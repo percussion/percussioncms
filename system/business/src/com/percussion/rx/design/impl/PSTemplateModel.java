@@ -204,14 +204,14 @@ public class PSTemplateModel extends PSDesignModel
       }
       IPSTemplateService service = (IPSTemplateService) getService();
 
-      List<IPSTemplateSlot> slots = new ArrayList<IPSTemplateSlot>();
+      List<IPSTemplateSlot> slots = new ArrayList<>();
       if (!slotNames.isEmpty())
       {
          slots = service.findSlotsByNames(slotNames);
          // Log all names that do not have slot objects
          if (slots.size() != slotNames.size())
          {
-            List<String> temp = new ArrayList<String>();
+            List<String> temp = new ArrayList<>();
             for (IPSTemplateSlot slot : slots)
             {
                temp.add(slot.getName());
@@ -225,7 +225,7 @@ public class PSTemplateModel extends PSDesignModel
             }
          }
       }
-      Set<IPSTemplateSlot> tempSlots = new HashSet<IPSTemplateSlot>(slots);
+      Set<IPSTemplateSlot> tempSlots = new HashSet<>(slots);
       template.setSlots(tempSlots);
    }
 
@@ -281,7 +281,7 @@ public class PSTemplateModel extends PSDesignModel
    {
       IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
       List<IPSNodeDefinition> nodeDefs = mgr.findAllItemNodeDefinitions();
-      List<IPSNodeDefinition> nodeDefs2Save = new ArrayList<IPSNodeDefinition>();
+      List<IPSNodeDefinition> nodeDefs2Save = new ArrayList<>();
       for (IPSNodeDefinition nodeDef : nodeDefs)
       {
          Set<IPSGuid> ctemps = nodeDef.getVariantGuids();
@@ -347,7 +347,7 @@ public class PSTemplateModel extends PSDesignModel
       IPSAssemblyService service = PSAssemblyServiceLocator
             .getAssemblyService();
       List<IPSTemplateSlot> allSlots = service.findSlotsByName(null);
-      List<IPSTemplateSlot> modSlots = new ArrayList<IPSTemplateSlot>();
+      List<IPSTemplateSlot> modSlots = new ArrayList<>();
       for (IPSTemplateSlot slot : allSlots)
       {
          Collection<PSPair<IPSGuid, IPSGuid>> slotAssociations = slot
@@ -384,7 +384,7 @@ public class PSTemplateModel extends PSDesignModel
    @Override
    public List<IPSAssociationSet> getAssociationSets()
    {
-      List<IPSAssociationSet> asets = new ArrayList<IPSAssociationSet>();
+      List<IPSAssociationSet> asets = new ArrayList<>();
       asets.add(new PSAssociationSet(AssociationType.TEMPLATE_SLOT));
       return asets;
    }

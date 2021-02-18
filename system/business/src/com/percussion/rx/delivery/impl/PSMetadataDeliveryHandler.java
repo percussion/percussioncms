@@ -105,13 +105,13 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
     
     private int operationTimeout = DEFAULT_OPERATION_TIMEOUT;
     
-    private Map<Long, Worker> workers = new ConcurrentHashMap<Long, PSMetadataDeliveryHandler.Worker>();
+    private Map<Long, Worker> workers = new ConcurrentHashMap<>();
 
     private List<String> supportedMimeTypes = asList("application/xhtml+xml", "application/html", "text/html");
 
     private List<String> supportedContentTypes = asList("");
     
-    private Map<IPSGuid, String> allContentTypes = new HashMap<IPSGuid,String>();
+    private Map<IPSGuid, String> allContentTypes = new HashMap<>();
     
     private IPSCmsObjectMgr cmsObjectMgr;
     
@@ -153,7 +153,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
     public void setSupportedMimeTypes(List<String> mimeTypes)
     {
         if (mimeTypes == null)
-            supportedMimeTypes = new ArrayList<String>();
+            supportedMimeTypes = new ArrayList<>();
         else
             supportedMimeTypes = mimeTypes;
     }
@@ -167,7 +167,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
     public void setSupportedContentTypes(List<String> contentTypes)
     {
         if (contentTypes == null)
-            supportedContentTypes = new ArrayList<String>();
+            supportedContentTypes = new ArrayList<>();
         else
            supportedContentTypes = contentTypes;
     }    
@@ -516,7 +516,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
       if (site == null || site.getBaseUrl() == null)
          return null;
       String root = getPublishRoot(data.m_pubServer, site);
-      return new PSPair<String, String>(root, site.getBaseUrl());
+      return new PSPair<>(root, site.getBaseUrl());
    }
 
     @Override

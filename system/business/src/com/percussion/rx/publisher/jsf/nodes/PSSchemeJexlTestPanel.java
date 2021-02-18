@@ -276,7 +276,7 @@ public class PSSchemeJexlTestPanel
     */
    public SelectItem[] getSites()
    {
-      List<SelectItem> siteList = new ArrayList<SelectItem>();
+      List<SelectItem> siteList = new ArrayList<>();
 
       for (PSSiteNode s : getAllSites())
       {

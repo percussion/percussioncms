@@ -218,7 +218,7 @@ public class PSTaskLogNode extends PSLockableNode
     */
    private Map<IPSGuid, String> getTaskIdNameMap()
    {
-      Map<IPSGuid,String> idnameMap = new HashMap<IPSGuid, String>();
+      Map<IPSGuid,String> idnameMap = new HashMap<>();
       // find the task container node
       PSNodeBase parent = getParent();
       PSTaskContainerNode containerNode = null;
@@ -248,7 +248,7 @@ public class PSTaskLogNode extends PSLockableNode
       Map<IPSGuid,String> idnameMap = getTaskIdNameMap();
       // 8640 log entries covers 30 days tasks that triggers every 5 minutes.
       List<PSScheduledTaskLog> logs = getService().findAllTaskLogs(8640);
-      List<EventLog> eventLogs = new ArrayList<EventLog>();
+      List<EventLog> eventLogs = new ArrayList<>();
       for (PSScheduledTaskLog log : logs)
       {
          
@@ -271,7 +271,7 @@ public class PSTaskLogNode extends PSLockableNode
       if (m_eventLogs == null)
          getEventLogs();
          
-      List<IPSGuid> ids = new ArrayList<IPSGuid>();
+      List<IPSGuid> ids = new ArrayList<>();
       for (EventLog log : m_eventLogs)
       {
          if (log.getSelected())

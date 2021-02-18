@@ -103,7 +103,7 @@ public class PSSiteModel extends PSDesignModel
    {
       Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> assoc = getSiteMgr()
             .findSiteTemplatesAssociations();
-      List<IPSGuid> ids = new ArrayList<IPSGuid>();
+      List<IPSGuid> ids = new ArrayList<>();
       for (PSPair<IPSGuid, String> k : assoc.keySet())
       {
          ids.add(k.getFirst());
@@ -119,7 +119,7 @@ public class PSSiteModel extends PSDesignModel
    {
       Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> assoc = getSiteMgr()
             .findSiteTemplatesAssociations();
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
       for (PSPair<IPSGuid, String> k : assoc.keySet())
       {
          names.add(k.getSecond());
