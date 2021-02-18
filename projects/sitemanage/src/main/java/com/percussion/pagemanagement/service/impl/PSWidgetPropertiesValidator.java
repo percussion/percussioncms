@@ -33,6 +33,7 @@ import com.percussion.pagemanagement.service.impl.PSWidgetUtils.PSWidgetProperty
 import com.percussion.pagemanagement.service.impl.PSWidgetUtils.PSWidgetPropertyCoercionException;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSPropertiesValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSAbstractPropertiesValidator;
@@ -115,7 +116,7 @@ public abstract class PSWidgetPropertiesValidator<T extends AbstractUserPref> ex
                     validate(name, object, p, properties, e);
                 }
             }
-        } catch (IPSDataService.DataServiceLoadException | PSValidationException | IPSDataService.DataServiceNotFoundException dataServiceLoadException) {
+        } catch (PSDataServiceException dataServiceLoadException) {
             e.addSuppressed(dataServiceLoadException);
         }
     }
@@ -126,7 +127,7 @@ public abstract class PSWidgetPropertiesValidator<T extends AbstractUserPref> ex
         return PSWidgetItem.class;
     }
     
-    private PSWidgetDefinition getDefinition(PSWidgetItem widgetItem) throws PSValidationException, IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException {
+    private PSWidgetDefinition getDefinition(PSWidgetItem widgetItem) throws PSDataServiceException {
         PSBeanValidationUtils.validate(widgetItem).throwIfInvalid();
         return widgetService.load(widgetItem.getDefinitionId());
     }

@@ -43,13 +43,13 @@ public interface IPageAdaptor
     
     public Page renamePage(URI baseURI, String siteName, String path, String pageName, String newName) throws BackendException;
   
-    public int approveAllPages(URI baseURI, String folderPath);
+    public int approveAllPages(URI baseURI, String folderPath) throws BackendException;
     
-    public int archiveAllPages(URI baseUri, String folderPath);
+    public int archiveAllPages(URI baseUri, String folderPath) throws BackendException;
     
-    public int submitForReviewAllPages(URI baseUri, String folderPath);
+    public int submitForReviewAllPages(URI baseUri, String folderPath) throws BackendException;
 
-	public Page changePageTemplate(URI baseUri, Page p) throws ContentMigrationException, BackendException;
+	public Page changePageTemplate(URI baseUri, Page p) throws BackendException;
 	
 	public List<String> allPagesReport(URI baseUri, String siteFolderPath) throws BackendException;
 	

@@ -375,7 +375,7 @@ public class PSAssemblyItemBridge {
     protected PSRenderLinkContext getRenderLinkContext(IPSAssemblyItem assemblyItem, IPSLinkableItem item) throws PSAssemblyException {
         try {
             return renderLinkContextFactory.create(assemblyItem, item);
-        } catch (IPSDataService.DataServiceLoadException | PSFilterException | IPSDataService.DataServiceNotFoundException e) {
+        } catch (IPSDataService.DataServiceLoadException | PSFilterException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
             throw new PSAssemblyException(23,e);
         }
     }

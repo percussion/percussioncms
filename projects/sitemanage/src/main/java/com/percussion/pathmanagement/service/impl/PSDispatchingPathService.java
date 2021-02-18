@@ -24,6 +24,7 @@
 package com.percussion.pathmanagement.service.impl;
 
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
 import com.percussion.pathmanagement.data.PSItemByWfStateRequest;
 import com.percussion.pathmanagement.data.PSMoveFolderItem;
@@ -41,9 +42,11 @@ import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.data.PSPagedObjectList;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.ui.data.PSDisplayPropertiesCriteria;
 import com.percussion.ui.data.PSSimpleDisplayFormat;
@@ -55,8 +58,6 @@ import com.percussion.util.PSStopwatch;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -238,16 +239,14 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
     /**
      * {@inheritDoc}
      */
-    public PSPathItem addFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    public PSPathItem addFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         checkRolesAllowed();
         
         PathMatch pm = match(path);
         return addFolder(pm);
     }    
 
-    protected PSPathItem addFolder(PathMatch pm) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    protected PSPathItem addFolder(PathMatch pm) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
         return pm.addFolder();
     }
     
@@ -278,7 +277,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
         return renameFolder(pm, item.getName());
     }    
 
-    public PSNoContent moveItem(PSMoveFolderItem request) throws PSPathServiceException, PSDataServiceException {
+    public PSNoContent moveItem(PSMoveFolderItem request) throws PSPathServiceException, PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         checkRolesAllowed();
         
         PathMatch pm = match(request.getTargetFolderPath());
@@ -293,32 +292,28 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
     /**
      * {@inheritDoc}
      */
-    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException
-    {
+    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         checkRolesAllowed();
         
         PathMatch pm = match(criteria.getPath());
         return deleteFolder(pm, criteria);
     }    
 
-    protected int deleteFolder(PathMatch pm, PSDeleteFolderCriteria criteria) throws PSPathServiceException
-    {
+    protected int deleteFolder(PathMatch pm, PSDeleteFolderCriteria criteria) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
         return pm.deleteFolder(criteria);
     }
     
     /**
      * {@inheritDoc}
      */
-    public String validateFolderDelete(String path) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    public String validateFolderDelete(String path) throws PSPathNotFoundServiceException, PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         checkRolesAllowed();
         
         PathMatch pm = match(path);
         return validateFolderDelete(pm);
     }    
 
-    protected String validateFolderDelete(PathMatch pm) throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+    protected String validateFolderDelete(PathMatch pm) throws PSPathNotFoundServiceException, PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         return pm.validateFolderDelete();
     }
     
@@ -326,8 +321,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
      * {@inheritDoc}
      */
     public List findItemProperties(PSItemByWfStateRequest request)
-    throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+            throws PSPathNotFoundServiceException, PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         checkRolesAllowed();
         
         PathMatch pm = match(request.getPath());
@@ -335,8 +329,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
     }    
 
     protected List findItemProperties(PathMatch pm, String workflowName, String stateName)
-    throws PSPathNotFoundServiceException, PSPathServiceException
-    {
+            throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
         return pm.findItemProperties(workflowName, stateName);
     }
     
@@ -571,8 +564,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
             return pathService.findRootChildren();
         }
         
-        public PSPathItem addFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException
-        {
+        public PSPathItem addFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
             return pathService.addFolder(path);
         }
         
@@ -586,25 +578,22 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
             return pathService.renameFolder(item);
         }
         
-        public PSNoContent moveItem(PSMoveFolderItem request) throws PSPathServiceException, PSDataServiceException {
+        public PSNoContent moveItem(PSMoveFolderItem request) throws PSPathServiceException, PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
             return pathService.moveItem(request);
         }
 
         public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathNotFoundServiceException,
-        PSPathServiceException
-        {
+                PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
             return pathService.deleteFolder(criteria);
         }
         
         public String validateFolderDelete(String path) throws PSPathNotFoundServiceException,
-        PSPathServiceException
-        {
+                PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSItemWorkflowService.PSItemWorkflowServiceException {
             return pathService.validateFolderDelete(path);
         }
         
         public List findItemProperties(PSItemByWfStateRequest request)
-        throws PSPathNotFoundServiceException, PSPathServiceException
-        {
+                throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
             return pathService.findItemProperties(request);
         }
         
@@ -964,7 +953,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * 
              * @return list of item properties, never <code>null</code>, may be empty.
              */
-            public List<PSItemProperties> findItemProperties(String workflowName, String stateName) throws PSPathServiceException {
+            public List<PSItemProperties> findItemProperties(String workflowName, String stateName) throws PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException {
                 PSItemByWfStateRequest request = new PSItemByWfStateRequest();
                 request.setPath(relativePath);
                 request.setWorkflow(workflowName);
@@ -990,7 +979,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * 
              * @return never <code>null</code>.
              */
-            public PSPathItem addFolder() throws PSPathServiceException {
+            public PSPathItem addFolder() throws PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException {
                 PSPathItem item = pathService.addFolder(relativePath);
                 validateReturnedPathItem(item);
                 item.setPath(toFullPath(item.getPath()));
@@ -1032,7 +1021,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
                 return item;
             }
             
-            public PSNoContent moveItem(PSMoveFolderItem request) throws PSDataServiceException, PSPathServiceException {
+            public PSNoContent moveItem(PSMoveFolderItem request) throws PSDataServiceException, PSPathServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
                 return pathService.moveItem(request);
             }
             
@@ -1041,7 +1030,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * @param criteria
              * @return number of undeleted items.
              */
-            public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException {
+            public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException {
                 PSDeleteFolderCriteria folderCriteria = new PSDeleteFolderCriteria();
                 folderCriteria.setPath(relativePath);
                 folderCriteria.setSkipItems(criteria.getSkipItems());
@@ -1053,7 +1042,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * See {@link #findChildren()}.  Validates the folder for deletion.
              * @return never <code>null</code> or empty.
              */
-            public String validateFolderDelete() throws PSPathServiceException {
+            public String validateFolderDelete() throws PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSItemWorkflowService.PSItemWorkflowServiceException {
                 return pathService.validateFolderDelete(relativePath);
             }
             

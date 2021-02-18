@@ -82,7 +82,7 @@ public class PSAssetUploadFolderPathMap
      * @param asset never <code>null</code>.
      * @return never <code>null</code>.
      */
-    public Number getLegacyFolderIdForAsset(PSAssetSummary asset) {
+    public Number getLegacyFolderIdForAsset(PSAssetSummary asset) throws PSAssetServiceException {
         notNull(asset, "asset");
         Map<String, Number> folderIds = getFolderIdsForPaths(asset.getFolderPaths());
         if ( ! folderIds.isEmpty() )

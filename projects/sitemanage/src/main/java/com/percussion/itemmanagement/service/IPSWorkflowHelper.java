@@ -28,6 +28,7 @@ import com.percussion.itemmanagement.data.PSItemStateTransition;
 import com.percussion.services.content.data.PSItemStatus;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.workflow.data.PSState;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentWs;
 
@@ -60,7 +61,7 @@ public interface IPSWorkflowHelper
      * 
      * @param ids set of item ID's, never <code>null</code>, may be empty.
      */
-    void transitionToPending(Set<String> ids);
+    void transitionToPending(Set<String> ids) throws PSValidationException;
     
     
     /***
@@ -68,7 +69,7 @@ public interface IPSWorkflowHelper
      * 
      * @param ids set of Item id's never <code>null</code>, may be empty
      */
-    void transitionToArchive(Set<String> ids);
+    void transitionToArchive(Set<String> ids) throws PSValidationException;
     
    
     /***
@@ -76,7 +77,7 @@ public interface IPSWorkflowHelper
      * 
      * @param ids set of Item id's never <code>null</code>, may be empty
      */
-    void transitionToReview(Set<String> ids);
+    void transitionToReview(Set<String> ids) throws PSValidationException;
     
     /**
      * Gets all possible workflow transitions for the specified item.
@@ -85,7 +86,7 @@ public interface IPSWorkflowHelper
      * 
      * @return the transition info.
      */
-    PSItemStateTransition getTransitions(String id);
+    PSItemStateTransition getTransitions(String id) throws PSValidationException;
     
     /**
      * Determines if the specified item is in the pending state.
@@ -94,7 +95,7 @@ public interface IPSWorkflowHelper
      * 
      * @return <code>true</code> if the item is pending for publish, <code>false</code> otherwise.
      */
-    boolean isPending(String id);
+    boolean isPending(String id) throws PSValidationException;
     
     /**
      * Determines if the specified item is in the archived state.
@@ -103,7 +104,7 @@ public interface IPSWorkflowHelper
      * 
      * @return <code>true</code> if the item is archived, <code>false</code> otherwise.
      */
-    boolean isArchived(String id);
+    boolean isArchived(String id) throws PSValidationException;
     
     /**
      * Determines if the specified item is in the live state.
@@ -112,7 +113,7 @@ public interface IPSWorkflowHelper
      * 
      * @return <code>true</code> if the item is live, <code>false</code> otherwise.
      */
-    boolean isLive(String id);
+    boolean isLive(String id) throws PSValidationException;
     
     /**
      * Determines if the specified item is in the quick edit state.
@@ -121,7 +122,7 @@ public interface IPSWorkflowHelper
      * 
      * @return <code>true</code> if the item is in quick edit, <code>false</code> otherwise.
      */    
-    boolean isQuickEdit(String id);
+    boolean isQuickEdit(String id) throws PSValidationException;
     
     /**
      * Determines if the specified item is in a state (Pending, Live, Quick Edit) which indicates that the item has
@@ -131,7 +132,7 @@ public interface IPSWorkflowHelper
      * 
      * @return <code>true</code> if the item has been approved, <code>false</code> otherwise.
      */
-    boolean isApproved(String id);
+    boolean isApproved(String id) throws PSValidationException;
     
     /**
      * Determines if the specified item is in "pending" or "live" state.
@@ -153,7 +154,7 @@ public interface IPSWorkflowHelper
      * @return <code>true</code> if the supplied item is still checked out to the current user, otherwise
      * <code>false</code>.
      */
-    boolean isCheckedOutToCurrentUser(String id);
+    boolean isCheckedOutToCurrentUser(String id) throws PSValidationException;
     
     /**
      * Checks whether the item with the supplied id is checked out to the
@@ -163,7 +164,7 @@ public interface IPSWorkflowHelper
      * @return <code>true</code> if the supplied item is still checked out to
      *         someone else user, otherwise <code>false</code>.
      */
-    public boolean isCheckedOutToSomeoneElse(String id);
+    public boolean isCheckedOutToSomeoneElse(String id) throws PSValidationException;
     
     /**
      * Checks if the current user has previlege to transition an item from draft to pending.
@@ -181,7 +182,7 @@ public interface IPSWorkflowHelper
      * 
      * @return <code>true</code> if the item is the tip revision, <code>false</code> otherwise.
      */
-    boolean isTipRevision(String id);
+    boolean isTipRevision(String id) throws PSValidationException;
     
     /**
      * Retrieves the summary of the specified item.
@@ -189,7 +190,7 @@ public interface IPSWorkflowHelper
      * @param id the ID of the item, not blank.
      * @return the item's component summary, never <code>null</code>.
      */
-    PSComponentSummary getComponentSummary(String id);
+    PSComponentSummary getComponentSummary(String id) throws PSValidationException;
     
     /**
      * Retrieves the state of the specified item.
@@ -197,7 +198,7 @@ public interface IPSWorkflowHelper
      * @param id the ID of the item, not blank.
      * @return the item's current workflow state, never <code>null</code>.
      */
-    PSState getState(String id);
+    PSState getState(String id) throws PSValidationException;
     
     /**
      * Determines if the specified item is a page.
@@ -206,7 +207,7 @@ public interface IPSWorkflowHelper
      *
      * @return <code>true</code> if the item is a page; otherwise return <code>false</code>.
      */
-    boolean isPage(String id) throws PSNotFoundException;
+    boolean isPage(String id) throws PSNotFoundException, PSValidationException;
     
     /**
      * Determines if the specified item is a template.
@@ -215,7 +216,7 @@ public interface IPSWorkflowHelper
      *
      * @return <code>true</code> if the item is a template; otherwise return <code>false</code>.
      */
-    boolean isTemplate(String id);
+    boolean isTemplate(String id) throws PSValidationException;
     
     /**
      * Determines if the specified item is an asset.
@@ -224,7 +225,7 @@ public interface IPSWorkflowHelper
      *
      * @return <code>true</code> if the item is an asset; otherwise return <code>false</code>.
      */
-    boolean isAsset(String id) throws PSNotFoundException;
+    boolean isAsset(String id) throws PSNotFoundException, PSValidationException;
     
     /**
      * Determines if the specified item is a local asset.
@@ -233,7 +234,7 @@ public interface IPSWorkflowHelper
      *
      * @return <code>true</code> if the item is a local asset; otherwise return <code>false</code>.
      */
-    boolean isLocalAsset(String id) throws PSNotFoundException;
+    boolean isLocalAsset(String id) throws PSNotFoundException, PSValidationException;
     
     /**
      * Returns the type of the specified item.
@@ -242,7 +243,7 @@ public interface IPSWorkflowHelper
      *
      * @return The type of the supplied id, if it is not one of the known types then returns unknown.
      */
-    PSItemTypeEnum getItemType(String id);
+    PSItemTypeEnum getItemType(String id) throws PSValidationException;
     
     /**
      * Returns the item type of the specified content type id.
@@ -259,7 +260,7 @@ public interface IPSWorkflowHelper
      * @return <code>true</code> if the current user have permission to approve transition,
      * otherwise <code>false</code>.
      */
-    boolean isApproveAvailableToCurrentUser(String itemId);    
+    boolean isApproveAvailableToCurrentUser(String itemId) throws PSValidationException;
     
 
     /**

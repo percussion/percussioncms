@@ -36,6 +36,7 @@ import com.percussion.analytics.error.PSAnalyticsProviderException.CAUSETYPE;
 import com.percussion.analytics.service.IPSAnalyticsProviderService;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -48,6 +49,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.util.*;
 
@@ -92,13 +94,14 @@ public class PSContentActivityService implements IPSContentActivityService
     @Override
     public List<PSContentActivity> getContentActivity(PSContentActivityRequest request)
     {
-    	//validate the request
-    	contentActivityReqvalidator.validate(request);
+        try {
+            //validate the request
+            contentActivityReqvalidator.validate(request);
 
-    	//Test Data, remove after implementation
-        //fillTestData(request.getPath(), caList);
-    
-    	return new PSContentActivityList(getContentActivity(request.getPath(), request.getDurationType(), request.getDuration(), true));
+            return new PSContentActivityList(getContentActivity(request.getPath(), request.getDurationType(), request.getDuration(), true));
+        } catch (PSValidationException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @POST
@@ -109,11 +112,12 @@ public class PSContentActivityService implements IPSContentActivityService
     @Override
     public List<PSEffectiveness> getEffectiveness(PSEffectivenessRequest request)
     {
-        //validate the request
-        contentActivityReqvalidator.validate(request);
-
         try
         {
+            //validate the request
+            contentActivityReqvalidator.validate(request);
+
+
             //check if analytics is configured
             PSAnalyticsProviderConfig config = analyticsProviderService.loadConfig(false);
             if (config == null)
@@ -152,9 +156,9 @@ public class PSContentActivityService implements IPSContentActivityService
             
             return new PSEffectivenessList(eList);
         }
-        catch (PSAnalyticsProviderException e)
+        catch (PSAnalyticsProviderException | PSValidationException e)
         {
-            throw new PSEffectivenessServiceException(analyticsProviderService.getErrorMessageHandler().getMessage(e));
+            throw new WebApplicationException(e);
         }
     }
     
@@ -250,14 +254,17 @@ public class PSContentActivityService implements IPSContentActivityService
         PSContentActivityRequest req,
         PSBeanValidationException e)
         {
-            String path = req.getPath();
-            String durationType = req.getDurationType();
-            String duration = req.getDuration();
-            rejectIfBlank("contentactivity", "path", path);
-            rejectIfBlank("contentactivity", "durationType", durationType);
-            rejectIfBlank("contentactivity", "duration", duration);
-            try
-            {
+            String duration="0";
+
+            try {
+
+                String path = req.getPath();
+                String durationType = req.getDurationType();
+                duration = req.getDuration();
+                rejectIfBlank("contentactivity", "path", path);
+                rejectIfBlank("contentactivity", "durationType", durationType);
+                rejectIfBlank("contentactivity", "duration", duration);
+
             	PSDurationTypeEnum dtype = PSDurationTypeEnum.valueOf(req.getDurationType());
             	if(dtype == null)
                 	e.rejectValue("Duration Type", "durationtype", "Invalid duration type, valid values are days, weeks, " +

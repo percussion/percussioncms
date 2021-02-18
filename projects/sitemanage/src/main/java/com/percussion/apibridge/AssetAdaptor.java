@@ -65,7 +65,6 @@ import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.PSDateUtils;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.data.IPSItemSummary.Category;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
@@ -217,9 +216,13 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         // requested
         if (StringUtils.isNotBlank(type))
         {
-            // Collect all assets by type
-            Collection<PSAsset> internalAssets = assetDao.findByType(type);
-
+            Collection<PSAsset> internalAssets;
+            try {
+                // Collect all assets by type
+                internalAssets = assetDao.findByType(type);
+            } catch (IPSGenericDao.LoadException e) {
+                throw new BackendException(e);
+            }
             // Both type and path were given, filter list
             boolean filterByPath = StringUtils.isNotBlank(path);
 
@@ -252,7 +255,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
             PSAsset asset = null;
             try {
                 asset = this.assetService.load(item.getId());
-            } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+            } catch (PSDataServiceException e) {
                 log.error(e.getMessage());
                 log.debug(e.getMessage(),e);
                throw new BackendException(e.getMessage(),e);
@@ -361,7 +364,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         PSAsset oldPSAsset;
         try {
             oldPSAsset = this.assetService.load(id);
-        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+        } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new BackendException(e.getMessage(),e);
@@ -451,7 +454,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
                     this.pathService.moveItem(request); // PXA What to do if this
                     // fails? Have we changed
                     // anything yet?
-                } catch (PSDataServiceException | IPSPathService.PSPathServiceException e) {
+                } catch (PSDataServiceException | IPSPathService.PSPathServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
                     log.error(e.getMessage());
                     throw new BackendException(e.getMessage(),e);
                 }
@@ -462,7 +465,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         try {
             // Save down the object! Woo!
             this.assetDao.save(oldPSAsset);
-        } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException | IPSGenericDao.DeleteException e) {
+        } catch (PSDataServiceException e) {
             throw new BackendException(e.getMessage(),e);
         }
 
@@ -580,7 +583,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         // Save it once.
         try {
             newAsset = this.assetDao.save(newAsset);
-        } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException | IPSGenericDao.DeleteException e) {
+        } catch (PSDataServiceException e) {
            throw new BackendException(e.getMessage(),e);
         }
 
@@ -604,7 +607,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
                     try {
                         newAsset = this.assetDao.save(newAsset);
-                    } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException | IPSGenericDao.DeleteException e) {
+                    } catch (PSDataServiceException e) {
                         throw new BackendException(e.getMessage(),e);
                     }
                 }
@@ -990,7 +993,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
 	        try {
                 update = this.assetService.load(a.getId());
-           } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+           } catch (PSDataServiceException e) {
              throw new BackendException(e.getMessage(),e);
            }
 

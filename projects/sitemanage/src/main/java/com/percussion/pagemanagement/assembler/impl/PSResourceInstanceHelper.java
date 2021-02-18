@@ -178,7 +178,7 @@ public class PSResourceInstanceHelper
      * @return never <code>null</code>.
      * @throws RuntimeException if the folder path for resource is invalid.
      */
-    private String getPublishLocationFolderPath(PSResourceInstance r) throws DataServiceNotFoundException {
+    private String getPublishLocationFolderPath(PSResourceInstance r) throws DataServiceNotFoundException, PSValidationException {
         notNull(r, "r");
         String path = r.getItem().getFolderPath();
         path = path == null ? r.getLinkContext().getFolderPath() : path;
@@ -220,7 +220,7 @@ public class PSResourceInstanceHelper
      * @param r never <code>null</code>.
      * @return never <code>null</code>.
      */
-    private PSSiteSummary resolveSite(PSResourceInstance r) throws DataServiceNotFoundException {
+    private PSSiteSummary resolveSite(PSResourceInstance r) throws DataServiceNotFoundException, PSValidationException {
         if (r.getSite() != null) return r.getSite();
         PSSiteSummary site = r.getLinkContext().getSite();
 
@@ -230,7 +230,7 @@ public class PSResourceInstanceHelper
         return site;
     }
     
-    public PSResourceInstance createResourceInstance(PSRenderLinkContext context, IPSLinkableItem item, PSAssetResource rd) throws IPSAssetService.PSAssetServiceException, DataServiceNotFoundException {
+    public PSResourceInstance createResourceInstance(PSRenderLinkContext context, IPSLinkableItem item, PSAssetResource rd) throws IPSAssetService.PSAssetServiceException, DataServiceNotFoundException, PSValidationException {
         PSResourceInstance r = new PSResourceInstance();
         if (item instanceof IPSLinkableContentItem) {
             r.setItem((IPSLinkableContentItem) item);

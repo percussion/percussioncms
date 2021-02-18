@@ -40,6 +40,7 @@ import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.share.dao.impl.PSFolderHelper;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.impl.PSSiteDataService;
 import com.percussion.sitemanage.service.impl.PSSitePublishStatusService;
@@ -208,8 +209,7 @@ public class PSRedirectService implements IPSRedirectService
         return status;
     }
 
-    private boolean isSitePublished(String siteId)
-    {
+    private boolean isSitePublished(String siteId) throws PSDataServiceException {
         IPSGuid siteGuid = guidMgr.makeGuid(siteId, PSTypeEnum.SITE);
         return pubStatusService.isSitePublished(siteGuid);
     }

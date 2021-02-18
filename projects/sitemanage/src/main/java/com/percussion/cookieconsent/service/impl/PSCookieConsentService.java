@@ -120,7 +120,7 @@ public class PSCookieConsentService implements IPSCookieConsentService {
                log.debug(response);
 
            return response;
-       } catch (PSValidationException e) {
+       } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException e) {
            log.error(e.getMessage());
            throw new WebApplicationException(e.getMessage());
        }
@@ -148,7 +148,7 @@ public class PSCookieConsentService implements IPSCookieConsentService {
                 log.debug(response);
 
             return response;
-        } catch (PSValidationException e) {
+        } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -204,23 +204,27 @@ public class PSCookieConsentService implements IPSCookieConsentService {
     @Path("/log/{siteName}")
     @Consumes(MediaType.APPLICATION_JSON)
     public void deleteCookieConsentEntriesForSite(@PathParam("siteName") String siteName) {
-        String currentUser = (String)PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
+      try {
+          String currentUser = (String) PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
 
-        log.info("Cookie consent entries for site: {} are being deleted by: {}",
-                siteName, currentUser);
-        
-        PSDeliveryInfo deliveryServer = findServer(siteName);
-        
-        if (deliveryServer == null)
-            throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
-        
-        PSDeliveryClient deliveryClient = new PSDeliveryClient();
-        
-        String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
-                DTS_URL + "/" + siteName, HttpMethodType.DELETE, true));
-        
-        if (response != null)
-            log.debug(response);
+          log.info("Cookie consent entries for site: {} are being deleted by: {}",
+                  siteName, currentUser);
+
+          PSDeliveryInfo deliveryServer = findServer(siteName);
+
+          if (deliveryServer == null)
+              throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
+
+          PSDeliveryClient deliveryClient = new PSDeliveryClient();
+
+          String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
+                  DTS_URL + "/" + siteName, HttpMethodType.DELETE, true));
+
+          if (response != null)
+              log.debug(response);
+      } catch (IPSPubServerService.PSPubServerServiceException e) {
+         throw new WebApplicationException(e);
+      }
     }
     
     /**
@@ -229,8 +233,7 @@ public class PSCookieConsentService implements IPSCookieConsentService {
      * @return the server, it may be <code>null</code> if cannot find the
      *         server.
      */
-    private PSDeliveryInfo findServer(String site)
-    {
+    private PSDeliveryInfo findServer(String site) throws IPSPubServerService.PSPubServerServiceException {
         String adminURl= pubServerService.getDefaultAdminURL(site);
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER,null,adminURl);
         //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER);
