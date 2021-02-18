@@ -78,54 +78,59 @@ public class PSCryptographer
       partone /= 7;
       parttwo /= 13;
 
-      try
-      {
+
          int padLen = 0;
-         ByteArrayOutputStream bOut = new ByteArrayOutputStream();
+         try(ByteArrayOutputStream bOut = new ByteArrayOutputStream()){
 
-         byte[] bOutarr = Base64.getMimeDecoder().decode(str.getBytes(
-                 StandardCharsets.UTF_8));
+            byte[] bOutarr = Base64.getMimeDecoder().decode(str.getBytes(
+                    StandardCharsets.UTF_8));
 
-         IPSKey key = PSEncryptionKeyFactory.getKeyGenerator(PSEncryptionKeyFactory.DES_ALGORITHM);
-         if ((key != null) && (key instanceof IPSSecretKey))
-         {
-            IPSSecretKey secretKey = (IPSSecretKey)key;
-            byte[] baOuter = new byte[8];
-            for (int i = 0; i < 4; i++)
-               baOuter[i] = (byte)((partone >> i) & 0xFF);
-            for (int i = 4; i < 8; i++)
-               baOuter[i] = (byte)((parttwo >> (i-4)) & 0xFF);
+            IPSKey key = PSEncryptionKeyFactory.getKeyGenerator(PSEncryptionKeyFactory.DES_ALGORITHM);
+            if ((key != null) && (key instanceof IPSSecretKey))
+            {
+               IPSSecretKey secretKey = (IPSSecretKey)key;
+               byte[] baOuter = new byte[8];
+               for (int i = 0; i < 4; i++)
+                  baOuter[i] = (byte)((partone >> i) & 0xFF);
+               for (int i = 4; i < 8; i++)
+                  baOuter[i] = (byte)((parttwo >> (i-4)) & 0xFF);
 
-            secretKey.setSecret(baOuter);
-            IPSDecryptor decr = secretKey.getDecryptor();
+               secretKey.setSecret(baOuter);
+               IPSDecryptor decr = secretKey.getDecryptor();
 
-            ByteArrayOutputStream bOut2 = new ByteArrayOutputStream();
-            decr.decrypt(new ByteArrayInputStream(bOutarr), bOut2);
-            byte[] bTemp = bOut2.toByteArray();
+               try(ByteArrayOutputStream bOut2 = new ByteArrayOutputStream())
+               {
+                  try(ByteArrayInputStream by = new ByteArrayInputStream(bOutarr)) {
+                     decr.decrypt(by, bOut2);
+                  }
+                  byte[] bTemp = bOut2.toByteArray();
+                  byte[] baInner = new byte[8];
+                  System.arraycopy(bTemp, 0, baInner, 0, 4);
+                  System.arraycopy(bTemp, bTemp.length - 4, baInner, 4, 4);
+                  int innerDataLength = bTemp.length - 8;
 
-            byte[] baInner = new byte[8];
-            System.arraycopy(bTemp, 0, baInner, 0, 4);
-            System.arraycopy(bTemp, bTemp.length - 4, baInner, 4, 4);
-            int innerDataLength = bTemp.length - 8;
+                  for (int i = 0; i < 8; i++)
+                     baInner[i] ^= (byte) ((1 << i) & innerDataLength);
 
-            for (int i = 0; i < 8; i++)
-               baInner[i] ^= (byte) ((1 << i) & innerDataLength);
+                  padLen = baInner[0];
 
-            padLen = baInner[0];
+                  secretKey.setSecret(baInner);
+                  try(ByteArrayOutputStream bOut3 = new ByteArrayOutputStream())
+                  {
+                     try(ByteArrayInputStream bin = new ByteArrayInputStream(bTemp, 4, innerDataLength)) {
+                        decr.decrypt(bin, bOut3);
+                     }
+                  }
+               }
+            }
 
-            secretKey.setSecret(baInner);
-            bOut = new ByteArrayOutputStream();
-            decr.decrypt(
-               new ByteArrayInputStream(bTemp, 4, innerDataLength), bOut);
+            String ret = bOut.toString();
+            // pad must be between 1 and 7 bytes, fix for bug id Rx-99-11-0049
+            if ((padLen > 0) & (padLen  < 8))
+               ret = ret.substring(0, ret.length() - padLen);
+
+            return ret;
          }
-
-         String ret = bOut.toString();
-         // pad must be between 1 and 7 bytes, fix for bug id Rx-99-11-0049
-         if ((padLen > 0) & (padLen  < 8))
-            ret = ret.substring(0, ret.length() - padLen);
-
-         return ret;
-      }
       catch (Exception e)
       {
          // we were returning null which caused a decryption error downstream
