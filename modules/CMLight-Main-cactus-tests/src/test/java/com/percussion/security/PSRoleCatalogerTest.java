@@ -28,7 +28,6 @@ import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Iterator;

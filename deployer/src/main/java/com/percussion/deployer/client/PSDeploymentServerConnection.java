@@ -224,19 +224,6 @@ public class PSDeploymentServerConnection
             IPSDeploymentErrors.SERVER_RESPONSE_ELEMENT_INVALID, args);
       }
 
-      // The client's deployment version must be greater than or equal to the
-      // server's.  This allows forward compatiblity to be handled by the
-      // server.
-	  
-	  //This will have to be reworked once we allow remote install of the package manager for cougar.
-	  // It will need to know the difference of cougar and rhythmyx
-      //if (deployInterface >= DEPLOYMENT_INTERFACE_VERSION)
-      //{
-      //   m_isConnected = false;
-      //   throw new PSDeployException(IPSDeploymentErrors.SERVER_VERSION_INVALID,
-      //      m_version.getVersionString());
-      //}
-      
       String licensed = root.getAttribute("licensed");
       if ((licensed != null) && (licensed.trim().length() > 0))
          m_bLicensed = "yes".equalsIgnoreCase(licensed.trim());
@@ -710,7 +697,6 @@ public class PSDeploymentServerConnection
       // make request
       byte[] respData = null;
       Document respDoc = null;
-      HttpOutputStream out = null;
       int status = -1;
       // add reqtype header after first header (will get set with
       // content-type header automatically by the formDataEncode call)
@@ -719,8 +705,6 @@ public class PSDeploymentServerConnection
       HTTPResponse resp = null;
       boolean doRepost = false;
 
-      try
-      {
          // add the params
          NVPair[] opts = getParams(params);
 
@@ -734,21 +718,23 @@ public class PSDeploymentServerConnection
          // keep alive connection header
          hdrs[2] = new NVPair("Connection", "Keep-Alive");
          // send the request to the Rx server
-         out = new HttpOutputStream(data.length);
+         try(HttpOutputStream out = new HttpOutputStream(data.length)){
 
-         synchronized(m_mutexObject)
-         {
-            resp= m_conn.Post(requestPage, out, hdrs);
-         }
-         ByteArrayInputStream bIn = new ByteArrayInputStream(data);
-         PSInputStreamCounter counter = new PSInputStreamCounter(bIn);
-         controller.setStream(counter, data.length);
+            synchronized(m_mutexObject)
+            {
+               resp= m_conn.Post(requestPage, out, hdrs);
+            }
+            try(ByteArrayInputStream bIn = new ByteArrayInputStream(data)) {
+               try (PSInputStreamCounter counter = new PSInputStreamCounter(bIn)) {
+                  controller.setStream(counter, data.length);
+               }
 
-         // copy the data
-         copyStream(counter, out, controller);
-         // get the response code
-         status = resp.getStatusCode();
-         respData = resp.getData();
+               // copy the data
+               copyStream(counter, out, controller);
+               // get the response code
+               status = resp.getStatusCode();
+               respData = resp.getData();
+            }
       }
       catch ( IOException ioe)
       {
@@ -771,11 +757,7 @@ public class PSDeploymentServerConnection
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
       }
-      finally
-      {
-         if (out != null)
-            try{ out.close();} catch(IOException e){}
-      }
+
       
       if (repost)
       {
@@ -889,14 +871,13 @@ public class PSDeploymentServerConnection
       byte[] respData = null;
       InputStream in = null;
       int status = -1;
-      PSPurgableTempFile reqFile = null;
-      try
-      {
+
+
          // no options
          NVPair[] opts = null;
 
          // add the request doc as an attachment
-         reqFile = createAttachmentFile(req);
+         try(PSPurgableTempFile reqFile = createAttachmentFile(req)){
 
          NVPair[] file = new NVPair[1];
          file[0] = new NVPair(reqFile.getName(), reqFile.getPath());
@@ -1201,22 +1182,14 @@ public class PSDeploymentServerConnection
     *
     * @throws IOException If there are any errors.
     */
-   private PSPurgableTempFile createAttachmentFile(Document doc)
-      throws IOException
-   {
-      FileOutputStream out = null;
-      try
-      {
-         PSPurgableTempFile reqFile = new PSPurgableTempFile("dpl_", ".xml",
-            null);
-         out = new FileOutputStream(reqFile);
-         PSXmlDocumentBuilder.write(doc, out);
-         return reqFile;
-      }
-      finally
-      {
-         if (out != null)
-            try {out.close();} catch (IOException ex){}
+   private PSPurgableTempFile createAttachmentFile(Document doc) throws Exception {
+
+      try(PSPurgableTempFile reqFile = new PSPurgableTempFile("dpl_", ".xml",
+            null)){
+         try( FileOutputStream out = new FileOutputStream(reqFile)) {
+            PSXmlDocumentBuilder.write(doc, out);
+            return reqFile;
+         }
       }
 
    }
@@ -1288,10 +1261,8 @@ public class PSDeploymentServerConnection
       }
 
       // try to parse the response as XML
-      ByteArrayInputStream bIn = null;
-      try
-      {
-         bIn = new ByteArrayInputStream(response);
+
+      try(ByteArrayInputStream bIn = new ByteArrayInputStream(response)){
          respDoc = PSXmlDocumentBuilder.createXmlDocument(bIn, false);
       }
       catch (Exception e)
@@ -1303,13 +1274,6 @@ public class PSDeploymentServerConnection
             Object[] args = {type, e.getLocalizedMessage()};
             throw new PSDeployException(
                IPSDeploymentErrors.SERVER_RESPONSE_PARSE_ERROR, args);
-         }
-      }
-      finally
-      {
-         if (bIn != null)
-         {
-            try { bIn.close(); } catch (IOException e) {}
          }
       }
 

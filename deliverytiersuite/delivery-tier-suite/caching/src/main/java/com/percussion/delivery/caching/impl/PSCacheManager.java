@@ -150,15 +150,7 @@ public class PSCacheManager implements IPSCacheManager
     {
         this.cacheConfigStream = cacheConfigStream;
     }
-    
-    /* (non-Javadoc)
-     * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
-     */
-//    public void setApplicationContext(ApplicationContext appContext) throws BeansException
-//    {
-//        this.appContext = appContext;
-//    }
-    
+
     /**
      * @return an unmodifiable map of the providers map
      */
@@ -266,17 +258,11 @@ public class PSCacheManager implements IPSCacheManager
     {
         File config = resource.getFile();
         PSCacheConfig configObj = null;
-        InputStream is = null;
-        try
-        {
-            is = new FileInputStream(config);
+
+        try(InputStream is = new FileInputStream(config)){
             configObj = PSJaxbUtils.unmarshall(is, PSCacheConfig.class, false);    
         }
-        finally
-        {
-            if(is != null)
-                is.close();
-        }
+
         if(configObj != null)
         {
             boolean modified = false;
@@ -295,20 +281,13 @@ public class PSCacheManager implements IPSCacheManager
             }
             if(modified)
             {
-                
-                PrintStream os = null;
-                try
-                {
-                    String xml = PSJaxbUtils.marshall(configObj, false);
-                    os = new PrintStream(config);
+
+                String xml = PSJaxbUtils.marshall(configObj, false);
+                try(PrintStream os = new PrintStream(config)) {
                     os.print(format(xml));
                     os.flush();
                 }
-                finally
-                {
-                    if(os != null)
-                        os.close();
-                }
+
             }
         }
     }
