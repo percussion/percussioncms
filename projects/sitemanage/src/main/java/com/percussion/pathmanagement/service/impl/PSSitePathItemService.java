@@ -319,7 +319,7 @@ public class PSSitePathItemService extends PSPathItemService
             }
         }
 
-        List<String> types = new ArrayList<String>();
+        List<String> types = new ArrayList<>();
 
         if (StringUtils.isNotBlank(navTreeType))
         {

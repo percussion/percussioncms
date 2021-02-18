@@ -56,7 +56,7 @@ public class PSResourceDefinitionUtils
         notNull(resources, "resources");
         int size = resources.size();
         
-        if (size == 0) return new ArrayList<T>();
+        if (size == 0) return new ArrayList<>();
         
         /*
          * It should take less than n*n times to sort the deps.
@@ -65,8 +65,8 @@ public class PSResourceDefinitionUtils
         //FB: UC_USELESS_CONDITION  NC 1-16-16
         int cutOff = (size - 1) * (size - 1) + 4;
         
-        List<T> resourceBag = new ArrayList<T>();
-        List<T> sortedResources = new ArrayList<T>();
+        List<T> resourceBag = new ArrayList<>();
+        List<T> sortedResources = new ArrayList<>();
         List<String> allIds = getResourceIds(resources);
         resourceBag.addAll(resources);
         while( ! resourceBag.isEmpty()  && cutOff != 0) {
@@ -99,7 +99,7 @@ public class PSResourceDefinitionUtils
      */
     public static <T extends PSResourceDependency> List<String> getResourceDependeeIds(Collection<T> deps) {
         notNull(deps, "deps");
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
         for (T d : deps) {
             ids.add(d.getDependeeId());
         }
@@ -160,7 +160,7 @@ public class PSResourceDefinitionUtils
      */
     public static <T extends PSResourceDefinition> List<String> getResourceIds(Collection<T> resources) {
         notNull(resources, "resources");
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
         for (T r : resources) {
             ids.add(r.getUniqueId());
         }

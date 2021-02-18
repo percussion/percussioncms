@@ -326,10 +326,10 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     }
     
     private List<PSTemplateSummary> itemsToTemplates(List<IPSItemSummary> items, String siteName, PSTemplateTypeEnum type) {
-        List<String> templateIds = new ArrayList<String>();
+        List<String> templateIds = new ArrayList<>();
         for (IPSItemSummary i : items) { templateIds.add(i.getId()); }
         List<PSTemplateSummary> templateSummaries = templateService.loadUserTemplateSummaries(templateIds, siteName);
-        List<PSTemplateSummary> results = new ArrayList<PSTemplateSummary>();
+        List<PSTemplateSummary> results = new ArrayList<>();
         
         for (PSTemplateSummary template : templateSummaries)
         {
@@ -601,7 +601,7 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     
     @SuppressWarnings("deprecation")
     protected List<AssignTemplate> createTemplates(List<CreateTemplate> createTemplates) {
-        List<AssignTemplate> rvalue = new ArrayList<AssignTemplate>();
+        List<AssignTemplate> rvalue = new ArrayList<>();
         for(CreateTemplate t : createTemplates) {
             PSTemplateSummary sum = createSiteTemplate(t);
             AssignTemplate assignTemplate = new AssignTemplate();
@@ -809,7 +809,7 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     {
  
         List<PSTemplateSummary> siteTemplates = this.findTemplatesBySite(siteId);
-        List<String> existingTemplateNames = new ArrayList<String>();
+        List<String> existingTemplateNames = new ArrayList<>();
         for (PSTemplateSummary templateSummary : siteTemplates)
         {
             existingTemplateNames.add(templateSummary.getName());

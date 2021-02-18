@@ -49,7 +49,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class PSRegionBranches extends PSRegionWidgetAssociations
 {
     @AssertValid(requireValidElements=true)
-    private List<PSRegion> regions = new ArrayList<PSRegion>();
+    private List<PSRegion> regions = new ArrayList<>();
 
     @AssertValid(requireValidElements=true)
     @XmlElementWrapper(name = "regions")

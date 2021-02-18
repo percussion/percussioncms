@@ -57,8 +57,8 @@ public class PSWidgetItem extends PSAbstractPersistantObject
     @NotBlank
     private String definitionId;
     
-    private Map<String, Object> properties = new HashMap<String, Object>();
-    private Map<String, Object> cssProperties = new HashMap<String, Object>();
+    private Map<String, Object> properties = new HashMap<>();
+    private Map<String, Object> cssProperties = new HashMap<>();
     
     @Override
     @NotBlank

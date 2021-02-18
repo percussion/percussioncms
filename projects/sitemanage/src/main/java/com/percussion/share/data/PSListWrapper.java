@@ -36,7 +36,7 @@ import java.util.List;
 @JsonRootName(value = "pslist")
 public class PSListWrapper
 {
-    private List<String> list = new ArrayList<String>();
+    private List<String> list = new ArrayList<>();
 
     public List<String> getList()
     {

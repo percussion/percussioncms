@@ -132,7 +132,7 @@ public class PSSpringOvalValidator implements Validator, InitializingBean
     @SuppressWarnings("unchecked")
     private List<Field> doGetFields(Class clazz)
     {
-        ArrayList<Field> list = new ArrayList<Field>();
+        ArrayList<Field> list = new ArrayList<>();
         Field[] fields = clazz.getDeclaredFields();
         list.addAll(Arrays.asList(fields));
         if (clazz.getSuperclass() != null)

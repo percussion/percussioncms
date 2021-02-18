@@ -145,7 +145,7 @@ public class PSUserLoginDao implements IPSUserLoginDao
     {
         String emsg;
         Session session = getSession(); 
-        List<PSUserLogin> results = new ArrayList<PSUserLogin>(); 
+        List<PSUserLogin> results = new ArrayList<>();
         try
         {
             results = session.createCriteria(PSUserLogin.class).add(Restrictions.ilike("userid", name)).list();
@@ -170,7 +170,7 @@ public class PSUserLoginDao implements IPSUserLoginDao
     {
         String emsg;
         Session session = getSession(); 
-        List<PSUserLogin> results = new ArrayList<PSUserLogin>(); 
+        List<PSUserLogin> results = new ArrayList<>();
         try
         {
             results = session.createCriteria(PSUserLogin.class)

@@ -63,7 +63,7 @@ public class PSFolders extends PSAbstractDataObject
     {
         if(children == null)
         {
-            return new ArrayList<PSFolderItem>();
+            return new ArrayList<>();
         }
         
         return children;

@@ -258,7 +258,7 @@ public class PSGoogleAnalyticsProviderHelper
     * Mappings of Google exceptions to are own cause enums.
     */
    public static final Map<String, PSAnalyticsProviderException.CAUSETYPE> CAUSE_MAPPINGS =
-      new HashMap<String, CAUSETYPE>();
+      new HashMap<>();
 
    /**
     * Helper to convert from a PKCS#8 String to an RSA private key

@@ -44,7 +44,7 @@ import org.apache.commons.lang.Validate;
 @JsonRootName("WidgetBuilderFieldsListData")
 public class PSWidgetBuilderFieldsListData  extends PSAbstractDataObject
 {
-    private List<PSWidgetBuilderFieldData> fields = new ArrayList<PSWidgetBuilderFieldData>();
+    private List<PSWidgetBuilderFieldData> fields = new ArrayList<>();
     
     public PSWidgetBuilderFieldsListData()
     {        

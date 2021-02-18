@@ -147,7 +147,7 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
         	//Get entries
         	packageFileList = getPackageFileList();
         	List<PSPackageFileEntry> entries = packageFileList.getEntries();
-          	List<PSPackageFileEntry> entriesToUninstall = new ArrayList<PSPackageFileEntry>();
+          	List<PSPackageFileEntry> entriesToUninstall = new ArrayList<>();
           	
         	// find uninstall and revert entries
         	for (PSPackageFileEntry entry : entries){
@@ -265,7 +265,7 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
         {
             packageFileList = getPackageFileList();
             List<PSPackageFileEntry> entries = packageFileList.getEntries();
-            List<PSPackageFileEntry> entriesToInstall = new ArrayList<PSPackageFileEntry>();
+            List<PSPackageFileEntry> entriesToInstall = new ArrayList<>();
             for (PSPackageFileEntry entry : entries)
             {
             	if (!PackageFileStatus.INSTALLED.equals(entry.getStatus()) && 

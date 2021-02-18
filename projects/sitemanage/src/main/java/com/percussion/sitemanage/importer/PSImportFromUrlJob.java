@@ -109,7 +109,7 @@ public class PSImportFromUrlJob extends PSAsyncJob
 
             // List to keep the executed helpers in case and rollback is
             // needed.
-            executedHelpers = new ArrayList<PSImportHelper>();
+            executedHelpers = new ArrayList<>();
 
             // Run helpers
             for (PSImportHelper mandatoryHelper : mandatoryHelpers)

@@ -86,7 +86,7 @@ public class PSMembershipService implements IPSMembershipService
         String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_USERS;
         try
         {
-            List<PSUserSummary> summaries = new ArrayList<PSUserSummary>();
+            List<PSUserSummary> summaries = new ArrayList<>();
             
             PSDeliveryClient deliveryClient = new PSDeliveryClient();
             JSONArray users = deliveryClient.getJsonArray(new PSDeliveryActionOptions(server, url));

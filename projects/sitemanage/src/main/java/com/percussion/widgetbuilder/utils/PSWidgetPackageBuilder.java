@@ -58,7 +58,7 @@ public class PSWidgetPackageBuilder
     private static final String binExt = ".png";
     private static final String WIDGET_TEMPLATE_NAME = "percWidgetTemplate";
     
-    private List<IPSWidgetFileTransformer> xformList = new ArrayList<IPSWidgetFileTransformer>(); 
+    private List<IPSWidgetFileTransformer> xformList = new ArrayList<>();
     private File srcFile;
     private File tmpDir;
 

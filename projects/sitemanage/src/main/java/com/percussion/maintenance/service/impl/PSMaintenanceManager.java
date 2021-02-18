@@ -38,7 +38,7 @@ import org.apache.commons.logging.LogFactory;
 public class PSMaintenanceManager implements IPSMaintenanceManager
 {
 
-    private ConcurrentMap<String, IPSMaintenanceProcess> workingProcesses = new ConcurrentHashMap<String, IPSMaintenanceProcess>();
+    private ConcurrentMap<String, IPSMaintenanceProcess> workingProcesses = new ConcurrentHashMap<>();
     private AtomicBoolean hasErrors = new AtomicBoolean(false);
     private static final Log log = LogFactory.getLog(PSMaintenanceManager.class);
     

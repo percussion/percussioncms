@@ -87,7 +87,7 @@ public class PSSiteImportService implements IPSSiteImportService
             PSPageContent importedPageContent = PSSiteImporter.getPageContentFromSite(siteImportCtx);
 
             // List to keep the executed helpers in case and rollback is needed.
-            executedHelpers = new ArrayList<PSImportHelper>();
+            executedHelpers = new ArrayList<>();
             
             // Run Helpers.
             runHelpers(siteImportCtx, importedPageContent);
@@ -146,7 +146,7 @@ public class PSSiteImportService implements IPSSiteImportService
             PSPageContent importedPageContent = PSSiteImporter.getPageContentFromSite(context);
             
             // List to keep the executed helpers in case and rollback is needed.
-            executedHelpers = new ArrayList<PSImportHelper>();
+            executedHelpers = new ArrayList<>();
             
             // Run Helpers.
             runHelpers(context, importedPageContent);

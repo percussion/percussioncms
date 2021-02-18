@@ -32,7 +32,7 @@ public abstract class PSRegionParserAdapter<REGION extends PSAbstractRegion, COD
             IPSRegionParserRegionFactory<REGION, CODE>,
             IPSRegionParser<REGION, CODE>
 {
-    PSRegionParser<REGION, CODE> parser = new PSRegionParser<REGION, CODE>(this);
+    PSRegionParser<REGION, CODE> parser = new PSRegionParser<>(this);
 
     public PSParsedRegionTree<REGION, CODE> parse(String text)
     {

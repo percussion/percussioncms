@@ -49,9 +49,9 @@ public class PSUiWorkflowStep extends PSAbstractDataObject
     
     private String stepName;
 
-    private List<PSUiWorkflowStepRole> stepRoles = new ArrayList<PSUiWorkflowStepRole>();
+    private List<PSUiWorkflowStepRole> stepRoles = new ArrayList<>();
     
-    private List<String> permissionNames = new ArrayList<String>();
+    private List<String> permissionNames = new ArrayList<>();
 
     public PSUiWorkflowStep()
     {

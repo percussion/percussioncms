@@ -35,5 +35,5 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class PSMonitorDesignators
 {
 	@XmlElement
-	public Set<String> designator = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+	public Set<String> designator = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 }

@@ -208,7 +208,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 
 	private IPSItemWorkflowService itemWorkflowService;
 
-	private static HashMap<Long, PSTemplate> unassignedTemplateCache = new HashMap<Long, PSTemplate>();
+	private static HashMap<Long, PSTemplate> unassignedTemplateCache = new HashMap<>();
 
 	@Autowired
 	public PSPageExtractorHelper(IPSPageService pageService,
@@ -294,7 +294,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 		PSAsset localAsset = createHTMLLocalContent(extractedBodyHtml,
 				itemWorkflowService, assetService, nameGenerator);
 
-		PSPair<PSWidgetItem, PSAsset> widgetAssetPair = new PSPair<PSWidgetItem, PSAsset>(
+		PSPair<PSWidgetItem, PSAsset> widgetAssetPair = new PSPair<>(
 				widgets.get(0), localAsset);
 
 		try {
@@ -437,7 +437,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 	private static List<PSAssetWidgetRelationship> addContentToWidgetOnPage(
 			PSPage targetPage, PSPair<PSWidgetItem, PSAsset> widgetAssetPair,
 			IPSAssetService assetService) throws PSDataServiceException {
-		List<PSAssetWidgetRelationship> relationships = new ArrayList<PSAssetWidgetRelationship>();
+		List<PSAssetWidgetRelationship> relationships = new ArrayList<>();
 		String ownerId = targetPage.getId();
 
 		PSWidgetItem widget = widgetAssetPair.getFirst();

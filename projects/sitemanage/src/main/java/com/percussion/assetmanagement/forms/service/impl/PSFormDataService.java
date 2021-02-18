@@ -144,7 +144,7 @@ public class PSFormDataService implements IPSFormDataService
             Map<String, PSFormSummary> formDataMap = new HashMap<>();
             procUrl = server.getUrl() + FORM_INFO_URL;
 
-            List<PSFormSummary> result = new ArrayList<PSFormSummary>();
+            List<PSFormSummary> result = new ArrayList<>();
 
             PSDeliveryClient deliveryClient = new PSDeliveryClient();
             JSONObject getJson = new JSONObject();

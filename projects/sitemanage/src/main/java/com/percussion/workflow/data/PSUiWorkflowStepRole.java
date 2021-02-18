@@ -129,7 +129,7 @@ public class PSUiWorkflowStepRole extends PSAbstractDataObject
     {
         if (roleTransitions == null)
         {
-            roleTransitions = new ArrayList<PSUiWorkflowStepRoleTransition>();
+            roleTransitions = new ArrayList<>();
         }
         this.roleTransitions = roleTransitions;
     }
