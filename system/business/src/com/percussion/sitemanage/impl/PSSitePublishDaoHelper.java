@@ -136,7 +136,7 @@ public class PSSitePublishDaoHelper
    public static Map<String, String> getExpanderParams(PSPubServer pubServer)
    {
        Validate.notNull(pubServer);
-       Map<String, String> params = new HashMap<String, String>();
+       Map<String, String> params = new HashMap<>();
    
        if (pubServer.isXmlFormat())
        {
@@ -276,7 +276,7 @@ public class PSSitePublishDaoHelper
        Validate.notNull(pubServer);
        Validate.notNull(filterId);
        String suffix = createSiteSuffix(site);
-       Map<String, String> incrementalParams = new HashMap<String, String>();
+       Map<String, String> incrementalParams = new HashMap<>();
        if(PSPubServer.STAGING.equalsIgnoreCase(pubServer.getServerType())){
           suffix += "STAGING";
           incrementalParams.put(INCREMENTAL_CHANGETYPE_PARAM_NAME, INCREMENTAL_CHANGETYPE_STAGED);

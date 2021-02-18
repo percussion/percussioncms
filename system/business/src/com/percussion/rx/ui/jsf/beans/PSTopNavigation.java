@@ -245,7 +245,7 @@ public class PSTopNavigation extends DataModel
     * Ctor.
     */
    public PSTopNavigation() {
-      m_tabs = new ArrayList<Tab>();
+      m_tabs = new ArrayList<>();
 
       m_tabs.add(new Tab("Content", "/Rhythmyx/sys_cx/mainpage.html", null));
       m_tabs.add(new Tab("Publishing Design",

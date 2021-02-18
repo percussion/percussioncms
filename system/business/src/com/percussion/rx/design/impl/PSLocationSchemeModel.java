@@ -79,7 +79,7 @@ public class PSLocationSchemeModel extends PSDesignModel
    @Override
    public Collection<String> findAllNames()
    {
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
       for (IPSLocationScheme scheme : findAllSchemes())
       {
          names.add(scheme.getName());

@@ -178,7 +178,7 @@ public class PSPublishingJob implements Runnable
    /**
     * Store list of updates for job
     */
-   public ConcurrentLinkedQueue<IPSPublisherItemStatus> m_updates = new ConcurrentLinkedQueue<IPSPublisherItemStatus>();
+   public ConcurrentLinkedQueue<IPSPublisherItemStatus> m_updates = new ConcurrentLinkedQueue<>();
    
    
    /**
@@ -278,7 +278,7 @@ public class PSPublishingJob implements Runnable
     * failed or delivered, the job is complete.
     */
    private Map<Long, AtomicReference<IPSPublisherJobStatus.ItemState>> m_items 
-      = new ConcurrentHashMap<Long, AtomicReference<IPSPublisherJobStatus.ItemState>>();
+      = new ConcurrentHashMap<>();
 
    /**
     * The state of the job.
@@ -745,7 +745,7 @@ public class PSPublishingJob implements Runnable
          /*
           * TODO ADAM GENT need to handle this as an iterator.
           */
-         Set<PSSiteItemKey> unpublishedKeys = new HashSet<PSSiteItemKey>();
+         Set<PSSiteItemKey> unpublishedKeys = new HashSet<>();
          if (ed.getEditionType().equals(PSEditionType.NORMAL))
          {
             ms_log.debug("Queuing unpblishing Items");
@@ -1060,7 +1060,7 @@ public class PSPublishingJob implements Runnable
       List<IPSPubItemStatus> stati =
             psvc.findPubItemStatusForReferenceIds(refs);
       List<PSSiteItem> siteitems = psvc.findSiteItemsForReferenceIds(refs);
-      Map<Long,PSSiteItem> refToSiteItem = new HashMap<Long, PSSiteItem>();
+      Map<Long,PSSiteItem> refToSiteItem = new HashMap<>();
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
       IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
       PSStringUtils sutils = new PSStringUtils();
@@ -1070,7 +1070,7 @@ public class PSPublishingJob implements Runnable
          refToSiteItem.put(item.referenceId, item);
       }
       
-      List<IPSAssemblyItem> queuedItems = new ArrayList<IPSAssemblyItem>();
+      List<IPSAssemblyItem> queuedItems = new ArrayList<>();
       for(IPSPubItemStatus status : stati)
       {
          if (ms_log.isDebugEnabled())
@@ -1204,7 +1204,7 @@ public class PSPublishingJob implements Runnable
       Map<String, Object> params = PSBaseHttpUtils.parseQueryParamsString(url,
             false, false);
 
-      Map<String, String> result = new HashMap<String, String>();
+      Map<String, String> result = new HashMap<>();
       for (Map.Entry<String, Object> entry : params.entrySet())
          result.put(entry.getKey(), entry.getValue().toString());
       
@@ -1478,7 +1478,7 @@ public class PSPublishingJob implements Runnable
     */
    private Set<PSSiteItemKey> getSiteItemKeys(List<IPSAssemblyItem> items)
    {
-      Set<PSSiteItemKey> keys = new HashSet<PSSiteItemKey>();
+      Set<PSSiteItemKey> keys = new HashSet<>();
       for (IPSAssemblyItem item : items)
       {
          PSSiteItemKey key = new PSSiteItemKey(item);
@@ -1564,7 +1564,7 @@ public class PSPublishingJob implements Runnable
             Iterators.transform(items.iterator(), new Function<ContentItem, List<IPSAssemblyItem>>(){
             public List<IPSAssemblyItem> apply(ContentItem item)
             {
-               List<IPSAssemblyItem> rvalue = new ArrayList<IPSAssemblyItem>();
+               List<IPSAssemblyItem> rvalue = new ArrayList<>();
                try
                {
                   Long pubServerId = ed.getPubServerId() == null ? null : (long)ed.getPubServerId().getUUID();
@@ -1601,7 +1601,7 @@ public class PSPublishingJob implements Runnable
                    * Unpublish items now.
                    */
                   sendItemsToPubQueue(Iterators.concat(moreUnPubs, changeLocationItems.iterator()), ed);
-                  ArrayList<IPSAssemblyItem> rvalue = new ArrayList<IPSAssemblyItem>();
+                  ArrayList<IPSAssemblyItem> rvalue = new ArrayList<>();
                   for (IPSAssemblyItem i : assemblyItems) {
                      if (i.isPublish()) {
                         rvalue.add(i);
@@ -1665,7 +1665,7 @@ public class PSPublishingJob implements Runnable
       // of work while being consumed.  If this work is done in the m_publishSender
       // it locks the object preventing other messages, like cancel request from being sent
       // We will parse items here in batches of 100 and send them to unblock for other messages.
-      List<IPSAssemblyItem> sendItems = new ArrayList<IPSAssemblyItem>();
+      List<IPSAssemblyItem> sendItems = new ArrayList<>();
       int count = 0;
       while (items.hasNext()) {
          // Items were still getting sent after the job is canceled.  
@@ -2007,7 +2007,7 @@ public class PSPublishingJob implements Runnable
        */
       Iterator<ContentItem> mi_items = null;
       
-      List<ContentItem> mi_legacyItems = new ArrayList<ContentItem>();
+      List<ContentItem> mi_legacyItems = new ArrayList<>();
       
       long mi_estimatedSize = 0;
       
@@ -2439,7 +2439,7 @@ public class PSPublishingJob implements Runnable
       ItemState previousState = null;
       if (previousStateRef == null)
       {
-         m_items.put(refId, new AtomicReference<IPSPublisherJobStatus.ItemState>(curState));
+         m_items.put(refId, new AtomicReference<>(curState));
       }
       else
       {

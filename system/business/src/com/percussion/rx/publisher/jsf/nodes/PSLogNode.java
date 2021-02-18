@@ -120,7 +120,7 @@ public abstract class PSLogNode extends PSNodeBase
     
       List<IPSPubStatus> stati = getStatusLogs();
       setPageRows(stati);
-      m_currentEntries = new ArrayList<PSStatusLogEntry>();
+      m_currentEntries = new ArrayList<>();
 
       List<Map<String,Object>> rval = PSPublishingStatusHelper
          .processStatus(stati, useAnimatedIcon(), (PSRuntimeNavigation) getModel().getNavigator());

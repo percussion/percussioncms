@@ -169,7 +169,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
       }
       
       // init parameters
-      m_parameters = new ArrayList<SchemeParam>();
+      m_parameters = new ArrayList<>();
       for (String pname : m_clonedScheme.getParameterNames())
       {
          String type = m_clonedScheme.getParameterType(pname);
@@ -447,7 +447,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
    public String createParameter()
    {
       // get a unique parameter name
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
       for (SchemeParam p : m_parameters)
       {
          names.add(p.getName());
@@ -586,7 +586,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
     */
    public SelectItem[] getContentTypes()
    {
-      List<SelectItem> ctNames = new ArrayList<SelectItem>();
+      List<SelectItem> ctNames = new ArrayList<>();
       Map<IPSGuid, String> cts = m_ctxNode.catalogContentTypes();
       for (String ctName : cts.values())
       {
@@ -749,7 +749,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
       
       IPSNodeDefinition ct = getCachedNodeDef();
       
-      List<String> tpNames = new ArrayList<String>();
+      List<String> tpNames = new ArrayList<>();
       if (ct == null)
          return Collections.EMPTY_LIST;
       
@@ -779,7 +779,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
     */
    private List<IPSGuid> getUsedTemplateIds(Long ctId)
    {
-      List<IPSGuid> tpIds = new ArrayList<IPSGuid>();
+      List<IPSGuid> tpIds = new ArrayList<>();
       for (PSLocationSchemeWrapper wrapper : m_ctxNode.getLocationSchemes())
       {
          if (wrapper != m_srcScheme &&
@@ -832,7 +832,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
          
       }
 
-      List<SelectItem> extNames = new ArrayList<SelectItem>();
+      List<SelectItem> extNames = new ArrayList<>();
       while (iterator.hasNext())
       {
          PSExtensionRef exit = (PSExtensionRef) iterator.next();
