@@ -154,7 +154,7 @@ public class PSContentTypeModel extends PSDesignModel
     */
    private List<IPSGuid> getTemplateGuids(List templates)
    {
-      List<IPSGuid> templateGuids = new ArrayList<IPSGuid>();
+      List<IPSGuid> templateGuids = new ArrayList<>();
       IPSAssemblyService asmSrvc = PSAssemblyServiceLocator
             .getAssemblyService();
       for (Object object : templates)
@@ -195,7 +195,7 @@ public class PSContentTypeModel extends PSDesignModel
     */
    private void updateWorkflowInfo(PSItemDefinition itemDef, List wfs)
    {
-      List<Integer> workFlows = new ArrayList<Integer>();
+      List<Integer> workFlows = new ArrayList<>();
       IPSWorkflowService wfSrvc = PSWorkflowServiceLocator
             .getWorkflowService();
       for (Object object : wfs)
@@ -265,7 +265,7 @@ public class PSContentTypeModel extends PSDesignModel
    @Override
    public List<IPSAssociationSet> getAssociationSets()
    {
-      List<IPSAssociationSet> asets = new ArrayList<IPSAssociationSet>();
+      List<IPSAssociationSet> asets = new ArrayList<>();
       asets.add(new PSAssociationSet(AssociationType.CONTENTTYPE_WORKFLOW));
       asets.add(new PSAssociationSet(AssociationType.CONTENTTYPE_TEMPLATE));
       return asets;

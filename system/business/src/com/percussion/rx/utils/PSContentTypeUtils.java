@@ -177,7 +177,7 @@ public class PSContentTypeUtils
    public static boolean hasRequiredRule(PSField field)
    {
       PSFieldValidationRules valrules = field.getValidationRules();
-      List<PSRule> rules = new ArrayList<PSRule>();
+      List<PSRule> rules = new ArrayList<>();
       if(valrules != null)
       {
          CollectionUtils.addAll(rules,valrules.getRules());
@@ -201,7 +201,7 @@ public class PSContentTypeUtils
          List<PSExtensionRef> fvExits)
    {
       PSFieldValidationRules valrules = field.getValidationRules();
-      List<PSRule> rules = new ArrayList<PSRule>();
+      List<PSRule> rules = new ArrayList<>();
       PSApplyWhen applyWhen = null;
       if(valrules != null)
       {
@@ -274,7 +274,7 @@ public class PSContentTypeUtils
       IPSExtensionManager mgr = PSServer.getExtensionManager(null);
       Iterator it = mgr.getExtensionNames(null, null,
             com.percussion.extension.IPSFieldValidator.class.getName(), null);
-      List<PSExtensionRef> extensions = new ArrayList<PSExtensionRef>();
+      List<PSExtensionRef> extensions = new ArrayList<>();
       CollectionUtils.addAll(extensions, it);
       
       // set the property
