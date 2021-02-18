@@ -75,7 +75,7 @@ public class PSContentListNode extends PSDesignNode
    /**
     * These params are skipped for the "extra" params field.
     */
-   public static Set<String> ms_omit_params = new HashSet<String>();
+   public static Set<String> ms_omit_params = new HashSet<>();
 
    /*
     * Initialize
@@ -126,7 +126,7 @@ public class PSContentListNode extends PSDesignNode
    /**
     * The url parameters to allow simpler manipulation.
     */
-   Map<String, String> m_urlParams = new HashMap<String, String>();
+   Map<String, String> m_urlParams = new HashMap<>();
 
    /**
     * The base portion of the url, without the parameters.
@@ -140,7 +140,7 @@ public class PSContentListNode extends PSDesignNode
     */
    public PSContentListNode(IPSContentList contentlist) {
       super(contentlist.getName(), contentlist.getGUID());
-      Map<String, String> props = new HashMap<String, String>();
+      Map<String, String> props = new HashMap<>();
       props.put("description", contentlist.getDescription());
       props.put("type", contentlist.getType().name());
       setProperties(props);
@@ -254,7 +254,7 @@ public class PSContentListNode extends PSDesignNode
       }
 
       // Store the old data
-      Map<String, String> pdata = new HashMap<String, String>();
+      Map<String, String> pdata = new HashMap<>();
       for (PSParameter i : params)
       {
          if (i.getValue() == null)
@@ -336,7 +336,7 @@ public class PSContentListNode extends PSDesignNode
          // Adjust the list of parameters
          if (m_currentGenParams == null)
          {
-            m_currentGenParams = new ArrayList<PSParameter>();
+            m_currentGenParams = new ArrayList<>();
          }
          m_currentGenParams = adjustParameters(m_generator, m_currentGenParams);
          m_resetGenParams = false;
@@ -372,7 +372,7 @@ public class PSContentListNode extends PSDesignNode
          // Adjust the list of parameters
          if (m_currentExpParams == null)
          {
-            m_currentExpParams = new ArrayList<PSParameter>();
+            m_currentExpParams = new ArrayList<>();
          }
          m_currentExpParams = adjustParameters(m_expander, m_currentExpParams);
          m_resetExpParams = false;
@@ -730,8 +730,8 @@ public class PSContentListNode extends PSDesignNode
       m_expander = m_clist.getExpander();
       m_generator = m_clist.getGenerator();
 
-      m_currentExpParams = new ArrayList<PSParameter>();
-      m_currentGenParams = new ArrayList<PSParameter>();
+      m_currentExpParams = new ArrayList<>();
+      m_currentGenParams = new ArrayList<>();
       // Extract the current parameters
       if (StringUtils.isNotBlank(m_expander))
       {
@@ -822,7 +822,7 @@ public class PSContentListNode extends PSDesignNode
     */
    private Set<String> extractKeys(List<PSParameter> currentParams)
    {
-      Set<String> rval = new HashSet<String>();
+      Set<String> rval = new HashSet<>();
 
       for (PSParameter i : currentParams)
       {

@@ -114,7 +114,7 @@ public class PSDeliveryTypeContainerNode extends PSEditableNodeContainer
    @Override
    public Set<Object> getAllNames()
    {
-      final Set<Object> names = new HashSet<Object>();
+      final Set<Object> names = new HashSet<>();
       for (final IPSDeliveryType dtype :
             getPublisherService().findAllDeliveryTypes())
       {

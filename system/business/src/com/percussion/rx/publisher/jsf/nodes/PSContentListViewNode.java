@@ -143,7 +143,7 @@ public class PSContentListViewNode extends PSEditableNodeContainer
             {
                return o1.getName().compareToIgnoreCase(o2.getName());
             }});
-         Set<IPSGuid> clistshown = new HashSet<IPSGuid>();
+         Set<IPSGuid> clistshown = new HashSet<>();
          for (IPSContentList c : clists)
          {
             if (clistshown.contains(c.getGUID()))
@@ -253,7 +253,7 @@ public class PSContentListViewNode extends PSEditableNodeContainer
    @Override
    public Set<Object> getAllNames()
    {
-      final Set<Object> names = new HashSet<Object>();
+      final Set<Object> names = new HashSet<>();
       try
       {
          for (final IPSContentList contentList :

@@ -98,7 +98,7 @@ public class PSContextContainerNode extends PSEditableNodeContainer
       IPSPublishingContext ctx = smgr.createContext();
       ctx.setName(getUniqueName("Context", false));
       PSContextNode node = 
-         new PSContextNode(ctx, new ArrayList<IPSLocationScheme>());
+         new PSContextNode(ctx, new ArrayList<>());
       return node.handleNewContext(this);
    }
 
@@ -122,7 +122,7 @@ public class PSContextContainerNode extends PSEditableNodeContainer
    @Override
    public Set<Object> getAllNames()
    {
-      final Set<Object> names = new HashSet<Object>();
+      final Set<Object> names = new HashSet<>();
       
       try
       {

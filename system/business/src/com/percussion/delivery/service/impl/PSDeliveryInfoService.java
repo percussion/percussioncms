@@ -82,7 +82,7 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
     /**
      * A list of delivery servers specified in the configure file.
      */
-    private List<PSDeliveryInfo> servers = new ArrayList<PSDeliveryInfo>();
+    private List<PSDeliveryInfo> servers = new ArrayList<>();
 
     public PSDeliveryInfoService() throws PSServerConfigException
     {
