@@ -128,7 +128,7 @@ public class Folder
 
     public List<String> getRecentUsers() {
     	if(recentUsers == null)
-    		recentUsers = new ArrayList<String>();
+    		recentUsers = new ArrayList<>();
     	
 		return recentUsers;
 	}
