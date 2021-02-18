@@ -148,7 +148,7 @@ public class RolesResource {
 	    {MediaType.APPLICATION_JSON})
 	    public RoleList findRoles()
 	    {
-	    	List<Role> ret = new ArrayList<Role>();
+	    	List<Role> ret = new ArrayList<>();
 	    	
 	    	ret = roleAdaptor.findRoles(uriInfo.getBaseUri(), "%");
 	    	

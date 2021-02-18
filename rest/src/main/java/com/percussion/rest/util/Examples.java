@@ -71,7 +71,7 @@ public class Examples
 
         SAMPLE_FOLDER.setWorkflow("default");
         SAMPLE_FOLDER.setAccessLevel(Folder.ACCESS_LEVEL_READ);
-        SAMPLE_FOLDER.setEditUsers(new ArrayList<String>(Arrays.asList("User1", "User2")));
+        SAMPLE_FOLDER.setEditUsers(new ArrayList<>(Arrays.asList("User1", "User2")));
 
         SectionInfo info = new SectionInfo();
         info.setDisplayTitle("Section Display Title");
@@ -82,17 +82,17 @@ public class Examples
         info.setNavClass("navclass1");
         info.setTargetWindow("top");
         SAMPLE_FOLDER.setSectionInfo(info);
-        List<LinkRef> pages = new ArrayList<LinkRef>();
+        List<LinkRef> pages = new ArrayList<>();
         pages.add(landingPage);
         pages.add(new LinkRef("file1.html", "http://test.com/file1.html"));
         pages.add(new LinkRef("file2.html", "http://test.com/file2.html"));
-        List<LinkRef> subfolders = new ArrayList<LinkRef>();
+        List<LinkRef> subfolders = new ArrayList<>();
         subfolders.add(new LinkRef("sub1", "http://test.com/file1.html"));
         subfolders.add(new LinkRef("sub2", "http://test.com/file2.html"));
 
         SAMPLE_FOLDER.setSubfolders(subfolders);
 
-        List<SectionLinkRef> subsections = new ArrayList<SectionLinkRef>();
+        List<SectionLinkRef> subsections = new ArrayList<>();
         subsections.add(new SectionLinkRef("subsection1", "http://test.com/file1.html", SectionLinkRef.TYPE_EXTERNAL));
         subsections.add(new SectionLinkRef("subsection2", "http://test.com/file2.html", SectionLinkRef.TYPE_INTERNAL));
         subsections.add(new SectionLinkRef("subsection2", "http://test.com/file2.html", SectionLinkRef.TYPE_SUBFOLDER));
@@ -126,7 +126,7 @@ public class Examples
         SAMPLE_PAGE.setSummary("Summary");
         SAMPLE_PAGE.setOverridePostDate(date1);
         CalendarInfo calendar = new CalendarInfo();
-        calendar.setCalendars(new ArrayList<String>(Arrays.asList(new String[]
+        calendar.setCalendars(new ArrayList<>(Arrays.asList(new String[]
         {"Caldendar1", "Calendar2"})));
         calendar.setStartDate(date1);
         calendar.setEndDate(date2);
@@ -169,8 +169,8 @@ public class Examples
         widget1.setType("widgetType");
         widget1.setAsset(asset1);
         widget1.setScope("local");
-        region.setWidgets(new ArrayList<Widget>(Arrays.asList(widget1)));
-        SAMPLE_PAGE.setBody(new ArrayList<Region>(Arrays.asList(region)));
+        region.setWidgets(new ArrayList<>(Arrays.asList(widget1)));
+        SAMPLE_PAGE.setBody(new ArrayList<>(Arrays.asList(region)));
 
         Guid guid = new Guid();
         guid.setUntypedString("100-100-100");

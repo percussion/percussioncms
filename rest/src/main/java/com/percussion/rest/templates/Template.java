@@ -108,9 +108,9 @@ public class Template {
     private String charset;
 
 
-    private List<TemplateBinding> bindings = new ArrayList<TemplateBinding>();
+    private List<TemplateBinding> bindings = new ArrayList<>();
 
-    private Set<TemplateSlot> slots = new HashSet<TemplateSlot>();
+    private Set<TemplateSlot> slots = new HashSet<>();
 
 
     private Integer globalTemplateUsage;// = new Integer(GlobalTemplateUsage.None.ordinal());
