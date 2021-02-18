@@ -204,7 +204,7 @@ public interface IPSDeliveryClient
         
         public PSDeliveryActionOptions()
         {
-            successfullHttpStatusCodes = new HashSet<Integer>();
+            successfullHttpStatusCodes = new HashSet<>();
         }
         
        /**
