@@ -261,10 +261,9 @@ public class PSGetAndSetCxOptions implements IPSResultDocumentProcessor,
    private Document loadOptionDoc(String localeKey)
       throws PSExtensionProcessingException
    {
-      FileInputStream inStream = null;
+
       Document doc = null;
-      try
-      {
+
          IPSRhythmyxInfo rxInfo = PSRhythmyxInfoLocator.getRhythmyxInfo();
          String rxRootDir = (String) rxInfo
                .getProperty(IPSRhythmyxInfo.Key.ROOT_DIRECTORY);
@@ -274,14 +273,15 @@ public class PSGetAndSetCxOptions implements IPSResultDocumentProcessor,
                + USER_OPTION_FILE_NAME;
 
          File file = new File(fullPath);
-         inStream = new FileInputStream(file);
+         try(FileInputStream inStream = new FileInputStream(file))
+         {
 
-         doc = PSXmlDocumentBuilder.createXmlDocument(
-            new InputSource(inStream), false);
+            doc = PSXmlDocumentBuilder.createXmlDocument(
+               new InputSource(inStream), false);
 
-         addDocToMap(localeKey, doc);
+            addDocToMap(localeKey, doc);
 
-      }
+         }
       catch (FileNotFoundException e)
       {
          // this message constant doesn't look right, however,
@@ -301,20 +301,7 @@ public class PSGetAndSetCxOptions implements IPSResultDocumentProcessor,
             IPSExtensionErrors.CATALOG_EXT_RESOURCE_ERROR,
             e.getLocalizedMessage());
       }
-      finally
-      {
-         try
-         {
-            if(inStream != null)
-            {
-               inStream.close();
-            }
-         }
-         catch (IOException e)
-         {
-            // ignore
-         }
-      }
+
       return doc;
    }
 

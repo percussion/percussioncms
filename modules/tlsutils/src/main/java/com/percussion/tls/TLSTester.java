@@ -254,7 +254,9 @@ public class TLSTester {
             System.out.println("adding alias "+alias);
             myTrustStore.setCertificateEntry( alias, cert);
         }
-        myTrustStore.store( new FileOutputStream( store ), KEYSTORE_PASS.toCharArray() );
+        try(FileOutputStream fo = new FileOutputStream( store )) {
+            myTrustStore.store(fo, KEYSTORE_PASS.toCharArray());
+        }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -270,19 +272,18 @@ public class TLSTester {
     private static void print_content(HttpsURLConnection con){
         if(con!=null){
 
-            try {
+
 
                 System.out.println("****** Content of the URL ********");
-                BufferedReader br =
+                try(BufferedReader br =
                         new BufferedReader(
-                                new InputStreamReader(con.getInputStream()));
+                                new InputStreamReader(con.getInputStream()))){
 
                 String input;
 
                 while ((input = br.readLine()) != null){
                     System.out.println(input);
                 }
-                br.close();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -393,7 +394,9 @@ public class TLSTester {
         if (!store.exists()) {
 
             myTrustStore.load(null, null);
-            myTrustStore.store(new FileOutputStream(store), password.toCharArray());
+            try(FileOutputStream fo = new FileOutputStream( store )) {
+                myTrustStore.store(fo, password.toCharArray());
+            }
         }
 
         try (FileInputStream myKeys = new FileInputStream(store)) {

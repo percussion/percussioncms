@@ -22,28 +22,16 @@ import java.util.Properties;
 
 public final class PropertyUtil
 {
-
     public static Properties loadProperties(String fileName) throws IOException
     {
         Properties props = new Properties();
-        InputStream is = null;
-        try
-        {
-            is = PropertyUtil.class.getResourceAsStream(fileName);
+        try(InputStream is = PropertyUtil.class.getResourceAsStream(fileName)){
             props.load(is);
             return props;
-
         }
         catch (IOException e)
         {
             throw e;
-        }
-        finally
-        {
-            if (is != null)
-            {
-                is.close();
-            }
         }
     }
 
