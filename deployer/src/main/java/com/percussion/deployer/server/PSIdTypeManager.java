@@ -46,7 +46,6 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -253,10 +252,7 @@ public class PSIdTypeManager
       
       idTypes.setChoiceFilters(null);
 
-      FileOutputStream out = null;
-      try
-      {
-         Document doc = PSXmlDocumentBuilder.createXmlDocument();
+        Document doc = PSXmlDocumentBuilder.createXmlDocument();
          Element mapEl = idTypes.toXml(doc);
          PSXmlDocumentBuilder.replaceRoot(doc, mapEl);
 
@@ -266,20 +262,13 @@ public class PSIdTypeManager
          File mapFile = new File(PSDeploymentHandler.IDTYPE_DIR,
             depKey + ".xml");
 
-         out = new FileOutputStream(mapFile);
-         PSXmlDocumentBuilder.write(doc, out);
-      }
-      catch (Exception e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
-      }
-      finally
-      {
-         if (out != null)
-            try {out.close();} catch(IOException ex){}
-      }
-      
+         try(FileOutputStream out = new FileOutputStream(mapFile)){
+            PSXmlDocumentBuilder.write(doc, out);
+         }catch (Exception e){
+            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+               e.getLocalizedMessage());
+         }
+
    }
    
    /**
@@ -342,10 +331,7 @@ public class PSIdTypeManager
       Document resultDoc = null;
       if (mapFile.exists())
       {
-         FileInputStream in = null;
-         try
-         {
-            in = new FileInputStream(mapFile);
+        try(FileInputStream in = new FileInputStream(mapFile)){
             resultDoc = PSXmlDocumentBuilder.createXmlDocument(in, false);
          }
          catch (Exception e)
@@ -353,13 +339,7 @@ public class PSIdTypeManager
             throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
                e.getLocalizedMessage());
          }
-         finally
-         {
-            if (in != null)
-               try {in.close();} catch(IOException ex){}
-         }
       }
-      
       return resultDoc;
    }
    

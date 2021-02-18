@@ -43,6 +43,7 @@ import com.percussion.security.PSSecurityToken;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.publisher.IPSEdition;
@@ -104,11 +105,9 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
    private String fixContextsInXmlSite(PSImportCtx ctx, String siteStr)
          throws PSDeployException
    {
-      ByteArrayInputStream bis = new ByteArrayInputStream(siteStr.getBytes());
-
       Document doc = null;
-      try
-      {
+
+      try(ByteArrayInputStream bis = new ByteArrayInputStream(siteStr.getBytes())){
          String xmlElemName = "context-id";
          doc = PSXmlDocumentBuilder.createXmlDocument(bis, false);
          if (doc == null)
@@ -234,15 +233,13 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
    /**
     * Returns a mixed list of templates and legacy templates aka VARIANTS
     * @param tok the security token, assumed not <code>null</code>.
-    * @param dep the site dependency, assumed not <code>null</code> and of the
-    * correct type.
     * @param site the actual site loaded, assumed not <code>null</code>.
     * @return child template/variant dependencies as a list, never
     * <code>null</code> may be empty.
     * @throws PSDeployException
     */
    private List<PSDependency> getTemplateDependencies(
-         PSSecurityToken tok, PSDependency dep, IPSSite site) 
+         PSSecurityToken tok, IPSSite site)
          throws PSDeployException
    {
             
@@ -276,15 +273,13 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
    /**
     * Iterate through site properties and get context dependencies if any
     * @param tok the security token, assumed not <code>null</code>.
-    * @param dep the site dependency, assumed not <code>null</code> and of the
-    * correct type.
     * @param site the actual site loaded, assumed not <code>null</code>.
     * @return child context deps dependencies as a list, never <code>null</code>
     * may be empty.
     * @throws PSDeployException
     */
    private Set<PSDependency> getContextDependencies(
-         PSSecurityToken tok, PSDependency dep, IPSSite site) 
+         PSSecurityToken tok, IPSSite site)
          throws PSDeployException
    {
       Set<PSDependency> deps = new HashSet<>();
@@ -312,15 +307,13 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
    /**
     * Retrieves the edition child dependencies for a given site.
     * @param tok the security token, assumed not <code>null</code>.
-    * @param dep the site dependency, assumed not <code>null</code> and of the
-    * correct type.
     * @param site the actual site loaded, assumed not <code>null</code>.
     * @return child edition dependencies as a list, never <code>null</code>,
     * may be empty.
     * @throws PSDeployException
     */
    private List<PSDependency> getEditionDependencies(
-         PSSecurityToken tok, PSDependency dep, IPSSite site) 
+         PSSecurityToken tok, IPSSite site)
          throws PSDeployException
    {
       List<PSDependency> deps = new ArrayList<>();
@@ -365,12 +358,12 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
       IPSSite s = findSiteByDependencyID(siteId);
       
       // get edition def child dependencies
-      List<PSDependency> childDeps = getEditionDependencies(tok, dep, s);      
+      List<PSDependency> childDeps = getEditionDependencies(tok,s);
       
-      List<PSDependency> tvDeps = getTemplateDependencies(tok,dep,s);
+      List<PSDependency> tvDeps = getTemplateDependencies(tok,s);
       childDeps.addAll(tvDeps);
       
-      Set<PSDependency> ctxDeps = getContextDependencies(tok, dep, s);
+      Set<PSDependency> ctxDeps = getContextDependencies(tok,s);
       childDeps.addAll(ctxDeps);
       
       //Acl deps
@@ -690,7 +683,12 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
       Integer ver = null;
       if (!isNew)
       {
-         site = m_siteMgr.loadSite(site.getGUID());
+         try {
+            site = m_siteMgr.loadSite(site.getGUID());
+         } catch (PSNotFoundException e) {
+            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                    "Site Not Found: "+ site.toString() + e.getLocalizedMessage());
+         }
          ver = ((PSSite) site).getVersion();
          ((PSSite) site).setVersion(null);
          // keep the slots out of SITE, they are not needed for template 

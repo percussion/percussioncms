@@ -369,9 +369,8 @@ public class PSFormatFileTree extends PSDefaultExtension
 
     String XMLFileName = args[0];
     pSFT.invokedStandalone = true;
-    try {
-       Document TestDoc = PSXmlDocumentBuilder.createXmlDocument((InputStream)
-                new FileInputStream(XMLFileName), false);
+    try(FileInputStream fs = new FileInputStream(XMLFileName)){
+       Document TestDoc = PSXmlDocumentBuilder.createXmlDocument(fs, false);
 
        pSFT.ProcessResultDoc(TestDoc, pt);
 
