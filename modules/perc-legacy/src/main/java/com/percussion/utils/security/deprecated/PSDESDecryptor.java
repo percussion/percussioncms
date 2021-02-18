@@ -122,21 +122,24 @@ public class PSDESDecryptor implements IPSDecryptor
     *
     * @throws IOException if an I/O exception occurs
     */
-   public java.lang.String decrypt(InputStream in) throws PSEncryptionException
-   {
+   public java.lang.String decrypt(InputStream in) throws PSEncryptionException {
       String empty = "";
       if (in == null){
          return empty;
       }
 
       // we'll use a byte array for the output stream
-      ByteArrayOutputStream oBuf = new ByteArrayOutputStream();
+      try(ByteArrayOutputStream oBuf = new ByteArrayOutputStream()) {
 
-      // do the decryption
-      decrypt(in, oBuf);
+         // do the decryption
+         decrypt(in, oBuf);
 
-      // and get the result as a string
-      return (oBuf.toString()).trim();    // remove the trailing white spaces
+         // and get the result as a string
+         return (oBuf.toString()).trim();
+      }// remove the trailing white spaces
+      catch (IOException e) {
+         throw new PSEncryptionException(e.getMessage(),e);
+      }
    }
 
    /**
@@ -157,11 +160,13 @@ public class PSDESDecryptor implements IPSDecryptor
       }
 
       // convert the input byte array to a stream
-      ByteArrayInputStream iBuf
-         = new ByteArrayInputStream(in);
+      try(ByteArrayInputStream iBuf = new ByteArrayInputStream(in)) {
 
-      // and do the string decryption
-      return decrypt(iBuf);
+         // and do the string decryption
+         return decrypt(iBuf);
+      } catch (IOException e) {
+         throw new PSEncryptionException(e.getMessage(),e);
+      }
    }
 
    @Override

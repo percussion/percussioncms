@@ -191,34 +191,38 @@ public class PSCryptographer
             secretKey.setSecret(baInner);
 
             IPSEncryptor encr = secretKey.getEncryptor();
-            ByteArrayOutputStream bOut = new ByteArrayOutputStream();
-            encr.encrypt(new ByteArrayInputStream(encrData), bOut);
-            encrData = bOut.toByteArray();
-            int innerDataLength = encrData.length;
+            try(ByteArrayOutputStream bOut = new ByteArrayOutputStream()) {
+               try(ByteArrayInputStream bis = new ByteArrayInputStream(encrData) ) {
+                  encr.encrypt(bis, bOut);
+               }
+               encrData = bOut.toByteArray();
+               int innerDataLength = encrData.length;
 
-            for (int i = 0; i < 8; i++)
-                 baInner[i] ^= (byte) ((1 << i) & innerDataLength);
+               for (int i = 0; i < 8; i++)
+                  baInner[i] ^= (byte) ((1 << i) & innerDataLength);
 
-            byte[] outerData = new byte[baInner.length + innerDataLength];
+               byte[] outerData = new byte[baInner.length + innerDataLength];
 
-            System.arraycopy(baInner, 0, outerData, 0, 4);
-            System.arraycopy(encrData, 0, outerData, 4, innerDataLength);
-            System.arraycopy(baInner, 4, outerData, innerDataLength + 4, 4);
+               System.arraycopy(baInner, 0, outerData, 0, 4);
+               System.arraycopy(encrData, 0, outerData, 4, innerDataLength);
+               System.arraycopy(baInner, 4, outerData, innerDataLength + 4, 4);
 
-            byte[] baOuter = new byte[8];
-            for (int i = 0; i < 4; i++)
-               baOuter[i] = (byte)((partone >> i) & 0xFF);
-            for (int i = 4; i < 8; i++)
-               baOuter[i] = (byte)((parttwo >> (i-4)) & 0xFF);
+               byte[] baOuter = new byte[8];
+               for (int i = 0; i < 4; i++)
+                  baOuter[i] = (byte) ((partone >> i) & 0xFF);
+               for (int i = 4; i < 8; i++)
+                  baOuter[i] = (byte) ((parttwo >> (i - 4)) & 0xFF);
 
-            secretKey.setSecret(baOuter);
-            bOut = new ByteArrayOutputStream();
-            encr.encrypt(new ByteArrayInputStream(outerData), bOut);
+               secretKey.setSecret(baOuter);
+               try(ByteArrayOutputStream bOut2 = new ByteArrayOutputStream()) {
+                  try(ByteArrayInputStream bis = new ByteArrayInputStream(outerData)) {
+                     encr.encrypt(bis, bOut2);
+                  }
+                  encrData = bOut2.toByteArray();
+               }
 
-            encrData = bOut.toByteArray();
-            bOut.close();
+            }
          }
-
             byte[] bOut2 = Base64.getMimeEncoder().encode(encrData);
             return new String(bOut2,StandardCharsets.UTF_8);
 

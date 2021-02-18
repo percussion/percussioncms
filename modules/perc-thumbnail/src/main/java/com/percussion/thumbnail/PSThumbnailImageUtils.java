@@ -39,30 +39,24 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 
-public class PSThumbnailImageUtils
-{
+public class PSThumbnailImageUtils {
     private static final Log log = LogFactory.getLog(PSThumbnailImageUtils.class);
 
-    public static void resizeThumbnail(String thumbnailFilePath)
-    {
-        try
-        {
-            File inImageFile = new File(thumbnailFilePath);
+    public static void resizeThumbnail(String thumbnailFilePath) {
 
-            int i = 0;
-            while ((!inImageFile.exists() || !inImageFile.canWrite()) && i < 120)
-            {
-                Thread.sleep(500);
-                i++;
-            }
+        File inImageFile = new File(thumbnailFilePath);
 
-            if (inImageFile.exists() && !inImageFile.canWrite())
-            {
-                File outImageFile = new File(thumbnailFilePath);
+        int i = 0;
+        while ((!inImageFile.exists() || !inImageFile.canWrite()) && i < 120) {
+            Thread.sleep(500);
+            i++;
+        }
 
-                try (FileInputStream inputStream = new FileInputStream(inImageFile);
-                     FileOutputStream output = new FileOutputStream(outImageFile)) {
+        if (inImageFile.exists() && !inImageFile.canWrite()) {
+            File outImageFile = new File(thumbnailFilePath);
 
+            try (FileInputStream inputStream = new FileInputStream(inImageFile)) {
+                try (FileOutputStream output = new FileOutputStream(outImageFile)) {
 
                     BufferedImage sourceImage = ImageIO.read(inputStream);
                     Image thumbnail = sourceImage.getScaledInstance(290, 207, Image.SCALE_SMOOTH);
@@ -85,14 +79,14 @@ public class PSThumbnailImageUtils
                     imageWriter.write(null, outimage, jpegParams);
                     imageWriter.dispose();
                 }
+            } catch (Exception e) {
+                //FB: DMI_INVOKING_TOSTRING_ON_ARRAY NC 1-16-16
+                log.debug("Failed to resize thumbnail at: " + thumbnailFilePath, e);
             }
         }
-        catch (Exception e)
-        {
-            //FB: DMI_INVOKING_TOSTRING_ON_ARRAY NC 1-16-16
-            log.debug("Failed to resize thumbnail at: " + thumbnailFilePath, e);
-        }
+
     }
-
-
 }
+
+
+
