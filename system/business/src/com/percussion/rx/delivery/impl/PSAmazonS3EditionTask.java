@@ -224,8 +224,8 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
    private PSPair<List<File>, List<String>> getFileList(AmazonS3 s3Client, String bucketName)
          throws FileNotFoundException, IOException
    {
-      List<File> modifiedFiles = new ArrayList<File>();
-      List<String> delKeys = new ArrayList<String>();
+      List<File> modifiedFiles = new ArrayList<>();
+      List<String> delKeys = new ArrayList<>();
       Map<String, PSPair<String, File>> localFilesMap = getLocalWebResFiles();
       Map<String, String> s3FilesMap = getAmazonS3FilesMap(s3Client, bucketName);
       // Prepare files to upload
@@ -246,7 +246,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
       delKeys.addAll(s3FilesMap.keySet());
       delKeys.removeAll(localFilesMap.keySet());
 
-      return new PSPair<List<File>, List<String>>(modifiedFiles, delKeys);
+      return new PSPair<>(modifiedFiles, delKeys);
    }
 
    /**
@@ -258,7 +258,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
     */
    private Map<String, PSPair<String, File>> getLocalWebResFiles() throws FileNotFoundException, IOException
    {
-      Map<String, PSPair<String, File>> localFilesMap = new HashMap<String, PSPair<String, File>>();
+      Map<String, PSPair<String, File>> localFilesMap = new HashMap<>();
       generateLocalFileMap(webResFolder, localFilesMap);
       return localFilesMap;
    }
@@ -276,7 +276,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
             {
                is = new FileInputStream(file);
                localFilesMap.put(key,
-                     new PSPair<String, File>(DigestUtils.md5Hex(IOUtils.toByteArray(is)), file));
+                     new PSPair<>(DigestUtils.md5Hex(IOUtils.toByteArray(is)), file));
             }
             finally{
                org.apache.commons.io.IOUtils.closeQuietly(is);
@@ -327,7 +327,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
    private Map<String, String> getAmazonS3FilesMap(AmazonS3 client, String bucketName)
    {
       ObjectListing listing;
-      Map<String, String> filesMap = new TreeMap<String, String>();
+      Map<String, String> filesMap = new TreeMap<>();
 
       ListObjectsRequest listObjectsRequest = new ListObjectsRequest().withBucketName(bucketName).withPrefix(WEB_RESOURCES);
 
