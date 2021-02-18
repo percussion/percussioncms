@@ -93,7 +93,7 @@ public class DeliveryServerConfig {
      */
     public List<DeliveryServer> getDeliveryServer() {
         if (deliveryServer == null) {
-            deliveryServer = new ArrayList<DeliveryServer>();
+            deliveryServer = new ArrayList<>();
         }
         return this.deliveryServer;
     }
