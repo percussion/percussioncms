@@ -54,7 +54,7 @@ public class PSTrafficDataHandler extends PSXmlDataHandler implements IPSTraffic
         
         PSContentTraffic trafficResponse = new PSContentTraffic();
                 
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("path", request.getPath());
         props.put("granularity", request.getGranularity());
         props.put("startDate", request.getStartDate());
@@ -134,7 +134,7 @@ public class PSTrafficDataHandler extends PSXmlDataHandler implements IPSTraffic
         
         PSContentTraffic trafficResponse = new PSContentTraffic();
                 
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("path", request.getPath());
         props.put("startDate", request.getStartDate());
         props.put("endDate", request.getEndDate());
@@ -168,8 +168,8 @@ public class PSTrafficDataHandler extends PSXmlDataHandler implements IPSTraffic
     
     private List<Integer> getIntList(Property prop)
     {
-        List<Integer> intVal = new ArrayList<Integer>();
-        List<String> stringVal = new ArrayList<String>();
+        List<Integer> intVal = new ArrayList<>();
+        List<String> stringVal = new ArrayList<>();
         stringVal = prop.getPvalues().getPvalue();
         for (int i = 0; i < stringVal.size(); i++)
         {

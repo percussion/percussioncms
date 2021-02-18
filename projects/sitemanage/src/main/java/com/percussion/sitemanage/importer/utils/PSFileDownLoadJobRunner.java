@@ -60,7 +60,7 @@ public class PSFileDownLoadJobRunner implements Runnable
 
     private PSFileDownloadJob job;
 
-    private List<PSPair<Boolean, String>> results = new ArrayList<PSPair<Boolean, String>>();
+    private List<PSPair<Boolean, String>> results = new ArrayList<>();
 
     private boolean hasCompleted = false;
 
@@ -146,7 +146,7 @@ public class PSFileDownLoadJobRunner implements Runnable
      */
     public List<PSPair<Boolean, String>> downloadFile(String url, String destinationPath)
     {
-        List<PSPair<Boolean, String>> localResults = new ArrayList<PSPair<Boolean, String>>();
+        List<PSPair<Boolean, String>> localResults = new ArrayList<>();
         try
         {
             URI uri = new URI(url);
@@ -155,17 +155,17 @@ public class PSFileDownLoadJobRunner implements Runnable
             File file = new File(destinationPath);
 
             if (doesFileExist(file))
-                localResults.add(new PSPair<Boolean, String>(true, getWarningMessage(url, destinationPath)));
+                localResults.add(new PSPair<>(true, getWarningMessage(url, destinationPath)));
 
             copyToFile(fileUrl, file);
 
-            localResults.add(new PSPair<Boolean, String>(true, getSucessMessage(url, destinationPath)));
+            localResults.add(new PSPair<>(true, getSucessMessage(url, destinationPath)));
         }
         catch (Exception e)
         {
             Exception debug = e;
             File destFile = new File(destinationPath);
-            PSPair<Boolean, String> result = new PSPair<Boolean, String>(false, getErrorMessage(url, destFile.getName()));
+            PSPair<Boolean, String> result = new PSPair<>(false, getErrorMessage(url, destFile.getName()));
             localResults.add(result);
         }
         return localResults;
@@ -205,7 +205,7 @@ public class PSFileDownLoadJobRunner implements Runnable
     public List<PSPair<Boolean, String>> downloadCreateAsset(String url, String destinationPath)
     {
         PSPurgableTempFile tempImage = null;
-        List<PSPair<Boolean, String>> localResults = new ArrayList<PSPair<Boolean, String>>();
+        List<PSPair<Boolean, String>> localResults = new ArrayList<>();
 
         try
         {
@@ -216,7 +216,7 @@ public class PSFileDownLoadJobRunner implements Runnable
 
             if (assetExist)
             {
-                localResults.add(new PSPair<Boolean, String>(true, getWarningMessage(url, destinationPath)));
+                localResults.add(new PSPair<>(true, getWarningMessage(url, destinationPath)));
             }
             else
             {
@@ -227,14 +227,14 @@ public class PSFileDownLoadJobRunner implements Runnable
                 InputStream fileInput = new FileInputStream(tempImage);
                 createAsset(fileInput, destinationPath, this.assetCreator);
 
-                localResults.add(new PSPair<Boolean, String>(true, getSucessMessage(url, destinationPath)));
+                localResults.add(new PSPair<>(true, getSucessMessage(url, destinationPath)));
             }
             return localResults;
         }
         catch (Exception e)
         {
             File destFile = new File(destinationPath);
-            localResults.add(new PSPair<Boolean, String>(false, getErrorMessage(url, destFile.getName())));
+            localResults.add(new PSPair<>(false, getErrorMessage(url, destFile.getName())));
             return localResults;
         }
         finally

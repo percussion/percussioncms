@@ -61,7 +61,7 @@ public class PSEffectivenessService implements IPSEffectivenessService
         notNull(request);
         notNull(activity);
                 
-        List<PSEffectiveness> eList = new ArrayList<PSEffectiveness>();
+        List<PSEffectiveness> eList = new ArrayList<>();
 
         PSDurationTypeEnum durationType = PSDurationTypeEnum.valueOf(request.getDurationType());
         int duration = Integer.parseInt(request.getDuration());
@@ -73,7 +73,7 @@ public class PSEffectivenessService implements IPSEffectivenessService
                 IPSAnalyticsProviderQueryService.FIELD_UNIQUE_PAGEVIEWS :
                     IPSAnalyticsProviderQueryService.FIELD_PAGEVIEWS;
 
-        List<PSAnalyticsProviderException> exceptions = new ArrayList<PSAnalyticsProviderException>();
+        List<PSAnalyticsProviderException> exceptions = new ArrayList<>();
         for (PSContentActivity ca : activity)
         {
             Long changes = (long) ca.getNewItems() + ca.getUpdatedItems();

@@ -44,7 +44,7 @@ public class PSPathItemDisplayProperties
     {
         if (displayProperty == null)
         {
-            displayProperty = new ArrayList<PSPathItemDisplayProperty>();
+            displayProperty = new ArrayList<>();
         }
         return this.displayProperty;
     }

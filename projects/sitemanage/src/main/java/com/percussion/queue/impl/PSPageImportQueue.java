@@ -65,7 +65,7 @@ import org.springframework.stereotype.Component;
 public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 		implements IPSPageImportQueue, IPSNotificationListener,
 		IPSPerformPageImport {
-	private Map<Long, PSSiteQueue> m_siteCache = new ConcurrentHashMap<Long, PSSiteQueue>();
+	private Map<Long, PSSiteQueue> m_siteCache = new ConcurrentHashMap<>();
 	private PSSiteQueue m_importingSite;
 	private PSSiteImportCtx m_importContext = new PSSiteImportCtx();
 
@@ -320,7 +320,7 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 	}
 
 	protected PSPair<PSSiteQueue, Integer> getNextEvent() {
-		PSPair<PSSiteQueue, Integer> pair = new PSPair<PSSiteQueue, Integer>();
+		PSPair<PSSiteQueue, Integer> pair = new PSPair<>();
 		if (m_importingSite == null) {
 			PSSiteQueue sq = getNextWaitingSite();
 			if (sq == null)
@@ -430,7 +430,7 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 	 *         <code>null</code>, but may be empty.
 	 */
 	private List<Integer> getContentIds(List<String> ids) {
-		List<Integer> contentIds = new ArrayList<Integer>();
+		List<Integer> contentIds = new ArrayList<>();
 		for (String id : ids) {
 			contentIds.add(((PSLegacyGuid) m_idMapper.getGuid(id))
 					.getContentId());

@@ -225,7 +225,7 @@ public class PSWidgetService implements IPSWidgetService {
      */
     private Map<String, String> loadWidgetTypeMap()
     {
-        Map<String, String> widgetTypeMap = new HashMap<String, String>();
+        Map<String, String> widgetTypeMap = new HashMap<>();
         InputStream in = null;
         in = this.getClass().getClassLoader()
                 .getResourceAsStream("com/percussion/pagemanagement/service/impl/WidgetRegistry.xml");

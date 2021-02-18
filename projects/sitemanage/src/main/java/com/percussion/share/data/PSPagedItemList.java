@@ -48,7 +48,7 @@ public class PSPagedItemList extends PSPagedList
     
     public PSPagedItemList()
     {
-        this(new ArrayList<PSPathItem>(), null, null);
+        this(new ArrayList<>(), null, null);
     }
     
     public PSPagedItemList(List<PSPathItem> childrenInPage, Integer childrenCount, Integer startIndex)

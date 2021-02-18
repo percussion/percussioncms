@@ -44,8 +44,8 @@ public class PSFeedInfo
     private int ownerpageid;
     private int ownerfolderid;
     private int contentId;
-    private Set<Integer> pages = new HashSet<Integer>();
-    private Set<Integer> templates = new HashSet<Integer>();
+    private Set<Integer> pages = new HashSet<>();
+    private Set<Integer> templates = new HashSet<>();
     
     public PSFeedInfo(int contentId, String name, String title, String desc)
     {

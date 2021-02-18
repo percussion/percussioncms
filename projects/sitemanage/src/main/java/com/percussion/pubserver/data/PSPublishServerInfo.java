@@ -50,7 +50,7 @@ public class PSPublishServerInfo
     
     private String serverType;
     
-    private List<PSPublishServerProperty> properties = new ArrayList<PSPublishServerProperty>();
+    private List<PSPublishServerProperty> properties = new ArrayList<>();
 
     private Boolean isModified;
     

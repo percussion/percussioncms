@@ -102,7 +102,7 @@ public class PSIdMapper implements IPSIdMapper
    {
        notNull(ids);
        
-       List<IPSGuid> guids = new ArrayList<IPSGuid>();
+       List<IPSGuid> guids = new ArrayList<>();
        for (String id : ids)
        {
            guids.add(getGuid(id));
@@ -125,7 +125,7 @@ public class PSIdMapper implements IPSIdMapper
    {
        notNull(ids);
 
-       List<String> result = new ArrayList<String>();
+       List<String> result = new ArrayList<>();
        for (IPSGuid id : ids)
        {
            result.add(getString(id));

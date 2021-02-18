@@ -50,7 +50,7 @@ public class PSNamedLockManager
     public PSNamedLockManager(long waitMillis)
     {
         this.waitMillis = waitMillis;
-        lockMap = new ConcurrentHashMap<String, ReentrantLock>();        
+        lockMap = new ConcurrentHashMap<>();
     }
     
     /**

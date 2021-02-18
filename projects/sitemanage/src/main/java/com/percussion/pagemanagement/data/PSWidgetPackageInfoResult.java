@@ -37,7 +37,7 @@ import org.apache.commons.lang.Validate;
 @XmlRootElement(name = "WidgetPackageInfoResult")
 public class PSWidgetPackageInfoResult
 {
-    private List<PSWidgetPackageInfo> packageInfoList = new ArrayList<PSWidgetPackageInfo>();
+    private List<PSWidgetPackageInfo> packageInfoList = new ArrayList<>();
 
     /**
      * Get the list of results

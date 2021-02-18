@@ -179,7 +179,7 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
     
     private <F extends IPSItemSummary> List<F> convert(IPSCatalogItemFactory<F, String> factory,
             List<PSItemSummary> sums, int landingPageId, String relationshipTypeName) throws PSErrorException, PSInvalidContentTypeException, DataServiceLoadException {
-        List<F> items = new ArrayList<F>();
+        List<F> items = new ArrayList<>();
         for(PSItemSummary sum : sums) 
         {
             PSThreadUtils.checkForInterrupt();

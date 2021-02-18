@@ -180,7 +180,7 @@ public class PSSectionNode extends PSAbstractPersistantObject
     /**
      * A list of direct child nodes, may be empty, never <code>null</code>.
      */
-    private List<PSSectionNode> childNodes = new ArrayList<PSSectionNode>();
+    private List<PSSectionNode> childNodes = new ArrayList<>();
     
     /**
      * The navigation title. It is also the link title of the landing page.

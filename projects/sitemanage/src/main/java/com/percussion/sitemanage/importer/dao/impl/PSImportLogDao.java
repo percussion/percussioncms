@@ -145,7 +145,7 @@ public class PSImportLogDao implements IPSImportLogDao
         Validate.notNull(objectIds);
         Validate.notNull(type);
         
-        List<Long> results = new ArrayList<Long>();
+        List<Long> results = new ArrayList<>();
         
         if (objectIds.isEmpty())
             return results;

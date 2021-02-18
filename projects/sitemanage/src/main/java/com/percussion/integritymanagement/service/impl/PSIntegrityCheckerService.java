@@ -306,10 +306,10 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
         try {
             itemWorkflowService.performApproveTransition(percussionImage.getId(), false, "");
 
-            PSPair<TaskStatus, String> imgApprove = new PSPair<TaskStatus, String>(TaskStatus.SUCCESS,"");
+            PSPair<TaskStatus, String> imgApprove = new PSPair<>(TaskStatus.SUCCESS,"");
             result.put(IMAGE_APPROVE_TASK, imgApprove);
         } catch (Exception e) {
-            PSPair<TaskStatus, String> imgApprove = new PSPair<TaskStatus, String>(TaskStatus.FAILED, e.getMessage());
+            PSPair<TaskStatus, String> imgApprove = new PSPair<>(TaskStatus.FAILED, e.getMessage());
             result.put(IMAGE_APPROVE_TASK, imgApprove);
         }
         
@@ -317,10 +317,10 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
         try {
             assetService.delete(percussionImage.getId());
             
-            PSPair<TaskStatus, String> imgDelete = new PSPair<TaskStatus, String>(TaskStatus.SUCCESS, "");
+            PSPair<TaskStatus, String> imgDelete = new PSPair<>(TaskStatus.SUCCESS, "");
             result.put(IMAGE_DELETE_TASK, imgDelete);
         } catch (Exception e) {
-            PSPair<TaskStatus, String> imgDelete = new PSPair<TaskStatus, String>(TaskStatus.FAILED, e.getMessage());
+            PSPair<TaskStatus, String> imgDelete = new PSPair<>(TaskStatus.FAILED, e.getMessage());
             result.put(IMAGE_DELETE_TASK, imgDelete);
         }
 
@@ -342,7 +342,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
      */
     private Set<PSIntegrityTask> runImagePublishTasks(String token)
     {
-        Set<PSIntegrityTask> result = new HashSet<PSIntegrityTask>();
+        Set<PSIntegrityTask> result = new HashSet<>();
         try
         {
             PSAmazonS3DeliveryHandler delHandler = new PSAmazonS3DeliveryHandler();
@@ -359,7 +359,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
                 || equalsIgnoreCase(pubType, PublishType.amazon_s3_only.toString()))){
                     continue;
                 }
-                Set<PSIntegrityTaskProperty> taskProps = new HashSet<PSIntegrityTaskProperty>();
+                Set<PSIntegrityTaskProperty> taskProps = new HashSet<>();
                 taskProps.add(new PSIntegrityTaskProperty("sitename", site.getName()));
                 try{
                     PSPair<Boolean, String> pub = delHandler.publishTestImage(pubServer, site, token);

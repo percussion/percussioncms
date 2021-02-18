@@ -47,6 +47,6 @@ public final class PSEmptyPage extends PSPage
      */
     public List<PSWidgetItem> getWidgets()
     {
-        return new ArrayList<PSWidgetItem>();
+        return new ArrayList<>();
     }
 }

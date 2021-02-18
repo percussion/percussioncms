@@ -48,7 +48,7 @@ public class PSMetadataEntry
 
     private String site;
 
-    private Set<PSMetadataProperty> properties = new HashSet<PSMetadataProperty>();
+    private Set<PSMetadataProperty> properties = new HashSet<>();
 
     public PSMetadataEntry()
     {

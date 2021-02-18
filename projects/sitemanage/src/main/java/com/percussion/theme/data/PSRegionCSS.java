@@ -58,7 +58,7 @@ public class PSRegionCSS extends PSAbstractDataObject implements Serializable, C
     @NotNull
     private String outerRegionName;
 
-    private List<Property> properties = new ArrayList<Property>();
+    private List<Property> properties = new ArrayList<>();
 
     public static class Property extends PSAbstractDataObject implements Serializable {
 

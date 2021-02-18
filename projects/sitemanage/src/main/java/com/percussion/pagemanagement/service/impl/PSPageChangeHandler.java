@@ -346,7 +346,7 @@ public class PSPageChangeHandler implements IPSPageChangeListener
    /**
     * A map of content type name and a more link capable field name.
     */
-   private static Map<String, String> moreLinkSupportTypes = new HashMap<String, String>();
+   private static Map<String, String> moreLinkSupportTypes = new HashMap<>();
    static
    {
       moreLinkSupportTypes.put("percRichTextAsset", "text");

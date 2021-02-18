@@ -104,7 +104,7 @@ public class PSLegacyExtensionUtils
     public static List<String> getParameterNames(IPSRequestContext request) {
         notNull(request);
         Iterator<Entry<String, ?>> iterator = request.getParametersIterator();
-        List<String> parameterNames = new ArrayList<String>();
+        List<String> parameterNames = new ArrayList<>();
         while(iterator.hasNext()) {
             String p = iterator.next().getKey();
             parameterNames.add(p);
@@ -120,7 +120,7 @@ public class PSLegacyExtensionUtils
     @SuppressWarnings("unchecked")
     public static List<String> getParameterNames(IPSExtensionDef extensionDef) {
         notNull(extensionDef);
-        List<String> rvalue = new ArrayList<String>();
+        List<String> rvalue = new ArrayList<>();
         Iterator<String> it = extensionDef.getRuntimeParameterNames();
         CollectionUtils.addAll(rvalue, it);
         return rvalue;

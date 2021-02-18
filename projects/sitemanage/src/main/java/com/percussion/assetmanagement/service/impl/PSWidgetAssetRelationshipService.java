@@ -303,7 +303,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
                    SHARED_ASSET_WIDGET_REL_TYPE : LOCAL_ASSET_WIDGET_REL_TYPE;
                       
            int maxOrder = 0;
-           List<PSRelationship> deleteRels = new ArrayList<PSRelationship>();
+           List<PSRelationship> deleteRels = new ArrayList<>();
            
            for (PSRelationship exRel : existingRels)
            {
@@ -417,7 +417,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     private Map<String, PSRelationship> getWidgetToAssetForTemplate(String id, List<PSWidgetItem> widgets)
     {
         List<PSRelationship> rels = getLocalSharedAssetRelationships(id);
-        Map<String, PSRelationship> widToAsset = new HashMap<String, PSRelationship>();
+        Map<String, PSRelationship> widToAsset = new HashMap<>();
         for (PSWidgetItem w : widgets)
         {
             PSRelationship r = getRelationship(w.getId(), rels);
@@ -441,7 +441,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     {
         notEmpty(id, "id");
 
-        Set<String> owners = new HashSet<String>();
+        Set<String> owners = new HashSet<>();
 
         List<PSRelationship> rels = getLocalAssetRelationships(null, null, id);
         
@@ -470,7 +470,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         filter.setDependentId(idMapper.getGuid(id).getUUID());
         filter.setCategory(PSRelationshipConfig.CATEGORY_ACTIVE_ASSEMBLY);
         filter.limitToEditOrCurrentOwnerRevision(true);
-        Set<String> owners = new HashSet<String>();
+        Set<String> owners = new HashSet<>();
         List<PSRelationship> rels = getRelationships(filter);
         for (PSRelationship rel : rels)
         {
@@ -494,16 +494,16 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     }
     
     public Collection<String> copyAssetWidgetRelationships(String srcId, String destId) throws PSWidgetAssetRelationshipServiceException {
-		Set<String> assetIds = new HashSet<String>();
+		Set<String> assetIds = new HashSet<>();
 		String copyId=null;
 		try {
 			notEmpty(srcId, "src");
 			notEmpty(destId, "dest");
 			// MAW
-			List<PSRelationship> destRels = new ArrayList<PSRelationship>();
+			List<PSRelationship> destRels = new ArrayList<>();
 			List<PSRelationship> srcLocalRels = getLocalAssetRelationships(srcId, null, null);
 			List<PSRelationship> srcSharedRels = getSharedAssetRelationships(srcId, null, null);
-			List<PSRelationship> srcRels = new ArrayList<PSRelationship>();
+			List<PSRelationship> srcRels = new ArrayList<>();
 			srcRels.addAll(srcLocalRels);
 			srcRels.addAll(srcSharedRels);
 
@@ -561,7 +561,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         
         // TODO: if the page does not contain widgets belong to template, then there is no need to involve template.
         // get the widget IDs exist in previous page, but not in current page, current template or previous template
-        Set<String> removedWidgetId = new HashSet<String>(prevWidgetIds);
+        Set<String> removedWidgetId = new HashSet<>(prevWidgetIds);
         removedWidgetId.removeAll(widgetIds);
         removedWidgetId.removeAll(templateWidgetIds);
         removedWidgetId.removeAll(prevTemplateWidgetIds);
@@ -701,7 +701,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         PSRelationshipFilter filter = getAssetRelationshipFilter(null, null, id);
         filter.setName(LOCAL_ASSET_WIDGET_REL_FILTER);
         filter.limitToEditOrCurrentOwnerRevision(true);
-        Map<Integer, PSRelationship> relsMap =  new HashMap<Integer, PSRelationship>();
+        Map<Integer, PSRelationship> relsMap =  new HashMap<>();
         List<PSRelationship> rels = getRelationships(filter);
         if (!rels.isEmpty())
         {
@@ -731,7 +731,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         notNull(id, "id");
         notEmpty(id, "id");
         
-        Set<String> linkedAssets = new HashSet<String>();
+        Set<String> linkedAssets = new HashSet<>();
         
         for (String assetId : getDirectAssets(id))
         {
@@ -759,7 +759,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         notNull(id, "id");
         notEmpty(id, "id");
         
-        Set<String> linkedAssets = new HashSet<String>();
+        Set<String> linkedAssets = new HashSet<>();
         
         PSRelationshipFilter filter = getAssetRelationshipFilter(id, null, null);
         filter.setName(SHARED_ASSET_WIDGET_REL_FILTER);
@@ -806,7 +806,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     {
         notEmpty(id, "id");
         
-        Set<String> inlinePages = new HashSet<String>();
+        Set<String> inlinePages = new HashSet<>();
         
         PSRelationshipFilter filter = getAssetRelationshipFilter(id, null, null);
         filter.setName(SHARED_ASSET_WIDGET_REL_FILTER);
@@ -837,7 +837,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         PSRelationshipFilter filter = getAssetRelationshipFilter(ownerId, null, depId);
         filter.setName(SHARED_ASSET_WIDGET_REL_FILTER);
         filter.limitToEditOrCurrentOwnerRevision(true);
-        Map<Integer, PSRelationship> relsMap =  new HashMap<Integer, PSRelationship>();
+        Map<Integer, PSRelationship> relsMap =  new HashMap<>();
         
         List<PSRelationship> rels = getRelationships(filter);
         for (PSRelationship rel : rels)
@@ -957,7 +957,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     private List<PSRelationship> calculateRelationshipsToUpdate(List<PSRelationship> assetRelationships,
             Map<String, PSPair<String, String>> changedWidgets)
     {
-        List<PSRelationship> relationshipsToUpdate = new ArrayList<PSRelationship>();
+        List<PSRelationship> relationshipsToUpdate = new ArrayList<>();
 
         for (PSRelationship assetRelationship : assetRelationships)
         {
@@ -983,7 +983,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
      */
     private Set<String> getInlineImagesAndManagedLinks(String id)
     {
-        Set<String> inlineImages = new HashSet<String>();
+        Set<String> inlineImages = new HashSet<>();
         
         PSRelationshipFilter filter = getAssetRelationshipFilter(id, null, null);
         filter.setName(SHARED_ASSET_WIDGET_REL_FILTER);
@@ -1008,7 +1008,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     
     private Set<String> getManagedLinkAssets(String id) {
         
-        Set<String> relIds = new HashSet<String>();
+        Set<String> relIds = new HashSet<>();
         
         List<String> ids = getManagedLinkService().getManagedLinks(Collections.singleton(id));
         
@@ -1098,7 +1098,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     {
         PSRelationshipFilter filter = getAssetRelationshipFilter(ownerId, widgetId, assetId);
         filter.setName(SHARED_ASSET_WIDGET_REL_FILTER);
-        List<PSRelationship> linksToAsset = new ArrayList<PSRelationship>();
+        List<PSRelationship> linksToAsset = new ArrayList<>();
         
         // further filtering out the (real) inline links, which may contained in the fields of a page/template
         for (PSRelationship rel : getRelationships(filter))
@@ -1123,7 +1123,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     {
         PSRelationshipFilter filter = getAssetRelationshipFilter(ownerId, widgetId, assetId);
         filter.setName(SHARED_ASSET_WIDGET_REL_FILTER);
-        List<PSRelationship> linksToAsset = new ArrayList<PSRelationship>();
+        List<PSRelationship> linksToAsset = new ArrayList<>();
 
         // further filtering out the (real) inline links, which may contained in the fields of a page/template
         for (PSRelationship rel : getRelationships(filter))
@@ -1147,7 +1147,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         notEmpty(ownerId);
         
         // the finder utils method uses cached relationships.  May not return all active rels if using this to delete.
-        List<PSRelationship> rels = new ArrayList<PSRelationship>();
+        List<PSRelationship> rels = new ArrayList<>();
         
         rels.addAll(getLocalAssetRelationships(ownerId, widgetId, null));
         rels.addAll(getSharedAssetRelationships(ownerId, widgetId, null));
@@ -1156,7 +1156,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         if (widgetId == null)
             return rels;
         
-        List<PSRelationship> result = new ArrayList<PSRelationship>();
+        List<PSRelationship> result = new ArrayList<>();
         for (PSRelationship r : rels)
         {
             String slotId = r.getProperty(PSRelationshipConfig.PDU_SLOTID);
@@ -1306,7 +1306,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
      */
     private Set<String> getDependents(List<PSRelationship> rels)
     {
-        Set<String> dependents = new HashSet<String>();
+        Set<String> dependents = new HashSet<>();
 
         for (PSRelationship rel : rels)
         {
@@ -1341,7 +1341,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     {
         systemWs.saveRelationships(rels);
         
-        Set<Integer> ownerIds = new HashSet<Integer>();
+        Set<Integer> ownerIds = new HashSet<>();
         for (PSRelationship rel : rels)
         {
             ownerIds.add(rel.getOwner().getId());

@@ -47,7 +47,7 @@ public class PSMapAdapter extends XmlAdapter<PSPathItemDisplayProperties, Map<St
     @Override
     public Map<String, String> unmarshal(PSPathItemDisplayProperties v) throws Exception
     {
-        HashMap<String, String> hashMap = new HashMap<String, String>();
+        HashMap<String, String> hashMap = new HashMap<>();
         
         for (PSPathItemDisplayProperty displayProp : v.getDisplayProperty())
             hashMap.put(displayProp.getName(), displayProp.getValue());

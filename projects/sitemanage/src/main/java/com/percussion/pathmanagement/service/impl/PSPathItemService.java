@@ -202,7 +202,7 @@ public abstract class PSPathItemService implements IPSPathService
         try
         {
             Query query = contentMgr.createQuery(jcrQuery, Query.SQL);
-            QueryResult queryResult = contentMgr.executeQuery(query, -1, new HashMap<String, Object>(), null);
+            QueryResult queryResult = contentMgr.executeQuery(query, -1, new HashMap<>(), null);
             RowIterator rowIter = queryResult.getRows();
             while (rowIter.hasNext())
             {
@@ -537,8 +537,8 @@ public abstract class PSPathItemService implements IPSPathService
             throw new PSPathNotFoundServiceException("Path not found: " + path, e);
         }
 
-        List<PSPathItem> pathFolderItems = new ArrayList<PSPathItem>();
-        List<PSPathItem> pathItems = new ArrayList<PSPathItem>();
+        List<PSPathItem> pathFolderItems = new ArrayList<>();
+        List<PSPathItem> pathItems = new ArrayList<>();
 
         for (IPSItemSummary data : sums)
         {
@@ -688,7 +688,7 @@ public abstract class PSPathItemService implements IPSPathService
 
         PSPathUtils.validatePath(path);
 
-        List<PSPathItem> items = new ArrayList<PSPathItem>();
+        List<PSPathItem> items = new ArrayList<>();
 
         for (PSPathItem item : findItems(path))
         {

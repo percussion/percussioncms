@@ -81,7 +81,7 @@ public class PSIntegrityCheckerDao
     public List<PSIntegrityStatus> find(Status status)
     {
         Session session = getSession();
-        List<PSIntegrityStatus> results = new ArrayList<PSIntegrityStatus>();
+        List<PSIntegrityStatus> results = new ArrayList<>();
 
         Criteria crit = session.createCriteria(PSIntegrityStatus.class);
         if (status != null)

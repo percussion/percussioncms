@@ -38,7 +38,7 @@ public class PSTransformCategoryNode {
    private String id;
    private String label;
    private String selectable;
-   private List<PSTransformCategoryNode> childNodes = new ArrayList<PSTransformCategoryNode>();
+   private List<PSTransformCategoryNode> childNodes = new ArrayList<>();
    
    @XmlAttribute(name="id")
    public String getId()

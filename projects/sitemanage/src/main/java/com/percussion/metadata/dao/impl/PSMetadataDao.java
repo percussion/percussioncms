@@ -189,7 +189,7 @@ public class PSMetadataDao
    public Collection<PSMetadata> findByPrefix(String prefix){
       String emsg;
       Session session = sessionFactory.getCurrentSession();
-      Collection<PSMetadata> results = new ArrayList<PSMetadata>(); 
+      Collection<PSMetadata> results = new ArrayList<>();
       try
       {
           results = session.createCriteria(PSMetadata.class)

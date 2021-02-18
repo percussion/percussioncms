@@ -46,7 +46,7 @@ public class PSPagedItemPropertiesList extends PSPagedList
     
     public PSPagedItemPropertiesList()
     {
-        this(new ArrayList<PSItemProperties>(), null, null);
+        this(new ArrayList<>(), null, null);
     }
     
     public PSPagedItemPropertiesList(List<PSItemProperties> childrenInPage, Integer childrenCount, Integer startIndex)

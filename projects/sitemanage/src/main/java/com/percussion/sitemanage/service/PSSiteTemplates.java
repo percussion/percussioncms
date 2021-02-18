@@ -38,9 +38,9 @@ import java.util.List;
 public class PSSiteTemplates {
 
     @AssertValid
-    private List<CreateTemplate> createTemplates = new ArrayList<CreateTemplate>();
+    private List<CreateTemplate> createTemplates = new ArrayList<>();
     @AssertValid
-    private List<AssignTemplate> assignTemplates = new ArrayList<AssignTemplate>();
+    private List<AssignTemplate> assignTemplates = new ArrayList<>();
     private ImportTemplate importTemplate = new ImportTemplate();
 
     public List<CreateTemplate> getCreateTemplates()

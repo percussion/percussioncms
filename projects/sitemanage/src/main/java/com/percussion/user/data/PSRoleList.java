@@ -55,7 +55,7 @@ public class PSRoleList extends PSAbstractDataObject
     
     public PSRoleList()
     {
-        roles = new ArrayList<String>(); 
+        roles = new ArrayList<>();
     }
 
     /**

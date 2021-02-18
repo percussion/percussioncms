@@ -42,7 +42,7 @@ public class PSOrphanAssetsSummary extends PSAbstractDataObject
      */
     private static final long serialVersionUID = 1L;
     
-    private List<PSAssetWidgetRelationship> assetWidgetRelationship = new ArrayList<PSAssetWidgetRelationship>();
+    private List<PSAssetWidgetRelationship> assetWidgetRelationship = new ArrayList<>();
     
   
     /**

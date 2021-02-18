@@ -51,7 +51,7 @@ public class PSSiteComments
 
     public PSSiteComments()
     {
-        comments = new ArrayList<String>();
+        comments = new ArrayList<>();
     }
 
     public String getSite()

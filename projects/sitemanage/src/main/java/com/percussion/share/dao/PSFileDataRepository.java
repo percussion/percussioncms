@@ -239,7 +239,7 @@ public abstract class PSFileDataRepository<T>
         
         Collection<File> files = getFiles();
         
-        Set<PSFileDataRepository.PSFileEntry> fileEntries = new HashSet<PSFileDataRepository.PSFileEntry>();
+        Set<PSFileDataRepository.PSFileEntry> fileEntries = new HashSet<>();
         
         for( File file : files) {
             PSFileDataRepository.PSFileEntry fileEntry = new PSFileDataRepository.PSFileEntry(toId(file.getName()), file.getAbsolutePath(), file.lastModified());
@@ -250,7 +250,7 @@ public abstract class PSFileDataRepository<T>
         if (data.get() != null)
             oldEntries = data.get().files;
         else
-            oldEntries = new HashSet<PSFileDataRepository.PSFileEntry>();
+            oldEntries = new HashSet<>();
         
         if ( ! oldEntries.equals(fileEntries)  || 
                 (fileEntries.isEmpty() && oldEntries.isEmpty())) {
@@ -261,7 +261,7 @@ public abstract class PSFileDataRepository<T>
                 log.debug("Loading files from: " + getRoot());
             }
             T object = update(fileEntries);
-            data.set(new Data<T> (object, fileEntries));
+            data.set(new Data<> (object, fileEntries));
         }
         else {
             log.trace("Files have not changed under: " + getRoot());

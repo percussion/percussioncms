@@ -51,7 +51,7 @@ public class PSPagedObjectList<T>
 
     public PSPagedObjectList()
     {
-        this.childrenInPage = new ArrayList<T>();
+        this.childrenInPage = new ArrayList<>();
         this.childrenCount = null;
         this.startIndex = null;
     }
@@ -107,7 +107,7 @@ public class PSPagedObjectList<T>
         if (realMaxResults > allItems.size())
             realMaxResults = allItems.size();
         
-        return new PSPagedObjectList<T>(allItems.subList(realStartIndex, realMaxResults), allItems.size(), realStartIndex + 1);
+        return new PSPagedObjectList<>(allItems.subList(realStartIndex, realMaxResults), allItems.size(), realStartIndex + 1);
     }    
     
     /**
