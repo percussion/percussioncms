@@ -282,7 +282,7 @@ public class DeliveryServer
      */
     public List<DeliveryServer.AvailableServices> getAvailableServices() {
         if (availableServices == null) {
-            availableServices = new ArrayList<DeliveryServer.AvailableServices>();
+            availableServices = new ArrayList<>();
         }
         return this.availableServices;
     }
@@ -339,7 +339,7 @@ public class DeliveryServer
          */
         public List<String> getService() {
             if (service == null) {
-                service = new ArrayList<String>();
+                service = new ArrayList<>();
             }
             return this.service;
         }

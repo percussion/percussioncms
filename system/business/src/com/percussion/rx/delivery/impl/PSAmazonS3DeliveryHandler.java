@@ -421,9 +421,9 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
    public PSPair<Boolean, String> publishTestImage(IPSPubServer pubServer, IPSSite site, String token)
    {
       if(!checkConnection(pubServer, site)){
-         return new PSPair<Boolean,String>(Boolean.FALSE, CREDS_WRONG_MSG);
+         return new PSPair<>(Boolean.FALSE, CREDS_WRONG_MSG);
       }
-      PSPair<Boolean,String> result = new PSPair<Boolean,String>(Boolean.TRUE, "Successfully published, accessed and deleted image to amazon s3");
+      PSPair<Boolean,String> result = new PSPair<>(Boolean.TRUE, "Successfully published, accessed and deleted image to amazon s3");
       InputStream in = null;
       String key = "Assets/uploads/" + generateTestImageKey(token);
       String bucketName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, "");
@@ -441,7 +441,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
       catch (Exception e)
       {
          ms_log.error("Error copying image to amazon s3 bucket.", e);
-         result = new PSPair<Boolean,String>(Boolean.FALSE, e.getLocalizedMessage());
+         result = new PSPair<>(Boolean.FALSE, e.getLocalizedMessage());
       }
       finally
       {

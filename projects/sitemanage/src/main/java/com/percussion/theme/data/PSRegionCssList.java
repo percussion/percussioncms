@@ -38,7 +38,7 @@ public class PSRegionCssList extends PSAbstractDataObject
 {
     private static final long serialVersionUID = 1L;
     
-    private List<PSRegionCSS> regions = new ArrayList<PSRegionCSS>();
+    private List<PSRegionCSS> regions = new ArrayList<>();
     
     public List<PSRegionCSS> getRegions()
     {

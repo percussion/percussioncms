@@ -277,7 +277,7 @@ public class PSPubServerService implements IPSPubServerService
         if (isBlank(siteId))
             throw new IllegalArgumentException("Site id cannot be blank.");
 
-        List<PSPublishServerInfo> serversList = new ArrayList<PSPublishServerInfo>();
+        List<PSPublishServerInfo> serversList = new ArrayList<>();
         try
         {
             IPSSite site = siteMgr.findSite(getSiteGuid(siteId));
@@ -1975,7 +1975,7 @@ public class PSPubServerService implements IPSPubServerService
                     IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY, IPSPubServerDao.PUBLISH_FOLDER_PROPERTY,
                     IPSPubServerDao.PUBLISH_FORMAT_PROPERTY, XML_FLAG, HTML_FLAG};
 
-    private List<String> excludedManagedProperties = new ArrayList<String>(Arrays.asList(specialCasesValues));
+    private List<String> excludedManagedProperties = new ArrayList<>(Arrays.asList(specialCasesValues));
 
 
     public static final String[] encryptableProperties =

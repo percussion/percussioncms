@@ -75,7 +75,7 @@ public class PSXmlDataHandler
             List<Request> requests = data.getRequest();
             for (Request request : requests)
             {
-                Map<String, Object> reqProps = new HashMap<String, Object>();
+                Map<String, Object> reqProps = new HashMap<>();
                 Settings settings = request.getSettings();
                 List<Property> props = settings.getProperty();
                 for (Property prop : props)

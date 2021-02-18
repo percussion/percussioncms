@@ -53,10 +53,10 @@ import org.apache.commons.logging.LogFactory;
 public class PSSiteQueue
 {
     private PSSite m_site = null;
-    private TreeSet<Integer> m_catalogedIds = new TreeSet<Integer>();
-    private TreeSet<Integer> m_importedIds = new TreeSet<Integer>();
-    private HashMap<String, PSLink> m_importedLinks = new HashMap<String, PSLink>();
-    private TreeSet<Integer> m_importingIds = new TreeSet<Integer>();
+    private TreeSet<Integer> m_catalogedIds = new TreeSet<>();
+    private TreeSet<Integer> m_importedIds = new TreeSet<>();
+    private HashMap<String, PSLink> m_importedLinks = new HashMap<>();
+    private TreeSet<Integer> m_importingIds = new TreeSet<>();
     private String m_userAgent = null;
     private int m_maxImportCount = 0;
     private static final String POUND = "#";
@@ -238,7 +238,7 @@ public class PSSiteQueue
     public List<Integer> getImportingIds()
     {
 
-        List<Integer> ids = new ArrayList<Integer>(m_importingIds);
+        List<Integer> ids = new ArrayList<>(m_importingIds);
         return ids;
      
     }
@@ -278,13 +278,13 @@ public class PSSiteQueue
     
     public synchronized List<Integer> getCatalogedIds()
     {
-        List<Integer> ids = new ArrayList<Integer>(m_catalogedIds);
+        List<Integer> ids = new ArrayList<>(m_catalogedIds);
         return ids;
     }
 
     public synchronized List<Integer> getImportedIds()
     {
-        List<Integer> ids = new ArrayList<Integer>(m_importedIds);
+        List<Integer> ids = new ArrayList<>(m_importedIds);
         return ids;
     }
 

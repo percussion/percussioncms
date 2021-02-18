@@ -248,7 +248,7 @@ public class PSPageAssemblyContextFactory
         PSRegionBranches pageRegionBranches = page.getRegionBranches();
         PSAbstractMergedRegionTree tree = new PSMergedRegionTree(widgetService, templateRegionTree, pageRegionBranches);
 
-        Map<String, List<PSRegionResult>> regions = new ConcurrentHashMap<String, List<PSRegionResult>>();
+        Map<String, List<PSRegionResult>> regions = new ConcurrentHashMap<>();
         context.setRegions(regions);
 
         /*
@@ -449,7 +449,7 @@ public class PSPageAssemblyContextFactory
          * 
          * (TODO) The widgets asset finder is called to $widget.assets
          */
-        List<PSRegionResult> regionResults = new ArrayList<PSRegionResult>();
+        List<PSRegionResult> regionResults = new ArrayList<>();
         for (PSWidgetInstance wi : wis)
         {
             PSWidgetAssemblyContext clonedContext = copyWidgetAssemblyContext(widgetContext);
@@ -468,7 +468,7 @@ public class PSPageAssemblyContextFactory
     }
     
     private PSRegionResult assemblyWidget(IPSAssemblyItem assemblyItem, PSWidgetInstance wis) {
-        List<IPSAssemblyItem> widgetAssemblyItems = new ArrayList<IPSAssemblyItem>();
+        List<IPSAssemblyItem> widgetAssemblyItems = new ArrayList<>();
         widgetAssemblyItems.add(assemblyItem);
         PSRegionResult regionResult = new PSRegionResult();
         regionResult.setType(PSRegionResultType.WIDGET);
@@ -580,7 +580,7 @@ public class PSPageAssemblyContextFactory
      */
     private List<PSTemplateBinding> createJexlScriptBindings(String script)
     {
-        LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+        LinkedHashMap<String, String> map = new LinkedHashMap<>();
         map.put("$_script", createJexlScript(script));
         return createBindings(map, 0);
     }

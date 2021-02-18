@@ -117,7 +117,7 @@ public abstract class PSSpringValidationException  extends PSValidationException
     }
     
     private List<String> args(Object[] args) {
-        List<String> rvalue = new ArrayList<String>();
+        List<String> rvalue = new ArrayList<>();
         if (args == null) return rvalue;
         for(Object o : args) {
             rvalue.add("" + o);

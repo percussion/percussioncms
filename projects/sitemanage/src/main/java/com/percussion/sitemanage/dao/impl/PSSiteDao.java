@@ -113,7 +113,7 @@ public class PSSiteDao implements IPSiteDao
      */
     public List<PSSite> findAll()
     {
-        List<PSSite> sites = new ArrayList<PSSite>();
+        List<PSSite> sites = new ArrayList<>();
 
         List<PSSiteSummary> sums = findAllSummaries();
         

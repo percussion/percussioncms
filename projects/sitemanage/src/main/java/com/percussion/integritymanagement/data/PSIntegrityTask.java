@@ -79,7 +79,7 @@ public class PSIntegrityTask  extends PSAbstractDataObject
     @JoinColumn(name = "TASKID", nullable = false, insertable = false, updatable = false)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "PSIntegrityTaskProperty")
     @Fetch(FetchMode. SUBSELECT)
-    private Set<PSIntegrityTaskProperty> taskProperties = new HashSet<PSIntegrityTaskProperty>();  
+    private Set<PSIntegrityTaskProperty> taskProperties = new HashSet<>();
 
     public long getTaskId()
     {

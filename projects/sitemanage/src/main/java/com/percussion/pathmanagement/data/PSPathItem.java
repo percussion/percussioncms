@@ -58,7 +58,7 @@ public class PSPathItem extends PSDataItemSummary implements IPSItemSummary, IPS
     
     @XmlElement(name = "columnData")
     @XmlJavaTypeAdapter(PSMapAdapter.class)
-    protected Map<String, String> displayProperties = new HashMap<String,String>();
+    protected Map<String, String> displayProperties = new HashMap<>();
     
     /**
      * Used to return properties that are specific to the type of item the path item represents.
@@ -87,7 +87,7 @@ public class PSPathItem extends PSDataItemSummary implements IPSItemSummary, IPS
     
     private String folderPath;
     {
-        setFolderPaths(new ArrayList<String>());
+        setFolderPaths(new ArrayList<>());
     }
 
     public String getPath()

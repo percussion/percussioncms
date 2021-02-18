@@ -220,7 +220,7 @@ public class PSJcrNodeFinder {
      */
     private List<IPSNode> executeQuery(String query)
     {
-        List<IPSNode> nodes = new ArrayList<IPSNode>();
+        List<IPSNode> nodes = new ArrayList<>();
         
         try
         {
@@ -273,7 +273,7 @@ public class PSJcrNodeFinder {
         notEmpty(uniqueId);
         notEmpty(selectFields);
         
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         
         // parse fields
         

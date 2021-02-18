@@ -173,5 +173,5 @@ public class PSItemStateTransition extends PSAbstractDataObject
      * A list of all possible transition trigger names for the specified
      * workflow state.
      */
-    private List<String> transitionTriggers = new ArrayList<String>();
+    private List<String> transitionTriggers = new ArrayList<>();
 }

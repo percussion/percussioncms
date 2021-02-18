@@ -48,7 +48,7 @@ public class PSGadget extends PSAbstractDataObject
     @XmlTransient
     private boolean expanded = true;
     
-    private Map<String, String> settings = new HashMap<String, String>();
+    private Map<String, String> settings = new HashMap<>();
 
     public Integer getInstanceId()
     {

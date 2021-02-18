@@ -106,7 +106,7 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
     public List<PSSitePublishJob> getCurrentJobs() throws PSDataServiceException
     {
         log.debug("getting the current jobs");
-        List<PSSitePublishJob> jobs = new ArrayList<PSSitePublishJob>();
+        List<PSSitePublishJob> jobs = new ArrayList<>();
 
         if (dummyData)
         {
@@ -185,7 +185,7 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
     public List<PSSitePublishJob> getCurrentJobsBySite(@PathParam("siteId") String siteId) throws PSDataServiceException
     {
         log.debug("getting the current jobs");
-        List<PSSitePublishJob> jobs = new ArrayList<PSSitePublishJob>();
+        List<PSSitePublishJob> jobs = new ArrayList<>();
 
         if (dummyData)
         {
@@ -262,7 +262,7 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
         {
             log.debug("getting logs. Site=" + request.getSiteId() + " Days=" + request.getDays() + " maxcount=" + request.getMaxcount());
         }
-        List<PSSitePublishJob> jobs = new ArrayList<PSSitePublishJob>();
+        List<PSSitePublishJob> jobs = new ArrayList<>();
         if (dummyData)
         {
             final SimpleDateFormat format = new SimpleDateFormat(dateFormat);
@@ -332,7 +332,7 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
         long jobid = request.getJobid();
 
         log.debug("getting job details for job " + jobid);
-        List<PSSitePublishItem> details = new ArrayList<PSSitePublishItem>();
+        List<PSSitePublishItem> details = new ArrayList<>();
 
         if (dummyData)
         {
@@ -356,7 +356,7 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
 
     protected List<PSSitePublishJob> buildCurrentJobs(String siteId)
     {
-        List<PSSitePublishJob> jobs = new ArrayList<PSSitePublishJob>();
+        List<PSSitePublishJob> jobs = new ArrayList<>();
         Collection<Long> activeJobs = null;
         if (siteId != null && !siteId.equals(""))
         {
@@ -386,7 +386,7 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
             
     protected List<PSSitePublishJob> buildLogs(String siteId, String pubServerId, int days, int maxCount, int skipCount, boolean showAll)
     {
-        List<PSSitePublishJob> jobs = new ArrayList<PSSitePublishJob>();
+        List<PSSitePublishJob> jobs = new ArrayList<>();
         GregorianCalendar dateLimit = new GregorianCalendar();
         dateLimit.add(Calendar.DATE, -days);
 
@@ -446,7 +446,7 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
     
     protected List<PSSitePublishItem> buildItemDetails(long jobid, int skipCount, boolean showFailures)
     {
-        List<PSSitePublishItem> details = new ArrayList<PSSitePublishItem>();
+        List<PSSitePublishItem> details = new ArrayList<>();
         int counter = Math.max(skipCount, 0); 
         for (IPSPubItemStatus status : pubSvc.findPubItemStatusForJob(jobid))
         {

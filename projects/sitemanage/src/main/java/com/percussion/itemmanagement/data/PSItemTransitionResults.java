@@ -96,5 +96,5 @@ public class PSItemTransitionResults extends PSAbstractDataObject
     /**
      * A list of all shared assets which could not be transitioned.  Never <code>null</code>, may be empty.
      */
-    private List<PSDataItemSummary> failedAssets = new ArrayList<PSDataItemSummary>();
+    private List<PSDataItemSummary> failedAssets = new ArrayList<>();
 }

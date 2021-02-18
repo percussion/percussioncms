@@ -81,7 +81,7 @@ public class PSSharedRelationshipDeleteListener implements IPSNotificationListen
         }
         
         // filter out all relationships except shared
-        Set<Integer> sharedOwnerIds = new HashSet<Integer>();
+        Set<Integer> sharedOwnerIds = new HashSet<>();
         
         Iterator iter = relEvent.getRelationships().iterator();
         while (iter.hasNext())

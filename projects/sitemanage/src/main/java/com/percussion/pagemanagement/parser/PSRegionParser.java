@@ -87,8 +87,8 @@ public class PSRegionParser<REGION extends PSAbstractRegion, CODE extends PSRegi
     public PSParsedRegionTree<REGION, CODE> parse(String text) {
         Source src = new Source(text);
         Iterator<Segment> it = src.iterator();
-        Stack<RegionToken> regionStack = new Stack<RegionToken>();
-        PSParsedRegionTree<REGION, CODE> tree = new PSParsedRegionTree<REGION, CODE>(regionFactory);
+        Stack<RegionToken> regionStack = new Stack<>();
+        PSParsedRegionTree<REGION, CODE> tree = new PSParsedRegionTree<>(regionFactory);
         REGION root = tree.getRootNode();
         RegionToken rootToken = new RegionToken(null, root);
         regionStack.push(rootToken);
@@ -102,7 +102,7 @@ public class PSRegionParser<REGION extends PSAbstractRegion, CODE extends PSRegi
             REGION current = regionStack.peek().region;
             Segment seg = it.next();
             if (current.getChildren() == null)
-                current.setChildren(new ArrayList<PSRegionNode>());
+                current.setChildren(new ArrayList<>());
             /*
              * Start of a Region ?
              */

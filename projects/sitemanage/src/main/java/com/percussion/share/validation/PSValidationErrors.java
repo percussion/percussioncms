@@ -45,8 +45,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
 @XmlRootElement(name="ValidationErrors")
 public class PSValidationErrors extends PSErrors {
 
-    private List<PSFieldError> fieldErrors = new ArrayList<PSFieldError>();
-    private List<PSObjectError> globalErrors = new ArrayList<PSObjectError>();
+    private List<PSFieldError> fieldErrors = new ArrayList<>();
+    private List<PSObjectError> globalErrors = new ArrayList<>();
     private String methodName;
     
     

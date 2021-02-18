@@ -68,9 +68,9 @@ public class PSPage extends PSPageSummary implements IPSLinkableItem, IPSHtmlMet
      */
     public List<PSWidgetItem> getWidgets(PSTemplate template)
     {
-        List<PSWidgetItem> widgetList = new ArrayList<PSWidgetItem>();
-        Map<String, List<PSWidgetItem>> tplWidgetMap = new HashMap<String, List<PSWidgetItem>>();
-        Set<String> tplRegIds = new HashSet<String>();
+        List<PSWidgetItem> widgetList = new ArrayList<>();
+        Map<String, List<PSWidgetItem>> tplWidgetMap = new HashMap<>();
+        Set<String> tplRegIds = new HashSet<>();
         if(template != null){
             tplWidgetMap = template.getRegionTree().getRegionWidgetsMap();
             List<PSRegion> tplRegs = template.getRegionTree().getRootRegion().getAllRegions();

@@ -74,7 +74,7 @@ public class PSRole extends PSAbstractNamedObject
     private String homepage;
 
     @NotNull
-    private List<String> users = new ArrayList<String>();
+    private List<String> users = new ArrayList<>();
 
     /**
      * {@inheritDoc}
@@ -156,7 +156,7 @@ public class PSRole extends PSAbstractNamedObject
         PSRole role = (PSRole) super.clone();
         role.setDescription(this.getDescription());
         if (this.getUsers() != null) {
-            role.setUsers(new ArrayList<String>(this.getUsers()));
+            role.setUsers(new ArrayList<>(this.getUsers()));
         }
         return role;
     }

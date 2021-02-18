@@ -86,7 +86,7 @@ public class PSWebResourcesPathItemService extends PSFileSystemPathItemService
         // it's handled.
         rootItem.setFolderPaths(Arrays.asList("//Design"));
         
-        Map<String, String> displayProperties = new HashMap<String, String>();
+        Map<String, String> displayProperties = new HashMap<>();
         displayProperties.put(IPSListViewHelper.TITLE_NAME, rootName);
         rootItem.setDisplayProperties(displayProperties);
         

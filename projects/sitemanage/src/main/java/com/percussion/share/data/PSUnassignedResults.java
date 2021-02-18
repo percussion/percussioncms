@@ -91,7 +91,7 @@ public class PSUnassignedResults extends PSAbstractDataObject
         {
             this.startIndex = 0;
             this.childrenCount = 0;
-            this.childrenInPage = new ArrayList<UnassignedItem>();
+            this.childrenInPage = new ArrayList<>();
         }
         
         public UnassignedItemList(Integer startIndex, Integer childrenCount, List<UnassignedItem> childrenInPage)
@@ -101,7 +101,7 @@ public class PSUnassignedResults extends PSAbstractDataObject
 
             if(childrenInPage == null)
             {
-                this.childrenInPage = new ArrayList<UnassignedItem>();
+                this.childrenInPage = new ArrayList<>();
             }
             else
             {

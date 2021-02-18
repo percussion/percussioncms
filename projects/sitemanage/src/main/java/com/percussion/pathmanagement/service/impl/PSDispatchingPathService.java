@@ -368,8 +368,8 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
      * @return never <code>null</code>, maybe empty.
      */
     protected List<PSPathItem> findRootChildren() throws PSPathServiceException, PSDataServiceException {
-        List<PSPathItem> items = new ArrayList<PSPathItem>();
-        List<String> paths = new ArrayList<String>( pathMatcher.getPaths());
+        List<PSPathItem> items = new ArrayList<>();
+        List<String> paths = new ArrayList<>( pathMatcher.getPaths());
         paths.remove("/");
         
         // Check the current user roles and return only the childs that are
@@ -847,8 +847,8 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
             private List<PSPathItem> filterByCategoryAndType(List<PSPathItem> items, String category, String type)
             {
                 
-                Set<String> categories = new HashSet<String>();
-                Set<String> types = new HashSet<String>();
+                Set<String> categories = new HashSet<>();
+                Set<String> types = new HashSet<>();
                 
                 boolean hasCat = !StringUtils.isBlank(category);
                 boolean hasType = !StringUtils.isBlank(type);
@@ -868,7 +868,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
                 }
 
                 
-                List<PSPathItem> result = new ArrayList<PSPathItem>();
+                List<PSPathItem> result = new ArrayList<>();
                 for (PSPathItem item : items)
                 {
                     Category itemCat = item.getCategory();
@@ -1141,7 +1141,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
             IPSPathService pathService;
             IPSListViewHelper listViewHelper;
             
-            List<String> pathPrefixs = new ArrayList<String>(pathPrefixSet);
+            List<String> pathPrefixs = new ArrayList<>(pathPrefixSet);
             Collections.sort(pathPrefixs);
             Collections.reverse(pathPrefixs);
             

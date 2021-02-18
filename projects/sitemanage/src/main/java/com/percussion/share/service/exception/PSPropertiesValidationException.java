@@ -43,7 +43,7 @@ public class PSPropertiesValidationException extends PSSpringValidationException
 
 
     private static final long serialVersionUID = 1L;
-    private Map<String, Object> properties = new HashMap<String, Object>();
+    private Map<String, Object> properties = new HashMap<>();
     
     public PSPropertiesValidationException(Object target, String methodName) {
         super(methodName);

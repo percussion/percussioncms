@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @JsonRootName("WidgetBuilderResourceListData")
 public class PSWidgetBuilderResourceListData extends PSAbstractDataObject
 {
-    private List<String> resourceList = new ArrayList<String>();
+    private List<String> resourceList = new ArrayList<>();
 
     public static PSWidgetBuilderResourceListData fromXml(String resourceXml)
     {

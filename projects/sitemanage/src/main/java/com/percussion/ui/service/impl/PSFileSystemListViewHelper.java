@@ -60,7 +60,7 @@ public class PSFileSystemListViewHelper extends PSBaseListViewHelper
     @Override
     protected Map<String, String> getDisplayProperties(PSPathItem pathItem)
     {
-        Map<String, String> displayProperties = new HashMap<String, String>();
+        Map<String, String> displayProperties = new HashMap<>();
         
         File relatedFile = (File) pathItem.getRelatedObject();
         

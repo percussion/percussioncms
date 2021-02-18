@@ -58,7 +58,7 @@ public class PSHelperPerformanceMonitor
 
     private static long methodWarningThreshold = 3000;
 
-    private static ConcurrentHashMap<String, PerformanceStats> performanceStats = new ConcurrentHashMap<String, PerformanceStats>();
+    private static ConcurrentHashMap<String, PerformanceStats> performanceStats = new ConcurrentHashMap<>();
 
     private static final Log log = LogFactory.getLog(PSHelperPerformanceMonitor.class);
 
