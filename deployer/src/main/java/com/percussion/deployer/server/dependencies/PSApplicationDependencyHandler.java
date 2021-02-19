@@ -29,7 +29,6 @@ import com.percussion.deployer.error.IPSDeploymentErrors;
 import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSAppEnabledPolicySetting;
 import com.percussion.deployer.objectstore.PSAppPolicySettings;
-import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSDatasourceMap;
 import com.percussion.deployer.objectstore.PSDbmsInfo;
 import com.percussion.deployer.objectstore.PSDbmsMap;
@@ -65,6 +64,7 @@ import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.design.objectstore.server.PSXmlObjectStoreLockerId;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.security.IPSBackEndRoleMgr;
 import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.util.PSCollection;
@@ -103,8 +103,7 @@ public class PSApplicationDependencyHandler
 
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -910,7 +909,7 @@ public class PSApplicationDependencyHandler
     *
     * @param app The application to check, assumed not <code>null</code>.
     * @param resourceName A resource name returned by
-    * {@link PSApplicationIDTypes#getResourceList()}, assumed not
+    * , assumed not
     * <code>null</code> or empty.
     *
     * @return The dataset, or <code>null</code> if not found.

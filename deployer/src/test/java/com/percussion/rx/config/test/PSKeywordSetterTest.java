@@ -32,6 +32,7 @@ import com.percussion.rx.design.PSDesignModelFactoryLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.data.PSKeyword;
 import com.percussion.services.content.data.PSKeywordChoice;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.utils.testing.IntegrationTest;
@@ -47,8 +48,7 @@ import java.util.Map;
 public class PSKeywordSetterTest extends PSConfigurationTest
 {
    @SuppressWarnings("unchecked")
-   public void testKeywordSetter()
-   {
+   public void testKeywordSetter() throws PSNotFoundException {
       IPSDesignModelFactory dm = PSDesignModelFactoryLocator.getDesignModelFactory();
       IPSDesignModel model = dm.getDesignModel(PSTypeEnum.KEYWORD_DEF);
       PSKeyword kw = getKeyword();
@@ -107,8 +107,7 @@ public class PSKeywordSetterTest extends PSConfigurationTest
       assertTrue("Expect 1", choices.get(1).getSecond().equals("1"));
    }
    
-   private PSKeyword getKeyword()
-   {
+   private PSKeyword getKeyword() throws PSNotFoundException {
       IPSDesignModelFactory dm = PSDesignModelFactoryLocator
             .getDesignModelFactory();
       IPSDesignModel model = dm.getDesignModel(PSTypeEnum.KEYWORD_DEF);

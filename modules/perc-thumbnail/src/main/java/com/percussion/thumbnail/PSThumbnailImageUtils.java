@@ -42,7 +42,7 @@ import org.apache.commons.logging.LogFactory;
 public class PSThumbnailImageUtils {
     private static final Log log = LogFactory.getLog(PSThumbnailImageUtils.class);
 
-    public static void resizeThumbnail(String thumbnailFilePath) {
+    public static void resizeThumbnail(String thumbnailFilePath) throws InterruptedException {
 
         File inImageFile = new File(thumbnailFilePath);
 
@@ -66,7 +66,7 @@ public class PSThumbnailImageUtils {
                     bufferedThumbnail.getGraphics().drawImage(thumbnail, 0, 0, null);
 
 
-                    ImageWriter imageWriter = (ImageWriter) ImageIO.getImageWritersByFormatName("jpeg").next();
+                    ImageWriter imageWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
 
                     float quality = 1.0f;
                     JPEGImageWriteParam jpegParams = (JPEGImageWriteParam) imageWriter.getDefaultWriteParam();

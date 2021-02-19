@@ -27,6 +27,7 @@ import com.percussion.rx.config.IPSConfigHandler.ObjectState;
 import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.design.IPSAssociationSet;
 import com.percussion.rx.design.impl.PSLocationSchemeModel;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSPublishingContext;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
@@ -70,8 +71,7 @@ public class PSContextSetter extends PSSimplePropertySetter
     * //see base class method for details
     */
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       if (DEFAULT_SCHEME.equals(propName))
       {
          IPSPublishingContext context = (IPSPublishingContext) obj;

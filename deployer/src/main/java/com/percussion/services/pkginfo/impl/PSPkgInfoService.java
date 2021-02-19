@@ -224,8 +224,7 @@ implements IPSPkgInfoService
    /* (non-Javadoc)
     * @see IPSPkgInfoService#loadPkgInfo(IPSGuid id)
     */
-   public PSPkgInfo loadPkgInfo(IPSGuid id)
-   {
+   public PSPkgInfo loadPkgInfo(IPSGuid id) throws PSNotFoundException {
       if (id == null)
          throw new IllegalArgumentException("id may not be null");
       
@@ -237,8 +236,7 @@ implements IPSPkgInfoService
    /* (non-Javadoc)
     * @see IPSPkgInfoService#loadPkgInfoModifiable(IPSGuid id)
     */
-   public PSPkgInfo loadPkgInfoModifiable(IPSGuid id)
-   {
+   public PSPkgInfo loadPkgInfoModifiable(IPSGuid id) throws PSNotFoundException {
       if (id == null)
          throw new IllegalArgumentException("id may not be null");
       
@@ -404,8 +402,7 @@ implements IPSPkgInfoService
     * @see IPSPkgInfoService#loadPkgElements(List<IPSGuid>)
     */
    @SuppressWarnings(value = { "unchecked" })
-   public List<PSPkgElement> loadPkgElements(List<IPSGuid> ids)
-   {
+   public List<PSPkgElement> loadPkgElements(List<IPSGuid> ids) throws PSNotFoundException {
       List<Long> idList = new ArrayList<>();
 
       if (ids == null)
@@ -456,8 +453,7 @@ implements IPSPkgInfoService
    /* (non-Javadoc)
     * @see IPSPkgInfoService#loadPkgElement(IPSGuid)
     */
-   public PSPkgElement loadPkgElement(IPSGuid id)
-   {
+   public PSPkgElement loadPkgElement(IPSGuid id) throws PSNotFoundException {
       if (id == null)
          throw new IllegalArgumentException("id may not be null");
       
@@ -471,8 +467,7 @@ implements IPSPkgInfoService
    /* (non-Javadoc)
     * @see IPSPkgInfoService#loadPkgElementModifiable(IPSGuid)
     */
-   public PSPkgElement loadPkgElementModifiable(IPSGuid id)
-   {
+   public PSPkgElement loadPkgElementModifiable(IPSGuid id) throws PSNotFoundException {
       if (id == null)
          throw new IllegalArgumentException("id may not be null");
       

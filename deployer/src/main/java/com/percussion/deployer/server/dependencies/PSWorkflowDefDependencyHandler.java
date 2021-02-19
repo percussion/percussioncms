@@ -40,6 +40,7 @@ import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.security.IPSBackEndRoleMgr;
 import com.percussion.services.security.PSRoleMgrLocator;
@@ -103,8 +104,7 @@ public class PSWorkflowDefDependencyHandler
    // see base class
    @Override
    public Iterator<PSDependency> getChildDependencies(PSSecurityToken tok,
-         PSDependency dep) throws PSDeployException
-   {
+         PSDependency dep) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -1077,8 +1077,6 @@ public class PSWorkflowDefDependencyHandler
    /**
     * Reserves ids for a database table.
     *
-    * @param data A dependency data object, it contains the database table name
-    * that need to reserve ids for. It may be <code>null</code>.
     * @param idCol The column name of the reserved id.
     * @param workflowId 
     * @param depData 

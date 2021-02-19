@@ -33,6 +33,7 @@ import com.percussion.design.objectstore.PSRule;
 import com.percussion.rx.config.IPSConfigHandler.ObjectState;
 import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.design.IPSAssociationSet;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSCollection;
 import org.apache.commons.lang.StringUtils;
 
@@ -85,8 +86,7 @@ public class PSRelationshipConfigSetter extends PSSimplePropertySetter
     */
    @Override
    protected boolean addPropertyDefs(Object obj, String propName,
-         Object pvalue, Map<String, Object> defs)
-   {
+         Object pvalue, Map<String, Object> defs) throws PSNotFoundException {
       if (super.addPropertyDefs(obj, propName, pvalue, defs))
          return true;
       if (!(obj instanceof PSRelationshipConfig))
@@ -112,8 +112,7 @@ public class PSRelationshipConfigSetter extends PSSimplePropertySetter
    }
 
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       if (!(obj instanceof PSRelationshipConfig))
          throw new IllegalArgumentException(
                "obj type must be PSRelationshipConfig.");
