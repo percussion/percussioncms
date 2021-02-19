@@ -40,6 +40,7 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author erikserating
@@ -93,10 +94,10 @@ public class PSAnalyticsProviderRestService
     {
 
         String creds = null;
-        try
-        {
-            creds = IOUtils.toString(attachment.getDataHandler().getInputStream());
-        }
+         try(InputStream is= attachment.getDataHandler().getInputStream()) {
+             creds = IOUtils.toString(is);
+         }
+
         catch (IOException e)
         {
             log.debug("Cannot parse .json key file", e);

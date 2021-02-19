@@ -280,11 +280,8 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
     private Map<String, PSPair<TaskStatus, String>> runImageTasks(String token) {
         Map<String, PSPair<TaskStatus, String>> result = new HashMap<>();
         PSAsset percussionImage = null;
-        InputStream in = null;
-        //Create Image Asset
-        try {
-            in = new FileInputStream(PSServer.getRxDir().getAbsolutePath() + PSAmazonS3DeliveryHandler.PERC_TEST_IMG_DIR
-                    + PSAmazonS3DeliveryHandler.PERC_TEST_IMG);
+        try(InputStream in = new FileInputStream(PSServer.getRxDir().getAbsolutePath() + PSAmazonS3DeliveryHandler.PERC_TEST_IMG_DIR
+                    + PSAmazonS3DeliveryHandler.PERC_TEST_IMG)){
             PSAbstractAssetRequest ar = new PSBinaryAssetRequest(PSAssetPathItemService.ASSET_ROOT + "/uploads",
                     AssetType.IMAGE, PSAmazonS3DeliveryHandler.generateTestImageKey(token), "image/jpeg",
                     in);
@@ -298,8 +295,6 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
             result.put(IMAGE_CREATE_TASK, imgCreate);
             //Return the result here
             return result;
-        } finally {
-            IOUtils.closeQuietly(in);
         }
 
         //Approve Image Asset
