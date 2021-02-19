@@ -114,7 +114,7 @@ public class PSUpgradePluginFixWFNotification extends PSSpringUpgradePluginBase
       logger.println("Updating workflow: " + workflow.getName());
       IPSGuid wfGuid = workflow.getGUID();
       
-      Map<String, PSState> stepMap = new HashMap<String, PSState>();
+      Map<String, PSState> stepMap = new HashMap<>();
       List<PSState> states = workflow.getStates();
       for (PSState state : states)
       {

@@ -159,7 +159,7 @@ public class PSUpgradePluginAddAmazonS3DeliveryTypes implements IPSUpgradePlugin
    }
    private static final String AMAZON_S3 = "amazon_s3";
    private static final String AMAZON_S3_ONLY = "amazon_s3_only";
-   private static final Map<String, String> valueList = new HashMap<String, String>();
+   private static final Map<String, String> valueList = new HashMap<>();
    private static final String AMAZON_S3_VALUES = "8,'amazon_s3','Publish content to amazon s3 bucket','sys_amazons3DeliveryHandler',0";
    private static final String AMAZON_S3_ONLY_VALUES = "9,'amazon_s3_only','Publish content amazon s3 bucket does not include other delivery handlers like metadata indexer.','sys_amazons3',0";
    static{

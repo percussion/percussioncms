@@ -399,5 +399,5 @@ IPSProxyLocator
    /**
     * See {@link #getModels()}.
     */
-   private static List<RxModel> m_models = new ArrayList<RxModel>();
+   private static List<RxModel> m_models = new ArrayList<>();
 }
