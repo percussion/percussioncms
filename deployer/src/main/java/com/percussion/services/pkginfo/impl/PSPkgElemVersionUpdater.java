@@ -25,6 +25,7 @@ package com.percussion.services.pkginfo.impl;
 
 import com.percussion.rx.config.IPSConfigService;
 import com.percussion.rx.config.data.PSConfigStatus.ConfigStatus;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pkginfo.IPSPkgUpdater;
 import com.percussion.services.pkginfo.utils.PSPkgHelper;
 import com.percussion.utils.guid.IPSGuid;
@@ -41,8 +42,7 @@ import java.util.Collection;
  */
 public class PSPkgElemVersionUpdater implements IPSPkgUpdater
 {
-   public void configChanged(Collection<IPSGuid> ids, ConfigStatus status)
-   {
+   public void configChanged(Collection<IPSGuid> ids, ConfigStatus status) throws PSNotFoundException {
       if (ids == null)
          throw new IllegalArgumentException("ids may not be null");
       
@@ -52,8 +52,7 @@ public class PSPkgElemVersionUpdater implements IPSPkgUpdater
       PSPkgHelper.updatePkgElementVersions(ids);
    }
 
-   public void preConfiguration(String name)
-   {
+   public void preConfiguration(String name) throws PSNotFoundException {
       if (StringUtils.isBlank(name))
          throw new IllegalArgumentException("name may not be blank");
       

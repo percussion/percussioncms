@@ -34,6 +34,7 @@ import com.percussion.rx.design.IPSDesignModelFactory;
 import com.percussion.rx.design.PSDesignModelFactoryLocator;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.logging.Log;
@@ -84,8 +85,7 @@ public class PSTemplateSlotSetter extends PSPropertySetterWithValidation
     */
    @Override
    protected boolean addPropertyDefs(Object obj, String propName,
-         Object pvalue, Map<String, Object> defs)
-   {
+         Object pvalue, Map<String, Object> defs) throws PSNotFoundException {
       if (super.addPropertyDefs(obj, propName, pvalue, defs))
          return true;
       
@@ -103,8 +103,7 @@ public class PSTemplateSlotSetter extends PSPropertySetterWithValidation
     * //see base class method for details
     */
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       IPSTemplateSlot slot = (IPSTemplateSlot) obj;
       if (FINDER_ARGUMENTS.equals(propName) || FINDER_PARAMS.equals(propName))
       {
@@ -134,8 +133,7 @@ public class PSTemplateSlotSetter extends PSPropertySetterWithValidation
 
    @Override
    protected List<PSConfigValidation> validate(String objName, ObjectState state,
-         String propName, Object propValue, Object otherValue)
-   {
+         String propName, Object propValue, Object otherValue) throws PSNotFoundException {
       if (!SLOT_ASSOCIATION.equals(propName))
          return super.validate(objName, state, propName, propValue, otherValue);
       

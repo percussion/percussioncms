@@ -100,9 +100,7 @@ public class PSConfigFilesFactoryTest
    /**
     * The same as {@link #applyConfig(String, String, String)}, except this
     * takes a configure file that was applied previously.
-    * 
-    * @param prevCfg the previous configuration, it may be <code>null</code>
-    * if there is no previous configuration.
+    *
     */
    public static void deApplyConfig(String pkgName, String implCfg,
          String cfgData) throws Exception
@@ -162,7 +160,6 @@ public class PSConfigFilesFactoryTest
     * if there is no previous configuration.
     * @param isApplyConfig <code>true</code> if apply the specified 
     * configuration; otherwise de-apply the specified configuration.
-    * @param changeOnly <code>true</code> if the delta of the local and
     * previous properties is empty, then do nothing; otherwise always apply all
     * configured properties.
     */

@@ -31,6 +31,7 @@ import com.percussion.deployer.objectstore.PSIdMap;
 import com.percussion.deployer.objectstore.PSIdMapping;
 import com.percussion.deployer.objectstore.PSImportPackage;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -60,7 +61,6 @@ public class PSTransformsHandler
     * 
     * @throws IllegalArgumentException if any parameter is invalid.
     */
-   @SuppressWarnings("unchecked")
    public PSTransformsHandler(PSSecurityToken tok, String sourceName,
          List<PSImportPackage> packages) 
    {
@@ -88,8 +88,7 @@ public class PSTransformsHandler
     * 
     * @throws PSDeployException If an error occurs during target guessing.
     */
-   public PSIdMap getIdMap() throws PSDeployException
-   {
+   public PSIdMap getIdMap() throws PSDeployException, PSNotFoundException {
       // transform id's
       guessAll();
       
@@ -105,8 +104,7 @@ public class PSTransformsHandler
     * @throws PSDeployException If an error occurs during target guessing.
     */
    private void guessAll()
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       List<PSIdMapping> allMappings = new ArrayList<>();
 
       for (PSImportPackage pkg : m_packages)
@@ -337,8 +335,7 @@ public class PSTransformsHandler
     * @throws PSDeployException if there are any errors. 
     */
    private List<PSIdMapping> guessTarget(Iterator<PSIdMapping> idMappings)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       List<PSIdMapping> unMatchedById = new ArrayList<>();
       List<PSIdMapping> unMatchedParentList = new ArrayList<>();
       while (idMappings.hasNext())
@@ -390,9 +387,8 @@ public class PSTransformsHandler
     * @throws IllegalStateException if id map can not be modifiable.
     * @throws PSDeployException if exception happens cataloging.
     */
-   private void guessTarget(PSIdMapping mapping, boolean mustMatchById) 
-      throws PSDeployException
-   {
+   private void guessTarget(PSIdMapping mapping, boolean mustMatchById)
+           throws PSDeployException, PSNotFoundException {
       checkModifyIdMap();
       
       if (mapping == null)
@@ -447,8 +443,7 @@ public class PSTransformsHandler
     */
    private PSMappingElement guessTarget(String elementType, String sourceName,
       String sourceId, String parentType, String parentId, 
-      boolean mustMatchById) throws PSDeployException
-   {
+      boolean mustMatchById) throws PSDeployException, PSNotFoundException {
       List<PSMappingElement> targetElements = getUnmappedTargetElements(
             elementType, parentType, parentId);      
                
@@ -505,9 +500,8 @@ public class PSTransformsHandler
     */
    @SuppressWarnings("unchecked")
    private List<PSMappingElement> getUnmappedTargetElements(String objectType, 
-      String parentType, String sourceParentId) 
-      throws PSDeployException
-   {
+      String parentType, String sourceParentId)
+           throws PSDeployException, PSNotFoundException {
       checkModifyIdMap();
       
       if (objectType == null || objectType.trim().length() == 0)
@@ -616,8 +610,7 @@ public class PSTransformsHandler
     */
    @SuppressWarnings("unchecked")
    private Set<PSMappingElement> getMappingElements(String type)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       Set<PSMappingElement> mapElems = new HashSet<>();
       
       Iterator iter = PSDependencyManager.getInstance().getDependencies(m_tok,
@@ -654,8 +647,7 @@ public class PSTransformsHandler
     */
    @SuppressWarnings("unchecked")
    private Iterator<PSMappingElement> getElementsByType(String type)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (type == null || type.trim().length() == 0)
          throw new IllegalArgumentException("type may not be null or empty");
 

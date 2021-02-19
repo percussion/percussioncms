@@ -29,6 +29,7 @@ import com.percussion.rx.config.PSConfigValidation;
 import com.percussion.rx.design.IPSAssociationSet;
 import com.percussion.rx.design.IPSDesignModel;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
@@ -95,8 +96,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
     * (non-Javadoc)
     * @see com.percussion.rx.config.IPSConfigHandler#getPropertyDefs(java.lang.Object)
     */
-   public Map<String, Object> getPropertyDefs(Object obj)
-   {
+   public Map<String, Object> getPropertyDefs(Object obj) throws PSNotFoundException {
       Map<String, Object> propDefs = new HashMap<>();
       for (IPSPropertySetter setter : m_setters)
       {
@@ -184,8 +184,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
     */
    public List<PSPair<Object, ObjectState>> getDesignObjects(
          @SuppressWarnings("unused")
-         Map<String, Object> cachedObjs)
-   {
+         Map<String, Object> cachedObjs) throws PSNotFoundException {
       throw new UnsupportedOperationException(
             "getDesignObjects() methed is not supported.");
    }
@@ -194,8 +193,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
     * (non-Javadoc)
     * @see com.percussion.rx.config.IPSConfigHandler#getDefaultDesignObject(java.util.Map)
     */
-   public Object getDefaultDesignObject(Map<String, Object> cachedObjs)
-   {
+   public Object getDefaultDesignObject(Map<String, Object> cachedObjs) throws PSNotFoundException {
       throw new UnsupportedOperationException(
       "getDefaultDesignObject() methed is not supported.");
    }
@@ -342,8 +340,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
     */
    public IPSGuid saveResult(IPSDesignModel model, Object obj,
          @SuppressWarnings("unused")
-         ObjectState state, List<IPSAssociationSet> assocList)
-   {
+         ObjectState state, List<IPSAssociationSet> assocList) throws PSNotFoundException {
       model.save(obj, assocList);
       return model.getGuid(obj);
    }

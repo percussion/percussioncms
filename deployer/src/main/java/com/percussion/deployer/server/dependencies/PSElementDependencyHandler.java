@@ -30,6 +30,7 @@ import com.percussion.deployer.objectstore.PSDeployableElement;
 import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -77,8 +78,7 @@ public abstract class PSElementDependencyHandler extends PSDependencyHandler
    // see base class
    @SuppressWarnings("unchecked")
    public Iterator getChildDependencies(PSSecurityToken tok,
-      PSDependency dep) throws PSDeployException
-   {
+      PSDependency dep) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -89,7 +89,7 @@ public abstract class PSElementDependencyHandler extends PSDependencyHandler
          throw new IllegalArgumentException("dep wrong type");
       
       String defId = dep.getDependencyId();
-      List childDeps = new ArrayList();
+      List childDeps = new ArrayList<>();
 
       PSDependency defDep = getChildHandler().getDependency(tok, defId);
       if ( defDep != null )
@@ -103,14 +103,13 @@ public abstract class PSElementDependencyHandler extends PSDependencyHandler
 
    // see base class
    @SuppressWarnings("unchecked")
-   public Iterator getDependencies(PSSecurityToken tok) 
-      throws PSDeployException
-   {
+   public Iterator getDependencies(PSSecurityToken tok)
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
       // get all registered element definition
-      List deps = new ArrayList();
+      List<PSDependency> deps = new ArrayList<>();
 
       Iterator defDeps = getChildHandler().getDependencies(tok);
       while (defDeps.hasNext())
@@ -135,8 +134,7 @@ public abstract class PSElementDependencyHandler extends PSDependencyHandler
    // see base class
    @SuppressWarnings("unchecked")
    public PSDependency getDependency(PSSecurityToken tok, String id)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
          
@@ -157,8 +155,7 @@ public abstract class PSElementDependencyHandler extends PSDependencyHandler
 
    // see base class
    public boolean doesDependencyExist(PSSecurityToken tok, String id)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (id == null || id.trim().length() == 0)

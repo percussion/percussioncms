@@ -93,8 +93,7 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
     * (non-Javadoc)
     * @see com.percussion.rx.config.IPSConfigStatusMgr#loadConfigStatus(long)
     */
-   public PSConfigStatus loadConfigStatus(long statusID)
-   {
+   public PSConfigStatus loadConfigStatus(long statusID) throws PSNotFoundException {
       // As per the convention added this method, there is not much need at this
       // moment to cache the status objects.
 
@@ -107,8 +106,7 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
     * (non-Javadoc)
     * @see com.percussion.rx.config.IPSConfigStatusMgr#loadConfigStatusModifiable(long)
     */
-   public PSConfigStatus loadConfigStatusModifiable(long statusID)
-   {
+   public PSConfigStatus loadConfigStatusModifiable(long statusID) throws PSNotFoundException {
       PSConfigStatus cfgStatus = null;
       Session session = sessionFactory.getCurrentSession();
 
@@ -182,8 +180,7 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
     * (non-Javadoc)
     * @see com.percussion.rx.config.IPSConfigStatusMgr#deleteConfigStatus(long)
     */
-   public void deleteConfigStatus(long statusID)
-   {
+   public void deleteConfigStatus(long statusID) throws PSNotFoundException {
       PSConfigStatus cfgStatus = loadConfigStatusModifiable(statusID);
       sessionFactory.getCurrentSession().delete(cfgStatus);
    }

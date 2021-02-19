@@ -204,8 +204,7 @@ public class PSSiteSetterTest extends PSConfigurationTest
    }
 
    
-   private void validateSiteVar(String siteName, String varName, boolean isExist)
-   {
+   private void validateSiteVar(String siteName, String varName, boolean isExist) throws PSNotFoundException {
       IPSGuid CTX_ID = new PSGuid(PSTypeEnum.CONTEXT, 301); // Site_Folder_Assembly
       IPSSiteManager sitemgr = PSSiteManagerLocator.getSiteManager();
 

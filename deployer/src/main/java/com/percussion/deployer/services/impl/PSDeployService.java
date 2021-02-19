@@ -349,7 +349,7 @@ public class PSDeployService
       {
          service.doInstallDependencyFiles(tok, archive, dep, ctx);
       }
-      catch (PSDeployException e)
+      catch (PSDeployException | PSNotFoundException e)
       {
          throw new PSDeployServiceException(e);
       }

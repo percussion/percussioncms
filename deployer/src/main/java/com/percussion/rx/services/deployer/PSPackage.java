@@ -52,7 +52,7 @@ public class PSPackage
       return m_packageStatus;
    }
    /**
-    * @param installed the installed to set
+    * @param status the installed to set
     */
    public void setPackageStatus(String status)
    {
@@ -66,7 +66,7 @@ public class PSPackage
       return m_configStatus;
    }
    /**
-    * @param configured the configured to set
+    * @param status the configured to set
     */
    public void setConfigStatus(String status)
    {
@@ -179,7 +179,7 @@ public class PSPackage
       return m_lockstatus;
    }
    /**
-    * @param category the package category to set
+    * @param lockStatus the package category to set
     */
    public void setLockStatus(String lockStatus)
    {

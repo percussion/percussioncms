@@ -63,6 +63,7 @@ import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.contentmgr.data.PSContentTemplateDesc;
 import com.percussion.services.contentmgr.data.PSNodeDefinition;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.PSGuidUtils;
@@ -125,8 +126,7 @@ public class PSContentTypeDependencyHandler
     */
    @SuppressWarnings("unchecked")
    private List<PSDependency> getCEChildDependencies(PSSecurityToken tok,
-         String name) throws PSDeployException
-   {
+         String name) throws PSDeployException, PSNotFoundException {
       List<PSDependency> childDeps = new ArrayList<>();
       PSApplication app = PSAppObjectDependencyHandler
             .getApplication(tok, name);
@@ -229,8 +229,7 @@ public class PSContentTypeDependencyHandler
     * @throws PSDeployException
     */
    private Set<PSDependency> getTemplateDependencies(PSSecurityToken tok,
-         PSDependency dep) throws PSDeployException
-   {
+         PSDependency dep) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -288,8 +287,7 @@ public class PSContentTypeDependencyHandler
    @SuppressWarnings("unchecked")
    @Override
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -440,8 +438,7 @@ public class PSContentTypeDependencyHandler
    @SuppressWarnings("unchecked")
    @Override
    public Iterator getDependencyFiles(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -483,8 +480,7 @@ public class PSContentTypeDependencyHandler
     */
    @SuppressWarnings("unchecked")
    private List<PSDependencyFile> getSchemaDepFiles(PSSecurityToken tok, 
-         PSDependency dep) throws PSDeployException
-   {
+         PSDependency dep) throws PSDeployException, PSNotFoundException {
       IPSNodeDefinition node = findNodeDefByDependencyID(dep.getDependencyId());      
       PSDependencyHandler schemaHandler = getDependencyHandler(
          PSSchemaDependencyHandler.DEPENDENCY_TYPE);

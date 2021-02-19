@@ -30,6 +30,7 @@ import com.percussion.rx.config.IPSConfigHandler.ObjectState;
 import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.config.PSConfigValidation;
 import com.percussion.rx.design.IPSAssociationSet;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSCollection;
 import org.apache.commons.lang.StringUtils;
 
@@ -99,8 +100,7 @@ public class PSRelationshipConfigEffectSetter extends
     */
    @Override
    protected boolean addPropertyDefs(Object obj, String propName,
-         Object pvalue, Map<String, Object> defs)
-   {
+         Object pvalue, Map<String, Object> defs) throws PSNotFoundException {
       if (super.addPropertyDefs(obj, propName, pvalue, defs))
          return true;
       if (!(obj instanceof PSRelationshipConfig))
@@ -115,8 +115,7 @@ public class PSRelationshipConfigEffectSetter extends
    }
 
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       if (!(obj instanceof PSRelationshipConfig))
          throw new IllegalArgumentException(
                "obj type must be PSRelationshipConfig.");
@@ -131,8 +130,7 @@ public class PSRelationshipConfigEffectSetter extends
    @Override
    protected List<PSConfigValidation> validate(String objName,
          ObjectState state, String propName, Object propValue,
-         Object otherValue)
-   {
+         Object otherValue) throws PSNotFoundException {
       if (!PROP_EFFECTS.equals(propName))
          return super
                .validate(objName, state, propName, propValue, otherValue);
@@ -183,7 +181,6 @@ public class PSRelationshipConfigEffectSetter extends
     * <code>null</code>.
     * @param propValue The new properties consisting of effects configuration.
     */
-   @SuppressWarnings("unchecked")
    private void setEffectsProperty(PSRelationshipConfig relConfig,
          Object propValue)
    {
