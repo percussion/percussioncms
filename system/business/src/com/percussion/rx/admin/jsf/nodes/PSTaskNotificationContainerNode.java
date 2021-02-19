@@ -26,13 +26,13 @@ package com.percussion.rx.admin.jsf.nodes;
 import com.percussion.rx.jsf.PSEditableNodeContainer;
 import com.percussion.rx.jsf.PSNodeBase;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.schedule.IPSSchedulingService;
 import com.percussion.services.schedule.PSSchedulingServiceLocator;
 import com.percussion.services.schedule.data.PSNotificationTemplate;
 import com.percussion.services.schedule.data.PSNotificationTemplate.ByLabelComparator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -59,8 +59,7 @@ public class PSTaskNotificationContainerNode
     * @return the perform action for the event notification node,
     * which will navigate to the editor.
     */
-   public String createNotification()
-   {
+   public String createNotification() throws PSNotFoundException {
       final PSNotificationTemplate notification =
             getSchedulingService().createNotificationTemplate();
       return initNewNotification(notification);
@@ -72,8 +71,7 @@ public class PSTaskNotificationContainerNode
     * @param notification the notification, assumed never <code>null</code>.
     * @return the outcome, never <code>null</code> or empty.
     */
-   private String initNewNotification(PSNotificationTemplate notification)
-   {
+   private String initNewNotification(PSNotificationTemplate notification) throws PSNotFoundException {
       notification.setName(getUniqueName("Notification", false));
       getSchedulingService().saveNotificationTemplate(notification);
       
@@ -84,8 +82,7 @@ public class PSTaskNotificationContainerNode
    }
 
    @Override
-   public List<? extends PSNodeBase> getChildren()
-   {
+   public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
       if (m_children == null)
       {
          initChildrenNodes();
@@ -99,9 +96,9 @@ public class PSTaskNotificationContainerNode
    private void initChildrenNodes()
    {
       final List<PSNotificationTemplate> notifications =
-            new ArrayList<PSNotificationTemplate>(
+            new ArrayList<>(
                   getSchedulingService().findAllNotificationTemplates());
-      Collections.sort(notifications, new ByLabelComparator());
+      notifications.sort(new ByLabelComparator());
       for (PSNotificationTemplate notification : notifications)
       {
          addNode(new PSTaskNotificationNode(notification));
@@ -133,7 +130,7 @@ public class PSTaskNotificationContainerNode
    @Override
    public Set<Object> getAllNames()
    {
-      final Set<Object> names = new HashSet<Object>();
+      final Set<Object> names = new HashSet<>();
       for (final PSNotificationTemplate notificationTemplate
             : getSchedulingService().findAllNotificationTemplates())
       {

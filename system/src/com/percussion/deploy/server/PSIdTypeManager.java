@@ -39,6 +39,7 @@ import com.percussion.extension.PSExtensionDef;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.io.File;
@@ -117,8 +118,7 @@ public class PSIdTypeManager
     * @throws PSDeployException if there are any errors.
     */
    public static Iterator loadIdTypes(PSSecurityToken tok, Iterator deps)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -144,8 +144,7 @@ public class PSIdTypeManager
     * loadIdTypes(tok, dep, false, null, null)}.
     */
    public static PSApplicationIDTypes loadIdTypes(PSSecurityToken tok, 
-      PSDependency dep) throws PSDeployException
-   {
+      PSDependency dep) throws PSDeployException, PSNotFoundException {
       return loadIdTypes(tok, dep, false, null, null);
    }
    
@@ -183,8 +182,7 @@ public class PSIdTypeManager
     */
    public static PSApplicationIDTypes loadIdTypes(PSSecurityToken tok, 
       PSDependency dep, boolean addDynamicData, Map filterCache, 
-      Map extensionCache) throws PSDeployException
-   {
+      Map extensionCache) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)   
@@ -300,9 +298,8 @@ public class PSIdTypeManager
     * application is incomplete.
     */
    public static Iterator getIdTypeDependencies(PSSecurityToken tok,
-      PSDependency dep) 
-      throws PSDeployException
-   {
+      PSDependency dep)
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       
@@ -440,8 +437,7 @@ public class PSIdTypeManager
     * types for an id
     */   
    private static void addChoiceFilters(PSSecurityToken tok, 
-      PSApplicationIDTypes idTypes, Map filterCache) throws PSDeployException
-   {
+      PSApplicationIDTypes idTypes, Map filterCache) throws PSDeployException, PSNotFoundException {
       Map choiceFilters = new HashMap();
       PSDependencyManager depMgr = PSDependencyManager.getInstance();
       Iterator ids = idTypes.getIds().iterator();
@@ -456,7 +452,7 @@ public class PSIdTypeManager
          if (typeList == null)
          {
             // not cached, look it up
-            typeList = new ArrayList();
+            typeList = new ArrayList<>();
             Iterator types = depMgr.getPossibleIdTypes(tok, id);
             while (types.hasNext())
             {

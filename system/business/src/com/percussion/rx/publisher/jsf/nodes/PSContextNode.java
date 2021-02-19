@@ -41,6 +41,7 @@ import com.percussion.services.sitemgr.IPSPublishingContext;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.services.sitemgr.data.PSLocationScheme;
+import com.percussion.services.sitemgr.data.PSPublishingContext;
 import com.percussion.utils.guid.IPSGuid;
 
 import java.text.MessageFormat;
@@ -109,7 +110,7 @@ public class PSContextNode extends PSDesignNode
    }
    
    /**
-    * See {@link IPSPublishingContext#setDescription()}.
+    * See {@link IPSPublishingContext#setDescription(String)} ()}.
     * 
     * @param desc May be <code>null</code> or empty.
     * @see #getDescription()
@@ -130,7 +131,7 @@ public class PSContextNode extends PSDesignNode
    }
    
    /**
-    * See {@link IPSPublishingContext#setName()}.
+    * See {@link IPSPublishingContext#getName()}.
     * 
     * @param name Never <code>null</code> or empty. It should be unique among
     * objects of this type, but that is not validated by this method.
@@ -161,7 +162,12 @@ public class PSContextNode extends PSDesignNode
       if (m_context == null)
       {
          IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
-         m_context = smgr.loadContextModifiable(getGUID());
+         try {
+            m_context = smgr.loadContextModifiable(getGUID());
+         } catch (PSNotFoundException e) {
+            ms_log.error(e.getMessage());
+            m_context = new PSPublishingContext();
+         }
       }
       return m_context;
    }
@@ -288,8 +294,7 @@ public class PSContextNode extends PSDesignNode
    }
 
    @Override
-   public String copy()
-   {
+   public String copy() throws PSNotFoundException {
       IPSSiteManager siteMgr = PSSiteManagerLocator.getSiteManager();
       IPSPublishingContext copiedContext = siteMgr.createContext();
       copiedContext.copy(getContext());
@@ -330,8 +335,7 @@ public class PSContextNode extends PSDesignNode
     * @return the cloned Location Scheme, never <code>null</code>.
     */
    private IPSLocationScheme copyScheme(IPSLocationScheme scheme, 
-         IPSPublishingContext parent)
-   {
+         IPSPublishingContext parent) throws PSNotFoundException {
       IPSGuidManager guidMgr = PSGuidManagerLocator.getGuidMgr();
 
       // todo ph: there should be a copy method on the service that clones
@@ -549,8 +553,7 @@ public class PSContextNode extends PSDesignNode
     * 
     * @return the outcome of the Location Scheme editor.
     */
-   public String createScheme()
-   {
+   public String createScheme() throws PSNotFoundException {
       PSLocationSchemeWrapper scheme = createLocationScheme(false);
       m_editedScheme = new PSLocationSchemeEditor(this, scheme, true);
 
@@ -565,8 +568,7 @@ public class PSContextNode extends PSDesignNode
     * 
     * @return the outcome of the Legacy Location Scheme editor.
     */
-   public String createLegacyScheme()
-   {
+   public String createLegacyScheme() throws PSNotFoundException {
       PSLocationSchemeWrapper scheme = createLocationScheme(true);
       m_editedScheme = new PSLocationSchemeEditor(this, scheme, true);
 
@@ -580,8 +582,7 @@ public class PSContextNode extends PSDesignNode
     *  
     * @return the created Location Scheme, never <code>null</code>.
     */
-   private PSLocationSchemeWrapper createLocationScheme(boolean isLegacy)
-   {
+   private PSLocationSchemeWrapper createLocationScheme(boolean isLegacy) throws PSNotFoundException {
       final IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
       IPSLocationScheme scheme = smgr.createScheme();
 
@@ -746,8 +747,7 @@ public class PSContextNode extends PSDesignNode
     * Action to copy a selected Location Scheme, then edit the copied one
     * @return the outcome to navigate to Location Scheme Editor.
     */
-   public String copyScheme()
-   {
+   public String copyScheme() throws PSNotFoundException {
       for(PSLocationSchemeWrapper wrapper : m_schemes)
       {
          if (wrapper.isSelected())

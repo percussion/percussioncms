@@ -34,6 +34,7 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.IPSContentService;
 import com.percussion.services.content.PSContentServiceLocator;
 import com.percussion.services.content.data.PSKeyword;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidHelper;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.publisher.IPSContentList;
@@ -52,7 +53,15 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.myfaces.trinidad.component.UIXEditableValue;
 
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -60,16 +69,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.trinidad.component.UIXEditableValue;
 
 /**
  * This node represents an edition in the navigation tree.
@@ -87,7 +86,7 @@ public class PSEditionNode extends PSDesignNode
    /**
     * Logger.
     */
-   private static Log ms_log = LogFactory.getLog(PSEditionNode.class);
+   private static final Logger ms_log = LogManager.getLogger(PSEditionNode.class);
 
    /**
     * Content List wrapper is used to display the available lists while 
@@ -337,8 +336,7 @@ public class PSEditionNode extends PSDesignNode
     * Make sure the edition is loaded before using values from the accessors.
     * Effectively lazy loads the edition on first access in the editor.
     */
-   private void assureLoaded()
-   {
+   private void assureLoaded() throws PSNotFoundException {
       if (m_edition == null)
       {
          IPSPublisherService psvc = PSPublisherServiceLocator
@@ -359,8 +357,7 @@ public class PSEditionNode extends PSDesignNode
    /**
     * @return the edition name
     */
-   public String getName()
-   {
+   public String getName() throws PSNotFoundException {
       assureLoaded();
       return m_edition.getDisplayTitle();
    }
@@ -370,8 +367,7 @@ public class PSEditionNode extends PSDesignNode
     * 
     * @return the edition, never <code>null</code>. 
     */
-   public IPSEdition getEdition()
-   {
+   public IPSEdition getEdition() throws PSNotFoundException {
       assureLoaded();
       return m_edition;
    }
@@ -387,8 +383,7 @@ public class PSEditionNode extends PSDesignNode
    /**
     * @return the edition comment or description
     */
-   public String getDescription()
-   {
+   public String getDescription() throws PSNotFoundException {
       assureLoaded();
       return m_edition.getComment();
    }
@@ -404,8 +399,7 @@ public class PSEditionNode extends PSDesignNode
    /**
     * @return get the priority
     */
-   public String getPriority()
-   {
+   public String getPriority() throws PSNotFoundException {
       assureLoaded();
       return Integer.toString(m_edition.getPriority().getValue());
    }
@@ -454,8 +448,7 @@ public class PSEditionNode extends PSDesignNode
     */
    @SuppressWarnings("unused")
    public List<PSEditionContentListWrapper> getContentLists()
-         throws PSPublisherException
-   {
+           throws PSPublisherException, PSNotFoundException {
       assureLoaded();
       return m_eclists;
    }
@@ -466,8 +459,7 @@ public class PSEditionNode extends PSDesignNode
     * @return the outcome, <code>null</code> since we aren't navigating on
     *         this action.
     */
-   public String moveSelectedUp()
-   {
+   public String moveSelectedUp() throws PSNotFoundException {
       if (moveSelectedContentListUp())
          return null;
       
@@ -486,8 +478,7 @@ public class PSEditionNode extends PSDesignNode
     * @return <code>true</code> if moved a ContentList up; otherwise return
     *    <code>false</code> if there is no selected ContentList.
     */
-   private boolean moveSelectedContentListUp()
-   {
+   private boolean moveSelectedContentListUp() throws PSNotFoundException {
       Integer sel = findSelectedCL();
       if (sel == null)
          return false;
@@ -575,8 +566,7 @@ public class PSEditionNode extends PSDesignNode
     * @return the outcome, <code>null</code> since we aren't navigating on
     *         this action.
     */
-   public String moveSelectedDown()
-   {
+   public String moveSelectedDown() throws PSNotFoundException {
       if (moveSelectedContentListDown())
          return null;
       
@@ -595,8 +585,7 @@ public class PSEditionNode extends PSDesignNode
     * @return <code>true</code> if moved down a selected Content List; otherwise
     *    return <code>false</code> if there is no selected Content List.
     */
-   public boolean moveSelectedContentListDown()
-   {
+   public boolean moveSelectedContentListDown() throws PSNotFoundException {
       Integer sel = findSelectedCL();
       if (sel == null)
          return false;
@@ -621,8 +610,7 @@ public class PSEditionNode extends PSDesignNode
     * @return the outcome, <code>null</code> since we aren't navigating on
     *         this action.
     */
-   public String removeSelected()
-   {
+   public String removeSelected() throws PSNotFoundException {
       Integer selIndex = findSelectedCL();
       if (removeContentList(selIndex))
          return null;
@@ -671,8 +659,7 @@ public class PSEditionNode extends PSDesignNode
     * @return the selected list's index or <code>null</code> if nothing is
     *         selected.
     */
-   private Integer findSelectedCL()
-   {
+   private Integer findSelectedCL() throws PSNotFoundException {
       assureLoaded();
       
       Integer index = 0;
@@ -948,8 +935,7 @@ public class PSEditionNode extends PSDesignNode
    }
 
    @Override
-   public String delete()
-   {
+   public String delete() throws PSNotFoundException {
       assureLoaded();
       IPSPublisherService psvc = PSPublisherServiceLocator
             .getPublisherService();
@@ -964,8 +950,7 @@ public class PSEditionNode extends PSDesignNode
     * @return the outcome, may be <code>null</code> if no node is selected
     */
    @Override
-   public String copy()
-   {
+   public String copy() throws PSNotFoundException {
       assureLoaded();
       IPSEdition copiedEdition = new PSEdition();
       copiedEdition.copy(m_edition);
@@ -1013,8 +998,7 @@ public class PSEditionNode extends PSDesignNode
     * 
     * @return the outcome
     */
-   public String editContentList()
-   {
+   public String editContentList() throws PSNotFoundException {
       Integer index = findSelectedCL();
       if (index == null)
          return PSNavigation.NONE_SELECT_WARNING;
@@ -1113,8 +1097,7 @@ public class PSEditionNode extends PSDesignNode
        * @return <code>true</code> if successfully done; return <code>false</code>
        *    if failed to load content list from the index element.
        */
-      private boolean setLocalVariables(Integer index)
-      {
+      private boolean setLocalVariables(Integer index) throws PSNotFoundException {
          reset();
          mi_isNew = false;
          
@@ -1195,8 +1178,7 @@ public class PSEditionNode extends PSDesignNode
        * @return the outcome "done" if successful; <code>null</code> if missing
        * required data (this will make UI remain at the same page).
        */
-      public String handleAssociation()
-      {
+      public String handleAssociation() throws PSNotFoundException {
          // get selected Content List & update the edited one if needed
          boolean foundSrcCList = false;
          List<IPSContentList> selectedCLists = new ArrayList<>();
@@ -1318,8 +1300,7 @@ public class PSEditionNode extends PSDesignNode
        * @return the lists, never <code>null</code> but might be empty. The entries
        * are in ascending alpha order.
        */
-      public List<CListWrapper> getCandidateContentLists()
-      {
+      public List<CListWrapper> getCandidateContentLists() throws PSNotFoundException {
          boolean isFirstCall = mi_clists.isEmpty();
          
          IPSGuid siteId = m_edition.getSiteId();
@@ -1370,8 +1351,7 @@ public class PSEditionNode extends PSDesignNode
        * 
        * @return the Content Lists of the site and unused by any sites.
        */
-      private List<CListWrapper> getSiteAndUnusedCLists(IPSGuid siteId)
-      {
+      private List<CListWrapper> getSiteAndUnusedCLists(IPSGuid siteId) throws PSNotFoundException {
          if (!mi_siteAndUnusedCLists.isEmpty())
             return mi_siteAndUnusedCLists;
 
@@ -1513,8 +1493,7 @@ public class PSEditionNode extends PSDesignNode
       /**
        * @return the candidate contexts to show, never <code>null</code>.
        */
-      public SelectItem[] getCandidateContexts()
-      {
+      public SelectItem[] getCandidateContexts() throws PSNotFoundException {
          IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
          List<IPSPublishingContext> ctxs = smgr.findAllContexts();
          SelectItem rval[] = new SelectItem[ctxs.size()];

@@ -32,6 +32,7 @@ import com.percussion.rx.ui.jsf.beans.PSHelpTopicMapping;
 import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.services.utils.jsf.validators.PSBaseValidator;
@@ -102,7 +103,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
    
    /**
     * The node definition of the {@link #m_clonedScheme}. It is set
-    * by {@link #getNodeDef()} if has not been set yet.
+    * by  if has not been set yet.
     */
    private IPSNodeDefinition m_nodeDef;
    
@@ -113,7 +114,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
    
    /**
     * The place holder for adding a parameter. Created/Initialized by 
-    * {@link #addParameter()}.
+    * .
     */
    private SchemeParam m_createdParam;
    
@@ -141,7 +142,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
     * @param scheme the to be edited Location Scheme wrapper, never 
     *    <code>null</code>.
     * @param isCreated <code>true</code> if the Location Scheme is created
-    *    and has not be added into {@link PSContextNode#m_schemes} yet.
+    *    and has not be added into  yet.
     */
    public PSLocationSchemeEditor(PSContextNode cxtNode,
          PSLocationSchemeWrapper scheme, boolean isCreated)
@@ -444,8 +445,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
     * @return the outcome of the parameter editor, never <code>null</code> 
     *    or empty.
     */
-   public String createParameter()
-   {
+   public String createParameter() throws PSNotFoundException {
       // get a unique parameter name
       List<String> names = new ArrayList<String>();
       for (SchemeParam p : m_parameters)
@@ -541,7 +541,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
    }
 
    /**
-    * See {@link IPSLocationScheme#getDescription(String)} for detail. 
+    * See  for detail.
     */
    public void setDescription(String name)
    {

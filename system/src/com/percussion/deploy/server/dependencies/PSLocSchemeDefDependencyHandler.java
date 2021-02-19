@@ -41,6 +41,7 @@ import com.percussion.deploy.services.PSDeployServiceLocator;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.services.sitemgr.IPSSiteManager;
@@ -79,10 +80,8 @@ public class PSLocSchemeDefDependencyHandler
 
    // see base class
    @Override
-   @SuppressWarnings("unchecked")
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -283,8 +282,7 @@ public class PSLocSchemeDefDependencyHandler
    @SuppressWarnings("unchecked")
    public void doInstallDependencyFiles(PSSecurityToken tok,
          PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (archive == null)

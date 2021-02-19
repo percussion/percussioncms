@@ -30,6 +30,7 @@ import com.percussion.deploy.objectstore.PSDeployableElement;
 import com.percussion.deploy.server.PSDependencyDef;
 import com.percussion.deploy.server.PSDependencyMap;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -62,8 +63,7 @@ public class PSContentDependencyHandler extends PSDataObjectDependencyHandler
 
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -79,8 +79,7 @@ public class PSContentDependencyHandler extends PSDataObjectDependencyHandler
    }
 
    // see base class
-   public Iterator getDependencies(PSSecurityToken tok) throws PSDeployException
-   {
+   public Iterator getDependencies(PSSecurityToken tok) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       
@@ -105,8 +104,7 @@ public class PSContentDependencyHandler extends PSDataObjectDependencyHandler
 
    // see base class
    public PSDependency getDependency(PSSecurityToken tok, String id)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -150,8 +148,7 @@ public class PSContentDependencyHandler extends PSDataObjectDependencyHandler
 
    // see base class
    public boolean doesDependencyExist(PSSecurityToken tok, String id)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 

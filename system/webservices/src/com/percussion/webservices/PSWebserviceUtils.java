@@ -485,7 +485,7 @@ public class PSWebserviceUtils
 
    /**
     * Convenience method that wraps the guid and version in an array and calls
-    * {@link #createLocks(IPSGuid[], String, String, Integer[], boolean)}.
+    * {@link #createLocks(List, String, String, List, boolean)}.
     * 
     * @param version May be <code>null</code> if the object doesn't support
     * versions.
@@ -1014,7 +1014,7 @@ public class PSWebserviceUtils
       {
          return service.loadSlot(slotId);
       }
-      catch (PSNotFoundException e)
+      catch (PSAssemblyException e)
       {
          int code = IPSWebserviceErrors.OBJECT_NOT_FOUND;
          PSErrorException error = new PSErrorException(code,

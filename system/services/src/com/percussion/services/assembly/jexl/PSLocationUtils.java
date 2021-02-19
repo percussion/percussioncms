@@ -44,6 +44,7 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSNode;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -317,11 +318,18 @@ public class PSLocationUtils extends PSJexlUtilBase
       try
       {
          PSServerFolderProcessor fproc =PSServerFolderProcessor.getInstance();
-         String paths[];
-         if (isFolderPath)
+         String paths[] = null;
+         if (isFolderPath) {
             paths = fproc.getFolderPaths(lg_id.getLocator());
-         else
+         }
+         else {
+            try{
             paths = fproc.getItemPaths(lg_id.getLocator());
+            } catch (PSNotFoundException e) {
+               ms_log.warn(e.getMessage());
+               ms_log.debug(e.getMessage(),e);
+            }
+         }
 
          if (paths != null && paths.length >= 1)
          {
@@ -634,20 +642,25 @@ public class PSLocationUtils extends PSJexlUtilBase
        * It would be nice if we could guarentee no duplicate templates but
        * IPSAssemblyTemplate does not have an equals method.
        */
-      Collection<IPSAssemblyTemplate> ct_default_templates = new ArrayList<IPSAssemblyTemplate>();
-      Collection<IPSAssemblyTemplate> site_templates = new ArrayList<IPSAssemblyTemplate>();
+      Collection<IPSAssemblyTemplate> ct_default_templates = new ArrayList<>();
+      Collection<IPSAssemblyTemplate> site_templates = new ArrayList<>();
       Collection<IPSAssemblyTemplate> rvalues = null;
 
       if (siteid != null)
       {
-         site_templates = sitem.loadUnmodifiableSite(siteid)
-            .getAssociatedTemplates();
-         if (site_templates.size() == 0)
+         try {
+            site_templates = sitem.loadUnmodifiableSite(siteid).getAssociatedTemplates();
+         } catch (PSNotFoundException e) {
+            ms_log.error(e.getMessage());
+            ms_log.debug(e.getMessage(),e);
+         }
+
+         if (site_templates != null && !site_templates.isEmpty())
          {
             ms_log.debug("No Templates Associated with the site.");
          }
          // Copy collection to avoid modifying the underlying set
-         Set<IPSAssemblyTemplate> copySet = new HashSet<IPSAssemblyTemplate>();
+         Set<IPSAssemblyTemplate> copySet = new HashSet<>();
          copySet.addAll(site_templates);
          site_templates = copySet; // Decouple
       }

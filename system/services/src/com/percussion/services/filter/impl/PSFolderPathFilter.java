@@ -26,6 +26,7 @@ package com.percussion.services.filter.impl;
 import com.percussion.cms.PSCmsException;
 import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSServerFolderProcessor;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterItem;
 import com.percussion.services.filter.IPSItemFilterRule;
 import com.percussion.services.filter.PSFilterException;
@@ -38,8 +39,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This filter removes items that are not present in the given site folder or
@@ -56,12 +57,12 @@ public class PSFolderPathFilter extends PSBaseFilter
    /**
     * Folder path filter logger
     */
-   private static Log ms_log = LogFactory.getLog(PSFolderPathFilter.class);
+   private static final Logger log = LogManager.getLogger(PSFolderPathFilter.class);
 
    public List<IPSFilterItem> filter(List<IPSFilterItem> items, Map<String, String> params)
          throws PSFilterException
    {
-      List<IPSFilterItem> rval = new ArrayList<IPSFilterItem>();
+      List<IPSFilterItem> rval = new ArrayList<>();
       PSRequest req = PSRequest.getContextForRequest();
       PSServerFolderProcessor proc = PSServerFolderProcessor.getInstance();
       
@@ -69,7 +70,7 @@ public class PSFolderPathFilter extends PSBaseFilter
 
       if (StringUtils.isBlank(folderList))
       {
-         ms_log.warn("No folder path defined, no filtering will occurred");
+         log.warn("No folder path defined, no filtering will occurred");
          return items;
       }
 
@@ -84,28 +85,29 @@ public class PSFolderPathFilter extends PSBaseFilter
          
          if (!(item.getItemId() instanceof PSLegacyGuid))
          {
-            ms_log.warn("Found illegal item guid, all must be PSLegacyGuid, "
-                  + "skipping " + item.getItemId());
+            log.warn("Found illegal item guid, all must be PSLegacyGuid, skipping {} " ,
+                    item.getItemId());
             continue;
          }
          
          if (!(item.getFolderId() instanceof PSLegacyGuid))
          {
-            ms_log.warn("Found illegal folder guid, all must be PSLegacyGuid, "
-                  + "skipping " + item.getFolderId());
+            log.warn("Found illegal folder guid, all must be PSLegacyGuid, skipping {}",
+                    item.getFolderId());
             continue;
          }
 
          try
          {
             PSLegacyGuid guid = (PSLegacyGuid) item.getFolderId();
-            String paths[] = proc.getItemPaths(guid.getLocator());            
+            String[] paths = proc.getItemPaths(guid.getLocator());
             if (PSFolderStringUtils.oneMatched(paths, matchPatterns))
                rval.add(item);
          }
-         catch (PSCmsException e)
+         catch (PSCmsException | PSNotFoundException e)
          {
-            ms_log.error("Problem getting folder paths", e);
+            log.error("Problem getting folder paths. Error: {}", e.getMessage());
+            log.debug(e.getMessage(),e);
          }
       }
 

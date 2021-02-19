@@ -27,6 +27,7 @@ import com.percussion.data.PSStylesheetCleanupFilter;
 
 import java.io.File;
 
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSResourceUtils;
 import com.percussion.utils.testing.UnitTest;
 import org.junit.BeforeClass;
@@ -74,8 +75,7 @@ public class PSNamespaceCleanupTest
     * Test cleanup
     */
    @Test
-   public void testNSCleanup()
-   {
+   public void testNSCleanup() throws PSNotFoundException {
       PSNamespaceCleanup cleanup = new PSNamespaceCleanup(null);
       String result = (String) cleanup.translate(ms_input);
       assertEquals(ms_result, result);

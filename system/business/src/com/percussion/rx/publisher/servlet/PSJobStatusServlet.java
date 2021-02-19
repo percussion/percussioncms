@@ -29,6 +29,7 @@ import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
 import com.percussion.rx.publisher.PSRxPubServiceInternalLocator;
 import com.percussion.rx.publisher.jsf.nodes.PSPublishingStatusHelper;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.publisher.IPSEdition;
@@ -193,8 +194,7 @@ public class PSJobStatusServlet extends HttpServlet
     * @return a map of data from the job's status, never <code>null</code>.
     */
    private Map<String, Object> getJobStatus(IPSRxPublisherService psvc,
-         IPSPublisherService pubsvc, DateFormat fmt, Long job)
-   {
+         IPSPublisherService pubsvc, DateFormat fmt, Long job) throws PSNotFoundException {
       IPSPublisherJobStatus stat = psvc.getPublishingJobStatus(job);
       IPSEdition ed = pubsvc.loadEdition(stat.getEditionId());
       Map<String, Object> data = new HashMap<>();

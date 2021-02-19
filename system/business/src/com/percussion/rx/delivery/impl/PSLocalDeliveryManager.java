@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.percussion.services.error.PSNotFoundException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -265,8 +266,7 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
     * @throws PSDeliveryException 
     */
    private IPSDeliveryHandler getHandlerForJob(long jobId, IPSDeliveryType loc, 
-         IPSDeliveryItem result) throws PSDeliveryException
-   {
+         IPSDeliveryItem result) throws PSDeliveryException, PSNotFoundException {
       IPSDeliveryHandler handler = null;
       synchronized (m_jobToHandler)
       {

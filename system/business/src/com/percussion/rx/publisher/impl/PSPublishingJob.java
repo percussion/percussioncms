@@ -158,11 +158,11 @@ public class PSPublishingJob implements Runnable
     */
    private static final String ELEM_NEXTPAGE = "PSXNextPage";
 
-    /**
+    /*
      * The parameter key we use to generate next numbers for each publication
      * which is a unit of publication.
      */
-    static public final String NEXTNUMBER_PUBLICATIONS = "PUBLICATIONS";
+   public static final String NEXTNUMBER_PUBLICATIONS = "PUBLICATIONS";
 
    /**
     * Marker to identify if a request has been made to rerun this edition as soon 
@@ -1586,8 +1586,14 @@ public class PSPublishingJob implements Runnable
             Iterator<List<IPSAssemblyItem>> mixIt = Iterators.transform(rechunkedIt, new Function<List<IPSAssemblyItem>, List<IPSAssemblyItem>>() {
                public List<IPSAssemblyItem> apply(List<IPSAssemblyItem> assemblyItems)
                {
-                  Collection<IPSAssemblyItem> changeLocationItems = 
-                     handler.getUnpublishingItemsByServer(ed.getPubServerOrSiteId(), deliveryContext, contentlist, unpublishKeys, assemblyItems);
+                  Collection<IPSAssemblyItem> changeLocationItems =
+                          null;
+                  try {
+                     changeLocationItems = handler.getUnpublishingItemsByServer(ed.getPubServerOrSiteId(), deliveryContext, contentlist, unpublishKeys, assemblyItems);
+                  } catch (com.percussion.services.error.PSNotFoundException e) {
+                     ms_log.warn(e.getMessage());
+                     ms_log.debug(e.getMessage(),e);
+                  }
                   Iterator<IPSAssemblyItem> moreUnPubs = Iterators.filter(assemblyItems.iterator(), new Predicate<IPSAssemblyItem>()
                   {
    
@@ -1724,8 +1730,7 @@ public class PSPublishingJob implements Runnable
     * 
     * @return the un-publish items, never <code>null</code>, but may be empty.
     */
-   public Collection<IPSAssemblyItem> getUnpublishPaginatedItems(List<IPSAssemblyItem> pagedItems)
-   {
+   public Collection<IPSAssemblyItem> getUnpublishPaginatedItems(List<IPSAssemblyItem> pagedItems) throws com.percussion.services.error.PSNotFoundException {
       notNull(pagedItems);
       
       PSLocationChangeHandler handler = new PSLocationChangeHandler(this);

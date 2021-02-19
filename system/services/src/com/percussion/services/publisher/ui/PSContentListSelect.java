@@ -26,6 +26,7 @@ package com.percussion.services.publisher.ui;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.rx.publisher.jsf.data.PSParameter;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.IPSItemFilter;
 import com.percussion.services.filter.PSFilterException;
@@ -869,8 +870,7 @@ public class PSContentListSelect
     * @return the name of the outcome
     * @throws PSPublisherException
     */
-   public String copy()
-   {
+   public String copy() throws PSNotFoundException {
       IPSPublisherService pub = PSPublisherServiceLocator.getPublisherService();
 
       if (m_copyItemName != null)

@@ -152,7 +152,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
     * all its calling methods are synchronized. 
     */
    protected static Map<Long, PSPublishingJob> m_jobs = 
-      new ConcurrentHashMap<Long, PSPublishingJob>();
+      new ConcurrentHashMap<>();
 
    /**
     * The key to the map is the edition id that is being queued. The value is
@@ -172,7 +172,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
     * NOTE, the accessing of this object is synchronized by "this" object or
     * all its calling methods are synchronized. 
     */
-   private Map<Long, Long> m_demandRequestToJob = new ConcurrentHashMap<Long, Long>();
+   private Map<Long, Long> m_demandRequestToJob = new ConcurrentHashMap<>();
    
    /**
     * The demand thread is started if this value is <code>null</code> or
@@ -236,7 +236,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
    /**
     * Setter used by Spring to wire the publishing sender.
     * 
-    * @param publisherSender the new sender to set, never <code>null</code>
+    * @param publisherSenderFactory the new sender to set, never <code>null</code>
     */
    public void setPublishSenderFactory(ObjectFactory publisherSenderFactory)
    {
@@ -301,8 +301,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       }
       return jobid;
    }
- protected boolean checkConnectivity(IPSGuid edition, PSPublishingJob job)
-   {
+ protected boolean checkConnectivity(IPSGuid edition, PSPublishingJob job) throws PSNotFoundException {
       IPSPublisherService pubService = PSPublisherServiceLocator.getPublisherService();
       IPSEdition editionObject =  pubService.loadEdition(edition);
       

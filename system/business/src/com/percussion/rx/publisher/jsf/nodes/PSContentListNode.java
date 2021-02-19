@@ -634,8 +634,7 @@ public class PSContentListNode extends PSDesignNode
     * 
     * @return the delivery types, never <code>null</code>.
     */
-   public List<SelectItem> getDeliveryTypes()
-   {
+   public List<SelectItem> getDeliveryTypes() throws PSNotFoundException {
       return getSelectionFromContainer(PSDeliveryTypeContainerNode.NODE_TITLE);
    }
 
@@ -838,8 +837,7 @@ public class PSContentListNode extends PSDesignNode
     * @return the outcome of the cancel action
     */
    @Override
-   public String cancel()
-   {
+   public String cancel() throws PSNotFoundException {
       String result = super.cancel();
       if (m_clist != null && ((PSContentList) m_clist).getVersion() == null)
       {
@@ -864,8 +862,7 @@ public class PSContentListNode extends PSDesignNode
    }
 
    @Override
-   public String copy()
-   {
+   public String copy() throws PSNotFoundException {
       IPSPublisherService pub = PSPublisherServiceLocator.getPublisherService();
 
       IPSContentList original = getContentList();

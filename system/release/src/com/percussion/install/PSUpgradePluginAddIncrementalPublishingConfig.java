@@ -23,6 +23,7 @@
  */
 package com.percussion.install;
 
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
@@ -80,8 +81,7 @@ public class PSUpgradePluginAddIncrementalPublishingConfig extends PSSpringUpgra
       
    }
 
-   private void updateSiteForIncremental(IPSSite site)
-   {
+   private void updateSiteForIncremental(IPSSite site) throws PSNotFoundException {
       // find default pub server
       PSPubServer pubServer = PSSitePublishDaoHelper.getDefaultPubServer(site.getGUID());
       

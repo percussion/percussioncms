@@ -210,7 +210,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
     */
    private Map<Long, String> getNameMap(List<? extends IPSCatalogSummary> sums)
    {
-      Map<Long, String> map = new HashMap<Long, String>();
+      Map<Long, String> map = new HashMap<>();
 
       for (IPSCatalogSummary summary : sums)
       {
@@ -512,7 +512,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          String[] paths = getFolderProcessor().getItemPaths(locator);
          return paths;
       }
-      catch (PSCmsException e)
+      catch (PSCmsException | PSNotFoundException e)
       {
          int code = IPSWebserviceErrors.FAILED_FIND_PATH_FROM_ID;
          PSErrorException error = new PSErrorException(code,
@@ -1899,7 +1899,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
     *
     * @param item the item in question, assumed not <code>null</code>.
     * @param itemStatus the item status in question, assumed not <code>null</code>.
-    * @param results the error results for collection errors, assumed not
     * <code>null</code>.
     *
     * @return <code>true</code> if current state of the item is the same as
@@ -3575,7 +3574,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          }
          return paths[0];
       }
-      catch (PSCmsException e)
+      catch (PSCmsException | PSNotFoundException e)
       {
          // error occurred while finding folder path, may caused by a bad data.
          e.printStackTrace();

@@ -23,8 +23,6 @@
  */
 package com.percussion.services.assembly.impl.finder;
 
-import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.reorderItems;
-
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSSlotContentFinder;
@@ -32,9 +30,8 @@ import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.jexl.PSAssemblerUtils;
-import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.PSFilterException;
-import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
@@ -42,7 +39,12 @@ import com.percussion.services.sitemgr.PSSiteManagerException;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -50,12 +52,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.jcr.Node;
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.reorderItems;
 
 /**
  * The base slot content finder provides the common functionality needed by each
@@ -310,12 +307,11 @@ public abstract class PSBaseSlotContentFinder extends PSContentFinderBase<IPSTem
     * turned into a map that yields ascending sort order, which is used with
     * a different comparator.
     * 
-    * @param rval the original results, may be empty but not <code>null</code>
     * @param orderby the orderby string, never <code>null</code> or empty
     * @param locale the locale to use in the search to ensure the correct
     * collating sequence. If <code>null</code> or empty the JVM locale is used.
     * @return the reordered set
-    * @deprecated use {@link #reorderItems(Set, String, String)} instead.
+    * @deprecated use  instead.
     */
    protected Set<SlotItem> reorder(Set<SlotItem> srcItems, String orderby, 
          String locale)
@@ -381,8 +377,7 @@ public abstract class PSBaseSlotContentFinder extends PSContentFinderBase<IPSTem
     * @throws PSSiteManagerException
     */
    protected void setSiteFolderId(SlotItem slotItem, boolean skipFolderID)
-         throws PSSiteManagerException
-   {
+           throws PSSiteManagerException, PSNotFoundException {
       if (slotItem == null)
          return;
       IPSGuid guid = slotItem.getItemId();

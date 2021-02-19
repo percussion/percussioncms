@@ -40,6 +40,7 @@ import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.PSContentMgrConfig;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.contentmgr.PSContentMgrOption;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.sitemgr.IPSSiteManager;
@@ -51,20 +52,18 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jexl.IPSScript;
 import com.percussion.utils.jexl.PSJexlEvaluator;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.jcr.Node;
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Generate a location using a jexl expression.
@@ -74,7 +73,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSJexlLocationGenerator implements IPSAssemblyLocation
 {
-   private static Log ms_log = LogFactory.getLog(PSJexlLocationGenerator.class);
+   private static final Logger ms_log = LogManager.getLogger(PSJexlLocationGenerator.class);
 
    /**
     * Options for the content manager - the options are static, so they are just
@@ -285,7 +284,7 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
                IPSExtensionErrors.EXT_PARAM_VALUE_INVALID, e
                      .getLocalizedMessage());
       }
-      catch (PSCmsException e)
+      catch (PSNotFoundException | PSCmsException e)
       {
          set_dummy_site_paths = true;
       }
@@ -293,7 +292,7 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
       {
          set_dummy_site_paths = true;
       }
-      
+
       if (set_dummy_site_paths)
       {
          jexlEvaluator.bind("$sys.pub_path", "/unknownpath/");
@@ -344,8 +343,7 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
     *            the specified site.
     */
    private String getPublishPath(String sitestr, PSLocator folder)
-         throws PSSiteManagerException
-   {
+           throws PSSiteManagerException, PSNotFoundException {
       IPSGuid siteid = new PSGuid(PSTypeEnum.SITE, sitestr);
       IPSSiteManager sitemanager = PSSiteManagerLocator.getSiteManager();
       return sitemanager.getPublishPath(siteid, new PSLegacyGuid(folder));
