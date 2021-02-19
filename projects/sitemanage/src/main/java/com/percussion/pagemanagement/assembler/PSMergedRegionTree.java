@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,11 +24,6 @@
 
 package com.percussion.pagemanagement.assembler;
 
-import static com.percussion.pagemanagement.assembler.PSMergedRegion.PSMergedRegionOwner.PAGE;
-import static com.percussion.pagemanagement.assembler.PSMergedRegion.PSMergedRegionOwner.TEMPLATE;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.pagemanagement.assembler.PSMergedRegion.PSMergedRegionOwner;
 import com.percussion.pagemanagement.data.PSAbstractRegion;
 import com.percussion.pagemanagement.data.PSRegionBranches;
@@ -37,9 +32,15 @@ import com.percussion.pagemanagement.data.PSWidgetDefinition;
 import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.pagemanagement.service.impl.PSWidgetUtils;
+import com.percussion.share.service.exception.PSDataServiceException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.percussion.pagemanagement.assembler.PSMergedRegion.PSMergedRegionOwner.PAGE;
+import static com.percussion.pagemanagement.assembler.PSMergedRegion.PSMergedRegionOwner.TEMPLATE;
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * A Merged Region tree that inherits from the template regions
@@ -149,7 +150,7 @@ public class PSMergedRegionTree extends PSAbstractMergedRegionTree {
     
     
     @Override
-    protected List<PSWidgetInstance> loadWidgets(List<PSWidgetItem> widgetItems) {
+    protected List<PSWidgetInstance> loadWidgets(List<PSWidgetItem> widgetItems) throws PSDataServiceException {
         List<PSWidgetInstance> wis = new ArrayList<>();
         for(PSWidgetItem wi : widgetItems) {
             wis.add(loadWidget(wi));
@@ -157,8 +158,7 @@ public class PSMergedRegionTree extends PSAbstractMergedRegionTree {
         return wis;
     }
     
-    protected PSWidgetInstance loadWidget(PSWidgetItem widgetItem)
-    {
+    protected PSWidgetInstance loadWidget(PSWidgetItem widgetItem) throws PSDataServiceException {
         PSWidgetInstance pwi = new PSWidgetInstance();
         PSWidgetDefinition widget = widgetService.load(widgetItem.getDefinitionId());
         setDefaultValuesFromDef(widgetItem, widget);

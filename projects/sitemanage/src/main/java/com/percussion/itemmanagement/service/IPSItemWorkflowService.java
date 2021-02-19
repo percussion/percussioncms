@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -28,8 +28,9 @@ import com.percussion.itemmanagement.data.PSBulkApprovalJobStatus;
 import com.percussion.itemmanagement.data.PSItemStateTransition;
 import com.percussion.itemmanagement.data.PSItemTransitionResults;
 import com.percussion.itemmanagement.data.PSItemUserInfo;
+import com.percussion.services.error.PSNotFoundException;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSNoContent;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 
@@ -132,7 +133,7 @@ public interface IPSItemWorkflowService
      * 
      * @return the transition results for the item.  This includes shared assets which failed to transition. 
      */
-     PSItemTransitionResults performApproveTransition(String id, boolean preventIfStartDate, String comment) throws PSItemWorkflowServiceException, PSDataServiceException;
+     PSItemTransitionResults performApproveTransition(String id, boolean preventIfStartDate, String comment) throws PSItemWorkflowServiceException, PSDataServiceException, PSNotFoundException;
     
     /**
      * Determines if the current user is authorized to modify (check-out, delete, etc.) the specified item in its
@@ -153,7 +154,7 @@ public interface IPSItemWorkflowService
      * 
      * @return set of page id's.  Never <code>null</code>, may be empty.
      */
-     Set<String> getApprovedPages(String id) throws PSValidationException;
+     Set<String> getApprovedPages(String id) throws PSValidationException, PSNotFoundException;
     
     /**
      * Gets all approved pages on the site specified by the given folder path which use the specified asset.  See
@@ -164,7 +165,7 @@ public interface IPSItemWorkflowService
      * 
      * @return set of page id's.  Never <code>null</code>, may be empty.
      */
-     Set<String> getApprovedPages(String id, String folderPath) throws PSValidationException;
+     Set<String> getApprovedPages(String id, String folderPath) throws PSValidationException, PSNotFoundException;
     
     /**
      * Checks whether the item with the supplied id is checked out to the current user or not.
@@ -233,7 +234,7 @@ public interface IPSItemWorkflowService
      * @param id of the item,  never blank.
      * @return <code>true</code> if available otherwise <code>false</code>.
      */
-     boolean isStagingOptionAvailable(String id);
+     boolean isStagingOptionAvailable(String id) throws PSValidationException, IPSGenericDao.LoadException;
     
     /**
      * Checks whether remove from staging option is available or not for the supplied user for the supplied item.
@@ -242,7 +243,7 @@ public interface IPSItemWorkflowService
      * @param id of the item,  never blank.
      * @return <code>true</code> if available otherwise <code>false</code>.
      */
-     boolean isRemoveFromStagingOptionAvailable(String id);
+     boolean isRemoveFromStagingOptionAvailable(String id) throws PSValidationException, IPSGenericDao.LoadException;
 
     /**
      * Returns the id of the local content workflow recognized by the name "LocalContent", throws RunTimeException if the workflow is not found.

@@ -190,7 +190,7 @@ public class PSManagedLinksConverter extends PSDefaultExtension implements IPSFi
     /**
      * Setter for dependency injection
      * 
-     * @param service the service to set
+     * @param managedService the service to set
      */
     public void setManagedService(IPSManagedLinkService managedService)
     {
@@ -200,7 +200,7 @@ public class PSManagedLinksConverter extends PSDefaultExtension implements IPSFi
     /**
      * Setter for dependency injection
      * 
-     * @param service the service to set
+     * @param renderService the service to set
      */
     public void setRenderService(IPSRenderLinkService renderService)
     {

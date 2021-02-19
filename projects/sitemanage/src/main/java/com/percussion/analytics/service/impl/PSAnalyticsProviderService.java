@@ -90,7 +90,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
       {
           try {
               ePwd = config.isEncrypted() ? pwd : PSEncryptor.getInstance("AES",
-                      PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                      PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
               ).encrypt(pwd);
           } catch (PSEncryptionException e) {
               ePwd = pwd;
@@ -147,10 +147,10 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
            String pwd = null;
            try {
                pwd = encrypted ? rawPwd : PSEncryptor.getInstance("AES",
-                           PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(rawPwd);
+                           PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(rawPwd);
            } catch (PSEncryptionException | IllegalArgumentException  e) {
                pwd = PSLegacyEncrypter.getInstance(
-               PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(
+               PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(
                rawPwd, PSLegacyEncrypter.getInstance(
                   PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).CRYPT_KEY(),null);
            }

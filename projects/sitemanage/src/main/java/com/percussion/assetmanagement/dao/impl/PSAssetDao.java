@@ -35,12 +35,8 @@ import com.percussion.share.dao.PSJcrNodeFinder;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSContentItemUtils;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSPropertiesValidationException;
-import com.percussion.share.service.exception.PSSpringValidationException;
-import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -52,7 +48,11 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.Validate.isTrue;
@@ -88,7 +88,7 @@ public class PSAssetDao implements IPSAssetDao
         contentItemDao.removeItemFromPath(item, folderPath);
     }    
 
-    public void delete(String id) throws com.percussion.share.dao.IPSGenericDao.DeleteException, LoadException {
+    public void delete(String id) throws PSDataServiceException {
         // Local content is not in a folder, also orphaned content.  Both of these types of asset should
         // be able to be deleted without validation.  Local content validation is based upon the page.
         boolean localOrOrphanedContent=false;
@@ -119,11 +119,11 @@ public class PSAssetDao implements IPSAssetDao
         PSNotificationHelper.notifyEvent(EventType.ASSET_DELETED, id);
     }
 
-    public PSAsset find(String id) throws com.percussion.share.dao.IPSGenericDao.LoadException, IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
+    public PSAsset find(String id) throws PSDataServiceException {
         return find(id, false);
     }
 
-    public PSAsset find(String id, boolean isSummary) throws com.percussion.share.dao.IPSGenericDao.LoadException, IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
+    public PSAsset find(String id, boolean isSummary) throws PSDataServiceException {
         PSContentItem contentItem = contentItemDao.find(id, isSummary);
         if (contentItem == null) return null;
         PSAsset asset = createAsset(contentItem);
@@ -136,7 +136,7 @@ public class PSAssetDao implements IPSAssetDao
         throw new UnsupportedOperationException("findAll is not yet supported");
     }
 
-    public synchronized PSAsset save(PSAsset object) throws com.percussion.share.dao.IPSGenericDao.SaveException, LoadException, DeleteException {
+    public synchronized PSAsset save(PSAsset object) throws PSDataServiceException {
         PSContentItem contentItem = new PSContentItem();
         PSContentItemUtils.copyProperties(object, contentItem);
         contentItem = contentItemDao.save(contentItem);
@@ -198,7 +198,7 @@ public class PSAssetDao implements IPSAssetDao
         {
             try {
                 assets.add(find(idMapper.getString(node.getGuid())));
-            } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+            } catch (PSDataServiceException e) {
                 log.error(e.getMessage());
                 log.debug(e.getMessage(),e);
                 //continue processing
@@ -281,7 +281,7 @@ public class PSAssetDao implements IPSAssetDao
              
 			try {
 				contentItem = contentItemDao.find(idMapper.getString(node.getGuid()), true);
-			} catch (LoadException | IPSDataService.DataServiceLoadException | PSValidationException | IPSDataService.DataServiceNotFoundException e) {
+			} catch (PSDataServiceException e) {
 				log.error("An error occurred retrieving an Image Asset for the  {} report from the Content Repository. Error: {}",reportName,
                         e.getMessage());
 				log.debug(e.getMessage(),e);

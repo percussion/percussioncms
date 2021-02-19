@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,12 +26,15 @@
  */
 package com.percussion.pagemanagement.assembler;
 
-import static com.percussion.pagemanagement.assembler.PSMergedRegion.PSMergedRegionOwner.PAGE;
-import static com.percussion.pagemanagement.assembler.PSMergedRegion.PSMergedRegionOwner.TEMPLATE;
-import static com.percussion.pagemanagement.data.PSRegionTreeUtils.getChildRegions;
-import static java.text.MessageFormat.format;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
+import com.percussion.pagemanagement.assembler.PSMergedRegion.PSMergedRegionOwner;
+import com.percussion.pagemanagement.data.PSAbstractRegion;
+import com.percussion.pagemanagement.data.PSRegionBranches;
+import com.percussion.pagemanagement.data.PSRegionTree;
+import com.percussion.pagemanagement.data.PSRegionTreeUtils;
+import com.percussion.pagemanagement.data.PSWidgetItem;
+import com.percussion.share.service.exception.PSDataServiceException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,15 +42,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.percussion.pagemanagement.assembler.PSMergedRegion.PSMergedRegionOwner;
-import com.percussion.pagemanagement.data.PSAbstractRegion;
-import com.percussion.pagemanagement.data.PSRegionBranches;
-import com.percussion.pagemanagement.data.PSRegionTree;
-import com.percussion.pagemanagement.data.PSRegionTreeUtils;
-import com.percussion.pagemanagement.data.PSWidgetItem;
+import static com.percussion.pagemanagement.assembler.PSMergedRegion.PSMergedRegionOwner.PAGE;
+import static com.percussion.pagemanagement.assembler.PSMergedRegion.PSMergedRegionOwner.TEMPLATE;
+import static com.percussion.pagemanagement.data.PSRegionTreeUtils.getChildRegions;
+import static java.text.MessageFormat.format;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Represents the merging of {@link PSRegionTree}
@@ -264,7 +264,7 @@ public abstract class PSAbstractMergedRegionTree {
      * @param widgetItems never <code>null</code>.
      * @return never <code>null</code>.
      */
-    protected abstract List<PSWidgetInstance> loadWidgets(List<PSWidgetItem> widgetItems);
+    protected abstract List<PSWidgetInstance> loadWidgets(List<PSWidgetItem> widgetItems) throws PSDataServiceException;
     
     /**
      * Retrieves the root merged node.

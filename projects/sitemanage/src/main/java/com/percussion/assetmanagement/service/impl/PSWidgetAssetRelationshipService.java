@@ -53,6 +53,7 @@ import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.searchmanagement.service.IPSPageIndexService;
 import com.percussion.server.PSRequest;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidHelper;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.memory.IPSCacheAccess;
@@ -660,7 +661,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
                 }
             }
         }
-        catch (PSErrorException | PSWidgetAssetRelationshipServiceException e)
+        catch (PSErrorException | PSWidgetAssetRelationshipServiceException | PSValidationException | PSNotFoundException e)
         {
             throw new PSWidgetAssetRelationshipServiceException("Failed to find resource assets", e);
         }
@@ -669,7 +670,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     }
     
     @Override
-    public boolean isUsedByTemplate(String id) throws PSValidationException {
+    public boolean isUsedByTemplate(String id) throws PSValidationException, PSNotFoundException {
         rejectIfBlank("isUsedByTemplate", "id", id);
         
         Set<String> owners = getRelationshipOwners(id);
@@ -727,7 +728,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     }
     
     @Override
-    public Set<String> getLinkedAssets(String id) throws PSWidgetAssetRelationshipServiceException {
+    public Set<String> getLinkedAssets(String id) throws PSWidgetAssetRelationshipServiceException, PSValidationException, PSNotFoundException {
         notNull(id, "id");
         notEmpty(id, "id");
         
@@ -754,8 +755,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         return linkedAssets;
     }
     
-    public Set<String> getLinkedAssetsForAsset(String id)
-    {
+    public Set<String> getLinkedAssetsForAsset(String id) throws PSValidationException, PSNotFoundException {
         notNull(id, "id");
         notEmpty(id, "id");
         
@@ -802,8 +802,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         saveRelationships(rels);
     }
     
-    public Set<String> getLinkedPages(String id)
-    {
+    public Set<String> getLinkedPages(String id) throws PSValidationException, PSNotFoundException {
         notEmpty(id, "id");
         
         Set<String> inlinePages = new HashSet<>();
@@ -981,8 +980,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
      * 
      * @return set of id's (string representation) of the inline image and managed link assets, never <code>null</code>, may be empty.
      */
-    private Set<String> getInlineImagesAndManagedLinks(String id)
-    {
+    private Set<String> getInlineImagesAndManagedLinks(String id) throws PSValidationException, PSNotFoundException {
         Set<String> inlineImages = new HashSet<>();
         
         PSRelationshipFilter filter = getAssetRelationshipFilter(id, null, null);

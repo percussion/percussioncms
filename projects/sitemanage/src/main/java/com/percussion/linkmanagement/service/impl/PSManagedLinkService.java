@@ -583,15 +583,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
         
         // handle a cloned page
         String relativePath = null;
-        try {
-            relativePath = getRelativePath(origSiteRoot, link.getChildId());
-        } catch (PSNotFoundException e)
-        {
-            log.error("Managed Cannot find child item "+link.getChildId() 
-                    +" for managed link with parent "+link.getParentId()
-                    + " revision "+ link.getParentRevision() + " and linkid ="+link.getLinkId());
-
-        }
+        relativePath = getRelativePath(origSiteRoot, link.getChildId());
         if (relativePath == null)
             return;
         
@@ -909,7 +901,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
 	 * @return Our completed url to our link.
 	 */
 	private String createHref(PSManagedLink link,
-			PSRenderLinkContext linkContext, Boolean isStaging, String href) throws IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSAssetService.PSAssetServiceException, IPSDataService.DataServiceLoadException {
+			PSRenderLinkContext linkContext, Boolean isStaging, String href) throws IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSAssetService.PSAssetServiceException, IPSDataService.DataServiceLoadException, PSNotFoundException {
 		IPSLinkableItem linkItem = getLinkItem(linkContext, link.getChildId(), isStaging);
 		//  Add orphaned manage link cleanup somewhere.  catch errors when child does not exist
 		if (linkItem != null)
@@ -1619,8 +1611,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
      * 
      * @return The link item for the current revision, <code>null</code> if no page or asset found for the supplied id.
      */
-    private IPSLinkableItem getLinkItem(PSRenderLinkContext linkContext, int childId, Boolean isStaging)
-    {
+    private IPSLinkableItem getLinkItem(PSRenderLinkContext linkContext, int childId, Boolean isStaging) throws PSValidationException, PSNotFoundException {
         IPSLinkableItem item = null;
         
         // get correct revision
