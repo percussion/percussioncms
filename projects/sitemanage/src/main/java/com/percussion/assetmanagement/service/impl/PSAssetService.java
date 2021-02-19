@@ -1614,7 +1614,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
     public PSAsset load(String id, boolean isSummary) throws PSAssetServiceException {
     	try {
 			return assetDao.find(id, isSummary);
-		} catch (IPSGenericDao.LoadException | DataServiceLoadException | PSValidationException | DataServiceNotFoundException e) {
+		} catch (PSDataServiceException e) {
 			throw new PSAssetServiceException(e.getMessage(),e);
 		}
 	}

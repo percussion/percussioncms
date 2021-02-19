@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,15 +23,6 @@
  */
 package com.percussion.pagemanagement.assembler;
 
-import java.io.File;
-
-import javax.jcr.ItemNotFoundException;
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.util.StopWatch;
-
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.pagemanagement.assembler.impl.PSAssemblyItemBridge;
@@ -39,14 +30,14 @@ import com.percussion.pagemanagement.assembler.impl.PSAssemblyItemBridge.Templat
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
-import com.percussion.services.assembly.PSAssemblyException;
-import com.percussion.services.assembly.PSAssemblyServiceLocator;
-import com.percussion.services.assembly.PSTemplateNotImplementedException;
 import com.percussion.services.assembly.impl.plugin.PSVelocityAssembler;
-import com.percussion.services.filter.PSFilterException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
-import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.jexl.PSJexlEvaluator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.util.StopWatch;
+
+import java.io.File;
 
 /**
  * The entry point for the assembly service to assemble pages

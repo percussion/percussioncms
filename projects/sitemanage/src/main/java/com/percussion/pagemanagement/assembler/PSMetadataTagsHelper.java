@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -27,6 +27,9 @@
  */
 package com.percussion.pagemanagement.assembler;
 
+import net.sf.json.JSONException;
+
+import javax.servlet.ServletException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -36,10 +39,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import javax.servlet.ServletException;
-
-import net.sf.json.JSONException;
 
 /**
  * @author davidpardini
@@ -63,8 +62,7 @@ public class PSMetadataTagsHelper
      * later by PropertyPage.
      * 
      * @param results assumed not <code>null</code>.
-     * @param tagsCountOrder
-     * @param tagsAlphaOrder
+     * @param sortOrder
      * @return JSONObject
      * @throws ServletException
      */
