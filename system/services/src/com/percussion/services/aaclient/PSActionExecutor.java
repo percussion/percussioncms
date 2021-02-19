@@ -259,7 +259,7 @@ public class PSActionExecutor implements IPSWidgetHandler
          IPSAssemblyItem aItem = aService.createAssemblyItem(null, 1000, 0,
             null, null, params, null, false);
          PSAssemblerUtils autils = new PSAssemblerUtils();
-         Map<String, Object> p = new HashMap<String, Object>();
+         Map<String, Object> p = new HashMap<>();
          p.put(IPSHtmlParameters.SYS_COMMAND, "editrc");
          List<IPSAssemblyItem> ais = autils.getSlotItems(aItem, slotObj, p);
          List<IPSAssemblyResult> results = autils.assemble(aItem, slotObj, p);
@@ -313,7 +313,7 @@ public class PSActionExecutor implements IPSWidgetHandler
     */
    private Map<String, String[]> getAssemblyParams(PSComponentSummary summary)
    {
-      Map<String, String[]> params = new HashMap<String, String[]>();
+      Map<String, String[]> params = new HashMap<>();
       Object temp = m_jsObjId.get(IPSHtmlParameters.SYS_CONTENTID);
       if (temp == null && summary != null)
          temp = summary.getContentId();
@@ -605,14 +605,14 @@ public class PSActionExecutor implements IPSWidgetHandler
 
       Collection<PSPair<IPSGuid, IPSGuid>> assoc = slotObj
          .getSlotAssociations();
-      List<IPSGuid> templateids = new ArrayList<IPSGuid>();
+      List<IPSGuid> templateids = new ArrayList<>();
       for (PSPair<IPSGuid, IPSGuid> pair : assoc)
       {
          if (pair.getFirst().equals(summary.getContentTypeGUID()))
             templateids.add(pair.getSecond());
       }
-      List<IPSAssemblyItem> aItems = new ArrayList<IPSAssemblyItem>();
-      List<IPSAssemblyResult> aResults = new ArrayList<IPSAssemblyResult>();
+      List<IPSAssemblyItem> aItems = new ArrayList<>();
+      List<IPSAssemblyResult> aResults = new ArrayList<>();
       Map<String, String[]> assemblyParams = getAssemblyParams(summary);
       assemblyParams.put(IPSHtmlParameters.SYS_RELATIONSHIPID, new String[]
       {
@@ -620,7 +620,7 @@ public class PSActionExecutor implements IPSWidgetHandler
       });
       for (IPSGuid guid : templateids)
       {
-         List<IPSAssemblyItem> list = new ArrayList<IPSAssemblyItem>();
+         List<IPSAssemblyItem> list = new ArrayList<>();
          assemblyParams.put(IPSHtmlParameters.SYS_VARIANTID, new String[]
          {
             String.valueOf(guid.getUUID())

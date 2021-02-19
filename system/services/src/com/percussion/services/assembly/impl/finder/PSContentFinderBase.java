@@ -267,7 +267,7 @@ public abstract class PSContentFinderBase<T extends Object>
       IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
       
       // Create return items for assembly
-      List<IPSAssemblyItem> items = new ArrayList<IPSAssemblyItem>();
+      List<IPSAssemblyItem> items = new ArrayList<>();
 
       int index = 1;
       boolean had_more = false;
@@ -321,7 +321,7 @@ public abstract class PSContentFinderBase<T extends Object>
       IPSAssemblyItem clone = null;
       try
       {
-         Map<String, IPSGuid> optionalParams = new HashMap<String, IPSGuid>();
+         Map<String, IPSGuid> optionalParams = new HashMap<>();
 
          if (slotitem.getSiteId() != null)
          {
@@ -524,8 +524,8 @@ public abstract class PSContentFinderBase<T extends Object>
    protected Set<ContentItem> filter(Set<ContentItem> items, IPSItemFilter filter,
          Map<String, Object> selectors) throws PSFilterException
    {
-      List<IPSFilterItem> temp = new ArrayList<IPSFilterItem>();
-      Map<String, String> params = new HashMap<String, String>();
+      List<IPSFilterItem> temp = new ArrayList<>();
+      Map<String, String> params = new HashMap<>();
       //FIXME: This code is not handling null keys or values gracefully
       for (Map.Entry<String, Object> selector : selectors.entrySet())
       {

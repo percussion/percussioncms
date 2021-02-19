@@ -135,13 +135,13 @@ public class PSDatabaseAssembler extends PSAssemblerBase
     * Child expressions calculated, may be empty for non-child case, see
     * {@link #getChildExpression(int)} for more info
     */
-   private static final List<IPSScript> ms_children = new ArrayList<IPSScript>();
+   private static final List<IPSScript> ms_children = new ArrayList<>();
 
    /**
     * Child expressions calculated, may be empty for non-child case, see
     * {@link #getDbChildExpression(int)} for more info
     */
-   private static final List<IPSScript> ms_db_children = new ArrayList<IPSScript>();
+   private static final List<IPSScript> ms_db_children = new ArrayList<>();
 
    /**
     * Logger
@@ -464,7 +464,7 @@ public class PSDatabaseAssembler extends PSAssemblerBase
    {
       // Render children as long as we find a table name
       int j = 0;
-      Set<String> childnames = new HashSet<String>();
+      Set<String> childnames = new HashSet<>();
       while (true)
       {
          IPSScript childname = getDbChildExpression(j);

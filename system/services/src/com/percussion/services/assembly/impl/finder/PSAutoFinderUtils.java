@@ -100,7 +100,7 @@ public class PSAutoFinderUtils
    public Set<ContentItem> getContentItems(IPSAssemblyItem sourceItem,
          long slotId, Map<String, Object> params, IPSGuid templateId)
    {
-      Set<ContentItem> rval = new TreeSet<ContentItem>(new ContentItemOrder());
+      Set<ContentItem> rval = new TreeSet<>(new ContentItemOrder());
       String type;
       String query = "";
       String locale = getLocale(sourceItem, params);
@@ -119,7 +119,7 @@ public class PSAutoFinderUtils
       // Parse and adjust query
       IPSContentMgr cmgr = PSContentMgrLocator.getContentMgr();
       // Run the query
-      Map<String, Object> queryargs = new PSFacadeMap<String, Object>(params);
+      Map<String, Object> queryargs = new PSFacadeMap<>(params);
       QueryResult result = null;
       try
       {

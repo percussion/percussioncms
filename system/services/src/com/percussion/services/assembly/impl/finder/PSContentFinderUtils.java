@@ -178,7 +178,7 @@ public class PSContentFinderUtils
          QueryResult res = cmgr.executeQuery(q, -1, null, locale);
          RowIterator riter = res.getRows();
          Set<ContentItem> newset
-            = new TreeSet<ContentItem>(new PSQueryResultOrderComparator(riter));
+            = new TreeSet<>(new PSQueryResultOrderComparator(riter));
          newset.addAll(rval);
          int index = 0;
          for(ContentItem item : newset)

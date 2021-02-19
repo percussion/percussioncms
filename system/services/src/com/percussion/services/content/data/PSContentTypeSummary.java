@@ -63,14 +63,14 @@ public class PSContentTypeSummary
     * be empty.
     */
    private List<PSFieldDescription> fields = 
-      new ArrayList<PSFieldDescription>();
+      new ArrayList<>();
    
    /**
     * A list of fields for this content type, never <code>null</code>, may
     * be empty.
     */
    private List<PSContentTypeSummaryChild> children = 
-      new ArrayList<PSContentTypeSummaryChild>();
+      new ArrayList<>();
    
    /**
     * Get the content type name.
@@ -138,7 +138,7 @@ public class PSContentTypeSummary
    public void setFields(List<PSFieldDescription> fields)
    {
       if (fields == null)
-         this.fields = new ArrayList<PSFieldDescription>();
+         this.fields = new ArrayList<>();
       else
          this.fields = fields;
    }
@@ -176,7 +176,7 @@ public class PSContentTypeSummary
    public void setChildren(List<PSContentTypeSummaryChild> children)
    {
       if (children == null)
-         this.children = new ArrayList<PSContentTypeSummaryChild>();
+         this.children = new ArrayList<>();
       else
          this.children = children;
    }
