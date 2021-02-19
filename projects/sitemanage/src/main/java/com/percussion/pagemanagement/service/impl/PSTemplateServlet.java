@@ -199,27 +199,28 @@ private static final int DEFAULT_BUFFER_SIZE = 20480; // 20KB.
 	   private PSTemplate importTemplate(String siteId, FileItem item)
 	      throws IOException, PSExtractHTMLException
 	   {
-	      InputStream fileInput = null;
+
 	      PSTemplate convertedTemplate = new PSTemplate();
-	      
-	      try
-	      {
-	    	  fileInput = item.getInputStream();
+
+	      try(InputStream fileInput = item.getInputStream()){
 	    	  //Build a string with the InputStream
-	    	  BufferedReader br = new BufferedReader(new InputStreamReader(item.getInputStream()));
-	    	  StringBuilder sb = new StringBuilder();
-	    	  String line = null;
-	    	  while ((line = br.readLine()) != null) {
-	    	        sb.append(line + "\n");
-	    	  }
-	    	  br.close();
-	    	 
-	    	  String validStringXml = sb.toString();
-	    	  validStringXml = validStringXml.trim().replaceFirst("^([\\W]+)<","<");
-	    	  convertedTemplate = PSSerializerUtils.unmarshal(validStringXml, PSTemplate.class);
-	    	  //Import the template
-	          PSTemplate importedTemplate = templateService.importTemplate(convertedTemplate,siteId);
-	          return importedTemplate;
+			  try(InputStream is = item.getInputStream()) {
+				  try(BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+					  StringBuilder sb = new StringBuilder();
+					  String line = null;
+					  while ((line = br.readLine()) != null) {
+						  sb.append(line + "\n");
+					  }
+					  br.close();
+
+					  String validStringXml = sb.toString();
+					  validStringXml = validStringXml.trim().replaceFirst("^([\\W]+)<", "<");
+					  convertedTemplate = PSSerializerUtils.unmarshal(validStringXml, PSTemplate.class);
+					  //Import the template
+					  PSTemplate importedTemplate = templateService.importTemplate(convertedTemplate, siteId);
+					  return importedTemplate;
+				  }
+			  }
 	      }
 	      catch (Exception e)
 	        {
@@ -236,13 +237,7 @@ private static final int DEFAULT_BUFFER_SIZE = 20480; // 20KB.
 	           log.error("Error getting the content from file: " +  msg);
 	           return new PSTemplate();
 	        }
-	      finally
-	      {
-	          if (fileInput != null)
-	          {
-	              fileInput.close();
-	          }
-	      }
+
    }
    
    public IPSTemplateService getTemplateService() {
