@@ -45,6 +45,7 @@ import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.services.datasource.PSDatasourceMgrLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSFilenameFilter;
 import com.percussion.utils.jdbc.IPSDatasourceManager;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -77,8 +78,7 @@ public class PSCatalogHandler
     * @throws PSDeployException if an error happens processing the request.
     */
    public static Document processRequest(PSRequest request)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       Document doc = request.getInputDocument();
       Element root = null;
       if (doc == null || (root = doc.getDocumentElement()) == null )
@@ -173,9 +173,7 @@ public class PSCatalogHandler
     * <tr><th>Build</th><th>text</th></tr>
     * </table>
     * Each result will have archive log id as id, and archive name as display 
-    * text. Please see {@link com.percussion.deployer.catalog#PSCatalogResult 
-    * PSCatalogResult} and {@link 
-    * com.percussion.deployer.catalog#PSCatalogResultColumn PSCatalogResultColumn}
+    * text. Please see  and
     * for more information on column types and identifiers.
     * 
     * @param props the additional parameters to use for the request, may be 
@@ -252,9 +250,8 @@ public class PSCatalogHandler
     * Catalogs for the active datasources. The returned result set will not have 
     * columns. Each result will have datasource name as id and display text. 
     * Please see 
-    * {@link com.percussion.deployer.catalog#PSCatalogResult PSCatalogResult} 
-    * and {@link 
-    * com.percussion.deployer.catalog#PSCatalogResultColumn PSCatalogResultColumn}
+    *
+    * and
     * for more information on column types and identifiers.
     * 
     * @param props the additional parameters to use for the request, may be 
@@ -284,9 +281,7 @@ public class PSCatalogHandler
    /**
     * Catalogs for the custom element types. The returned result set will not  
     * have columns. Each result will have element type as id and display text. 
-    * Please see {@link com.percussion.deployer.catalog#PSCatalogResult 
-    * PSCatalogResult} and {@link 
-    * com.percussion.deployer.catalog#PSCatalogResultColumn PSCatalogResultColumn}
+    * Please see  and
     * for more information on column types and identifiers.
     * 
     * @param props the additional parameters to use for the request, may be 
@@ -315,9 +310,7 @@ public class PSCatalogHandler
    /**
     * Catalogs for the deployable element types. The returned result set will  
     * not have columns. Each result will have element type as id and display 
-    * text. Please see {@link com.percussion.deployer.catalog#PSCatalogResult 
-    * PSCatalogResult} and {@link 
-    * com.percussion.deployer.catalog#PSCatalogResultColumn PSCatalogResultColumn}
+    * text. Please see  and
     * for more information on column types and identifiers.
     * 
     * @param props the additional parameters to use for the request, may be 
@@ -355,9 +348,7 @@ public class PSCatalogHandler
     * <tr><th>version</th><th>text</th></tr>
     * </table>
     * Each result will have descriptor name as id and as display text. Please 
-    * see {@link com.percussion.deployer.catalog#PSCatalogResult 
-    * PSCatalogResult} and {@link 
-    * com.percussion.deployer.catalog#PSCatalogResultColumn PSCatalogResultColumn}
+    * see  and
     * for more information on column types and identifiers.
     * 
     * @param props the additional parameters to use for the request, may be 
@@ -436,9 +427,7 @@ public class PSCatalogHandler
    /**
     * Catalogs for the literal ID types (The types that are used to represent 
     * the objects having ids). The returned result set will not have columns. 
-    * Each result will have id type as id and display text. Please see {@link 
-    * com.percussion.deployer.catalog#PSCatalogResult PSCatalogResult} and {@link 
-    * com.percussion.deployer.catalog#PSCatalogResultColumn PSCatalogResultColumn}
+    * Each result will have id type as id and display text. Please see  and
     * for more information on column types and identifiers.
     * 
     * @param props the additional parameters to use for the request, may be 
@@ -470,9 +459,7 @@ public class PSCatalogHandler
    /**
     * Catalogs for the objects with specified type. The returned result 
     * set will not have columns. Each result will have object id as id and name 
-    * as display text. Please see {@link 
-    * com.percussion.deployer.catalog#PSCatalogResult PSCatalogResult} and {@link 
-    * com.percussion.deployer.catalog#PSCatalogResultColumn PSCatalogResultColumn}
+    * as display text. Please see  and
     * for more information on column types and identifiers.
     * 
     * @param props the additional parameters to use for the request, may not be 
@@ -484,8 +471,7 @@ public class PSCatalogHandler
     * property is missing.
     */  
    private static PSCatalogResultSet catalogIDTypeObjects(PSSecurityToken tok, 
-      Properties props) throws PSDeployException    
-   {
+      Properties props) throws PSDeployException, PSNotFoundException {
       if(props == null || props.getProperty("type") == null ||
          ((String)props.getProperty("type")).trim().length() == 0)
          throw new PSDeployException(
@@ -521,9 +507,7 @@ public class PSCatalogHandler
     * <tr><th>Build</th><th>text</th></tr>
     * </table>
     * Each result will have descriptor name as id and as display text. Please 
-    * see {@link com.percussion.deployer.catalog#PSCatalogResult 
-    * PSCatalogResult} and {@link 
-    * com.percussion.deployer.catalog#PSCatalogResultColumn PSCatalogResultColumn}
+    * see  and
     * for more information on column types and identifiers.
     * 
     * @param props the additional parameters to use for the request, may be 
@@ -609,9 +593,7 @@ public class PSCatalogHandler
     * display text. If it is a directory the id string will end with a file 
     * separator. If the 'directory' property is supplied it catalogs for the 
     * files/directories under the specified directory. The directory should be
-    * the relative path to rhythtmyx root. Please see {@link 
-    * com.percussion.deployer.catalog#PSCatalogResult PSCatalogResult} and {@link 
-    * com.percussion.deployer.catalog#PSCatalogResultColumn PSCatalogResultColumn}
+    * the relative path to rhythtmyx root. Please see  and
     * for more information on column types and identifiers.
     * 
     * @param props the additional parameters to use for the request, if <code>

@@ -548,10 +548,7 @@ public class PSConfigMapper
     * @param origValue the string in question, it may not <code>null</code>.
     * @param props the properties may contain replaced value, it may not
     * <code>null</code>.
-    * @param isDelta <code>true</code> if <code>props</code> is the delta
-    * of current and previous properties.
-    * 
-    * @return a pair, where the 1st element is the replaced value or the 
+    * @return a pair, where the 1st element is the replaced value or the
     * original value; the 2nd element determines if a replacement has happened.
     * It may be <code>null</code> if there is no leading {@link #PREFIX} and no 
     * ending {@link #SUFFIX}.

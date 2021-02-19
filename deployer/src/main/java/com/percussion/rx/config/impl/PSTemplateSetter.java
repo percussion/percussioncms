@@ -34,6 +34,7 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSTemplateBinding;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.types.PSPair;
 
 import java.util.ArrayList;
@@ -87,8 +88,7 @@ public class PSTemplateSetter extends PSSimplePropertySetter
     */
    @Override
    protected boolean addPropertyDefs(Object obj, String propName,
-         Object pvalue, Map<String, Object> defs)
-   {
+         Object pvalue, Map<String, Object> defs) throws PSNotFoundException {
       if (super.addPropertyDefs(obj, propName, pvalue, defs))
          return true;
       
@@ -108,8 +108,7 @@ public class PSTemplateSetter extends PSSimplePropertySetter
     * //see base class method for details
     */
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       IPSAssemblyTemplate template = (IPSAssemblyTemplate) obj;
       if (GLOBAL_TEMPLATE.equals(propName))
       {

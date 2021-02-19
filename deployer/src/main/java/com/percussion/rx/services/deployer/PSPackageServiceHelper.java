@@ -27,6 +27,7 @@ import com.percussion.rx.config.IPSConfigService;
 import com.percussion.rx.config.PSConfigServiceLocator;
 import com.percussion.rx.config.PSConfigValidation;
 import com.percussion.rx.services.deployer.PSPkgUiResponse.PSPkgUiResponseType;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pkginfo.IPSPkgInfoService;
 import com.percussion.services.pkginfo.PSPkgInfoServiceLocator;
 import com.percussion.services.pkginfo.data.PSPkgInfo;
@@ -59,8 +60,7 @@ public class PSPackageServiceHelper
     * @param pkgName The name of the package that needs to be validated.
     * @return Either failure or success {@link PSPkgUiResponse} object.
     */
-   public static PSPkgUiResponse getValidationResults(String pkgName)
-   {
+   public static PSPkgUiResponse getValidationResults(String pkgName) throws PSNotFoundException {
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
       PSPkgInfo pkgInfo = pkgService.findPkgInfo(pkgName);
@@ -125,8 +125,7 @@ public class PSPackageServiceHelper
     * may be empty.
     * 
     */
-   private static List<String> getMissingPackages(PSPkgInfo pkgInfo)
-   {
+   private static List<String> getMissingPackages(PSPkgInfo pkgInfo) throws PSNotFoundException {
       List<String> missingPkgs = new ArrayList<>();
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();

@@ -35,6 +35,7 @@ import com.percussion.rx.design.IPSDesignModel;
 import com.percussion.rx.design.IPSDesignModelFactory;
 import com.percussion.rx.design.PSDesignModelFactoryLocator;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -83,8 +84,7 @@ public class PSActionSetter extends PSSimplePropertySetter
     */
    @Override
    protected boolean addPropertyDefs(Object obj, String propName,
-         Object pvalue, Map<String, Object> defs)
-   {
+         Object pvalue, Map<String, Object> defs) throws PSNotFoundException {
       if (super.addPropertyDefs(obj, propName, pvalue, defs))
          return true;
       if (!(obj instanceof PSAction))
@@ -103,8 +103,7 @@ public class PSActionSetter extends PSSimplePropertySetter
    }
 
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       if (!(obj instanceof PSAction))
          throw new IllegalArgumentException("obj type must be PSAction.");
       PSAction action = (PSAction) obj;
@@ -536,7 +535,7 @@ public class PSActionSetter extends PSSimplePropertySetter
 
    /**
     * The key for the possible visibility contexts for action menus. This is a
-    * key into the RXLOOKUP table. See also {@link #VISIBILITY_CONTEXTS}.
+    * key into the RXLOOKUP table. See also .
     */
    private static final String VISIBILITY_CONTEXTS_LOOKUP_KEY = "157";
 

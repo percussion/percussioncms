@@ -38,6 +38,7 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
 
@@ -367,7 +368,7 @@ public class PSAssemblyServiceHelper
             }
         }
       }
-      catch (PSCatalogException e)
+      catch (PSCatalogException | PSNotFoundException | PSAssemblyException e)
       {
          e.printStackTrace();
       }

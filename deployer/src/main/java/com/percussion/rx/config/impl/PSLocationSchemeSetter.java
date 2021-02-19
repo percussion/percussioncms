@@ -31,6 +31,7 @@ import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.design.IPSAssociationSet;
 import com.percussion.rx.publisher.jsf.nodes.PSLocationSchemeEditor;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
@@ -156,8 +157,7 @@ public class PSLocationSchemeSetter extends PSSimplePropertySetter
     * //see base class method for details
     */
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       if (!(obj instanceof IPSLocationScheme))
          throw new PSConfigException("obj must be an instance of IPSLocationScheme.");
 

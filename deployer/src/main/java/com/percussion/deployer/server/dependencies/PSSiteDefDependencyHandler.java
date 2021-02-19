@@ -41,7 +41,6 @@ import com.percussion.deployer.services.PSDeployServiceException;
 import com.percussion.deployer.services.PSDeployServiceLocator;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
-import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
@@ -240,8 +239,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
     */
    private List<PSDependency> getTemplateDependencies(
          PSSecurityToken tok, IPSSite site)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
             
       List<PSDependency> deps = new ArrayList<>();
       Iterator<IPSAssemblyTemplate> it = 
@@ -280,8 +278,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
     */
    private Set<PSDependency> getContextDependencies(
          PSSecurityToken tok, IPSSite site)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       Set<PSDependency> deps = new HashSet<>();
       PSDependencyHandler  ctxHandler = getDependencyHandler(
             PSContextDefDependencyHandler.DEPENDENCY_TYPE);
@@ -314,8 +311,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
     */
    private List<PSDependency> getEditionDependencies(
          PSSecurityToken tok, IPSSite site)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       List<PSDependency> deps = new ArrayList<>();
       PSDependencyHandler  edtnHandler = getDependencyHandler(
             PSEditionDefDependencyHandler.DEPENDENCY_TYPE);
@@ -342,8 +338,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
    // see base class
    @Override
    public Iterator<PSDependency> getChildDependencies(PSSecurityToken tok,
-         PSDependency dep) throws PSDeployException
-   {
+         PSDependency dep) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 

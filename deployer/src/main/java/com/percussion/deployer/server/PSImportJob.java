@@ -52,6 +52,7 @@ import com.percussion.server.PSServerLockResult;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.server.job.IPSJobErrors;
 import com.percussion.server.job.PSJobException;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.pkginfo.IPSPkgInfoService;
 import com.percussion.services.pkginfo.PSPkgInfoServiceLocator;
@@ -459,8 +460,7 @@ public class PSImportJob extends PSDeployJob
     * <code>null</code>.
     */
    private void postInstallPackage(PSPkgInfo pkgInfo,
-         PSExportDescriptor expDesc)
-   {
+         PSExportDescriptor expDesc) throws PSNotFoundException {
       if (isCancelled())
          return;
       

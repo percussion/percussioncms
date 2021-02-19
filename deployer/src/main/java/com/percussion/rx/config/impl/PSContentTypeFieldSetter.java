@@ -47,6 +47,7 @@ import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.design.IPSAssociationSet;
 import com.percussion.rx.utils.PSContentTypeUtils;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSCollection;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.collections.CollectionUtils;
@@ -69,7 +70,7 @@ public class PSContentTypeFieldSetter extends PSSimplePropertySetter
    /**
     * Default constructor, invoked by Spring framework. This can only used for
     * an existing field. Must call {@link #setFieldName(String)} before calling
-    * {@link #applyProperty(Object, String, Object)}.
+    * .
     */
    public PSContentTypeFieldSetter()
    {
@@ -176,8 +177,7 @@ public class PSContentTypeFieldSetter extends PSSimplePropertySetter
     */
    @Override
    protected boolean addPropertyDefs(Object obj, String propName,
-         Object pvalue, Map<String, Object> defs)
-   {
+         Object pvalue, Map<String, Object> defs) throws PSNotFoundException {
       if (super.addPropertyDefs(obj, propName, pvalue, defs))
          return true;
       
@@ -204,8 +204,7 @@ public class PSContentTypeFieldSetter extends PSSimplePropertySetter
     */
    @SuppressWarnings({ "unchecked", "cast" })
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       validateObjAndPropertyName(obj, propName);
 
       PSItemDefinition itemDef = (PSItemDefinition) obj;

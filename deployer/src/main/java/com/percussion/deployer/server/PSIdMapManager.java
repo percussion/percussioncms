@@ -97,7 +97,6 @@ public class PSIdMapManager
     * @throws PSDeployException if the given <code>PSIdMap</code> object is not
     * in the saved state.
     */
-   @SuppressWarnings("unchecked")
    private void validateSavedIdMap(PSIdMap map) throws PSDeployException
    {
       Iterator mappingList = map.getMappings();
