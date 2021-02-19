@@ -134,7 +134,7 @@ public class PSTaskContainerNode extends PSEditableNodeContainer
       List<PSScheduledTask> notifications;
       try
       {
-         notifications = new ArrayList<PSScheduledTask>(
+         notifications = new ArrayList<>(
                getSchedulingService().findAllSchedules());
       }
       catch (PSSchedulingException e)

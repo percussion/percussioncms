@@ -182,7 +182,7 @@ public class SolrServer
    @XmlRootElement(name = "metadataMap")
    public static class MetadataMap {
        @XmlElement(name = "entry", required = true)
-       private final List<SolrMetaMapEntry> a = new ArrayList<SolrMetaMapEntry>();
+       private final List<SolrMetaMapEntry> a = new ArrayList<>();
        public List<SolrMetaMapEntry> getSolrMetaMapEntry() {
            return this.a;
        }
@@ -207,7 +207,7 @@ public class SolrServer
 
       @Override
       public Map<String,String> unmarshal(MetadataMap v) throws Exception {
-          Map<String,String> map = new HashMap<String,String>();
+          Map<String,String> map = new HashMap<>();
           for ( SolrMetaMapEntry e : v.getSolrMetaMapEntry() ) {
               map.put(e.getKey(), e.getValue());
           }
@@ -232,13 +232,13 @@ public class SolrServer
    public void addSiteEntry(String siteName)
    {
       if (enabledSites == null)
-         enabledSites = new ArrayList<String>();
+         enabledSites = new ArrayList<>();
       enabledSites.add(siteName);
    }
    public void addMetaMapEntry(String key, String value)
    {
       if (metadataMap == null)
-         metadataMap = new HashMap<String,String>();
+         metadataMap = new HashMap<>();
       metadataMap.put(key, value);
    }
    

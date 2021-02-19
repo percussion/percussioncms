@@ -48,7 +48,7 @@ public class PSProxyConfigService implements IPSProxyConfigService
    /**
     * A list of configurations specified in the proxy configuration file.
     */
-   private List<PSProxyConfig> proxyConfigurations = new ArrayList<PSProxyConfig>();
+   private List<PSProxyConfig> proxyConfigurations = new ArrayList<>();
 
    public PSProxyConfigService()
    {

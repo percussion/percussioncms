@@ -70,11 +70,11 @@ public class PSProxyConfig extends PSAbstractDataObject
 
       if (protocols == null)
       {
-         this.protocols = new ArrayList<String>();
+         this.protocols = new ArrayList<>();
       }
       else
       {
-         this.protocols = new ArrayList<String>(protocols);
+         this.protocols = new ArrayList<>(protocols);
       }
    }
    
@@ -92,11 +92,11 @@ public class PSProxyConfig extends PSAbstractDataObject
 
       if (proxyConfig.getProtocols() == null)
       {
-         this.protocols = new ArrayList<String>();
+         this.protocols = new ArrayList<>();
       }
       else
       {
-         this.protocols = new ArrayList<String>();
+         this.protocols = new ArrayList<>();
          for (String protocol : proxyConfig.getProtocols().getProtocols())
          {
             this.protocols.add(protocol);

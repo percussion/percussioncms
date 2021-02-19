@@ -71,13 +71,13 @@ public class PSTripleHandler implements TripleHandler
      * 'http://purl.org/dc/terms/': 'dcterms' }. It used to replace the URL by
      * the declared name when filling PSMetadataProperty.name field.
      */
-    private Map<String, String> namespacesByUrl = new HashMap<String, String>();
+    private Map<String, String> namespacesByUrl = new HashMap<>();
 
     /**
      * All the PSMetadataProperty objects that were created from the metadata
      * properties extracted from the page being processed.
      */
-    private Set<PSMetadataProperty> properties = new HashSet<PSMetadataProperty>();
+    private Set<PSMetadataProperty> properties = new HashSet<>();
 
     /**
      * The linktext of the PSMetadataEntry.

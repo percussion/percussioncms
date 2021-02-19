@@ -669,7 +669,7 @@ public class PSSiteNode extends PSDesignNode
    public SelectItem[] getGlobalTemplates() throws MalformedURLException,
          PSCmsException, PSAssemblyException
    {
-      final List<SelectItem> selectItems = new ArrayList<SelectItem>();
+      final List<SelectItem> selectItems = new ArrayList<>();
       addGlobalTemplates(selectItems);
       add57GlobalTemplates(selectItems);
       sortByLabel(selectItems);
@@ -688,7 +688,7 @@ public class PSSiteNode extends PSDesignNode
    {
       final IPSAssemblyService asm =
             PSAssemblyServiceLocator.getAssemblyService();
-      final Set<IPSAssemblyTemplate> globals = new HashSet<IPSAssemblyTemplate>(
+      final Set<IPSAssemblyTemplate> globals = new HashSet<>(
             asm.findAllGlobalTemplates());
       for (IPSAssemblyTemplate t : globals)
       {
@@ -897,7 +897,7 @@ public class PSSiteNode extends PSDesignNode
 
    public SelectItem[] getPrivateKeys()
    {
-      final List<SelectItem> selectItems = new ArrayList<SelectItem>();
+      final List<SelectItem> selectItems = new ArrayList<>();
       selectItems.add(new SelectItem());
       
       File folder = new File(PSServer.getBaseConfigDir(), "ssh-keys");
@@ -997,7 +997,7 @@ public class PSSiteNode extends PSDesignNode
       IPSSiteManager siteManager =
          PSSiteManagerLocator.getSiteManager();
 
-      List<SiteProperty> rval = new ArrayList<SiteProperty>();
+      List<SiteProperty> rval = new ArrayList<>();
       Map<Integer, String> nameMap = siteManager.getContextNameMap();
       for (final IPSSite site : siteManager.findAllSites())
       {
@@ -1026,7 +1026,7 @@ public class PSSiteNode extends PSDesignNode
       assureLoaded();
       if (m_siteproperties == null)
       {
-         m_siteproperties = new ArrayList<SiteProperty>();
+         m_siteproperties = new ArrayList<>();
          
          PSSite s = (PSSite) m_site;
          SiteProperty sp;
@@ -1122,7 +1122,7 @@ public class PSSiteNode extends PSDesignNode
        log.debug(e.getMessage(),e);
       }
       final Map<IPSGuid, IPSPublishingContext> idToContext =
-            new HashMap<IPSGuid, IPSPublishingContext>();
+            new HashMap<>();
       for (IPSPublishingContext cx : contexts)
       {
          idToContext.put(cx.getGUID(), cx);
