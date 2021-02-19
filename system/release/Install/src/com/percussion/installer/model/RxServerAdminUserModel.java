@@ -286,5 +286,5 @@ public class RxServerAdminUserModel extends RxIAModel
     */
    private static String ms_adminUserPassword = "";
    
-   private static Map<String, String> ms_userLogins = new HashMap<String,String>();
+   private static Map<String, String> ms_userLogins = new HashMap<>();
 }

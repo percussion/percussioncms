@@ -439,7 +439,7 @@ public class RxInstall extends RxIAAction implements BuildListener
     * Map containing the Ant installation property name/value pairs.
     */
    protected static Map<String,String> ms_propertiesMap = 
-      new HashMap<String,String>();
+      new HashMap<>();
    
    /**
     * The name of the current Ant install project.
@@ -675,20 +675,20 @@ public class RxInstall extends RxIAAction implements BuildListener
     * List of Install Configuration properties
     */
    protected static final List<String> INSTALL_CONF_LIST = 
-      new ArrayList<String>();
+      new ArrayList<>();
    
    
    /**
     * List of Product Selection properties
     */
    protected static final List<String> SELECT_PROP_LIST = 
-      new ArrayList<String>();
+      new ArrayList<>();
    
    /**
     * List of Server Properties
     */
    protected List<String> SERVER_PROP_LIST = 
-       new ArrayList<String>();
+       new ArrayList<>();
    
    
    
