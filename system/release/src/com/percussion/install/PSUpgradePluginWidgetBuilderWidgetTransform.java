@@ -91,7 +91,7 @@ public class PSUpgradePluginWidgetBuilderWidgetTransform implements IPSUpgradePl
    {
       try
       {
-         ArrayList<String> files = new ArrayList<String>();
+         ArrayList<String> files = new ArrayList<>();
          File objectStoreDir = RxUpgrade.getObjectStoreDir();
          File[] onlyfiles = objectStoreDir.listFiles(new FileFilter(){
             public boolean accept(File pathname){
