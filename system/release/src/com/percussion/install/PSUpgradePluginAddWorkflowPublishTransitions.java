@@ -555,7 +555,7 @@ public class PSUpgradePluginAddWorkflowPublishTransitions
     */
    private List<Integer> getTransitionId(String transitionLabel) throws SQLException
    {
-      List<Integer> ids = new ArrayList<Integer>();
+      List<Integer> ids = new ArrayList<>();
       logger.println("Finding all transitions associated to " + transitionLabel + " transition.");
       String query = "SELECT TRANSITIONID FROM " + transitionTable
             + " WHERE WORKFLOWAPPID = ? AND TRANSITIONLABEL = ?";
@@ -642,7 +642,7 @@ public class PSUpgradePluginAddWorkflowPublishTransitions
    private List<Integer> getTransitionRoleId(
          List<Integer> transitionsId) throws SQLException
    {
-      List<Integer> ids = new ArrayList<Integer>();
+      List<Integer> ids = new ArrayList<>();
       
       for (Integer transitionId : transitionsId)
       {
@@ -727,7 +727,7 @@ public class PSUpgradePluginAddWorkflowPublishTransitions
     */
    private List<Integer> getDifference(List<Integer> list1, List<Integer> list2)
    {
-      List<Integer> result = new ArrayList<Integer>(list1);
+      List<Integer> result = new ArrayList<>(list1);
       for (Integer value : list2)
       {
          if (list1.contains(value))

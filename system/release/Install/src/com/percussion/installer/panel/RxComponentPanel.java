@@ -147,7 +147,7 @@ public class RxComponentPanel extends RxIAPanel
     * Will maintain the set of currently available components.
     */
    private Map<String, Checkbox> m_checkboxMap =
-      new TreeMap<String, Checkbox>();
+      new TreeMap<>();
    
    /**
     * Maintains the component model for this panel, never <code>null</code>

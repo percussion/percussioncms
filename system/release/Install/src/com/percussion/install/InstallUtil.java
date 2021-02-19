@@ -1203,7 +1203,7 @@ public class InstallUtil
       {
          if (m_jarUrls == null)
          {
-            m_jarUrls = new ArrayList<URL>();
+            m_jarUrls = new ArrayList<>();
          }
 
          m_jarUrls.add(new URL(strUrl));

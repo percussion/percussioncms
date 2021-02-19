@@ -238,7 +238,7 @@ public class PSCreateMenuVisibilityAcls extends PSSpringUpgradePluginBase
          {PSPermissions.READ});
          acl.addEntry(owner, entry);
          // Save
-         List<IPSAcl> acls = new ArrayList<IPSAcl>();
+         List<IPSAcl> acls = new ArrayList<>();
          acls.add(acl);
          ms_acl.saveAcls(acls);
          logger.println("ACL created for actionid " + actionid);

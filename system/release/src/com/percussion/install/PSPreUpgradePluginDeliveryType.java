@@ -73,7 +73,7 @@ public class PSPreUpgradePluginDeliveryType implements IPSUpgradePlugin
       PreparedStatement stmt = null;
       ResultSet rs = null;
       Connection conn = null;
-      Set<String> customTypes = new HashSet<String>();
+      Set<String> customTypes = new HashSet<>();
       boolean ftpTypesFound = false;
       PSConnectionObject connObj = new PSConnectionObject();
       
@@ -171,7 +171,7 @@ public class PSPreUpgradePluginDeliveryType implements IPSUpgradePlugin
    /**
     * Set of standard delivery types.
     */
-   private static Set<String> ms_deliveryTypes = new HashSet<String>();
+   private static Set<String> ms_deliveryTypes = new HashSet<>();
    
    /**
     * Name of the ftp delivery type.
