@@ -80,11 +80,11 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>5.2.6.RELEASE</spring.version>
-        <spring.security.version>5.3.3.RELEASE</spring.security.version>
+        <spring.version>5.2.13.RELEASE</spring.version>
+        <spring.security.version>5.3.8.RELEASE</spring.security.version>
         <cxf.version>3.3.5</cxf.version>
         <servlet.spec>3.1.0</servlet.spec>
-        <hibernate.version>5.4.20.Final</hibernate.version>
+        <hibernate.version>5.4.28.Final</hibernate.version>
         <!-- <myfaces.version>2.2.12</myfaces.version> -->
         <myfaces.version>1.1.5</myfaces.version>
         <poi.version>3.17</poi.version>
@@ -134,7 +134,7 @@
         <oracle.version>12.1.0.1</oracle.version>
         <sqlserver.version>9.2.0.jre8</sqlserver.version>
         <slf4j.version>1.7.29</slf4j.version>
-        <hikaricp.version>4.0.1</hikaricp.version>
+        <hikaricp.version>4.0.2</hikaricp.version>
         <jersey.version>2.33</jersey.version>
         <jaxrs.version>2.1.1</jaxrs.version>
        <junit.version>4.12</junit.version>
