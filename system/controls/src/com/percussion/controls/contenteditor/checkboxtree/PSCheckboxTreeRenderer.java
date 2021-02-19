@@ -72,7 +72,7 @@ public class PSCheckboxTreeRenderer extends DefaultTreeCellRenderer
    public void setParameters(Map<String, String> parameters)
    {
       if (parameters == null)
-         m_parameters = new HashMap<String, String>();
+         m_parameters = new HashMap<>();
       else
          m_parameters = parameters;
    }
@@ -81,7 +81,7 @@ public class PSCheckboxTreeRenderer extends DefaultTreeCellRenderer
     * The extra parameters set for this renderer, never <code>null</code>, may
     * be empty.
     */
-   private Map<String, String> m_parameters = new HashMap<String, String>();
+   private Map<String, String> m_parameters = new HashMap<>();
    
    /**
     * Generated serial version id.
