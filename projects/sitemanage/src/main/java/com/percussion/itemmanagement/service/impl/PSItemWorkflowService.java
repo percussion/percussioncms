@@ -48,6 +48,7 @@ import com.percussion.security.PSThreadRequestUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.catalog.data.PSObjectSummary;
 import com.percussion.services.content.data.PSItemStatus;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
@@ -371,7 +372,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
                 results.setItemId(id);
             }
             return results;
-        } catch (PSItemWorkflowServiceException | PSDataServiceException e) {
+        } catch (PSItemWorkflowServiceException | PSDataServiceException | PSNotFoundException e) {
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -385,7 +386,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
      * @param id - the ID of the page to check the information. Never <code> null </code>
      * @return true if no assets or managed links are found that are unallowed for the current site, false otherwise.
      */
-    private boolean isPublishablePage(String id) throws PSDataServiceException {
+    private boolean isPublishablePage(String id) throws PSDataServiceException, PSNotFoundException {
         rejectIfBlank("isPublishablePage", "id", id);
         
         PSPage page = pageDao.find(id);
@@ -429,7 +430,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
      * (non-Javadoc)
      * @see com.percussion.itemmanagement.service.IPSItemWorkflowService#performApproveTransition(java.lang.String, boolean)
      */
-    public PSItemTransitionResults performApproveTransition(String id, boolean preventIfStartDate, String comment) throws PSItemWorkflowServiceException, PSDataServiceException {
+    public PSItemTransitionResults performApproveTransition(String id, boolean preventIfStartDate, String comment) throws PSItemWorkflowServiceException, PSDataServiceException, PSNotFoundException {
         rejectIfBlank("transition", "id", id);
         
         //Make sure user has permission for publish transition while he is approving the content
@@ -551,14 +552,14 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     }
     
     @Override
-    public Set<String> getApprovedPages(String id) throws PSValidationException {
+    public Set<String> getApprovedPages(String id) throws PSValidationException, PSNotFoundException {
         rejectIfBlank("getApprovedPages", "id", id);
         
         return getApprovedPages(id, null);
     }
     
     @Override
-    public Set<String> getApprovedPages(String id, String folderPath) throws PSValidationException {
+    public Set<String> getApprovedPages(String id, String folderPath) throws PSValidationException, PSNotFoundException {
         rejectIfBlank("getApprovedPages", "id", id);
         
         PSSiteSummary resourceSiteSum = null;
@@ -811,7 +812,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
      * @return list of {@link PSAsset} objects representing assets which could not be transitioned either due to an
      * error or if the items are checked out to a different user.  Never <code>null</code>, may be empty.
      */
-    private List<PSDataItemSummary> approveSharedAssets(String id) throws PSDataServiceException {
+    private List<PSDataItemSummary> approveSharedAssets(String id) throws PSDataServiceException, PSNotFoundException {
         Set<String> sharedAssetIds = new HashSet<>();
         sharedAssetIds.addAll(widgetAssetRelationshipService.getSharedAssets(id));
         sharedAssetIds.addAll(widgetAssetRelationshipService.getLinkedAssets(id));
@@ -1035,8 +1036,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
 
     
     @Override
-    public boolean isStagingOptionAvailable(String id) 
-    {
+    public boolean isStagingOptionAvailable(String id) throws PSValidationException {
         boolean result = false;
         PSComponentSummary sum = workflowHelper.getComponentSummary(id);
         if(workflowHelper.isItemInStagingState(sum.getContentId()))
@@ -1051,8 +1051,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     }
     
     @Override
-    public boolean isRemoveFromStagingOptionAvailable(String id) 
-    {
+    public boolean isRemoveFromStagingOptionAvailable(String id) throws PSValidationException {
         boolean result = false;
         PSComponentSummary sum = workflowHelper.getComponentSummary(id);
         if(workflowHelper.isArchived(id))
