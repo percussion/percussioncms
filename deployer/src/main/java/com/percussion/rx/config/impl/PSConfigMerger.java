@@ -31,6 +31,7 @@ import com.percussion.rx.design.IPSDesignModel;
 import com.percussion.rx.design.IPSDesignModelFactory;
 import com.percussion.rx.design.PSDesignModelFactoryLocator;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 
@@ -68,8 +69,7 @@ public class PSConfigMerger
     * but never <code>null</code>.
     */
    public PSPair<Collection<IPSGuid>, PSConfigException> merge(List<IPSConfigHandler> cfgHandlers,
-         boolean hasPrevProps, boolean isApplyConfig)
-   {
+         boolean hasPrevProps, boolean isApplyConfig) throws PSNotFoundException {
       if (cfgHandlers == null)
          throw new IllegalArgumentException("cfgHandlers must not be null");
       List<IPSGuid> processedGuids = new ArrayList<>();
@@ -209,8 +209,7 @@ public class PSConfigMerger
     */
    @SuppressWarnings("unchecked")
    private List<PSPair<Object, ObjectState>> getDesignObjectsWithState(PSTypeEnum type,
-         IPSDesignModel model, IPSConfigHandler handler, boolean hasPrevProps)
-   {
+         IPSDesignModel model, IPSConfigHandler handler, boolean hasPrevProps) throws PSNotFoundException {
       Map<String, Object> typeMap = m_designObjects.get(type);
       if (typeMap== null)
       {
@@ -256,8 +255,7 @@ public class PSConfigMerger
     * IPSDesignModelFactory throws {@link RuntimeException} if it fails to load
     * the design object with the given name.
     */
-   private Object getDesignObject(IPSConfigHandler handler)
-   {
+   private Object getDesignObject(IPSConfigHandler handler) throws PSNotFoundException {
       PSTypeEnum type = handler.getType();
       IPSDesignModelFactory dmFactory = PSDesignModelFactoryLocator
       .getDesignModelFactory();

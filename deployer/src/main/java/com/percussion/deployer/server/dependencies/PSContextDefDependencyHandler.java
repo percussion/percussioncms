@@ -40,6 +40,7 @@ import com.percussion.deployer.services.PSDeployServiceException;
 import com.percussion.deployer.services.PSDeployServiceLocator;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSPublishingContext;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
@@ -75,7 +76,6 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
    }
 
    // see base class
-   @SuppressWarnings("unchecked")
    @Override
    public Iterator<PSDependency> getChildDependencies(PSSecurityToken tok, PSDependency dep)
       throws PSDeployException
@@ -99,8 +99,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
 
    // see base class
    @Override
-   public Iterator<PSDependency> getDependencies(PSSecurityToken tok)
-   {
+   public Iterator<PSDependency> getDependencies(PSSecurityToken tok) throws PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -119,8 +118,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
 
    // see base class
    @Override
-   public PSDependency getDependency(PSSecurityToken tok, String id)
-   {
+   public PSDependency getDependency(PSSecurityToken tok, String id) throws PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -183,8 +181,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
    @SuppressWarnings("unchecked")
    public Iterator getDependencyFiles(
       @SuppressWarnings("unused") PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       
@@ -286,8 +283,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
    @SuppressWarnings("unchecked")
    public void doInstallDependencyFiles(PSSecurityToken tok,
          PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (archive == null)
@@ -384,8 +380,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
     * @return publishing context corresponding to the id, <code>null</code> if a
     * match was not found.
     */
-   private IPSPublishingContext findPublishingContext(String id)
-   {
+   private IPSPublishingContext findPublishingContext(String id) throws PSNotFoundException {
       IPSPublishingContext context = null;
       
       List<IPSPublishingContext> contexts = m_siteMgr.findAllContexts();

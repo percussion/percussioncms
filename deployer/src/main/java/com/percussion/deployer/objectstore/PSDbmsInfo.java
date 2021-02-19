@@ -231,7 +231,7 @@ public class PSDbmsInfo implements IPSDeployComponent
       }else if(encrypted && !passwordEncrypted){
          try {
             pwd = PSEncryptor.getInstance("AES",
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
             ).encrypt(m_pw);
          } catch (PSEncryptionException e) {
             logger.warn("Error encrypting datasource password: {}", e.getMessage());
@@ -578,7 +578,7 @@ public class PSDbmsInfo implements IPSDeployComponent
 
       try {
          return PSEncryptor.getInstance("AES",
-                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
          ).encrypt(pwd);
       } catch (PSEncryptionException e) {
          logger.error("Error encrypting string: {}",e.getMessage());
@@ -605,18 +605,18 @@ public class PSDbmsInfo implements IPSDeployComponent
 
       String key = uid == null || uid.trim().length() == 0
             ? PSLegacyEncrypter.getInstance(
-              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+              PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
       ).INVALID_DRIVER()
             : uid;
 
       try {
          return PSEncryptor.getInstance("AES",
-                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
          ).decrypt(pwd);
       } catch (PSEncryptionException e) {
          return PSCryptographer.decrypt(
                  PSLegacyEncrypter.getInstance(
-                         PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                         PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                  ).INVALID_CRED(), key, pwd);
       }
 

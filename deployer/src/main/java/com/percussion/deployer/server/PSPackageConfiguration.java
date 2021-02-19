@@ -83,7 +83,7 @@ public class PSPackageConfiguration
    /**
     * Package private ctor to allow choice in building dependency maps for unit
     * testing when <code>PSDependencyHandler</code> classes are not available.
-    * See {@link #PSDependencyMap(Element)} for information on params and
+    * See  for information on params and
     * exceptions not noted below.
     * 
     * @param buildDepMaps If <code>true</code>, handler, parent and child

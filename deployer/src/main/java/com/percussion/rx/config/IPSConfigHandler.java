@@ -26,6 +26,7 @@ package com.percussion.rx.config;
 import com.percussion.rx.design.IPSAssociationSet;
 import com.percussion.rx.design.IPSDesignModel;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 
@@ -177,7 +178,7 @@ public interface IPSConfigHandler
     * may be empty if there is no loaded or created object from the handler.
     */
    List<PSPair<Object, ObjectState>> getDesignObjects(
-         Map<String, Object> cachedObjs);
+         Map<String, Object> cachedObjs) throws PSNotFoundException;
 
    /**
     * Gets the Design Object names along with its related state. This is similar
@@ -235,21 +236,21 @@ public interface IPSConfigHandler
 
    /**
     * Saves the processed result. This is typically called after
-    * {@link #process(Object, List)}.
+    * .
     * 
     * @param model the model of the design object, never <code>null</code>.
     * @param obj the design object that has been processed by
-    * {@link #process(Object, List)}, never <code>null</code>.
+    * , never <code>null</code>.
     * @param state the state of the specified design object. It may be
     * <code>null</code> if the design object is <code>null</code>, but it
     * is not <code>null</code> if the design object is not <code>null</code>.
     * @param assocList the associations that has been processed by
-    * {@link #process(Object, List)}, it may be <code>null</code> or empty if
+    * , it may be <code>null</code> or empty if
     * there is no associations to be processed.
     * @return the guid of the updated object.
     */
    IPSGuid saveResult(IPSDesignModel model, Object obj, ObjectState state,
-         List<IPSAssociationSet> assocList);
+         List<IPSAssociationSet> assocList) throws PSNotFoundException;
 
    /**
     * Validates the design objects specified in current configure against the
@@ -275,7 +276,7 @@ public interface IPSConfigHandler
     * @return A map of replacement name of the property and the value of the
     * property, never <code>null</code>, may be empty.
     */
-   Map<String, Object> getPropertyDefs(Object obj);
+   Map<String, Object> getPropertyDefs(Object obj) throws PSNotFoundException;
 
    /**
     * Gets the first available design object that is either loaded, created or
@@ -294,5 +295,5 @@ public interface IPSConfigHandler
     * @return the Design Object that is either loaded, created or find from the
     * cached Design Objects. It may be <code>null</code>, if not found.
     */
-   Object getDefaultDesignObject(Map<String, Object> cachedObjs);
+   Object getDefaultDesignObject(Map<String, Object> cachedObjs) throws PSNotFoundException;
 }

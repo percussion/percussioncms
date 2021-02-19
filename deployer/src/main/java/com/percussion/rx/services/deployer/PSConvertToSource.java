@@ -27,6 +27,7 @@ import com.percussion.deployer.client.IPSDeployConstants;
 import com.percussion.deployer.server.PSDeploymentHandler;
 import com.percussion.deployer.server.uninstall.PSPackageUninstaller;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pkginfo.IPSPkgInfoService;
 import com.percussion.services.pkginfo.PSPkgInfoServiceLocator;
 import com.percussion.services.pkginfo.data.PSPkgInfo;
@@ -54,8 +55,7 @@ public class PSConvertToSource
     * and String of error message never <code>null</code> 
     * or empty.
     */
-   public PSPair<Boolean, String> convert(String packageName)
-   {
+   public PSPair<Boolean, String> convert(String packageName) throws PSNotFoundException {
       PSPair<Boolean,String> message = new PSPair<>();
       
       IPSPkgInfoService pkgSvc = PSPkgInfoServiceLocator.getPkgInfoService();
@@ -194,8 +194,7 @@ public class PSConvertToSource
     * 
     * @param pkgName - package name
     */
-   protected void convertDB(String pkgName)
-   {
+   protected void convertDB(String pkgName) throws PSNotFoundException {
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
 

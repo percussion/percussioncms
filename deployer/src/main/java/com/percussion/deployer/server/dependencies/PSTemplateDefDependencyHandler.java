@@ -52,6 +52,7 @@ import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSTemplateBinding;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
@@ -202,8 +203,7 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
     * @throws PSDeployException
     */
    protected List<PSDependency> getSlotDependencies(PSSecurityToken tok,
-         IPSAssemblyTemplate tmp) throws PSDeployException
-   {
+         IPSAssemblyTemplate tmp) throws PSDeployException, PSNotFoundException {
       List<PSDependency> depList = new ArrayList<>();
       
       Set<IPSTemplateSlot> slots = tmp.getSlots();
@@ -231,8 +231,7 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
    @Override
    @SuppressWarnings("unchecked")
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -336,8 +335,7 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
    private Iterator<PSDependency> getExitDependenciesFromJEXLExp(
          PSSecurityToken tok, String exp, PSDependencyHandler exitHandler,
          PSJexlHelper jexlHelper) throws PSExtensionException,
-         PSDeployException
-   {
+           PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -422,8 +420,7 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
     */
    private List<PSDependency> handleExitsInJexlExp(
          PSSecurityToken tok, IPSAssemblyTemplate t) throws PSDeployException,
-         PSExtensionException
-   {
+           PSExtensionException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 

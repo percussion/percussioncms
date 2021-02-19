@@ -39,6 +39,7 @@ import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
 import com.percussion.services.contentmgr.data.PSNodeDefinition;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
@@ -149,8 +150,7 @@ public class PSContentTypeSetter extends PSSimplePropertySetter
     */
    @Override
    protected boolean addPropertyDefs(Object obj, String propName,
-         Object pvalue, Map<String, Object> defs)
-   {
+         Object pvalue, Map<String, Object> defs) throws PSNotFoundException {
       if (super.addPropertyDefs(obj, propName, pvalue, defs))
          return true;
       
@@ -169,8 +169,7 @@ public class PSContentTypeSetter extends PSSimplePropertySetter
     * //see base class method for details
     */
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       if (!(obj instanceof PSItemDefinition))
          throw new IllegalArgumentException(
                "obj type must be PSItemDefinition.");
