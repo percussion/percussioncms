@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,29 +23,32 @@
  */
 package com.percussion.pagemanagement.assembler.impl;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.pagemanagement.data.PSRenderLink;
 import com.percussion.pagemanagement.service.IPSRenderLinkService;
+import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
 import com.percussion.pagemanagement.service.impl.PSLinkableAsset;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.utils.guid.IPSGuid;
 
 import java.io.File;
+
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * A legacy location scheme generator that uses
@@ -83,8 +86,7 @@ public class PSResourceAssemblyLocation extends PSAbstractAssemblyLocationAdapte
      * {@inheritDoc}
      */
     @Override
-    protected String createLocation(PSAssemblyLocationRequest locationRequest)
-    {
+    protected String createLocation(PSAssemblyLocationRequest locationRequest) throws PSValidationException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, IPSDataService.DataServiceNotFoundException, IPSAssetService.PSAssetServiceException, IPSDataService.DataServiceLoadException {
         PSBeanValidationUtils.validate(locationRequest).throwIfInvalid();
         String resourceId = getResourceDefinitionId(locationRequest);
         /*
@@ -102,7 +104,7 @@ public class PSResourceAssemblyLocation extends PSAbstractAssemblyLocationAdapte
      * @param locationRequest never <code>null</code>.
      * @return <strong>SHOULD</strong> never be <code>null</code>.
      */
-    protected String getResourceDefinitionId(PSAssemblyLocationRequest locationRequest) {
+    protected String getResourceDefinitionId(PSAssemblyLocationRequest locationRequest) throws IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException {
         String resourceId = locationRequest.getParameters().get(PSAssemblyConfig.PERC_RESOURCE_ID_PARAM_NAME);
         if (resourceId != null) {
             log.debug("Found resource in parameters");
@@ -123,7 +125,7 @@ public class PSResourceAssemblyLocation extends PSAbstractAssemblyLocationAdapte
      * @param locationRequest Assumed not <code>null</code>.
      * @return never <code>null</code>.
      */
-    private ItemAndContext getItemAndContext(PSAssemblyLocationRequest locationRequest) {
+    private ItemAndContext getItemAndContext(PSAssemblyLocationRequest locationRequest) throws IPSAssetService.PSAssetServiceException, IPSDataService.DataServiceLoadException, PSValidationException {
         PSAssemblyRenderLinkContext context = new PSAssemblyRenderLinkContext();
         
         /*

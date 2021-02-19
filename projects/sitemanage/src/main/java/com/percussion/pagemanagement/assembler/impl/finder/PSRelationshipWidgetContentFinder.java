@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,12 +24,6 @@
 
 package com.percussion.pagemanagement.assembler.impl.finder;
 
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.injectDependencies;
-import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSRelationship;
@@ -45,6 +39,9 @@ import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.IPSItemEntry;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
 import java.util.Comparator;
@@ -52,9 +49,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.injectDependencies;
+import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Find contents related to a page and/or template by Active Assembly
@@ -123,12 +122,10 @@ public class PSRelationshipWidgetContentFinder extends PSWidgetContentFinder
     }
     
     /**
-     * @see PSRelationshipFinderUtils#getContentItems(IPSAssemblyItem, long, Map)
      */   
     @Override
     protected Set<ContentItem> getContentItems(IPSAssemblyItem sourceItem,
-            PSWidgetInstance widget, Map<String, Object> params)
-    {
+            PSWidgetInstance widget, Map<String, Object> params) throws PSNotFoundException {
         if (!(widget instanceof PSWidgetInstance))
             throw new IllegalArgumentException("Cannot create widget criteria from object: " + widget);
 
@@ -137,11 +134,10 @@ public class PSRelationshipWidgetContentFinder extends PSWidgetContentFinder
     }
 
     /**
-     * The comparator used to order the returned list from {@link #find(IPSAssemblyItem, Object, Map)}
+     * The comparator used to order the returned list from
      * @return the comparator, never <code>null</code>.
      */
-    protected Comparator<ContentItem> getComparator(PSWidgetInstance widget)
-    {
+    protected Comparator<ContentItem> getComparator(PSWidgetInstance widget) throws PSNotFoundException {
        return new ContentItemOrder(widget);
     }
     
@@ -152,8 +148,7 @@ public class PSRelationshipWidgetContentFinder extends PSWidgetContentFinder
     {
        private WidgetCriteria m_criteria;
        
-       public ContentItemOrder(PSWidgetInstance widget)
-       {
+       public ContentItemOrder(PSWidgetInstance widget) throws PSNotFoundException {
            m_criteria = new WidgetCriteria(widget);    
        }
        
@@ -229,8 +224,7 @@ public class PSRelationshipWidgetContentFinder extends PSWidgetContentFinder
          * 
          * @param widget the widget instance, never <code>null</code>.
          */
-        public WidgetCriteria(PSWidgetInstance widget)
-        {
+        public WidgetCriteria(PSWidgetInstance widget) throws PSNotFoundException {
             notNull(widget, "widget");
             
             PSWidgetInstance w = (PSWidgetInstance) widget;

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -29,8 +29,8 @@ import com.percussion.itemmanagement.data.PSItemStateTransition;
 import com.percussion.itemmanagement.data.PSItemTransitionResults;
 import com.percussion.itemmanagement.data.PSItemUserInfo;
 import com.percussion.services.error.PSNotFoundException;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSNoContent;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 
@@ -234,7 +234,7 @@ public interface IPSItemWorkflowService
      * @param id of the item,  never blank.
      * @return <code>true</code> if available otherwise <code>false</code>.
      */
-     boolean isStagingOptionAvailable(String id) throws PSValidationException;
+     boolean isStagingOptionAvailable(String id) throws PSValidationException, IPSGenericDao.LoadException;
     
     /**
      * Checks whether remove from staging option is available or not for the supplied user for the supplied item.
@@ -243,7 +243,7 @@ public interface IPSItemWorkflowService
      * @param id of the item,  never blank.
      * @return <code>true</code> if available otherwise <code>false</code>.
      */
-     boolean isRemoveFromStagingOptionAvailable(String id) throws PSValidationException;
+     boolean isRemoveFromStagingOptionAvailable(String id) throws PSValidationException, IPSGenericDao.LoadException;
 
     /**
      * Returns the id of the local content workflow recognized by the name "LocalContent", throws RunTimeException if the workflow is not found.

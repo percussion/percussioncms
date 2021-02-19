@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -30,24 +30,21 @@ import com.percussion.itemmanagement.service.IPSItemWorkflowService.PSItemWorkfl
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
 import com.percussion.itemmanagement.service.impl.PSItemWorkflowService;
 import com.percussion.pathmanagement.data.PSFolderPermission;
-import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.workflow.data.PSState;
 import com.percussion.share.async.impl.PSAsyncJob;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.user.service.IPSUserService;
-import com.percussion.user.service.impl.PSUserService;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSWebserviceUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Class that implements job to approve a list of items.
