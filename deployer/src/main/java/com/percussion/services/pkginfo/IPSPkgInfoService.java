@@ -229,7 +229,7 @@ public interface IPSPkgInfoService
     * @throws PSNotFoundException If a matching object is not found. The message
     * will contain the invalid id.
     */
-   public PSPkgInfo loadPkgInfo(IPSGuid id);
+   public PSPkgInfo loadPkgInfo(IPSGuid id) throws PSNotFoundException;
 
    /**
     * This method is used to load a PSPkgInfo object that needs to be modified.
@@ -242,7 +242,7 @@ public interface IPSPkgInfoService
     * @throws PSNotFoundException If a matching object is not found. The message
     * will contain the invalid id.
     */
-   public PSPkgInfo loadPkgInfoModifiable(IPSGuid id);
+   public PSPkgInfo loadPkgInfoModifiable(IPSGuid id) throws PSNotFoundException;
 
    // ---------------------------------------------------------------------------
    // Package Element object: PSPkgElement
@@ -348,7 +348,7 @@ public interface IPSPkgInfoService
     * @throws PSNotFoundException If a matching object is not found. The message
     * will contain the invalid id.
     */
-   public List<PSPkgElement> loadPkgElements(List<IPSGuid> ids);
+   public List<PSPkgElement> loadPkgElements(List<IPSGuid> ids) throws PSNotFoundException;
 
    /**
     * Convenience method that puts the supplied id in a list and calls
@@ -361,7 +361,7 @@ public interface IPSPkgInfoService
     * @throws PSNotFoundException If a matching object is not found. The message
     * will contain the invalid id.
     */
-   public PSPkgElement loadPkgElement(IPSGuid id);
+   public PSPkgElement loadPkgElement(IPSGuid id) throws PSNotFoundException;
 
    /**
     * This method is used to load a PSPkgElement object that needs to be
@@ -374,7 +374,7 @@ public interface IPSPkgInfoService
     * @throws PSNotFoundException If a matching object is not found. The message
     * will contain the invalid id.
     */
-   public PSPkgElement loadPkgElementModifiable(IPSGuid id);
+   public PSPkgElement loadPkgElementModifiable(IPSGuid id) throws PSNotFoundException;
 
    // *******Package dependency methods
    /**
@@ -390,7 +390,7 @@ public interface IPSPkgInfoService
    /**
     * Saves the supplied package dependency object. Generally, the object must
     * have been created using {@link #createPkgDependency()} or loaded by
-    * {@link #loadPkgDependencies(IPSGuid)}.
+    * .
     * 
     * @param pkgDependency The PSPkgDependency that needs to be saved, must not
     * be <code>null</code>.
