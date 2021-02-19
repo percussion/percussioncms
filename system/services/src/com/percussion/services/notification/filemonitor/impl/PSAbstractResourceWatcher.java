@@ -34,7 +34,7 @@ public abstract class PSAbstractResourceWatcher extends PSIntervalThread
     /**
      * The list of listeners to notify when this resource changes.
      */
-    private Collection<IPSResourceListener> listeners = new LinkedList<IPSResourceListener>();
+    private Collection<IPSResourceListener> listeners = new LinkedList<>();
 
     /**
      * Gets the total count of registered listeners.

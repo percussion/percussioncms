@@ -194,7 +194,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
     * The parameters from the original HTTP request. It is possible that this
     * will be empty, but it will never be <code>null</code>.
     */
-   public Map<String, String[]> m_parameters = new HashMap<String, String[]>();
+   public Map<String, String[]> m_parameters = new HashMap<>();
 
    /**
     * The site variables are loaded into this map. This is loaded using
@@ -266,7 +266,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
     * these initial values are set, the bindings on the particular template are
     * evaluated, and the results are rebound into this map as well.
     */
-   public Map<String, Object> m_bindings = new HashMap<String, Object>();
+   public Map<String, Object> m_bindings = new HashMap<>();
 
    /**
     * The node being assembled is stored here. This value is not set (initially)
@@ -648,7 +648,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
       if (m_bindings != null)
          return m_bindings;
       else
-         return new HashMap<String, Object>();
+         return new HashMap<>();
    }
 
    /*
@@ -735,7 +735,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
    public void setParameters(Map<String, String[]> parameters)
    {
       if (parameters == null)
-         m_parameters = new HashMap<String, String[]>();
+         m_parameters = new HashMap<>();
       else
          m_parameters = parameters;
    }
@@ -951,7 +951,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
          }
 
          IPSContentMgr cmgr = PSContentMgrLocator.getContentMgr();
-         List<IPSGuid> iguids = new ArrayList<IPSGuid>();
+         List<IPSGuid> iguids = new ArrayList<>();
          iguids.add(m_id);
          PSContentMgrConfig config = new PSContentMgrConfig();
          config.addOption(PSContentMgrOption.LAZY_LOAD_CHILDREN);
@@ -1149,7 +1149,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
       try
       {
          PSAssemblyWorkItem copy = (PSAssemblyWorkItem) super.clone();
-         copy.setBindings(new HashMap<String, Object>());
+         copy.setBindings(new HashMap<>());
          copy.setParameters(PSCopier.deepCopy(getParameters()));
          copy.m_depth = m_depth + 1;
          if (copy.m_depth > 20)

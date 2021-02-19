@@ -272,7 +272,7 @@ public class PSEhCacheAccessor implements IPSCacheAccess
    public List<PSCacheStatisticsSnapshot> getStatistics()
    {
       List<PSCacheStatisticsSnapshot> statList = 
-         new ArrayList<PSCacheStatisticsSnapshot>();
+         new ArrayList<>();
 
       PSCacheStatisticsSnapshot cacheStat;
       for (String name : m_manager.getCacheNames())

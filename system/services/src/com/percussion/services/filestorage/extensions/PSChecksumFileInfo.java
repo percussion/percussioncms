@@ -97,7 +97,7 @@ public class PSChecksumFileInfo extends PSDefaultExtension
       if (command == null || !command.equals("modify"))
            return;
       // make a copy to avoid ConcurrentModificationException
-      Set<?> paramKeys = new HashSet<Object>(request.getParameters().keySet());
+      Set<?> paramKeys = new HashSet<>(request.getParameters().keySet());
       Iterator<?> iter = paramKeys.iterator();
       String wifxFlag = request.getParameter("webimagefxupload");
       
@@ -449,7 +449,7 @@ public class PSChecksumFileInfo extends PSDefaultExtension
       }
       else
       {
-         final List<String> list = new ArrayList<String>();
+         final List<String> list = new ArrayList<>();
          while (st.hasMoreTokens())
             list.add(st.nextToken());
          obj = list;

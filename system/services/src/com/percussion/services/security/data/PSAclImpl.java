@@ -671,7 +671,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
       
       
       // now handle adds, removes, and updates of entries
-      Set<String> matches = new HashSet<String>();
+      Set<String> matches = new HashSet<>();
       Enumeration<AclEntry> entryEnum = acl.entries();
       while (entryEnum.hasMoreElements())
       {
@@ -730,7 +730,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
       else 
       {
          if (entries == null)
-            entries = new HashSet<IPSAclEntry>();
+            entries = new HashSet<>();
          for (PSAclEntryImpl ent : newEntries)
             addEntry(ent);
       }
@@ -1007,7 +1007,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
            orphanRemoval=true, mappedBy="acl")
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "PSAclImpl_Entries")
    @Fetch(FetchMode.SUBSELECT)
-   private Set<IPSAclEntry> entries = new HashSet<IPSAclEntry>();
+   private Set<IPSAclEntry> entries = new HashSet<>();
 
    /**
     * The hibernate object version

@@ -51,14 +51,14 @@ public class PSFileMonitorService implements IPSFileMonitorService
     * Used by the service to track the active PSDirectoryWatchers.
     */
    static Map<String,PSDirectoryWatcher> m_dirWatcherMap = 
-      new HashMap<String,PSDirectoryWatcher>();
+      new HashMap<>();
    
    /**
     * Map of File Path Names to PSConfigFileListener objects.
     * Used by the service to track the active PSDirectoryWatchers.
     */
    static Map<String,PSConfigFileListener> m_fileListenerMap = 
-      new HashMap<String,PSConfigFileListener>();
+      new HashMap<>();
 
    /**
     * The polling interval in seconds for monitoring file changes.

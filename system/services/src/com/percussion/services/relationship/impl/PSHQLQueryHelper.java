@@ -69,8 +69,8 @@ class PSHQLQueryHelper  implements IPSQueryHelper
       {
          Collection<String> pduPropNames = PSRelationshipConfig
                .getPreDefinedUserPropertyNames();
-         m_pduProps = new ArrayList<Map.Entry<String, String>>();
-         m_customProps = new ArrayList<Map.Entry<String, String>>();
+         m_pduProps = new ArrayList<>();
+         m_customProps = new ArrayList<>();
 
          // separate pre-defined and customer properties
          Set<Map.Entry<String, String>> props = m_filter.getProperties()
@@ -322,7 +322,7 @@ class PSHQLQueryHelper  implements IPSQueryHelper
             m_qryBuffer.append(R_TABLE).append(FN_DEPENDENTID).append(" IN (:")
                   .append(FN_DEPENDENTIDS).append(") ");
             m_paramNames.add(FN_DEPENDENTIDS);
-            List<Integer> ids = new ArrayList<Integer>();
+            List<Integer> ids = new ArrayList<>();
             for (PSLocator loc : m_filter.getDependents())
                ids.add(loc.getId());
             m_paramValues.add(ids);
@@ -385,7 +385,7 @@ class PSHQLQueryHelper  implements IPSQueryHelper
          return (Set<Integer>) Collections.EMPTY_SET;
       }
 
-      HashSet<Integer> ids = new HashSet<Integer>();
+      HashSet<Integer> ids = new HashSet<>();
       Integer id;
       // get the names first
       for (String name : filter.getNames())
@@ -444,7 +444,7 @@ class PSHQLQueryHelper  implements IPSQueryHelper
     */
    private Set<Integer> getConfigIdsFromType(String type)
    {
-      Set<Integer> ids = new HashSet<Integer>();
+      Set<Integer> ids = new HashSet<>();
 
       Collection<PSRelationshipConfig> configs = m_configMap.values();
       for (PSRelationshipConfig config : configs)

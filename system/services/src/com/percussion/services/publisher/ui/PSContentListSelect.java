@@ -190,7 +190,7 @@ public class PSContentListSelect
       {
          IPSPublisherService pub = PSPublisherServiceLocator
                .getPublisherService();
-         List<IPSGuid> ids = new ArrayList<IPSGuid>();
+         List<IPSGuid> ids = new ArrayList<>();
          ids.add(new PSGuid(PSTypeEnum.CONTENT_LIST, mi_id));
          List<IPSContentList> list = pub.loadContentLists(ids);
          pub.deleteContentLists(list);
@@ -207,7 +207,7 @@ public class PSContentListSelect
       {
          IPSPublisherService pub = PSPublisherServiceLocator
                .getPublisherService();
-         List<IPSGuid> ids = new ArrayList<IPSGuid>();
+         List<IPSGuid> ids = new ArrayList<>();
          ids.add(new PSGuid(PSTypeEnum.CONTENT_LIST, mi_id));
          setCurrent(pub.loadContentLists(ids).get(0));
          return "edit";
@@ -283,7 +283,7 @@ public class PSContentListSelect
     */
    public List<Entry> getEntries()
    {
-      List<Entry> rval = new ArrayList<Entry>();
+      List<Entry> rval = new ArrayList<>();
       IPSPublisherService pub = PSPublisherServiceLocator.getPublisherService();
       List<IPSContentList> lists = pub.findAllContentLists(m_namefilter);
       for (IPSContentList list : lists)
@@ -352,7 +352,7 @@ public class PSContentListSelect
    {
       m_current = current;
 
-      m_currentGenParams = new ArrayList<PSParameter>();
+      m_currentGenParams = new ArrayList<>();
       if (m_current != null)
       {
          Map<String, String> args = m_current.getGeneratorParams();
@@ -367,7 +367,7 @@ public class PSContentListSelect
             }
          }
       }
-      m_currentExpParams = new ArrayList<PSParameter>();
+      m_currentExpParams = new ArrayList<>();
       if (m_current != null)
       {
          Map<String, String> args = m_current.getExpanderParams();
@@ -616,7 +616,7 @@ public class PSContentListSelect
       }
 
       // Store the old data
-      Map<String, String> pdata = new HashMap<String, String>();
+      Map<String, String> pdata = new HashMap<>();
       for (PSParameter i : params)
       {
          if (i.getValue() == null)
@@ -653,7 +653,7 @@ public class PSContentListSelect
          // Adjust the list of parameters
          if (m_currentGenParams == null)
          {
-            m_currentGenParams = new ArrayList<PSParameter>();
+            m_currentGenParams = new ArrayList<>();
          }
          m_currentGenParams = adjustParameters(m_generator, m_currentGenParams);
          m_resetGenParams = false;
@@ -689,7 +689,7 @@ public class PSContentListSelect
          // Adjust the list of parameters
          if (m_currentExpParams == null)
          {
-            m_currentExpParams = new ArrayList<PSParameter>();
+            m_currentExpParams = new ArrayList<>();
          }
          m_currentExpParams = adjustParameters(m_expander, m_currentExpParams);
          m_resetExpParams = false;
@@ -853,7 +853,7 @@ public class PSContentListSelect
 
       if (m_current != null)
       {
-         List<IPSContentList> lists = new ArrayList<IPSContentList>();
+         List<IPSContentList> lists = new ArrayList<>();
          lists.add(m_current);
          // Copy expander and generator params back to the original object
          copyParams();
@@ -897,7 +897,7 @@ public class PSContentListSelect
                   IPSHtmlParameters.SYS_CONTENTLIST, m_copyItemNewName);
             clist.setUrl(url);
          }
-         List<IPSContentList> tosave = new ArrayList<IPSContentList>();
+         List<IPSContentList> tosave = new ArrayList<>();
          tosave.add(clist);
          pub.saveContentLists(tosave);
       }
@@ -964,7 +964,7 @@ public class PSContentListSelect
     */
    private Set<String> extractKeys(List<PSParameter> currentParams)
    {
-      Set<String> rval = new HashSet<String>();
+      Set<String> rval = new HashSet<>();
 
       for (PSParameter i : currentParams)
       {
