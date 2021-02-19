@@ -94,7 +94,7 @@ public final class PSTouchParentHelper
       Set<Integer> processedIds = (Set<Integer>) request.getPrivateObject(PROCESSED_DEPENDENTS);
       if (processedIds == null)
       {
-         processedIds = new HashSet<Integer>();
+         processedIds = new HashSet<>();
          request.setPrivateObject(PROCESSED_DEPENDENTS, processedIds);
       }
       AtomicInteger counter = new AtomicInteger(0);
@@ -151,7 +151,7 @@ public final class PSTouchParentHelper
             PSRelationshipConfig.TYPE_FOLDER_CONTENT, locator);
 
       int counter = 0;
-      Set<Integer> ids = new HashSet<Integer>();
+      Set<Integer> ids = new HashSet<>();
       Integer id;
       // process a group (1000 items) at a time
       for (int i = 0; i < locators.length; i++)
@@ -195,7 +195,7 @@ public final class PSTouchParentHelper
       if (ms_logger.isDebugEnabled()) {
          ms_logger.debug("Touching items and their parents: " + ids + " processed: " + processedIds);
       }
-      List<ItemId> items = new ArrayList<ItemId>();
+      List<ItemId> items = new ArrayList<>();
       for (Integer id : ids) {
          if (processedIds.contains(id)) continue;
          items.add(new ItemId(id));
@@ -208,7 +208,7 @@ public final class PSTouchParentHelper
       {
          throw new RuntimeException(e);
       }
-      ids = new ArrayList<Integer>();
+      ids = new ArrayList<>();
       for (ItemId i : items) {
          ids.add(i.getContentId());
       }

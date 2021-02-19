@@ -71,7 +71,7 @@ public class PSHashedFieldCatalogerDAO implements IPSHashedFieldCatalogerDAO
    {
       Criteria crit = getSession().createCriteria(PSHashedColumn.class);
       crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-      return new HashSet<PSHashedColumn>(crit.list());
+      return new HashSet<>(crit.list());
 
    }
 

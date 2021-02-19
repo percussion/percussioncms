@@ -598,7 +598,7 @@ public class PSSiteManager
             .get(LOCATION_MAP_KEY, IPSCacheAccess.IN_MEMORY_STORE);
       if (locationSchemeMap == null)
       {
-         locationSchemeMap = new ConcurrentHashMap<LocationSchemeKey, List<IPSLocationScheme>>(8, 0.9f, 1);
+         locationSchemeMap = new ConcurrentHashMap<>(8, 0.9f, 1);
          m_cache.save(LOCATION_MAP_KEY, locationSchemeMap,
                IPSCacheAccess.IN_MEMORY_STORE);
       }
@@ -751,7 +751,7 @@ public class PSSiteManager
     */
    @SuppressWarnings("unchecked")
    public List<IPSCatalogSummary> getSummaries(PSTypeEnum type) throws PSNotFoundException {
-      List<IPSCatalogSummary> rval = new ArrayList<IPSCatalogSummary>();
+      List<IPSCatalogSummary> rval = new ArrayList<>();
 
       Session s = sessionFactory.getCurrentSession();
 
@@ -977,7 +977,7 @@ public class PSSiteManager
 
       // get the locator path from the specified folder to the site's root
       // folder
-      List<PSLocator> siteFolderPath = new ArrayList<PSLocator>(pathToRoot
+      List<PSLocator> siteFolderPath = new ArrayList<>(pathToRoot
             .size());
       boolean foundRoot = false;
       for (int i = 0; i < pathToRoot.size(); i++)
@@ -1066,7 +1066,7 @@ public class PSSiteManager
       {
          throw new IllegalArgumentException("contentId must be a legacy guid");
       }
-      List<IPSSite> matchingSites = new ArrayList<IPSSite>();
+      List<IPSSite> matchingSites = new ArrayList<>();
       PSLegacyGuid lg = (PSLegacyGuid) contentId;
       PSRequest request = PSRequest.getContextForRequest();
       PSServerFolderProcessor fproc = PSServerFolderProcessor.getInstance();
@@ -1144,11 +1144,11 @@ public class PSSiteManager
       }
       else
       {
-         sites = new ArrayList<IPSSite>();
+         sites = new ArrayList<>();
          sites.add(loadUnmodifiableSite(siteId));
       }
       // get templates publishable to all the sites
-      Set<IPSAssemblyTemplate> siteTemplates = new HashSet<IPSAssemblyTemplate>();
+      Set<IPSAssemblyTemplate> siteTemplates = new HashSet<>();
       for (int i = 0; i < sites.size(); i++)
       {
          IPSSite site = sites.get(i);
@@ -1301,7 +1301,7 @@ public class PSSiteManager
    {
       List<Object[]> values = sessionFactory.getCurrentSession()
          .createQuery("select id, name from PSPublishingContext").list();
-      Map<Integer, String> rval = new HashMap<Integer, String>();
+      Map<Integer, String> rval = new HashMap<>();
       for(Object[] row : values)
       {
          rval.put(((Long) row[0]).intValue(), (String) row[1]);
@@ -1367,7 +1367,7 @@ public class PSSiteManager
    private Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> getSiteTemplateAssociation(
          Session sess)
    {
-      Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> siteToTemplateIds = new HashMap<PSPair<IPSGuid, String>, Collection<IPSGuid>>();
+      Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> siteToTemplateIds = new HashMap<>();
 
       String sql = null;
       try {
@@ -1388,7 +1388,7 @@ public class PSSiteManager
       {
          // collect the data
          IPSGuid siteId = new PSGuid(PSTypeEnum.SITE, (Long)row[0]);
-         PSPair<IPSGuid, String> site = new PSPair<IPSGuid, String>(siteId,
+         PSPair<IPSGuid, String> site = new PSPair<>(siteId,
                (String)row[1]);
 
          // This is a result of left outer join, so 3nd value may be null
@@ -1400,7 +1400,7 @@ public class PSSiteManager
          Collection<IPSGuid> ids = siteToTemplateIds.get(site);
          if (ids == null)
          {
-            ids = new ArrayList<IPSGuid>();
+            ids = new ArrayList<>();
             siteToTemplateIds.put(site, ids);
          }
          if (tempId != null)

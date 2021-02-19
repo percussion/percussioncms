@@ -307,7 +307,7 @@ public class PSIncrementalPublishingFilter
    private Collection<Integer> getContentIds(List<IPSFilterItem> items,
          Collection<Integer> movedIds, Collection<Integer> alwaysPublishIds)
    {
-      List<Integer> contentIds = new ArrayList<Integer>();
+      List<Integer> contentIds = new ArrayList<>();
       for (IPSFilterItem item : items)
       {
          int id = ((PSLegacyGuid)item.getItemId()).getContentId();
@@ -332,7 +332,7 @@ public class PSIncrementalPublishingFilter
    private Set<IPSGuid> findComputedContentTypes(IPSAssemblyService asm,
          IPSContentMgr cmgr, IPSSite site) throws RepositoryException
    {
-      Set<IPSGuid> computedCTSet = new HashSet<IPSGuid>();
+      Set<IPSGuid> computedCTSet = new HashSet<>();
       String finder = null;
 
       for (IPSAssemblyTemplate t : site.getAssociatedTemplates())

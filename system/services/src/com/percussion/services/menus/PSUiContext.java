@@ -60,7 +60,7 @@ public class PSUiContext implements Serializable {
     Set<PSActionMenuVisibility> visibility = new HashSet<>();
 
     @OneToMany(mappedBy = "context")
-    private Set<PSUIModeContextAction> contextMenus = new HashSet<PSUIModeContextAction>();
+    private Set<PSUIModeContextAction> contextMenus = new HashSet<>();
 
 
     public PSUiContext (){}

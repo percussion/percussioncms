@@ -43,7 +43,7 @@ public class PSSearchSummary extends PSItemSummary
     * A map with additional search result fields, never <code>null</code>,
     * may be empty.
     */
-   Map<String, String> fields = new HashMap<String, String>();
+   Map<String, String> fields = new HashMap<>();
    
    /**
     * Construct a search item summary for the supplied search row.

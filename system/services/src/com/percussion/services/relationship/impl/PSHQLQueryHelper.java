@@ -754,13 +754,13 @@ class PSHQLQueryHelper  implements IPSQueryHelper
     * The parameter list, used to record the parameter names for the HQL,
     * never <code>null</code>, may be empty.
     */
-   private List<String> m_paramNames = new ArrayList<String>();
+   private List<String> m_paramNames = new ArrayList<>();
 
    /**
     * The parameter values list, used to record the values of the above
     * parameter names. Never <code>null</code>, may be empty.
     */
-   private List<Object> m_paramValues = new ArrayList<Object>();
+   private List<Object> m_paramValues = new ArrayList<>();
 
    /**
     * Determines whether to append a {@link #AND} before add further

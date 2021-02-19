@@ -403,7 +403,7 @@ public class PSVelocityAssembler extends PSAssemblerBase
       if (StringUtils.isBlank(nameProperty))
          return Collections.emptySet();
 
-      Set<String> templateNames = new HashSet<String>();
+      Set<String> templateNames = new HashSet<>();
       if (nameProperty.trim().equals("*"))
       {
          templateNames.add("*");
@@ -617,7 +617,7 @@ public class PSVelocityAssembler extends PSAssemblerBase
       compressor.setCompressJavaScript(false);        //compress inline javascript
 
 
-      List<Pattern> preservePatterns = new ArrayList<Pattern>();
+      List<Pattern> preservePatterns = new ArrayList<>();
       preservePatterns.add(HtmlCompressor.PHP_TAG_PATTERN); //<?php ... ?> blocks
       preservePatterns.add(HtmlCompressor.SERVER_SCRIPT_TAG_PATTERN); //<% ... %> blocks
       preservePatterns.add(HtmlCompressor.SERVER_SIDE_INCLUDE_PATTERN); //<!--# ... --> blocks
