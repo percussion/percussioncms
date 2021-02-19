@@ -89,7 +89,7 @@ public class RxServerFeatureModel extends RxComponentModel
     * See {@link #getServerFeaturesMap()}.
     */
    private static final SortedMap<String, RxComponent> ms_serverFeaturesMap =
-      new TreeMap<String, RxComponent>();
+      new TreeMap<>();
    
    static
    {

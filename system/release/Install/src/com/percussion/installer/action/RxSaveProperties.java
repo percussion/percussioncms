@@ -414,17 +414,17 @@ public class RxSaveProperties extends RxIAAction
    /**
     * The set of installation persisted property names.
     */   
-   private static Set<String> ms_installProps = new HashSet<String>();      
+   private static Set<String> ms_installProps = new HashSet<>();
    
    /**
     * The set of repository persisted property names.
     */
-   private static Set<String> ms_repositoryProps = new HashSet<String>();
+   private static Set<String> ms_repositoryProps = new HashSet<>();
    
    /**
     * The set of server persisted property names.
     */
-   private static Set<String> ms_serverProps = new HashSet<String>();
+   private static Set<String> ms_serverProps = new HashSet<>();
    
    /**
     * Map of products where the key is the product install property loaded as
@@ -433,7 +433,7 @@ public class RxSaveProperties extends RxIAAction
     * product selection.
     */
    private static Map<String, String> ms_productMap = 
-      new HashMap<String, String>();
+      new HashMap<>();
    
    static
    {

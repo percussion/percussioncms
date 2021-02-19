@@ -319,7 +319,7 @@ public class PSUpgradePluginSpringBeans implements IPSUpgradePlugin
    /**
     * Set of system spring bean id's deployed in 6.0.
     */
-   private static Set<String> ms_systemSpringBeans60Set = new HashSet<String>();
+   private static Set<String> ms_systemSpringBeans60Set = new HashSet<>();
    
    static
    {
