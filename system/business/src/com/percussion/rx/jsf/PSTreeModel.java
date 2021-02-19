@@ -92,7 +92,7 @@ public class PSTreeModel extends MenuModel
     * Each added node is put in this map so it can be found, and removed
     * if the node is removed from its container.
     */
-   Map<String,PSNodeBase> m_rowmap = new HashMap<String, PSNodeBase>();
+   Map<String,PSNodeBase> m_rowmap = new HashMap<>();
 
    /**
     * The focus row key. 
@@ -388,7 +388,7 @@ public class PSTreeModel extends MenuModel
    private List<String> createExternalKey(Object internalKey)
    {      
       PSNodeBase base = m_rowmap.get(internalKey);
-      List<String> rval = new ArrayList<String>();
+      List<String> rval = new ArrayList<>();
       while(base != null && base.getParent() != null)
       {
          rval.add(0, (String) base.getKey());

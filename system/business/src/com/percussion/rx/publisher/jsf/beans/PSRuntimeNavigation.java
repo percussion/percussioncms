@@ -197,7 +197,7 @@ public class PSRuntimeNavigation extends PSNavigation
        */
       public List<Map<String, Object>> getTasks()
       {
-         List<Map<String, Object>> rval = new ArrayList<Map<String,Object>>();
+         List<Map<String, Object>> rval = new ArrayList<>();
          IPSPublisherService pubsvc = PSPublisherServiceLocator.
             getPublisherService();
          List<IPSEditionTaskLog> entries =
@@ -424,7 +424,7 @@ public class PSRuntimeNavigation extends PSNavigation
     *    but may be empty if there is no Edition defined.
     */
    public Map<Long, EditionSiteName> getEditionIdNameMap() throws PSNotFoundException {
-      Map<Long, EditionSiteName> map = new HashMap<Long, EditionSiteName>();
+      Map<Long, EditionSiteName> map = new HashMap<>();
       for (PSNodeBase node : m_sites.getChildren())
       {
          PSRuntimeSiteNode snode = (PSRuntimeSiteNode) node;

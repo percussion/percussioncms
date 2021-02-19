@@ -216,7 +216,7 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
    @Override
    public Set<Object> getAllNames()
    {
-      final Set<Object> names = new HashSet<Object>();
+      final Set<Object> names = new HashSet<>();
       
       try
       {

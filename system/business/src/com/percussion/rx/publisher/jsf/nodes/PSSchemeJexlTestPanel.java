@@ -273,7 +273,7 @@ public class PSSchemeJexlTestPanel
     * @return all available sites, never <code>null</code>, but may be empty.
     */
    public SelectItem[] getSites() throws PSNotFoundException {
-      List<SelectItem> siteList = new ArrayList<SelectItem>();
+      List<SelectItem> siteList = new ArrayList<>();
 
       for (PSSiteNode s : getAllSites())
       {

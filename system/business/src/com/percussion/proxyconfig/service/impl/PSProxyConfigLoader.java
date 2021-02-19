@@ -68,7 +68,7 @@ public class PSProxyConfigLoader
    {
        notNull(configFile);
        
-       proxyConfigurations = new ArrayList<PSProxyConfig>();
+       proxyConfigurations = new ArrayList<>();
        
        if (configFile.exists())
           readAndEncryptConfigFile(configFile);

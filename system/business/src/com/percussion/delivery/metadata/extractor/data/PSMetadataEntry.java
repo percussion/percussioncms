@@ -51,7 +51,7 @@ public class PSMetadataEntry implements IPSMetadataEntry
 
     private String site;
 
-    private Set<IPSMetadataProperty> properties = new HashSet<IPSMetadataProperty>();
+    private Set<IPSMetadataProperty> properties = new HashSet<>();
 
     public PSMetadataEntry()
     {

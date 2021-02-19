@@ -65,10 +65,10 @@ public class ProxyConfigurations
    {
       if (proxyConfigs == null)
       {
-         proxyConfigs = new ArrayList<ProxyConfig>();
+         proxyConfigs = new ArrayList<>();
       }
 
-      List<ProxyConfig> copy = new ArrayList<ProxyConfig>(proxyConfigs.size());
+      List<ProxyConfig> copy = new ArrayList<>(proxyConfigs.size());
 
       for (ProxyConfig config : proxyConfigs)
       {
@@ -79,7 +79,7 @@ public class ProxyConfigurations
 
    public void setConfigs(List<ProxyConfig> configurations)
    {
-      proxyConfigs = new ArrayList<ProxyConfig>();
+      proxyConfigs = new ArrayList<>();
 
       for (ProxyConfig config : configurations)
       {
