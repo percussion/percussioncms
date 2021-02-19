@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,9 +23,6 @@
  */
 package com.percussion.services.assembly.jexl;
 
-import static com.percussion.utils.xml.PSSaxHelper.canBeSelfClosedElement;
-import static com.percussion.utils.xml.PSSaxHelper.newSAXParser;
-
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
 import com.percussion.extension.PSJexlUtilBase;
@@ -35,22 +32,9 @@ import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.util.IPSHtmlParameters;
-
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Stack;
-
-import javax.jcr.Property;
-import javax.jcr.RepositoryException;
-import javax.jcr.ValueFormatException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -59,6 +43,21 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DefaultHandler2;
 import org.xml.sax.helpers.DefaultHandler;
+
+import javax.jcr.Property;
+import javax.jcr.RepositoryException;
+import javax.jcr.ValueFormatException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Stack;
+
+import static com.percussion.utils.xml.PSSaxHelper.canBeSelfClosedElement;
+import static com.percussion.utils.xml.PSSaxHelper.newSAXParser;
 
 /**
  * Jexl methods for paginating content items.
@@ -233,8 +232,7 @@ public class PSPaginateUtils extends PSJexlUtilBase
     */
    private List<IPSAssemblyItem> getSlotContents(IPSAssemblyItem item,
          String slotName, Map<String, Object> params)
-      throws PSAssemblyException, PSFilterException, RepositoryException
-   {
+           throws PSAssemblyException, PSFilterException, RepositoryException, PSNotFoundException {
       if (item == null)
       {
          throw new IllegalArgumentException("item may not be null");
@@ -287,13 +285,12 @@ public class PSPaginateUtils extends PSJexlUtilBase
          @IPSJexlParam(name = "params", description = "optional parameters to pass to the slot") }, returns = "how many pages worth of items are in the slot")
    public Number slotContentPageCount(IPSAssemblyItem item, String slotName,
          int itemsPerPage, Map<String, Object> params)
-      throws PSAssemblyException, PSFilterException, RepositoryException
-   {
+           throws PSAssemblyException, PSFilterException, RepositoryException, PSNotFoundException {
       if (itemsPerPage <= 0)
          throw new IllegalArgumentException("itemsPerPage must be > 0.");
       
       List<IPSAssemblyItem> items = getSlotContents(item, slotName, params);
-      if (items.size() == 0)
+      if (items.isEmpty())
       {
          return 1;
       }
