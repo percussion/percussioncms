@@ -23,10 +23,6 @@
  */
 package com.percussion.activity.service.impl;
 
-import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_STATE_ARCHIVE;
-import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_STATE_LIVE;
-import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_TAKE_DOWN_TRANSITION;
-
 import com.percussion.activity.data.PSContentTraffic;
 import com.percussion.activity.data.PSContentTrafficRequest;
 import com.percussion.activity.data.PSTrafficDetails;
@@ -45,9 +41,11 @@ import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.data.PSItemProperties;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.utils.date.PSDateRange;
+import org.apache.commons.lang.StringUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -58,7 +56,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_STATE_ARCHIVE;
+import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_STATE_LIVE;
+import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_TAKE_DOWN_TRANSITION;
 
 /**
  * The traffic data service.  This service provides actual data.
@@ -85,8 +85,7 @@ public class PSTrafficService implements IPSTrafficService
         this.pageService = pageService;
     }
     
-    public PSContentTraffic getContentTraffic(PSContentTrafficRequest request) 
-    {
+    public PSContentTraffic getContentTraffic(PSContentTrafficRequest request) throws PSTrafficServiceException {
         PSContentTraffic results = new PSContentTraffic();
 
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -194,8 +193,7 @@ public class PSTrafficService implements IPSTrafficService
         return results;
     }
 
-    public List<PSTrafficDetails> getTrafficDetails(PSTrafficDetailsRequest request) 
-    {
+    public List<PSTrafficDetails> getTrafficDetails(PSTrafficDetailsRequest request) throws PSTrafficServiceException, PSDataServiceException, IPSPathService.PSPathServiceException {
         //Create PSDateRange
         PSDateRange range;
         try

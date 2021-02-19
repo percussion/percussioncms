@@ -53,8 +53,6 @@ public class PSEffectivenessService implements IPSEffectivenessService
         this.activityService = activityService;
         this.analyticsService = analyticsService;
     }
-    
-    @SuppressWarnings("unchecked")
     public List<PSEffectiveness> getEffectiveness(PSEffectivenessRequest request, List<PSContentActivity> activity)
         throws PSAnalyticsProviderException
     {

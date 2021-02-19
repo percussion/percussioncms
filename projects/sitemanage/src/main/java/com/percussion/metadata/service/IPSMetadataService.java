@@ -24,6 +24,7 @@
 package com.percussion.metadata.service;
 
 import com.percussion.metadata.data.PSMetadata;
+import com.percussion.share.dao.IPSGenericDao;
 
 import java.util.Collection;
 
@@ -40,7 +41,7 @@ public interface IPSMetadataService
     * @return may be <code>null</code> if no matching entry was found in the
     * database.
     */
-   public PSMetadata find(String key);
+   public PSMetadata find(String key) throws IPSGenericDao.LoadException;
    
    /**
     * Locate all metadata objects by a key prefix. So to retrieve all of the objects with the
@@ -49,26 +50,26 @@ public interface IPSMetadataService
     * @return a collection containing all of the located metadata objects, will
     * be empty if none were found. Never <code>null</code>.
     */
-   public Collection<PSMetadata> findByPrefix(String prefix);
+   public Collection<PSMetadata> findByPrefix(String prefix) throws IPSGenericDao.LoadException;
    
    /**
     * Saves the passed in metadata object to the repository, replacing any existing
     * entry that uses the same key or creating a new entry if one does not yet exist.
     * @param data the metadata object to be saved, cannot be <code>null</code>.
     */
-   public void save(PSMetadata data);
+   public void save(PSMetadata data) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException;
    
    /**
     * Deletes the metadata object specified by the passed in key if it exists.
     * @param key the unique key used to delete the metadata object. Cannot
     * be <code>null</code> or empty. 
     */
-   public void delete(String key);
+   public void delete(String key) throws IPSGenericDao.LoadException, IPSGenericDao.DeleteException;
    
    /**
     * Deletes all metadata objects who's key starts with the specified prefix.
     * @param prefix the key prefix, cannot be <code>null</code> or empty.
     */
-   public void deleteByPrefix(String prefix);
+   public void deleteByPrefix(String prefix) throws IPSGenericDao.DeleteException, IPSGenericDao.LoadException;
    
 }

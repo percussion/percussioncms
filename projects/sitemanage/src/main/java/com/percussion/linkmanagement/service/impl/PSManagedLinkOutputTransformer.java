@@ -25,7 +25,6 @@
 package com.percussion.linkmanagement.service.impl;
 
 import com.percussion.data.PSConversionException;
-import com.percussion.design.objectstore.PSLocator;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSFieldOutputTransformer;
 import com.percussion.extension.PSDefaultExtension;
@@ -33,13 +32,11 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionParams;
 import com.percussion.linkmanagement.service.IPSManagedLinkService;
 import com.percussion.server.IPSRequestContext;
-import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Field output transformer to update the managed links on edit. This is a thin wrapper, calls the managedlink service to do the actual work.

@@ -35,6 +35,7 @@ import com.percussion.services.workflow.data.PSState;
 import com.percussion.share.async.impl.PSAsyncJob;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.user.service.IPSUserService;
 import com.percussion.user.service.impl.PSUserService;
 import com.percussion.utils.guid.IPSGuid;
@@ -156,8 +157,7 @@ public class PSBulkApprovalJob extends PSAsyncJob
      * @param item assumed not <code>null</code>
      * @return true if it is checked out by someone else.
      */
-    private boolean isCheckedOutByOthers(PSApprovableItem item)
-    {
+    private boolean isCheckedOutByOthers(PSApprovableItem item) throws PSValidationException {
         boolean result = false;
         if(workflowHelper.isCheckedOutToSomeoneElse((item.getId())))
         {
@@ -173,8 +173,7 @@ public class PSBulkApprovalJob extends PSAsyncJob
      * @param item assumed not <code>null</code>
      * @return true if the user has approve transition.
      */
-    private boolean hasApproveTransition(PSApprovableItem item)
-    {
+    private boolean hasApproveTransition(PSApprovableItem item) throws PSValidationException {
         if(isAdmin)
             return true;
         boolean result = true;
@@ -191,11 +190,10 @@ public class PSBulkApprovalJob extends PSAsyncJob
     /**
      * Helper method to check whether user has at least write permission to the parent folder. 
      * If user doesn't have the access then updates the item status and error message.
-     * @param itemId assumed not <code>null</code>.
+     * @param item assumed not <code>null</code>.
      * @return true if user has at least write access or false.
      */
-    private boolean hasFolderAccess(PSApprovableItem item)
-    {
+    private boolean hasFolderAccess(PSApprovableItem item) throws PSValidationException {
         if(isAdmin)
             return true;
         //check folder permission
@@ -222,8 +220,7 @@ public class PSBulkApprovalJob extends PSAsyncJob
      * @param item assumed not <code>null</code>
      * @return true if the item is already in approved state.
      */
-    private boolean isInApprovedState(PSApprovableItem item)
-    {
+    private boolean isInApprovedState(PSApprovableItem item) throws PSValidationException {
         boolean result = false;
         if(workflowHelper.isLive(item.getId()) || workflowHelper.isPending(item.getId()))
         {
