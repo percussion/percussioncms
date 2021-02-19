@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -29,14 +29,14 @@ import com.percussion.services.assembly.IPSSlotContentFinder;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.jexl.PSAssemblerUtils;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.util.IPSHtmlParameters;
 
+import javax.jcr.RepositoryException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.jcr.RepositoryException;
 
 /**
  * The base slot content finder provides the common functionality needed by each
@@ -63,11 +63,9 @@ implements IPSSlotContentFinder
     *      com.percussion.services.assembly.IPSTemplateSlot, java.util.Map)
     */
    @Override
-   @SuppressWarnings("unchecked")
    public List<IPSAssemblyItem> find(IPSAssemblyItem sourceItem,
          IPSTemplateSlot slot, Map<String, Object> selectors)
-         throws RepositoryException, PSFilterException, PSAssemblyException
-   {
+           throws RepositoryException, PSFilterException, PSAssemblyException, PSNotFoundException {
       Map<String, Object> params = mergeParameters(slot, selectors);
       return super.find(sourceItem, slot, params);
    }
