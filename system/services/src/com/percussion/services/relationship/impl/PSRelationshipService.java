@@ -99,8 +99,8 @@ public class PSRelationshipService
          return findPersistedRids(testedIds);
 
       // otherwise, process the IDs in groups
-      List<Integer> returnIds = new ArrayList<Integer>();
-      List<Integer> groupIds = new ArrayList<Integer>();
+      List<Integer> returnIds = new ArrayList<>();
+      List<Integer> groupIds = new ArrayList<>();
       for (Integer rid : testedIds)
       {
          groupIds.add(rid);
@@ -185,9 +185,9 @@ public class PSRelationshipService
          return Collections.singletonList(filter);
       }
 
-      List<PSRelationshipFilter> filters = new ArrayList<PSRelationshipFilter>();
+      List<PSRelationshipFilter> filters = new ArrayList<>();
       PSRelationshipFilter f;
-      Set<PSLocator> deps = new HashSet<PSLocator>();
+      Set<PSLocator> deps = new HashSet<>();
       for(PSLocator loc : dependents)
       {
          deps.add(loc);
@@ -197,7 +197,7 @@ public class PSRelationshipService
             f.setDependents(null); // force to reset the dependents
             f.setDependents(deps);
             filters.add(f);
-            deps = new HashSet<PSLocator>();
+            deps = new HashSet<>();
          }
       }
       if (!deps.isEmpty())
@@ -231,7 +231,7 @@ public class PSRelationshipService
    private List<PSRelationship> postProcessResultList(
            List<PSRelationshipData> relsData, IPSQueryHelper qryHelper)
    {
-      List<PSRelationship> rels = new ArrayList<PSRelationship>(relsData
+      List<PSRelationship> rels = new ArrayList<>(relsData
               .size());
       boolean filterOwnerRev = qryHelper.mayFilterOwnerRev();
       boolean filterDepedentRev = qryHelper.mayFilterDependentRev();
@@ -584,8 +584,8 @@ public class PSRelationshipService
       PSRelationshipCommandHandler.loadConfigs();
 
       // initialize the m_configMap
-      configMap = new HashMap<Integer, PSRelationshipConfig>();
-      nameMapToId = new HashMap<String, Integer>();
+      configMap = new HashMap<>();
+      nameMapToId = new HashMap<>();
 
       IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
       Collection<PSRelationshipConfigName> configNames = objMgr

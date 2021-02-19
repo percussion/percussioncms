@@ -114,5 +114,5 @@ public class PSRhythmyxInfo implements IPSRhythmyxInfo
    /**
     * Map of the Rhythmyx information properties. Access must be synchronized.
     */
-   private Map<Key, Object> m_propMap = new HashMap<Key, Object>();
+   private Map<Key, Object> m_propMap = new HashMap<>();
 }

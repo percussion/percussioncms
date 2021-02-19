@@ -193,7 +193,7 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
          if (!StringUtils.isBlank(namespaces))
          {
             String tokens[] = namespaces.split(",");
-            pset = new HashSet<String>();
+            pset = new HashSet<>();
             for (String p : tokens)
             {
                pset.add(p);

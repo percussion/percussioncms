@@ -106,12 +106,12 @@ public class PSTouchItemConfigBean
    /**
     * See {@link #getSourceTypes()}.
     */
-   private Set<String> sourceTypes = new HashSet<String>();
+   private Set<String> sourceTypes = new HashSet<>();
    
    /**
     * See {@link #getTargetTypes()}.
     */
-   private Set<String> targetTypes = new HashSet<String>();
+   private Set<String> targetTypes = new HashSet<>();
    
    /**
     * See {@link #getLevel()}.

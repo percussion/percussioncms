@@ -226,7 +226,7 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
    {
       String sql = "";
       int count = 0;
-      List<String> results = new ArrayList<String>();
+      List<String> results = new ArrayList<>();
       // union will automatically remove duplicates.
       for (PSHashedColumn column : columns)
       {

@@ -117,7 +117,7 @@ public class PSWorkflowService
 
       static
       {
-         List<String> tables = new ArrayList<String>();
+         List<String> tables = new ArrayList<>();
          for (Class c : msi_involvedObjects)
          {
             Table t = (Table) c.getAnnotation(Table.class);
@@ -161,7 +161,7 @@ public class PSWorkflowService
                   + "empty");
          }
          
-         List<String> columns = new ArrayList<String>();
+         List<String> columns = new ArrayList<>();
          columns.add(WORKFLOW_ID_COLUMN);
          
          return columns.iterator();
@@ -253,7 +253,7 @@ public class PSWorkflowService
          .add(Projections.property("id")));
 
       List<Object> queryResults = c.list();
-      List<PSObjectSummary> sums = new ArrayList<PSObjectSummary>(queryResults.size());
+      List<PSObjectSummary> sums = new ArrayList<>(queryResults.size());
       for (Object o : queryResults)
       {
          Object[] oa = (Object[]) o;
@@ -615,7 +615,7 @@ public class PSWorkflowService
    @Transactional
    public List<PSWorkflow> findWorkflowsByName(String name)
    {
-      List<PSWorkflow> workflows = new ArrayList<PSWorkflow>();
+      List<PSWorkflow> workflows = new ArrayList<>();
       List<PSObjectSummary> sums = findWorkflowSummariesByName(name);
       for (PSObjectSummary sum : sums)
       {
@@ -877,9 +877,9 @@ public class PSWorkflowService
    {
       Session s = sessionFactory.getCurrentSession();
 
-         List<PSContentWorkflowState> rval = new ArrayList<PSContentWorkflowState>();
+         List<PSContentWorkflowState> rval = new ArrayList<>();
          // Extract content ids
-         Map<Integer, IPSGuid> cidToGuid = new HashMap<Integer, IPSGuid>();
+         Map<Integer, IPSGuid> cidToGuid = new HashMap<>();
          for (IPSGuid contentid : contentids)
          {
             PSLegacyGuid lg = (PSLegacyGuid) contentid;

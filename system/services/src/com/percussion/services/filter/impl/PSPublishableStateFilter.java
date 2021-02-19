@@ -55,7 +55,7 @@ public class PSPublishableStateFilter extends PSBaseFilter
          throw new PSFilterException(IPSFilterServiceErrors.ARGUMENT_MISSING, 
                null, "sys_flagValues", "sys_filterByFolderPaths");
       }
-      List<String> flags = new ArrayList<String>();
+      List<String> flags = new ArrayList<>();
       
       for(String f : flagstr.split(","))
       {

@@ -113,7 +113,7 @@ public class PSSiteHelper
          context = sitemgr.loadContext(contextstr);
       }
       Set<String> names = site.getPropertyNames(context.getGUID());
-      Map<String, String> rval = new HashMap<String, String>();
+      Map<String, String> rval = new HashMap<>();
       for (String name : names)
       {
          rval.put(name, site.getProperty(name, context.getGUID()));

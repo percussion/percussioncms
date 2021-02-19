@@ -135,7 +135,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       long navonTypeId = navService.getNavonContentTypeId();
       long navTreeTypeId = navService.getNavtreeContentTypeId();
 
-      List<Integer> typeFilter = new ArrayList<Integer>();
+      List<Integer> typeFilter = new ArrayList<>();
       typeFilter.add((int) navonTypeId);
       typeFilter.add((int) navTreeTypeId);
       return typeFilter;
@@ -213,8 +213,8 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       Session session = sessionFactory.getCurrentSession();
       
       int count = 0;
-      Map<Integer, List<String>> contentTypeTableMap = new HashMap<Integer, List<String>>();
-      Set<Integer> ids = new HashSet<Integer>();
+      Map<Integer, List<String>> contentTypeTableMap = new HashMap<>();
+      Set<Integer> ids = new HashSet<>();
       for (PSLocator item : items)
       {
          ids.add(item.getId());
@@ -225,7 +225,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       // Get the type tables first. if there are any errors we will throw
       // exception before any relationships
       // processed.
-      List<String> qualifiedTables = new ArrayList<String>();
+      List<String> qualifiedTables = new ArrayList<>();
 
       for (int typeId : contentTypeMap.keySet())
       {
@@ -233,7 +233,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
 
          PSItemDefinition itemDef = itemDefMgr.getItemDef(typeId, -1);
          List<PSBackEndTable> tables = itemDef.getTypeTables();
-         List<String> tableKeys = new ArrayList<String>();
+         List<String> tableKeys = new ArrayList<>();
          for (PSBackEndTable table : tables)
          {
             tableKeys.add(table.getTable());
@@ -263,7 +263,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
 
                List<String> tables = contentTypeTableMap.get(typeId);
 
-               Set<Integer> batch = new HashSet<Integer>();
+               Set<Integer> batch = new HashSet<>();
                for (int id : contentTypeMap.get(typeId))
                {
                   batch.add(id);
@@ -406,7 +406,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
                + "less than keepRevsYoungerThanDays");
       }
 
-      Map<Integer, List<Table>> contentTypeMap = new HashMap<Integer, List<Table>>();
+      Map<Integer, List<Table>> contentTypeMap = new HashMap<>();
       PSItemDefManager itemDefMgr = PSItemDefManager.getInstance();
       Session session = null;
       PreparedStatement pst = null;
@@ -437,7 +437,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
             int contentTypeId = (Integer)rs.next();
             PSItemDefinition itemDef = itemDefMgr.getItemDef(contentTypeId, -1);
             List<PSBackEndTable> tables = itemDef.getTypeTables();
-            List<Table> tableList = new ArrayList<Table>();
+            List<Table> tableList = new ArrayList<>();
             for (PSBackEndTable table : tables)
             {
                String qName = qualify(table.getTable());
@@ -710,7 +710,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       // process any folder items
       if (contentTypeMap.get(FOLDER_CONTENT_TYPE_ID).size() > 0)
       {
-         Map<Integer, Set<Integer>> folderContentTypeMap = new HashMap<Integer, Set<Integer>>();
+         Map<Integer, Set<Integer>> folderContentTypeMap = new HashMap<>();
 
          createContentTypeFolderMap(getDependents(contentTypeMap.get(FOLDER_CONTENT_TYPE_ID)), folderContentTypeMap,
                typeFilter);
@@ -773,7 +773,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       {
          if (!contentTypeMap.containsKey(entry.getKey()))
          {
-            contentTypeMap.put(entry.getKey(), new HashSet<Integer>());
+            contentTypeMap.put(entry.getKey(), new HashSet<>());
          }
          contentTypeMap.get(entry.getKey()).addAll(entry.getValue());
       }
@@ -803,7 +803,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
             // Folders should never be in more than one folder
             if (entry.getKey() != FOLDER_CONTENT_TYPE_ID)
             {
-               Set<Integer> removeItems = new HashSet<Integer>();
+               Set<Integer> removeItems = new HashSet<>();
 
                for (int id : entry.getValue())
                {
@@ -849,8 +849,8 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
     */
    private Map<Integer, Set<Integer>> createContentTypeMap(Set<Integer> ids, List<Integer> typeFilter)
    {
-      Map<Integer, Set<Integer>> contentTypeMap = new HashMap<Integer, Set<Integer>>();
-      contentTypeMap.put(FOLDER_CONTENT_TYPE_ID, new HashSet<Integer>());
+      Map<Integer, Set<Integer>> contentTypeMap = new HashMap<>();
+      contentTypeMap.put(FOLDER_CONTENT_TYPE_ID, new HashSet<>());
       IPSCmsContentSummaries summ = PSCmsContentSummariesLocator.getObjectManager();
 
       List<PSComponentSummary> itemSum = summ.loadComponentSummaries(ids);
@@ -865,7 +865,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
             Set<Integer> typeList = contentTypeMap.get(typeId);
             if (typeList == null)
             {
-               typeList = new HashSet<Integer>();
+               typeList = new HashSet<>();
                contentTypeMap.put(typeId, typeList);
             }
             typeList.add(item.getContentId());
@@ -900,7 +900,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
             Set<Integer> typeList = contentTypeMap.get(typeId);
             if (typeList == null)
             {
-               typeList = new HashSet<Integer>();
+               typeList = new HashSet<>();
                contentTypeMap.put(typeId, typeList);
             }
             typeList.add(item.getContentId());
@@ -915,7 +915,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       }
       if (contentTypeMap.get(FOLDER_CONTENT_TYPE_ID) == null)
       {
-         contentTypeMap.put(FOLDER_CONTENT_TYPE_ID, new HashSet<Integer>());
+         contentTypeMap.put(FOLDER_CONTENT_TYPE_ID, new HashSet<>());
       }
    }
 
@@ -940,7 +940,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
     */
    private Set<Integer> getDependents(Set<Integer> ids) throws PSCmsException
    {
-      Set<Integer> dependents = new HashSet<Integer>();
+      Set<Integer> dependents = new HashSet<>();
       for (int id : ids)
       {
          PSRequest req = (PSRequest) PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
@@ -1041,7 +1041,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       
       
       PSItemSummaryCache itemCache = PSItemSummaryCache.getInstance();
-      Map<String, String> cacheData = new HashMap<String,String>();
+      Map<String, String> cacheData = new HashMap<>();
       // Notify purge event.
       for (int id : filteredIds)
       {

@@ -81,7 +81,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    
    static
    {
-      List<String> allUsers = new ArrayList<String>();
+      List<String> allUsers = new ArrayList<>();
       for (int i = 0; i < GROUPMEMBERS.length; i++)
       {
          for (int j = 0; j < GROUPMEMBERS[i].length; j++)
@@ -135,7 +135,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    public List<Subject> findUsers(List<String> names)
       throws PSSecurityCatalogException
    {
-      List<Subject> results = new ArrayList<Subject>();
+      List<Subject> results = new ArrayList<>();
       
       Boolean[] matches = new Boolean[ALLUSERS.length];
       boolean allMatch = false;
@@ -166,7 +166,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
             Subject sub = createSubject(ALLUSERS[i]);
             
             // add email attribute
-            List<String> values = new ArrayList<String>();
+            List<String> values = new ArrayList<>();
             String addr;
             if (m_emailAddress != null)
                addr = "\"" + ALLUSERS[i] + "\"<" + m_emailAddress + ">";
@@ -237,7 +237,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    public List<Principal> findGroups(String pattern)
       throws PSSecurityCatalogException
    {
-      List<Principal> results = new ArrayList<Principal>();
+      List<Principal> results = new ArrayList<>();
       if (!m_supportsGroups)
          return results;
       
@@ -277,12 +277,12 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
       if (groups == null)
          throw new IllegalArgumentException("groups may not be null");
       
-      List<IPSTypedPrincipal> results = new ArrayList<IPSTypedPrincipal>();
+      List<IPSTypedPrincipal> results = new ArrayList<>();
       if (!m_supportsGroups)
          return results;
       
       // copy list for removing during traversal
-      List<Principal> testGroups = new ArrayList<Principal>(groups);
+      List<Principal> testGroups = new ArrayList<>(groups);
       for (Principal group : testGroups)
       {
          for (int i = 0; i < GROUPS.length; i++)
@@ -311,7 +311,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
       if (user == null)
          throw new IllegalArgumentException("user may not be null");
       
-      List<Principal> results = new ArrayList<Principal>();
+      List<Principal> results = new ArrayList<>();
       if (!m_supportsGroups)
          return results;
       
