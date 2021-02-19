@@ -200,7 +200,7 @@ public class PSCheckboxTreeApplet extends JApplet implements Runnable
    protected Map<String, String> getExtraParameters()
    {
       if (m_parameters == null)
-         m_parameters = new HashMap<String, String>();
+         m_parameters = new HashMap<>();
       
       return m_parameters;
    }
@@ -323,7 +323,7 @@ public class PSCheckboxTreeApplet extends JApplet implements Runnable
     */
    private List<String> getSelectedNodes()
    {
-      List<String> selectedList = new ArrayList<String>();
+      List<String> selectedList = new ArrayList<>();
       
       PSCheckboxTreeRootNode rootNode = 
          (PSCheckboxTreeRootNode) m_tree.getModel().getRoot();
@@ -353,7 +353,7 @@ public class PSCheckboxTreeApplet extends JApplet implements Runnable
       if (delimitedString == null)
          throw new IllegalArgumentException("delimitedString cannot be null");
       
-      List<String> tokenList = new ArrayList<String>();
+      List<String> tokenList = new ArrayList<>();
 
       StringTokenizer tokens = new StringTokenizer(delimitedString, ",;");
       while (tokens.hasMoreTokens())
