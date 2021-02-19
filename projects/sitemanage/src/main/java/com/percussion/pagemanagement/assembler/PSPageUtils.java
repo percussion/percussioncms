@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -333,40 +333,70 @@ public class PSPageUtils extends PSJexlUtilBase
             {@IPSJexlParam(name = "sitename", description = "The name of the site to load the login page property")}, returns = "String")
     public String getSiteLoginPage(String sitename)
     {
-        IPSSite site = siteMgr.loadSite(sitename);
-        return site.getLoginPage();
+        try {
+            IPSSite site = siteMgr.loadSite(sitename);
+            return site.getLoginPage();
+        } catch (com.percussion.services.error.PSNotFoundException e) {
+            log.error(LOG_ERROR_DEFAULT,"getSiteLoginPage",e.getMessage());
+            log.debug(e.getMessage(),e);
+            return "";
+        }
     }
 
     @IPSJexlMethod(description = "Renders a relative path to the registration page", params =
             {@IPSJexlParam(name = "sitename", description = "The name of the site to load the registration page property")}, returns = "String")
     public String getSiteRegistrationPage(String sitename)
     {
-        IPSSite site = siteMgr.loadSite(sitename);
-        return site.getRegistrationPage();
+        try {
+            IPSSite site = siteMgr.loadSite(sitename);
+            return site.getRegistrationPage();
+        } catch (com.percussion.services.error.PSNotFoundException e) {
+            log.error(LOG_ERROR_DEFAULT,"getSiteRegistrationPage",e.getMessage());
+            log.debug(e.getMessage(),e);
+            return "";
+        }
     }
 
     @IPSJexlMethod(description = "Renders a relative path to the registration confirmation page", params =
             {@IPSJexlParam(name = "sitename", description = "The name of the site to load the registration confirmation page property")}, returns = "String")
     public String getSiteRegistrationConfirmationPage(String sitename)
     {
-        IPSSite site = siteMgr.loadSite(sitename);
-        return site.getRegistrationConfirmationPage();
+        try {
+            IPSSite site = siteMgr.loadSite(sitename);
+            return site.getRegistrationConfirmationPage();
+        } catch (com.percussion.services.error.PSNotFoundException e) {
+            log.error(LOG_ERROR_DEFAULT,"getSiteRegistrationConfirmationPage",e.getMessage());
+            log.debug(e.getMessage(),e);
+            return "";
+        }
     }
 
     @IPSJexlMethod(description = "Renders a relative path to the reset page", params =
             {@IPSJexlParam(name = "sitename", description = "The name of the site to load the reset page property")}, returns = "String")
     public String getSiteResetPage(String sitename)
     {
-        IPSSite site = siteMgr.loadSite(sitename);
-        return site.getResetPage();
+        try {
+            IPSSite site = siteMgr.loadSite(sitename);
+            return site.getResetPage();
+        } catch (com.percussion.services.error.PSNotFoundException e) {
+            log.error(LOG_ERROR_DEFAULT,"getSiteResetPage",e.getMessage());
+            log.debug(e.getMessage(),e);
+            return "";
+        }
     }
 
     @IPSJexlMethod(description = "Renders a relative path to the reset request password page", params =
             {@IPSJexlParam(name = "sitename", description = "The name of the site to load the reset request password page property")}, returns = "String")
     public String getSiteResetRequestPasswordPage(String sitename)
     {
-        IPSSite site = siteMgr.loadSite(sitename);
-        return site.getResetRequestPasswordPage();
+        try {
+            IPSSite site = siteMgr.loadSite(sitename);
+            return site.getResetRequestPasswordPage();
+        } catch (com.percussion.services.error.PSNotFoundException e) {
+            log.error(LOG_ERROR_DEFAULT,"getSiteResetPage",e.getMessage());
+            log.debug(e.getMessage(),e);
+            return "";
+        }
     }
 
     @IPSJexlMethod(description = "Create a clone of the current assemblyItem if an id is passed the clone will be modified to that id.", params =

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -64,6 +64,7 @@ import com.percussion.share.async.IPSAsyncJob;
 import com.percussion.share.async.IPSAsyncJobService;
 import com.percussion.share.async.PSAsyncJobStatus;
 import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSDataItemSummary;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.IPSDataItemSummaryService;
@@ -1036,7 +1037,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
 
     
     @Override
-    public boolean isStagingOptionAvailable(String id) throws PSValidationException {
+    public boolean isStagingOptionAvailable(String id) throws PSValidationException, IPSGenericDao.LoadException {
         boolean result = false;
         PSComponentSummary sum = workflowHelper.getComponentSummary(id);
         if(workflowHelper.isItemInStagingState(sum.getContentId()))
@@ -1051,7 +1052,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     }
     
     @Override
-    public boolean isRemoveFromStagingOptionAvailable(String id) throws PSValidationException {
+    public boolean isRemoveFromStagingOptionAvailable(String id) throws PSValidationException, IPSGenericDao.LoadException {
         boolean result = false;
         PSComponentSummary sum = workflowHelper.getComponentSummary(id);
         if(workflowHelper.isArchived(id))

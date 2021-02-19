@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -36,8 +36,8 @@ import com.percussion.delivery.utils.security.PSSecureProperty;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.springframework.context.ApplicationContext;
@@ -76,7 +76,7 @@ public class PSCacheManager implements IPSCacheManager
     /**
      * Log for this class.
      */
-    private Log log = LogFactory.getLog(getClass());
+    private static final Logger log = LogManager.getLogger(PSCacheManager.class);
     
     /**
      * Cache configuration content. It's quietly closed once
@@ -376,12 +376,7 @@ public class PSCacheManager implements IPSCacheManager
             this.cacheConfig = PSJaxbUtils.unmarshall(cacheConfigStream, PSCacheConfig.class, true);
             
             log.info("Cache manager configuration loaded successfully");
-        }
-        catch (FileNotFoundException e)
-        {
-            log.error("Configuration XML file was not found", e);
-        }
-        catch (UnmarshalException e)
+        } catch (UnmarshalException e)
         {
             String message = e.getMessage();
             

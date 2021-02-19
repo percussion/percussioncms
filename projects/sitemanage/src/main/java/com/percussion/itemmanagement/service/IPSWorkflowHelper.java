@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,12 +25,11 @@ package com.percussion.itemmanagement.service;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.itemmanagement.data.PSItemStateTransition;
-import com.percussion.services.content.data.PSItemStatus;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.workflow.data.PSState;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.webservices.content.IPSContentWs;
 
 import java.util.List;
 import java.util.Set;
@@ -267,7 +266,7 @@ public interface IPSWorkflowHelper
      * @param workflowId must not be <code>null</code>.
      * @return Returns a list of staging enabled role names, never <code>null</code> may be empty.
      */
-    public List<String> getStagingRoles(int workflowId);
+    public List<String> getStagingRoles(int workflowId) throws IPSGenericDao.LoadException;
     
     
     enum PSItemTypeEnum{

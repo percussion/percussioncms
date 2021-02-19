@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,12 +24,12 @@
 package com.percussion.services.assembly;
 
 import com.percussion.extension.IPSExtension;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.PSFilterException;
 
+import javax.jcr.RepositoryException;
 import java.util.List;
 import java.util.Map;
-
-import javax.jcr.RepositoryException;
 
 /**
  * Content finders calculate what items are related to a particular content item.
@@ -85,5 +85,5 @@ public interface IPSContentFinder<T extends Object> extends IPSExtension
     */
    List<IPSAssemblyItem> find(IPSAssemblyItem sourceItem, T target,
          Map<String, Object> parameters) throws RepositoryException,
-         PSFilterException, PSAssemblyException;
+           PSFilterException, PSAssemblyException, PSNotFoundException;
 }
