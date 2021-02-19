@@ -1067,7 +1067,7 @@ public abstract class PSWebdavMethod
          if (parent == null)
             throw new IllegalArgumentException("parent may not be null");
          
-         ArrayList<PSLocator> children = new ArrayList<PSLocator>();
+         ArrayList<PSLocator> children = new ArrayList<>();
          children.add((PSLocator)target.getLocator());
          agent.removeComponentsFromFolder(parent.getLocator(),
                children);
