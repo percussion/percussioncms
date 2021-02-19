@@ -14,8 +14,8 @@
 	    <property name="username" value="${db.username}" />
 	    <property name="password" value="${db.password}" />
 		<property name="driverClassName" value="${jdbcDriver}" />
-		<property name="connectionTestQuery" value="SELECT 1" />
 		<property name="maximumPoolSize" value="${maximumPoolSize}" />
+		<property name="transactionIsolation" value="TRANSACTION_READ_UNCOMMITTED" />
 	</bean>
 
    <!-- DataSource -->
@@ -30,10 +30,6 @@
          <props>
             <prop key="hibernate.hbm2ddl.auto">update</prop>
             <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-            <!--
-            	There is some EL embedded in the key. This is needed to avoid
-            	Hibernate to set the default_schema when it's empty.
-           	 -->
             <prop key="hibernate.default_schema#{'${db.schema}'.length() == 0 ? '.null' : ''}">${db.schema}</prop>  
             <prop key="hibernate.query.substitutions">${hibernate.query.substitutions}</prop>
             <prop key="hibernate.show_sql">false</prop>
@@ -47,10 +43,10 @@
 			<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
 			<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.internal.EhcacheRegionFactory</prop>
 			<prop key="hibernate.id.new_generator_mappings">${hibernate.id.new_generator_mappings}</prop>
-            <!-- Set to false if seeing performance issues / locking issues in metadata -->
-            <prop key="hibernate.connection.sendStringParametersAsUnicode">true</prop>
+            <prop key="hibernate.connection.sendStringParametersAsUnicode">false</prop>
             <prop key="hibernate.query.in_clause_parameter_padding">true</prop>
             <prop key="hibernate.criteria.literal_handling_mode">bind</prop>
+            <prop key="hibernate.connection.transactionIsolation">1</prop>
          </props>
       </property>
    </bean>
