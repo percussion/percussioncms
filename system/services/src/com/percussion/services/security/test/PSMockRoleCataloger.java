@@ -107,7 +107,7 @@ public class PSMockRoleCataloger implements IPSRoleCataloger
          throw new IllegalArgumentException(
             "roleName may not be null or empty");
       
-      Set<IPSTypedPrincipal> members = new HashSet<IPSTypedPrincipal>();
+      Set<IPSTypedPrincipal> members = new HashSet<>();
       
       for (int i = 0; i < ROLES.length; i++)
       {
@@ -131,7 +131,7 @@ public class PSMockRoleCataloger implements IPSRoleCataloger
       if (user == null)
          throw new IllegalArgumentException("user may not be null");
       
-      Set<String> roles = new HashSet<String>();
+      Set<String> roles = new HashSet<>();
       
       for (int i = 0; i < ROLEMEMBERS.length; i++)
       {

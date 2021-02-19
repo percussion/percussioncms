@@ -126,7 +126,7 @@ public class PSTouchItemService
       if (!requireExtendedTouchItems(rel))
          return 0;
       
-      Collection<Integer> touchedItems = new HashSet<Integer>();
+      Collection<Integer> touchedItems = new HashSet<>();
       
       PSLocator depLoc = rel.getDependent();
       if (rel.getDependentObjectType() == TYPE_FOLDER)
@@ -174,7 +174,7 @@ public class PSTouchItemService
       
       if (impact.isImpactItem)
       {
-         Collection<Integer> touchedItems = new HashSet<Integer>();
+         Collection<Integer> touchedItems = new HashSet<>();
          touchedItems.add(((PSLegacyGuid) id).getContentId());
          
          count += touchItems(id, impact.levelTargetTypesMap, touchedItems,
@@ -202,7 +202,7 @@ public class PSTouchItemService
          Collection<PSLocator> ids = folderProcessor.getDescendantFoldersWithItems(defId);
          List<IPSSite> sites = msg.getItemSites(new PSLegacyGuid(defId));
 
-         List<Integer> folderIds = new ArrayList<Integer>();
+         List<Integer> folderIds = new ArrayList<>();
          for (PSLocator loc : ids)
             folderIds.add(loc.getId());
          for (IPSSite site : sites)
@@ -252,7 +252,7 @@ public class PSTouchItemService
          boolean touchLandingPages)
    {
       List<IPSGuid> nodeIds = navService.findDescendantNavonIds(id);
-      List<Integer> ids = new ArrayList<Integer>();
+      List<Integer> ids = new ArrayList<>();
       
       for (IPSGuid nodeId : nodeIds)
       {
@@ -300,7 +300,7 @@ public class PSTouchItemService
       PSRelationshipFilter filter = new PSRelationshipFilter();
       filter.setName(PSRelationshipFilter.FILTER_NAME_ACTIVE_ASSEMBLY);
       
-      List<IPSGuid> ownerIds = new ArrayList<IPSGuid>();
+      List<IPSGuid> ownerIds = new ArrayList<>();
       for (IPSGuid id : ids)
       {
          try
@@ -314,7 +314,7 @@ public class PSTouchItemService
          }
       }
       
-      Set<Integer> idSet = new HashSet<Integer>();
+      Set<Integer> idSet = new HashSet<>();
       
       if (!ownerIds.isEmpty())
       {
@@ -440,7 +440,7 @@ public class PSTouchItemService
        */
       public boolean isImpactItem = false;
       public Map<Integer, Set<String>> levelTargetTypesMap =
-         new HashMap<Integer, Set<String>>();
+         new HashMap<>();
       public boolean hasImpact() {
          return (isNavItem || isLandingPage || isImpactItem);
       }
@@ -507,7 +507,7 @@ public class PSTouchItemService
          
          if (touchAAParents)
          {
-            Set<IPSGuid> guids = new HashSet<IPSGuid>();
+            Set<IPSGuid> guids = new HashSet<>();
             for (Integer contentId : contentIds)
             {
                guids.add(childMap.get(contentId));
@@ -577,7 +577,7 @@ public class PSTouchItemService
    private Map<Integer, IPSGuid> findFolderChildrenByTypes(PSLocator parent,
          Collection<String> typeNames)
    {
-      Map<Integer, IPSGuid> childMap = new HashMap<Integer, IPSGuid>();
+      Map<Integer, IPSGuid> childMap = new HashMap<>();
       
       for (PSItemSummary item : findFolderChildren(parent))
       {

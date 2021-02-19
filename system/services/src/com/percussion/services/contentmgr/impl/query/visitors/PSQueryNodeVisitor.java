@@ -110,7 +110,7 @@ public abstract class PSQueryNodeVisitor
       {
          throw new IllegalArgumentException("functionNode may not be null");
       }
-      List<IPSQueryNode> params = new ArrayList<IPSQueryNode>();
+      List<IPSQueryNode> params = new ArrayList<>();
       int count = functionNode.getParameterCount();
       for (int i = 0; i < count; i++)
       {

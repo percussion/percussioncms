@@ -60,7 +60,7 @@ public class PSQueryNodeIterator extends PSCollectionRangeIterator<IPSGuid>
          throw new NoSuchElementException();
       }
       IPSContentMgr cms = PSContentMgrLocator.getContentMgr();
-      List<IPSGuid> ids = new ArrayList<IPSGuid>();
+      List<IPSGuid> ids = new ArrayList<>();
       ids.add(nodeGuid);
       PSContentMgrConfig config = new PSContentMgrConfig();
       config.addOption(PSContentMgrOption.LOAD_MINIMAL);

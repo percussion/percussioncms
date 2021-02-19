@@ -92,7 +92,7 @@ public class PSSiteTemplateExpander extends PSBaseTemplateExpander
          dt = dt.toUpperCase();
          dtype = DefaultTemplateType.valueOf(dt);
       }
-      List<IPSGuid> candidates = new ArrayList<IPSGuid>();
+      List<IPSGuid> candidates = new ArrayList<>();
       IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
       IPSGuid siteg = new PSGuid(PSTypeEnum.SITE, siteid);
       IPSSite site = null;

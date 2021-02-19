@@ -184,7 +184,7 @@ public class PSPubServerDao
    {
       notNull(siteId);
 
-      List<PSPubServer> pubServers = new ArrayList<PSPubServer>();
+      List<PSPubServer> pubServers = new ArrayList<>();
 
       pubServers = sessionFactory.getCurrentSession().createQuery(
             "from PSPubServer where siteId = :siteid").setParameter("siteid",

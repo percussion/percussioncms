@@ -180,37 +180,37 @@ public class PSVariantMigrationBean
        * A collection of associated contenttypes, never <code>null</code>
        * after construction.
        */
-      private Set<Integer> mi_contenttypes = new HashSet<Integer>();
+      private Set<Integer> mi_contenttypes = new HashSet<>();
 
       /**
        * Slots associated with this variant set, may be empty, but not
        * <code>null</code>
        */
-      private Set<IPSGuid> mi_slots = new HashSet<IPSGuid>();
+      private Set<IPSGuid> mi_slots = new HashSet<>();
 
       /**
        * A set of associated sites, never <code>null</code> after
        * construction.
        */
-      private Set<IPSGuid> mi_sites = new HashSet<IPSGuid>();
+      private Set<IPSGuid> mi_sites = new HashSet<>();
 
       /**
        * A set of the associated communities, never <code>null</code> after
        * construction.
        */
-      private Set<String> mi_communities = new HashSet<String>();
+      private Set<String> mi_communities = new HashSet<>();
 
       /**
        * Problems that occurred during processing, may be empty, but not
        * <code>null</code>
        */
-      private List<String> mi_errors = new ArrayList<String>();
+      private List<String> mi_errors = new ArrayList<>();
 
       /**
        * The original variants, never <code>null</code> or empty after
        * initialization. Used to mark the variants after processing.
        */
-      private Collection<IPSAssemblyTemplate> mi_variants = new ArrayList<IPSAssemblyTemplate>();
+      private Collection<IPSAssemblyTemplate> mi_variants = new ArrayList<>();
 
       /**
        * The name of the converted template, initialized during the conversion
@@ -432,7 +432,7 @@ public class PSVariantMigrationBean
     * The list of variants that are available, might be empty if there are no
     * variants of course.
     */
-   private Set<Variant> m_variants = new TreeSet<Variant>();
+   private Set<Variant> m_variants = new TreeSet<>();
 
    /**
     * A list of sites, initialized in the ctor, should never be empty
@@ -465,7 +465,7 @@ public class PSVariantMigrationBean
 
       List<PSCommunity> communities = rmgr.findCommunitiesByName("%");
       m_sites = smgr.findAllSites();
-      Map<String, Variant> vmap = new HashMap<String, Variant>();
+      Map<String, Variant> vmap = new HashMap<>();
 
       Set<IPSAssemblyTemplate> templates = asm.findAllTemplates();
       for (IPSAssemblyTemplate t : templates)
@@ -605,7 +605,7 @@ public class PSVariantMigrationBean
     */
    private Collection<IPSGuid> getSitesForTemplate(IPSAssemblyTemplate template)
    {
-      Set<IPSGuid> siteids = new HashSet<IPSGuid>();
+      Set<IPSGuid> siteids = new HashSet<>();
 
       for (IPSSite s : m_sites)
       {
@@ -650,7 +650,7 @@ public class PSVariantMigrationBean
     */
    public Collection<Variant> getProcessedvariants()
    {
-      Set<Variant> rval = new TreeSet<Variant>();
+      Set<Variant> rval = new TreeSet<>();
       for (Variant v : m_variants)
       {
          if (v.getSelected())
@@ -745,7 +745,7 @@ public class PSVariantMigrationBean
 
          }
 
-         List<IPSAcl> alist = new ArrayList<IPSAcl>();
+         List<IPSAcl> alist = new ArrayList<>();
          alist.add(acl);
 
          amgr.saveAcls(alist);
@@ -764,7 +764,7 @@ public class PSVariantMigrationBean
       asm.saveTemplate(template);
 
       // Add the content type associations
-      List<IPSGuid> defids = new ArrayList<IPSGuid>();
+      List<IPSGuid> defids = new ArrayList<>();
       for (int ct : v.getContenttypes())
       {
          defids.add(gmgr.makeGuid(ct, PSTypeEnum.NODEDEF));

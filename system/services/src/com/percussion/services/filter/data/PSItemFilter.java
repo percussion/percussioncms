@@ -117,7 +117,7 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
    {CascadeType.ALL,CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "filter", orphanRemoval = true)
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "PSItemFilter_Rules")
    @Fetch(FetchMode.SUBSELECT)
-   private Set<IPSItemFilterRuleDef> rules = new HashSet<IPSItemFilterRuleDef>();
+   private Set<IPSItemFilterRuleDef> rules = new HashSet<>();
 
    /**
     * Item filters can be changed, this member points to the parent filter,
@@ -409,7 +409,7 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
    public List<IPSFilterItem> filter(List<IPSFilterItem> items,
          Map<String, String> params) throws PSFilterException
    {
-      SortedSet<IPSItemFilterRuleDef> sortedDefs = new TreeSet<IPSItemFilterRuleDef>();
+      SortedSet<IPSItemFilterRuleDef> sortedDefs = new TreeSet<>();
       sortedDefs.addAll(rules);
 
       // Add any parent rules, stop after 100 cycles to avoid tracing a cycle
@@ -430,7 +430,7 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
 
       // Run the sorted definitions one at a time, stopping if we run out
       // of items
-      Map<String, String> ruleparams = new HashMap<String, String>();
+      Map<String, String> ruleparams = new HashMap<>();
       for (IPSItemFilterRuleDef def : sortedDefs)
       {
          if (items.size() == 0)
@@ -490,9 +490,9 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
          throw new IllegalArgumentException("src may not be null");
       }
       
-      Set<String> sourceRuleNames = new HashSet<String>();
+      Set<String> sourceRuleNames = new HashSet<>();
       Map<String,IPSItemFilterRuleDef> oldRuleNameMap = 
-         new HashMap<String,IPSItemFilterRuleDef>();
+         new HashMap<>();
       
       for(IPSItemFilterRuleDef def : src.getRuleDefs())
       {

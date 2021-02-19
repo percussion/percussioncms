@@ -50,7 +50,7 @@ public class PSNotificationService implements IPSNotificationService
     * The listeners to call
     */
    // See following for info on constructor params https://ria101.wordpress.com/2011/12/12/concurrenthashmap-avoid-a-common-misuse/
-   private Map<EventType, Collection<IPSNotificationListener>> m_queue = new ConcurrentHashMap<EventType, Collection<IPSNotificationListener>>(8, 0.9f, 1);
+   private Map<EventType, Collection<IPSNotificationListener>> m_queue = new ConcurrentHashMap<>(8, 0.9f, 1);
    
    private Object queueLock = new Object();
    /*
@@ -122,7 +122,7 @@ public class PSNotificationService implements IPSNotificationService
             queue = m_queue.get(type);
             if (queue==null)
             {
-               queue = new ArrayList<IPSNotificationListener>();
+               queue = new ArrayList<>();
                m_queue.put(type, queue);
             }
          }

@@ -78,7 +78,7 @@ public class PSQueryPropertyLimiter extends PSQueryNodeVisitor
          throw new IllegalArgumentException("config may not be null");
       }
       m_config = config;
-      m_props = new HashSet<String>();
+      m_props = new HashSet<>();
       m_props.addAll(m_config.getAllJSR170Properties());
    }
 

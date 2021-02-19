@@ -50,7 +50,7 @@ public class PSUserAccessLevel
     */
    public PSUserAccessLevel(Collection<PSPermissions> permissions)
    {
-      m_permissions = new HashSet<PSPermissions>();
+      m_permissions = new HashSet<>();
       if (permissions != null)
          m_permissions.addAll(permissions);
    }

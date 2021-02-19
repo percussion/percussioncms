@@ -100,7 +100,7 @@ public class PSState implements Serializable, IPSCatalogSummary, IPSCatalogItem
    {
          @JoinColumn(name = "WORKFLOWAPPID", referencedColumnName = "WORKFLOWAPPID", insertable = false, updatable = false),
          @JoinColumn(name = "TRANSITIONFROMSTATEID", referencedColumnName = "STATEID", insertable = false, updatable = false)})
-   private List<PSTransitionHib> transitionHibs = new ArrayList<PSTransitionHib>();
+   private List<PSTransitionHib> transitionHibs = new ArrayList<>();
 
    @OneToMany(targetEntity = PSAssignedRole.class, cascade =
    {CascadeType.ALL}, orphanRemoval = true)
@@ -109,7 +109,7 @@ public class PSState implements Serializable, IPSCatalogSummary, IPSCatalogItem
    {
          @JoinColumn(name = "WORKFLOWAPPID", referencedColumnName = "WORKFLOWAPPID", insertable = false, updatable = false),
          @JoinColumn(name = "STATEID", referencedColumnName = "STATEID", insertable = false, updatable = false)})
-   private List<PSAssignedRole> assignedRoles = new ArrayList<PSAssignedRole>();
+   private List<PSAssignedRole> assignedRoles = new ArrayList<>();
 
    /**
     * The list of (non-aging) transitions. It is non-persisted property, used to cache the transformed (from PSTransitionHib) objects.
@@ -352,7 +352,7 @@ public class PSState implements Serializable, IPSCatalogSummary, IPSCatalogItem
    public void setTransitions(List<PSTransition> transitions)
    {
       if (transitions == null)
-         transitions = new ArrayList<PSTransition>();
+         transitions = new ArrayList<>();
 
       copyTransitions(transitions, transitionHibs);
       
@@ -403,7 +403,7 @@ public class PSState implements Serializable, IPSCatalogSummary, IPSCatalogItem
    public void setAgingTransitions(List<PSAgingTransition> transitions)
    {
       if (transitions == null)
-         transitions = new ArrayList<PSAgingTransition>();
+         transitions = new ArrayList<>();
 
       copyAgingTransitions(transitions, transitionHibs);
       // update the cache
@@ -472,7 +472,7 @@ public class PSState implements Serializable, IPSCatalogSummary, IPSCatalogItem
    public void setAssignedRoles(List<PSAssignedRole> roleList)
    {
       if (roleList == null)
-         roleList = new ArrayList<PSAssignedRole>();
+         roleList = new ArrayList<>();
 
       assignedRoles = roleList;
    }
