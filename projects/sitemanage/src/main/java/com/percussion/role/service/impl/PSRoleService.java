@@ -23,15 +23,13 @@
  */
 package com.percussion.role.service.impl;
 
-import static java.util.Arrays.asList;
-
-import static org.springframework.util.StringUtils.trimWhitespace;
-
 import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
 import com.percussion.role.data.PSRole;
 import com.percussion.role.service.IPSRoleService;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.services.security.IPSBackEndRoleMgr;
 import com.percussion.services.security.IPSRoleMgr;
 import com.percussion.services.security.data.PSBackEndRole;
@@ -41,12 +39,12 @@ import com.percussion.services.workflow.data.PSAssignmentTypeEnum;
 import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.services.workflow.data.PSWorkflowRole;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSStringWrapper;
 import com.percussion.share.service.PSCollectionUtils;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
-import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
@@ -54,11 +52,21 @@ import com.percussion.user.data.PSUserList;
 import com.percussion.user.service.IPSUserService;
 import com.percussion.user.service.impl.PSUserService;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.security.IPSTypedPrincipal;
-import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.utils.service.impl.PSBackEndRoleManagerFacade;
 import com.percussion.utils.string.PSStringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,16 +74,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static java.util.Arrays.asList;
+import static org.springframework.util.StringUtils.trimWhitespace;
 
 /**
  * 
@@ -550,8 +550,7 @@ public class PSRoleService implements IPSRoleService
      * @param roleName the name of the role must not be blank.
      * @param homepage the homepage to set if <code>null</code> or not a valid home page, then set to Dashboard.
      */
-    private void setHomepage(String roleName, String homepage)
-    {
+    private void setHomepage(String roleName, String homepage) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException {
     	if(StringUtils.isBlank(roleName))
     		throw new IllegalArgumentException("roleName must not be blank");
     	if(StringUtils.isBlank(homepage) || !(homepage.equals(HOMEPAGE_TYPE_DASHBOARD) || homepage.equals(HOMEPAGE_TYPE_EDITOR) || 
@@ -575,8 +574,7 @@ public class PSRoleService implements IPSRoleService
      * @param roleName the name of the role must not be blank.
      * @return String never <code>null</code>, if it is not set, returns "Dashboard".
      */
-    private String getHomepage(String roleName)
-    {
+    private String getHomepage(String roleName) throws IPSGenericDao.LoadException {
     	if(StringUtils.isBlank(roleName))
     		throw new IllegalArgumentException("roleName must not be blank");
     	String key = META_DATA_HOMEPAGE_PREFIX + roleName;
@@ -714,7 +712,7 @@ public class PSRoleService implements IPSRoleService
     @GET
     @Path("/userhomepage")
     @Produces(MediaType.TEXT_PLAIN)
-    public String getUserHomepage() {
+    public String getUserHomepage() throws IPSGenericDao.LoadException {
 
         List<String> userRoles=null;
         try {

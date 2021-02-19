@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -31,17 +31,16 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.impl.finder.PSContentFinderBase;
 import com.percussion.services.filter.PSFilterException;
 
+import javax.jcr.RepositoryException;
 import java.util.List;
 import java.util.Map;
-
-import javax.jcr.RepositoryException;
 
 /**
  * The base widget content finder provides the common functionality needed by 
  * each widget content finder implementation. The general pattern is to 
- * implement the abstract method {@link #getContentItems(IPSAssemblyItem, long, Map)}.
+ * implement the abstract method .
  * This method provides the information to a general implementation of the
- * {@link #find(IPSAssemblyItem, Long, Map)} method.
+ *  method.
  * 
  * @see PSContentFinderBase
  */

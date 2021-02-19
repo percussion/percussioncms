@@ -593,7 +593,7 @@ public class PSAssetRestService
         Map<String, PSFormSummary> formAssetSums;
         try {
             formAssetSums = getPublishedForms();
-        } catch (PSAssetServiceException | IPSGenericDao.LoadException e) {
+        } catch (PSAssetServiceException | IPSGenericDao.LoadException | PSValidationException e) {
             throw new WebApplicationException(e);
         }
 
@@ -1014,7 +1014,7 @@ public class PSAssetRestService
      * @return map of form name to summary object, never <code>null</code>, may be empty.  The key of this map is the
      * name of the form in lower-case.
      */
-    private Map<String, PSFormSummary> getPublishedForms() throws PSAssetServiceException, IPSGenericDao.LoadException {
+    private Map<String, PSFormSummary> getPublishedForms() throws PSAssetServiceException, IPSGenericDao.LoadException, PSValidationException {
         Map<String, PSFormSummary> sumMap = new HashMap<>();
         
         Map<Long, PSAsset> assetMap = new HashMap<Long, PSAsset>();
@@ -1046,8 +1046,7 @@ public class PSAssetRestService
      * 
      * @return a new form summary object, never <code>null</code>.
      */
-    private PSFormSummary createFormSummary(PSAsset asset)
-    {
+    private PSFormSummary createFormSummary(PSAsset asset) throws PSValidationException {
         PSFormSummary sum = new PSFormSummary();
         
         String name = asset.getName();

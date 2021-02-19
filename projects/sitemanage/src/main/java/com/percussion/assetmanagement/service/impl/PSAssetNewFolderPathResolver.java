@@ -35,6 +35,8 @@ import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteTemplateService;
 
@@ -67,7 +69,7 @@ public class PSAssetNewFolderPathResolver
      * @param asset The asset to be associated with the owner.
      * @return the resolved path.
      */
-    public PSResolvedFolderPath resolveFolderPath(IPSItemSummary owner, IPSItemSummary asset) {
+    public PSResolvedFolderPath resolveFolderPath(IPSItemSummary owner, IPSItemSummary asset) throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         List<String> assetPaths = asset.getFolderPaths();
         
         if (IPSTemplateService.TPL_CONTENT_TYPE.equals(owner.getType())) {

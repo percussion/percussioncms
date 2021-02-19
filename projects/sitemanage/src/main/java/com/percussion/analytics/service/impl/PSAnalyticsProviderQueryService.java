@@ -29,7 +29,6 @@ import com.percussion.analytics.service.IPSAnalyticsProviderQueryService;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.date.PSDateRange;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 

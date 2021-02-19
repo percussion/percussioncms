@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -165,8 +165,7 @@ public abstract class PSBaseSlotContentFinder extends PSContentFinderBase<IPSTem
    @SuppressWarnings("unchecked")
    public List<IPSAssemblyItem> find(IPSAssemblyItem sourceItem,
          IPSTemplateSlot slot, Map<String, Object> selectors)
-         throws RepositoryException, PSFilterException, PSAssemblyException
-   {
+           throws RepositoryException, PSFilterException, PSAssemblyException, PSNotFoundException {
       Map<String, ? extends Object> args = slot.getFinderArguments();
       Map<String, Object> params = new HashMap<String, Object>();
       params.putAll(args);

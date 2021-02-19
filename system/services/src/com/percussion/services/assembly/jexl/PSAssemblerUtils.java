@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -48,6 +48,7 @@ import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.impl.PSTrackAssemblyError;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -61,8 +62,8 @@ import com.percussion.xmldom.PSXmlDomContext;
 import com.percussion.xmldom.PSXmlDomUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -77,6 +78,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -94,7 +96,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
    /**
     * Logger for this class
     */
-   private static Log ms_log = LogFactory.getLog(PSAssemblerUtils.class);
+   private static final Logger log = LogManager.getLogger(PSAssemblerUtils.class);
 
    /**
     * helper to assemble the items in a slot
@@ -123,13 +125,13 @@ public class PSAssemblerUtils extends PSJexlUtilBase
                   "slot may not be null, check template's slot reference");
          }
          if (params == null)
-            params = new HashMap<String, Object>();
+            params = new HashMap<>();
          IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
          // Handle old slots
          String findername = slot.getFinderName();
          if (findername == null)
          {
-            ms_log.warn("No finder defined for slot " + slot.getName()
+            log.warn("No finder defined for slot " + slot.getName()
                   + " defaulting to sys_RelationshipContentFinder");
             findername = "Java/global/percussion/slotcontentfinder/sys_RelationshipContentFinder";
          }
@@ -145,8 +147,8 @@ public class PSAssemblerUtils extends PSJexlUtilBase
          List<IPSAssemblyItem> relitems = finder.find(item, slot, params);
          return asm.assemble(relitems);
       }
-      catch (Throwable ae) {
-         ms_log.error("Assembly Error", ae);
+      catch (Exception ae) {
+         log.error("Assembly Error", ae);
 
          PSTrackAssemblyError.addProblem(PSI18nUtils
                  .getString("psx_assembly@Error processing slot"), ae);
@@ -162,13 +164,15 @@ public class PSAssemblerUtils extends PSJexlUtilBase
          results.append(PSI18nUtils
                  .getString("psx_assembly@Error processing slot"));
          results.append(" \"");
-         results.append(slot.getName());
+         if(slot!=null) {
+            results.append(slot.getName());
+         }
          results.append(" \"");
          results.append("</h2><p>");
          results.append(ae.toString());
          results.append("</p></div></body></html>");
-         work.setResultData(results.toString().getBytes("UTF8"));
-         List<IPSAssemblyResult> rval = new ArrayList<IPSAssemblyResult>();
+         work.setResultData(results.toString().getBytes(StandardCharsets.UTF_8));
+         List<IPSAssemblyResult> rval = new ArrayList<>();
          rval.add((IPSAssemblyResult) work);
          return rval;
       }
@@ -216,7 +220,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
       }
       catch (Exception e)
       {
-         ms_log.error("Problem during assemble", e);
+         log.error("Problem during assemble", e);
          throw new Exception(e);
       }
       finally
@@ -343,7 +347,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
          }
          catch (PSInternalRequestCallException e)
          {
-            ms_log.error("Problem getting popup", e);
+            log.error("Problem getting popup", e);
          }
          finally
          {
@@ -589,7 +593,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
             }
             else
             {
-               ms_log.error("Found no value for key: \"" + key + "\"");
+               log.error("Found no value for key: \"" + key + "\"");
             }
          }
 
@@ -704,8 +708,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
     */
    public List<IPSAssemblyItem> getSlotItems(IPSAssemblyItem item,
       IPSTemplateSlot slot, Map<String, Object> params)
-      throws PSAssemblyException, PSFilterException, RepositoryException
-   {
+           throws PSAssemblyException, PSFilterException, RepositoryException, PSNotFoundException {
       if (slot == null || slot.getFinderName() == null)
          throw new IllegalArgumentException(
             "slot and slot finder must not be null");
@@ -714,7 +717,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
       if (!StringUtils.isBlank(item.getUserName()))
       {
          // Create an new map, so that we don't pollute the original one.
-         params = new HashMap<String, Object>(params);
+         params = new HashMap<>(params);
          // Need user name for preview filter rule
          params.put(IPSHtmlParameters.SYS_USER, item.getUserName());
       }
@@ -790,7 +793,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
       }
       catch (IOException e)
       {
-         ms_log.error("Cannot find file for assembly import : "+ path);
+         log.error("Cannot find file for assembly import : "+ path);
       } 
       return fileString;
    }
@@ -860,7 +863,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
       }
       catch (Exception e)
       {
-         ms_log.debug("Cannot find import file: "+path+" may be invalid or not published yet" , e);
+         log.debug("Cannot find import file: "+path+" may be invalid or not published yet" , e);
          includeMap.put("INCLUDE_ERROR", "Error loading include "+path+" "+ e.getMessage());
       }
       finally
@@ -961,11 +964,11 @@ public class PSAssemblerUtils extends PSJexlUtilBase
       
       String lvlUp = level.toUpperCase();
       if(lvlUp.equals("DEBUG")) 
-            ms_log.debug(string);
+            log.debug(string);
       else if (lvlUp.equals("INFO")) 
-            ms_log.info(string);
+            log.info(string);
       else if (lvlUp.equals("ERROR")) 
-            ms_log.error(string);
+            log.error(string);
     
    }
    

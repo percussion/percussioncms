@@ -112,7 +112,7 @@ public class PSCloudService implements IPSCloudService {
 	@GET
 	@Path("/info")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public PSCloudServiceInfo getInfo() {
+	public PSCloudServiceInfo getInfo() throws PSCloudServiceException {
        PSModuleLicense poLic = null;
        
         try {
@@ -146,7 +146,7 @@ public class PSCloudService implements IPSCloudService {
         try {
             poLic = getLicense(licenseType);
         } catch (PSLicenseServiceException le) { 
-            throw new PSCloudServiceException(licenseType.toFriendlyString() + " is not enabled for this instance of CM1");
+            throw new WebApplicationException(licenseType.toFriendlyString() + " is not enabled for this instance of Percussion CMS");
         }
         
         PSCloudServiceInfo info = new PSCloudServiceInfo();
@@ -160,8 +160,14 @@ public class PSCloudService implements IPSCloudService {
     @Path("/pagedata/{pageId}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSCloudServicePageData getPageData(@PathParam("pageId") String pageId) {
-        PSCloudServiceInfo info = getInfo();
-        return getPageData(info, pageId);
+	    try {
+            PSCloudServiceInfo info = getInfo();
+            return getPageData(info, pageId);
+        } catch (PSCloudServiceException e) {
+	        log.error(e.getMessage());
+	        log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @Override
@@ -171,8 +177,12 @@ public class PSCloudService implements IPSCloudService {
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSCloudServicePageData getPageData(@PathParam("licenseType") PSCloudLicenseType licenseType,
             @PathParam("pageId") String pageId) {
-        PSCloudServiceInfo info = getInfo(licenseType);
-        return getPageData(info, pageId);
+	    try {
+            PSCloudServiceInfo info = getInfo(licenseType);
+            return getPageData(info, pageId);
+        } catch (PSCloudServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @Override
@@ -190,7 +200,7 @@ public class PSCloudService implements IPSCloudService {
             pageService.save(page);
         }
         catch (Throwable cause) {
-            throw new PSCloudServiceException(cause);
+            throw new WebApplicationException(cause);
         }
     }
     
@@ -265,7 +275,7 @@ public class PSCloudService implements IPSCloudService {
 		return poLic;
 	}
 
-    private PSCloudServicePageData getPageData(PSCloudServiceInfo info, String pageId) {
+    private PSCloudServicePageData getPageData(PSCloudServiceInfo info, String pageId) throws PSCloudServiceException {
         PSItemProperties itemProps = null;
         String siteName = "";
         PSPage page = null;

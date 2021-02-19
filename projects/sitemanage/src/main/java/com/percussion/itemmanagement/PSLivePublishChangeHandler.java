@@ -228,7 +228,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     }
 
 
-    private void handleAdd(String id, PSItemTypeEnum itemType, PSContentChangeType changeType, long contentTypeId) throws IPSGenericDao.SaveException, PSValidationException {
+    private void handleAdd(String id, PSItemTypeEnum itemType, PSContentChangeType changeType, long contentTypeId) throws IPSGenericDao.SaveException, PSValidationException, PSNotFoundException {
         if (itemType.equals(PSItemTypeEnum.PAGE))
         {
             // page approved
@@ -410,8 +410,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
         return sites.get(0).getSiteId();
     }
 
-    private long[] getAssetSiteIds(String assetId)
-    {
+    private long[] getAssetSiteIds(String assetId) throws PSNotFoundException {
         List<Long> siteList = new ArrayList<>();
         String allowedSites = folderHelper.getRootLevelFolderAllowedSitesPropertyValue(assetId);
         if (!StringUtils.isBlank(allowedSites))
@@ -462,8 +461,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
         return Longs.toArray(results);
     }
     
-    private boolean canPublishAssetIncremental(Long siteId)
-    {
+    private boolean canPublishAssetIncremental(Long siteId) throws PSNotFoundException {
         PSPubServer pubServer = PSSitePublishDaoHelper.getDefaultPubServer(PSGuidUtils.makeGuid(siteId, PSTypeEnum.SITE));
         return !pubServer.isXmlFormat() && !pubServer.isDatabaseType();
     }
