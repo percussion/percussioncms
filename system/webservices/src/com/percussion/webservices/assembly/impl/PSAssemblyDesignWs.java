@@ -79,7 +79,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
       if (names == null || names.isEmpty())
          throw new IllegalArgumentException("names cannot be null or empty");
 
-      List<IPSAssemblyTemplate> templates = new ArrayList<IPSAssemblyTemplate>();
+      List<IPSAssemblyTemplate> templates = new ArrayList<>();
       for (String name : names)
       {
          if (StringUtils.isBlank(name))
@@ -519,7 +519,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
             IPSTemplateSlot slot = service.loadSlot(id);
             results.addResult(id, slot);
          }
-         catch (PSNotFoundException e)
+         catch (PSAssemblyException e)
          {
             int code = IPSWebserviceErrors.OBJECT_NOT_FOUND;
             PSDesignGuid guid = new PSDesignGuid(id);
@@ -637,9 +637,8 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
     * @throws PSLockException if an associated slot cannot be locked.
     */
    private void deleteTemplateWs(IPSGuid deletedId, String session, String user)
-      throws PSAssemblyException, PSErrorsException,
-      PSLockException
-   {
+           throws PSAssemblyException, PSErrorsException,
+           PSLockException, PSNotFoundException {
       synchronized (SYNC_SAVE_DELETE_TEMPLATE_AND_SLOT)
       {
          // save or load (if delete) the template object first
@@ -746,8 +745,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
     * @throws PSAssemblyException if an error occurs in the assembly service.
     */
    private synchronized void saveTemplateWs(PSAssemblyTemplateWs templateWs,
-      Integer version) throws PSAssemblyException
-   {
+      Integer version) throws PSAssemblyException, PSNotFoundException {
       synchronized (SYNC_SAVE_DELETE_TEMPLATE_AND_SLOT)
       {
          // save or load (if delete) the template object first

@@ -717,17 +717,16 @@ public class PSConditionalCloneHandler extends PSCloneHandler
    private static PSPair<Integer, Integer> selectSiteFolderIds(
          List<IPSSite> sites, IPSGuid itemId, Integer origSiteId,
          IPSSiteManager smgr)
-      throws PSSiteManagerException
-   {
+           throws PSSiteManagerException, com.percussion.services.error.PSNotFoundException {
       if (origSiteId != null)
       {
          // use the original site ID if it is one of the sites
          for (IPSSite s : sites)
          {
-            if (s.getGUID().getUUID() == origSiteId.intValue())
+            if (s.getGUID().getUUID() == origSiteId)
             {
                IPSGuid folderId = smgr.getSiteFolderId(s.getGUID(), itemId);
-               return new PSPair<Integer, Integer>(s.getGUID().getUUID(),
+               return new PSPair<>(s.getGUID().getUUID(),
                      folderId.getUUID());
             }
          }
@@ -736,7 +735,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
       // just pick the 1st site (if the original site ID is not in the "sites"
       IPSGuid siteId = sites.get(0).getGUID();
       IPSGuid folderId = smgr.getSiteFolderId(siteId, itemId);
-      return new PSPair<Integer, Integer>(siteId.getUUID(), folderId
+      return new PSPair<>(siteId.getUUID(), folderId
             .getUUID());
    }
    

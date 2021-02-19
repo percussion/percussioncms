@@ -29,6 +29,7 @@ import com.percussion.deploy.server.PSArchiveHandler;
 import com.percussion.deploy.server.PSImportCtx;
 import com.percussion.deploy.server.dependencies.PSDependencyHandler;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 
 
 /**
@@ -55,5 +56,5 @@ public interface IPSServiceDependencyHandler
     */
    public void doInstallDependencyFiles(PSSecurityToken tok,
          PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
-         throws PSDeployException;
+           throws PSDeployException, PSNotFoundException;
 }

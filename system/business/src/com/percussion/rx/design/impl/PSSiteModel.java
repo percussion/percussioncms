@@ -23,6 +23,7 @@
  */
 package com.percussion.rx.design.impl;
 
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.publisher.IPSEditionContentList;
 import com.percussion.services.publisher.IPSEditionTaskDef;
@@ -32,7 +33,6 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.IPSSiteManagerInternal;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
-import com.percussion.services.sitemgr.data.PSSite;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 
@@ -103,7 +103,7 @@ public class PSSiteModel extends PSDesignModel
    {
       Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> assoc = getSiteMgr()
             .findSiteTemplatesAssociations();
-      List<IPSGuid> ids = new ArrayList<IPSGuid>();
+      List<IPSGuid> ids = new ArrayList<>();
       for (PSPair<IPSGuid, String> k : assoc.keySet())
       {
          ids.add(k.getFirst());
@@ -119,7 +119,7 @@ public class PSSiteModel extends PSDesignModel
    {
       Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> assoc = getSiteMgr()
             .findSiteTemplatesAssociations();
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
       for (PSPair<IPSGuid, String> k : assoc.keySet())
       {
          names.add(k.getSecond());
@@ -141,8 +141,7 @@ public class PSSiteModel extends PSDesignModel
    }
 
    @Override
-   public void delete(IPSGuid guid)
-   {
+   public void delete(IPSGuid guid) throws PSNotFoundException {
       IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
       IPSPublisherService psvc = PSPublisherServiceLocator
             .getPublisherService();

@@ -23,15 +23,13 @@
  */
 package com.percussion.webservices.publishing.impl;
 
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.rx.publisher.IPSPublisherJobStatus;
 import com.percussion.rx.publisher.IPSPublishingJobStatusCallback;
 import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
 import com.percussion.rx.publisher.PSRxPubServiceInternalLocator;
 import com.percussion.rx.publisher.data.PSDemandWork;
 import com.percussion.services.error.PSNotFoundException;
+import com.percussion.services.error.PSRuntimeException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.IPSItemFilter;
 import com.percussion.services.filter.PSFilterException;
@@ -42,7 +40,6 @@ import com.percussion.services.publisher.IPSEditionTaskDef;
 import com.percussion.services.publisher.IPSPubStatus;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.pubserver.IPSPubServerDao;
-import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSPublishingContext;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
@@ -51,13 +48,15 @@ import com.percussion.webservices.IPSWebserviceErrors;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSWebserviceErrors;
 import com.percussion.webservices.publishing.IPSPublishingWs;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Wraps various methods of the filter, publisher, and site manager services.
@@ -184,8 +183,11 @@ public class PSPublishingWs implements IPSPublishingWs
    {
       if (contListId == null)
          throw new IllegalArgumentException("contListId may not be null");
-      
+      try{
       return pubSvc.findContentListById(contListId);
+      } catch (PSNotFoundException e) {
+         throw new PSRuntimeException(e);
+      }
    }
 
    /* (non-Javadoc)
@@ -294,20 +296,8 @@ public class PSPublishingWs implements IPSPublishingWs
    
 
    public IPSSite findSiteById(IPSGuid siteId) throws PSErrorException
-   {      
-      try
-      {
-         return siteMgr.findSite(siteId);
-      }
-      catch (PSNotFoundException e)
-      {
-         int code = IPSWebserviceErrors.OBJECT_NOT_FOUND;
-         PSErrorException error = new PSErrorException(code,
-               PSWebserviceErrors.createErrorMessage(code,
-                     IPSSite.class.getName(), siteId), ExceptionUtils
-                     .getFullStackTrace(new Exception()));
-         throw error;
-      }
+   {
+      return siteMgr.findSite(siteId);
    }
    
    /*
@@ -432,8 +422,12 @@ public class PSPublishingWs implements IPSPublishingWs
    public long queueDemandWork(int editionid, PSDemandWork work)
    {
       notNull(work, "work");
-      
-      return getRxPubSvc().queueDemandWork(editionid, work);
+
+      try {
+         return getRxPubSvc().queueDemandWork(editionid, work);
+      }catch (PSNotFoundException e) {
+         throw new PSRuntimeException(e);
+      }
    }
 
    /*
@@ -516,8 +510,11 @@ public class PSPublishingWs implements IPSPublishingWs
    public IPSEditionTaskDef findEditionTaskById(IPSGuid id)
    {
       notNull(id, "id");
-      
-      return pubSvc.findEditionTaskById(id);
+      try {
+         return pubSvc.findEditionTaskById(id);
+      } catch (PSNotFoundException e) {
+         throw new PSRuntimeException(e);
+      }
    }
 
    /*

@@ -27,6 +27,7 @@ package com.percussion.services.sitemgr;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSCatalogException;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.exceptions.PSExceptionHelper;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.serialization.PSObjectSerializer;
@@ -115,7 +116,7 @@ public class PSSiteCatalogServlet extends javax.servlet.http.HttpServlet
       {
          ex = e;
       }
-      catch (PSCatalogException e)
+      catch (PSCatalogException | PSNotFoundException e)
       {
          ex = e;
       }

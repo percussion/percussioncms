@@ -24,15 +24,10 @@
 
 package com.percussion.deploy.server.dependencies;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummaries;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.deploy.error.IPSDeploymentErrors;
 import com.percussion.deploy.error.PSDeployException;
@@ -45,7 +40,12 @@ import com.percussion.deploy.server.PSImportCtx;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSIteratorUtils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Class to handle packaging and deploying a folder's translation.
@@ -82,8 +82,7 @@ public class PSFolderTranslationsDependencyHandler
 
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 

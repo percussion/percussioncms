@@ -28,6 +28,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.contentmgr.IPSContentPropertyConstants;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.jsr170.PSValueFactory;
 
 import java.util.HashMap;
@@ -172,7 +173,7 @@ public class PSRow implements Row
                val = null;
             }
          }
-         catch (PSCmsException e)
+         catch (PSCmsException | PSNotFoundException e)
          {
             throw new RepositoryException("Problem getting path", e);
          }

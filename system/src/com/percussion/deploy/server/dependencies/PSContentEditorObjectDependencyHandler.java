@@ -46,6 +46,7 @@ import com.percussion.design.objectstore.PSUIDefinition;
 import com.percussion.design.objectstore.PSUISet;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 
 /**
  * Base class for handlers that deploy content editor objects.
@@ -80,15 +81,14 @@ public abstract class PSContentEditorObjectDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    protected List<PSDependency> checkUIDef(PSSecurityToken tok,
-      PSUIDefinition uiDef) throws PSDeployException
-   {
+      PSUIDefinition uiDef) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
       if (uiDef == null)
          throw new IllegalArgumentException("uiDef may not be null");
 
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
 
       Iterator defSets = uiDef.getDefaultUI();
       if (defSets != null)
@@ -116,15 +116,14 @@ public abstract class PSContentEditorObjectDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    protected List<PSDependency> checkDisplayMapper(PSSecurityToken tok,
-      PSDisplayMapper mapper) throws PSDeployException
-   {
+      PSDisplayMapper mapper) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
       if (mapper == null)
          throw new IllegalArgumentException("mapper may not be null");
 
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
 
       Iterator dispMappings = mapper.iterator();
       while (dispMappings.hasNext())
@@ -157,15 +156,14 @@ public abstract class PSContentEditorObjectDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    protected List<PSDependency> checkUiSet(PSSecurityToken tok, PSUISet uiSet)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
       if (uiSet == null)
          throw new IllegalArgumentException("uiSet may not be null");
 
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       PSChoices choices = uiSet.getChoices();
 
       PSDependencyHandler keywordHandler = getDependencyHandler(
@@ -324,7 +322,7 @@ public abstract class PSContentEditorObjectDependencyHandler
       if (locator == null)
          throw new IllegalArgumentException("locator may not be null");
 
-      List<String> tables = new ArrayList<String>();
+      List<String> tables = new ArrayList<>();
 
       Iterator tableSets = locator.getTableSets();
       while (tableSets.hasNext())
@@ -354,8 +352,7 @@ public abstract class PSContentEditorObjectDependencyHandler
     */
    protected List<PSDependency> checkLocatorTables(PSSecurityToken tok,
       PSContainerLocator locator)
-        throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 

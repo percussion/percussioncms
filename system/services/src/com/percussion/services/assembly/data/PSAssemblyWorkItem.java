@@ -44,6 +44,7 @@ import com.percussion.services.contentmgr.IPSNode;
 import com.percussion.services.contentmgr.PSContentMgrConfig;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.contentmgr.PSContentMgrOption;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.IPSFilterServiceErrors;
 import com.percussion.services.filter.IPSItemFilter;
@@ -1293,31 +1294,33 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
    private void setPathFromFolderParam(int contentId, int revision)
          throws PSCmsException
    {
-      String folderidParam = getParameterValue(IPSHtmlParameters.SYS_FOLDERID,
-            null);
-      if (!StringUtils.isBlank(folderidParam) && !folderidParam.equals("0"))
-      {
-         PSRequest req = PSRequest.getContextForRequest();
-         m_folderId = Integer.parseInt(folderidParam);
-         PSServerFolderProcessor fproc = PSServerFolderProcessor.getInstance();
-         String paths[] = fproc.getItemPaths(new PSLocator(m_folderId));
-         String folderpath = paths[0] + "/";
-         String itempaths[] = fproc.getItemPaths(new PSLocator(contentId,
-               revision));
-         for (String ipath : itempaths)
-         {
-            if (ipath.startsWith(folderpath))
-            {
-               m_path = ipath;
-               break;
+      try {
+         String folderidParam = getParameterValue(IPSHtmlParameters.SYS_FOLDERID,
+                 null);
+         if (!StringUtils.isBlank(folderidParam) && !folderidParam.equals("0")) {
+            PSRequest req = PSRequest.getContextForRequest();
+            m_folderId = Integer.parseInt(folderidParam);
+            PSServerFolderProcessor fproc = PSServerFolderProcessor.getInstance();
+
+
+            String paths[] = fproc.getItemPaths(new PSLocator(m_folderId));
+            String folderpath = paths[0] + "/";
+            String itempaths[] = fproc.getItemPaths(new PSLocator(contentId,
+                    revision));
+            for (String ipath : itempaths) {
+               if (ipath.startsWith(folderpath)) {
+                  m_path = ipath;
+                  break;
+               }
             }
          }
-      }
-      if (m_path == null)
-      {
-         // assign pseudo path when either the folder wasn't right or
-         // no folder was supplied
-         m_path = "/" + contentId + "#" + revision;
+         if (m_path == null) {
+            // assign pseudo path when either the folder wasn't right or
+            // no folder was supplied
+            m_path = "/" + contentId + "#" + revision;
+         }
+      } catch (PSNotFoundException e) {
+         throw new PSCmsException(e);
       }
    }
 

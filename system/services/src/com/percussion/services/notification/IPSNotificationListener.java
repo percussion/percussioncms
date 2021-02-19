@@ -23,6 +23,9 @@
  */
 package com.percussion.services.notification;
 
+import com.percussion.services.error.PSNotFoundException;
+import com.percussion.share.service.exception.PSDataServiceException;
+
 /**
  * A notification listener is informed of a change that has been reported to the
  * notification service.
@@ -44,5 +47,5 @@ public interface IPSNotificationListener
     * 
     * @param notification the notification event, never <code>null</code>
     */
-   void notifyEvent(PSNotificationEvent notification);
+   void notifyEvent(PSNotificationEvent notification) throws PSDataServiceException, PSNotFoundException;
 }

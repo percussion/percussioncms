@@ -379,8 +379,7 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
    @Override
    public void installDependencyFiles(PSSecurityToken tok,
          PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
-   throws PSDeployException
-   {
+           throws PSDeployException, PSAssemblyException {
       Iterator files = getSlotDependecyFilesFromArchive(archive, dep);
       PSDependencyFile depFile = (PSDependencyFile) files.next();
       String tgtId = findTargetId(dep, ctx);

@@ -48,6 +48,7 @@ import com.percussion.services.contentmgr.PSContentMgrConfig;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.contentmgr.PSContentMgrOption;
 import com.percussion.services.contentmgr.data.PSContentNode;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterItem;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.filter.data.PSFilterItem;
@@ -826,7 +827,7 @@ public class PSNavHelper
             }
          }
       }
-      catch (PSCmsException e)
+      catch (PSNotFoundException | PSCmsException e)
       {
          ms_log.error("problem finding the parent folder", e);
       }
@@ -834,6 +835,7 @@ public class PSNavHelper
       {
          ms_log.error("problem finding the parent folder", e);
       }
+
       return folderid;
    }
 

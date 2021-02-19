@@ -135,7 +135,6 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
    {
       /**
        * The file to be written, it may be <code>null</code> if
-       * {@link #mi_resultStream} is not <code>null</code>.
        */
       private final PSPurgableTempFile mi_file;
 
@@ -1346,8 +1345,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
       return combineRootAndPath(root, deliveryPath);
    }
 
-   private String getPublishRoot(IPSDeliveryItem result)
-   {
+   private String getPublishRoot(IPSDeliveryItem result) throws PSNotFoundException {
       if (result.getPubServerId() != null)
       {
          try

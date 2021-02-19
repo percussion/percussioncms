@@ -25,6 +25,7 @@ package com.percussion.services.assembly.impl;
 
 import com.percussion.data.PSStylesheetCleanupFilter;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
@@ -74,7 +75,7 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
        * A map that connects namespace prefixes with namespace URIs. The default
        * namespace is stored under the empty string key.
        */
-      private Map<String, String> mi_namespaces = new HashMap<String, String>();
+      private Map<String, String> mi_namespaces = new HashMap<>();
 
       /**
        * Track the level in the hierarchy, which allows us to add namespaces to
@@ -90,7 +91,7 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
        */
       public ContentHandler(XMLStreamWriter writer,
             Map<String, String> namespaces) {
-         super(writer, new HashMap<String, String>(), true);
+         super(writer, new HashMap<>(), true);
 
          mi_namespaces = namespaces;
       }
@@ -110,7 +111,7 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
          {
             resetCharCount();
             m_writer.writeStartElement(qName);
-            Set<String> nsattrs = new HashSet<String>();
+            Set<String> nsattrs = new HashSet<>();
             for (int i = 0; i < attributes.getLength(); i++)
             {
                String name = attributes.getQName(i);
@@ -170,7 +171,7 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
     * A map that connects namespace prefixes with namespace URIs. The default
     * namespace is stored under the empty string key.
     */
-   private Map<String, String> m_namespaces = new HashMap<String, String>();
+   private Map<String, String> m_namespaces = new HashMap<>();
 
    /**
     * Create a namespace cleanup interceptor. Does nothing if supplied siteid
@@ -178,7 +179,7 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
     * 
     * @param siteid the site, may be <code>null</code>.
     */
-   public PSNamespaceCleanup(Integer siteid) {
+   public PSNamespaceCleanup(Integer siteid) throws PSNotFoundException {
       Set<String> pset = null;
       PSStylesheetCleanupFilter filter = PSStylesheetCleanupFilter
             .getInstance();

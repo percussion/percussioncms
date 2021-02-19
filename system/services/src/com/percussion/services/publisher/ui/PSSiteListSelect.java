@@ -27,6 +27,7 @@ import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerException;
@@ -175,8 +176,7 @@ public class PSSiteListSelect
        * 
        * @return the name of the outcome
        */
-      public String edit()
-      {
+      public String edit() throws PSNotFoundException {
          String name = getName();
          System.out.println("Editing this site with id:" +name);
          
@@ -485,8 +485,7 @@ public class PSSiteListSelect
     * @return Returns the entries.
     * @throws PSSiteManagerException
     */
-   public List<SiteEntry> getEntries()
-   {
+   public List<SiteEntry> getEntries() throws PSNotFoundException {
       List<SiteEntry> rval = new ArrayList<SiteEntry>();
       List<IPSSite> sites = ms_siteMgr.loadSitesModifiable();
       for (IPSSite s : sites)

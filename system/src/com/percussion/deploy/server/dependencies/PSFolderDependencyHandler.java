@@ -36,6 +36,7 @@ import com.percussion.deploy.objectstore.PSDependency;
 import com.percussion.deploy.server.PSDependencyDef;
 import com.percussion.deploy.server.PSDependencyMap;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 
 
 /**
@@ -68,8 +69,7 @@ public class PSFolderDependencyHandler
 
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -79,7 +79,7 @@ public class PSFolderDependencyHandler
       if (! dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List childDeps = new ArrayList();
+      List<PSDependency> childDeps = new ArrayList<>();
 
       PSDependencyHandler handler = getDependencyHandler(
          PSFolderDefDependencyHandler.DEPENDENCY_TYPE);

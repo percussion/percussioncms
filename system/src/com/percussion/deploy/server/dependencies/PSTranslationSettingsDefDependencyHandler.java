@@ -52,6 +52,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.percussion.services.error.PSNotFoundException;
 import org.apache.commons.lang.StringUtils;
 import org.xml.sax.SAXException;
 
@@ -124,8 +125,7 @@ public class PSTranslationSettingsDefDependencyHandler
    // see base class
    @Override
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)

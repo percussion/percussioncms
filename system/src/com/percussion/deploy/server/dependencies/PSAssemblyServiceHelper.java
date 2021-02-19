@@ -38,6 +38,7 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 
 import java.util.ArrayList;
@@ -51,6 +52,8 @@ import java.util.Set;
 import javax.jcr.RepositoryException;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * A helper class for the new templates, slots, bindings, contentlists etc to 
@@ -60,7 +63,9 @@ import org.apache.commons.lang.StringUtils;
  */
 public class PSAssemblyServiceHelper
 {
-   
+
+   private static final Logger log = LogManager.getLogger(PSAssemblyServiceHelper.class);
+
    /**
     * CTOR
     */
@@ -209,7 +214,8 @@ public class PSAssemblyServiceHelper
       }
       catch (RepositoryException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
       }
       return cTypes;
    }
@@ -369,9 +375,9 @@ public class PSAssemblyServiceHelper
             }
         }
       }
-      catch (PSCatalogException e)
+      catch (PSCatalogException | PSNotFoundException | PSAssemblyException e)
       {
-         e.printStackTrace();
+
       }
       // sort the collection
       Collections.sort(m_slots, new SlotsComparer());

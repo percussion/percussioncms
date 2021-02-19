@@ -29,6 +29,7 @@ import com.percussion.deploy.objectstore.PSDependency;
 import com.percussion.deploy.server.PSDependencyDef;
 import com.percussion.deploy.server.PSDependencyMap;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSIteratorUtils;
 
 import java.util.ArrayList;
@@ -81,9 +82,8 @@ public class PSCustomDependencyHandler extends PSDependencyHandler
     * key and display name, and the child dependency set as a local child 
     * dependency. See {@link PSDependencyHandler} for more info.
    */
-   public Iterator getDependencies(PSSecurityToken tok) 
-      throws PSDeployException
-   {
+   public Iterator getDependencies(PSSecurityToken tok)
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       
@@ -114,9 +114,8 @@ public class PSCustomDependencyHandler extends PSDependencyHandler
    }
 
    // see base class
-   public boolean doesDependencyExist(PSSecurityToken tok, String id) 
-      throws PSDeployException
-   {
+   public boolean doesDependencyExist(PSSecurityToken tok, String id)
+           throws PSDeployException, PSNotFoundException {
       return getDependency(tok, id) != null;
    }
 
@@ -130,9 +129,8 @@ public class PSCustomDependencyHandler extends PSDependencyHandler
     * children is returned.  See 
     * {@link PSDependencyHandler} for more info.
     */
-   public PSDependency getDependency(PSSecurityToken tok, String id) 
-      throws PSDeployException
-   {
+   public PSDependency getDependency(PSSecurityToken tok, String id)
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       
@@ -178,9 +176,8 @@ public class PSCustomDependencyHandler extends PSDependencyHandler
     * type of the children that will be returned.  See 
     * {@link PSDependencyHandler} for more info.
     */
-   public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep) 
-      throws PSDeployException
-   {
+   public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
          

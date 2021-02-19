@@ -43,6 +43,7 @@ import com.percussion.deploy.server.PSImportCtx;
 import com.percussion.design.objectstore.PSAclEntry;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.security.IPSAcl;
 import com.percussion.services.security.IPSAclEntry;
@@ -104,8 +105,7 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
    // see base class
    @Override
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 

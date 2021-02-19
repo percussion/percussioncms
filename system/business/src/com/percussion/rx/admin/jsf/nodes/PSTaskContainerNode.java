@@ -27,6 +27,7 @@ import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.rx.jsf.PSEditableNodeContainer;
 import com.percussion.rx.jsf.PSNodeBase;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.schedule.IPSSchedulingService;
 import com.percussion.services.schedule.PSSchedulingException;
 import com.percussion.services.schedule.PSSchedulingServiceLocator;
@@ -84,8 +85,7 @@ public class PSTaskContainerNode extends PSEditableNodeContainer
     * @return the perform action for the site node, which will navigate to the
     * editor.
     */
-   public String createEvent()
-   {
+   public String createEvent() throws PSNotFoundException {
       final PSScheduledTask event = getSchedulingService().createSchedule();
       event.setName(getUniqueName("TimedEvent", false));
       return initNewEvent(event);
@@ -118,8 +118,7 @@ public class PSTaskContainerNode extends PSEditableNodeContainer
    }
 
    @Override
-   public List<? extends PSNodeBase> getChildren()
-   {
+   public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
       if (m_children == null)
       {
          initChildrenNodes();

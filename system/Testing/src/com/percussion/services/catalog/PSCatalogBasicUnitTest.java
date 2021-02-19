@@ -25,6 +25,7 @@ package com.percussion.services.catalog;
 
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.PSFilterServiceLocator;
 import com.percussion.services.publisher.IPSPublisherService;
@@ -60,27 +61,23 @@ public class PSCatalogBasicUnitTest
          .getPublisherService();
 
    @Test
-   public void testAssemblyEnumeration() throws PSCatalogException
-   {
+   public void testAssemblyEnumeration() throws PSCatalogException, PSNotFoundException {
       doEnumerationTest(asm);
    }
 
    @Test
-   public void testFilterEnumeration() throws PSCatalogException
-   {
+   public void testFilterEnumeration() throws PSCatalogException, PSNotFoundException {
       doEnumerationTest(fsvc);
    }
 
    @Test
-   public void testPublisherEnumeration() throws PSCatalogException
-   {
+   public void testPublisherEnumeration() throws PSCatalogException, PSNotFoundException {
       doEnumerationTest(psvc);
    }
 
-   private void doEnumerationTest(IPSCataloger cat) throws PSCatalogException
-   {
+   private void doEnumerationTest(IPSCataloger cat) throws PSCatalogException, PSNotFoundException {
       // Check getTypes
-      PSTypeEnum types[] = cat.getTypes();
+      PSTypeEnum[] types = cat.getTypes();
       
       assertNotNull(types);
       assertTrue(types.length >= 1);

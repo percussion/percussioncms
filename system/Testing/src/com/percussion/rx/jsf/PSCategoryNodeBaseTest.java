@@ -23,6 +23,7 @@
  */
 package com.percussion.rx.jsf;
 
+import com.percussion.services.error.PSNotFoundException;
 import junit.framework.TestCase;
 
 /**
@@ -30,8 +31,7 @@ import junit.framework.TestCase;
  */
 public class PSCategoryNodeBaseTest extends TestCase
 {
-   public void testGetFilteredNodes()
-   {
+   public void testGetFilteredNodes() throws PSNotFoundException {
       final String title1 = "title 1 val";
 
       final PSCategoryNodeBase category = createCategory();

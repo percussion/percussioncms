@@ -27,6 +27,7 @@ import static org.apache.commons.lang.Validate.notNull;
 import static org.apache.commons.lang.Validate.notEmpty;
 
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.error.PSRuntimeException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.publisher.IPSContentList;
@@ -148,7 +149,12 @@ public class PSPublisherUtils
 
       IPSPublisherService psvc = PSPublisherServiceLocator
             .getPublisherService();
+
+      try{
       return psvc.loadContentList(ecList.getContentListId());
+      } catch (PSNotFoundException e) {
+         throw new PSRuntimeException(e);
+      }
    }
    
    /**

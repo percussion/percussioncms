@@ -130,7 +130,7 @@ public class PSSiteFolderFilter extends PSBaseFilter
                continue;
             }
          }
-         catch (PSCmsException e)
+         catch (PSCmsException | PSNotFoundException e)
          {
             ms_log.warn("Problem getting paths for folder " + id.getFolderId()
                   + " removing item");

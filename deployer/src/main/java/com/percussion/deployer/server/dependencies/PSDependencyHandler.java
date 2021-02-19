@@ -38,6 +38,7 @@ import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.deployer.server.PSLogHandler;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.security.IPSAclService;
@@ -276,8 +277,7 @@ public abstract class PSDependencyHandler
     */
    public void installDependencyFiles(PSSecurityToken tok,
       PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSAssemblyException {
       throw new UnsupportedOperationException("method not supported");
    }
 

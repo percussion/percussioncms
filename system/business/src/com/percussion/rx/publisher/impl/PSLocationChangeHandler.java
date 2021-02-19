@@ -40,6 +40,7 @@ import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.jexl.PSStringUtils;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -159,8 +160,7 @@ public class PSLocationChangeHandler
     *         empty.
     */
    public Collection<IPSAssemblyItem> getUnpublishPaginateedItems(
-         List<IPSAssemblyItem> pagedItems)
-   {
+         List<IPSAssemblyItem> pagedItems) throws PSNotFoundException {
       if (pagedItems.isEmpty())
          return Collections.emptyList();
 
@@ -206,8 +206,7 @@ public class PSLocationChangeHandler
     */
    private Collection<IPSAssemblyItem> getUnpublishExtraPages(
          IPSAssemblyItem item1, Collection<IPSSiteItem> siteItems,
-         Set<String> paths)
-   {
+         Set<String> paths) throws PSNotFoundException {
       List<IPSAssemblyItem> result = new ArrayList<>();
       for (IPSSiteItem sItem : siteItems)
       {
@@ -311,8 +310,6 @@ public class PSLocationChangeHandler
     * Collects the specified item for checking location change if needed.
     * 
     * @param item the item in question, assumed not <code>null</code>.
-    * @param publishItems the list used to collection the item, assumed not
-    *           <code>null</code>.
     */
    public boolean isPosssibleLocationChange(IPSAssemblyItem item)
    {
@@ -340,8 +337,7 @@ public class PSLocationChangeHandler
     */
    public Collection<IPSAssemblyItem> getUnpublishingItems(IPSGuid siteId,
          int deliveryContext, IPSContentList contentlist,
-         Set<PSSiteItemKey> unpublishKeys, Collection<IPSAssemblyItem> publishItems)
-   {
+         Set<PSSiteItemKey> unpublishKeys, Collection<IPSAssemblyItem> publishItems) throws PSNotFoundException {
       notNull(siteId);
 
 
@@ -367,8 +363,7 @@ public class PSLocationChangeHandler
     */
    public Collection<IPSAssemblyItem> getUnpublishingItemsByServer(IPSGuid serverId,
          int deliveryContext, IPSContentList contentlist,
-         Set<PSSiteItemKey> unpublishKeys, Collection<IPSAssemblyItem> publishItems)
-   {
+         Set<PSSiteItemKey> unpublishKeys, Collection<IPSAssemblyItem> publishItems) throws PSNotFoundException {
       notNull(serverId);
 
       return getUnpublishingItemsSiteOrServer(serverId,
@@ -380,7 +375,7 @@ public class PSLocationChangeHandler
     * Creates un-publishing items from previously collected publishing items.
     * 
     * 
-    * @param siteId the ID of the site, not <code>null</code>.
+    * @param isSite the ID of the site, not <code>null</code>.
     * @param deliveryContext the delivery context used for the publishing.
     * @param contentlist the processing content list, not <code>null</code>.
     * @param unpublishKeys the key of the un-published site items that were
@@ -393,8 +388,7 @@ public class PSLocationChangeHandler
     */
    public Collection<IPSAssemblyItem> getUnpublishingItemsSiteOrServer(IPSGuid objectId,
          int deliveryContext, IPSContentList contentlist,
-         Set<PSSiteItemKey> unpublishKeys, Collection<IPSAssemblyItem> publishItems, boolean isSite)
-   {
+         Set<PSSiteItemKey> unpublishKeys, Collection<IPSAssemblyItem> publishItems, boolean isSite) throws PSNotFoundException {
       notNull(objectId);
 
       if (publishItems.isEmpty())
@@ -443,7 +437,7 @@ public class PSLocationChangeHandler
     * 
     * @param items the publishing items in question, assumed not
     *           <code>null</code>.
-    * @param siteId the ID of the site, not <code>null</code>.
+    * @param isSite the ID of the site, not <code>null</code>.
     * @param deliveryContext the delivery context used for the publishing.
     * @param unpublishKeys the key of the un-published site items that were
     *           processed at the beginning of the current job.
@@ -454,8 +448,7 @@ public class PSLocationChangeHandler
     */
    private List<IPSAssemblyItem> createUnpublishItems(
          List<IPSAssemblyItem> items, IPSGuid objectId, int deliveryContext,
-         Set<PSSiteItemKey> unpublishKeys, boolean isPaginated, boolean isSite)
-   {
+         Set<PSSiteItemKey> unpublishKeys, boolean isPaginated, boolean isSite) throws PSNotFoundException {
       Collection<Integer> ids = getIdsFromItems(items);
       Collection<IPSSiteItem> siteItems = isSite?m_pubService.findSiteItemsByIds(
             objectId, deliveryContext, ids):
@@ -470,7 +463,7 @@ public class PSLocationChangeHandler
     * Creates un-publishing work items from the specified items and related site
     * items.
     * 
-    * @param item the work item, assumed not <code>null</code>.
+    * @param items the work item, assumed not <code>null</code>.
     * @param idToSiteItems a map that maps the content ID to a list of site
     *           items. Assumed not <code>null</code>.
     * @param isPaginated <code>true</code> if check for paginated item.
@@ -482,8 +475,7 @@ public class PSLocationChangeHandler
     */
    private List<IPSAssemblyItem> createUnpublishItems(
          Collection<IPSAssemblyItem> items,
-         Map<Integer, List<IPSSiteItem>> idToSiteItems, boolean isPaginated)
-   {
+         Map<Integer, List<IPSSiteItem>> idToSiteItems, boolean isPaginated) throws PSNotFoundException {
       List<IPSAssemblyItem> result = new ArrayList<>();
 
       for (IPSAssemblyItem item : items)
@@ -673,10 +665,10 @@ public class PSLocationChangeHandler
       if (paths.isEmpty())
          return false;
          
-      List<PSLocator> locators = (List<PSLocator>) paths.get(0);
+      List<PSLocator> locators = paths.get(0);
       for (PSLocator loc : locators)
       {
-         if (loc.getId() == siteId.intValue())
+         if (loc.getId() == siteId)
             return true;
       }
       return false;
@@ -943,8 +935,7 @@ public class PSLocationChangeHandler
     * @return the un-publishing item, never <code>null</code>.
     */
    private IPSAssemblyItem addUnpublishItem(IPSAssemblyItem item,
-         IPSSiteItem sItem, List<IPSAssemblyItem> queuedItems)
-   {
+         IPSSiteItem sItem, List<IPSAssemblyItem> queuedItems) throws PSNotFoundException {
       IPSDeliveryType dtype = getDeliveryType(sItem.getDeliveryType());
       IPSAssemblyItem clone = (IPSAssemblyItem) item.pageClone(); // item.clone();
 
@@ -972,8 +963,7 @@ public class PSLocationChangeHandler
     * 
     * @return the delivery type, never <code>null</code>.
     */
-   private IPSDeliveryType getDeliveryType(String deliveryType)
-   {
+   private IPSDeliveryType getDeliveryType(String deliveryType) throws PSNotFoundException {
       IPSDeliveryType dtype = m_typeMap.get(deliveryType);
       if (dtype != null)
          return dtype;

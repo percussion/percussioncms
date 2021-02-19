@@ -41,6 +41,7 @@ import com.percussion.deploy.services.PSDeployServiceLocator;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.publisher.IPSEditionTaskDef;
@@ -80,10 +81,8 @@ public class PSEditionTaskDefDependencyHandler
 
    // see base class
    @Override
-   @SuppressWarnings("unchecked")
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -107,8 +106,7 @@ public class PSEditionTaskDefDependencyHandler
     * @throws PSDeployException
     */
    private List<PSDependency> getExtensionDependencies(
-         PSSecurityToken tok, PSDependency dep) throws PSDeployException
-   {
+         PSSecurityToken tok, PSDependency dep) throws PSDeployException, PSNotFoundException {
       List<PSDependency> childDeps = new ArrayList<PSDependency>();
       List<String> exts = new ArrayList<String>();
       
@@ -156,8 +154,7 @@ public class PSEditionTaskDefDependencyHandler
 
    // see base class
    @Override
-   public PSDependency getDependency(PSSecurityToken tok, String id)
-   {
+   public PSDependency getDependency(PSSecurityToken tok, String id) throws PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -223,8 +220,7 @@ public class PSEditionTaskDefDependencyHandler
    @Override
    @SuppressWarnings("unchecked")
    public Iterator getDependencyFiles(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -232,7 +228,7 @@ public class PSEditionTaskDefDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       // package the dep itself
       IPSEditionTaskDef task = findEditionTask(dep.getDependencyId());
@@ -304,8 +300,7 @@ public class PSEditionTaskDefDependencyHandler
     * @return edition task corresponding to the id, <code>null</code> if a
     * match was not found.
     */
-   private IPSEditionTaskDef findEditionTask(String id)
-   {
+   private IPSEditionTaskDef findEditionTask(String id) throws PSNotFoundException {
       return m_pubSvc.findEditionTaskById(PSGuidUtils.makeGuid(id,
             PSTypeEnum.EDITION_TASK_DEF));
    }
@@ -404,8 +399,7 @@ public class PSEditionTaskDefDependencyHandler
    @SuppressWarnings("unchecked")
    public void doInstallDependencyFiles(PSSecurityToken tok,
          PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (archive == null)

@@ -54,8 +54,7 @@ public class PSContextContainerNode extends PSEditableNodeContainer
    
    /**
     * Ctor.
-    * 
-    * @param title The text to render for the node in the tree.
+    *
     */
    public PSContextContainerNode() 
    {
@@ -63,8 +62,7 @@ public class PSContextContainerNode extends PSEditableNodeContainer
    }
 
    @Override
-   synchronized public List<? extends PSNodeBase> getChildren()
-   {
+   synchronized public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
       // synchronize this operation to prevent loading children more than once
       // from multiple requests/threads. This may happen when browser user
       // quickly clicking the same link more than once. 
@@ -92,8 +90,7 @@ public class PSContextContainerNode extends PSEditableNodeContainer
     * 
     * @return the outcome for the node, which will navigate to the editor.
     */
-   public String createContext()
-   {
+   public String createContext() throws PSNotFoundException {
       IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
       IPSPublishingContext ctx = smgr.createContext();
       ctx.setName(getUniqueName("Context", false));
@@ -134,7 +131,7 @@ public class PSContextContainerNode extends PSEditableNodeContainer
             names.add(summary.getName());
          }
       }
-      catch (PSCatalogException e)
+      catch (PSCatalogException | PSNotFoundException e)
       {
          ms_log.error("Problem obtaining site names", e);
       }

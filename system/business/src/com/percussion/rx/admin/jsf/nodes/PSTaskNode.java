@@ -32,6 +32,7 @@ import com.percussion.rx.publisher.jsf.data.PSParameter;
 import com.percussion.rx.publisher.jsf.utils.PSExtensionHelper;
 import com.percussion.security.PSRoleManager;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.schedule.IPSSchedulingService;
@@ -66,7 +67,7 @@ public class PSTaskNode extends PSEditableNode
 {
    /**
     * Creates new node for the specified notification template.
-    * @param notification the notification template.
+    * @param event the notification template.
     * Not <code>null</code>.
     */
    public PSTaskNode(PSScheduledTask event)
@@ -76,8 +77,7 @@ public class PSTaskNode extends PSEditableNode
 
    // see base
    @Override
-   public String copy()
-   {
+   public String copy() throws PSNotFoundException {
       final PSScheduledTask copy = getSchedulingService().createSchedule();
       final IPSGuid id = copy.getId();
       copy.apply(getEvent());
@@ -265,7 +265,6 @@ public class PSTaskNode extends PSEditableNode
     * Retrieves notification template label.
     * For use in the constructor, so the constructor will be able to validate
     * the notification template variable before the super constructor is called.
-    * @param notificationTemplate the notification template
     * to request the label from.
     * If <code>null</code> the method throws
     * <code>IllegalArgumentException</code>.
@@ -532,7 +531,7 @@ public class PSTaskNode extends PSEditableNode
    }
 
    /**
-    * This is the wrapper of the {@link #m_event.m_notifyTemplateId}.
+    * This is the wrapper of the .
     * The purpose of this is to be able to set <code>null</code> to the 
     * notification template ID of the event object. 
     * 
