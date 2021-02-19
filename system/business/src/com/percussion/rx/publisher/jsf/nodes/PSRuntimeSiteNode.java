@@ -51,7 +51,7 @@ public class PSRuntimeSiteNode extends PSNodeBase
    /**
     * Sites have child nodes.
     */
-   protected List<PSNodeBase> m_children = new ArrayList<PSNodeBase>();
+   protected List<PSNodeBase> m_children = new ArrayList<>();
 
    /**
     * The current index into the collection. <code>-1</code> indicates that no

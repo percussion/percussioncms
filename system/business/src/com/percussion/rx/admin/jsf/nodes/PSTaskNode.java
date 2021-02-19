@@ -104,7 +104,7 @@ public class PSTaskNode extends PSEditableNode
     */
    private void setEventFromInput()
    {
-      Map<String, String> params = new HashMap<String, String>();
+      Map<String, String> params = new HashMap<>();
       for (PSParameter p : m_params)
       {
          params.put(p.getName(), p.getValue());
@@ -326,7 +326,7 @@ public class PSTaskNode extends PSEditableNode
     */
    public List<SelectItem> getNotifyWhenChoices()
    {
-      final List<SelectItem> choices = new ArrayList<SelectItem>();
+      final List<SelectItem> choices = new ArrayList<>();
       for (PSNotifyWhen when : PSNotifyWhen.values())
       {
          choices.add(new SelectItem(when, when.getLabel()));
@@ -342,7 +342,7 @@ public class PSTaskNode extends PSEditableNode
    @SuppressWarnings({"unchecked"})
    public List<SelectItem> getNotifyRowChoices()
    {
-      final List<SelectItem> choices = new ArrayList<SelectItem>();
+      final List<SelectItem> choices = new ArrayList<>();
       choices.add(new SelectItem("", ""));
       final List<String> roles = getRoleManager().getRoles();
       for (final String role : roles)
@@ -386,8 +386,8 @@ public class PSTaskNode extends PSEditableNode
     */
    public List<SelectItem> getNotificationTemplateChoices()
    {
-      final List<SelectItem> choices = new ArrayList<SelectItem>();
-      List<PSNotificationTemplate> ntList = new ArrayList<PSNotificationTemplate>(
+      final List<SelectItem> choices = new ArrayList<>();
+      List<PSNotificationTemplate> ntList = new ArrayList<>(
             getSchedulingService().findAllNotificationTemplates());
       Collections.sort(ntList, new ByLabelComparator());
       
@@ -519,7 +519,7 @@ public class PSTaskNode extends PSEditableNode
    /**
     * Holds the parameters while the task is being edited.
     */
-   private List<PSParameter> m_params = new ArrayList<PSParameter>();
+   private List<PSParameter> m_params = new ArrayList<>();
 
    /**
     * A convenience method to access the role manager.

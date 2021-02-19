@@ -134,14 +134,14 @@ public class PSPublishHandler implements MessageListener
     * is received and old messages have expired.
     */
    private static List<PSCancelPublishingMessage> ms_cancellations 
-      = new CopyOnWriteArrayList<PSCancelPublishingMessage>();
+      = new CopyOnWriteArrayList<>();
 
    /**
     * Map whose key is a delivery type name and value is a flag which indicates
     * whether or not empty delivery locations are allowed. 
     */
    private static Map<String, Boolean> ms_deliveryTypeToAllowsEmptyLocation
-      = new ConcurrentHashMap<String, Boolean>();
+      = new ConcurrentHashMap<>();
    
    /**
     * The delivery manager to actually deliver the content. Set via spring.
@@ -486,7 +486,7 @@ public class PSPublishHandler implements MessageListener
       results = expander.expand(result);
       notNull(results, "results should not be null");
       noNullElements(results);
-      List<IPSAssemblyItem> addedItems = new ArrayList<IPSAssemblyItem>(results);
+      List<IPSAssemblyItem> addedItems = new ArrayList<>(results);
       Iterator<IPSAssemblyItem> iter = addedItems.iterator();
       /*
        * Filter out the original item.

@@ -155,7 +155,7 @@ public class PSPubItemStatus implements Serializable, IPSPublisherItemStatus
    /**
     * The message or messages associated with the status.
     */
-   private List<String> m_messages = new ArrayList<String>();
+   private List<String> m_messages = new ArrayList<>();
    
    /**
     * The delivery type.

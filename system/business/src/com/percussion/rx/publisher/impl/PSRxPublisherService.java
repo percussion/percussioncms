@@ -163,7 +163,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
     * the same time, except in the {@link PSDemandWork} - avoid deadlock. 
     */
    Map<Integer,  ConcurrentLinkedQueue<PSDemandWork>> m_demandWork = 
-      new ConcurrentHashMap<Integer,  ConcurrentLinkedQueue<PSDemandWork>>();
+      new ConcurrentHashMap<>();
    
    /**
     * This map holds the correspondence between the demand ids and the running
@@ -324,7 +324,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
    {
       // Check existing jobs to see if any can be reaped 
       long current = System.currentTimeMillis();
-      Set<Long> keysToRemove = new HashSet<Long>();
+      Set<Long> keysToRemove = new HashSet<>();
 
       for (Long key : m_jobs.keySet())
       {
@@ -367,7 +367,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
             m_jobs.remove(key);
          }  
          
-         Set<Long> requestsToRemove = new HashSet<Long>();
+         Set<Long> requestsToRemove = new HashSet<>();
          for (Long requestid : m_demandRequestToJob.keySet())
          {
             Long jobid = m_demandRequestToJob.get(requestid);
@@ -473,7 +473,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       IPSPublisherService svc = PSPublisherServiceLocator
          .getPublisherService();
       
-         List<IPSPublisherItemStatus> persistStatuses = new ArrayList<IPSPublisherItemStatus>();
+         List<IPSPublisherItemStatus> persistStatuses = new ArrayList<>();
    
          
          IPSPublisherItemStatus item = updateQueue.poll();
@@ -527,7 +527,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       reapActiveJobs();
       
       Map<IPSGuid,PSPublishingJob> editionToJob = 
-         new HashMap<IPSGuid, PSPublishingJob>();
+         new HashMap<>();
       
       for(PSPublishingJob job : m_jobs.values())
       {
@@ -547,7 +547,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
          }
       }
       
-      Collection<Long> rval = new ArrayList<Long>();
+      Collection<Long> rval = new ArrayList<>();
       for(PSPublishingJob job : editionToJob.values()) 
       {
          rval.add(job.getJobid());
@@ -626,7 +626,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       }
       else
       {
-         Collection<PSDemandWork> rval = new ArrayList<PSDemandWork>();
+         Collection<PSDemandWork> rval = new ArrayList<>();
          PSDemandWork item = q.poll();
    
             while(item != null)
@@ -656,7 +656,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       if (q == null || q.size() == 0 || (!isRetrieveOnly))
          return q;
       
-      Queue<PSDemandWork> qCloned = new LinkedList<PSDemandWork>();
+      Queue<PSDemandWork> qCloned = new LinkedList<>();
       qCloned.addAll(q);
       return qCloned;
    }
@@ -721,7 +721,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
          {
             if (q == null)
             {
-               q = new  ConcurrentLinkedQueue<PSDemandWork>();
+               q = new  ConcurrentLinkedQueue<>();
                m_demandWork.put(editionid, q);
             }
          }
