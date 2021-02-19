@@ -29,6 +29,7 @@ import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
 import com.percussion.rx.publisher.PSRxPubServiceInternalLocator;
 import com.percussion.rx.publisher.jsf.beans.PSRuntimeNavigation;
 import com.percussion.rx.publisher.jsf.data.PSStatusLogEntry;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.publisher.IPSPubStatus;
 import com.percussion.services.publisher.IPSPubStatus.EndingState;
 import com.percussion.services.publisher.IPSPublisherService;
@@ -82,8 +83,7 @@ public class PSPublishingStatusHelper
    public static List<Map<String, Object>> processStatus(
          List<IPSPubStatus> stati,
          boolean useAnimatedIcon,
-         PSRuntimeNavigation navigation)
-   {
+         PSRuntimeNavigation navigation) throws PSNotFoundException {
       if (stati == null)
       {
          throw new IllegalArgumentException("stati may not be null");
@@ -96,14 +96,14 @@ public class PSPublishingStatusHelper
             .getRxPublisherService();
       IPSPublisherService pubService = PSPublisherServiceLocator.getPublisherService();
       Collection<Long> ids = rxpub.getActiveJobIds();
-      List<Map<String,Object>> rval = new ArrayList<Map<String,Object>>();
+      List<Map<String,Object>> rval = new ArrayList<>();
       Map<Long, PSRuntimeNavigation.EditionSiteName> idmap = 
          navigation.getEditionIdNameMap();
       PSRuntimeNavigation.EditionSiteName names;
       for(IPSPubStatus status : stati)
       {
          Long jobId = status.getStatusId();
-         Map<String,Object> data = new HashMap<String, Object>();
+         Map<String,Object> data = new HashMap<>();
          data.put("statusid", jobId);
          
          // get the start time for display
@@ -116,7 +116,7 @@ public class PSPublishingStatusHelper
          data.put("delivered", status.getDeliveredCount());
          data.put("removed", status.getRemovedCount());
          data.put("failures", status.getFailedCount());
-         Long editionId = new Long(status.getEditionId());
+         Long editionId = status.getEditionId();
          
          boolean activeJob = ids.contains(jobId) || 
             ( ! pubService.getServerId().equals(status.getServer()) );
@@ -147,8 +147,7 @@ public class PSPublishingStatusHelper
 
    /**
     * Gets the source and (short) description of the status image.
-    * 
-    * @param status the status, assumed not <code>null</code>.
+    *
     * @param isActiveJob <code>true</code> if this is an active job.
     * @param useAnimated <code>true</code> if use animated icon to display
     *    the running job; otherwise use non-animated icon to display the 
@@ -367,7 +366,7 @@ public class PSPublishingStatusHelper
       {
          return Collections.emptyList();
       }
-      List<String> rval = new ArrayList<String>();
+      List<String> rval = new ArrayList<>();
       while (StringUtils.isNotBlank(msg))
       {
          MsgSpliter ms = splitIndex(msg);

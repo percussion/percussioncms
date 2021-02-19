@@ -84,8 +84,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
     * 
     * @return the outcome
     */
-   public String createEdition()
-   {
+   public String createEdition() throws PSNotFoundException {
       IPSEdition ed = getPublisherService().createEdition();
       return createEdition(ed, null, "Edition", false);
    }
@@ -105,8 +104,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
     */
    private String createEdition(IPSEdition edition,
          List<PSEditionContentListWrapper> eclists, String baseName,
-         boolean isCopyFrom)
-   {
+         boolean isCopyFrom) throws PSNotFoundException {
       edition.setSiteId(m_siteParent.getGUID());
       edition.setName(getUniqueName(baseName, isCopyFrom)); 
       
@@ -120,8 +118,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
     * 
     * @return the outcome
     */
-   public String copyEditionFromOtherSite()
-   {
+   public String copyEditionFromOtherSite() throws PSNotFoundException {
       String slctEditionName = getSelectedEditionName();
       if (slctEditionName == null)
          return null;
@@ -144,8 +141,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
     */
    @SuppressWarnings("unchecked")
    private List<PSEditionContentListWrapper> cloneEditionContentList(
-         IPSEdition srcEdition, IPSEdition copiedEdition)
-   {
+         IPSEdition srcEdition, IPSEdition copiedEdition) throws PSNotFoundException {
       if (!m_isDeepClone)
          return null;
       
@@ -173,8 +169,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
     * @return the cloned association wrapper, never <code>null</code>.
     */
    private PSEditionContentListWrapper cloneEditionContentList(
-         IPSEditionContentList src, IPSEdition tgtEdition)
-   {
+         IPSEditionContentList src, IPSEdition tgtEdition) throws PSNotFoundException {
       
       IPSContentList tgtClist = cloneContentList(src.getContentListId());
       IPSEditionContentList dest = getPublisherService()
@@ -193,8 +188,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
     * @param clistGuid the id of the source Content List.
     * @return the cloned (and persisted) Content List.
     */
-   private IPSContentList cloneContentList(IPSGuid clistGuid)
-   {
+   private IPSContentList cloneContentList(IPSGuid clistGuid) throws PSNotFoundException {
       IPSContentList clist = getPublisherService().loadContentList(clistGuid);
       IPSContentList tgtClist = clist.clone();
       tgtClist.setName(getUniqueContentListName(clist.getName()));
@@ -208,8 +202,7 @@ public class PSEditionContainerNode extends PSEditableNodeContainer
     * @param baseName the base name, assumed not <code>null</code>.
     * @return the unique name, never <code>null</code> or empty.
     */
-   private String getUniqueContentListName(String baseName)
-   {
+   private String getUniqueContentListName(String baseName) throws PSNotFoundException {
       PSContentListViewNode tmpNode = new PSContentListViewNode("dummy",
             PSContentListViewNode.Type.UNUSED, getSiteParent(), "dummyKey");
       

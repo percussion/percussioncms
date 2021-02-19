@@ -27,18 +27,17 @@ import com.percussion.rx.jsf.PSLockableNode;
 import com.percussion.rx.jsf.PSNodeBase;
 import com.percussion.rx.publisher.jsf.nodes.PSPublishingStatusHelper;
 import com.percussion.rx.ui.jsf.beans.PSHelpTopicMapping;
-import com.percussion.services.publisher.IPSPubStatus;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.schedule.IPSSchedulingService;
 import com.percussion.services.schedule.PSSchedulingServiceLocator;
 import com.percussion.services.schedule.data.PSScheduledTaskLog;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
 
 public class PSTaskLogNode extends PSLockableNode
 {
@@ -216,9 +215,8 @@ public class PSTaskLogNode extends PSLockableNode
     * Gets the ID/name mapping for all tasks.  
     * @return the ID/name mapping, never <code>null</code>.
     */
-   private Map<IPSGuid, String> getTaskIdNameMap()
-   {
-      Map<IPSGuid,String> idnameMap = new HashMap<IPSGuid, String>();
+   private Map<IPSGuid, String> getTaskIdNameMap() throws PSNotFoundException {
+      Map<IPSGuid,String> idnameMap = new HashMap<>();
       // find the task container node
       PSNodeBase parent = getParent();
       PSTaskContainerNode containerNode = null;
@@ -228,7 +226,7 @@ public class PSTaskLogNode extends PSLockableNode
             containerNode = (PSTaskContainerNode) n;
       }
       if (containerNode == null)
-         throw new IllegalStateException("Cannot find Event Containder Node.");
+         throw new IllegalStateException("Cannot find Event Container Node.");
       
       // build the map
       for (PSNodeBase n : containerNode.getChildren())
@@ -243,12 +241,11 @@ public class PSTaskLogNode extends PSLockableNode
     * Gets the rows for the Event log table
     * @return all event log entries, never <code>null</code>, may be empty.
     */
-   public List<EventLog> getEventLogs()
-   {
+   public List<EventLog> getEventLogs() throws PSNotFoundException {
       Map<IPSGuid,String> idnameMap = getTaskIdNameMap();
       // 8640 log entries covers 30 days tasks that triggers every 5 minutes.
       List<PSScheduledTaskLog> logs = getService().findAllTaskLogs(8640);
-      List<EventLog> eventLogs = new ArrayList<EventLog>();
+      List<EventLog> eventLogs = new ArrayList<>();
       for (PSScheduledTaskLog log : logs)
       {
          
@@ -266,12 +263,11 @@ public class PSTaskLogNode extends PSLockableNode
    /**
     * Deletes selected log entries.
     */
-   public String deleteLogs()
-   {
+   public String deleteLogs() throws PSNotFoundException {
       if (m_eventLogs == null)
          getEventLogs();
          
-      List<IPSGuid> ids = new ArrayList<IPSGuid>();
+      List<IPSGuid> ids = new ArrayList<>();
       for (EventLog log : m_eventLogs)
       {
          if (log.getSelected())
@@ -306,8 +302,7 @@ public class PSTaskLogNode extends PSLockableNode
     *  
     * @return the number of rows per page.
     */
-   public int getPageRows()
-   {
+   public int getPageRows() throws PSNotFoundException {
       setPageRows(null);
       return m_pageRows.intValue();
    }
@@ -316,8 +311,7 @@ public class PSTaskLogNode extends PSLockableNode
     * Set the rows per page if needed.
     * @param entries the list of rows will be displayed on the table.
     */
-   private void setPageRows(List<EventLog> entries)
-   {
+   private void setPageRows(List<EventLog> entries) throws PSNotFoundException {
       if (m_pageRows != null)
          return;
       

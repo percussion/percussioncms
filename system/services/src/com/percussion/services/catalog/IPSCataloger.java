@@ -23,6 +23,7 @@
  */
 package com.percussion.services.catalog;
 
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 
 import java.util.List;
@@ -65,7 +66,7 @@ public interface IPSCataloger
     *            data
     */
    List<IPSCatalogSummary> getSummaries(PSTypeEnum type)
-         throws PSCatalogException;
+           throws PSCatalogException, PSNotFoundException;
 
    /**
     * Load the item specified by the given document and store into persistent

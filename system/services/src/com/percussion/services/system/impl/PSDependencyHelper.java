@@ -52,6 +52,7 @@ import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.IPSItemFilter;
 import com.percussion.services.filter.PSFilterException;
@@ -473,9 +474,8 @@ public class PSDependencyHelper
     * @throws PSFilterException 
     */
    private Collection<PSDependent> checkItemFilterDependencies(IPSGuid guid)
-   throws PSFilterException
-   {
-      Collection<PSDependent> rval = new ArrayList<PSDependent>();
+           throws PSFilterException, PSNotFoundException {
+      Collection<PSDependent> rval = new ArrayList<>();
       IPSFilterService fsvc = PSFilterServiceLocator.getFilterService();
       
       IPSItemFilter filter = fsvc.loadFilter(guid);

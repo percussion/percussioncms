@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import com.percussion.services.error.PSNotFoundException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.trinidad.model.RowKeyIndex;
 
@@ -158,8 +159,7 @@ public class PSCategoryNodeBase extends PSNodeBase
    }
 
    @Override
-   public List<? extends PSNodeBase> getChildren()
-   {
+   public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
       return m_children;
    }
 
@@ -321,8 +321,7 @@ public class PSCategoryNodeBase extends PSNodeBase
     * @return the matching nodes, may be empty. If it is not empty, then
     * there always be one selected node.
     */
-   public List<PSNodeBase> getFilteredNodes()
-   {
+   public List<PSNodeBase> getFilteredNodes() throws PSNotFoundException {
       if (getChildren() == null)
       {
          return Collections.emptyList();

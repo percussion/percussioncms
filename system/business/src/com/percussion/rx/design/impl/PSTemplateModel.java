@@ -24,41 +24,37 @@
 package com.percussion.rx.design.impl;
 
 import com.percussion.rx.design.IPSAssociationSet;
-import com.percussion.rx.design.PSDesignModelUtils;
 import com.percussion.rx.design.IPSAssociationSet.AssociationType;
+import com.percussion.rx.design.PSDesignModelUtils;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSTemplateService;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
-import com.percussion.services.assembly.data.PSTemplateSlot;
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
-import com.percussion.services.contentmgr.data.PSContentTemplateDesc;
-import com.percussion.services.locking.IPSObjectLockService;
-import com.percussion.services.locking.PSObjectLockServiceLocator;
-import com.percussion.services.locking.data.PSObjectLock;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManagerInternal;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
-import com.percussion.webservices.PSErrorException;
-import com.percussion.webservices.PSErrorResultsException;
-import com.percussion.webservices.PSWebserviceUtils;
-import com.percussion.webservices.content.IPSContentDesignWs;
-import com.percussion.webservices.content.PSContentWsLocator;
-
-import java.text.MessageFormat;
-import java.util.*;
-import java.util.stream.Collectors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.RepositoryException;
-
-import org.apache.log4j.Logger;
-import org.hibernate.AnnotationException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class PSTemplateModel extends PSDesignModel
 {
@@ -81,7 +77,7 @@ public class PSTemplateModel extends PSDesignModel
       try {
          return service.findAllTemplates().stream().map(t -> t.getName()).collect(Collectors.toList());
       } catch (PSAssemblyException e) {
-         ms_logger.error("Cannot load template names",e);
+         log.error("Cannot load template names",e);
          return Collections.emptyList();
       }
    }
@@ -199,19 +195,19 @@ public class PSTemplateModel extends PSDesignModel
             String msg = "Skipping the template ({0}), slot ({1}) association "
                   + "as the type of the association is not String.";
             Object[] args = { template.getName(), obj.toString() };
-            ms_logger.warn(MessageFormat.format(msg, args));
+            log.warn(MessageFormat.format(msg, args));
          }
       }
       IPSTemplateService service = (IPSTemplateService) getService();
 
-      List<IPSTemplateSlot> slots = new ArrayList<IPSTemplateSlot>();
+      List<IPSTemplateSlot> slots = new ArrayList<>();
       if (!slotNames.isEmpty())
       {
          slots = service.findSlotsByNames(slotNames);
          // Log all names that do not have slot objects
          if (slots.size() != slotNames.size())
          {
-            List<String> temp = new ArrayList<String>();
+            List<String> temp = new ArrayList<>();
             for (IPSTemplateSlot slot : slots)
             {
                temp.add(slot.getName());
@@ -221,11 +217,11 @@ public class PSTemplateModel extends PSDesignModel
                String msg = "Failed to load the slot with the given name {0}, "
                      + "skipping the template {1} and slot {2} association.";
                Object[] args = { sn, template.getName(), sn };
-               ms_logger.warn(MessageFormat.format(msg, args));
+               log.warn(MessageFormat.format(msg, args));
             }
          }
       }
-      Set<IPSTemplateSlot> tempSlots = new HashSet<IPSTemplateSlot>(slots);
+      Set<IPSTemplateSlot> tempSlots = new HashSet<>(slots);
       template.setSlots(tempSlots);
    }
 
@@ -241,7 +237,7 @@ public class PSTemplateModel extends PSDesignModel
          String msg = "Failed to find the template with the given id ({0}) "
                + " skipping the deletion.";
          Object[] args = { guid };
-         ms_logger.info(MessageFormat.format(msg, args));
+         log.info(MessageFormat.format(msg, args));
          return;
       }
       
@@ -281,7 +277,7 @@ public class PSTemplateModel extends PSDesignModel
    {
       IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
       List<IPSNodeDefinition> nodeDefs = mgr.findAllItemNodeDefinitions();
-      List<IPSNodeDefinition> nodeDefs2Save = new ArrayList<IPSNodeDefinition>();
+      List<IPSNodeDefinition> nodeDefs2Save = new ArrayList<>();
       for (IPSNodeDefinition nodeDef : nodeDefs)
       {
          Set<IPSGuid> ctemps = nodeDef.getVariantGuids();
@@ -304,8 +300,7 @@ public class PSTemplateModel extends PSDesignModel
     * @throws PSAssemblyException
     */
    private void removeSiteAssociations(IPSGuid guid)
-      throws PSAssemblyException
-   {
+           throws PSAssemblyException, PSNotFoundException {
       IPSAssemblyService service = PSAssemblyServiceLocator
             .getAssemblyService();
       IPSAssemblyTemplate template;
@@ -347,7 +342,7 @@ public class PSTemplateModel extends PSDesignModel
       IPSAssemblyService service = PSAssemblyServiceLocator
             .getAssemblyService();
       List<IPSTemplateSlot> allSlots = service.findSlotsByName(null);
-      List<IPSTemplateSlot> modSlots = new ArrayList<IPSTemplateSlot>();
+      List<IPSTemplateSlot> modSlots = new ArrayList<>();
       for (IPSTemplateSlot slot : allSlots)
       {
          Collection<PSPair<IPSGuid, IPSGuid>> slotAssociations = slot
@@ -384,7 +379,7 @@ public class PSTemplateModel extends PSDesignModel
    @Override
    public List<IPSAssociationSet> getAssociationSets()
    {
-      List<IPSAssociationSet> asets = new ArrayList<IPSAssociationSet>();
+      List<IPSAssociationSet> asets = new ArrayList<>();
       asets.add(new PSAssociationSet(AssociationType.TEMPLATE_SLOT));
       return asets;
    }
@@ -392,6 +387,6 @@ public class PSTemplateModel extends PSDesignModel
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("PSTemplateModel");
+   private static Logger log = LogManager.getLogger(PSTemplateModel.class);
 
 }

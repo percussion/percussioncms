@@ -26,6 +26,7 @@ package com.percussion.services.filter.data;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.data.IPSCloneTuner;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.*;
 import com.percussion.services.guidmgr.PSGuidHelper;
 import com.percussion.services.guidmgr.PSGuidUtils;
@@ -37,7 +38,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
 import org.xml.sax.SAXException;
-
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -60,6 +62,8 @@ import java.util.*;
 public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
    IPSCloneTuner, Serializable
 {
+   private static final Logger log = LogManager.getLogger(PSItemFilter.class);
+
    /**
     * 
     */
@@ -225,10 +229,14 @@ public class PSItemFilter implements IPSItemFilter, IPSCatalogSummary,
       else
       {
          IPSFilterService svc = PSFilterServiceLocator.getFilterService();
-         List<IPSGuid> ids = new ArrayList<IPSGuid>();
+         List<IPSGuid> ids = new ArrayList<>();
          ids.add(parentId);
-         List<IPSItemFilter> filters = svc.loadFilter(ids);
-         parentFilter = filters.get(0);
+         try {
+            List<IPSItemFilter> filters = svc.loadFilter(ids);
+            parentFilter = filters.get(0);
+         } catch (PSNotFoundException e) {
+            log.warn("Unable to load parent Item Filter: {} Error: {}",parentId,e.getMessage());
+         }
       }
    }
 

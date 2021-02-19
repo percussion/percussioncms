@@ -39,6 +39,7 @@ import com.percussion.deploy.server.PSDependencyDef;
 import com.percussion.deploy.server.PSDependencyMap;
 import com.percussion.deploy.server.PSImportCtx;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.tablefactory.PSJdbcColumnData;
 import com.percussion.tablefactory.PSJdbcRowData;
 import com.percussion.tablefactory.PSJdbcTableData;
@@ -80,8 +81,7 @@ public class PSComponentDefDependencyHandler extends PSDataObjectDependencyHandl
 
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -89,7 +89,7 @@ public class PSComponentDefDependencyHandler extends PSDataObjectDependencyHandl
       if (! dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
 
       // get the LOCAL app child dependency
       Iterator ids = getChildIdsFromTable(COMPONENT_TABLE, COMPONENT_URL, 

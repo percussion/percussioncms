@@ -36,6 +36,7 @@ import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.system.IPSSystemService;
 import com.percussion.services.system.PSSystemServiceLocator;
 import com.percussion.services.system.data.PSDependency;
@@ -232,8 +233,7 @@ public class PSDesignModelUtils
     * @return The design object name.  May be <code>null</code> if a design
     * model is not available for the object. 
     */
-   public static String getName(IPSGuid guid)
-   {
+   public static String getName(IPSGuid guid) throws PSNotFoundException {
       String name = null;
       
       IPSDesignModel model = getDesignModel(PSTypeEnum.valueOf(guid.getType()));
@@ -390,11 +390,6 @@ public class PSDesignModelUtils
     * @param id The guid to check for associations to. If it specifies a content
     * type or template to which a slot has any associations, the slot will be
     * modified to remove the association. May not be <code>null</code>.
-    * @param session The session used for locking purposes, may not be
-    * <code>null</code> or empty.
-    * @param user The user name to use for locking purposes, may not be
-    * <code>null</code> or empty.
-    * 
     * @throws PSAssemblyException If there are any errors saving a modified
     * slot.
     */

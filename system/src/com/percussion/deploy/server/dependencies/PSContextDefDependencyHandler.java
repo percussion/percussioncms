@@ -40,6 +40,7 @@ import com.percussion.deploy.services.PSDeployServiceException;
 import com.percussion.deploy.services.PSDeployServiceLocator;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.services.sitemgr.IPSPublishingContext;
@@ -77,11 +78,9 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
    }
 
    // see base class
-   @SuppressWarnings("unchecked")
    @Override
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -89,19 +88,18 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
       if (! dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List childDeps = getLocationSchemeDependencies(tok, dep);      
+      List<PSDependency> childDeps = getLocationSchemeDependencies(tok, dep);
       
       return childDeps.iterator();         
     }
 
    // see base class
    @Override
-   public Iterator<PSDependency> getDependencies(PSSecurityToken tok)
-   {
+   public Iterator<PSDependency> getDependencies(PSSecurityToken tok) throws PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       
       List<IPSPublishingContext> contexts = m_siteMgr.findAllContexts();
       for (IPSPublishingContext context : contexts)
@@ -116,8 +114,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
 
    // see base class
    @Override
-   public PSDependency getDependency(PSSecurityToken tok, String id)
-   {
+   public PSDependency getDependency(PSSecurityToken tok, String id) throws PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -145,7 +142,6 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
     * empty entries.
     */
    @Override
-   @SuppressWarnings("unchecked")
    public Iterator getChildTypes()
    {
       return ms_childTypes.iterator();
@@ -177,11 +173,9 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
 
    // see base class
    @Override
-   @SuppressWarnings("unchecked")
    public Iterator getDependencyFiles(
       @SuppressWarnings("unused") PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       
@@ -191,7 +185,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
          
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
       
       String depId = dep.getDependencyId();
       IPSPublishingContext context = findPublishingContext(depId);
@@ -252,7 +246,6 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
    
    // see base class
    @Override
-   @SuppressWarnings("unchecked")
    public void installDependencyFiles(
       @SuppressWarnings("unused") PSSecurityToken tok, PSArchiveHandler archive, 
       PSDependency dep, PSImportCtx ctx) throws PSDeployException
@@ -286,11 +279,9 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
     * PSSecurityToken, PSArchiveHandler, PSDependency, PSImportCtx)} for
     * details.
     */
-   @SuppressWarnings("unchecked")
    public void doInstallDependencyFiles(PSSecurityToken tok,
          PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (archive == null)
@@ -362,10 +353,9 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
     * @throws PSDeployException
     */
    private List<PSDependency> getLocationSchemeDependencies(
-         PSSecurityToken tok, PSDependency dep) throws PSDeployException
-   {
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
-      List<String> ids = new ArrayList<String>();
+         PSSecurityToken tok, PSDependency dep) throws PSDeployException, PSNotFoundException {
+      List<PSDependency> childDeps = new ArrayList<>();
+      List<String> ids = new ArrayList<>();
       
       IPSPublishingContext context = findPublishingContext(
             dep.getDependencyId());
@@ -435,8 +425,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
     * @return publishing context corresponding to the id, <code>null</code> if a
     * match was not found.
     */
-   private IPSPublishingContext findPublishingContext(String id)
-   {
+   private IPSPublishingContext findPublishingContext(String id) throws PSNotFoundException {
       IPSPublishingContext context = null;
       
       List<IPSPublishingContext> contexts = m_siteMgr.findAllContexts();
@@ -455,7 +444,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
    /**
     * Constant for this handler's supported type
     */
-   final static String DEPENDENCY_TYPE = "ContextDef";
+    static final String DEPENDENCY_TYPE = "ContextDef";
    
    /**
     * Get the site manager.
@@ -467,7 +456,7 @@ public class PSContextDefDependencyHandler extends PSDataObjectDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {

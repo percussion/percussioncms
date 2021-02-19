@@ -31,6 +31,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.percussion.services.error.PSNotFoundException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Element;
 
 import com.percussion.cms.PSCmsException;
@@ -61,6 +64,8 @@ import com.percussion.util.PSIteratorUtils;
 public class PSFolderContentsDependencyHandler
    extends PSFolderObjectDependencyHandler
 {
+
+   private static final Logger log = LogManager.getLogger(PSFolderContentsDependencyHandler.class);
 
    /**
     * Construct a dependency handler.
@@ -106,8 +111,15 @@ public class PSFolderContentsDependencyHandler
          while (sums.hasNext())
          {
             PSComponentSummary itemSum = (PSComponentSummary)sums.next();
-            PSDependency itemDep = handler.getDependency(tok, String.valueOf(
-               itemSum.getCurrentLocator().getId()));
+            PSDependency itemDep=null;
+            try {
+                itemDep = handler.getDependency(tok, String.valueOf(
+                       itemSum.getCurrentLocator().getId()));
+            } catch (PSNotFoundException e) {
+               log.warn(e.getMessage());
+               log.debug(e.getMessage(),e);
+            }
+
             if (itemDep != null)
             {
                itemDep.setDependencyType(PSDependency.TYPE_LOCAL);

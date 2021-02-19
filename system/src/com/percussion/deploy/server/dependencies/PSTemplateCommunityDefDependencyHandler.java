@@ -23,15 +23,6 @@
  */
 package com.percussion.deploy.server.dependencies;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.jcr.RepositoryException;
-
-import org.w3c.dom.Document;
-
 import com.percussion.deploy.error.IPSDeploymentErrors;
 import com.percussion.deploy.error.PSDeployException;
 import com.percussion.deploy.objectstore.PSDependency;
@@ -42,14 +33,16 @@ import com.percussion.deploy.server.PSDependencyDef;
 import com.percussion.deploy.server.PSDependencyMap;
 import com.percussion.deploy.server.PSImportCtx;
 import com.percussion.security.PSSecurityToken;
-import com.percussion.services.assembly.IPSAssemblyTemplate;
-import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
-import com.percussion.xml.PSXmlDocumentBuilder;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Class to handle packaging and deploying a **PART OF** template definition.
@@ -140,8 +133,7 @@ public class PSTemplateCommunityDefDependencyHandler
    
    //see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -161,7 +153,7 @@ public class PSTemplateCommunityDefDependencyHandler
    // Empty Implementation
    public Iterator getDependencies(PSSecurityToken tok) throws PSDeployException
    {    
-      List<PSDependency> deps = new ArrayList<PSDependency>(); 
+      List<PSDependency> deps = new ArrayList<>();
       return deps.iterator();
    }
 
@@ -194,7 +186,6 @@ public class PSTemplateCommunityDefDependencyHandler
    /**
     * Creates a dummy dependency file from a given dependency data object.
     *
-    * @param depData The dependency data object, may not be <code>null</code>.
     *
     * @return The dependency file object, it will never be <code>null</code>.
     *

@@ -51,6 +51,7 @@ import com.percussion.security.PSSecurityToken;
 import com.percussion.server.config.PSConfigManager;
 import com.percussion.server.config.PSServerConfigException;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.io.File;
@@ -91,10 +92,8 @@ public class PSRelationshipDefDependencyHandler
    }
    
    // see base class
-   @SuppressWarnings("unchecked")
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 

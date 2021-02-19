@@ -69,7 +69,6 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.types.PSPair;
-import com.percussion.webservices.assembly.impl.PSAssemblyBaseWs;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -286,8 +285,7 @@ public class PSSiteManager
       return rval;
    }
 
-   public IPSSite loadSiteModifiable(String siteName)
-   {
+   public IPSSite loadSiteModifiable(String siteName) throws PSNotFoundException {
       IPSSite site = findSite(siteName);
       if (site==null)
          throw new PSNotFoundException(siteName, PSTypeEnum.SITE);
@@ -693,8 +691,7 @@ public class PSSiteManager
     * Context if it has one.
     * @param ctx the Context object in question, assumed not <code>null</code>.
     */
-   private void loadDefaultSchemeIfNeeded(IPSPublishingContext ctx)
-   {
+   private void loadDefaultSchemeIfNeeded(IPSPublishingContext ctx) throws PSNotFoundException {
       if (ctx.getDefaultSchemeId() == null)
          return;
 
@@ -753,8 +750,7 @@ public class PSSiteManager
     * @see com.percussion.services.catalog.IPSCataloger#getSummaries(com.percussion.services.catalog.PSTypeEnum)
     */
    @SuppressWarnings("unchecked")
-   public List<IPSCatalogSummary> getSummaries(PSTypeEnum type)
-   {
+   public List<IPSCatalogSummary> getSummaries(PSTypeEnum type) throws PSNotFoundException {
       List<IPSCatalogSummary> rval = new ArrayList<IPSCatalogSummary>();
 
       Session s = sessionFactory.getCurrentSession();
@@ -863,9 +859,8 @@ public class PSSiteManager
     * @see com.percussion.services.sitemgr.IPSSiteManager#getPublishPath(com.percussion.utils.guid.IPSGuid,
     *      com.percussion.utils.guid.IPSGuid)
     */
-   public String getPublishPath(IPSGuid siteId, IPSGuid folderId) 
-      throws PSSiteManagerException
-   {
+   public String getPublishPath(IPSGuid siteId, IPSGuid folderId)
+           throws PSSiteManagerException, PSNotFoundException {
       if (siteId == null)
          throw new IllegalArgumentException("siteId must not be null.");
       if (!(folderId instanceof PSLegacyGuid))
@@ -1007,8 +1002,7 @@ public class PSSiteManager
     *      com.percussion.utils.guid.IPSGuid)
     */
    public IPSGuid getSiteFolderId(IPSGuid siteId, IPSGuid contentId)
-         throws PSSiteManagerException
-   {
+           throws PSSiteManagerException, PSNotFoundException {
       if (siteId == null)
       {
          throw new IllegalArgumentException("siteId may not be null");
@@ -1123,8 +1117,7 @@ public class PSSiteManager
    
    // implements method from IPSSiteManager interface
    public boolean isContentTypePublishableToSite(IPSGuid contentTypeId,
-         IPSGuid siteId) throws PSSiteManagerException
-   {
+         IPSGuid siteId) throws PSSiteManagerException, PSNotFoundException {
       if (contentTypeId == null)
       {
          throw new IllegalArgumentException("contentTypeId must not be null");
@@ -1217,8 +1210,7 @@ public class PSSiteManager
    }
 
    @SuppressWarnings("unchecked")
-   public List<IPSPublishingContext> findAllContexts()
-   {
+   public List<IPSPublishingContext> findAllContexts() throws PSNotFoundException {
       return findAllContexts(true);
    }
 
@@ -1229,8 +1221,7 @@ public class PSSiteManager
     * @return the loaded Context, never <code>null</code>, may be empty.
     */
    @SuppressWarnings("unchecked")
-   private List<IPSPublishingContext> findAllContexts(boolean includeChildren)
-   {
+   private List<IPSPublishingContext> findAllContexts(boolean includeChildren) throws PSNotFoundException {
       List<IPSPublishingContext> result = sessionFactory.getCurrentSession()
               .createCriteria(PSPublishingContext.class).list();
 
@@ -1321,8 +1312,7 @@ public class PSSiteManager
    /**
     * Finds the Site and Templates associations. This is not exposed in
     * {@link IPSSiteManager} because the map key is not consistent with map
-    * value, but we need the ID/Name pair in
-    * {@link PSAssemblyBaseWs#getTemplateWs}.
+    * value, but we need the ID/Name pair in.
     * 
     * @TODO enhance {@link #getSummaries(PSTypeEnum)} to use projection to load
     * the object so that it can be used to result ID/Name mapping.
