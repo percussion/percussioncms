@@ -122,8 +122,6 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -3025,15 +3023,9 @@ public class PSPageUtils extends PSJexlUtilBase
         this.pubServerService = pubServerService;
     }
 
-    public PSPageUtils(){ }
-
-    private static final String  VELOCITY_LOGGER="velocity";
-    private static final String LOG_ERROR_DEFAULT="Error in $rx.pageutils.{}: {}";
-
-    /**
-     * Logger for this class - write to the Velocity Log as this code is used by templates
-     */
-    private static final Logger log = LogManager.getLogger(VELOCITY_LOGGER);
+    public PSPageUtils(){
+        //default ctor
+    }
 
     private static Object metalock = new Object();
 
