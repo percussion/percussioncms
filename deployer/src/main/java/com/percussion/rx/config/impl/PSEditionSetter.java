@@ -26,6 +26,7 @@ package com.percussion.rx.config.impl;
 import com.percussion.rx.config.IPSConfigHandler.ObjectState;
 import com.percussion.rx.design.IPSAssociationSet;
 import com.percussion.rx.design.impl.PSEditionWrapper;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.publisher.IPSEditionTaskDef;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
@@ -76,8 +77,7 @@ public class PSEditionSetter extends PSSimplePropertySetter
     * //see base class method for details
     */
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       PSEditionWrapper wrapper = (PSEditionWrapper) obj;
       if (PRE_TASKS.equals(propName))
       {

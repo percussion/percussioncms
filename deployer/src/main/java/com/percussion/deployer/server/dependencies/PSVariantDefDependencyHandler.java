@@ -42,6 +42,7 @@ import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
 
@@ -85,8 +86,7 @@ public class PSVariantDefDependencyHandler extends PSDataObjectDependencyHandler
    // see base class
    @Override
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -161,8 +161,7 @@ public class PSVariantDefDependencyHandler extends PSDataObjectDependencyHandler
     * @throws PSDeployException
     */
    private List<PSDependency> getContentTypeDependencies(PSSecurityToken tok,
-         IPSAssemblyTemplate tmp) throws PSDeployException
-   {
+         IPSAssemblyTemplate tmp) throws PSDeployException, PSNotFoundException {
       List<PSDependency> depList = new ArrayList<>();
       init();
       List<IPSGuid> ctGuidList = m_assemblyHelper.getContentTypesByTemplate(tmp);
@@ -187,8 +186,7 @@ public class PSVariantDefDependencyHandler extends PSDataObjectDependencyHandler
     * @throws PSDeployException
     */
    private List<PSDependency> getSlotDependencies(PSSecurityToken tok,
-         IPSAssemblyTemplate tmp) throws PSDeployException
-   {
+         IPSAssemblyTemplate tmp) throws PSDeployException, PSNotFoundException {
       List<PSDependency> depList = new ArrayList<>();
       
       Set<IPSTemplateSlot> slots = tmp.getSlots();
