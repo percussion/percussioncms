@@ -77,7 +77,7 @@ public class PSGuidUtils
       if (summaries == null)
          throw new IllegalArgumentException("summaries cannot be null");
       
-      List<IPSGuid> ids = new ArrayList<IPSGuid>();
+      List<IPSGuid> ids = new ArrayList<>();
       
       Iterator walker = summaries.iterator();
       while (walker.hasNext())
@@ -150,7 +150,7 @@ public class PSGuidUtils
       if (ids == null)
          throw new IllegalArgumentException("ids cannot be null");
       
-      List<Long> longList = new ArrayList<Long>();
+      List<Long> longList = new ArrayList<>();
       for (int i=0; i<ids.size(); i++)
          longList.add(new Long(ids.get(i).longValue())); 
       
@@ -171,7 +171,7 @@ public class PSGuidUtils
       if (ids == null)
          throw new IllegalArgumentException("ids cannot be null");
       
-      List<Long> longList = new ArrayList<Long>();
+      List<Long> longList = new ArrayList<>();
       for (int i=0; i<ids.size(); i++)
          longList.add(new Long(new PSDesignGuid(ids.get(i)).getValue())); 
       
@@ -190,7 +190,7 @@ public class PSGuidUtils
       if (ids == null)
          throw new IllegalArgumentException("ids cannot be null");
       
-      List<IPSGuid> guidList = new ArrayList<IPSGuid>();
+      List<IPSGuid> guidList = new ArrayList<>();
       for (int i=0; i<ids.length; i++)
          guidList.add(new PSDesignGuid(ids[i]));
       
@@ -215,7 +215,7 @@ public class PSGuidUtils
       if (type == null)
          throw new IllegalArgumentException("type cannot be null");
       
-      List<IPSGuid> guidList = new ArrayList<IPSGuid>();
+      List<IPSGuid> guidList = new ArrayList<>();
       for (int i=0; i<ids.length; i++)
          guidList.add(new PSGuid(type, ids[i]));
       
@@ -262,7 +262,7 @@ public class PSGuidUtils
       if (items == null)
          throw new IllegalArgumentException("items cannot be null");
       
-      List<IPSGuid> guidList = new ArrayList<IPSGuid>();
+      List<IPSGuid> guidList = new ArrayList<>();
 
       Iterator walker = items.iterator();
       while (walker.hasNext())
@@ -290,7 +290,7 @@ public class PSGuidUtils
       if (guid == null)
          throw new IllegalArgumentException("guid may not be null");
       
-      List<IPSGuid> guids = new ArrayList<IPSGuid>();
+      List<IPSGuid> guids = new ArrayList<>();
       guids.add(guid);
       
       return guids;
@@ -309,7 +309,7 @@ public class PSGuidUtils
       if (ids == null)
          throw new IllegalArgumentException("ids may not be null");
       
-      List<IPSGuid> guidList = new ArrayList<IPSGuid>(ids.length);
+      List<IPSGuid> guidList = new ArrayList<>(ids.length);
       for (long id : ids)
       {
          guidList.add(new PSLegacyGuid(id));

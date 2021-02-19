@@ -484,7 +484,7 @@ public class PSAssemblyService implements IPSAssemblyService
             throw new PSAssemblyException(IPSAssemblyErrors.PARAMS_VARIANT_OR_TEMPLATE);
          }
 
-         Map<String, String[]> params = new PSFacadeMap<String, String[]>(request.getParameterMap());
+         Map<String, String[]> params = new PSFacadeMap<>(request.getParameterMap());
          long jobId;
          if (params.get(IPSHtmlParameters.SYS_PUBSTATUSID) != null)
          {

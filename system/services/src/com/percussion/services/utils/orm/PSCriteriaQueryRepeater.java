@@ -112,7 +112,7 @@ public abstract class PSCriteriaQueryRepeater<E>
       int loops = (totalIds-1)/MAX + 1;
       int j=0;
       Iterator<IPSGuid> idsIter = ids.iterator();
-      List<E> results = new ArrayList<E>();
+      List<E> results = new ArrayList<>();
       for (int i = 0; i < loops; i++)
       {
          Criteria criteria = sess.createCriteria(clazz);
@@ -120,7 +120,7 @@ public abstract class PSCriteriaQueryRepeater<E>
          int currentMax = (i+1)*MAX;
          if (currentMax > totalIds)
             currentMax = totalIds;
-         List<IPSGuid> currentIds = new ArrayList<IPSGuid>();
+         List<IPSGuid> currentIds = new ArrayList<>();
          for (; j < currentMax; j++)
          {
             currentIds.add(idsIter.next());

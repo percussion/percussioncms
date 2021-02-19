@@ -71,7 +71,7 @@ public class PSContentNode implements IPSNode, IPSJcrCacheItem, Serializable
     * Interfaces to ignore when "figuring out" the body access class argument
     * classes
     */
-   private static Set<Class> ms_ignoredClasses = new HashSet<Class>();
+   private static Set<Class> ms_ignoredClasses = new HashSet<>();
 
    static
    {
@@ -82,7 +82,7 @@ public class PSContentNode implements IPSNode, IPSJcrCacheItem, Serializable
    /**
     * Holds properties
     */
-   private Map<String, Property> m_properties = new HashMap<String, Property>();
+   private Map<String, Property> m_properties = new HashMap<>();
 
    /**
     * Holds children. Children are held in named collections, implemented by the
@@ -484,7 +484,7 @@ public class PSContentNode implements IPSNode, IPSJcrCacheItem, Serializable
       {
          IPSContentRepository rep = PSContentInternalLocator
                .getLegacyRepository();
-         List<Node> nodes = new ArrayList<Node>();
+         List<Node> nodes = new ArrayList<>();
          nodes.add(this);
          rep.loadChildren(nodes, m_cmgrConfig);
       }
@@ -524,11 +524,11 @@ public class PSContentNode implements IPSNode, IPSJcrCacheItem, Serializable
    public List<String> getPropertyStringValues(String name) throws PathNotFoundException, RepositoryException
    {
       Property p = getProperty(name);
-      Set<String> result = new HashSet<String>();
+      Set<String> result = new HashSet<>();
       for (Value v : p.getValues())
          result.add(v.getString());
       
-      List<String> list = new ArrayList<String>(result);
+      List<String> list = new ArrayList<>(result);
       Collections.sort(list);
       return list;
    }
