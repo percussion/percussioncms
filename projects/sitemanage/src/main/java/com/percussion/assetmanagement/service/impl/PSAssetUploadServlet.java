@@ -23,11 +23,12 @@
  */
 package com.percussion.assetmanagement.service.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.util.List;
+import com.percussion.assetmanagement.data.PSAsset;
+import com.percussion.share.service.exception.PSExtractHTMLException;
+import com.percussion.sitemanage.importer.theme.PSAssetCreator;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -36,14 +37,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.codehaus.jettison.json.JSONObject;
-
-import com.percussion.assetmanagement.data.PSAsset;
-import com.percussion.share.service.exception.PSExtractHTMLException;
-import com.percussion.sitemanage.importer.theme.PSAssetCreator;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Servlet responsible for uploading a file and creating an asset from it.

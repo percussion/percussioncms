@@ -57,7 +57,7 @@ public interface IPSAssetDao extends IPSGenericDao<PSAsset, String>
      * 
      * @throws LoadException if error occurs during the find operation.
      */
-    PSAsset find(String id, boolean isSummary) throws LoadException, IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException;
+    PSAsset find(String id, boolean isSummary) throws PSDataServiceException;
     
     /**
      * Finds all assets of the specified type in the specified workflow and state.

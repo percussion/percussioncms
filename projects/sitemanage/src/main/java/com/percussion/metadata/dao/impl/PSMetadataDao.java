@@ -88,8 +88,7 @@ public class PSMetadataDao
       return data;      
    }
    
-   public void delete(String key) throws IPSGenericDao.DeleteException
-   {      
+   public void delete(String key) throws IPSGenericDao.DeleteException, IPSGenericDao.LoadException {
       PSMetadata data = find(key);
       if (data == null)
       {
@@ -167,7 +166,7 @@ public class PSMetadataDao
       return data;
    }
    
-   public PSMetadata find(String key){
+   public PSMetadata find(String key) throws IPSGenericDao.LoadException {
       Session session = sessionFactory.getCurrentSession();
       
       try
@@ -186,7 +185,7 @@ public class PSMetadataDao
    
    @SuppressWarnings("unchecked")
    @Transactional
-   public Collection<PSMetadata> findByPrefix(String prefix){
+   public Collection<PSMetadata> findByPrefix(String prefix) throws IPSGenericDao.LoadException {
       String emsg;
       Session session = sessionFactory.getCurrentSession();
       Collection<PSMetadata> results = new ArrayList<>();
