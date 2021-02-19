@@ -282,7 +282,7 @@ public class PSCalendarMonthModel extends PSJexlUtilBase
     * Need to use a model setup for the specific thread to keep this thread safe
     */
    private static ThreadLocal<PSCalendarMonthModel> m_model = 
-      new ThreadLocal<PSCalendarMonthModel>();
+      new ThreadLocal<>();
    
    /**
     * Used for calculating month details, never <code>null</code>.
