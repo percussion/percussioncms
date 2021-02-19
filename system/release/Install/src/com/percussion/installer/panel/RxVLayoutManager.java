@@ -543,7 +543,7 @@ public class RxVLayoutManager implements LayoutManager
    private int m_orientation = VERTICAL;
    private int m_margin = 1;
    private Hashtable<Component, int[]> m_codeTable =
-      new Hashtable<Component, int[]>();
+      new Hashtable<>();
 
    /* Layout codes */
    private static final int CODE_CENTER = 0;

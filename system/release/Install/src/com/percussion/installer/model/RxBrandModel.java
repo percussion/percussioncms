@@ -41,7 +41,7 @@ public class RxBrandModel extends RxIAModel
       setPersistPropertiesUsingReflection(true);
       setPropertyFileName("rxconfig/Installer/installation.properties");
       
-      m_featuresMap = new TreeMap<String, Map<String, RxComponent>>();
+      m_featuresMap = new TreeMap<>();
       m_featuresMap.put(RxProductModel.SERVER_NAME,
             RxServerFeatureModel.getServerFeaturesMap());
    }
