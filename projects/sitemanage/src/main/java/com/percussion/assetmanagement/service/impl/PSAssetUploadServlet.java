@@ -25,6 +25,7 @@ package com.percussion.assetmanagement.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.List;
@@ -102,7 +103,9 @@ public class PSAssetUploadServlet extends HttpServlet
 
                 fileName = getFileName(part);
                 if(fileName != "") {
-                    newAsset = assetCreator.createAsset(folderpath, PSAssetCreator.getAssetType(assetType), part.getInputStream(), fileName, selector, includeOuterHtml, approveOnUpload);
+                    try(InputStream is = part.getInputStream()) {
+                        newAsset = assetCreator.createAsset(folderpath, PSAssetCreator.getAssetType(assetType), is, fileName, selector, includeOuterHtml, approveOnUpload);
+                    }
                 }
             }
 
