@@ -216,7 +216,7 @@ public abstract class PSComponent implements IPSComponent, Serializable
       return true;
    }
 
-   public void validate(IPSValidationContext cxt) throws PSValidationException
+   public void validate(IPSValidationContext cxt) throws PSSystemValidationException
    {
       // no op
    }

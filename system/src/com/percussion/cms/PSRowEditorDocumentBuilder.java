@@ -45,9 +45,9 @@ import com.percussion.design.objectstore.PSDisplayText;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSTextLiteral;
 import com.percussion.design.objectstore.PSUISet;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSServerErrors;
@@ -88,7 +88,7 @@ public class PSRowEditorDocumentBuilder extends PSModifyDocumentBuilder
    public PSRowEditorDocumentBuilder( PSContentEditor ce,
          PSEditorDocumentContext ctx, PSDisplayMapper dispMapper, int pageId,
          boolean isError )
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       super( ce, ctx, pageId, isError );
 
@@ -129,7 +129,7 @@ public class PSRowEditorDocumentBuilder extends PSModifyDocumentBuilder
                fieldName,
                mappingLabel
             };
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                   IPSServerErrors.CE_MISSING_FIELD, args );
          }
          if ( o instanceof PSFieldSet )
@@ -138,7 +138,7 @@ public class PSRowEditorDocumentBuilder extends PSModifyDocumentBuilder
             PSDisplayMapper childMapper = mapping.getDisplayMapper();
             if ( null == childMapper )
             {
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                      IPSServerErrors.CE_MISSING_MAPPINGS,
                      fieldSet.getName());
             }
@@ -189,7 +189,7 @@ public class PSRowEditorDocumentBuilder extends PSModifyDocumentBuilder
             IPSConstants.HIDDEN_CONTROL_PARAM_NAME,
             "InitParam is empty or missing from system def"
          };
-         throw new PSValidationException( IPSServerErrors.CE_INVALID_PARAM,
+         throw new PSSystemValidationException( IPSServerErrors.CE_INVALID_PARAM,
                args );
       }
 
@@ -355,11 +355,11 @@ public class PSRowEditorDocumentBuilder extends PSModifyDocumentBuilder
     *    first entry, and the sdmp child entries appear in the order of the
     *    appearance of the first mapping of each child in the document.
     *
-    * @throws PSValidationException If the backend columns in the supplied
+    * @throws PSSystemValidationException If the backend columns in the supplied
     *    fieldset are not fully specified.
     */
    private List createSdmpExtractors( PSFieldSet fs, PSDisplayMapper mapper )
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       // key is sdmp fieldset, value is List of mappings for that fieldset
       Map sdmpFieldSets = new HashMap();
@@ -454,7 +454,7 @@ public class PSRowEditorDocumentBuilder extends PSModifyDocumentBuilder
     */
    private String createExtractors( PSFieldSet fs, List mappings,
          List results )
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       String tableName = null;
       Iterator mappingIter = mappings.iterator();
@@ -473,7 +473,7 @@ public class PSRowEditorDocumentBuilder extends PSModifyDocumentBuilder
             tableName = col.getTable().getTable();
             if ( null == tableName || tableName.trim().length() == 0 )
             {
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                      IPSServerErrors.CE_MISSING_TABLE_NAME,
                      col.getColumn());
             }

@@ -23,20 +23,13 @@
  */
 package com.percussion.pagemanagement.assembler.impl;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.extension.IPSExtensionDef;
-import com.percussion.pagemanagement.data.PSResourceLocation;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
+import com.percussion.pagemanagement.data.PSResourceLocation;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
 import com.percussion.services.assembly.IPSTemplateService;
@@ -44,19 +37,23 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.publisher.IPSTemplateExpander;
 import com.percussion.services.publisher.data.PSContentListItem;
-import com.percussion.share.service.IPSDataService;
-import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * This template expander expands content items so that they are associated
@@ -166,14 +163,14 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
     protected boolean isContentTypePublishable(String contentTypeName) 
     {
         boolean exclude = ! getExcludedContentTypes().contains(contentTypeName);
-        if (exclude == false) return false;
+        if (!exclude) return false;
         List<PSAssetResource> assetResources = 
             resourceDefinitionService.findAssetResourcesForType(contentTypeName);
         return ! assetResources.isEmpty();
     }
 
     @Override
-    protected IPSGuid getTemplateId(Map<String, String> parameters, TemplateCache cache) throws IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException {
+    protected IPSGuid getTemplateId(Map<String, String> parameters, TemplateCache cache) throws PSDataServiceException, PSAssemblyException {
         if (cache.templateId != null)
             return cache.templateId;
         
@@ -186,14 +183,8 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
                 templateName = ((PSAssetResource)resource).getLegacyTemplate();
         }
         notEmpty(templateName, "resourceAssemblyTemplate");
-        try
-        {
-            cache.templateId = getTemplateService().findTemplateByName(templateName).getGUID();
-        }
-        catch (PSAssemblyException e)
-        {
-            throw new RuntimeException("Failed to find resourceAssemblyTemplate for assembly template: " + templateName, e);
-        }
+
+        cache.templateId = getTemplateService().findTemplateByName(templateName).getGUID();
 
         return cache.templateId;
     }

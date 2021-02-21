@@ -23,26 +23,8 @@
  */
 package com.percussion.pagemanagement.assembler.impl;
 
-import static org.apache.commons.lang.Validate.noNullElements;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.jcr.RepositoryException;
-import javax.jcr.Value;
-import javax.jcr.query.QueryResult;
-import javax.jcr.query.Row;
-import javax.jcr.query.RowIterator;
-
-import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
-import com.percussion.share.service.IPSDataService;
-import com.percussion.share.service.exception.PSValidationException;
-import org.apache.commons.lang.StringUtils;
-
 import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSContentPropertyConstants;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -51,10 +33,25 @@ import com.percussion.services.publisher.IPSPublisherServiceErrors;
 import com.percussion.services.publisher.IPSTemplateExpander;
 import com.percussion.services.publisher.PSPublisherException;
 import com.percussion.services.publisher.data.PSContentListItem;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.jcr.RepositoryException;
+import javax.jcr.Value;
+import javax.jcr.query.QueryResult;
+import javax.jcr.query.Row;
+import javax.jcr.query.RowIterator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static org.apache.commons.lang.Validate.noNullElements;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * An adapter to the Template expander extension point in cm system
@@ -79,7 +76,7 @@ public abstract class PSAbstractTemplateExpanderAdapter<CACHE> implements IPSTem
      * @param templateCache never <code>null</code>..
      * @return a template id that can be <code>null</code>.
      */
-    protected abstract IPSGuid getTemplateId(Map<String, String> parameters, CACHE templateCache) throws IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException;
+    protected abstract IPSGuid getTemplateId(Map<String, String> parameters, CACHE templateCache) throws PSDataServiceException, PSAssemblyException;
     
     /**
      * Creates a new template cache that will be used for the current publishing job.
@@ -127,7 +124,7 @@ public abstract class PSAbstractTemplateExpanderAdapter<CACHE> implements IPSTem
                 IPSGuid templateId=null;
                 try {
                     templateId = getTemplateId(parameters, cache);
-                } catch (PSValidationException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException | IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceLoadException e) {
+                } catch (PSDataServiceException | PSAssemblyException e) {
                     log.error(e.getMessage());
                     log.debug(e.getMessage(),e);
                     //Continue processing

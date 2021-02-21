@@ -35,9 +35,9 @@ import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSParam;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSTextLiteral;
 import com.percussion.design.objectstore.PSUISet;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.design.objectstore.PSVisibilityRules;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.server.IPSServerErrors;
@@ -83,7 +83,7 @@ public class PSDisplayFieldBuilder implements IPSBuildStep
     */
    public PSDisplayFieldBuilder( PSField field, PSUISet ui,
          PSEditorDocumentBuilder parentBuilder )
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       if ( null == field || null == ui || null == parentBuilder )
          throw new IllegalArgumentException( "One or more params was null." );
@@ -113,7 +113,7 @@ public class PSDisplayFieldBuilder implements IPSBuildStep
     */
    public PSDisplayFieldBuilder( PSFieldSet fieldSet, PSUISet ui,
          PSEditorDocumentBuilder parentBuilder )
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       if ( null == fieldSet || null == ui || null == parentBuilder )
          throw new IllegalArgumentException( "One or more params was null." );
@@ -130,7 +130,7 @@ public class PSDisplayFieldBuilder implements IPSBuildStep
 
          if ( null == ui.getChoices())
          {
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                   IPSServerErrors.CE_MISSING_CHOICESET, fieldSet.getName());
          }
 
@@ -161,14 +161,14 @@ public class PSDisplayFieldBuilder implements IPSBuildStep
 
       if ( null != ui.getChoices())
       {
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
                IPSServerErrors.CE_CHOICESET_NOT_SUPPORTED, fieldSet.getName());
       }
 
       m_controlName = ui.getControl().getName();
       if ( null == m_controlName || m_controlName.trim().length() == 0 )
       {
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
                IPSServerErrors.CE_MISSING_CONTROL_NAME, fieldSet.getName());
       }
       m_dimension = PSDisplayFieldElementBuilder.DIMENSION_TABLE;
@@ -204,12 +204,12 @@ public class PSDisplayFieldBuilder implements IPSBuildStep
     *
     * @throws PSNotFoundException If a UDF can't be found.
     *
-    * @throws PSValidationException If there are any inconsistencies in the
+    * @throws PSSystemValidationException If there are any inconsistencies in the
     *    definitions.
     */
    private void initField( PSField field, PSUISet ui,
          String dataDimension, PSEditorDocumentBuilder parentBuilder )
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       if ( null == dataDimension || !(dataDimension.equals(
          PSDisplayFieldElementBuilder.DIMENSION_SINGLE)
@@ -237,11 +237,11 @@ public class PSDisplayFieldBuilder implements IPSBuildStep
       m_accessKey = ui.getAccessKey();
       m_choices = ui.getChoices();
       if (ui.getControl() == null)
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
                IPSServerErrors.CE_MISSING_CONTROL, field.getSubmitName());
       m_controlName = ui.getControl().getName();
       if ( null == m_controlName || m_controlName.trim().length() == 0 )
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
                IPSServerErrors.CE_MISSING_CONTROL_NAME, field.getSubmitName());
       m_dataType = getDataTypeText(field.getType());
       m_fieldValueTypeText = field.getFieldValueTypeText();

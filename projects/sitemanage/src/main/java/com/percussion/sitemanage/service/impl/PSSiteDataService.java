@@ -57,6 +57,7 @@ import com.percussion.search.PSSearchIndexEventQueue;
 import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentchange.IPSContentChangeService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.pubserver.PSPubServerDaoLocator;
@@ -309,7 +310,7 @@ import static org.apache.commons.lang.Validate.notNull;
     }
 
     
-    public PSSiteProperties getSiteProperties(String siteName) throws IPSSiteSectionService.PSSiteSectionException, PSValidationException {
+    public PSSiteProperties getSiteProperties(String siteName) throws IPSSiteSectionService.PSSiteSectionException, PSValidationException, PSNotFoundException {
         IPSSite site = siteMgr.findSite(siteName);
         if (site == null)
         {
@@ -409,7 +410,7 @@ import static org.apache.commons.lang.Validate.notNull;
         return getFolderPermission(folder);
     }
 
-    public PSSiteProperties updateSiteProperties(PSSiteProperties props) throws PSDataServiceException {
+    public PSSiteProperties updateSiteProperties(PSSiteProperties props) throws PSDataServiceException, PSNotFoundException {
         notNull(props, "Properties cannot be null");
         IPSSite site = siteMgr.loadSiteModifiable(idMapper.getGuid(props.getId()));
         String newSiteName = props.getName();
@@ -512,7 +513,7 @@ import static org.apache.commons.lang.Validate.notNull;
     }
 
 
-    public PSSitePublishProperties updateSitePublishProperties(PSSitePublishProperties publishProps) throws DataServiceSaveException {
+    public PSSitePublishProperties updateSitePublishProperties(PSSitePublishProperties publishProps) throws DataServiceSaveException, PSNotFoundException {
         notNull(publishProps, "Publish Properties cannot be null");
         validateSitePublishProperties(publishProps);
         IPSSite site = siteMgr.loadSiteModifiable(idMapper.getGuid(publishProps.getId()));
@@ -1474,14 +1475,12 @@ import static org.apache.commons.lang.Validate.notNull;
     }
 
     @Override
-    public void createPublishingItemsForPubServer(IPSSite site, PSPubServer pubServer, boolean isDefaultServer)
-    {
+    public void createPublishingItemsForPubServer(IPSSite site, PSPubServer pubServer, boolean isDefaultServer) throws PSNotFoundException {
         sitePublishDao.createPublishingItemsForPubServer(site, pubServer, isDefaultServer);
     }
 
     @Override
-    public void setPublishServerAsDefault(IPSSite site, PSPubServer pubServer)
-    {
+    public void setPublishServerAsDefault(IPSSite site, PSPubServer pubServer) throws PSNotFoundException {
         sitePublishDao.setPublishServerAsDefault(site, pubServer);
     }
 
@@ -1498,14 +1497,12 @@ import static org.apache.commons.lang.Validate.notNull;
     }
 
     @Override
-    public void deletePublishingItemsByPubServer(PSPubServer pubServer)
-    {
+    public void deletePublishingItemsByPubServer(PSPubServer pubServer) throws PSNotFoundException {
         sitePublishDao.deletePublishingItemsByPubServer(pubServer);
     }
 
     @Override
-    public void updateServerEditions(IPSSite site, PSPubServer oldServer, PSPubServer pubServer, boolean isDefaultServer)
-    {
+    public void updateServerEditions(IPSSite site, PSPubServer oldServer, PSPubServer pubServer, boolean isDefaultServer) throws PSNotFoundException {
         sitePublishDao.updateServerEditions(site, oldServer, pubServer, isDefaultServer);
     }
 
@@ -1859,7 +1856,7 @@ import static org.apache.commons.lang.Validate.notNull;
                 page.setWorkflowId(origPage.getWorkflowId());
             }
             return assetIds;
-        } catch (IPSPageService.PSPageException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
+        } catch (IPSPageService.PSPageException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException | PSValidationException | PSNotFoundException e) {
             log.error("Error updating Page. Error: {}",e.getMessage() );
             log.debug(e.getMessage(),e);
             throw new DataServiceSaveException(e.getMessage(),e);
@@ -1917,7 +1914,7 @@ import static org.apache.commons.lang.Validate.notNull;
      * @param copySiteName the name of the copied site.
      * @param assetMap map of original asset id (string) to copied asset id.
      */
-    private void updateTemplate(String id, PSSiteSummary origSite, String copySiteName, Map<String, String> assetMap) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
+    private void updateTemplate(String id, PSSiteSummary origSite, String copySiteName, Map<String, String> assetMap) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSNotFoundException, PSValidationException {
         updateLinks(id, origSite, copySiteName, assetMap);
         updateSharedAssets(id, assetMap);
     }
@@ -1931,7 +1928,7 @@ import static org.apache.commons.lang.Validate.notNull;
      * @param copySiteName the name of the copied site.
      * @param assetMap map of original asset id (string) to copied asset id.
      */
-    private void updateLinks(String id, PSSiteSummary origSite, String copySiteName, Map<String, String> assetMap) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
+    private void updateLinks(String id, PSSiteSummary origSite, String copySiteName, Map<String, String> assetMap) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSValidationException, PSNotFoundException {
         for (String assetId : widgetAssetRelationshipService.getLocalAssets(id))
         {
             updateLinkedPages(assetId, origSite, copySiteName);
@@ -1946,8 +1943,7 @@ import static org.apache.commons.lang.Validate.notNull;
      * @param origSite the original site which was copied.
      * @param copySiteName the name of the copied site.
      */
-    private void updateLinkedPages(String assetId, PSSiteSummary origSite, String copySiteName)
-    {
+    private void updateLinkedPages(String assetId, PSSiteSummary origSite, String copySiteName) throws PSNotFoundException, PSValidationException {
         Set<String> linkedPageIds = widgetAssetRelationshipService.getLinkedPages(assetId);
         for (String linkedPageId : linkedPageIds)
         {
@@ -1979,8 +1975,7 @@ import static org.apache.commons.lang.Validate.notNull;
  * @param assetId
  * @param assetMap
  */
-    private void updateLinkedAssets(String assetId, Map<String, String> assetMap)
-    {
+    private void updateLinkedAssets(String assetId, Map<String, String> assetMap) throws PSValidationException, PSNotFoundException {
     	updateLinkedAssets(assetId,assetMap, false);
     }
     
@@ -1991,8 +1986,7 @@ import static org.apache.commons.lang.Validate.notNull;
      * @param checkInOut specify whether or not an item should be checkedout before updating it
      * @param assetMap map of original asset id (string) to copied asset id.
      */
-    private void updateLinkedAssets(String assetId, Map<String, String> assetMap, boolean checkInOut)
-    {
+    private void updateLinkedAssets(String assetId, Map<String, String> assetMap, boolean checkInOut) throws PSNotFoundException, PSValidationException {
         updateAssets(assetId, widgetAssetRelationshipService.getLinkedAssetsForAsset(assetId), assetMap, checkInOut);
     }
 
@@ -2002,15 +1996,14 @@ import static org.apache.commons.lang.Validate.notNull;
      * @param id of the page/template.
      * @param assetMap map of original asset id (string) to copied asset id.
      */
-    private void updateSharedAssets(String id, Map<String, String> assetMap) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
+    private void updateSharedAssets(String id, Map<String, String> assetMap) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSValidationException {
     	//Shared assets should be checked out
         
     	boolean checkInOut = true;
     	updateAssets(id, widgetAssetRelationshipService.getSharedAssets(id), assetMap, checkInOut);
      }
 
-    private void updateAssets(String id, Set<String> assetIds, Map<String, String> assetMap)
-    {
+    private void updateAssets(String id, Set<String> assetIds, Map<String, String> assetMap) throws PSValidationException {
     	updateAssets(id, assetIds, assetMap, false);
     }
     /**
@@ -2023,8 +2016,7 @@ import static org.apache.commons.lang.Validate.notNull;
      * 
      
      */
-    private void updateAssets(String id, Set<String> assetIds, Map<String, String> assetMap, boolean checkInOut)
-    {
+    private void updateAssets(String id, Set<String> assetIds, Map<String, String> assetMap, boolean checkInOut) throws PSValidationException {
         if (assetMap.isEmpty())
         {
             return;

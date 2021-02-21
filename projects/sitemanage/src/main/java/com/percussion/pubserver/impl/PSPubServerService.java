@@ -34,6 +34,7 @@ import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentchange.IPSContentChangeService;
 import com.percussion.services.contentchange.data.PSContentChangeType;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.publisher.IPSDeliveryType;
 import com.percussion.services.publisher.IPSEdition;
@@ -145,8 +146,7 @@ public class PSPubServerService implements IPSPubServerService
                               @Qualifier("sys_dbPubServerFileService") IPSDatabasePubServerFilesService serverFileService, IPSSiteDataService siteDataService,
                               IPSSitePublishStatusService statusService, IPSGuidManager guidMgr, IPSRxPublisherService rxPubService,
                               PSSitePublishDao sitePublishDao, IPSPublisherService publisherService, IPSContentChangeService contentChangeService,
-                              IPSUtilityService utilityService)
-    {
+                              IPSUtilityService utilityService) throws PSNotFoundException {
         this.pubServerDao = pubServerDao;
         this.siteMgr = siteMgr;
         this.serverFileService = serverFileService;
@@ -172,7 +172,7 @@ public class PSPubServerService implements IPSPubServerService
      * the _only tagged pubservers represent non-default pubservers
      * @return Map of all the pub server handlers
      */
-    private Map<String, Object> generatePubServerHandlerMap(){
+    private Map<String, Object> generatePubServerHandlerMap() throws PSNotFoundException {
 
         IPSPublisherService pubsvc = PSPublisherServiceLocator.getPublisherService();
 
@@ -313,7 +313,7 @@ public class PSPubServerService implements IPSPubServerService
 
     @Override
     public synchronized PSPublishServerInfo createPubServer(String siteId, String serverName, PSPublishServerInfo pubServerInfo)
-            throws PSPubServerServiceException, PSDataServiceException {
+            throws PSPubServerServiceException, PSDataServiceException, PSNotFoundException {
         if (isBlank(siteId))
             throw new IllegalArgumentException("Site id cannot be blank.");
 
@@ -408,7 +408,7 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     @Override
-    public PSPublishServerInfo updatePubServer(String siteId, String serverId, PSPublishServerInfo pubServerInfo) throws PSPubServerServiceException, PSDataServiceException {
+    public PSPublishServerInfo updatePubServer(String siteId, String serverId, PSPublishServerInfo pubServerInfo) throws PSPubServerServiceException, PSDataServiceException, PSNotFoundException {
         if (isBlank(siteId))
             throw new IllegalArgumentException("Site id cannot be blank.");
         if (isBlank(serverId))
@@ -553,7 +553,7 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     @Override
-    public List<PSPublishServerInfo> deleteServer(String siteId, String serverId) throws PSPubServerServiceException, PSDataServiceException {
+    public List<PSPublishServerInfo> deleteServer(String siteId, String serverId) throws PSPubServerServiceException, PSDataServiceException, PSNotFoundException {
         boolean locked = tryToLockSite(siteId);
 
         try
@@ -608,7 +608,7 @@ public class PSPubServerService implements IPSPubServerService
         {
             try {
                 deletePubServer(pubServer);
-            } catch (PSPubServerServiceException e) {
+            } catch (PSPubServerServiceException | PSNotFoundException e) {
                 log.error("Error deleting publishing server: {} Error:{}",
                         pubServer.getName(),e.getMessage());
                 log.debug(e.getMessage(),e);
@@ -702,13 +702,12 @@ public class PSPubServerService implements IPSPubServerService
      * com.percussion.pubserver.IPSPubServerService#getDefaultPubServer()
      */
     @Override
-    public PSPubServer getDefaultPubServer(IPSGuid siteId)
-    {
+    public PSPubServer getDefaultPubServer(IPSGuid siteId) throws PSNotFoundException {
         return PSSitePublishDaoHelper.getDefaultPubServer(siteId);
     }
 
     @Override
-    public PSPubServer getStagingPubServer(IPSGuid siteId) {
+    public PSPubServer getStagingPubServer(IPSGuid siteId) throws PSNotFoundException {
         return PSSitePublishDaoHelper.getStagingPubServer(siteId);
     }
 
@@ -846,7 +845,7 @@ public class PSPubServerService implements IPSPubServerService
      * Deletes the specified publish-server.
      * @param pubServer the publish-server, assumed not <code>null</code>.
      */
-    private void deletePubServer(PSPubServer pubServer) throws PSPubServerServiceException {
+    private void deletePubServer(PSPubServer pubServer) throws PSPubServerServiceException, PSNotFoundException {
         siteDataService.deletePublishingItemsByPubServer(pubServer);
 
         pubServerDao.deletePubServer(pubServer);
@@ -1778,8 +1777,7 @@ public class PSPubServerService implements IPSPubServerService
      * @return
      */
     private boolean updatePreviousDefaultPubServer(PSPubServer previousDefaultServer, PSPubServer currentServer,
-                                                   IPSSite site, boolean isDefaultServer)
-    {
+                                                   IPSSite site, boolean isDefaultServer) throws PSNotFoundException {
         if ((previousDefaultServer.getServerId() != currentServer.getServerId()) && isDefaultServer)
         {
             String currentPublishingType = previousDefaultServer.getPublishType();
@@ -2039,7 +2037,7 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     @Override
-    public PSPubInfo getS3PubInfo(IPSGuid siteId) throws PSPubServerServiceException {
+    public PSPubInfo getS3PubInfo(IPSGuid siteId) throws PSPubServerServiceException, PSNotFoundException {
         if (siteId == null)
             throw new IllegalArgumentException("siteId must not be null");
         PSPubInfo pubInfo = null;
@@ -2117,7 +2115,7 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     @Override
-    public String getDefaultAdminURL(String siteName) throws PSPubServerServiceException {
+    public String getDefaultAdminURL(String siteName) throws PSPubServerServiceException, PSNotFoundException {
 
         IPSSite site = siteMgr.findSite(siteName);
         if(site == null){

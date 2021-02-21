@@ -163,7 +163,7 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 	}
 
 	private Reader transformItemDef(Reader reader,
-			PSWidgetPackageSpec packageSpec) throws IOException, SAXException, PSValidationException, PSUnknownNodeTypeException {
+			PSWidgetPackageSpec packageSpec) throws IOException, SAXException, PSSystemValidationException, PSUnknownNodeTypeException {
 		PSItemDefinition itemDef = getItemDef(reader);
 
 		// workflow id is automatically updated, need to set token so that
@@ -298,7 +298,7 @@ public class PSContentTypeFileTransformer implements IPSWidgetFileTransformer {
 
 	private PSField addField(PSBackEndTable beTable,
 			PSWidgetBuilderFieldData field, PSFieldSet fieldSet,
-			boolean required) throws PSValidationException {
+			boolean required) throws PSSystemValidationException {
 		// create locator
 		PSBackEndColumn col = new PSBackEndColumn(beTable, field.getName()
 				.toUpperCase());

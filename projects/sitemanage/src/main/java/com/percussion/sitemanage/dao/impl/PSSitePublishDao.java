@@ -228,8 +228,7 @@ public class PSSitePublishDao
      * @return <code>true</code> if the update resulted in a change to a pubserver definition, <code>false</code>
      * if not.
      */
-    public boolean updateSite(IPSSite site, String newName, String newDescrption)
-    {
+    public boolean updateSite(IPSSite site, String newName, String newDescrption) throws PSNotFoundException {
         notNull(site, "site");
         notEmpty(newName, "newName");
         
@@ -256,8 +255,7 @@ public class PSSitePublishDao
      * @param site the existing site, not <code>null</code>.
      * @param publishProps publishing properties to be updated on the site. not <code>null</code>.
      */
-    public void updateSitePublishProperties(IPSSite site, PSSitePublishProperties publishProps)
-    {
+    public void updateSitePublishProperties(IPSSite site, PSSitePublishProperties publishProps) throws PSNotFoundException {
         notNull(site, "site");
         notNull(publishProps, "publishProps");
         
@@ -287,7 +285,7 @@ public class PSSitePublishDao
         publishWs.saveSite(site);
     }
     
-    protected boolean saveSite(PSSite site) throws PSErrorException, IPSPubServerService.PSPubServerServiceException {
+    protected boolean saveSite(PSSite site) throws PSErrorException, IPSPubServerService.PSPubServerServiceException, PSNotFoundException {
         notNull(site,"site may not be null");
         
 
@@ -337,7 +335,7 @@ public class PSSitePublishDao
         return isNew;
     }
     
-    public IPSSite createSite(String siteName) {
+    public IPSSite createSite(String siteName) throws PSNotFoundException {
 
         IPSSite tmpSite = publishWs.createSite();
         setSiteNameRelatedProperties(tmpSite, siteName);
@@ -374,8 +372,7 @@ public class PSSitePublishDao
      * 
      * @return <code>true</code> if a pubserver was modified, <code>false</code> if not
      */
-    private boolean setSiteNameRelatedProperties(IPSSite site, String siteName)
-    {
+    private boolean setSiteNameRelatedProperties(IPSSite site, String siteName) throws PSNotFoundException {
         String oldName = site.getName();
        
         site.setName(siteName);
@@ -570,8 +567,7 @@ public class PSSitePublishDao
      * @throws PSErrorException If an error occurs creating the required content
      *             lists.
      */
-    protected void createPublishingItems(IPSSite site, PSPubServer pubServer, boolean isDefaultServer) throws PSErrorException
-    {
+    protected void createPublishingItems(IPSSite site, PSPubServer pubServer, boolean isDefaultServer) throws PSErrorException, PSNotFoundException {
         notNull(site, "site");
 
         // Create content lists
@@ -656,8 +652,7 @@ public class PSSitePublishDao
      * @param pubServer the {@link PSPubServer publish server}, must not be
      *            <code>null</code>.
      */
-    public void createPublishingItemsForPubServer(IPSSite site, PSPubServer pubServer, boolean isDefaultServer)
-    {
+    public void createPublishingItemsForPubServer(IPSSite site, PSPubServer pubServer, boolean isDefaultServer) throws PSNotFoundException {
         notNull(site, "site");
         notNull(pubServer, "pubServer");
 
@@ -820,8 +815,7 @@ public class PSSitePublishDao
      * @param site the site of the edition, assumed not <code>null</code>.
      * @param oldSiteName the original name of the site, assumed not blank.
      */
-    private void updateFullEdition(List<IPSEdition> editions, IPSSite site, String oldSiteName)
-    {
+    private void updateFullEdition(List<IPSEdition> editions, IPSSite site, String oldSiteName) throws PSNotFoundException {
         IPSEdition tgtEdition = null;
         for (IPSEdition edition : editions)
         {
@@ -843,8 +837,7 @@ public class PSSitePublishDao
      * also contains the updated site name.
      * @param oldSiteName the original site name, assumed not blank.
      */
-    private void updateContentListForEditionFull(IPSEdition edition, IPSSite site, String oldSiteName)
-    {
+    private void updateContentListForEditionFull(IPSEdition edition, IPSSite site, String oldSiteName) throws PSNotFoundException {
         List<IPSEditionContentList> editionCLists = publishWs.loadEditionContentLists(edition.getGUID());
 
         for (IPSEditionContentList editionClist : editionCLists)
@@ -888,8 +881,7 @@ public class PSSitePublishDao
      * @param pubServer The publish server, may not be <code>null</code>.
      * 
      */
-    private void updateOnDemandEditionsByPubServer(List<IPSEdition> editions, IPSSite site, PSPubServer pubServer, String oldSiteName, boolean isDefaultServer)
-    {
+    private void updateOnDemandEditionsByPubServer(List<IPSEdition> editions, IPSSite site, PSPubServer pubServer, String oldSiteName, boolean isDefaultServer) throws PSNotFoundException {
         for (IPSEdition edition : editions)
         {
             if (edition.getSiteId().longValue() == site.getGUID().longValue()
@@ -919,8 +911,7 @@ public class PSSitePublishDao
         }
     }
     
-    private void updateContentListForOnDemandEditionsByPubServer(IPSEdition edition, PSPubServer pubServer)
-    {
+    private void updateContentListForOnDemandEditionsByPubServer(IPSEdition edition, PSPubServer pubServer) throws PSNotFoundException {
         notNull(edition, "edition");
         notNull(pubServer, "pubServer");
         
@@ -954,8 +945,7 @@ public class PSSitePublishDao
      * 
      * @throws PSErrorException If a required content list does not exist.
      */
-    protected void createEditions(IPSSite site, PSPubServer pubServer, boolean isDefaultServer) throws PSErrorException
-    {
+    protected void createEditions(IPSSite site, PSPubServer pubServer, boolean isDefaultServer) throws PSErrorException, PSNotFoundException {
         notNull(site, "site");
 
         String suffix = PSSitePublishDaoHelper.createSiteSuffix(site);
@@ -1085,8 +1075,7 @@ public class PSSitePublishDao
      * @param oldServer
      * @param server
      */
-    public void updateServerEditions(IPSSite site, PSPubServer oldServer, PSPubServer server, boolean isDefaultServer)
-    {
+    public void updateServerEditions(IPSSite site, PSPubServer oldServer, PSPubServer server, boolean isDefaultServer) throws PSNotFoundException {
         notNull(oldServer);
         notNull(server);
 
@@ -1115,8 +1104,7 @@ public class PSSitePublishDao
      * @param isDefaultServer
      */
     private void updateServerIncrementalEdition(List<IPSEdition> editions, PSPubServer server,
-            IPSSite site, boolean isDefaultServer)
-    {
+            IPSSite site, boolean isDefaultServer) throws PSNotFoundException {
         boolean isStaging = PSPubServer.STAGING.equalsIgnoreCase(server.getServerType());
         String suffix = isStaging?PSSitePublishDaoHelper.STAGING_INCREMENTAL:PSSitePublishDaoHelper.INCREMENTAL;
     	IPSEdition tgtEdition = null;
@@ -1151,8 +1139,7 @@ public class PSSitePublishDao
     }
 
     private void updateServerFullEdition(List<IPSEdition> editions, PSPubServer oldServer, PSPubServer server,
-            IPSSite site, boolean isDefaultServer)
-    {
+            IPSSite site, boolean isDefaultServer) throws PSNotFoundException {
         String editionName = PSSitePublishDaoHelper.createName(oldServer.getName(), FULL);
         IPSEdition tgtEdition = null;
         for (IPSEdition edition : editions)
@@ -1342,8 +1329,7 @@ public class PSSitePublishDao
     }
 
     private void updateServerContentListForEditionIncremental(IPSEdition edition, PSPubServer server,
-            IPSSite site)
-    {
+            IPSSite site) throws PSNotFoundException {
         notNull(edition, "edition");
         notNull(server, "server");
         notNull(site, "Site");
@@ -1373,8 +1359,7 @@ public class PSSitePublishDao
      *            be <code>null</code>.
      */
     private void updateServerContentListForEditionFull(IPSEdition edition, PSPubServer oldServer, PSPubServer server,
-            IPSSite site)
-    {
+            IPSSite site) throws PSNotFoundException {
         notNull(edition, "edition");
         notNull(server, "server");
         notNull(oldServer, "oldServer");
@@ -1755,64 +1740,57 @@ public class PSSitePublishDao
         notNull(site, "site");
         
         IPSGuid siteId = site.getGUID();
-        
-        try
+
+        // delete pub items
+        publishWs.deleteSiteItems(siteId);
+
+        // delete pub logs
+        List<IPSPubStatus> pubStatusEntries = publishWs.findPubStatusBySite(siteId);
+        for (IPSPubStatus pubStatus : pubStatusEntries)
         {
-            // delete pub items
-            publishWs.deleteSiteItems(siteId);
-            
-            // delete pub logs
-            List<IPSPubStatus> pubStatusEntries = publishWs.findPubStatusBySite(siteId);
-            for (IPSPubStatus pubStatus : pubStatusEntries)
-            {
-                publishWs.purgeJobLog(pubStatus.getStatusId());
-            }
-            
-            Set<IPSContentList> cLists = new HashSet<>();
+            publishWs.purgeJobLog(pubStatus.getStatusId());
+        }
 
-            // delete editions
-            List<IPSEdition> edtns = publishWs.findAllEditionsBySite(site.getGUID());
-            for (IPSEdition edtn : edtns)
-            {
-                List<IPSEditionContentList> ecls = publishWs.loadEditionContentLists(edtn.getGUID());
-                for (IPSEditionContentList ecl : ecls)
-                {
-                    IPSContentList cList = publishWs.findContentListById(ecl.getContentListId());
-                    if (cList != null)
-                    {
-                        cLists.add(cList);
-                    }
-                }
+        Set<IPSContentList> cLists = new HashSet<>();
 
-                try
+        // delete editions
+        List<IPSEdition> edtns = publishWs.findAllEditionsBySite(site.getGUID());
+        for (IPSEdition edtn : edtns)
+        {
+            List<IPSEditionContentList> ecls = publishWs.loadEditionContentLists(edtn.getGUID());
+            for (IPSEditionContentList ecl : ecls)
+            {
+                IPSContentList cList = publishWs.findContentListById(ecl.getContentListId());
+                if (cList != null)
                 {
-                    publishWs.deleteEdition(edtn);
-                }
-                catch (Exception e)
-                {
-                    throw new PSErrorException("Failed to delete edition for site: " + site + " edition " + edtn, e);
+                    cLists.add(cList);
                 }
             }
 
-            /*
-             * Try to delete content lists. It may be empty since the process to delete the publishing servers already
-             * deletes content lists associated to editions for publishing servers.
-             */
             try
             {
-                if (!cLists.isEmpty()) {
-                    publishWs.deleteContentLists(new ArrayList<>(cLists));
-                }
+                publishWs.deleteEdition(edtn);
             }
             catch (Exception e)
             {
-                throw new PSErrorException("Failed to delete content lists: " + new ArrayList<IPSContentList>(cLists) + " for site:"
-                        + site, e);
+                throw new PSErrorException("Failed to delete edition for site: " + site + " edition " + edtn, e);
             }
         }
-        catch (PSNotFoundException e)
+
+        /*
+         * Try to delete content lists. It may be empty since the process to delete the publishing servers already
+         * deletes content lists associated to editions for publishing servers.
+         */
+        try
         {
-            throw new PSErrorException("Sub item not found for site: " + site, e);
+            if (!cLists.isEmpty()) {
+                publishWs.deleteContentLists(new ArrayList<>(cLists));
+            }
+        }
+        catch (Exception e)
+        {
+            throw new PSErrorException("Failed to delete content lists: " + new ArrayList<IPSContentList>(cLists) + " for site:"
+                    + site, e);
         }
 
     }
@@ -1827,8 +1805,7 @@ public class PSSitePublishDao
      * @throws PSErrorException if no edition is found for the default publish
      *             server.
      */
-    public String getSiteDeliveryType(IPSSite site)
-    {
+    public String getSiteDeliveryType(IPSSite site) throws PSNotFoundException {
         // Get the default publish server for the site
         PSPubServer defaultPubServer = getPubServerService().getDefaultPubServer(site.getGUID());
         List<IPSEdition>  editions = publishWs.findAllEditionsByPubServer(defaultPubServer.getGUID());
@@ -1856,8 +1833,7 @@ public class PSSitePublishDao
      * @throws PSErrorException if no edition is found for the staging publish
      *             server.
      */
-    public String getStagingDeliveryType(IPSSite site)
-    {
+    public String getStagingDeliveryType(IPSSite site) throws PSNotFoundException {
         // Get the default publish server for the site
         PSPubServer stagingPubServer = PSSitePublishDaoHelper.getStagingPubServer(site.getGUID());
         if(stagingPubServer == null)
@@ -1884,8 +1860,7 @@ public class PSSitePublishDao
      * 
      * @param site may not be <code>null</code>.
      */
-    public void addPublishNow(IPSSite site)
-    {
+    public void addPublishNow(IPSSite site) throws PSNotFoundException {
         addOnDemandEdition(site, PSSitePublishDaoHelper.PUBLISH_NOW);
     }
 
@@ -1894,8 +1869,7 @@ public class PSSitePublishDao
      * 
      * @param site may not be <code>null</code>.
      */
-    public void addUnpublishNow(IPSSite site)
-    {
+    public void addUnpublishNow(IPSSite site) throws PSNotFoundException {
         addOnDemandEdition(site, PSSitePublishDaoHelper.UNPUBLISH_NOW);
     }
 
@@ -1904,8 +1878,7 @@ public class PSSitePublishDao
      * 
      * @param site may not be <code>null</code>.
      */
-    public void addStagingPublishNow(IPSSite site)
-    {
+    public void addStagingPublishNow(IPSSite site) throws PSNotFoundException {
         addOnDemandEdition(site, PSSitePublishDaoHelper.STAGING_PUBLISH_NOW);
     }
 
@@ -1914,8 +1887,7 @@ public class PSSitePublishDao
      * 
      * @param site may not be <code>null</code>.
      */
-    public void addStagingUnpublishNow(IPSSite site)
-    {
+    public void addStagingUnpublishNow(IPSSite site) throws PSNotFoundException {
         addOnDemandEdition(site, PSSitePublishDaoHelper.STAGING_UNPUBLISH_NOW);
     }
     
@@ -1925,8 +1897,7 @@ public class PSSitePublishDao
      * @param site the site, must not be <code>null</code>.
      * @param nowType the type of the on demand edition, assumed not <code>null</code>.
      */
-    private void addOnDemandEdition(IPSSite site, String nowType)
-    {
+    private void addOnDemandEdition(IPSSite site, String nowType) throws PSNotFoundException {
         notNull(site, "site");
         
         String siteName = site.getName();
@@ -1962,8 +1933,7 @@ public class PSSitePublishDao
      * 
      * @throws PSErrorException If a required content list does not exist.
      */
-    private void createEditionForPubServer(IPSSite site, PSPubServer pubServer, boolean isDefaultServer) throws PSErrorException
-    {
+    private void createEditionForPubServer(IPSSite site, PSPubServer pubServer, boolean isDefaultServer) throws PSErrorException, PSNotFoundException {
         notNull(site, "site");
         notNull(pubServer, "pubServer");
         
@@ -2007,8 +1977,7 @@ public class PSSitePublishDao
      * @param site the existing site, not <code>null</code>.
      * @param pubServer The publish server, may not be <code>null</code>.
      */
-    public void setPublishServerAsDefault(IPSSite site, PSPubServer pubServer)
-    {
+    public void setPublishServerAsDefault(IPSSite site, PSPubServer pubServer) throws PSNotFoundException {
         notNull(site, "site");
         notNull(pubServer, "pubServer");
         
@@ -2031,8 +2000,7 @@ public class PSSitePublishDao
      * 
      * @param pubServer The pubServer, may not be <code>null</code>.
      */
-    public void deletePublishingItemsByPubServer(PSPubServer pubServer)
-    {   
+    public void deletePublishingItemsByPubServer(PSPubServer pubServer) throws PSNotFoundException {
         // delete server entry in the site's tch file
         handleDeleteServerEntryFromTchFile(pubServer);
         
@@ -2098,8 +2066,7 @@ public class PSSitePublishDao
      * @param pubServer {@link PSPubServer} server object, assumed not
      *            <code>null</code>.
      */
-    private void handleDeleteServerEntryFromTchFile(PSPubServer pubServer)
-    {
+    private void handleDeleteServerEntryFromTchFile(PSPubServer pubServer) throws PSNotFoundException {
         IPSSite site = siteMgr.loadSite(new PSGuid(PSTypeEnum.SITE, pubServer.getSiteId()));
         try
         {

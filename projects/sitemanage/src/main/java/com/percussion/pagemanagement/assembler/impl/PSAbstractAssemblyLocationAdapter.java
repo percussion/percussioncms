@@ -23,24 +23,21 @@
  */
 package com.percussion.pagemanagement.assembler.impl;
 
-import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSException;
 import com.percussion.extension.IPSAssemblyLocation;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
-import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.share.rx.PSLegacyExtensionUtils;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
-import com.percussion.share.service.exception.PSSpringValidationException;
-import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import net.sf.oval.constraint.NotNull;
@@ -101,10 +98,11 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
         log.debug("Validating location request: {}", lr);
         try {
             PSBeanValidationUtils.validate(lr).throwIfInvalid();
-        } catch (PSSpringValidationException e) {
+
+        return createLocation(lr);
+        } catch (PSDataServiceException | PSException e) {
             throw new PSExtensionException(e.getMessage(),e);
         }
-        return createLocation(lr);
     }
     
     /**
@@ -112,7 +110,7 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
      * @param locationRequest never <code>null</code>.
      * @return never <code>null</code>.
      */
-    protected abstract String createLocation(PSAssemblyLocationRequest locationRequest) throws PSValidationException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, IPSDataService.DataServiceNotFoundException, IPSAssetService.PSAssetServiceException, IPSDataService.DataServiceLoadException;
+    protected abstract String createLocation(PSAssemblyLocationRequest locationRequest) throws PSDataServiceException, PSException;
     
     /**
      * Gets the assembly template.
@@ -143,16 +141,16 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
      * @param locationRequest never <code>null</code>.
      * @return never <code>null</code>.
      */
-    protected String getContentTypeName(PSAssemblyLocationRequest locationRequest) {
+    protected String getContentTypeName(PSAssemblyLocationRequest locationRequest) throws PSException {
         PSLocator locator = guidManager.makeLocator(locationRequest.getItemId());
-        Long contentTypeId = itemDefManager.getItemContentType(locator);
+        long contentTypeId = itemDefManager.getItemContentType(locator);
         try
         {
             return itemDefManager.contentTypeIdToName(contentTypeId);
         }
         catch (PSInvalidContentTypeException e)
         {
-            throw new RuntimeException("Cannot get content type for location request", e);
+            throw new PSException("Cannot get content type for location request", e);
         }
     }
     

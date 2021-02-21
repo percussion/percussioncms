@@ -56,7 +56,7 @@ public interface IPSImportHelper
      * @throws PSSiteImportException When any kind of unexpected error occurs
      *             processing the pageContent through the helper.
      */
-    public void process(PSPageContent pageContent, PSSiteImportCtx context) throws PSSiteImportException, PSTemplateImportException, IPSPageService.PSPageException;
+    public void process(PSPageContent pageContent, PSSiteImportCtx context) throws PSSiteImportException, PSDataServiceException;
 
     /**
      * Call this method to undo all the operations done by the helper in its

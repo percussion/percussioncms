@@ -26,10 +26,11 @@ package com.percussion.rest.errors;
 
 import java.util.ResourceBundle;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Error")
-public class RestExceptionBase extends RuntimeException
+public class RestExceptionBase extends WebApplicationException
 {
     private RestErrorCode errorCode;
 

@@ -32,6 +32,7 @@ import com.percussion.pagemanagement.data.PSResourceLinkAndLocation;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 
 /**
@@ -60,7 +61,7 @@ public interface IPSResourceLinkAndLocationService
      * @throws PSResourceServiceException If the resource definition is not applicable for the item.
      */
     PSResourceInstance createResourceInstance(PSRenderLinkContext context, IPSLinkableItem item, String resourceDefinitionId)
-            throws PSResourceServiceException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException;
+            throws PSResourceServiceException, PSDataServiceException;
     
     /**
      * Resolves link and locations for the resource instance.

@@ -29,6 +29,7 @@ import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -48,6 +49,7 @@ import com.percussion.services.workflow.data.PSTransition;
 import com.percussion.services.workflow.data.PSTransitionRole;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.services.workflow.data.PSWorkflowRole;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSEnumVals;
 import com.percussion.share.data.PSEnumVals.EnumVal;
 import com.percussion.share.service.exception.PSDataServiceException;
@@ -446,8 +448,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
      */
     @Override
     public PSUiWorkflow updateWorkflow(String workflowName, PSUiWorkflow uiWorkflow)
-            throws PSWorkflowEditorServiceException
-    {
+            throws PSWorkflowEditorServiceException, PSNotFoundException, IPSGenericDao.LoadException, IPSGenericDao.SaveException {
         if(!uiWorkflow.getPreviousWorkflowName().equalsIgnoreCase(workflowName))
         {
             throw new PSWorkflowEditorServiceException("Parameters values are inconsistent with the values passed in the object");
@@ -1351,8 +1352,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
      * @param workflow The <code>PSWorkflow</code> object to convert
      * @return a <code>PSUiWorkflow</code> object
      */
-    private PSUiWorkflow toPSUiWorkflow(PSWorkflow workflow)
-    {
+    private PSUiWorkflow toPSUiWorkflow(PSWorkflow workflow) throws IPSGenericDao.LoadException {
         PSUiWorkflow uiWorkflow = new PSUiWorkflow();
 
         uiWorkflow.setWorkflowName(workflow.getName());
@@ -1945,8 +1945,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
      * @param workflowId
      * @param stagingRoles 
      */
-    private void saveStagingRoles(long workflowId, String stagingRoles)
-    {
+    private void saveStagingRoles(long workflowId, String stagingRoles) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException {
     	PSMetadata md = new PSMetadata(METADATA_STAGING_ROLES_KEY_PREFIX + workflowId, StringUtils.defaultString(stagingRoles));
     	metadataService.save(md);
     }
@@ -1955,8 +1954,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
      * Deletes the staging roles from metadata for the supplied workflow id
      * @param workflowId
      */
-    private void deleteStagingRoles(long workflowId)
-    {
+    private void deleteStagingRoles(long workflowId) throws IPSGenericDao.LoadException, IPSGenericDao.DeleteException {
     	metadataService.delete(METADATA_STAGING_ROLES_KEY_PREFIX + workflowId);
     }
     
@@ -1965,8 +1963,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
      * @param workflowId assumed to be a valid workflow id
      * @return staging role names corresponding to the supplied workflow, may be empty never <code>null</code>.
      */
-    private String getStagingRoles(long workflowId)
-    {
+    private String getStagingRoles(long workflowId) throws IPSGenericDao.LoadException {
         String stagingRoleNames = "";
         PSMetadata md = metadataService.find(METADATA_STAGING_ROLES_KEY_PREFIX + workflowId);
         if(md != null)

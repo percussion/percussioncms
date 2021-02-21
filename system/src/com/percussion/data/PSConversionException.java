@@ -52,7 +52,11 @@ public class PSConversionException extends PSException {
    {
       super(msgCode, singleArg);
    }
-   
+
+   public PSConversionException(Throwable cause){
+      super(cause);
+   }
+
    /**
     * Construct an exception for messages taking an array of
     * arguments. Be sure to store the arguments in the correct order in

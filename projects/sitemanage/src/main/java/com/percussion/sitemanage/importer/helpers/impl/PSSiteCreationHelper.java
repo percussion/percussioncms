@@ -23,12 +23,10 @@
  */
 package com.percussion.sitemanage.importer.helpers.impl;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.share.IPSSitemanageConstants;
-import com.percussion.share.dao.IPSGenericDao.DeleteException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.dao.impl.PSSiteContentDao;
 import com.percussion.sitemanage.data.PSPageContent;
@@ -37,10 +35,6 @@ import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitesummaryservice.service.IPSSiteImportSummaryService;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
@@ -48,6 +42,11 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.apache.commons.lang.Validate.notNull;
 
 
 /**
@@ -138,7 +137,7 @@ public class PSSiteCreationHelper extends PSImportHelper
             context.getSummaryService().update(context.getSite().getSiteId().intValue(), summaryStats);        
             
         }
-        catch (RuntimeException e)
+        catch (RuntimeException | PSDataServiceException e)
         {
             // Errors in mandatory helpers are not logged in siteImportLogger,
             // because that log is discarded. Log the error in the server log.
@@ -159,7 +158,7 @@ public class PSSiteCreationHelper extends PSImportHelper
             // Delete site and related content
             siteDao.delete(context.getSite().getId());
         }
-        catch (DeleteException e)
+        catch (PSDataServiceException e)
         {
             context.getLogger().appendLogMessage(PSLogEntryType.ERROR, "Delete Site",
                     "Failed to roll back site creation: " + e.getLocalizedMessage());

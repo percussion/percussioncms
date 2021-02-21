@@ -65,7 +65,7 @@ public interface IPSRenderLinkService
      * @param linkableItem never <code>null</code>.
      * @return never <code>null</code>.
      */
-    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem linkableItem) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException;
+    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem linkableItem) throws PSDataServiceException;
     
     
     /**
@@ -75,7 +75,7 @@ public interface IPSRenderLinkService
      * @param resourceDefinitionId never <code>null</code>, empty, or blank.
      * @return never <code>null</code>.
      */
-    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem linkableItem, String resourceDefinitionId) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException;
+    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem linkableItem, String resourceDefinitionId) throws PSDataServiceException;
     
     /**
      * Renders a link to the region CSS file of specified theme.
@@ -131,7 +131,7 @@ public interface IPSRenderLinkService
      * @param renderType this is the rendered type, "html", "xml" or "database". It is default to "html".
      * @return the link to a page, never blank.
      */
-    public PSInlineRenderLink renderPreviewPageLink(String pageId, String renderType) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException;
+    public PSInlineRenderLink renderPreviewPageLink(String pageId, String renderType) throws PSDataServiceException;
     
     /**
      * Creates a preview image link.
@@ -177,6 +177,6 @@ public interface IPSRenderLinkService
     public PSAssetResource resolveResourceDefinition(
             String resourceDefinitionId,  
             String legacyTemplate,
-            String contentType) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, PSValidationException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException;
+            String contentType) throws PSDataServiceException;
     
 }

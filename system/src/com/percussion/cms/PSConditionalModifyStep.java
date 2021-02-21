@@ -27,7 +27,7 @@ package com.percussion.cms;
 import com.percussion.data.PSConditionalEvaluator;
 import com.percussion.data.PSExecutionData;
 import com.percussion.data.PSInternalRequestCallException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.util.PSCollection;
@@ -77,7 +77,7 @@ public class PSConditionalModifyStep extends PSUpdateStep
     */
    public void execute(PSExecutionData data)
       throws PSInternalRequestCallException, PSAuthorizationException,
-      PSAuthenticationFailedException, PSValidationException
+      PSAuthenticationFailedException, PSSystemValidationException
    {
       if (m_conditions.isMatch(data))
          super.execute(data);

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,14 +23,15 @@
  */
 package com.percussion.share.validation;
 
-import static org.apache.commons.lang.Validate.*;
+import static org.apache.commons.lang3.Validate.*;
 
 import com.percussion.share.service.exception.PSValidationException;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.percussion.share.service.exception.PSParametersValidationException;
 import com.percussion.share.validation.PSErrors.PSObjectError;
 import com.percussion.share.validation.PSValidationErrors.PSFieldError;
+import org.apache.commons.lang3.Validate;
 
 
 /**
@@ -61,9 +62,9 @@ public class PSValidationErrorsBuilder {
     }
     
     public  PSValidationErrorsBuilder rejectField(String field, String code, String defaultMessage, Object value) {
-        notNull(field);
-        notNull(code);
-        notNull(defaultMessage);
+        Validate.notNull(field);
+        Validate.notNull(code);
+        Validate.notNull(defaultMessage);
         PSFieldError e = new PSFieldError();
         e.setCode(code);
         e.setDefaultMessage(defaultMessage);

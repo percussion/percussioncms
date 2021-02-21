@@ -106,8 +106,9 @@ public abstract class PSDataConverter
 
             switch (dstType) {
                case DATATYPE_DATE:
-                  return new Date(((java.lang.Number)data).longValue());
-
+                  if(data != null)
+                     return new Date(((java.lang.Number)data).longValue());
+                  break;
                case DATATYPE_TEXT:
                   return data.toString();
                case DATATYPE_INT:
@@ -116,6 +117,7 @@ public abstract class PSDataConverter
                   throw new IllegalArgumentException("data invalid conversion" +
                      getTypeString(srcType) + " " + getTypeString(dstType));
                default:
+
             }
             break;
 
@@ -350,7 +352,7 @@ public abstract class PSDataConverter
             PSDateLiteral day = null;
             try
             {
-               StringBuffer formatBuf = new StringBuffer();
+               StringBuilder formatBuf = new StringBuilder();
                Date date = PSDataTypeConverter.parseStringToDate(
                   itValueSet.next(), formatBuf);
 

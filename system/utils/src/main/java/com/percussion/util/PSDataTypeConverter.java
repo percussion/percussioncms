@@ -257,7 +257,7 @@ public class PSDataTypeConverter
    }
    
    /**
-    * Convenience version of {@link #parseStringToDate(String, StringBuffer)}
+    * Convenience version of {@link #parseStringToDate(String, StringBuilder)}
     * that calls <code>parseStringToDate(myText, null)</code> and returns the
     * result.
     */
@@ -268,14 +268,16 @@ public class PSDataTypeConverter
 
 
    /**
-    * Convenience version of {@link #parseStringToDate(String, StringBuffer,
+    * Convenience version of {@link #parseStringToDate(String, StringBuilder,
     * Locale)} that calls <code>parseStringToDate(myText, patternUsed, null)</code>
     * and returns the result.
     */
-   public static Date parseStringToDate(String myText, StringBuffer patternUsed)
+   public static Date parseStringToDate(String myText, StringBuilder patternUsed)
    {
       return parseStringToDate(myText, patternUsed, null);
    }
+
+
 
    /**
     * Try to parse a given string to a date, using a pre-defined set of formats
@@ -298,7 +300,7 @@ public class PSDataTypeConverter
     * 
     * @throws IllegalArgumentException if myText is <code>null</code>.
     */
-   public static Date parseStringToDate(String myText, StringBuffer patternUsed,
+   public static Date parseStringToDate(String myText, StringBuilder patternUsed,
       Locale locale)
    {
       if (myText == null || myText.trim().length() < 1)
@@ -354,7 +356,7 @@ public class PSDataTypeConverter
 
    /**
     * Get a recognized date format for the supplied String.  Calls {@link
-    * #parseStringToDate(String, StringBuffer)} passing the supplied text and
+    * #parseStringToDate(String, StringBuilder)} passing the supplied text and
     * an empty StringBuffer, and returns the result contained in the
     * StringBuffer.
     *
@@ -368,7 +370,7 @@ public class PSDataTypeConverter
       if (text == null)
          throw new IllegalArgumentException("text may not be null");
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       Date date = parseStringToDate(text, buf);
 
       return date == null ? null : buf.toString();
