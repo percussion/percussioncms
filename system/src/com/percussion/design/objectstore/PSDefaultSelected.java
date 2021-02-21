@@ -281,7 +281,7 @@ public class PSDefaultSelected extends PSComponent
 
    // see IPSComponent
    public void validate(IPSValidationContext context)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (!context.startValidation(this, null))
          return;

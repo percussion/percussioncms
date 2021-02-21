@@ -39,20 +39,33 @@ public class PSBeanValidationUtils
         }
     }
     
-    public static <FULL> PSValidationErrors getValidationErrorsOrFailIfInvalid(FULL obj) {
-        PSBeanValidationException e = defaultValidator.validate(obj);
-        e.throwIfInvalid();
-        return e.getValidationErrors();
+    public static <FULL> PSValidationErrors getValidationErrorsOrFailIfInvalid(FULL obj) throws PSBeanValidationException{
+       try {
+           PSBeanValidationException e = defaultValidator.validate(obj);
+           e.throwIfInvalid();
+           return e.getValidationErrors();
+       } catch (PSValidationException e) {
+          throw new PSBeanValidationException(e);
+       }
     }
     
     public static <FULL> PSBeanValidationException validate(FULL obj) {
-        PSBeanValidationException e = defaultValidator.validate(obj);
-        return e;
+        try {
+            PSBeanValidationException e = defaultValidator.validate(obj);
+            return e;
+        } catch (PSValidationException e) {
+            return new PSBeanValidationException(e);
+        }
+
     }
 
     public static <FULL> PSValidationErrors getValidationErrors(FULL obj) {
-        PSBeanValidationException e = defaultValidator.validate(obj);
-        return e.getValidationErrors();
+        try {
+            PSBeanValidationException e = defaultValidator.validate(obj);
+            return e.getValidationErrors();
+        } catch (PSValidationException e) {
+            return new PSBeanValidationException(e).getValidationErrors();
+        }
     }
     
     public static <FULL> void validate(FULL obj, PSBeanValidationException errors) {

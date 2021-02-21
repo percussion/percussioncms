@@ -42,6 +42,7 @@ import com.percussion.design.objectstore.PSRelationshipConfigSet;
 import com.percussion.design.objectstore.PSRole;
 import com.percussion.design.objectstore.PSRoleConfiguration;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.server.PSDatabaseComponentLoader;
 import com.percussion.error.PSException;
 import com.percussion.i18n.PSLocale;
@@ -1822,7 +1823,7 @@ public class PSCmsObjectMgr
             ms_log.debug("Force Checked in "+summary.getContentId() + " for user "+ checkedOutTo);
          }
          }
-         catch (PSORMException e)
+         catch (PSORMException | PSSystemValidationException e)
          {
             ms_log.error("Failed to force checkin users ",e);
          }

@@ -73,7 +73,7 @@ public interface IPSWidgetAssetRelationshipService
      * 
      * @throws PSWidgetAssetRelationshipServiceException if the relationship cannot be created.
      */    
-    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSWidgetAssetRelationshipServiceException;
+    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSWidgetAssetRelationshipServiceException, PSValidationException;
     
     /**
      * Creates the relationship defined by the specified asset widget relationship.
@@ -99,7 +99,7 @@ public interface IPSWidgetAssetRelationshipService
             PSAssetResourceType resourceType,
             int order, 
             String widgetName,
-            int replacedRelationshipId) throws PSWidgetAssetRelationshipServiceException;
+            int replacedRelationshipId) throws PSWidgetAssetRelationshipServiceException, PSValidationException;
     
     /**
      * Clears the specified relationship.  If no other asset widget relationships exist for the asset, the item will
@@ -260,7 +260,7 @@ public interface IPSWidgetAssetRelationshipService
      * @param newDepId the new dependent id, never blank.
      * @throws PSCmsException 
      */
-    public void updateSharedRelationshipDependent(String ownerId, String depId, String newDepId) ;
+    public void updateSharedRelationshipDependent(String ownerId, String depId, String newDepId) throws PSValidationException;
     
 
     /**
@@ -271,7 +271,7 @@ public interface IPSWidgetAssetRelationshipService
      * @param newDepId the new dependent id, never blank.
      * @throws PSCmsException 
      */
-    public void updateSharedRelationshipDependent(String ownerId, String depId, String newDepId, boolean checkInOut) ;
+    public void updateSharedRelationshipDependent(String ownerId, String depId, String newDepId, boolean checkInOut) throws PSValidationException;
 
     /**
      * Determines if the specified item is used directly or indirectly (via an inline link) by a template.
@@ -288,14 +288,14 @@ public interface IPSWidgetAssetRelationshipService
      * 
      * @param id never blank.
      */
-    public void updateLocalRelationshipAsset(String id);
+    public void updateLocalRelationshipAsset(String id) throws PSValidationException;
     
     /**
      * Gets the local content relationships for the supplied parent and resets the dependent revision of local content 
      * to the tip revision. 
      * @param id The string representation of the parent guid. Must not be blank.
      */
-    public void adjustLocalContentRelationships(String id);
+    public void adjustLocalContentRelationships(String id) throws PSValidationException;
     
     /**
      * Gets all resource assets associated with the specified item.  This includes local, shared, and linked resources.
@@ -316,7 +316,7 @@ public interface IPSWidgetAssetRelationshipService
      *            {@link String}, {@link String}>> maps the widgetId (slot id)
      *            to the new name of the widget. Assumed not <code>null</code>.
      */
-    public void updateWidgetsNames(String templateId, Map<String, PSPair<String, String>> changedWidgets);
+    public void updateWidgetsNames(String templateId, Map<String, PSPair<String, String>> changedWidgets) throws PSValidationException;
 
     /**
      * Creates a relationship based on the specified source relationship, asset

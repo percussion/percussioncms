@@ -27,7 +27,7 @@ package com.percussion.cms;
 import com.percussion.data.IPSInternalRequestHandler;
 import com.percussion.data.PSExecutionData;
 import com.percussion.data.PSInternalRequestCallException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 
@@ -46,7 +46,7 @@ public interface IPSModifyStep
     * perform the step.
     * @throws PSAuthenticationFailedException if the user cannot be
     * authenticated.
-    * @throws PSValidationException if the step does any validation and the
+    * @throws PSSystemValidationException if the step does any validation and the
     * validation fails.
     * @throws PSInternalRequestCallException if there are any other errors.
     * @throws IllegalArgumentException if data is <code>null</code>.
@@ -54,7 +54,7 @@ public interface IPSModifyStep
     */
    public void execute(PSExecutionData data)
       throws PSInternalRequestCallException, PSAuthorizationException,
-      PSAuthenticationFailedException, PSValidationException;
+      PSAuthenticationFailedException, PSSystemValidationException;
 
 
    /**

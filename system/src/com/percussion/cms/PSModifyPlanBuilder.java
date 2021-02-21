@@ -42,10 +42,9 @@ import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSHtmlParameter;
 import com.percussion.design.objectstore.PSSingleHtmlParameter;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSTableRef;
 import com.percussion.design.objectstore.PSTableSet;
-import com.percussion.design.objectstore.PSUserContext;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.util.PSCollection;
 
@@ -95,11 +94,11 @@ public abstract class PSModifyPlanBuilder
     * @return The modify plan to execute at runtime.
     *
     * @throws SQLException if there is an error determining a column's datatype.
-    * @throws PSValidationException if any objects used by this method are
+    * @throws PSSystemValidationException if any objects used by this method are
     * invalid.
     */
    public abstract PSModifyPlan createModifyPlan(PSDisplayMapper mapper,
-      PSFieldSet fieldSet) throws PSValidationException, SQLException;
+      PSFieldSet fieldSet) throws PSSystemValidationException, SQLException;
 
 
    /**
@@ -247,10 +246,10 @@ public abstract class PSModifyPlanBuilder
     * Creates a PSValidateModifyStep that compares the edit revision in the
     * database against the supplied revision id.
     *
-    * @throws PSValidationException if there is an error creating the dataset.
+    * @throws PSSystemValidationException if there is an error creating the dataset.
     */
    protected IPSModifyStep createRevisionValidationStep()
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       try
       {
@@ -438,11 +437,11 @@ public abstract class PSModifyPlanBuilder
     * @return A List of binary PSField objects, may be empty if the fieldset
     * does not contain any.
     *
-    * @throws PSValidationException if any field's table cannot be located.
+    * @throws PSSystemValidationException if any field's table cannot be located.
     * @throws SQLException if the column type cannot be determined
     */
    protected List getBinaryFields(PSFieldSet fieldSet)
-      throws SQLException, PSValidationException
+      throws SQLException, PSSystemValidationException
    {
       if (fieldSet == null)
          throw new IllegalArgumentException("fieldSet may not be null");
@@ -459,7 +458,7 @@ public abstract class PSModifyPlanBuilder
     * immediate SDMP fieldsets will be included in the resulting list.
     */
    private List getBinaryFields(PSFieldSet fieldSet, boolean checkChildren)
-      throws SQLException, PSValidationException
+      throws SQLException, PSSystemValidationException
    {
       if (fieldSet == null)
          throw new IllegalArgumentException("fieldSet may not be null");
@@ -540,7 +539,7 @@ public abstract class PSModifyPlanBuilder
             }
 
             if (!foundIt)
-               throw new PSValidationException(IPSServerErrors.CE_MISSING_TABLE,
+               throw new PSSystemValidationException(IPSServerErrors.CE_MISSING_TABLE,
                   tableName);
          }
       }

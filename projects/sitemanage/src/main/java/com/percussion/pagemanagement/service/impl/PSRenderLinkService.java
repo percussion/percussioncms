@@ -26,6 +26,7 @@ package com.percussion.pagemanagement.service.impl;
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.cms.PSSingleValueBuilder;
+import com.percussion.error.PSException;
 import com.percussion.pagemanagement.assembler.IPSRenderLinkContextFactory;
 import com.percussion.pagemanagement.assembler.PSAbstractAssemblyContext.EditType;
 import com.percussion.pagemanagement.assembler.impl.PSLegacyLinkGenerator;
@@ -62,6 +63,7 @@ import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
 import com.percussion.share.service.IPSDataService.PSThemeNotFoundException;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSSpringValidationException;
@@ -166,7 +168,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
     /**
      * {@inheritDoc}
      */
-    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem item) throws DataServiceNotFoundException, DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException {
+    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem item) throws PSDataServiceException {
         PSAssetResource r = resolveResourceDefinition(null, null, item.getType());
         return renderLinkHelper(context, r, item);
     }
@@ -174,7 +176,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
     /**
      * {@inheritDoc}
      */
-    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem item, String resourceDefinitionId) throws DataServiceNotFoundException, DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException {
+    public PSRenderLink renderLink(PSRenderLinkContext context, IPSLinkableItem item, String resourceDefinitionId) throws PSDataServiceException {
         notNull(resourceDefinitionId, "resourceDefinitionId");
         PSAssetResource r = resolveResourceDefinition(resourceDefinitionId, null, null);
         return renderLinkHelper(context, r, item);
@@ -297,14 +299,14 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
     {
         try {
             return renderPreviewPageLink(pageId, "html");
-        } catch (DataServiceNotFoundException | DataServiceLoadException | IPSAssetService.PSAssetServiceException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException | PSValidationException e) {
+        } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
         }
     }
     
-    public PSInlineRenderLink renderPreviewPageLink(String pageId, String renderType) throws DataServiceNotFoundException, DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException {
+    public PSInlineRenderLink renderPreviewPageLink(String pageId, String renderType) throws PSDataServiceException {
         notNull(pageId, "pageId");
         PSPage page = null;
         try
@@ -481,7 +483,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
 
 
             renderLinkHelper(renLink, context, rd, linkAsset);
-        } catch (IPSAssetService.PSAssetServiceException | PSValidationException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException e) {
+        } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -502,7 +504,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
                    renLink.setThumbUrl(thumbLink.getUrl());
                    renLink.setThumbResourceDefinition(thumbLink.getResourceDefinition());
                }
-           } catch (IPSAssetService.PSAssetServiceException | PSValidationException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException e) {
+           } catch (PSDataServiceException e) {
                log.error(e.getMessage());
                log.debug(e.getMessage(),e);
                //It is just the thumbnail so don't completely fail out
@@ -543,7 +545,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
     public PSAssetResource resolveResourceDefinition(
             String resourceDefinitionId,  
             String legacyTemplate,
-            String contentType) throws DataServiceNotFoundException, DataServiceLoadException, PSValidationException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException {
+            String contentType) throws PSDataServiceException {
         if (resourceDefinitionId != null)
             return findAssetResourceDefinition(resourceDefinitionId);
         if (legacyTemplate != null)
@@ -647,7 +649,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
                 legacyLinkGenerator.fillLegacyLink(context, item, resourceDefinition, link);
                 String url = legacyLinkGenerator.generate(link);
                 rl = new PSRenderLink(url, resourceDefinition);
-            }catch (ValidationException ex){
+            }catch (ValidationException | PSException ex){
                 log.warn("Error: {}", ex.getMessage());
                 log.debug(ex.getMessage(),ex);
                 rl = new PSRenderLink();
@@ -682,7 +684,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
     /**
      * {@inheritDoc}
      */
-    public PSResourceInstance createResourceInstance(PSRenderLinkContext context, IPSLinkableItem item, String resourceDefinitionId) throws DataServiceNotFoundException, DataServiceLoadException, IPSAssetService.PSAssetServiceException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException {
+    public PSResourceInstance createResourceInstance(PSRenderLinkContext context, IPSLinkableItem item, String resourceDefinitionId) throws PSDataServiceException {
         PSAssetResource rd = resolveResourceDefinition(resourceDefinitionId, null, item.getType());
         return resourceInstanceHelper.createResourceInstance(context, item, rd);
     }
@@ -809,14 +811,14 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
             // exception will be thrown
             log.warn("Theme folder may have been deleted. Error:{}",e.getMessage());
             log.debug(e.getMessage(),e);
-        } catch (DataServiceLoadException | DataServiceNotFoundException e) {
+        } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
         }
         return rd;
     }
     
-    private PSAssetResource findAssetResourceDefinition(String resourceDefinitionId) throws DataServiceLoadException, DataServiceNotFoundException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException {
+    private PSAssetResource findAssetResourceDefinition(String resourceDefinitionId) throws PSDataServiceException {
         PSResourceDefinition definition = resourceDefinitionService.findResource(resourceDefinitionId);
         if (definition instanceof PSAssetResource)
         {
@@ -847,8 +849,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
     }
 
 
-    public void validateLinkContext(PSRenderLinkContext context)
-    {
+    public void validateLinkContext(PSRenderLinkContext context) throws PSBeanValidationException {
         PSBeanValidationUtils.getValidationErrorsOrFailIfInvalid(context);
     }
     

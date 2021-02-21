@@ -30,7 +30,6 @@ import com.percussion.cms.handlers.PSRelationshipCommandHandler;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.server.PSRelationshipDbProcessor;
-import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.data.IPSDataExtractor;
 import com.percussion.data.PSDataExtractionException;
 import com.percussion.data.PSDataExtractorFactory;
@@ -45,9 +44,8 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.design.objectstore.PSUISet;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.log.PSLogManager;
@@ -67,7 +65,6 @@ import com.percussion.services.assembly.IPSAssemblyResult.Status;
 import com.percussion.services.assembly.impl.AssemblerInfoUtils;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
-import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.services.relationship.IPSRelationshipService;
 import com.percussion.services.relationship.PSRelationshipServiceLocator;
@@ -77,7 +74,6 @@ import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.services.workflow.data.PSState;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCms;
-import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
@@ -184,7 +180,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
     */
    public PSSingleValueBuilder( PSField field, PSUISet ui,
          IPSReplacementValue value, PSEditorDocumentBuilder parentBuilder )
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       super( field, ui, parentBuilder );
       m_extractor = createExtractor( value );
@@ -202,7 +198,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
     */
    public PSSingleValueBuilder( PSField field, PSUISet ui,
          IPSBackEndMapping locator, PSEditorDocumentBuilder parentBuilder )
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       super( field, ui, parentBuilder );      
       m_extractor = createExtractor(locator );

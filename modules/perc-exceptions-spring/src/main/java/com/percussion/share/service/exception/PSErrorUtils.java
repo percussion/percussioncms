@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -27,9 +27,9 @@ import com.percussion.error.IPSException;
 import com.percussion.share.validation.PSErrorCause;
 import com.percussion.share.validation.PSErrors;
 import com.percussion.share.validation.PSErrors.PSObjectError;
-import org.apache.commons.lang.StringUtils;
-
-import static org.apache.commons.lang.Validate.notNull;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * 
@@ -42,7 +42,7 @@ public class PSErrorUtils
 {
     
     public static PSErrors createErrorsFromException(Throwable exception) {
-        notNull(exception);
+        Validate.notNull(exception);
         PSErrors errors = new PSErrors();
         PSObjectError oe = new PSObjectError();
 
@@ -60,7 +60,7 @@ public class PSErrorUtils
     }
     
     public static RuntimeException createExceptionFromErrors(PSErrors errors) {
-        notNull(errors);
+        Validate.notNull(errors);
         return new PSProxyException(errors);
     }
     
@@ -82,7 +82,7 @@ public class PSErrorUtils
 
         protected void convert(PSErrors errors) {
             this.errors = errors;
-            notNull(errors);
+            Validate.notNull(errors);
             PSObjectError oe = errors.getGlobalError();
             setMessage(oe.getDefaultMessage());
             //setStackTrace(cause.getStackTrace());

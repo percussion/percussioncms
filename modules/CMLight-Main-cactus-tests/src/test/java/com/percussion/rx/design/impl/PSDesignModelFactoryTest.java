@@ -457,8 +457,8 @@ public class PSDesignModelFactoryTest extends ServletTestCase
       assertFalse(version == null);
       try
       {
-         Method method = obj.getClass().getMethod("getVersion",
-               new Class[0]);
+         Method method = obj.getClass().getMethod("getVersion"
+         );
          Integer oversion = (Integer) method.invoke(obj, new Object[0]);
          assertEquals(version.longValue(), oversion.longValue());
       }

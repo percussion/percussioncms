@@ -102,8 +102,12 @@ public class PSRecent extends PSAbstractDataObject
     private String value;
 
     /**
-     * @param key
-     * @param data
+     *
+     * @param user
+     * @param siteName
+     * @param type
+     * @param order
+     * @param value
      */
     public PSRecent(String user, String siteName, RecentType type, int order, String value)
     {

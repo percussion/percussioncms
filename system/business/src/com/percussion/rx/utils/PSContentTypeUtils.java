@@ -31,7 +31,7 @@ import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldValidationRules;
 import com.percussion.design.objectstore.PSRule;
 import com.percussion.design.objectstore.PSSingleHtmlParameter;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionRef;
@@ -247,7 +247,7 @@ public class PSContentTypeUtils
          field.clearOccurrenceSettings();
          field.setOccurrenceDimension(occur, null);
       }
-      catch (PSValidationException ve)
+      catch (PSSystemValidationException ve)
       {
          // We can safely ignore this as we are setting a valid value
          // here.

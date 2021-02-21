@@ -24,15 +24,18 @@
 
 package com.percussion.apibridge;
 
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.roles.IRoleAdaptor;
 import com.percussion.rest.roles.Role;
 import com.percussion.role.data.PSRole;
 import com.percussion.role.service.impl.PSRoleService;
 import com.percussion.share.data.PSStringWrapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.util.PSSiteManageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
+import javax.ws.rs.WebApplicationException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,43 +48,63 @@ public class RoleAdaptor implements IRoleAdaptor{
    PSRoleService roleService;
 
 	@Override
-	public Role getRole(URI baseURI, String roleName) {
-		Role ret = null;
-        PSStringWrapper wrap = new PSStringWrapper();
-        wrap.setValue(roleName);
+	public Role getRole(URI baseURI, String roleName) throws BackendException {
+		try {
+			Role ret = null;
+			PSStringWrapper wrap = new PSStringWrapper();
+			wrap.setValue(roleName);
 
-        PSRole p_role = roleService.find(wrap);
-		ret = ApiUtils.convertRole(p_role);
+			PSRole p_role = roleService.find(wrap);
+			ret = ApiUtils.convertRole(p_role);
 
-		return ret;
+			return ret;
+		} catch (PSDataServiceException e) {
+			throw new BackendException(e);
+		}
 	}
 
 	@Override
 	public Role updateRole(URI baseURI, Role role) {
-	    return ApiUtils.convertRole(roleService.update(ApiUtils.convertRole(role)));
+		try {
+			return ApiUtils.convertRole(roleService.update(ApiUtils.convertRole(role)));
+		} catch (PSDataServiceException e) {
+			throw new WebApplicationException(e);
+		}
 	}
 
     @Override
-    public Role createRole(URI baseURI, Role role) {
-        return ApiUtils.convertRole(roleService.create(ApiUtils.convertRole(role)));
-    }
+    public Role createRole(URI baseURI, Role role) throws BackendException {
+		try {
+			return ApiUtils.convertRole(roleService.create(ApiUtils.convertRole(role)));
+		} catch (PSDataServiceException e) {
+			throw new BackendException(e);
+		}
+	}
 
 
     @Override
-	public void deleteRole(URI baseURI, String roleName) {
-		PSStringWrapper wrap = new PSStringWrapper(roleName);
-	    roleService.delete(wrap);
+	public void deleteRole(URI baseURI, String roleName) throws BackendException {
+		try {
+			PSStringWrapper wrap = new PSStringWrapper(roleName);
+			roleService.delete(wrap);
+		} catch (PSDataServiceException e) {
+			throw new BackendException(e);
+		}
 	}
 
     @Override
-    public List<Role> findRoles(URI baseURI, String pattern) {
-	    List<String> roleList = roleService.getRoleMgr().getDefinedRoles();
+    public List<Role> findRoles(URI baseURI, String pattern) throws BackendException {
+		try {
+			List<String> roleList = roleService.getRoleMgr().getDefinedRoles();
 
-	    ArrayList<Role> roles = new ArrayList();
-        for(String s : roleList){
-            roles.add(ApiUtils.convertRole(roleService.find(new PSStringWrapper(s))));
-        }
-        return roles;
+			ArrayList<Role> roles = new ArrayList<>();
+			for (String s : roleList) {
+				roles.add(ApiUtils.convertRole(roleService.find(new PSStringWrapper(s))));
+			}
+			return roles;
+		} catch (PSDataServiceException e) {
+			throw new BackendException(e);
+		}
 	}
 
 

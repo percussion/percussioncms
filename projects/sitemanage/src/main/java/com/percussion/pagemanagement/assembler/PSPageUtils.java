@@ -290,7 +290,7 @@ public class PSPageUtils extends PSJexlUtilBase
     {
         try{
             return renderLinkService.renderLink(linkContext, linkableItem);
-        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | IPSAssetService.PSAssetServiceException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException | PSValidationException e) {
+        } catch (PSDataServiceException e) {
             log.error(LOG_ERROR_DEFAULT,"itemLink", e.getMessage());
             log.debug(e.getMessage(),e);
             return new PSRenderLink("#",null);
@@ -467,7 +467,7 @@ public class PSPageUtils extends PSJexlUtilBase
             PSRegionBranches pageRegionBranches = page.getRegionBranches();
             regionTree =  new PSMergedRegionTree(widgetService ,templateRegionTree , pageRegionBranches);
         }
-        catch (RepositoryException e)
+        catch (RepositoryException | PSDataServiceException e)
         {
             log.error("Error getting RegionTree for item ", e);
         }
@@ -622,7 +622,7 @@ public class PSPageUtils extends PSJexlUtilBase
                 log.debug("Failed to find the landing page for nav node id = {}", navId);
             }
         }
-        catch (RepositoryException | IPSDataService.DataServiceLoadException | IPSAssetService.PSAssetServiceException | IPSDataService.DataServiceNotFoundException | IllegalArgumentException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException | PSValidationException e)
+        catch (RepositoryException | IllegalArgumentException | PSDataServiceException e)
         {
             IPSGuid navId = ((IPSNode) navNode).getGuid();
 
@@ -642,7 +642,7 @@ public class PSPageUtils extends PSJexlUtilBase
     {
         try {
             return renderLinkService.renderLink(linkContext, linkableItem, resourceDefinitionId);
-        } catch (IPSDataService.DataServiceLoadException | IPSAssetService.PSAssetServiceException | IPSDataService.DataServiceNotFoundException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException | PSValidationException e) {
+        } catch (PSDataServiceException e) {
             log.error(LOG_ERROR_DEFAULT,"itemLink", e.getMessage());
             log.debug(e.getMessage(),e);
             return new PSRenderLink("#",null);

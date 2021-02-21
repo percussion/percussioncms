@@ -102,7 +102,7 @@ public class PSConditionalTest extends TestCase
          {
             cond.validate(validator);
          }
-         catch (PSValidationException e)
+         catch (PSSystemValidationException e)
          {
             didThrow = true;
          }

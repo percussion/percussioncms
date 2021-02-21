@@ -166,7 +166,7 @@ public class PSAssemblyItemBridge {
      * @param resourceId the unique resource ID. It may be blank or <code>null</code> if the resource is determined by the content type of the item.
      * @return never <code>null</code>.
      */
-    public PSResourceInstance createResourceInstance(PSContentListItem item, String resourceId) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, IPSAssetService.PSAssetServiceException, PSValidationException, IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException {
+    public PSResourceInstance createResourceInstance(PSContentListItem item, String resourceId) throws PSDataServiceException {
 
         IPSLinkableItem linkableItem = createLinkableItem(item.getItemId());
         PSRenderLinkContext context = this.renderLinkContextFactory.create(item, linkableItem);
@@ -186,7 +186,7 @@ public class PSAssemblyItemBridge {
      * @param resourceId the resource ID. It may be blank if the resource is determined by the content type of the item.
      * @return never <code>null</code>.
      */
-    public PSResourceLocation getResourceLocation(PSContentListItem listItem, String resourceId) throws IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSAssetService.PSAssetServiceException, IPSDataService.DataServiceLoadException {
+    public PSResourceLocation getResourceLocation(PSContentListItem listItem, String resourceId) throws PSDataServiceException {
         PSResourceInstance resource;
 
         resource = createResourceInstance(listItem, resourceId);
@@ -244,7 +244,7 @@ public class PSAssemblyItemBridge {
 
         try {
             return resourceLinkandLocationService.createResourceInstance(context, linkableItem, resourceDefinitionId);
-        } catch (IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceLoadException | IPSAssetService.PSAssetServiceException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException | PSValidationException e) {
+        } catch (PSDataServiceException e) {
             throw new PSAssemblyException(22,e,id);
         }
     }

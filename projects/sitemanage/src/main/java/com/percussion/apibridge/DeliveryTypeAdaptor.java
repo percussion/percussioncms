@@ -26,7 +26,9 @@ package com.percussion.apibridge;
 
 import com.percussion.rest.deliverytypes.DeliveryType;
 import com.percussion.rest.deliverytypes.IDeliveryTypeAdaptor;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -59,11 +61,14 @@ public class DeliveryTypeAdaptor implements IDeliveryTypeAdaptor {
      * @return
      */
     @Override
-    public DeliveryType getDeliveryTypeById(URI baseURI, String id) {
-
-        PSGuid guid = new PSGuid(PSTypeEnum.DELIVERY_TYPE,id);
-        IPSDeliveryType type = pubService.loadDeliveryType(guid);
-        return copyDeliveryType(type);
+    public DeliveryType getDeliveryTypeById(URI baseURI, String id) throws BackendException {
+        try {
+            PSGuid guid = new PSGuid(PSTypeEnum.DELIVERY_TYPE, id);
+            IPSDeliveryType type = pubService.loadDeliveryType(guid);
+            return copyDeliveryType(type);
+        } catch (PSNotFoundException e) {
+            throw new BackendException(e);
+        }
     }
 
     /***
@@ -73,26 +78,30 @@ public class DeliveryTypeAdaptor implements IDeliveryTypeAdaptor {
      * @return
      */
     @Override
-    public DeliveryType updateDeliveryType(URI baseURI, DeliveryType type) {
-        if(type.getId() == null || StringUtils.isBlank(type.getId().getStringValue())){
-            //Create
-            IPSDeliveryType create = pubService.createDeliveryType();
+    public DeliveryType updateDeliveryType(URI baseURI, DeliveryType type) throws BackendException {
+        try {
+            if (type.getId() == null || StringUtils.isBlank(type.getId().getStringValue())) {
+                //Create
+                IPSDeliveryType create = pubService.createDeliveryType();
 
-            create.setUnpublishingRequiresAssembly(type.getUnpublishingRequiresAssembly());
-            create.setName(type.getName());
-            create.setDescription(type.getDescription());
-            create.setBeanName(type.getBeanName());
-            pubService.saveDeliveryType(create);
-            return copyDeliveryType(create);
+                create.setUnpublishingRequiresAssembly(type.getUnpublishingRequiresAssembly());
+                create.setName(type.getName());
+                create.setDescription(type.getDescription());
+                create.setBeanName(type.getBeanName());
+                pubService.saveDeliveryType(create);
+                return copyDeliveryType(create);
 
-        }else{
-            IPSDeliveryType update = copyDeliveryType(type);
+            } else {
+                IPSDeliveryType update = copyDeliveryType(type);
 
-            //Update the type
-            pubService.saveDeliveryType(update);
+                //Update the type
+                pubService.saveDeliveryType(update);
 
-            //Load after save
-            return copyDeliveryType(pubService.loadDeliveryType(update.getGUID()));
+                //Load after save
+                return copyDeliveryType(pubService.loadDeliveryType(update.getGUID()));
+            }
+        } catch (PSNotFoundException e) {
+            throw new BackendException(e);
         }
     }
 
@@ -103,10 +112,14 @@ public class DeliveryTypeAdaptor implements IDeliveryTypeAdaptor {
      * @return
      */
     @Override
-    public void deleteDeliveryTypeById(URI baseURI, String id) {
-        IPSGuid guid = guidMgr.makeGuid(id, PSTypeEnum.DELIVERY_TYPE);
-        IPSDeliveryType type = pubService.loadDeliveryType(guid);
-        pubService.deleteDeliveryType(type);
+    public void deleteDeliveryTypeById(URI baseURI, String id) throws BackendException {
+        try {
+            IPSGuid guid = guidMgr.makeGuid(id, PSTypeEnum.DELIVERY_TYPE);
+            IPSDeliveryType type = pubService.loadDeliveryType(guid);
+            pubService.deleteDeliveryType(type);
+        } catch (PSNotFoundException e) {
+            throw new BackendException(e);
+        }
     }
 
     /***

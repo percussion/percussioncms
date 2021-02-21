@@ -24,7 +24,7 @@
 
 package com.percussion.server.cache;
 
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.server.PSBaseResponse;
 import com.percussion.server.PSCachedResponse;
 
@@ -224,12 +224,12 @@ public interface IPSCacheHandler
     * @throws IllegalArgumentException if <code>keys</code> is 
     * <code>null</code>.
     *
-    * @throws PSValidationException if <code>keys</code> does not have an entry
+    * @throws PSSystemValidationException if <code>keys</code> does not have an entry
     * for each named key expected by the handler, or if any keys with required
     * values are <code>null</code>.
     */
    public void validateKeys(Map keys)
-      throws PSValidationException;
+      throws PSSystemValidationException;
    
    /**
     * Gets the type of caching the handler will perform.  Each handler must

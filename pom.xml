@@ -48,6 +48,7 @@
         <module>modules/jcadf-master</module>
         <module>modules/build-tools</module>
         <module>modules/perc-auditlog</module>
+        <module>modules/perc-exceptions-spring</module>
         <module>modules/shindig-uber</module>
         <module>modules/perc-tinymce</module>
         <module>system/utils</module>
@@ -1519,31 +1520,11 @@
                 <scope>test</scope>
                 <optional>true</optional>
             </dependency>
-         <!--  
-            <dependency>
-                <groupId>cactus</groupId>
-                <artifactId>cactus</artifactId>
-                <version>1.8.1</version>
-                <type>pom</type>
-            </dependency>
--->
-
-            <!-- https://mvnrepository.com/artifact/org.apache.cactus/cactus.core.framework.uberjar.javaEE.14 -->
-            <!-- <dependency> <groupId>cactus</groupId> <artifactId>cactus.core.framework.uberjar.javaEE.14</artifactId>
-                <version>1.8.1</version> <type>pom</type> </dependency> -->
-            <!-- https://mvnrepository.com/artifact/cactus/cactus -->
-            <!-- https://mvnrepository.com/artifact/org.apache.cactus/cactus -->
-
-
-            <!-- https://mvnrepository.com/artifact/org.apache.geronimo.specs/geronimo-jms_1.1_spec -->
             <dependency>
                 <groupId>org.apache.geronimo.specs</groupId>
                 <artifactId>geronimo-jms_1.1_spec</artifactId>
                 <version>1.1.1</version>
             </dependency>
-
-            <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-            <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
@@ -1555,88 +1536,56 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-
-
-            <!-- https://mvnrepository.com/artifact/org.apache.jackrabbit/jackrabbit-jcr-commons -->
-            <dependency>
+         <dependency>
                 <groupId>org.apache.jackrabbit</groupId>
                 <artifactId>jackrabbit-jcr-commons</artifactId>
                 <version>1.4</version>
             </dependency>
-
-            <!-- https://mvnrepository.com/artifact/org.jasypt/jasypt -->
             <dependency>
                 <groupId>org.jasypt</groupId>
                 <artifactId>jasypt</artifactId>
                 <version>1.8</version>
             </dependency>
-
-            <!-- https://mvnrepository.com/artifact/javax.sql/jdbc-stdext -->
-            <!-- <dependency> <groupId>javax.sql</groupId> <artifactId>jdbc-stdext</artifactId> 
-                <version>2.0</version> </dependency> -->
-            <!-- missing <dependency> <groupId>javax.jh</groupId> <artifactId>jh</artifactId> 
-                <version>1.1.3</version> </dependency> -->
-            <!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
             <dependency>
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
                 <version>2.8.1</version>
             </dependency>
-
-            <!-- https://mvnrepository.com/artifact/net.sf.jtidy/jtidy -->
             <dependency>
                 <groupId>net.sf.jtidy</groupId>
                 <artifactId>jtidy</artifactId>
                 <version>r938</version>
             </dependency>
-
-
-            <!-- https://mvnrepository.com/artifact/org.apache.velocity/velocity -->
             <dependency>
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity</artifactId>
                 <version>1.7</version>
             </dependency>
-
-
-            <!-- https://mvnrepository.com/artifact/velocity-tools/velocity-tools-view -->
             <dependency>
                 <groupId>velocity-tools</groupId>
                 <artifactId>velocity-tools</artifactId>
                 <version>1.4</version>
             </dependency>
-
-
-            <!-- https://mvnrepository.com/artifact/xerces/xercesImpl -->
             <dependency>
                 <groupId>xerces</groupId>
                 <artifactId>xercesImpl</artifactId>
                 <version>${xerces.version}</version>
-
             </dependency>
-
-            <!-- https://mvnrepository.com/artifact/xml-apis/xml-apis -->
             <dependency>
                 <groupId>xml-apis</groupId>
                 <artifactId>xml-apis</artifactId>
                 <version>1.4.01</version>
-
             </dependency>
-
-
-            <!-- https://mvnrepository.com/artifact/javax.jcr/jcr -->
             <dependency>
                 <groupId>javax.jcr</groupId>
                 <artifactId>jcr</artifactId>
                 <version>1.0</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.codehaus.jettison/jettison -->
             <dependency>
                 <groupId>org.codehaus.jettison</groupId>
                 <artifactId>jettison</artifactId>
                 <version>1.4.1</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/com.jcraft/jsch -->
             <dependency>
                 <groupId>com.jcraft</groupId>
                 <artifactId>jsch</artifactId>
@@ -1648,17 +1597,11 @@
                 <artifactId>jzlib</artifactId>
                 <version>1.1.3</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.json/json -->
             <dependency>
                 <groupId>org.json</groupId>
                 <artifactId>json</artifactId>
                 <version>${json.version}</version>
             </dependency>
-
-            <!-- https://mvnrepository.com/artifact/net.sf.json-lib/json-lib 
-                Note, current version unknown -->
-            <!-- https://mvnrepository.com/artifact/net.sf.json-lib/json-lib -->
-            <!-- https://mvnrepository.com/artifact/net.sf.json-lib/json-lib-ext-spring -->
             <dependency>
                 <groupId>net.sf.json-lib</groupId>
                 <artifactId>json-lib-ext-spring</artifactId>
@@ -1686,9 +1629,6 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-
-
-            <!-- https://mvnrepository.com/artifact/org.apache.myfaces.core/myfaces-api -->
             <dependency>
                 <groupId>org.apache.myfaces.core</groupId>
                 <artifactId>myfaces-api</artifactId>
@@ -1699,14 +1639,6 @@
                 <artifactId>myfaces-impl</artifactId>
                 <version>${myfaces.version}</version>
             </dependency>
-
-
-            <!-- https://mvnrepository.com/artifact/net.sf.saxon/saxon -->
-            <!-- <dependency> package now net.sf.saxon have to be aware of 
-                license changes also. <groupId>net.sf.saxon</groupId> <artifactId>saxon</artifactId> 
-                <version>7.9.1</version> </dependency> -->
-            <!-- https://mvnrepository.com/artifact/com.icl.saxon/saxon -->
-            <!-- https://mvnrepository.com/artifact/saxon/saxon -->
             <dependency>
                 <groupId>saxon</groupId>
                 <artifactId>saxon</artifactId>
@@ -1721,8 +1653,6 @@
                 <groupId>org.apache.solr</groupId>
                 <artifactId>solr-solrj</artifactId>
                 <version>${solr.version}</version>
-                <!-- Jetty Jars need to be excluded as they are provided by app server
-     will cause app to fail to start when upgrading jetty if jars are present -->
                 <exclusions>
                     <exclusion>
                         <groupId>io.netty</groupId>
@@ -1764,16 +1694,6 @@
                 <artifactId>woodstox-core-asl</artifactId>
                 <version>4.4.1</version>
             </dependency>
-
-
-            <!-- rxutils aspectjrt cactus.core.framework.uberjar.javaEE.14-1.8.1.jar 
-                commons-codec-1.10commons-collections-3.2.2.jar commons-io-2.0.1.jar commons-jexl-1.1.1-patched.jar 
-                commons-lang-2.4.jar commons-logging-1.1.1.jar geronimo-jms_1.1_spec-1.1.1.jar 
-                guava-r07.jar hibernate3.jar jackrabbit-jcr-commons-1.4.jar jasypt-1.8.jar 
-                jcr-1.0.jar jdbc2_0-stdext.jar jh.jar joda-time-2.5.jar jtidy-r938.jar junit-4.11.jar 
-                spring-beans-3.2.17.RELEASE.jar spring-context-3.2.17.RELEASE.jar spring-core-3.2.17.RELEASE.jar 
-                spring-test-3.2.17.RELEASE.jar spring-web-3.2.17.RELEASE.jar spring-webmvc-3.2.17.RELEASE.jar 
-                velocity-1.6.2.jar xercesImpl-2.11.0.jar xml-apis-1.4.01.jar -->
             <dependency>
                 <groupId>com.github.jsonld-java</groupId>
                 <artifactId>jsonld-java</artifactId>
@@ -1817,44 +1737,32 @@
                 <artifactId>jdom2</artifactId>
                 <version>2.0.6</version>
             </dependency>
-
-            <!-- https://mvnrepository.com/artifact/software.amazon.awssdk/aws-sdk-java -->
             <dependency>
                 <groupId>com.amazonaws</groupId>
                 <artifactId>aws-java-sdk-s3</artifactId>
                 <version>${awssdk.version}</version>
             </dependency>
-
-            <!-- remove backport-util.concurrent -->
-            <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
             <dependency>
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>${commons.beanutils.version}</version>
             </dependency>
-
-            <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
             <dependency>
                 <groupId>commons-net</groupId>
                 <artifactId>commons-net</artifactId>
                 <version>2.2</version>
             </dependency>
-
-
-            <!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
             <dependency>
                 <groupId>javax.ws.rs</groupId>
                 <artifactId>javax.ws.rs-api</artifactId>
                 <version>2.1</version>
             </dependency>
-
             <dependency>
                 <groupId>org.apache.tika</groupId>
                 <artifactId>tika-core</artifactId>
                 <version>${tika.version}</version><!-- was 1.3 update to bring in line
                     with other deps -->
            </dependency>
-
             <dependency>
                 <groupId>org.apache.tika</groupId>
                 <artifactId>tika-parsers</artifactId>
@@ -1988,31 +1896,16 @@
                 <artifactId>commons-validator</artifactId>
                 <version>1.1.4</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/com.google.gdata/gdata-analytics -->
-            <!-- <dependency> <groupId>com.google.gdata</groupId> <artifactId>gdata-maps</artifactId> 
-                <version>2.1</version> </dependency> <dependency> <groupId>com.google.gdata</groupId> 
-                <artifactId>gdata-analytics</artifactId> <version>2.1</version> </dependency> -->
-            <!-- https://mvnrepository.com/artifact/com.google.gdata/core -->
             <dependency>
                 <groupId>com.google.gdata</groupId>
                 <artifactId>core</artifactId>
                 <version>1.47.1</version>
             </dependency>
-
-
-            <!-- https://mvnrepository.com/artifact/concurrent/concurrent -->
-            <!-- Still used ? old -->
             <dependency>
                 <groupId>concurrent</groupId>
                 <artifactId>concurrent</artifactId>
                 <version>1.3.4</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/com.google.gdata/gdata-analytics -->
-            <!-- <dependency> <groupId>com.google.gdata</groupId> <artifactId>gdata-analytics</artifactId> 
-                <version>2.1</version> </dependency> -->
-            <!-- used for ? -->
-            <!-- https://mvnrepository.com/artifact/se.fishtank/css-selectors -->
-
             <dependency>
                 <groupId>se.fishtank</groupId>
                 <artifactId>css-selectors</artifactId>
@@ -2037,12 +1930,6 @@
                 <artifactId>esapi</artifactId>
                 <version>2.1.0.1</version>
             </dependency>
-
-
-            <!-- <dependency> <groupId>javax.media</groupId> <artifactId>jai_core</artifactId> 
-                <version>1.1.1</version> </dependency> -->
-            <!-- https://mvnrepository.com/artifact/nl.bitwalker/UserAgentUtils 
-                Where?? -->
             <dependency>
                 <groupId>nl.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>

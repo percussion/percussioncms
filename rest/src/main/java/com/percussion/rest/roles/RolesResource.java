@@ -25,9 +25,12 @@
 package com.percussion.rest.roles;
 
 import com.percussion.rest.Status;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.users.User;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.annotations.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
@@ -47,6 +50,8 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.NONE)
 @Api(value = "/roles", description = "Role operations")
 public class RolesResource {
+
+	private static final Logger log = LogManager.getLogger(RolesResource.class);
 
 	 @Autowired
 	 private IRoleAdaptor roleAdaptor;
@@ -68,18 +73,19 @@ public class RolesResource {
 	    })
 	    public Role getRoleByName(@PathParam("roleName") String roleName)
 	    {
-	    	Role r = null;
-	 
-	   		try
-	        {
-	            roleName = java.net.URLDecoder.decode(roleName, "UTF-8");
-	        }
-	        catch (UnsupportedEncodingException e)
-	        {}
-	   		
-	   		r = roleAdaptor.getRole(uriInfo.getBaseUri(), roleName);
-	   		return r;
-	    }
+			try {
+				Role r = null;
+
+				roleName = java.net.URLDecoder.decode(roleName, "UTF-8");
+
+				r = roleAdaptor.getRole(uriInfo.getBaseUri(), roleName);
+				return r;
+			} catch (BackendException | UnsupportedEncodingException e) {
+				log.error(e.getMessage());
+				log.debug(e.getMessage(),e);
+				throw new WebApplicationException(e);
+			}
+		}
 	   	
 	    @DELETE
 	    @Path("/{roleName}")
@@ -148,13 +154,19 @@ public class RolesResource {
 	    {MediaType.APPLICATION_JSON})
 	    public RoleList findRoles()
 	    {
-	    	List<Role> ret = new ArrayList<>();
-	    	
-	    	ret = roleAdaptor.findRoles(uriInfo.getBaseUri(), "%");
-	    	
-	        return new RoleList(ret);
-	        
-	    }
+	    	try {
+				List<Role> ret = new ArrayList<>();
+
+				ret = roleAdaptor.findRoles(uriInfo.getBaseUri(), "%");
+
+				return new RoleList(ret);
+			} catch (BackendException e) {
+				log.error(e.getMessage());
+				log.debug(e.getMessage(),e);
+				throw new WebApplicationException(e);
+			}
+
+		}
 	    
 	    public IRoleAdaptor getRoleAdaptor()
 	    {

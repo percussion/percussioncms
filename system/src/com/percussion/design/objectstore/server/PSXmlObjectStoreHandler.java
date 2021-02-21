@@ -1818,7 +1818,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
     *                                          an application by the same name
     *                                          already exists
     *
-    * @throws PSValidationException         if validate is <code>true</code>
+    * @throws PSSystemValidationException         if validate is <code>true</code>
     *                                          and a validation error is
     *                                          encountered
     *
@@ -1832,7 +1832,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
       throws PSServerException, PSAuthorizationException,
                PSAuthenticationFailedException,
                PSNotLockedException, PSNonUniqueException,
-               PSValidationException, PSUnknownDocTypeException
+           PSSystemValidationException, PSUnknownDocTypeException
    {
 
       if (inDoc == null)
@@ -1996,7 +1996,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
          PSAuthorizationException,
          PSAuthenticationFailedException,
          PSNotLockedException,
-         PSValidationException,
+           PSSystemValidationException,
          PSExtensionException,
          PSNotFoundException,
          PSUnknownDocTypeException
@@ -2109,7 +2109,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
          PSAuthorizationException,
          PSAuthenticationFailedException,
          PSNotLockedException,
-         PSValidationException,
+           PSSystemValidationException,
          PSExtensionException,
          PSNotFoundException,
          PSUnknownDocTypeException
@@ -2168,7 +2168,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
          PSAuthorizationException,
          PSAuthenticationFailedException,
          PSNotLockedException,
-         PSValidationException,
+           PSSystemValidationException,
          PSExtensionException,
          PSNotFoundException,
          PSUnknownDocTypeException
@@ -4077,11 +4077,11 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
     *
     * @throws   PSServerException
     * @throws   PSAuthorizationException
-    * @throws   PSValidationException;
+    * @throws PSSystemValidationException ;
     *
     */
    public boolean validateApplicationObject(PSApplication app)
-      throws PSServerException, PSAuthorizationException, PSValidationException
+      throws PSServerException, PSAuthorizationException, PSSystemValidationException
    {
       try
       {
@@ -4090,7 +4090,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
          validator.validateApplication(app);
          return true;
       }
-      catch (PSValidationException valex)
+      catch (PSSystemValidationException valex)
       {
          // ignore, we simply return false below
       }
@@ -4488,7 +4488,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
             HANDLER_UNEXPECTED_EXCEPTION, new Object[]
             {e.toString()}, true, "ObjectStore"));
       }
-      catch (PSValidationException e)
+      catch (PSSystemValidationException e)
       {
          PSLogManager.write(new PSLogServerWarning(
             HANDLER_UNEXPECTED_EXCEPTION, new Object[]
@@ -4510,7 +4510,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
                                      String saveDescription)
       throws   PSServerException, PSAuthorizationException,
                PSNotLockedException, PSNonUniqueException,
-               PSValidationException, PSUnknownDocTypeException,
+           PSSystemValidationException, PSUnknownDocTypeException,
                PSUnknownNodeTypeException, PSLockedException,
                IOException, PSNotFoundException, PSLockAcquisitionException,
                PSAuthenticationFailedException
@@ -4675,7 +4675,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
    private void doSaveUserConfiguration(Document cfgTree, PSRequest req)
       throws   PSServerException, PSAuthorizationException,
                PSNotLockedException, PSNonUniqueException,
-               PSValidationException, PSUnknownDocTypeException,
+           PSSystemValidationException, PSUnknownDocTypeException,
                IOException
    {
       if (cfgTree == null) {
@@ -4783,7 +4783,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
       )
       throws   PSServerException, PSAuthorizationException,
                PSNotLockedException, PSNonUniqueException,
-               PSValidationException, PSUnknownDocTypeException,
+           PSSystemValidationException, PSUnknownDocTypeException,
                PSUnknownNodeTypeException, PSNotFoundException,
                PSLockAcquisitionException, PSLockedException,
                IOException
@@ -6261,13 +6261,13 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
     * <code>false</code> if updating an existing app.
     * @param isRemove <code>true</code> if removing an app, <code>false</code>
     * if not, ignored if <code>isNewApp</code> is <code>true</code>.
-    * @throws PSValidationException if app fails validation on restart
+    * @throws PSSystemValidationException if app fails validation on restart
     * @throws PSNotFoundException if app cannot be located on disk
     * @throws PSServerException for anything else that may go wrong.
     */
    void notifyApplicationListeners(PSApplication app, boolean isNewApp, 
       boolean isRemove)
-      throws PSValidationException, PSServerException, PSNotFoundException
+      throws PSSystemValidationException, PSServerException, PSNotFoundException
    {
 
       /* we need to synchronize on the vector, as new listeners could be

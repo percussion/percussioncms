@@ -1430,6 +1430,11 @@
             <artifactId>yuicompressor</artifactId>
             <version>2.4.8</version>
         </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-exceptions-spring</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
 
     </dependencies>
     <distributionManagement>

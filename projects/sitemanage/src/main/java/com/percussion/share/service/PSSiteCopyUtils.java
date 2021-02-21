@@ -30,6 +30,7 @@ import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.share.data.PSMapWrapper;
+import com.percussion.share.service.exception.PSValidationException;
 
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -115,8 +116,7 @@ public class PSSiteCopyUtils
      * @param sourceSite not <code>null</code> or <code>empty</code>
      * @param targetSite not <code>null</code> or <code>empty</code>
      */
-    public static void startSiteCopy(String sourceSite, String targetSite)
-    {
+    public static void startSiteCopy(String sourceSite, String targetSite) throws PSValidationException {
         boolean canCopy = false;
         rwl.readLock().lock();
         if (!copyInProgress)
@@ -177,8 +177,7 @@ public class PSSiteCopyUtils
      * @param errorMessage error message based on what kind of action is being done on a site while getting copied 
      *                      not <code>null</code> or <code>empty</code>
      */
-    public static void throwCopySiteMessageIfNotAllowed(String siteName, String methodName, String errorMessage)
-    {
+    public static void throwCopySiteMessageIfNotAllowed(String siteName, String methodName, String errorMessage) throws PSValidationException {
         validate(siteName, methodName);
         notEmpty(errorMessage, "Error Message can not be blank");
         rwl.readLock().lock();
@@ -203,8 +202,7 @@ public class PSSiteCopyUtils
      * not <code>null</code> or <code>empty</code>
      * @param errorMessage  not <code>null</code> or <code>empty</code>
      */
-   public static void throwCopySiteMessageIfSameTargetName(String siteName, String methodName, String errorMessage)
-    {
+   public static void throwCopySiteMessageIfSameTargetName(String siteName, String methodName, String errorMessage) throws PSValidationException {
         validate(siteName, methodName);
         notEmpty(errorMessage, "Error Message can not be blank");
         rwl.readLock().lock();
@@ -229,8 +227,7 @@ public class PSSiteCopyUtils
      * @param newSiteName  name of the new site name
      * @param methodName name of the method from where it is getting called. 
      */
-    public static void throwCopySiteMessageForUpdateError(String siteName, String newSiteName, String methodName)
-    {
+    public static void throwCopySiteMessageForUpdateError(String siteName, String newSiteName, String methodName) throws PSValidationException {
         validate(siteName, methodName);
         notNull(newSiteName, "New Site Name can not be null");
         notEmpty(newSiteName, "New Site Name can not be empty");
