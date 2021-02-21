@@ -25,8 +25,9 @@
 package com.percussion.queue.impl;
 
 import com.percussion.sitemanage.data.PSSite;
+import com.percussion.sitemanage.error.PSSiteImportException;
 
 public interface IPSPerformPageImport
 {
-    void performPageImport(PSSite site, Integer id, String userAgent) throws InterruptedException;
+    void performPageImport(PSSite site, Integer id, String userAgent) throws InterruptedException, PSSiteImportException;
 }

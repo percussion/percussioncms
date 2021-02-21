@@ -259,7 +259,7 @@ public class PSConditionalStylesheet extends PSStylesheet
 
    // see IPSComponent
    public void validate(IPSValidationContext context) 
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (!context.startValidation(this, null))
          return;

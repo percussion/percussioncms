@@ -45,7 +45,7 @@ import com.percussion.design.objectstore.PSDisplayMapping;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.security.PSAuthenticationFailedException;
@@ -61,7 +61,6 @@ import com.percussion.util.PSMapPair;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -97,7 +96,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
          PSContentEditorHandler ceh, PSContentEditor ce,
          PSApplication app )
       throws PSNotFoundException, PSIllegalArgumentException,
-         PSExtensionException, PSServerException, PSValidationException
+         PSExtensionException, PSServerException, PSSystemValidationException
    {
       super( ah, ceh, ce, app, COMMAND_NAME );
 
@@ -111,7 +110,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
                ce.getName(),
                ah.getApplicationDefinition().getName()
          };
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
                IPSServerErrors.APP_NO_QUERY_PIPES_IN_DATASET, args );
       }
       PSDisplayMapper dispMapper =
@@ -132,7 +131,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
       {
          if ( null == ce.getRequestor())
          {
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                   IPSServerErrors.CE_MISSING_REQUESTOR, ce.getName());
          }
           if (PSServer.getProperty("requestBehindProxy","false").equalsIgnoreCase("true")) {
@@ -149,7 +148,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
       }
       catch ( MalformedURLException mue )
       {
-         throw new PSValidationException( IPSServerErrors.RAW_DUMP,
+         throw new PSSystemValidationException( IPSServerErrors.RAW_DUMP,
                mue.getLocalizedMessage());
       }
 
@@ -459,7 +458,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
    private int initializeEditorBuilders( PSContentEditor ce,
          PSDisplayMapper dispMapper, int pageId,
          PSEditorDocumentContext rowCtx, PSEditorDocumentContext summaryCtx )
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       Map pageInfoMap = rowCtx.getPageInfoMap();
       updatePageInfo( pageInfoMap, pageId,
@@ -600,13 +599,13 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
     * @return A value one larger than the largest id used by all recursive
     *    calls to this method, i.e. it can be used as a new id as is.
     *
-    * @throws PSValidationException If anything used by this method is missing
+    * @throws PSSystemValidationException If anything used by this method is missing
     *    or misconfigured.
     */
    private int initializeRequestResources( PSApplication app,
          PSContentEditor ce, PSDisplayMapper dispMapper, int recursionDepth,
          int pageId, HashMap pageInfoMap, StringBuffer resultDatasetName )
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       PSContentEditorPipe pipe = (PSContentEditorPipe) ce.getPipe();
       PSFieldSet fields =
@@ -677,7 +676,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
                   fields.getName(),
                   fs.getName()
                };
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                      IPSServerErrors.CE_MISSING_CHILDMAPPER, args );
             }
             if ( PSFieldSet.TYPE_COMPLEX_CHILD == fs.getType())

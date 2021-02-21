@@ -499,7 +499,7 @@ public class PSContentEditorMapper extends PSComponent
    // see IPSComponent
    @Override
    public void validate(IPSValidationContext context)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (!context.startValidation(this, null))
          return;
@@ -574,12 +574,12 @@ public class PSContentEditorMapper extends PSComponent
     *
     * @return the merged content editor mapper, never <code>null</code>
     *
-    * @throws PSValidationException if an error happens in merging.
+    * @throws PSSystemValidationException if an error happens in merging.
     */
    public PSContentEditorMapper getMergedMapper(
       PSContentEditorSystemDef sysDef, PSContentEditorSharedDef sharedDef,
       boolean mergeDefault)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (sysDef == null)
          throw new IllegalArgumentException("sysDef may not be null.");
@@ -657,12 +657,12 @@ public class PSContentEditorMapper extends PSComponent
     * @param sharedFieldExcludes the list of all shared field excludes as 
     *    <code>String</code>, assumed not <code>null</code>.
     * @return the merged field set, never <code>null</code>
-    * @throws PSValidationException if an error happens in merging.
+    * @throws PSSystemValidationException if an error happens in merging.
     */
    private PSFieldSet getMergedFieldSet(PSContentEditorSystemDef sysDef, 
       PSContentEditorSharedDef sharedDef, List systemFieldExcludes, 
       List sharedFieldIncludes, List sharedFieldExcludes)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       PSFieldSet mergedFieldSet = new PSFieldSet(getFieldSet());
 
@@ -695,7 +695,7 @@ public class PSContentEditorMapper extends PSComponent
             if (groupFields.getType() == PSFieldSet.TYPE_PARENT)
             {
                Object[] args = {group.getName(), groupFields.getName()};
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                   IPSObjectStoreErrors.CE_INVALID_SHARED_FIELDSET_TYPE, args);
             }
 
@@ -865,12 +865,12 @@ public class PSContentEditorMapper extends PSComponent
     *    merged with its default), otherwise it simply merges with UI set 
     *    defined in system/shared definition
     * @return the merged UI definition, never <code>null</code>
-    * @throws PSValidationException if an error happens in merging.
+    * @throws PSSystemValidationException if an error happens in merging.
     */
    private PSUIDefinition getMergedUIDefinition(PSContentEditorSystemDef sysDef, 
       PSContentEditorSharedDef sharedDef, List systemFieldExcludes, 
       List sharedFieldIncludes, List sharedFieldExcludes, boolean mergeDefault)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       PSUIDefinition localUIDef = getUIDefinition();
       setSourceType(localUIDef.getDisplayMapper(), LOCAL);
@@ -1161,12 +1161,12 @@ public class PSContentEditorMapper extends PSComponent
     *
     * @return the demerged content editor mapper, never <code>null</code>
     *
-    * @throws PSValidationException if an error happens in demerging.
+    * @throws PSSystemValidationException if an error happens in demerging.
     */
    public PSContentEditorMapper getDemergedMapper(
       PSContentEditorSystemDef sysDef, PSContentEditorSharedDef sharedDef,
       boolean demergeDefault)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if(sysDef == null)
          throw new IllegalArgumentException("sysDef may not be null.");
@@ -1201,11 +1201,11 @@ public class PSContentEditorMapper extends PSComponent
     *
     * @return the demerged field set, never <code>null</code>
     *
-    * @throws PSValidationException if an error happens in demerging.
+    * @throws PSSystemValidationException if an error happens in demerging.
     */
     private PSFieldSet getDemergedFieldSet(
       PSContentEditorSystemDef sysDef, PSContentEditorSharedDef sharedDef)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       PSFieldSet demergedFieldSet = new PSFieldSet( getFieldSet() );
 
@@ -1234,7 +1234,7 @@ public class PSContentEditorMapper extends PSComponent
             if (groupFields.getType() == PSFieldSet.TYPE_PARENT)
             {
                Object[] args = {group.getName(), groupFields.getName()};
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                   IPSObjectStoreErrors.CE_INVALID_SHARED_FIELDSET_TYPE, args);
             }
 
@@ -1278,12 +1278,12 @@ public class PSContentEditorMapper extends PSComponent
     *
     * @return the demerged UI Definition, never <code>null</code>
     *
-    * @throws PSValidationException if an error happens in demerging.
+    * @throws PSSystemValidationException if an error happens in demerging.
     */
    private PSUIDefinition getDemergedUIDefinition(
       PSContentEditorSystemDef sysDef, PSContentEditorSharedDef sharedDef,
       boolean demergeDefault)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       PSUIDefinition localUIDef = getUIDefinition();
 
@@ -1333,18 +1333,18 @@ public class PSContentEditorMapper extends PSComponent
     *    defined in the fields ui definition.</li>
     * </ul>
     * If any of these validations fail they will be returned in an iterator of
-    * <code>PSValidationException</code> objects that can be sent to the console.
+    * <code>PSSystemValidationException</code> objects that can be sent to the console.
     *
     * @param sharedDef the content editor shared def, assumed not to be <code>
     * null</code>
     *
-    * @return iterator of <code>PSValidationException</code> objects to capture
+    * @return iterator of <code>PSSystemValidationException</code> objects to capture
     * warnings. Never <code>null</code>, may be empty.
     *
-    * @throws PSValidationException if the above conditions are not met.
+    * @throws PSSystemValidationException if the above conditions are not met.
     */
    public Iterator validateSharedGroups(PSContentEditorSharedDef sharedDef)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       List<Exception> warnings = new ArrayList<Exception>();
       
@@ -1358,7 +1358,7 @@ public class PSContentEditorMapper extends PSComponent
          {
             // get name for error message
             include = (String) includes.next();
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSObjectStoreErrors.CE_SHARED_GROUP_NO_DEF, include);
          }
          else
@@ -1388,7 +1388,7 @@ public class PSContentEditorMapper extends PSComponent
                      if(!groupName.equalsIgnoreCase(fieldSetName))
                      {
                         Object[] args = { groupName };
-                        warnings.add( new PSValidationException(
+                        warnings.add( new PSSystemValidationException(
                            IPSObjectStoreErrors.
                               CE_GROUPNAME_AND_FIELDSETNAME_MUST_MATCH,
                            args ));
@@ -1399,7 +1399,7 @@ public class PSContentEditorMapper extends PSComponent
                      if(!fieldSetName.equalsIgnoreCase(fieldSetRef))
                      {
                         Object[] args = { groupName };
-                        warnings.add( new PSValidationException(
+                        warnings.add( new PSSystemValidationException(
                            IPSObjectStoreErrors.
                               CE_FIELDSETNAME_AND_FIELDSETREF_MUST_MATCH,
                            args ));
@@ -1458,7 +1458,7 @@ public class PSContentEditorMapper extends PSComponent
                         if(bInvalid)
                         {
                            Object[] args = { fieldSetRef };
-                           warnings.add( new PSValidationException(
+                           warnings.add( new PSSystemValidationException(
                               IPSObjectStoreErrors.
                                  CE_MISSING_OR_INVALID_CHILD_DISPLAY_MAPPING,
                               args ));
@@ -1482,7 +1482,7 @@ public class PSContentEditorMapper extends PSComponent
 
                if (!hasMatch)
                {
-                  throw new PSValidationException(
+                  throw new PSSystemValidationException(
                      IPSObjectStoreErrors.CE_INCLUDED_GROUP_INVALID, include);
                }
             }
@@ -1502,7 +1502,7 @@ public class PSContentEditorMapper extends PSComponent
             buf.append((String)excludes.next());
          }
          Object[] args = {buf.toString()};
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSObjectStoreErrors.CE_SHARED_EXCLUDE_INVALID, args);
       }
 
@@ -1638,10 +1638,10 @@ public class PSContentEditorMapper extends PSComponent
     * @param systemDef the content editor system def, assumed not to be <code>
     * null</code>
     *
-    * @throws PSValidationException if any of the excludes are not defined.
+    * @throws PSSystemValidationException if any of the excludes are not defined.
     */
    private void validateSystemFieldExcludes(PSContentEditorSystemDef systemDef)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       PSFieldSet sysFieldSet = systemDef.getFieldSet();
 
@@ -1667,7 +1667,7 @@ public class PSContentEditorMapper extends PSComponent
             buf.append((String)excludes.next());
          }
          Object[] args = {buf.toString()};
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSObjectStoreErrors.CE_SYSTEM_EXCLUDE_INVALID, args);
 
       }

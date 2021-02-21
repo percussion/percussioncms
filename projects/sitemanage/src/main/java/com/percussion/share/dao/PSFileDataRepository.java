@@ -27,8 +27,6 @@ import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -195,7 +193,7 @@ public abstract class PSFileDataRepository<T>
         {
             poll();
         }
-        catch (IOException | PSValidationException e)
+        catch (IOException | PSValidationException | PSXmlFileDataRepository.PSXmlFileDataRepositoryException e)
         {
             throw new PSDataServiceException(e);
         }
@@ -232,7 +230,7 @@ public abstract class PSFileDataRepository<T>
      * Poll should be called from quartz or some other scheduler.
      * @throws IOException 
      */
-    public synchronized void poll() throws IOException, PSValidationException {
+    public synchronized void poll() throws IOException, PSValidationException, PSXmlFileDataRepository.PSXmlFileDataRepositoryException {
         if (log.isTraceEnabled()) {
             log.trace(format("Polling folder: {0} for file ext: {1}", getRoot(), getFileExt()));
         }
@@ -253,18 +251,18 @@ public abstract class PSFileDataRepository<T>
             oldEntries = new HashSet<>();
         
         if ( ! oldEntries.equals(fileEntries)  || 
-                (fileEntries.isEmpty() && oldEntries.isEmpty())) {
+                (fileEntries.isEmpty())) {
             if (initialized) {
-                log.debug("Files have changed under: " + getRoot() + " reloading");
+                log.debug("Files have changed under: {} reloading",getRoot() );
             }
             else {
-                log.debug("Loading files from: " + getRoot());
+                log.debug("Loading files from: {}" ,getRoot());
             }
             T object = update(fileEntries);
             data.set(new Data<> (object, fileEntries));
         }
         else {
-            log.trace("Files have not changed under: " + getRoot());
+            log.trace("Files have not changed under: {}",  getRoot());
         }
 
     }
@@ -295,7 +293,7 @@ public abstract class PSFileDataRepository<T>
      * 
      * @throws IOException
      */
-    protected abstract T update(Set<PSFileDataRepository.PSFileEntry> files) throws IOException, PSValidationException;
+    protected abstract T update(Set<PSFileDataRepository.PSFileEntry> files) throws IOException, PSValidationException, PSXmlFileDataRepository.PSXmlFileDataRepositoryException;
 
     /**
      * Turns the filename into an id.

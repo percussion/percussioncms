@@ -55,7 +55,7 @@ import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipConfigSet;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSBackEndUpdateProcessingError;
 import com.percussion.error.PSErrorException;
 import com.percussion.error.PSException;
@@ -119,7 +119,7 @@ public class PSRelationshipCommandHandler extends PSCommandHandler
     * @throws PSIllegalArgumentException if there is any invalid data.
     * @throws PSExtensionException if there is an error preparing an exception.
     * @throws PSNotFoundException if a udf or extension cannot be located.
-    * @throws PSValidationException if there is a problem starting an internal
+    * @throws PSSystemValidationException if there is a problem starting an internal
     *    application.
     * @throws PSServerConfigException if a needed relationship or clone handler
     *    configuration failed to load.
@@ -128,7 +128,7 @@ public class PSRelationshipCommandHandler extends PSCommandHandler
     */
    public PSRelationshipCommandHandler(PSApplicationHandler ah,
       PSContentEditorHandler ceh, PSContentEditor ce, PSApplication app)
-      throws PSExtensionException, PSNotFoundException, PSValidationException,
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException,
          PSIllegalArgumentException, PSServerConfigException,
          PSUnknownNodeTypeException
    {
@@ -402,7 +402,7 @@ public class PSRelationshipCommandHandler extends PSCommandHandler
     * @throws PSAuthorizationException if the requestor is not authorized.
     * @throws PSInternalRequestCallException if anything goes wrong making
     *    internal requests.
-    * @throws PSValidationException for any validation failed.
+    * @throws PSSystemValidationException for any validation failed.
     * @throws SQLException for any failed sql operations.
     * @throws PSAuthenticationFailedException if the requestor is not
     *    authenticated.
@@ -422,7 +422,7 @@ public class PSRelationshipCommandHandler extends PSCommandHandler
     */
    private boolean processRequest(PSExecutionData data)
       throws PSRequestValidationException, PSAuthorizationException,
-         PSInternalRequestCallException, PSValidationException, SQLException,
+         PSInternalRequestCallException, PSSystemValidationException, SQLException,
          PSAuthenticationFailedException, PSNotFoundException,
          PSExtensionProcessingException, PSDataExtractionException,
          PSParameterMismatchException, IOException, PSUnknownNodeTypeException,

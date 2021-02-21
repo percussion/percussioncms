@@ -32,6 +32,7 @@ import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.data.PSRenameFolderItem;
 import com.percussion.services.contentmgr.IPSContentMgr;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.PSFolderPathUtils;
@@ -40,7 +41,6 @@ import com.percussion.share.data.PSDataItemSummary;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSIdMapper;
-import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
@@ -62,6 +62,7 @@ import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
+
 @Component("sitePathItemService")
 @Lazy
 public class PSSitePathItemService extends PSPathItemService
@@ -90,7 +91,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
 
     @Override
-    protected PSPathItem findItem(String path) throws PSPathNotFoundServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
+    protected PSPathItem findItem(String path) throws PSPathNotFoundServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, DataServiceLoadException {
         SiteIdAndFolderPath sfp = getSiteIdAndFolderPath(path);
         PSSiteSummary site = null;
         try
@@ -184,7 +185,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
     
     @Override
-    public PSPathItem addNewFolder(String path) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
+    public PSPathItem addNewFolder(String path) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, DataServiceLoadException {
         PSPathUtils.validatePath(path);
         
         if ("/".equals(path))
@@ -196,7 +197,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
     
     @Override
-    public PSPathItem renameFolder(PSRenameFolderItem item) throws PSValidationException, PSPathServiceException, IPSDataService.DataServiceNotFoundException {
+    public PSPathItem renameFolder(PSRenameFolderItem item) throws PSValidationException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, DataServiceLoadException {
         String path = item.getPath();
         if (getSiteIdAndFolderPath(path).isOnlySiteId())
         {
@@ -207,7 +208,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
 
     @Override
-    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
+    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, DataServiceLoadException, PSNotFoundException {
         String path = criteria.getPath();
         if (getSiteIdAndFolderPath(path).isOnlySiteId())
         {
@@ -261,13 +262,8 @@ public class PSSitePathItemService extends PSPathItemService
     @Override
     protected boolean shouldFilterItem(IPSItemSummary item)
     {
-        if (item == null || getFilteredItemTypes().contains(item.getType()) || getFilteredItemNames().contains(
-                item.getName()) || item.getCategory().equals(IPSItemSummary.Category.EXTERNAL_SECTION_FOLDER))
-        {
-            return true;
-        }
-        
-        return false;        
+        return item == null || getFilteredItemTypes().contains(item.getType()) || getFilteredItemNames().contains(
+                item.getName()) || item.getCategory().equals(IPSItemSummary.Category.EXTERNAL_SECTION_FOLDER);
     }
     
     @Override
@@ -287,7 +283,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
     
     @Override
-    protected Set<String> getApprovedPages(PSPathItem item) throws PSValidationException {
+    protected Set<String> getApprovedPages(PSPathItem item) throws PSValidationException, PSNotFoundException {
         notNull(item);
         
         return itemWorkflowService.getApprovedPages(item.getId(), PSFolderPathUtils.parentPath(item.getFolderPath()));

@@ -58,6 +58,7 @@ import com.percussion.rest.errors.RestErrorCode;
 import com.percussion.rest.errors.RestExceptionBase;
 import com.percussion.rest.pages.WorkflowInfo;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.data.PSWorkflow;
@@ -236,7 +237,12 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
                         continue;
                     }
                 }
-                filteredAssets.add(this.psAssetToAsset(baseURI, asset));
+                try {
+                    filteredAssets.add(this.psAssetToAsset(baseURI, asset));
+                } catch (PSValidationException e) {
+                    log.warn(e.getMessage());
+                    log.debug(e.getMessage(),e);
+                }
             }
         }
         else
@@ -255,12 +261,13 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
             PSAsset asset = null;
             try {
                 asset = this.assetService.load(item.getId());
+                filteredAssets.add(this.psAssetToAsset(baseURI, asset));
             } catch (PSDataServiceException e) {
                 log.error(e.getMessage());
                 log.debug(e.getMessage(),e);
                throw new BackendException(e.getMessage(),e);
             }
-            filteredAssets.add(this.psAssetToAsset(baseURI, asset));
+
         }
         return filteredAssets;
     }
@@ -274,16 +281,19 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
         try {
             asset = this.assetDao.find(id);
+
+            if (asset == null)
+            {
+                throw new AssetNotFoundException();
+            }
+            return this.psAssetToAsset(baseURI, asset);
         } catch (PSDataServiceException e) {
             throw new BackendException(e.getMessage(),e);
         }
 
-        if (asset == null)
-        {
-            throw new AssetNotFoundException();
-        }
 
-        return this.psAssetToAsset(baseURI, asset);
+
+
     }
 
     @Override
@@ -362,14 +372,16 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
     public Asset updateSharedAsset(URI baseURI, String id, Asset asset) throws BackendException {
 
         PSAsset oldPSAsset;
+        WorkflowInfo workflowInfo;
         try {
             oldPSAsset = this.assetService.load(id);
+            workflowInfo = this.getWorkflowInfo(oldPSAsset);
         } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new BackendException(e.getMessage(),e);
         }
-        WorkflowInfo workflowInfo = this.getWorkflowInfo(oldPSAsset);
+
 
         String endState;
 
@@ -387,22 +399,25 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
           // work with it
             workflowInfo.setState(this.setWorkflowState(id, DefaultWorkflowStates.quickEdit, new ArrayList<>()));
         }
-        if (!this.workflowHelper.isCheckedOutToCurrentUser(id))
-        { // If this isn't checked out to the currently logged in user it needs
-          // to be.
-            PSItemUserInfo userInfo;
-            try {
-                userInfo = this.itemWorkflowService.forceCheckOut(id);
-            } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
-                throw new BackendException(e.getMessage(),e);
-            }
 
-            if(userInfo!=null) {
-                workflowInfo.setCheckedOut(true);
-                workflowInfo.setCheckedOutUser(userInfo.getCurrentUser());
+        try {
+            if (!this.workflowHelper.isCheckedOutToCurrentUser(id)) { // If this isn't checked out to the currently logged in user it needs
+                // to be.
+                PSItemUserInfo userInfo;
+                try {
+                    userInfo = this.itemWorkflowService.forceCheckOut(id);
+                } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+                    throw new BackendException(e.getMessage(), e);
+                }
+
+                if (userInfo != null) {
+                    workflowInfo.setCheckedOut(true);
+                    workflowInfo.setCheckedOutUser(userInfo.getCurrentUser());
+                }
             }
+        } catch (PSValidationException e) {
+            throw new BackendException(e);
         }
-
         // First, update the modified date to NOW
         // TODO: does this need formatting?
         oldPSAsset.getFields().put(lastModifiedDateFieldName, new Date());
@@ -624,8 +639,12 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
                 log.debug(e.getMessage(),e);
             }
         }
-        
-        return this.psAssetToAsset(baseURI, newAsset);
+
+        try {
+            return this.psAssetToAsset(baseURI, newAsset);
+        } catch (PSValidationException e) {
+            throw new BackendException(e);
+        }
     }
 
     @Override
@@ -692,8 +711,12 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
                         e.getMessage());
             }
         }
-        
-        return this.psAssetToAsset(baseURI, resource);
+
+        try {
+            return this.psAssetToAsset(baseURI, resource);
+        } catch (PSValidationException e) {
+            throw new BackendException(e);
+        }
     }
 
     @Override
@@ -784,8 +807,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         Validate.notEmpty(string.trim());
     }
 
-    private Asset psAssetToAsset(URI baseURI, PSAsset from)
-    {
+    private Asset psAssetToAsset(URI baseURI, PSAsset from) throws PSValidationException {
         Asset to = new Asset();
         to.setId(from.getId());
         to.setName(from.getName());
@@ -908,8 +930,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
      * @param from
      * @return WorkflowInfo check out info, state and workflow name
      */
-    private WorkflowInfo getWorkflowInfo(PSAsset from)
-    {
+    private WorkflowInfo getWorkflowInfo(PSAsset from) throws PSValidationException {
         PSComponentSummary summ = this.workflowHelper.getComponentSummary(from.getId());
         PSWorkflow wf = this.workflowService.loadWorkflow(PSGuidUtils.makeGuid(
                 Long.parseLong((String) from.getFields().get(workflowIdFieldName)), PSTypeEnum.WORKFLOW));
@@ -998,17 +1019,19 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
            }
 
         //Check it out
+        try {
 	        if (!workflowHelper.isCheckedOutToCurrentUser(update.getId()))
 	        {
-	            try {
+
                     itemWorkflowService.forceCheckOut(update.getId());
-                } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
-                    log.warn("Unable to check out item with id: {} Error: {}",
-                            update.getId(),
-                            e.getMessage());
-                    log.debug(e.getMessage(),e);
-                }
+
             }
+        } catch (IPSItemWorkflowService.PSItemWorkflowServiceException | PSValidationException e) {
+            log.warn("Unable to check out item with id: {} Error: {}",
+                    update.getId(),
+                    e.getMessage());
+            log.debug(e.getMessage(),e);
+        }
 	        
 	        update.setName(newName);
 	        
@@ -1027,18 +1050,16 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
             }
 
         //Check it in
+        try {
 	        if (workflowHelper.isCheckedOutToCurrentUser(update.getId()))
 	        {
-	            try {
                     itemWorkflowService.checkIn(update.getId());
-                } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
-                    log.warn("Unable to checkin item with id: {} Error: {}",
-                            update.getId(),e.getMessage());
-                    log.debug(e.getMessage(),e);
-                }
             }
 	        
 	        return this.psAssetToAsset(baseUri,update);
+        } catch (IPSItemWorkflowService.PSItemWorkflowServiceException | PSValidationException e) {
+            throw new BackendException(e);
+        }
 	        
 	}
 
@@ -1171,7 +1192,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 	}
 
 	
-	private int recursivelyWorkflowAllAssets(WorkflowStates state, int counter, String path) throws IPSPathService.PSPathServiceException, PSDataServiceException {
+	private int recursivelyWorkflowAllAssets(WorkflowStates state, int counter, String path) throws IPSPathService.PSPathServiceException, PSDataServiceException, PSNotFoundException {
 		int ctr = counter;
 		
 		PSPathItem pi = pathService.find(path);
@@ -1219,7 +1240,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
             String path = folderPath;
 
             counter = recursivelyWorkflowAllAssets(WorkflowStates.APPROVE, 0, path);
-        } catch (IPSPathService.PSPathServiceException | PSDataServiceException e) {
+        } catch (IPSPathService.PSPathServiceException | PSDataServiceException | PSNotFoundException e) {
             throw new BackendException(e.getMessage(),e);
         }
         return counter;
@@ -1280,7 +1301,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
             String path = folder;
 
             counter = recursivelyWorkflowAllAssets(WorkflowStates.ARCHIVE, 0, path);
-        } catch (IPSPathService.PSPathServiceException | PSDataServiceException e) {
+        } catch (IPSPathService.PSPathServiceException | PSDataServiceException | PSNotFoundException e) {
             throw new BackendException(e.getMessage(),e);
         }
         return counter;
@@ -1298,7 +1319,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
             counter = recursivelyWorkflowAllAssets(WorkflowStates.REVIEW, 0, path);
             return counter;
-        } catch (IPSPathService.PSPathServiceException | PSDataServiceException e) {
+        } catch (IPSPathService.PSPathServiceException | PSDataServiceException | PSNotFoundException e) {
             throw new BackendException(e.getMessage(),e);
         }
     }

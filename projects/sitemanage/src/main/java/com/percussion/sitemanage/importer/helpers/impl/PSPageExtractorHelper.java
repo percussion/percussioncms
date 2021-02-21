@@ -26,7 +26,6 @@ package com.percussion.sitemanage.importer.helpers.impl;
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSAssetWidgetRelationship;
 import com.percussion.assetmanagement.service.IPSAssetService;
-import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
@@ -42,12 +41,9 @@ import com.percussion.queue.IPSPageImportQueue;
 import com.percussion.queue.impl.PSSiteQueue;
 import com.percussion.server.PSRequest;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
-import com.percussion.share.dao.IPSGenericDao;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSNameGenerator;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.error.PSSiteImportException;
@@ -586,7 +582,7 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 	 * #addHtmlWidgetToTemplate(com.percussion.sitemanage.data.PSSiteImportCtx)
 	 */
 	@Override
-	protected void addHtmlWidgetToTemplate(PSSiteImportCtx context) throws PSDataServiceException {
+	protected void addHtmlWidgetToTemplate(PSSiteImportCtx context) throws PSDataServiceException, PSSiteImportException {
 		PSTemplate template = unassignedTemplateCache.get(context.getSite()
 				.getSiteId());
 

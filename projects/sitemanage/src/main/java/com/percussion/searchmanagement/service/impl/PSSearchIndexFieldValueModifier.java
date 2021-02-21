@@ -101,7 +101,7 @@ public class PSSearchIndexFieldValueModifier implements IPSFieldValueModifier, I
             if (StringUtils.isBlank(userName) || StringUtils.isBlank(strDate))
                 return;
             
-            StringBuffer patternUsed = new StringBuffer();
+            StringBuilder patternUsed = new StringBuilder();
             Date lastModified = PSDataTypeConverter.parseStringToDate(strDate, patternUsed);
             if (lastModified == null)
                 return;

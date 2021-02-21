@@ -25,6 +25,8 @@
 package com.percussion.extension;
 
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.error.PSNotFoundException;
+import com.percussion.share.service.exception.PSDataServiceException;
 
 /**
  * The <CODE>IPSWorkflowAction</CODE> interface must be implemented by 
@@ -74,8 +76,8 @@ public interface IPSWorkflowAction extends IPSExtension
     *           if an exception occurs which prevents the proper
     *           handling of this request. 
     */
-   public void performAction(IPSWorkFlowContext wfContext,
+    void performAction(IPSWorkFlowContext wfContext,
                              IPSRequestContext request)
-      throws PSExtensionProcessingException;
+           throws PSExtensionProcessingException, PSDataServiceException, PSNotFoundException;
 }
 

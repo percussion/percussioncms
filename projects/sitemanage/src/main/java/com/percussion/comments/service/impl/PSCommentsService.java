@@ -23,11 +23,14 @@
  */
 package com.percussion.comments.service.impl;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.notNull;
-
-import com.percussion.comments.data.*;
+import com.percussion.comments.data.PSComment;
+import com.percussion.comments.data.PSCommentIds;
+import com.percussion.comments.data.PSCommentList;
+import com.percussion.comments.data.PSCommentModeration;
+import com.percussion.comments.data.PSCommentsDefaultModerationState;
+import com.percussion.comments.data.PSCommentsSummary;
+import com.percussion.comments.data.PSCommentsSummaryList;
+import com.percussion.comments.data.PSSiteComments;
 import com.percussion.comments.service.IPSCommentsService;
 import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
 import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
@@ -39,6 +42,7 @@ import com.percussion.pagemanagement.data.PSPageSummary;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.pubserver.IPSPubServerService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.data.PSItemProperties;
@@ -46,16 +50,9 @@ import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSiteSummary;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import net.sf.json.JSONArray;
+import net.sf.json.JSONNull;
+import net.sf.json.JSONObject;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
@@ -65,9 +62,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONNull;
-import net.sf.json.JSONObject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * @author davidpardini
@@ -277,7 +289,7 @@ public class PSCommentsService implements IPSCommentsService
             }
 
             return new PSCommentList(aggregatedComments);
-        } catch (IPSPubServerService.PSPubServerServiceException e) {
+        } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
             throw new WebApplicationException(e);
         }
     }
@@ -516,7 +528,7 @@ public class PSCommentsService implements IPSCommentsService
         String adminURl= null;
         try {
             adminURl = pubServerService.getDefaultAdminURL(name);
-        } catch (IPSPubServerService.PSPubServerServiceException e) {
+        } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
             throw new WebApplicationException(e);
         }
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_COMMENTS,null,adminURl);

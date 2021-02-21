@@ -27,7 +27,7 @@ import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.design.objectstore.PSDisplayMapper;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.extension.PSExtensionException;
 
 
@@ -44,7 +44,7 @@ public class PSPreviewDocumentBuilderEx extends PSPreviewDocumentBuilder
    public PSPreviewDocumentBuilderEx( PSContentEditor ce,
          PSEditorDocumentContext ctx, PSDisplayMapper dispMapper, int pageId,
          boolean isError )
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       super( ce, ctx, dispMapper, pageId, isError );
    }

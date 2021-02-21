@@ -33,7 +33,7 @@ import com.percussion.design.objectstore.PSPipe;
 import com.percussion.design.objectstore.PSRequestLink;
 import com.percussion.design.objectstore.PSResultPage;
 import com.percussion.design.objectstore.PSResultPageSet;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSBackEndUpdateProcessingError;
 import com.percussion.error.PSErrorException;
 import com.percussion.error.PSException;
@@ -66,7 +66,6 @@ import java.util.List;
 import java.util.Vector;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 
 /**
@@ -198,7 +197,7 @@ public class PSUpdateHandler extends PSDataHandler
     */
    public PSUpdateHandler(PSApplicationHandler app, PSDataSet ds)
       throws PSInvalidRequestTypeException, PSIllegalArgumentException,
-            java.sql.SQLException, PSValidationException,
+            java.sql.SQLException, PSSystemValidationException,
             PSNotFoundException, PSExtensionException
    {
       super(app, ds);
@@ -218,7 +217,7 @@ public class PSUpdateHandler extends PSDataHandler
             try {
                m_outputGenerator = new PSRequestRedirector(app, link);
             } catch (com.percussion.design.objectstore.PSNotFoundException e) {
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                   e.getErrorCode(), e.getErrorArguments(),
                   app.getApplicationDefinition(), ds);
             }

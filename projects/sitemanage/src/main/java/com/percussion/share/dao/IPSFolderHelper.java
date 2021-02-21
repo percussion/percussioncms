@@ -29,6 +29,7 @@ import com.percussion.pathmanagement.data.PSFolderPermission;
 import com.percussion.pathmanagement.data.PSFolderProperties;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.service.IPSPathService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.data.IPSItemSummary;
@@ -177,9 +178,9 @@ public interface IPSFolderHelper {
      * 
      * @return the item, never <code>null</code>.
      */
-    public PSPathItem findItemById(String id) throws IPSDataService.DataServiceLoadException, PSValidationException;
+    public PSPathItem findItemById(String id) throws IPSDataService.DataServiceLoadException, PSValidationException, PSNotFoundException;
 
-    public PSPathItem findItemById(String id, String relationshipTypeName) throws IPSDataService.DataServiceLoadException, PSValidationException;
+    public PSPathItem findItemById(String id, String relationshipTypeName) throws IPSDataService.DataServiceLoadException, PSValidationException, PSNotFoundException;
     
     /**
      * Gets the parent folder ID for the specified item.
@@ -213,7 +214,7 @@ public interface IPSFolderHelper {
      * @return the item which contains the access level for the current user, 
      * never <code>null</code>.
      */
-    public PSPathItem setFolderAccessLevel(PSPathItem item) throws PSValidationException;
+    public PSPathItem setFolderAccessLevel(PSPathItem item) throws PSValidationException, PSNotFoundException;
 
     /**
      * Sets the access level for current user to the specified items (siblings).

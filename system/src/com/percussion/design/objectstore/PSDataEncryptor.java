@@ -319,10 +319,10 @@ public class PSDataEncryptor extends PSComponent
     *
     * @param   cxt The validation context.
     *
-    * @throws   PSValidationException According to the implementation of the
+    * @throws PSSystemValidationException According to the implementation of the
     * validation context (on warnings and/or errors).
     */
-   public void validate(IPSValidationContext cxt) throws PSValidationException
+   public void validate(IPSValidationContext cxt) throws PSSystemValidationException
    {
       if (!cxt.startValidation(this, null))
          return;

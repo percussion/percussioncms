@@ -64,6 +64,7 @@ import com.percussion.recent.service.rest.IPSRecentService;
 import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.recycle.service.impl.PSRecycleService;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.PSGuidUtils;
@@ -411,7 +412,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
                 log.info("Page: '{}' has been recycled by: {}",page.getFolderPath() + '/' + page.getName(),  currentUser);
             }
         }
-        catch (IPSGenericDao.DeleteException | IPSGenericDao.LoadException | DataServiceLoadException | DataServiceNotFoundException | PSItemWorkflowServiceException e)
+        catch (IPSGenericDao.DeleteException | IPSGenericDao.LoadException | DataServiceLoadException | DataServiceNotFoundException | PSItemWorkflowServiceException | PSNotFoundException e)
         {
             log.error("Page: {} not found for delete. Error: {}",id,e.getMessage());
             log.debug(e.getMessage(), e);
@@ -781,7 +782,7 @@ try {
             PSPage page = super.load(id);
             validateForDelete(page, builder);  
         }
-        catch (DataServiceLoadException | DataServiceNotFoundException | PSValidationException | PSItemWorkflowServiceException e)
+        catch (DataServiceLoadException | DataServiceNotFoundException | PSValidationException | PSItemWorkflowServiceException | PSNotFoundException e)
         {
             log.debug("Page: " + id + " not found for delete validation.", e);
         }
@@ -963,7 +964,7 @@ try {
      * @param page the page to validate, assumed not <code>null</code>.
      * @param builder used to capture and throw validation errors, assumed not <code>null</code>.
      */
-    private void validateForDelete(PSPage page, PSValidationErrorsBuilder builder) throws PSValidationException, PSItemWorkflowServiceException {
+    private void validateForDelete(PSPage page, PSValidationErrorsBuilder builder) throws PSValidationException, PSItemWorkflowServiceException, PSNotFoundException {
         String id = page.getId();
         
         if (!itemWorkflowService.isModifiableByUser(id))
