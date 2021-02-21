@@ -54,8 +54,6 @@
         <maven.assembly.plugin.version>3.2.0</maven.assembly.plugin.version>
         <gwt.maven.plugin.version>2.8.2</gwt.maven.plugin.version>
         <build.helper.maven.plugin.version>3.0.0</build.helper.maven.plugin.version>
-        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-        <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
         <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
         <spotbugs.plugin.version>4.0.0-SNAPSHOT</spotbugs.plugin.version>
         <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
@@ -63,9 +61,7 @@
         <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
         <maven.failsafe.plugin.version>3.0.0-M4</maven.failsafe.plugin.version>
         <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
-        <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
         <maven.execmaven.plugin.version>1.6.0</maven.execmaven.plugin.version>
-        <maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
         <maven.pmd.plugin.version>3.13.0</maven.pmd.plugin.version>
         <maven.jxr.plugin.version>3.0.0</maven.jxr.plugin.version>
         <plexus.component.metadata.version>2.1.0</plexus.component.metadata.version>
@@ -440,27 +436,27 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version>
+                <version>${maven.antrun.plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-install-plugin</artifactId>
-                <version>3.0.0-M1</version>
+                <version>${maven.install.plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>${maven.clean.plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.0.0-M1</version>
+                <version>${maven.deploy.plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>${maven.compiler.plugin.version}</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
