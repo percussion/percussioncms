@@ -60,7 +60,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
                     <executions>
-
                         <execution>
                             <phase>process-resources</phase>
                             <id>import-jetty-installs</id>
@@ -165,9 +164,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-
                 <executions>
-
                     <execution>
                         <phase>process-resources</phase>
                         <id>import-upstream</id>
