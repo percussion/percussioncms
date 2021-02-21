@@ -95,86 +95,24 @@
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.8</version>
             <executions>
                 <execution>
-                    <id>populate perc distribution from jetty</id>
+                    <id>populate-perc-distribution-with-packages</id>
                     <phase>process-resources</phase>
                     <goals>
                         <goal>run</goal>
                     </goals>
                     <configuration>
-
                         <target>
                             <property name="plugin_classpath" refid="maven.plugin.classpath" />
-                            <!--
-                                     Import the ant-contrib utility tasks
-                                -->
-                            <!--
-                            <taskdef resource="net/sf/antcontrib/antlib.xml" onerror="report">
-                                <classpath>
-                                    <pathelement location="${ant.contrib.resource}"/>
-                                </classpath>
-                            </taskdef>
--->
                             <taskdef resource="com/percussion/ant/antlib.xml" loaderref="perc.loader" />
-
                             <taskdef resource="net/sf/antcontrib/antlib.xml" loaderref="perc.loader" />
-
-<!--
-
-                            <taskdef name="PSTableAction" classname="com.percussion.ant.install.PSTableAction" classpathref="maven.plugin.classpath">
-
-                            </taskdef>
-
-                            <typedef name="PSTableViewExistsWizCondition" classname="com.percussion.ant.install.PSTableViewExistsWizCondition" classpathref="maven.plugin.classpath">
-
-                            </typedef>
-
-
-                            <taskdef name="PSExecSQLStmt" classname="com.percussion.ant.install.PSExecSQLStmt" classpathref="maven.plugin.classpath">
-
-                            </taskdef>
-                            <taskdef name="PSAction" classname="com.percussion.ant.install.PSAction" classpathref="maven.plugin.classpath">
-
-                            </taskdef>
-                            -->
-
                             <ant antfile="${basedir}/packages-ant.xml" inheritRefs="true">
                                 <property name="plugin_classpath" refid="maven.plugin.classpath" />
                             </ant>
-
-
-
                         </target>
                     </configuration>
                 </execution>
-                <!--
-                <execution>
-                  <id>set jetty.sh</id>
-                  <phase>process-resources</phase>
-                  <goals>
-                    <goal>run</goal>
-                  </goals>
-                  <configuration>
-                    <target>
-                      <chmod dir="${assembly-directory}/bin" perm="755" includes="**/*.sh" />
-                    </target>
-                  </configuration>
-                </execution>
-                <execution>
-                  <id>removeKeystore</id>
-                  <phase>process-resources</phase>
-                  <goals>
-                    <goal>run</goal>
-                  </goals>
-                  <configuration>
-                    <target>
-                      <delete file="${assembly-directory}/etc/keystore" />
-                    </target>
-                  </configuration>
-                </execution>
-              -->
             </executions>
             <dependencies>
                 <dependency>
@@ -182,8 +120,6 @@
                     <artifactId>perc-ant</artifactId>
                     <version>${project.version}</version>
                 </dependency>
-
-
             </dependencies>
         </plugin>
 
@@ -196,7 +132,6 @@
                 </descriptors>
                 <tarLongFileMode>posix</tarLongFileMode>
                 <appendAssemblyId>false</appendAssemblyId>
-
             </configuration>
             <executions>
                 <execution>
@@ -207,14 +142,9 @@
                 </execution>
             </executions>
         </plugin>
-
     </plugins>
-
 
     </build>
     <dependencies>
-
-
-
     </dependencies>
 </project>
