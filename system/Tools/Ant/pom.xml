@@ -339,5 +339,11 @@
             <artifactId>disruptor</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.percussion.deliverytier</groupId>
+            <artifactId>perc-delivery-common</artifactId>
+            <version>8.0.2-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

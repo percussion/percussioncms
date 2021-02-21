@@ -102,7 +102,8 @@ public class PSAESGCMDecryptor implements IPSDecryptor {
 
         ByteBuffer bb = ByteBuffer.wrap(in);
 
-        byte[] iv = new byte[12];
+        int size = (bb.capacity() > 12? 12: bb.capacity());
+        byte[] iv = new byte[size];
         bb.get(iv);
 
         byte[] cipherText = new byte[bb.remaining()];
