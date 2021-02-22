@@ -27,11 +27,11 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.2-SNAPSHOT</version>
+        <version>8.0.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>perc-system</artifactId>
-  <version>8.0.2-SNAPSHOT</version>
+  <version>8.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <build>
         <sourceDirectory>src</sourceDirectory>
@@ -400,9 +400,8 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.0.3-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>servlet-utils</artifactId>
@@ -413,45 +412,38 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>servlet-utils</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.0.3-SNAPSHOT</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-simple</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.0.3-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.0.3-SNAPSHOT</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
-
-
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>tablefactory</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.0.3-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>webservices</artifactId>
-            <version>${project.parent.version}</version>
+            <version>8.0.3-SNAPSHOT</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>org.jmock</groupId>
             <artifactId>jmock</artifactId>
-
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jmock/jmock-junit4 -->
         <dependency>
             <groupId>org.jmock</groupId>
             <artifactId>jmock-junit4</artifactId>

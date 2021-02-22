@@ -28,7 +28,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.2-SNAPSHOT</version>
+        <version>8.0.3-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.percussion.deliverytier</groupId>
@@ -641,7 +641,7 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>8.0.2-SNAPSHOT</version>
+                        <version>8.0.3-SNAPSHOT</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -661,26 +661,14 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>8.0.2-SNAPSHOT</version>
+                        <version>8.0.3-SNAPSHOT</version>
                     </dependency>
                 </dependencies>
             </plugin>
-
             <plugin>
                 <groupId>org.basepom.maven</groupId>
                 <artifactId>duplicate-finder-maven-plugin</artifactId>
                 <version>1.3.0</version>
-                <!--
-                <executions>
-                    <execution>
-                        <id>default</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                -->
                 <configuration>
                     <printEqualFiles>false</printEqualFiles>
                     <failBuildInCaseOfDifferentContentConflict>false</failBuildInCaseOfDifferentContentConflict>
