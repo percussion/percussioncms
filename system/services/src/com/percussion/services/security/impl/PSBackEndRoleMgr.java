@@ -114,7 +114,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
 
     // see IPSBackendRoleMgr interface
     public List<String> getRhythmyxRoles() {
-        List<String> roleList = new ArrayList<String>();
+        List<String> roleList = new ArrayList<>();
 
         Iterator roles = loadRoleList(null).iterator();
 
@@ -128,7 +128,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
 
     // see IPSBackendRoleMgr interface
     public List<String> getRhythmyxRoles(String subjectName, int subjectType) {
-        List<String> roleNames = new ArrayList<String>();
+        List<String> roleNames = new ArrayList<>();
 
         Session session = getSessionFactory().getCurrentSession();
 
@@ -412,7 +412,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
                 "roleName may not be null or empty");
         }
 
-        Set<IPSPrincipalAttribute> attrSet = new HashSet<IPSPrincipalAttribute>();
+        Set<IPSPrincipalAttribute> attrSet = new HashSet<>();
 
         Iterator attrs = PSBackendCataloger.getRoleAttributes(roleName)
                                            .iterator();
@@ -433,7 +433,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
                 "roleName may not be null or empty");
         }
 
-        Set<Subject> subSet = new HashSet<Subject>();
+        Set<Subject> subSet = new HashSet<>();
 
         Iterator subs = PSBackendCataloger.getSubjectRoleAttributes(subjectNameFilter,
                 0, roleName, null).iterator();
@@ -449,7 +449,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
     // see IPSBackendRoleMgr interface
     public Set<Subject> getGlobalSubjectAttributes(String subjectNameFilter,
         String attributeNameFilter, boolean includeEmptySubjects) {
-        Set<Subject> subSet = new HashSet<Subject>();
+        Set<Subject> subSet = new HashSet<>();
 
         Iterator subs = PSBackendCataloger.getSubjectGlobalAttributes(subjectNameFilter,
                 0, null, attributeNameFilter, includeEmptySubjects).iterator();
@@ -464,7 +464,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
 
     // see IPSBackendRoleMgr interface
     public List<String> getCommunityRoles(int communityId) {
-        List<String> roleNames = new ArrayList<String>();
+        List<String> roleNames = new ArrayList<>();
 
         PSGuid guid = new PSGuid(PSTypeEnum.COMMUNITY_DEF, communityId);
         PSCommunity[] comms = loadCommunities(new IPSGuid[] { guid });

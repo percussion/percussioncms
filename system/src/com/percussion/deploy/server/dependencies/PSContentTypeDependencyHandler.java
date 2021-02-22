@@ -74,6 +74,7 @@ import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.contentmgr.data.PSContentTemplateDesc;
 import com.percussion.services.contentmgr.data.PSNodeDefinition;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -89,7 +90,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -127,9 +129,8 @@ public class PSContentTypeDependencyHandler
     * @throws PSDeployException
     */
    private List<PSDependency> getCEChildDependencies(PSSecurityToken tok,
-         String name) throws PSDeployException
-   {
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+         String name) throws PSDeployException, PSNotFoundException {
+      List<PSDependency> childDeps = new ArrayList<>();
       PSApplication app = PSAppObjectDependencyHandler
             .getApplication(tok, name);
 
@@ -165,10 +166,17 @@ public class PSContentTypeDependencyHandler
                   Iterator ids = wfInfo.getValues();
                   while (ids.hasNext())
                   {
-                     PSDependency childDep = wfHandler.getDependency(tok, ids
-                           .next().toString());
+                     PSDependency childDep = null;
+                     try {
+                         childDep = wfHandler.getDependency(tok, ids
+                                .next().toString());
+                     } catch (PSNotFoundException e) {
+                        m_log.warn(e.getMessage());
+                        m_log.debug(e.getMessage(),e);
+                     }
                      if (childDep != null)
                         childDeps.add(childDep);
+
                   }
                }
 
@@ -234,8 +242,7 @@ public class PSContentTypeDependencyHandler
     * @throws PSDeployException
     */
    private Set<PSDependency> getTemplateDependencies(PSSecurityToken tok,
-         PSDependency dep) throws PSDeployException
-   {
+         PSDependency dep) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -300,8 +307,7 @@ public class PSContentTypeDependencyHandler
    // see base class
    @Override
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -1466,7 +1472,7 @@ public class PSContentTypeDependencyHandler
    /**
     * logger 
     */
-   private Logger m_log = Logger.getLogger(this.getClass());
+   private static final Logger m_log = LogManager.getLogger(PSContentTypeDependencyHandler.class);
 
    
    /**

@@ -157,7 +157,7 @@ public class PSContentTypeHelper
       Set<PSContentTemplateDesc> descSet, int version, boolean enable) 
    throws PSLockedException, PSServerException,
    PSAuthenticationRequiredException, PSNotFoundException, 
-   PSNotLockedException, PSAuthorizationException, PSValidationException, 
+   PSNotLockedException, PSAuthorizationException, PSSystemValidationException,
    PSNonUniqueException, IOException, RepositoryException
    {
       saveContentType(itemDef, descSet, version, null, enable);
@@ -173,7 +173,7 @@ public class PSContentTypeHelper
          IPSSaveNodeDefListener listener, boolean enable) 
    throws PSLockedException, PSServerException, 
    PSAuthenticationRequiredException, PSNotFoundException, 
-   PSNotLockedException, PSAuthorizationException, PSValidationException, 
+   PSNotLockedException, PSAuthorizationException, PSSystemValidationException,
    PSNonUniqueException, IOException, RepositoryException
    {
       List<IPSGuid> templateGuids = null;
@@ -217,7 +217,7 @@ public class PSContentTypeHelper
     * @throws IOException If There is an error saving the application
     * @throws PSNonUniqueException If an application already exists with the
     * specified name.
-    * @throws PSValidationException If the supplied content editor does not pass
+    * @throws PSSystemValidationException If the supplied content editor does not pass
     * validation.
     * @throws RepositoryException If the content type definition cannot be
     * saved.
@@ -228,7 +228,7 @@ public class PSContentTypeHelper
          boolean enable) 
       throws PSLockedException, PSServerException, 
       PSAuthenticationRequiredException, PSNotFoundException, 
-      PSNotLockedException, PSAuthorizationException, PSValidationException, 
+      PSNotLockedException, PSAuthorizationException, PSSystemValidationException,
       PSNonUniqueException, IOException, RepositoryException
    {
       if (itemDef == null)

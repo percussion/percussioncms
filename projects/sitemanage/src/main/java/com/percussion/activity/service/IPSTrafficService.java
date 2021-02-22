@@ -29,6 +29,10 @@ import com.percussion.activity.data.PSContentTrafficRequest;
 import com.percussion.activity.data.PSTrafficDetails;
 import com.percussion.activity.data.PSTrafficDetailsRequest;
 import com.percussion.error.PSException;
+import com.percussion.pathmanagement.service.IPSPathService;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 
 import java.util.List;
 
@@ -42,14 +46,14 @@ public interface IPSTrafficService
      * @param request List of traffic data types that is getting requested. Never <code>null</code>.
      * @return Never <code>null</code>. 
      */
-    public PSContentTraffic getContentTraffic(PSContentTrafficRequest request);
+    public PSContentTraffic getContentTraffic(PSContentTrafficRequest request) throws PSTrafficServiceException;
     
     /**
      * Gets the content traffic activity for the given site path, and specified date range.
      * @param request List of traffic data types that is getting requested. Never <code>null</code>.
      * @return Never <code>null</code>. 
      */
-    public List<PSTrafficDetails> getTrafficDetails(PSTrafficDetailsRequest request);
+    public List<PSTrafficDetails> getTrafficDetails(PSTrafficDetailsRequest request) throws PSTrafficServiceException, PSDataServiceException, IPSPathService.PSPathServiceException;
     
     /**
      * (Runtime) Exception is thrown when an unexpected error occurs in this service.

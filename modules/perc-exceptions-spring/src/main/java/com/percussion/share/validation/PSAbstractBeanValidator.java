@@ -24,6 +24,7 @@
 package com.percussion.share.validation;
 
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
 import com.percussion.share.service.exception.PSValidationException;
 import net.sf.oval.integration.spring.SpringValidator;

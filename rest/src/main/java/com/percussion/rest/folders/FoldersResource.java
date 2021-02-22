@@ -26,6 +26,7 @@ package com.percussion.rest.folders;
 
 import com.percussion.rest.MoveFolderItem;
 import com.percussion.rest.Status;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.errors.LocationMismatchException;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.annotations.Api;
@@ -34,7 +35,8 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -65,7 +67,7 @@ import java.util.regex.Pattern;
 public class FoldersResource
 {
     private Pattern p = Pattern.compile("^\\/?([^\\/]+)(\\/(.*?))??(\\/([^\\/]+))?$");
-    private Logger log = LoggerFactory.getLogger(this.getClass());
+    private Logger log = LogManager.getLogger(this.getClass());
 
     private IFolderAdaptor folderAdaptor;
 
@@ -84,7 +86,13 @@ public class FoldersResource
     @ApiOperation(value="Get the specified folder by it's guid",response = Folder.class)
     public Folder getFolderById(@PathParam("guid") String guid)
     {
-        return folderAdaptor.getFolder(uriInfo.getBaseUri(), guid);
+        try {
+            return folderAdaptor.getFolder(uriInfo.getBaseUri(), guid);
+        } catch (BackendException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
     
     
@@ -103,25 +111,25 @@ public class FoldersResource
     String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
-        try
-        {
+        try {
             path = java.net.URLDecoder.decode(path, "UTF-8");
+
+            Matcher m = p.matcher(path);
+            String siteName = "";
+            String folderName = "";
+            String apiPath = "";
+            if (m.matches()) {
+                siteName = StringUtils.defaultString(m.group(1));
+                apiPath = StringUtils.defaultString(m.group(3));
+                folderName = StringUtils.defaultString(m.group(5));
+            }
+
+            return folderAdaptor.getFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName);
+        } catch (BackendException | UnsupportedEncodingException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
         }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-        Matcher m = p.matcher(path);
-        String siteName = "";
-        String folderName = "";
-        String apiPath = "";
-        if(m.matches()) {
-            siteName = StringUtils.defaultString(m.group(1));
-            apiPath = StringUtils.defaultString(m.group(3));
-            folderName = StringUtils.defaultString(m.group(5));
-        }
-        
-        return folderAdaptor.getFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName);
     }
 
     /**
@@ -148,46 +156,43 @@ public class FoldersResource
     String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
-        try
-        {
+        try {
             path = java.net.URLDecoder.decode(path, "UTF-8");
+
+
+            Matcher m = p.matcher(path);
+            String siteName = "";
+            String folderName = "";
+            if (m.matches()) {
+                siteName = StringUtils.defaultString(m.group(1));
+                folderName = StringUtils.defaultString(m.group(5));
+            }
+
+
+            String objectName = folder.getName();
+            String objectPath = folder.getPath();
+            String objectSite = folder.getSiteName();
+
+
+            if (objectName != null && !objectName.equals(folderName)) {
+                throw new LocationMismatchException();
+            }
+
+            if (objectSite != null && !objectSite.equals(siteName)) {
+                throw new LocationMismatchException();
+            }
+            folder.setName(folderName);
+            folder.setPath(folder.getPath());
+            folder.setSiteName(siteName);
+
+            folder = folderAdaptor.updateFolder(uriInfo.getBaseUri(), folder);
+
+            return folder;
+        } catch (BackendException | UnsupportedEncodingException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
         }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-        
-        Matcher m = p.matcher(path);
-        String siteName = "";
-        String folderName = "";
-        if(m.matches()) {
-            siteName = StringUtils.defaultString(m.group(1));
-            folderName = StringUtils.defaultString(m.group(5));
-        }
-        
-    
-
-        String objectName = folder.getName();
-        String objectPath = folder.getPath();
-        String objectSite = folder.getSiteName();
-
-
-        if (objectName != null && !objectName.equals(folderName))
-        {
-            throw new LocationMismatchException();
-        }
-
-        if (objectSite != null && !objectSite.equals(siteName))
-        {
-            throw new LocationMismatchException();
-        }
-        folder.setName(folderName);
-        folder.setPath(folder.getPath());
-        folder.setSiteName(siteName);
-
-        folder = folderAdaptor.updateFolder(uriInfo.getBaseUri(), folder);
-
-        return folder;
     }
 
     @DELETE
@@ -204,25 +209,20 @@ public class FoldersResource
     public Status deleteFolderItem(@PathParam(value="itempath") String itempath){
         Status ret = new Status(500,"Error");
 
-        try
-        {
-            itempath = java.net.URLDecoder.decode(itempath, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-
         try {
+            itempath = java.net.URLDecoder.decode(itempath, "UTF-8");
+
             folderAdaptor.deleteFolderItem(uriInfo.getBaseUri(), itempath);
-        }catch(Exception e){
-            throw new WebApplicationException(e,500);
+
+            ret.setMessage("Ok");
+            ret.setStatusCode(200);
+
+            return ret;
+        } catch (BackendException | UnsupportedEncodingException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
         }
-
-        ret.setMessage("Ok");
-        ret.setStatusCode(200);
-
-        return ret;
     }
 
 
@@ -241,27 +241,26 @@ public class FoldersResource
     String path,@ApiParam(value= "Boolean to delete subfolders along with the folder." ,  name="includeSubFolders" ) @DefaultValue("false") @QueryParam("includeSubFolders") boolean includeSubFolders)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
-        try
-        {
+        try {
             path = java.net.URLDecoder.decode(path, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-        
-        Matcher m = p.matcher(path);
-        String siteName = "";
-        String folderName = "";
-        String apiPath = "";
-        if(m.matches()) {
-            siteName = StringUtils.defaultString(m.group(1));
-            apiPath = StringUtils.defaultString(m.group(3));
-            folderName = StringUtils.defaultString(m.group(5));
-        }
 
-        folderAdaptor.deleteFolder(uriInfo.getBaseUri(), siteName,apiPath,folderName, includeSubFolders);
-        return new Status("Deleted");
+            Matcher m = p.matcher(path);
+            String siteName = "";
+            String folderName = "";
+            String apiPath = "";
+            if (m.matches()) {
+                siteName = StringUtils.defaultString(m.group(1));
+                apiPath = StringUtils.defaultString(m.group(3));
+                folderName = StringUtils.defaultString(m.group(5));
+            }
+
+            folderAdaptor.deleteFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName, includeSubFolders);
+            return new Status("Deleted");
+        } catch (BackendException | UnsupportedEncodingException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
     
     @POST
@@ -273,8 +272,14 @@ public class FoldersResource
     {@ApiResponse(code = 404, message = "Item not found"), @ApiResponse(code = 200, message = "Moved OK")})
     public Status moveFolderItem(MoveFolderItem moveRequest)
     {
-    	folderAdaptor.moveFolderItem(uriInfo.getBaseUri(), moveRequest.getItemPath(), moveRequest.getTargetFolderPath());
-        return new Status("Moved OK");
+        try {
+            folderAdaptor.moveFolderItem(uriInfo.getBaseUri(), moveRequest.getItemPath(), moveRequest.getTargetFolderPath());
+            return new Status("Moved OK");
+        } catch (BackendException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
 
@@ -287,8 +292,14 @@ public class FoldersResource
     {@ApiResponse(code = 404, message = "Item not found"), @ApiResponse(code = 200, message = "Moved OK")})
     public Status moveFolder(MoveFolderItem moveRequest)
     {
-    	folderAdaptor.moveFolderItem(uriInfo.getBaseUri(), moveRequest.getItemPath(), moveRequest.getTargetFolderPath());
-        return new Status("Moved OK");
+        try {
+            folderAdaptor.moveFolderItem(uriInfo.getBaseUri(), moveRequest.getItemPath(), moveRequest.getTargetFolderPath());
+            return new Status("Moved OK");
+        } catch (BackendException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
@@ -306,8 +317,9 @@ public class FoldersResource
             folderAdaptor.copyFolderItem(uriInfo.getBaseUri(), request.getItemPath(), request.getTargetFolderPath());
             return new Status(200,"Copied OK");
         }catch(Exception e){
-            log.error("REST: Error in copyFolderItem:" + e.getMessage(),e);
-            throw new WebApplicationException(e, 500);
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
         }
     }
 
@@ -327,8 +339,9 @@ public class FoldersResource
         }catch(NotFoundException nfe){
             return new Status(404, "Not Found");
         }catch(Exception e){
-            log.error("REST: Error in copyFolder: " + e.getMessage(),e);
-            throw new WebApplicationException(e, 500);
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
         }
     }
 
@@ -342,27 +355,26 @@ public class FoldersResource
     public Folder renameFolder( @PathParam("folderPath") String path, @PathParam("name") String newName)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
-        try
-        {
+        try {
             path = java.net.URLDecoder.decode(path, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-        
-        Matcher m = p.matcher(path);
-        String siteName = "";
-        String folderName = "";
-        String apiPath = "";
 
-        if(m.matches()) {
-            siteName = StringUtils.defaultString(m.group(1));
-            apiPath = StringUtils.defaultString(m.group(3));
-            folderName = StringUtils.defaultString(m.group(5));
+            Matcher m = p.matcher(path);
+            String siteName = "";
+            String folderName = "";
+            String apiPath = "";
+
+            if (m.matches()) {
+                siteName = StringUtils.defaultString(m.group(1));
+                apiPath = StringUtils.defaultString(m.group(3));
+                folderName = StringUtils.defaultString(m.group(5));
+            }
+
+
+            return folderAdaptor.renameFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName, newName);
+        } catch (UnsupportedEncodingException | BackendException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
         }
-        
-        
-        return folderAdaptor.renameFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName, newName);
     }
 }

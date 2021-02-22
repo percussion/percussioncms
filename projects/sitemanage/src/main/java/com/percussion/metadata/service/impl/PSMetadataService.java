@@ -26,6 +26,7 @@ package com.percussion.metadata.service.impl;
 import com.percussion.metadata.dao.impl.PSMetadataDao;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.util.PSSiteManageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -51,16 +52,14 @@ public class PSMetadataService implements IPSMetadataService
    /* (non-Javadoc)
     * @see com.percussion.metadata.service.IPSMetadataService#delete(java.lang.String)
     */
-   public void delete(String key)
-   {
+   public void delete(String key) throws IPSGenericDao.LoadException, IPSGenericDao.DeleteException {
       dao.delete(key);
    }
    
    /* (non-Javadoc)
     * @see com.percussion.metadata.service.IPSMetadataService#deleteByPrefix(java.lang.String)
     */
-   public void deleteByPrefix(String prefix)
-   {
+   public void deleteByPrefix(String prefix) throws IPSGenericDao.DeleteException, IPSGenericDao.LoadException {
       Collection<PSMetadata> results = findByPrefix(prefix);
       if(!results.isEmpty())
       {
@@ -74,24 +73,21 @@ public class PSMetadataService implements IPSMetadataService
    /* (non-Javadoc)
     * @see com.percussion.metadata.service.IPSMetadataService#find(java.lang.String)
     */
-   public PSMetadata find(String key)
-   {
+   public PSMetadata find(String key) throws IPSGenericDao.LoadException {
       return dao.find(key);
    }
 
    /* (non-Javadoc)
     * @see com.percussion.metadata.service.IPSMetadataService#findByPrefix(java.lang.String)
     */
-   public Collection<PSMetadata> findByPrefix(String prefix)
-   {
+   public Collection<PSMetadata> findByPrefix(String prefix) throws IPSGenericDao.LoadException {
      return dao.findByPrefix(prefix);
    }
 
    /* (non-Javadoc)
     * @see com.percussion.metadata.service.IPSMetadataService#save(com.percussion.metadata.data.PSMetadata)
     */
-   public void save(PSMetadata data)
-   {
+   public void save(PSMetadata data) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException {
       PSMetadata existing = find(data.getKey());
       if(existing != null)
       {

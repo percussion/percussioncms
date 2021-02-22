@@ -37,7 +37,7 @@ import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSSingleHtmlParameter;
 import com.percussion.design.objectstore.PSTextLiteral;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.util.PSCollection;
 import com.percussion.util.PSUniqueObjectGenerator;
 
@@ -68,7 +68,7 @@ public class PSUpdatePlanBuilder extends PSModifyPlanBuilder
     * super.createModifyPlan()} for details.
     */
    public PSModifyPlan createModifyPlan(PSDisplayMapper mapper,
-      PSFieldSet fieldSet) throws PSValidationException, SQLException
+      PSFieldSet fieldSet) throws PSSystemValidationException, SQLException
    {
       if (mapper == null || fieldSet == null)
          throw new IllegalArgumentException("one or more params is null");

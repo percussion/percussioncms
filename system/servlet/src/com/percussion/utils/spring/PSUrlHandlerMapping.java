@@ -120,13 +120,13 @@ public class PSUrlHandlerMapping extends SimpleUrlHandlerMapping
     * The map value is the URL of the (servlet) handler (that is the map key).
     */
    private static Map<Object, String> ms_handlerMap = 
-      new HashMap<Object, String>();
+      new HashMap<>();
    
    /**
     * Stores most recently match url path pattern for a thread of execution,
     * never <code>null</code>.
     */
-   private static ThreadLocal<String> ms_urlPath = new ThreadLocal<String>();
+   private static ThreadLocal<String> ms_urlPath = new ThreadLocal<>();
 
 }
 

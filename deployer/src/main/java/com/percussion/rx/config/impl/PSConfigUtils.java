@@ -102,7 +102,6 @@ public class PSConfigUtils
     * document.
     * @return The resulting xml document. Never <code>null</code>.
     */
-   @SuppressWarnings("unchecked")
    public static Document getDocument(String url, Map extraParams,
          boolean applyStyleSheet)
    {

@@ -83,7 +83,7 @@ public class RxDevToolsFeatureModel extends RxComponentModel
     * See {@link #getDevToolsFeaturesMap()}.
     */
    private static final SortedMap<String, RxComponent> ms_devToolsFeaturesMap =
-      new TreeMap<String, RxComponent>();
+      new TreeMap<>();
    
    static
    {

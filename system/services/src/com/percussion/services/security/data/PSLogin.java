@@ -72,19 +72,19 @@ public class PSLogin implements Serializable
     * A list with all communities to which the logged in user is a member,
     * never <code>null</code>, may be empty.
     */
-   private List<PSCommunity> communities = new ArrayList<PSCommunity>();
+   private List<PSCommunity> communities = new ArrayList<>();
    
    /**
     * A list with all roles to which the logged in user is a member, never
     * <code>null</code>, may be empty.
     */
-   private List<PSRole> roles = new ArrayList<PSRole>();
+   private List<PSRole> roles = new ArrayList<>();
    
    /**
     * A list of enabled locales for the logged in user, never <code>null</code>,
     * may be empty.
     */
-   private List<PSLocale> locales = new ArrayList<PSLocale>();
+   private List<PSLocale> locales = new ArrayList<>();
 
    /**
     * Default constructor.
@@ -222,7 +222,7 @@ public class PSLogin implements Serializable
    public void setCommunities(List<PSCommunity> communities)
    {
       if (communities == null)
-         this.communities = new ArrayList<PSCommunity>();
+         this.communities = new ArrayList<>();
       else
          this.communities = communities;
    }
@@ -261,7 +261,7 @@ public class PSLogin implements Serializable
    public void setRoles(List<PSRole> roles)
    {
       if (roles == null)
-         this.roles = new ArrayList<PSRole>();
+         this.roles = new ArrayList<>();
       else
          this.roles = roles;
    }
@@ -300,7 +300,7 @@ public class PSLogin implements Serializable
    public void setLocales(List<PSLocale> locales)
    {
       if (locales == null)
-         this.locales = new ArrayList<PSLocale>();
+         this.locales = new ArrayList<>();
       else
          this.locales = locales;
    }

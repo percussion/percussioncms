@@ -64,7 +64,7 @@ public class PSTextToImageServlet extends HttpServlet
 
         // Find the height and width of the image
         Font font = new Font("Verdana", Font.PLAIN, 11);
-        @SuppressWarnings("serial")
+
         FontMetrics metrics = new FontMetrics(font)
         {
         };

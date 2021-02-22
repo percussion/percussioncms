@@ -60,7 +60,7 @@ public interface IPSIdNameService
    /**
     * Get a name for the given <code>IPSGuid</code>.
     * 
-    * @param id The guid, may not be <code>null</code>.
+    * @param guid The guid, may not be <code>null</code>.
     * 
     * @return The name of the dependency element which corresponds to the guid
     * or <code>null</code> if not found.

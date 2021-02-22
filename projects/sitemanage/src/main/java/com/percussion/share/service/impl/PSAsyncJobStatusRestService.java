@@ -24,6 +24,7 @@
 
 package com.percussion.share.service.impl;
 
+import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.share.async.IPSAsyncJobService;
 import com.percussion.share.async.PSAsyncJobStatus;
 import com.percussion.share.service.IPSAsyncJobStatusRestService;
@@ -37,6 +38,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -88,9 +90,15 @@ public class PSAsyncJobStatusRestService implements IPSAsyncJobStatusRestService
     @Produces(MediaType.TEXT_PLAIN)
     public Long startTestJob()
     {
-        long jobId = asyncJobService.startJob("asyncJobTest", 1);
-        log.info("Created dummy async job with id: " + jobId);
-        return jobId;
+        try {
+            long jobId = asyncJobService.startJob("asyncJobTest", 1);
+            log.info("Created dummy async job with id: " + jobId);
+            return jobId;
+        } catch (IPSFolderService.PSWorkflowNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+           throw new WebApplicationException(e);
+        }
     }
     
     /**

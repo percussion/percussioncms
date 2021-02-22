@@ -427,7 +427,7 @@ public class PSAAObjectId
       {
          throw new IllegalArgumentException("item must not be null");
       }
-      Map<String, String> params = new HashMap<String, String>();
+      Map<String, String> params = new HashMap<>();
       Map oldParams = item.getParameters();
       Iterator iter = oldParams.keySet().iterator();
       while (iter.hasNext())
@@ -460,7 +460,7 @@ public class PSAAObjectId
       Map params)
       throws PSAssemblyException, PSMissingBeanConfigurationException
    {
-      Map<String, String> id = new HashMap<String, String>();
+      Map<String, String> id = new HashMap<>();
       // ContentId
       String temp = parseParam(params, IPSHtmlParameters.SYS_CONTENTID, null,
             true);
@@ -823,7 +823,7 @@ public class PSAAObjectId
     * Constant map for to maintain the indices of the parameters in the JSON
     * array object
     */
-   private static final Map<String, Integer> m_indices = new HashMap<String, Integer>();
+   private static final Map<String, Integer> m_indices = new HashMap<>();
 
    //Static initialization of indices with parameters
    static
@@ -852,7 +852,7 @@ public class PSAAObjectId
       String slotJsonArray = "[1,335,505,301,306,0,0,311,1,518,null,null,null]";
       String snippetJsonArray = "[2,372,503,301,null,0,0,311,0,518,1728,null,null]";
       String fieldJsonArray = "[3,372,503,301,null,0,0,311,0,null,null,displaytitle,null]";
-      Map<String,String> jsonArrays = new HashMap<String,String>();
+      Map<String,String> jsonArrays = new HashMap<>();
       jsonArrays.put("Page", pageJsonArray);
       jsonArrays.put("Slot", slotJsonArray);
       jsonArrays.put("Snippet", snippetJsonArray);

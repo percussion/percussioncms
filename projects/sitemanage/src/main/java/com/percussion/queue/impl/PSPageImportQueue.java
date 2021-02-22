@@ -42,6 +42,7 @@ import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
+import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.service.IPSSiteImportService;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
@@ -293,7 +294,7 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 	 * @throws InterruptedException
 	 */
 	public void performPageImport(PSSite site, Integer id, String userAgent)
-			throws InterruptedException {
+			throws InterruptedException, PSSiteImportException {
 		String pageId = m_idMapper.getString(new PSLegacyGuid(id, -1));
 		PSSiteImportCtx siteImportContext = new PSSiteImportCtx();
 		siteImportContext.setCanceled(this.m_importContext.isCanceled());

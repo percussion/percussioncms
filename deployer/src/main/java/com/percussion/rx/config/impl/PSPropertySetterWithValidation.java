@@ -27,6 +27,7 @@ import com.percussion.rx.config.IPSConfigHandler.ObjectState;
 import com.percussion.rx.config.IPSPropertySetter;
 import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.config.PSConfigValidation;
+import com.percussion.services.error.PSNotFoundException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -91,13 +92,12 @@ public class PSPropertySetterWithValidation extends PSSimplePropertySetter
     * <code>null</code> if there is no error or warning.
     */
    protected List<PSConfigValidation> validate(String objName, ObjectState state,
-         String propName, Object propValue, Object otherValue)
-   {
+         String propName, Object propValue, Object otherValue) throws PSNotFoundException {
       return Collections.emptyList();
    }
    
    /**
     * Logger for this class.
     */
-   private static Log ms_log = LogFactory.getLog("PSPropertySetterWithValidation");   
+   private static final Log ms_log = LogFactory.getLog("PSPropertySetterWithValidation");
 }

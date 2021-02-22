@@ -42,6 +42,7 @@ import com.percussion.design.objectstore.PSRelationshipConfigSet;
 import com.percussion.design.objectstore.PSRole;
 import com.percussion.design.objectstore.PSRoleConfiguration;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.server.PSDatabaseComponentLoader;
 import com.percussion.error.PSException;
 import com.percussion.i18n.PSLocale;
@@ -163,9 +164,9 @@ public class PSCmsObjectMgr
    private static Log ms_log = LogFactory.getLog("PSCmsObjectMgr");
    
    private static final int BATCH_SIZE = 50;
-   private static ThreadLocal<Integer> ms_itemCount = new ThreadLocal<Integer>();
+   private static ThreadLocal<Integer> ms_itemCount = new ThreadLocal<>();
   
-   private Map<Long,PSCommandHandler> workflowHandlers = new ConcurrentHashMap<Long,PSCommandHandler>(16, 0.9f, 1);
+   private Map<Long,PSCommandHandler> workflowHandlers = new ConcurrentHashMap<>(16, 0.9f, 1);
 
    private SessionFactory sessionFactory;
 
@@ -231,7 +232,7 @@ public class PSCmsObjectMgr
       // Data is not backed up// and this affects ordering of content on
       // customer system.
       PSItemSummaryCache cache = PSItemSummaryCache.getInstance();
-      List<Integer> filteredIds = new ArrayList<Integer>();
+      List<Integer> filteredIds = new ArrayList<>();
        for (Integer id:ids) {
            PSItemEntry itemEntry = (PSItemEntry)cache.getItem(id);
            if(itemEntry.getPostDate() == null){
@@ -263,7 +264,7 @@ public class PSCmsObjectMgr
             return session.createCriteria(PSUIMode.class).list();
         }catch(Exception e){
             ms_log.warn("An error occurred while listing UI Contexts:" + e.getMessage());
-            return new ArrayList<PSUIMode>();
+            return new ArrayList<>();
       }
 	}
 
@@ -275,7 +276,7 @@ public class PSCmsObjectMgr
             return session.createCriteria(PSActionMenu.class).addOrder(Order.asc("sortOrder")).list();
         } catch (Exception e) {
             ms_log.warn("An error occurred while listing action menus:" + e.getMessage());
-            return new ArrayList<PSActionMenu>();
+            return new ArrayList<>();
         }
     }
 
@@ -287,7 +288,7 @@ public class PSCmsObjectMgr
             return session.createCriteria(PSActionMenu.class).add(Restrictions.ilike("type",type)).addOrder(Order.asc("sortOrder")).list();
         }catch(Exception e) {
             ms_log.warn("An error occurred while listing action menus:" + e.getMessage());
-            return new ArrayList<PSActionMenu>();
+            return new ArrayList<>();
         }
    }
 
@@ -298,7 +299,7 @@ public class PSCmsObjectMgr
             return session.createCriteria(PSUiContext.class).list();
         }catch(Exception e) {
             ms_log.warn("An error occurred while listing UI Contexts:" + e.getMessage());
-            return new ArrayList<PSUiContext>();
+            return new ArrayList<>();
         }
    }
 
@@ -401,9 +402,9 @@ public class PSCmsObjectMgr
    {
       Session session = sessionFactory.getCurrentSession();
 
-         List<PSLocale> locales = new ArrayList<PSLocale>();
+         List<PSLocale> locales = new ArrayList<>();
 
-         Map<String, String> paramMap = new LinkedHashMap<String, String>();
+         Map<String, String> paramMap = new LinkedHashMap<>();
          String queryString = "from PSLocale locale ";
 
          if (!StringUtils.isBlank(lang))
@@ -441,7 +442,7 @@ public class PSCmsObjectMgr
    {
       Session session = sessionFactory.getCurrentSession();
 
-         List<PSLocale> locales = new ArrayList<PSLocale>();
+         List<PSLocale> locales = new ArrayList<>();
 
          Query query = session.createQuery("from PSLocale locale " + "order by locale.m_displayName asc");
 
@@ -650,7 +651,7 @@ public class PSCmsObjectMgr
    public List<PSComponentSummary> loadComponentSummaries(Collection<Integer> ids)
    {
       Session s = sessionFactory.getCurrentSession();
-      List<PSComponentSummary> summaries = new ArrayList<PSComponentSummary>();
+      List<PSComponentSummary> summaries = new ArrayList<>();
 
          for (Integer id : ids)
          {
@@ -819,8 +820,8 @@ public class PSCmsObjectMgr
          throws PSORMException
    {
       Session s = sessionFactory.getCurrentSession();
-      List<T> rval = new ArrayList<T>();
-      List<Integer> cids = new ArrayList<Integer>();
+      List<T> rval = new ArrayList<>();
+      List<Integer> cids = new ArrayList<>();
       for (T item : items)
       {
          PSLegacyGuid lg = (PSLegacyGuid) item.getItemId();
@@ -851,7 +852,7 @@ public class PSCmsObjectMgr
          }
          // 
          List<Integer> results = (idset != 0) ? (List) executeQuery(q) : q.list();
-         Set<Integer> passedcids = new HashSet<Integer>();
+         Set<Integer> passedcids = new HashSet<>();
          for (Integer cid : results)
          {
             passedcids.add(cid);
@@ -997,7 +998,7 @@ public class PSCmsObjectMgr
       PSRelationshipConfigSet configset = getRelationshipConfigSet(config);
 
       Collection<PSRelationshipConfigName> names = findAllRelationshipConfigNames();
-      Collection<PSRelationshipConfigName> existNames = new ArrayList<PSRelationshipConfigName>();
+      Collection<PSRelationshipConfigName> existNames = new ArrayList<>();
       Iterator configs = configset.iterator();
       PSRelationshipConfig rconfig;
       PSRelationshipConfigName cfgName;
@@ -1065,7 +1066,7 @@ public class PSCmsObjectMgr
          throws PSCmsException
    {
       Collection<PSRelationshipConfigName> names = findAllRelationshipConfigNames();
-      Collection<PSRelationshipConfigName> existNames = new ArrayList<PSRelationshipConfigName>();
+      Collection<PSRelationshipConfigName> existNames = new ArrayList<>();
       PSRelationshipConfigName cfgName;
 
       boolean isResetId = false;
@@ -1344,7 +1345,7 @@ public class PSCmsObjectMgr
          // ignore, this should never happen
       }
 
-      List<PSRole> roles = new ArrayList<PSRole>();
+      List<PSRole> roles = new ArrayList<>();
 
       Pattern pattern = Pattern.compile(name.replace("%", ".*"), Pattern.CASE_INSENSITIVE);
       Iterator components = config.getRoles().iterator();
@@ -1367,8 +1368,8 @@ public class PSCmsObjectMgr
 
 
          List<PSComponentSummary> results = loadComponentSummaries(ids);
-         List<IPSGuid> rval = new ArrayList<IPSGuid>(results.size());
-         Map<Integer, IPSGuid> rmap = new HashMap<Integer, IPSGuid>(results.size());
+         List<IPSGuid> rval = new ArrayList<>(results.size());
+         Map<Integer, IPSGuid> rmap = new HashMap<>(results.size());
          for (PSComponentSummary r : results)
          {
             Integer contentid = r.getContentId();
@@ -1428,7 +1429,7 @@ public class PSCmsObjectMgr
       Session session = sessionFactory.getCurrentSession();
 
          // Convert incoming id strings to id numbers as appropriate
-         List<Integer> ids = new ArrayList<Integer>();
+         List<Integer> ids = new ArrayList<>();
          for(Object id : contentIds)
          {
             if (id instanceof String)
@@ -1456,11 +1457,11 @@ public class PSCmsObjectMgr
             }
          }
          
-         Set<Long> rval = new HashSet<Long>();
+         Set<Long> rval = new HashSet<>();
          List<Number> results;
          // Grab max ids at a time from the list, if less than max do the
          // entire list
-         results = new ArrayList<Number>();
+         results = new ArrayList<>();
          for (int i = 0; i < ids.size(); i += MAX_IDS)
          {
             int end = i + MAX_IDS;
@@ -1571,7 +1572,7 @@ public class PSCmsObjectMgr
          return stateIdNameMap;
       
       PSWorkflow wf = loadWorkflow(wfId);
-      Map<Integer, String> map = new HashMap<Integer, String>();
+      Map<Integer, String> map = new HashMap<>();
       if (wf == null)
       {
          ms_log.warn("Failed to load workflow id = " + wfId);
@@ -1705,9 +1706,9 @@ public class PSCmsObjectMgr
                "c.m_workflowAppId, c.m_contentStateId, c.m_tipRevision, c.m_currRevision, c.m_publicRevision, c.m_contentLastModifier, c.m_checkoutUserName, c.m_contentPublishDate from PSComponentSummary c");
          List<Object[]> listItems = q.list();
          
-         List<IPSItemEntry> allEntries = new ArrayList<IPSItemEntry>();
-         Map<Integer, Map<Integer, String>> wfStateIdNameMap = new HashMap<Integer, Map<Integer, String>>();
-         Map<Integer, String> ctTypeIdLabelMap = new HashMap<Integer, String>();
+         List<IPSItemEntry> allEntries = new ArrayList<>();
+         Map<Integer, Map<Integer, String>> wfStateIdNameMap = new HashMap<>();
+         Map<Integer, String> ctTypeIdLabelMap = new HashMap<>();
          
          for (Object[] row : listItems)
          {
@@ -1751,7 +1752,7 @@ public class PSCmsObjectMgr
          itemState = validStateNames.get(0);
       
       Map<Integer, String> wfStateIdNameMap = getStateIdNameMap(workflowId,
-            new HashMap<Integer, Map<Integer, String>>());
+            new HashMap<>());
       Map<String, Integer> wfStateNameIdMap = MapUtils.invertMap(wfStateIdNameMap);
       
       Integer targetStateId = wfStateNameIdMap.get(itemState);
@@ -1822,7 +1823,7 @@ public class PSCmsObjectMgr
             ms_log.debug("Force Checked in "+summary.getContentId() + " for user "+ checkedOutTo);
          }
          }
-         catch (PSORMException e)
+         catch (PSORMException | PSSystemValidationException e)
          {
             ms_log.error("Failed to force checkin users ",e);
          }
@@ -1842,11 +1843,11 @@ public class PSCmsObjectMgr
       String roleName = validateWorkflowAdmin(workflowId, userReq.getUserSession().getUserRoles());
       
       // build map of state id to list of items to move to that state
-      Map<Integer, List<IPSItemEntry>> entriesByTargetState = new HashMap<Integer, List<IPSItemEntry>>();
+      Map<Integer, List<IPSItemEntry>> entriesByTargetState = new HashMap<>();
       
       // get map of state names to ids
       Map<Integer, String> wfStateIdNameMap = getStateIdNameMap(workflowId,
-            new HashMap<Integer, Map<Integer, String>>());
+            new HashMap<>());
       Map<String, Integer> wfStateNameIdMap = MapUtils.invertMap(wfStateIdNameMap);
       
       PSServerFolderProcessor proc = PSServerFolderProcessor.getInstance();
@@ -1860,7 +1861,7 @@ public class PSCmsObjectMgr
          for (Integer folderId : folderIds)
          {
             PSLocator loc = new PSLocator(folderId);
-            List<Integer> contentIds = new ArrayList<Integer>(proc.getChildIds(loc, false));
+            List<Integer> contentIds = new ArrayList<>(proc.getChildIds(loc, false));
             
             Set<Integer> checkedOutContent = findCheckedOutContentIds(contentIds);
             contentIds.removeAll(checkedOutContent);
@@ -1891,7 +1892,7 @@ public class PSCmsObjectMgr
                List<IPSItemEntry> stateEntries = entriesByTargetState.get(targetStateId);
                if (stateEntries == null)
                {
-                  stateEntries = new ArrayList<IPSItemEntry>();
+                  stateEntries = new ArrayList<>();
                   entriesByTargetState.put(targetStateId, stateEntries);
                }
                
@@ -1976,11 +1977,11 @@ public class PSCmsObjectMgr
       
       Session session = sessionFactory.getCurrentSession();
 
-         Set<Long> rval = new HashSet<Long>();
+         Set<Long> rval = new HashSet<>();
          Set<Integer> results;
          // Grab max ids at a time from the list, if less than max do the
          // entire list
-         results = new HashSet<Integer>();
+         results = new HashSet<>();
          for (int i = 0; i < ids.size(); i += MAX_IDS)
          {
             int end = i + MAX_IDS;
@@ -2015,8 +2016,8 @@ public class PSCmsObjectMgr
    private void updateWorkflowAndState(int workflowId, Integer stateId, List<IPSItemEntry> itemEntries, String roleName,
          PSRequest req)
    {
-      Collection<Integer> ids = new ArrayList<Integer>();
-      List<PSContentStatusHistory> histories = new ArrayList<PSContentStatusHistory>();
+      Collection<Integer> ids = new ArrayList<>();
+      List<PSContentStatusHistory> histories = new ArrayList<>();
       
       Date now = new Date();
       
@@ -2119,7 +2120,7 @@ public class PSCmsObjectMgr
       Set<Integer> itemIds = folderProcessor.getChildIds(new PSLocator(rootFolderId), true);
 
       // Get all the children of the root folder from ItemSummary cache.
-      List<IPSItemEntry> itemEntries = cache.getItems(new ArrayList<Integer>(itemIds));
+      List<IPSItemEntry> itemEntries = cache.getItems(new ArrayList<>(itemIds));
 
       // For each child, check if it is of type contentTypeName and if its state
       // matches one of stateNames
@@ -2199,7 +2200,7 @@ public class PSCmsObjectMgr
             // we have to call methods in this class with proxy to respect
             // transactional annotations.
             IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
-            List<Integer> idBatch = new ArrayList<Integer>();
+            List<Integer> idBatch = new ArrayList<>();
             for (int id : ids)
             {
                 idBatch.add(id);

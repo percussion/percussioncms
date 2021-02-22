@@ -59,7 +59,7 @@ public class PSWebDavRequestFilter implements Filter
     * Not every webdav method is included because most only make sense once 
     * we're in the tree.
     */
-   private static Set<String> ms_webdavmethods = new HashSet<String>();
+   private static Set<String> ms_webdavmethods = new HashSet<>();
    
    static {
       ms_webdavmethods.add("PROPFIND");

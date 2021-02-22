@@ -27,6 +27,7 @@ import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.IPSFolderHelper.PathTarget;
 import com.percussion.share.data.IPSFolderPath;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.sitemanage.service.IPSSiteSectionMetaDataService;
 import com.percussion.webservices.content.IPSContentWs;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -129,8 +130,7 @@ public class PSSiteSectionMetaDataService implements IPSSiteSectionMetaDataServi
         return paths;
     }
 
-    public List<IPSItemSummary> findItems(IPSFolderPath section, String category)
-    {
+    public List<IPSItemSummary> findItems(IPSFolderPath section, String category) throws IPSDataService.DataServiceNotFoundException {
         String path = sectionToPath(section, category);
         PathTarget p = folderHelper.pathTarget(path);
         if ( p.isToNothing())

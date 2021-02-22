@@ -32,7 +32,7 @@ import com.percussion.data.PSDataExtractorFactory;
 import com.percussion.data.PSExecutionData;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.IPSReplacementValue;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSServerErrors;
@@ -117,7 +117,7 @@ public class PSValidateModifyStep extends PSModifyStep
     */
    public void execute(PSExecutionData data)
       throws PSInternalRequestCallException, PSAuthorizationException,
-      PSAuthenticationFailedException, PSValidationException
+      PSAuthenticationFailedException, PSSystemValidationException
    {
       if (data == null)
          throw new IllegalArgumentException(
@@ -169,17 +169,17 @@ public class PSValidateModifyStep extends PSModifyStep
          }
 
          Object[] args = {getName(), errorText};
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSServerErrors.CE_MODIFY_VALIDATION_EXCEPTION, args);
       }
-      catch (PSValidationException e)
+      catch (PSSystemValidationException e)
       {
          throw e;
       }
       catch (Exception e)
       {
          Object[] args = {getName(), e.toString()};
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSServerErrors.CE_MODIFY_VALIDATION_EXCEPTION, args);
       }
       finally
@@ -225,7 +225,7 @@ public class PSValidateModifyStep extends PSModifyStep
     * May not be <code>null</code>.
     * @param rs The result set to validate. May not be <code>null</code>.
     *
-    * @throws PSValidationException if any column specified in the validations
+    * @throws PSSystemValidationException if any column specified in the validations
     * is missing from the resultset, or whose value does not match the expected
     * result for any row returned.
     * @throws SQLException if there are any errors using the result set.
@@ -233,7 +233,7 @@ public class PSValidateModifyStep extends PSModifyStep
     * extracted from the data.
     */
    private void validate(PSExecutionData data, ResultSet rs) throws
-      PSValidationException, SQLException, PSDataExtractionException
+           PSSystemValidationException, SQLException, PSDataExtractionException
    {
       if (data == null || rs == null)
          throw new IllegalArgumentException("data or rs may not be null");
@@ -257,10 +257,10 @@ public class PSValidateModifyStep extends PSModifyStep
                if(colName.equals("EDITREVISION")){
 
                   if (resultVal.trim().equals("-1"))
-                     throw new PSValidationException(
+                     throw new PSSystemValidationException(
                         IPSServerErrors.CE_MODIFY_VALIDATION_FAIL_NOT_CHECKOUT);
                   else
-                     throw new PSValidationException(
+                     throw new PSSystemValidationException(
                         IPSServerErrors
                            .CE_MODIFY_VALIDATION_FAIL_OLD_EDITREVISION);
 
@@ -270,7 +270,7 @@ public class PSValidateModifyStep extends PSModifyStep
                   Object[] args = {colName, colValue == null ? "null" : colValue,
                      resultVal == null ? "null" : resultVal};
 
-                  throw new PSValidationException(
+                  throw new PSSystemValidationException(
                      IPSServerErrors.CE_MODIFY_VALIDATION_FAIL, args);
                }
             }
@@ -279,7 +279,7 @@ public class PSValidateModifyStep extends PSModifyStep
       if (!hasRows)
       {
          Object[] args = {getName(), validations[0][0]};
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSServerErrors.CE_MODIFY_VALIDATION_FAIL, args);
       }
 

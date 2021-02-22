@@ -104,18 +104,18 @@ public class PSWorkflow
    @OneToMany(targetEntity = PSState.class, fetch = FetchType.LAZY, cascade =
    {CascadeType.ALL}, orphanRemoval = true)
    @JoinColumn(name = "WORKFLOWAPPID", insertable = false, updatable = false)
-   private List<PSState> states = new ArrayList<PSState>();
+   private List<PSState> states = new ArrayList<>();
 
    @OneToMany(targetEntity = PSWorkflowRole.class, fetch = FetchType.EAGER, cascade =
    {CascadeType.ALL}, orphanRemoval = true)
    @JoinColumn(name = "WORKFLOWAPPID", insertable = false, updatable = false)
    @Fetch(FetchMode. SUBSELECT)
-   private List<PSWorkflowRole> roles = new ArrayList<PSWorkflowRole>();
+   private List<PSWorkflowRole> roles = new ArrayList<>();
 
    @OneToMany(targetEntity = PSNotificationDef.class, fetch = FetchType.LAZY, cascade =
    {CascadeType.ALL}, orphanRemoval = true)
    @JoinColumn(name = "WORKFLOWAPPID", insertable = false, updatable = false)
-   private List<PSNotificationDef> notificationDefs = new ArrayList<PSNotificationDef>();
+   private List<PSNotificationDef> notificationDefs = new ArrayList<>();
 
    /*
     * (non-Javadoc)
@@ -339,7 +339,7 @@ public class PSWorkflow
    public void setStates(List<PSState> stateList)
    {
       if (stateList == null)
-         stateList = new ArrayList<PSState>();
+         stateList = new ArrayList<>();
 
       states = stateList;
    }
@@ -386,7 +386,7 @@ public class PSWorkflow
    public void setRoles(List<PSWorkflowRole> wfroles)
    {
       if (wfroles == null)
-         wfroles = new ArrayList<PSWorkflowRole>();
+         wfroles = new ArrayList<>();
 
       this.roles = wfroles;
    }
@@ -424,7 +424,7 @@ public class PSWorkflow
    public void setNotificationDefs(List<PSNotificationDef> notificationList)
    {
       if (notificationList == null)
-         notificationList = new ArrayList<PSNotificationDef>();
+         notificationList = new ArrayList<>();
 
       notificationDefs = notificationList;
    }
@@ -480,7 +480,7 @@ public class PSWorkflow
       if (userRoles == null)
          throw new IllegalArgumentException("userRoles may not be null");
       
-      Set<Integer> rids = new HashSet<Integer>();
+      Set<Integer> rids = new HashSet<>();
 
       for (PSWorkflowRole role : roles)
       {
@@ -507,7 +507,7 @@ public class PSWorkflow
       if (roleids == null)
          throw new IllegalArgumentException("roleids may not be null");
       
-      Set<String> names = new HashSet<String>();
+      Set<String> names = new HashSet<>();
       
       for (PSWorkflowRole role : roles)
       {

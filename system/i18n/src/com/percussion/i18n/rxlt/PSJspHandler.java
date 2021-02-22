@@ -165,7 +165,7 @@ public class PSJspHandler extends PSIdleDotter implements IPSSectionHandler
       PSTmxDocument tmxDoc = null;
       try
       {
-         Map<String, String[]> tuInfo = new HashMap<String, String[]>();
+         Map<String, String[]> tuInfo = new HashMap<>();
          handleAllJsps(rxroot, tuInfo);
 
          // Now the dataDoc has all the keys from all content editors.

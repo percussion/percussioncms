@@ -37,6 +37,8 @@ import com.percussion.pagemanagement.service.PSSiteDataServletTestCaseFixture;
 import com.percussion.pagemanagement.service.PSSiteDataServletTestCaseFixture.PSAssetCleaner;
 import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
 import com.percussion.server.PSServer;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.share.test.PSTestUtils;
 import com.percussion.test.PSServletTestCase;
@@ -363,8 +365,7 @@ public class PSManagedLinksHtmlAndRIchTextTest extends PSServletTestCase
     	return htmlAsset.getFields().get(HTML).toString();
     }
 
-    private PSAsset createFileAsset()
-    {
+    private PSAsset createFileAsset() throws PSDataServiceException {
         String fileName = "managed-link.txt";
         String file = PSTestUtils.resourceToBase64(PSManagedLinkServiceTest.class, fileName);
         
@@ -383,8 +384,7 @@ public class PSManagedLinksHtmlAndRIchTextTest extends PSServletTestCase
         return asset;
     }
 
-    private PSAsset createImgAsset()
-    {
+    private PSAsset createImgAsset() throws IPSAssetService.PSAssetServiceException, PSValidationException {
         
         String fileName = "managed-image.jpg";
         InputStream in = getClass().getResourceAsStream(fileName);

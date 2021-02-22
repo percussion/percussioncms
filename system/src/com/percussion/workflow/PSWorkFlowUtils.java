@@ -2276,8 +2276,7 @@ public class PSWorkFlowUtils
     * 
     * @param workflowName the name of the workflow, never empty or <code>null</code>.
     */
-   public static void setDefaultWorkflowName(String workflowName)
-   {
+   public static void setDefaultWorkflowName(String workflowName) throws com.percussion.services.error.PSNotFoundException {
       if (StringUtils.isBlank(workflowName))
          throw new IllegalArgumentException("worklfow name may not be null.");
       
@@ -2292,8 +2291,7 @@ public class PSWorkFlowUtils
     * 
     * @return the workflow, never <code>null</code>.
     */
-   private static PSWorkflow loadDefaultWorkflow(String wfName)
-   {
+   private static PSWorkflow loadDefaultWorkflow(String wfName) throws com.percussion.services.error.PSNotFoundException {
       IPSWorkflowService wfService = PSWorkflowServiceLocator.getWorkflowService();
       List<PSWorkflow> wfs = wfService.findWorkflowsByName(wfName);
       if (!wfs.isEmpty())

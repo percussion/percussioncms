@@ -23,7 +23,6 @@
  */
 package com.percussion.design.objectstore;
 
-import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlTreeWalker;
 
@@ -306,10 +305,10 @@ public class PSFieldSet extends PSComponent
     *
     * @throws IllegalStateException if this fieldset is not of the type {@link
     * #TYPE_SIMPLE_CHILD}.
-    * @throws PSValidationException if this fieldset contains more than one
+    * @throws PSSystemValidationException if this fieldset contains more than one
     * field or any child fieldsets are found.
     */
-   public PSField getSimpleChildField() throws PSValidationException
+   public PSField getSimpleChildField() throws PSSystemValidationException
    {
       if (getType() != PSFieldSet.TYPE_SIMPLE_CHILD)
          throw new IllegalStateException(
@@ -319,14 +318,14 @@ public class PSFieldSet extends PSComponent
       if ( !fields.hasNext())
       {
          String [] args = { getName(), ""+1, ""+1 };
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
                IPSObjectStoreErrors.CE_INCORRECT_FIELD_COUNT, args );
       }
 
       Object o = fields.next();
       if ( !( o instanceof PSField ))
       {
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
                IPSObjectStoreErrors.CE_CANNOT_HAVE_FIELDSETS, getName());
       }
 
@@ -334,7 +333,7 @@ public class PSFieldSet extends PSComponent
       if ( fields.hasNext())
       {
          String [] args = { getName(), ""+0, ""+1 };
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
                IPSObjectStoreErrors.CE_INCORRECT_FIELD_COUNT, args );
       }
 
@@ -491,7 +490,7 @@ public class PSFieldSet extends PSComponent
       try {
          PSField.validateType( type );
       }
-      catch(PSValidationException e)
+      catch(PSSystemValidationException e)
       {
          throw new IllegalArgumentException(e.getLocalizedMessage());
       }
@@ -1253,7 +1252,7 @@ public class PSFieldSet extends PSComponent
    // see IPSComponent
    @Override
    public void validate(IPSValidationContext context)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (!context.startValidation(this, null))
          return;
@@ -1331,12 +1330,12 @@ public class PSFieldSet extends PSComponent
     * @return the merged field set with the added and merged source fields,
     * never <code>null</code>
     *
-    * @throws PSValidationException if a fieldname in the source already exists
+    * @throws PSSystemValidationException if a fieldname in the source already exists
     * in this fieldset but the objects are of different types (i.e. one is a
     * PSField object and one is a PSFieldSet object).
     */
    public PSFieldSet merge(PSFieldSet source)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (source == null)
          throw new IllegalArgumentException("source may not be null");
@@ -1359,7 +1358,7 @@ public class PSFieldSet extends PSComponent
             else
             {
                // throw error
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                   IPSObjectStoreErrors.CE_DUPLICATE_MERGED_FIELD_NAME, name );
             }
          }
@@ -1405,12 +1404,12 @@ public class PSFieldSet extends PSComponent
     *
     * @return the demerged fieldset, never <code>null</code>
     *
-    * @throws PSValidationException if a fieldname in the source already exists
+    * @throws PSSystemValidationException if a fieldname in the source already exists
     * in this fieldset but the objects are of different types (i.e. one is a
     * PSField object and one is a PSFieldSet object).
     */
    public PSFieldSet demerge(PSFieldSet source)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if(source == null)
          throw new IllegalArgumentException("source may not be null");
@@ -1434,7 +1433,7 @@ public class PSFieldSet extends PSComponent
             else
             {
                // throw error
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                   IPSObjectStoreErrors.CE_DUPLICATE_MERGED_FIELD_NAME, name );
             }
          }
@@ -1491,11 +1490,11 @@ public class PSFieldSet extends PSComponent
     * @return A copy of the fieldset with the exculded fields removed.  Never
     * <code>null</code>.
     *
-    * @throws PSValidationException if validating and an excluded field is not
+    * @throws PSSystemValidationException if validating and an excluded field is not
     * found in the fieldset.
     */
    public PSFieldSet removeFields(List fieldExcludes, boolean validate)
-         throws PSValidationException
+         throws PSSystemValidationException
    {
       if (fieldExcludes == null)
          throw new IllegalArgumentException("fieldExcludes may not be null");
@@ -1510,7 +1509,7 @@ public class PSFieldSet extends PSComponent
             if (!contains(exclude))
             {
                Object[] args = {exclude, getName()};
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                   IPSObjectStoreErrors.CE_EXCLUDED_FIELD_MISSING, args);
             }
          }
@@ -1543,14 +1542,14 @@ public class PSFieldSet extends PSComponent
     *    that has all properties properly specified. The Map is treated
     *    read-only.
     *
-    * @throws PSValidationException if there is a table ref in the fieldset
+    * @throws PSSystemValidationException if there is a table ref in the fieldset
     *    that doesn't exist in the supplied map.
     *
     * @todo PSApplicationBuilder and PSCopyHandler need to be cleaned up to
     *    take advantage of this method.
     */
    public void fixupBackEndColumns(Map tables)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       try
       {
@@ -1570,7 +1569,7 @@ public class PSFieldSet extends PSComponent
                         col.getTable().getAlias().toLowerCase());
                   if ( null == table )
                   {
-                     throw new PSValidationException(
+                     throw new PSSystemValidationException(
                            IPSObjectStoreErrors.BE_TABLE_NULL);
                   }
                   col.setTable( table );

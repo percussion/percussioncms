@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -51,6 +51,7 @@ import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pathmanagement.data.PSFolderPermission;
 import com.percussion.services.content.data.PSItemStatus;
 import com.percussion.services.content.data.PSItemSummary;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.linkmanagement.IPSManagedLinkDao;
 import com.percussion.services.linkmanagement.data.PSManagedLink;
 import com.percussion.services.notification.IPSNotificationListener;
@@ -221,7 +222,7 @@ public class PSItemService implements IPSItemService
             try {
                 validateItemRestorable(id);
                 revSummary.setRestorable(true);
-            } catch (PSValidationException e) {
+            } catch (PSValidationException | PSNotFoundException e) {
                 revSummary.setRestorable(false);
             }
             // revisions for the client side
@@ -363,7 +364,7 @@ public class PSItemService implements IPSItemService
             }
 
             return new PSNoContent("Item with id " + id + " has been restored.");
-        } catch (PSValidationException | PSItemServiceException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
+        } catch (PSValidationException | PSItemServiceException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException | PSNotFoundException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -398,19 +399,22 @@ public class PSItemService implements IPSItemService
                 try{
                 	impact.getOwnerPages().add(folderHelper.findItemPropertiesById(page));
                 }catch(Exception e){
-                	log.error("Error processing Site Impact with owner Page " + page + " for Asset id:" + id, e);
+                	log.error("Error processing Site Impact with owner Page {} for Asset id: {} Error: {}",page, id, e.getMessage());
+                	log.debug(e.getMessage(),e);
                 }
 
                 List<IPSSite> sites = new ArrayList<>();
                 try{
                 	sites = folderHelper.getItemSites(page);
                 }catch(Exception e){
-                	log.error("Error processing Site Impact detecting owner Site for Page " + page + " for Asset id:" + id, e);
+                	log.error("Error processing Site Impact detecting owner Site for Page {} for Asset id: {} Error: {}",
+                             page,
+                             id,
+                             e.getMessage());
+                	log.debug(e.getMessage(),e);
                 }
 
-                for(IPSSite site : sites){
-                	ownerSites.add(site);
-                }
+                ownerSites.addAll(sites);
             }
 
 			for (String templateId : ownerTemplates){
@@ -525,8 +529,7 @@ public class PSItemService implements IPSItemService
      * @param ownerPages assumed not <code>null</code>, may be empty.
      * @param ownerTemplates assumed not <code>null</code>, may be empty.
      */
-    private void fillOwners(String assetId, Set<String> ownerPages, Set<String> ownerTemplates)
-    {
+    private void fillOwners(String assetId, Set<String> ownerPages, Set<String> ownerTemplates) throws PSValidationException {
     	Set<String> owners=null;
 
     	try{
@@ -795,7 +798,7 @@ public class PSItemService implements IPSItemService
      * @param id the ID of the item, must not be blank. Expects the string representation of guid.
      * @throws PSItemServiceException when the item is not valid for revision promotion.
      */
-    private void validateItemRestorable(String id) throws PSItemServiceException, PSValidationException {
+    private void validateItemRestorable(String id) throws PSItemServiceException, PSValidationException, PSNotFoundException {
         rejectIfBlank("validateItemPromotable", "id", id);
         PSComponentSummary sum = workflowHelper.getComponentSummary(id);
         String type = workflowHelper.isPage(id)?PAGE:ASSET;
@@ -929,7 +932,7 @@ public class PSItemService implements IPSItemService
             itemDates.setEndDate(endDateField.toLowerCase());
 
             return itemDates;
-        } catch (IPSGenericDao.LoadException | IPSDataService.DataServiceLoadException | PSValidationException | IPSDataService.DataServiceNotFoundException e) {
+        } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -1048,7 +1051,7 @@ catch (Exception e){
 
             return new PSSoProMetadata(id, metadata);
 
-        } catch (IPSGenericDao.LoadException | IPSDataService.DataServiceLoadException | PSValidationException | IPSDataService.DataServiceNotFoundException e) {
+        } catch (PSDataServiceException e) {
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -1060,29 +1063,31 @@ catch (Exception e){
     @Deprecated
     public PSNoContent setSoProMetadata(PSSoProMetadata req) throws PSItemServiceException
     {
-        String id = req.getItemId();
-
-        // If item is checked out to some one else throw exception
-        PSComponentSummary sum = workflowHelper.getComponentSummary(id);
-        String type = workflowHelper.isPage(id)?PAGE:ASSET;
-        if (StringUtils.isNotBlank(sum.getCheckoutUserName()) &&
-            !workflowHelper.isCheckedOutToCurrentUser(id))
-        {
-            throw new PSItemServiceException(MessageFormat.format(
-                    "User {1} is editing this {0}. You cannot modify this item.",
-                    type, sum.getCheckoutUserName()));
-        }
-
         try {
+                String id = req.getItemId();
+
+                // If item is checked out to some one else throw exception
+                PSComponentSummary sum = workflowHelper.getComponentSummary(id);
+                String type = workflowHelper.isPage(id)?PAGE:ASSET;
+                if (StringUtils.isNotBlank(sum.getCheckoutUserName()) &&
+                    !workflowHelper.isCheckedOutToCurrentUser(id))
+                {
+                    throw new PSItemServiceException(MessageFormat.format(
+                            "User {1} is editing this {0}. You cannot modify this item.",
+                            type, sum.getCheckoutUserName()));
+                }
+
+
             PSContentItem item = contentItemDao.find(id);
             Map<String, Object> fields = item.getFields();
             fields.put(SOPRO_METADATA, req.getMetadata());
             contentItemDao.save(item);
-        } catch (PSDataServiceException e) {
+            return new PSNoContent("Item with id " + id + " has been Updated");
+        } catch (PSDataServiceException | PSNotFoundException e) {
             throw new WebApplicationException(e);
         }
 
-        return new PSNoContent("Item with id " + id + " has been Updated");
+
     }
 
     /* (non-Javadoc)

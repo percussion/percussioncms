@@ -32,18 +32,19 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerException;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
-
-import java.util.List;
-import java.util.Random;
-
 import com.percussion.utils.testing.IntegrationTest;
-import junit.framework.TestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import static org.junit.Assert.*;
+import java.util.List;
+import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @Category(IntegrationTest.class)
 public class PSPubServerDaoTest
@@ -68,7 +69,7 @@ public class PSPubServerDaoTest
        /**
         * publishing will be done to database
         */
-       database;
+       database
     }
 
    /**
@@ -131,8 +132,7 @@ public class PSPubServerDaoTest
       createAndDeleteServer(PublishType.database);
    }
 
-   private void createAndDeleteServer(PublishType type)
-   {
+   private void createAndDeleteServer(PublishType type) throws PSNotFoundException {
       List<PSPubServer> servers = pubServerDao.findPubServersBySite(m_site.getGUID());
       PSPubServer pubServer = createServerForSite(m_site, type);
       
@@ -169,8 +169,7 @@ public class PSPubServerDaoTest
    }
 
    @Test
-   public void testLoadPubServer()
-   {
+   public void testLoadPubServer() throws PSNotFoundException {
       PSPubServer pubServer = createServerForSite(m_site, PublishType.ftp);
     
       PSPubServer pubServer_2 = pubServerDao.loadPubServer(pubServer.getGUID());
@@ -195,8 +194,7 @@ public class PSPubServerDaoTest
    }
 
    @Test
-   public void testModifyPublishServer()
-   {
+   public void testModifyPublishServer() throws PSNotFoundException {
       PSPubServer pubServer = createServerForSite(m_site, PublishType.ftp);
       
       // cannot use object returned from "loadServer" to save

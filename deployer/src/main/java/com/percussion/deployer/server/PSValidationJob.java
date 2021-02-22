@@ -39,6 +39,7 @@ import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSRequest;
 import com.percussion.server.job.IPSJobErrors;
 import com.percussion.server.job.PSJobException;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.logging.LogFactory;
@@ -155,8 +156,7 @@ public class PSValidationJob extends PSDeployJob
     * 
     * @throws PSDeployException If there are any errors.
     */
-   public void validate(PSImportDescriptor descriptor, IPSJobHandle jobHandle, PSSecurityToken tok) throws PSDeployException
-   {
+   public void validate(PSImportDescriptor descriptor, IPSJobHandle jobHandle, PSSecurityToken tok) throws PSDeployException, PSNotFoundException {
        Validate.notNull(descriptor);
        Validate.notNull(jobHandle);
        Validate.notNull(tok);

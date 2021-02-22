@@ -81,7 +81,7 @@ class PSTransformTransitionUtils
     */
    static List<? extends PSTransitionBase> convertTransitions(List<PSTransitionHib> transitionHibs, TransitionType type)
    {
-      List<PSTransitionBase> result = new ArrayList<PSTransitionBase>();
+      List<PSTransitionBase> result = new ArrayList<>();
       for (PSTransitionHib hib : transitionHibs)
       {
          if (type == hib.getTransitionType())
@@ -175,7 +175,7 @@ class PSTransformTransitionUtils
    private static List<PSTransitionHib> getTransitionHibs(List<? extends PSTransitionBase> transitions, TransitionType transitionType)
    {
       PSTransitionHib hib;
-      List<PSTransitionHib> hibs = new ArrayList<PSTransitionHib>();
+      List<PSTransitionHib> hibs = new ArrayList<>();
       for (PSTransitionBase trans : transitions)
       {
          if (transitionType == TransitionType.TRANSITION)

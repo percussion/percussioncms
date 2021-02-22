@@ -164,7 +164,7 @@ public class PSSerializerUtils
     }
     
     public static <T> List<T> copyFullToSummaries(List<? extends T> froms, Class<T> type) {
-        List<T> newList = new ArrayList<T>();
+        List<T> newList = new ArrayList<>();
         for(T from : froms) {
             T sum;
             try

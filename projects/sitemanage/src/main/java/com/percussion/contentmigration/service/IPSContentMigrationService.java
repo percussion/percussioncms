@@ -85,7 +85,7 @@ public interface IPSContentMigrationService
      * @param templateId  must not be <code>null</code>
      * @return List of page guid strings never <code>null</code> may be empty.
      */
-    List<String> getTemplatePages(String templateId);
+    List<String> getTemplatePages(String templateId) throws IPSPageService.PSPageException;
     
     
 }

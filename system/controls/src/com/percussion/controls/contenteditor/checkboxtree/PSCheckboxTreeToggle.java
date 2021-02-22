@@ -108,7 +108,7 @@ public class PSCheckboxTreeToggle extends MouseInputAdapter
    public void setParameters(Map<String, String> parameters)
    {
       if (parameters == null)
-         m_parameters = new HashMap<String, String>();
+         m_parameters = new HashMap<>();
       else
          m_parameters = parameters;
    }
@@ -117,7 +117,7 @@ public class PSCheckboxTreeToggle extends MouseInputAdapter
     * The extra parameters set for this listener, never <code>null</code>, may
     * be empty.
     */
-   private Map<String, String> m_parameters = new HashMap<String, String>();
+   private Map<String, String> m_parameters = new HashMap<>();
 
    /**
     * The containing tree, never <code>null</code> after construction.

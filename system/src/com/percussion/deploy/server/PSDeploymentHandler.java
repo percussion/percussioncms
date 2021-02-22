@@ -66,6 +66,7 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSResponse;
 import com.percussion.server.PSServer;
 import com.percussion.server.PSServerBrand;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.util.IOTools;
 import com.percussion.util.IPSBrandCodeConstants;
@@ -271,8 +272,7 @@ public class PSDeploymentHandler  implements IPSLoadableRequestHandler
     *
     * @throws PSDeployException if there are any errors.
     */
-   public Document getDeployableElements(PSRequest req) throws PSDeployException
-   {
+   public Document getDeployableElements(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
          throw new IllegalArgumentException("req may not be null");
 
@@ -566,8 +566,7 @@ public class PSDeploymentHandler  implements IPSLoadableRequestHandler
     * @throws IllegalArgumentException If <code>req</code> is <code>null</code>.
     * @throws PSDeployException if there are any errors.
     */
-   public Document getIdTypes(PSRequest req) throws PSDeployException
-   {
+   public Document getIdTypes(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
          throw new IllegalArgumentException("req may not be null");
 
@@ -1940,8 +1939,7 @@ public class PSDeploymentHandler  implements IPSLoadableRequestHandler
     *
     * @throws PSDeployException if there are any errors.
     */
-   public Document loadDependencies(PSRequest req) throws PSDeployException
-   {
+   public Document loadDependencies(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
          throw new IllegalArgumentException("req may not be null");
 
@@ -1994,8 +1992,7 @@ public class PSDeploymentHandler  implements IPSLoadableRequestHandler
     *
     * @throws PSDeployException if there are any errors.
     */
-   public Document loadAncestors(PSRequest req) throws PSDeployException
-   {
+   public Document loadAncestors(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
          throw new IllegalArgumentException("req may not be null");
 

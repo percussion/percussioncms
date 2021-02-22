@@ -115,7 +115,7 @@ public class PSSiteRootBrowser extends PSContentBrowser
       IPSGuidManager mgr = PSGuidManagerLocator.getGuidMgr();
       PSComponentSummaries sums = getFolderSrv().getSummaries(filter, false);
       
-      List<ChildItem> folders = new ArrayList<ChildItem>();
+      List<ChildItem> folders = new ArrayList<>();
       Iterator it = sums.getSummaries();
       ChildItem child;
       while (it.hasNext())

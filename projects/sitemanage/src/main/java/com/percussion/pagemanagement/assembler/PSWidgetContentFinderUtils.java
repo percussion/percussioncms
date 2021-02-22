@@ -34,6 +34,7 @@ import com.percussion.pagemanagement.assembler.impl.finder.PSRelationshipWidgetC
 import com.percussion.pagemanagement.data.PSWidgetDefinition;
 import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.IPSWidgetService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSDataServiceException;
@@ -199,7 +200,7 @@ public class PSWidgetContentFinderUtils
                 return null;
 
             return rels.first();
-        } catch (PSDataServiceException e) {
+        } catch (PSDataServiceException | PSNotFoundException e) {
             log.error("Error getting Widget Definition for: {} Error: {}",widget.getDefinitionId(),e.getMessage());
             log.debug(e.getMessage(),e);
         }

@@ -53,6 +53,7 @@ import com.percussion.share.data.PSDataItemSummary;
 import com.percussion.share.service.IPSDataItemSummaryService;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorResultsException;
@@ -295,7 +296,7 @@ public class PSRecycleService implements IPSRecycleService {
             }
             psContentEvent=new PSContentEvent(itemGuid.toString(),String.valueOf(dependentId),path, PSContentEvent.ContentEventActions.recycle, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
             psAuditLogService.logContentEvent(psContentEvent);
-        } catch (PSErrorsException | PSErrorException | PSErrorResultsException | PSCmsException | IPSDataService.DataServiceLoadException e) {
+        } catch (PSErrorsException | PSErrorException | PSErrorResultsException | PSCmsException | IPSDataService.DataServiceLoadException | PSValidationException e) {
             psContentEvent=new PSContentEvent(itemGuid.toString(),String.valueOf(dependentId),path, PSContentEvent.ContentEventActions.recycle,PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.FAILURE);
             psAuditLogService.logContentEvent(psContentEvent);
             log.error("Unable to recycle item with dependent id: {} Error: {}",
@@ -709,7 +710,7 @@ public class PSRecycleService implements IPSRecycleService {
 
     }
 
-    private void transitionWorkflowItem(PSRelationship rel, int dependentId) {
+    private void transitionWorkflowItem(PSRelationship rel, int dependentId) throws PSValidationException {
         Set<String> ids = new HashSet<>();
         String id = idMapper.getString(rel.getDependent());
         ids.add(id);

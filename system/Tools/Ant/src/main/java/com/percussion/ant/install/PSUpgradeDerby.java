@@ -105,6 +105,23 @@ public class PSUpgradeDerby extends PSAction {
 
     private static final String driver = "org.apache.derby.jdbc.EmbeddedDriver";
 
+    private void dropPercMetadataPropertiesTable(Connection conn)  {
+        org.apache.derby.impl.jdbc.EmbedStatement stmt = null;
+        try {
+            stmt = (org.apache.derby.impl.jdbc.EmbedStatement) conn.createStatement();
+            String sql2 = "DROP TABLE PERC_PAGE_METADATA_PROPERTIES";
+            stmt.executeUpdate(sql2);
+        }catch (SQLException throwables) {
+            PSLogger.logWarn("SQL State: Drop table for PERC_PAGE_METADATA_PROPERTIES failed, may be doesn't exist");
+        }
+        try {
+            String sql = "DROP TABLE PERC_PAGE_METADATA";
+            stmt.executeUpdate(sql);
+        }catch (SQLException e){
+            PSLogger.logWarn("SQL State: Drop table for PERC_PAGE_METADATA failed, may be doesn't exist");
+        }
+    }
+
     @Override
     public void execute() throws BuildException {
 
@@ -136,6 +153,10 @@ public class PSUpgradeDerby extends PSAction {
         }
 
         try {
+            if(getDatabasePath().contains("percmetadata")) {
+                //Drop Metadata Tables on upgrade.
+                dropPercMetadataPropertiesTable(conn);
+            }
             DatabaseMetaData meta = conn.getMetaData();
             PSLogger.logInfo("Derby database version: " + meta.getDatabaseProductVersion() + " detected...");
             conn.close();

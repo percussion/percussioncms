@@ -32,10 +32,12 @@ import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.pagemanagement.service.PSSiteDataServletTestCaseFixture;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.pages.Page;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.testing.IntegrationTest;
@@ -89,7 +91,7 @@ public class PageAdaptorTest extends PSServletTestCase
        assertNotNull(page.getId());
    }
 
-   public void testRenamePage(){
+   public void testRenamePage() throws PSDataServiceException, BackendException {
 	   Page p = pageAdaptor.renamePage(baseUri,FIXTURE_SITE_NAME , "", "index.html", "renamed-index.html");
 	   
 	   assertEquals("Page should have been renamed.","renamed-index.html", p.getName());

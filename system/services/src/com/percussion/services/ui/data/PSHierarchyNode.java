@@ -95,7 +95,7 @@ public class PSHierarchyNode implements Serializable, IPSCatalogSummary,
    private int type;
    
    @Transient
-   private Map<String, String> properties = new HashMap<String, String>();
+   private Map<String, String> properties = new HashMap<>();
 
    /**
     * This ctor is meant for serialization only. It should not be used by 

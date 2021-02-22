@@ -49,6 +49,7 @@ import com.percussion.design.objectstore.PSProperty;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.IPSHtmlParameters;
 import org.w3c.dom.Element;
 
@@ -86,8 +87,7 @@ public abstract class PSSearchObjectDependencyHandler
 
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -514,8 +514,7 @@ public abstract class PSSearchObjectDependencyHandler
     * @throws PSDeployException
     */
    private List<PSDependency> getSystemFieldDeps(PSSecurityToken tok,
-         PSSearch search) throws PSDeployException
-   {
+         PSSearch search) throws PSDeployException, PSNotFoundException {
       List<PSDependency> deps = new ArrayList<>();
       List<String[]> childList = new ArrayList<>();
       Iterator fields = getSystemDefFields(search, false).entrySet().iterator();

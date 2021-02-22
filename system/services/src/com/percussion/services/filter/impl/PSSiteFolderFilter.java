@@ -73,7 +73,7 @@ public class PSSiteFolderFilter extends PSBaseFilter
       // Get default site id from parameters
       String siteidstr = params.get(IPSHtmlParameters.SYS_SITEID);
          
-      List<IPSFilterItem> removals = new ArrayList<IPSFilterItem>();
+      List<IPSFilterItem> removals = new ArrayList<>();
       PSServerFolderProcessor fproc = PSServerFolderProcessor.getInstance();
       IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
       
@@ -130,7 +130,7 @@ public class PSSiteFolderFilter extends PSBaseFilter
                continue;
             }
          }
-         catch (PSCmsException e)
+         catch (PSCmsException | PSNotFoundException e)
          {
             ms_log.warn("Problem getting paths for folder " + id.getFolderId()
                   + " removing item");

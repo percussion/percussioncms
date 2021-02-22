@@ -34,6 +34,7 @@ import com.percussion.rx.design.PSDesignModelFactoryLocator;
 import com.percussion.rx.design.PSDesignModelUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pkginfo.IPSIdNameService;
 import com.percussion.services.pkginfo.IPSPkgInfoService;
 import com.percussion.services.pkginfo.PSIdNameServiceLocator;
@@ -72,8 +73,7 @@ public class PSPackageUninstaller
      * uninstall succeeds, otherwise one message for the failure of each package
      * element.
      */
-    public List<IPSUninstallResult> uninstallPackages(List<String> packageNames)
-    {
+    public List<IPSUninstallResult> uninstallPackages(List<String> packageNames) throws PSNotFoundException {
         return uninstallPackages(packageNames, false);
     }
 
@@ -88,8 +88,7 @@ public class PSPackageUninstaller
     * uninstall succeeds, otherwise one message for the failure of each package
     * element.
     */
-   public List<IPSUninstallResult> uninstallPackages(List<String> packageNames, boolean isRevertEntry)
-   {
+   public List<IPSUninstallResult> uninstallPackages(List<String> packageNames, boolean isRevertEntry) throws PSNotFoundException {
       if (packageNames == null)
          throw new IllegalArgumentException("packageNames must not be null");
       List<IPSUninstallResult> messages = new ArrayList<>();
@@ -205,8 +204,7 @@ public class PSPackageUninstaller
     * <code>null</code>. The message objects are filled in properly by
     * appropriate action.
     */
-   private List<IPSUninstallResult> uninstallPackage(PSPkgInfo pkgInfo)
-   {
+   private List<IPSUninstallResult> uninstallPackage(PSPkgInfo pkgInfo) throws PSNotFoundException {
       IPSConfigService cfgSrvc = PSConfigServiceLocator.getConfigService();
       cfgSrvc.deApplyConfiguration(pkgInfo.getPackageDescriptorName());
       boolean wasContentTypeDeleted = false;
@@ -272,8 +270,7 @@ public class PSPackageUninstaller
     * @return List of IPSUninstallResult objects may be empty, never
     * <code>null</code>.
     */
-   private List<IPSUninstallResult> deletePackageElements(PSPkgInfo pkgInfo)
-   {
+   private List<IPSUninstallResult> deletePackageElements(PSPkgInfo pkgInfo) throws PSNotFoundException {
       List<IPSUninstallResult> messages = new ArrayList<>();
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();

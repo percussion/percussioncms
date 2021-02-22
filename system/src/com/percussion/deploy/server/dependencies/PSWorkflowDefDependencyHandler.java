@@ -40,6 +40,7 @@ import com.percussion.deploy.server.PSDependencyMap;
 import com.percussion.deploy.server.PSImportCtx;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
@@ -98,8 +99,7 @@ public class PSWorkflowDefDependencyHandler
 
    // see base class
    public Iterator<PSDependency> getChildDependencies(PSSecurityToken tok,
-         PSDependency dep) throws PSDeployException
-   {
+         PSDependency dep) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -110,7 +110,7 @@ public class PSWorkflowDefDependencyHandler
          throw new IllegalArgumentException("dep wrong type");
 
       String workflowId = dep.getDependencyId();
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
 
       // Acl deps
       addAclDependency(tok, PSTypeEnum.WORKFLOW, dep, childDeps);
@@ -1068,8 +1068,6 @@ public class PSWorkflowDefDependencyHandler
    /**
     * Reserves ids for a database table.
     *
-    * @param data A dependency data object, it contains the database table name
-    * that need to reserve ids for. It may be <code>null</code>.
     * @param idCol The column name of the reserved id.
     * @param workflowId 
     * @param depData 

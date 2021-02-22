@@ -37,6 +37,7 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 
 import java.util.ArrayList;
@@ -132,8 +133,7 @@ public class PSTemplateCommunityDefDependencyHandler
    
    //see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -185,8 +185,6 @@ public class PSTemplateCommunityDefDependencyHandler
 
    /**
     * Creates a dummy dependency file from a given dependency data object.
-    *
-    * @param depData The dependency data object, may not be <code>null</code>.
     *
     * @return The dependency file object, it will never be <code>null</code>.
     *

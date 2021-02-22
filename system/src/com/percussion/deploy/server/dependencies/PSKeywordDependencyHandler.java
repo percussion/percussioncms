@@ -44,6 +44,7 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.IPSContentService;
 import com.percussion.services.content.PSContentServiceLocator;
 import com.percussion.services.content.data.PSKeyword;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.tablefactory.PSJdbcRowData;
 import com.percussion.tablefactory.PSJdbcTableData;
 import com.percussion.tablefactory.PSJdbcTableSchema;
@@ -85,8 +86,7 @@ public class PSKeywordDependencyHandler extends PSDataObjectDependencyHandler
    @Override
    @SuppressWarnings("unchecked")
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
          
@@ -97,7 +97,7 @@ public class PSKeywordDependencyHandler extends PSDataObjectDependencyHandler
          throw new IllegalArgumentException("dep wrong type");
          
       //Acl deps
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
       addAclDependency(tok, PSTypeEnum.KEYWORD_DEF, dep, childDeps);
 
       // no children
@@ -112,7 +112,7 @@ public class PSKeywordDependencyHandler extends PSDataObjectDependencyHandler
          throw new IllegalArgumentException("tok may not be null");
          
       // get all keyword lookup categories
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       
       List<PSKeyword> keywords = ms_contentSvc.findKeywordsByLabel(null, null);
       for (PSKeyword keyword : keywords)

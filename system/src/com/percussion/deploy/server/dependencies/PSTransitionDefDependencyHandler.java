@@ -33,6 +33,7 @@ import com.percussion.deploy.server.PSDependencyDef;
 import com.percussion.deploy.server.PSDependencyMap;
 import com.percussion.deploy.server.PSImportCtx;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.tablefactory.PSJdbcFilterContainer;
 import com.percussion.tablefactory.PSJdbcRowData;
 import com.percussion.tablefactory.PSJdbcSelectFilter;
@@ -73,8 +74,7 @@ public class PSTransitionDefDependencyHandler
 
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -94,7 +94,7 @@ public class PSTransitionDefDependencyHandler
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       
-      List deps = new ArrayList();
+      List deps = new ArrayList<>();
       Iterator ids = getChildPairIdsFromTable(TRANSITIONS_TABLE, TRANSITION_ID, 
          WORKFLOW_ID, null);
       while (ids.hasNext())

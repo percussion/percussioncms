@@ -54,21 +54,21 @@ public interface IPSCloudService
      * Get the cloud services info (client identity, UI provider, etc...)
      * @return cloud services info
      */
-    public PSCloudServiceInfo getInfo();
+    public PSCloudServiceInfo getInfo() throws PSCloudServiceException;
     
     /**
      * Get the cloud services info (client identity, UI provider, etc...) for the given license type
      * @param licenseType
      * @return cloud services info
      */
-    public PSCloudServiceInfo getInfo(PSCloudLicenseType licenseType);
+    public PSCloudServiceInfo getInfo(PSCloudLicenseType licenseType) throws PSCloudServiceException;
     
     /**
      * Get the page data for the given page
      * @param pageId
      * @return page data
      */
-    public PSCloudServicePageData getPageData(String pageId);
+    public PSCloudServicePageData getPageData(String pageId) throws PSCloudServiceException;
     
     /**
      * Get the page data for the given page using the given license type

@@ -213,7 +213,7 @@ public class PSUiService implements IPSUiService
          List<PSHierarchyNode> resultNodes = null;
          if (parentId == null)
          {
-            resultNodes = new ArrayList<PSHierarchyNode>();
+            resultNodes = new ArrayList<>();
             for (PSHierarchyNode node : nodes)
                if (node.getParentId() == null)
                   resultNodes.add(node);

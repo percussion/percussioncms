@@ -173,12 +173,12 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 	}
 
 
-	public void delete(String id) throws DeleteException, LoadException {
+	public void delete(String id) throws PSDataServiceException {
 		isTrue(isNotBlank(id), "id may not be blank");
 		delete(id, false);
 	}
 
-	public void delete(String id, boolean force) throws DeleteException, LoadException {
+	public void delete(String id, boolean force) throws PSDataServiceException {
 		isTrue(isNotBlank(id), "id may not be blank");
 
 			PSPropertiesValidationException pve = new PSPropertiesValidationException(
@@ -201,7 +201,7 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 	}
 
 	public List<PSPage> findPagesBySiteAndTemplate(String path,
-			String templateId) throws LoadException {
+			String templateId) throws PSDataServiceException {
 		isTrue(isNotBlank(templateId), "templateId may not be blank");
 
 		List<PSPage> pages = new ArrayList<>();
@@ -218,7 +218,7 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 	}
 
 	public List<PSPageSummary> findPagesBySiteAndWf(String path,
-			int workflowId, int stateId) throws LoadException {
+			int workflowId, int stateId) throws PSDataServiceException {
 		isTrue(isNotBlank(path), "path may not be blank");
 
 		List<PSPageSummary> sums = new ArrayList<>();
@@ -356,7 +356,7 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 	}
 
 	@Override
-	public List<PSPage> findAllPagesBySite(String sitePath) throws LoadException {
+	public List<PSPage> findAllPagesBySite(String sitePath) throws PSDataServiceException {
 
 		isTrue(isNotBlank(sitePath), "sitePath may not be blank");
 

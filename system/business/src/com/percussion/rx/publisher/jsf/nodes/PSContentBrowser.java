@@ -241,8 +241,8 @@ public abstract class PSContentBrowser
       if (m_children != null)
          return m_children;
       
-      List<ChildItem> folders = new ArrayList<ChildItem>();
-      List<ChildItem> items = new ArrayList<ChildItem>();
+      List<ChildItem> folders = new ArrayList<>();
+      List<ChildItem> items = new ArrayList<>();
       
       try
       {
@@ -263,7 +263,7 @@ public abstract class PSContentBrowser
       Collections.sort(folders);
       Collections.sort(items);
       
-      m_children = new ArrayList<ChildItem>();
+      m_children = new ArrayList<>();
       m_children.addAll(folders);
       m_children.addAll(items);
 

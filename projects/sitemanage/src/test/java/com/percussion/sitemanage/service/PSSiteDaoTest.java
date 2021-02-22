@@ -35,6 +35,7 @@ import com.percussion.rx.publisher.IPSPublisherJobStatus;
 import com.percussion.rx.publisher.IPSPublisherJobStatus.State;
 import com.percussion.rx.publisher.IPSRxPublisherService;
 import com.percussion.services.content.data.PSItemSummary;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.publisher.IPSContentList;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.publisher.IPSPublisherService;
@@ -42,7 +43,6 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.IPSSitemanageConstants;
 import com.percussion.share.dao.IPSGenericDao.DeleteException;
-import com.percussion.share.dao.IPSGenericDao.LoadException;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.dao.impl.PSSiteContentDao;
 import com.percussion.sitemanage.data.PSSite;
@@ -61,14 +61,12 @@ import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
 import com.percussion.webservices.security.PSSecurityWsLocator;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.experimental.categories.Category;
 
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.Ignore;
-import org.junit.experimental.categories.Category;
 
 /**
  * Test the site manager.
@@ -400,8 +398,7 @@ public class PSSiteDaoTest extends PSServletTestCase
     }
 
     private void checkOnDemandPublishEdition(IPSiteDao siteDao, String siteName,
-            IPSSite psSite, String deliveryType, String publishType)
-    {
+            IPSSite psSite, String deliveryType, String publishType) throws PSNotFoundException {
         // remove publish now from site
         String edtnCListName = PSSitePublishDaoHelper.createName(siteName, publishType);
         IPSPublisherService pubSvc = getPublisherService();
@@ -577,8 +574,7 @@ public class PSSiteDaoTest extends PSServletTestCase
         }    
     } 
     
-    private String getSiteDeliveryType(IPSSite psSite, IPSiteDao siteDao)
-    {
+    private String getSiteDeliveryType(IPSSite psSite, IPSiteDao siteDao) throws PSNotFoundException {
         return siteDao.getSiteDeliveryType(psSite);
     }
 

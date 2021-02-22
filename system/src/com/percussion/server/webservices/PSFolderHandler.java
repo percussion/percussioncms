@@ -45,6 +45,7 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.cache.PSItemSummaryCache;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
@@ -64,7 +65,7 @@ import org.w3c.dom.NodeList;
  * These operations are specified in the "Folder" port in the
  * <code>WebServices.wsdl</code>.
  *
- * @See {@link com.percussion.hooks.webservices.PSWSFolder}.
+ * @see {@link com.percussion.hooks.webservices.PSWSFolder}.
  */
 public class PSFolderHandler extends PSWebServicesBaseHandler
 {
@@ -191,8 +192,7 @@ public class PSFolderHandler extends PSWebServicesBaseHandler
     *    base element for the response.
     * @throws PSException if any error occurs.
     */
-   void purgeFolderAction(PSRequest request, Document parent) throws PSException
-   {
+   void purgeFolderAction(PSRequest request, Document parent) throws PSException, PSValidationException {
       Document inputDoc = request.getInputDocument();
 
       // get the input data from request
@@ -216,9 +216,8 @@ public class PSFolderHandler extends PSWebServicesBaseHandler
     * @throws PSException if an error occurs while purging the specified folder
     *    and its child folders and items.
     */
-   public static void purgeFolderAndChildItems(int folderId, PSRequest request) 
-      throws PSException
-   {
+   public static void purgeFolderAndChildItems(int folderId, PSRequest request)
+           throws PSException, PSValidationException {
       PSLocator folder = new PSLocator(folderId, 1);
 
       List<String> itemIds = new ArrayList<String>(); 
@@ -240,8 +239,6 @@ public class PSFolderHandler extends PSWebServicesBaseHandler
     * Get a list of content id's for all content items for the supplied folder 
     * recursivly.
     * 
-    * @param relationshipProc the relationship proxy, assume not 
-    *    <code>null</code>.
     * @param folder the folder for which to get a list of content id's,
     *    assumed not <code>null</code>.
     * @param itemIds a list into which all content id's are collected. This is
@@ -270,8 +267,6 @@ public class PSFolderHandler extends PSWebServicesBaseHandler
    /**
     * Get the summaries of all children for the supplied folder locator.
     * 
-    * @param proc the processor which will be used to request the children,
-    *    assumed not <code>null</code>.
     * @param locator the locator of the folder for which to get all children,
     *    assumed not <code>null</code>.
     * @return a list of <code>PSComponentSummary</code> objects with all direct

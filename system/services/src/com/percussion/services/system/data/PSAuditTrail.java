@@ -49,7 +49,7 @@ public class PSAuditTrail implements Serializable
    
    private int editRevision;
    
-   private List<PSAudit> audits = new ArrayList<PSAudit>();
+   private List<PSAudit> audits = new ArrayList<>();
 
    /**
     * Default constructor.
@@ -126,7 +126,7 @@ public class PSAuditTrail implements Serializable
    public void setAudits(List<PSAudit> audits)
    {
       if (audits == null)
-         this.audits = new ArrayList<PSAudit>();
+         this.audits = new ArrayList<>();
       else
          this.audits = audits;
    }

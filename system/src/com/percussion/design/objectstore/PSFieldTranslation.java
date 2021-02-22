@@ -260,7 +260,7 @@ public class PSFieldTranslation extends PSComponent
    // see IPSComponent
    @Override
    public void validate(IPSValidationContext context)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (!context.startValidation(this, null))
          return;

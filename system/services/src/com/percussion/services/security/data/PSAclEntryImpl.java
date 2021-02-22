@@ -648,7 +648,7 @@ public class PSAclEntryImpl implements IPSAclEntry
       type = srcEntry.type;
 
     
-      Set<Short> updatePer = new HashSet<Short>();
+      Set<Short> updatePer = new HashSet<>();
       
       for (PSAccessLevelImpl updateAccess : srcEntry.getPsPermissions())
       {
@@ -656,8 +656,8 @@ public class PSAclEntryImpl implements IPSAclEntry
          }
       
       
-      HashMap<Short,PSAccessLevelImpl> curPer = new HashMap<Short,PSAccessLevelImpl>();
-      HashSet<Short> newPer = new HashSet<Short>();
+      HashMap<Short,PSAccessLevelImpl> curPer = new HashMap<>();
+      HashSet<Short> newPer = new HashSet<>();
       
       for (PSAccessLevelImpl currAccess : getPsPermissions())
          {
@@ -751,7 +751,7 @@ public class PSAclEntryImpl implements IPSAclEntry
    @JoinColumn(name = "ENTRYID", referencedColumnName = "ID", insertable = false, updatable = false)
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "PSAclEntry_Perms")
    @Fetch(FetchMode.SUBSELECT)
-   private Set<PSAccessLevelImpl> psPermissions = new HashSet<PSAccessLevelImpl>();
+   private Set<PSAccessLevelImpl> psPermissions = new HashSet<>();
 
    /**
     * Constant to indicate an id is not initialized or invalid.

@@ -26,6 +26,7 @@ package com.percussion.webservices.transformation.converter;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSCoreItem;
 import com.percussion.cms.objectstore.PSItemDefinition;
+import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.webservices.content.PSItem;
 import com.percussion.webservices.content.PSItemFolders;
@@ -101,7 +102,7 @@ public class PSItemConverter extends PSConverter
             PSItemFolders[] folders = orig.getFolders();
             if (folders != null)
             {
-               List<PSItemFolders> folderList = new ArrayList<PSItemFolders>();
+               List<PSItemFolders> folderList = new ArrayList<>();
                folderList = Arrays.asList(folders);
                dest.setFolderPaths(PSItemConverterUtils.toServerFolders(
                      folderList));
@@ -146,7 +147,7 @@ public class PSItemConverter extends PSConverter
             return dest;
          }
       }
-      catch (PSCmsException e)
+      catch (PSCmsException | PSAssemblyException e)
       {
          throw new ConversionException(e.getLocalizedMessage());
       }

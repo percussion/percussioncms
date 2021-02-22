@@ -439,7 +439,7 @@ public class PSBackEndCredential extends PSComponent
    }
 
    // see IPSComponent
-   public void validate(IPSValidationContext cxt) throws PSValidationException
+   public void validate(IPSValidationContext cxt) throws PSSystemValidationException
    {
       if (!cxt.startValidation(this, null))
          return;

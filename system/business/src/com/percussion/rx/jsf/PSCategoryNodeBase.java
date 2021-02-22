@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import com.percussion.services.error.PSNotFoundException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.trinidad.model.RowKeyIndex;
 
@@ -131,7 +132,7 @@ public class PSCategoryNodeBase extends PSNodeBase
       notNullNode(node);
       if (m_children == null)
       {
-         m_children = new ArrayList<PSNodeBase>();
+         m_children = new ArrayList<>();
       }
       m_children.add(node);
       node.setParent(this);
@@ -158,8 +159,7 @@ public class PSCategoryNodeBase extends PSNodeBase
    }
 
    @Override
-   public List<? extends PSNodeBase> getChildren()
-   {
+   public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
       return m_children;
    }
 
@@ -321,8 +321,7 @@ public class PSCategoryNodeBase extends PSNodeBase
     * @return the matching nodes, may be empty. If it is not empty, then
     * there always be one selected node.
     */
-   public List<PSNodeBase> getFilteredNodes()
-   {
+   public List<PSNodeBase> getFilteredNodes() throws PSNotFoundException {
       if (getChildren() == null)
       {
          return Collections.emptyList();
@@ -332,7 +331,7 @@ public class PSCategoryNodeBase extends PSNodeBase
          return Collections.unmodifiableList(m_children);
       }
 
-      List<PSNodeBase> rval = new ArrayList<PSNodeBase>();
+      List<PSNodeBase> rval = new ArrayList<>();
       final String star = "*";
       final String allPattern = ".*";
       String pattern = m_filter.replaceAll("\\*", allPattern);

@@ -38,6 +38,7 @@ import com.percussion.deployer.server.dependencies.PSDependencyHandler;
 import com.percussion.rx.config.IPSConfigService;
 import com.percussion.rx.config.PSConfigServiceLocator;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pkginfo.IPSPkgInfoService;
 import com.percussion.services.pkginfo.PSPkgInfoServiceLocator;
 import com.percussion.services.pkginfo.data.PSPkgElement;
@@ -132,8 +133,7 @@ public class PSDependencyValidator
     * 
     * @throws PSDeployException if there are any errors.
     */
-   public PSValidationResults validate() throws PSDeployException
-   {
+   public PSValidationResults validate() throws PSDeployException, PSNotFoundException {
       // validate local dependencies of any referenced elements at the end to
       // ensure that if the same dependency occurs elsewhere in the tree, it
       // is properly validated first.      
@@ -184,8 +184,7 @@ public class PSDependencyValidator
     * @throws PSDeployException if there are any errors.
     */
    private void validateDependency(PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       // immediately defer validation of local deps of a referenced deployable
       // element so that if the same dependency occurs elsewhere within the
       // tree, it is validated first since we won't re-validate the same 
@@ -335,8 +334,7 @@ public class PSDependencyValidator
     * @throws PSDeployException if there are any errors.
     */
    private void validateChildDependencies(PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       Iterator deps = dep.getDependencies();
       if (deps != null)
       {
@@ -390,8 +388,7 @@ public class PSDependencyValidator
     * <code>null</code>.
     */
    private void checkExistingDependency(PSDependency dep, PSDependency tgtDep,
-         PSDependencyManager depMgr, ResourceBundle bundle)
-   {
+         PSDependencyManager depMgr, ResourceBundle bundle) throws PSNotFoundException {
       boolean addError = false;
       String modObjStr = null;
       String otherPkgName = null;

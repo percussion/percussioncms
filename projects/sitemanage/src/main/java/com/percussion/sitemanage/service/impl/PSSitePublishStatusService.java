@@ -27,32 +27,53 @@ import com.percussion.rx.publisher.IPSPublisherJobStatus;
 import com.percussion.rx.publisher.IPSPublisherJobStatus.State;
 import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
-import com.percussion.services.publisher.*;
+import com.percussion.services.publisher.IPSEdition;
+import com.percussion.services.publisher.IPSPubItemStatus;
+import com.percussion.services.publisher.IPSPubStatus;
 import com.percussion.services.publisher.IPSPubStatus.EndingState;
+import com.percussion.services.publisher.IPSPublisherService;
+import com.percussion.services.publisher.IPSSiteItem;
 import com.percussion.services.publisher.IPSSiteItem.Operation;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.sitemanage.data.*;
+import com.percussion.sitemanage.data.PSSitePublishItem;
+import com.percussion.sitemanage.data.PSSitePublishItemList;
+import com.percussion.sitemanage.data.PSSitePublishJob;
+import com.percussion.sitemanage.data.PSSitePublishJobList;
+import com.percussion.sitemanage.data.PSSitePublishLogDetailsRequest;
+import com.percussion.sitemanage.data.PSSitePublishLogRequest;
+import com.percussion.sitemanage.data.PSSitePublishPurgeRequest;
 import com.percussion.sitemanage.service.IPSSitePublishStatusService;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.string.PSStringUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
-import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 /**
  * @author DavidBenua
@@ -65,7 +86,7 @@ import static org.apache.commons.lang.StringUtils.*;
 public class PSSitePublishStatusService implements IPSSitePublishStatusService
 {
 
-    private static Log log = LogFactory.getLog(PSSitePublishStatusService.class);
+    private static Logger log = LogManager.getLogger(PSSitePublishStatusService.class);
 
     private IPSRxPublisherServiceInternal rxPubSvc;
 
@@ -105,71 +126,68 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSSitePublishJob> getCurrentJobs() throws PSDataServiceException
     {
-        log.debug("getting the current jobs");
-        List<PSSitePublishJob> jobs = new ArrayList<>();
+        try {
+            log.debug("getting the current jobs");
+            List<PSSitePublishJob> jobs = new ArrayList<>();
 
-        if (dummyData)
-        {
-            final SimpleDateFormat format = new SimpleDateFormat(dateFormat);
-            final SimpleDateFormat tformat = new SimpleDateFormat(timeFormat);
-            final GregorianCalendar today = new GregorianCalendar();
-            PSSitePublishJob job1 = new PSSitePublishJob()
-            {
-                {
-                    setSiteId("1");
-                    setSiteName("Site1");
-                    setStartDate(format.format(today.getTime()));
-                    setStartTime(tformat.format(today.getTime()));
-                    setJobId(1L);
-                    setElapsedTime(483L);
-                    setStatus(IPSPublisherJobStatus.State.WORKING.getDisplayName());
-                    setCompletedItems(43L);
-                    setTotalItems(107L);
-                }
-            };
-            jobs.add(job1);
-            today.add(GregorianCalendar.HOUR, 1);
-            PSSitePublishJob job2 = new PSSitePublishJob()
-            {
-                {
-                    setSiteId("2");
-                    setSiteName("Site2");
-                    setStartDate(format.format(today.getTime()));
-                    setStartTime(tformat.format(today.getTime()));
-                    setJobId(2L);
-                    setElapsedTime(512L);
-                    setStatus(IPSPublisherJobStatus.State.COMMITTING.getDisplayName());
-                    setCompletedItems(17L);
-                    setTotalItems(245L);
-                }
-            };
-            jobs.add(job2);
-            today.add(GregorianCalendar.HOUR, 3);
-            PSSitePublishJob job3 = new PSSitePublishJob()
-            {
-                {
-                    setSiteId("3");
-                    setSiteName("Site3");
-                    setStartDate(format.format(today.getTime()));
-                    setStartTime(tformat.format(today.getTime()));
-                    setJobId(3L);
-                    setElapsedTime(687L);
-                    setStatus(IPSPublisherJobStatus.State.QUEUEING.getDisplayName());
-                    setCompletedItems(53L);
-                    setTotalItems(784L);
-                }
-            };
-            jobs.add(job3);
+            if (dummyData) {
+                final SimpleDateFormat format = new SimpleDateFormat(dateFormat);
+                final SimpleDateFormat tformat = new SimpleDateFormat(timeFormat);
+                final GregorianCalendar today = new GregorianCalendar();
+                PSSitePublishJob job1 = new PSSitePublishJob() {
+                    {
+                        setSiteId("1");
+                        setSiteName("Site1");
+                        setStartDate(format.format(today.getTime()));
+                        setStartTime(tformat.format(today.getTime()));
+                        setJobId(1L);
+                        setElapsedTime(483L);
+                        setStatus(IPSPublisherJobStatus.State.WORKING.getDisplayName());
+                        setCompletedItems(43L);
+                        setTotalItems(107L);
+                    }
+                };
+                jobs.add(job1);
+                today.add(GregorianCalendar.HOUR, 1);
+                PSSitePublishJob job2 = new PSSitePublishJob() {
+                    {
+                        setSiteId("2");
+                        setSiteName("Site2");
+                        setStartDate(format.format(today.getTime()));
+                        setStartTime(tformat.format(today.getTime()));
+                        setJobId(2L);
+                        setElapsedTime(512L);
+                        setStatus(IPSPublisherJobStatus.State.COMMITTING.getDisplayName());
+                        setCompletedItems(17L);
+                        setTotalItems(245L);
+                    }
+                };
+                jobs.add(job2);
+                today.add(GregorianCalendar.HOUR, 3);
+                PSSitePublishJob job3 = new PSSitePublishJob() {
+                    {
+                        setSiteId("3");
+                        setSiteName("Site3");
+                        setStartDate(format.format(today.getTime()));
+                        setStartTime(tformat.format(today.getTime()));
+                        setJobId(3L);
+                        setElapsedTime(687L);
+                        setStatus(IPSPublisherJobStatus.State.QUEUEING.getDisplayName());
+                        setCompletedItems(53L);
+                        setTotalItems(784L);
+                    }
+                };
+                jobs.add(job3);
+            } else {
+                // get all jobs
+                jobs = buildCurrentJobs(null);
+            }
+
+            log.debug("Returning " + jobs.size() + " jobs");
+            return new PSSitePublishJobList(jobs);
+        } catch (PSNotFoundException e) {
+           throw new WebApplicationException(e);
         }
-        else
-        {
-            // get all jobs
-            jobs = buildCurrentJobs(null);
-        }
-
-        log.debug("Returning " + jobs.size() + " jobs");
-        return new PSSitePublishJobList(jobs);
-
     }
     
     /**
@@ -184,71 +202,68 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSSitePublishJob> getCurrentJobsBySite(@PathParam("siteId") String siteId) throws PSDataServiceException
     {
-        log.debug("getting the current jobs");
-        List<PSSitePublishJob> jobs = new ArrayList<>();
+        try {
+            log.debug("getting the current jobs");
+            List<PSSitePublishJob> jobs = new ArrayList<>();
 
-        if (dummyData)
-        {
-            final SimpleDateFormat format = new SimpleDateFormat(dateFormat);
-            final SimpleDateFormat tformat = new SimpleDateFormat(timeFormat);
-            final GregorianCalendar today = new GregorianCalendar();
-            PSSitePublishJob job1 = new PSSitePublishJob()
-            {
-                {
-                    setSiteId("1");
-                    setSiteName("Site1");
-                    setStartDate(format.format(today.getTime()));
-                    setStartTime(tformat.format(today.getTime()));
-                    setJobId(1L);
-                    setElapsedTime(483L);
-                    setStatus(IPSPublisherJobStatus.State.WORKING.getDisplayName());
-                    setCompletedItems(43L);
-                    setTotalItems(107L);
-                }
-            };
-            jobs.add(job1);
-            today.add(GregorianCalendar.HOUR, 1);
-            PSSitePublishJob job2 = new PSSitePublishJob()
-            {
-                {
-                    setSiteId("2");
-                    setSiteName("Site2");
-                    setStartDate(format.format(today.getTime()));
-                    setStartTime(tformat.format(today.getTime()));
-                    setJobId(2L);
-                    setElapsedTime(512L);
-                    setStatus(IPSPublisherJobStatus.State.COMMITTING.getDisplayName());
-                    setCompletedItems(17L);
-                    setTotalItems(245L);
-                }
-            };
-            jobs.add(job2);
-            today.add(GregorianCalendar.HOUR, 3);
-            PSSitePublishJob job3 = new PSSitePublishJob()
-            {
-                {
-                    setSiteId("3");
-                    setSiteName("Site3");
-                    setStartDate(format.format(today.getTime()));
-                    setStartTime(tformat.format(today.getTime()));
-                    setJobId(3L);
-                    setElapsedTime(687L);
-                    setStatus(IPSPublisherJobStatus.State.QUEUEING.getDisplayName());
-                    setCompletedItems(53L);
-                    setTotalItems(784L);
-                }
-            };
-            jobs.add(job3);
+            if (dummyData) {
+                final SimpleDateFormat format = new SimpleDateFormat(dateFormat);
+                final SimpleDateFormat tformat = new SimpleDateFormat(timeFormat);
+                final GregorianCalendar today = new GregorianCalendar();
+                PSSitePublishJob job1 = new PSSitePublishJob() {
+                    {
+                        setSiteId("1");
+                        setSiteName("Site1");
+                        setStartDate(format.format(today.getTime()));
+                        setStartTime(tformat.format(today.getTime()));
+                        setJobId(1L);
+                        setElapsedTime(483L);
+                        setStatus(IPSPublisherJobStatus.State.WORKING.getDisplayName());
+                        setCompletedItems(43L);
+                        setTotalItems(107L);
+                    }
+                };
+                jobs.add(job1);
+                today.add(GregorianCalendar.HOUR, 1);
+                PSSitePublishJob job2 = new PSSitePublishJob() {
+                    {
+                        setSiteId("2");
+                        setSiteName("Site2");
+                        setStartDate(format.format(today.getTime()));
+                        setStartTime(tformat.format(today.getTime()));
+                        setJobId(2L);
+                        setElapsedTime(512L);
+                        setStatus(IPSPublisherJobStatus.State.COMMITTING.getDisplayName());
+                        setCompletedItems(17L);
+                        setTotalItems(245L);
+                    }
+                };
+                jobs.add(job2);
+                today.add(GregorianCalendar.HOUR, 3);
+                PSSitePublishJob job3 = new PSSitePublishJob() {
+                    {
+                        setSiteId("3");
+                        setSiteName("Site3");
+                        setStartDate(format.format(today.getTime()));
+                        setStartTime(tformat.format(today.getTime()));
+                        setJobId(3L);
+                        setElapsedTime(687L);
+                        setStatus(IPSPublisherJobStatus.State.QUEUEING.getDisplayName());
+                        setCompletedItems(53L);
+                        setTotalItems(784L);
+                    }
+                };
+                jobs.add(job3);
+            } else {
+                // get jobs selected by siteId
+                jobs = buildCurrentJobs(siteId);
+            }
+
+            log.debug("Returning " + jobs.size() + " jobs");
+            return new PSSitePublishJobList(jobs);
+        } catch (PSNotFoundException e) {
+            throw new WebApplicationException(e);
         }
-        else
-        {
-            // get jobs selected by siteId
-            jobs = buildCurrentJobs(siteId);
-        }
-
-        log.debug("Returning " + jobs.size() + " jobs");
-        return new PSSitePublishJobList(jobs);
-
     }
 
     @Override
@@ -258,45 +273,44 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSSitePublishJob> getLogs(PSSitePublishLogRequest request) throws PSDataServiceException
     {
-        if (log.isDebugEnabled())
-        {
+        try {
             log.debug("getting logs. Site=" + request.getSiteId() + " Days=" + request.getDays() + " maxcount=" + request.getMaxcount());
-        }
-        List<PSSitePublishJob> jobs = new ArrayList<>();
-        if (dummyData)
-        {
-            final SimpleDateFormat format = new SimpleDateFormat(dateFormat);
-            final SimpleDateFormat tformat = new SimpleDateFormat(timeFormat);
-            final GregorianCalendar today = new GregorianCalendar();
-            for (int i = 0; i < request.getMaxcount(); i++)
-            {
 
-                PSSitePublishJob job1 = new PSSitePublishJob()
-                {
-                    {
-                        setStartDate(format.format(today.getTime()));
-                        setStartTime(tformat.format(today.getTime()));
-                        setElapsedTime(483L);
-                        setStatus(IPSPublisherJobStatus.State.WORKING.getDisplayName());
-                        setCompletedItems(43L);
-                        setTotalItems(107L);
-                        setFailedItems(1L);
-                    }
-                };
-                job1.setSiteId(String.valueOf(i));
-                job1.setSiteName("Site" + String.valueOf(i));
-                job1.setJobId(301L + i);
-                jobs.add(job1);
-                today.add(GregorianCalendar.HOUR, 1);
+            List<PSSitePublishJob> jobs = new ArrayList<>();
+            if (dummyData) {
+                final SimpleDateFormat format = new SimpleDateFormat(dateFormat);
+                final SimpleDateFormat tformat = new SimpleDateFormat(timeFormat);
+                final GregorianCalendar today = new GregorianCalendar();
+                for (int i = 0; i < request.getMaxcount(); i++) {
+
+                    PSSitePublishJob job1 = new PSSitePublishJob() {
+                        {
+                            setStartDate(format.format(today.getTime()));
+                            setStartTime(tformat.format(today.getTime()));
+                            setElapsedTime(483L);
+                            setStatus(IPSPublisherJobStatus.State.WORKING.getDisplayName());
+                            setCompletedItems(43L);
+                            setTotalItems(107L);
+                            setFailedItems(1L);
+                        }
+                    };
+                    job1.setSiteId(String.valueOf(i));
+                    job1.setSiteName("Site" + String.valueOf(i));
+                    job1.setJobId(301L + i);
+                    jobs.add(job1);
+                    today.add(GregorianCalendar.HOUR, 1);
+                }
+            } else {
+                jobs = buildLogs(request.getSiteId(), request.getPubServerId(), request.getDays(), request.getMaxcount(), request.getSkipCount(), !request.isShowOnlyFailures());
             }
-        }
-        else
-        {
-            jobs = buildLogs(request.getSiteId(),request.getPubServerId(), request.getDays(), request.getMaxcount(), request.getSkipCount(), !request.isShowOnlyFailures());
-        }
 
-        log.debug("Returning " + jobs.size() + " jobs");
-        return new PSSitePublishJobList(jobs);
+            log.debug("Returning " + jobs.size() + " jobs");
+            return new PSSitePublishJobList(jobs);
+        } catch (PSNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @Override
@@ -354,8 +368,7 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
         return new PSSitePublishItemList(details);
     }
 
-    protected List<PSSitePublishJob> buildCurrentJobs(String siteId)
-    {
+    protected List<PSSitePublishJob> buildCurrentJobs(String siteId) throws PSNotFoundException {
         List<PSSitePublishJob> jobs = new ArrayList<>();
         Collection<Long> activeJobs = null;
         if (siteId != null && !siteId.equals(""))
@@ -379,13 +392,11 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
         return jobs;
     }
     
-    protected List<PSSitePublishJob> buildLogs(String siteId, String pubServerId, int days, int maxCount)
-    {
+    protected List<PSSitePublishJob> buildLogs(String siteId, String pubServerId, int days, int maxCount) throws PSNotFoundException {
     	return buildLogs(siteId, pubServerId, days, maxCount, 0, true); 
     }
             
-    protected List<PSSitePublishJob> buildLogs(String siteId, String pubServerId, int days, int maxCount, int skipCount, boolean showAll)
-    {
+    protected List<PSSitePublishJob> buildLogs(String siteId, String pubServerId, int days, int maxCount, int skipCount, boolean showAll) throws PSNotFoundException {
         List<PSSitePublishJob> jobs = new ArrayList<>();
         GregorianCalendar dateLimit = new GregorianCalendar();
         dateLimit.add(Calendar.DATE, -days);
@@ -555,44 +566,37 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
         return "";
     }
 
-    protected String getSiteName(long editionId)
-    {
+    protected String getSiteName(long editionId) throws PSNotFoundException {
         IPSGuid editionGUID = guidMgr.makeGuid(editionId, PSTypeEnum.EDITION);
         return getSiteName(editionGUID);
     }
 
-    protected String getSiteName(IPSGuid editionId)
-    {
+    protected String getSiteName(IPSGuid editionId) throws PSNotFoundException {
         IPSEdition edition = pubSvc.loadEdition(editionId);
         return getSiteName(edition);
     }
     
-    protected IPSGuid getPubServerId(IPSGuid editionId)
-    {
+    protected IPSGuid getPubServerId(IPSGuid editionId) throws PSNotFoundException {
         IPSEdition edition = pubSvc.loadEdition(editionId);
         return edition.getPubServerId();
     }
 
-    protected String getSiteName(IPSEdition edition)
-    {
+    protected String getSiteName(IPSEdition edition) throws PSNotFoundException {
         IPSSite site = siteMgr.loadSite(edition.getSiteId());
         return site.getName();
     }
     
-    protected String getServerName(long serverId)
-    {
+    protected String getServerName(long serverId) throws PSNotFoundException {
         IPSGuid serverGUID = guidMgr.makeGuid(serverId, PSTypeEnum.PUBLISHING_SERVER);
         return getPubServerName(serverGUID);
     }
 
-    private String getPubServerName(IPSGuid serverGUID)
-    {
+    private String getPubServerName(IPSGuid serverGUID) throws PSNotFoundException {
         IPSPubServer server = pubServerDao.loadPubServer(serverGUID);
         return server.getName();
     }
 
-    protected PSSitePublishJob buildJob(long jobId, IPSPublisherJobStatus status)
-    {
+    protected PSSitePublishJob buildJob(long jobId, IPSPublisherJobStatus status) throws PSNotFoundException {
         SimpleDateFormat dformat = new SimpleDateFormat(dateFormat);
         SimpleDateFormat tformat = new SimpleDateFormat(timeFormat);
         PSSitePublishJob job = new PSSitePublishJob();
@@ -611,8 +615,7 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
         return job;
     }
 
-    protected PSSitePublishJob buildJob(IPSPubStatus status)
-    {
+    protected PSSitePublishJob buildJob(IPSPubStatus status) throws PSNotFoundException {
         SimpleDateFormat dformat = new SimpleDateFormat(dateFormat);
         SimpleDateFormat tformat = new SimpleDateFormat(timeFormat);
         PSSitePublishJob job = new PSSitePublishJob();

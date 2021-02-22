@@ -30,7 +30,7 @@ import com.percussion.design.objectstore.PSChoices;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSUISet;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.server.IPSServerErrors;
 
@@ -55,7 +55,7 @@ public class PSMultiValueBuilder extends PSDisplayFieldBuilder
     */
    public PSMultiValueBuilder(PSFieldSet fieldSet, PSUISet ui,
          PSEditorDocumentBuilder parentBuilder)
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       super(fieldSet, ui, parentBuilder);
       m_isFieldShown = parentBuilder.showField(fieldSet.getSimpleChildField());

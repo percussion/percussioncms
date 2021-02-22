@@ -80,8 +80,7 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
    }
 
    @Override
-   public List<? extends PSNodeBase> getChildren()
-   {
+   public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
       // synchronize this operation to prevent loading children more than once
       // from multiple requests/threads. This may happen when browser user
       // quickly clicking the same link more than one. 
@@ -123,7 +122,7 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
                }
             }
          }
-         catch (PSCatalogException e)
+         catch (PSCatalogException | PSNotFoundException e)
          {
             ms_log.error("Problem loading children for sites", e);
          }
@@ -135,8 +134,7 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
     * Gets all child nodes with one selected node.
     * @return the child nodes, may be <code>null</code> or empty.
     */
-   private List<? extends PSNodeBase> getChildrenWithOneSelected()
-   {
+   private List<? extends PSNodeBase> getChildrenWithOneSelected() throws PSNotFoundException {
       List<? extends PSNodeBase> childList = super.getChildren();
       if (childList == null || childList.isEmpty())
          return childList;
@@ -162,8 +160,7 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
     * @return the site summaries. Never <code>null</code>.
     * @throws PSCatalogException if cataloging fails.
     */
-   private List<IPSCatalogSummary> getSiteSummaries() throws PSCatalogException
-   {
+   private List<IPSCatalogSummary> getSiteSummaries() throws PSCatalogException, PSNotFoundException {
       return getSiteManager().getSummaries(PSTypeEnum.SITE);
    }
 
@@ -191,8 +188,7 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
     * @return the perform action for the site node, which will navigate to the
     * editor.
     */
-   public String createSite()
-   {
+   public String createSite() throws PSNotFoundException {
       IPSSiteManager smgr = getSiteManager();
       IPSSite newsite = smgr.createSite();
       newsite.setName(getUniqueName("Site", false));
@@ -220,7 +216,7 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
    @Override
    public Set<Object> getAllNames()
    {
-      final Set<Object> names = new HashSet<Object>();
+      final Set<Object> names = new HashSet<>();
       
       try
       {
@@ -229,7 +225,7 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
             names.add(summary.getName());
          }
       }
-      catch (PSCatalogException e)
+      catch (PSCatalogException | PSNotFoundException e)
       {
          ms_log.error("Problem obtaining site names", e);
       }

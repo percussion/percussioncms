@@ -49,6 +49,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.IPSHtmlParameters;
 import org.w3c.dom.Element;
 
@@ -305,8 +306,7 @@ public abstract class PSFolderObjectDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    protected List getChildDependencies(PSSecurityToken tok,
-      String path, int folderDepType) throws PSDeployException
-   {
+      String path, int folderDepType) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -792,8 +792,7 @@ public abstract class PSFolderObjectDependencyHandler
     */
    protected PSDependency getDisplayFormatDep(PSSecurityToken tok,
       PSComponentProcessorProxy proc, String formatId)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (proc == null)

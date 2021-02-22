@@ -522,7 +522,7 @@ public class PSUIDefinition extends PSComponent
 
    // see IPSComponent
    public void validate(IPSValidationContext context)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (!context.startValidation(this, null))
          return;
@@ -569,11 +569,11 @@ public class PSUIDefinition extends PSComponent
     *
     * @return the merged UI definition, never <code>null</code>
     *
-    * @throws PSValidationException if an error happens in merging.
+    * @throws PSSystemValidationException if an error happens in merging.
     */
    public PSUIDefinition merge(PSUIDefinition sourceUIDef, boolean mergeChild,
       List fieldExcludes, boolean mergeDefault)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if(sourceUIDef == null)
          throw new IllegalArgumentException("sourceUIDef may not be null.");
@@ -619,11 +619,11 @@ public class PSUIDefinition extends PSComponent
     *
     * @return the demerged UI definition, never <code>null</code>
     *
-    * @throws PSValidationException if an error happens in merging.
+    * @throws PSSystemValidationException if an error happens in merging.
     */
    public PSUIDefinition demerge(PSUIDefinition sourceUIDef,
       boolean demergeChild, List fieldExcludes, boolean demergeDefault)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if(sourceUIDef == null)
          throw new IllegalArgumentException("sourceUIDef may not be null.");

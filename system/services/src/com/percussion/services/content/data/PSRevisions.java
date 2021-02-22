@@ -52,7 +52,7 @@ public class PSRevisions
       
       m_sum = sum;
       
-      m_revisions = new ArrayList<PSContentStatusHistory>();
+      m_revisions = new ArrayList<>();
       if (history != null && history.size() > 0)
       {
          int curRev = -1;
@@ -77,7 +77,7 @@ public class PSRevisions
     */
    public List<PSContentStatusHistory> getRevisions()
    {
-      return new ArrayList<PSContentStatusHistory>(m_revisions);
+      return new ArrayList<>(m_revisions);
    }
    
    /**

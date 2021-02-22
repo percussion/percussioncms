@@ -28,7 +28,7 @@ import com.percussion.error.PSException;
 
 
 /**
- * PSValidationException is thrown when a validation error occurs.
+ * PSSystemValidationException is thrown when a validation error occurs.
  * This usually occurs when an application is being saved to the object
  * store and an invalid value is detected for a particular setting.
  *
@@ -36,7 +36,7 @@ import com.percussion.error.PSException;
  * @version    1.0
  * @since      1.0
  */
-public class PSValidationException extends PSException {
+public class PSSystemValidationException extends PSException {
    /**
     * Construct an exception for messages taking only a single argument.
     *
@@ -45,7 +45,7 @@ public class PSValidationException extends PSException {
     * @param singleArg      the argument to use as the sole argument in
     *                      the error message
     */
-   public PSValidationException(int msgCode, Object singleArg)
+   public PSSystemValidationException(int msgCode, Object singleArg)
    {
       super(msgCode, singleArg);
    }
@@ -60,7 +60,7 @@ public class PSValidationException extends PSException {
     * @param arrayArgs      the array of arguments to use as the arguments
     *                      in the error message
     */
-   public PSValidationException(int msgCode, Object[] arrayArgs)
+   public PSSystemValidationException(int msgCode, Object[] arrayArgs)
    {
       super(msgCode, arrayArgs);
    }
@@ -70,7 +70,7 @@ public class PSValidationException extends PSException {
     *
     * @param msgCode       the error string to load
     */
-   public PSValidationException(int msgCode)
+   public PSSystemValidationException(int msgCode)
    {
       super(msgCode);
    }
@@ -91,8 +91,8 @@ public class PSValidationException extends PSException {
     * @param   component   the component which is the source of the error
     *                        or <code>null</code> if the container is in error
     */
-   public PSValidationException(int msgCode, Object[] arrayArgs, 
-      IPSDocument container, IPSComponent component)
+   public PSSystemValidationException(int msgCode, Object[] arrayArgs,
+                                      IPSDocument container, IPSComponent component)
    {
       super(msgCode, arrayArgs);
 

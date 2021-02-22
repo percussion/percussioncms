@@ -54,7 +54,8 @@ import com.percussion.util.PSPurgableTempFile;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -713,52 +714,55 @@ public class PSDeploymentServerConnection
          file[0] = new NVPair(body.getName(), body.getPath());
 
          hdrs[1] = new NVPair(IPSCgiVariables.CGI_PS_REQUEST_TYPE, type);
+      try {
          byte[] data = Codecs.mpFormDataEncode(opts, file, hdrs);
 
          // keep alive connection header
          hdrs[2] = new NVPair("Connection", "Keep-Alive");
          // send the request to the Rx server
-         try(HttpOutputStream out = new HttpOutputStream(data.length)){
 
-            synchronized(m_mutexObject)
-            {
-               resp= m_conn.Post(requestPage, out, hdrs);
+         try (HttpOutputStream out = new HttpOutputStream(data.length)) {
+            synchronized (m_mutexObject) {
+               resp = m_conn.Post(requestPage, out, hdrs);
             }
-            try(ByteArrayInputStream bIn = new ByteArrayInputStream(data)) {
+            try (ByteArrayInputStream bIn = new ByteArrayInputStream(data)) {
                try (PSInputStreamCounter counter = new PSInputStreamCounter(bIn)) {
                   controller.setStream(counter, data.length);
-               }
-
                // copy the data
                copyStream(counter, out, controller);
+               }
                // get the response code
                status = resp.getStatusCode();
                respData = resp.getData();
             }
-      }
-      catch ( IOException ioe)
-      {
-         if (repost)
-         {
-            System.out.println("6. IOException occurred rePOSTing: " + 
-               ioe.getLocalizedMessage());
-            doRepost = true;
-         }
-         else
-         {
-            ms_log.error(ioe);
+         } catch (IOException ioe) {
+            if (repost) {
+               ms_log.error("6. IOException occurred rePOSTing: " +
+                       ioe.getLocalizedMessage());
+               doRepost = true;
+            } else {
+               ms_log.error(ioe);
+               throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                       ioe.getLocalizedMessage());
+            }
+         } catch (Exception e) {
+            ms_log.error(e.getMessage());
+            ms_log.debug(e.getMessage(),e);
             throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-               ioe.getLocalizedMessage());
+                    e.getLocalizedMessage());
          }
-      }
-      catch (Exception e)
-      {
-         e.printStackTrace();
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
+      } catch (IOException e) {
+         if (repost) {
+            ms_log.error("6. IOException occurred rePOSTing: " +
+                    e.getMessage());
+            doRepost = true;
+         } else {
+            ms_log.error(e);
+            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                    e.getMessage());
+         }
       }
 
-      
       if (repost)
       {
          return execute(type, params, body, controller, reconnect, false);
@@ -923,8 +927,6 @@ public class PSDeploymentServerConnection
             try{ in.close();} catch(IOException e){}
          if (out != null)
             try {out.close();} catch(IOException e){}
-         if (reqFile != null)
-            reqFile.release();
       }
 
       if (status != 200 || respData != null)
@@ -1078,13 +1080,13 @@ public class PSDeploymentServerConnection
          return "";
 
       String key = uid == null || uid.trim().length() == 0 ? PSLegacyEncrypter.getInstance(
-              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR
+              PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR
               )).INVALID_DRIVER() :
          uid;
 
       try {
          return PSEncryptor.getInstance("AES",
-                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
          ).encrypt(pwd);
       } catch (PSEncryptionException e) {
          ms_log.error("Error encrypting password: {}" + e.getMessage());
@@ -1110,17 +1112,17 @@ public class PSDeploymentServerConnection
          return "";
 
       String key = uid == null || uid.trim().length() == 0 ? PSLegacyEncrypter.getInstance(
-              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+              PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
       ).INVALID_DRIVER() :
          uid;
 
       try {
          return PSEncryptor.getInstance("AES",
-                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
          ).decrypt(pwd);
       } catch (PSEncryptionException e) {
          return PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
-                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
          ).INVALID_CRED(), key, pwd);
       }
 
@@ -1516,7 +1518,7 @@ public class PSDeploymentServerConnection
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(PSDeploymentServerConnection.class);
+   private static final Logger ms_log = LogManager.getLogger(PSDeploymentServerConnection.class);
 
    /**
     * Constant for the page to use when executing deployment requests against

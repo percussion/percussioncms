@@ -305,7 +305,7 @@ public class PSConsistencyCheckerBean
     */
    public PSConsistencyCheckerBean() throws RepositoryException {
       List<IPSNodeDefinition> nodedefs = ms_cmgr.findAllItemNodeDefinitions();
-      List<CTypeEntry> defs = new ArrayList<CTypeEntry>();
+      List<CTypeEntry> defs = new ArrayList<>();
 
       for (IPSNodeDefinition def : nodedefs)
       {
@@ -315,7 +315,7 @@ public class PSConsistencyCheckerBean
       }
 
       m_typeentries = defs;
-      m_problemsFound = new ArrayList<CItemEntry>();
+      m_problemsFound = new ArrayList<>();
    }
 
    /**
@@ -360,8 +360,8 @@ public class PSConsistencyCheckerBean
    public String check()
    {
       m_errorMessage = "";
-      m_problemsFound = new ArrayList<CItemEntry>();
-      Map<Integer, Collection<Problem>> pmap = new HashMap<Integer, Collection<Problem>>();
+      m_problemsFound = new ArrayList<>();
+      Map<Integer, Collection<Problem>> pmap = new HashMap<>();
       try
       {
          PSConsistencyProblemFinder finder = new PSConsistencyProblemFinder();
@@ -377,14 +377,14 @@ public class PSConsistencyCheckerBean
                Collection<Problem> cidproblems = pmap.get(p.getContentid());
                if (cidproblems == null)
                {
-                  cidproblems = new ArrayList<Problem>();
+                  cidproblems = new ArrayList<>();
                   pmap.put(p.getContentid(), cidproblems);
                }
                cidproblems.add(p);
             }
          }
          // Build the UI data structure
-         Set<Integer> sortedids = new TreeSet<Integer>(pmap.keySet());
+         Set<Integer> sortedids = new TreeSet<>(pmap.keySet());
          for (Integer cid : sortedids)
          {
             Collection<Problem> problems = pmap.get(cid);

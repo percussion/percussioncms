@@ -62,6 +62,7 @@ import com.percussion.design.objectstore.PSResultPage;
 import com.percussion.design.objectstore.PSResultPageSet;
 import com.percussion.design.objectstore.PSSingleHtmlParameter;
 import com.percussion.design.objectstore.PSSortedColumn;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSTableLocator;
 import com.percussion.design.objectstore.PSTableRef;
 import com.percussion.design.objectstore.PSTableSet;
@@ -71,7 +72,6 @@ import com.percussion.design.objectstore.PSUISet;
 import com.percussion.design.objectstore.PSUpdateColumn;
 import com.percussion.design.objectstore.PSUpdatePipe;
 import com.percussion.design.objectstore.PSUserContext;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.design.objectstore.PSWhereClause;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.extension.PSExtensionRef;
@@ -318,13 +318,13 @@ public class PSApplicationBuilder
     * are not.  If no binary fields are in the fieldset, this parameter is
     * ignored.
     *
-    * @throws PSValidationException if any objectstore objects are found to be
+    * @throws PSSystemValidationException if any objectstore objects are found to be
     * invalid.
     */
    public static void createUpdateDataset(PSApplication app, String requestName,
       PSContentEditor ce, PSDisplayMapper mapper, String xmlActionTypeField,
       PSDataMapper systemMappings, boolean includeBinary)
-         throws PSValidationException
+         throws PSSystemValidationException
    {
       createUpdateDataset(app, requestName, ce, mapper,
          xmlActionTypeField, systemMappings, includeBinary, FLAG_ALLOW_UPDATES);
@@ -339,7 +339,7 @@ public class PSApplicationBuilder
     * <li>Binary fields are always included</li>
     * </ol>
     *
-    * @throws PSValidationException if any objectstore objects are found to be
+    * @throws PSSystemValidationException if any objectstore objects are found to be
     * invalid.
     *
     * @see #createUpdateDataset(PSApplication, String, PSContentEditor,
@@ -349,7 +349,7 @@ public class PSApplicationBuilder
    public static void createInsertDataset(PSApplication app, String requestName,
       PSContentEditor ce, PSDisplayMapper mapper, String xmlActionTypeField,
       PSDataMapper systemMappings)
-         throws PSValidationException
+         throws PSSystemValidationException
    {
       createUpdateDataset(app, requestName, ce, mapper,
          xmlActionTypeField, systemMappings, true, FLAG_ALLOW_INSERTS);
@@ -359,7 +359,7 @@ public class PSApplicationBuilder
     * Creates a dataset that only allows deletes.  This method's parameters are
     * the same as <code>createInsertDataSet()</code>.
     *
-    * @throws PSValidationException if any objectstore objects are found to be
+    * @throws PSSystemValidationException if any objectstore objects are found to be
     * invalid.
     *
     * @see #createInsertDataset(PSApplication, String, PSContentEditor,
@@ -369,7 +369,7 @@ public class PSApplicationBuilder
    public static void createDeleteDataset(PSApplication app, String requestName,
       PSContentEditor ce, PSDisplayMapper mapper, String xmlActionTypeField,
       PSDataMapper systemMappings)
-         throws PSValidationException
+         throws PSSystemValidationException
    {
       createUpdateDataset(app, requestName, ce, mapper,
          xmlActionTypeField, systemMappings, true, FLAG_ALLOW_DELETES);
@@ -395,7 +395,7 @@ public class PSApplicationBuilder
       String requestName, PSContentEditor ce, PSDisplayMapper mapper,
       String xmlActionTypeField, PSDataMapper systemMappings,
       boolean includeBinary, int allowActions)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       createUpdateDataset(app, requestName, ce, mapper,
          xmlActionTypeField, systemMappings, includeBinary, allowActions, null);
@@ -416,7 +416,7 @@ public class PSApplicationBuilder
       String requestName, PSContentEditor ce, PSDisplayMapper mapper,
       String xmlActionTypeField, PSDataMapper systemMappings,
       boolean includeBinary, int allowActions, PSDtdBuilder dtd)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if ( null == app || null == requestName || null == ce ||
             requestName.length() == 0 )
@@ -536,7 +536,7 @@ public class PSApplicationBuilder
 
             if (mapperFieldSet == null)
             {
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                   IPSServerErrors.CE_MISSING_FIELDSET, mapperFieldSetRef);
             }
 
@@ -561,7 +561,7 @@ public class PSApplicationBuilder
                      if ( null != mapping.getUISet().getLabel())
                         label = mapping.getUISet().getLabel().getText();
                      String [] args = { fieldRef, label };
-                     throw new PSValidationException(
+                     throw new PSSystemValidationException(
                            IPSServerErrors.CE_MISSING_FIELD, args );
                   }
                }
@@ -849,13 +849,13 @@ public class PSApplicationBuilder
     *    dataset's mapper would be empty, no dataset is created and 
     *    <code>null</code> is returned. 
     *
-    * @throws PSValidationException If any errors in the definition are found
+    * @throws PSSystemValidationException If any errors in the definition are found
     *    while building the dataset.
     */
    public static String createQueryDataset(PSApplication app, PSContentEditor ce,
          PSDisplayMapper dispMapper, Iterator selectionKeys,
          Iterator auxMappings, Iterator sortColumns )
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if ( null == app || null == ce || null == dispMapper ||
             null == selectionKeys || null == auxMappings || null == sortColumns )
@@ -901,7 +901,7 @@ public class PSApplicationBuilder
 
          if ( null == fieldSet )
          {
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                   IPSServerErrors.CE_MISSING_FIELDSET,
                   dispMapper.getFieldSetRef());
          }
@@ -973,7 +973,7 @@ public class PSApplicationBuilder
                      fieldRef,
                      mappingLabel,
                   };
-                  throw new PSValidationException(
+                  throw new PSSystemValidationException(
                         IPSServerErrors.CE_MISSING_FIELD, args );
                }
                sdmpField = true;
@@ -1017,7 +1017,7 @@ public class PSApplicationBuilder
                               systemTable.getAlias(),
                               col.getTable().getAlias()
                            };
-                           throw new PSValidationException(
+                           throw new PSSystemValidationException(
                                  IPSServerErrors.CE_MULTIPLE_TABLES_NOT_SUPPORTED,
                                  args );
                         }
@@ -1039,7 +1039,7 @@ public class PSApplicationBuilder
                                  localTable.getAlias(),
                                  col.getTable().getAlias()
                               };
-                              throw new PSValidationException(
+                              throw new PSSystemValidationException(
                                     IPSServerErrors.CE_MULTIPLE_TABLES_NOT_SUPPORTED,
                                     args );
                            }
@@ -1075,7 +1075,7 @@ public class PSApplicationBuilder
             systemTable = (PSBackEndTable) tableMap.get( alias.toLowerCase());
             if ( null == systemTable )
             {
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                      IPSServerErrors.CE_MISSING_TABLE, alias );
             }
             tables.add( systemTable );
@@ -1087,7 +1087,7 @@ public class PSApplicationBuilder
             localTable = (PSBackEndTable) tableMap.get( alias.toLowerCase());
             if ( null == localTable )
             {
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                      IPSServerErrors.CE_MISSING_TABLE, alias );
             }
             tables.add( localTable );
@@ -1095,7 +1095,7 @@ public class PSApplicationBuilder
          else
          {
             // we have to have at least 1 mapping for main table
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                   IPSServerErrors.CE_MISSING_MAPPINGS,
                   dispMapper.getFieldSetRef());
          }
@@ -1347,7 +1347,7 @@ public class PSApplicationBuilder
     */
    public static String createQueryDataset(PSApplication app,
       PSDataMapper dataMapper, Iterator selectionKeys, Iterator sortCols )
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       return createQueryDataset(app, dataMapper, selectionKeys, sortCols, null,
          false);
@@ -1382,12 +1382,12 @@ public class PSApplicationBuilder
     * @return The name of the dataset, which is unique among all names from
     * this method during a session.
     *
-    * @throws PSValidationException for any other errors.
+    * @throws PSSystemValidationException for any other errors.
     */
    public static String createQueryDataset(PSApplication app,
       PSDataMapper dataMapper, Iterator selectionKeys, Iterator sortCols,
       PSDtdBuilder dtd, boolean isBinary)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (null == app || null == dataMapper ||
             null == selectionKeys )
