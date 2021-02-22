@@ -27,7 +27,7 @@
     <parent>
         <artifactId>delivery-tier-suite</artifactId>
         <groupId>com.percussion.deliverytier</groupId>
-        <version>8.0.2-SNAPSHOT</version>
+        <version>8.0.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -163,7 +163,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>8.0.3-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.commons</groupId>
@@ -235,7 +235,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>servlet-utils</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>8.0.3-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-beanutils</groupId>
@@ -286,7 +286,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.2-SNAPSHOT</version>
+            <version>8.0.3-SNAPSHOT</version>
             <type>test-jar</type>
             <scope>test</scope>
             <exclusions>

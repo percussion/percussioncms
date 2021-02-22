@@ -116,7 +116,7 @@ public class PSFeedsServiceTests{
 
         boolean passed = false;
         try {
-            String xml = svc.readExternalFeed(feedDTO, "percId");
+            String xml = svc.readExternalFeed(feedDTO);
         }
         catch(WebApplicationException x){
             passed = true;
@@ -140,7 +140,7 @@ public class PSFeedsServiceTests{
 
         boolean passed = false;
         try {
-            String xml = svc.readExternalFeed(feedDTO, "percId");
+            String xml = svc.readExternalFeed(feedDTO);
         }
         catch(WebApplicationException x){
             passed = true;
@@ -164,7 +164,7 @@ public class PSFeedsServiceTests{
 
         boolean passed = false;
         try {
-            String xml = svc.readExternalFeed(feedDTO, "percId");
+            String xml = svc.readExternalFeed(feedDTO);
         }
         catch(WebApplicationException x){
             passed = true;
