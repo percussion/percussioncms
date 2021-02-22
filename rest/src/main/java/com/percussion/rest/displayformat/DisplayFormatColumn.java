@@ -85,10 +85,10 @@ public class DisplayFormatColumn {
 
 
     // Data Types
-    public final static String DATATYPE_TEXT = PSDisplayColumn.DATATYPE_TEXT;
-    public final static String DATATYPE_NUMBER = PSDisplayColumn.DATATYPE_NUMBER;
-    public final static String DATATYPE_DATE = PSDisplayColumn.DATATYPE_DATE;
-    public final static String DATATYPE_IMAGE = PSDisplayColumn.DATATYPE_IMAGE;
+    public  static final String DATATYPE_TEXT = PSDisplayColumn.DATATYPE_TEXT;
+    public  static final String DATATYPE_NUMBER = PSDisplayColumn.DATATYPE_NUMBER;
+    public  static final String DATATYPE_DATE = PSDisplayColumn.DATATYPE_DATE;
+    public  static final String DATATYPE_IMAGE = PSDisplayColumn.DATATYPE_IMAGE;
 
     public String getRenderType() {
         return renderType;
@@ -218,5 +218,7 @@ public class DisplayFormatColumn {
         this.width = width;
     }
 
-    public DisplayFormatColumn(){}
+    public DisplayFormatColumn(){
+        //default ctor
+    }
 }
