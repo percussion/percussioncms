@@ -31,9 +31,14 @@ import javax.ws.rs.core.Context;
 
 import com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
+import com.percussion.pagemanagement.service.IPSTemplateService;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.sitemanage.data.PSSiteSummary;
+import com.percussion.sitemanage.error.PSSiteImportException;
 
 
 /**
@@ -74,7 +79,7 @@ public interface IPSSiteTemplateService
      * @param type - the type of template. Never <code>null</code>
      * @return list of template summaries, never <code>null</code>, may be <code>empty</code>.
      */
-    List<PSTemplateSummary> findTypedTemplatesBySite(String siteId, PSTemplateTypeEnum type) throws PSValidationException;
+    List<PSTemplateSummary> findTypedTemplatesBySite(String siteId, PSTemplateTypeEnum type) throws PSValidationException, IPSTemplateService.PSTemplateException, IPSDataService.DataServiceNotFoundException;
     
     List<PSSiteSummary> findSitesByTemplate(String templateId);
     
@@ -129,9 +134,9 @@ public interface IPSSiteTemplateService
      *         finished, or if it wasn't possible to retrieve result from the
      *         job.
      */
-    PSTemplateSummary getImportedTemplate(Long jobId);
+    PSTemplateSummary getImportedTemplate(Long jobId) throws PSDataServiceException;
     
-    PSValidationErrors validate(PSSiteTemplates siteTemplates);
+    PSValidationErrors validate(PSSiteTemplates siteTemplates) throws PSBeanValidationException;
     
     /**
      * Copies all templates from the specified source site to the specified target site.  Names, assets, and local
@@ -143,7 +148,7 @@ public interface IPSSiteTemplateService
      * @return map whose key is the source template id (guid string) and associated value is the id (guid string) of the
      * newly created template, never <code>null</code>.
      */
-    Map<String, String> copyTemplates(String site1Id, String site2Id) throws PSValidationException;
+    Map<String, String> copyTemplates(String site1Id, String site2Id) throws PSDataServiceException, PSSiteImportException;
 
     PSTemplateSummary createTemplateFromPage(PSPageToTemplatePair pair);
 

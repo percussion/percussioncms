@@ -126,4 +126,8 @@ public class RestExceptionBase extends WebApplicationException
     {
         this.status = status;
     }
+
+    public RestExceptionBase(Throwable cause){
+        super(cause);
+    }
 }

@@ -79,7 +79,7 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
         PSResourceDefinitionGroup rdg;
         try {
            rdg = dao.find(id);
-        } catch (LoadException e) {
+        } catch (PSDataServiceException e) {
             throw new DataServiceLoadException(e.getMessage(),e);
         }
         if (rdg == null)
@@ -99,8 +99,7 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
      * {@inheritDoc}
      */
     @Override
-    public List<PSResourceDefinition> findAllResources()
-    {
+    public List<PSResourceDefinition> findAllResources() throws PSDataServiceException {
         return dao.findAllResources();
     }
     
@@ -124,7 +123,7 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
     /**
      * {@inheritDoc}
      */
-    public PSAssetResource findDefaultAssetResourceForType(String contentType) throws PSResourceDefinitionNotFoundException
+    public PSAssetResource findDefaultAssetResourceForType(String contentType) throws PSDataServiceException
     {
         PSAssetResource resource = dao.findAssetResourceForType(contentType);
         if (resource == null) 
@@ -137,8 +136,7 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
      * {@inheritDoc}
      */
     @Override
-    public List<PSAssetResource> findAssetResourcesForType(String contentType)
-    {
+    public List<PSAssetResource> findAssetResourcesForType(String contentType) throws PSDataServiceException {
         return dao.findAssetResourcesForType(contentType);
     }
     
@@ -147,8 +145,7 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
      * {@inheritDoc}
      */
     @Override
-    public List<PSAssetResource> findAssetResourcesForLegacyTemplate(String template)
-    {
+    public List<PSAssetResource> findAssetResourcesForLegacyTemplate(String template) throws PSDataServiceException {
         return dao.findAssetResourcesForLegacyTemplate(template);
     }
 

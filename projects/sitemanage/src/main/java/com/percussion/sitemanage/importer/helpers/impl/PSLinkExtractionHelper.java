@@ -41,7 +41,9 @@ import com.percussion.server.IPSHttpErrors;
 import com.percussion.services.assembly.impl.PSReplacementFilter;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
@@ -212,8 +214,7 @@ public class PSLinkExtractionHelper extends PSImportHelper
      * page catalog service
      */
     @Override
-    public void process(final PSPageContent pageContent, final PSSiteImportCtx context) throws PSSiteImportException
-    {
+    public void process(final PSPageContent pageContent, final PSSiteImportCtx context) throws PSSiteImportException, IPSGenericDao.SaveException {
         startTimer();
         final IPSSiteImportLogger log = context.getLogger();
         
@@ -299,7 +300,7 @@ public class PSLinkExtractionHelper extends PSImportHelper
                     link.getElement().attr(PERC_MANAGED_ATTR, "true");
                 }
             }
-            catch (IOException e)
+            catch (IOException | PSDataServiceException e)
             {
                 log.appendLogMessage(PSLogEntryType.ERROR, "Link Extractor", link.getAbsoluteLink()
                         + " could not be retrieved.");
@@ -365,8 +366,7 @@ public class PSLinkExtractionHelper extends PSImportHelper
         return remoteUrl;
     }
 
-    protected String getPathForTargetItem(String siteName, PSLink link)
-    {
+    protected String getPathForTargetItem(String siteName, PSLink link) throws PSDataServiceException {
         // Determine the path
         String pathToTargetItem = getFinderPathForTargetItem(siteName, link.getRelativePathWithFileName());
 
@@ -378,13 +378,12 @@ public class PSLinkExtractionHelper extends PSImportHelper
         return pathToTargetItem;
     }
 
-    protected String getCatalogedItemPath(String siteName, String folderPath, String pageName)
-    {
+    protected String getCatalogedItemPath(String siteName, String folderPath, String pageName) throws PSDataServiceException {
         // find the site
         PSSiteSummary site = getSiteDao().findSummary(siteName);
         if (site == null)
         {
-            throw new RuntimeException("Unable to find cataloged pages, the specified site was not found: " + siteName);
+            throw new PSDataServiceException("Unable to find cataloged pages, the specified site was not found: " + siteName);
         }
 
         // determine paths

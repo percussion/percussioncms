@@ -27,6 +27,7 @@ package com.percussion.sitemanage.service.impl;
 import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.itemmanagement.service.IPSItemService;
 import com.percussion.services.error.PSNotFoundException;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSEnumVals;
 import com.percussion.share.data.PSMapWrapper;
 import com.percussion.share.service.IPSDataService;
@@ -111,7 +112,7 @@ public class PSSiteDataRestService
     {
         try {
             return siteDataService.find(id);
-        } catch (PSValidationException e) {
+        } catch (PSValidationException | IPSGenericDao.LoadException e) {
             throw new WebApplicationException(e);
         }
     }
@@ -243,7 +244,7 @@ public class PSSiteDataRestService
     {
         try {
             return siteDataService.getSitePublishProperties(siteName);
-        } catch (PSValidationException e) {
+        } catch (PSValidationException | PSNotFoundException e) {
             throw new WebApplicationException(e);
         }
     }

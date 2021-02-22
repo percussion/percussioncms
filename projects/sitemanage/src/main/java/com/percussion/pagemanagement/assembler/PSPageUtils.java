@@ -24,7 +24,6 @@
 package com.percussion.pagemanagement.assembler;
 
 import com.percussion.analytics.service.IPSAnalyticsProviderService;
-import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.category.data.PSCategory;
 import com.percussion.category.data.PSCategoryNode;
 import com.percussion.category.extension.PSCategoryControlUtils;
@@ -89,6 +88,7 @@ import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.share.dao.IPSContentItemDao;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.PSHtmlUtils;
 import com.percussion.share.dao.PSJcrNodeFinder;
 import com.percussion.share.dao.impl.PSContentItem;
@@ -305,7 +305,7 @@ public class PSPageUtils extends PSJexlUtilBase
         try {
             Set<String> widgetDefIds = getWidgetDefIds(item);
             return renderLinkService.renderJavascriptLinks(linkContext, widgetDefIds);
-        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException e) {
+        } catch (PSDataServiceException | RepositoryException e) {
             log.error(LOG_ERROR_DEFAULT,"javascriptLinks", e.getMessage());
             log.debug(e.getMessage(),e);
             return new ArrayList<>();
@@ -320,7 +320,7 @@ public class PSPageUtils extends PSJexlUtilBase
         try {
             Set<String> widgetDefIds = getWidgetDefIds(item);
             return renderLinkService.renderCssLinks(linkContext, widgetDefIds);
-        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException e) {
+        } catch (PSDataServiceException | RepositoryException e) {
             log.error(LOG_ERROR_DEFAULT,"cssLinks", e.getMessage());
             log.debug(e.getMessage(),e);
             return new ArrayList<>();
@@ -548,13 +548,10 @@ public class PSPageUtils extends PSJexlUtilBase
      * @return Set of widget definition ids, never <code>null</code>, may be
      *         empty.
      */
-    private Set<String> getWidgetDefIds(IPSAssemblyItem item)
-    {
+    private Set<String> getWidgetDefIds(IPSAssemblyItem item) throws PSDataServiceException, RepositoryException {
         Set<String> widgetDefIds = new HashSet<>();
         if (item == null)
             return widgetDefIds;
-        try
-        {
             PSPage page = getAssemblyItemBridge().getTemplateAndPage(item).getPage();
             PSTemplate template = getAssemblyItemBridge().getTemplateAndPage(item).getTemplate();
             List<PSWidgetItem> widgetList = page.getWidgets(template);
@@ -563,13 +560,7 @@ public class PSPageUtils extends PSJexlUtilBase
             {
                 widgetDefIds.add(psWidgetItem.getDefinitionId());
             }
-        }
-        catch (RepositoryException e)
-        {
-            String errMsg = "Failed to find content for widget definitions for item =" + item.getId().toString();
-            log.error(errMsg, e);
-            throw new RuntimeException(errMsg, e);
-        }
+
         return widgetDefIds;
     }
 
@@ -1780,17 +1771,21 @@ public class PSPageUtils extends PSJexlUtilBase
             {@IPSJexlParam(name = "templateIds", description = "String of comma separated template ids")}, returns = "List of template names")
     public List<String> templateNames(String templateIds)
     {
-        List<String> templateNames = new ArrayList<>();
-        String[] ids = StringUtils.split(templateIds, ',');
-        for (String id : ids)
-        {
-            PSTemplateSummary summary = templateService.find(id);
-            if (summary != null)
-            {
-                templateNames.add(summary.getName());
+        try {
+            List<String> templateNames = new ArrayList<>();
+            String[] ids = StringUtils.split(templateIds, ',');
+            for (String id : ids) {
+                PSTemplateSummary summary = templateService.find(id);
+                if (summary != null) {
+                    templateNames.add(summary.getName());
+                }
             }
+            return templateNames;
+        } catch (PSDataServiceException e) {
+            log.error(LOG_ERROR_DEFAULT,"templateNames",e.getMessage());
+            log.debug(e.getMessage(),e);
+            return new ArrayList<>();
         }
-        return templateNames;
     }
 
     /**
@@ -2859,8 +2854,7 @@ public class PSPageUtils extends PSJexlUtilBase
      * @return the web property ID. It may be empty if it is not configured for
      *         the site.
      */
-    public String getWebPropertyId(String sitename)
-    {
+    public String getWebPropertyId(String sitename) throws IPSGenericDao.LoadException {
         if (StringUtils.isBlank(sitename))
             return "";
         String webPropertyId = analyticsProviderService.getWebPropertyId(sitename);
@@ -2878,8 +2872,7 @@ public class PSPageUtils extends PSJexlUtilBase
      * @return the API key. It may be empty if the site name is blank or the
      *         google API key is not configure for the site.
      */
-    public String getGoogleApiKey(String sitename)
-    {
+    public String getGoogleApiKey(String sitename) throws IPSGenericDao.LoadException {
         if (StringUtils.isBlank(sitename))
             return "";
 

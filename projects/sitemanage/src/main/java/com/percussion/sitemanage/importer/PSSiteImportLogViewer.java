@@ -40,6 +40,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -67,115 +68,106 @@ public class PSSiteImportLogViewer extends HttpServlet  {
     /**
      * Gets the log entry for a specific template id and returns the information as a txt file
      * @author federicoromanelli
-     * @throws IOException
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-        throws IOException
-    {
-        String templateId   = request.getParameter("templateId");
-        String siteName     = request.getParameter("siteName");
-        boolean existsFlag   = ("true".equalsIgnoreCase(request.getParameter("exists"))? true : false);
-        
-                
-        PSSite site = null;
-        if (StringUtils.isBlank(templateId) && !StringUtils.isBlank(siteName))
-        {
-            try
-            {
-                site = siteDao.find(siteName);
-                if (site==null)
-                {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load site: " + siteName);
-                    return;   
-                }
-                templateId = site.getBaseTemplateName();
-            }
-            catch (PSDataServiceException e)
-            {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load site: " + siteName);
-                return;                
-            }
-        }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+        try {
+            String templateId = request.getParameter("templateId");
+            String siteName = request.getParameter("siteName");
+            boolean existsFlag = ("true".equalsIgnoreCase(request.getParameter("exists")));
 
-        List<PSImportLogEntry> logs = null;
-        String templateName = "";
-        if (!StringUtils.isBlank(templateId))
-        {
-            PSTemplateSummary sum = templateService.find(templateId);
-            if (sum != null)
-            {
-                templateName = sum.getName();
-                logs = logDao.findAll(templateId, PSLogObjectType.TEMPLATE.name());
-            }
-        }
-        
-        if (logs == null || logs.isEmpty())
-        {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't find import log");
-            return;
-        }
 
-        if (existsFlag)
-        {
-            response.sendError(HttpServletResponse.SC_OK, "Import log exists");
-            return;
-        }
-        
-        if (StringUtils.isBlank(siteName))
-        {
-            try
-            {
-                siteName = siteMgr.getItemSites(idMapper.getGuid(templateId)).get(0).getName();
-                site = siteDao.find(siteName);
-            }
-            catch (PSDataServiceException e)
-            {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load for template: " + templateName);
-                return; 
-            }
-        }
-
-        
-        PSImportLogEntry templateLogEntry = getLatestLogEntry(logs);
-        
-        // now see if template is home page template, if so, get all page import logs for the site
-        List<Long> pageLogIds = null;
-        if (templateName.equals(site.getTemplateName()))
-        {
-            try
-            {
-                List<String> itemIds = folderHelper.findItemIdsByPath(site.getFolderPath());
-                pageLogIds = logDao.findLogIdsForObjects(itemIds, PSLogObjectType.PAGE.name());
-            }
-            catch (Exception e)
-            {
-                log.error("Failed to load page import logs for Site: " + siteName); 
-            }
-        }
-        
-        // Get all pages in site (see search) - .25
-        // Get all logids for those pages, sort them ascending - .25
-        // For each, get and stream output - .25
-       
-        response.setContentType("text/plain");
-        response.setHeader("Content-Disposition", "attachment;filename=" + siteName + "-" + templateName + "-importlog.txt");
-        PrintWriter out = response.getWriter();        
-        if (templateLogEntry != null)
-        {
-            out.println(templateLogEntry.getLogData());
-        }
-        
-        // now write out each page's log
-        if (pageLogIds != null)
-        {
-            for (Long pageLogId : pageLogIds)
-            {
-                PSImportLogEntry pageLog = logDao.findLogEntryById(pageLogId);
-                if (pageLog != null)
-                {
-                    out.println(pageLog.getLogData());
+            PSSite site = null;
+            if (StringUtils.isBlank(templateId) && !StringUtils.isBlank(siteName)) {
+                try {
+                    site = siteDao.find(siteName);
+                    if (site == null) {
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load site: " + siteName);
+                        return;
+                    }
+                    templateId = site.getBaseTemplateName();
+                } catch (PSDataServiceException e) {
+                    log.error(e.getMessage());
+                    log.debug(e.getMessage(), e);
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Couldn't load site: " + siteName);
+                    return;
                 }
             }
+
+            List<PSImportLogEntry> logs = null;
+            String templateName = "";
+            if (!StringUtils.isBlank(templateId)) {
+                try {
+                    PSTemplateSummary sum = templateService.find(templateId);
+                    if (sum != null) {
+                        templateName = sum.getName();
+                        logs = logDao.findAll(templateId, PSLogObjectType.TEMPLATE.name());
+                    }
+                } catch (PSDataServiceException e) {
+                    log.error(e.getMessage());
+                    log.debug(e.getMessage(), e);
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+                    return;
+                }
+            }
+
+            if (logs == null || logs.isEmpty()) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't find import log");
+                return;
+            }
+
+            if (existsFlag) {
+                response.sendError(HttpServletResponse.SC_OK, "Import log exists");
+                return;
+            }
+
+            if (StringUtils.isBlank(siteName)) {
+                try {
+                    siteName = siteMgr.getItemSites(idMapper.getGuid(templateId)).get(0).getName();
+                    site = siteDao.find(siteName);
+                } catch (PSDataServiceException e) {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load for template: " + templateName);
+                    return;
+                }
+            }
+
+
+            PSImportLogEntry templateLogEntry = getLatestLogEntry(logs);
+
+            // now see if template is home page template, if so, get all page import logs for the site
+            List<Long> pageLogIds = null;
+
+            if (site !=null && templateName.equals(site.getTemplateName())) {
+                try {
+                    List<String> itemIds = folderHelper.findItemIdsByPath(site.getFolderPath());
+                    pageLogIds = logDao.findLogIdsForObjects(itemIds, PSLogObjectType.PAGE.name());
+                } catch (Exception e) {
+                    log.error("Failed to load page import logs for Site: " + siteName);
+                }
+            }
+
+            // Get all pages in site (see search) - .25
+            // Get all logids for those pages, sort them ascending - .25
+            // For each, get and stream output - .25
+
+            response.setContentType("text/plain");
+            response.setHeader("Content-Disposition", "attachment;filename=" + siteName + "-" + templateName + "-importlog.txt");
+            PrintWriter out = response.getWriter();
+            if (templateLogEntry != null) {
+                out.println(templateLogEntry.getLogData());
+            }
+
+            // now write out each page's log
+            if (pageLogIds != null) {
+                for (Long pageLogId : pageLogIds) {
+                    PSImportLogEntry pageLog = logDao.findLogEntryById(pageLogId);
+                    if (pageLog != null) {
+                        out.println(pageLog.getLogData());
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new ServletException(e);
         }
     }
 
@@ -199,9 +191,8 @@ public class PSSiteImportLogViewer extends HttpServlet  {
      * @author federicoromanelli
      * @throws IOException
      */    
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
-        throws IOException
-    {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException {
         doGet(req, resp);
     }
     

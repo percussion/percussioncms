@@ -30,6 +30,7 @@ import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.share.dao.IPSGenericDao.LoadException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.dao.impl.PSSiteContentDao;
@@ -37,6 +38,7 @@ import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.data.PSSiteSummary;
+import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
 import com.percussion.sitemanage.importer.PSSiteImportLogger;
 import com.percussion.sitemanage.importer.helpers.impl.PSSiteCreationHelper;
@@ -91,8 +93,7 @@ public class PSSiteCreationHelperTest extends ServletTestCase
     }
 
     @Test
-    public void test010CreateSite()
-    {
+    public void test010CreateSite() throws PSDataServiceException, PSSiteImportException {
         assertNotNull(siteCreationHelper);
         siteCreationHelper.process(pageContent, importContext);
         

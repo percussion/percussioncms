@@ -30,6 +30,7 @@ import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
 import com.percussion.share.service.IPSDataService.DataServiceSaveException;
 import com.percussion.share.service.IPSReadOnlyDataService;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.theme.data.PSRegionCSS;
 import com.percussion.theme.data.PSRegionCssList;
@@ -151,7 +152,7 @@ public interface IPSThemeService extends IPSCatalogService<PSThemeSummary, Strin
      * @param templatename the template name, not blank
      * @param deletedRegions
      */
-    public void mergeRegionCSS(String theme, String templatename, PSRegionCssList deletedRegions) throws IPSDataService.PSThemeNotFoundException;
+    public void mergeRegionCSS(String theme, String templatename, PSRegionCssList deletedRegions) throws PSDataServiceException;
     
     /**
      * Prepare for editing the region CSS file. It copies the file from the location of the theme

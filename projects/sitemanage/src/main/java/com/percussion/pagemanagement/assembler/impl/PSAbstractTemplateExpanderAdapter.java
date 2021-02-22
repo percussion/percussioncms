@@ -98,7 +98,7 @@ public abstract class PSAbstractTemplateExpanderAdapter<CACHE> implements IPSTem
      * 
      * @see #clone(PSContentListItem)
      */
-    protected abstract List<PSContentListItem> expandContentListItem(PSContentListItem contentListItem, Map<String, String> parameters);
+    protected abstract List<PSContentListItem> expandContentListItem(PSContentListItem contentListItem, Map<String, String> parameters) throws PSDataServiceException;
     
     @Override
     public List<PSContentListItem> expand(QueryResult results, Map<String, String> parameters,
@@ -138,7 +138,7 @@ public abstract class PSAbstractTemplateExpanderAdapter<CACHE> implements IPSTem
                 
             }
         }
-        catch (RepositoryException e)
+        catch (RepositoryException | PSDataServiceException e)
         {
             throw new PSPublisherException(IPSPublisherServiceErrors.RUNTIME_ERROR, e, e.getLocalizedMessage());
         }

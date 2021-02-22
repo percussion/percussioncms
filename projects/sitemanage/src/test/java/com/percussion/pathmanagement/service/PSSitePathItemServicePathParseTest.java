@@ -81,8 +81,7 @@ public class PSSitePathItemServicePathParseTest
         
     }
     
-    public void assertExtraction(String path, String expectedSiteId, String expectedFolderPath)
-    {
+    public void assertExtraction(String path, String expectedSiteId, String expectedFolderPath) throws PSPathNotFoundServiceException {
         SiteIdAndFolderPath sfp = ps.getSiteIdAndFolderPath(path);
         assertEquals("Site Id", expectedSiteId,sfp.getSiteId());
         assertEquals("Folder path", expectedFolderPath, sfp.getFullFolderPath(siteFolderPath));
@@ -95,8 +94,7 @@ public class PSSitePathItemServicePathParseTest
         }
 
         @Override
-        public SiteIdAndFolderPath getSiteIdAndFolderPath(String path)
-        {
+        public SiteIdAndFolderPath getSiteIdAndFolderPath(String path) throws PSPathNotFoundServiceException {
             return super.getSiteIdAndFolderPath(path);
         }
         

@@ -33,6 +33,7 @@ import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.data.PSWidgetDefinition.UserPref;
 import com.percussion.pagemanagement.data.PSWidgetDefinition.AbstractUserPref.EnumValue;
 import com.percussion.pagemanagement.service.impl.PSWidgetUserPropertiesValidator;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSPropertiesValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 
@@ -176,19 +177,19 @@ public class PSWidgetServiceValidationTest
         assertPropertyInvalid("enum", "d", enumPref);
     }
     
-    private PSPropertiesValidationException validate(String field, Object value, UserPref userPref) {
+    private PSPropertiesValidationException validate(String field, Object value, UserPref userPref) throws PSDataServiceException {
         definition.getUserPref().add(userPref);
         expectDefinition("wid");
         widgetItem.getProperties().put(field, value);
         return validator.validate(widgetItem);
     }
     
-    private void assertPropertyValid(String field, Object value, UserPref userPref) {
+    private void assertPropertyValid(String field, Object value, UserPref userPref) throws PSDataServiceException {
         PSPropertiesValidationException e = validate(field,value,userPref);
         assertFalse(e.hasErrors());
     }
     
-    private void assertPropertyInvalid(String field, Object value, UserPref userPref) {
+    private void assertPropertyInvalid(String field, Object value, UserPref userPref) throws PSDataServiceException {
         PSPropertiesValidationException e = validate(field, value, userPref);
         assertTrue("should have errors", e.hasErrors());
         assertEquals("should equal value", value, e.getFieldValue(field));
@@ -204,7 +205,7 @@ public class PSWidgetServiceValidationTest
         return up;
     }
     
-    private void expectDefinition(final String id) {
+    private void expectDefinition(final String id) throws PSDataServiceException {
         context.checking(new Expectations() {{
             one(widgetService).load(with(any(String.class)));
             will(returnValue(definition));;

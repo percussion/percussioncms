@@ -25,6 +25,8 @@ package com.percussion.share.service;
 
 import java.util.List;
 
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
@@ -68,22 +70,19 @@ public class PSAbstractFullDataServiceTest
     }
     
     @Test(expected=PSParametersValidationException.class)
-    public void shouldThrowValidationExceptionOnInvalidFindParameter()
-    {
+    public void shouldThrowValidationExceptionOnInvalidFindParameter() throws PSDataServiceException {
         sut.find(null);
     }
     
     @SuppressWarnings("unchecked")
     @Test(expected=PSParametersValidationException.class)
-    public void shouldThrowValidationExceptionOnInvalidLoadParameter()
-    {
+    public void shouldThrowValidationExceptionOnInvalidLoadParameter() throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         sut.load(null);
     }
     
     @SuppressWarnings("unchecked")
     @Test(expected=PSParametersValidationException.class)
-    public void shouldThrowValidationExceptionOnInvalidDeleteParameter()
-    {
+    public void shouldThrowValidationExceptionOnInvalidDeleteParameter() throws PSDataServiceException {
         sut.delete(null);
     }
     

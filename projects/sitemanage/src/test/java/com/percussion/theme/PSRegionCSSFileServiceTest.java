@@ -32,6 +32,8 @@ import static org.junit.Assert.assertTrue;
 
 import com.percussion.pagemanagement.data.PSRegionTree;
 import com.percussion.pagemanagement.data.PSRegionTreeTest;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.theme.data.PSRegionCSS;
 import com.percussion.theme.data.PSThemeSummary;
 import com.percussion.theme.data.PSRegionCSS.Property;
@@ -234,22 +236,19 @@ public class PSRegionCSSFileServiceTest
         return regionCSS;
     }
     
-    private List<PSRegionCSS> readFromSampleFile()
-    {
+    private List<PSRegionCSS> readFromSampleFile() throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, PSValidationException {
         List<PSRegionCSS> regions = cssService.read(getSampleFilePath());
         return regions;
     }
 
-    private String getSampleFilePath()
-    {
+    private String getSampleFilePath() throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         PSThemeSummary summary = themeService.find("test");
         assertNotNull("Region CSS file", summary.getRegionCssFilePath());
         
         return getRegionCssFile(summary);
     }
 
-    private List<PSRegionCSS> writeToTempFileThenRead(List<PSRegionCSS> regions) throws IOException
-    {
+    private List<PSRegionCSS> writeToTempFileThenRead(List<PSRegionCSS> regions) throws IOException, IPSDataService.PSThemeNotFoundException {
         PSPurgableTempFile tempCss = new PSPurgableTempFile("temp", "css", null);
         try
         {
@@ -262,8 +261,7 @@ public class PSRegionCSSFileServiceTest
         }
     }
 
-    private PSPurgableTempFile copySampleToTempFile() throws IOException
-    {
+    private PSPurgableTempFile copySampleToTempFile() throws IOException, IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         PSPurgableTempFile tempCss = createTempCssFile();
         List<PSRegionCSS> regions = readFromSampleFile();
         cssService.write(tempCss.getAbsolutePath(), regions);

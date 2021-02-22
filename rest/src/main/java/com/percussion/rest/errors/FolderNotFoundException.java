@@ -41,4 +41,8 @@ public class FolderNotFoundException extends RestExceptionBase
     {
         super(RestErrorCode.FOLDER_NOT_FOUND, null, null, Response.Status.NOT_FOUND);
     }
+
+    public FolderNotFoundException(Throwable cause){
+	    super(cause);
+    }
 }

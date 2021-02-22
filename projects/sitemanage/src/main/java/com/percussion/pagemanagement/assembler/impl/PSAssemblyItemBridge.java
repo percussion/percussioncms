@@ -23,33 +23,6 @@
  */
 package com.percussion.pagemanagement.assembler.impl;
 
-import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PERC_RESOURCE_BINDING_NAME;
-import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PERC_RESOURCE_ID_PARAM_NAME;
-import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PREVIEW_PAGE_BINDING_NAME;
-import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PREVIEW_TEMPLATE_BINDING_NAME;
-import static java.util.Arrays.asList;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.removeStart;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.util.Collections;
-import java.util.List;
-
-import javax.jcr.Node;
-import javax.jcr.RepositoryException;
-
-import com.percussion.services.assembly.PSAssemblyException;
-import com.percussion.services.filter.PSFilterException;
-import com.percussion.share.service.IPSDataService;
-import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSValidationException;
-import com.percussion.util.PSSiteManageBean;
-import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-
 import com.percussion.assetmanagement.data.PSAssetSummary;
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
@@ -60,12 +33,12 @@ import com.percussion.pagemanagement.assembler.PSRenderAsset;
 import com.percussion.pagemanagement.data.PSEmptyPage;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSRenderLinkContext;
+import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.pagemanagement.data.PSResourceInstance;
 import com.percussion.pagemanagement.data.PSResourceLinkAndLocation;
 import com.percussion.pagemanagement.data.PSResourceLocation;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
-import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSRenderLinkService;
 import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
@@ -74,21 +47,45 @@ import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.rx.publisher.IPSAssemblyResultExpander;
 import com.percussion.services.assembly.IPSAssemblyItem;
+import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.contentmgr.IPSNode;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
+import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.publisher.data.PSContentListItem;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.PSJcrNodeMap;
 import com.percussion.share.data.PSItemSummaryUtils;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.sitemanage.service.IPSSiteTemplateService;
 import com.percussion.util.IPSHtmlParameters;
+import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentDesignWs;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+import java.util.Collections;
+import java.util.List;
+
+import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PERC_RESOURCE_BINDING_NAME;
+import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PERC_RESOURCE_ID_PARAM_NAME;
+import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PREVIEW_PAGE_BINDING_NAME;
+import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PREVIEW_TEMPLATE_BINDING_NAME;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.removeStart;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 
 /**
@@ -359,7 +356,7 @@ public class PSAssemblyItemBridge {
      * @param assemblyItem never <code>null</code>.
      * @return never <code>null</code> maybe empty.
      */
-    public List<PSAssetResource> getResourceDefinitions(IPSAssemblyItem assemblyItem) throws IPSResourceDefinitionService.PSResourceDefinitionNotFoundException {
+    public List<PSAssetResource> getResourceDefinitions(IPSAssemblyItem assemblyItem) throws PSDataServiceException {
         String contentType = getContentType(assemblyItem);
         if (IPSPageService.PAGE_CONTENT_TYPE.equals(contentType))
         {
@@ -532,7 +529,7 @@ public class PSAssemblyItemBridge {
      * @return never <code>null</code>.
      * @throws RepositoryException
      */
-    public TemplateAndPage getTemplateAndPage(IPSAssemblyItem item) throws RepositoryException {
+    public TemplateAndPage getTemplateAndPage(IPSAssemblyItem item) throws RepositoryException, PSDataServiceException {
         String contentType = ((IPSNodeDefinition) ((IPSNode) item.getNode()).getDefinition()).getInternalName();
         log.debug("Getting template and page for assembly item: " + item.getId() + " of type: " + contentType);
         TemplateAndPage tp = new TemplateAndPage();
@@ -668,7 +665,7 @@ public class PSAssemblyItemBridge {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSAssemblyItemBridge.class);
+    private static final Logger log = LogManager.getLogger(PSAssemblyItemBridge.class);
     
     
 }

@@ -23,11 +23,14 @@
  */
 package com.percussion.searchmanagement.service;
 
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.data.PSPagedItemPropertiesList;
 import com.percussion.searchmanagement.data.PSSearchCriteria;
 import com.percussion.searchmanagement.error.PSSearchServiceException;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSValidationException;
 
 import java.util.List;
 
@@ -42,7 +45,7 @@ public interface IPSSearchService
      *         empty.
      * @throws <code>PSFinderServiceException</code> if any error occurs.
      */
-    public PSPagedItemList search(PSSearchCriteria criteria) throws PSSearchServiceException;
+    public PSPagedItemList search(PSSearchCriteria criteria) throws PSSearchServiceException, PSValidationException, PSNotFoundException, IPSDataService.DataServiceLoadException;
     
     /**
      * Creates the search result objects for the supplied content ids and returns them.
@@ -52,7 +55,7 @@ public interface IPSSearchService
      *         empty.
      * @throws PSSearchServiceException
      */
-    public PSPagedItemList search(PSSearchCriteria criteria, List<Integer> contentIdList) throws PSSearchServiceException;
+    public PSPagedItemList search(PSSearchCriteria criteria, List<Integer> contentIdList) throws PSSearchServiceException, PSValidationException, PSNotFoundException, IPSDataService.DataServiceLoadException;
     
     /**
      * Retrieve the items found after performing a full text search for the

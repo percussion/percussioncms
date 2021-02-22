@@ -23,6 +23,8 @@
  */
 package com.percussion.pagemanagement.service;
 
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSValidationException;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -110,21 +112,18 @@ public class PSTemplateServiceValidationTest
     }
     
     @Test
-    public void shouldNotFail()
-    {
+    public void shouldNotFail() throws IPSDataService.DataServiceSaveException, PSValidationException {
         sut.validate(template);
     }
     
     @Test(expected=PSBeanValidationException.class)
-    public void shouldFailWithBadEmptyName()
-    {
+    public void shouldFailWithBadEmptyName() throws IPSDataService.DataServiceSaveException, PSValidationException {
         template.setName("");
         sut.validate(template);
     }
     
     @Test(expected=PSBeanValidationException.class)
-    public void shouldFailWithBadRegionTree()
-    {
+    public void shouldFailWithBadRegionTree() throws IPSDataService.DataServiceSaveException, PSValidationException {
         template.setRegionTree(new PSRegionTree());
         sut.validate(template);
     }

@@ -106,7 +106,7 @@ public interface IPSRenderLinkService
      * @param widgetDefIds set of widget definitions whose JavaScript  resource definitions needs to be returned.
      * @return javascript links in correct order, never <code>null</code> but maybe empty.
      */
-    public List<PSRenderLink> renderJavascriptLinks(PSRenderLinkContext context, Set<String> widgetDefIds) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException;
+    public List<PSRenderLink> renderJavascriptLinks(PSRenderLinkContext context, Set<String> widgetDefIds) throws PSDataServiceException;
     
     /**
      * All CSS links from the resource definitions that match the the supplied widget definitions in order based on the resources dependency,
@@ -116,7 +116,7 @@ public interface IPSRenderLinkService
      * @param widgetDefIds set of widget definitions whose css  resource definitions needs to be returned.
      * @return css links in correct order, never <code>null</code> but maybe empty.
      */
-    public List<PSRenderLink> renderCssLinks(PSRenderLinkContext context, Set<String> widgetDefIds) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException;
+    public List<PSRenderLink> renderCssLinks(PSRenderLinkContext context, Set<String> widgetDefIds) throws PSDataServiceException;
     
     /**
      * Renders a preview link to a file.
@@ -141,7 +141,7 @@ public interface IPSRenderLinkService
      * @return never <code>null</code>.
      * @see PSInlineLinkRequest
      */
-    public PSInlineRenderLink renderPreviewResourceLink(PSInlineLinkRequest inlineLinkRequest) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException;
+    public PSInlineRenderLink renderPreviewResourceLink(PSInlineLinkRequest inlineLinkRequest) throws PSDataServiceException;
     
     
     /**
