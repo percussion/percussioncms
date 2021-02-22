@@ -97,9 +97,6 @@ public class PSUpgradeRepository extends PSAction
       String strPw;
       String strDb;
       String strSchema;
-      FileInputStream repPropsIn = null;
-      FileInputStream serverPropsIn = null;
-      FileOutputStream repPropsOut = null;
 
       try
       {
@@ -110,9 +107,9 @@ public class PSUpgradeRepository extends PSAction
          // Backup original file
          InstallUtil.backupRepositoryPropertyFile(strRootDir);
 
-         repPropsIn = new FileInputStream(repPropFile);
-         repProps.load(repPropsIn);
-         repPropsIn.close();
+         try(FileInputStream repPropsIn = new FileInputStream(repPropFile)){
+            repProps.load(repPropsIn);
+         }
 
 
          // This is an upgrade of 6.X and up, load repository info from
@@ -136,8 +133,9 @@ public class PSUpgradeRepository extends PSAction
          repProps.setProperty(PSJdbcDbmsDef.DB_NAME_PROPERTY, strDb);
          repProps.setProperty(PSJdbcDbmsDef.DB_SCHEMA_PROPERTY, strSchema);
 
-         repPropsOut = new FileOutputStream(repPropFile);
-         repProps.store(repPropsOut, null);
+         try(FileOutputStream repPropsOut = new FileOutputStream(repPropFile)) {
+            repProps.store(repPropsOut, null);
+         }
       }
       catch (Exception e)
       {
@@ -150,41 +148,6 @@ public class PSUpgradeRepository extends PSAction
          }
          catch (Exception e2)
          {
-         }
-      }
-      finally
-      {
-         if (repPropsIn != null)
-         {
-            try
-            {
-               repPropsIn.close();
-            }
-            catch (IOException e)
-            {
-            }
-         }
-
-         if (serverPropsIn != null)
-         {
-            try
-            {
-               serverPropsIn.close();
-            }
-            catch (IOException e)
-            {
-            }
-         }
-
-         if (repPropsOut != null)
-         {
-            try
-            {
-               repPropsOut.close();
-            }
-            catch (IOException e)
-            {
-            }
          }
       }
    }
