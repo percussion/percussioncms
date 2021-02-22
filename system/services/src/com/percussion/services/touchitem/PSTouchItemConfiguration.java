@@ -62,21 +62,21 @@ public class PSTouchItemConfiguration implements InitializingBean
     * Set of touch item configurations.
     */
    private Set<PSTouchItemConfigBean> touchItemConfig =
-      new HashSet<PSTouchItemConfigBean>();
+      new HashSet<>();
    
    /**
     * Map whose key is a source content type id and value is the
     * set of touch item configurations for the source type.
     */
    private Map<Long, Set<PSTouchItemConfigBean>> touchItemConfigMap =
-      new HashMap<Long, Set<PSTouchItemConfigBean>>();
+      new HashMap<>();
    
    /**
     * Map whose key is a source content type id and value is a map of 
     * levels to target types for the source type.
     */
    private Map<Long, Map<Integer, Set<String>>> sourceLevelTargetMap =
-      new HashMap<Long, Map<Integer, Set<String>>>();
+      new HashMap<>();
    
    /**
     * See {@link #getMinimumLevel()}.
@@ -145,7 +145,7 @@ public class PSTouchItemConfiguration implements InitializingBean
       }
       
       Map<Integer, Set<String>> levelTargets =
-         new HashMap<Integer, Set<String>>();
+         new HashMap<>();
       
       Set<PSTouchItemConfigBean> configs = 
          getTouchItemConfigMap().get(id);
@@ -157,7 +157,7 @@ public class PSTouchItemConfiguration implements InitializingBean
             Set<String> targetTypes = config.getTargetTypes();
             if (!levelTargets.containsKey(level))
             {
-               Set<String> targetTypesSet = new HashSet<String>();
+               Set<String> targetTypesSet = new HashSet<>();
                targetTypesSet.addAll(targetTypes);
                levelTargets.put(level, targetTypesSet);
             }
@@ -188,7 +188,7 @@ public class PSTouchItemConfiguration implements InitializingBean
       }
       
       Map<Long, Set<PSTouchItemConfigBean>> configMap = 
-         new HashMap<Long, Set<PSTouchItemConfigBean>>();
+         new HashMap<>();
       for (PSTouchItemConfigBean config : getTouchItemConfig())
       {  
          for (String name : config.getSourceTypes())
@@ -197,7 +197,7 @@ public class PSTouchItemConfiguration implements InitializingBean
             if (!configMap.containsKey(id))
             {
                Set<PSTouchItemConfigBean> touchItemConfigBeans =
-                  new HashSet<PSTouchItemConfigBean>();
+                  new HashSet<>();
                touchItemConfigBeans.add(config);
                configMap.put(id, touchItemConfigBeans);
             }

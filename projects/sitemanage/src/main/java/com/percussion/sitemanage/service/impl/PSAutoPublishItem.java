@@ -1,4 +1,4 @@
-/*
+/*========================p;;;;;;;;;;;;;;/*
  *     Percussion CMS
  *     Copyright (C) 1999-2020 Percussion Software, Inc.
  *
@@ -30,26 +30,29 @@ import com.percussion.extension.IPSWorkflowAction;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.itemmanagement.service.IPSItemService;
+import com.percussion.itemmanagement.service.IPSItemWorkflowService;
+import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.rx.publisher.IPSPublisherJobStatus;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.service.IPSDataItemSummaryService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.data.PSSitePublishResponse;
 import com.percussion.sitemanage.service.IPSSitePublishService;
 import com.percussion.sitemanage.service.IPSSitePublishService.PubType;
-import com.percussion.webservices.PSWebserviceUtils;
-
-import java.io.File;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.io.File;
+
 /**
  * This is a workflow action that gets executed by the aging agent, Gets the locator from the supplied workflow context 
- * and calls the {@link IPSSitePublishService#publish(String, PubType, String, boolean)} to do the actual work.
+ * and calls the  to do the actual work.
  * Uses the type as PubType.PUBLISH_NOW.
  * 
  */
@@ -72,22 +75,25 @@ public class PSAutoPublishItem extends PSDefaultExtension implements
    /*
     * //see base class method for details
     */
-    public void performAction(IPSWorkFlowContext arg0, IPSRequestContext arg1) throws PSExtensionProcessingException
-    {
-        PSLocator loc = new PSLocator(arg0.getContentID(), arg0.getBaseRevisionNum());
-        String cguid = idMapper.getString(loc);
-        IPSItemSummary sum = itemSummaryService.find(cguid);
-        PSSitePublishResponse response = sitePublishService.publish(null, PubType.PUBLISH_NOW, cguid, sum.isResource(),
-                null);
-        if (response != null
-                && StringUtils.equalsIgnoreCase(IPSPublisherJobStatus.State.FORBIDDEN.toString(), response.getStatus()))
-        {
-            log.warn("Publication has been stopped because the license is inactive or suspended, or its usage limits have been exceeded. Please check the License Monitor Gadget on the Dashboard.");
-        }
-        if (response != null && response.getWarningMessage() != "")
-        {
-            log.warn(response.getWarningMessage());
-        }
+    public void performAction(IPSWorkFlowContext arg0, IPSRequestContext arg1) throws PSExtensionProcessingException, PSDataServiceException,   PSNotFoundException {
+       try {
+           PSLocator loc = new PSLocator(arg0.getContentID(), arg0.getBaseRevisionNum());
+           String cguid = idMapper.getString(loc);
+           IPSItemSummary sum = itemSummaryService.find(cguid);
+           PSSitePublishResponse response = sitePublishService.publish(null, PubType.PUBLISH_NOW, cguid, sum.isResource(),
+                   null);
+           if (response != null
+                   && StringUtils.equalsIgnoreCase(IPSPublisherJobStatus.State.FORBIDDEN.toString(), response.getStatus())) {
+               log.warn("Publication has been stopped because the license is inactive or suspended, or its usage limits have been exceeded. Please check the License Monitor Gadget on the Dashboard.");
+           }
+           if (response != null && response.getWarningMessage() != "") {
+               log.warn(response.getWarningMessage());
+           }
+       } catch (IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException e) {
+           log.error(e.getMessage());
+           log.debug(e.getMessage(),e);
+           throw new PSExtensionProcessingException(e.getMessage(),e);
+       }
     }
    
    //Getters and setters for the services

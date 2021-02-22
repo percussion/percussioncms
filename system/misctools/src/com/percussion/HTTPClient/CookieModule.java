@@ -122,14 +122,9 @@ public class CookieModule implements HTTPClientModule
 
 	    cookieSaver = new Object()
 		{
-		    public void finalize() { saveCookies(); }
+		    protected void finalize() { saveCookies(); }
 		};
-/*
-	    try
-		{ System.runFinalizersOnExit(true); }
-	    catch (Throwable t)
-		{ }
-*/
+
 	}
     }
 

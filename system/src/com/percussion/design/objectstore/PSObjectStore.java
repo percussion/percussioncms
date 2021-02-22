@@ -43,7 +43,6 @@ import com.percussion.services.security.data.PSCatalogerConfig;
 import com.percussion.tablefactory.PSJdbcTableSchemaCollection;
 import com.percussion.util.PSCollection;
 import com.percussion.utils.container.IPSJndiDatasource;
-import com.percussion.utils.container.PSContainerUtilsFactory;
 import com.percussion.utils.container.jboss.PSJBossJndiDatasource;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSDatasourceResolver;
@@ -1541,7 +1540,7 @@ public class PSObjectStore
     *                                     application by the same name
     *                                     already exists
     *
-    * @throws PSValidationException    if validate is <code>true</code>
+    * @throws PSSystemValidationException    if validate is <code>true</code>
     *                                     and a validation error is
     *                                     encountered
     *
@@ -1554,7 +1553,7 @@ public class PSObjectStore
       throws PSServerException, PSAuthorizationException,
       PSAuthenticationFailedException,
       PSNotLockedException, PSNonUniqueException,
-      PSValidationException, PSVersionConflictException
+           PSSystemValidationException, PSVersionConflictException
    {
       /* format the request as an XML document
        * this is tricky due to the DOM rules, so we must let the app
@@ -1641,8 +1640,8 @@ public class PSObjectStore
                throw (PSNonUniqueException)throwExc;
             else if (throwExc instanceof PSNotLockedException)
                throw (PSNotLockedException)throwExc;
-            else if (throwExc instanceof PSValidationException)
-               throw (PSValidationException)throwExc;
+            else if (throwExc instanceof PSSystemValidationException)
+               throw (PSSystemValidationException)throwExc;
             else if (throwExc instanceof PSVersionConflictException)
                throw (PSVersionConflictException)throwExc;
          }
@@ -1680,7 +1679,7 @@ public class PSObjectStore
     *                                     expired or getApplication was not
     *                                     used to lock the application)
     *
-    * @throws PSValidationException    if validate is <code>true</code>
+    * @throws PSSystemValidationException    if validate is <code>true</code>
     *                                     and a validation error is
     *                                     encountered
     *
@@ -1695,7 +1694,7 @@ public class PSObjectStore
          PSAuthorizationException,
          PSAuthenticationFailedException,
          PSNotLockedException,
-         PSValidationException
+           PSSystemValidationException
    {
       Document saveFileDoc = PSXmlDocumentBuilder.createXmlDocument();
       Element root = PSXmlDocumentBuilder.createRoot(
@@ -1719,8 +1718,8 @@ public class PSObjectStore
                throw (PSAuthorizationException)throwExc;
             else if (throwExc instanceof PSNotLockedException)
                throw (PSNotLockedException)throwExc;
-            else if (throwExc instanceof PSValidationException)
-               throw (PSValidationException)throwExc;
+            else if (throwExc instanceof PSSystemValidationException)
+               throw (PSSystemValidationException)throwExc;
          }
          throw e;
       }
@@ -1760,7 +1759,7 @@ public class PSObjectStore
     *                                     expired or getApplication was not
     *                                     used to lock the application)
     *
-    * @throws PSValidationException    if validate is <code>true</code>
+    * @throws PSSystemValidationException    if validate is <code>true</code>
     *                                     and a validation error is
     *                                     encountered
     *
@@ -1776,7 +1775,7 @@ public class PSObjectStore
          PSAuthorizationException,
          PSAuthenticationFailedException,
          PSNotLockedException,
-         PSValidationException
+           PSSystemValidationException
    {
       Document saveFileDoc = PSXmlDocumentBuilder.createXmlDocument();
       Element root = PSXmlDocumentBuilder.createRoot(
@@ -1801,8 +1800,8 @@ public class PSObjectStore
                throw (PSAuthorizationException)throwExc;
             else if (throwExc instanceof PSNotLockedException)
                throw (PSNotLockedException)throwExc;
-            else if (throwExc instanceof PSValidationException)
-               throw (PSValidationException)throwExc;
+            else if (throwExc instanceof PSSystemValidationException)
+               throw (PSSystemValidationException)throwExc;
          }
          throw e;
       }
@@ -1845,7 +1844,7 @@ public class PSObjectStore
          PSAuthorizationException,
          PSAuthenticationFailedException,
          PSNotLockedException,
-         PSValidationException,
+           PSSystemValidationException,
          PSExtensionException,
          PSNotFoundException
    {
@@ -1880,8 +1879,8 @@ public class PSObjectStore
                throw (PSAuthorizationException)throwExc;
             else if (throwExc instanceof PSLockedException)
                throw (PSNotLockedException)throwExc;
-            else if (throwExc instanceof PSValidationException)
-               throw (PSValidationException)throwExc;
+            else if (throwExc instanceof PSSystemValidationException)
+               throw (PSSystemValidationException)throwExc;
             else if (throwExc instanceof PSNotLockedException)
                throw (PSNotLockedException)throwExc;
             else if (throwExc instanceof PSExtensionException)
@@ -1910,7 +1909,7 @@ public class PSObjectStore
          PSAuthorizationException,
          PSAuthenticationFailedException,
          PSNotLockedException,
-         PSValidationException,
+           PSSystemValidationException,
          PSExtensionException,
          PSNotFoundException
    {
@@ -1934,8 +1933,8 @@ public class PSObjectStore
                throw (PSAuthorizationException)throwExc;
             else if (throwExc instanceof PSLockedException)
                throw (PSNotLockedException)throwExc;
-            else if (throwExc instanceof PSValidationException)
-               throw (PSValidationException)throwExc;
+            else if (throwExc instanceof PSSystemValidationException)
+               throw (PSSystemValidationException)throwExc;
             else if (throwExc instanceof PSNotLockedException)
                throw (PSNotLockedException)throwExc;
             else if (throwExc instanceof PSExtensionException)
@@ -1968,7 +1967,7 @@ public class PSObjectStore
          PSAuthorizationException,
          PSAuthenticationFailedException,
          PSNotLockedException,
-         PSValidationException,
+           PSSystemValidationException,
          PSExtensionException,
          PSNotFoundException
    {
@@ -2000,8 +1999,8 @@ public class PSObjectStore
                throw (PSAuthorizationException)throwExc;
             else if (throwExc instanceof PSLockedException)
                throw (PSNotLockedException)throwExc;
-            else if (throwExc instanceof PSValidationException)
-               throw (PSValidationException)throwExc;
+            else if (throwExc instanceof PSSystemValidationException)
+               throw (PSSystemValidationException)throwExc;
             else if (throwExc instanceof PSNotLockedException)
                throw (PSNotLockedException)throwExc;
             else if (throwExc instanceof PSExtensionException)
@@ -2034,7 +2033,7 @@ public class PSObjectStore
     * @throws   PSServerException
     * @throws   PSAuthorizationException
     * @throws   PSNotLockedException
-    * @throws   PSValidationException
+    * @throws PSSystemValidationException
     *
     */
    public void removeApplicationFile(
@@ -2045,7 +2044,7 @@ public class PSObjectStore
          PSAuthorizationException,
          PSAuthenticationFailedException,
          PSNotLockedException,
-         PSValidationException
+           PSSystemValidationException
    {
       Document removeFileDoc = PSXmlDocumentBuilder.createXmlDocument();
       Element root = PSXmlDocumentBuilder.createRoot(
@@ -2068,8 +2067,8 @@ public class PSObjectStore
                throw (PSAuthorizationException)throwExc;
             else if (throwExc instanceof PSLockedException)
                throw (PSNotLockedException)throwExc;
-            else if (throwExc instanceof PSValidationException)
-               throw (PSValidationException)throwExc;
+            else if (throwExc instanceof PSSystemValidationException)
+               throw (PSSystemValidationException)throwExc;
          }
          throw e;
       }
@@ -2096,7 +2095,7 @@ public class PSObjectStore
     * @throws   PSServerException
     * @throws   PSAuthorizationException
     * @throws   PSNotLockedException
-    * @throws   PSValidationException
+    * @throws PSSystemValidationException
     *
     */
    public void removeApplicationFile(
@@ -2108,7 +2107,7 @@ public class PSObjectStore
          PSAuthorizationException,
          PSAuthenticationFailedException,
          PSNotLockedException,
-         PSValidationException
+           PSSystemValidationException
    {
       Document removeFileDoc = PSXmlDocumentBuilder.createXmlDocument();
       Element root = PSXmlDocumentBuilder.createRoot(
@@ -2132,8 +2131,8 @@ public class PSObjectStore
                throw (PSAuthorizationException)throwExc;
             else if (throwExc instanceof PSLockedException)
                throw (PSNotLockedException)throwExc;
-            else if (throwExc instanceof PSValidationException)
-               throw (PSValidationException)throwExc;
+            else if (throwExc instanceof PSSystemValidationException)
+               throw (PSSystemValidationException)throwExc;
          }
          throw e;
       }
@@ -2176,7 +2175,7 @@ public class PSObjectStore
          PSAuthorizationException,
          PSAuthenticationFailedException,
          PSNotLockedException,
-         PSValidationException
+           PSSystemValidationException
    {
       if(app == null || targetApp == null)
          throw new IllegalArgumentException("Application cannot be null.");
@@ -2216,8 +2215,8 @@ public class PSObjectStore
                throw (PSAuthorizationException)throwExc;
             else if (throwExc instanceof PSLockedException)
                throw (PSNotLockedException)throwExc;
-            else if (throwExc instanceof PSValidationException)
-               throw (PSValidationException)throwExc;
+            else if (throwExc instanceof PSSystemValidationException)
+               throw (PSSystemValidationException)throwExc;
          }
          throw e;
       }
@@ -2261,7 +2260,7 @@ public class PSObjectStore
          PSAuthorizationException,
          PSAuthenticationFailedException,
          PSNotLockedException,
-         PSValidationException
+           PSSystemValidationException
    {
       if(app == null || targetApp == null)
          throw new IllegalArgumentException("Application cannot be null.");
@@ -2302,8 +2301,8 @@ public class PSObjectStore
                throw (PSAuthorizationException)throwExc;
             else if (throwExc instanceof PSLockedException)
                throw (PSNotLockedException)throwExc;
-            else if (throwExc instanceof PSValidationException)
-               throw (PSValidationException)throwExc;
+            else if (throwExc instanceof PSSystemValidationException)
+               throw (PSSystemValidationException)throwExc;
          }
          throw e;
       }
@@ -2331,7 +2330,7 @@ public class PSObjectStore
     * @throws   PSAuthorizationException if the user does not have authorization
     * to perform the operation.
     * @throws   PSNotLockedException if the appication was and could not be locked
-    * @throws   PSValidationException
+    * @throws PSSystemValidationException
     *
     */
    public void renameApplicationFile(
@@ -2343,7 +2342,7 @@ public class PSObjectStore
          PSAuthorizationException,
          PSAuthenticationFailedException,
          PSNotLockedException,
-         PSValidationException
+           PSSystemValidationException
    {
       if(newName == null || newName.trim().length() == 0)
          throw new IllegalArgumentException(
@@ -2376,7 +2375,7 @@ public class PSObjectStore
     * @throws   PSAuthorizationException if the user does not have authorization
     * to perform the operation.
     * @throws   PSNotLockedException if the appication was and could not be locked
-    * @throws   PSValidationException
+    * @throws PSSystemValidationException
     *
     */
    public void renameApplicationFile(
@@ -2389,7 +2388,7 @@ public class PSObjectStore
          PSAuthorizationException,
          PSAuthenticationFailedException,
          PSNotLockedException,
-         PSValidationException
+           PSSystemValidationException
    {
       if(newName == null || newName.trim().length() == 0)
          throw new IllegalArgumentException(
@@ -2570,7 +2569,7 @@ public class PSObjectStore
          PSAuthorizationException,
          PSAuthenticationFailedException,
          PSNotLockedException,
-         PSValidationException
+           PSSystemValidationException
    {
       if(loadFile.isFolder())
          return null;
@@ -2601,8 +2600,8 @@ public class PSObjectStore
                throw (PSAuthorizationException)throwExc;
             else if (throwExc instanceof PSNotLockedException)
                throw (PSNotLockedException)throwExc;
-            else if (throwExc instanceof PSValidationException)
-               throw (PSValidationException)throwExc;
+            else if (throwExc instanceof PSSystemValidationException)
+               throw (PSSystemValidationException)throwExc;
          }
          throw e;
       }

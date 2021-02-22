@@ -741,7 +741,7 @@ public class PSLocationUtils extends PSJexlUtilBase
 
       if (rvalues.size() > 1)
       {
-         List<IPSAssemblyTemplate> sorted_templates = new ArrayList<IPSAssemblyTemplate>(
+         List<IPSAssemblyTemplate> sorted_templates = new ArrayList<>(
                rvalues);
          Comparator cmp = new Comparator()
          {
@@ -768,7 +768,7 @@ public class PSLocationUtils extends PSJexlUtilBase
          Collections.sort(sorted_templates, cmp);
 
          rvalues = sorted_templates;
-         List<String> template_names = new ArrayList<String>();
+         List<String> template_names = new ArrayList<>();
          for (IPSAssemblyTemplate t : rvalues)
          {
             template_names.add(t.getName());

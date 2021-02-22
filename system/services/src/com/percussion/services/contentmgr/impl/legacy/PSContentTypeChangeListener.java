@@ -46,7 +46,7 @@ public class PSContentTypeChangeListener implements IPSItemDefChangeListener
     * Holds the list of outstanding changes
     */
    private List<PSContentTypeChange> m_waitingChanges =
-      new ArrayList<PSContentTypeChange>();
+      new ArrayList<>();
    
    /**
     * Ctor

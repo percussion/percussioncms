@@ -61,10 +61,10 @@ import com.percussion.design.objectstore.PSOutputTranslations;
 import com.percussion.design.objectstore.PSParam;
 import com.percussion.design.objectstore.PSSharedFieldGroup;
 import com.percussion.design.objectstore.PSSingleHtmlParameter;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSTextLiteral;
 import com.percussion.design.objectstore.PSUIDefinition;
 import com.percussion.design.objectstore.PSUrlRequest;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.design.objectstore.PSValidationRules;
 import com.percussion.design.objectstore.PSView;
 import com.percussion.design.objectstore.PSViewSet;
@@ -83,16 +83,19 @@ import com.percussion.server.PSConsole;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.server.PSServerLogHandler;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSCollection;
 import com.percussion.util.PSIteratorUtils;
 import com.percussion.util.PSStringOperation;
 import com.percussion.util.PSUniqueObjectGenerator;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.collections.IteratorUtils;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Document;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -102,10 +105,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.collections.IteratorUtils;
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
 
 /**
  * Request handler for all content editor requests.  Dispatches all requests to
@@ -131,10 +130,10 @@ public class PSContentEditorHandler implements IPSRequestHandler,
     * @param ds the data set containing the query pipe(s) this
     * object will handle. Never <code>null</code>.
     *
-    * @throws PSValidationException if there are any errors
+    * @throws PSSystemValidationException if there are any errors
     */
    public PSContentEditorHandler(PSApplicationHandler appHandler, PSDataSet ds)
-      throws PSValidationException
+           throws PSException
    {
       if (appHandler == null)
          throw new IllegalArgumentException("appHandler may not be null");
@@ -169,13 +168,13 @@ public class PSContentEditorHandler implements IPSRequestHandler,
        */
       if (null == m_systemDef)
       {
-         throw new PSValidationException(IPSServerErrors.CE_SYSTEM_DEF_INVALID);
+         throw new PSSystemValidationException(IPSServerErrors.CE_SYSTEM_DEF_INVALID);
       }
 
       if (null == m_sharedDef)
       {
          // must have at least one group
-         throw new PSValidationException(IPSServerErrors.CE_SHARED_DEF_INVALID);
+         throw new PSSystemValidationException(IPSServerErrors.CE_SHARED_DEF_INVALID);
       }
 
       PSContentEditorPipe cePipe = (PSContentEditorPipe)ce.getPipe();
@@ -190,7 +189,7 @@ public class PSContentEditorHandler implements IPSRequestHandler,
       // Send warnings to console and log
       while(warnings.hasNext())
       {
-         PSValidationException e = (PSValidationException)warnings.next();
+         PSSystemValidationException e = (PSSystemValidationException)warnings.next();
          PSConsole.printMsg(SUBSYSTEM_NAME, e);
       }
 
@@ -268,16 +267,15 @@ public class PSContentEditorHandler implements IPSRequestHandler,
       }
       catch (SQLException se)
       {
-         throw new RuntimeException(se.getLocalizedMessage());
+         throw new PSException(se);
       }
 
       //todo: debug, add trace here
       //TODO: debug - need way to optionally turn this on (command line param?)
-      FileOutputStream os = null;
-      try
+
+      try(FileOutputStream os = new FileOutputStream(new File(PSServer.getRxDir(),
+      "mergedEditor.xml")))
       {
-         os = new FileOutputStream(new File(PSServer.getRxDir(), 
-            "mergedEditor.xml"));
          Document doc = PSXmlDocumentBuilder.createXmlDocument();
          PSXmlDocumentBuilder.createRoot(doc, "root" ).appendChild( ce.toXml(doc));
          PSXmlDocumentBuilder.write( doc, os);
@@ -285,15 +283,6 @@ public class PSContentEditorHandler implements IPSRequestHandler,
       catch ( Exception e )
       {
          PSConsole.printMsg(SUBSYSTEM_NAME, e);
-      }
-      finally
-      {
-         try
-         {
-            if ( null != os )
-               os.close();
-         }
-         catch (IOException e) {/*ignore, not important*/}
       }
       // end debug
 
@@ -354,7 +343,7 @@ public class PSContentEditorHandler implements IPSRequestHandler,
       }
       catch (PSException e)
       {
-         throw new PSValidationException(e.getErrorCode(),
+         throw new PSSystemValidationException(e.getErrorCode(),
             e.getErrorArguments());
       }
       finally
@@ -839,7 +828,7 @@ public class PSContentEditorHandler implements IPSRequestHandler,
     *
     * @param contentId The content id to notify for</code>.
     */
-   public void notifyPurge(int contentId) {
+   public void notifyPurge(int contentId) throws PSSystemValidationException, PSValidationException {
         for (IPSEditorChangeListener listener : m_changeListeners)
         {
             PSEditorChangeEvent e = new PSEditorChangeEvent(PSEditorChangeEvent.ACTION_DELETE, contentId, -1, -1, -1,
@@ -893,11 +882,11 @@ public class PSContentEditorHandler implements IPSRequestHandler,
     * <code>null</code>. Key is the column name as a <code>String</code>, value
     * is a set of the field names using that back end column.
     *
-    * @throws PSValidationException if the fieldSet or any of it's fields or
+    * @throws PSSystemValidationException if the fieldSet or any of it's fields or
     * fieldSets are invalid
     */
    private void validateFields(PSFieldSet fieldSet, Set fieldNames, 
-      Map colNames) throws PSValidationException
+      Map colNames) throws PSSystemValidationException
    {
       if (fieldSet == null)
          throw new IllegalArgumentException("fieldSet may not be null");
@@ -940,7 +929,7 @@ public class PSContentEditorHandler implements IPSRequestHandler,
             if (locator == null)
             {
                // throw validation error!
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                   IPSObjectStoreErrors.CE_MISSING_FIELD_ELEMENT,
                   new Object[] {field.getSubmitName(),
                   PSField.DATA_LOCATOR_ELEM });
@@ -987,16 +976,16 @@ public class PSContentEditorHandler implements IPSRequestHandler,
     * @param fieldName The duplicated name.  Assumed not <code>null</code> or
     * empty.
     *
-    * @throws PSValidationException if the server requires unique field names.
+    * @throws PSSystemValidationException if the server requires unique field names.
     */
    private void handleNonUniqueFieldName(String fieldName)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       Object[] args = {fieldName, m_dataSet.getName(), m_appHandler.getName()};
       if (PSServer.requireUniqueFieldNames())
       {
          // throw error
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSServerErrors.CE_DUPLICATE_FIELD_NAME_ERROR, args);
       }
       else
@@ -1041,10 +1030,10 @@ public class PSContentEditorHandler implements IPSRequestHandler,
     *
     * @param ce the content editor to validate the workflow information for,
     *    assumed not <code>null</code>.
-    * @throws PSValidationException if any validation fails.
+    * @throws PSSystemValidationException if any validation fails.
     */
    private void validateWorkflow(PSContentEditor ce)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       int defaultWfId = ce.getWorkflowId();
       PSWorkflowInfo wfInfo = ce.getWorkflowInfo();
@@ -1058,7 +1047,7 @@ public class PSContentEditorHandler implements IPSRequestHandler,
             {
                int id = ((Integer) ids.next()).intValue();
                if (id == defaultWfId)
-                  throw new PSValidationException(
+                  throw new PSSystemValidationException(
                      IPSServerErrors.CE_DEFAULT_WF_EXCLUDED,
                         Integer.toString(id));
             }
@@ -1074,7 +1063,7 @@ public class PSContentEditorHandler implements IPSRequestHandler,
                found = (id == defaultWfId);
             }
             if (!found)
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                   IPSServerErrors.CE_DEFAULT_WF_NOT_INLUDED,
                      Integer.toString(id));
          }
@@ -1109,10 +1098,10 @@ public class PSContentEditorHandler implements IPSRequestHandler,
     * Adds all tablesets from the system and shared defs to the contentEditor.
     * @param contentEditor The definition of the editor.  May not be
     * <code>null</code>.
-    * @throws PSValidationException if there are any errors.
+    * @throws PSSystemValidationException if there are any errors.
     */
    private void promoteTableSets(PSContentEditor contentEditor)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (contentEditor == null)
          throw new IllegalArgumentException("contentEditor may not be null");
@@ -1295,10 +1284,10 @@ public class PSContentEditorHandler implements IPSRequestHandler,
     *
     * @param contentEditor The Content Editor pipe.  May not be
     * <code>null</code>.
-    * @throws PSValidationException if there are any errors
+    * @throws PSSystemValidationException if there are any errors
     */
    private void promoteStyleSheets(PSContentEditor contentEditor)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (contentEditor == null)
          throw new IllegalArgumentException("contentEditor may not be null");
@@ -1356,10 +1345,10 @@ public class PSContentEditorHandler implements IPSRequestHandler,
     *
     * @param contentEditor The Content Editor pipe.  May not be
     * <code>null</code>.
-    * @throws PSValidationException if there are any errors
+    * @throws PSSystemValidationException if there are any errors
     */
    private void promoteAppFlow(PSContentEditor contentEditor)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (contentEditor == null)
          throw new IllegalArgumentException("contentEditor may not be null");
@@ -1409,10 +1398,10 @@ public class PSContentEditorHandler implements IPSRequestHandler,
     *
     * @param contentEditor The Content Editor pipe.  May not be
     * <code>null</code>.
-    * @throws PSValidationException if there are any errors
+    * @throws PSSystemValidationException if there are any errors
     */
    private void promoteSectionLinkList(PSContentEditor contentEditor)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (contentEditor == null)
          throw new IllegalArgumentException("contentEditor may not be null");
@@ -1453,10 +1442,10 @@ public class PSContentEditorHandler implements IPSRequestHandler,
     * mapper is already merged with system and shared definition.
     *
     * @param contentEditor The Content Editor.  Assumed not <code>null</code>.
-    * @throws PSValidationException if there are any errors
+    * @throws PSSystemValidationException if there are any errors
     */
    private void promoteViewSet(PSContentEditor contentEditor)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       PSViewSet viewSet = new PSViewSet();
 
@@ -1544,11 +1533,11 @@ public class PSContentEditorHandler implements IPSRequestHandler,
     * the two page ids produced for each child mapper, so (pageId - 1) and
     * pageId will be the two page id's used to create the conditional views.
     *
-    * @throws PSValidationException if there are any errors
+    * @throws PSSystemValidationException if there are any errors
     */
    private void createSystemViews(PSViewSet viewSet, PSDisplayMapper displayMapper,
       PSContentEditorPipe cePipe, int pageId)
-        throws PSValidationException
+        throws PSSystemValidationException
    {
       // Create each list of fields, walk the mapper, and set them as we go
       // for each field, create a single field view and set it on the viewSet
@@ -1741,11 +1730,11 @@ public class PSContentEditorHandler implements IPSRequestHandler,
     * @param source The source app flow.  Assumed not to be <code>null</code>.
     * @param target The target app flow.  Assumed not to be <code>null</code>.
     *
-    * @throws PSValidationException if there is a problem with the application
+    * @throws PSSystemValidationException if there is a problem with the application
     * flow being added.
     */
    private void mergeAppFlow(PSApplicationFlow source, PSApplicationFlow target)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       Iterator cmdNames = source.getCommandHandlerNames();
       while (cmdNames.hasNext())
@@ -1767,12 +1756,12 @@ public class PSContentEditorHandler implements IPSRequestHandler,
     * @param target The target stylesheet set.  Assumed not to be
     * <code>null</code>.
     *
-    * @throws PSValidationException if there is a problem with the stylesheet
+    * @throws PSSystemValidationException if there is a problem with the stylesheet
     * being added.
     */
    private void mergeStyleSheets(PSCommandHandlerStylesheets source,
       PSCommandHandlerStylesheets target)
-         throws PSValidationException
+         throws PSSystemValidationException
    {
       Iterator cmdNames = source.getCommandHandlerNames();
       while (cmdNames.hasNext())

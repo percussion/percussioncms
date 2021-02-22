@@ -24,11 +24,10 @@
 
 package com.percussion.delivery.jaxrs;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.WebApplicationException;
@@ -42,7 +41,6 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public class PSExceptionMapper implements ExceptionMapper<Exception>{
 
-    //public static Log log = LogFactory.getLog(PSMetadataRestService.class);
     private static final Logger log = LogManager.getLogger(PSExceptionMapper.class);
     
     @Context
@@ -52,42 +50,31 @@ public class PSExceptionMapper implements ExceptionMapper<Exception>{
     public Response toResponse(Exception e)
     {
        
-        String clientMsg = null;
-        Status status = Response.Status.BAD_REQUEST;
-        boolean includeStack = false;
-        String serverMsg = "JAX-RS Exception with request "+request.getRequestURI()+" host="+request.getRemoteAddr()+": ";
-        if (e instanceof JsonMappingException)
+        String clientMsg;
+        Status status;
+         if (e instanceof JsonMappingException)
         {
             clientMsg = "Invalid request. JSON property is not of an expected type";
-            serverMsg+=e.getMessage();
             status = Response.Status.BAD_REQUEST;
         } else if (e instanceof JsonParseException)
         {
             clientMsg = "Invalid request.  Invalid JSON object";
-            serverMsg+=e.getMessage();
             status = Response.Status.BAD_REQUEST;
         }
-        else if (e instanceof UnrecognizedPropertyException) 
-        {
-            clientMsg = "Invalid request. The JSON contains an unexpected property";
-            serverMsg+=e.getMessage();
-            status = Response.Status.BAD_REQUEST;
-        }
-
         else if (e instanceof WebApplicationException)
         {
-            log.debug("WebApplicationException:",e);
+            log.debug("WebApplicationException:{}",e.getMessage(),e);
             return ((WebApplicationException) e).getResponse();
         }
         else
         {
             clientMsg = "An unexpected error occurred processing the request on the DTS server";
-            status = Response.Status.INTERNAL_SERVER_ERROR;
+            status = Status.INTERNAL_SERVER_ERROR;
             
         }
-        
-        log.error(serverMsg,includeStack ? e : null);
-        
+
+        log.error(e.getMessage());
+        log.debug(e.getMessage(),e);
         
         return Response
                 .status(status)

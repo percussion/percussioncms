@@ -27,9 +27,12 @@ package com.percussion.pagemanagement.extension;
 import com.percussion.category.extension.PSCategoryControlUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSResultDocumentProcessor;
+import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.pagemanagement.service.IPSPageCategoryService;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.assembly.jexl.PSDocumentUtils;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 
 import java.io.File;
@@ -40,6 +43,8 @@ import javax.servlet.ServletException;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.io.DOMWriter;
@@ -64,7 +69,8 @@ public class PSCategoryTreeXmlExit implements IPSResultDocumentProcessor
 
     @Override
     public Document processResultDocument(@SuppressWarnings("unused") Object[] args, IPSRequestContext requestContext, 
-            @SuppressWarnings("unused") Document document)
+            @SuppressWarnings("unused") Document document) throws PSParameterMismatchException,
+            PSExtensionProcessingException
     {
         DOMWriter domWriter = new DOMWriter();
         org.dom4j.Document doc;
@@ -79,8 +85,9 @@ public class PSCategoryTreeXmlExit implements IPSResultDocumentProcessor
         }
         catch (Exception e)
         {
-            log.error("Failed to retrieve category xml: ",e);
-            throw new RuntimeException("Failed to retrieve category xml: ", e);
+            log.error("Failed to retrieve category xml: {}",e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new PSExtensionProcessingException("Failed to retrieve category xml: ", e);
         }
         
         try
@@ -89,15 +96,16 @@ public class PSCategoryTreeXmlExit implements IPSResultDocumentProcessor
         }
         catch (DocumentException e)
         {
-            log.error("Failed to retrieve category xml: ",e);
-            throw new RuntimeException("Failed to write category xml: ", e);
+            log.error("Failed to retrieve category xml: {}",e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new PSExtensionProcessingException("Failed to write category xml: ", e);
         }   
     }  
     
-    protected String getResourceUrl() {
+    protected String getResourceUrl() throws PSDataServiceException {
         return getPageCategoryService().loadConfiguration().getTree().getUrl();
     }
-    protected String loadResource(String resourceUrl) throws HttpException, IOException, ServletException {
+    protected String loadResource(String resourceUrl) throws IOException, ServletException {
         return new  PSDocumentUtils().getDocument(resourceUrl);
     }
 
@@ -114,5 +122,5 @@ public class PSCategoryTreeXmlExit implements IPSResultDocumentProcessor
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSCategoryTreeXmlExit.class);
+    public static final Logger log = LogManager.getLogger(PSCategoryTreeXmlExit.class);
 }

@@ -26,8 +26,12 @@ package com.percussion.pagemanagement.service;
 
 import com.percussion.pagemanagement.data.PSCatalogPageSummary;
 import com.percussion.pagemanagement.data.PSPage;
+import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteSummary;
+import com.percussion.sitemanage.error.PSSiteImportException;
 
 import java.util.List;
 
@@ -99,7 +103,7 @@ public interface IPSPageCatalogService
      * @return The template id.  Will be <code>null</code> if not found.
      * @throws Exception If there are any unexpected errors
      */
-    String getCatalogTemplateIdBySite(String siteName);
+    String getCatalogTemplateIdBySite(String siteName) throws PSDataServiceException, PSSiteImportException;
 
     /**
      * Move the cataloged page from the "page stub" location to the local

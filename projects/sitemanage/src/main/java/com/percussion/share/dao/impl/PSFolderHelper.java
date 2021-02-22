@@ -49,6 +49,7 @@ import com.percussion.recycle.service.impl.PSRecycleService;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.data.PSItemSummary;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.notification.IPSNotificationListener;
@@ -565,7 +566,7 @@ public class PSFolderHelper implements IPSFolderHelper
      * (non-Javadoc)
      * @see com.percussion.share.dao.IPSFolderHelper#addFolderAccessLevel(com.percussion.pathmanagement.data.PSPathItem)
      */
-    public PSPathItem setFolderAccessLevel(PSPathItem item) throws PSValidationException {
+    public PSPathItem setFolderAccessLevel(PSPathItem item) throws PSValidationException, PSNotFoundException {
 		// FIXME Change this. We need to skip PSPathItem that point
 		// to the file system.
         if (StringUtils.startsWith(item.getType(), "FS"))
@@ -1292,11 +1293,11 @@ public class PSFolderHelper implements IPSFolderHelper
         
         return dataItemSummaryService.find(id);
     }
-    public PSPathItem findItemById(String id) throws DataServiceLoadException, PSValidationException {
+    public PSPathItem findItemById(String id) throws DataServiceLoadException, PSValidationException, PSNotFoundException {
         return findItemById(id, FOLDER_RELATE_TYPE);
     }
     
-    public PSPathItem findItemById(String id, String relationshipTypeName) throws DataServiceLoadException, PSValidationException {
+    public PSPathItem findItemById(String id, String relationshipTypeName) throws DataServiceLoadException, PSValidationException, PSNotFoundException {
         IPSItemSummary sum = dataItemSummaryService.find(id, relationshipTypeName);
         // throw validation exception if cannot find the item
         //FB: NP_NULL_PARAM_DEREF NC 1-16-16

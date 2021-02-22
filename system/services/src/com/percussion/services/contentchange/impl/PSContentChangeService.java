@@ -75,7 +75,7 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
    
    private IPSGuidManager m_guidMgr;
    
-   private List<IPSContentChangeHandler> changeHandlers = new ArrayList<IPSContentChangeHandler>();
+   private List<IPSContentChangeHandler> changeHandlers = new ArrayList<>();
    
    
    public PSContentChangeService()

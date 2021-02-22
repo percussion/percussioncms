@@ -101,7 +101,7 @@ public class PSDivTagCleanup implements IPSPropertyInterceptor
        */
       public ContentHandler(XMLStreamWriter writer) 
       {
-         super(writer, new HashMap<String, String>(), true);
+         super(writer, new HashMap<>(), true);
       }
 
       /*
@@ -162,7 +162,7 @@ public class PSDivTagCleanup implements IPSPropertyInterceptor
        * A stack to keep track of the current tag nesting posistion.
        * Never <code>null</code>, may be empty.
        */
-      private Stack<State> m_stack = new Stack<State>();
+      private Stack<State> m_stack = new Stack<>();
       
       /**
        * A simple enumeration to track the write state for the tags
@@ -186,7 +186,7 @@ public class PSDivTagCleanup implements IPSPropertyInterceptor
     * the div should be removed.
     */
    static final List<String> ms_skipClassList = 
-      new ArrayList<String>(2);
+      new ArrayList<>(2);
    
    static
    {

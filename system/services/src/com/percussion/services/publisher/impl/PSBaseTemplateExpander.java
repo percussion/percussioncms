@@ -101,7 +101,7 @@ public abstract class PSBaseTemplateExpander implements IPSTemplateExpander
          siteg = new PSGuid(PSTypeEnum.SITE, siteid);
       }
 
-      List<PSContentListItem> clist = new ArrayList<PSContentListItem>();
+      List<PSContentListItem> clist = new ArrayList<>();
 
       String ctx = parameters.get(IPSHtmlParameters.SYS_CONTEXT);
       String deliveryctx = parameters
@@ -120,7 +120,7 @@ public abstract class PSBaseTemplateExpander implements IPSTemplateExpander
          if (candidates.isEmpty())
             return clist;
          RowIterator riter = results.getRows();
-         Map<IPSGuid, List<IPSGuid>> cache = new HashMap<IPSGuid, List<IPSGuid>>();
+         Map<IPSGuid, List<IPSGuid>> cache = new HashMap<>();
          while (riter.hasNext())
          {
             Row r = riter.nextRow();
@@ -210,7 +210,7 @@ public abstract class PSBaseTemplateExpander implements IPSTemplateExpander
          rval = cache.get(ctype);
          if (rval == null)
          {
-            rval = new ArrayList<IPSGuid>();
+            rval = new ArrayList<>();
             IPSAssemblyService asm = PSAssemblyServiceLocator
                   .getAssemblyService();
             for (IPSAssemblyTemplate t : asm.findTemplatesByContentType(ctype))

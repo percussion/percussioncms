@@ -55,7 +55,7 @@ public class PSDependency implements Serializable
    /**
     * All dependent design object, never <code>null</code>, may be empty. 
     */
-   private List<PSDependent> dependents = new ArrayList<PSDependent>();
+   private List<PSDependent> dependents = new ArrayList<>();
 
    /**
     * Default construcctor.
@@ -104,7 +104,7 @@ public class PSDependency implements Serializable
    public void setDependents(List<PSDependent> dependents)
    {
       if (dependents == null)
-         this.dependents = new ArrayList<PSDependent>();
+         this.dependents = new ArrayList<>();
       else
          this.dependents = dependents;
    }
@@ -130,7 +130,7 @@ public class PSDependency implements Serializable
     */
    public String getDependentTypes()
    {
-      Set<String> types = new HashSet<String>();
+      Set<String> types = new HashSet<>();
       for (PSDependent dependent : dependents)
       {
          types.add(dependent.getDisplayType());

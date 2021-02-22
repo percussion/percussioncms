@@ -96,7 +96,7 @@ public class PSKeyword implements Serializable, IPSCatalogSummary,
    private Integer version;
    
    @Transient
-   private List<PSKeywordChoice> m_choices = new ArrayList<PSKeywordChoice>();
+   private List<PSKeywordChoice> m_choices = new ArrayList<>();
    
    /**
     * Constant for all objects of type keyword.
@@ -315,7 +315,7 @@ public class PSKeyword implements Serializable, IPSCatalogSummary,
    public void setChoices(List<PSKeywordChoice> choices)
    {
       if (choices == null)
-         m_choices = new ArrayList<PSKeywordChoice>();
+         m_choices = new ArrayList<>();
       else
          m_choices = choices;
    }
@@ -533,7 +533,7 @@ public class PSKeyword implements Serializable, IPSCatalogSummary,
       description = other.description;
       keywordType = other.keywordType;
       label = other.label;
-      m_choices = new ArrayList<PSKeywordChoice>(other.getChoices());
+      m_choices = new ArrayList<>(other.getChoices());
       sequence = other.sequence;
       value = other.value;
    }

@@ -73,7 +73,7 @@ public class PSConsistencyBase
       /**
        * The revisions that are not present in the table
        */
-      Set<Integer> mi_missingrevisions = new TreeSet<Integer>();
+      Set<Integer> mi_missingrevisions = new TreeSet<>();
 
       /**
        * Ctor

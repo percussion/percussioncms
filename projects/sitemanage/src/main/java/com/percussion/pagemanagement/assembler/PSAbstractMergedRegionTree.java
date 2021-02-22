@@ -112,7 +112,7 @@ public abstract class PSAbstractMergedRegionTree {
      * @param templateRegionTree never <code>null</code>.
      * @param pageRegionBranches never <code>null</code>.
      */
-    public void merge(PSRegionTree templateRegionTree, PSRegionBranches pageRegionBranches) {
+    public void merge(PSRegionTree templateRegionTree, PSRegionBranches pageRegionBranches) throws PSDataServiceException {
         notNull(templateRegionTree);
         notNull(pageRegionBranches);
         this.templateRegionTree = templateRegionTree;
@@ -139,7 +139,7 @@ public abstract class PSAbstractMergedRegionTree {
      * @param parent maybe <code>null</code>
      * @return not <code>null</code>
      */
-    private PSMergedRegion mergeTree(PSAbstractRegion regionNode, PSMergedRegion parent) {
+    private PSMergedRegion mergeTree(PSAbstractRegion regionNode, PSMergedRegion parent) throws PSDataServiceException {
         notNull(regionNode);
         notNull(pageRegionMap);
         if (parent != null)
@@ -245,7 +245,7 @@ public abstract class PSAbstractMergedRegionTree {
     protected PSMergedRegion createNode(PSAbstractRegion region, 
             PSMergedRegionOwner owner, 
             PSAbstractRegion overriddenRegion, 
-            PSMergedRegion parent) {
+            PSMergedRegion parent) throws PSDataServiceException {
         String id = region.getRegionId();
         notNull(id);
         PSMergedRegion mr = new PSMergedRegion(region);

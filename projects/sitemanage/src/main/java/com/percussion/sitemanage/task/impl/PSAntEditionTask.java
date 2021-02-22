@@ -45,6 +45,7 @@ import com.percussion.rx.publisher.IPSEditionTask;
 import com.percussion.rx.publisher.IPSEditionTaskStatusCallback;
 import com.percussion.server.PSServer;
 import com.percussion.services.PSBaseServiceLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
@@ -186,58 +187,53 @@ public class PSAntEditionTask implements IPSEditionTask
             log.debug(e.getMessage(),e);
         }
 
-        String siteRootTemp = prepareSiteRootTemp(jobId, edition.getName(), site, pubServer, root);
+        if(pubServer != null) {
+            String siteRootTemp = prepareSiteRootTemp(jobId, edition.getName(), site, pubServer, root);
 
-        Map<String, String> props = new HashMap<>();
-        props.put("perc.site.name", site.getName());
-        props.put("perc.site.baseUrl", site.getBaseUrl());
-        props.put("perc.site.cmsFolderPath", site.getFolderRoot());
-        props.put("perc.sys.dir", getRootDirectory());
-        props.put("perc.sys.jobId", "" + jobId);
-        props.put("perc.site.root", siteRootTemp);
+            Map<String, String> props = new HashMap<>();
+            props.put("perc.site.name", site.getName());
+            props.put("perc.site.baseUrl", site.getBaseUrl());
+            props.put("perc.site.cmsFolderPath", site.getFolderRoot());
+            props.put("perc.sys.dir", getRootDirectory());
+            props.put("perc.sys.jobId", "" + jobId);
+            props.put("perc.site.root", siteRootTemp);
 
-        prepareFtpProperties(props, site, pubServer);
-        
-        // If the publish server uses an absolute path, the configuration files are
-        // not copyied over.
-        if (!Boolean.valueOf(pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY, "false")))
-        {
-            preparePublishConfigFiles(props, site, pubServer.getServerId());
+            prepareFtpProperties(props, site, pubServer);
+
+            // If the publish server uses an absolute path, the configuration files are
+            // not copyied over.
+            if (!Boolean.parseBoolean(pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY, "false"))) {
+                preparePublishConfigFiles(props, site, pubServer.getServerId());
+            }
+
+            if (Boolean.parseBoolean(pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY, "false")) && Boolean.valueOf(pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_SECURE_SITE_CONF, "false"))) {
+                preparePublishConfigFiles(props, site, pubServer.getServerId());
+            }
+
+            for (Map.Entry<String, String> p : params.entrySet()) {
+                props.put("perc." + p.getKey(), p.getValue());
+            }
+
+            a.setBlocking(true);
+            File f = new File(new File(getAntScriptDirectory()), file);
+            isTrue(f.isFile(), "Ant file: " + f + " does not exist");
+            a.setFile(f.getPath());
+            a.setProperties(props);
+
+            List<BuildListener> listeners = new ArrayList<>();
+
+            // Pass the siteRootTemp if the site will be published on FTP or SFTP
+            String deliveryType = pubServer.getPublishType();
+            if (isFilesystemType(deliveryType)) {
+                listeners.add(new AntEditionTaskListener(site.getName(), edition.getName(), null, pubServer));
+            } else {
+                listeners.add(new AntEditionTaskListener(site.getName(), edition.getName(), siteRootTemp, pubServer));
+            }
+
+            a.setListeners(listeners);
+
+            service.runAnt(a);
         }
-
-        if (Boolean.valueOf(pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY, "false")) && Boolean.valueOf(pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_SECURE_SITE_CONF, "false")) )
-        {
-            preparePublishConfigFiles(props, site, pubServer.getServerId());
-        }
-
-        for (Map.Entry<String, String> p : params.entrySet())
-        {
-            props.put("perc." + p.getKey(), p.getValue());
-        }
-
-        a.setBlocking(true);
-        File f = new File(new File(getAntScriptDirectory()), file);
-        isTrue(f.isFile(), "Ant file: " + f + " does not exist");
-        a.setFile(f.getPath());
-        a.setProperties(props);
-
-        List<BuildListener> listeners = new ArrayList<>();
-
-        // Pass the siteRootTemp if the site will be published on FTP or SFTP
-        String deliveryType = pubServer.getPublishType();
-        if (isFilesystemType(deliveryType))
-        {
-            listeners.add(new AntEditionTaskListener(site.getName(), edition.getName(), null, pubServer));
-        }
-        else
-        {
-            listeners.add(new AntEditionTaskListener(site.getName(), edition.getName(), siteRootTemp, pubServer));
-        }
-
-        a.setListeners(listeners);
-
-        service.runAnt(a);
-
     }
 
     /**
@@ -312,7 +308,7 @@ public class PSAntEditionTask implements IPSEditionTask
      * @param site The site to get the properties from.
      * @throws IOException if an error occurs when comparing the files
      */
-    private void preparePublishConfigFiles(Map<String, String> props, IPSSite site, long serverId) throws IOException, IPSDataService.DataServiceSaveException, IPSSiteSectionService.PSSiteSectionException {
+    private void preparePublishConfigFiles(Map<String, String> props, IPSSite site, long serverId) throws IOException, IPSDataService.DataServiceSaveException, IPSSiteSectionService.PSSiteSectionException, PSNotFoundException {
         if (filesModifiedAfterPublished(site.getName(), serverId))
         {
             if (configFilesExist(site))
@@ -354,11 +350,11 @@ public class PSAntEditionTask implements IPSEditionTask
             // FTP or SFTP live site
             IPSDeliveryManager deliveryManager = PSLocalDeliveryManagerLocator.getDeliveryManager();
             String tempPath = deliveryManager.getTempDir();
-            if (tempPath != "")
+            if (!tempPath.equals(""))
             {
                 // Check if we could create the temporary directory.
                 File tempDir = new File(deliveryManager.getTempDir(), site.getName() + "-" + editionName + "-"
-                        + Long.toString(jobId));
+                        + jobId);
                 boolean dirCreated = tempDir.mkdirs();
                 if (dirCreated)
                 {
@@ -381,7 +377,7 @@ public class PSAntEditionTask implements IPSEditionTask
      * @param site the site (assumed not <code>null</code>) for which the
      *            configuration files are going to be created.
      */
-    private void createSecurityUrlPatternFile(IPSSite site) throws IPSDataService.DataServiceSaveException, IPSSiteSectionService.PSSiteSectionException {
+    private void createSecurityUrlPatternFile(IPSSite site) throws IPSDataService.DataServiceSaveException, IPSSiteSectionService.PSSiteSectionException, PSNotFoundException {
         IPSSiteSectionService sectionService = (IPSSiteSectionService) getWebApplicationContext().getBean(
                 "siteSectionService");
         if (sectionService != null)

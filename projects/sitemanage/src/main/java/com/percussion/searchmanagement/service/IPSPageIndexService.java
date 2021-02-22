@@ -23,6 +23,8 @@
  */
 package com.percussion.searchmanagement.service;
 
+import com.percussion.share.service.exception.PSValidationException;
+
 import java.util.Set;
 
 /**
@@ -38,5 +40,5 @@ public interface IPSPageIndexService {
      * 
      * @param set of content id's to index.  May not be <code>null</code>.
      */
-    public void index(Set<Integer> ids);
+    public void index(Set<Integer> ids) throws PSValidationException;
 }

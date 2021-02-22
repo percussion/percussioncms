@@ -1272,7 +1272,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
     /*
        * //see base interface method for details
        */
-   public List<PSAssetDropCriteria> getWidgetAssetCriteria(String id, Boolean isPage) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
+   public List<PSAssetDropCriteria> getWidgetAssetCriteria(String id, Boolean isPage) throws PSDataServiceException {
        validateParameters("getWidgetAssetCriteria")
            .rejectIfBlank("id", id)
            .rejectIfNull("isPage", isPage)
@@ -1370,7 +1370,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      *
      * @return the requested widget, never <code>null</code>.
      */
-    private PSWidgetItem getWidget(PSAssetEditUrlRequest request, boolean isPage) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
+    private PSWidgetItem getWidget(PSAssetEditUrlRequest request, boolean isPage) throws PSDataServiceException {
         String templateId = null;
         Set<PSRegionWidgets> regionSet;
         if (isPage)
@@ -1547,7 +1547,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 						e.rejectValue("ownerId", "asset.template_or_page_not_exist", "The template or page does not exist for ownerid.");
 					}
 				}
-			} catch (DataServiceLoadException | DataServiceNotFoundException | PSValidationException dataServiceLoadException) {
+			} catch (PSDataServiceException dataServiceLoadException) {
 				e.addSuppressed(dataServiceLoadException);
 			}
 

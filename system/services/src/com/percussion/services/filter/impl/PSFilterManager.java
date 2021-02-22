@@ -295,7 +295,7 @@ public class PSFilterManager
    @SuppressWarnings("unchecked")
    public List<IPSCatalogSummary> getSummaries(PSTypeEnum type)
    {
-      List<IPSCatalogSummary> rval = new ArrayList<IPSCatalogSummary>();
+      List<IPSCatalogSummary> rval = new ArrayList<>();
 
       Session s = sessionFactory.getCurrentSession();
 
@@ -364,7 +364,7 @@ public class PSFilterManager
 
          if (id.getType() == PSTypeEnum.ITEM_FILTER.getOrdinal())
          {
-            List<IPSGuid> ids = new ArrayList<IPSGuid>();
+            List<IPSGuid> ids = new ArrayList<>();
             ids.add(id);
             IPSItemFilter temp = loadFilter(ids).get(0);
             return temp.toXML();

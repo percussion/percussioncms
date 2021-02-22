@@ -88,7 +88,7 @@ public class PSDispatchAssembler extends PSAssemblerBase
          }
          item.setTemplate(template);
          
-         List<IPSAssemblyItem> items = new ArrayList<IPSAssemblyItem>();
+         List<IPSAssemblyItem> items = new ArrayList<>();
          items.add(item);
          List<IPSAssemblyResult> results = asm.assemble(items);
          return results.get(0);

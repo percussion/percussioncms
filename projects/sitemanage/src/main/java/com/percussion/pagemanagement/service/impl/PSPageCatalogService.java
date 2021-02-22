@@ -52,6 +52,7 @@ import com.percussion.share.IPSSitemanageConstants;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSSystemProperties;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.error.PSSiteImportException;
@@ -152,8 +153,7 @@ public class PSPageCatalogService implements IPSPageCatalogService
     }
     
     @Override
-    public PSCatalogPageSummary getCatalogPageSummary(String id)
-    {
+    public PSCatalogPageSummary getCatalogPageSummary(String id) throws PSDataServiceException {
         PSCatalogPageSummary sum = null;
         PSPage page = pageDao.find(id);
         if (page != null)
@@ -223,8 +223,7 @@ public class PSPageCatalogService implements IPSPageCatalogService
     }
 
     private PSPage createPageStub(String pageName, String linkText, String href, PSSiteSummary site,
-            String fullFolderPath, String catItemPath)
-    {
+            String fullFolderPath, String catItemPath) throws IPSItemWorkflowService.PSItemWorkflowServiceException, PSDataServiceException, PSSiteImportException {
         PSPage page;
         page = new PSPage();
         
@@ -247,13 +246,11 @@ public class PSPageCatalogService implements IPSPageCatalogService
     }
 
     @Override
-    public String getCatalogTemplateIdBySite(String siteName)
-    {
+    public String getCatalogTemplateIdBySite(String siteName) throws PSDataServiceException, PSSiteImportException {
         PSSiteSummary site = siteDao.findSummary(siteName);
         if (site == null)
         {
-            // this would be a strange bug
-            throw new RuntimeException("Unable to find the template id, the specified site was not found: " + siteName);
+            throw new PSPageException("Unable to find the template id, the specified site was not found: " + siteName);
         }
         
         return getCatalogTemplateId(site);
@@ -266,7 +263,7 @@ public class PSPageCatalogService implements IPSPageCatalogService
 
         if (page == null)
         {
-            throw new RuntimeException("Unable to move the cataloged page, the specified page id was not found: "
+            throw new PSPageException("Unable to move the cataloged page, the specified page id was not found: "
                     + pageId);
         }
 
@@ -411,8 +408,7 @@ public class PSPageCatalogService implements IPSPageCatalogService
         return defaultWorkflowId;
     }
 
-    public String getCatalogTemplateId(PSSiteSummary site)
-    {
+    public String getCatalogTemplateId(PSSiteSummary site) throws PSDataServiceException, PSSiteImportException {
         String templateId = null;
         String siteId = site.getId();
         
@@ -454,11 +450,10 @@ public class PSPageCatalogService implements IPSPageCatalogService
      * 
      * @param templateId {@link String} with the id of the unassigned template.
      *            Assumed not <code>null</code>.
-     * @param site {@link PSSiteSummary} of the site, assumed not
+     * @param siteSummary {@link PSSiteSummary} of the site, assumed not
      *            <code>null</code>.
      */
-    private void setSiteThemeInTemplate(String templateId, PSSiteSummary siteSummary)
-    {
+    private void setSiteThemeInTemplate(String templateId, PSSiteSummary siteSummary) throws PSSiteImportException {
         try
         {
             // get the root folder's id
@@ -516,7 +511,7 @@ public class PSPageCatalogService implements IPSPageCatalogService
     }
 
     /**
-     * Increment the catalog count for the specified site by 1.  Assumes {@link #getCatalogCount(String)}
+     * Increment the catalog count for the specified site by 1.  Assumes
      * has already been called.
      * 
      * @param site the site to increment the count for, assumed not <code>null<code/> or empty.
@@ -611,7 +606,7 @@ public class PSPageCatalogService implements IPSPageCatalogService
         }
 
         /**
-         * @param longValue
+         * @param siteId
          */
         public void remove(Long siteId)
         {

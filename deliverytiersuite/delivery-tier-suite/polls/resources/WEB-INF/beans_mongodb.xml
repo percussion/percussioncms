@@ -138,11 +138,5 @@
     <property name="AuthorizeExpiredTTL" value="${tenant.cache.reauth}" />
    </bean>
    
-   <!--  Filters all requests to ensure tenants are authorized and that the tenant ID is added to the request context -->
-   <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
-   	<constructor-arg index="0" ref="authProvider" />
-   	<constructor-arg index="1" ref="authCache" />
-   </bean>
-   
    
 </beans>

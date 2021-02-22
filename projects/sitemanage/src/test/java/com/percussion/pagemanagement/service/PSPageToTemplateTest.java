@@ -24,9 +24,7 @@
 
 package com.percussion.pagemanagement.service;
 
-import static java.util.Arrays.asList;
 import com.percussion.assetmanagement.data.PSAsset;
-import com.percussion.assetmanagement.data.PSAssetWidgetRelationship;
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.itemmanagement.service.impl.PSItemWorkflowService;
@@ -34,37 +32,28 @@ import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.dao.IPSPageDaoHelper;
 import com.percussion.pagemanagement.dao.impl.PSTemplateDao;
 import com.percussion.pagemanagement.data.PSPage;
-import com.percussion.pagemanagement.data.PSRegion;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.data.PSWidgetItem;
-import com.percussion.pagemanagement.data.PSRegionNode.PSRegionOwnerType;
-import com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum;
-import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.impl.PSPageCatalogService;
 import com.percussion.pagemanagement.service.impl.PSPageManagementUtils;
 import com.percussion.pagemanagement.service.impl.PSTemplateService;
-import com.percussion.services.assembly.IPSAssemblyTemplate;
-import com.percussion.share.IPSSitemanageConstants;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSNameGenerator;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.dao.impl.PSSiteDao;
-import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteSummary;
-import com.percussion.sitemanage.service.impl.PSSiteTemplateService;
 import com.percussion.sitemanage.service.PSPageToTemplatePair;
+import com.percussion.sitemanage.service.impl.PSSiteTemplateService;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.utils.types.PSPair;
 import com.percussion.webservices.system.IPSSystemWs;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Assert;
 import org.junit.experimental.categories.Category;
+
+import static java.util.Arrays.asList;
 
 @Category(IntegrationTest.class)
 public class PSPageToTemplateTest extends PSServletTestCase
@@ -308,8 +297,7 @@ public class PSPageToTemplateTest extends PSServletTestCase
      * @return the id of the created page, never blank.
      */
     private String createPage(String name, String title, String templateId, String folderPath, String linkTitle,
-            String url, String noindex, String description)
-    {
+            String url, String noindex, String description) throws PSDataServiceException {
         PSPage page = new PSPage();
         page.setFolderPath(folderPath);
         page.setName(name);
@@ -359,8 +347,7 @@ public class PSPageToTemplateTest extends PSServletTestCase
 
     }
 
-    private PSAsset createHTMLLocalContent(String htmlContent)
-    {
+    private PSAsset createHTMLLocalContent(String htmlContent) throws PSDataServiceException {
         PSAsset asset = new PSAsset();
         String assetName = nameGenerator.generateLocalContentName();
         asset.setName(assetName);

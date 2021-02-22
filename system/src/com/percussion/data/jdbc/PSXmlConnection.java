@@ -404,7 +404,7 @@ public class PSXmlConnection extends PSFileSystemConnection {
       checkClosed();
    }
 
-   public void finalize() throws Throwable
+   protected void finalize() throws Throwable
    {
       super.finalize();
    }

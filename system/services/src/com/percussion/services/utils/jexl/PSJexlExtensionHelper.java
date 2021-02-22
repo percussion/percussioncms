@@ -60,7 +60,7 @@ public class PSJexlExtensionHelper
    @SuppressWarnings("unchecked")
    public static Collection<IPSExtensionDef> getJexlExtensionDefs()
    {
-      List<IPSExtensionDef> defs = new ArrayList<IPSExtensionDef>();
+      List<IPSExtensionDef> defs = new ArrayList<>();
       IPSExtensionManager emgr = PSServer.getExtensionManager(null);
       try
       {
@@ -91,11 +91,11 @@ public class PSJexlExtensionHelper
    @SuppressWarnings("unchecked")
    public static List<IPSExtensionDef> getVelocityTools()
    {
-      List<IPSExtensionDef> rval = new ArrayList<IPSExtensionDef>();
+      List<IPSExtensionDef> rval = new ArrayList<>();
       PSServiceJexlEvaluatorBase jexl = new PSServiceJexlEvaluatorBase(true);
       // Grab the $tools
       Map<String, Object> tools = (Map<String, Object>) jexl.getVars().get("$tools");
-      List<String> xfaces = new ArrayList<String>();
+      List<String> xfaces = new ArrayList<>();
       xfaces.add(PSServiceJexlEvaluatorBase.IPSJEXL_EXPRESSION);
       for (String key : tools.keySet())
       {

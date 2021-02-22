@@ -102,7 +102,7 @@ private static final int DEFAULT_BUFFER_SIZE = 20480; // 20KB.
        }
        catch (Exception ex)
        {
-    	   throw new PSTemplateException("Failed to find Template with name = " + templateName, ex);
+    	   throw new ServletException("Failed to find Template with name = " + templateName, ex);
        }      
    }
    

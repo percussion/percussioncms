@@ -41,6 +41,7 @@ import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.data.PSRenameFolderItem;
 import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.services.contentmgr.IPSContentMgr;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.share.IPSSitemanageConstants;
@@ -141,7 +142,7 @@ public abstract class PSPathItemService implements IPSPathService
         this.rolesAllowed = rolesAllowed;
     }
     
-    public PSPathItem find(String path) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
+    public PSPathItem find(String path) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSDataService.DataServiceLoadException {
         log.debug("Find root of path: {}", path);
         if ("/".equals(path))
             return findRoot();
@@ -308,7 +309,7 @@ public abstract class PSPathItemService implements IPSPathService
         return findItems(path);
     }
 
-    public PSPathItem addFolder(String path) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
+    public PSPathItem addFolder(String path) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSDataService.DataServiceLoadException {
         notEmpty(path, "path");
 
         log.debug("Add folder: {}", path);
@@ -325,7 +326,7 @@ public abstract class PSPathItemService implements IPSPathService
         return find(path);
     }
 
-    public PSPathItem addNewFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
+    public PSPathItem addNewFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSDataService.DataServiceLoadException {
         notEmpty(path, "path");
 
         String folderPath = path;
@@ -352,7 +353,7 @@ public abstract class PSPathItemService implements IPSPathService
 
     }
 
-    public PSPathItem renameFolder(PSRenameFolderItem item) throws PSValidationException, PSPathServiceException, IPSDataService.DataServiceNotFoundException {
+    public PSPathItem renameFolder(PSRenameFolderItem item) throws PSValidationException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException {
         PSBeanValidationException errors = PSBeanValidationUtils.validate(item);
         errors.throwIfInvalid();
 
@@ -412,7 +413,7 @@ public abstract class PSPathItemService implements IPSPathService
         return find(folderHelper.concatPath(relativeParentPath(path), name, "/"));
     }
 
-    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
+    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSDataService.DataServiceLoadException, PSNotFoundException {
         notNull(criteria, "criteria");
 
         String path = criteria.getPath();
@@ -429,7 +430,7 @@ public abstract class PSPathItemService implements IPSPathService
         return deleteFolder(path, getInUseItems(items), criteria);
     }
 
-    public String validateFolderDelete(String path) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, PSItemWorkflowServiceException {
+    public String validateFolderDelete(String path) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, PSItemWorkflowServiceException, IPSDataService.DataServiceLoadException, PSNotFoundException {
         notEmpty(path, "path");
 
         String response = "";
@@ -506,7 +507,7 @@ public abstract class PSPathItemService implements IPSPathService
      * @return {@link PSPathItem} which represents the item located at the
      *         specified path. Never <code>null</code>.
      */
-    protected PSPathItem findItem(String path) throws PSPathNotFoundServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException {
+    protected PSPathItem findItem(String path) throws PSPathNotFoundServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSDataService.DataServiceLoadException {
         String fullFolderPath = getFullFolderPath(path);
         IPSItemSummary dataItemSummary = getItemFromPath(path, fullFolderPath);
         PSPathItem item = createPathItem();
@@ -714,7 +715,7 @@ public abstract class PSPathItemService implements IPSPathService
      * @return list of paths representing the in use children of the path. Never
      *         <code>null</code>, may be empty.
      */
-    private List<String> getInUseItems(List<PSPathItem> items) throws PSValidationException {
+    private List<String> getInUseItems(List<PSPathItem> items) throws PSValidationException, PSNotFoundException {
         List<String> inUseItemPaths = new ArrayList<>();
 
         Map<String, Set<String>> assetRelOwnersMap = new HashMap<>();
@@ -794,7 +795,7 @@ public abstract class PSPathItemService implements IPSPathService
                 if (widgetAssetRelationshipService.isUsedByTemplate(item.getId())) {
                     return false;
                 }
-            } catch (PSValidationException e) {
+            } catch (PSValidationException | PSNotFoundException e) {
                log.warn("Validation error preparing for delete action, id: {} Error: {}",
                        item.getId(),
                        e.getMessage());
@@ -868,7 +869,7 @@ public abstract class PSPathItemService implements IPSPathService
      * 
      * @return set of id's for the pages. Never <code>null</code>, may be empty.
      */
-    protected Set<String> getApprovedPages(PSPathItem item) throws PSValidationException {
+    protected Set<String> getApprovedPages(PSPathItem item) throws PSValidationException, PSNotFoundException {
         notNull(item);
 
         return itemWorkflowService.getApprovedPages(item.getId());
@@ -903,7 +904,7 @@ public abstract class PSPathItemService implements IPSPathService
      * 
      * @return number of undeleted items;
      */
-    private int deleteFolder(String path, List<String> inUseItems, PSDeleteFolderCriteria criteria) throws IPSDataService.DataServiceNotFoundException, PSPathServiceException, PSValidationException {
+    private int deleteFolder(String path, List<String> inUseItems, PSDeleteFolderCriteria criteria) throws IPSDataService.DataServiceNotFoundException, PSPathServiceException, PSValidationException, IPSDataService.DataServiceLoadException {
         PSPathItem folderItem = findItem(path);
         String fullFolderPath = getFullFolderPath(path);
         int undeletedItems = 0;
@@ -950,7 +951,7 @@ public abstract class PSPathItemService implements IPSPathService
      * 
      * @return number of undeleted items;
      */
-    private int purgeFolderChildren(String path, List<String> inUseItems, PSDeleteFolderCriteria criteria) throws IPSDataService.DataServiceNotFoundException, PSPathServiceException, PSValidationException {
+    private int purgeFolderChildren(String path, List<String> inUseItems, PSDeleteFolderCriteria criteria) throws IPSDataService.DataServiceNotFoundException, PSPathServiceException, PSValidationException, IPSDataService.DataServiceLoadException {
         int undeletedItems = 0;
 
         String fullFolderPath = getFullFolderPath(path);
@@ -1023,7 +1024,7 @@ public abstract class PSPathItemService implements IPSPathService
      *         item; otherwise current user does not have privilege to delete
      *         the item.
      */
-    private boolean hasDeletePermission(String itemId) throws PSValidationException, PSItemWorkflowServiceException {
+    private boolean hasDeletePermission(String itemId) throws PSValidationException, PSItemWorkflowServiceException, PSNotFoundException {
         IPSGuid id = idMapper.getGuid(itemId);
 
         PSComponentSummary sum = getItemSummary(((PSLegacyGuid) id).getContentId());

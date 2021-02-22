@@ -76,7 +76,7 @@ public interface IPSFeedsRestService extends IPSRestService {
 	@Path("/readExternalFeed")
 	@Produces(MediaType.APPLICATION_XML)
 	public abstract String readExternalFeed(
-            PSFeedDTO psFeedDTO, @HeaderParam("perc-tid") String percId);
+            PSFeedDTO psFeedDTO);
 
 	/**
 	 * Saves the feed descriptors and connection info for meta data service. It

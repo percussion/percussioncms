@@ -25,6 +25,7 @@
 package com.percussion.server;
 
 import com.percussion.conn.IPSConnection;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSApplicationAuthorizationError;
 import com.percussion.error.PSErrorHandler;
 import com.percussion.error.PSErrorManager;
@@ -292,7 +293,7 @@ public class PSServerLogHandler {
     * @param   e            the validation exception to report
     */
    public static void handleValidationError(
-      int applId, com.percussion.design.objectstore.PSValidationException e)
+      int applId, PSSystemValidationException e)
    {
       org.w3c.dom.Element xmlData = null;
       org.w3c.dom.Document doc;

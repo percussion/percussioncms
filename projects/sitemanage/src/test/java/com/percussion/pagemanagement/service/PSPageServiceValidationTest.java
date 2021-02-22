@@ -28,7 +28,11 @@ import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.dao.IPSPageDaoHelper;
 import com.percussion.pagemanagement.dao.IPSTemplateDao;
-import com.percussion.pagemanagement.data.*;
+import com.percussion.pagemanagement.data.PSPage;
+import com.percussion.pagemanagement.data.PSRegion;
+import com.percussion.pagemanagement.data.PSRegionBranches;
+import com.percussion.pagemanagement.data.PSRegionWidgets;
+import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.impl.PSPageService;
 import com.percussion.recent.service.rest.IPSRecentService;
 import com.percussion.recycle.service.IPSRecycleService;
@@ -38,13 +42,13 @@ import com.percussion.share.service.IPSDataItemSummaryService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSPropertiesValidationException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.publishing.IPSPublishingWs;
-import com.percussion.webservices.system.IPSSystemWs;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -131,8 +135,7 @@ public class PSPageServiceValidationTest
     }
     
     @Test
-    public void shouldValidateWithOutFolderPathIfIdIsGiven()
-    {
+    public void shouldValidateWithOutFolderPathIfIdIsGiven() throws PSValidationException {
         /*
          * Given: a page that has been created.
          */
@@ -246,7 +249,7 @@ public class PSPageServiceValidationTest
     }
     
     @Test(expected=PSBeanValidationException.class)
-    public void shouldInValidateBranchOverridesWithNoRegionId() {
+    public void shouldInValidateBranchOverridesWithNoRegionId() throws PSValidationException {
         /*
          * Given: a page that has been created
          * with page branches.
@@ -277,7 +280,7 @@ public class PSPageServiceValidationTest
     }
     
     @Test(expected=PSBeanValidationException.class)
-    public void shouldFailIfDuplicateRegionWidgetAssocations() {
+    public void shouldFailIfDuplicateRegionWidgetAssocations() throws PSValidationException {
         /*
          * Given: a page that has been created
          * with page branches.
@@ -325,7 +328,7 @@ public class PSPageServiceValidationTest
     
     
     @Test(expected=PSBeanValidationException.class)
-    public void shouldFailIfDuplicateRegionIds() {
+    public void shouldFailIfDuplicateRegionIds() throws PSValidationException {
         /*
          * Given: a page that has been created
          * with page branches.

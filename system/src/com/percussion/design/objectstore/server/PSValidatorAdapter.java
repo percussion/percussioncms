@@ -30,7 +30,7 @@ import com.percussion.design.objectstore.IPSValidationContext;
 import com.percussion.design.objectstore.PSApplication;
 import com.percussion.design.objectstore.PSNonUniqueException;
 import com.percussion.design.objectstore.PSServerConfiguration;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSValidationError;
 import com.percussion.log.PSLogHandler;
 import com.percussion.security.PSAuthorizationException;
@@ -109,7 +109,7 @@ public class PSValidatorAdapter implements IPSValidationContext
    }
 
    public void validateApplication(PSApplication app)
-      throws PSValidationException, PSNonUniqueException, PSServerException,
+      throws PSSystemValidationException, PSNonUniqueException, PSServerException,
       PSAuthorizationException
    {
       setContainer(app);
@@ -119,7 +119,7 @@ public class PSValidatorAdapter implements IPSValidationContext
    }
 
    public void validateServerConfiguration(PSServerConfiguration srvCfg)
-      throws PSValidationException, PSNonUniqueException, PSServerException,
+      throws PSSystemValidationException, PSNonUniqueException, PSServerException,
       PSAuthorizationException
    {
       setContainer(srvCfg);
@@ -251,7 +251,7 @@ public class PSValidatorAdapter implements IPSValidationContext
 
    /**
     * Registers a validation warning with the validation context. The context
-    * may choose to discard warnings or to raise a PSValidationException,
+    * may choose to discard warnings or to raise a PSSystemValidationException,
     * which must not be caught by the validate method.
     * <P>
     * Warnings are caused by conditions that may produce inefficient or
@@ -271,7 +271,7 @@ public class PSValidatorAdapter implements IPSValidationContext
       IPSComponent component,
       int errorCode,
       Object[] args)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (m_treatWarningsAsErrors)
          validationError(component, errorCode, args);
@@ -285,7 +285,7 @@ public class PSValidatorAdapter implements IPSValidationContext
     * 
     * @version 1.0 1999/6/28
     * 
-    * @throws   PSValidationException
+    * @throws PSSystemValidationException
     *
     * @see #validationWarning(IPSComponent, int, Object[])
     */
@@ -293,14 +293,14 @@ public class PSValidatorAdapter implements IPSValidationContext
       IPSComponent component,
       int errorCode,
       Object arg)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       validationWarning(component, errorCode, new Object[] { arg });
    }
 
    /**
     * Registers a validation error with the validation context. The context
-    * may choose to discard errors or to raise a PSValidationException,
+    * may choose to discard errors or to raise a PSSystemValidationException,
     * which must not be caught by the validate method.
     * <P>
     * Validation errors are caused by conditions that will produce incorrect
@@ -320,10 +320,10 @@ public class PSValidatorAdapter implements IPSValidationContext
       IPSComponent component,
       int errorCode,
       Object[] args)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
-      PSValidationException ex
-         = new PSValidationException(errorCode, args, m_container, component);
+      PSSystemValidationException ex
+         = new PSSystemValidationException(errorCode, args, m_container, component);
       trace(ex.getMessage());
       if (m_logHandler != null)
       {
@@ -364,7 +364,7 @@ public class PSValidatorAdapter implements IPSValidationContext
     * 
     * @version 1.0 1999/6/28
     * 
-    * @throws   PSValidationException
+    * @throws PSSystemValidationException
     *
     * @see #validationError(IPSComponent, int, Object[])
     */
@@ -372,7 +372,7 @@ public class PSValidatorAdapter implements IPSValidationContext
       IPSComponent component,
       int errorCode,
       Object arg)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       validationError(component, errorCode, new Object[] { arg });
    }

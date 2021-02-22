@@ -40,10 +40,12 @@ import com.percussion.itemmanagement.data.PSItemUserInfo;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService.PSItemWorkflowServiceException;
 import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
 import com.percussion.pagemanagement.data.PSPage;
+import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pathmanagement.data.PSItemByWfStateRequest;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSItemEntry;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSWebserviceUtils;
 
@@ -120,8 +122,7 @@ public class PSItemWorkflowServiceTest extends PSItemWorkflowServiceTestBase
         checkinPageWithOutOfSyncRelationship(pageId, localAssetId1);
     }
     
-    private void checkinPageWithOutOfSyncRelationship(String pageId, String localAssetId)
-    {
+    private void checkinPageWithOutOfSyncRelationship(String pageId, String localAssetId) throws PSItemWorkflowServiceException {
         validateRevisions(pageId, localAssetId, 1, 1);
         validateLocalAssetRelationship(localAssetId, 1, pageId);
         
@@ -718,8 +719,7 @@ public class PSItemWorkflowServiceTest extends PSItemWorkflowServiceTestBase
         assertFalse(workflowHelper.isAsset(templateId));
     }
     
-    public void testTransitionRelatedNavigationItem() throws LoginException
-    {
+    public void testTransitionRelatedNavigationItem() throws LoginException, IPSPageService.PSPageException, PSValidationException {
         securityWs.login("admin1", "demo", "Enterprise_Investments", null);
         
         PSPage homePage = fixture.getPageService().findPageByPath(fixture.site1.getFolderPath() + "/index.html");

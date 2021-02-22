@@ -324,7 +324,7 @@ public class PSFileStorageMigrator implements Runnable
         PSItemDefManager itemDefMgr = PSItemDefManager.getInstance();
         long[] typeIds = itemDefMgr.getAllContentTypeIds(-1);
 
-        List<PSField> fields = new ArrayList<PSField>();
+        List<PSField> fields = new ArrayList<>();
 
         for (int i = 0; i < typeIds.length; i++)
         {
@@ -346,7 +346,7 @@ public class PSFileStorageMigrator implements Runnable
             }
         }
 
-        Map<String, Map<String, String>> fieldInfoMap = new HashMap<String, Map<String, String>>();
+        Map<String, Map<String, String>> fieldInfoMap = new HashMap<>();
 
         for (PSField field : fields)
         {
@@ -364,7 +364,7 @@ public class PSFileStorageMigrator implements Runnable
                 Map<String, String> fieldInfo = fieldInfoMap.get(fieldKey);
                 if (fieldInfo == null)
                 {
-                    fieldInfo = new HashMap<String, String>();
+                    fieldInfo = new HashMap<>();
                     fieldInfo.put("base", fieldName);
                     fieldInfo.put("tableName", tableName);
                     fieldInfoMap.put(fieldKey, fieldInfo);
@@ -376,7 +376,7 @@ public class PSFileStorageMigrator implements Runnable
                 Map<String, String> fieldInfo = fieldInfoMap.get(fieldKey);
                 if (fieldInfo == null)
                 {
-                    fieldInfo = new HashMap<String, String>();
+                    fieldInfo = new HashMap<>();
                     fieldInfo.put("base", fieldName);
                     fieldInfo.put("tableName", tableName);
                     fieldInfoMap.put(fieldKey, fieldInfo);

@@ -26,6 +26,7 @@ package com.percussion.analytics.service;
 import com.percussion.analytics.data.PSAnalyticsProviderConfig;
 import com.percussion.analytics.error.IPSAnalyticsErrorMessageHandler;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
+import com.percussion.share.dao.IPSGenericDao;
 
 import java.util.Map;
 
@@ -47,12 +48,12 @@ public interface IPSAnalyticsProviderService
     * @param config The analytics <code>PSAnalyticsProviderConfig</code> object. Cannot
     * be <code>null</code>.
     */
-   public void saveConfig(PSAnalyticsProviderConfig config); 
+   public void saveConfig(PSAnalyticsProviderConfig config) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException;
    
    /**
     * Deletes the stored configuration if exists.
     */
-   public void deleteConfig();
+   public void deleteConfig() throws IPSGenericDao.LoadException, IPSGenericDao.DeleteException;
    
    /**
     * Returns the stored analytics provider config if one exists. 
@@ -60,7 +61,7 @@ public interface IPSAnalyticsProviderService
     * in the returned config object.
     * @return the config object or <code>null</code> if not found.
     */
-   public PSAnalyticsProviderConfig loadConfig(boolean encrypted);
+   public PSAnalyticsProviderConfig loadConfig(boolean encrypted) throws IPSGenericDao.LoadException;
    
    /**
     * Retrieves a list of "profiles" from the provider. Profiles are basically id's used to
@@ -73,7 +74,7 @@ public interface IPSAnalyticsProviderService
     * profile display value. Never <code>null</code>, may be empty.
     * @throws PSAnalyticsProviderException, upon any error.
     */
-   public Map<String, String> getProfiles(String uid, String password) throws PSAnalyticsProviderException;
+   public Map<String, String> getProfiles(String uid, String password) throws PSAnalyticsProviderException, IPSGenericDao.LoadException;
    
    /**
     * Tests a connection to the provider using the specified credentials.
@@ -83,7 +84,7 @@ public interface IPSAnalyticsProviderService
     * If so it will attempt to use stored password or error if it does not find one.
     * @throws PSAnalyticsProviderException if failed to connect with the specified parameters.
     */
-   public void testConnection(String uid, String password) throws PSAnalyticsProviderException;
+   public void testConnection(String uid, String password) throws PSAnalyticsProviderException, IPSGenericDao.LoadException, IPSGenericDao.SaveException;
    
    
    /**
@@ -91,21 +92,21 @@ public interface IPSAnalyticsProviderService
     * @param sitename the name of the site to check. Cannot be <code>null</code> or empty.
     * @return <code>true</code> if the profile is configured for the site
     */
-   public boolean isProfileConfigured(String sitename);
+   public boolean isProfileConfigured(String sitename) throws IPSGenericDao.LoadException;
    
    /**
     * Returns the configured profile id|webpropertyId for the specified sitename.
     * @param sitename the name of the site to check. Cannot be <code>null</code> or empty.
     * @return the profile id string or <code>null</code> if not set.
     */
-   public String getProfileId(String sitename);
+   public String getProfileId(String sitename) throws IPSGenericDao.LoadException;
    
    /**
     * Gets the Web Property ID for the specified site.
     * @param sitename the name of the site, not blank.
     * @return the web property ID. It may be <code>null</code> if it is not configured for the site.
     */
-   public String getWebPropertyId(String sitename);
+   public String getWebPropertyId(String sitename) throws IPSGenericDao.LoadException;
    
    
    /**
@@ -113,7 +114,7 @@ public interface IPSAnalyticsProviderService
     * @param sitename the name of the site, not blank.
     * @return the API key. It may be <code>null</code> if it is not configured for the site.
     */
-   public String getGoogleApiKey(String sitename);
+   public String getGoogleApiKey(String sitename) throws IPSGenericDao.LoadException;
    
    /**
     * Get the proper error message handler for the analytics provider service in use.

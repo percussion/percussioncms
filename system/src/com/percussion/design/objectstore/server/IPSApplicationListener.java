@@ -27,7 +27,7 @@ package com.percussion.design.objectstore.server;
 import com.percussion.conn.PSServerException;
 import com.percussion.design.objectstore.PSApplication;
 import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 
 import java.util.EventListener;
 
@@ -65,7 +65,7 @@ public interface IPSApplicationListener extends EventListener
     * @param   app         the application object
     */
    public void applicationUpdated(PSApplication app)
-      throws PSValidationException, PSServerException, PSNotFoundException;
+      throws PSSystemValidationException, PSServerException, PSNotFoundException;
 
    /**
     * A new application has been created.
@@ -73,7 +73,7 @@ public interface IPSApplicationListener extends EventListener
     * @param   app         the application object
     */
    public void applicationCreated(PSApplication app)
-      throws PSValidationException, PSServerException, PSNotFoundException;
+      throws PSSystemValidationException, PSServerException, PSNotFoundException;
 
    /**
     * The name of the application has been changed.

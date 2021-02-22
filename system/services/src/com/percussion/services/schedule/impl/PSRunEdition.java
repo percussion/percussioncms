@@ -171,7 +171,7 @@ public class PSRunEdition implements IPSTask, IPSPublishingJobStatusCallback
       String errMsg = edition == null ? cause.getLocalizedMessage() 
          : getErrorMessage(edition, cause, null);
       
-      Map<String, Object> vars = new HashMap<String, Object>();
+      Map<String, Object> vars = new HashMap<>();
       vars.put("$sys.editionName", edition == null 
          ? "Unknown" : edition.getName());
       vars.put("$sys.siteName", edition == null 
@@ -197,7 +197,7 @@ public class PSRunEdition implements IPSTask, IPSPublishingJobStatusCallback
       if (m_status == null)
          throw new IllegalStateException("m_status must not be null.");
       
-      Map<String, Object> vars = new HashMap<String, Object>();
+      Map<String, Object> vars = new HashMap<>();
       vars.put("$sys.editionName", edition.getName());
       vars.put("$sys.siteName", getSiteName(edition.getSiteId()));
       vars.put("$sys.failureCount", m_status.countFailedItems());

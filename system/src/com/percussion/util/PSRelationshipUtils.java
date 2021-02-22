@@ -28,8 +28,8 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSInternalRequest;
@@ -58,7 +58,7 @@ public class PSRelationshipUtils
     * @return <code>null</code> if no translation exists, the dependent
     *    locator if there is a translation.
     * @throws PSRequestValidationException for any failed request validation.
-    * @throws PSValidationException for any failed validation.
+    * @throws PSSystemValidationException for any failed validation.
     * @throws SQLException for any failed SQL operation.
     * @throws PSNotFoundException for any file not found.
     * @throws PSInternalRequestCallException if any error occurs processing
@@ -74,7 +74,7 @@ public class PSRelationshipUtils
     */
    public static PSLocator getExistingTranslation(IPSRequestContext request)
       throws PSRequestValidationException, PSAuthorizationException,
-         PSInternalRequestCallException, PSValidationException, SQLException,
+         PSInternalRequestCallException, PSSystemValidationException, SQLException,
          PSAuthenticationFailedException, PSNotFoundException, IOException,
          PSUnknownNodeTypeException
    {
@@ -124,7 +124,7 @@ public class PSRelationshipUtils
     * @return <code>true</code> if the requested language already exists for
     *    the provided content id, <code>false</code> otherwise.
     * @throws PSRequestValidationException for any failed request validation.
-    * @throws PSValidationException for any failed validation.
+    * @throws PSSystemValidationException for any failed validation.
     * @throws SQLException for any failed SQL operation.
     * @throws PSNotFoundException for any file not found.
     * @throws PSInternalRequestCallException if any error occurs processing
@@ -138,7 +138,7 @@ public class PSRelationshipUtils
     */
    public static boolean doesTranslationExist(IPSRequestContext request)
       throws PSRequestValidationException, PSAuthorizationException,
-         PSInternalRequestCallException, PSValidationException, SQLException,
+         PSInternalRequestCallException, PSSystemValidationException, SQLException,
          PSAuthenticationFailedException, PSNotFoundException, IOException
    {
       if (request == null)

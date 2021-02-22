@@ -297,7 +297,7 @@ public class PSDisplayMapper extends PSCollectionComponent
 
    // see IPSComponent
    public void validate(IPSValidationContext context)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (!context.startValidation(this, null))
          return;
@@ -480,12 +480,12 @@ public class PSDisplayMapper extends PSCollectionComponent
    * @return the copy of this mapper merged with provided source mapper, never
    * <code>null</code>.
    *
-   * @throws PSValidationException if there are any errors.
+   * @throws PSSystemValidationException if there are any errors.
    */
    public PSDisplayMapper merge(boolean mergeDefault, Iterator defaultUISet,
       PSDisplayMapper sourceMapper, Iterator sourceDefaultUISet,
       boolean mergeChild, List fieldExcludes)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if(sourceMapper == null)
          throw new IllegalArgumentException("sourceMapper may not be null.");
@@ -518,7 +518,7 @@ public class PSDisplayMapper extends PSCollectionComponent
          {
             /* No placeholder in this mapper for merging with child mapper.
              */
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSObjectStoreErrors.CE_UNUSED_MAPPER, fieldRef);
          }
       }
@@ -578,12 +578,12 @@ public class PSDisplayMapper extends PSCollectionComponent
    * @return the copy of this mapper demerged from provided source mapper, never
    * <code>null</code>.
    *
-   * @throws PSValidationException if there are any errors.
+   * @throws PSSystemValidationException if there are any errors.
    */
    public PSDisplayMapper demerge(boolean demergeDefault, Iterator defaultUISet,
       PSDisplayMapper sourceMapper, Iterator sourceDefaultUI,
       boolean demergeChild, List fieldExcludes)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if(sourceMapper == null)
          throw new IllegalArgumentException("sourceMapper may not be null.");
@@ -627,13 +627,13 @@ public class PSDisplayMapper extends PSCollectionComponent
     * source mapper. Will be updated with any mappings used from the source def.
     * Assumed not to be <code>null</code> and empty.
     *
-    * @throws PSValidationException if there are any errors.
+    * @throws PSSystemValidationException if there are any errors.
     */
    private void mergeMapper(PSDisplayMapper targetDisplayMapper,
       boolean mergeDefault, Iterator targetDefaultUISet, List fieldExcludes,
       PSDisplayMapper sourceMapper, Iterator sourceDefaultUISet,
       boolean mergeChild, ArrayList usedMappings)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       /* walk the mapper, and for any "placeholders", create a new merged
        * version and add it to a replacement list.  Then we'll walk the
@@ -747,11 +747,11 @@ public class PSDisplayMapper extends PSCollectionComponent
     * @param sourceDefaultUI The source default ui to merge uiset in source
     * mapping, may be <code>null</code>
     * @param sourceMapper The mapper to add as the child of the target mapping.
-    * @throws PSValidationException if there are any errors.
+    * @throws PSSystemValidationException if there are any errors.
     */
    private void addUIMapper(PSDisplayMapping targetMapping,
       Iterator sourceDefaultUI, PSDisplayMapper sourceMapper)
-         throws PSValidationException
+         throws PSSystemValidationException
    {
       // create the new mapper
       PSDisplayMapper targetMapper = null;
@@ -794,11 +794,11 @@ public class PSDisplayMapper extends PSCollectionComponent
     *
     * @return the new target mapping, never <code>null</code>.
     *
-    * @throws PSValidationException if there are any errors.
+    * @throws PSSystemValidationException if there are any errors.
     */
    private PSDisplayMapping addMapping(PSDisplayMapper targetMapper,
       Iterator sourceDefaultUI, PSDisplayMapping sourceMapping)
-         throws PSValidationException
+         throws PSSystemValidationException
    {
       // create new mapping and merge default values
       String fieldRef = sourceMapping.getFieldRef();
@@ -842,12 +842,12 @@ public class PSDisplayMapper extends PSCollectionComponent
     * @return A copy of the target updated with the source as described, never
     * <code>null</code>
     *
-    * @throws PSValidationException if there are any errors.
+    * @throws PSSystemValidationException if there are any errors.
     */
    private PSDisplayMapping mergeMapping(Iterator sourceDefaultUI,
       PSDisplayMapping sourceMapping, boolean mergeDefault,
       Iterator targetDefaultUI, PSDisplayMapping targetMapping)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       PSDisplayMapping resultMapping = null;
 
@@ -882,7 +882,7 @@ public class PSDisplayMapper extends PSCollectionComponent
       if ((targetChildMapper != null) && (sourceChildMapper == null))
       {
          // target cannot have a child if source does not
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSObjectStoreErrors.CE_MAPPING_INVALID_CHILD,
                targetMapping.getFieldRef());
       }
@@ -923,13 +923,13 @@ public class PSDisplayMapper extends PSCollectionComponent
     * @return copy of target child mapper merged with source childmapper,
     * never <code>null</code>
     *
-    * @throws PSValidationException if an error happens in merging.
+    * @throws PSSystemValidationException if an error happens in merging.
     */
    private PSDisplayMapper getMergedChildMapper(
       PSDisplayMapper sourceChildMapper, Iterator sourceDefaultUI,
       PSDisplayMapper targetChildMapper, boolean mergeDefault,
       Iterator targetDefaultUI)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       // build map of source mappings
       HashMap sourceMappings = new HashMap();
@@ -966,7 +966,7 @@ public class PSDisplayMapper extends PSCollectionComponent
          else
          {
             // target may not contain fields not in the source
-           throw new PSValidationException(
+           throw new PSSystemValidationException(
                IPSObjectStoreErrors.CE_MAPPING_INVALID_CHILD_FIELDS,
                   targetChildMapper.getFieldSetRef());
 
@@ -1004,11 +1004,11 @@ public class PSDisplayMapper extends PSCollectionComponent
     * the uiSet passed in if it is not modified in any way. Never
     * <code>null</code>.
     *
-    * @throws PSValidationException if the default specified in the uiSet is not
+    * @throws PSSystemValidationException if the default specified in the uiSet is not
     * found in the collection of the default uisets.
     */
    private PSUISet mergeDefaultUISet(Iterator defaultUISet, PSUISet uiSet)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (uiSet == null)
          throw new IllegalArgumentException("uiSet may not be null");
@@ -1046,7 +1046,7 @@ public class PSDisplayMapper extends PSCollectionComponent
          if (!isMatch)
          {
             // a default set specified that does not exist!
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSObjectStoreErrors.CE_MAPPING_INVALID_DEFAULT_UISET, defaultName);
          }
       }
@@ -1119,7 +1119,7 @@ public class PSDisplayMapper extends PSCollectionComponent
       boolean demergeDefault, Iterator defaultUISet,
       List fieldExcludes, PSDisplayMapper sourceMapper,
       Iterator sourceDefaultUI, boolean demergeChild)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
        /* walk the mapper, and for any "placeholders", create a new merged
        * version and add it to a replacement list.  Then we'll walk the
@@ -1206,12 +1206,12 @@ public class PSDisplayMapper extends PSCollectionComponent
     * @return A copy of the target updated with the source as described, never
     * <code>null</code>
     *
-    * @throws PSValidationException if there are any errors.
+    * @throws PSSystemValidationException if there are any errors.
     */
    private PSDisplayMapping demergeMapping(Iterator sourceDefaultUI,
       PSDisplayMapping sourceMapping, boolean demergeDefault,
       Iterator targetDefaultUI, PSDisplayMapping targetMapping)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       PSDisplayMapping resultMapping = null;
 
@@ -1242,7 +1242,7 @@ public class PSDisplayMapper extends PSCollectionComponent
       if ((targetChildMapper != null) && (sourceChildMapper == null))
       {
          // target cannot have a child if source does not
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSObjectStoreErrors.CE_MAPPING_INVALID_CHILD,
                targetMapping.getFieldRef());
       }
@@ -1273,13 +1273,13 @@ public class PSDisplayMapper extends PSCollectionComponent
     * @return copy of target child mapper demerged from source childmapper,
     * never <code>null</code>
     *
-    * @throws PSValidationException if an error happens in demerging.
+    * @throws PSSystemValidationException if an error happens in demerging.
     */
    private PSDisplayMapper getDemergedChildMapper(
       PSDisplayMapper sourceChildMapper, Iterator sourceDefaultUI,
       PSDisplayMapper targetChildMapper, boolean demergeDefault,
       Iterator targetDefaultUI)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       // build map of source mappings
       HashMap sourceMappings = new HashMap();
@@ -1319,7 +1319,7 @@ public class PSDisplayMapper extends PSCollectionComponent
             //for a field which don't have a mapping in corresponding source
             //definition of this child mapper
             // target may not contain fields not in the source
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSObjectStoreErrors.CE_MAPPING_INVALID_CHILD_FIELDS,
                   targetChildMapper.getFieldSetRef());
          }
@@ -1349,11 +1349,11 @@ public class PSDisplayMapper extends PSCollectionComponent
     * the uiSet passed in if it is not modified in any way. Never
     * <code>null</code>.
     *
-    * @throws PSValidationException if the default specified in the uiSet is not
+    * @throws PSSystemValidationException if the default specified in the uiSet is not
     * found in the collection of the default uisets.
     */
    private PSUISet demergeDefaultUISet(Iterator defaultUISet, PSUISet uiSet)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (uiSet == null)
          throw new IllegalArgumentException("uiSet may not be null");
@@ -1390,7 +1390,7 @@ public class PSDisplayMapper extends PSCollectionComponent
          if (!isMatch)
          {
             // a default set specified that does not exist!
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSObjectStoreErrors.CE_MAPPING_INVALID_DEFAULT_UISET, defaultName);
          }
       }

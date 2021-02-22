@@ -73,7 +73,7 @@ public class PSRow implements Row
       {
          throw new IllegalArgumentException("data may not be null");
       }
-      m_data = new HashMap<String,Object>();
+      m_data = new HashMap<>();
       
       // Fix the keys, they were probably modified for Hibernate
       for(String key : data.keySet())

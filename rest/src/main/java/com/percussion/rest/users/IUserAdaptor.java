@@ -29,18 +29,19 @@ import java.util.List;
 
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.rest.Status;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.webservices.PSErrorResultsException;
 
 
 public interface IUserAdaptor {
 	
-	 	public User getUser(URI baseURI, String userName) throws PSErrorResultsException, PSInternalRequestCallException;
+	 	public User getUser(URI baseURI, String userName) throws PSErrorResultsException, PSInternalRequestCallException, BackendException;
 
-	    public User updateOrCreateUser(URI baseURI, User user);
+	    public User updateOrCreateUser(URI baseURI, User user) throws BackendException;
 
-	    public void deleteUser(URI baseURI, String userName);
+	    public void deleteUser(URI baseURI, String userName) throws BackendException;
 	    
-	    public List<String> findUsers(URI baseURI, String pattern);
+	    public List<String> findUsers(URI baseURI, String pattern) throws BackendException;
 	    
 	    public Status checkDirectoryStatus();
 	    

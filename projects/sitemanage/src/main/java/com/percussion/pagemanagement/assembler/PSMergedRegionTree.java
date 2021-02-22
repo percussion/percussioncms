@@ -61,8 +61,7 @@ public class PSMergedRegionTree extends PSAbstractMergedRegionTree {
         this.widgetService = widgetService;
     }
 
-    public PSMergedRegionTree(IPSWidgetService widgetService, PSRegionTree templateRegionTree, PSRegionBranches pageRegionBranches)
-    {
+    public PSMergedRegionTree(IPSWidgetService widgetService, PSRegionTree templateRegionTree, PSRegionBranches pageRegionBranches) throws PSDataServiceException {
         this(widgetService);
         merge(templateRegionTree, pageRegionBranches);
     }

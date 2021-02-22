@@ -50,6 +50,8 @@ import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSTemplateBinding;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.webservices.PSWebserviceUtils;
@@ -179,7 +181,7 @@ public class PSPageAssemblyContextFactory
      */
     public PSPageAssemblyContext createContext(IPSAssemblyItem assemblyItem, TemplateAndPage templateAndPage, boolean isHtml)
             throws ItemNotFoundException, PSAssemblyException, PSFilterException, RepositoryException,
-            PSTemplateNotImplementedException, IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, IPSTemplateService.PSTemplateException {
+            PSTemplateNotImplementedException, PSDataServiceException {
 
         StopWatch sw = new StopWatch("#createContext");
         /*

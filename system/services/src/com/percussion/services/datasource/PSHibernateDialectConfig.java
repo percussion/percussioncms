@@ -93,7 +93,7 @@ public class PSHibernateDialectConfig implements IPSBeanConfig, IPSHibernateDial
     */
    public Map<String, String> getDialects()
    {
-      return new HashMap<String, String>(m_sqlDialects);
+      return new HashMap<>(m_sqlDialects);
    }
 
    /**
@@ -154,7 +154,7 @@ public class PSHibernateDialectConfig implements IPSBeanConfig, IPSHibernateDial
     * Map of jdbc driver name to hibernate sql dialect, never <code>null</code>,
     * may be empty. Modified by calls to {@link #setDialects(Map)}.
     */
-   private Map<String, String> m_sqlDialects = new HashMap<String, String>();
+   private Map<String, String> m_sqlDialects = new HashMap<>();
    
    /** 
     * Dialect property name

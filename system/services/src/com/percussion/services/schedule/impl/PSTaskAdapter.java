@@ -923,6 +923,6 @@ public class PSTaskAdapter implements Job
     * none scheduled (manually invoked) jobs. It never <code>null</code>, but
     * may be empty.
     */
-   private static List<IPSGuid> ms_activeJobs = new ArrayList<IPSGuid>();
+   private static List<IPSGuid> ms_activeJobs = new ArrayList<>();
    
 }

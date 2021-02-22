@@ -23,7 +23,9 @@
  */
 package com.percussion.workflow.service;
 
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.workflow.data.PSState;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSEnumVals;
 import com.percussion.workflow.data.PSUiWorkflow;
 
@@ -107,7 +109,7 @@ public interface IPSSteppedWorkflowService
      * @return a <code>PSUiWorkflow</code> object never empty or <code>null</code>
      * @throws PSWorkflowEditorServiceException, if the supplied object is invalid.
      */
-    public PSUiWorkflow updateWorkflow(String workflowName, PSUiWorkflow uiWorkflow) throws PSWorkflowEditorServiceException;
+    public PSUiWorkflow updateWorkflow(String workflowName, PSUiWorkflow uiWorkflow) throws PSWorkflowEditorServiceException, PSNotFoundException, IPSGenericDao.LoadException, IPSGenericDao.SaveException;
     
     /**
      * Deletes a workflow with the name provided.

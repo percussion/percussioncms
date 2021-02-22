@@ -96,13 +96,13 @@ public class PSContentList implements IPSContentList {
     , fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "CONTENT_LIST_ID")
     @Fetch(FetchMode.SUBSELECT)
-    Set<PSContentListGeneratorParam> generatorArguments = new HashSet<PSContentListGeneratorParam>();
+    Set<PSContentListGeneratorParam> generatorArguments = new HashSet<>();
     @OneToMany(targetEntity = PSTemplateExpanderParam.class, cascade =  {
         CascadeType.ALL}
     , fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "CONTENT_LIST_ID")
     @Fetch(FetchMode.SUBSELECT)
-    Set<PSTemplateExpanderParam> expanderArguments = new HashSet<PSTemplateExpanderParam>();
+    Set<PSTemplateExpanderParam> expanderArguments = new HashSet<>();
 
     /**
      * The item filter as a transient object, can only exist when the
@@ -123,7 +123,7 @@ public class PSContentList implements IPSContentList {
      * @see com.percussion.services.publisher.IPSContentList#getGeneratorParams()
      */
     public Map<String, String> getGeneratorParams() {
-        Map<String, String> rval = new HashMap<String, String>();
+        Map<String, String> rval = new HashMap<>();
 
         if (generatorArguments != null) {
             for (PSContentListGeneratorParam p : generatorArguments) {
@@ -151,7 +151,7 @@ public class PSContentList implements IPSContentList {
         }
 
         // First remove any old argument that no longer belongs
-        Set<String> removals = new HashSet<String>();
+        Set<String> removals = new HashSet<>();
 
         for (PSContentListGeneratorParam param : generatorArguments) {
             if (!newargs.keySet().contains(param.getName())) {
@@ -175,7 +175,7 @@ public class PSContentList implements IPSContentList {
      * @see com.percussion.services.publisher.IPSContentList#getExpanderParams()
      */
     public Map<String, String> getExpanderParams() {
-        Map<String, String> rval = new HashMap<String, String>();
+        Map<String, String> rval = new HashMap<>();
 
         if (expanderArguments != null) {
             for (PSTemplateExpanderParam p : expanderArguments) {
@@ -203,7 +203,7 @@ public class PSContentList implements IPSContentList {
         }
 
         // First remove any old argument that no longer belongs
-        Set<String> removals = new HashSet<String>();
+        Set<String> removals = new HashSet<>();
 
         for (PSTemplateExpanderParam param : expanderArguments) {
             if (!newargs.keySet().contains(param.getName())) {
@@ -256,7 +256,7 @@ public class PSContentList implements IPSContentList {
         newparam.setContentList(this);
 
         if (generatorArguments == null) {
-            generatorArguments = new HashSet<PSContentListGeneratorParam>();
+            generatorArguments = new HashSet<>();
         }
 
         generatorArguments.add(newparam);
@@ -323,7 +323,7 @@ public class PSContentList implements IPSContentList {
         newparam.setContentList(this);
 
         if (expanderArguments == null) {
-            expanderArguments = new HashSet<PSTemplateExpanderParam>();
+            expanderArguments = new HashSet<>();
         }
 
         expanderArguments.add(newparam);

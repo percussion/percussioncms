@@ -63,7 +63,7 @@ public class PSLegacyAssembler extends PSAssemblerBase
    {
       IPSAssemblyTemplate template = item.getTemplate();
       String path = template.getAssemblyUrl();
-      Map<String, Object> requestparams = new HashMap<String, Object>();
+      Map<String, Object> requestparams = new HashMap<>();
       for (String name : item.getParameters().keySet())
       {
          //Legacy assembler needs to pass empty parameters values
