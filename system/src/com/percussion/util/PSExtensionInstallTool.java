@@ -910,7 +910,7 @@ public class PSExtensionInstallTool
     * Closes all resources used in this class.
     */
    @Override
-   public void finalize() throws Throwable
+   protected void finalize() throws Throwable
    {
       close();
       super.finalize();
