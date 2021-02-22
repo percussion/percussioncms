@@ -109,7 +109,9 @@ public class MainDTSPreInstall {
             System.out.println("====Will remove below code if value of is Production comes fine PSDeliveryTierServerTYpePanel"+isProduction);
             String staging = installPath.toFile() + File.separator + "Staging";
             File f = new File(staging);
-            if(Files.exists(f.toPath())){
+            String prod = installPath.toFile() + File.separator + "Deployment";
+            File f2 = new File(prod);
+            if(Files.exists(f.toPath()) && !Files.exists(f2.toPath())){
                 isProduction="false";
             }
             if(isProduction == null || isProduction.isEmpty()){
@@ -147,7 +149,7 @@ public class MainDTSPreInstall {
             Path execPath = installSrc.resolve(Paths.get("rxconfig","Installer"));
             Path installAntJarPath = execPath.resolve(
                     getVersionLessJarFilePath(
-                    execPath,PERC_ANT_JAR + "-*.jar"));
+                            execPath,PERC_ANT_JAR + "-*.jar"));
 
             exitCode =  execJar(installAntJarPath,execPath,installPath,isProduction);
 
@@ -226,4 +228,4 @@ public class MainDTSPreInstall {
     }
 
 
-            }
+}

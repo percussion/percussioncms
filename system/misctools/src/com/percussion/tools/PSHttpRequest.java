@@ -485,7 +485,7 @@ public class PSHttpRequest implements IPSHTTPConstants
 		m_sock = null;
 	}
 
-	public void finalize() throws Throwable
+	protected void finalize() throws Throwable
 	{
 		super.finalize();
 		disconnect();
