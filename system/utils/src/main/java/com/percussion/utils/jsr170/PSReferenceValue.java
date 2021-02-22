@@ -23,15 +23,14 @@
  */
 package com.percussion.utils.jsr170;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.Calendar;
-
 import javax.jcr.Node;
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.ValueFormatException;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Calendar;
 
 /**
  * Value that holds a reference
@@ -48,7 +47,7 @@ public class PSReferenceValue extends PSBaseValue<Node>
       m_value = arg0;
    }
 
-   public String getString() throws ValueFormatException,
+   public String getString() throws
          IllegalStateException, RepositoryException
    {
       if (m_value != null)
@@ -61,38 +60,32 @@ public class PSReferenceValue extends PSBaseValue<Node>
          RepositoryException
    {
       String stringrep = getString();
-      if (stringrep != null)
-         try
-         {
-            return new ByteArrayInputStream(stringrep.getBytes("UTF8"));
-         }
-         catch (UnsupportedEncodingException e)
-         {
-            throw new ValueFormatException("Problem encoding", e);
-         }
+      if (stringrep != null) {
+         return new ByteArrayInputStream(stringrep.getBytes(StandardCharsets.UTF_8));
+      }
       else
          return null;
    }
 
-   public long getLong() throws ValueFormatException, IllegalStateException,
+   public long getLong() throws IllegalStateException,
          RepositoryException
    {
       throw new ValueFormatException("reference cannot be converted to long");
    }
 
-   public double getDouble() throws ValueFormatException,
+   public double getDouble() throws
          IllegalStateException, RepositoryException
    {
       throw new ValueFormatException("reference cannot be converted to double");
    }
 
-   public Calendar getDate() throws ValueFormatException,
+   public Calendar getDate() throws
          IllegalStateException, RepositoryException
    {
       throw new ValueFormatException("reference cannot be converted to date");
    }
 
-   public boolean getBoolean() throws ValueFormatException,
+   public boolean getBoolean() throws
          IllegalStateException, RepositoryException
    {
       throw new ValueFormatException("reference cannot be converted to boolean");
@@ -104,8 +97,7 @@ public class PSReferenceValue extends PSBaseValue<Node>
    }
 
    @Override
-   public long getSizeInBytes()
-   {
+   public long getSizeInBytes() throws RepositoryException {
       return ((IPSJcrCacheItem) m_value).getSizeInBytes() + 4;
    }
 
