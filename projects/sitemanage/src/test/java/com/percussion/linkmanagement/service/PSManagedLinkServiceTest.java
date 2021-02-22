@@ -43,6 +43,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -393,8 +396,7 @@ public class PSManagedLinkServiceTest extends PSServletTestCase
         }        
     }
 
-    private String createPage(String path, String name)
-    {
+    private String createPage(String path, String name) throws PSDataServiceException {
         PSPage page = new PSPage();
 
         String pageId;
@@ -467,8 +469,7 @@ public class PSManagedLinkServiceTest extends PSServletTestCase
         return getItemId(site.getFolderPath() + "/index.html");
     }
 
-    private void createManagedLink(int parentId, int revision, int childId)
-    {
+    private void createManagedLink(int parentId, int revision, int childId) throws IPSGenericDao.SaveException {
         PSManagedLink link = dao.createLink(parentId, revision, childId, null);
         dao.saveLink(link);        
     }
@@ -966,8 +967,7 @@ public class PSManagedLinkServiceTest extends PSServletTestCase
         return asset;
     }
     
-    private PSAsset createFileAsset(int count)
-    {
+    private PSAsset createFileAsset(int count) throws PSDataServiceException {
         String fileName = "managed-link.txt";
         String file = PSTestUtils.resourceToBase64(PSManagedLinkServiceTest.class, fileName);
         
@@ -988,8 +988,7 @@ public class PSManagedLinkServiceTest extends PSServletTestCase
         return asset;
     }
 
-    private PSAsset createImgAsset()
-    {
+    private PSAsset createImgAsset() throws IPSAssetService.PSAssetServiceException, PSValidationException {
         
         String fileName = "managed-image.jpg";
         /*

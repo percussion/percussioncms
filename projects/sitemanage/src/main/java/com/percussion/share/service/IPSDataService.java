@@ -26,6 +26,7 @@ package com.percussion.share.service;
 import java.io.Serializable;
 
 import com.percussion.dashboardmanagement.service.IPSGadgetService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.exception.IPSNotFoundException;
 import com.percussion.share.service.exception.PSBeanValidationException;
@@ -62,7 +63,7 @@ public interface IPSDataService<FULL, SUMMARY, PK extends Serializable>
      * @param id the identifier (primary key) of the object to remove
      * @throws DataServiceDeleteException
      */
-    void delete(PK id) throws PSDataServiceException, IPSGadgetService.PSGadgetNotFoundException, IPSGadgetService.PSGadgetServiceException;
+    void delete(PK id) throws PSDataServiceException, IPSGadgetService.PSGadgetNotFoundException, IPSGadgetService.PSGadgetServiceException, PSNotFoundException;
 
     /**
      * Validate.
@@ -70,7 +71,7 @@ public interface IPSDataService<FULL, SUMMARY, PK extends Serializable>
      * @param object crud object
      * @return validation exception.
      */
-    PSValidationErrors validate(FULL object) throws PSValidationException;
+    PSValidationErrors validate(FULL object) throws PSValidationException, DataServiceSaveException;
 
     /**
      * DataServiceSaveException is thrown when a site cannot be saved

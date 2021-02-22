@@ -38,7 +38,7 @@ public class PSBeanValidationException extends PSSpringValidationException {
 
     private static final long serialVersionUID = 8097878230304938879L;
 
-    protected PSBeanValidationException(Throwable cause){
+    public PSBeanValidationException(Throwable cause){
         super(cause);
     }
 

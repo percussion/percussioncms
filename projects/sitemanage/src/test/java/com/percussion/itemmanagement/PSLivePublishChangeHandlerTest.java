@@ -49,6 +49,7 @@ import com.percussion.services.contentchange.data.PSContentChangeEvent;
 import com.percussion.services.contentchange.data.PSContentChangeType;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.pubserver.data.PSPubServer;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentWs;
@@ -315,8 +316,7 @@ public class PSLivePublishChangeHandlerTest extends PSItemWorkflowServiceTestBas
         
     }
 
-    private void createContentChange(long siteId, int contentId)
-    {
+    private void createContentChange(long siteId, int contentId) throws IPSGenericDao.SaveException {
         PSContentChangeEvent changeEvent;
         changeEvent = new PSContentChangeEvent();
         changeEvent.setChangeType(PSContentChangeType.PENDING_LIVE);

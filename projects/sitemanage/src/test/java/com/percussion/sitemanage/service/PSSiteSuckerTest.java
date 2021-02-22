@@ -26,7 +26,9 @@ package com.percussion.sitemanage.service;
 import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
 
 import com.percussion.server.PSServer;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSite;
+import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.service.impl.PSSiteDataService;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.testing.IntegrationTest;
@@ -227,8 +229,7 @@ public class PSSiteSuckerTest extends PSServletTestCase
      * @return The created PSSite object never null, server throws RuntimeException if there is an error creating the site.
      * @throws MalformedURLException if the supplied url is malformed.
      */
-    private PSSite createSiteFromURL(String siteUrl) throws MalformedURLException
-    {
+    private PSSite createSiteFromURL(String siteUrl) throws MalformedURLException, PSSiteImportException, PSValidationException {
         String siteUrlToImport = siteUrl;
         if (!siteUrl.startsWith("http://") && !siteUrl.startsWith("https://"))
         {

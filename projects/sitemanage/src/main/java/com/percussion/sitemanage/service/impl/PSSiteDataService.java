@@ -276,7 +276,7 @@ import static org.apache.commons.lang.Validate.notNull;
         return super.load(id);
     }
 
-    public PSSiteSummary find(String id) throws com.percussion.share.service.IPSDataService.DataServiceLoadException, PSValidationException {
+    public PSSiteSummary find(String id) throws com.percussion.share.service.IPSDataService.DataServiceLoadException, PSValidationException, IPSGenericDao.LoadException {
         return find(id, false);
     }
 
@@ -291,7 +291,7 @@ import static org.apache.commons.lang.Validate.notNull;
         return sum;
     }
 
-    public PSSiteSummary find(String id, boolean includePubInfo) throws com.percussion.share.service.IPSDataService.DataServiceLoadException, PSValidationException {
+    public PSSiteSummary find(String id, boolean includePubInfo) throws com.percussion.share.service.IPSDataService.DataServiceLoadException, PSValidationException, IPSGenericDao.LoadException {
         PSParameterValidationUtils.rejectIfBlank("find", "id", id);
         PSSiteSummary sum = siteDao.findSummary(id);
         if (sum == null)
@@ -365,7 +365,7 @@ import static org.apache.commons.lang.Validate.notNull;
         props.setMobilePreviewEnabled(site.isMobilePreviewEnabled());
     }
 
-    public PSSitePublishProperties getSitePublishProperties(String siteName) throws PSValidationException {
+    public PSSitePublishProperties getSitePublishProperties(String siteName) throws PSValidationException, PSNotFoundException {
         IPSSite site = siteMgr.findSite(siteName);
         if (site == null)
         {

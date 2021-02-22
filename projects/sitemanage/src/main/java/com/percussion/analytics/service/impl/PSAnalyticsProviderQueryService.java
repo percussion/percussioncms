@@ -26,6 +26,7 @@ package com.percussion.analytics.service.impl;
 import com.percussion.analytics.data.IPSAnalyticsQueryResult;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.service.IPSAnalyticsProviderQueryService;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.date.PSDateRange;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +54,7 @@ public class PSAnalyticsProviderQueryService
     */
    public List<IPSAnalyticsQueryResult> getPageViewsByPathPrefix(
             String sitename, String pathPrefix, PSDateRange range)
-            throws PSAnalyticsProviderException
-   {
+           throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
       return handler.getPageViewsByPathPrefix(sitename, pathPrefix, range);
    }
 
@@ -63,8 +63,7 @@ public class PSAnalyticsProviderQueryService
     *   java.lang.String, com.percussion.utils.date.PSDateRange)
     */
    public List<IPSAnalyticsQueryResult> getVisitsViewsBySite(String sitename,
-            PSDateRange range) throws PSAnalyticsProviderException
-   {
+            PSDateRange range) throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
       return handler.getVisitsViewsBySite(sitename, range);
    }
    

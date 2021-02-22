@@ -46,6 +46,7 @@ import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.error.PSAnalyticsProviderException.CAUSETYPE;
 import com.percussion.analytics.service.IPSAnalyticsProviderService;
 import com.percussion.pathmanagement.service.IPSPathService;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
@@ -173,7 +174,7 @@ public class PSContentActivityService implements IPSContentActivityService
             
             return new PSEffectivenessList(eList);
         }
-        catch (PSAnalyticsProviderException | PSValidationException | IPSActivityService.PSActivityServiceException | IPSPathService.PSPathServiceException e)
+        catch (PSAnalyticsProviderException | PSValidationException | IPSActivityService.PSActivityServiceException | IPSPathService.PSPathServiceException | IPSGenericDao.LoadException e)
         {
             throw new WebApplicationException(e);
         }

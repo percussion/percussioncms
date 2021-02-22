@@ -188,7 +188,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
      * {@inheritDoc}
      */
     @Override
-    public List<PSRenderLink> renderCssLinks(PSRenderLinkContext context, Set<String> widgetDefIds) throws DataServiceLoadException, DataServiceNotFoundException {
+    public List<PSRenderLink> renderCssLinks(PSRenderLinkContext context, Set<String> widgetDefIds) throws PSDataServiceException {
         return renderFileLinks(context, PSFileResourceType.css, widgetDefIds);
     }
     
@@ -197,7 +197,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
      * {@inheritDoc}
      */
     @Override
-    public List<PSRenderLink> renderJavascriptLinks(PSRenderLinkContext context, Set<String> widgetDefIds) throws DataServiceLoadException, DataServiceNotFoundException {
+    public List<PSRenderLink> renderJavascriptLinks(PSRenderLinkContext context, Set<String> widgetDefIds) throws PSDataServiceException {
         return renderFileLinks(context, PSFileResourceType.javascript, widgetDefIds);
     }
 
@@ -209,7 +209,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
      * @param type the file type.
      * @return never <code>null</code>, maybe empty.
      */
-    private List<PSRenderLink> renderFileLinks(final PSRenderLinkContext context, final PSFileResourceType type, final Set<String> widgetDefIds) throws DataServiceLoadException, DataServiceNotFoundException {
+    private List<PSRenderLink> renderFileLinks(final PSRenderLinkContext context, final PSFileResourceType type, final Set<String> widgetDefIds) throws PSDataServiceException {
         List<PSResourceDefinition> resources = resourceDefinitionService.findAllResources();
         notNull(resources, "resources should not be null");
          
@@ -415,7 +415,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
     @Path("/preview")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSInlineRenderLink renderPreviewResourceLink(PSInlineLinkRequest request) throws DataServiceNotFoundException, DataServiceLoadException {
+    public PSInlineRenderLink renderPreviewResourceLink(PSInlineLinkRequest request) throws PSDataServiceException {
 
         try {
             PSBeanValidationUtils.validate(request).throwIfInvalid();
@@ -828,7 +828,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
         throw new DataServiceLoadException(String.format("resourceDefinitionId: %s is not an asset resource", resourceDefinitionId));
     }
     
-    private PSAssetResource findAssetResourceDefinitionForTemplate(String legacyTemplate, final String contentType) {
+    private PSAssetResource findAssetResourceDefinitionForTemplate(String legacyTemplate, final String contentType) throws PSDataServiceException {
         notEmpty(legacyTemplate, "template");
 
         List<PSAssetResource> definition = resourceDefinitionService.findAssetResourcesForLegacyTemplate(legacyTemplate);

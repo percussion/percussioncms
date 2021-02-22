@@ -136,7 +136,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * @return the seo statistics for pages which are considered sub-optimal for searching.
     * @throws PSPageException If the workflow could not be found, or other system failure.
     */
-    List<PSSEOStatistics> findNonSEOPages(PSNonSEOPagesRequest request) throws PSPageException, IPSGenericDao.LoadException;
+    List<PSSEOStatistics> findNonSEOPages(PSNonSEOPagesRequest request) throws PSDataServiceException;
    
    /**
     * Deletes the specified page.  All local content of the page will also be deleted.  The page will not be deleted if
@@ -244,7 +244,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
     * @param templateId the string representation of the page guid. must not be <code>null</code>.
     * @return PSNoContent, never blank
     */
-    PSNoContent changeTemplate(String pageId, String templateId);
+    PSNoContent changeTemplate(String pageId, String templateId) throws PSDataServiceException;
 
     /**
      * Update the template migration version of the page to match the version in its template
@@ -275,7 +275,7 @@ public interface IPSPageService extends IPSDataService<PSPage, PSPage, String>
      * @return A list of CSV formattable report lines. 
      * @throws PSReportFailedToRunException 
      */
-    public List<PSPageReportLine> findAllPages(String siteName) throws PSReportFailedToRunException, PSPageException, IPSGenericDao.LoadException;
+    public List<PSPageReportLine> findAllPages(String siteName) throws PSReportFailedToRunException, PSDataServiceException;
    
     /**
      * get the import status for cataloged pages.

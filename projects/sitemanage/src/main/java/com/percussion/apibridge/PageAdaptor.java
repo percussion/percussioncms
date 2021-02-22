@@ -84,14 +84,15 @@ import com.percussion.rest.pages.Region;
 import com.percussion.rest.pages.SeoInfo;
 import com.percussion.rest.pages.Widget;
 import com.percussion.rest.pages.WorkflowInfo;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.share.dao.IPSContentItemDao;
 import com.percussion.share.dao.IPSFolderHelper;
-import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.PSDateUtils;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.data.PSItemProperties;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSNameGenerator;
 import com.percussion.share.service.exception.PSDataServiceException;
@@ -1110,7 +1111,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 
                                     assetService.clearAssetWidgetRelationship(awRel);
                                 }
-                            } catch (PSDataServiceException e) {
+                            } catch (PSDataServiceException | PSNotFoundException e) {
                                throw new BackendException(e.getMessage(),e);
                             }
                         }
@@ -1522,11 +1523,11 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                 String templateName = p.getTemplateName();
                 String templateId = null;
 
+
                 templateId = idMapper
                         .getString(templateService.findUserTemplateIdByName(templateName, p.getSiteName()));
 
                 if ((templateId != null) && p.getId() != null) {
-                    //	pageService.changeTemplate(p.getId(), templateId);
                     ArrayList<String> pageIds = new ArrayList<>();
                     pageIds.add(p.getId());
                     try {
@@ -1552,7 +1553,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
             ret = getPage(baseUri, p.getId());
 
             return ret;
-        } catch (IPSItemWorkflowService.PSItemWorkflowServiceException | BackendException | PSValidationException e) {
+        } catch (IPSItemWorkflowService.PSItemWorkflowServiceException | BackendException | PSValidationException | IPSDataService.DataServiceLoadException e) {
             throw new BackendException(e);
         }
     }
@@ -1576,7 +1577,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 	       	  if(csvData != null)
 	       		  ret.add(row.toCSVRow());
 	         }
-			} catch (PSReportFailedToRunException | IPSPageService.PSPageException | IPSGenericDao.LoadException e) {
+			} catch (PSReportFailedToRunException | PSDataServiceException e) {
 				log.error("An error occurred while running the All Pages Report", e);
 		        throw new BackendException(e);
 			}

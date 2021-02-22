@@ -48,7 +48,6 @@ import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSNameGenerator;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.service.impl.PSJsoupUtils;
 import org.apache.commons.lang.StringUtils;
@@ -241,8 +240,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
     }
 
     @Override
-    public List<String> getTemplatePages(String templateId)
-    {
+    public List<String> getTemplatePages(String templateId) throws IPSPageService.PSPageException {
         List<String> pageIds = new ArrayList<>();
         List<Integer>pgIds = pageTemplateService.findPageIdsByTemplate(templateId);
         for (Integer pgId : pgIds)
@@ -341,7 +339,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
      * @param pageId assumed not <code>null</code>
      * @return List of empty widgets, may be empty but never <code>null</code>.
      */
-    private List<ApplicableWidget> findEmptyWidgets(String templateId, String pageId) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, PSValidationException {
+    private List<ApplicableWidget> findEmptyWidgets(String templateId, String pageId) throws PSDataServiceException {
         List<PSAssetDropCriteria> tplAssetDropCriteria = assetService.getWidgetAssetCriteria(templateId, false);
         List<ApplicableWidget> applicableWidgets = new ArrayList<>();
         List<String> tplWidgetIds = new ArrayList<>();

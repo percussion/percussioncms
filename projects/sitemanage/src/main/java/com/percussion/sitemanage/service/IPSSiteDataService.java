@@ -113,7 +113,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
         }
      }
     
-    public PSSiteSummary find(String id) throws DataServiceLoadException, PSValidationException;
+    public PSSiteSummary find(String id) throws DataServiceLoadException, PSValidationException, IPSGenericDao.LoadException;
 
     /**
      * Finds the site and adds the publishing info based on the includePubInfo flag.
@@ -122,7 +122,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * @return site summary 
      * @throws DataServiceLoadException
      */
-    public PSSiteSummary find(String id, boolean includePubInfo) throws DataServiceLoadException, PSValidationException;
+    public PSSiteSummary find(String id, boolean includePubInfo) throws DataServiceLoadException, PSValidationException, IPSGenericDao.LoadException;
     
     /**
      * Finds the site summary by the legacy ID.
@@ -237,7 +237,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * @param siteName name of the site, not blank
      * @return sites publishing properties never <code>null</code>.
      */
-    public PSSitePublishProperties getSitePublishProperties(String siteName) throws PSValidationException;
+    public PSSitePublishProperties getSitePublishProperties(String siteName) throws PSValidationException, PSNotFoundException;
    
     /**
      * Updates the specified site with publish properties, the specified site is

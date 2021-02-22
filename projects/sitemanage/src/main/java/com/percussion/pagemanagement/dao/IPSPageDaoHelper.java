@@ -66,7 +66,7 @@ public interface IPSPageDaoHelper
      * of a page, we need to update that revision to use the template that the
      * page is using in the current revision.
      * 
-     * @param id {@link String} with the template id that is deleted. Must not
+     * @param deletedTemplate {@link String} with the template id that is deleted. Must not
      *            be blank.
      */
     void replaceTemplateForPageInOlderRevisions(String deletedTemplate);
@@ -77,7 +77,7 @@ public interface IPSPageDaoHelper
      * page also uses that template in the mentioned revisions, it is not
      * returned.
      * 
-     * @param id {@link String} with the template id that is deleted. Must not
+     * @param deletedTemplate {@link String} with the template id that is deleted. Must not
      *            be blank.
      * @return {@link Collection}<{@link Integer}> with the ids of the pages.
      *         Never <code>null</code> but may be empty.
@@ -90,8 +90,6 @@ public interface IPSPageDaoHelper
      * 
      * @param pages {@link List}<{@link Integer}> with the pages ids we
      *            are going to update. Assumed not <code>null</code>.
-     * @param deletedTemplate {@link String} with the id of the template. Assumed not
-     *            blank.
      * @return {@link Map}<{@link String}, {@link String}> where the key is the
      *         id of the page, and the value is te template. Never
      *         <code>null</code> but may be empty.

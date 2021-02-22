@@ -39,7 +39,9 @@ import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSSiteSummary;
@@ -59,6 +61,7 @@ import java.util.List;
 import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_STATE_ARCHIVE;
 import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_STATE_LIVE;
 import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_TAKE_DOWN_TRANSITION;
+import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.log;
 
 /**
  * The traffic data service.  This service provides actual data.
@@ -168,6 +171,8 @@ public class PSTrafficService implements IPSTrafficService
             {
                IPSAnalyticsErrorMessageHandler errorHandler = providerService.getErrorMessageHandler(); 
                throw new PSTrafficServiceException(errorHandler.getMessage(e), e);
+            } catch (IPSGenericDao.LoadException e) {
+                throw new PSTrafficServiceException(e.getMessage(),e);
             }
         }
 
@@ -217,28 +222,26 @@ public class PSTrafficService implements IPSTrafficService
         //Get Item Properties
         List<PSTrafficDetails> itemPropList = new ArrayList<>();
         for(String pageId:activityIds)
-        {
+        {try {
             PSPathItem pathItem = folderHelper.findItemById(pageId);
             String path = pathItem.getFolderPaths().get(0) + "/" + pathItem.getName();
             String finderPath = PSPathUtils.getFinderPath(path);
             PSItemProperties itemProp = pathService.findItemProperties(finderPath);
             itemProp.setPath(finderPath);
-            PSPage page  = null;
-            try
-            {
-                page = pageService.findPageByPath(path);
-            }
-            catch(Exception e)
-            {
-            }
-            
+            PSPage page = null;
+
+            page = pageService.findPageByPath(path);
+
             // CM-126: pageService.findPageByPath(path) may return null
-            if(page != null)
-            {
+            if (page != null) {
                 itemProp.setSummary(page.getSummary());
             }
-            
-            itemPropList.add(createTrafficDetail(itemProp));       
+
+            itemPropList.add(createTrafficDetail(itemProp));
+        } catch (PSNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+        }
         }
         
         //Get Analytics data
@@ -293,10 +296,8 @@ public class PSTrafficService implements IPSTrafficService
         Date startDate = formatter.parse(start);
         Date endDate = formatter.parse(addDay(end, formatter));
 
-        PSDateRange range = new PSDateRange(startDate,endDate,
+        return new PSDateRange(startDate,endDate,
                 PSDateRange.Granularity.valueOf(granularity));
-
-        return range;
     }
     
     /**
@@ -391,8 +392,7 @@ public class PSTrafficService implements IPSTrafficService
      * @throws PSAnalyticsProviderException
      */
     public List<Integer> createAnalyticsActivity(PSDateRange range, List<Date> dates, 
-            String siteName, String usage) throws PSAnalyticsProviderException
-    {
+            String siteName, String usage) throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
         List<Integer> counts = new ArrayList<>(dates.size() - 1);
         //Fill in array with 0
         for(int i=0;i < dates.size()-1;i++)

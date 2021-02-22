@@ -30,6 +30,7 @@ import com.percussion.rest.assets.PSCSVStreamingOutput;
 import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.errors.LocationMismatchException;
 import com.percussion.rest.util.APIUtilities;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.annotations.*;
 import org.apache.commons.lang.StringUtils;
@@ -110,8 +111,8 @@ public class PagesResource
         }
         try {
             return pageAdaptor.getPage(uriInfo.getBaseUri(), siteName, apiPath, pageName);
-        } catch (BackendException e) {
-            throw new WebApplicationException();
+        } catch (BackendException | PSDataServiceException e) {
+            throw new WebApplicationException(e);
         }
     }
     
@@ -182,8 +183,8 @@ public class PagesResource
         page.setSiteName(siteName);
         try {
             page = pageAdaptor.updatePage(uriInfo.getBaseUri(), page);
-        } catch (BackendException e) {
-           throw new WebApplicationException();
+        } catch (BackendException | PSDataServiceException e) {
+           throw new WebApplicationException(e);
         }
 
         return page;
@@ -234,8 +235,8 @@ public class PagesResource
         
         try {
             return pageAdaptor.renamePage(uriInfo.getBaseUri(), siteName, apiPath, pageName, name);
-        } catch (BackendException e) {
-            throw new WebApplicationException();
+        } catch (BackendException | PSDataServiceException e) {
+            throw new WebApplicationException(e);
         }
     }
     

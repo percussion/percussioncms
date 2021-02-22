@@ -34,9 +34,11 @@ import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.service.IPSPageCatalogService;
 import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
+import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.importer.IPSConnectivity;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
 import com.percussion.sitemanage.importer.PSLink;
@@ -213,7 +215,7 @@ public class PSLinkExtractionHelperTest {
     }
 
     @Ignore("Test relied on broken error handling that has been fixed")
-    public void testFileUpload() {
+    public void testFileUpload() throws PSSiteImportException, IPSGenericDao.SaveException {
         PSLinkExtractionHelper linkExtractionHelper = new TestablePSLinkExtractionHelper(
                 null, null, null, null, null);
         // IOException catalog files - Document is null - Mock throws an
@@ -229,7 +231,7 @@ public class PSLinkExtractionHelperTest {
     }
 
     @Ignore("Awkward Coupling")
-    public void testStandardPath() {
+    public void testStandardPath() throws PSSiteImportException, IPSGenericDao.SaveException {
         PSLinkExtractionHelper linkExtractionHelper = new TestablePSLinkExtractionHelper(
                 null, null, null, null, null);
         PSLinkExtractionTestConnectivity testConn = (PSLinkExtractionTestConnectivity) ((TestablePSLinkExtractionHelper) linkExtractionHelper)
