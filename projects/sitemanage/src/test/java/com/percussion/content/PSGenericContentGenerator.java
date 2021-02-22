@@ -28,8 +28,10 @@ import com.percussion.share.dao.PSSerializerUtils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.xml.bind.UnmarshalException;
 
@@ -218,21 +220,21 @@ public abstract class PSGenericContentGenerator<T>
         
         Validate.notEmpty(url, "Server URL must be specified");
         Validate.notEmpty(defFileName, "XML file name must be specified");
-        
-        Constructor<K> ctor;
-        try
-        {
+
+        Constructor<K> ctor = null;
+        try {
             ctor = generatorClass.getConstructor(String.class, InputStream.class, String.class, String.class);
-            PSGenericContentGenerator contentGenerator =
-                ctor.newInstance(url, new FileInputStream(defFileName), uid, pw);
-            
-            contentGenerator.cleanup();
-            contentGenerator.generateContent();
-        }
-        catch (Exception e)
-        {
+
+            try(FileInputStream fs = new FileInputStream(defFileName)){
+                PSGenericContentGenerator contentGenerator =
+                    ctor.newInstance(url,fs , uid, pw);
+
+                contentGenerator.cleanup();
+                contentGenerator.generateContent();
+            }
+
+        } catch (IOException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
         }
     }
     
@@ -273,12 +275,14 @@ public abstract class PSGenericContentGenerator<T>
         {
             ctor = generatorClass.getConstructor(String.class, String.class, Boolean.class, InputStream.class,
                     String.class, String.class);
-            PSGenericContentGenerator contentGenerator = ctor.newInstance(url, secureUrl,
-                    allowSelfSignedCertificate.booleanValue(), new FileInputStream(xmlDefFileName), adminUser,
-                    adminPassword);
+            try(FileInputStream fi = new FileInputStream(xmlDefFileName)) {
+                PSGenericContentGenerator contentGenerator = ctor.newInstance(url, secureUrl,
+                        allowSelfSignedCertificate.booleanValue(), fi, adminUser,
+                        adminPassword);
 
-            contentGenerator.cleanup();
-            contentGenerator.generateContent();
+                contentGenerator.cleanup();
+                contentGenerator.generateContent();
+            }
         }
         catch (Exception e)
         {

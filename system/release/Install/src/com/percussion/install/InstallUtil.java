@@ -60,28 +60,29 @@ public class InstallUtil
 
          System.out.println("find: + " + strFind + " replace: " + strReplace);
          File file = new File(strFile);
-         FileInputStream in = new FileInputStream(file);
+         try(FileInputStream in = new FileInputStream(file)) {
 
-         String strReadData = new String();
-         String strWriteData = new String();
-         int iAvail = in.available();
-         byte[] bData = new byte[iAvail];
-         in.read(bData, 0, iAvail);
-         strReadData = new String(bData);
+            String strReadData = new String();
+            String strWriteData = new String();
+            int iAvail = in.available();
+            byte[] bData = new byte[iAvail];
+            in.read(bData, 0, iAvail);
+            strReadData = new String(bData);
 
-         StringBuffer buffer = new StringBuffer(strReadData);
-         int replace = buffer.toString().indexOf(strFind);
-         while (replace != -1)
-         {
-            buffer = buffer.replace(replace, replace + strFind.length(), strReplace);
-            replace = buffer.toString().indexOf(strFind);
+            StringBuffer buffer = new StringBuffer(strReadData);
+            int replace = buffer.toString().indexOf(strFind);
+            while (replace != -1) {
+               buffer = buffer.replace(replace, replace + strFind.length(), strReplace);
+               replace = buffer.toString().indexOf(strFind);
+            }
+
+            strWriteData = buffer.toString();
+            in.close();
+            try(FileWriter writer = new FileWriter(strFile)) {
+               writer.write(strWriteData, 0, strWriteData.length());
+               writer.close();
+            }
          }
-
-         strWriteData = buffer.toString();
-         in.close();
-         FileWriter writer = new FileWriter(strFile);
-         writer.write(strWriteData, 0, strWriteData.length());
-         writer.close();
       }
       catch (FileNotFoundException e)
       {
@@ -606,12 +607,11 @@ public class InstallUtil
       if (out == null)
          throw new IllegalArgumentException("out may not be null or empty");
 
-      FileChannel sourceChannel = new FileInputStream(in).getChannel();
-      FileChannel destinationChannel = new FileOutputStream(out).getChannel();
-      sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
-
-      sourceChannel.close();
-      destinationChannel.close();
+      try(FileChannel sourceChannel = new FileInputStream(in).getChannel()) {
+         try(FileChannel destinationChannel = new FileOutputStream(out).getChannel()) {
+            sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
+         }
+      }
    }
 
    /**
@@ -776,17 +776,17 @@ public class InstallUtil
          // First Check the Port. We have to read the config file, and then
          // check
          // if the port is active
-         prop.load(new FileInputStream(dirName + File.separator + "rxconfig" + File.separator + "server"
-               + File.separator + "server.properties"));
-         String bindPort = prop.getProperty("bindPort");
-         if (bindPort == null || bindPort.isEmpty())
-         {
-            bindPort = "9992";
-         }
-         isRunning = !portAvailable(Integer.parseInt(bindPort));
-         if (!isRunning)
-         {
-            isRunning = isDerbyRunning(dirName);
+         try(FileInputStream is = new FileInputStream(dirName + File.separator + "rxconfig" + File.separator + "server"
+                 + File.separator + "server.properties")) {
+            prop.load(is);
+            String bindPort = prop.getProperty("bindPort");
+            if (bindPort == null || bindPort.isEmpty()) {
+               bindPort = "9992";
+            }
+            isRunning = !portAvailable(Integer.parseInt(bindPort));
+            if (!isRunning) {
+               isRunning = isDerbyRunning(dirName);
+            }
          }
       }
       catch (IOException ex)
@@ -935,8 +935,6 @@ public class InstallUtil
       if (strRootDir == null || strRootDir.trim().length() == 0)
          throw new IllegalArgumentException("strRootDir may not be null or " + "empty");
 
-      InputStream in = null;
-      FileOutputStream out = null;
       File rxclientFile = null;
       try
       {
@@ -1002,18 +1000,14 @@ public class InstallUtil
 
                         if (jarEntry != null)
                         {
-                           InputStream rxclientStream = jar.getInputStream(jarEntry);
-                           rxclientFile = File.createTempFile("rxclient", "jar");
-                           FileOutputStream tempStream = new FileOutputStream(rxclientFile);
-                           IOTools.copyStream(rxclientStream, tempStream);
-
-                           if (rxclientStream != null)
-                              rxclientStream.close();
-                           if (tempStream != null)
-                              tempStream.close();
-
-                           jar = new JarFile(rxclientFile);
-                           jarEntry = jar.getJarEntry(RxFileManager.VERSION_FILE);
+                           try(InputStream rxclientStream = jar.getInputStream(jarEntry)) {
+                              rxclientFile = File.createTempFile("rxclient", "jar");
+                              try(FileOutputStream tempStream = new FileOutputStream(rxclientFile)) {
+                                 IOTools.copyStream(rxclientStream, tempStream);
+                                 jar = new JarFile(rxclientFile);
+                                 jarEntry = jar.getJarEntry(RxFileManager.VERSION_FILE);
+                              }
+                           }
                         }
                      }
                   }
@@ -1021,63 +1015,34 @@ public class InstallUtil
             }
          }
 
-         if (jarEntry != null)
-         {
+         if (jarEntry != null) {
             PSLogger.logInfo("Located Version.properties");
 
-            in = jar.getInputStream(jarEntry);
-            Properties verProp = new Properties();
-            verProp.load(in);
-            out = new FileOutputStream(
-                  new File(strRootDir + File.separator + RxFileManager.PREVIOUS_VERSION_PROPS_FILE));
-            verProp.store(out, "Written by installer for upgrade purpose");
+            try (InputStream in = jar.getInputStream(jarEntry)) {
+               Properties verProp = new Properties();
+               verProp.load(in);
+               try (FileOutputStream out = new FileOutputStream(
+                       new File(strRootDir + File.separator + RxFileManager.PREVIOUS_VERSION_PROPS_FILE))) {
+                  verProp.store(out, "Written by installer for upgrade purpose");
 
-            try
-            {
-               // Set the major version for this installation
-               ms_majorVersion = Integer.parseInt(verProp.getProperty("majorVersion",
-                     String.valueOf(InstallUtil.ms_majorVersion)));
-            }
-            catch (NumberFormatException nfe)
-            {
-               PSLogger.logError("Error parsing majorVersion");
+                  try {
+                     // Set the major version for this installation
+                     ms_majorVersion = Integer.parseInt(verProp.getProperty("majorVersion",
+                             String.valueOf(InstallUtil.ms_majorVersion)));
+                  } catch (NumberFormatException nfe) {
+                     PSLogger.logError("Error parsing majorVersion");
+                  }
+               }
             }
          }
          else
-            PSLogger.logInfo("Could not locate Version.properties");
+               PSLogger.logInfo("Could not locate Version.properties");
       }
+
       catch (IOException e)
       {
          PSLogger.logInfo("ERROR : " + e.getMessage());
          PSLogger.logInfo(e);
-      }
-      finally
-      {
-         if (in != null)
-         {
-            try
-            {
-               in.close();
-            }
-            catch (IOException e)
-            {
-               PSLogger.logInfo("ERROR : " + e.getMessage());
-               PSLogger.logInfo(e);
-            }
-         }
-
-         if (out != null)
-         {
-            try
-            {
-               out.close();
-            }
-            catch (IOException e)
-            {
-               PSLogger.logInfo("ERROR : " + e.getMessage());
-               PSLogger.logInfo(e);
-            }
-         }
       }
    }
 
@@ -1646,9 +1611,6 @@ public class InstallUtil
       String strPw;
       String strDb;
       String strSchema;
-      FileInputStream repPropsIn = null;
-      FileInputStream serverPropsIn = null;
-      FileOutputStream repPropsOut = null;
 
       try
       {
@@ -1659,34 +1621,33 @@ public class InstallUtil
          // Backup original file
          backupRepositoryPropertyFile(strRootDir);
 
-         repPropsIn = new FileInputStream(repPropFile);
-         repProps.load(repPropsIn);
-         repPropsIn.close();
+         try(FileInputStream repPropsIn = new FileInputStream(repPropFile)) {
+            repProps.load(repPropsIn);
 
-        
-         // This is an upgrade of 6.X and up, load repository info from
-         // the new file structure
-         Properties dbProps = PSJdbcDbmsDef.loadRxRepositoryProperties(strRootDir);
+            // This is an upgrade of 6.X and up, load repository info from
+            // the new file structure
+            Properties dbProps = PSJdbcDbmsDef.loadRxRepositoryProperties(strRootDir);
 
-         strDriver = dbProps.getProperty(PSJdbcDbmsDef.DB_DRIVER_NAME_PROPERTY, "");
-         strClass = dbProps.getProperty(PSJdbcDbmsDef.DB_DRIVER_CLASS_NAME_PROPERTY, "");
-         strServer = dbProps.getProperty(PSJdbcDbmsDef.DB_SERVER_PROPERTY, "");
-         strId = dbProps.getProperty(PSJdbcDbmsDef.UID_PROPERTY, "");
-         strPw = dbProps.getProperty(PSJdbcDbmsDef.PWD_PROPERTY, "");
-         strDb = dbProps.getProperty(PSJdbcDbmsDef.DB_NAME_PROPERTY, "");
-         strSchema = dbProps.getProperty(PSJdbcDbmsDef.DB_SCHEMA_PROPERTY, "");
-      
+            strDriver = dbProps.getProperty(PSJdbcDbmsDef.DB_DRIVER_NAME_PROPERTY, "");
+            strClass = dbProps.getProperty(PSJdbcDbmsDef.DB_DRIVER_CLASS_NAME_PROPERTY, "");
+            strServer = dbProps.getProperty(PSJdbcDbmsDef.DB_SERVER_PROPERTY, "");
+            strId = dbProps.getProperty(PSJdbcDbmsDef.UID_PROPERTY, "");
+            strPw = dbProps.getProperty(PSJdbcDbmsDef.PWD_PROPERTY, "");
+            strDb = dbProps.getProperty(PSJdbcDbmsDef.DB_NAME_PROPERTY, "");
+            strSchema = dbProps.getProperty(PSJdbcDbmsDef.DB_SCHEMA_PROPERTY, "");
 
-         repProps.setProperty(PSJdbcDbmsDef.DB_DRIVER_NAME_PROPERTY, strDriver);
-         repProps.setProperty(PSJdbcDbmsDef.DB_DRIVER_CLASS_NAME_PROPERTY, strClass);
-         repProps.setProperty(PSJdbcDbmsDef.DB_SERVER_PROPERTY, strServer);
-         repProps.setProperty(PSJdbcDbmsDef.UID_PROPERTY, strId);
-         repProps.setProperty(PSJdbcDbmsDef.PWD_PROPERTY, strPw);
-         repProps.setProperty(PSJdbcDbmsDef.DB_NAME_PROPERTY, strDb);
-         repProps.setProperty(PSJdbcDbmsDef.DB_SCHEMA_PROPERTY, strSchema);
 
-         repPropsOut = new FileOutputStream(repPropFile);
-         repProps.store(repPropsOut, null);
+            repProps.setProperty(PSJdbcDbmsDef.DB_DRIVER_NAME_PROPERTY, strDriver);
+            repProps.setProperty(PSJdbcDbmsDef.DB_DRIVER_CLASS_NAME_PROPERTY, strClass);
+            repProps.setProperty(PSJdbcDbmsDef.DB_SERVER_PROPERTY, strServer);
+            repProps.setProperty(PSJdbcDbmsDef.UID_PROPERTY, strId);
+            repProps.setProperty(PSJdbcDbmsDef.PWD_PROPERTY, strPw);
+            repProps.setProperty(PSJdbcDbmsDef.DB_NAME_PROPERTY, strDb);
+            repProps.setProperty(PSJdbcDbmsDef.DB_SCHEMA_PROPERTY, strSchema);
+            try(FileOutputStream repPropsOut = new FileOutputStream(repPropFile)) {
+               repProps.store(repPropsOut, null);
+            }
+         }
       }
       catch (Exception e)
       {
@@ -1699,41 +1660,6 @@ public class InstallUtil
          }
          catch (Exception e2)
          {
-         }
-      }
-      finally
-      {
-         if (repPropsIn != null)
-         {
-            try
-            {
-               repPropsIn.close();
-            }
-            catch (IOException e)
-            {
-            }
-         }
-
-         if (serverPropsIn != null)
-         {
-            try
-            {
-               serverPropsIn.close();
-            }
-            catch (IOException e)
-            {
-            }
-         }
-
-         if (repPropsOut != null)
-         {
-            try
-            {
-               repPropsOut.close();
-            }
-            catch (IOException e)
-            {
-            }
          }
       }
    }

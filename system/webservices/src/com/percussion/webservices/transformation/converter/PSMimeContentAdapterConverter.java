@@ -93,16 +93,15 @@ public class PSMimeContentAdapterConverter extends PSConverter
             
             // expecting base64 encoded string, so decode it:
             String stringValue = (String) orig.getContent();
-            try
-            {
-               ByteArrayInputStream iBuf = new ByteArrayInputStream(
-                  stringValue.getBytes(dest.getCharacterEncoding()));
+            try(ByteArrayInputStream iBuf = new ByteArrayInputStream(
+                  stringValue.getBytes(dest.getCharacterEncoding()))){
 
-               ByteArrayOutputStream oBuf = new ByteArrayOutputStream();
+               try(ByteArrayOutputStream oBuf = new ByteArrayOutputStream()) {
 
-               PSBase64Decoder.decode(iBuf, oBuf);
+                  PSBase64Decoder.decode(iBuf, oBuf);
 
-               dest.setContent(new ByteArrayInputStream(oBuf.toByteArray()));  
+                  dest.setContent(new ByteArrayInputStream(oBuf.toByteArray()));
+               }
             }
             catch (IOException e)
             {
@@ -129,32 +128,17 @@ public class PSMimeContentAdapterConverter extends PSConverter
          }
          else
          {
-            InputStream in = orig.getContent();
-            
-            try
-            {
-               ByteArrayOutputStream out = new ByteArrayOutputStream();
-               PSBase64Encoder.encode(in, out);
-               dest.setContent(out.toString(PSCharSetsConstants.rxStdEnc()));
-               dest.setCharacterEncoding(PSCharSetsConstants.rxStdEnc());
+            try(InputStream in = orig.getContent()){
+               try(ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                  PSBase64Encoder.encode(in, out);
+                  dest.setContent(out.toString(PSCharSetsConstants.rxStdEnc()));
+                  dest.setCharacterEncoding(PSCharSetsConstants.rxStdEnc());
+               }
             }
             catch (IOException e)
             {
                throw new RuntimeException("Error converting mime content: " + 
                   e.getLocalizedMessage(), e);
-            }
-            finally
-            {
-               if (in != null)
-               {
-                  try
-                  {
-                     in.close();
-                  }
-                  catch (IOException e)
-                  {
-                  }
-               }               
             }
          }
       }

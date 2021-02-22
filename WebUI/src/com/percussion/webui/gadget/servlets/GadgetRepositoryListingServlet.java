@@ -141,51 +141,37 @@ public class GadgetRepositoryListingServlet extends HttpServlet
     {
         JSONObject gadget = null;
 
-        FileInputStream fin = null;
         try
         {
-            fin = new FileInputStream(config);
-            Document doc = PSXmlDocumentBuilder.createXmlDocument(fin, false);
-            NodeList modulePrefs = doc.getElementsByTagName("ModulePrefs");
-            if (modulePrefs.getLength() > 0)
-            {
-                Element modulePref = (Element) modulePrefs.item(0);
-                gadget = new JSONObject();
-                gadget.put("name", modulePref.getAttribute("title"));
-                gadget.put("type", getGadgetType(modulePref.getAttribute("title")));
-                gadget.put("category", modulePref.getAttribute("category"));
-                String adminOnly = modulePref.getAttribute("adminOnly");
-                gadget.put("adminOnly", adminOnly != null &&
-                        (adminOnly.equalsIgnoreCase("true") || adminOnly.equalsIgnoreCase("yes")));
-                gadget.put("description", modulePref.getAttribute("description"));
+            try(FileInputStream fin = new FileInputStream(config)) {
+                Document doc = PSXmlDocumentBuilder.createXmlDocument(fin, false);
+                NodeList modulePrefs = doc.getElementsByTagName("ModulePrefs");
+                if (modulePrefs.getLength() > 0) {
+                    Element modulePref = (Element) modulePrefs.item(0);
+                    gadget = new JSONObject();
+                    gadget.put("name", modulePref.getAttribute("title"));
+                    gadget.put("type", getGadgetType(modulePref.getAttribute("title")));
+                    gadget.put("category", modulePref.getAttribute("category"));
+                    String adminOnly = modulePref.getAttribute("adminOnly");
+                    gadget.put("adminOnly", adminOnly != null &&
+                            (adminOnly.equalsIgnoreCase("true") || adminOnly.equalsIgnoreCase("yes")));
+                    gadget.put("description", modulePref.getAttribute("description"));
 
-                String path = config.getCanonicalPath().replaceAll("\\\\", "/");
-                String absRootPath = gadgetsRoot.getCanonicalPath().replaceAll("\\\\", "/");
-                String url = path.replace(absRootPath + "/","");
-                gadget.put("url", GADGETS_BASE_URL + url);
+                    String path = config.getCanonicalPath().replaceAll("\\\\", "/");
+                    String absRootPath = gadgetsRoot.getCanonicalPath().replaceAll("\\\\", "/");
+                    String url = path.replace(absRootPath + "/", "");
+                    gadget.put("url", GADGETS_BASE_URL + url);
 
-                String configParentPath = config.getParentFile().getCanonicalPath().replaceAll("\\\\", "/");
-                String iconBaseUrl = configParentPath.replace(absRootPath + "/","");
-                gadget.put("iconUrl", GADGETS_BASE_URL + iconBaseUrl + '/' + modulePref.getAttribute("thumbnail"));
+                    String configParentPath = config.getParentFile().getCanonicalPath().replaceAll("\\\\", "/");
+                    String iconBaseUrl = configParentPath.replace(absRootPath + "/", "");
+                    gadget.put("iconUrl", GADGETS_BASE_URL + iconBaseUrl + '/' + modulePref.getAttribute("thumbnail"));
+                }
             }
         }
         catch (Exception e)
         {
             System.err.println("Failed to load gadget from file : " + config.getAbsolutePath());
             e.printStackTrace();
-        }
-        finally
-        {
-            if (fin != null)
-            {
-                try
-                {
-                    fin.close();
-                }
-                catch (IOException e)
-                {
-                }
-            }
         }
 
         return gadget;
@@ -236,30 +222,26 @@ public class GadgetRepositoryListingServlet extends HttpServlet
     private Map<String, String> loadGadgetTypeMap()
     {
         Map<String, String> gadTypeMap = new HashMap<String, String>();
-        InputStream in = null;
-        in = this.getClass().getClassLoader()
-                .getResourceAsStream("com/percussion/webui/gadget/servlets/GadgetRegistry.xml");
-        if(in == null)
-        {
-            System.err.println("Gadget registry file is missing in gadgets jar.");
-            return gadTypeMap;
-        }
-        try
-        {
-            Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
-            NodeList groupElems = doc.getElementsByTagName("group");
-            for (int i = 0; i < groupElems.getLength(); i++)
-            {
-                Element groupElem = (Element) groupElems.item(i);
-                String groupName = groupElem.getAttribute("name");
-                NodeList gadgetElems = groupElem.getElementsByTagName("gadget");
-                for (int j = 0; j < gadgetElems.getLength(); j++)
-                {
-                    Element gadgetElem = (Element) gadgetElems.item(j);
-                    String gdgName = gadgetElem.getAttribute("name");
-                    gadTypeMap.put(gdgName, groupName);
-                }
+        try(InputStream in = this.getClass().getClassLoader()
+                .getResourceAsStream("com/percussion/webui/gadget/servlets/GadgetRegistry.xml")) {
+            if (in == null) {
+                System.err.println("Gadget registry file is missing in gadgets jar.");
+                return gadTypeMap;
             }
+
+                Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
+                NodeList groupElems = doc.getElementsByTagName("group");
+                for (int i = 0; i < groupElems.getLength(); i++) {
+                    Element groupElem = (Element) groupElems.item(i);
+                    String groupName = groupElem.getAttribute("name");
+                    NodeList gadgetElems = groupElem.getElementsByTagName("gadget");
+                    for (int j = 0; j < gadgetElems.getLength(); j++) {
+                        Element gadgetElem = (Element) gadgetElems.item(j);
+                        String gdgName = gadgetElem.getAttribute("name");
+                        gadTypeMap.put(gdgName, groupName);
+                    }
+                }
+
         }
         catch (IOException e)
         {
