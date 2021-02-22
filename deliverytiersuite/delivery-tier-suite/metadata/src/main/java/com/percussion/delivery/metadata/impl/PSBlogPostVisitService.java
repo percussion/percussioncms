@@ -52,8 +52,9 @@ import com.percussion.delivery.metadata.IPSCookieConsentService;
 import com.percussion.delivery.metadata.data.PSBlogPostVisit;
 import com.percussion.delivery.metadata.data.PSCookieConsentQuery;
 import com.percussion.delivery.metadata.data.PSVisitQuery;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class PSBlogPostVisitService implements IPSBlogPostVisitService, InitializingBean {
 	private Map<String, IPSBlogPostVisit> inMemoryVisitMap = new ConcurrentHashMap<>();
 	private List<PSCookieConsentQuery> inMemoryCookieConsentMap = new ArrayList<PSCookieConsentQuery>();
@@ -61,7 +62,7 @@ public class PSBlogPostVisitService implements IPSBlogPostVisitService, Initiali
 	private long lastSave;
 	private IPSBlogPostVisitDao visitDao;
 	private IPSCookieConsentService cookieService;
-    private final static Logger log = LogManager.getLogger(PSBlogPostVisitService.class);
+    private static final Logger log = LogManager.getLogger(PSBlogPostVisitService.class);
     private Integer schedulerInitialDelay = INTIAL_DELAY_SECONDS;
     private Integer schedulerSaveInterval = SAVE_INTERVAL_SECONDS;
     
