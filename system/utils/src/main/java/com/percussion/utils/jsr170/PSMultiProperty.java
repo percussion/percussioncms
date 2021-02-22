@@ -452,8 +452,7 @@ public class PSMultiProperty extends PSPropertyWrapper
             m_value).toHashCode();
    }
 
-   public long getSizeInBytes()
-   {
+   public long getSizeInBytes() throws RepositoryException {
       if (m_value == null) return 0;
       
       long size = 0;
