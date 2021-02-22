@@ -81,10 +81,10 @@ public class PSTextToImageServlet extends HttpServlet
 
         // Write the image to response
         response.setContentType("image/png");
-        OutputStream os = response.getOutputStream();
-        ImageIO.setUseCache(false);
-        ImageIO.write(buffer, "png", os);
-        os.close();
+        try(OutputStream os = response.getOutputStream()) {
+            ImageIO.setUseCache(false);
+            ImageIO.write(buffer, "png", os);
+        }
     }
 
     /**

@@ -41,6 +41,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -134,26 +135,21 @@ public class CookieModule implements HTTPClientModule
     }
 
 
-    private static void loadCookies()
-    {
-	// The isFile() etc need to be protected by the catch as signed
-	// applets may be allowed to read properties but not do IO
-	try
-	{
-	    cookie_jar = new File(getCookieJarName());
-	    if (cookie_jar.isFile()  &&  cookie_jar.canRead())
-	    {
-		ObjectInputStream ois =
-		    new ObjectInputStream(new FileInputStream(cookie_jar));
-		cookie_cntxt_list.put(HTTPConnection.getDefaultContext(),
-				      (Hashtable) ois.readObject());
-		ois.close();
-	    }
-	}
-	catch (Throwable t)
-	    { cookie_jar = null; }
-    }
+    private static void loadCookies() {
+		// The isFile() etc need to be protected by the catch as signed
+		// applets may be allowed to read properties but not do IO
 
+		cookie_jar = new File(getCookieJarName());
+		if (cookie_jar.isFile() && cookie_jar.canRead()) {
+			try (ObjectInputStream ois =
+						 new ObjectInputStream(new FileInputStream(cookie_jar))) {
+				cookie_cntxt_list.put(HTTPConnection.getDefaultContext(),
+						(Hashtable) ois.readObject());
+			} catch (IOException | ClassNotFoundException e) {
+				cookie_jar = null;
+			}
+		}
+	}
 
     private static void saveCookies()
     {

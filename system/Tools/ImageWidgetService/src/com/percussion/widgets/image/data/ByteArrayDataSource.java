@@ -64,8 +64,9 @@ package com.percussion.widgets.image.data;
        public InputStream getInputStream()
          throws IOException
        {
-       ByteArrayInputStream bis = new ByteArrayInputStream(this.store.toByteArray());
-       return bis;
+           try(ByteArrayInputStream bis = new ByteArrayInputStream(this.store.toByteArray())) {
+               return bis;
+           }
        }
      
        public String getName()
