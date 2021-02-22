@@ -90,7 +90,7 @@ public class PSContentPropertyLoader implements IPSPropertyLoader, Serializable
                .getLegacyRepository();
          try
          {
-            List<Node> nodes = new ArrayList<Node>();
+            List<Node> nodes = new ArrayList<>();
             nodes.add(m_node);
             rep.loadBodies(nodes);
          }

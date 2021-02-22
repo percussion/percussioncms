@@ -34,9 +34,7 @@ import com.percussion.pagemanagement.dao.IPSPageDaoHelper;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.service.IPSTemplateService;
-import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
 import com.percussion.pathmanagement.data.PSFolderPermission;
-import com.percussion.pathmanagement.service.impl.PSDispatchingPathService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.search.PSSearchIndexEventQueue;
@@ -46,14 +44,13 @@ import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.content.data.PSItemStatus;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
-import com.percussion.services.purge.IPSSqlPurgeHelper;
-import com.percussion.services.purge.PSSqlPurgeHelperLocator;
 import com.percussion.share.dao.IPSContentItemDao;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.IPSGenericDao.DeleteException;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.utils.guid.IPSGuid;
@@ -68,7 +65,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
@@ -278,15 +274,13 @@ public class PSSiteContentDao
      *
      * @throws PSAssemblyException if failed to find the base template specified in the site object.
      */
-    private PSTemplateSummary createSiteTemplate(PSSite site) throws PSAssemblyException {
+    private PSTemplateSummary createSiteTemplate(PSSite site) throws PSAssemblyException, PSDataServiceException {
         IPSAssemblyTemplate baseTemplate = assemblyService.findTemplateByName(site.getBaseTemplateName());
         PSTemplateSummary templateSummary = null;
         IPSGuid tempId = null;
-        try {
-            tempId = templateService.findUserTemplateIdByName(site.getTemplateName(), site.getName());
-        } catch (Exception e) {
 
-        }
+        tempId = templateService.findUserTemplateIdByName(site.getTemplateName(), site.getName());
+
         if (tempId == null){
             templateSummary = templateService.createTemplate(site.getTemplateName(),
                     idMapper.getString(baseTemplate.getGUID()),
@@ -312,8 +306,7 @@ public class PSSiteContentDao
      * @throws PSErrorException If error occurs creating the item.
      */
     protected String createItem(String contentType, Map<String, Object> fields, String path)
-            throws PSUnknownContentTypeException, PSErrorException
-    {
+            throws PSUnknownContentTypeException, PSErrorException, PSDataServiceException {
         notEmpty(contentType, "contentType");
         notNull(fields, "fields");
         notEmpty(path, "path");
@@ -331,8 +324,7 @@ public class PSSiteContentDao
      *
      * @param site The site, may not be <code>null</code>.
      */
-    protected void deleteRelatedItems(PSSiteSummary site)
-    {
+    protected void deleteRelatedItems(PSSiteSummary site) throws DeleteException {
         notNull(site, "site");
         PSSearchIndexEventQueue indexer = PSSearchIndexEventQueue.getInstance();
 
@@ -365,8 +357,7 @@ public class PSSiteContentDao
      *
      * @throws Exception if an error occurs finding the navigation tree.
      */
-    public PSPage getHomePage(PSSiteSummary site) throws PSNavException
-    {
+    public PSPage getHomePage(PSSiteSummary site) throws PSNavException, PSDataServiceException {
         notNull(site, "site");
 
         PSPage homePage = null;
@@ -395,8 +386,7 @@ public class PSSiteContentDao
      * @return the nav title, never <code>null</code>, may be empty.
      * @throws Exception if an error occurs finding the navigation tree for the site.
      */
-    public String getNavTitle(PSSiteSummary siteSummary) throws PSNavException
-    {
+    public String getNavTitle(PSSiteSummary siteSummary) throws PSNavException, PSDataServiceException {
         notNull(siteSummary, "siteSummary");
 
         String navTitle = "";
@@ -418,8 +408,7 @@ public class PSSiteContentDao
      * @return the nav tree content item, may be <code>null</code> if not found.
      * @throws Exception if an error occurs finding the item.
      */
-    private PSContentItem getNavTree(PSSiteSummary siteSummary) throws PSNavException
-    {
+    private PSContentItem getNavTree(PSSiteSummary siteSummary) throws PSNavException, PSDataServiceException {
 
         PSContentItem navTree = null;
 
@@ -433,8 +422,7 @@ public class PSSiteContentDao
         return navTree;
     }
 
-    public void loadTemplateInfo(PSSite site)
-    {
+    public void loadTemplateInfo(PSSite site) throws PSDataServiceException {
         if (site.getBaseTemplateName() != null) {
             PSTemplateSummary tempSummary = templateService.find(site.getBaseTemplateName());
             site.setBaseTemplateName(tempSummary.getSourceTemplateName());

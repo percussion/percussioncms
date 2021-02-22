@@ -484,7 +484,7 @@ public class PSAssemblyService implements IPSAssemblyService
             throw new PSAssemblyException(IPSAssemblyErrors.PARAMS_VARIANT_OR_TEMPLATE);
          }
 
-         Map<String, String[]> params = new PSFacadeMap<String, String[]>(request.getParameterMap());
+         Map<String, String[]> params = new PSFacadeMap<>(request.getParameterMap());
          long jobId;
          if (params.get(IPSHtmlParameters.SYS_PUBSTATUSID) != null)
          {
@@ -1176,8 +1176,9 @@ public class PSAssemblyService implements IPSAssemblyService
                PSSiteHelper.setupSiteInfo(rval, siteidstr, contextstr);
             }
          }
-         catch (NumberFormatException e)
+         catch (NumberFormatException | PSNotFoundException e)
          {
+            ms_log.warn(e.getMessage());
             // This should not happen at this level...
             ms_log.debug("Skipping site information setting as the supplied siteid is not an integer.", e);
          }
@@ -1263,7 +1264,7 @@ public class PSAssemblyService implements IPSAssemblyService
             //config.setDivTagCleanup(new PSDivTagCleanup());
             items = contentmgr.findItemsByGUID(guids, config);
          }
-         catch (PSFilterException e)
+         catch (PSFilterException | PSNotFoundException e)
          {
             throw new PSAssemblyException(IPSAssemblyErrors.PARAMS_AUTHTYPE_OR_FILTER, e);
          }
@@ -1913,30 +1914,27 @@ public class PSAssemblyService implements IPSAssemblyService
    }
 
    @Transactional
-   public IPSTemplateSlot loadSlot(String idstr) throws PSNotFoundException
-   {
+   public IPSTemplateSlot loadSlot(String idstr) throws PSAssemblyException {
       return loadSlot(new PSGuid(PSTypeEnum.SLOT, idstr));
    }
 
    @Transactional
-   public IPSTemplateSlot loadSlot(IPSGuid id) throws PSNotFoundException
-   {
+   public IPSTemplateSlot loadSlot(IPSGuid id) throws PSAssemblyException {
       IPSTemplateSlot slot = findSlot(id);
       if (slot == null)
       {
-         throw new PSNotFoundException(id);
+         throw new PSAssemblyException(PSAssemblyException.SLOT_NOT_FOUND);
       }
 
       return slot;
    }
 
    @Transactional
-   public IPSTemplateSlot loadSlotModifiable(IPSGuid id) throws PSNotFoundException
-   {
+   public IPSTemplateSlot loadSlotModifiable(IPSGuid id) throws PSAssemblyException {
       IPSTemplateSlot slot = getSlotById(id);
       if (slot == null)
       {
-         throw new PSNotFoundException(id);
+         throw new PSAssemblyException(PSAssemblyException.SLOT_NOT_FOUND,id);
       }
 
       return slot;
@@ -1973,14 +1971,16 @@ public class PSAssemblyService implements IPSAssemblyService
    }
 
    @Transactional
-   @SuppressWarnings("unchecked")
-   public List<IPSTemplateSlot> loadSlots(List<IPSGuid> ids)
+   public List<IPSTemplateSlot> loadSlots(List<IPSGuid> ids) throws PSAssemblyException
    {
+      List<IPSTemplateSlot> slots = new ArrayList<>();
       if (PSGuidUtils.isBlank(ids))
          throw new IllegalArgumentException("ids cannot be null or empty");
 
-      return ids.stream().map(this::loadSlot).collect(Collectors.toList());
-
+      for(IPSGuid g : ids){
+         slots.add(loadSlot(g));
+      }
+      return slots;
    }
 
    @Transactional

@@ -25,6 +25,7 @@
 package com.percussion.sitesummaryservice.service;
 
 import com.percussion.services.siteimportsummary.data.PSSiteImportSummary;
+import com.percussion.share.dao.IPSGenericDao;
 
 import java.util.Map;
 
@@ -46,7 +47,7 @@ public interface IPSSiteImportSummaryService
      * @param siteId must be a valid site.
      * @return site summary for the site.
      */
-    PSSiteImportSummary create(int siteId);
+    PSSiteImportSummary create(int siteId) throws IPSGenericDao.SaveException;
     
     /**
      * Deletes the site summary entry for a given site.
@@ -60,7 +61,7 @@ public interface IPSSiteImportSummaryService
      * @param fields may not be <code>null</code>.
      * @return updated site summary.
      */
-    PSSiteImportSummary update(int siteId, Map<SiteImportSummaryTypeEnum, Integer> fields);
+    PSSiteImportSummary update(int siteId, Map<SiteImportSummaryTypeEnum, Integer> fields) throws IPSGenericDao.SaveException;
     
     enum SiteImportSummaryTypeEnum{
         PAGES, TEMPLATES, STYLESHEETS, FILES, INTERNALLINKS

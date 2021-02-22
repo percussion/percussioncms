@@ -26,6 +26,7 @@ package com.percussion.rx.design.impl;
 import com.percussion.rx.design.IPSAssociationSet;
 import com.percussion.rx.design.IPSDesignModel;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 
 import java.lang.reflect.InvocationTargetException;
@@ -45,10 +46,8 @@ public class PSDesignModel implements IPSDesignModel
     * 
     * @see com.percussion.rx.design.IPSDesignModel#delete(com.percussion.utils.guid.IPSGuid)
     */
-   @SuppressWarnings("unchecked")
    public void delete(@SuppressWarnings("unused")
-   IPSGuid guid)
-   {
+   IPSGuid guid) throws PSNotFoundException {
       if (guid == null || !isValidGuid(guid))
          throw new IllegalArgumentException("guid is not valid for this model");
       Object service = getService();
@@ -94,8 +93,7 @@ public class PSDesignModel implements IPSDesignModel
     * @see com.percussion.rx.design.IPSDesignModel#delete(java.lang.String)
     */
    public void delete(@SuppressWarnings("unused")
-   String name)
-   {
+   String name) throws PSNotFoundException {
       IPSGuid guid = nameToGuid(name);
       if (guid == null)
       {
@@ -130,8 +128,7 @@ public class PSDesignModel implements IPSDesignModel
     * 
     * @see com.percussion.rx.design.IPSDesignModel#guidToName(com.percussion.utils.guid.IPSGuid)
     */
-   public String guidToName(IPSGuid guid)
-   {
+   public String guidToName(IPSGuid guid) throws PSNotFoundException {
       Object obj = load(guid);
       Object name = null;
       try
@@ -161,8 +158,7 @@ public class PSDesignModel implements IPSDesignModel
     * 
     * @see com.percussion.rx.design.IPSDesignModel#load(java.lang.String)
     */
-   public Object load(String name)
-   {
+   public Object load(String name) throws PSNotFoundException {
       IPSGuid guid = nameToGuid(name);
       if (guid == null)
       {
@@ -179,8 +175,7 @@ public class PSDesignModel implements IPSDesignModel
     * 
     * @see com.percussion.rx.design.IPSDesignModel#load(com.percussion.utils.guid.IPSGuid)
     */
-   public Object load(IPSGuid guid)
-   {
+   public Object load(IPSGuid guid) throws PSNotFoundException {
       return loadDesignObject(guid, true);
    }
 
@@ -189,8 +184,7 @@ public class PSDesignModel implements IPSDesignModel
     * 
     * @see com.percussion.rx.design.IPSDesignModel#loadModifiable(com.percussion.utils.guid.IPSGuid)
     */
-   public Object loadModifiable(IPSGuid guid)
-   {
+   public Object loadModifiable(IPSGuid guid) throws PSNotFoundException {
       return loadDesignObject(guid, false);
    }
 
@@ -263,8 +257,7 @@ public class PSDesignModel implements IPSDesignModel
     * 
     * @see com.percussion.rx.design.IPSDesignModel#loadModifiable(java.lang.String)
     */
-   public Object loadModifiable(String name)
-   {
+   public Object loadModifiable(String name) throws PSNotFoundException {
       IPSGuid guid = nameToGuid(name);
       if (guid == null)
       {

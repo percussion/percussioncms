@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,8 +23,9 @@
  */
 package com.percussion.share.validation;
 
-import static org.apache.commons.lang.Validate.*;
+import static org.apache.commons.lang3.Validate.*;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -51,7 +52,7 @@ public abstract class PSAbstractPropertiesValidator<PROPERTIES> implements Valid
     @SuppressWarnings("unchecked")
     public boolean supports(Class klass)
     {
-        notNull(getType());
+        Validate.notNull(getType());
         if (klass == getType()) return true;
         return false;
     }

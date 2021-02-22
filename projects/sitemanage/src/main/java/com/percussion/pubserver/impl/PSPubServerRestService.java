@@ -23,8 +23,6 @@
  */
 package com.percussion.pubserver.impl;
 
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.RegionUtils;
 import com.amazonaws.regions.Regions;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
@@ -33,14 +31,27 @@ import com.percussion.delivery.service.impl.PSDeliveryInfoService;
 import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.pubserver.data.PSPublishServerInfo;
 import com.percussion.pubserver.data.PSPublishServerInfoList;
+import com.percussion.services.error.PSNotFoundException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
+import com.percussion.share.service.exception.PSValidationException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +65,8 @@ import java.util.List;
 @Lazy
 public class PSPubServerRestService
 {
+    private static final Logger log = LogManager.getLogger(PSPubServerRestService.class);
+
     private IPSPubServerService service;
     private PSDeliveryInfoService psDeliveryInfoService;
     private List<PSDeliveryInfo> psDeliveryInfoServiceList;
@@ -79,7 +92,13 @@ public class PSPubServerRestService
                                                     String siteId, @PathParam("serverId")
                                                     String serverId)
     {
-        return service.getPubServer(siteId, serverId);
+        try {
+            return service.getPubServer(siteId, serverId);
+        } catch (IPSPubServerService.PSPubServerServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @GET
@@ -88,7 +107,13 @@ public class PSPubServerRestService
     public List<PSPublishServerInfo> getServers(@PathParam("siteId")
                                                         String siteId)
     {
-        return new PSPublishServerInfoList(service.getPubServerList(siteId));
+        try {
+            return new PSPublishServerInfoList(service.getPubServerList(siteId));
+        } catch (IPSPubServerService.PSPubServerServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /**
@@ -110,9 +135,15 @@ public class PSPubServerRestService
                                                        String siteId, @PathParam("serverName")
                                                        String serverName, PSPublishServerInfo pubServerInfo)
     {
-        PSParameterValidationUtils.rejectIfBlank("create", "siteId", siteId);
-        PSParameterValidationUtils.rejectIfBlank("create", "serverName", serverName);
-        return service.createPubServer(siteId, serverName, pubServerInfo);
+        try {
+            PSParameterValidationUtils.rejectIfBlank("create", "siteId", siteId);
+            PSParameterValidationUtils.rejectIfBlank("create", "serverName", serverName);
+            return service.createPubServer(siteId, serverName, pubServerInfo);
+        } catch (PSDataServiceException | PSNotFoundException | IPSPubServerService.PSPubServerServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /**
@@ -132,10 +163,16 @@ public class PSPubServerRestService
                                                        String siteId, @PathParam("serverId")
                                                        String serverId, PSPublishServerInfo pubServerInfo)
     {
-        PSParameterValidationUtils.rejectIfBlank("update", "siteId", siteId);
-        PSParameterValidationUtils.rejectIfBlank("update", "serverId", serverId);
+        try {
+            PSParameterValidationUtils.rejectIfBlank("update", "siteId", siteId);
+            PSParameterValidationUtils.rejectIfBlank("update", "serverId", serverId);
 
-        return service.updatePubServer(siteId, serverId, pubServerInfo);
+            return service.updatePubServer(siteId, serverId, pubServerInfo);
+        } catch (PSDataServiceException | PSNotFoundException | IPSPubServerService.PSPubServerServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /**
@@ -152,10 +189,16 @@ public class PSPubServerRestService
                                                           String siteId, @PathParam("serverId")
                                                           String serverId)
     {
-        PSParameterValidationUtils.rejectIfBlank("delete", "siteName", siteId);
-        PSParameterValidationUtils.rejectIfBlank("delete", "serverId", serverId);
+        try {
+            PSParameterValidationUtils.rejectIfBlank("delete", "siteName", siteId);
+            PSParameterValidationUtils.rejectIfBlank("delete", "serverId", serverId);
 
-        return new PSPublishServerInfoList(service.deleteServer(siteId, serverId));
+            return new PSPublishServerInfoList(service.deleteServer(siteId, serverId));
+        } catch (IPSPubServerService.PSPubServerServiceException | PSDataServiceException | PSNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
@@ -164,9 +207,15 @@ public class PSPubServerRestService
     public void stopPublishing(@PathParam("jobId")
                                        String jobId)
     {
-        PSParameterValidationUtils.rejectIfBlank("delete", "jobId", jobId);
+        try {
+            PSParameterValidationUtils.rejectIfBlank("delete", "jobId", jobId);
 
-        service.stopPublishing(jobId);
+            service.stopPublishing(jobId);
+        } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /**
@@ -266,11 +315,17 @@ public class PSPubServerRestService
                                                    String publishType, @PathParam("driver")
                                                    String driver, @PathParam("serverType") String serverType)
     {
-        PSParameterValidationUtils.rejectIfBlank("defaultFolderLocation", "siteId", siteId);
-        PSParameterValidationUtils.rejectIfBlank("defaultFolderLocation", "publishType", publishType);
-        PSParameterValidationUtils.rejectIfBlank("defaultFolderLocation", "driver", driver);
+        try {
+            PSParameterValidationUtils.rejectIfBlank("defaultFolderLocation", "siteId", siteId);
+            PSParameterValidationUtils.rejectIfBlank("defaultFolderLocation", "publishType", publishType);
+            PSParameterValidationUtils.rejectIfBlank("defaultFolderLocation", "driver", driver);
 
-        return service.getDefaultFolderLocation(siteId, publishType, driver, serverType);
+            return service.getDefaultFolderLocation(siteId, publishType, driver, serverType);
+        } catch (PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @GET

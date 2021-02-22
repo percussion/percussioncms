@@ -24,6 +24,7 @@
 package com.percussion.sitemanage.service;
 
 import com.percussion.foldermanagement.service.IPSFolderService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.dao.IPSGenericDao;
@@ -112,7 +113,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
         }
      }
     
-    public PSSiteSummary find(String id) throws DataServiceLoadException, PSValidationException;
+    public PSSiteSummary find(String id) throws DataServiceLoadException, PSValidationException, IPSGenericDao.LoadException;
 
     /**
      * Finds the site and adds the publishing info based on the includePubInfo flag.
@@ -121,7 +122,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * @return site summary 
      * @throws DataServiceLoadException
      */
-    public PSSiteSummary find(String id, boolean includePubInfo) throws DataServiceLoadException, PSValidationException;
+    public PSSiteSummary find(String id, boolean includePubInfo) throws DataServiceLoadException, PSValidationException, IPSGenericDao.LoadException;
     
     /**
      * Finds the site summary by the legacy ID.
@@ -220,7 +221,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * 
      * @return the specified site properties, never <code>null</code>.
      */
-    public PSSiteProperties getSiteProperties(String siteName) throws IPSSiteSectionService.PSSiteSectionException, PSValidationException;
+    public PSSiteProperties getSiteProperties(String siteName) throws IPSSiteSectionService.PSSiteSectionException, PSValidationException, PSNotFoundException;
     
     /**
      * Updates the specified site properties.
@@ -229,14 +230,14 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * 
      * @return the updated properties, never <code>null</code>.
      */
-    public PSSiteProperties updateSiteProperties(PSSiteProperties props) throws PSDataServiceException;
+    public PSSiteProperties updateSiteProperties(PSSiteProperties props) throws PSDataServiceException, PSNotFoundException;
     
     /**
      * Gets the publishing properties of the specified site
      * @param siteName name of the site, not blank
      * @return sites publishing properties never <code>null</code>.
      */
-    public PSSitePublishProperties getSitePublishProperties(String siteName) throws PSValidationException;
+    public PSSitePublishProperties getSitePublishProperties(String siteName) throws PSValidationException, PSNotFoundException;
    
     /**
      * Updates the specified site with publish properties, the specified site is
@@ -248,7 +249,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * @throws IOException if an error takes place when handling the secure
      *             configuration files.
      */
-    public PSSitePublishProperties updateSitePublishProperties(PSSitePublishProperties publishProps) throws DataServiceSaveException;
+    public PSSitePublishProperties updateSitePublishProperties(PSSitePublishProperties publishProps) throws DataServiceSaveException, PSNotFoundException;
     
     /**
      * Finds all choices.  A choice is comprised of a value (site name).  See {@link PSEnumVals.EnumVal} for details.
@@ -279,7 +280,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * @param isDefaultServer boolean flag that indicates whether the publish server is the default, not <code>null</code>.
      * 
      */
-    public void createPublishingItemsForPubServer(IPSSite site, PSPubServer pubServer, boolean isDefaultServer);
+    public void createPublishingItemsForPubServer(IPSSite site, PSPubServer pubServer, boolean isDefaultServer) throws PSNotFoundException;
 
     /**
      * Update the publish edition to set the default publish server.
@@ -288,7 +289,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * @param pubServer the pubServer associated to the edition, not <code>null</code>.
      * 
      */
-    public void setPublishServerAsDefault(IPSSite site, PSPubServer pubServer);
+    public void setPublishServerAsDefault(IPSSite site, PSPubServer pubServer) throws PSNotFoundException;
     
     /**
      * Update the publish edition to set the default publish server.
@@ -317,7 +318,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * @param pubServer the pubServer associated to the edition, not <code>null</code>.
      * 
      */
-    public void deletePublishingItemsByPubServer(PSPubServer pubServer);
+    public void deletePublishingItemsByPubServer(PSPubServer pubServer) throws PSNotFoundException;
     
     /**
      * Update a full publish edition for the specified publish server.
@@ -328,7 +329,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * @param isDefaultServer boolean flag that indicates whether the publish server is the default, not <code>null</code>.
      * 
      */
-    public void updateServerEditions(IPSSite site, PSPubServer oldServer, PSPubServer pubServer, boolean isDefaultServer);
+    public void updateServerEditions(IPSSite site, PSPubServer oldServer, PSPubServer pubServer, boolean isDefaultServer) throws PSNotFoundException;
     
     /**
      * Gets the statistics of the specified site.

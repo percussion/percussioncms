@@ -98,7 +98,7 @@ public interface IPSResultDocumentProcessor extends IPSExtension
     *                          call are incorrect for the usage of this
     *                          extension.
     *
-    * @exception   PSExtensionProcessorException
+    * @exception   PSExtensionProcessingException
     *                          if any other exception occurs which
     *                          prevents the proper handling of this request.
     */

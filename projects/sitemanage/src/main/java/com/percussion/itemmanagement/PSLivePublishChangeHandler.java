@@ -34,6 +34,7 @@ import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper.PSItemTypeEnum;
+import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSPageTemplateService;
 import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -141,7 +142,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     /**
      * @param e
      */
-    private void handleTransition(PSEditorChangeEvent e) throws IPSGenericDao.SaveException, PSValidationException, PSNotFoundException {
+    private void handleTransition(PSEditorChangeEvent e) throws PSDataServiceException, PSNotFoundException {
         IPSGuid guid = idMapper.getGuid(new PSLocator(e.getContentId()));
         String id = guid.toString();
         long contentTypeId = e.getContentTypeId();
@@ -176,8 +177,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     }
     
 
-    private void handleDelete(PSEditorChangeEvent e)
-    {
+    private void handleDelete(PSEditorChangeEvent e) throws PSDataServiceException {
         IPSGuid guid = idMapper.getGuid(new PSLocator(e.getContentId()));
         String id = guid.toString();
         long contentTypeId = e.getContentTypeId();
@@ -197,7 +197,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     /**
      * @param e
      */
-    private void handleUpdate(PSEditorChangeEvent e) throws IPSGenericDao.SaveException, PSValidationException, PSNotFoundException {
+    private void handleUpdate(PSEditorChangeEvent e) throws IPSGenericDao.SaveException, PSValidationException, PSNotFoundException, IPSPageService.PSPageException {
         IPSGuid guid = idMapper.getGuid(new PSLocator(e.getContentId()));
         String id = guid.toString();
         if (wfHelper.isLocalAsset(id))
@@ -228,7 +228,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     }
 
 
-    private void handleAdd(String id, PSItemTypeEnum itemType, PSContentChangeType changeType, long contentTypeId) throws IPSGenericDao.SaveException, PSValidationException {
+    private void handleAdd(String id, PSItemTypeEnum itemType, PSContentChangeType changeType, long contentTypeId) throws PSDataServiceException, PSNotFoundException {
         if (itemType.equals(PSItemTypeEnum.PAGE))
         {
             // page approved
@@ -246,7 +246,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     }
 
 
-    private void handleRemove(String id, PSItemTypeEnum itemType, long contentTypeId) throws PSValidationException {
+    private void handleRemove(String id, PSItemTypeEnum itemType, long contentTypeId) throws PSDataServiceException {
         if (itemType.equals(PSItemTypeEnum.PAGE))
         {
             doRemove(id);
@@ -264,7 +264,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
     /**
      * @param assetId
      */
-    private void handleAssetChangeForPages(String assetId) throws PSValidationException {
+    private void handleAssetChangeForPages(String assetId) throws PSValidationException, IPSPageService.PSPageException {
         // shared asset is approved (all live pages, all templates using it-their pages)
         Set<String> owners = widgetAssetRelationshipService.getRelationshipOwners(assetId);
         Set<String> pageOwners = new HashSet<>();
@@ -315,8 +315,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
         }
     }
     
-    private void handleTemplateChange(String templateId)
-    {
+    private void handleTemplateChange(String templateId) throws IPSPageService.PSPageException {
         // Find all live pages using the template, need to get non-revision specific id
         templateId = idMapper.getString(new PSLocator(idMapper.getLocator(templateId).getId()));
         List<Integer> pageIds = pageTemplateService.findPageIdsByTemplate(templateId);
@@ -410,8 +409,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
         return sites.get(0).getSiteId();
     }
 
-    private long[] getAssetSiteIds(String assetId)
-    {
+    private long[] getAssetSiteIds(String assetId) throws PSNotFoundException {
         List<Long> siteList = new ArrayList<>();
         String allowedSites = folderHelper.getRootLevelFolderAllowedSitesPropertyValue(assetId);
         if (!StringUtils.isBlank(allowedSites))
@@ -462,14 +460,12 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
         return Longs.toArray(results);
     }
     
-    private boolean canPublishAssetIncremental(Long siteId)
-    {
+    private boolean canPublishAssetIncremental(Long siteId) throws PSNotFoundException {
         PSPubServer pubServer = PSSitePublishDaoHelper.getDefaultPubServer(PSGuidUtils.makeGuid(siteId, PSTypeEnum.SITE));
         return !pubServer.isXmlFormat() && !pubServer.isDatabaseType();
     }
 
-    private boolean isResource(long contentTypeId)
-    {
+    private boolean isResource(long contentTypeId) throws PSDataServiceException {
         boolean isResource = false;
         try
         {

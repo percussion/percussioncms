@@ -24,18 +24,32 @@
 
 package com.percussion.activity.service.impl;
 
-import com.percussion.activity.data.*;
+import com.percussion.activity.data.PSActivityNode;
+import com.percussion.activity.data.PSContentActivity;
+import com.percussion.activity.data.PSContentActivityList;
+import com.percussion.activity.data.PSContentActivityRequest;
+import com.percussion.activity.data.PSContentTraffic;
+import com.percussion.activity.data.PSContentTrafficRequest;
+import com.percussion.activity.data.PSEffectiveness;
+import com.percussion.activity.data.PSEffectivenessComparator;
+import com.percussion.activity.data.PSEffectivenessList;
+import com.percussion.activity.data.PSEffectivenessRequest;
+import com.percussion.activity.data.PSTrafficDetails;
+import com.percussion.activity.data.PSTrafficDetailsList;
+import com.percussion.activity.data.PSTrafficDetailsRequest;
 import com.percussion.activity.service.IPSActivityService;
 import com.percussion.activity.service.IPSContentActivityService;
 import com.percussion.activity.service.IPSEffectivenessService;
-import com.percussion.activity.service.IPSEffectivenessService.PSEffectivenessServiceException;
 import com.percussion.activity.service.IPSTrafficService;
 import com.percussion.analytics.data.PSAnalyticsProviderConfig;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.error.PSAnalyticsProviderException.CAUSETYPE;
 import com.percussion.analytics.service.IPSAnalyticsProviderService;
+import com.percussion.pathmanagement.service.IPSPathService;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
 import org.apache.commons.lang.StringUtils;
@@ -51,7 +65,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
 
@@ -99,7 +117,7 @@ public class PSContentActivityService implements IPSContentActivityService
             contentActivityReqvalidator.validate(request);
 
             return new PSContentActivityList(getContentActivity(request.getPath(), request.getDurationType(), request.getDuration(), true));
-        } catch (PSValidationException e) {
+        } catch (PSValidationException | IPSActivityService.PSActivityServiceException | IPSPathService.PSPathServiceException e) {
             throw new WebApplicationException(e);
         }
     }
@@ -156,7 +174,7 @@ public class PSContentActivityService implements IPSContentActivityService
             
             return new PSEffectivenessList(eList);
         }
-        catch (PSAnalyticsProviderException | PSValidationException e)
+        catch (PSAnalyticsProviderException | PSValidationException | IPSActivityService.PSActivityServiceException | IPSPathService.PSPathServiceException | IPSGenericDao.LoadException e)
         {
             throw new WebApplicationException(e);
         }
@@ -169,7 +187,11 @@ public class PSContentActivityService implements IPSContentActivityService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSContentTraffic getContentTraffic(PSContentTrafficRequest request) 
     {
-        return trafficService.getContentTraffic(request);
+        try {
+            return trafficService.getContentTraffic(request);
+        } catch (PSTrafficServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @Override
@@ -179,7 +201,11 @@ public class PSContentActivityService implements IPSContentActivityService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSTrafficDetails> getTrafficDetails(PSTrafficDetailsRequest request)
     {
-        return new PSTrafficDetailsList(trafficService.getTrafficDetails(request));
+        try {
+            return new PSTrafficDetailsList(trafficService.getTrafficDetails(request));
+        } catch (IPSPathService.PSPathServiceException | PSTrafficServiceException | PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     /**
@@ -213,8 +239,7 @@ public class PSContentActivityService implements IPSContentActivityService
     }
     
     private List<PSContentActivity> getContentActivity(String path, String durationType, String duration,
-            boolean includeSite)
-    {
+            boolean includeSite) throws IPSActivityService.PSActivityServiceException, IPSPathService.PSPathServiceException {
         List<PSContentActivity> caList = new ArrayList<>();
         
         int timeoutSeconds = NumberUtils.toInt(systemProperties.getProperty(IPSSystemProperties.CONTENT_ACTIVITY_TIME_OUT), DEFAULT_TIMEOUT);

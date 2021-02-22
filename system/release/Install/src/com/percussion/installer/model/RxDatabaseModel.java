@@ -105,7 +105,7 @@ public class RxDatabaseModel extends RxIAModel
          DatabaseMetaData dbMeta = null;
          ResultSet rs            = null;
          Statement stmt          = null;
-         Vector<String> vSchemas         = new Vector<String>();
+         Vector<String> vSchemas         = new Vector<>();
          try
          {
             if (isDB2)
@@ -156,7 +156,7 @@ public class RxDatabaseModel extends RxIAModel
             return;
          }
          
-         Vector<String> vDbs = new Vector<String>();
+         Vector<String> vDbs = new Vector<>();
          ResultSet rs1 = null;
          try
          {

@@ -640,7 +640,7 @@ public class PSUpgradePluginConvertContentTypes extends PSSpringUpgradePluginBas
          return;
       
       IPSAclService aclService = PSAclServiceLocator.getAclService();
-      List<IPSAcl> aclList = new ArrayList<IPSAcl>();
+      List<IPSAcl> aclList = new ArrayList<>();
             
       log("Creating acl for content type [" + contentTypeId + "]");
       

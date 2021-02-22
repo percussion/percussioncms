@@ -375,14 +375,14 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
        * and the resulting connection.
        */
       private Map<DbmsInfo, DbmsConnection> m_connections =
-            new HashMap<DbmsInfo, DbmsConnection>();
+            new HashMap<>();
 
       /**
        * Maintain the connections for the different jobs. Connections are
        * established and cleared when the job commits.
        */
       private static Map<Long, Connections> ms_jobConnections
-            = new HashMap<Long, Connections>();
+            = new HashMap<>();
 
       /**
        * Obtain information for a given {@link DbmsInfo}.
@@ -490,7 +490,7 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
        * table schema is copied. The value is a set of primary key column names.
        */
       Map<String, Set<String>> m_primaryKeys =
-            new HashMap<String, Set<String>>();
+            new HashMap<>();
 
       /**
        * The current primary keys. This field is set during the data copying
@@ -553,7 +553,7 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
             Set<String> keys = m_primaryKeys.get(m_currentTableDef);
             if (keys == null)
             {
-               keys = new HashSet<String>();
+               keys = new HashSet<>();
                m_primaryKeys.put(m_currentTableDef, keys);
             }
             keys.add(m_nameCapture.toString().trim());

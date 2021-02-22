@@ -459,7 +459,7 @@ public class PSUpgradePluginPublishing implements IPSUpgradePlugin
       ResultSet rs2 = null;
       int rowCount = 0;
       Map<Integer, PubStatusValue> pubStatusMap =
-         new HashMap<Integer, PubStatusValue>();
+         new HashMap<>();
       PSConnectionObject connObj1 = new PSConnectionObject();
       PSConnectionObject connObj2 = new PSConnectionObject();
       
@@ -607,7 +607,7 @@ public class PSUpgradePluginPublishing implements IPSUpgradePlugin
       PreparedStatement stmt = null;
       ResultSet rs = null;
       int rowCount = 0;
-      Map<Integer, String> cListUrls = new HashMap<Integer, String>();
+      Map<Integer, String> cListUrls = new HashMap<>();
       PSConnectionObject connObj = new PSConnectionObject();
             
       try

@@ -24,13 +24,15 @@
 
 package com.percussion.sitemanage.service.impl;
 
+import com.percussion.foldermanagement.service.IPSFolderService;
+import com.percussion.itemmanagement.service.IPSItemService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSEnumVals;
 import com.percussion.share.data.PSMapWrapper;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.sitemanage.data.PSSite;
@@ -42,6 +44,7 @@ import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.data.PSSiteSummaryList;
 import com.percussion.sitemanage.data.PSValidateCopyFoldersRequest;
 import com.percussion.sitemanage.error.PSSiteImportException;
+import com.percussion.sitemanage.service.IPSSiteSectionService;
 import com.percussion.util.PSSiteManageBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -94,7 +97,7 @@ public class PSSiteDataRestService
     {
         try {
             return siteDataService.load(id);
-        } catch (IPSDataService.DataServiceNotFoundException e) {
+        } catch (IPSDataService.DataServiceNotFoundException | PSValidationException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(404);
@@ -107,7 +110,11 @@ public class PSSiteDataRestService
     public PSSiteSummary find(@PathParam(ID_PATH_PARAM)
     String id) throws com.percussion.share.service.IPSDataService.DataServiceLoadException
     {
-        return siteDataService.find(id);
+        try {
+            return siteDataService.find(id);
+        } catch (PSValidationException | IPSGenericDao.LoadException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
 
@@ -141,7 +148,7 @@ public class PSSiteDataRestService
     {
         try {
             return siteDataService.save(site);
-        } catch (IPSDataService.DataServiceNotFoundException | PSSpringValidationException | IPSDataService.DataServiceSaveException | DataServiceLoadException e) {
+        } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -155,7 +162,11 @@ public class PSSiteDataRestService
     public PSSite createSiteFromUrl(@Context
     HttpServletRequest request, PSSite site) throws PSSiteImportException
     {
-        return siteDataService.createSiteFromUrl(request,site); 
+        try {
+            return siteDataService.createSiteFromUrl(request, site);
+        } catch (PSValidationException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
 
@@ -166,7 +177,11 @@ public class PSSiteDataRestService
     public long createSiteFromUrlAsync(@Context
     HttpServletRequest request, PSSite site)
     {
-        return siteDataService.createSiteFromUrlAsync(request,site);
+        try {
+            return siteDataService.createSiteFromUrlAsync(request, site);
+        } catch (PSValidationException | IPSFolderService.PSWorkflowNotFoundException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
 
@@ -188,7 +203,7 @@ public class PSSiteDataRestService
     {
         try {
             return siteDataService.validate(site);
-        } catch (PSSpringValidationException e) {
+        } catch (PSValidationException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -201,7 +216,11 @@ public class PSSiteDataRestService
     public PSSiteProperties getSiteProperties(@PathParam("siteName")
     String siteName)
     {
-        return siteDataService.getSiteProperties(siteName);
+        try {
+            return siteDataService.getSiteProperties(siteName);
+        } catch (IPSSiteSectionService.PSSiteSectionException | PSValidationException | PSNotFoundException e) {
+           throw new WebApplicationException(e);
+        }
     }
 
     @POST
@@ -210,7 +229,11 @@ public class PSSiteDataRestService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSSiteProperties updateSiteProperties(PSSiteProperties props)
     {
-        return siteDataService.updateSiteProperties(props);
+        try {
+            return siteDataService.updateSiteProperties(props);
+        } catch (PSNotFoundException | PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     @GET
@@ -219,7 +242,11 @@ public class PSSiteDataRestService
     public PSSitePublishProperties getSitePublishProperties(@PathParam("siteName")
     String siteName)
     {
-        return siteDataService.getSitePublishProperties(siteName);
+        try {
+            return siteDataService.getSitePublishProperties(siteName);
+        } catch (PSValidationException | PSNotFoundException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
@@ -228,7 +255,11 @@ public class PSSiteDataRestService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSSitePublishProperties updateSitePublishProperties(PSSitePublishProperties publishProps)
     {
-        return siteDataService.updateSitePublishProperties(publishProps);
+        try {
+            return siteDataService.updateSitePublishProperties(publishProps);
+        } catch (IPSDataService.DataServiceSaveException | PSNotFoundException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
 
@@ -270,7 +301,11 @@ public class PSSiteDataRestService
     @Produces({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML})
     public PSMapWrapper getSaaSSiteNames(@QueryParam("filterUsedSites") boolean filterUsedSites)
     {
-        return siteDataService.getSaaSSiteNames(filterUsedSites);
+        try {
+            return siteDataService.getSaaSSiteNames(filterUsedSites);
+        } catch (DataServiceLoadException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     @GET
@@ -281,7 +316,7 @@ public class PSSiteDataRestService
     {
         try {
             return siteDataService.isSiteBeingImported(sitename);
-        } catch (IPSGenericDao.LoadException e) {
+        } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -307,7 +342,11 @@ public class PSSiteDataRestService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSSite copy(PSSiteCopyRequest req)
     {
-        return siteDataService.copy(req);
+        try {
+            return siteDataService.copy(req);
+        } catch (IPSItemService.PSItemServiceException | PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
 

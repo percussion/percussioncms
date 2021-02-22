@@ -76,7 +76,7 @@ public class PSQueryResult implements QueryResult
          throw new IllegalArgumentException("comparator may not be null");
       }
       m_columnNames = columnNames;
-      m_rows = new TreeSet<PSRow>(comparator);
+      m_rows = new TreeSet<>(comparator);
    }
 
    /**
@@ -106,7 +106,7 @@ public class PSQueryResult implements QueryResult
     */
    public NodeIterator getNodes() throws RepositoryException
    {
-      List<IPSGuid> guids = new ArrayList<IPSGuid>();
+      List<IPSGuid> guids = new ArrayList<>();
       for (PSRow row : m_rows)
       {
          long cid = row.getRawValue(

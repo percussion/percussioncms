@@ -242,7 +242,7 @@ public class PSPersistentProperty
     *
     * @todo rename getExtraParam to getActionType() ?
     */
-   public String getExtraParam()
+   public synchronized String getExtraParam()
    {
       return m_action;
    }

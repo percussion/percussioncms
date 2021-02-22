@@ -39,6 +39,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.util.PSSiteManageBean;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
@@ -59,8 +60,7 @@ public class PSSimpleStartupProcessor implements IPSStartupProcess
         createDefaultGlobalVariablesJs();
     }
 
-    private void createDefaultGlobalVariablesJs()
-    {
+    private void createDefaultGlobalVariablesJs() throws IPSGenericDao.LoadException {
         //We always want to create the default file if it doesn't exist.
 
 

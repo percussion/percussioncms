@@ -57,7 +57,7 @@ public class PSDispatchingPathServicePathParsingTest
     
     @Before
     public void setup () {
-        pathRegistry = new HashMap<String, IPSPathService>();
+        pathRegistry = new HashMap<>();
         pathNormalizer = new PSDispatchingPathService.PathNormalizer();
         pathMatcher = new PSDispatchingPathService.PathMatcher(pathNormalizer, pathRegistry, null, null);
         pathServiceA = new TestPathService();
@@ -118,13 +118,11 @@ public class PSDispatchingPathServicePathParsingTest
         assertPathMatch("b/c/", "/b/c/", "/c/", pathServiceB);
     }
     
-    public void assertPathMatch(String fullPath, String relativePath, IPSPathService pathService)
-    {
+    public void assertPathMatch(String fullPath, String relativePath, IPSPathService pathService) throws IPSPathService.PSPathNotFoundServiceException {
         assertPathMatch(fullPath, fullPath, relativePath, pathService);
     }
     
-    public void assertPathMatch(String fullPath, String properFullPath, String relativePath, IPSPathService pathService) 
-    {
+    public void assertPathMatch(String fullPath, String properFullPath, String relativePath, IPSPathService pathService) throws IPSPathService.PSPathNotFoundServiceException {
         PathMatch pm = pathMatcher.matchPath(fullPath);
         assertEquals("Full path: ", properFullPath, pm.fullPath);
         assertEquals("Relative path: ", relativePath, pm.relativePath);

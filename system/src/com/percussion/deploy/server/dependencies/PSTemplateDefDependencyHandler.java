@@ -57,6 +57,7 @@ import com.percussion.services.assembly.IPSAssemblyTemplate.GlobalTemplateUsage;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSTemplateBinding;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.utils.guid.IPSGuid;
 
@@ -65,6 +66,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Class to handle packaging and deploying a template definition.
@@ -126,8 +129,11 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
         {
             tmp = m_assemblySvc.loadTemplate(depId, loadSlots);
         }
-        catch (PSAssemblyException ignored)
-        { }
+        catch (PSAssemblyException e)
+        {
+            log.warn(e.getMessage());
+            log.debug(e.getMessage(),e);
+        }
 
         return tmp;
     }
@@ -221,7 +227,13 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
         for (IPSTemplateSlot slot : slots) {
             IPSGuid slotGuid = slot.getGUID();
             String id = String.valueOf(slotGuid.longValue());
-            PSDependency childDep = handler.getDependency(tok, id);
+            PSDependency childDep=null;
+            try {
+                 childDep = handler.getDependency(tok, id);
+            } catch (PSNotFoundException e) {
+                log.warn(e.getMessage());
+                log.debug(e.getMessage(),e);
+            }
             if (childDep != null)
                 depList.add(childDep);
         }
@@ -234,8 +246,7 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
     @Override
     @SuppressWarnings("unchecked")
     public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-            throws PSDeployException
-    {
+            throws PSDeployException, PSNotFoundException {
         if (tok == null)
             throw new IllegalArgumentException("tok may not be null");
 
@@ -260,7 +271,7 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
         Set<PSDependency> childDeps = new HashSet<>();
         PSDependency childDep;
         // 1. Global template
-        if (tmp.getGlobalTemplateUsage().equals(GlobalTemplateUsage.Defined)
+        if (tmp!=null && tmp.getGlobalTemplateUsage().equals(GlobalTemplateUsage.Defined)
                 && (tmp.getGlobalTemplate() != null))
         {
             PSDependencyHandler th = getDependencyHandler(
@@ -325,8 +336,7 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
     private Iterator<PSDependency> getExitDependenciesFromJEXLExp(
             PSSecurityToken tok, String exp, PSDependencyHandler exitHandler,
             PSJexlHelper jexlHelper) throws PSExtensionException,
-            PSDeployException
-    {
+            PSDeployException, PSNotFoundException {
         if (tok == null)
             throw new IllegalArgumentException("tok may not be null");
 
@@ -411,8 +421,7 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
      */
     private List<PSDependency> handleExitsInJexlExp(
             PSSecurityToken tok, IPSAssemblyTemplate t) throws PSDeployException,
-            PSExtensionException
-    {
+            PSExtensionException, PSNotFoundException {
         if (tok == null)
             throw new IllegalArgumentException("tok may not be null");
 
@@ -561,11 +570,11 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
         if (!isNew)
         {
             // deserialize on the existing template
-            ver = ((PSAssemblyTemplate) tmp).getVersion();
+            ver = ( tmp).getVersion();
             List<PSTemplateBinding> bList = tmp.getBindings();
             bVer = bList.stream().filter(Objects::nonNull).collect(Collectors.toMap(PSTemplateBinding::getId,
                     PSTemplateBinding::getVersion, (a, b1) -> b1, HashMap::new));
-            ((PSAssemblyTemplate) tmp).setVersion(null);
+            tmp.setVersion(null);
 
             // remove any existing slot associations
             List<Long> slots = ((PSAssemblyTemplate) tmp).getTemplateSlotIds();
@@ -1059,6 +1068,7 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
      */
     private static final String TEMPLATE_BINDINGS  = "TemplateBinding";
 
+    private static final Logger log = LogManager.getLogger(PSTemplateDependencyHandler.class);
     static
     {
         ms_childTypes.add(PSCEDependencyHandler.DEPENDENCY_TYPE);

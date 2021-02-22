@@ -89,7 +89,7 @@ public class XpathParser extends antlr.LLkParser implements XpathTokenTypes
       IPSQueryNode w = null;
       List<PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder>> o = null;
       PSPair<PSQueryNodeIdentifier, String> eldata = null;
-      List<String> path = new ArrayList<String>();
+      List<String> path = new ArrayList<>();
       String pp = null;
       query = new PSQuery(Query.XPATH);
       List al = null;
@@ -396,7 +396,7 @@ public class XpathParser extends antlr.LLkParser implements XpathTokenTypes
       Token prop = null;
 
       PSQueryNodeIdentifier type = null;
-      eldata = new PSPair<PSQueryNodeIdentifier, String>();
+      eldata = new PSPair<>();
 
       try
       { // for error handling
@@ -591,7 +591,7 @@ public class XpathParser extends antlr.LLkParser implements XpathTokenTypes
       List<PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder>> solist;
 
       PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder> adef = null;
-      solist = new ArrayList<PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder>>();
+      solist = new ArrayList<>();
 
       try
       { // for error handling
@@ -1294,7 +1294,7 @@ public class XpathParser extends antlr.LLkParser implements XpathTokenTypes
          if (inputState.guessing == 0)
          {
 
-            rval = new PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder>(p, asc
+            rval = new PSPair<>(p, asc
                   ? PSQuery.SortOrder.ASC
                   : PSQuery.SortOrder.DSC);
 

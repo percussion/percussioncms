@@ -23,6 +23,8 @@
  */
 package com.percussion.pagemanagement.service;
 
+import com.percussion.share.service.exception.PSDataServiceException;
+
 import java.util.List;
 
 import javax.jcr.RepositoryException;
@@ -42,7 +44,7 @@ public interface IPSPageTemplateService
     public static final String FIELD_NAME_TEMPLATE_ID = "templateid";
     
     //fixme: doc and remove from page servcie
-    public void changeTemplate(String pageId, String templateId);
+    public void changeTemplate(String pageId, String templateId) throws PSDataServiceException;
 
     /**
      * Find all the pages that use a certain template and return their ids
@@ -51,6 +53,6 @@ public interface IPSPageTemplateService
      * 
      * @return The list of ids, not <code>null</code>, may be empty.
      */
-    List<Integer> findPageIdsByTemplate(String templateId);
+    List<Integer> findPageIdsByTemplate(String templateId) throws IPSPageService.PSPageException;
     
 }

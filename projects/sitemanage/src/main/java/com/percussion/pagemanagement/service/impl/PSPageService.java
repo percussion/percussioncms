@@ -64,6 +64,7 @@ import com.percussion.recent.service.rest.IPSRecentService;
 import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.recycle.service.impl.PSRecycleService;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.PSGuidUtils;
@@ -75,7 +76,6 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.share.dao.IPSContentItemDao;
 import com.percussion.share.dao.IPSFolderHelper;
-import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSNoContent;
@@ -411,7 +411,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
                 log.info("Page: '{}' has been recycled by: {}",page.getFolderPath() + '/' + page.getName(),  currentUser);
             }
         }
-        catch (IPSGenericDao.DeleteException | IPSGenericDao.LoadException | DataServiceLoadException | DataServiceNotFoundException | PSItemWorkflowServiceException e)
+        catch (PSItemWorkflowServiceException | PSNotFoundException | PSDataServiceException e)
         {
             log.error("Page: {} not found for delete. Error: {}",id,e.getMessage());
             log.debug(e.getMessage(), e);
@@ -735,8 +735,7 @@ try {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
  
-    public PSNoContent changeTemplate(String pageId, String templateId)
-    {
+    public PSNoContent changeTemplate(String pageId, String templateId) throws PSDataServiceException {
         isTrue(isNotBlank(pageId), "pageId may not be blank");
         isTrue(isNotBlank(templateId), "templateId may not be blank");
         
@@ -781,7 +780,7 @@ try {
             PSPage page = super.load(id);
             validateForDelete(page, builder);  
         }
-        catch (DataServiceLoadException | DataServiceNotFoundException | PSValidationException | PSItemWorkflowServiceException e)
+        catch (DataServiceLoadException | DataServiceNotFoundException | PSValidationException | PSItemWorkflowServiceException | PSNotFoundException e)
         {
             log.debug("Page: " + id + " not found for delete validation.", e);
         }
@@ -797,7 +796,7 @@ try {
         throw new UnsupportedOperationException("findAll is not yet supported");
     }
     
-    public List<PSSEOStatistics> findNonSEOPages(PSNonSEOPagesRequest request) throws PSPageException, IPSGenericDao.LoadException {
+    public List<PSSEOStatistics> findNonSEOPages(PSNonSEOPagesRequest request) throws PSDataServiceException {
         List<PSSEOStatistics> nonSEOStats = new ArrayList<>();
         List<PSPageSummary> sums = new ArrayList<>();
         
@@ -963,7 +962,7 @@ try {
      * @param page the page to validate, assumed not <code>null</code>.
      * @param builder used to capture and throw validation errors, assumed not <code>null</code>.
      */
-    private void validateForDelete(PSPage page, PSValidationErrorsBuilder builder) throws PSValidationException, PSItemWorkflowServiceException {
+    private void validateForDelete(PSPage page, PSValidationErrorsBuilder builder) throws PSValidationException, PSItemWorkflowServiceException, PSNotFoundException {
         String id = page.getId();
         
         if (!itemWorkflowService.isModifiableByUser(id))
@@ -1398,7 +1397,7 @@ try {
         this.recentService = recentService;
     }
 	@Override
-	public List<PSPageReportLine> findAllPages(String sitePath) throws PSReportFailedToRunException, PSPageException, IPSGenericDao.LoadException {
+	public List<PSPageReportLine> findAllPages(String sitePath) throws PSReportFailedToRunException, PSDataServiceException {
 		List<PSPageReportLine> ret = new ArrayList<>();
 		List<PSPage> pages = pageDao.findAllPagesBySite(sitePath);
 		

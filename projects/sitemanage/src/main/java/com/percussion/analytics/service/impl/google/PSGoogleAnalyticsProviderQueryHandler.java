@@ -32,6 +32,7 @@ import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.error.PSAnalyticsProviderException.CAUSETYPE;
 import com.percussion.analytics.service.IPSAnalyticsProviderService;
 import com.percussion.analytics.service.impl.IPSAnalyticsProviderQueryHandler;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.utils.date.PSDateRange;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -65,7 +66,7 @@ public class PSGoogleAnalyticsProviderQueryHandler implements IPSAnalyticsProvid
      * getPageViewsByPathPrefix( java.lang.String, java.lang.String,
      * com.percussion.utils.date.PSDateRange)
      */
-    public List<IPSAnalyticsQueryResult> getPageViewsByPathPrefix(String sitename, String pathPrefix, PSDateRange range) throws PSAnalyticsProviderException {
+    public List<IPSAnalyticsQueryResult> getPageViewsByPathPrefix(String sitename, String pathPrefix, PSDateRange range) throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
         notEmpty(sitename);
         notNull(range);
 
@@ -185,7 +186,7 @@ public class PSGoogleAnalyticsProviderQueryHandler implements IPSAnalyticsProvid
      * getVisitsViewsBySite( java.lang.String,
      * com.percussion.utils.date.PSDateRange)
      */
-    public List<IPSAnalyticsQueryResult> getVisitsViewsBySite(String sitename, PSDateRange range) throws PSAnalyticsProviderException {
+    public List<IPSAnalyticsQueryResult> getVisitsViewsBySite(String sitename, PSDateRange range) throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
         notEmpty(sitename);
         notNull(range);
 
@@ -426,15 +427,14 @@ public class PSGoogleAnalyticsProviderQueryHandler implements IPSAnalyticsProvid
      * 
      * @param sitename the site name is required so we can retrieve the proper
      *            profile to use. Cannot be <code>null</code> or empty.
-     * @param Requestquery the Google DataQuery, the setMaxResults and setStartIndex
+     * @param requestQuery the Google DataQuery, the setMaxResults and setStartIndex
      *            values will be overwritten by this method. Cannot be
      *            <code>null</code>.
      * @return list of data entries, never <code>null</code>, may be empty.
      * @throws PSAnalyticsProviderException on any error that occurs while
      *             executing the query.
      */
-    private Report executeQuery(String sitename, ReportRequest Requestquery) throws PSAnalyticsProviderException
-    {
+    private Report executeQuery(String sitename, ReportRequest requestQuery) throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
         // Get user ID and password
         PSAnalyticsProviderConfig config = providerService.loadConfig(false);
         if (config == null)
@@ -445,12 +445,11 @@ public class PSGoogleAnalyticsProviderQueryHandler implements IPSAnalyticsProvid
         String pwd = config.getPassword();
 
         String pid = getProfileId(sitename);
-        return executeGoogleQuery(Requestquery, pid, uid, pwd);
+        return executeGoogleQuery(requestQuery, pid, uid, pwd);
 
     }
 
-    private String getProfileId(String sitename) throws PSAnalyticsProviderException
-    {
+    private String getProfileId(String sitename) throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
         String profileId = providerService.getProfileId(sitename);
         if (profileId == null)
         {

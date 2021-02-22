@@ -88,7 +88,7 @@ public class PSScheduleUtils
       if (params == null)
          throw new IllegalArgumentException("params may not be null.");
       
-      Map<String,Object> vars = new HashMap<String, Object>();
+      Map<String,Object> vars = new HashMap<>();
       for (Map.Entry<String, String> entry : params.entrySet())
       {
          if (entry.getKey().startsWith("$"))

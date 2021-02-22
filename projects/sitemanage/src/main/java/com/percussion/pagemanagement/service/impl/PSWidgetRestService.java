@@ -30,7 +30,11 @@ import com.percussion.pagemanagement.data.PSWidgetPackageInfoResult;
 import com.percussion.pagemanagement.data.PSWidgetSummary;
 import com.percussion.pagemanagement.data.PSWidgetSummaryList;
 import com.percussion.pagemanagement.service.IPSWidgetService;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSPropertiesValidationException;
 import com.percussion.share.service.exception.PSSpringValidationException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -42,6 +46,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -50,7 +55,9 @@ import java.util.List;
 @Component("widgetRestService")
 @Lazy
 public class PSWidgetRestService {
-    
+
+    private static final Logger log = LogManager.getLogger(PSWidgetRestService.class);
+
     private IPSWidgetService widgetService;
   
     @Autowired
@@ -66,7 +73,13 @@ public class PSWidgetRestService {
     @Consumes({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML})
     public PSSpringValidationException validateWidgetItem(PSWidgetItem widgetItem)
     {
-        return widgetService.validateWidgetItem(widgetItem);
+        try {
+            return widgetService.validateWidgetItem(widgetItem);
+        } catch (PSPropertiesValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
     
 
@@ -74,9 +87,15 @@ public class PSWidgetRestService {
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN,MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML})
-    public PSWidgetSummary find(@PathParam("id") String id) throws com.percussion.share.service.IPSDataService.DataServiceLoadException
+    public PSWidgetSummary find(@PathParam("id") String id)
     {
-        return widgetService.find(id);
+        try {
+            return widgetService.find(id);
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
     
     @GET
@@ -84,7 +103,13 @@ public class PSWidgetRestService {
     @Produces({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML})
     public List<PSWidgetSummary> findAll() {
-        return new PSWidgetSummaryList(widgetService.findAll());
+        try {
+            return new PSWidgetSummaryList(widgetService.findAll());
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
     
     @GET
@@ -92,16 +117,28 @@ public class PSWidgetRestService {
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN,MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML})
     public List<PSWidgetSummary> findByType(@PathParam("type") String type, @QueryParam("filterDisabledWidgets") String filterDisabledWidgets) {
-        return new PSWidgetSummaryList(widgetService.findByType(type, filterDisabledWidgets));
+        try {
+            return new PSWidgetSummaryList(widgetService.findByType(type, filterDisabledWidgets));
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @GET
     @Path("/full/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN,MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML})
-    public PSWidgetDefinition load(@PathParam("id") String id) throws com.percussion.share.service.IPSDataService.DataServiceLoadException
+    public PSWidgetDefinition load(@PathParam("id") String id)
     {
-        return widgetService.load(id);
+        try {
+            return widgetService.load(id);
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST    
@@ -110,7 +147,13 @@ public class PSWidgetRestService {
     @Consumes({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN,MediaType.APPLICATION_XML})
     public PSWidgetPackageInfoResult findWidgetPackageInfo(PSWidgetPackageInfoRequest request)
     {
-        return widgetService.findWidgetPackageInfo(request);
+        try {
+            return widgetService.findWidgetPackageInfo(request);
+        }catch(Exception e){
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     

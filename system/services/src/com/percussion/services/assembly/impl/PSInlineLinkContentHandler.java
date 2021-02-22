@@ -255,7 +255,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
    /**
     * The stack of state and element names
     */
-   private List<ElementState> m_stateStack = new LinkedList<ElementState>();
+   private List<ElementState> m_stateStack = new LinkedList<>();
 
    /**
     * The calling link processor, set in the ctor
@@ -790,7 +790,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
       
       link.overrides.put("src", link.getLink(target));
       
-      Map<String, String> altAndTitle = new HashMap<String, String>();
+      Map<String, String> altAndTitle = new HashMap<>();
       
       // get alt text and title from actual asset itself
       // only if rtw overrides are not set
@@ -868,7 +868,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          // so that the inline content of the variant from the body field
          // is swallowed
          inlineType = attrs.getValue(PSSingleValueBuilder.INLINE_TYPE);
-         overrides = new HashMap<String, String>();
+         overrides = new HashMap<>();
 
          // Get attributes
          dependentVariantId = 
@@ -924,7 +924,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
       {
          super();
          inlineType = type;
-         overrides = new HashMap<String, String>();
+         overrides = new HashMap<>();
          IPSUdfProcessor processor = getManagedLinkConverterUdf();
          if (processor == null)
          {
@@ -974,9 +974,9 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
       }
       
       protected Map<String, String> getAltTextAndTitleFromAsset(IPSAssemblyItem assemblyItem) {
-         Map<String, String> items = new HashMap<String, String>();
+         Map<String, String> items = new HashMap<>();
          IPSGuid guid = assemblyItem.getId();
-         List<IPSGuid> guidList = new ArrayList<IPSGuid>();
+         List<IPSGuid> guidList = new ArrayList<>();
          List<Node> nodeList;
          guidList.add(guid);
          IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
@@ -1111,7 +1111,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
       List<IPSFilterItem> input = Collections.singletonList(item);
       try
       {
-         Map<String, String> params = new HashMap<String, String>();
+         Map<String, String> params = new HashMap<>();
          params.put(IPSHtmlParameters.SYS_SITEID, siteid);
          IPSItemFilter filter = m_processor.getItemFilter();
       

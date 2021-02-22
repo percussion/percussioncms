@@ -58,7 +58,7 @@ public class PSListTemplateExpander extends PSBaseTemplateExpander
       
       IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
 
-      List<IPSGuid> rval = new ArrayList<IPSGuid>();
+      List<IPSGuid> rval = new ArrayList<>();
       for (String name : names)
       {
          try

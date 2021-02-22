@@ -45,6 +45,7 @@ import com.percussion.i18n.tmxdom.PSTmxDocument;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
@@ -132,8 +133,7 @@ public class PSLocaleDefDependencyHandler extends PSDependencyHandler
    // see base class
    @Override
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -514,8 +514,7 @@ public class PSLocaleDefDependencyHandler extends PSDependencyHandler
     * @throws PSDeployException
     */
    private PSDependency getTranslationSettingsDependencies(PSSecurityToken tok,
-         String id) throws PSDeployException 
-   {
+         String id) throws PSDeployException, PSNotFoundException {
       if ( StringUtils.isBlank(id) )
          throw new IllegalArgumentException("locale id may not be null or empty");
       PSLocale l = findLocaleByLanguageString(id);
@@ -537,9 +536,8 @@ public class PSLocaleDefDependencyHandler extends PSDependencyHandler
     * 
     * @throws PSDeployException If the are any errors.
     */
-   private Set getTmxDependencies(PSSecurityToken tok, Document doc) 
-      throws PSDeployException
-   {
+   private Set getTmxDependencies(PSSecurityToken tok, Document doc)
+           throws PSDeployException, PSNotFoundException {
       Set deps = new HashSet();
       clearKeyData();
       
@@ -571,9 +569,8 @@ public class PSLocaleDefDependencyHandler extends PSDependencyHandler
     * 
     * @throws PSDeployException if there are any errors.
     */
-   private PSDependency getTmxDep(PSSecurityToken tok, String tuid) 
-      throws PSDeployException
-   {
+   private PSDependency getTmxDep(PSSecurityToken tok, String tuid)
+           throws PSDeployException, PSNotFoundException {
       PSDependency dep = null;
       
       // walk all possible tmx dependency types and process any match

@@ -31,8 +31,8 @@ import com.percussion.design.objectstore.PSNonUniqueException;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSNotLockedException;
 import com.percussion.design.objectstore.PSServerConfiguration;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUnknownDocTypeException;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSRequestHandler;
@@ -446,7 +446,7 @@ public interface IPSObjectStoreHandler extends IPSRequestHandler {
     *                              an application by the same name
     *                              already exists
     *
-    * @exception PSValidationException      if validate is <code>true</code>
+    * @exception PSSystemValidationException      if validate is <code>true</code>
     *                              and a validation error is
     *                              encountered
     *
@@ -460,7 +460,7 @@ public interface IPSObjectStoreHandler extends IPSRequestHandler {
       throws PSServerException, PSAuthorizationException,
          PSAuthenticationFailedException, 
          PSNotLockedException, PSNonUniqueException,
-         PSValidationException, PSUnknownDocTypeException;
+           PSSystemValidationException, PSUnknownDocTypeException;
    
    /**
     * Loads the previously saved user configuration object for the specified
@@ -687,11 +687,11 @@ public interface IPSObjectStoreHandler extends IPSRequestHandler {
     * 
     * @throws  PSServerException
     * @throws  PSAuthorizationException
-    * @throws  PSValidationException;
+    * @throws PSSystemValidationException ;
     * 
     */
    public boolean validateApplicationObject(PSApplication app)
-      throws PSServerException, PSAuthorizationException, PSValidationException;
+      throws PSServerException, PSAuthorizationException, PSSystemValidationException;
    
    /**
     * Checks that the given session's security matches the given security for

@@ -107,15 +107,14 @@ public class MainDTSPreInstall {
             String isProduction="true";
             isProduction=System.getProperty("install.prod.dts");
             System.out.println("====Will remove below code if value of is Production comes fine PSDeliveryTierServerTYpePanel"+isProduction);
-            if(isProduction!=null){
-                if(isProduction.equals("$DTS_SERVER_TYPE$")){
-                    isProduction="true";
-                }
-            }else{
+            String staging = installPath.toFile() + File.separator + "Staging";
+            File f = new File(staging);
+            if(Files.exists(f.toPath())){
+                isProduction="false";
+            }
+            if(isProduction == null || isProduction.isEmpty()){
                 isProduction="true";//change done for dev environment
             }
-
-
 
             Path installSrc;
             Path currentJar = Paths.get(MainDTSPreInstall.class.getProtectionDomain().getCodeSource().getLocation().toURI());

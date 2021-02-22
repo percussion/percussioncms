@@ -27,6 +27,7 @@ import com.percussion.rx.config.IPSConfigHandler.ObjectState;
 import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.config.PSConfigValidation;
 import com.percussion.rx.design.IPSAssociationSet;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSPublishingContext;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
@@ -49,7 +50,6 @@ import java.util.Map;
  */
 public class PSSiteSetter extends PSPropertySetterWithValidation
 {
-   @SuppressWarnings("unchecked")
    @Override
    protected boolean applyProperty(Object obj, ObjectState state,
          @SuppressWarnings("unused")
@@ -83,8 +83,7 @@ public class PSSiteSetter extends PSPropertySetterWithValidation
     */
    @Override
    protected boolean addPropertyDefs(Object obj, String propName,
-         Object pvalue, Map<String, Object> defs)
-   {
+         Object pvalue, Map<String, Object> defs) throws PSNotFoundException {
       if (super.addPropertyDefs(obj, propName, pvalue, defs))
          return true;
       
@@ -99,8 +98,7 @@ public class PSSiteSetter extends PSPropertySetterWithValidation
     * //see base class method for details
     */
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       if (!(obj instanceof IPSSite))
          throw new PSConfigException("obj must be an instance of IPSSite.");
 
@@ -133,8 +131,7 @@ public class PSSiteSetter extends PSPropertySetterWithValidation
     */
    @Override
    protected List<PSConfigValidation> validate(String objName, ObjectState state,
-         String propName, Object propValue, Object otherValue)
-   {
+         String propName, Object propValue, Object otherValue) throws PSNotFoundException {
       if (!VARIABLES.equals(propName))
          return super.validate(objName, state, propName, propValue, otherValue);
       
@@ -201,8 +198,7 @@ public class PSSiteSetter extends PSPropertySetterWithValidation
     */
    @SuppressWarnings("unchecked")
    private boolean applySiteVariables(IPSSite site, ObjectState state,
-         Object propValue)
-   {
+         Object propValue) throws PSNotFoundException {
       if (state.equals(ObjectState.PREVIOUS))
       {
          return deleteSiteVariables(site, getPrevSiteVariables());
@@ -224,14 +220,13 @@ public class PSSiteSetter extends PSPropertySetterWithValidation
     * 
     * @param site the Site to merge the variable into, assumed not 
     * <code>null</code>.
-    * @param props the map contains 0 or more merged Site Variables, 
+    * @param propValue the map contains 0 or more merged Site Variables,
     * it may be <code>null</code> or empty if there is nothing to merge.
     * 
     * @return <code>true</code> if the object has been modified.
     */
    @SuppressWarnings("unchecked")
-   private boolean mergeAndDeleteSiteVariables(IPSSite site, Object propValue)
-   {
+   private boolean mergeAndDeleteSiteVariables(IPSSite site, Object propValue) throws PSNotFoundException {
       boolean isChanged = mergeSiteVariables(site, propValue);
       List<Map<String, Object>> prevVars = getPrevSiteVariables();
       if (prevVars.isEmpty())
@@ -300,14 +295,13 @@ public class PSSiteSetter extends PSPropertySetterWithValidation
     * Deletes the Site Variables that were applied in previous configuration.
     * 
     * @param site the Site object with state as {@link ObjectState#PREVIOUS}.
-    * @param props the Site Variables were applied in previous configuration.
+    * @param vars the Site Variables were applied in previous configuration.
     * 
     * @return <code>true</code> if the object has been modified.
     */
    @SuppressWarnings("unchecked")
    private boolean deleteSiteVariables(IPSSite site,
-         List<Map<String, Object>> vars)
-   {
+         List<Map<String, Object>> vars) throws PSNotFoundException {
       if (vars.isEmpty())
          return false;
       
@@ -323,14 +317,13 @@ public class PSSiteSetter extends PSPropertySetterWithValidation
     * 
     * @param site the Site to merge the variable into, assumed not 
     * <code>null</code>.
-    * @param props the map contains 0 or more merged Site Variables, 
+    * @param propValue the map contains 0 or more merged Site Variables,
     * it may be <code>null</code> or empty if there is nothing to merge.
     * 
     * @return <code>true</code> if the object has been modified.
     */
    @SuppressWarnings("unchecked")
-   private boolean mergeSiteVariables(IPSSite site, Object propValue)
-   {
+   private boolean mergeSiteVariables(IPSSite site, Object propValue) throws PSNotFoundException {
       // apply the property
       List<Map<String, Object>> vars = convertObjectToMaps(propValue);
       if (vars.isEmpty())
@@ -351,8 +344,7 @@ public class PSSiteSetter extends PSPropertySetterWithValidation
     * @param props the map contains the merged Site Variable properties, 
     * assumed not <code>null</code> or empty.
     */
-   private void mergeSiteVariable(IPSSite site, Map<String, Object> props)
-   {
+   private void mergeSiteVariable(IPSSite site, Map<String, Object> props) throws PSNotFoundException {
       if (props == null || props.isEmpty())
          throw new PSConfigException(
                "Properties of Site Variable cannot be null or empty.");
@@ -370,8 +362,7 @@ public class PSSiteSetter extends PSPropertySetterWithValidation
     * @param props the map contains the merged Site Variable properties, 
     * assumed not <code>null</code> or empty.
     */
-   private void deleteSiteVariable(IPSSite site, Map<String, Object> props)
-   {
+   private void deleteSiteVariable(IPSSite site, Map<String, Object> props) throws PSNotFoundException {
       if (props == null || props.isEmpty())
          throw new PSConfigException(
                "Properties of Site Variable cannot be null or empty.");
@@ -391,8 +382,7 @@ public class PSSiteSetter extends PSPropertySetterWithValidation
     * 2nd value is the context ID. Never <code>null</code>.
     */
    private PSPair<String, IPSGuid> getSiteVariableNameCtx(
-         Map<String, Object> props)
-   {
+         Map<String, Object> props) throws PSNotFoundException {
       String name = (String) props.get(NAME);
       if (name == null || StringUtils.isBlank(name))
          throw new PSConfigException("The property \"" + NAME

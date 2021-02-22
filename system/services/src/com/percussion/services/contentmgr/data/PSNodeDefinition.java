@@ -532,7 +532,7 @@ public class PSNodeDefinition implements IPSNodeDefinition
    @IPSXmlSerialization(suppress = true)
    public Set<IPSGuid> getVariantGuids()
    {
-      Set<IPSGuid> guids = new HashSet<IPSGuid>();
+      Set<IPSGuid> guids = new HashSet<>();
       if (m_cvDescriptors != null)
       {
          for (PSContentTemplateDesc desc : m_cvDescriptors)
@@ -553,7 +553,7 @@ public class PSNodeDefinition implements IPSNodeDefinition
    @IPSXmlSerialization(suppress = true)
    public Set<IPSGuid> getWorkflowGuids()
    {
-      Set<IPSGuid> guids = new HashSet<IPSGuid>();
+      Set<IPSGuid> guids = new HashSet<>();
       if (m_ctWfRels != null)
       {
          for (PSContentTypeWorkflow rel : m_ctWfRels)
@@ -575,7 +575,7 @@ public class PSNodeDefinition implements IPSNodeDefinition
       }
       if (m_cvDescriptors == null)
       {
-         m_cvDescriptors = new HashSet<PSContentTemplateDesc>();
+         m_cvDescriptors = new HashSet<>();
       }
       IPSContentMgr cmgr = PSContentMgrLocator.getContentMgr();
       
@@ -721,7 +721,7 @@ public class PSNodeDefinition implements IPSNodeDefinition
     */
    public Set<String> getTemplateIds()
    {
-      Set<String> ids = new HashSet<String>();
+      Set<String> ids = new HashSet<>();
       if (m_cvDescriptors != null && !m_cvDescriptors.isEmpty())
       {
          for (PSContentTemplateDesc desc : m_cvDescriptors)
@@ -737,7 +737,7 @@ public class PSNodeDefinition implements IPSNodeDefinition
     */
    public Set<String> getWorkflowIds()
    {
-      Set<String> ids = new HashSet<String>();
+      Set<String> ids = new HashSet<>();
       if (m_ctWfRels != null && !m_ctWfRels.isEmpty())
       {
          for (PSContentTypeWorkflow ctwf : m_ctWfRels)
@@ -798,7 +798,7 @@ public class PSNodeDefinition implements IPSNodeDefinition
    {
       if (newT.isEmpty())
          return;
-      Set<IPSGuid> newTmps = new HashSet<IPSGuid>();
+      Set<IPSGuid> newTmps = new HashSet<>();
       for (String t : newT)
          newTmps.add(new PSGuid(t));
 
@@ -812,7 +812,7 @@ public class PSNodeDefinition implements IPSNodeDefinition
          return;
       }
       // get all existing tmp guids associated with this site
-      Set<IPSGuid> curTmps = new HashSet<IPSGuid>();
+      Set<IPSGuid> curTmps = new HashSet<>();
       for (PSContentTemplateDesc desc : m_cvDescriptors)
          curTmps.add(desc.getTemplateId());
 

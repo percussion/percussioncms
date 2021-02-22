@@ -27,6 +27,7 @@ import com.percussion.analytics.data.PSAnalyticsProviderConfig;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.error.PSAnalyticsProviderException.CAUSETYPE;
 import com.percussion.analytics.service.IPSAnalyticsProviderService;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSGAEntries;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -40,7 +41,6 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * @author erikserating
@@ -73,10 +73,15 @@ public class PSAnalyticsProviderRestService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSGAEntries getProfiles() throws PSAnalyticsProviderException
     {
-        //PSMapWrapper result = new PSMapWrapper();
-        PSGAEntries result = new PSGAEntries();
-        result.setEntries(providerService.getProfiles(null, null));
-        return result;
+        try {
+            PSGAEntries result = new PSGAEntries();
+            result.setEntries(providerService.getProfiles(null, null));
+            return result;
+        } catch (IPSGenericDao.LoadException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /*
@@ -92,19 +97,21 @@ public class PSAnalyticsProviderRestService
     public void testConnection(@PathParam(value = "uid") String uid, @Multipart(value = "file") Attachment attachment)
             throws PSAnalyticsProviderException
     {
+        try {
+            String creds = null;
+            try {
+                creds = IOUtils.toString(attachment.getDataHandler().getInputStream());
+            } catch (IOException e) {
+                log.debug("Cannot parse .json key file", e);
+                throw new PSAnalyticsProviderException("Cannot parse .json key file", CAUSETYPE.INVALID_DATA);
+            }
 
-        String creds = null;
-         try(InputStream is= attachment.getDataHandler().getInputStream()) {
-             creds = IOUtils.toString(is);
-         }
-
-        catch (IOException e)
-        {
-            log.debug("Cannot parse .json key file", e);
-            throw new PSAnalyticsProviderException("Cannot parse .json key file", CAUSETYPE.INVALID_DATA);
+            providerService.testConnection(StringUtils.trimToEmpty(uid), creds);
+        } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
         }
-       
-        providerService.testConnection(StringUtils.trimToEmpty(uid), creds);
 
     }
 
@@ -120,7 +127,13 @@ public class PSAnalyticsProviderRestService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public void storeConfig(PSAnalyticsProviderConfig config)
     {
-        providerService.saveConfig(config);
+        try {
+            providerService.saveConfig(config);
+        } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @GET
@@ -128,14 +141,26 @@ public class PSAnalyticsProviderRestService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSAnalyticsProviderConfig getStoredConfig()
     {
-        return providerService.loadConfig(true);
+        try {
+            return providerService.loadConfig(true);
+        } catch (IPSGenericDao.LoadException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @DELETE
     @Path("/config")
     public void deleteConfig()
     {
-        providerService.deleteConfig();
+        try {
+            providerService.deleteConfig();
+        } catch (IPSGenericDao.DeleteException | IPSGenericDao.LoadException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /*
@@ -150,7 +175,13 @@ public class PSAnalyticsProviderRestService
     @Produces(MediaType.TEXT_PLAIN)
     public String isProfileConfigured(@PathParam("sitename") String sitename)
     {
-        return ((Boolean) providerService.isProfileConfigured(sitename)).toString();
+        try {
+            return ((Boolean) providerService.isProfileConfigured(sitename)).toString();
+        } catch (IPSGenericDao.LoadException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     private IPSAnalyticsProviderService providerService;

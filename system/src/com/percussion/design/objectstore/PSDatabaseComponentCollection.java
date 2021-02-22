@@ -429,7 +429,7 @@ public class PSDatabaseComponentCollection extends PSDatabaseComponent
    
    /**
     * Validates this object within the given validation context. The method
-    * signature declares that it throws PSValidationException, but the
+    * signature declares that it throws PSSystemValidationException, but the
     * implementation must not directly throw any exceptions. Instead, it
     * should register any errors with the validation context, which will
     * decide whether to throw the exception (in which case the implementation
@@ -438,11 +438,11 @@ public class PSDatabaseComponentCollection extends PSDatabaseComponent
     * 
     * @param   cxt The validation context.
     * 
-    * @throws   PSValidationException According to the implementation of the
+    * @throws PSSystemValidationException According to the implementation of the
     * validation context (on warnings and/or errors).
     */
    public void validate(IPSValidationContext cxt)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (cxt == null)
          return;

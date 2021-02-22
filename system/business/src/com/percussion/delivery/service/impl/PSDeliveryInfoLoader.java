@@ -80,7 +80,7 @@ public class PSDeliveryInfoLoader
     {
         notNull(configFile);
         
-        deliveryServers = new ArrayList<PSDeliveryInfo>();
+        deliveryServers = new ArrayList<>();
 
         if (configFile.exists())
             readAndEncryptConfigFile(configFile);

@@ -30,7 +30,11 @@ import com.percussion.extension.IPSWorkflowAction;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.itemmanagement.service.IPSItemService;
+import com.percussion.itemmanagement.service.IPSItemWorkflowService;
+import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.service.IPSDataItemSummaryService;
 import com.percussion.share.service.IPSIdMapper;
@@ -78,7 +82,7 @@ public class PSAutoUnPublishItem extends PSDefaultExtension implements
          PSWebserviceUtils.setUserName("rxserver");
          IPSItemSummary sum = itemSummaryService.find(cguid);
          sitePublishService.publish(null, PubType.TAKEDOWN_NOW, cguid, sum.isResource(), null);
-      } catch (PSDataServiceException e) {
+      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
          log.error("Error un publishing content id: {} Error: {}", arg0.getContentID(),e.getMessage());
          throw new PSExtensionProcessingException(e.getMessage(),e);
       }

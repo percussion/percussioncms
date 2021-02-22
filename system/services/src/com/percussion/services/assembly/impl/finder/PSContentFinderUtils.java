@@ -28,6 +28,7 @@ import com.percussion.services.assembly.impl.finder.PSContentFinderBase.ContentI
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.IPSContentPropertyConstants;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
@@ -177,7 +178,7 @@ public class PSContentFinderUtils
          QueryResult res = cmgr.executeQuery(q, -1, null, locale);
          RowIterator riter = res.getRows();
          Set<ContentItem> newset
-            = new TreeSet<ContentItem>(new PSQueryResultOrderComparator(riter));
+            = new TreeSet<>(new PSQueryResultOrderComparator(riter));
          newset.addAll(rval);
          int index = 0;
          for(ContentItem item : newset)
@@ -205,8 +206,7 @@ public class PSContentFinderUtils
     * @throws PSSiteManagerException
     */
    public static void setSiteFolderId(ContentItem slotItem, boolean isSetFolderID)
-         throws PSSiteManagerException
-   {
+           throws PSSiteManagerException, PSNotFoundException {
       if (slotItem == null)
          return;
       

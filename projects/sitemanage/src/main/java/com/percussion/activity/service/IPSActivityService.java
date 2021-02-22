@@ -26,6 +26,7 @@ package com.percussion.activity.service;
 
 import com.percussion.activity.data.PSActivityNode;
 import com.percussion.activity.data.PSContentActivity;
+import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.utils.date.PSDateRange;
 
 import java.util.Collection;
@@ -46,7 +47,7 @@ public interface IPSActivityService
      * 
      * @throws PSActivityServiceException if there is a timeout.
      */
-    public PSContentActivity createActivity(PSActivityNode node, Date beginDate, long timeout);
+    public PSContentActivity createActivity(PSActivityNode node, Date beginDate, long timeout) throws PSActivityServiceException, IPSPathService.PSPathServiceException;
     
     /**
      * Gets a site and path pairs for the specified path. The returned list is all sites if the path is

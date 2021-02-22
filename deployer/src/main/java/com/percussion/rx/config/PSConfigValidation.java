@@ -153,7 +153,7 @@ public class PSConfigValidation
     * Sets the package name that was used to validate against with the
     * current package. 
     * 
-    * @param pkgName the other package name, not <code>null</code> or empty.
+    * @param otherPkgName the other package name, not <code>null</code> or empty.
     */
    public void setOtherPkgName(String otherPkgName)
    {

@@ -25,6 +25,7 @@ package com.percussion.sitemanage.importer.helpers;
 
 import java.io.File;
 
+import com.percussion.share.service.IPSDataService;
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -56,8 +57,7 @@ public class PSThemeHelperTest extends TestCase
         themeHelper.setThemesRootDirectory(WEB_RESOURCES_ROOT);
     }
 
-    public void tearDown()
-    {
+    public void tearDown() throws IPSDataService.DataServiceDeleteException, IPSDataService.DataServiceNotFoundException {
         // remove all themes created
         themeService.delete(SITE_NAME);
         themeService.delete(SITE_NAME_2_TRANSFORMED);

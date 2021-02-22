@@ -46,6 +46,7 @@ import com.percussion.design.objectstore.PSContentEditorSharedDef;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.io.File;
@@ -161,9 +162,8 @@ public class PSSystemDefElementDependencyHandler
    }
    
    // see base class
-   public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep) 
-      throws PSDeployException
-   {
+   public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
          
@@ -174,7 +174,7 @@ public class PSSystemDefElementDependencyHandler
          throw new IllegalArgumentException("dep wrong type");
          
       // use set to ensure we don't add dupes
-      Set childDeps = new HashSet();
+      Set childDeps = new HashSet<>();
       
       // get dependencies specified by id type map
       childDeps.addAll(getIdTypeDependencies(tok, dep));

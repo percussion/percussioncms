@@ -31,6 +31,7 @@ import com.percussion.packagemanagement.PSPackageFileEntry.PackageFileStatus;
 import com.percussion.rx.services.deployer.IPSPackageUninstaller;
 import com.percussion.rx.services.deployer.PSPackageUninstall;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
@@ -231,7 +232,7 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
      * Uninstalls a package
      * @param packageName the name of the package to uninstall, i.e. perc.widget.form
      */
-    protected void doPackageUninstall(String packageName) {
+    protected void doPackageUninstall(String packageName) throws PSNotFoundException {
         doPackageUninstall(packageName, false);
     }
     
@@ -240,7 +241,7 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
      * @param packageName the name of the package to uninstall, i.e. perc.widget.form
      * @param isRevertEntry <code>true</code> if the package is marked for REVERT in InstallPackages.xml
      */
-    protected void doPackageUninstall(String packageName, boolean isRevertEntry) {
+    protected void doPackageUninstall(String packageName, boolean isRevertEntry) throws PSNotFoundException {
         packageUninstaller.uninstallPackages(packageName, isRevertEntry);
     }
 
@@ -395,7 +396,6 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
     }
 
     /**
-     * @param string
      */
     private void appendLogEntry(String msg, Exception ex, boolean logToServer)
     {

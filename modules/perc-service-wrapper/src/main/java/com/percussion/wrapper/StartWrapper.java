@@ -378,16 +378,17 @@ public abstract class StartWrapper {
                 if (stopTimeout > 0 && stopResponse != null) {
                     info("Waiting for stop response '%s'", stopResponse);
                     try(InputStreamReader isr = new InputStreamReader(s.getInputStream())) {
-                        LineNumberReader lin = new LineNumberReader();
-                        String response;
-                        while ((response = lin.readLine()) != null) {
+                        try(LineNumberReader lin = new LineNumberReader(isr)) {
+                            String response;
+                            while ((response = lin.readLine()) != null) {
 
-                            // "Stopped" for jetty
-                            if (stopResponse.equals(response)) {
-                                info("Server reports itself as Stopped");
-                                return true;
-                            } else {
-                                debug("Received \"%s\"", response);
+                                // "Stopped" for jetty
+                                if (stopResponse.equals(response)) {
+                                    info("Server reports itself as Stopped");
+                                    return true;
+                                } else {
+                                    debug("Received \"%s\"", response);
+                                }
                             }
                         }
                     }

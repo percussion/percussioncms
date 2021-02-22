@@ -164,7 +164,7 @@ public abstract class PSChildRelationshipBase
       // extract owner content ids from the relationship set
       @SuppressWarnings("unchecked")
       Iterator<PSRelationship> iter = relationships.iterator();
-      List<Integer> cids = new ArrayList<Integer>();
+      List<Integer> cids = new ArrayList<>();
       while (iter.hasNext())
       {
          PSRelationship rel = iter.next();

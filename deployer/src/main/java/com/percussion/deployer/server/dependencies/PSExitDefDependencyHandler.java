@@ -83,8 +83,7 @@ public class PSExitDefDependencyHandler extends PSDependencyHandler
    
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, com.percussion.services.error.PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
          

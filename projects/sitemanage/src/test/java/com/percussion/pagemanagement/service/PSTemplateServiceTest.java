@@ -44,6 +44,7 @@ import com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum;
 import com.percussion.share.service.IPSDataService.DataServiceSaveException;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.testing.IntegrationTest;
@@ -551,8 +552,7 @@ public class PSTemplateServiceTest extends PSServletTestCase
         }
     }
 
-    private PSPage createPage(PSTemplateSummary sum1, String name)
-    {
+    private PSPage createPage(PSTemplateSummary sum1, String name) throws PSDataServiceException {
         PSPage page = new PSPage();
         page.setFolderPath(fixture.site1.getFolderPath());
         page.setName(name);

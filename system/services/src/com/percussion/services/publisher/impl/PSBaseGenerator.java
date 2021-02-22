@@ -77,8 +77,8 @@ public abstract class PSBaseGenerator implements IPSContentListGenerator
     */
    protected PSQueryResult createQueryResult()
    {
-      List<PSPair<String, Boolean>> fields = new ArrayList<PSPair<String, Boolean>>();
-      fields.add(new PSPair<String, Boolean>(
+      List<PSPair<String, Boolean>> fields = new ArrayList<>();
+      fields.add(new PSPair<>(
             IPSContentPropertyConstants.RX_SYS_CONTENTID, true));
       PSRowComparator comparator = new PSRowComparator(fields);
       String[] columns =
@@ -101,7 +101,7 @@ public abstract class PSBaseGenerator implements IPSContentListGenerator
    
    protected void addToResults(PSQueryResult qr, int contentid, int folderid)
    {
-      Map<String, Object> data = new HashMap<String, Object>();
+      Map<String, Object> data = new HashMap<>();
       Value idval = new PSLongValue(contentid);
       data.put(IPSContentPropertyConstants.RX_SYS_CONTENTID, idval);
       if (folderid != -1)

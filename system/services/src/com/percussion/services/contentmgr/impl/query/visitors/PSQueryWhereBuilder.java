@@ -107,12 +107,12 @@ public class PSQueryWhereBuilder extends PSQueryNodeVisitor
    /**
     * The query parameters, built as we go.
     */
-   Map<String, Object> m_queryParams = new HashMap<String, Object>();
+   Map<String, Object> m_queryParams = new HashMap<>();
 
    /**
     * The classes in use in the query, see {@link #getInuse()} for details.
     */
-   List<Class> m_inuse = new ArrayList<Class>();
+   List<Class> m_inuse = new ArrayList<>();
 
    /**
     * The parameter name counter
@@ -131,7 +131,7 @@ public class PSQueryWhereBuilder extends PSQueryNodeVisitor
     * longs. Used in the query handling to avoid binding the wrong type of
     * parameter.
     */
-   private static Set<String> ms_integerProperties = new HashSet<String>();
+   private static Set<String> ms_integerProperties = new HashSet<>();
 
    static
    {
@@ -163,7 +163,7 @@ public class PSQueryWhereBuilder extends PSQueryNodeVisitor
       if (params != null)
          m_parameters = params;
       else
-         m_parameters = new HashMap<String, Object>();
+         m_parameters = new HashMap<>();
       
       // Make sure that the main class is always "in use". This makes references
       // to c0 always valid

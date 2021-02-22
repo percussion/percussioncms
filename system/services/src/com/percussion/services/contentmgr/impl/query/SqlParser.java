@@ -167,7 +167,7 @@ public class SqlParser extends antlr.LLkParser implements SqlTokenTypes
       List<PSQueryNodeIdentifier> ids;
 
       PSQueryNodeIdentifier p = null;
-      ids = new ArrayList<PSQueryNodeIdentifier>();
+      ids = new ArrayList<>();
 
       try
       { // for error handling
@@ -246,7 +246,7 @@ public class SqlParser extends antlr.LLkParser implements SqlTokenTypes
       List<PSQueryNodeIdentifier> ids;
 
       PSQueryNodeIdentifier tn = null;
-      ids = new ArrayList<PSQueryNodeIdentifier>();
+      ids = new ArrayList<>();
 
       try
       { // for error handling
@@ -327,7 +327,7 @@ public class SqlParser extends antlr.LLkParser implements SqlTokenTypes
       List<PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder>> solist;
 
       PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder> adef = null;
-      solist = new ArrayList<PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder>>();
+      solist = new ArrayList<>();
 
       try
       { // for error handling
@@ -1126,7 +1126,7 @@ public class SqlParser extends antlr.LLkParser implements SqlTokenTypes
          if (inputState.guessing == 0)
          {
 
-            rval = new PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder>(p, asc
+            rval = new PSPair<>(p, asc
                   ? PSQuery.SortOrder.ASC
                   : PSQuery.SortOrder.DSC);
 

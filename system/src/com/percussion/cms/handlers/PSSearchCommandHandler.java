@@ -66,9 +66,9 @@ import com.percussion.design.objectstore.PSRequestor;
 import com.percussion.design.objectstore.PSResultPage;
 import com.percussion.design.objectstore.PSResultPageSet;
 import com.percussion.design.objectstore.PSResultPager;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSTextLiteral;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.design.objectstore.PSWhereClause;
 import com.percussion.extension.PSDatabaseFunctionManager;
 import com.percussion.extension.PSExtensionException;
@@ -261,7 +261,7 @@ public class PSSearchCommandHandler extends PSCommandHandler
             IPSDataErrors.INTERNAL_REQUEST_CALL_EXCEPTION,
             getExceptionText(e));
       }
-      catch (PSValidationException e)
+      catch (PSSystemValidationException e)
       {
          throw new PSInternalRequestCallException(
             IPSDataErrors.INTERNAL_REQUEST_CALL_EXCEPTION,
@@ -318,7 +318,7 @@ public class PSSearchCommandHandler extends PSCommandHandler
     * this search.
     * @throws PSAuthenticationFailedException If the user has not been 
     * authenticated.
-    * @throws PSValidationException If there is an error adding the dynamic
+    * @throws PSSystemValidationException If there is an error adding the dynamic
     * search dataset.
     * @throws PSUnsupportedConversionException if an invalid page type is
     * requested based on the page extension.
@@ -330,7 +330,7 @@ public class PSSearchCommandHandler extends PSCommandHandler
       List execDataCleanupList)
          throws PSInternalRequestCallException,
             PSAuthorizationException, PSAuthenticationFailedException,
-            PSValidationException, PSUnsupportedConversionException,
+           PSSystemValidationException, PSUnsupportedConversionException,
             PSUnknownNodeTypeException
    {
       // We only support requests for htm?, xml or txt
@@ -1285,7 +1285,7 @@ public class PSSearchCommandHandler extends PSCommandHandler
                Iterator iter = list.iterator();
                while (iter.hasNext())
                {
-                  StringBuffer formatBuf = new StringBuffer();
+                  StringBuilder formatBuf = new StringBuilder();
                   Date date = PSDataTypeConverter.parseStringToDate(
                      (String)iter.next(), formatBuf);
                   ls.add(new PSDateLiteral(date, new SimpleDateFormat(
@@ -1295,7 +1295,7 @@ public class PSSearchCommandHandler extends PSCommandHandler
             }
             else
             {
-               StringBuffer formatBuf = new StringBuffer();
+               StringBuilder formatBuf = new StringBuilder();
                Date date =
                   PSDataTypeConverter.parseStringToDate(data, formatBuf);
 
@@ -1309,7 +1309,7 @@ public class PSSearchCommandHandler extends PSCommandHandler
                // only if we are not searching with a time do we need to 
                // do the following workaround
                if (op.equals(PSConditional.OPTYPE_EQUALS)
-                  && (formatBuf.toString().toLowerCase().indexOf("h") == -1))
+                  && (!formatBuf.toString().toLowerCase().contains("h")))
                {
                   // time not found, we need to add the time
                   SimpleDateFormat dateFormat =

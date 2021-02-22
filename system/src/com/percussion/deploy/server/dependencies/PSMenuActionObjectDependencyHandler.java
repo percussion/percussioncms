@@ -56,6 +56,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.percussion.services.error.PSNotFoundException;
 import org.w3c.dom.Element;
 
 /**
@@ -86,8 +87,7 @@ public abstract class PSMenuActionObjectDependencyHandler
    // see base class
    @SuppressWarnings("unchecked")
    public Iterator getChildDependencies(PSSecurityToken tok,
-      PSDependency dep) throws PSDeployException
-   {
+      PSDependency dep) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -473,7 +473,6 @@ public abstract class PSMenuActionObjectDependencyHandler
     * Loads all action of the specified type from the repository.
     *
     * @param proc The processor to use, may not be <code>null</code>.
-    * @param id The id of the action, may not be <code>null</code> or empty.
     * @param loadLeaf If <code>true</code>, only leaves are loaded, otherwise
     * only non-leaves are loaded.  See {@link #isLeaf(PSAction)} for more info.
     * @param childId If provided, only actions that are "parents" of this child

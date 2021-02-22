@@ -29,13 +29,13 @@ import com.percussion.pathmanagement.data.PSItemByWfStateRequest;
 import com.percussion.pathmanagement.data.PSMoveFolderItem;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.data.PSRenameFolderItem;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.IPSNotFoundException;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.ui.service.IPSListViewHelper;
 
@@ -119,7 +119,7 @@ public interface IPSPathService
      * @throws PSPathNotFoundServiceException If the created folder item could not be found.
      * @throws PSPathServiceException If the folder could not be created or other system failure.
      */
-    PSPathItem addFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException;
+    PSPathItem addFolder(String path) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSDataService.DataServiceLoadException;
     
     /**
      * Adds a new folder {@link PSPathItem} as a child of the given folder path or as a sibling of the given item path.
@@ -167,7 +167,7 @@ public interface IPSPathService
      * 
      * @throws PSPathServiceException If the folder could not be deleted or other system failure.
      */
-    int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException;
+    int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSDataService.DataServiceLoadException, PSNotFoundException;
     
     /**
      * Validates a folder for deletion by the current user.
@@ -179,7 +179,7 @@ public interface IPSPathService
      * @throws PSPathNotFoundServiceException If the folder path could not be found.
      * @throws PSPathServiceException If the folder could not be validated or other system failure.
      */
-    String validateFolderDelete(String path) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSItemWorkflowService.PSItemWorkflowServiceException;
+    String validateFolderDelete(String path) throws PSPathNotFoundServiceException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, IPSItemWorkflowService.PSItemWorkflowServiceException, IPSDataService.DataServiceLoadException, PSNotFoundException;
     
     /**
      * Checks for the existence of a path and finds the last portion of the path which exists.  Never blank.

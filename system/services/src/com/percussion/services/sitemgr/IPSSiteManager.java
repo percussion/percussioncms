@@ -347,8 +347,8 @@ public interface IPSSiteManager extends IPSCataloger
     * @throws PSSiteManagerException if an error occurs while looking up the
     *    path.
     */
-   String getPublishPath(IPSGuid siteId, IPSGuid folderId) 
-      throws PSSiteManagerException;
+   String getPublishPath(IPSGuid siteId, IPSGuid folderId)
+           throws PSSiteManagerException, PSNotFoundException;
 
    /**
     * Find and return the folder id that the given item is contained in for a
@@ -362,7 +362,7 @@ public interface IPSSiteManager extends IPSCataloger
     * @throws PSSiteManagerException
     */
    public IPSGuid getSiteFolderId(IPSGuid siteId, IPSGuid contentId)
-         throws PSSiteManagerException;
+           throws PSSiteManagerException, PSNotFoundException;
 
    /**
     * Find and return all the sites the item exists in. The sites are ordered by
@@ -390,7 +390,7 @@ public interface IPSSiteManager extends IPSCataloger
     * @throws PSSiteManagerException
     */
    public boolean isContentTypePublishableToSite(IPSGuid contentTypeId,
-         IPSGuid siteId) throws PSSiteManagerException;
+         IPSGuid siteId) throws PSSiteManagerException, PSNotFoundException;
 
    /**
     * Load a site instance using an in-memory cache if possible. The returned
@@ -414,7 +414,7 @@ public interface IPSSiteManager extends IPSCataloger
     * never empty on a normal system. A list is returned for the convenience of
     * the caller, no order is guaranteed.
     */
-   List<IPSPublishingContext> findAllContexts();
+   List<IPSPublishingContext> findAllContexts() throws PSNotFoundException;
    
    /**
     * Find all the available location schemes.

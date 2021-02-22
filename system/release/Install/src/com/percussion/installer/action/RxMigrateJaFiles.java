@@ -195,7 +195,7 @@ public class RxMigrateJaFiles extends RxIAAction
    /**
     * Set of possible Rhythmyx launcher .ja files as of 6.5.2.
     */
-   private static Set<String> ms_jaFiles = new HashSet<String>();
+   private static Set<String> ms_jaFiles = new HashSet<>();
    
    /**
     * The name of the .lax property to which the java arguments will be moved.

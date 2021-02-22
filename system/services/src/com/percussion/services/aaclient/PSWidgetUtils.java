@@ -60,7 +60,7 @@ public class PSWidgetUtils
       {
          throw new IllegalArgumentException("item must not be null");
       }
-      Map<String, String> params = new HashMap<String, String>();
+      Map<String, String> params = new HashMap<>();
       Map oldParams = item.getParameters();
       Iterator iter = oldParams.keySet().iterator();
       while (iter.hasNext())
@@ -229,7 +229,7 @@ public class PSWidgetUtils
    static private Map<String, String> parseCommonParams(Map params)
       throws PSAssemblyException, PSMissingBeanConfigurationException
    {
-      Map<String, String> id = new HashMap<String, String>();
+      Map<String, String> id = new HashMap<>();
       // ContentId
       String temp = parseParam(params, IPSHtmlParameters.SYS_CONTENTID, null,
          true);

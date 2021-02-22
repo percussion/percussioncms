@@ -115,18 +115,18 @@ public class PSObjectLockService
       String lockSession = getLockSession(session);
       
       List<PSObjectLock> locks = findLocksByObjectIds(ids, null, null);
-      Map<IPSGuid, PSObjectLock> idToLock = new HashMap<IPSGuid, PSObjectLock>();
+      Map<IPSGuid, PSObjectLock> idToLock = new HashMap<>();
       for (PSObjectLock l : locks)
       {
          idToLock.put(l.getObjectId(), l);
       }
       
-      List<PSObjectLock> toSave = new ArrayList<PSObjectLock>();
+      List<PSObjectLock> toSave = new ArrayList<>();
       Iterator<Integer> versionIter = versions.iterator();
       Map<IPSGuid, PSLockException> errors = 
-         new HashMap<IPSGuid, PSLockException>();
+         new HashMap<>();
       Map<IPSGuid, PSObjectLock> existingLocks = 
-         new HashMap<IPSGuid, PSObjectLock>();
+         new HashMap<>();
       
       for (IPSGuid id : ids)
       {
@@ -174,13 +174,13 @@ public class PSObjectLockService
       assert(existingLocks.size() + errors.size() + toSave.size() == ids.size());
       saveLocks(toSave);
 
-      Map<IPSGuid, PSObjectLock> tmp = new HashMap<IPSGuid, PSObjectLock>();
+      Map<IPSGuid, PSObjectLock> tmp = new HashMap<>();
       for (PSObjectLock l : existingLocks.values())
          tmp.put(l.getObjectId(), l);
       for (PSObjectLock l : toSave)
          tmp.put(l.getObjectId(), l);
 
-      List<PSObjectLock> results = new ArrayList<PSObjectLock>();
+      List<PSObjectLock> results = new ArrayList<>();
       for (IPSGuid id : ids)
       {
          results.add(tmp.get(id));
@@ -292,9 +292,9 @@ public class PSObjectLockService
        * crash that was longer that 30 minutes ago.
        */
       Map<IPSGuid, PSLockException> errors = 
-         new HashMap<IPSGuid, PSLockException>();
+         new HashMap<>();
       
-      Map<IPSGuid, PSObjectLock> idToLock = new HashMap<IPSGuid, PSObjectLock>();
+      Map<IPSGuid, PSObjectLock> idToLock = new HashMap<>();
       for (PSObjectLock l : locks)
       {
          idToLock.put(l.getObjectId(), l);
@@ -302,7 +302,7 @@ public class PSObjectLockService
       
       String normalizedSession = getLockSession(session);
       Iterator<Integer> verIter = versions.iterator();
-      List<PSObjectLock> toSaveLocks = new ArrayList<PSObjectLock>();
+      List<PSObjectLock> toSaveLocks = new ArrayList<>();
       for (IPSGuid id : ids)
       {
          PSObjectLock lock = idToLock.get(id);
@@ -479,7 +479,7 @@ public class PSObjectLockService
    {
       if (lock != null)
       {
-         List<PSObjectLock> locks = new ArrayList<PSObjectLock>();
+         List<PSObjectLock> locks = new ArrayList<>();
          locks.add(lock);
          
          releaseLocks(locks);
@@ -493,7 +493,7 @@ public class PSObjectLockService
    {
       if (locks != null && !locks.isEmpty())
       {
-         List<IPSGuid> ids = new ArrayList<IPSGuid>();
+         List<IPSGuid> ids = new ArrayList<>();
          for (PSObjectLock lock : locks)
             ids.add(lock.getGUID());
 
@@ -616,7 +616,7 @@ public class PSObjectLockService
     */
    private List<PSObjectLock> releaseExpiredLocks(List<PSObjectLock> locks)
    {
-      List<PSObjectLock> results = new ArrayList<PSObjectLock>();
+      List<PSObjectLock> results = new ArrayList<>();
       for (PSObjectLock lock : locks)
       {
          PSObjectLock validLock = releaseExpiredLock(lock);

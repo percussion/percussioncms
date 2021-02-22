@@ -85,7 +85,7 @@ public class PSStringUtils extends PSJexlUtilBase
       if (StringUtils.isBlank(enc))
          throw new IllegalArgumentException("enc may not be null or empty.");
       
-      Map<String, String> rval = new HashMap<String, String>();
+      Map<String, String> rval = new HashMap<>();
       if (paramstring == null)
       {
          return rval;
@@ -233,14 +233,14 @@ public class PSStringUtils extends PSJexlUtilBase
       {})
    public ArrayList<Object> getArrayList()
    {
-      return new ArrayList<Object>();
+      return new ArrayList<>();
    }
    
    @IPSJexlMethod(description = "Return a new HashMap instance", params =
       {})
    public Map<Object,Object> getHashMap()
    {
-      return new HashMap<Object,Object>();
+      return new HashMap<>();
    }
    
    /**

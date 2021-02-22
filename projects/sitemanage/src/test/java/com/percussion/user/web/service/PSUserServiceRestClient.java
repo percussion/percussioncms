@@ -52,7 +52,7 @@ public class PSUserServiceRestClient extends PSObjectRestClient implements IPSUs
     }
 
     @Override
-    public void delete(String name) throws PSDataServiceException
+    public void delete(String name)
     {
         super.delete(concatPath(getPath(), "delete", name));
     }
@@ -77,7 +77,7 @@ public class PSUserServiceRestClient extends PSObjectRestClient implements IPSUs
         return getObjectFromPath(concatPath(getPath(), "external/status"), PSDirectoryServiceStatus.class);
     }
 
-    public PSRoleList getRoles() throws PSDataServiceException
+    public PSRoleList getRoles()
     {
         return getObjectFromPath(concatPath(getPath(), "roles"), PSRoleList.class);
     }
@@ -87,7 +87,7 @@ public class PSUserServiceRestClient extends PSObjectRestClient implements IPSUs
         return getObjectFromPath(concatPath(getPath(), "users"), PSUserList.class);
     }
     
-    public PSUserList getUsersByRole(String roleName) throws PSDataServiceException
+    public PSUserList getUsersByRole(String roleName)
     {
         return getObjectFromPath(concatPath(getPath(), "usersByRole", roleName), PSUserList.class);
     }
@@ -97,12 +97,12 @@ public class PSUserServiceRestClient extends PSObjectRestClient implements IPSUs
         return postObjectToPath(concatPath(getPath(),"update"), user, PSUser.class);
     }
     
-    public PSUser changePassword(PSUser user) throws PSDataServiceException
+    public PSUser changePassword(PSUser user)
     {
         return putObjectToPath(concatPath(getPath(),"changepw"), user, PSUser.class);
     }
 
-    public PSCurrentUser getCurrentUser() throws PSNoCurrentUserException
+    public PSCurrentUser getCurrentUser()
     {
         return getObjectFromPath(concatPath(getPath(), "current"), PSCurrentUser.class);
     }
@@ -122,7 +122,7 @@ public class PSUserServiceRestClient extends PSObjectRestClient implements IPSUs
     }
 
     @Override
-    public PSUserList getUserNames(String nameFilter) throws PSDataServiceException
+    public PSUserList getUserNames(String nameFilter)
     {
         return getObjectFromPath(concatPath(getPath(), "users/names", nameFilter), PSUserList.class);
     }

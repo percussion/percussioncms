@@ -24,41 +24,54 @@
 
 package com.percussion.pagemanagement.service.impl;
 
-import static com.percussion.share.web.service.PSRestServicePathConstants.DELETE_PATH;
-import static com.percussion.share.web.service.PSRestServicePathConstants.LOAD_PATH;
-import static com.percussion.share.web.service.PSRestServicePathConstants.SAVE_PATH;
-import static com.percussion.share.web.service.PSRestServicePathConstants.VALIDATE_PATH;
-
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.isTrue;
-
-import com.percussion.cx.objectstore.PSProperties;
 import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.pagemanagement.data.*;
+import com.percussion.pagemanagement.data.PSNonSEOPagesRequest;
+import com.percussion.pagemanagement.data.PSPage;
+import com.percussion.pagemanagement.data.PSPageChangeEvent;
 import com.percussion.pagemanagement.data.PSPageChangeEvent.PSPageChangeEventType;
+import com.percussion.pagemanagement.data.PSSEOStatistics;
+import com.percussion.pagemanagement.data.PSSEOStatisticsList;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSPageService.PSPageException;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.recycle.service.IPSRecycleService;
-import com.percussion.server.PSServer;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.impl.PSFolderHelper;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.data.PSUnassignedResults;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceSaveException;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.share.web.service.PSRestServicePathConstants;
-
-import java.util.List;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
+
+import static com.percussion.share.web.service.PSRestServicePathConstants.DELETE_PATH;
+import static com.percussion.share.web.service.PSRestServicePathConstants.LOAD_PATH;
+import static com.percussion.share.web.service.PSRestServicePathConstants.SAVE_PATH;
+import static com.percussion.share.web.service.PSRestServicePathConstants.VALIDATE_PATH;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.isTrue;
 
 /**
  * CRUDS pages.
@@ -72,6 +85,7 @@ import org.springframework.stereotype.Component;
 public class PSPageRestService
 {
 
+    private static final Logger log =  LogManager.getLogger(PSPageRestService.class);
     /**
      * The page service.
      */
@@ -103,9 +117,16 @@ public class PSPageRestService
      */
     @DELETE
     @Path(DELETE_PATH)
-    public void delete(@PathParam("id") String id)
+    public void delete(@PathParam(value="id")
+                                   String id)
     {
-        pageService.delete(id);
+        try {
+            pageService.delete(id);
+        } catch (PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /**
@@ -116,19 +137,37 @@ public class PSPageRestService
     @Path("/forceDelete/{id}")
     public void forceDelete(@PathParam(PSRestServicePathConstants.ID_PATH_PARAM) String id)
     {
-        pageService.delete(id, true);
+        try {
+            pageService.delete(id, true);
+        } catch (PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @DELETE
     @Path("/purge/{id}")
     public void purge(@PathParam("id") String id) {
-        pageService.delete(id, false, true);
+        try {
+            pageService.delete(id, false, true);
+        } catch (PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @DELETE
     @Path("/forcePurge/{id}")
     public void forcePurge(@PathParam("id") String id) {
-        pageService.delete(id, true, true);
+        try {
+            pageService.delete(id, true, true);
+        } catch (PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /**
@@ -138,9 +177,14 @@ public class PSPageRestService
     @Path("/copy/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public String copy(@PathParam("id") String id, @QueryParam("addToRecent") boolean addToRecent)
-            throws DataServiceSaveException
     {
-        return pageService.copy(id, addToRecent);
+        try {
+            return pageService.copy(id, addToRecent);
+        } catch (IPSPathService.PSPathNotFoundServiceException | PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /**
@@ -152,24 +196,34 @@ public class PSPageRestService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPage find(@PathParam("id") String id)
     {
-        return pageService.load(id);
+        try {
+            return pageService.load(id);
+        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @GET
     @Path("/folderpath/{fullPath:.*}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSPage findPageByPath(@PathParam("fullPath") String fullPath) throws PSPageException
+    public PSPage findPageByPath(@PathParam("fullPath") String fullPath)
     {
-        return pageService.findPageByPath(fullPath);
+        try {
+            return pageService.findPageByPath(fullPath);
+        } catch (PSValidationException | PSPageException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
-    public boolean isPageItem(String id)
-    {
+    public boolean isPageItem(String id) throws PSPageException {
         return pageService.isPageItem(id);
     }
 
-    public void updateTemplateMigrationVersion(String pageId)
-    {
+    public void updateTemplateMigrationVersion(String pageId) throws PSDataServiceException {
         pageService.updateTemplateMigrationVersion(pageId);
     }
 
@@ -183,9 +237,15 @@ public class PSPageRestService
     public PSPagedItemList findPagesByTemplate(@PathParam("templateId") String templateId,
             @QueryParam("startIndex") Integer startIndex, @QueryParam("maxResults") Integer maxResults,
             @QueryParam("sortColumn") String sortColumn, @QueryParam("sortOrder") String sortOrder,
-            @QueryParam("pageId") String pageId) throws PSPageException
+            @QueryParam("pageId") String pageId)
     {
-        return pageService.findPagesByTemplate(templateId, startIndex, maxResults, sortColumn, sortOrder, pageId);
+        try {
+            return pageService.findPagesByTemplate(templateId, startIndex, maxResults, sortColumn, sortOrder, pageId);
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /**
@@ -201,7 +261,6 @@ public class PSPageRestService
      *            <code>null</code>, it must be greater than 0.
      * @return {@link PSUnassignedResults} with the results, never
      *         <code>null</code>.
-     * @throws Exception
      */
     @GET
     @Path("/unassignedPagesBySite/{sitename}")
@@ -209,7 +268,13 @@ public class PSPageRestService
     public PSUnassignedResults getUnassignedPagesBySite(@PathParam("sitename") String sitename,
             @QueryParam("startIndex") Integer startIndex, @QueryParam("maxResults") Integer maxResults)
     {
-        return pageService.getUnassignedPagesBySite(sitename, startIndex, maxResults);
+        try {
+            return pageService.getUnassignedPagesBySite(sitename, startIndex, maxResults);
+        } catch (PSPageException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
@@ -217,7 +282,13 @@ public class PSPageRestService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSNoContent clearMigrationEmptyFlag(@PathParam("pageid") String pageid)
     {
-        return pageService.clearMigrationEmptyFlag(pageid);
+        try {
+            return pageService.clearMigrationEmptyFlag(pageid);
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @GET
@@ -225,7 +296,13 @@ public class PSPageRestService
     @Produces(MediaType.TEXT_PLAIN)
     public Boolean getMigrationEmptyFlag(@PathParam("pageid") String pageid)
     {
-        return pageService.getMigrationEmptyWidgetFlag(pageid);
+        try {
+            return pageService.getMigrationEmptyWidgetFlag(pageid);
+        } catch (IPSDataService.DataServiceLoadException | PSValidationException | IPSDataService.DataServiceNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
@@ -234,7 +311,13 @@ public class PSPageRestService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPage save(PSPage page)
     {
-        return pageService.save(page);
+        try {
+            return pageService.save(page);
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
@@ -252,19 +335,23 @@ public class PSPageRestService
         return new PSNoContent();
     }
 
-    @SuppressWarnings(
-    {"unchecked", "rawtypes"})
     @PUT
     @Path("/changeTemplate/{pageId}/{templateId}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSNoContent changeTemplate(@PathParam("pageId") String pageId, @PathParam("templateId") String templateId)
     {
-        isTrue(isNotBlank(pageId), "pageId may not be blank");
-        isTrue(isNotBlank(templateId), "templateId may not be blank");
+        try {
+            isTrue(isNotBlank(pageId), "pageId may not be blank");
+            isTrue(isNotBlank(templateId), "templateId may not be blank");
 
-        pageService.changeTemplate(pageId, templateId);
+            pageService.changeTemplate(pageId, templateId);
 
-        return new PSNoContent("Changed template for page.");
+            return new PSNoContent("Changed template for page.");
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /**
@@ -328,7 +415,13 @@ public class PSPageRestService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSValidationErrors validate(PSPage object)
     {
-        return pageService.validate(object);
+        try {
+            return pageService.validate(object);
+        } catch (PSValidationException | DataServiceSaveException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @GET
@@ -336,19 +429,30 @@ public class PSPageRestService
     @Produces(value= {MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSNoContent validateDelete(@PathParam(PSRestServicePathConstants.ID_PATH_PARAM) String id)
     {
-        pageService.validateDelete(id);
+        try {
+            pageService.validateDelete(id);
 
-        return new PSNoContent("validateDelete");
+            return new PSNoContent("validateDelete");
+        } catch (PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
     @Path("/nonSEOPages")
     @Produces(value= {MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<PSSEOStatistics> findNonSEOPages(PSNonSEOPagesRequest request) throws PSPageException
+    public List<PSSEOStatistics> findNonSEOPages(PSNonSEOPagesRequest request)
     {
-
-        return new PSSEOStatisticsList(pageService.findNonSEOPages(request));
+        try {
+            return new PSSEOStatisticsList(pageService.findNonSEOPages(request));
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
 }

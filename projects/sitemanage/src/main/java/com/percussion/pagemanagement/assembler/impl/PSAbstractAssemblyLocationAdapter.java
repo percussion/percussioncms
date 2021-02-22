@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,13 +23,10 @@
  */
 package com.percussion.pagemanagement.assembler.impl;
 
-import static com.percussion.share.rx.PSLegacyExtensionUtils.addParameters;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSException;
 import com.percussion.extension.IPSAssemblyLocation;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
@@ -40,9 +37,17 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.share.rx.PSLegacyExtensionUtils;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
-import com.percussion.share.service.exception.PSSpringValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
+import net.sf.oval.constraint.NotNull;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -50,17 +55,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.oval.constraint.NotNull;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static com.percussion.share.rx.PSLegacyExtensionUtils.addParameters;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * An adapter for legacy location scheme generators.
@@ -101,10 +98,11 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
         log.debug("Validating location request: {}", lr);
         try {
             PSBeanValidationUtils.validate(lr).throwIfInvalid();
-        } catch (PSSpringValidationException e) {
+
+        return createLocation(lr);
+        } catch (PSDataServiceException | PSException e) {
             throw new PSExtensionException(e.getMessage(),e);
         }
-        return createLocation(lr);
     }
     
     /**
@@ -112,7 +110,7 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
      * @param locationRequest never <code>null</code>.
      * @return never <code>null</code>.
      */
-    protected abstract String createLocation(PSAssemblyLocationRequest locationRequest);
+    protected abstract String createLocation(PSAssemblyLocationRequest locationRequest) throws PSDataServiceException, PSException;
     
     /**
      * Gets the assembly template.
@@ -143,16 +141,16 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
      * @param locationRequest never <code>null</code>.
      * @return never <code>null</code>.
      */
-    protected String getContentTypeName(PSAssemblyLocationRequest locationRequest) {
+    protected String getContentTypeName(PSAssemblyLocationRequest locationRequest) throws PSException {
         PSLocator locator = guidManager.makeLocator(locationRequest.getItemId());
-        Long contentTypeId = itemDefManager.getItemContentType(locator);
+        long contentTypeId = itemDefManager.getItemContentType(locator);
         try
         {
             return itemDefManager.contentTypeIdToName(contentTypeId);
         }
         catch (PSInvalidContentTypeException e)
         {
-            throw new RuntimeException("Cannot get content type for location request", e);
+            throw new PSException("Cannot get content type for location request", e);
         }
     }
     

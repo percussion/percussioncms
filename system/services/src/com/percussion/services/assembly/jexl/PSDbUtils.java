@@ -80,7 +80,7 @@ public class PSDbUtils extends PSJexlUtilBase
       {
          throw new IllegalArgumentException("sqlselect may not be null or empty");
       }
-      List<Map<String,Object>> rval = new ArrayList<Map<String,Object>>();
+      List<Map<String,Object>> rval = new ArrayList<>();
       IPSDatasourceManager dsmgr = PSDatasourceMgrLocator.getDatasourceMgr();
       Connection c = null;
       PreparedStatement st = null;
@@ -95,7 +95,7 @@ public class PSDbUtils extends PSJexlUtilBase
          ResultSetMetaData rsmd = rs.getMetaData();
          while(rs.next())
          {
-            Map<String,Object> row = new HashMap<String,Object>();
+            Map<String,Object> row = new HashMap<>();
             rval.add(row);
             for(int i = 0; i < rsmd.getColumnCount(); i++)
             {

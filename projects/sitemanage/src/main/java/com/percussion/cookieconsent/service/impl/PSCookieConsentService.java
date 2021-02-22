@@ -33,6 +33,7 @@ import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.pubserver.IPSPubServerService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.request.PSRequestInfo;
@@ -120,7 +121,7 @@ public class PSCookieConsentService implements IPSCookieConsentService {
                log.debug(response);
 
            return response;
-       } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException e) {
+       } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
            log.error(e.getMessage());
            throw new WebApplicationException(e.getMessage());
        }
@@ -148,7 +149,7 @@ public class PSCookieConsentService implements IPSCookieConsentService {
                 log.debug(response);
 
             return response;
-        } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException e) {
+        } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -222,7 +223,7 @@ public class PSCookieConsentService implements IPSCookieConsentService {
 
           if (response != null)
               log.debug(response);
-      } catch (IPSPubServerService.PSPubServerServiceException e) {
+      } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
          throw new WebApplicationException(e);
       }
     }
@@ -233,7 +234,7 @@ public class PSCookieConsentService implements IPSCookieConsentService {
      * @return the server, it may be <code>null</code> if cannot find the
      *         server.
      */
-    private PSDeliveryInfo findServer(String site) throws IPSPubServerService.PSPubServerServiceException {
+    private PSDeliveryInfo findServer(String site) throws IPSPubServerService.PSPubServerServiceException, PSNotFoundException {
         String adminURl= pubServerService.getDefaultAdminURL(site);
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER,null,adminURl);
         //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER);

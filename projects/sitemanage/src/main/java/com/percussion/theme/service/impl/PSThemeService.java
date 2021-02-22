@@ -28,6 +28,7 @@ import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.server.PSRequest;
 import com.percussion.share.service.IPSDataService.*;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.theme.data.*;
 import com.percussion.theme.service.IPSThemeService;
@@ -236,7 +237,7 @@ public class PSThemeService implements IPSThemeService
         File themeFolder = getThemeFolder(themeName);
         ThemeFileFilter filter = new ThemeFileFilter(new String[]{THEME_CSS_EXTENSION});
         File[] cssFiles = themeFolder.listFiles(filter);
-        if (cssFiles.length == 1)
+        if (cssFiles != null && cssFiles.length == 1)
         {
             return cssFiles[0];
         }
@@ -247,7 +248,7 @@ public class PSThemeService implements IPSThemeService
             return namedCssFile;
         }
         
-        if (cssFiles.length > 0)
+        if (cssFiles != null && cssFiles.length > 0)
         {
             Arrays.sort(cssFiles);
             return cssFiles[0];
@@ -493,7 +494,7 @@ public class PSThemeService implements IPSThemeService
     }
 
 
-    public void mergeRegionCSS( String theme, String templateId, PSRegionCssList deletedRegions) throws PSThemeNotFoundException {
+    public void mergeRegionCSS( String theme, String templateId, PSRegionCssList deletedRegions) throws PSDataServiceException {
         log.debug("merge region CSS: {} {} ", theme , templateId);
         
         File tempFile = getCachedRegionCSSFile(theme, false);

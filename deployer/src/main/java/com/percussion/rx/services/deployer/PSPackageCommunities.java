@@ -87,7 +87,7 @@ public class PSPackageCommunities
    /**
     * Adds a packagecommunity object to the collection.
     * 
-    * @param pkg the package to add, cannot be <code>null</code>.
+    * @param pkgComm the package to add, cannot be <code>null</code>.
     */
    public void add(PSPackageCommunity pkgComm)
    {

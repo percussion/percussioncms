@@ -49,10 +49,16 @@ import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.services.publisher.data.PSEdition;
 import com.percussion.services.publisher.data.PSEditionType;
 import com.percussion.services.publisher.data.PSSortCriterion;
-import com.percussion.services.publisher.impl.PSPublisherService;
 import com.percussion.util.PSStopwatch;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.jdbc.IPSDatasourceManager;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.cactus.ServletTestCase;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runners.MethodSorters;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,15 +68,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.cactus.ServletTestCase;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runners.MethodSorters;
 
 import static com.percussion.rx.publisher.impl.PSPublishingJob.NEXTNUMBER_PUBLICATIONS;
 
@@ -205,8 +202,7 @@ public class PSPublisherServiceTest extends ServletTestCase
     * Test CRUD operations on editions and edition tasks.
     */
    @Test
-   public void test20EditionCRUD()
-   {
+   public void test20EditionCRUD() throws PSNotFoundException {
       List<IPSEdition> eds = ps.findAllEditions("");
       assertTrue(eds.size() > 0);
       
@@ -802,8 +798,7 @@ public class PSPublisherServiceTest extends ServletTestCase
     * Test CRUD operations on delivery types
     */
    @Test
-   public void tes98tDeliveryTypes()
-   {
+   public void tes98tDeliveryTypes() throws PSNotFoundException {
       IPSDeliveryType ttd = null;
       
       ttd = findDeliveryType("dt1");

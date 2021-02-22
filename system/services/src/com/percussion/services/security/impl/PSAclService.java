@@ -451,7 +451,7 @@ public class PSAclService implements IPSAclService
             .add( Restrictions.eq("permission", (int)PSPermissions.RUNTIME_VISIBLE.getOrdinal()))
             .setCacheable(true).list();
 
-      Collection<IPSTypedPrincipal> principals = new ArrayList<IPSTypedPrincipal>();
+      Collection<IPSTypedPrincipal> principals = new ArrayList<>();
       for (String comm : communityNames)
       {
          principals

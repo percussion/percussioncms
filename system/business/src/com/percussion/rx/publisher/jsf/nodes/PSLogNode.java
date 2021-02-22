@@ -28,6 +28,7 @@ import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
 import com.percussion.rx.publisher.PSRxPubServiceInternalLocator;
 import com.percussion.rx.publisher.jsf.beans.PSRuntimeNavigation;
 import com.percussion.rx.publisher.jsf.data.PSStatusLogEntry;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.publisher.IPSPubStatus;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
@@ -43,8 +44,8 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.myfaces.trinidad.model.RowKeySet;
 import org.apache.myfaces.trinidad.model.RowKeySetImpl;
 
@@ -58,7 +59,7 @@ public abstract class PSLogNode extends PSNodeBase
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog(PSLogNode.class);
+   private static final Logger log = LogManager.getLogger(PSLogNode.class);
    
    /**
     * Defaults to <code>null</code>. See {@link #getPageRows()} for detail.
@@ -114,13 +115,12 @@ public abstract class PSLogNode extends PSNodeBase
     * to get the raw data. The current entries will also be setup to allow
     * later actions to determine what status row was selected. 
     */
-   public List<Map<String,Object>> getProcessedStatusLogs()
-   {
+   public List<Map<String,Object>> getProcessedStatusLogs() throws PSNotFoundException {
       m_selectedRowKeys.clear();
     
       List<IPSPubStatus> stati = getStatusLogs();
       setPageRows(stati);
-      m_currentEntries = new ArrayList<PSStatusLogEntry>();
+      m_currentEntries = new ArrayList<>();
 
       List<Map<String,Object>> rval = PSPublishingStatusHelper
          .processStatus(stati, useAnimatedIcon(), (PSRuntimeNavigation) getModel().getNavigator());
@@ -269,7 +269,7 @@ public abstract class PSLogNode extends PSNodeBase
    
    /**
     * Archive the log data from the given job
-    * @param jobid the job id, assumed not <code>null</code>.
+    * @param jobId the job id, assumed not <code>null</code>.
     * @return <code>null</code> if successfully archived the pub log; otherwise 
     * return error message if failed to archive the given pub log. 
     */
@@ -289,7 +289,7 @@ public abstract class PSLogNode extends PSNodeBase
       {
          String msg = "Failed to archive job (id=" + jobId
                + ") to location: '" + psvc.getArchiveLocation() + "'.";
-         ms_log.error(msg, e);
+         log.error(msg, e);
          return msg + " The underlying error is: " + e.getLocalizedMessage();
       }
    }
@@ -322,7 +322,7 @@ public abstract class PSLogNode extends PSNodeBase
       catch (Exception e)
       {
          String msg = "Failed to purge Job ID: " + jobId + ".";
-         ms_log.error(msg, e);
+         log.error(msg, e);
          return msg + " The underlying error is: " + e.getLocalizedMessage();
       }
    }

@@ -32,6 +32,7 @@ import com.percussion.cms.objectstore.PSUserInfo;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
@@ -62,14 +63,11 @@ public class PSCrossSiteFolderMoveActionProcessor extends
 
    /**
     * Only ctor. Invokes base class version. Does additional initialization.
-    * 
-    * @see PSCrossSiteFolderActionProcessor#PSCrossSiteFolderActionProcessor(PSUserInfo,
-    * PSLocator, List)
+    *
     */
    public PSCrossSiteFolderMoveActionProcessor(
       PSLocator sourceFolderId, List<PSLocator> children,
-      PSLocator targetFolderId) throws PSCmsException
-   {
+      PSLocator targetFolderId) throws PSCmsException, PSNotFoundException {
       super(sourceFolderId, children);
       if (targetFolderId == null)
       {
