@@ -100,8 +100,8 @@ import com.percussion.utils.timing.PSStopwatchStack;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
@@ -382,7 +382,7 @@ public class PSAssemblyService implements IPSAssemblyService
    /**
     * Logger for the assembler.
     */
-   public static Log ms_log = LogFactory.getLog(PSAssemblyService.class);
+   private static final Logger log = LogManager.getLogger(PSAssemblyService.class);
 
    /**
     * Counter used to generate job ids for items that have none specified.
@@ -447,7 +447,6 @@ public class PSAssemblyService implements IPSAssemblyService
     * @return an instance of {@link IPSAssembler}, never <code>null</code>
     * @throws PSAssemblyException if the bean does not exist
     */
-   @SuppressWarnings("unchecked")
    static IPSAssembler getAssembler(String name) throws PSAssemblyException
    {
       if (StringUtils.isBlank(name))
@@ -462,17 +461,17 @@ public class PSAssemblyService implements IPSAssemblyService
       }
       catch (PSExtensionException e)
       {
-         ms_log.error("Serious problem, cannot instantiate " + name, e);
+         log.error("Serious problem, cannot instantiate {} Error: {}", name, e.getMessage());
+         log.debug(e.getMessage(),e);
          throw new PSAssemblyException(IPSAssemblyErrors.ASSEMBLER_INST, name, e);
       }
       catch (com.percussion.design.objectstore.PSNotFoundException e)
       {
-         ms_log.error("Serious problem, cannot find " + name, e);
+         log.error("Serious problem, cannot find {} Error: {}" ,name, e.getMessage());
          throw new PSAssemblyException(IPSAssemblyErrors.ASSEMBLER_INST, name, e);
       }
    }
 
-   @SuppressWarnings("unchecked")
    public IPSAssemblyResult processServletRequest(HttpServletRequest request, String templatename, String variantidstr)
          throws PSAssemblyException
    {
@@ -534,7 +533,7 @@ public class PSAssemblyService implements IPSAssemblyService
       catch (Exception e)
       {
          Throwable cause = PSExceptionHelper.findRootCause(e, true);
-         ms_log.error("Failure while processing assembly item", cause);
+         log.error("Failure while processing assembly item", cause);
          throw new PSAssemblyException(IPSAssemblyErrors.UNKNOWN_ERROR, cause, e.getLocalizedMessage());
       }
    }
@@ -630,7 +629,7 @@ public class PSAssemblyService implements IPSAssemblyService
          }
          catch (Exception e)
          {
-            ms_log.error("Problem while processing " + PAGE_COUNT + "binding for item: " + item, e);
+            log.error("Problem while processing " + PAGE_COUNT + "binding for item: " + item, e);
          }
          int context = item.getContext();
          if (item.getParentPageReferenceId() == null && count != null && count.intValue() > 1)
@@ -707,20 +706,20 @@ public class PSAssemblyService implements IPSAssemblyService
          }
          catch (PSAssemblyException e)
          {
-            ms_log.error("Error while assembling items for assembler " + assemblerName
+            log.error("Error while assembling items for assembler " + assemblerName
                   + " no items processed for that assembler", e);
          }
          catch (PSCmsException e)
          {
-            ms_log.error("Error during assembly", e);
+            log.error("Error during assembly", e);
          }
          catch (PathNotFoundException e)
          {
-            ms_log.error("Missing content during assembly", e);
+            log.error("Missing content during assembly", e);
          }
          catch (RepositoryException e)
          {
-            ms_log.error("Illegal repository operation during assembly", e);
+            log.error("Illegal repository operation during assembly", e);
          }
       }
 
@@ -750,7 +749,7 @@ public class PSAssemblyService implements IPSAssemblyService
          IPSAssemblyTemplate template = item.getTemplate();
          if (template == null)
          {
-            ms_log.error("Skipping item " + item.getId() + " due to missing template");
+            log.error("Skipping item " + item.getId() + " due to missing template");
             continue;
          }
          String assemblername = template.getAssembler();
@@ -911,13 +910,17 @@ public class PSAssemblyService implements IPSAssemblyService
       {
          for (IPSAssemblyItem i : items)
          {
-            IPSNode n = (IPSNode) i.getNode();
-            long size = n.getSizeInBytes();
-            if (size > maxSize)
-            {
-               ms_log.debug("Not caching " + n.getGuid() + " which is approx. " + size
-                     + " bytes, maximum size allowed is: " + maxSize + " bytes");
-               m_cache.evict(n.getGuid(), CONTENT_REGION);
+            try {
+               IPSNode n = (IPSNode) i.getNode();
+               long size = n.getSizeInBytes();
+               if (size > maxSize) {
+                  log.debug("Not caching " + n.getGuid() + " which is approx. " + size
+                          + " bytes, maximum size allowed is: " + maxSize + " bytes");
+                  m_cache.evict(n.getGuid(), CONTENT_REGION);
+               }
+            } catch (RepositoryException e) {
+               log.warn(e.getMessage());
+               log.debug(e.getMessage(),e);
             }
          }
       }
@@ -992,7 +995,7 @@ public class PSAssemblyService implements IPSAssemblyService
                template = loadUnmodifiableTemplate(idstr);
                if (template == null)
                {
-                  ms_log.error("Template could not be loaded for id " + idstr);
+                  log.error("Template could not be loaded for id " + idstr);
                }
             }
             else if (StringUtils.isNotBlank(templatename) && !StringUtils.isNumeric(templatename))
@@ -1003,7 +1006,7 @@ public class PSAssemblyService implements IPSAssemblyService
                template = findTemplateByNameAndType(templatename, ctypeguid);
                if (template == null)
                {
-                  ms_log.error("Template could not be loaded for name " + templatename + " and type " + ctypeguid);
+                  log.error("Template could not be loaded for name " + templatename + " and type " + ctypeguid);
                }
             }
             item.setTemplate(template);
@@ -1061,8 +1064,8 @@ public class PSAssemblyService implements IPSAssemblyService
 
                 String message = "Problem when evaluating expression : " + exp.getOwnerType() + " : " + exp.getOwnerName();
 
-               ms_log.debug("ERROR ProcessBinding: " + debugMessage, e);
-                ms_log.error("ERROR ProcessBinding: " + message);
+               log.debug("ERROR ProcessBinding: " + debugMessage, e);
+                log.error("ERROR ProcessBinding: " + message);
 
                throw new RuntimeException(message, e);
             }
@@ -1178,9 +1181,9 @@ public class PSAssemblyService implements IPSAssemblyService
          }
          catch (NumberFormatException | PSNotFoundException e)
          {
-            ms_log.warn(e.getMessage());
+            log.warn(e.getMessage());
             // This should not happen at this level...
-            ms_log.debug("Skipping site information setting as the supplied siteid is not an integer.", e);
+            log.debug("Skipping site information setting as the supplied siteid is not an integer.", e);
          }
 
          IPSAssemblyTemplate templ = work.getTemplate();
@@ -1573,7 +1576,9 @@ public class PSAssemblyService implements IPSAssemblyService
       }
       catch (RuntimeException re)
       {
-         ms_log.error("Couldn't force load one or more slots for template: " + template.getName(), re);
+         log.error("Couldn't force load one or more slots for template: {}, Error: {}",
+                  template.getName(), re.getMessage());
+         log.debug(re.getMessage(),re);
       }
    }
 
@@ -1601,7 +1606,7 @@ public class PSAssemblyService implements IPSAssemblyService
 
       catch (Exception e)
       {
-         ms_log.error("Failed to save template id=" + var.getGUID().toString() + ", name=" + var.getName(), e);
+         log.error("Failed to save template id=" + var.getGUID().toString() + ", name=" + var.getName(), e);
          throw new PSAssemblyException(IPSAssemblyErrors.UNKNOWN_CRUD_ERROR, e);
       }
 
@@ -2012,7 +2017,7 @@ public class PSAssemblyService implements IPSAssemblyService
       }
       catch (Exception e)
       {
-         ms_log.error("Failed to save slot id=" + slot.getGUID().toString() + ", name=" + slot.getName(), e);
+         log.error("Failed to save slot id=" + slot.getGUID().toString() + ", name=" + slot.getName(), e);
          throw new PSAssemblyException(IPSAssemblyErrors.UNKNOWN_CRUD_ERROR, e);
       }
       finally
@@ -2245,7 +2250,7 @@ public class PSAssemblyService implements IPSAssemblyService
       }
       catch (Exception e)
       {
-         ms_log.error("Problem extracting URL from landing page snippet", e);
+         log.error("Problem extracting URL from landing page snippet", e);
       }
       finally
       {

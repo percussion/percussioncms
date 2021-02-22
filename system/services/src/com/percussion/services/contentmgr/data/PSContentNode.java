@@ -1238,8 +1238,7 @@ public class PSContentNode implements IPSNode, IPSJcrCacheItem, Serializable
       m_cmgrConfig = cmgrConfig;
    }
 
-   public long getSizeInBytes()
-   {
+   public long getSizeInBytes() throws RepositoryException {
       // We'll basically ignore this object's size as it is fairly insignificant
       // Instead we'll add up the properties on this and any child nodes. We
       // need to be careful that nothing we do forces the load of binary and
