@@ -132,7 +132,7 @@
         </if>
 
         <if>
-             <isfalse value="${install.prod.dts}"/>
+            <isfalse value="${install.prod.dts}"/>
             <then>
                 <echo>Installing stage dts </echo>
                 <install-dts type="Staging" upgrade="${stage.dts.upgrade}"/>
