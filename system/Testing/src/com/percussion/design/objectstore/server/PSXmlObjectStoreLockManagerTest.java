@@ -177,12 +177,6 @@ public class PSXmlObjectStoreLockManagerTest
                      m_locker.releaseLock(id, lockKey);
                      System.err.println(Thread.currentThread().toString() + " released lock.");
                   }
-                  if (rand.nextDouble() > 0.1) // 10% chance of yielding
-                  {
-                     System.err.println(Thread.currentThread().toString() + " yielding for 1 second.");
-                     Thread.sleep(1000);
-                     Thread.currentThread().yield();
-                  }
                }
             }
          }
