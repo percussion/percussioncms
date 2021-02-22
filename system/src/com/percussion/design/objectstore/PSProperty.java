@@ -65,8 +65,7 @@ public class PSProperty extends PSComponent
    }
 
    /**
-    * Convenience constructor for {@link
-    * #PSProperty(String, type, value, lock)
+    * Convenience constructor for
     * PSProperty(name, TYPE_STRING, null, false, null)}. See the link for more
     * description.
     */
