@@ -125,11 +125,5 @@
          class="com.percussion.delivery.polls.services.PSPollsRestService">
       <constructor-arg ref="pollsService" />
    </bean>
-      
-  <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
-   	<constructor-arg index="0"><null/></constructor-arg>
-   	<constructor-arg index="1"><null/></constructor-arg>
-   </bean>
-
    
 </beans>

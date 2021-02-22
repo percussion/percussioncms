@@ -207,10 +207,5 @@
       class="com.percussion.membership.services.impl.PSMembershipRestService">
       <constructor-arg ref="membershipService" />
    </bean>
-   
-  <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
-   	<constructor-arg index="0"><null/></constructor-arg>
-   	<constructor-arg index="1"><null/></constructor-arg>
-   </bean>
 
 </beans>

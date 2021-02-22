@@ -1,6 +1,6 @@
 //Constants.
-SEP_PADDING = 5
-HANDLE_PADDING = 7
+SEP_PADDING = 5;
+HANDLE_PADDING = 7;
 
 var yToolbars = new Array();  // Array of all toolbars.
 
