@@ -188,7 +188,7 @@ public class PSValidateSlotName implements IPSRequestPreProcessor
    * The HashMap of all slot names and ids. Never <code>null</code>,
    * but may be empty.
    */
-  private Map<String,String> m_slotMap = new HashMap<String,String>();
+  private Map<String,String> m_slotMap = new HashMap<>();
 
   /**
    * The slot name passed in the request. Never <code>null</code>.

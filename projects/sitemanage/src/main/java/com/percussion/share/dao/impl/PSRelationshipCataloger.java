@@ -63,7 +63,7 @@ public class PSRelationshipCataloger implements IPSRelationshipCataloger
             filter.setOwnerContentTypeId(ctid);
         }
         List<IPSGuid> guids = systemWs.findOwners(guid, filter);
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
         for (IPSGuid gid: guids) {
             ids.add(idMapper.getString(gid));
         }

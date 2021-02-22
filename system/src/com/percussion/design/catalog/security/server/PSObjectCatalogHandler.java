@@ -33,7 +33,7 @@ import com.percussion.server.PSRequest;
 import com.percussion.services.security.IPSRoleMgr;
 import com.percussion.services.security.PSJaasUtils;
 import com.percussion.services.security.PSRoleMgrLocator;
-import com.percussion.utils.security.PSSecurityCatalogException;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 

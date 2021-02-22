@@ -29,7 +29,6 @@ import com.percussion.deployer.error.IPSDeploymentErrors;
 import com.percussion.deployer.error.PSDeployException;
 import com.percussion.deployer.objectstore.PSAppEnabledPolicySetting;
 import com.percussion.deployer.objectstore.PSAppPolicySettings;
-import com.percussion.deployer.objectstore.PSApplicationIDTypes;
 import com.percussion.deployer.objectstore.PSDatasourceMap;
 import com.percussion.deployer.objectstore.PSDbmsInfo;
 import com.percussion.deployer.objectstore.PSDbmsMap;
@@ -65,6 +64,7 @@ import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.design.objectstore.server.PSXmlObjectStoreLockerId;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.security.IPSBackEndRoleMgr;
 import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.util.PSCollection;
@@ -103,8 +103,7 @@ public class PSApplicationDependencyHandler
 
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -115,7 +114,7 @@ public class PSApplicationDependencyHandler
          throw new IllegalArgumentException("dep wrong type");
 
       // use set to ensure we don't add dupes
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
 
       // don't get dependencies if a system app
       if (isSystemApp(dep.getDependencyId()))
@@ -139,7 +138,7 @@ public class PSApplicationDependencyHandler
 
       
       // get app deps - make a new set so we can avoid adding the parent app
-      Set<PSDependency> appDepSet = new HashSet<PSDependency>();
+      Set<PSDependency> appDepSet = new HashSet<>();
       Document appDoc = app.toXml();
       addApplicationDependencies(tok, appDepSet, appDoc.getDocumentElement());
       Iterator<PSDependency> appDeps = appDepSet.iterator();
@@ -261,7 +260,7 @@ public class PSApplicationDependencyHandler
 
       try
       {
-         List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+         List<PSDependencyFile> files = new ArrayList<>();
          PSServerXmlObjectStore os = PSServerXmlObjectStore.getInstance();
          Document doc = os.getApplicationDoc(dep.getDependencyId(), tok);
          File appDocFile = createXmlFile(doc);
@@ -305,7 +304,7 @@ public class PSApplicationDependencyHandler
       if (!dep.getObjectType().equals(getType()))
          throw new IllegalArgumentException("dep wrong type for this handler");
 
-      List<PSDatasourceMap> infoList = new ArrayList<PSDatasourceMap>();
+      List<PSDatasourceMap> infoList = new ArrayList<>();
 
       try
       {
@@ -865,7 +864,7 @@ public class PSApplicationDependencyHandler
    private List<PSDependency> getStyleSheetDependencies(PSSecurityToken tok, PSDependency dep)
       throws PSDeployException
    {
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
 
       String appName = dep.getDependencyId();
       Iterator<File> files = getAppFiles(tok, appName);
@@ -910,7 +909,7 @@ public class PSApplicationDependencyHandler
     *
     * @param app The application to check, assumed not <code>null</code>.
     * @param resourceName A resource name returned by
-    * {@link PSApplicationIDTypes#getResourceList()}, assumed not
+    * , assumed not
     * <code>null</code> or empty.
     *
     * @return The dataset, or <code>null</code> if not found.
@@ -982,7 +981,7 @@ public class PSApplicationDependencyHandler
     * List of child types supported by this handler, never <code>null</code> or
     * empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    /**
     * Set of all child types supported by this handler, including any type

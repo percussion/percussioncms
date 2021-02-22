@@ -174,7 +174,7 @@ public class PSContentRepository
 
             PSRequest req = PSRequest.getContextForRequest();
             PSServerFolderProcessor proc = PSServerFolderProcessor.getInstance();
-            List<IPSGuid> rval = new ArrayList<IPSGuid>();
+            List<IPSGuid> rval = new ArrayList<>();
 
             // Enumerate the folders and return the GUIDs of the matched
             // folders
@@ -188,7 +188,7 @@ public class PSContentRepository
                     ms_log.warn("Root path '" + rootPath
                             + "' not found", new Exception("Root path '" + rootPath
                             + "' not found"));
-                    rval = new ArrayList<IPSGuid>();
+                    rval = new ArrayList<>();
                 }
             }
             catch (PSCmsException e)
@@ -286,13 +286,13 @@ public class PSContentRepository
          * The place holder for removed configurations, never <code>null</code>,
          * may be empty.
          */
-        Map<IPSTypeKey, PSTypeConfiguration> m_removedConfigs = new HashMap<IPSTypeKey, PSTypeConfiguration>();
+        Map<IPSTypeKey, PSTypeConfiguration> m_removedConfigs = new HashMap<>();
 
         /**
          * The place holder for added configurations, never <code>null</code>,
          * may be empty.
          */
-        Map<IPSTypeKey, PSTypeConfiguration> m_addedConfigs = new HashMap<IPSTypeKey, PSTypeConfiguration>();
+        Map<IPSTypeKey, PSTypeConfiguration> m_addedConfigs = new HashMap<>();
     }
 
     /**
@@ -325,7 +325,7 @@ public class PSContentRepository
         PSContentEditorSystemDef systemDef = PSServer
                 .getContentEditorSystemDef();
         PSFieldSet fieldset = systemDef.getFieldSet();
-        Map<String, String> columnToProp = new HashMap<String, String>();
+        Map<String, String> columnToProp = new HashMap<>();
         Field csfields[] = PSComponentSummary.class.getDeclaredFields();
         for (Field field : csfields)
         {
@@ -370,7 +370,7 @@ public class PSContentRepository
     /**
      * The thread local memory to hold an instance of the changed configurations.
      */
-    private ThreadLocal<ChangedConfigs> ms_changedConfigs = new ThreadLocal<ChangedConfigs>();
+    private ThreadLocal<ChangedConfigs> ms_changedConfigs = new ThreadLocal<>();
 
     /**
      * This reader/writer lock allows safe update of the content repository while
@@ -397,7 +397,7 @@ public class PSContentRepository
      * references to the child configurations in the parent to enable child
      * loading.
      */
-    private static Map<IPSTypeKey, PSTypeConfiguration> ms_configuration = new HashMap<IPSTypeKey, PSTypeConfiguration>();
+    private static Map<IPSTypeKey, PSTypeConfiguration> ms_configuration = new HashMap<>();
 
     /**
      * Stores correspondances between content summary "properties" and the system
@@ -405,7 +405,7 @@ public class PSContentRepository
      * a subset is created for unit testing. Never <code>null</code> and never
      * empty after construction.
      */
-    private static Map<String, String> ms_csFieldToProperties = new HashMap<String, String>();
+    private static Map<String, String> ms_csFieldToProperties = new HashMap<>();
 
     /**
      * @throws Exception
@@ -501,7 +501,7 @@ public class PSContentRepository
             IPSFolderProcessor proc = PSServerFolderProcessor.getInstance();
             // Translate each path to a component summary. From this the contentid
             // and revision can be extracted
-            List<IPSGuid> guids = new ArrayList<IPSGuid>();
+            List<IPSGuid> guids = new ArrayList<>();
             for (String path : paths)
             {
                 try
@@ -575,16 +575,16 @@ public class PSContentRepository
     {
         Set<PSContentMgrOption> options = cconfig != null
                 ? cconfig.getOptions()
-                : new HashSet<PSContentMgrOption>();
+                : new HashSet<>();
         Session session = sessionFactory.getCurrentSession();
-        List<Node> rval = new ArrayList<Node>();
+        List<Node> rval = new ArrayList<>();
         try
         {
             m_rwlock.readLock().lock();
             // Get the component summaries for items as appropriate
             IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
             PSStopwatch sw = new PSStopwatch();
-            List<Integer> ids = new ArrayList<Integer>();
+            List<Integer> ids = new ArrayList<>();
             for (IPSGuid g : guids)
             {
                 if (!(g instanceof PSLegacyGuid))
@@ -601,7 +601,7 @@ public class PSContentRepository
                 return Collections.emptyList(); // none of the items exist
             }
 
-            Map<Integer, PSComponentSummary> summarymap = new HashMap<Integer, PSComponentSummary>();
+            Map<Integer, PSComponentSummary> summarymap = new HashMap<>();
             for (PSComponentSummary s : summaries)
             {
                 if (s != null)
@@ -826,8 +826,8 @@ public class PSContentRepository
                                                                 List<IPSGuid> guids, Map<Integer, PSComponentSummary> summarymap)
             throws RepositoryException
     {
-        Map<PSLegacyGuid, GeneratedClassBase> rval = new HashMap<PSLegacyGuid, GeneratedClassBase>();
-        Map<Long, Class> typeToClassMap = new HashMap<Long, Class>();
+        Map<PSLegacyGuid, GeneratedClassBase> rval = new HashMap<>();
+        Map<Long, Class> typeToClassMap = new HashMap<>();
         MultiMap typeToIdsMap = new MultiHashMap();
         for (IPSGuid g : guids)
         {
@@ -864,7 +864,7 @@ public class PSContentRepository
             Class iclass = typeToClassMap.get(type);
             List<PSLegacyCompositeId> ids = (List<PSLegacyCompositeId>) typeToIdsMap
                     .get(type);
-            List<GeneratedClassBase> results = new ArrayList<GeneratedClassBase>();
+            List<GeneratedClassBase> results = new ArrayList<>();
             for (PSLegacyCompositeId id : ids)
             {
                 GeneratedClassBase data = (GeneratedClassBase) session.get(iclass,
@@ -1051,7 +1051,7 @@ public class PSContentRepository
      */
     public Set<String> getUnmappedSystemFields()
     {
-        Set<String> rval = new HashSet<String>();
+        Set<String> rval = new HashSet<>();
         for(int i = 0; i < ms_fieldToAdd.length; i += 2)
         {
             rval.add(ms_fieldToAdd[i]);
@@ -1370,7 +1370,7 @@ public class PSContentRepository
         // unregistered
         boolean isUnregisterOnly = true;
 
-        Set<Long> types = new HashSet<Long>();
+        Set<Long> types = new HashSet<>();
         // Get the list of types being add/removed. We'll remove all the
         // configurations, then rerun the list and re-add those that were
         // not deletes.
@@ -1384,7 +1384,7 @@ public class PSContentRepository
 
         // Walk the map of configurations and remove any that match a
         // content type
-        Set<IPSTypeKey> toRemove = new HashSet<IPSTypeKey>();
+        Set<IPSTypeKey> toRemove = new HashSet<>();
         for (Map.Entry<IPSTypeKey, PSTypeConfiguration> entry : ms_configuration
                 .entrySet())
         {
@@ -1562,7 +1562,7 @@ public class PSContentRepository
         // direct call to this listener
         IPSContentRepository rep = PSContentInternalLocator.getLegacyRepository();
         PSLegacyGuid guid = new PSLegacyGuid(content_id, revision);
-        List<IPSGuid> guids = new ArrayList<IPSGuid>();
+        List<IPSGuid> guids = new ArrayList<>();
         guids.add(guid);
         rep.evict(guids);
     }
@@ -1580,8 +1580,8 @@ public class PSContentRepository
         {
             m_rwlock.readLock().lock();
             IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
-            List<Integer> ids = new ArrayList<Integer>();
-            Map<Integer, PSComponentSummary> summarymap = new HashMap<Integer, PSComponentSummary>();
+            List<Integer> ids = new ArrayList<>();
+            Map<Integer, PSComponentSummary> summarymap = new HashMap<>();
             SessionFactory fact = this.getSessionFactory();
 
             for (IPSGuid g : guids)
@@ -1608,7 +1608,7 @@ public class PSContentRepository
                 PSNotificationHelper.notifyEvent(EventType.CONTENT_CHANGED,
                         legacyguid);
                 PSComponentSummary s = summarymap.get(legacyguid.getContentId());
-                Set<String> affectedclasses = new HashSet<String>();
+                Set<String> affectedclasses = new HashSet<>();
 
                 // If the component summary is not there, we've never loaded
                 // this item through the repository interface, or the second
@@ -1758,7 +1758,7 @@ public class PSContentRepository
     private Set<Long> getTypeIds(PSQuery psquery) throws RepositoryException
     {
         List<PSQueryNodeIdentifier> types = psquery.getTypeConstraints();
-        Set<Long> typeids = new HashSet<Long>();
+        Set<Long> typeids = new HashSet<>();
         IPSContentMgr cms = PSContentMgrLocator.getContentMgr();
         for (PSQueryNodeIdentifier type : types)
         {
@@ -1805,7 +1805,7 @@ public class PSContentRepository
         if (columns != null)
             return columns;
 
-        Set<String> allprops = new HashSet<String>();
+        Set<String> allprops = new HashSet<>();
         // projection, use all single valued properties from all
         // types
         for (Long typeid : typeids)
@@ -1862,7 +1862,7 @@ public class PSContentRepository
     {
         if (((PSQuery) query).getWhere() == null)
         {
-            return new PSPair<IPSQueryNode, List<Long>>(null, collectionIds);
+            return new PSPair<>(null, collectionIds);
         }
 
         PSQueryTransformer transformer = new PSQueryTransformer(
@@ -1900,7 +1900,7 @@ public class PSContentRepository
             }
         }
 
-        return new PSPair<IPSQueryNode, List<Long>>(internalwhere, collectionIds);
+        return new PSPair<>(internalwhere, collectionIds);
     }
 
     /**
@@ -1961,7 +1961,7 @@ public class PSContentRepository
                 }
             }
         }
-        return new PSPair<PSQueryWhereBuilder, String>(wherebuilder, where);
+        return new PSPair<>(wherebuilder, where);
     }
 
     /**

@@ -42,6 +42,10 @@ public class PSCmsException extends PSException
       super(msgCode);
    }
 
+   public PSCmsException(Throwable t){
+      super(t);
+   }
+
    /**
     * Construct an exception from a class derived from PSException.
     *
@@ -65,7 +69,7 @@ public class PSCmsException extends PSException
    {
       this(msgCode, new Integer[]
          {
-            new Integer(contentId), new Integer(revisionId)
+                 contentId, revisionId
          });
    }
 

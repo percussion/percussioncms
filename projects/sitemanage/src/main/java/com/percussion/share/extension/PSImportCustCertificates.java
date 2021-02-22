@@ -75,32 +75,31 @@ public class PSImportCustCertificates implements IPSStartupProcess {
             return;
         }
 
-        try {
-                char[] password = "changeit".toCharArray();
-                String certificatePath = System.getProperty("java.home") + "/lib/security/cacerts";
-                File file = new File(certificatePath);
-                InputStream localCertIn = new FileInputStream(file);
+        char[] password = "changeit".toCharArray();
+        String certificatePath = System.getProperty("java.home") + "/lib/security/cacerts";
+        File file = new File(certificatePath);
+        try(InputStream localCertIn = new FileInputStream(file)){
 
-                KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
-                keystore.load(localCertIn, password);
-                localCertIn.close();
+            KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keystore.load(localCertIn, password);
+            localCertIn.close();
 
-                //Read all certificates in the given directory
-                File custCertificateDir = new File(PSServer.getRxDir(),"rxconfig/trusted_certificates");
-                File[] certificates = custCertificateDir.listFiles();
-                if(certificates != null && (certificates.length > 0)){
-                    for (int i=0;i<certificates.length;i++) {
-                        File cert = certificates[i];
-                        appendCertKey (cert,keystore);
-                    }
-                    File keystoreFile = new File(certificatePath);
-                    // Save the new keystore contents
-                    FileOutputStream out = new FileOutputStream(keystoreFile);
-                    keystore.store(out, password);
-                    out.close();
-                }else{
-                    log.info("No Certificate Files found in : " + custCertificateDir.getPath());
+            //Read all certificates in the given directory
+            File custCertificateDir = new File(PSServer.getRxDir(),"rxconfig/trusted_certificates");
+            File[] certificates = custCertificateDir.listFiles();
+            if(certificates != null && (certificates.length > 0)){
+                for (int i=0;i<certificates.length;i++) {
+                    File cert = certificates[i];
+                    appendCertKey (cert,keystore);
                 }
+                File keystoreFile = new File(certificatePath);
+                // Save the new keystore contents
+                try(FileOutputStream out = new FileOutputStream(keystoreFile)) {
+                    keystore.store(out, password);
+                }
+            }else{
+                log.info("No Certificate Files found in : " + custCertificateDir.getPath());
+            }
 
         }catch (Exception e) {
             log.error("Error while importing customer trusted certificates into the central cacerts keystore.", e);
@@ -111,38 +110,37 @@ public class PSImportCustCertificates implements IPSStartupProcess {
 
 
     private static void appendCertKey ( File file , KeyStore keystore) throws Exception {
-        try {
+
             String fname = file.getPath();
             String sName = file.getName();
-            FileInputStream fis = new FileInputStream(fname);
-            String alias = sName + " : " + fis.getChannel().size();
-            //If this Certificate is already added, then return
-            if (keystore.containsAlias(alias)) {
-                fis.close();
-                return;
-            }
-            //if Certificate name is same and size is different, then we need to replace the certificate
-            Enumeration<String> aliases = keystore.aliases();
-            while (aliases.hasMoreElements()) {
-                String str = aliases.nextElement();
-                if (str.contains(sName)) {
-                    keystore.deleteEntry(str);
-                    break;
+            try(FileInputStream fis = new FileInputStream(fname)){
+                String alias = sName + " : " + fis.getChannel().size();
+                //If this Certificate is already added, then return
+                if (keystore.containsAlias(alias)) {
+                    fis.close();
+                    return;
                 }
-            }
+                //if Certificate name is same and size is different, then we need to replace the certificate
+                Enumeration<String> aliases = keystore.aliases();
+                while (aliases.hasMoreElements()) {
+                    String str = aliases.nextElement();
+                    if (str.contains(sName)) {
+                        keystore.deleteEntry(str);
+                        break;
+                    }
+                }
 
-            DataInputStream dis = new DataInputStream(fis);
-            byte[] bytes = new byte[dis.available()];
-            dis.readFully(bytes);
-            ByteArrayInputStream certIn = new ByteArrayInputStream(bytes);
-            BufferedInputStream bis = new BufferedInputStream(certIn);
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-            Certificate cert = cf.generateCertificate(bis);
-            keystore.setCertificateEntry(alias, cert);
-            certIn.close();
-            dis.close();
-            fis.close();
-            bis.close();
+                try(DataInputStream dis = new DataInputStream(fis)) {
+                    byte[] bytes = new byte[dis.available()];
+                    dis.readFully(bytes);
+                    try(ByteArrayInputStream certIn = new ByteArrayInputStream(bytes)) {
+                        try(BufferedInputStream bis = new BufferedInputStream(certIn)) {
+                            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+                            Certificate cert = cf.generateCertificate(bis);
+                            keystore.setCertificateEntry(alias, cert);
+                        }
+                    }
+                }
         }catch(Exception e){
             log.error("Error while importing customer trusted certificate File Name : " + file.getName(), e);
         }

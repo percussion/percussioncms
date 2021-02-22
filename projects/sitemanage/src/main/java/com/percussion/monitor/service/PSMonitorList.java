@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class PSMonitorList
 {
 	@XmlElement
-	public List<PSMonitor> monitor = new ArrayList<PSMonitor>();
+	public List<PSMonitor> monitor = new ArrayList<>();
 	
 	public void addEntriesToList(Map<String, PSMonitor> monitors)
 	{

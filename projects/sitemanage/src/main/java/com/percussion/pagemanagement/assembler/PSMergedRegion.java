@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,14 +23,13 @@
  */
 package com.percussion.pagemanagement.assembler;
 
-import java.util.List;
-
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 import com.percussion.pagemanagement.data.PSAbstractRegion;
 import com.percussion.pagemanagement.data.PSRegion;
 import com.percussion.pagemanagement.data.PSRegionBranches;
 import com.percussion.pagemanagement.data.PSRegionTree;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+import java.util.List;
 
 /**
  * A node on the merged region tree region that has been merged with {@link PSRegionTree}
@@ -56,7 +55,7 @@ public class PSMergedRegion
     private PSMergedRegionOwner owner = PSMergedRegionOwner.TEMPLATE;
     
     /**
-     * The original region is either a {@link PSPageRegion}
+     * The original region is either
      * or a {@link PSRegion}.
      */
     private transient PSAbstractRegion originalRegion;

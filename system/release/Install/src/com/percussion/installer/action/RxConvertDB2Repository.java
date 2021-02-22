@@ -83,23 +83,25 @@ public class RxConvertDB2Repository extends RxIAAction
          
          if (serverPropFile.exists())
          {
-            serverProps.load(new FileInputStream(strServerPropFile));
-            
-            strServer = serverProps.getProperty(
-                  InstallUtil.SERVER_PROPERTY,
-                  ""
-            );
+            try(FileInputStream fs = new FileInputStream(strServerPropFile)) {
+               serverProps.load(fs);
+               strServer = serverProps.getProperty(
+                       InstallUtil.SERVER_PROPERTY,
+                       ""
+               );
+            }
          }
          else
          {
             if (repPropFile.exists())
             {
-               repProps.load(new FileInputStream(strRepPropFile));
-               
-               strServer = repProps.getProperty(
-                     PSJdbcDbmsDef.DB_SERVER_PROPERTY,
-                     ""
-               );
+               try(FileInputStream fs = new FileInputStream(strRepPropFile)) {
+                  repProps.load(fs);
+
+                  strServer = repProps.getProperty(IPSJdbcDbmsConstants.DB_SERVER_PROPERTY,
+                          ""
+                  );
+               }
             }
             else
             {
@@ -126,19 +128,27 @@ public class RxConvertDB2Repository extends RxIAAction
          // Set the new properties and save
          if (serverPropFile.exists())
          {
-            serverProps.load(new FileInputStream(strServerPropFile));
-            serverProps.setProperty(InstallUtil.SERVER_PROPERTY, strServer);
-            serverProps.setProperty(InstallUtil.CLASS_PROPERTY, strDriverClass);
-            serverProps.store(new FileOutputStream(strServerPropFile), null);
+            try(FileInputStream fs = new FileInputStream(strServerPropFile)) {
+               serverProps.load(fs);
+               serverProps.setProperty(InstallUtil.SERVER_PROPERTY, strServer);
+               serverProps.setProperty(InstallUtil.CLASS_PROPERTY, strDriverClass);
+               try (FileInputStream fs = new FileInputStream(strServerPropFile)) {
+                  serverProps.store(fs, null);
+               }
+            }
          }
          
          if (repPropFile.exists())
          {
-            repProps.load(new FileInputStream(strRepPropFile));
-            repProps.setProperty(PSJdbcDbmsDef.DB_SERVER_PROPERTY, strServer);
-            repProps.setProperty(PSJdbcDbmsDef.DB_DRIVER_CLASS_NAME_PROPERTY,
-                  strDriverClass);
-            repProps.store(new FileOutputStream(strRepPropFile), null);
+            try(FileInputStream fs = new FileInputStream(strRepPropFile)) {
+               repProps.load(fs);
+               repProps.setProperty(IPSJdbcDbmsDefConstants.DB_SERVER_PROPERTY, strServer);
+               repProps.setProperty(IPSJdbcDbmsDefConstants.DB_DRIVER_CLASS_NAME_PROPERTY,
+                       strDriverClass);
+               try (FileInputStream fs = new FileInputStream(strRepPropFile)) {
+                  repProps.store(fs, null);
+               }
+            }
          }
       }
       catch (Exception e)

@@ -27,7 +27,6 @@ package com.percussion.redirect.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.percussion.licensemanagement.data.PSModuleLicense;
 import com.percussion.licensemanagement.service.impl.PSLicenseService;
-import com.percussion.licensemanagement.service.impl.PSLicenseService;
 import com.percussion.redirect.data.PSCreateRedirectRequest;
 import com.percussion.redirect.data.PSRedirectStatus;
 import com.percussion.redirect.data.PSRedirectValidationData;
@@ -40,6 +39,7 @@ import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.share.dao.impl.PSFolderHelper;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.impl.PSSiteDataService;
 import com.percussion.sitemanage.service.impl.PSSitePublishStatusService;
@@ -53,8 +53,8 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -62,7 +62,7 @@ import org.springframework.stereotype.Service;
 @Service("pSRedirectService")
 public class PSRedirectService implements IPSRedirectService
 {
-    static Log ms_log = LogFactory.getLog(PSRedirectService.class);
+    private static final Logger log = LogManager.getLogger(PSRedirectService.class);
 
     @Autowired
     private PSLicenseService licenseService;
@@ -114,7 +114,7 @@ public class PSRedirectService implements IPSRedirectService
         catch (Exception e)
         {
             status =RedirectValidationStatus.Error;
-            ms_log.error("Error occurred validating the redirect object, data: " + getDataAsString(data), e);
+            log.error("Error occurred validating the redirect object, data: " + getDataAsString(data), e);
             response.setErrorMessage("A redirect rule cannot be created at this time, Please note the time and date and submit this problem to Percussion support.");
         }
         response.setStatus(status);
@@ -179,7 +179,7 @@ public class PSRedirectService implements IPSRedirectService
             // If there is no redirect license, we don't have to log it for on
             // prem customers.
             if (utilityService.isSaaSEnvironment())
-                ms_log.error(e);
+                log.error(e);
         }
         return licInfo;
     }
@@ -208,8 +208,7 @@ public class PSRedirectService implements IPSRedirectService
         return status;
     }
 
-    private boolean isSitePublished(String siteId)
-    {
+    private boolean isSitePublished(String siteId) throws PSDataServiceException {
         IPSGuid siteGuid = guidMgr.makeGuid(siteId, PSTypeEnum.SITE);
         return pubStatusService.isSitePublished(siteGuid);
     }
@@ -245,7 +244,7 @@ public class PSRedirectService implements IPSRedirectService
 			    
 		
 			}catch(Exception e){
-				ms_log.error("Error creating redirect from " + request.getCondition() + " to " + request.getRedirectTo(),e);
+				log.error("Error creating redirect from " + request.getCondition() + " to " + request.getRedirectTo(),e);
 			}
 			if(response != null && response.getStatus() == 200){
 				ret.setStatusCode(PSRedirectStatus.SERVICE_OK);

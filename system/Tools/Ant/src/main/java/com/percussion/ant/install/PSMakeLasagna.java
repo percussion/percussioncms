@@ -26,8 +26,9 @@ package com.percussion.ant.install;
 import com.percussion.server.PSServer;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.util.PSProperties;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.BuildException;
@@ -107,9 +108,13 @@ public class PSMakeLasagna extends Task
          {
             String decryptPwd = "";
              try{
-                decryptPwd = PSEncryptor.getInstance().decrypt(pwd);
+                decryptPwd = PSEncryptor.getInstance("AES",
+                        PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                ).decrypt(pwd);
              }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-                decryptPwd = PSLegacyEncrypter.getInstance().decrypt(pwd, PSServer.getPartOneKey());
+                decryptPwd = PSLegacyEncrypter.getInstance(
+                        PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                ).decrypt(pwd, PSServer.getPartOneKey(),null);
              }
 
              if (decryptPwd.equals(pwd))
@@ -119,7 +124,9 @@ public class PSMakeLasagna extends Task
          }
          if (encryptedPWDProp.equals("N"))
          {
-            pwd = PSEncryptor.getInstance().encrypt(pwd);
+            pwd = PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).encrypt(pwd);
             props.setProperty(PSJdbcDbmsDef.PWD_PROPERTY, pwd);
             props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY,"Y");
             out = new FileOutputStream(m_root + File.separator +

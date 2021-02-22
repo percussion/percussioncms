@@ -226,7 +226,7 @@ public class PSSlotModel extends PSDesignModel
          for (IPSGuid id : nodeDef.getVariantGuids())
          {
             if (id.equals(template.getGUID()))
-               return new PSPair<IPSGuid, IPSGuid>(nodeDef.getGUID(), template
+               return new PSPair<>(nodeDef.getGUID(), template
                      .getGUID());
          }
          
@@ -251,7 +251,7 @@ public class PSSlotModel extends PSDesignModel
    @Override
    public List<IPSAssociationSet> getAssociationSets()
    {
-      List<IPSAssociationSet> asets = new ArrayList<IPSAssociationSet>();
+      List<IPSAssociationSet> asets = new ArrayList<>();
       
       // create 2 associations as the place-holder, one for DELETE, one for MERGE
       IPSAssociationSet assoc = new PSAssociationSet(AssociationType.SLOT_CONTENTTYPE_TEMPLATE);
@@ -312,7 +312,7 @@ public class PSSlotModel extends PSDesignModel
       IPSAssemblyService service = PSAssemblyServiceLocator
             .getAssemblyService();
       Map<IPSGuid, IPSAssemblyTemplate> templateMap = 
-         new HashMap<IPSGuid, IPSAssemblyTemplate>();
+         new HashMap<>();
       List<IPSAssemblyTemplate> templates = service.findTemplatesBySlot(slot);
       for (IPSAssemblyTemplate template : templates)
       {

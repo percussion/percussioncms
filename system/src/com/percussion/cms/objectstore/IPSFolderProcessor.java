@@ -25,6 +25,7 @@ package com.percussion.cms.objectstore;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.services.error.PSNotFoundException;
 
 import java.util.List;
 import java.util.Set;
@@ -185,7 +186,7 @@ public interface IPSFolderProcessor
     * Same as {@link #moveChildren(PSLocator, List, PSLocator, boolean)} with
     * the last parameter value of <code>false</code>.
     */
-    public void removeChildren(PSLocator sourceFolderId, List children) throws PSCmsException;
+    public void removeChildren(PSLocator sourceFolderId, List children) throws PSCmsException, PSNotFoundException;
 
    /**
     * Removes all items/folders specified in <code>children</code> from the
@@ -213,7 +214,7 @@ public interface IPSFolderProcessor
      *             not found or cannot be instantiated, or any problems occur
      *             while removing the relationship(s).
     */
-    public void removeChildren(PSLocator sourceFolderId, List children, boolean force) throws PSCmsException;
+    public void removeChildren(PSLocator sourceFolderId, List children, boolean force) throws PSCmsException, PSNotFoundException;
 
    /**
     * Same as {@link #moveChildren(PSLocator, List, PSLocator, boolean)} with

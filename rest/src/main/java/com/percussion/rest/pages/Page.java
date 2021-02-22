@@ -97,7 +97,7 @@ public class Page
 
 	public List<String> getBookmarkedUsers() {
 		if(bookmarkedUsers == null)
-			bookmarkedUsers = new ArrayList<String>();
+			bookmarkedUsers = new ArrayList<>();
 		
 		return bookmarkedUsers;
 	}

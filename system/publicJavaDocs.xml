@@ -418,7 +418,7 @@
          <format property="CURRENT_YEAR" pattern="yyyy"/>
       </tstamp>
       <loadproperties srcfile="${basedir}/VersionControl/Version.properties" />
-      <property name="doctitle" value="Rhythmyx ${majorVersion} Public API"/>
+      <property name="doctitle" value="Percussion CMS ${majorVersion} Public API"/>
       <javadoc sourcepath="publicJavaDocs/src" destdir="publicJavaDocs/docs" windowtitle="${doctitle}" link="http://java.sun.com/j2se/1.5/docs/api" packagenames="*" maxmemory="512m">
          <classpath refid="project.class.path"/>
          <header><![CDATA[<h4>${doctitle}</h4>]]></header>

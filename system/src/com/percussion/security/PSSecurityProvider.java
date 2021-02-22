@@ -34,8 +34,7 @@ import com.percussion.log.PSLogServerWarning;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSUserSession;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.security.PSRemoteUserCallback;
@@ -296,12 +295,17 @@ public abstract class PSSecurityProvider implements IPSSecurityProvider
 
       String partTwo = uid;
       if (uid == null || uid.equals(""))
-         partTwo = PSLegacyEncrypter.getPartTwoKey();
+         partTwo = PSLegacyEncrypter.getInstance(
+                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).getPartTwoKey();
 
       try {
-         return PSEncryptor.getInstance().decrypt(str);
+         return PSEncryptor.getInstance("AES",
+                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(str);
       } catch (PSEncryptionException e) {
-         return PSCryptographer.decrypt(PSLegacyEncrypter.getPartOneKey(), partTwo, str);
+         return PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
+                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).getPartOneKey(), partTwo, str);
       }
 
    }

@@ -55,7 +55,7 @@ public class PSStagingItemFilterRule extends PSPublicAssetItemFilterRule impleme
         boolean ignoreUnModAssets = StringUtils.equals(ignoreAssets, "true");
         Long serverId = pubServer==null?null:pubServer.getServerId();
         WorkflowItemWorker worker = getWorker(params);
-        List<IPSFilterItem> rvalue = new ArrayList<IPSFilterItem>();
+        List<IPSFilterItem> rvalue = new ArrayList<>();
         IPSContentChangeService contentChangeService = PSContentChangeServiceLocator.getContentChangeService();
         List<Integer> changedIds;
         Set<Integer> changedIdsSet = null;

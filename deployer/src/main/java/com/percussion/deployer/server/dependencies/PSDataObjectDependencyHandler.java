@@ -40,6 +40,7 @@ import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.tablefactory.PSJdbcColumnData;
 import com.percussion.tablefactory.PSJdbcDataTypeMap;
 import com.percussion.tablefactory.PSJdbcFilterContainer;
@@ -89,8 +90,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
 
    // see base class
    public boolean doesDependencyExist(PSSecurityToken tok, String id)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -123,8 +123,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
     */
    protected List<PSDependency> getChildDepsFromParentID(String tableName,
       String childIdCol, String parentIdCol, String parentId,
-      String dependentType, PSSecurityToken tok) throws PSDeployException
-   {
+      String dependentType, PSSecurityToken tok) throws PSDeployException, PSNotFoundException {
       if ( tableName == null || tableName.trim().length() == 0)
          throw new IllegalArgumentException(
             "tableName may not be null or empty");
@@ -164,8 +163,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
     * @throws PSDeployException if any other error occurs.
     */
    protected List<PSDependency> getDepsFromIds(Iterator ids, String dependencyType, 
-      PSSecurityToken tok) throws PSDeployException
-   {
+      PSSecurityToken tok) throws PSDeployException, PSNotFoundException {
       if (ids == null)
          throw new IllegalArgumentException("ids may not be null");
       if ( dependencyType == null || dependencyType.trim().length() == 0)
@@ -200,8 +198,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
     * @throws PSDeployException if any other error occurs.
     */
    protected List<PSDependency> getDepsFromIds(Iterator ids, String dependencyType, 
-      PSSecurityToken tok, int depType) throws PSDeployException
-   {
+      PSSecurityToken tok, int depType) throws PSDeployException, PSNotFoundException {
       if (ids == null)
          throw new IllegalArgumentException("ids may not be null");
       if ( dependencyType == null || dependencyType.trim().length() == 0)
@@ -213,7 +210,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
          throw new IllegalArgumentException(
             "depType must be one of the PSDependency.TYPE_XXX values");
 
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       
       PSDependencyHandler handler = getDependencyHandler(dependencyType);
       String id;
@@ -259,7 +256,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
          throw new IllegalArgumentException("col may not be null or empty");
    
       // use "Set" to make sure it is a distinct list
-      Set<String> ids = new HashSet<String>();
+      Set<String> ids = new HashSet<>();
 
       if (data != null && data.getRows().hasNext())
       {
@@ -307,7 +304,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
          throw new IllegalArgumentException("col may not be null or empty");
 
       // get a distinct list of app names
-      Set<String> appNames = new HashSet<String>();
+      Set<String> appNames = new HashSet<>();
 
       if (data != null && data.getRows().hasNext())
       {
@@ -502,7 +499,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
          throw new IllegalArgumentException("nameCol may not be null or empty");
 
       // get all registered content types
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
 
       Iterator regEntries = PSDbmsHelper.getInstance().getRegistrationEntries(
          table, idCol, nameCol, null).iterator();
@@ -996,7 +993,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
          mapping);
 
       // set the update key to be the id column in case there's no primary key
-      List<String> cols = new ArrayList<String>();
+      List<String> cols = new ArrayList<>();
       cols.add(idCol);
       PSDbmsHelper dbmsHelper = PSDbmsHelper.getInstance();
       dbmsHelper.setUpdateKeyForSchema(cols.iterator(), schema);
@@ -1449,8 +1446,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
     */
    protected List<PSDependency> getChildDepsWithPairIdFromParentID(PSSecurityToken tok,
       String table, String childIdCol, String parentIdCol, String parentId,
-      String childDepType, int childDepScope) throws PSDeployException
-   {
+      String childDepType, int childDepScope) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (table == null || table.trim().length() == 0)
@@ -1531,7 +1527,7 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
          table, columns, filter);
 
       // use "Set" to make sure it is a distinct list
-      Set<String> ids = new HashSet<String>();
+      Set<String> ids = new HashSet<>();
 
       if (data != null && data.getRows().hasNext())
       {

@@ -41,8 +41,8 @@ import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.security.data.PSAclImpl;
 import com.percussion.services.security.data.PSCommunity;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.xml.PSXmlTreeWalker;
 
 import java.io.File;
@@ -110,7 +110,7 @@ public class PSSearchCommunityHandler implements IPSRequestPreProcessor
 
       PSAclImpl object_acl = null;
 
-      List<Element> toremove = new ArrayList<Element>();
+      List<Element> toremove = new ArrayList<>();
 
       for (int i = 0; i < len; i++)
       {
@@ -183,7 +183,7 @@ public class PSSearchCommunityHandler implements IPSRequestPreProcessor
          
          if (object_acl != null)
          {
-            List<IPSAcl> acls = new ArrayList<IPSAcl>();
+            List<IPSAcl> acls = new ArrayList<>();
             acls.add(object_acl);
             asvc.saveAcls(acls);
          }

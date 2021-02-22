@@ -102,7 +102,7 @@ public class PSConsistencyProblemFinder extends PSConsistencyBase
          throws RepositoryException, SQLException, NamingException,
          PSORMException
    {
-      List<Problem> problems = new ArrayList<Problem>();
+      List<Problem> problems = new ArrayList<>();
       IPSNodeDefinition def = ms_cmgr.findNodeDefinitionByName(contentTypeName);
       long ctid = def.getGUID().longValue();
       PSTypeConfiguration config = PSContentRepository
@@ -151,8 +151,8 @@ public class PSConsistencyProblemFinder extends PSConsistencyBase
    private Collection<Problem> check(List<PSComponentSummary> sblock,
          PSTypeConfiguration config) throws NamingException, SQLException
    {
-      List<Problem> problems = new ArrayList<Problem>();
-      List<Integer> cids = new ArrayList<Integer>();
+      List<Problem> problems = new ArrayList<>();
+      List<Integer> cids = new ArrayList<>();
       for (PSComponentSummary s : sblock)
       {
          cids.add(s.getContentId());
@@ -185,7 +185,7 @@ public class PSConsistencyProblemFinder extends PSConsistencyBase
    private Collection<Problem> checkTable(List<PSComponentSummary> sblock,
          String table, List<Integer> cids) throws NamingException, SQLException
    {
-      List<Problem> problems = new ArrayList<Problem>();
+      List<Problem> problems = new ArrayList<>();
       if (table.equalsIgnoreCase("CONTENTSTATUS"))
       {
          return problems;
@@ -217,7 +217,7 @@ public class PSConsistencyProblemFinder extends PSConsistencyBase
          PreparedStatement st = c.prepareStatement(query.toString());
 
          ResultSet rs = st.executeQuery();
-         Map<Integer, Set<Integer>> present = new HashMap<Integer, Set<Integer>>();
+         Map<Integer, Set<Integer>> present = new HashMap<>();
          while (rs.next())
          {
             int contentid = rs.getInt(1);
@@ -225,7 +225,7 @@ public class PSConsistencyProblemFinder extends PSConsistencyBase
             Set<Integer> revisions = present.get(contentid);
             if (revisions == null)
             {
-               revisions = new HashSet<Integer>();
+               revisions = new HashSet<>();
                present.put(contentid, revisions);
             }
             revisions.add(revision);

@@ -24,23 +24,36 @@
 
 package com.percussion.theme.service.impl;
 
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceDeleteException;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
 import com.percussion.share.service.IPSDataService.DataServiceSaveException;
-import com.percussion.theme.data.*;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.theme.data.PSRegionCSS;
+import com.percussion.theme.data.PSRegionCssList;
+import com.percussion.theme.data.PSRichTextCustomStyle;
+import com.percussion.theme.data.PSRichTextCustomStyleList;
+import com.percussion.theme.data.PSTheme;
+import com.percussion.theme.data.PSThemeSummary;
 import com.percussion.theme.service.IPSThemeService;
-
-import java.util.List;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 /**
  * Implementation of the {@link IPSThemeService}.
@@ -79,17 +92,28 @@ public class PSThemeRestService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSTheme load(@PathParam("name") String name)
     {
-        return themeService.load(name);
+        try {
+            return themeService.load(name);
+        } catch (DataServiceLoadException | PSValidationException | DataServiceNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     
     @GET
     @Path("/create/{newTheme}/{existingTheme}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSThemeSummary create(@PathParam("newTheme") String newTheme,
-            @PathParam("existingTheme") String existingTheme) throws DataServiceLoadException,
-            DataServiceNotFoundException, DataServiceSaveException
+            @PathParam("existingTheme") String existingTheme)
     {
-        return themeService.create(newTheme, existingTheme);
+        try {
+            return themeService.create(newTheme, existingTheme);
+        } catch (DataServiceSaveException | DataServiceNotFoundException | DataServiceLoadException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     
     /* (non-Javadoc)
@@ -118,7 +142,13 @@ public class PSThemeRestService
     public PSRegionCSS getRegionCSS(@PathParam("theme") String theme, @PathParam("templatename") String templatename,
             @PathParam("outerregion") String outerregion, @PathParam("region") String region)
     {
-        return themeService.getRegionCSS(theme, templatename, outerregion, region);
+        try {
+            return themeService.getRegionCSS(theme, templatename, outerregion, region);
+        } catch (IPSDataService.PSThemeNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
 
     @POST
@@ -127,27 +157,51 @@ public class PSThemeRestService
     public void saveRegionCSS(@PathParam("theme") String theme, @PathParam("templatename") String templatename,
             PSRegionCSS regionCSS)
     {
-       themeService.saveRegionCSS(theme, templatename, regionCSS);
+        try {
+            themeService.saveRegionCSS(theme, templatename, regionCSS);
+        } catch (IPSDataService.PSThemeNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     @DELETE
     @Path("/regioncss/{theme}/{templatename}/{outerregion}/{region}")
     public void deleteRegionCSS(@PathParam("theme") String theme, @PathParam("templatename") String templatename,
             @PathParam("outerregion") String outerregion, @PathParam("region") String region)
     {
-       themeService.deleteRegionCSS(theme, templatename, outerregion, region);
+        try {
+            themeService.deleteRegionCSS(theme, templatename, outerregion, region);
+        } catch (IPSDataService.PSThemeNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     @POST
     @Path("/regioncss/merge/{theme}/{templateId}")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public void mergeRegionCSS(@PathParam("theme") String theme, @PathParam("templateId") String templateId, PSRegionCssList deletedRegions)
     {
-        themeService.mergeRegionCSS(theme, templateId, deletedRegions);
+        try {
+            themeService.mergeRegionCSS(theme, templateId, deletedRegions);
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+           throw new WebApplicationException(e.getMessage());
+        }
     }
     @POST
     @Path("/regioncss/prepareForEdit/{theme}/{templatename}")
     public void prepareForEditRegionCSS(@PathParam("theme") String theme, @PathParam("templatename") String templatename)
     {
-        themeService.prepareForEditRegionCSS(theme, templatename);
+        try {
+            themeService.prepareForEditRegionCSS(theme, templatename);
+        } catch (IPSDataService.PSThemeNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     @DELETE
     @Path("/regioncss/clearCache/{theme}/{templatename}")
@@ -169,7 +223,7 @@ public class PSThemeRestService
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSThemeRestService.class);
+    public static final Logger log = LogManager.getLogger(PSThemeRestService.class);
 
     
 

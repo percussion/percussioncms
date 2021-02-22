@@ -26,9 +26,15 @@ package com.percussion.sitemanage.importer.helpers.impl;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.Validate.notNull;
 
+import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.data.IPSHtmlMetadata;
+import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.impl.PSPageManagementUtils;
+import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.error.PSSiteImportException;
@@ -118,18 +124,18 @@ public abstract class PSGenericMetadataExtractorHelper extends PSImportHelper
     /**
      * @param targetItem
      */
-    protected abstract void saveTargetItem(IPSHtmlMetadata targetItem);
+    protected abstract void saveTargetItem(IPSHtmlMetadata targetItem) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException;
 
     /**
      * @param context
      */
-    protected abstract void addHtmlWidgetToTemplate(PSSiteImportCtx context);
+    protected abstract void addHtmlWidgetToTemplate(PSSiteImportCtx context) throws PSDataServiceException, PSSiteImportException;
 
     /**
      * @param context
      * @return
      */
-    protected abstract IPSHtmlMetadata getTargetItem(PSSiteImportCtx context);
+    protected abstract IPSHtmlMetadata getTargetItem(PSSiteImportCtx context) throws PSDataServiceException;
 
 
     /**

@@ -47,7 +47,7 @@ public class PSClassNameMatcher
     
     Element cur;
     
-    List<Element> parents = new ArrayList<Element>();
+    List<Element> parents = new ArrayList<>();
 
     /**
      * Construct the matcher from the Element to start matching on, walking up it's parent chain.
@@ -91,7 +91,7 @@ public class PSClassNameMatcher
      */
     public Set<String> getNextParentElementClasses()
     {
-        Set<String> classNames = new HashSet<String>();
+        Set<String> classNames = new HashSet<>();
 
         while (classNames.isEmpty() && !parents.isEmpty())
         {

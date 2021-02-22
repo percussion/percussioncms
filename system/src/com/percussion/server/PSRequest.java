@@ -41,7 +41,7 @@ import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.util.*;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.utils.security.PSSecurityCatalogException;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.utils.string.PSStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -2115,6 +2115,7 @@ public class PSRequest
       }
       if (useInternalSession)
       {
+
 
          String key = ms_internalUserSessionIdMap.get(host);
          PSUserSession sess = null;

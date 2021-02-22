@@ -34,7 +34,7 @@ import com.percussion.delivery.multitenant.IPSTenantContext;
 public class PSThreadLocalTenantContext implements IPSTenantContext 
 {
 
-	private static ThreadLocal<String> userLocal = new ThreadLocal<String>();
+	private static ThreadLocal<String> userLocal = new ThreadLocal<>();
 
 	/*
 	 * (non-Javadoc)

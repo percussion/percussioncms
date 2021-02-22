@@ -58,6 +58,7 @@ import com.smartgwt.client.widgets.tab.Tab;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -70,6 +71,7 @@ import java.util.logging.Logger;
 public class PSPackagesTab
 {
 
+   private static final String BR_TAG="<br/>";
    /**
     * Creates the packages tab. Gets the packages info through rest and creates
     * a table to hold that data and returns the tab.
@@ -157,11 +159,12 @@ public class PSPackagesTab
          {
             Record[] recs = response.getData();
             ListGridRecord[] lgrecs = new ListGridRecord[recs.length];
-            logger.log(Level.INFO,"found "+recs.length+" records");
+            logger.log(Level.INFO, "found " + recs.length + " records");
             for (int i=0; i<recs.length; i++)
             {
                JavaScriptObject jsObj = recs[i].getJsObj();
-               logger.log(Level.INFO,"jsObj="+jsObj);
+               logger.log(Level.INFO,"jsObj="+
+                       jsObj.toString());
 
 
                ListGridRecord lgr = new ListGridRecord(recs[i].getJsObj());
@@ -446,20 +449,23 @@ public class PSPackagesTab
       final List<String> noConfigPakcages = selectedPackages.get(1);
       if (!noConfigPakcages.isEmpty() && configPakcages.isEmpty())
       {
-         String msg = "None of the selected packages is associated " +
-               "with a configuration file.";
+         StringBuilder bld = new StringBuilder(
+                 "None of the selected packages is associated with a configuration file.");
          for (String pkgName : noConfigPakcages)
          {
-            msg += "<br/>" + pkgName;
+            bld.append(BR_TAG).append(pkgName);
          }
-         SC.say(msg);
+         SC.say(bld.toString());
          return;
       }
       String packageNames = "";
+      StringBuilder bld = new StringBuilder();
       for (String pkgName : configPakcages)
       {
-         packageNames += pkgName + PkgMgtUI.NAME_SEPARATOR;
+         bld.append(pkgName).append(PkgMgtUI.NAME_SEPARATOR);
       }
+      packageNames = bld.toString();
+
       if (packageNames.endsWith(PkgMgtUI.NAME_SEPARATOR))
          packageNames = packageNames.substring(0, packageNames.length() - 1);
       String reapplyConfigUrl = m_reapplyConfigUrl + "?packageNames="
@@ -488,12 +494,12 @@ public class PSPackagesTab
                      + " configuration for the following packages.";
                for (String pkg : configPakcages)
                {
-                  respMsg += "<br/>" + pkg;
+                  respMsg += BR_TAG + pkg;
                }
             }
             if(!noConfigPakcages.isEmpty())
             {
-               respMsg += "<br/><br/>No configuration files are associated " +
+               respMsg += BR_TAG + BR_TAG + "No configuration files are associated " +
                      "with the following packages, so no configurations were " +
                      "applied.";
                for (String pkg : noConfigPakcages)
@@ -519,10 +525,10 @@ public class PSPackagesTab
     */
    private List<List<String>> getPkgsForConfigReapply()
    {
-      List<List<String>> result = new ArrayList<List<String>>();
+      List<List<String>> result = new ArrayList<>();
       final ListGridRecord[] selectedRecords = m_packagesGrid.getSelection();
-      List<String> noConfigPakcages = new ArrayList<String>();
-      List<String> configPakcages = new ArrayList<String>();
+      List<String> noConfigPakcages = new ArrayList<>();
+      List<String> configPakcages = new ArrayList<>();
       for (int i = 0; i < selectedRecords.length; i++)
       {
          ListGridRecord selectedRecord = selectedRecords[i];
@@ -693,17 +699,17 @@ public class PSPackagesTab
       {
          String msg = "";
          String status = record.getAttribute(CONFIG_STATUS);
-         if (status == "Success")
-         {
-            msg = "Configured Successfully";
-         }
-         else if (status == "Error")
-         {
-            msg = "Error during the configuration";
-         }
-         else if (status == "Warn")
-         {
-            msg = "Warnings during the configuration";
+
+         switch (status) {
+            case "SUCCESS":
+               msg = "Configured Successfully";
+               break;
+            case "ERROR":
+               msg = "Error during the configuration";
+               break;
+            case "WARN":
+               msg = "Warnings during the configuration";
+               break;
          }
          return msg;
       }
@@ -720,16 +726,17 @@ public class PSPackagesTab
             int colNum)
       {
          String msg = "";
-         String status = record.getAttribute(PACKAGE_STATUS);
-         if (status.equalsIgnoreCase( "Success"))
+         String status =
+                 record.getAttribute(PACKAGE_STATUS);
+         if (status.equals( "SUCCESS"))
          {
             msg = "Installed Successfully";
          }
-         else if (status.equalsIgnoreCase("Error"))
+         else if (status.equals("ERROR"))
          {
             msg = "Error during the installation";
          }
-         else if (status.equalsIgnoreCase("Uninstalled"))
+         else if (status.equals("UNINSTALLED"))
          {
             msg = "Uninstalled";
          }
@@ -779,7 +786,7 @@ public class PSPackagesTab
 
    private Menu m_actionsMenu = new Menu();
 
-   MenuItem m_uninstallMenuItem = new MenuItem("Uninstall");
+   MenuItem m_uninstallMenuItem = new MenuItem(STATUS_UNINSTALLED);
    MenuItem m_verifyMenuItem = new MenuItem("Verify");
    MenuItem m_convertMenuItem = new MenuItem("Convert to Source");
    

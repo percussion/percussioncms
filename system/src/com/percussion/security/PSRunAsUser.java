@@ -30,7 +30,6 @@ import com.percussion.services.security.IPSRoleMgr;
 import com.percussion.services.security.PSJaasUtils;
 import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.utils.security.PSSecurityCatalogException;
 
 import java.util.Collections;
 import java.util.Map;

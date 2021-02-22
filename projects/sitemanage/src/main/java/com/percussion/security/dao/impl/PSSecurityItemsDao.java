@@ -58,7 +58,7 @@ public class PSSecurityItemsDao implements IPSSecurityItemsDao
     public List<String> getAvailablePrivateKeys()
     {
         List<File> privateKeys;
-        List<String> keyNames = new ArrayList<String>();
+        List<String> keyNames = new ArrayList<>();
 
         try
         {

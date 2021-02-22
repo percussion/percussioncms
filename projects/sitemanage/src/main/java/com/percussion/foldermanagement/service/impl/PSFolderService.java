@@ -48,6 +48,8 @@ import com.percussion.share.async.PSAsyncJobStatus;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.data.PSLightWeightObject;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.service.IPSSiteSectionMetaDataService;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.thread.PSThreadUtils;
@@ -143,7 +145,7 @@ public class PSFolderService implements IPSFolderService
         Validate.notEmpty(path, "path cannot be empty");
         validateWorkflow(workflowName);
 
-        List<PSFolderItem> folderItems = new ArrayList<PSFolderItem>();
+        List<PSFolderItem> folderItems = new ArrayList<>();
 
         List<PSPathItem> foldersProperties;
         PSFolderTreeInfo fullFolderTreeItem;
@@ -180,8 +182,7 @@ public class PSFolderService implements IPSFolderService
     
     
     @Override
-    public String startGetAssignedFoldersJob(String workflowName, String path, boolean includeFoldersWithDifferentWorkflow)
-    {
+    public String startGetAssignedFoldersJob(String workflowName, String path, boolean includeFoldersWithDifferentWorkflow) throws PSWorkflowNotFoundException {
         long jobId = asyncJobService.startJob("getAssignedFoldersJob", new Object[] {workflowName, path, includeFoldersWithDifferentWorkflow});
         return String.valueOf(jobId);
     }
@@ -204,7 +205,7 @@ public class PSFolderService implements IPSFolderService
         {
             PSGetAssignedFoldersJobStatus jobStatus = (PSGetAssignedFoldersJobStatus)result;
             jobStatus.setJobId(lJob);
-            if(jobStatus.getStatus() == "-1" ){
+            if(jobStatus.getStatus().equals("-1" )){
                 asyncJobService.cancelJob(lJob);
                 jobStatus.setMessage("terminated");
             }else{
@@ -235,8 +236,7 @@ public class PSFolderService implements IPSFolderService
        return getAssignedFoldersJobStatus(jobId);
     }
 
-    public void assignFoldersToWorkflow(PSWorkflowAssignment workflowAssignment)
-    {
+    public void assignFoldersToWorkflow(PSWorkflowAssignment workflowAssignment) throws PSWorkflowNotFoundException, PSWorkflowAssignmentInProgressException {
         Validate.notNull(workflowAssignment, "workflowAssignment cannot be null");
         Validate.notEmpty(workflowAssignment.getWorkflowName(), "workflowAssignment.workflowName cannot be null");
 
@@ -348,7 +348,7 @@ public class PSFolderService implements IPSFolderService
         if (folderIds != null && folderIds.length == 0)
             return didStartThread;
         
-        final Map<Integer,List<Integer>> workflowsMap = new HashMap<Integer,List<Integer>>();
+        final Map<Integer,List<Integer>> workflowsMap = new HashMap<>();
         
         // if no ids supplied, get the list of ids using the default workflow implicitly
         if (folderIds == null)
@@ -377,11 +377,11 @@ public class PSFolderService implements IPSFolderService
                     List<Integer> workflowsList = workflowsMap.get(folderWorkflowId);
                     if (workflowsList == null)
                     {
-                        workflowsList = new ArrayList<Integer>();
+                        workflowsList = new ArrayList<>();
                         workflowsMap.put(folderWorkflowId,workflowsList);
                     }
                        
-                    workflowsList.add(new Integer(folderContentId));                
+                    workflowsList.add(folderContentId);
                 }
                 catch (Exception e)
                 {
@@ -450,7 +450,7 @@ public class PSFolderService implements IPSFolderService
      */
     private List<String> getDefaultWorkflowFolderIds()
     {
-        List<String> idList = new ArrayList<String>();
+        List<String> idList = new ArrayList<>();
         try
         {
             idList.addAll(getDefaultWorfklowIdsFromPath("/Sites"));
@@ -479,7 +479,7 @@ public class PSFolderService implements IPSFolderService
      */
     private List<String> getDefaultWorfklowIdsFromPath(String path) throws Exception
     {
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
         
         List<PSPathItem> subPaths = getSubfolders(path);
         for (PSPathItem pathItem : subPaths)
@@ -496,7 +496,7 @@ public class PSFolderService implements IPSFolderService
 
     private List<String> getDefaultWorfklowIds(String id) throws Exception
     {
-        List<String> paths = new ArrayList<String>();
+        List<String> paths = new ArrayList<>();
         
         List<PSPathItem> subPaths = getSubFoldersWithoutPath(id);
         for (PSPathItem pathItem : subPaths)
@@ -519,10 +519,9 @@ public class PSFolderService implements IPSFolderService
      * @return a list of {@link PSPathItem} objects. May be empty, but never
      *         <code>null</code>
      */
-    private List<PSPathItem> getSubfolders(String path)
-    {
+    private List<PSPathItem> getSubfolders(String path) throws IPSPathService.PSPathServiceException, PSDataServiceException {
         List<PSPathItem> children = pathService.findChildren(path);
-        List<PSPathItem> subfolders = new ArrayList<PSPathItem>();
+        List<PSPathItem> subfolders = new ArrayList<>();
 
         for (PSPathItem item : children)
         {
@@ -535,7 +534,7 @@ public class PSFolderService implements IPSFolderService
     
     private List<PSPathItem> getSubFoldersWithoutPath(String id)
     {
-        List<PSPathItem> subfolders = new ArrayList<PSPathItem>();
+        List<PSPathItem> subfolders = new ArrayList<>();
         List<PSItemSummary> itemSums = contentWs.findFolderChildren(idMapper.getGuid(id), false);
         for (PSItemSummary sum : itemSums)
         {
@@ -584,7 +583,7 @@ public class PSFolderService implements IPSFolderService
      * @param includeFoldersWithDifferentWorkflow include or not folders that
      *            are not associated with the given workflow.
      * @return a {@link PSFolderTreeInfo} object, holding the corresponding
-     *         {@link PsFolderItem} object and a boolean value that indicates if
+     *         {@link PSFolderItem} object and a boolean value that indicates if
      *         there is a node in this branch of the tree associated with the
      *         given workflow.
      * @throws Exception if an error occurs when getting the childs of the path.
@@ -614,7 +613,7 @@ public class PSFolderService implements IPSFolderService
             return new PSFolderTreeInfo(folderItem, branchAssociatedWithWorkflow);
         }
 
-        List<PSFolderTreeInfo> children = new ArrayList<PSFolderTreeInfo>();
+        List<PSFolderTreeInfo> children = new ArrayList<>();
         PSFolderTreeInfo childFolderItemWithChildren;
         boolean allChildrenAssociatedWithWorkflow = true;
 
@@ -664,7 +663,7 @@ public class PSFolderService implements IPSFolderService
      * 
      * @param pathItem the path item from which to create the PSFolderItem
      *            object. Assumed not <code>null<code>
-     * @return a {@link PSFolderITem} object. Never <code>null</code>
+     * @return a {@link PSFolderItem} object. Never <code>null</code>
      * @throws Exception if the path requested cannot be found.
      */
     private PSFolderItem getFolderItem(PSPathItem pathItem) throws Exception
@@ -703,8 +702,7 @@ public class PSFolderService implements IPSFolderService
     }
 
     @Override
-    public PSWorkflow validateWorkflow(String workflowName)
-    {
+    public PSWorkflow validateWorkflow(String workflowName) throws PSWorkflowNotFoundException {
         PSWorkflow workflow = null;
 
         if (!StringUtils.isBlank(workflowName))
@@ -740,10 +738,10 @@ public class PSFolderService implements IPSFolderService
 
         /**
          * Constructs and instance using the params.
-         * 
+         *
+         * @param folderItem the PSFolderItem object to use.
          * @param branchAssociatedWithWorkflow the boolean value to use in the
          *            instance.
-         * @param folderItemObject the PSFolderItem object to use.
          */
         public PSFolderTreeInfo(PSFolderItem folderItem, boolean branchAssociatedWithWorkflow)
         {
@@ -762,7 +760,7 @@ public class PSFolderService implements IPSFolderService
          */
         public static List<PSFolderItem> getChildrenElements(List<PSFolderTreeInfo> children)
         {
-            List<PSFolderItem> items = new ArrayList<PSFolderItem>();
+            List<PSFolderItem> items = new ArrayList<>();
             if (children != null)
             {
                 for (PSFolderTreeInfo item : children)
@@ -776,17 +774,17 @@ public class PSFolderService implements IPSFolderService
 
     @Override
     public List<PSLightWeightObject> getPagesFromFolder(String folderId)
-            throws PSFolderNotFoundException, PSPagesNotFoundException {
+            throws PSFolderNotFoundException, PSPagesNotFoundException, PSValidationException {
         if(StringUtils.isBlank(folderId))
             throw new PSFolderNotFoundException("The supplied folder id is blank");
         PSFolderProperties folderProperties = folderHelper.findFolderProperties(folderId);
-        List<PSLightWeightObject> results = new ArrayList<PSLightWeightObject>();
+        List<PSLightWeightObject> results = new ArrayList<>();
         long pageCtypeId;
         try {
             pageCtypeId = itemDefManager.contentTypeNameToId(IPSPageService.PAGE_CONTENT_TYPE);
         } catch (PSInvalidContentTypeException e) {
             log.error(e);
-            throw new PSPagesNotFoundException("Error occurred retreiving pages for the supplied folder, please se log for more details.");
+            throw new PSPagesNotFoundException("Error occurred retrieving pages for the supplied folder, please se log for more details.");
         }
         List<PSItemSummary> itemSums = contentWs.findFolderChildren(idMapper.getGuid(folderProperties.getId()), false);
         for (PSItemSummary sum : itemSums)

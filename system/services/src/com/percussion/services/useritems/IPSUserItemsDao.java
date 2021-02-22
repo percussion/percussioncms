@@ -25,6 +25,7 @@
 package com.percussion.services.useritems;
 
 import com.percussion.services.useritems.data.PSUserItem;
+import com.percussion.share.dao.IPSGenericDao;
 
 import java.util.List;
 /**
@@ -37,7 +38,7 @@ public interface IPSUserItemsDao
     * Saves userItem object.
     * @param userItem must not be <code>null</code>
     */
-   void save(PSUserItem userItem);
+   void save(PSUserItem userItem) throws IPSGenericDao.SaveException;
    
    /**
     * Finds user item by given user name and item id.

@@ -25,6 +25,7 @@ package com.percussion.design.objectstore.server;
 
 import com.percussion.design.objectstore.PSApplication;
 import com.percussion.design.objectstore.PSObjectFactory;
+import com.percussion.error.PSException;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,8 +33,8 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Random;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -58,7 +59,7 @@ public class PSXmlObjectStoreLockManagerTest
    {
       int numThreads = 10;
       int numTimes = 10;
-      Random rand = new Random();
+      SecureRandom rand = new SecureRandom();
 
       File lockDir = temporaryFolder.newFolder("Temp","Testing","TestLocks");
 
@@ -93,7 +94,7 @@ public class PSXmlObjectStoreLockManagerTest
     */
    @Test
    @Ignore("TODO: This test has a logic problem.  Please fix it.")
-   public void testBackFile() throws IOException {
+   public void testBackFile() throws IOException, PSException {
       PSServerXmlObjectStore.RecoverableFile dirBkup;
       
       // cleanup both source and destination directories if exist
@@ -147,7 +148,7 @@ public class PSXmlObjectStoreLockManagerTest
       {
          try
          {
-            Random rand = new Random();
+            SecureRandom rand = new SecureRandom();
             PSApplication testApp = PSObjectFactory.createApplication();
             testApp.setName(m_appName);
             while (m_numTimes-- > 0)
@@ -175,12 +176,6 @@ public class PSXmlObjectStoreLockManagerTest
                   {
                      m_locker.releaseLock(id, lockKey);
                      System.err.println(Thread.currentThread().toString() + " released lock.");
-                  }
-                  if (rand.nextDouble() > 0.1) // 10% chance of yielding
-                  {
-                     System.err.println(Thread.currentThread().toString() + " yielding for 1 second.");
-                     Thread.sleep(1000);
-                     Thread.currentThread().yield();
                   }
                }
             }

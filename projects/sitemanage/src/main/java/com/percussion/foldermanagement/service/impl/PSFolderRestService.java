@@ -43,12 +43,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.percussion.share.data.PSLightWeightObjectList;
+import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -91,7 +93,11 @@ public class PSFolderRestService
             @PathParam("path") String path,
             @QueryParam("includeFoldersWithDifferentWorkflow") @DefaultValue("false") Boolean includeFoldersWithDifferentWorkflow)
     {
-        return folderService.startGetAssignedFoldersJob(workflowName, path, includeFoldersWithDifferentWorkflow);
+        try {
+            return folderService.startGetAssignedFoldersJob(workflowName, path, includeFoldersWithDifferentWorkflow);
+        } catch (PSWorkflowNotFoundException e) {
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     
     /**
@@ -154,21 +160,16 @@ public class PSFolderRestService
             log.error(message, e);
             return Response.status(Status.BAD_REQUEST).entity(message + e.getLocalizedMessage()).build();
         }
-        catch(PSPathNotFoundServiceException e)
+        catch(PSPathNotFoundServiceException | LoadException e)
         {
             // This means that the required path could not be found.
-            log.error(message, e);
+            log.error(message);
+            log.debug(e.getMessage(),e);
             return Response.status(Status.NOT_FOUND).entity(message + e.getLocalizedMessage()).build();
-        }
-        catch(LoadException e)
+        } catch (Exception e)
         {
-            // This means that the required path could not be found.
-            log.error(message, e);
-            return Response.status(Status.NOT_FOUND).entity(message + e.getLocalizedMessage()).build();
-        }
-        catch (Exception e)
-        {
-            log.error(message, e);
+            log.error(message);
+            log.debug(e.getMessage(),e);
             return Response.serverError().entity(message + e.getLocalizedMessage()).build();
         }
     }
@@ -220,7 +221,13 @@ public class PSFolderRestService
     @Path("/folderpages/id/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSLightWeightObject> getFolderPagesById(@PathParam("id") String id){
-    	return new PSLightWeightObjectList(folderService.getPagesFromFolder(id));
+        try {
+            return new PSLightWeightObjectList(folderService.getPagesFromFolder(id));
+        } catch (IPSFolderService.PSFolderNotFoundException | IPSFolderService.PSPagesNotFoundException | PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     
 }

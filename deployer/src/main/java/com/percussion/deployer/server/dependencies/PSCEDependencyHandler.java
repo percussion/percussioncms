@@ -91,7 +91,7 @@ public class PSCEDependencyHandler extends PSElementDependencyHandler
    /**
     * Constant for this handler's supported type
     */
-   public final static String DEPENDENCY_TYPE = 
+   public static final String DEPENDENCY_TYPE =
       IPSDeployConstants.DEP_OBJECT_TYPE_CONTENT_EDITOR;
 
    /**
@@ -105,7 +105,7 @@ public class PSCEDependencyHandler extends PSElementDependencyHandler
     * List of child types supported by this handler, never <code>null</code> or
     * empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {

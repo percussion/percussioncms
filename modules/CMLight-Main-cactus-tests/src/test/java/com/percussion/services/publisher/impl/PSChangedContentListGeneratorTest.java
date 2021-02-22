@@ -28,6 +28,7 @@ import com.percussion.services.contentchange.PSContentChangeServiceLocator;
 import com.percussion.services.contentchange.data.PSContentChangeEvent;
 import com.percussion.services.contentchange.data.PSContentChangeType;
 import com.percussion.services.contentmgr.IPSContentPropertyConstants;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.util.IPSHtmlParameters;
 
 import java.util.ArrayList;
@@ -67,14 +68,14 @@ public class PSChangedContentListGeneratorTest extends ServletTestCase
    
    public void tearDown()
    {
-      changeService.deleteChangeEventsForSite(Long.valueOf(SITEID));
+      changeService.deleteChangeEventsForSite(Long.parseLong(SITEID));
    }
    
    public void testGenerate() throws Exception
    {
        
        assertGeneration(null, null, true);
-       Map<String, String> params = new HashMap<String, String>();
+       Map<String, String> params = new HashMap<>();
        assertGeneration(null, null, true);
        
        params.put(SITE_ID_PARAM, null);
@@ -93,7 +94,7 @@ public class PSChangedContentListGeneratorTest extends ServletTestCase
        params.put(CONTENT_CHANGE_TYPE_PARAM, "badType");
        assertGeneration(params, null, true);
        
-       List<String> changedIds = new ArrayList<String>();
+       List<String> changedIds = new ArrayList<>();
        params.put(SITE_ID_PARAM, SITEID);
        params.put(CONTENT_CHANGE_TYPE_PARAM, "PENDING_LIVE");
        assertGeneration(params, changedIds, false);
@@ -110,8 +111,7 @@ public class PSChangedContentListGeneratorTest extends ServletTestCase
        assertGeneration(params, changedIds, false);
    }
 
-   private String createChange(int contentId, long siteId, PSContentChangeType changeType)
-   {
+   private String createChange(int contentId, long siteId, PSContentChangeType changeType) throws IPSGenericDao.SaveException {
       PSContentChangeEvent changeEvent = new PSContentChangeEvent();
        changeEvent.setChangeType(changeType);
        changeEvent.setContentId(contentId);

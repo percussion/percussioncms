@@ -39,15 +39,16 @@ import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.user.service.IPSUserService;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.nio.channels.OverlappingFileLockException;
 import java.util.ArrayList;
@@ -76,7 +78,8 @@ import java.util.Set;
 @Lazy
 public class PSCategoryService implements IPSCategoryService {
 
-    private static Log log = LogFactory.getLog(PSCategoryService.class);
+    private static final Logger log = LogManager.getLogger(PSCategoryService.class);
+
     private IPSUserService userService;
     private IPSDeliveryInfoService deliveryService;
     private IPSSiteDataService siteDataService;
@@ -118,11 +121,10 @@ public class PSCategoryService implements IPSCategoryService {
     }
 
     public PSCategory getCategoryList(String sitename) throws PSDataServiceException {
-        PSCategory category = getCategoryTreeForSite(sitename, null, false, true);
-        return category;
+        return getCategoryTreeForSite(sitename, null, false, true);
     }
 
-    public PSCategory getCategoryTreeForSite(String sitename, String rootPath, boolean includeDeleted, boolean includeNotSelectable) {
+    public PSCategory getCategoryTreeForSite(String sitename, String rootPath, boolean includeDeleted, boolean includeNotSelectable) throws PSDataServiceException {
         if (StringUtils.isBlank(sitename))
             sitename = null;
         if (StringUtils.isBlank(rootPath))
@@ -136,7 +138,7 @@ public class PSCategoryService implements IPSCategoryService {
 
         // extract nodes from dummy root or other found node.
         if (node == null) {
-            category.setTopLevelNodes(new ArrayList<PSCategoryNode>());
+            category.setTopLevelNodes(new ArrayList<>());
             return category;
         }
 
@@ -145,7 +147,7 @@ public class PSCategoryService implements IPSCategoryService {
 
         List<PSCategoryNode> filteredNodes = node.getChildNodes();
         if (filteredNodes == null) {
-            filteredNodes = new ArrayList<PSCategoryNode>();
+            filteredNodes = new ArrayList<>();
         }
         if(node.getChildNodes() != null && !node.getChildNodes() .isEmpty() ) {
             category.setTopLevelNodes(node.getChildNodes());
@@ -178,7 +180,7 @@ public class PSCategoryService implements IPSCategoryService {
         PSCategoryUnMarshaller unMarshaller = new PSCategoryUnMarshaller();
         PSCategory category = unMarshaller.unMarshal();
 
-        log.debug("Finding categoryNode with rootPath " + rootPath + " and site " + siteName);
+        log.debug("Finding categoryNode with rootPath {} and site {}", rootPath , siteName);
         return findCategoryNode(category, siteName, rootPath, includeDeleted,
                 includeNotSelectable);
 
@@ -186,17 +188,17 @@ public class PSCategoryService implements IPSCategoryService {
 
     private PSCategoryNode findCategoryNode(PSCategory category, String sitename, String rootPath, boolean includeDeleted,
                                             boolean includeNotSelectable) {
-        LinkedList<String> findPath = new LinkedList<String>();
+        LinkedList<String> findPath = new LinkedList<>();
         boolean relativePath = false;
         if (rootPath != null) {
             relativePath = (!rootPath.startsWith("/"));
-            findPath = new LinkedList<String>(Arrays.asList(StringUtils.split(rootPath, "/")));
+            findPath = new LinkedList<>(Arrays.asList(StringUtils.split(rootPath, "/")));
         }
 
 
-        if (findPath.size() > 0) {
+        if (!findPath.isEmpty()) {
             String checkElement = findPath.peek();
-            while (findPath.size() > 0 && (checkElement.equals("Categories") || StringUtils.isEmpty(checkElement))) {
+            while (!findPath.isEmpty() && (checkElement.equals("Categories") || StringUtils.isEmpty(checkElement))) {
                 findPath.removeFirst();
                 checkElement = findPath.peek();
             }
@@ -204,7 +206,7 @@ public class PSCategoryService implements IPSCategoryService {
 
         }
 
-        log.debug("Cleaned up parent seach path = " + findPath);
+        log.debug("Cleaned up parent seach path = {}", findPath);
 
         PSCategoryNode dummyRoot = new PSCategoryNode();
         dummyRoot.setId(PSCategoryServiceUtil.DUMMYROOT);
@@ -213,14 +215,12 @@ public class PSCategoryService implements IPSCategoryService {
         dummyRoot.setSelectable(true);
         dummyRoot.setTitle(PSCategoryServiceUtil.DUMMYROOT);
 
-        PSCategoryNode foundNode = PSCategoryServiceUtil.filterForSite(dummyRoot, sitename, findPath, getActiveSiteNames(), relativePath, includeDeleted, includeNotSelectable);
-
-        return foundNode;
+        return PSCategoryServiceUtil.filterForSite(dummyRoot, sitename, findPath, getActiveSiteNames(), relativePath, includeDeleted, includeNotSelectable);
     }
 
     private List<String> getActiveSiteNames() {
         List<PSSiteSummary> siteSummaries = siteDataService.findAll();
-        List<String> currentSites = new ArrayList<String>();
+        List<String> currentSites = new ArrayList<>();
         for (PSSiteSummary site : siteSummaries) {
             currentSites.add(site.getName());
         }
@@ -237,7 +237,9 @@ public class PSCategoryService implements IPSCategoryService {
             ObjectMapper mapper = new ObjectMapper();
             categoryWithJson = mapper.readValue(categoryString, PSCategory.class);
         }catch (JsonProcessingException ex){
-            log.error("Error while parsing json to "+categoryString, ex);
+            log.error("Error while parsing json to {} Error: {}",
+                    categoryString, ex.getMessage());
+            log.debug(ex.getMessage(),ex);
         }
 
         return updateCategories(categoryWithJson, sitename).toJSON();
@@ -253,7 +255,8 @@ public class PSCategoryService implements IPSCategoryService {
             ObjectMapper mapper = new ObjectMapper();
             categoryWithJson = mapper.readValue(categoryString, PSCategory.class);
         }catch (JsonProcessingException ex){
-            log.error("Error while parsing json to "+categoryString, ex);
+            log.error("Error while parsing json to {} Error: {}",categoryString, ex.getMessage());
+            log.debug(ex.getMessage(),ex);
         }
 
         return updateCategories(categoryWithJson ,null).toJSON();
@@ -263,7 +266,7 @@ public class PSCategoryService implements IPSCategoryService {
         return updateCategories(category, null);
     }
 
-    public PSCategory updateCategories(PSCategory category,  String sitename) throws PSDataServiceException {
+    public PSCategory updateCategories(PSCategory category,  String sitename) throws PSValidationException {
 
         PSCategory updatedCategory = null;
         doValidation(category);
@@ -281,28 +284,26 @@ public class PSCategoryService implements IPSCategoryService {
 
         PSCategoryMarshaller marshaller = new PSCategoryMarshaller();
 
-        if (marshaller != null) {
-            marshaller.setCategory(category);
+        marshaller.setCategory(category);
 
-            try {
-                marshaller.marshal();
-            } catch (OverlappingFileLockException e) {
-                log.error("Category XML is locked by another user ! - PSCategoryService.updateCategories()", e);
-            }
+        try {
+            marshaller.marshal();
+        } catch (OverlappingFileLockException e) {
+            log.error("Category XML is locked by another user ! - PSCategoryService.updateCategories()", e);
+        }
 
-            updatedCategory = unMarshaller.unMarshal();
+        updatedCategory = unMarshaller.unMarshal();
 
-            if (updatedCategory == null) {
-                log.error("The updated categories are null ! - PSCategoryService.updateCategories()"
-                        , new PSDataServiceException("Updated Categories are null"));
-            } else if (updatedCategory.getTopLevelNodes() != null && !updatedCategory.getTopLevelNodes().isEmpty()) {
-                Set<String> nodesToRemove = new HashSet<>();
-                nodesToRemove = PSCategoryServiceUtil.removeDeletedNodes(updatedCategory.getTopLevelNodes(), nodesToRemove);
-                if (nodesToRemove.size() > 0) {
-                    List<Integer> pageIds = categoryDao.getPageIdsFromCategoryIds(nodesToRemove);
-                    List<IPSGuid> guids = getGuidsFromPageIds(pageIds);
-                     categoryDao.delete(nodesToRemove, guids);
-                }
+        if (updatedCategory == null) {
+            log.error("The updated categories are null ! - PSCategoryService.updateCategories()"
+                    , new PSDataServiceException("Updated Categories are null"));
+        } else if (updatedCategory.getTopLevelNodes() != null && !updatedCategory.getTopLevelNodes().isEmpty()) {
+            Set<String> nodesToRemove = new HashSet<>();
+            nodesToRemove = PSCategoryServiceUtil.removeDeletedNodes(updatedCategory.getTopLevelNodes(), nodesToRemove);
+            if (!nodesToRemove.isEmpty()) {
+                List<Integer> pageIds = categoryDao.getPageIdsFromCategoryIds(nodesToRemove);
+                List<IPSGuid> guids = getGuidsFromPageIds(pageIds);
+                 categoryDao.delete(nodesToRemove, guids);
             }
         }
         return updatedCategory;
@@ -312,7 +313,7 @@ public class PSCategoryService implements IPSCategoryService {
     @Path("/lockinfo")
     @Produces({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN,MediaType.APPLICATION_XML})
-    public String getLockInfo() throws PSDataServiceException {
+    public String getLockInfo() {
 
         JSONObject jsonObject = null;
 
@@ -336,11 +337,10 @@ public class PSCategoryService implements IPSCategoryService {
                 jsonObject.put("sitename", "");
             } catch (JSONException e) {
                 log.error("JSON Exception occurred while creating empty json object - PSCategoryService.getLockInfo()",
-                        new PSDataServiceException("No lock on category tab. Could not create an empty json to return from api."));
+                        new WebApplicationException("No lock on category tab. Could not create an empty json to return from api."));
             }
 
         }
-
         return jsonObject.toString();
     }
 
@@ -348,35 +348,36 @@ public class PSCategoryService implements IPSCategoryService {
     @Path("/locktab/{date}")
     @Produces({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN,MediaType.APPLICATION_XML})
-    public void lockCategoryTab(@PathParam("date") String date) throws PSDataServiceException {
+    public void lockCategoryTab(@PathParam("date") String date){
 
         JSONObject jsonObject = null;
 
         if (PSCategoryLockInfo.isFileLocked())
             jsonObject = PSCategoryLockInfo.getLockInfo();
+        try {
+            if (jsonObject != null) {
 
-        if (jsonObject != null) {
-            try {
-                if (!((String) jsonObject.get("userName")).equals(userService.getCurrentUser().getName())) {
-                    PSCategoryLockInfo.removeLockInfo();
-                    PSCategoryLockInfo.writeLockInfoToFile(userService, date);
-                } else if (!((String) jsonObject.get("creationDate")).equals(date)) {
-                    PSCategoryLockInfo.removeLockInfo();
-                    PSCategoryLockInfo.writeLockInfoToFile(userService, date);
-                }
+                    if (!( jsonObject.get("userName")).equals(userService.getCurrentUser().getName())) {
+                        PSCategoryLockInfo.removeLockInfo();
+                        PSCategoryLockInfo.writeLockInfoToFile(userService, date);
+                    } else if (!( jsonObject.get("creationDate")).equals(date)) {
+                        PSCategoryLockInfo.removeLockInfo();
+                        PSCategoryLockInfo.writeLockInfoToFile(userService, date);
+                    }
 
-            } catch (JSONException e) {
-                log.error("JSON Exception occurred while reading from the json object - PSCategoryService.overrideCatTabLock()",
-                        new PSDataServiceException("Could not read lock information file"));
+
+            } else {
+                PSCategoryLockInfo.writeLockInfoToFile(userService, date);
             }
-        } else {
-            PSCategoryLockInfo.writeLockInfoToFile(userService, date);
+        } catch (JSONException | PSDataServiceException e) {
+            log.error("JSON Exception occurred while reading from the json object - PSCategoryService.overrideCatTabLock()",
+                    new WebApplicationException("Could not read lock information file"));
         }
     }
 
     @POST
     @Path("/removelocktab")
-    public void removeCategoryTabLock() throws PSDataServiceException {
+    public void removeCategoryTabLock() {
         PSCategoryLockInfo.removeLockInfo();
     }
 
@@ -386,13 +387,17 @@ public class PSCategoryService implements IPSCategoryService {
     @Consumes({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN,MediaType.APPLICATION_XML})
     public void updateCategoryInDTS(@PathParam("sitename") String sitename, @PathParam("deliveryserver") String deliveryserver) {
 
-        String category = PSCategoryServiceUtil.prepareCategoryJson(getCategoryList(sitename));
+        try {
+            String category = PSCategoryServiceUtil.prepareCategoryJson(getCategoryList(sitename));
 
-        if (deliveryserver.equalsIgnoreCase("Both")) {
-            PSCategoryServiceUtil.publishToDTS(category, sitename, "Production", deliveryService);
-            PSCategoryServiceUtil.publishToDTS(category, sitename, "Staging", deliveryService);
-        } else
-            PSCategoryServiceUtil.publishToDTS(category, sitename, deliveryserver, deliveryService);
+            if (deliveryserver.equalsIgnoreCase("Both")) {
+                PSCategoryServiceUtil.publishToDTS(category, sitename, "Production", deliveryService);
+                PSCategoryServiceUtil.publishToDTS(category, sitename, "Staging", deliveryService);
+            } else
+                PSCategoryServiceUtil.publishToDTS(category, sitename, deliveryserver, deliveryService);
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e.getMessage());
+        }
     }
 
     /**
@@ -405,7 +410,7 @@ public class PSCategoryService implements IPSCategoryService {
      * @throws PSBeanValidationException if failed to validate the specified
      *                                   role.
      */
-    protected void doValidation(PSCategory category) throws PSBeanValidationException {
+    protected void doValidation(PSCategory category) throws PSValidationException {
         PSCategoryValidator validator = new PSCategoryValidator();
 
         validator.validate(category).throwIfInvalid();
@@ -421,8 +426,7 @@ public class PSCategoryService implements IPSCategoryService {
 
         @Override
         protected void doValidation(PSCategory category, PSBeanValidationException e) {
-            // Left in for future validation needs
-            //e.reject("cat.testError", "Test error message");
+            throw new NotImplementedException();
         }
     }
 
@@ -438,7 +442,7 @@ public class PSCategoryService implements IPSCategoryService {
                 IPSGuid guid = new PSLegacyGuid(id, -1);
                 guids.add(guid);
             } catch (Exception e) {
-                log.error("Error creating guid from id: " + id);
+                log.error("Error creating guid from id: {}", id);
             }
         }
         return guids;

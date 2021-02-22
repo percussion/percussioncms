@@ -55,7 +55,7 @@ public class PSGroup implements Group, Serializable
    /**
     * Set of principals, never <code>null</code> may be empty.
     */
-   private Set<Principal> mi_principals = new HashSet<Principal>();
+   private Set<Principal> mi_principals = new HashSet<>();
 
    /**
     * Construct a group

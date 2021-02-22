@@ -91,7 +91,7 @@ public class PSComment implements IPSComment, Serializable
            orphanRemoval=true, mappedBy="comment" , targetEntity = PSCommentTag.class)
    @Fetch(FetchMode.SUBSELECT)
    @OnDelete(action = OnDeleteAction.CASCADE)
-   private Set<PSCommentTag> commentTags = new HashSet<PSCommentTag>();
+   private Set<PSCommentTag> commentTags = new HashSet<>();
    
    @Basic 
    private boolean moderated;
@@ -191,7 +191,7 @@ public class PSComment implements IPSComment, Serializable
     */
    public Set<String> getTags()
    {
-      Set<String> tagsAsString = new HashSet<String>();
+      Set<String> tagsAsString = new HashSet<>();
       
       for (PSCommentTag tag : this.commentTags)
           tagsAsString.add(tag.getName());

@@ -40,11 +40,6 @@ import com.percussion.util.PSPurgableTempFile;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.types.PSPair;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -64,7 +59,7 @@ import org.apache.commons.lang.Validate;
  */
 public class PSFileDownloader implements IPSFileDownloader
 {
-    private static HashSet<String> multiThreadSync = new HashSet<String>();
+    private static HashSet<String> multiThreadSync = new HashSet<>();
 
     private enum Operation {
         DELETE, CHECK
@@ -97,7 +92,7 @@ public class PSFileDownloader implements IPSFileDownloader
     public List<PSPair<Boolean, String>> downloadFiles(Map<String, String> urlToPathMap, PSSiteImportCtx context,
             boolean createAsset)
     {
-        List<PSPair<Boolean, String>> downloaded = new ArrayList<PSPair<Boolean, String>>();
+        List<PSPair<Boolean, String>> downloaded = new ArrayList<>();
         if (urlToPathMap.size() > 0)
         {
             notNull(urlToPathMap);
@@ -134,7 +129,7 @@ public class PSFileDownloader implements IPSFileDownloader
     @Override
     public PSPair<Boolean, String> downloadFile(String url, String destination)
     {
-        Map<String, String> downloads = new HashMap<String, String>();
+        Map<String, String> downloads = new HashMap<>();
         downloads.put(url, destination);
         List<PSPair<Boolean, String>> downloaded = downloadFiles(downloads, null, false);
         return downloaded.get(0);

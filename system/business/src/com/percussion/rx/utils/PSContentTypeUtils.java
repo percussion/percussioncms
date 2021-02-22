@@ -31,7 +31,7 @@ import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldValidationRules;
 import com.percussion.design.objectstore.PSRule;
 import com.percussion.design.objectstore.PSSingleHtmlParameter;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionRef;
@@ -177,7 +177,7 @@ public class PSContentTypeUtils
    public static boolean hasRequiredRule(PSField field)
    {
       PSFieldValidationRules valrules = field.getValidationRules();
-      List<PSRule> rules = new ArrayList<PSRule>();
+      List<PSRule> rules = new ArrayList<>();
       if(valrules != null)
       {
          CollectionUtils.addAll(rules,valrules.getRules());
@@ -201,7 +201,7 @@ public class PSContentTypeUtils
          List<PSExtensionRef> fvExits)
    {
       PSFieldValidationRules valrules = field.getValidationRules();
-      List<PSRule> rules = new ArrayList<PSRule>();
+      List<PSRule> rules = new ArrayList<>();
       PSApplyWhen applyWhen = null;
       if(valrules != null)
       {
@@ -247,7 +247,7 @@ public class PSContentTypeUtils
          field.clearOccurrenceSettings();
          field.setOccurrenceDimension(occur, null);
       }
-      catch (PSValidationException ve)
+      catch (PSSystemValidationException ve)
       {
          // We can safely ignore this as we are setting a valid value
          // here.
@@ -274,7 +274,7 @@ public class PSContentTypeUtils
       IPSExtensionManager mgr = PSServer.getExtensionManager(null);
       Iterator it = mgr.getExtensionNames(null, null,
             com.percussion.extension.IPSFieldValidator.class.getName(), null);
-      List<PSExtensionRef> extensions = new ArrayList<PSExtensionRef>();
+      List<PSExtensionRef> extensions = new ArrayList<>();
       CollectionUtils.addAll(extensions, it);
       
       // set the property

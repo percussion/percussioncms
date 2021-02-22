@@ -93,7 +93,7 @@ public class PSWidgetItemIdGenerator implements IPSWidgetItemIdGenerator
      */
     private Set<String> getWidgetIds(PSRegionWidgetAssociations widgets)
     {
-        Set<String> ids = new HashSet<String>();
+        Set<String> ids = new HashSet<>();
         Set<PSRegionWidgets> regionWidgets = widgets.getRegionWidgetAssociations();
         for (PSRegionWidgets ws : regionWidgets)
         {

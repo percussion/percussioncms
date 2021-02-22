@@ -62,7 +62,7 @@ public class PSFeedGenerator
       // Process each item
       SyndEntry entry;
       SyndContent description;
-      List<SyndEntry> entries = new ArrayList<SyndEntry>();
+      List<SyndEntry> entries = new ArrayList<>();
       for(PSFeedItem item : items)
       {
           entry = new SyndEntryImpl();

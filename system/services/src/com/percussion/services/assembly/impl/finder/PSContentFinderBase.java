@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -27,8 +27,16 @@ import com.percussion.cms.PSCmsException;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
-import com.percussion.services.assembly.*;
+import com.percussion.services.assembly.IPSAssemblyErrors;
+import com.percussion.services.assembly.IPSAssemblyItem;
+import com.percussion.services.assembly.IPSAssemblyResult;
+import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.IPSContentFinder;
+import com.percussion.services.assembly.IPSSlotContentFinder;
+import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterItem;
 import com.percussion.services.filter.IPSItemFilter;
 import com.percussion.services.filter.PSFilterException;
@@ -42,10 +50,18 @@ import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Session;
 
 import javax.jcr.RepositoryException;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getValue;
@@ -213,7 +229,7 @@ public abstract class PSContentFinderBase<T extends Object>
     * find method.
     * 
     * @param sourceItem the source assembly item,never <code>null</code>.
-    * @param slotId the ID of the container. It may be <code>null</code>
+    * @param slot the ID of the container. It may be <code>null</code>
     * 
     * @return a set of items, never <code>null</code>, but may be empty. The
     *         items can be filtered, re-ordered and turned into assembly items.
@@ -222,13 +238,12 @@ public abstract class PSContentFinderBase<T extends Object>
     */   
    @SuppressWarnings({"cast"})
    abstract protected Set<ContentItem> getContentItems(IPSAssemblyItem sourceItem,
-         T slot, Map<String, Object> params); 
+         T slot, Map<String, Object> params) throws PSNotFoundException;
 
    @SuppressWarnings({"unchecked"})
    public List<IPSAssemblyItem> find(IPSAssemblyItem sourceItem,
          T slot, Map<String, Object> params)
-         throws RepositoryException, PSFilterException, PSAssemblyException
-   {
+           throws RepositoryException, PSFilterException, PSAssemblyException, PSNotFoundException {
       if (sourceItem == null)
       {
          throw new IllegalArgumentException("sourceItem may not be null");
@@ -252,7 +267,7 @@ public abstract class PSContentFinderBase<T extends Object>
       IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
       
       // Create return items for assembly
-      List<IPSAssemblyItem> items = new ArrayList<IPSAssemblyItem>();
+      List<IPSAssemblyItem> items = new ArrayList<>();
 
       int index = 1;
       boolean had_more = false;
@@ -306,7 +321,7 @@ public abstract class PSContentFinderBase<T extends Object>
       IPSAssemblyItem clone = null;
       try
       {
-         Map<String, IPSGuid> optionalParams = new HashMap<String, IPSGuid>();
+         Map<String, IPSGuid> optionalParams = new HashMap<>();
 
          if (slotitem.getSiteId() != null)
          {
@@ -355,8 +370,7 @@ public abstract class PSContentFinderBase<T extends Object>
     * The comparator used to order the returned list from {@link #find(IPSAssemblyItem, Object, Map)}
     * @return the comparator, never <code>null</code>.
     */
-   protected Comparator<ContentItem> getComparator(T slot)
-   {
+   protected Comparator<ContentItem> getComparator(T slot) throws PSNotFoundException {
       return new ContentItemOrder();
    }
    
@@ -411,31 +425,30 @@ public abstract class PSContentFinderBase<T extends Object>
     * Filters the specified items.
     * <p>
     * Note, it filters the items in chunks of
-    * {@link PSDataCollectionHelter#MAX_IDS} or less. This is to avoid the calls
-    * to {@link PSDataCollectionHelter#createIdSet()} and
-    * {@link PSDataCollectionHelter#clearIdSet()}, which may leads to database
+    * {@link PSDataCollectionHelper#MAX_IDS} or less. This is to avoid the calls
+    * to {@link PSDataCollectionHelper#createIdSet(Session, Collection)} and
+    * {@link PSDataCollectionHelper#clearIdSet(Session, long)}, which may leads to database
     * deadlocks when involving a lot of IDs (insert, query and delete).
     * 
     * @param allItems the to be filtered items, never <code>null</code>, but
     * may be empty.
     * @param sourceItem the source assembly item, guaranteed never
     * <code>null</code> because this is called from
-    * {@link IPSSlotContentFinder#find(IPSAssemblyItem, IPSTemplateSlot, Map)}
+    * {@link IPSSlotContentFinder#find(IPSAssemblyItem, Object, Map)}
     * @param selectors the selectors, may be <code>null</code>
     * @param max_results the max number of items that are needed for the
     * returned items. There is no limit if it is less than 1.
     * 
     * @return a set of slot items, never <code>null</code>, that are
     * filtered, ordered and turned into assembly items. The set must be ordered
-    * if the slots are to be ordered. Use {@link getComparator()} to order slot
+    * if the slots are to be ordered. Use {@link #getComparator(Object)} to order slot
     * items in the set.
     * 
     * @throws PSFilterException if an error occurs during filtering process.
     */
    protected Set<ContentItem> getFilteredItems(Set<ContentItem> allItems,
          IPSAssemblyItem sourceItem, Map<String, Object> selectors,
-         int max_results, T slot) throws PSFilterException
-   {
+         int max_results, T slot) throws PSFilterException, PSNotFoundException {
       // figure out maximum filtered items, which must be less than
       // PSDataCollectionHelper.MAX_IDS - 1; optimize to 100 or 
       // twice as "max_results" if it is > 0
@@ -452,8 +465,8 @@ public abstract class PSContentFinderBase<T extends Object>
          maxChunkItems = Math.min(tmpChunkItems, maxChunkItems);
       }
 
-      Set<ContentItem> slotitems = new TreeSet<ContentItem>(getComparator(slot));
-      Set<ContentItem> tmpItems = new TreeSet<ContentItem>(getComparator(slot));
+      Set<ContentItem> slotitems = new TreeSet<>(getComparator(slot));
+      Set<ContentItem> tmpItems = new TreeSet<>(getComparator(slot));
       IPSAssemblyResult workitem = (IPSAssemblyResult) sourceItem;
 
       PSStopwatch watch = new PSStopwatch();
@@ -511,8 +524,8 @@ public abstract class PSContentFinderBase<T extends Object>
    protected Set<ContentItem> filter(Set<ContentItem> items, IPSItemFilter filter,
          Map<String, Object> selectors) throws PSFilterException
    {
-      List<IPSFilterItem> temp = new ArrayList<IPSFilterItem>();
-      Map<String, String> params = new HashMap<String, String>();
+      List<IPSFilterItem> temp = new ArrayList<>();
+      Map<String, String> params = new HashMap<>();
       //FIXME: This code is not handling null keys or values gracefully
       for (Map.Entry<String, Object> selector : selectors.entrySet())
       {

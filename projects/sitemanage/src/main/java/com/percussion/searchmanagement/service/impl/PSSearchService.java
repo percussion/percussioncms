@@ -37,8 +37,8 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSSearchHandler;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
-import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.IPSItemEntry;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
@@ -50,7 +50,9 @@ import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.data.PSPagedItemPropertiesList;
 import com.percussion.share.data.PSPagedObjectList;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.ui.data.PSDisplayPropertiesCriteria;
 import com.percussion.ui.data.PSSimpleDisplayFormat;
 import com.percussion.ui.service.IPSListViewHelper;
@@ -66,7 +68,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static com.percussion.webservices.PSWebserviceUtils.getWorkflow;
 import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
@@ -90,7 +97,6 @@ public class PSSearchService implements IPSSearchService
         this.itemWorkflowService = itemWorkflowService;
         this.listViewHelper = listViewHelper;
         this.workflowService = PSWorkflowServiceLocator.getWorkflowService();
-        this.uiService = uiService;
         this.recycleService=recycleService;
     }
 
@@ -102,8 +108,7 @@ public class PSSearchService implements IPSSearchService
      * lang.String)
      */
     @Override
-    public PSPagedItemList search(PSSearchCriteria criteria) throws PSSearchServiceException
-    {
+    public PSPagedItemList search(PSSearchCriteria criteria) throws PSSearchServiceException, PSValidationException, PSNotFoundException, IPSDataService.DataServiceLoadException {
         List<Integer> contentIdList = searchForIds(criteria);
         return search(criteria, contentIdList);
     }
@@ -123,10 +128,12 @@ public class PSSearchService implements IPSSearchService
         List<IPSItemEntry> pagedItemEntries = result.getChildrenInPage();
         resultingStartIndex = result.getStartIndex();
         
-        List<Integer> pagedContentIdList = new ArrayList<Integer>();
-        List<PSItemProperties> itemsInPage = new ArrayList<PSItemProperties>();
+        List<Integer> pagedContentIdList = new ArrayList<>();
+        List<PSItemProperties> itemsInPage = new ArrayList<>();
         for (IPSItemEntry itemEntry : pagedItemEntries)
         {
+            try
+            {
             IPSGuid myGuid = PSGuidUtils.makeGuid(itemEntry.getContentId(), PSTypeEnum.LEGACY_CONTENT);
             if (folderHelper.getParentFolderId(myGuid, false) == null)
             {
@@ -136,26 +143,25 @@ public class PSSearchService implements IPSSearchService
             }
             
             PSItemProperties itemProps;
-            try
-            {
+
                 itemProps = folderHelper.findItemPropertiesById(idMapper.getString(myGuid));
-            }
-            catch (Exception e)
-            {
-                log.debug(e);
-                continue;
-            }
+
    
             itemsInPage.add(itemProps);
             pagedContentIdList.add(itemEntry.getContentId());
+            }
+            catch (Exception e)
+            {
+                log.warn(e.getMessage());
+                log.debug(e.getMessage(),e);
+            }
         }
         
         return new PSPagedItemPropertiesList(itemsInPage, allItemEntries.size(), resultingStartIndex);
     }
     
     public PSPagedItemList search(PSSearchCriteria criteria, List<Integer> contentIdList)
-            throws PSSearchServiceException
-    {
+            throws PSSearchServiceException, PSValidationException, PSNotFoundException, IPSDataService.DataServiceLoadException {
         if (criteria.getFormatId() == null)
             throw new IllegalArgumentException("format Id cannot be blank.");
         List<IPSItemEntry> allItemEntries = getSortedEntries(criteria, contentIdList);
@@ -178,7 +184,7 @@ public class PSSearchService implements IPSSearchService
             Map<String, String> searchFields = criteria.getSearchFields();
             if (searchFields != null && !searchFields.isEmpty())
             {
-                List<PSWSSearchField> wsSearchFields = new ArrayList<PSWSSearchField>();
+                List<PSWSSearchField> wsSearchFields = new ArrayList<>();
                 for (Map.Entry<String, String> entry : searchFields.entrySet())
                 {
                     wsSearchFields.add(new PSWSSearchField(entry.getKey(), "=", entry.getValue(), PSWSSearchField.CONN_ATTR_AND));
@@ -242,8 +248,7 @@ public class PSSearchService implements IPSSearchService
      * 
      * @return The paged item list, not <code>null</code>.
      */
-    private PSPagedItemList formatResults(PSSearchCriteria criteria, List<IPSItemEntry> allItemEntries)
-    {
+    private PSPagedItemList formatResults(PSSearchCriteria criteria, List<IPSItemEntry> allItemEntries) throws PSValidationException, IPSDataService.DataServiceLoadException, PSNotFoundException {
         Integer resultingStartIndex = 1;
         Integer startIndex = criteria.getStartIndex() == null ? 1 : criteria.getStartIndex();
         
@@ -254,8 +259,8 @@ public class PSSearchService implements IPSSearchService
         resultingStartIndex = result.getStartIndex();
         
         // PSItemEntry -> PSPathItem
-        List<Integer> pagedContentIdList = new ArrayList<Integer>();
-        List<PSPathItem> itemsInPage = new ArrayList<PSPathItem>();
+        List<Integer> pagedContentIdList = new ArrayList<>();
+        List<PSPathItem> itemsInPage = new ArrayList<>();
         for (IPSItemEntry itemEntry : pagedItemEntries)
         {
             IPSGuid myGuid = PSGuidUtils.makeGuid(itemEntry.getContentId(), PSTypeEnum.LEGACY_CONTENT);
@@ -295,8 +300,7 @@ public class PSSearchService implements IPSSearchService
         if (criteria.getSortColumn() != null && criteria.getSortOrder() != null)
             compare = new CompareItemEntry(criteria.getSortColumn(), criteria.getSortOrder());
         
-        List<IPSItemEntry> allItemEntries = cmsObjectMgr.findItemEntries(contentIdList, compare);
-        return allItemEntries;
+       return cmsObjectMgr.findItemEntries(contentIdList, compare);
     }
 
     private class CompareItemEntry implements Comparator<IPSItemEntry>
@@ -418,7 +422,7 @@ public class PSSearchService implements IPSSearchService
         int id = -1;
         
         if (displayFormatId != null)
-            id = displayFormatId.intValue();
+            id = displayFormatId;
         
         return uiService.getDisplayFormat(id);
     }
@@ -455,8 +459,7 @@ public class PSSearchService implements IPSSearchService
      * @return The query possibly modified to add an exclude clause, may be <code>null<code/> or empty if
      * the supplied query was and if the params include the workflow id field.
      */
-    private String excludeLocalWorkflow(String query, PSWSSearchParams searchParams)
-    {
+    private String excludeLocalWorkflow(String query, PSWSSearchParams searchParams) throws IPSItemWorkflowService.PSItemWorkflowServiceException, PSValidationException {
         int localId = getLocalContentWfId();
         // if we have a query, just add NOT condition
         if (!StringUtils.isBlank(query))
@@ -509,8 +512,7 @@ public class PSSearchService implements IPSSearchService
      * 
      * @return the id.
      */
-    private int getLocalContentWfId()
-    {
+    private int getLocalContentWfId() throws PSValidationException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         if (localContentWfId == -1)
         {
             localContentWfId = itemWorkflowService.getWorkflowId(PSWorkflowHelper.LOCAL_WORKFLOW_NAME);
@@ -519,9 +521,8 @@ public class PSSearchService implements IPSSearchService
         return localContentWfId;
     }
     
-    private List<Integer> getSearchableWorkflowIds()
-    {
-        List<Integer> wfIds = new ArrayList<Integer>();
+    private List<Integer> getSearchableWorkflowIds() throws IPSItemWorkflowService.PSItemWorkflowServiceException, PSValidationException {
+        List<Integer> wfIds = new ArrayList<>();
         int localWorkflowId = getLocalContentWfId();
         
         List<PSObjectSummary> workflowSums = workflowService.findWorkflowSummariesByName(null);

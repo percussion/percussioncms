@@ -57,7 +57,7 @@ public class PSConvertToSourceDialog extends Dialog
       setWidth(DIALOG_WIDTH);
       setIsModal(true);
       setCanDragResize(true);
-      setResizeFrom(IPSConstants.DIALOG_RESIZE_OPTIONS);
+      setResizeFrom(PSConstants.getDialogResizeOptions());
       setCanDragReposition(true);
       setAutoCenter(true);
       setShowToolbar(true);
@@ -117,7 +117,7 @@ public class PSConvertToSourceDialog extends Dialog
          }
 
       });
-      btnStack.setMembersMargin(IPSConstants.MEMBERS_MARGIN);
+      btnStack.setMembersMargin(PSConstants.getMembersMargin());
       btnStack.setAlign(Alignment.RIGHT);
       btnStack.setHeight(m_oKBtn.getHeight());
       return btnStack;

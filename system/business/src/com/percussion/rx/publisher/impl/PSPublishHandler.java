@@ -39,8 +39,13 @@ import com.percussion.rx.publisher.data.PSPubItemStatus;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.server.PSRequest;
 import com.percussion.services.PSBaseServiceLocator;
-import com.percussion.services.assembly.*;
+import com.percussion.services.assembly.IPSAssemblyItem;
+import com.percussion.services.assembly.IPSAssemblyResult;
 import com.percussion.services.assembly.IPSAssemblyResult.Status;
+import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.assembly.PSAssemblyServiceLocator;
+import com.percussion.services.assembly.PSTemplateNotImplementedException;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.publisher.IPSDeliveryType;
@@ -59,10 +64,9 @@ import com.percussion.utils.timing.PSStopwatch;
 import com.percussion.webservices.PSWebserviceUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.jcr.RepositoryException;
 import javax.jms.JMSException;
@@ -72,7 +76,13 @@ import javax.jms.ObjectMessage;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -102,7 +112,7 @@ public class PSPublishHandler implements MessageListener
    /**
     * Logger used for publishing handler service.
     */
-   private static Log ms_log = LogFactory.getLog(PSPublishHandler.class);
+   private static final Logger log = LogManager.getLogger(PSPublishHandler.class);
    
    
    /**
@@ -110,7 +120,7 @@ public class PSPublishHandler implements MessageListener
     */
    public static final Map<Outcome, ItemState> OUTCOME_STATE;
    static {
-      final Map<Outcome, ItemState> m = new HashMap<Outcome, ItemState>();
+      final Map<Outcome, ItemState> m = new HashMap<>();
       m.put(Outcome.DELIVERED, ItemState.DELIVERED);
       m.put(Outcome.FAILED, ItemState.FAILED);
       m.put(Outcome.PREPARED_FOR_DELIVERY, ItemState.PREPARED_FOR_DELIVERY);
@@ -124,14 +134,14 @@ public class PSPublishHandler implements MessageListener
     * is received and old messages have expired.
     */
    private static List<PSCancelPublishingMessage> ms_cancellations 
-      = new CopyOnWriteArrayList<PSCancelPublishingMessage>();
+      = new CopyOnWriteArrayList<>();
 
    /**
     * Map whose key is a delivery type name and value is a flag which indicates
     * whether or not empty delivery locations are allowed. 
     */
    private static Map<String, Boolean> ms_deliveryTypeToAllowsEmptyLocation
-      = new ConcurrentHashMap<String, Boolean>();
+      = new ConcurrentHashMap<>();
    
    /**
     * The delivery manager to actually deliver the content. Set via spring.
@@ -211,7 +221,7 @@ public class PSPublishHandler implements MessageListener
             }
             catch (JMSException e)
             {
-               ms_log.error("Problem getting message", e);
+               log.error("Problem getting message", e);
                return;
             }
    
@@ -233,7 +243,7 @@ public class PSPublishHandler implements MessageListener
       }
       catch (Exception e)
       {
-         ms_log.error(
+         log.error(
                "Uncaught exception while handling message " + message, e);
       }
       finally
@@ -244,7 +254,7 @@ public class PSPublishHandler implements MessageListener
          }
          catch (JMSException e)
          {
-            ms_log.error("Problem acknowledging message");
+            log.error("Problem acknowledging message");
          }
       }
    }
@@ -273,7 +283,7 @@ public class PSPublishHandler implements MessageListener
       boolean active = m_rxPubService.isJobActive(jobId);
       if ( ! active )
       {
-         ms_log.debug("Ignore item: " + work.getId() 
+         log.debug("Ignore item: " + work.getId()
                + " for job: " + work.getJobId() 
                + " because its not an active job for this server.");
          return;
@@ -331,7 +341,7 @@ public class PSPublishHandler implements MessageListener
                   {
                      if (work.getJobId() == cp.getJobId())
                      {
-                        ms_log.info("Discarding cancelled item: " + work.getId());
+                        log.info("Discarding cancelled item: " + work.getId());
                         // ignore/discard
                         return;
                      }
@@ -343,7 +353,7 @@ public class PSPublishHandler implements MessageListener
             PSPublishingJob job = rxpsvc.getPublishingJob(work.getJobId());
             if (job == null)
             {
-               ms_log.info("Discarding process item "+ work.getId()+" for old or cancelled job: " +work.getJobId() );
+               log.info("Discarding process item "+ work.getId()+" for old or cancelled job: " +work.getJobId() );
                // ignore/discard
                return;
             }
@@ -375,7 +385,7 @@ public class PSPublishHandler implements MessageListener
                }
                catch (Exception e)
                {
-                  ms_log.error("Error expanding assembly result id: " 
+                  log.error("Error expanding assembly result id: "
                         + result.getId(), e);
                   result.setStatus(Status.FAILURE);
                   result.setMimeType("text/plain");
@@ -420,7 +430,7 @@ public class PSPublishHandler implements MessageListener
             // should never happen
          }
          
-         ms_log.error(msg, th);
+         log.error(msg, th);
       }
    }
 
@@ -439,7 +449,7 @@ public class PSPublishHandler implements MessageListener
       long pubServerId = result.getPubServerId() == null ? -1 : result.getPubServerId();
       if (result.getPubServerId()==null)
       {
-         ms_log.error("PubServerId not passed in IPSAssemblyItem" + result);
+         log.error("PubServerId not passed in IPSAssemblyItem" + result);
       }
       
       PSPubItemStatus status = new PSPubItemStatus(result.getReferenceId(),
@@ -476,7 +486,7 @@ public class PSPublishHandler implements MessageListener
       results = expander.expand(result);
       notNull(results, "results should not be null");
       noNullElements(results);
-      List<IPSAssemblyItem> addedItems = new ArrayList<IPSAssemblyItem>(results);
+      List<IPSAssemblyItem> addedItems = new ArrayList<>(results);
       Iterator<IPSAssemblyItem> iter = addedItems.iterator();
       /*
        * Filter out the original item.
@@ -527,8 +537,7 @@ public class PSPublishHandler implements MessageListener
     * <code>null</code>, but may be empty. Assumed the 1st element is the 1st 
     * page of the item.
     */
-   private void handleChangedLocations(List<IPSAssemblyItem> pagedItems)
-   {
+   private void handleChangedLocations(List<IPSAssemblyItem> pagedItems) throws PSNotFoundException {
       if (pagedItems.isEmpty())
          return;
       
@@ -549,7 +558,9 @@ public class PSPublishHandler implements MessageListener
       
       if (unpubItems.size()>0)
       {
-          ms_log.debug("Unpublish list size = "+unpubItems.size()+ " path="+unpubItems.iterator().next().getDeliveryPath());
+          log.debug("Unpublish list size = {} path={}",
+                  unpubItems.size(),
+                  unpubItems.iterator().next().getDeliveryPath());
       }
      
       // Need to set item status as queued
@@ -605,7 +616,7 @@ public class PSPublishHandler implements MessageListener
          }
          catch (PSNotFoundException e)
          {
-            ms_log.error("Could not load site " + siteguid.toString());
+            log.error("Could not load site {}",  siteguid.toString());
          }
       } 
       else // jc.getType() == END
@@ -637,7 +648,7 @@ public class PSPublishHandler implements MessageListener
          }
          catch (Exception e)
          {
-            ms_log.error("Failed to commit publishing Job id=" + jc.getJobId(), e);
+            log.error("Failed to commit publishing Job id=" + jc.getJobId(), e);
             isCommitWithError = true;
          }
        
@@ -683,7 +694,7 @@ public class PSPublishHandler implements MessageListener
       }
       catch (PSDeliveryException e)
       {
-         ms_log.error("Failed to abort delivery manager", e);
+         log.error("Failed to abort delivery manager", e);
       }
    }
    
@@ -716,26 +727,26 @@ public class PSPublishHandler implements MessageListener
          throws RepositoryException,
          PSTemplateNotImplementedException, PSAssemblyException,
          PSFilterException
-   {
+   {try {
       List<IPSAssemblyResult> results;
       boolean doassemble = true;
-      if (!work.isPublish())
-      {
+      if (!work.isPublish()) {
          // Before assembling, check the delivery
          String location = work.getDeliveryType();
+
          IPSDeliveryType dloc = psvc.loadDeliveryType(location);
          doassemble = dloc.isUnpublishingRequiresAssembly();
       }
 
-      if (doassemble)
-      {
+      if (doassemble) {
          results = asm.assemble(Collections.singletonList(work));
-      }
-      else
-      {
+      } else {
          results = Collections.singletonList((IPSAssemblyResult) work);
       }
       return results;
+   } catch (PSNotFoundException e) {
+      throw new RepositoryException(e);
+   }
    }
 
    /**
@@ -772,7 +783,7 @@ public class PSPublishHandler implements MessageListener
       }
       catch (UnsupportedEncodingException e1)
       {
-         ms_log.error("Impossible, utf8 is not known");
+         log.error("Impossible, utf8 is not known");
       }                  
    }
    
@@ -820,7 +831,7 @@ public class PSPublishHandler implements MessageListener
       }
       catch (Exception e)
       {
-         ms_log.error("Problem in delivery ", e);
+         log.error("Problem in delivery ", e);
          state = IPSPublisherJobStatus.ItemState.FAILED;
          PSPubItemStatus status = new PSPubItemStatus(work.getReferenceId(),
                work.getJobId(), work.getPubServerId(), work.getDeliveryContext(), state);
@@ -830,7 +841,7 @@ public class PSPublishHandler implements MessageListener
       finally
       {
          sw.stop();
-         ms_log.debug("Delivered item " + sw);
+         log.debug("Delivered item " + sw);
          // we're done with the item, clear
          work.clearResults();
       }
@@ -854,7 +865,7 @@ public class PSPublishHandler implements MessageListener
       // logged.
       // The item should also be marked as a failure for future
       // processing
-      ms_log.error("Problems assembly item, content guid: " + item.getId().toString(), e);
+      log.error("Problems assembly item, content guid: " + item.getId().toString(), e);
       if (work.getStatus() == null || work.getStatus().equals(Status.SUCCESS))
       {
          work.setStatus(Status.FAILURE);
@@ -876,8 +887,7 @@ public class PSPublishHandler implements MessageListener
     * @throws IllegalAccessException if an error occurs.
     */
    private boolean isEmptyLocationAllowed(IPSPublisherService psvc, String deliveryType)
-         throws InvocationTargetException, IllegalAccessException
-   {
+           throws InvocationTargetException, IllegalAccessException, PSNotFoundException {
       if (ms_deliveryTypeToAllowsEmptyLocation.containsKey(deliveryType))
       {
          return ms_deliveryTypeToAllowsEmptyLocation.get(deliveryType);

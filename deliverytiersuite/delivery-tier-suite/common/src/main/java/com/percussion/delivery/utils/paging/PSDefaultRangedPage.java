@@ -57,9 +57,9 @@ public class PSDefaultRangedPage implements IPSRangedPage
     /***
      * The map of sort fields with sort directions
      */
-    private Hashtable<String,PSRangedPageSortDirection> sortFields = new Hashtable<String, PSRangedPageSortDirection>();
+    private Hashtable<String,PSRangedPageSortDirection> sortFields = new Hashtable<>();
     
-    private Hashtable<String,Object> pageFields = new Hashtable<String,Object>();
+    private Hashtable<String,Object> pageFields = new Hashtable<>();
 
     private int pageSize = DEFAULT_PAGE_SIZE;
     

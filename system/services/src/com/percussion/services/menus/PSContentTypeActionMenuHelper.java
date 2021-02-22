@@ -103,7 +103,7 @@ public class PSContentTypeActionMenuHelper {
             // Map to store menu action String key is the path of the action in the
             // hierarchy node
             // and value is the menu action
-            Map<String, List<PSActionMenu>> folderActions = new HashMap<String, List<PSActionMenu>>();
+            Map<String, List<PSActionMenu>> folderActions = new HashMap<>();
 
             PSItemDefManager defMgr = PSItemDefManager.getInstance();
 
@@ -112,7 +112,7 @@ public class PSContentTypeActionMenuHelper {
             Collection summaries = defMgr.getSummaries(securityToken);
 
             // Convert summaries collection to list
-        List<PSItemDefSummary> summaryList = new ArrayList<PSItemDefSummary>(summaries);
+        List<PSItemDefSummary> summaryList = new ArrayList<>(summaries);
 
         // List to store structured actions based on the content type path
         List<PSActionMenu> structuredActions = new ArrayList<PSActionMenu>();
@@ -152,7 +152,7 @@ public class PSContentTypeActionMenuHelper {
                     }
                     List<PSActionMenu> pathItems = folderActions.get(path);
                     if (pathItems == null) {
-                        pathItems = new ArrayList<PSActionMenu>();
+                        pathItems = new ArrayList<>();
                         folderActions.put(path, pathItems);
                     }
                     pathItems.add(action);
@@ -223,7 +223,7 @@ public class PSContentTypeActionMenuHelper {
     */
     private String getPath(PSItemDefSummary itemDefSummary) throws PSExtensionProcessingException
     {
-        Map<IPSGuid, String> itemPaths = new HashMap<IPSGuid, String>();
+        Map<IPSGuid, String> itemPaths = new HashMap<>();
         String path = "";
         IPSGuid guid = null;
         try
@@ -266,7 +266,7 @@ public class PSContentTypeActionMenuHelper {
         String skipFolders = PSServer.getProperty(SERVER_PROP_SKIP_FOLDERS);
         if (skipFolders != null)
             alwaysShowSubmenu = skipFolders.trim().equalsIgnoreCase("false");
-        List<PSActionMenu> retList = new ArrayList<PSActionMenu>();
+        List<PSActionMenu> retList = new ArrayList<>();
         List<PSActionMenu> thisLevelActions = folderActions.get("");
 
         // add all without any further path
@@ -276,7 +276,7 @@ public class PSContentTypeActionMenuHelper {
             alwaysShowSubmenu = (thisLevelActions.size() > 0);
         }
         // split out the first part of the path
-        Map<String, List<String>> pathSplit = new HashMap<String, List<String>>();
+        Map<String, List<String>> pathSplit = new HashMap<>();
         for (String path : folderActions.keySet())
         {
             if (path.length() > 0)
@@ -296,7 +296,7 @@ public class PSContentTypeActionMenuHelper {
                 List<String> rights = pathSplit.get(left);
                 if (rights == null)
                 {
-                    rights = new ArrayList<String>();
+                    rights = new ArrayList<>();
                     pathSplit.put(left, rights);
                 }
                 rights.add(right);
@@ -308,7 +308,7 @@ public class PSContentTypeActionMenuHelper {
 
         for (String folder : folders)
         {
-            Map<String, List<PSActionMenu>> submenuActions = new HashMap<String, List<PSActionMenu>>();
+            Map<String, List<PSActionMenu>> submenuActions = new HashMap<>();
             // create a modified action map stripping off the first part of the
             // path
             for (String right : pathSplit.get(folder))
@@ -431,7 +431,7 @@ public class PSContentTypeActionMenuHelper {
     }
 
     public URL getURL(PSItemDefSummary itemDefSummary, IPSRequestContext request) throws MalformedURLException {
-        HashMap<String, String> paramMap = new HashMap<String, String>();
+        HashMap<String, String> paramMap = new HashMap<>();
         String sourceUrl = itemDefSummary.getEditorUrl();
         paramMap.put(IPSHtmlParameters.SYS_COMMAND, "edit");
         paramMap.put(IPSHtmlParameters.SYS_VIEW, "sys_All");

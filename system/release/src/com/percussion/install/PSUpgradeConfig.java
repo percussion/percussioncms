@@ -433,7 +433,7 @@ public class PSUpgradeConfig implements IPSUpgradeConfig
 
    /**
     * Evaluates all given properties match conditions.
-    * @param el list of 'propertyMatch' elements, may be <code>null</code>
+    * @param nlpm list of 'propertyMatch' elements, may be <code>null</code>
     * may be <code>empty</code>.
     * @return <code>true</code> if either all match or the list is null or empty.
     */
@@ -477,7 +477,9 @@ public class PSUpgradeConfig implements IPSUpgradeConfig
       File propFile = new File(fileName);
       if (propFile.isFile())
       {
-         props.load(new FileInputStream(fileName));
+         try(FileInputStream is = new FileInputStream(fileName)) {
+            props.load(is);
+         }
          
          return props;
       }
@@ -492,7 +494,9 @@ public class PSUpgradeConfig implements IPSUpgradeConfig
       }
       else
       {
-         props.load(new FileInputStream(fileName));
+         try(FileInputStream is = new FileInputStream(fileName)) {
+            props.load(is);
+         }
          
          return props;
       }
@@ -502,7 +506,7 @@ public class PSUpgradeConfig implements IPSUpgradeConfig
 
    /**
     * Evaluates all given XPathMatch match conditions.
-    * @param el list of 'XPathMatch' elements, may be <code>null</code>
+    * @param nlxpe list of 'XPathMatch' elements, may be <code>null</code>
     * may be <code>empty</code>.
     * @return <code>true</code> if either all match or the list is null or empty.
     */
@@ -867,96 +871,55 @@ public class PSUpgradeConfig implements IPSUpgradeConfig
     *
     * @returns server version props, may be <code>null</code>.
     */
-   private Properties getVersionProps()
-   {
-      if (ms_versionProps!=null)
+   private Properties getVersionProps() {
+      if (ms_versionProps != null)
          return ms_versionProps;
 
       ms_isUpgrade = false;
 
       //Construct the full path of the previous properties file.
       String prevPropertiesFile = RxUpgrade.getRxRoot() +
-      InstallUtil.PREVIOUS_VERSION_PROPS_FILE;
+              InstallUtil.PREVIOUS_VERSION_PROPS_FILE;
 
       File propFile = new File(prevPropertiesFile);
-      if (propFile.isFile())
-      {
+      if (propFile.isFile()) {
          ms_versionProps = new Properties();
-         try
-         {
-            ms_versionProps.load(new FileInputStream(prevPropertiesFile));
-
+         try (FileInputStream is = new FileInputStream(prevPropertiesFile)) {
+            ms_versionProps.load(is);
             ms_isUpgrade = true;
             return ms_versionProps;
-         }
-         catch (IOException e1)
-         {
+         } catch (IOException e1) {
             //this shouldn't happen is File sais that file exists?
             RxUpgradeLog.logIt(e1.getMessage());
             RxUpgradeLog.logIt(e1);
          }
       }
 
-      InputStream in = null;
-      FileOutputStream out = null;
+      String strRootDir = RxUpgrade.getRxRoot();
 
-      try
-      {
-         String strRootDir = RxUpgrade.getRxRoot();
+      //get jar file with version props
+      File jarFile = new File(strRootDir + File.separator +
+              RxFileManager.VERSION_JAR_FILE);
 
-         //get jar file with version props
-         File jarFile = new File(strRootDir + File.separator +
-            RxFileManager.VERSION_JAR_FILE);
-
-         if (jarFile.exists())
-         {
-            JarFile jar = new JarFile(jarFile);
+      if (jarFile.exists()) {
+         try (JarFile jar = new JarFile(jarFile)) {
             JarEntry jarEntry = jar.getJarEntry(RxFileManager.VERSION_FILE);
-            if (jarEntry != null)
-            {
-               in = jar.getInputStream(jarEntry);
-               Properties verProp = new Properties();
-               verProp.load(in);
-
-               ms_versionProps = verProp;
-               ms_isUpgrade = false;
+            if (jarEntry != null) {
+               try (InputStream in = jar.getInputStream(jarEntry)) {
+                  Properties verProp = new Properties();
+                  verProp.load(in);
+                  ms_versionProps = verProp;
+                  ms_isUpgrade = false;
+               }
             }
+         } catch (IOException e) {
+            RxUpgradeLog.logIt(e.getMessage());
+            RxUpgradeLog.logIt(e);
          }
       }
-      catch(IOException e)
-      {
-         RxUpgradeLog.logIt(e.getMessage());
-         RxUpgradeLog.logIt(e);
-      }
-      finally
-      {
-         if (in != null)
-         {
-            try
-            {
-               in.close();
-            }
-            catch(IOException e)
-            {
-            }
-         }
-
-         if (out != null)
-         {
-            try
-            {
-               out.close();
-            }
-            catch(IOException e)
-            {
-               RxUpgradeLog.logIt(e.getMessage());
-               RxUpgradeLog.logIt(e.toString());
-            }
-         }
-      }
-
       return ms_versionProps;
    }
+
    /**
     * Converts the m_modules arraylist to Iterator and returns.
     * One can iterate through the returned iterator to get the modules that

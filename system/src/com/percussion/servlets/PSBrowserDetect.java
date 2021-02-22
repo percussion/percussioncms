@@ -181,6 +181,7 @@ public class PSBrowserDetect implements Filter
       seenCookie.setMaxAge(60 * 5); // 5 Minutes so that it can time
                                     // out quickly if they try to
                                     // navigate away.
+      seenCookie.setHttpOnly(true);
       seenCookie.setSecure(true);
       ((HttpServletResponse) response).addCookie(seenCookie); // Breaks
                                                               // infinite

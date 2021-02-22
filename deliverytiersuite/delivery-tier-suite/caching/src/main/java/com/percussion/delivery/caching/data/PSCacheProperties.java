@@ -44,7 +44,7 @@ public class PSCacheProperties
     {
         if (property == null)
         {
-            property = new ArrayList<PSCacheProperty>();
+            property = new ArrayList<>();
         }
         return this.property;
     }

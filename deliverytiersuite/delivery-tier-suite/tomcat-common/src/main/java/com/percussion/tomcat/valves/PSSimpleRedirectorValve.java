@@ -174,7 +174,7 @@ public class PSSimpleRedirectorValve extends ValveBase implements Lifecycle
         }
 
         StringTokenizer toker = new StringTokenizer(serviceNames, ",");
-        Collection<String> urls = new ArrayList<String>();
+        Collection<String> urls = new ArrayList<>();
         while (toker.hasMoreTokens())
         {
             String s = toker.nextToken().trim();

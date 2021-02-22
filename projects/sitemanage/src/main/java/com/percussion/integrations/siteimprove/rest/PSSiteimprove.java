@@ -38,6 +38,7 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManagerInternal;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.util.PSSiteManageBean;
 import net.sf.json.JSONObject;
 
@@ -53,6 +54,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -97,7 +99,11 @@ public class PSSiteimprove {
 	@Path("/token")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<PSMetadata> retrieveAllSiteImproveTokens() {
-		return new PSMetadataList(metadataService.findByPrefix(SITEIMPROVE_CREDENTIALS_BASE_KEY));
+		try {
+			return new PSMetadataList(metadataService.findByPrefix(SITEIMPROVE_CREDENTIALS_BASE_KEY));
+		} catch (IPSGenericDao.LoadException e) {
+			throw new WebApplicationException(e);
+		}
 	}
 	
 	/**
@@ -110,8 +116,12 @@ public class PSSiteimprove {
 	@Path("/token/{siteName}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public PSMetadata retrieveSiteImproveTokens(@PathParam("siteName") String siteName) {
-		String credentialsKey = SITEIMPROVE_CREDENTIALS_BASE_KEY + siteName;
-		return metadataService.find(credentialsKey);
+		try {
+			String credentialsKey = SITEIMPROVE_CREDENTIALS_BASE_KEY + siteName;
+			return metadataService.find(credentialsKey);
+		} catch (IPSGenericDao.LoadException e) {
+			throw new WebApplicationException(e);
+		}
 	}
 	
 	/**
@@ -148,7 +158,7 @@ public class PSSiteimprove {
 	public Response storeSiteImproveToken(PSSiteImproveCredentials credentials) {
 		try {
 
-			Map<String, String> credentialsToValidate = new HashMap<String, String>();
+			Map<String, String> credentialsToValidate = new HashMap<>();
 
 			credentialsToValidate.put("token", credentials.getToken());
 			credentialsToValidate.put("sitename", credentials.getSiteName());
@@ -221,14 +231,14 @@ public class PSSiteimprove {
 	@DELETE
 	@Path("delete/config/{siteName}")
 	public void deleteSiteImproveConfiguration(@PathParam("siteName") String siteName) {
-		metadataService.delete(SITEIMPROVE_CONFIGURATION_BASE_KEY + siteName);
-		metadataService.delete(SITEIMPROVE_CREDENTIALS_BASE_KEY + siteName);
-		
 		try {
+			metadataService.delete(SITEIMPROVE_CONFIGURATION_BASE_KEY + siteName);
+			metadataService.delete(SITEIMPROVE_CREDENTIALS_BASE_KEY + siteName);
 			removeSiteImproveTaskFromEditions(siteName);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new WebApplicationException(e);
 		}
+
 	}
 	
 
@@ -242,8 +252,12 @@ public class PSSiteimprove {
 	@Path("publish/config/{siteName}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public PSMetadata retrieveSiteImproveConfiguration(@PathParam("siteName") String siteName) {
-		String siteConfigKey = SITEIMPROVE_CONFIGURATION_BASE_KEY + siteName;
-		return metadataService.find(siteConfigKey);
+		try {
+			String siteConfigKey = SITEIMPROVE_CONFIGURATION_BASE_KEY + siteName;
+			return metadataService.find(siteConfigKey);
+		} catch (IPSGenericDao.LoadException e) {
+			throw new WebApplicationException(e);
+		}
 	}
 
 
@@ -256,7 +270,11 @@ public class PSSiteimprove {
 	@Path("publish/config")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Collection<PSMetadata> retrieveAllSiteImproveConfiguration() {
-		return metadataService.findByPrefix(SITEIMPROVE_CONFIGURATION_BASE_KEY);
+		try {
+			return metadataService.findByPrefix(SITEIMPROVE_CONFIGURATION_BASE_KEY);
+		} catch (IPSGenericDao.LoadException e) {
+			throw new WebApplicationException(e);
+		}
 	}
 
 
@@ -278,7 +296,7 @@ public class PSSiteimprove {
 	 * @param siteName The site whose editions we are adding the new post edition task to.
 	 * @throws Exception If we encountered an issue adding the new post task definition
 	 */
-	private void addSiteImproveTaskToPreExistingEditions(String siteName) throws Exception {
+	private void addSiteImproveTaskToPreExistingEditions(String siteName) {
 
 		IPSPublisherService pubService = PSPublisherServiceLocator.getPublisherService();
 		IPSSite site = sitemgr.findSite(siteName);

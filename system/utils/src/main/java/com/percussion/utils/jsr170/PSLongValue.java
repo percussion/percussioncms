@@ -23,6 +23,7 @@
  */
 package com.percussion.utils.jsr170;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
 
@@ -76,7 +77,11 @@ public class PSLongValue extends PSBaseValue<Long>
    public InputStream getStream() throws IllegalStateException,
          RepositoryException
    {
-      return PSValueConverter.convertToStream(getString());
+      try(InputStream io = PSValueConverter.convertToStream(getString())) {
+         return io;
+      } catch (IOException e) {
+         throw new IllegalStateException("Error reading getString()");
+      }
    }
 
    public long getLong() throws ValueFormatException, IllegalStateException,

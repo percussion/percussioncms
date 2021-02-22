@@ -23,28 +23,6 @@
  */
 package com.percussion.pagemanagement.assembler.impl;
 
-import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PERC_RESOURCE_BINDING_NAME;
-import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PERC_RESOURCE_ID_PARAM_NAME;
-import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PREVIEW_PAGE_BINDING_NAME;
-import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PREVIEW_TEMPLATE_BINDING_NAME;
-import static java.util.Arrays.asList;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.removeStart;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.util.Collections;
-import java.util.List;
-
-import javax.jcr.Node;
-import javax.jcr.RepositoryException;
-
-import com.percussion.util.PSSiteManageBean;
-import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-
 import com.percussion.assetmanagement.data.PSAssetSummary;
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
@@ -55,12 +33,12 @@ import com.percussion.pagemanagement.assembler.PSRenderAsset;
 import com.percussion.pagemanagement.data.PSEmptyPage;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSRenderLinkContext;
+import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.pagemanagement.data.PSResourceInstance;
 import com.percussion.pagemanagement.data.PSResourceLinkAndLocation;
 import com.percussion.pagemanagement.data.PSResourceLocation;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
-import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSRenderLinkService;
 import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
@@ -69,21 +47,45 @@ import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.rx.publisher.IPSAssemblyResultExpander;
 import com.percussion.services.assembly.IPSAssemblyItem;
+import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.contentmgr.IPSNode;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
+import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.publisher.data.PSContentListItem;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.PSJcrNodeMap;
 import com.percussion.share.data.PSItemSummaryUtils;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.sitemanage.service.IPSSiteTemplateService;
 import com.percussion.util.IPSHtmlParameters;
+import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentDesignWs;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+import java.util.Collections;
+import java.util.List;
+
+import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PERC_RESOURCE_BINDING_NAME;
+import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PERC_RESOURCE_ID_PARAM_NAME;
+import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PREVIEW_PAGE_BINDING_NAME;
+import static com.percussion.pagemanagement.assembler.impl.PSAssemblyConfig.PREVIEW_TEMPLATE_BINDING_NAME;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.removeStart;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 
 /**
@@ -157,11 +159,11 @@ public class PSAssemblyItemBridge {
     /**
      * Creates a resource instance from a content list item for generating locations
      * during content list generating
-     * @param assemblyItem never <code>null</code>.
+     * @param item never <code>null</code>.
      * @param resourceId the unique resource ID. It may be blank or <code>null</code> if the resource is determined by the content type of the item.
      * @return never <code>null</code>.
      */
-    public PSResourceInstance createResourceInstance(PSContentListItem item, String resourceId) throws Exception {
+    public PSResourceInstance createResourceInstance(PSContentListItem item, String resourceId) throws PSDataServiceException {
 
         IPSLinkableItem linkableItem = createLinkableItem(item.getItemId());
         PSRenderLinkContext context = this.renderLinkContextFactory.create(item, linkableItem);
@@ -181,17 +183,11 @@ public class PSAssemblyItemBridge {
      * @param resourceId the resource ID. It may be blank if the resource is determined by the content type of the item.
      * @return never <code>null</code>.
      */
-    public PSResourceLocation getResourceLocation(PSContentListItem listItem, String resourceId) 
-    {
+    public PSResourceLocation getResourceLocation(PSContentListItem listItem, String resourceId) throws PSDataServiceException {
         PSResourceInstance resource;
-        try
-        {
-            resource = createResourceInstance(listItem, resourceId);
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException("Error creating a resource for: " + listItem, e);
-        }
+
+        resource = createResourceInstance(listItem, resourceId);
+
         List<PSResourceLinkAndLocation> linkAndLocations = resourceLinkandLocationService.resolveLinkAndLocations(resource);
         if (linkAndLocations.isEmpty()) return null;
         return linkAndLocations.get(0).getResourceLocation();
@@ -200,7 +196,7 @@ public class PSAssemblyItemBridge {
     /**
      * Loads the content node for the specified item.
      * 
-     * @param item the item, assumed not <code>null</code>.
+     * @param guid the item, assumed not <code>null</code>.
      * 
      * @return the node of the item, not <code>null</code>.
      * 
@@ -219,7 +215,7 @@ public class PSAssemblyItemBridge {
      * @return The item, never <code>null</code>.
      * @see IPSLinkableItem
      */
-    public IPSLinkableItem createLinkableItem(IPSGuid guid) throws Exception
+    public IPSLinkableItem createLinkableItem(IPSGuid guid)
     {
         Validate.notNull(guid);
         
@@ -231,7 +227,7 @@ public class PSAssemblyItemBridge {
      * @param assemblyItem never <code>null</code>.
      * @return never <code>null</code>.
      */
-    public PSResourceInstance createResourceInstance(IPSAssemblyItem assemblyItem) {
+    public PSResourceInstance createResourceInstance(IPSAssemblyItem assemblyItem) throws PSAssemblyException {
         
         PSResourceInstance rvalue = getResourceInstance(assemblyItem);
         if (rvalue != null)
@@ -242,8 +238,12 @@ public class PSAssemblyItemBridge {
         String id = idMapper.getString(assemblyItem.getId());
         IPSLinkableItem linkableItem = PSPathUtils.getLinkableItem(id);
         PSRenderLinkContext context = getRenderLinkContext(assemblyItem, linkableItem);
-        
-        return resourceLinkandLocationService.createResourceInstance(context, linkableItem, resourceDefinitionId);
+
+        try {
+            return resourceLinkandLocationService.createResourceInstance(context, linkableItem, resourceDefinitionId);
+        } catch (PSDataServiceException e) {
+            throw new PSAssemblyException(22,e,id);
+        }
     }
     
     /**
@@ -252,8 +252,7 @@ public class PSAssemblyItemBridge {
      * @param assemblyItem never <code>null</code>.
      * @return never <code>null</code>.
      */
-    public PSResourceLocation getResourceLocation(IPSAssemblyItem assemblyItem) 
-    {
+    public PSResourceLocation getResourceLocation(IPSAssemblyItem assemblyItem) throws PSAssemblyException, IPSAssetService.PSAssetServiceException {
         PSResourceInstance resource = createResourceInstance(assemblyItem);
         List<PSResourceLinkAndLocation> linkAndLocations = resourceLinkandLocationService.resolveLinkAndLocations(resource);
         if (linkAndLocations.isEmpty()) return null;
@@ -297,8 +296,7 @@ public class PSAssemblyItemBridge {
      * @return never <code>null</code>.
      * @see PSRenderAsset
      */
-    public PSRenderAsset createRenderAsset(IPSAssemblyItem assemblyItem)
-    {
+    public PSRenderAsset createRenderAsset(IPSAssemblyItem assemblyItem) throws PSDataServiceException {
         PSRenderAsset asset = new PSRenderAsset();
         String id = idMapper.getString(assemblyItem.getId());
         PSAssetSummary sum = assetService.find(id);
@@ -358,8 +356,7 @@ public class PSAssemblyItemBridge {
      * @param assemblyItem never <code>null</code>.
      * @return never <code>null</code> maybe empty.
      */
-    public List<PSAssetResource> getResourceDefinitions(IPSAssemblyItem assemblyItem) 
-    {
+    public List<PSAssetResource> getResourceDefinitions(IPSAssemblyItem assemblyItem) throws PSDataServiceException {
         String contentType = getContentType(assemblyItem);
         if (IPSPageService.PAGE_CONTENT_TYPE.equals(contentType))
         {
@@ -372,8 +369,12 @@ public class PSAssemblyItemBridge {
         }
     }
     
-    protected PSRenderLinkContext getRenderLinkContext(IPSAssemblyItem assemblyItem, IPSLinkableItem item) {
-        return renderLinkContextFactory.create(assemblyItem, item);
+    protected PSRenderLinkContext getRenderLinkContext(IPSAssemblyItem assemblyItem, IPSLinkableItem item) throws PSAssemblyException {
+        try {
+            return renderLinkContextFactory.create(assemblyItem, item);
+        } catch (IPSDataService.DataServiceLoadException | PSFilterException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+            throw new PSAssemblyException(23,e);
+        }
     }
     
     
@@ -528,7 +529,7 @@ public class PSAssemblyItemBridge {
      * @return never <code>null</code>.
      * @throws RepositoryException
      */
-    public TemplateAndPage getTemplateAndPage(IPSAssemblyItem item) throws RepositoryException {
+    public TemplateAndPage getTemplateAndPage(IPSAssemblyItem item) throws RepositoryException, PSDataServiceException {
         String contentType = ((IPSNodeDefinition) ((IPSNode) item.getNode()).getDefinition()).getInternalName();
         log.debug("Getting template and page for assembly item: " + item.getId() + " of type: " + contentType);
         TemplateAndPage tp = new TemplateAndPage();
@@ -562,7 +563,11 @@ public class PSAssemblyItemBridge {
         }
         else {
             if (tp.page == null) {
-                tp.page = pageService.load(idTemplateOrPage);
+                try {
+                    tp.page = pageService.load(idTemplateOrPage);
+                } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+                    throw new RepositoryException(e.getMessage(),e);
+                }
             }
             if (tp.template == null) {
                 String templateId = tp.page.getTemplateId();
@@ -660,7 +665,7 @@ public class PSAssemblyItemBridge {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSAssemblyItemBridge.class);
+    private static final Logger log = LogManager.getLogger(PSAssemblyItemBridge.class);
     
     
 }

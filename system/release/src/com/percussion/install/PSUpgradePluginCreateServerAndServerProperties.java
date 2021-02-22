@@ -462,7 +462,7 @@ public class PSUpgradePluginCreateServerAndServerProperties
       ps.setInt(1, serverId);
       ResultSet result = ps.executeQuery();
       
-      List<Integer> editions = new ArrayList<Integer>();
+      List<Integer> editions = new ArrayList<>();
       while (result.next())
       {
          editions.add(result.getInt("EDITIONID"));
@@ -544,7 +544,7 @@ public class PSUpgradePluginCreateServerAndServerProperties
     */
    private static Map<String, String> initializeProperties()
    {
-      Map<String, String> result = new HashMap<String, String>();
+      Map<String, String> result = new HashMap<>();
 
       result.put("ROOT", "folder");
       result.put("IPADDRESS", "serverip");

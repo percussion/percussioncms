@@ -23,7 +23,7 @@
  */
 package com.percussion.services.security;
 
-import com.percussion.utils.security.IPSPrincipalAttribute;
+import com.percussion.security.IPSPrincipalAttribute;
 
 import java.io.Serializable;
 import java.util.List;
@@ -68,7 +68,7 @@ public class PSPrincipalAttribute implements IPSPrincipalAttribute, Serializable
    }
    
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSPrincipalAttribute#getValues()
+    * @see com.percussion.security.IPSPrincipalAttribute#getValues()
     */
    public List<String> getValues()
    {
@@ -76,7 +76,7 @@ public class PSPrincipalAttribute implements IPSPrincipalAttribute, Serializable
    }
 
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSPrincipalAttribute#getAttributeType()
+    * @see com.percussion.security.IPSPrincipalAttribute#getAttributeType()
     */
    public PrincipalAttributes getAttributeType()
    {

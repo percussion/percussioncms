@@ -85,11 +85,6 @@
    <import resource="perc-integrations.xml" />
     <import resource="security.xml" />
 
-  <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
-   	<constructor-arg index="0"><null/></constructor-arg>
-   	<constructor-arg index="1"><null/></constructor-arg>
-   </bean>
-   
     <bean id="emsSoapBean" class="com.percussion.delivery.integrations.ems.EMSSOAPEventService">
    	<constructor-arg index="0" value="${ems.api.user}" />
    	<constructor-arg index="1" value="${ems.api.password}" />

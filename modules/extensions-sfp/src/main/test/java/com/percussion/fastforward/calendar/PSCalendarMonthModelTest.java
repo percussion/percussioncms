@@ -258,7 +258,7 @@ public class PSCalendarMonthModelTest
       assertNull(m_info.getEvents(2));
       assertNull(m_info.getEvents(15));
 
-      m_info.setEvents(new ArrayList<IPSAssemblyResult>());
+      m_info.setEvents(new ArrayList<>());
       assertNull(m_info.getEvents(1));
       assertNull(m_info.getEvents(2));
       assertNull(m_info.getEvents(15));
@@ -282,7 +282,7 @@ public class PSCalendarMonthModelTest
        Property mockProperty1 = context.mock(Property.class, "property1");
        Property mockProperty2 = context.mock(Property.class, "property2");
 
-      List<IPSAssemblyResult> events = new ArrayList<IPSAssemblyResult>(2);
+      List<IPSAssemblyResult> events = new ArrayList<>(2);
       events.add((IPSAssemblyResult) mockResult1);
       events.add((IPSAssemblyResult) mockResult2);
 
@@ -415,7 +415,7 @@ public class PSCalendarMonthModelTest
    private VelocityContext getVelocityContext()
    {
       VelocityContext rval = new VelocityContext();
-      Map<String, Object> rx = new HashMap<String, Object>();
+      Map<String, Object> rx = new HashMap<>();
       rval.put("rx", rx);
 
       rx.put("month", m_info);

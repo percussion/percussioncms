@@ -54,7 +54,7 @@ public class PSConfigDeltaFinder
          return newProps;
       }
       // Propcess delta and return changed props
-      Map<String, Object> delta = new HashMap<String, Object>();
+      Map<String, Object> delta = new HashMap<>();
       Iterator<String> iter = newProps.keySet().iterator();
       while(iter.hasNext())
       {

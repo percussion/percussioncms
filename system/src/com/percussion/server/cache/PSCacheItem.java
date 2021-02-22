@@ -135,7 +135,7 @@ class PSCacheItem
       if (keys == null)
          throw new IllegalArgumentException("keys may not be null");
          
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       buf.append("[");
       for (int i = 0; i < keys.length; i++) 
@@ -460,19 +460,12 @@ class PSCacheItem
    private Object getObjectFromDisk(File file) throws FileNotFoundException, 
       IOException, ClassNotFoundException
    {
-      ObjectInputStream in = null;
       Object o = null;
-      try
-      {
-         in = new ObjectInputStream(new FileInputStream(file));
+      try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
          o = in.readObject();
          return o;
       }
-      finally
-      {
-         if (in != null)
-            try {in.close();} catch (IOException e) {}
-      }   
+
    }
 
    /**
@@ -495,20 +488,12 @@ class PSCacheItem
       if (!dir.exists())
          dir.mkdirs();
          
-      File file = new PSPurgableTempFile("psx", ".csh", dir);
-      
-      ObjectOutputStream out = null;
-      try 
-      {
-         out = new ObjectOutputStream(new FileOutputStream(file));
+     File file = new PSPurgableTempFile("psx", ".csh", dir);
+
+      try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))){
          out.writeObject(object);
       }
-      finally 
-      {
-         if (out != null)
-            try{out.close();} catch (IOException e){}
-      }
-      
+
       return file;
    }
    
@@ -526,11 +511,11 @@ class PSCacheItem
          if (!m_cacheAccessedListeners.isEmpty())
          {
             PSCacheEvent event = new PSCacheEvent(action, this);
-            Iterator i = m_cacheAccessedListeners.iterator();
+            Iterator<IPSCacheAccessedListener> i = m_cacheAccessedListeners.iterator();
             while (i.hasNext()) 
             {
                IPSCacheAccessedListener listener = 
-                  (IPSCacheAccessedListener)i.next();
+                  i.next();
                listener.cacheAccessed(event);
             }
          }
@@ -550,11 +535,11 @@ class PSCacheItem
          if (!m_cacheModifiedListeners.isEmpty())
          {
             PSCacheEvent event = new PSCacheEvent(action, this);
-            Iterator i = m_cacheModifiedListeners.iterator();
+            Iterator<IPSCacheModifiedListener> i = m_cacheModifiedListeners.iterator();
             while (i.hasNext()) 
             {
                IPSCacheModifiedListener listener = 
-                  (IPSCacheModifiedListener)i.next();
+                  i.next();
                listener.cacheModified(event);
             }
          }
@@ -614,14 +599,14 @@ class PSCacheItem
     * List of <code>IPSCacheModifiedListener</code> objects to notify if this 
     * item is moved to or from disk.  Never <code>null</code>, may be empty.
     */
-   private List m_cacheModifiedListeners = new ArrayList();
+   private List<IPSCacheModifiedListener> m_cacheModifiedListeners = new ArrayList<>();
    
    /**
     * List of <code>IPSCacheAccessedListener</code> objects to notify if this 
     * item is accessed by calling {@link #getObject()}.  Never 
     * <code>null</code>, may be empty.
     */
-   private List m_cacheAccessedListeners = new ArrayList();
+   private List<IPSCacheAccessedListener> m_cacheAccessedListeners = new ArrayList<>();
    
    /**
     * Monitor object used to synchronize access to the object while moving it

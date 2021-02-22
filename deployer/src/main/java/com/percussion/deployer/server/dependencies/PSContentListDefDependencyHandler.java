@@ -38,6 +38,7 @@ import com.percussion.extension.PSExtensionRef;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.IPSCatalogItem;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.publisher.IPSContentList;
@@ -114,8 +115,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
    // see base class
    // id is a PSGuid for a template def
    @Override
-   public PSDependency getDependency(PSSecurityToken tok, String id)
-   {
+   public PSDependency getDependency(PSSecurityToken tok, String id) throws PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -143,8 +143,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
     */
    private List<PSDependency> getAppDependenciesForLegacyContentList(
          PSSecurityToken tok, PSDependency dep, IPSContentList cList)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -154,7 +153,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
       if (cList == null )
          throw new IllegalArgumentException("ContentList may not be null");
      
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
       String url = cList.getUrl();
       if (!StringUtils.isBlank(url))
       {
@@ -180,8 +179,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
    @Override
    @SuppressWarnings("unchecked")
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -197,7 +195,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
       IPSContentList cList = null;
       
       cList = findContentListByDependencyID(dep.getDependencyId());
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
       
       //    Dont forget the stupid idTypes...
       childDeps.addAll(PSIdTypeDependencyHandler.getIdTypeDependencies(tok, 
@@ -285,7 +283,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
          throws PSDeployException
    {
       init();   
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       PSDependency dep;
       IterableMap namedCList = m_publisherHelper.getNamedContentListMap();
 
@@ -317,7 +315,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
          init();
 
       // pack the data into the files
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
       IterableMap namedCList = m_publisherHelper.getNamedContentListMap();
       IPSContentList cList = (IPSContentList) namedCList.get(dep
             .getDisplayName());
@@ -368,7 +366,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
       ((PSContentList) cList).setVersion(ver);
       try
       {
-         List<IPSContentList> lists = new ArrayList<IPSContentList>();
+         List<IPSContentList> lists = new ArrayList<>();
          lists.add(cList);
          m_publisherSvc.saveContentLists(lists);
       }
@@ -385,8 +383,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
    @Override
    public void installDependencyFiles(PSSecurityToken tok,
       PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -529,8 +526,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
     * @return <code>null</code> if content list is not found else get the
     * content list
     */
-   private IPSContentList findContentListByDependencyID(String depId)
-   {
+   private IPSContentList findContentListByDependencyID(String depId) throws PSNotFoundException {
       if (depId == null || depId.trim().length() == 0)
          throw new IllegalArgumentException(
                "dependency ID may not be null or empty");
@@ -545,8 +541,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
 
    // see base class
    @Override
-   public boolean doesDependencyExist(PSSecurityToken tok, String id)
-   {
+   public boolean doesDependencyExist(PSSecurityToken tok, String id) throws PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -716,7 +711,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
       init();
       List<String> nList = 
          m_publisherHelper.getAllContentListNames("%"+currentName+"%");
-      Set<String> names = new HashSet<String>(nList);
+      Set<String> names = new HashSet<>(nList);
       
       int count = 1; 
       String uniqueName = currentName;
@@ -747,7 +742,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();  
+   private static List<String> ms_childTypes = new ArrayList<>();
    
    static
    {

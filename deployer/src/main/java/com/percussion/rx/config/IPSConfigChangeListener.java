@@ -24,6 +24,7 @@
 package com.percussion.rx.config;
 
 import com.percussion.rx.config.data.PSConfigStatus.ConfigStatus;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 
 import java.util.Collection;
@@ -42,12 +43,12 @@ public interface IPSConfigChangeListener
     * @param status The status of the package configuration, never
     * <code>null</code>.
     */
-   public void configChanged(Collection<IPSGuid> ids, ConfigStatus status);
+   public void configChanged(Collection<IPSGuid> ids, ConfigStatus status) throws PSNotFoundException;
    
    /**
     * Called to notify listeners before a configuration is applied to a package.
     * 
     * @param name The package name, never <code>null</code> or empty.
     */
-   public void preConfiguration(String name);
+   public void preConfiguration(String name) throws PSNotFoundException;
 }

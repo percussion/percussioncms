@@ -126,7 +126,7 @@ public class Event extends CADFType
     {
         if (reportersteps == null)
         {
-            reportersteps = new ArrayList<Reporterstep>();
+            reportersteps = new ArrayList<>();
         }
         reportersteps.add(reporterstep);
     }
@@ -160,7 +160,7 @@ public class Event extends CADFType
     {
         if (measurements == null)
         {
-            measurements = new ArrayList<Measurement>();
+            measurements = new ArrayList<>();
         }
 
         measurements.add(measurement);
@@ -175,7 +175,7 @@ public class Event extends CADFType
     {
         if (attachments == null)
         {
-            attachments = new ArrayList<Attachment>();
+            attachments = new ArrayList<>();
         }
         attachments.add(attachment);
     }

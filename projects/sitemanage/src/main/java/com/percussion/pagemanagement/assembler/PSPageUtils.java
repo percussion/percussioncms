@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -29,12 +29,14 @@ import com.percussion.category.data.PSCategoryNode;
 import com.percussion.category.extension.PSCategoryControlUtils;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.designmanagement.service.IPSFileSystemService;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
+import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.extension.PSJexlUtilBase;
 import com.percussion.linkmanagement.service.IPSManagedLinkService;
@@ -53,15 +55,14 @@ import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.IPSPageCategoryService;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSRenderLinkService;
+import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.pubserver.IPSPubServerService;
-//import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.recycle.service.IPSRecycleService;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.ToDoVulnerability;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyErrors;
 import com.percussion.services.assembly.IPSAssemblyItem;
@@ -87,20 +88,24 @@ import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.share.dao.IPSContentItemDao;
-import com.percussion.share.dao.IPSGenericDao.LoadException;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.PSHtmlUtils;
 import com.percussion.share.dao.PSJcrNodeFinder;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.dao.impl.PSContentItemDao;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.service.IPSSiteSectionService;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jsr170.PSValueFactory;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.utils.security.ToDoVulnerability;
 import com.percussion.utils.timing.PSStopwatchStack;
 import com.percussion.utils.types.PSPair;
 import com.percussion.webservices.content.IPSContentWs;
@@ -117,8 +122,6 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -132,17 +135,29 @@ import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 import javax.jcr.ValueFormatException;
+import javax.xml.XMLConstants;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 
 import static com.percussion.pagemanagement.assembler.impl.finder.PSRelationshipWidgetContentFinder.IS_MATCH_BY_NAME;
 import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
@@ -217,11 +232,12 @@ public class PSPageUtils extends PSJexlUtilBase
         net.sf.ehcache.Element cachedLink =null;
 
         try{
-            log.debug("Checking link: " + link + " in context: " + context +" dontCache=" + Boolean.toString(dontCache));
+            log.debug("Checking link: {} in context: {} dontCache= {}",
+                    link,context,dontCache);
 
             if(!dontCache){
                 cachedLink = linkCache.get(link);
-                log.debug("Got link:" + link + " from cache.");
+                log.debug("Got link: {} from cache.",link);
             }
 
 
@@ -234,7 +250,7 @@ public class PSPageUtils extends PSJexlUtilBase
                     connection.setRequestMethod("HEAD");
                     int responseCode = connection.getResponseCode();
 
-                    log.debug("Got response code of " + Integer.toString(responseCode) + " for " + link);
+                    log.debug("Got response code of {}  for {}",responseCode ,link);
 
                     boolean result = (200 <= responseCode && responseCode <= 399);
 
@@ -245,34 +261,40 @@ public class PSPageUtils extends PSJexlUtilBase
 
                     if(!dontCache){
                         linkCache.put(newLink);
-                        log.debug("Caching link: " + link + " with result of " + Boolean.toString(result));
+                        log.debug("Caching link: {} with result of {}",link,result);
                     }
 
                     return result;
                 } catch (IOException exception) {
-                    log.error("Error checking link: " + link + " error:" + exception.getMessage());
-                    log.debug(exception);
+                    log.error(LOG_ERROR_DEFAULT,"isLinkGood", exception.getMessage());
+                    log.debug(exception.getMessage(),exception);
                     return false;
                 }
             }else{
-                if(log.isDebugEnabled())
-                    log.debug("Returning cached link result for link:" + link + " status: " + (Boolean)cachedLink.getObjectValue());
+                log.debug("Returning cached link result for link: {} status: {}",link , cachedLink.getObjectValue());
                 return (Boolean)cachedLink.getObjectValue();
             }
         }catch(Exception e){
-            log.error("Error checking link: " + link + " error:" + e.getMessage());
-            log.debug(e);
+            log.error("Error checking link: {} Error: {}", link, e.getMessage());
+            log.debug(e.getMessage(),e);
             return false;
         }
 
     }
+
 
     @IPSJexlMethod(description = "Renders a Link to an item using the default resource definition for that items type.", params =
             {@IPSJexlParam(name = "linkContext", description = "The link context. Use $perc.linkContext"),
                     @IPSJexlParam(name = "linkableItem", description = "An asset or page.")}, returns = "PSRenderLink")
     public PSRenderLink itemLink(PSRenderLinkContext linkContext, IPSLinkableItem linkableItem)
     {
-        return renderLinkService.renderLink(linkContext, linkableItem);
+        try{
+            return renderLinkService.renderLink(linkContext, linkableItem);
+        } catch (PSDataServiceException e) {
+            log.error(LOG_ERROR_DEFAULT,"itemLink", e.getMessage());
+            log.debug(e.getMessage(),e);
+            return new PSRenderLink("#",null);
+        }
     }
 
     @IPSJexlMethod(description = "Renders a list of javascript links", params =
@@ -280,8 +302,14 @@ public class PSPageUtils extends PSJexlUtilBase
                     @IPSJexlParam(name = "item", description = "the parent (page/template) assembly item")}, returns = "List of PSRenderLink")
     public List<PSRenderLink> javascriptLinks(PSRenderLinkContext linkContext, IPSAssemblyItem item)
     {
-        Set<String> widgetDefIds = getWidgetDefIds(item);
-        return renderLinkService.renderJavascriptLinks(linkContext, widgetDefIds);
+        try {
+            Set<String> widgetDefIds = getWidgetDefIds(item);
+            return renderLinkService.renderJavascriptLinks(linkContext, widgetDefIds);
+        } catch (PSDataServiceException | RepositoryException e) {
+            log.error(LOG_ERROR_DEFAULT,"javascriptLinks", e.getMessage());
+            log.debug(e.getMessage(),e);
+            return new ArrayList<>();
+        }
     }
 
     @IPSJexlMethod(description = "Renders a list of css links", params =
@@ -289,48 +317,84 @@ public class PSPageUtils extends PSJexlUtilBase
                     @IPSJexlParam(name = "item", description = "the parent (page/template) assembly item")}, returns = "List of PSRenderLink")
     public List<PSRenderLink> cssLinks(PSRenderLinkContext linkContext, IPSAssemblyItem item)
     {
-        Set<String> widgetDefIds = getWidgetDefIds(item);
-        return renderLinkService.renderCssLinks(linkContext, widgetDefIds);
+        try {
+            Set<String> widgetDefIds = getWidgetDefIds(item);
+            return renderLinkService.renderCssLinks(linkContext, widgetDefIds);
+        } catch (PSDataServiceException | RepositoryException e) {
+            log.error(LOG_ERROR_DEFAULT,"cssLinks", e.getMessage());
+            log.debug(e.getMessage(),e);
+            return new ArrayList<>();
+        }
     }
 
     @IPSJexlMethod(description = "Renders a relative path to the login page", params =
             {@IPSJexlParam(name = "sitename", description = "The name of the site to load the login page property")}, returns = "String")
     public String getSiteLoginPage(String sitename)
     {
-        IPSSite site = siteMgr.loadSite(sitename);
-        return site.getLoginPage();
+        try {
+            IPSSite site = siteMgr.loadSite(sitename);
+            return site.getLoginPage();
+        } catch (com.percussion.services.error.PSNotFoundException e) {
+            log.error(LOG_ERROR_DEFAULT,"getSiteLoginPage",e.getMessage());
+            log.debug(e.getMessage(),e);
+            return "";
+        }
     }
 
     @IPSJexlMethod(description = "Renders a relative path to the registration page", params =
             {@IPSJexlParam(name = "sitename", description = "The name of the site to load the registration page property")}, returns = "String")
     public String getSiteRegistrationPage(String sitename)
     {
-        IPSSite site = siteMgr.loadSite(sitename);
-        return site.getRegistrationPage();
+        try {
+            IPSSite site = siteMgr.loadSite(sitename);
+            return site.getRegistrationPage();
+        } catch (com.percussion.services.error.PSNotFoundException e) {
+            log.error(LOG_ERROR_DEFAULT,"getSiteRegistrationPage",e.getMessage());
+            log.debug(e.getMessage(),e);
+            return "";
+        }
     }
 
     @IPSJexlMethod(description = "Renders a relative path to the registration confirmation page", params =
             {@IPSJexlParam(name = "sitename", description = "The name of the site to load the registration confirmation page property")}, returns = "String")
     public String getSiteRegistrationConfirmationPage(String sitename)
     {
-        IPSSite site = siteMgr.loadSite(sitename);
-        return site.getRegistrationConfirmationPage();
+        try {
+            IPSSite site = siteMgr.loadSite(sitename);
+            return site.getRegistrationConfirmationPage();
+        } catch (com.percussion.services.error.PSNotFoundException e) {
+            log.error(LOG_ERROR_DEFAULT,"getSiteRegistrationConfirmationPage",e.getMessage());
+            log.debug(e.getMessage(),e);
+            return "";
+        }
     }
 
     @IPSJexlMethod(description = "Renders a relative path to the reset page", params =
             {@IPSJexlParam(name = "sitename", description = "The name of the site to load the reset page property")}, returns = "String")
     public String getSiteResetPage(String sitename)
     {
-        IPSSite site = siteMgr.loadSite(sitename);
-        return site.getResetPage();
+        try {
+            IPSSite site = siteMgr.loadSite(sitename);
+            return site.getResetPage();
+        } catch (com.percussion.services.error.PSNotFoundException e) {
+            log.error(LOG_ERROR_DEFAULT,"getSiteResetPage",e.getMessage());
+            log.debug(e.getMessage(),e);
+            return "";
+        }
     }
 
     @IPSJexlMethod(description = "Renders a relative path to the reset request password page", params =
             {@IPSJexlParam(name = "sitename", description = "The name of the site to load the reset request password page property")}, returns = "String")
     public String getSiteResetRequestPasswordPage(String sitename)
     {
-        IPSSite site = siteMgr.loadSite(sitename);
-        return site.getResetRequestPasswordPage();
+        try {
+            IPSSite site = siteMgr.loadSite(sitename);
+            return site.getResetRequestPasswordPage();
+        } catch (com.percussion.services.error.PSNotFoundException e) {
+            log.error(LOG_ERROR_DEFAULT,"getSiteResetPage",e.getMessage());
+            log.debug(e.getMessage(),e);
+            return "";
+        }
     }
 
     @IPSJexlMethod(description = "Create a clone of the current assemblyItem if an id is passed the clone will be modified to that id.", params =
@@ -403,7 +467,7 @@ public class PSPageUtils extends PSJexlUtilBase
             PSRegionBranches pageRegionBranches = page.getRegionBranches();
             regionTree =  new PSMergedRegionTree(widgetService ,templateRegionTree , pageRegionBranches);
         }
-        catch (RepositoryException e)
+        catch (RepositoryException | PSDataServiceException e)
         {
             log.error("Error getting RegionTree for item ", e);
         }
@@ -427,7 +491,7 @@ public class PSPageUtils extends PSJexlUtilBase
     {
         notNull(regionTree, "regionTree");
 
-        List<PSWidgetInstance> instances = new ArrayList<PSWidgetInstance>();
+        List<PSWidgetInstance> instances = new ArrayList<>();
         Map<String, PSMergedRegion> regionMap = regionTree.getMergedRegionMap();
         if (regionName != null)
         {
@@ -484,13 +548,10 @@ public class PSPageUtils extends PSJexlUtilBase
      * @return Set of widget definition ids, never <code>null</code>, may be
      *         empty.
      */
-    private Set<String> getWidgetDefIds(IPSAssemblyItem item)
-    {
-        Set<String> widgetDefIds = new HashSet<String>();
+    private Set<String> getWidgetDefIds(IPSAssemblyItem item) throws PSDataServiceException, RepositoryException {
+        Set<String> widgetDefIds = new HashSet<>();
         if (item == null)
             return widgetDefIds;
-        try
-        {
             PSPage page = getAssemblyItemBridge().getTemplateAndPage(item).getPage();
             PSTemplate template = getAssemblyItemBridge().getTemplateAndPage(item).getTemplate();
             List<PSWidgetItem> widgetList = page.getWidgets(template);
@@ -499,13 +560,7 @@ public class PSPageUtils extends PSJexlUtilBase
             {
                 widgetDefIds.add(psWidgetItem.getDefinitionId());
             }
-        }
-        catch (RepositoryException e)
-        {
-            String errMsg = "Failed to find content for widget definitions for item =" + item.getId().toString();
-            log.error(errMsg, e);
-            throw new RuntimeException(errMsg, e);
-        }
+
         return widgetDefIds;
     }
 
@@ -538,8 +593,6 @@ public class PSPageUtils extends PSJexlUtilBase
         PSRenderLink renderLink = new PSRenderLink("#", null);
         try
         {
-
-
             Property landingPageProperty = navNode.getProperty("nav:landingPage");
 
 
@@ -556,15 +609,16 @@ public class PSPageUtils extends PSJexlUtilBase
             else
             {
                 IPSGuid navId = ((IPSNode) navNode).getGuid();
-                String msg = "Failed to find the landing page for nav node id = " + navId.toString();
-                log.debug(msg);
+
+                log.debug("Failed to find the landing page for nav node id = {}", navId);
             }
         }
-        catch (RepositoryException | java.lang.IllegalArgumentException e)
+        catch (RepositoryException | IllegalArgumentException | PSDataServiceException e)
         {
             IPSGuid navId = ((IPSNode) navNode).getGuid();
-            String msg = "Could not generate nav link (landing page link) for nav node id = " + navId.toString();
-            log.warn(msg, e);
+
+            log.error(LOG_ERROR_DEFAULT, "navLink",e.getMessage());
+            log.debug(e.getMessage(),e);
         }
         return renderLink;
     }
@@ -577,7 +631,13 @@ public class PSPageUtils extends PSJexlUtilBase
     public PSRenderLink itemLink(PSRenderLinkContext linkContext, IPSLinkableItem linkableItem,
                                  String resourceDefinitionId)
     {
-        return renderLinkService.renderLink(linkContext, linkableItem, resourceDefinitionId);
+        try {
+            return renderLinkService.renderLink(linkContext, linkableItem, resourceDefinitionId);
+        } catch (PSDataServiceException e) {
+            log.error(LOG_ERROR_DEFAULT,"itemLink", e.getMessage());
+            log.debug(e.getMessage(),e);
+            return new PSRenderLink("#",null);
+        }
     }
 
     @IPSJexlMethod(description = "Renders a Link to a folder", params =
@@ -585,7 +645,13 @@ public class PSPageUtils extends PSJexlUtilBase
                     @IPSJexlParam(name = "resourceDefinitionId", description = "the fully qualified resourceDefinitionId")}, returns = "PSRenderLink")
     public PSRenderLink folderLink(PSRenderLinkContext linkContext, String resourceDefinitionId)
     {
-        return renderLinkService.renderLink(linkContext, resourceDefinitionId);
+        try {
+            return renderLinkService.renderLink(linkContext, resourceDefinitionId);
+        } catch (PSDataServiceException e) {
+            log.error(LOG_ERROR_DEFAULT,"folderLink", e.getMessage());
+            log.debug(e.getMessage(),e);
+            return new PSRenderLink("#",null);
+        }
     }
 
     @IPSJexlMethod(description = "Renders a Link to a file", params =
@@ -593,7 +659,13 @@ public class PSPageUtils extends PSJexlUtilBase
                     @IPSJexlParam(name = "resourceDefinitionId", description = "the fully qualified resourceDefinitionId")}, returns = "PSRenderLink")
     public PSRenderLink fileLink(PSRenderLinkContext linkContext, String resourceDefinitionId)
     {
-        return renderLinkService.renderLink(linkContext, resourceDefinitionId);
+        try {
+            return renderLinkService.renderLink(linkContext, resourceDefinitionId);
+        } catch (PSDataServiceException e) {
+            log.error(LOG_ERROR_DEFAULT,"fileLink", e.getMessage());
+            log.debug(e.getMessage(),e);
+            return new PSRenderLink("#",null);
+        }
     }
 
     @IPSJexlMethod(description = "Renders a Link to a theme CSS file", params =
@@ -601,8 +673,14 @@ public class PSPageUtils extends PSJexlUtilBase
                     @IPSJexlParam(name = "theme", description = "theme name")}, returns = "PSRenderLink")
     public PSRenderLink themeLink(PSRenderLinkContext linkContext, String theme)
     {
-        theme = isNotBlank(theme) ? theme : "percussion";
-        return renderLinkService.renderLink(linkContext, "theme." + theme);
+        try {
+            theme = isNotBlank(theme) ? theme : "percussion";
+            return renderLinkService.renderLink(linkContext, "theme." + theme);
+        } catch (PSDataServiceException e) {
+            log.error(LOG_ERROR_DEFAULT,"themeLink", e.getMessage());
+            log.debug(e.getMessage(),e);
+            return new PSRenderLink("#",null);
+        }
     }
 
     @IPSJexlMethod(description = "Renders a Link to the region's CSS file of a theme", params =
@@ -613,8 +691,14 @@ public class PSPageUtils extends PSJexlUtilBase
     public PSRenderLink themeRegionCssLink(PSRenderLinkContext linkContext, String theme, Boolean isEdit,
                                            EditType editType)
     {
-        theme = isNotBlank(theme) ? theme : "percussion";
-        return renderLinkService.renderLinkThemeRegionCSS(linkContext, theme, isEdit.booleanValue(), editType);
+        try {
+            theme = isNotBlank(theme) ? theme : "percussion";
+            return renderLinkService.renderLinkThemeRegionCSS(linkContext, theme, isEdit, editType);
+        } catch (IPSDataService.PSThemeNotFoundException | PSValidationException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException e) {
+            log.error(LOG_ERROR_DEFAULT,"themeRegionCssLink", e.getMessage());
+            log.debug(e.getMessage(),e);
+            return new PSRenderLink("#",null);
+        }
     }
 
 
@@ -658,7 +742,7 @@ public class PSPageUtils extends PSJexlUtilBase
             String finder = "Java/global/percussion/widgetcontentfinder/perc_NavWidgetContentFinder";
             List<PSRenderAsset> navSelfList = widgetContents(item,widget,finder,null,true);
             if (CollectionUtils.isEmpty(navSelfList))
-                return null;
+                return new ArrayList<>();
 
             IPSProxyNode selfNode = (IPSProxyNode)navSelfList.get(0).getNode();
 
@@ -713,7 +797,7 @@ public class PSPageUtils extends PSJexlUtilBase
                 }
             }
 
-            return new ArrayList<PSRenderAsset>();
+            return new ArrayList<>();
 
         }
         return widgetContents;
@@ -758,12 +842,12 @@ public class PSPageUtils extends PSJexlUtilBase
             return Boolean.FALSE;
         try {
             List<PSRelationshipData> psRelationshipDataList = relationshipService.findByDependentIdConfigId(idMapper.getContentId(itemId), PSRelationshipConfig.ID_RECYCLED_CONTENT);
-            if (psRelationshipDataList.size() > 0) {
+            if (!psRelationshipDataList.isEmpty()) {
                 return Boolean.TRUE;
             }
         }catch (Exception e){
             //incase any exception happens because of some reason
-            log.error("isInRecycle check failed for item id: " + itemId,e);
+            log.error("isInRecycle check failed for item id: {}", itemId,e);
         }
         return  Boolean.FALSE;
     }
@@ -821,7 +905,7 @@ public class PSPageUtils extends PSJexlUtilBase
     public Map<String, String> parseSoProMetadata(String metadata)
     {
         JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(metadata);
-        Map<String, String> map = new Hashtable<String, String>();
+        Map<String, String> map = new Hashtable<>();
 
         for (Object key : jsonObject.keySet())
         {
@@ -972,7 +1056,7 @@ public class PSPageUtils extends PSJexlUtilBase
      * returned items are relate to the page's template if there is any.
      *
      * @param item the page or template item, never <code>null</code>.
-     * @param widget the ID of the widget, never blank.
+     * @param widgetParam the ID of the widget, never blank.
      * @param finderName the name of the widget content finder. It defaults to
      *            {@link #DEFAULT_WIDGET_CONTENT_FINDER}. if the finder name is
      *            not specified.
@@ -1017,7 +1101,7 @@ public class PSPageUtils extends PSJexlUtilBase
                 }
             }
             if (params == null)
-                params = new HashMap<String, Object>();
+                params = new HashMap<>();
 
             IPSWidgetContentFinder finder = getWidgetContentFinder(finderName);
             if (finder == null)
@@ -1037,7 +1121,7 @@ public class PSPageUtils extends PSJexlUtilBase
                 if (!processPageAssetOnly)
                     widgetAssets = toAssets(finder.find(item, widget, params));
                 else
-                    widgetAssets = new ArrayList<PSRenderAsset>();
+                    widgetAssets = new ArrayList<>();
             }
             else
             {
@@ -1079,7 +1163,7 @@ public class PSPageUtils extends PSJexlUtilBase
      * Gets the tool-tip for the specified widget in edit mode.
      *
      * @param context the assembly page/template context, not <code>null</code>.
-     * @param widget the widget instance, not <code>null</code>.
+     * @param widgetInstance the widget instance, not <code>null</code>.
      * @param defaultTooltip the default tool-tip, this is used if not in edit
      *            mode or there is no widget name and/or description.
      *
@@ -1115,40 +1199,40 @@ public class PSPageUtils extends PSJexlUtilBase
      * category of the current node and his childrens and the third is a list of
      * PSCategoryTree.
      *
-     * @throws RepositoryException
-     * @throws IllegalStateException
-     * @throws PathNotFoundException
-     * @throws ValueFormatException
      */
     @IPSJexlMethod(description = "Gets the processed list of categories.", params =
             {@IPSJexlParam(name = "categories", description = "String of comma separated categories")}, returns = "List of PSCategoryTree.")
-    public List<PSCategoryTree> getProcessedCategories(List<PSRenderAsset> assemblyPages) throws ValueFormatException,
-            PathNotFoundException, IllegalStateException, RepositoryException
+    public List<PSCategoryTree> getProcessedCategories(List<PSRenderAsset> assemblyPages)
     {
         PSCategoryTree categoryTree = new PSCategoryTree("dummyRoot");
-        if (assemblyPages == null)
-            throw new IllegalArgumentException("assemblyPages pages must not be null");
-        List<String> parsedCategories = new ArrayList<String>();
-        for (PSRenderAsset assembledPage : assemblyPages)
-        {
-            Node pageNode = assembledPage.getNode();
-            if (pageNode.hasProperty("page_categories_tree"))
-            {
-                Value[] values = pageNode.getProperty("page_categories_tree").getValues();
-                for (Value val : values)
-                {
-                    String valStr = val.getString().trim();
-                    String valStrLbl = getCategoryByIdPath(valStr);
-                    valStr = valStrLbl != null ? valStrLbl : valStr;
-                    if (valStr.startsWith("/"))
-                        valStr = valStr.substring(1);
-                    processCategory(valStr, categoryTree.getChildren(), parsedCategories, "");
-                }
-                parsedCategories = new ArrayList<String>();
-            }
-        }
+        try {
 
-        alphaOrderCategories(categoryTree);
+            if (assemblyPages == null)
+                return categoryTree.getChildren();
+
+            List<String> parsedCategories = new ArrayList<>();
+            for (PSRenderAsset assembledPage : assemblyPages) {
+                Node pageNode = assembledPage.getNode();
+                if (pageNode.hasProperty("page_categories_tree")) {
+                    Value[] values = pageNode.getProperty("page_categories_tree").getValues();
+                    for (Value val : values) {
+                        String valStr = val.getString().trim();
+                        String valStrLbl = getCategoryByIdPath(valStr);
+                        valStr = valStrLbl != null ? valStrLbl : valStr;
+                        if (valStr.startsWith("/"))
+                            valStr = valStr.substring(1);
+                        processCategory(valStr, categoryTree.getChildren(), parsedCategories, "");
+                    }
+                    parsedCategories = new ArrayList<>();
+                }
+            }
+
+            alphaOrderCategories(categoryTree);
+
+        } catch (RepositoryException e) {
+            log.error(LOG_ERROR_DEFAULT,"getProcessedCategories", e.getMessage());
+            log.debug(e.getMessage(),e);
+        }
         return categoryTree.getChildren();
     }
 
@@ -1175,7 +1259,7 @@ public class PSPageUtils extends PSJexlUtilBase
      */
     private Map<String, String> getCategoryMap()
     {
-        Map<String, String> catMap = new HashMap<String, String>();
+        Map<String, String> catMap = new HashMap<>();
         String url = CATEGORY_URL;
 
 
@@ -1193,6 +1277,8 @@ public class PSPageUtils extends PSJexlUtilBase
         catFile = null;
         catFile = new File(correctedPath);
         SAXBuilder builder = new SAXBuilder();
+        builder.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        builder.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
         Document document;
         try
         {
@@ -1236,7 +1322,6 @@ public class PSPageUtils extends PSJexlUtilBase
      * @param map assumed not <code>null</code>, the map gets updated in
      *            recursive calls.
      * @param node assumed not <code>null</code>.
-     * @param path assumed not <code>null</code>.
      * @param label assumed not <code>null</code>.
      */
     private void createCategoryMap(Map<String, String> map, Element node, String label)
@@ -1421,72 +1506,64 @@ public class PSPageUtils extends PSJexlUtilBase
      * element the string year, the count for the year and the list of months
      * with the number of blogs.
      *
-     * @throws RepositoryException
-     * @throws IllegalStateException
-     * @throws PathNotFoundException
-     * @throws ValueFormatException
      */
     @IPSJexlMethod(description = "Gets the processed list of blogs per month organized by year.", params =
             {@IPSJexlParam(name = "assemblyPages", description = "assembly pages")}, returns = "List of PSBlogArchive.")
-    public List<PSBlogYear> getProcessedBlogs(List<PSRenderAsset> assemblyPages) throws ValueFormatException,
-            PathNotFoundException, IllegalStateException, RepositoryException
+    public List<PSBlogYear> getProcessedBlogs(List<PSRenderAsset> assemblyPages)
     {
         PSBlogEntry blogs = new PSBlogEntry();
 
-        if (assemblyPages == null)
-            throw new IllegalArgumentException("assemblyPages pages must not be null");
+        if (assemblyPages == null) {
+            log.error(LOG_ERROR_DEFAULT,"itemLink", "assemblyPages pages must not be null");
+            return new ArrayList<>();
+        }
 
         for (PSRenderAsset assembledPage : assemblyPages)
         {
-            Node pageNode = assembledPage.getNode();
-            Calendar date = Calendar.getInstance();
-            if (pageNode.hasProperty("sys_contentpostdate")
-                    && pageNode.getProperty("sys_contentpostdate").getValue() != null)
-            {
-                date = pageNode.getProperty("sys_contentpostdate").getValue().getDate();
-            }
-            PSBlogYear selectedYear = null;
-            PSBlogMonth selectedMonth = null;
-            Integer currentYear = date.get(Calendar.YEAR);
-            String currentMonth = date.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
-            for (PSBlogYear year : blogs.getYears())
-            {
-                if (year.getYear().equals(currentYear))
-                {
-                    selectedYear = year;
-                    break;
+            try {
+                Node pageNode = assembledPage.getNode();
+                Calendar date = Calendar.getInstance();
+                if (pageNode.hasProperty("sys_contentpostdate")
+                        && pageNode.getProperty("sys_contentpostdate").getValue() != null) {
+                    date = pageNode.getProperty("sys_contentpostdate").getValue().getDate();
                 }
-            }
-            if (selectedYear == null)
-            {
-                selectedYear = new PSBlogYear(date.get(Calendar.YEAR));
-            }
-            if (selectedYear != null)
-            {
-                for (PSBlogMonth month : selectedYear.getMonths())
-                {
-                    if (month.getMonth().equals(currentMonth))
-                    {
-                        selectedMonth = month;
+                PSBlogYear selectedYear = null;
+                PSBlogMonth selectedMonth = null;
+                Integer currentYear = date.get(Calendar.YEAR);
+                String currentMonth = date.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+                for (PSBlogYear year : blogs.getYears()) {
+                    if (year.getYear().equals(currentYear)) {
+                        selectedYear = year;
                         break;
                     }
                 }
-                if (selectedMonth != null)
-                {
-                    selectedYear.setYearCount(selectedYear.getYearCount() + 1);
-                    selectedMonth.setCount(selectedMonth.getCount() + 1);
+                if (selectedYear == null) {
+                    selectedYear = new PSBlogYear(date.get(Calendar.YEAR));
                 }
+                if (selectedYear != null) {
+                    for (PSBlogMonth month : selectedYear.getMonths()) {
+                        if (month.getMonth().equals(currentMonth)) {
+                            selectedMonth = month;
+                            break;
+                        }
+                    }
+                    if (selectedMonth != null) {
+                        selectedYear.setYearCount(selectedYear.getYearCount() + 1);
+                        selectedMonth.setCount(selectedMonth.getCount() + 1);
+                    }
+                }
+
+                blogs.getYears().add(selectedYear);
+            } catch (RepositoryException e) {
+                log.error(LOG_ERROR_DEFAULT,"getProcessedBlogs", e.getMessage());
+                log.debug(e.getMessage(),e);
             }
-            //FB:HE_USE_OF_UNHASHABLE_CLASS NC 1-16-16
-            blogs.getYears().add(selectedYear);
         }
 
-        List<PSBlogYear> blogYears = new ArrayList<PSBlogYear>();
+        List<PSBlogYear> blogYears = new ArrayList<>();
 
-        for (PSBlogYear year : blogs.getYears())
-        {
-            blogYears.add(year);
-        }
+        blogYears.addAll(blogs.getYears());
+
         Comparator<PSBlogYear> comp = new YearOrderBlogsComparator();
         Collections.sort(blogYears, comp);
 
@@ -1507,70 +1584,69 @@ public class PSPageUtils extends PSJexlUtilBase
      */
     @IPSJexlMethod(description = "Gets the processed list of pages that have set supplied calendar.", params =
             {@IPSJexlParam(name = "calendarName", description = "The name of the calendar")}, returns = "JSONArray object")
-    public JSONArray getPagesForCalendar(String calendarName) throws ValueFormatException, PathNotFoundException,
-            IllegalStateException, RepositoryException, ParseException
-    {
-        JSONArray pagesForCal = new JSONArray();
-        List<Integer> ids = pageDao.getPageIdsByFieldNameAndValue("page_calendar", calendarName);
+    public JSONArray getPagesForCalendar(String calendarName) throws  RepositoryException, ParseException {
+        try {
+            JSONArray pagesForCal = new JSONArray();
+            List<Integer> ids = pageDao.getPageIdsByFieldNameAndValue("page_calendar", calendarName);
 
-        // Convert input string into a date
-        DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+            // Convert input string into a date
+            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 
-        // don't output time-zone as the application is not time-zone aware
-        // fullCalendar.js lib supports ISO-8601 formatted date/time values
-        DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            // don't output time-zone as the application is not time-zone aware
+            // fullCalendar.js lib supports ISO-8601 formatted date/time values
+            DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-        for (Integer id : ids)
-        {
-            PSLegacyGuid guid = new PSLegacyGuid(id, -1);
-            String sid = idMapper.getString(guid);
+            for (Integer id : ids) {
+                PSLegacyGuid guid = new PSLegacyGuid(id, -1);
+                String sid = idMapper.getString(guid);
 
-            // Find the content item for the given id
-            PSContentItem contentItem = getContentItemDao().find(sid);
-            Map<String, Object> fields = contentItem.getFields();
+                // Find the content item for the given id
+                PSContentItem contentItem = getContentItemDao().find(sid);
+                Map<String, Object> fields = contentItem.getFields();
 
-            // Find the path for the item and strip the site from the url
-            String[] paths = getItemPath(sid).split("/");
-            String pageUrl = StringUtils.EMPTY;
-            // Starts from three because the array has the format [, Sites,
-            // TestSite, page1] and has to remove the site name
-            for (int i = 3; i < paths.length; i++)
-            {
-                pageUrl = pageUrl + "/" + paths[i];
+                // Find the path for the item and strip the site from the url
+                String[] paths = getItemPath(sid).split("/");
+                String pageUrl = StringUtils.EMPTY;
+                // Starts from three because the array has the format [, Sites,
+                // TestSite, page1] and has to remove the site name
+                for (int i = 3; i < paths.length; i++) {
+                    pageUrl = pageUrl + "/" + paths[i];
+                }
+                // Get the values from the fields
+                String title = StringUtils.isNotBlank((String) fields.get("resource_link_title")) ? (String) fields
+                        .get("resource_link_title") : "";
+                String summary = StringUtils.isNotBlank((String) fields.get("page_summary")) ? (String) fields
+                        .get("page_summary") : "";
+
+                Date startDate = null;
+                if (fields.get("page_start_date") != null) {
+                    startDate = inputFormat.parse((String) fields.get("page_start_date"));
+                }
+
+                Date endDate = null;
+                if (fields.get("page_end_date") != null) {
+                    endDate = inputFormat.parse((String) fields.get("page_end_date"));
+                }
+                JSONObject pageCalItem = new JSONObject();
+                pageCalItem.put("title", title);
+                pageCalItem.put("summary", summary);
+                pageCalItem.put("start", (startDate == null) ? StringUtils.EMPTY : outputFormat.format(startDate));
+                if (endDate != null) {
+                    pageCalItem.put("end", outputFormat.format(endDate));
+                }
+                pageCalItem.put("url", pageUrl);
+                pageCalItem.put("allDay", false);
+                pageCalItem.put("textColor", StringUtils.EMPTY);
+                pageCalItem.put("textBackground", StringUtils.EMPTY);
+                pagesForCal.add(pageCalItem);
             }
-            // Get the values from the fields
-            String title = StringUtils.isNotBlank((String) fields.get("resource_link_title")) ? (String) fields
-                    .get("resource_link_title") : "";
-            String summary = StringUtils.isNotBlank((String) fields.get("page_summary")) ? (String) fields
-                    .get("page_summary") : "";
 
-            Date startDate = null;
-            if (fields.get("page_start_date") != null)
-            {
-                startDate = inputFormat.parse((String) fields.get("page_start_date"));
-            }
-
-            Date endDate = null;
-            if (fields.get("page_end_date") != null)
-            {
-                endDate = inputFormat.parse((String) fields.get("page_end_date"));
-            }
-            JSONObject pageCalItem = new JSONObject();
-            pageCalItem.put("title", title);
-            pageCalItem.put("summary", summary);
-            pageCalItem.put("start", (startDate == null) ? StringUtils.EMPTY : outputFormat.format(startDate));
-            if (endDate != null)
-            {
-                pageCalItem.put("end", outputFormat.format(endDate));
-            }
-            pageCalItem.put("url", pageUrl);
-            pageCalItem.put("allDay", false);
-            pageCalItem.put("textColor", StringUtils.EMPTY);
-            pageCalItem.put("textBackground", StringUtils.EMPTY);
-            pagesForCal.add(pageCalItem);
+            return pagesForCal;
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+           return new JSONArray();
         }
-
-        return pagesForCal;
     }
 
     // ====================================================
@@ -1594,11 +1670,11 @@ public class PSPageUtils extends PSJexlUtilBase
                     @IPSJexlParam(name = "sortOption", description = "either alpha and count, defaults to alpha and any value other "
                             + "than count is treated as alpha")}, returns = "List of PSPair of String and Integers.")
     public List<PSPair<String, Integer>> getProcessedTags(List<PSRenderAsset> assemblyPages, String sortOption)
-            throws ValueFormatException, PathNotFoundException, IllegalStateException, RepositoryException
+            throws RepositoryException
     {
         if (assemblyPages == null)
             throw new IllegalArgumentException("assemblyPages pages must not be null");
-        List<String> tags = new ArrayList<String>();
+        List<String> tags = new ArrayList<>();
         for (PSRenderAsset assembledPage : assemblyPages)
         {
             Node node = assembledPage.getNode();
@@ -1630,7 +1706,7 @@ public class PSPageUtils extends PSJexlUtilBase
      */
     private List<PSPair<String, Integer>> collapseStrings(List<String> tags, String sortOption)
     {
-        Map<String, Integer> tagMap = new HashMap<String, Integer>();
+        Map<String, Integer> tagMap = new HashMap<>();
         for (String tag : tags)
         {
             if (tagMap.containsKey(tag))
@@ -1642,10 +1718,10 @@ public class PSPageUtils extends PSJexlUtilBase
                 tagMap.put(tag, new Integer(1));
             }
         }
-        List<PSPair<String, Integer>> tagResultList = new ArrayList<PSPair<String, Integer>>();
+        List<PSPair<String, Integer>> tagResultList = new ArrayList<>();
         for (Entry<String, Integer> entry : tagMap.entrySet())
         {
-            tagResultList.add(new PSPair<String, Integer>(entry.getKey(), entry.getValue()));
+            tagResultList.add(new PSPair<>(entry.getKey(), entry.getValue()));
         }
         Comparator<PSPair<String, Integer>> comp = new AlphaOrderTagComparator();
         if (sortOption.equalsIgnoreCase("count"))
@@ -1695,17 +1771,21 @@ public class PSPageUtils extends PSJexlUtilBase
             {@IPSJexlParam(name = "templateIds", description = "String of comma separated template ids")}, returns = "List of template names")
     public List<String> templateNames(String templateIds)
     {
-        List<String> templateNames = new ArrayList<String>();
-        String[] ids = StringUtils.split(templateIds, ',');
-        for (String id : ids)
-        {
-            PSTemplateSummary summary = templateService.find(id);
-            if (summary != null)
-            {
-                templateNames.add(summary.getName());
+        try {
+            List<String> templateNames = new ArrayList<>();
+            String[] ids = StringUtils.split(templateIds, ',');
+            for (String id : ids) {
+                PSTemplateSummary summary = templateService.find(id);
+                if (summary != null) {
+                    templateNames.add(summary.getName());
+                }
             }
+            return templateNames;
+        } catch (PSDataServiceException e) {
+            log.error(LOG_ERROR_DEFAULT,"templateNames",e.getMessage());
+            log.debug(e.getMessage(),e);
+            return new ArrayList<>();
         }
-        return templateNames;
     }
 
     /**
@@ -1772,29 +1852,21 @@ public class PSPageUtils extends PSJexlUtilBase
             {@IPSJexlParam(name = "type", description = "the content type name of the item"),
                     @IPSJexlParam(name = "fields", description = "A comma delimited list of fields to return"),
                     @IPSJexlParam(name = "contentId", description = "The content id of the item to find")}, returns = "A map of the specified field names and their values as strings, values are escaped for html")
-    public Map<String, String> findItemFieldValues(String type, String fields, String contentId)
-    {
-        notEmpty(type);
-        notEmpty(fields);
-        notEmpty(contentId);
+    public Map<String, String> findItemFieldValues(String type, String fields, String contentId) {
 
-        List<String> selectFields = Arrays.asList(fields.split("\\s*,\\s*"));
+            notEmpty(type);
+            notEmpty(fields);
+            notEmpty(contentId);
 
-        try
-        {
+            List<String> selectFields = Arrays.asList(fields.split("\\s*,\\s*"));
+
             PSJcrNodeFinder nodeFinder = new PSJcrNodeFinder(contentMgr, type, IPSHtmlParameters.SYS_CONTENTID);
             Map<String, String> result = nodeFinder.find(selectFields, contentId);
-            for (Map.Entry<String, String> entry : result.entrySet())
-            {
+            for (Map.Entry<String, String> entry : result.entrySet()) {
                 entry.setValue(StringEscapeUtils.escapeHtml(entry.getValue()));
             }
 
             return result;
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException(e);
-        }
 
     }
 
@@ -1804,11 +1876,17 @@ public class PSPageUtils extends PSJexlUtilBase
                     @IPSJexlParam(name = "rootPath", description = "The root path, can find by title or guid,  if relative path first match will be returned")}, returns = "A list of PSCategoryNode objects")
     public List<PSCategoryNode> getCategoryNodes(String site, String rootPath)
     {
-        PSCategory category = PSCategoryControlUtils.getCategories(site, rootPath, false, true);
-        return category.getTopLevelNodes();
+        try {
+            PSCategory category = PSCategoryControlUtils.getCategories(site, rootPath, false, true);
+            return category.getTopLevelNodes();
+        } catch (PSDataServiceException e) {
+            log.error(LOG_ERROR_DEFAULT,"getCategoryNodes",e.getMessage());
+            log.debug(e.getMessage(),e);
+            return new ArrayList<>();
+        }
     }
 
-    @IPSJexlMethod(description = "Get item's category json string value and preapre the information in a map and return.", params =
+    @IPSJexlMethod(description = "Get item's category json string value and prepare the information in a map and return.", params =
             {@IPSJexlParam(name = "fieldValue", description = "the category drop down value that is to be displayed"),
                     @IPSJexlParam(name = "fieldName", description = "the name of the category drop down field"),
                     @IPSJexlParam(name = "siteName", description = "the name of the site")}, returns = "A map of the category drop down values, where is key is the drop down fieldname appended with a count and value is a list of PSCategoryNode. "
@@ -1816,44 +1894,38 @@ public class PSPageUtils extends PSJexlUtilBase
     public Map<String, List<PSCategoryNode>> getCategoryDropDownValues(String fieldValue, String fieldName,
                                                                        String siteName)
     {
-        notEmpty(fieldValue);
-        notEmpty(fieldName);
-        // Prepare the data Structure that needs to be returned.
-        // This List contains the category nodes with one/more marked as
-        // selected.
-        List<PSCategoryNode> nodeList = new ArrayList<PSCategoryNode>();
-        // This is the map which will be returned back to the template. This
-        // will have key as the drop down number and value will be the combo
-        // map.
-        Map<String, List<PSCategoryNode>> templateMap = new HashMap<String, List<PSCategoryNode>>();
-        PSCategoryNode parentNode = null;
-        PSCategoryNode prevParentNode = null;
-        int fieldCounter = 0;
+        try {
+            notEmpty(fieldValue);
+            notEmpty(fieldName);
+            // Prepare the data Structure that needs to be returned.
+            // This List contains the category nodes with one/more marked as
+            // selected.
+            List<PSCategoryNode> nodeList;
+            // This is the map which will be returned back to the template. This
+            // will have key as the drop down number and value will be the combo
+            // map.
+            Map<String, List<PSCategoryNode>> templateMap = new HashMap<>();
+            PSCategoryNode parentNode = null;
+            PSCategoryNode prevParentNode = null;
+            int fieldCounter = 0;
 
-        // Get the persisted drop down field value.
+            // Get the persisted drop down field value.
 
-        try
-        {
             JSONArray jsonArray = JSONArray.fromObject(fieldValue);
 
             // Get the categories from the category xml, so that the relevant
             // map can be populated.
             PSCategory category = PSCategoryControlUtils.getCategories(siteName, null, false, true);
 
-            if (category.getTopLevelNodes() != null && !category.getTopLevelNodes().isEmpty())
-            {
+            if (category.getTopLevelNodes() != null && !category.getTopLevelNodes().isEmpty()) {
                 List<PSCategoryNode> nodes = category.getTopLevelNodes();
-                for (int n = 0; n < jsonArray.size(); n++)
-                {
+                for (int n = 0; n < jsonArray.size(); n++) {
                     JSONObject jObj = jsonArray.getJSONObject(n);
 
-                    for (Object key : jObj.keySet())
-                    {
-                        if (((String) key).equalsIgnoreCase("id"))
-                        {
+                    for (Object key : jObj.keySet()) {
+                        if (((String) key).equalsIgnoreCase("id")) {
                             parentNode = getParentNode(nodes, jObj.getString((String) key), parentNode);
-                            if (parentNode != null)
-                            {
+                            if (parentNode != null) {
                                 nodes = parentNode.getChildNodes();
                                 if (!parentNode.equals(prevParentNode))
                                     fieldCounter = fieldCounter + 1;
@@ -1865,13 +1937,12 @@ public class PSPageUtils extends PSJexlUtilBase
                     }
                 }
             }
+            return new TreeMap<>(templateMap);
+        } catch (PSDataServiceException e) {
+            log.error(LOG_ERROR_DEFAULT,"getCategoryDropDownValues",e.getMessage());
+            log.debug(e.getMessage(),e);
+            return new TreeMap<>();
         }
-        catch (LoadException e)
-        {
-            log.error("Load Exception while fetching JSONArray - PSPageUtils.getCategoryDropDownValues()", e);
-        }
-
-        return new TreeMap<String, List<PSCategoryNode>>(templateMap);
     }
 
     @IPSJexlMethod(description = "Find a category node by the category path", params = {
@@ -1921,7 +1992,7 @@ public class PSPageUtils extends PSJexlUtilBase
      * page if we find it we return the object that individual widgets can add
      * to. If we do not find it we add it.
      *
-     * @param asmItem
+     * @param param
      * @return The Metadata Map. The key is a string and the value must be a
      *         String or List of Strings.
      */
@@ -1930,7 +2001,7 @@ public class PSPageUtils extends PSJexlUtilBase
             {@IPSJexlParam(name = "asmItem", description = "The current assemblyItem usually $sys.assemblyItem")}, returns = "A Map.  The key is a String of the metada key.  The value is an Object but should only be populated with a String or List of Strings ")
     public Map<String, Object> getMetadataMap(Object param)
     {
-        if (param ==null || !(param instanceof IPSAssemblyItem))
+        if ( !(param instanceof IPSAssemblyItem))
         {
             throw new IllegalArgumentException("Expecting $sys.assemblyItem");
         }
@@ -1970,7 +2041,7 @@ public class PSPageUtils extends PSJexlUtilBase
     private List<PSCategoryNode> getCategoryList(List<PSCategoryNode> nodes, String selectedId)
     {
 
-        List<PSCategoryNode> nodeList = new ArrayList<PSCategoryNode>();
+        List<PSCategoryNode> nodeList = new ArrayList<>();
 
         for (PSCategoryNode node : nodes)
         {
@@ -2025,7 +2096,7 @@ public class PSPageUtils extends PSJexlUtilBase
 
     public List<PSRenderAsset> toAssets(List<IPSAssemblyItem> assemblyItems)
     {
-        List<PSRenderAsset> list = new ArrayList<PSRenderAsset>();
+        List<PSRenderAsset> list = new ArrayList<>();
         for (IPSAssemblyItem ai : assemblyItems)
         {
             list.add(toAsset(ai));
@@ -2035,7 +2106,13 @@ public class PSPageUtils extends PSJexlUtilBase
 
     public PSRenderAsset toAsset(IPSAssemblyItem assemblyItem)
     {
-        return assemblyItemBridge.createRenderAsset(assemblyItem);
+        try {
+            return assemblyItemBridge.createRenderAsset(assemblyItem);
+        } catch (PSDataServiceException e) {
+            log.error(LOG_ERROR_DEFAULT,"toAsset", e.getMessage());
+            log.debug(e.getMessage(),e);
+            return new PSRenderAsset();
+        }
     }
 
     /**
@@ -2057,16 +2134,15 @@ public class PSPageUtils extends PSJexlUtilBase
         {
             PSExtensionRef ref = new PSExtensionRef(finder);
             return (IPSWidgetContentFinder) emgr.prepareExtension(ref, null);
+        } catch (PSExtensionException | PSNotFoundException e) {
+                log.error(LOG_ERROR_DEFAULT,"getWidgetContentFinder", e.getMessage());
+                log.debug(e.getMessage(),e);
         }
-        catch (Exception e)
-        {
-            String errMsg = "Cannot find finder \"" + finder + "\"";
-            log.error(errMsg, e);
-            throw new RuntimeException(errMsg, e);
+        return null;
         }
-    }
 
-    /**
+
+        /**
      * Gets html content from a field and escapes the fields contents to html if
      * needed.
      * <p>
@@ -2165,7 +2241,9 @@ public class PSPageUtils extends PSJexlUtilBase
         }
         catch (RepositoryException e)
         {
-            throw new RuntimeException(e);
+            log.error(LOG_ERROR_DEFAULT,"html", e.getMessage());
+            log.debug(e.getMessage(),e);
+            return "";
         }
 
     }
@@ -2204,8 +2282,8 @@ public class PSPageUtils extends PSJexlUtilBase
         }
         catch (Exception e)
         {
-            log.error("Error processing json string:" + jsonString);
-            log.debug(e);
+            log.error("Error processing json string: {}" ,jsonString);
+            log.debug(e.getMessage(),e);
 
         }
         return jsonObj;
@@ -2232,7 +2310,7 @@ public class PSPageUtils extends PSJexlUtilBase
             try {
                 ret = jsonObj.getJSONArray(name);
             } catch (Exception e) {
-                log.error("Error processing json string:" +  e.getMessage());
+                log.error("Error processing json string: {}",e.getMessage());
                 log.debug(e);
             }
         }
@@ -2242,9 +2320,12 @@ public class PSPageUtils extends PSJexlUtilBase
 
     public String encryptString(String str){
         try {
-            return PSEncryptor.getInstance().encrypt(str);
+            return PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).encrypt(str);
         } catch (PSEncryptionException e) {
-            log.error("Error encrypting string: " + e.getMessage());
+            log.error("Error encrypting string: {}",e.getMessage());
+            log.debug(e);
             return "";
         }
     }
@@ -2255,14 +2336,15 @@ public class PSPageUtils extends PSJexlUtilBase
      *
      * @param src the source string, may be empty but never <code>null</code>
      * @return the edited or concatenated result string, never <code>null</code>
-     * @throws UnsupportedEncodingException
      */
     public String processForm(IPSAssemblyItem item, Object widget, String src)
     {
         if (src == null)
         {
-            throw new IllegalArgumentException("src may not be null");
+            log.error(LOG_ERROR_DEFAULT,"processForm","src may not be null");
+            return "";
         }
+
         Source processSRC = new Source(src);
         OutputDocument processOUT = new OutputDocument(processSRC);
         List<net.htmlparser.jericho.Element> hiddenContentType = processSRC.getAllElements(HTMLElementName.INPUT);
@@ -2281,12 +2363,12 @@ public class PSPageUtils extends PSJexlUtilBase
     private String createDDDropdown(IPSAssemblyItem item, Object widget, String query)
     {
         String finderName = "Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder";
-        String dddString = "<select name=\"perc_EmailFormTo\" id=\"email-to\" />";
-        Map<String, Object> params = new HashMap<String,Object>();
+        StringBuilder dddString = new StringBuilder("<select name=\"perc_EmailFormTo\" id=\"email-to\" />");
+        Map<String, Object> params = new HashMap<>();
         params.put("query", "select rx:personFirstName, rx:personLastName, rx:personEmail, jcr:path from rx:" + query + " where jcr:path like '//Folders/$System$/Assets/%'");
         List<PSRenderAsset> results = widgetContents(item, widget, finderName, params);
         if(results.size() > 0){
-            TreeMap<String, PSRenderAsset> resultsTree = new TreeMap<String, PSRenderAsset>();
+            TreeMap<String, PSRenderAsset> resultsTree = new TreeMap<>();
             for(PSRenderAsset element : results){
                 try {
                     Node node = element.getNode();
@@ -2294,13 +2376,13 @@ public class PSPageUtils extends PSJexlUtilBase
                     resultsTree.put(temp,element);
                 }
                 catch (ValueFormatException e) {
-                    log.error("Error retrieving name property as string",e);
+                    log.error("Error retrieving name property as string {}",e.getMessage());
                 }
                 catch (PathNotFoundException e) {
-                    log.error("Error finding path  to retrieve name property as string",e);
+                    log.error("Error finding path  to retrieve name property as string {}",e.getMessage());
                 }
                 catch (RepositoryException e) {
-                    log.error("Error quierying form repository",e);
+                    log.error("Error querying form repository {}",e.getMessage());
                 }
             }
             for(Entry<String, PSRenderAsset> entry : resultsTree.entrySet()){
@@ -2313,12 +2395,17 @@ public class PSPageUtils extends PSJexlUtilBase
 
                     String encryptEmail = "";
                     try {
-                        encryptEmail = PSEncryptor.getInstance().encrypt(email);
+                        encryptEmail = PSEncryptor.getInstance("AES",
+                                PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                        ).encrypt(email);
                     } catch (PSEncryptionException e) {
-                       log.error("Error encrypting email address:" + e.getMessage());
+                       log.error("Error encrypting email address: {}", e.getMessage());
                     }
 
-                    dddString += "<option data-personName=\"" + first +  "-" + last + "\" value=\"" + encryptEmail +  "\">" + first +  " " + last +  "</option>";
+                    dddString.append("<option data-personName=\"").append(
+                            first).append( "-" ).append(last).append("\" value=\"").append( encryptEmail).append(
+                                    "\">").append(first).append(" ").append(last).append("</option>");
+
 
                 }
                 catch (ValueFormatException e) {
@@ -2328,17 +2415,19 @@ public class PSPageUtils extends PSJexlUtilBase
                     log.error("Error finding path  to retrieve name property as string",e);
                 }
                 catch (RepositoryException e) {
-                    log.error("Error quierying form repository",e);
+                    log.error("Error querying form repository",e);
                 }
             }
-        } else dddString += "<option value=\"empty\">Select an Option</option>";
-        dddString += "</select>";
-        return dddString;
+        } else{
+            dddString.append("<option value=\"empty\">Select an Option</option>");
+        }
+        dddString.append("</select>");
+        return dddString.toString();
     }
 
-    private void handleNoFieldFound(Object item, String fields)
-    {
-        throw new RuntimeException(format(
+    private void handleNoFieldFound(Object item, String fields) throws RepositoryException {
+
+        throw new RepositoryException(format(
                 "For item type: {0} failed to find a property and no default value provided for fields: {1}",
                 item.getClass(), fields));
     }
@@ -2382,7 +2471,7 @@ public class PSPageUtils extends PSJexlUtilBase
         notNull(node);
         String[] fs = fields.split(",");
         String contentType = assemblyItemBridge.getContentType(node);
-        List<String> rvalue = new ArrayList<String>();
+        List<String> rvalue = new ArrayList<>();
         for (String name : fs)
         {
             name = removeStart(name, "rx:");
@@ -2399,7 +2488,7 @@ public class PSPageUtils extends PSJexlUtilBase
         return rvalue;
     }
 
-    private Property getProperty(Node node, List<String> fields) throws ValueFormatException, PathNotFoundException,
+    private Property getProperty(Node node, List<String> fields) throws
             RepositoryException
     {
         notNull(fields);
@@ -2765,8 +2854,7 @@ public class PSPageUtils extends PSJexlUtilBase
      * @return the web property ID. It may be empty if it is not configured for
      *         the site.
      */
-    public String getWebPropertyId(String sitename)
-    {
+    public String getWebPropertyId(String sitename) throws IPSGenericDao.LoadException {
         if (StringUtils.isBlank(sitename))
             return "";
         String webPropertyId = analyticsProviderService.getWebPropertyId(sitename);
@@ -2784,8 +2872,7 @@ public class PSPageUtils extends PSJexlUtilBase
      * @return the API key. It may be empty if the site name is blank or the
      *         google API key is not configure for the site.
      */
-    public String getGoogleApiKey(String sitename)
-    {
+    public String getGoogleApiKey(String sitename) throws IPSGenericDao.LoadException {
         if (StringUtils.isBlank(sitename))
             return "";
 
@@ -2815,8 +2902,14 @@ public class PSPageUtils extends PSJexlUtilBase
     {
         String serverBase = "";
         PSPubServer pubServer = null;
-        if (serverId != null)
-            pubServer = pubServerService.findPubServer(serverId);
+        if (serverId != null) {
+            try {
+                pubServer = pubServerService.findPubServer(serverId);
+            } catch (IPSPubServerService.PSPubServerServiceException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
+            }
+        }
         if (serverId != null && pubServer != null && pubServer.getServerType().equals(PSPubServer.STAGING))
         {
             serverBase = deliveryInfoService.findBaseByServerType(PSPubServer.STAGING);
@@ -2923,12 +3016,9 @@ public class PSPageUtils extends PSJexlUtilBase
         this.pubServerService = pubServerService;
     }
 
-    public PSPageUtils(){ }
-
-    /**
-     * Logger for this class
-     */
-    private static Log log = LogFactory.getLog(PSPageUtils.class);
+    public PSPageUtils(){
+        //default ctor
+    }
 
     private static Object metalock = new Object();
 

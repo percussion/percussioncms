@@ -82,7 +82,7 @@ public class PSPubItemEntry
    /**
     * The properties, setup in the {@link #initProperties()} method.
     */
-   private Map<String, Object> m_properties = new HashMap<String, Object>();
+   private Map<String, Object> m_properties = new HashMap<>();
 
    /**
     * The publishing item status, initialized by constructor, never

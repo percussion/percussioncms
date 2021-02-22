@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.utils.testing.IntegrationTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -45,13 +46,12 @@ public class PSContentChangeServiceTest
 {
 
    @Test
-   public void test()
-   {
+   public void test() throws IPSGenericDao.SaveException {
       IPSContentChangeService changeSvc = PSContentChangeServiceLocator.getContentChangeService();
       assertNotNull(changeSvc);
       
-      List<Integer> changedItems = null;
-      Set<Integer> site1Ids = new HashSet<Integer>();
+      List<Integer> changedItems;
+      Set<Integer> site1Ids = new HashSet<>();
 
       try
       {

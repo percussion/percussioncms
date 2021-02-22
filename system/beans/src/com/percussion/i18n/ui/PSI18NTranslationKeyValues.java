@@ -177,7 +177,7 @@ public class PSI18NTranslationKeyValues
       if(requester == null)
          throw new IllegalArgumentException("requester must not be null");
 
-      Map<String,Object> parameters = new HashMap<String,Object>();
+      Map<String,Object> parameters = new HashMap<>();
       if (m_packages.size() > 0)
       {
          parameters.put("sys_package", m_packages);         

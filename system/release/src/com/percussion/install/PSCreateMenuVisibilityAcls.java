@@ -38,7 +38,7 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 
 import java.io.PrintStream;
 import java.security.acl.NotOwnerException;
@@ -238,7 +238,7 @@ public class PSCreateMenuVisibilityAcls extends PSSpringUpgradePluginBase
          {PSPermissions.READ});
          acl.addEntry(owner, entry);
          // Save
-         List<IPSAcl> acls = new ArrayList<IPSAcl>();
+         List<IPSAcl> acls = new ArrayList<>();
          acls.add(acl);
          ms_acl.saveAcls(acls);
          logger.println("ACL created for actionid " + actionid);

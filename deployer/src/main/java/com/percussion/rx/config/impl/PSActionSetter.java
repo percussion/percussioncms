@@ -35,6 +35,7 @@ import com.percussion.rx.design.IPSDesignModel;
 import com.percussion.rx.design.IPSDesignModelFactory;
 import com.percussion.rx.design.PSDesignModelFactoryLocator;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -83,8 +84,7 @@ public class PSActionSetter extends PSSimplePropertySetter
     */
    @Override
    protected boolean addPropertyDefs(Object obj, String propName,
-         Object pvalue, Map<String, Object> defs)
-   {
+         Object pvalue, Map<String, Object> defs) throws PSNotFoundException {
       if (super.addPropertyDefs(obj, propName, pvalue, defs))
          return true;
       if (!(obj instanceof PSAction))
@@ -103,8 +103,7 @@ public class PSActionSetter extends PSSimplePropertySetter
    }
 
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       if (!(obj instanceof PSAction))
          throw new IllegalArgumentException("obj type must be PSAction.");
       PSAction action = (PSAction) obj;
@@ -152,7 +151,7 @@ public class PSActionSetter extends PSSimplePropertySetter
          aps.setParameter(name, params.get(name));
       }
       // Prepare a delete list by getting current params
-      List<PSActionParameter> deleteList = new ArrayList<PSActionParameter>();
+      List<PSActionParameter> deleteList = new ArrayList<>();
       Iterator iter = aps.iterator();
       while (iter.hasNext())
       {
@@ -178,7 +177,7 @@ public class PSActionSetter extends PSSimplePropertySetter
     */
    private Map<String, Object> getUrlParams(PSAction action)
    {
-      Map<String, Object> params = new HashMap<String, Object>();
+      Map<String, Object> params = new HashMap<>();
       PSActionParameters aps = action.getParameters();
       Iterator iter = aps.iterator();
       while (iter.hasNext())
@@ -198,7 +197,7 @@ public class PSActionSetter extends PSSimplePropertySetter
     */
    private Map<String, Object> getActionVisibility(PSAction action)
    {
-      Map<String, Object> propValue = new HashMap<String, Object>();
+      Map<String, Object> propValue = new HashMap<>();
       PSActionVisibilityContexts actionContexts = action
             .getVisibilityContexts();
       Iterator ctxIter = actionContexts.iterator();
@@ -206,7 +205,7 @@ public class PSActionSetter extends PSSimplePropertySetter
       Map<String, String> contexts = getResourceLookupData(VISIBILITY_CONTEXTS_LOOKUP_KEY);
       Map<String, String> revContexts = getReverseMap(contexts);
       initVisibilityContexts();
-      List<String> processedContexts = new ArrayList<String>();
+      List<String> processedContexts = new ArrayList<>();
       while (ctxIter.hasNext())
       {
          PSActionVisibilityContext avContext = (PSActionVisibilityContext) ctxIter
@@ -214,10 +213,10 @@ public class PSActionSetter extends PSSimplePropertySetter
          avCxtName = avContext.getName();
          processedContexts.add(avCxtName);
          Iterator propsIter = avContext.iterator();
-         List<String> values = new ArrayList<String>();
+         List<String> values = new ArrayList<>();
          String resource = m_vcResources.get(avCxtName);
 
-         Map<String, String> supportedVals = new HashMap<String, String>();
+         Map<String, String> supportedVals = new HashMap<>();
          if (resource != null)
             supportedVals = getReverseMap(getResourceLookupData(resource));
 
@@ -298,7 +297,7 @@ public class PSActionSetter extends PSSimplePropertySetter
             actionContexts.addContext(contextVal, validValues);
             continue;
          }
-         List<String> delList = new ArrayList<String>();
+         List<String> delList = new ArrayList<>();
          Iterator iter1 = cxt.iterator();
          while (iter1.hasNext())
          {
@@ -332,8 +331,8 @@ public class PSActionSetter extends PSSimplePropertySetter
    private String[] getValidValues(String context, String contextVal,
          List<String> values)
    {
-      List<String> results = new ArrayList<String>();
-      Map<String, String> supportedVals = new HashMap<String, String>();
+      List<String> results = new ArrayList<>();
+      Map<String, String> supportedVals = new HashMap<>();
       if (contextVal
             .equals(PSActionVisibilityContext.VIS_CONTEXT_CONTENT_TYPE))
       {
@@ -399,7 +398,7 @@ public class PSActionSetter extends PSSimplePropertySetter
     */
    private Map<String, String> getNormalizedMaps(Map<String, String> inputMap)
    {
-      Map<String, String> normalizedMap = new HashMap<String, String>();
+      Map<String, String> normalizedMap = new HashMap<>();
       Iterator<String> iter = inputMap.keySet().iterator();
       while (iter.hasNext())
       {
@@ -422,7 +421,7 @@ public class PSActionSetter extends PSSimplePropertySetter
    @SuppressWarnings("unchecked")
    private static Map<String, String> getResourceLookupData(String resource)
    {
-      Map<String, String> data = new HashMap<String, String>();
+      Map<String, String> data = new HashMap<>();
       Map params = new HashMap();
       try
       {
@@ -486,7 +485,7 @@ public class PSActionSetter extends PSSimplePropertySetter
     */
    private Map getReverseMap(Map<String,String> map)
    {
-      Map<String,String> revMap = new HashMap<String,String>();
+      Map<String,String> revMap = new HashMap<>();
       Iterator i = map.entrySet().iterator();
       while(i.hasNext())
       {
@@ -536,7 +535,7 @@ public class PSActionSetter extends PSSimplePropertySetter
 
    /**
     * The key for the possible visibility contexts for action menus. This is a
-    * key into the RXLOOKUP table. See also {@link #VISIBILITY_CONTEXTS}.
+    * key into the RXLOOKUP table. See also .
     */
    private static final String VISIBILITY_CONTEXTS_LOOKUP_KEY = "157";
 

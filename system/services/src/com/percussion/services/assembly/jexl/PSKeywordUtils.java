@@ -114,7 +114,7 @@ public class PSKeywordUtils extends PSJexlUtilBase
          + "keyword choice, the second is the value of the keyword choice.")
    public List<String[]> keywordChoices(String keywordname)
    {
-      List<String[]> rval = new ArrayList<String[]>();
+      List<String[]> rval = new ArrayList<>();
       IPSContentService csvc = PSContentServiceLocator.getContentService();
       List<PSKeyword> keywords = csvc.findKeywordsByLabel(keywordname, "sequence");
       if (keywords == null || keywords.size() == 0)

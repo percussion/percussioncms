@@ -56,36 +56,33 @@ public class ConvertProject
             
          System.out.println("find: + " + strFind  + " replace: " + strReplace);
          File file = new File(strFile);
-         FileInputStream in = new FileInputStream(file);
-         
-         String strReadData = new String();
-         String strWriteData = new String();
-         int iAvail = in.available();
-         byte[] bData = new byte[iAvail];
-         in.read(bData, 0, iAvail);
-         strReadData = new String(bData);
+          String strReadData;
+          String strWriteData;
 
-         StringBuffer buffer = new StringBuffer(strReadData);
-         int replace = buffer.toString().indexOf(strFind);
-         while(replace != -1)
-         {
-            buffer = buffer.replace(replace, replace + strFind.length(), strReplace);
-            replace = buffer.toString().indexOf(strFind);            
+         try(FileInputStream in = new FileInputStream(file)) {
+
+
+             int iAvail = in.available();
+             byte[] bData = new byte[iAvail];
+             in.read(bData, 0, iAvail);
+             strReadData = new String(bData);
+
+             StringBuilder buffer = new StringBuilder(strReadData);
+             int replace = buffer.toString().indexOf(strFind);
+             while (replace != -1) {
+                 buffer = buffer.replace(replace, replace + strFind.length(), strReplace);
+                 replace = buffer.toString().indexOf(strFind);
+             }
+
+             strWriteData = buffer.toString();
+         }
+         try(FileWriter writer = new FileWriter(strFile)) {
+             writer.write(strWriteData, 0, strWriteData.length());
          }
 
-         strWriteData = buffer.toString();
-         in.close();
-         FileWriter writer = new FileWriter(strFile);
-         writer.write(strWriteData, 0, strWriteData.length());
-         writer.close();
-      }      
-      catch(java.io.FileNotFoundException e)
+      } catch(IOException e)
       {
-         e.printStackTrace();         
-      }
-      catch(java.io.IOException e)
-      {
-         e.printStackTrace();         
+         e.printStackTrace();
       }
    }
 
@@ -124,22 +121,18 @@ public class ConvertProject
 
       //replace \\e2
       String[] dirs = getPossibleDirectories();
-      for(int iDir = 0; iDir < dirs.length;
-          ++iDir)
-      {
-        String strFind = dirs[iDir];
-          findReplace(strFind, strCurDir.substring(1) + "\\", project);
-      }
+       for (String strFind : dirs) {
+           findReplace(strFind, strCurDir.substring(1) + "\\", project);
+       }
   
       //when we add files to the installer, we could have been mapped to a different
       //drive, so switch to the current drive.
       String[] drives = getPossibleDrives();
       String strReplace = strCurDir.charAt(0) + ":\\";
-      for(int iDrive = 0; iDrive < drives.length; ++iDrive)
-      {
-         String strFind = drives[iDrive] + ":\\";
-         findReplace(strFind, strReplace, project);
-      }
+       for (String drive : drives) {
+           String strFind = drive + ":\\";
+           findReplace(strFind, strReplace, project);
+       }
    }
 
    /**

@@ -48,8 +48,12 @@ public class PSDesignPathItemService extends PSDispatchingPathService
     private IPSRecycleService recycleService;
 
     /**
-     * @param pathRegistry
+     *
+     * @param folderHelper
      * @param uiService
+     * @param userService
+     * @param defaultListViewHelper
+     * @param recycleService
      */
     public PSDesignPathItemService(IPSFolderHelper folderHelper,
             IPSUiService uiService, IPSUserService userService,
@@ -72,8 +76,7 @@ public class PSDesignPathItemService extends PSDispatchingPathService
     }
 
     @Override
-    protected PSPathItem findRoot()
-    {
+    protected PSPathItem findRoot() throws PSPathNotFoundServiceException {
         PSPathItem root = new PSPathItem();
         root.setName(rootName);
         root.setPath("/");
@@ -83,8 +86,7 @@ public class PSDesignPathItemService extends PSDispatchingPathService
         return root;
     }
     
-    protected String getFullFolderPath(String path)
-    {
+    protected String getFullFolderPath(String path) throws PSPathNotFoundServiceException {
         PSPathUtils.validatePath(path);
         
         String fullFolderPath = getRootFolderPath();

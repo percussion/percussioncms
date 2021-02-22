@@ -51,7 +51,7 @@ public class PSPageSummaries
     public List<PSPageSummary> getSummaries()
     {
         if (summaries == null)
-            summaries = new ArrayList<PSPageSummary>();
+            summaries = new ArrayList<>();
         return summaries;
     }
 }

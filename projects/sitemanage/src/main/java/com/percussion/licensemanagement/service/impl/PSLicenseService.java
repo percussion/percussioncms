@@ -34,6 +34,7 @@ import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.sitemgr.IPSSiteManager;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.IPSSystemProperties;
 import org.apache.commons.lang.StringUtils;
@@ -49,6 +50,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -163,7 +165,7 @@ public class PSLicenseService {
             PSModuleLicenses moduleLicenses = findAllModuleLicenses();
             moduleLicenses.addModuleLicense(moduleLicense);
             metadataService.save(new PSMetadata(MODULE_LICENSE_METADATA_KEY, mapper.writeValueAsString(moduleLicenses)));
-        } catch (IOException e){
+        } catch (IOException | IPSGenericDao.LoadException | IPSGenericDao.SaveException e){
             log.error(e);
             throw new PSLicenseServiceException(PSLicenseServiceException.ERROR_SAVING_LICENSES);
         }
@@ -186,7 +188,7 @@ public class PSLicenseService {
             PSModuleLicenses moduleLicenses = findAllModuleLicenses();
             moduleLicenses.removeModuleLicense(moduleLicense);
             metadataService.save(new PSMetadata(MODULE_LICENSE_METADATA_KEY, mapper.writeValueAsString(moduleLicenses)));
-        } catch (IOException e){
+        } catch (IOException | IPSGenericDao.LoadException | IPSGenericDao.SaveException e){
             log.error(e);
             throw new PSLicenseServiceException(PSLicenseServiceException.ERROR_SAVING_LICENSES);
         }
@@ -200,23 +202,23 @@ public class PSLicenseService {
     @GET
     @Path("/module/{name}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSModuleLicense findModuleLicense(@PathParam("name") String name) throws PSLicenseServiceException
+    public PSModuleLicense findModuleLicense(@PathParam("name") String name)
     {
-        PSModuleLicense result = null;
-        PSModuleLicenses mls = findAllModuleLicenses();
-        if(mls.getModuleLicenses() != null){
-            for (PSModuleLicense ml : mls.getModuleLicenses()) {
-                if(ml.getName().equalsIgnoreCase(name)){
-                    result = ml;   
-                    break;
+            PSModuleLicense result = null;
+            PSModuleLicenses mls = findAllModuleLicenses();
+            if (mls.getModuleLicenses() != null) {
+                for (PSModuleLicense ml : mls.getModuleLicenses()) {
+                    if (ml.getName().equalsIgnoreCase(name)) {
+                        result = ml;
+                        break;
+                    }
                 }
             }
-        }
-        if(result == null){
-            Object[] obj = {name};
-            throw new PSLicenseServiceException(MessageFormat.format(PSLicenseServiceException.LICENSE_NOT_FOUND, obj));
-        }
-        return result;
+            if (result == null) {
+                Object[] obj = {name};
+                throw new PSLicenseServiceException(MessageFormat.format(PSLicenseServiceException.LICENSE_NOT_FOUND, obj));
+            }
+            return result;
     }
     
     /**
@@ -241,19 +243,24 @@ public class PSLicenseService {
     @GET
     @Path("/module/all")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSModuleLicenses findAllModuleLicenses() throws PSLicenseServiceException
+    public PSModuleLicenses findAllModuleLicenses()
     {
-        PSMetadata mldata = metadataService.find(MODULE_LICENSE_METADATA_KEY);
-        PSModuleLicenses mls = null;
-        if(mldata == null || StringUtils.isBlank(mldata.getData())){
-            mls = new PSModuleLicenses();
-        }
-        else{
-            mls = mapToModuleLicenses(mldata.getData());
-        }
-        //set service url
-        mls.setLicenseServiceUrl(systemProps.getProperty(CLOUD_LICENSES_URL_PROPNAME));
-        return mls;
+     try {
+         PSMetadata mldata = metadataService.find(MODULE_LICENSE_METADATA_KEY);
+         PSModuleLicenses mls = null;
+         if (mldata == null || StringUtils.isBlank(mldata.getData())) {
+             mls = new PSModuleLicenses();
+         } else {
+             mls = mapToModuleLicenses(mldata.getData());
+         }
+         //set service url
+         mls.setLicenseServiceUrl(systemProps.getProperty(CLOUD_LICENSES_URL_PROPNAME));
+         return mls;
+     } catch (IPSGenericDao.LoadException e) {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
+         throw new WebApplicationException(e);
+     }
     }
     
     /**

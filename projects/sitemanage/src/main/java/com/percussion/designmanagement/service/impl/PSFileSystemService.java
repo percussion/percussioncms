@@ -103,7 +103,7 @@ public class PSFileSystemService implements IPSFileSystemService
      * A list of includes file names. This is only applied to the root directory, not sub directories.
      * Only these ones are visible when getting the children of the root directory.
      */
-    protected List<String> includes = new ArrayList<String>();
+    protected List<String> includes = new ArrayList<>();
     
     public PSFileSystemService(String rootFolderPath)
     {
@@ -175,7 +175,7 @@ public class PSFileSystemService implements IPSFileSystemService
         if (includes.isEmpty() || !StringUtils.equals(path, "/"))
             return Arrays.asList(children);
         
-        List<File> result = new ArrayList<File>();
+        List<File> result = new ArrayList<>();
         //FB: NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE NC 1-17-16
         if(children!= null){
 	        for (File child : children)

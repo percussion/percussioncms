@@ -40,47 +40,15 @@
         updateRSSLinks: updateRSSLinks
     };
     /**
-     * Finds all the rss feed links by class perc-rss-icon and adds the tenantid, version, and hostname to the url.
+     * Finds all the rss feed links by class perc-rss-icon and adds the version, and hostname to the url.
      */
     function updateRSSLinks() {
-        var tenantId = $.isFunction($.getCm1License) ? $.getCm1License() : "";
-        var version = $.isFunction($.getCm1Version) ? $.getCm1Version() : "";
+        var version = $.isFunction($.getCMSVersion) ? $.getCMSVersion() : "";
         var hostname = window.location.host;
 
         $(".perc-rss-icon").each(function() {
             var feedUrl = $(this).attr("href");
             feedUrl = feedUrl+hostname+"/";
-            /*if (0 < feedUrl.length) {
-                if (feedUrl.indexOf("?") === -1) {
-                    if (0 < tenantId.length) {
-                        feedUrl += "?perc-tid=" + tenantId;
-                        if (0 < version.length) {
-                            feedUrl += "&perc-version=" + version;
-                        }
-                    }
-                }else{
-                    if (0 < tenantId.length) {
-                        feedUrl += "&perc-tid=" + tenantId;
-                        if (0 < version.length) {
-                            feedUrl += "&perc-version=" + version;
-                        }
-                    }
-                }
-            }*/
-            /*if (0 < feedUrl.length) {
-                if (feedUrl.indexOf("?") === -1) {
-                    feedUrl += "?hostname=" + hostname;
-                }
-                else {
-                    feedUrl += "&hosthame=" + hostname;
-                }
-                if (0 < tenantId.length) {
-                    feedUrl += "&perc-tid=" + tenantId;
-                    if (0 < version.length) {
-                        feedUrl += "&perc-version=" + version;
-                    }
-                }
-            }*/
             $(this).attr("href", feedUrl);
 
         });
@@ -153,7 +121,7 @@
                 // Needs to know about doResultsDisplay.
                 return loadResults(target, navLoc, function(status, result) {
                     doResultsDisplay(status, result, options);
-                    secondCallback(status, result)
+                    secondCallback(status, result);
                 }, options);
             };
 

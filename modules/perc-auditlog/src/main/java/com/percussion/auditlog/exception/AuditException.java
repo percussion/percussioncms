@@ -24,7 +24,7 @@
 
 package com.percussion.auditlog.exception;
 
-public class AuditException extends RuntimeException
+public class AuditException extends Exception
 {
 
     private static final long serialVersionUID = 1L;

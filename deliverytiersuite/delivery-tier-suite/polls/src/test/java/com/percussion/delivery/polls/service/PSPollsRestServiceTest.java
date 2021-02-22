@@ -94,7 +94,7 @@ public class PSPollsRestServiceTest extends JerseyTest {
 	public void testGetRestVersion(){
 		Client client = ClientBuilder.newClient();
 		WebTarget webTarget = client.target("/polls/version");
-		Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON).header("perc-tid", "1");
+		Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
         Assert.assertNotNull(response);

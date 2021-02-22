@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -34,6 +34,7 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.jexl.PSAssemblerUtils;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -43,21 +44,19 @@ import com.percussion.util.PSStringTemplate;
 import com.percussion.util.PSStringTemplate.PSStringTemplateException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.jcr.RepositoryException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+
+import javax.jcr.RepositoryException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 
@@ -66,8 +65,7 @@ public class PSPageTree implements IPSWidgetHandler
 {
 
    public void handleRequest(HttpServletRequest request,
-      HttpServletResponse response) throws Exception
-   {
+      HttpServletResponse response) throws PSAssemblyException, RepositoryException, PSNotFoundException, PSFilterException, IOException {
       String resp = "";
       String action = request.getParameter("action");
       if (action.equalsIgnoreCase("getchildren"))
@@ -112,8 +110,7 @@ public class PSPageTree implements IPSWidgetHandler
     */
    @SuppressWarnings("unchecked")
    private JSONArray getSnippets(JSONObject idObj) throws PSAssemblyException,
-      PSFilterException, RepositoryException
-   {
+           PSFilterException, RepositoryException, PSNotFoundException {
       JSONArray result = new JSONArray();
       IPSTemplateSlot slotObj = PSAssemblyServiceLocator.getAssemblyService()
          .loadSlot(
@@ -226,7 +223,7 @@ public class PSPageTree implements IPSWidgetHandler
 
       IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
       PSComponentSummary summary = objMgr.loadComponentSummary(cid);
-      Map<String, String> vars = new HashMap<String, String>();
+      Map<String, String> vars = new HashMap<>();
       vars.put("TITLE", summary.getName());
       vars.put("OBJECTID", jsObj.toString());
       resp = TREE_ROOT_NODE_TEMPLATE.expand(vars);
@@ -284,11 +281,10 @@ public class PSPageTree implements IPSWidgetHandler
 
    public List<IPSAssemblyItem> getSlotItems(JSONObject objectId,
       IPSTemplateSlot slotObj) throws NumberFormatException,
-      PSAssemblyException, PSFilterException, RepositoryException
-   {
+           PSAssemblyException, PSFilterException, RepositoryException, PSNotFoundException {
       IPSAssemblyItem aItem = loadAssemblyItem(objectId);
       PSAssemblerUtils autils = new PSAssemblerUtils();
-      Map<String, Object> p = new HashMap<String, Object>();
+      Map<String, Object> p = new HashMap<>();
       return autils.getSlotItems(aItem, slotObj, p);
    }
 
@@ -300,7 +296,7 @@ public class PSPageTree implements IPSWidgetHandler
    private IPSAssemblyItem loadAssemblyItem(JSONObject objectId)
       throws PSAssemblyException
    {
-      Map<String, String[]> params = new HashMap<String, String[]>();
+      Map<String, String[]> params = new HashMap<>();
       Object temp = objectId.get(IPSHtmlParameters.SYS_CONTENTID);
 
       if (temp != null)

@@ -31,9 +31,8 @@ import com.percussion.design.objectstore.PSDataSet;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSPipe;
 import com.percussion.design.objectstore.PSRequestor;
-import com.percussion.design.objectstore.PSResultPage;
 import com.percussion.design.objectstore.PSResultPager;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSBackEndQueryProcessingError;
 import com.percussion.error.PSErrorException;
 import com.percussion.error.PSException;
@@ -53,10 +52,7 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestStatistics;
 import com.percussion.server.PSUserSession;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Stack;
@@ -117,12 +113,12 @@ public class PSQueryHandler extends PSDataHandler implements IPSInternalResultHa
     *
     * @throws  PSCatalogException               if the data belongs to the wrong catalog
     *
-    * @exception  PSValidationException            if the execution plan has error
+    * @exception PSSystemValidationException            if the execution plan has error
     */
    public PSQueryHandler(PSApplicationHandler app, PSDataSet ds)
       throws PSInvalidRequestTypeException, java.sql.SQLException,
             PSIllegalArgumentException, PSNotFoundException,
-            PSCatalogException, PSValidationException, PSExtensionException
+            PSCatalogException, PSSystemValidationException, PSExtensionException
    {
       super(app, ds);
 
@@ -141,7 +137,7 @@ public class PSQueryHandler extends PSDataHandler implements IPSInternalResultHa
          // for unknown exceptions, it's useful to log the stack trace
          Object[] args = { app.getName(),
             com.percussion.error.PSException.getStackTraceAsString(e) };
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSServerErrors.APPLICATION_INIT_EXCEPTION, args,
             app.getApplicationDefinition(), ds);
       }
@@ -157,7 +153,7 @@ public class PSQueryHandler extends PSDataHandler implements IPSInternalResultHa
          // for unknown exceptions, it's useful to log the stack trace
          Object[] args = { app.getName(),
             com.percussion.error.PSException.getStackTraceAsString(e) };
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSServerErrors.APPLICATION_INIT_EXCEPTION, args,
             app.getApplicationDefinition(), ds);
       }

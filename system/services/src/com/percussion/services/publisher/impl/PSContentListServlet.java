@@ -170,7 +170,7 @@ public class PSContentListServlet extends HttpServlet
          XMLStreamWriter f = beginDocument(delivery, context, writer, ofact);
 
          IPSContentList list = pub.loadContentList(contentlistname);
-         Map<String, String> overrides = new HashMap<String, String>();
+         Map<String, String> overrides = new HashMap<>();
          Map<String, String[]> params = request.getParameterMap();
          for (Map.Entry<String, String[]> e : params.entrySet())
          {
@@ -365,7 +365,7 @@ public class PSContentListServlet extends HttpServlet
       formatter.writeAttribute("variantid", Long.toString(item.getTemplateId()
             .longValue()));
       formatter.writeCharacters("\n    ");
-      List<Integer> ids = new ArrayList<Integer>();
+      List<Integer> ids = new ArrayList<>();
       ids.add(new Integer(cid.getContentId()));
       PSComponentSummary s = cms.loadComponentSummaries(ids).get(0);
       formatter.writeCharacters("\n    ");

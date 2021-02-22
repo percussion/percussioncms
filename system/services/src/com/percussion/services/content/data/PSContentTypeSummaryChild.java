@@ -50,7 +50,7 @@ public class PSContentTypeSummaryChild
     * <code>null</code>, may be empty.
     */
    private List<PSFieldDescription> childFields = 
-      new ArrayList<PSFieldDescription>();
+      new ArrayList<>();
    
    /**
     * Default constructor.
@@ -112,7 +112,7 @@ public class PSContentTypeSummaryChild
    public void setChildFields(List<PSFieldDescription> childFields)
    {
       if (childFields == null)
-         this.childFields = new ArrayList<PSFieldDescription>();
+         this.childFields = new ArrayList<>();
       else
          this.childFields = childFields;
    }

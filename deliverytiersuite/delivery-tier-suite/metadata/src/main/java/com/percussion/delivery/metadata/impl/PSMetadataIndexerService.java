@@ -50,7 +50,7 @@ public class PSMetadataIndexerService implements IPSMetadataIndexerService
     
     /* Connector to be notified of data change events */
     private IPSServiceDataChangeListener connector;
-    private List<IPSServiceDataChangeListener> listeners = new ArrayList<IPSServiceDataChangeListener>();
+    private List<IPSServiceDataChangeListener> listeners = new ArrayList<>();
     private final String[] PERC_METADATA_SERVICES = {"perc-metadata-services"};
     
     @Autowired
@@ -86,7 +86,7 @@ public class PSMetadataIndexerService implements IPSMetadataIndexerService
             return;
 
         // array of sites for data changed event
-        HashSet<String> siteNames = new HashSet<String>(entries.size());
+        HashSet<String> siteNames = new HashSet<>(entries.size());
         for (IPSMetadataEntry entry : entries)
         {
             siteNames.add(entry.getSite());
@@ -119,7 +119,7 @@ public class PSMetadataIndexerService implements IPSMetadataIndexerService
     {
         Validate.notEmpty(pagepath, "pagepath cannot be null or empty.");
 
-        HashSet<String> siteNames = new HashSet<String>();
+        HashSet<String> siteNames = new HashSet<>();
         String site = getSiteNameFromPagePath(pagepath);
         siteNames.add(site);
 
@@ -161,7 +161,7 @@ public class PSMetadataIndexerService implements IPSMetadataIndexerService
         Validate.notNull(pagepaths, "pagepaths cannot be null.");
 
                 
-        HashSet<String> siteNames = new HashSet<String>(pagepaths.size());
+        HashSet<String> siteNames = new HashSet<>(pagepaths.size());
         for(String path : pagepaths)
         {
             String site = getSiteNameFromPagePath(path);
@@ -206,7 +206,7 @@ public class PSMetadataIndexerService implements IPSMetadataIndexerService
     public void deleteAllMetadataEntries()
     {
         List<String> sites = dao.getAllSites();
-        HashSet<String> siteSet = new HashSet<String>(sites);
+        HashSet<String> siteSet = new HashSet<>(sites);
         fireDataChangeRequestedEvent(siteSet);
         dao.deleteAllMetadataEntries();
         fireDataChangedEvent(siteSet);

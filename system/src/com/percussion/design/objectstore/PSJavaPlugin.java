@@ -393,10 +393,10 @@ public class PSJavaPlugin implements IPSJavaPlugin
    /**
     * See IPSComponent.
     * @param cxt
-    * @throws PSValidationException
+    * @throws PSSystemValidationException
     */
    @SuppressWarnings("unused")
-   public void validate(IPSValidationContext cxt) throws PSValidationException
+   public void validate(IPSValidationContext cxt) throws PSSystemValidationException
    {
       throw new UnsupportedOperationException("validate is not implemented");
    }

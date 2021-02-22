@@ -29,6 +29,7 @@ import com.percussion.rx.config.data.PSConfigStatus;
 import com.percussion.rx.config.data.PSConfigStatus.ConfigStatus;
 import com.percussion.rx.services.deployer.PSPkgUiResponse.PSPkgUiResponseType;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pkginfo.IPSPkgInfoService;
 import com.percussion.services.pkginfo.PSPkgInfoServiceLocator;
 import com.percussion.services.pkginfo.data.PSPkgElement;
@@ -178,7 +179,7 @@ public class PSPackageService
    private Map<IPSGuid, String> getPkgCommsMap(Map<IPSGuid, String> pkgInfomap)
    {
       IPSConfigService srv = PSConfigServiceLocator.getConfigService();
-      Map<IPSGuid, String> result = new HashMap<IPSGuid, String>();
+      Map<IPSGuid, String> result = new HashMap<>();
       for (Map.Entry<IPSGuid, String> pkg : pkgInfomap.entrySet())
       {
          Collection<String> names = srv.loadCommunityVisibility(pkg.getValue());         
@@ -245,8 +246,7 @@ public class PSPackageService
    @Path("/uninstallPackage")
    @Consumes("application/x-www-form-urlencoded")
    public PSUninstallMessages postUninstallPackage(@QueryParam("packageName")
-   String packageNames)
-   {
+   String packageNames) throws PSNotFoundException {
       PSUninstallMessages msgs = new PSUninstallMessages();
       PSPackageUninstall pkgUninstall = new PSPackageUninstall();
       msgs.setMessages(pkgUninstall.uninstallPackages(packageNames));
@@ -258,8 +258,7 @@ public class PSPackageService
    @Consumes("application/x-www-form-urlencoded")
    public PSUninstallMessages postCheckPackageDependencies(
          @QueryParam("packageName")
-         String packageName)
-   {
+         String packageName) throws PSNotFoundException {
       PSUninstallMessages msgs = new PSUninstallMessages();
       PSPackageUninstall pkgUninstall = new PSPackageUninstall();
       msgs.setMessages(pkgUninstall.checkPackageDepedencies(packageName));
@@ -342,7 +341,7 @@ public class PSPackageService
          updatePkgComms(pkg, commList, false);
       }
       List<PSPkgInfo> pInfos = getPkgService().findAllPkgInfos();
-      List<IPSGuid> objectGuids = new ArrayList<IPSGuid>();
+      List<IPSGuid> objectGuids = new ArrayList<>();
       for (PSPkgInfo info : pInfos)
       {
          if (pkgs.contains(info.getPackageDescriptorName()))
@@ -390,7 +389,7 @@ public class PSPackageService
     */
    private List<String> getListFromString(String commaList)
    {
-      List<String> nameList = new ArrayList<String>();
+      List<String> nameList = new ArrayList<>();
       if (StringUtils.isNotBlank(commaList))
       {
          String[] commNames = commaList.split(NAME_SEPARATOR);

@@ -23,25 +23,24 @@
  */
 package com.percussion.install;
 
-import com.percussion.tablefactory.PSJdbcColumnDef;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.tablefactory.tools.PSCatalogTableData;
 import com.percussion.util.PSSqlHelper;
-import com.percussion.utils.jdbc.PSJdbcUtils;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 
 /**
@@ -146,9 +145,9 @@ public class PSUpgradePluginPsxCTTemplate implements IPSUpgradePlugin
    {
       log("Inserting VARIANTID/CONTENTTYPEID mappings.");
 
-      String qualCVTableName = qualifyTableName(CV_TABLE);
+      String qualCVTableName = qualifyTableName(SecureStringUtils.sanitizeStringForSQLStatement(CV_TABLE));
       
-      String qualCTTTableName = qualifyTableName(PSXCTT_TABLE);
+      String qualCTTTableName = qualifyTableName(SecureStringUtils.sanitizeStringForSQLStatement(PSXCTT_TABLE));
       
       String queryStmt = "SELECT " + qualCVTableName + ".VARIANTID," + 
                          qualCVTableName + ".CONTENTTYPEID FROM " + qualCVTableName;
@@ -159,34 +158,36 @@ public class PSUpgradePluginPsxCTTemplate implements IPSUpgradePlugin
       try
       {
          // statement for query
-         Statement stmt = conn.createStatement();
-         
-         // statement for insert
-         Statement stmt2 = conn.createStatement();
+         PreparedStatement stmt = conn.prepareStatement(queryStmt);
          
          // get the variantid/contenttypeid mappings
-         ResultSet rs = stmt.executeQuery(queryStmt);      
-                  
-         while (rs.next())
-         {
-            int variantId = rs.getInt("VARIANTID");
-            int contenttypeId = rs.getInt("CONTENTTYPEID");
-            int templatetypeId = variantId;
-            int templateId = variantId;
-            int version = 0;
-            
-            String insertStmt = "INSERT INTO " + qualCTTTableName + 
-                                " (TEMPLATE_TYPE_ID,VERSION,CONTENTTYPEID,TEMPLATE_ID) " +
-                                "VALUES (" + templatetypeId + "," + version + "," + 
-                                contenttypeId + "," + templateId +  ")";
-            
-            // insert map entry into new table
-            stmt2.execute(insertStmt);
-            
-            modifications = true;
-            mappings++;
+         try(ResultSet rs = stmt.executeQuery(queryStmt)) {
+
+            while (rs.next()) {
+               int variantId = rs.getInt("VARIANTID");
+               int contenttypeId = rs.getInt("CONTENTTYPEID");
+               int templatetypeId = variantId;
+               int templateId = variantId;
+               int version = 0;
+
+               String insertStmt = "INSERT INTO " + qualCTTTableName +
+                       " (TEMPLATE_TYPE_ID,VERSION,CONTENTTYPEID,TEMPLATE_ID) " +
+                       "VALUES (?,?,?,?)";
+
+               PreparedStatement stmt2 = conn.prepareStatement(insertStmt);
+               stmt2.setInt(1,templatetypeId);
+               stmt2.setInt(2,version);
+               stmt2.setInt(3, contenttypeId);
+               stmt2.setInt(4,templateId);
+
+               // insert map entry into new table
+               stmt2.execute(insertStmt);
+
+               modifications = true;
+               mappings++;
+            }
          }
-         
+
          log("Inserted " + mappings + " mapping(s) into " + PSXCTT_TABLE + ".");
       }
       catch (SQLException e)
@@ -207,9 +208,9 @@ public class PSUpgradePluginPsxCTTemplate implements IPSUpgradePlugin
    {
       log("Performing orphan data cleanup.");
 
-      String qualCVTableName = qualifyTableName(CV_TABLE);
+      String qualCVTableName = qualifyTableName(SecureStringUtils.sanitizeStringForSQLStatement(CV_TABLE));
       
-      String qualCTTableName = qualifyTableName(CT_TABLE);
+      String qualCTTableName = qualifyTableName(SecureStringUtils.sanitizeStringForSQLStatement(CT_TABLE));
       
       String deleteStmt = "DELETE FROM " + qualCVTableName + " WHERE " + 
                           qualCVTableName + ".CONTENTTYPEID NOT IN (SELECT " + 
@@ -363,7 +364,7 @@ public class PSUpgradePluginPsxCTTemplate implements IPSUpgradePlugin
    /**
     * This will update the NAME column of the PSX_TEMPLATE table with the values
     * of the LABEL column but with all whitespace and hyphens removed.
-    * Uses {@link InstallUtil#updateName(String)} to do name cleanup.
+    * Uses {@link InstallUtil} to do name cleanup.
     * @throws SQLException 
     */
    private void updateNames(Connection conn) throws SQLException
@@ -373,7 +374,8 @@ public class PSUpgradePluginPsxCTTemplate implements IPSUpgradePlugin
       String driver = m_dbmsDef.getDriver();
       
       String qualTEMPTableName = 
-         PSSqlHelper.qualifyTableName(PSXTEMP_TABLE, database, schema, driver);
+         PSSqlHelper.qualifyTableName(SecureStringUtils.sanitizeStringForSQLStatement(PSXTEMP_TABLE)
+                 , database, schema, driver);
       
       String queryStmt = "SELECT " + qualTEMPTableName + ".LABEL, "
                   + qualTEMPTableName + ".TEMPLATE_ID "

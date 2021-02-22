@@ -208,7 +208,7 @@ public class PSLdapMembershipAuthProvider extends AbstractLdapAuthenticationProv
            logger.debug("'memberOf' attribute values: " + Arrays.asList(groups));
        }
 
-       ArrayList<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(groups.length);
+       ArrayList<GrantedAuthority> authorities = new ArrayList<>(groups.length);
 
        for (String group : groups) {
            authorities.add(new SimpleGrantedAuthority(new DistinguishedName(group).removeLast().getValue()));
@@ -222,7 +222,7 @@ public class PSLdapMembershipAuthProvider extends AbstractLdapAuthenticationProv
        final String bindUrl = url;
        DirContext dirContext = null;
 
-       Hashtable<String,String> env = new Hashtable<String,String>();
+       Hashtable<String,String> env = new Hashtable<>();
        env.put(Context.SECURITY_AUTHENTICATION, "simple");
        String bindPrincipal = createBindPrincipal(username);
        env.put(Context.SECURITY_PRINCIPAL, bindPrincipal);

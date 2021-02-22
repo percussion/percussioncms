@@ -149,7 +149,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
     public PSSearchResults get(PSMetadataQuery metadataQuery)
     {
         // execute the query
-        List<PSMetadataRestEntry> resultArr = new ArrayList<PSMetadataRestEntry>();
+        List<PSMetadataRestEntry> resultArr = new ArrayList<>();
         PSSearchResults searchResults = new PSSearchResults();
 
         if(metadataQuery == null) {
@@ -246,7 +246,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         {
             PSPair<List<IPSMetadataEntry>, Integer> metadataResults = queryService.executeQuery(metadataQuery);
             List<IPSMetadataEntry> results = metadataResults.getFirst();
-            List<PSMetadataRestEntry> resultArr = new ArrayList<PSMetadataRestEntry>();
+            List<PSMetadataRestEntry> resultArr = new ArrayList<>();
             for (IPSMetadataEntry entry : results)
             {
                 resultArr.add(toRestMetadataEntry(entry));
@@ -508,20 +508,20 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
     public String updateCategoryInDTS(String category, @PathParam("sitename") String sitename, @PathParam("deliveryserver") String deliveryserver) {
 
         JSONObject categoryJson = null;
-        JSONObject returnJson = null;
+        JSONObject returnJson = new JSONObject();
         JSONArray categoryArray = null;
 
         try {
 
             categoryArray = new JSONArray(category);
 
-            if(categoryArray != null && categoryArray.length() != 0) {
+            if( categoryArray.length() != 0) {
                 returnJson = categoryArray.getJSONObject(0);
 
                 for(int i = 0; i < categoryArray.length(); i++) {
                     categoryJson = categoryArray.getJSONObject(i);
 
-                    int updatedRows = dao.updateByCategoryProperty(categoryJson.get("previousCategoryName").toString(), categoryJson.get("title").toString());
+                   dao.updateByCategoryProperty(categoryJson.get("previousCategoryName").toString(), categoryJson.get("title").toString());
                 }
             } else {
                 returnJson = new JSONObject();
@@ -532,9 +532,8 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             }
         } catch (JSONException e) {
 
-            log.error("JSON Exception during updating the categories : " + e.getLocalizedMessage());
-
-            e.printStackTrace();
+            log.error("JSON Exception during updating the categories : {}" ,e.getMessage());
+            log.debug(e);
         }
 
         return  returnJson.toString();
@@ -558,7 +557,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
     @Path("/topblogposts")
     @Produces(MediaType.APPLICATION_JSON)
     public List<PSMetadataRestEntry> getTopVisitedBlogPosts(PSVisitQuery visitQuery) {
-        List<PSMetadataRestEntry> results  = new ArrayList<PSMetadataRestEntry>();
+        List<PSMetadataRestEntry> results  = new ArrayList<>();
         try {
             List<String> promotedPagePaths = new ArrayList<>(Arrays.asList(StringUtils.defaultString(visitQuery.getPromotedPagePaths(), "").split(";")));
 
@@ -632,7 +631,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
 
         log.debug("Exporting all site stats.  CSV file name is: " + csvFileName);
 
-        Collection<IPSCookieConsent> consents = new ArrayList<IPSCookieConsent>();
+        Collection<IPSCookieConsent> consents = new ArrayList<>();
         consents = this.cookieService.getAllConsentStats();
         PSCookieConsentCSVWriter writer = new PSCookieConsentCSVWriter(consents);
 
@@ -664,7 +663,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
 
         log.debug("Exporting CSV entries for site:" + siteName + " with CSV name: " + csvFileName);
 
-        Collection<IPSCookieConsent> consents = new ArrayList<IPSCookieConsent>();
+        Collection<IPSCookieConsent> consents = new ArrayList<>();
         consents = this.cookieService.getAllConsentStatsForSite(siteName);
         PSCookieConsentCSVWriter writer = new PSCookieConsentCSVWriter(consents);
 

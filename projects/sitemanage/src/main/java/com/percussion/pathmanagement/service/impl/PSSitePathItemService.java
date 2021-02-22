@@ -32,13 +32,17 @@ import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.data.PSRenameFolderItem;
 import com.percussion.services.contentmgr.IPSContentMgr;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSDataItemSummary;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.ui.service.IPSListViewHelper;
@@ -59,6 +63,7 @@ import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
+
 @Component("sitePathItemService")
 @Lazy
 public class PSSitePathItemService extends PSPathItemService
@@ -87,19 +92,18 @@ public class PSSitePathItemService extends PSPathItemService
     }
 
     @Override
-    protected PSPathItem findItem(String path)
-    {
+    protected PSPathItem findItem(String path) throws PSPathNotFoundServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, DataServiceLoadException {
         SiteIdAndFolderPath sfp = getSiteIdAndFolderPath(path);
         PSSiteSummary site = null;
         try
         {
             site = siteDataService.find(sfp.getSiteId());
         }
-        catch (DataServiceLoadException e)
+        catch (DataServiceLoadException | PSValidationException | IPSGenericDao.LoadException e)
         {
             try {
                 site = siteDataService.findByPath(("/Sites/" + path).replace("//","/"));
-            }catch (DataServiceLoadException e1){
+            }catch (IPSDataService.DataServiceNotFoundException | PSValidationException e1){
                 // Site not found, if we have assume we have a valid path and the path item is orphaned
                 String msg = sfp.isOnlySiteId() ? "Oops.  We can't find the site " + sfp.getSiteId() + ".  It may have been deleted." : "Oops. We're sorry. This page should have been deleted when its site was deleted. Please contact Customer Success for assistance.";
                 throw new PSPathNotFoundServiceException(msg);
@@ -150,7 +154,7 @@ public class PSSitePathItemService extends PSPathItemService
     
     protected List<PSPathItem> findRootChildren() {
         List<PSSiteSummary> sites = siteDataService.findAll();
-        List<PSPathItem> items = new ArrayList<PSPathItem>();
+        List<PSPathItem> items = new ArrayList<>();
         for(PSSiteSummary site : sites) {
             PSPathItem item = createPathItem();
             convert(site, item);
@@ -160,16 +164,14 @@ public class PSSitePathItemService extends PSPathItemService
     }
     
     @Override
-    protected List<PSPathItem> findItems(String path)
-    {
+    protected List<PSPathItem> findItems(String path) throws IPSDataService.DataServiceNotFoundException, PSPathNotFoundServiceException, PSValidationException {
         if ("/".equals(path)) return findRootChildren();
                
         return super.findItems(path);
     }
     
     @Override
-    protected String getFullFolderPath(String path)
-    {
+    protected String getFullFolderPath(String path) throws IPSDataService.DataServiceNotFoundException, PSPathNotFoundServiceException, PSValidationException {
         notEmpty(path, "path");
         
         String fullFolderPath = SITE_ROOT;
@@ -184,8 +186,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
     
     @Override
-    public PSPathItem addNewFolder(String path)
-    {
+    public PSPathItem addNewFolder(String path) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, DataServiceLoadException {
         PSPathUtils.validatePath(path);
         
         if ("/".equals(path))
@@ -197,8 +198,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
     
     @Override
-    public PSPathItem renameFolder(PSRenameFolderItem item)
-    {
+    public PSPathItem renameFolder(PSRenameFolderItem item) throws PSValidationException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, DataServiceLoadException {
         String path = item.getPath();
         if (getSiteIdAndFolderPath(path).isOnlySiteId())
         {
@@ -209,7 +209,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
 
     @Override
-    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException {
+    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, IPSDataService.DataServiceNotFoundException, PSValidationException, DataServiceLoadException, PSNotFoundException {
         String path = criteria.getPath();
         if (getSiteIdAndFolderPath(path).isOnlySiteId())
         {
@@ -227,6 +227,7 @@ public class PSSitePathItemService extends PSPathItemService
                 // purgeItem is false so item is recycled.
                 folderHelper.removeItem(folderPath, idMapper.getString(
                         navService.findNavigationIdFromFolder(folderPath)), false);
+
             }
             catch (IllegalArgumentException e) {
                 throw new PSPathServiceException(e.getMessage());
@@ -238,6 +239,7 @@ public class PSSitePathItemService extends PSPathItemService
         }
 
         return super.deleteFolder(criteria);
+
     }
 
     @Override
@@ -261,13 +263,8 @@ public class PSSitePathItemService extends PSPathItemService
     @Override
     protected boolean shouldFilterItem(IPSItemSummary item)
     {
-        if (item == null || getFilteredItemTypes().contains(item.getType()) || getFilteredItemNames().contains(
-                item.getName()) || item.getCategory().equals(IPSItemSummary.Category.EXTERNAL_SECTION_FOLDER))
-        {
-            return true;
-        }
-        
-        return false;        
+        return item == null || getFilteredItemTypes().contains(item.getType()) || getFilteredItemNames().contains(
+                item.getName()) || item.getCategory().equals(IPSItemSummary.Category.EXTERNAL_SECTION_FOLDER);
     }
     
     @Override
@@ -287,8 +284,7 @@ public class PSSitePathItemService extends PSPathItemService
     }
     
     @Override
-    protected Set<String> getApprovedPages(PSPathItem item)
-    {
+    protected Set<String> getApprovedPages(PSPathItem item) throws PSValidationException, PSNotFoundException {
         notNull(item);
         
         return itemWorkflowService.getApprovedPages(item.getId(), PSFolderPathUtils.parentPath(item.getFolderPath()));
@@ -320,7 +316,7 @@ public class PSSitePathItemService extends PSPathItemService
             }
         }
 
-        List<String> types = new ArrayList<String>();
+        List<String> types = new ArrayList<>();
 
         if (StringUtils.isNotBlank(navTreeType))
         {
@@ -344,14 +340,14 @@ public class PSSitePathItemService extends PSPathItemService
     {
         if (filteredItemNames == null)
         {
-            filteredItemNames = new ArrayList<String>();
+            filteredItemNames = new ArrayList<>();
             filteredItemNames.add(".system");
         }
                 
         return filteredItemNames;
     }
     
-    private PSSiteSummary getSite(String id) {
+    private PSSiteSummary getSite(String id) throws PSPathNotFoundServiceException, DataServiceLoadException, PSValidationException, IPSGenericDao.LoadException {
         PSSiteSummary site = siteDataService.find(id);
         if(log.isDebugEnabled())
             log.debug("Loaded site: " + site);

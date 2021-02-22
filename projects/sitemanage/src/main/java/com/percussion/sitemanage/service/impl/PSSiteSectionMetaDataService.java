@@ -27,6 +27,7 @@ import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.IPSFolderHelper.PathTarget;
 import com.percussion.share.data.IPSFolderPath;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.sitemanage.service.IPSSiteSectionMetaDataService;
 import com.percussion.webservices.content.IPSContentWs;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -111,7 +112,7 @@ public class PSSiteSectionMetaDataService implements IPSSiteSectionMetaDataServi
         String sectionPath = section.getFolderPath();
         validateSection(sectionPath);
         String systemSectionPath = folderHelper.concatPath(sectionPath, SECTION_SYSTEM_FOLDER_NAME);
-        List<String> catPaths = new ArrayList<String>();
+        List<String> catPaths = new ArrayList<>();
         try
         {
             catPaths = folderHelper.findChildren(systemSectionPath);
@@ -120,7 +121,7 @@ public class PSSiteSectionMetaDataService implements IPSSiteSectionMetaDataServi
         {
             log.error("failed to find children for path: " + systemSectionPath);
         }
-        List<String> paths = new ArrayList<String>();
+        List<String> paths = new ArrayList<>();
         for (String c : catPaths)
         {
             paths.add(folderHelper.name(c));
@@ -129,8 +130,7 @@ public class PSSiteSectionMetaDataService implements IPSSiteSectionMetaDataServi
         return paths;
     }
 
-    public List<IPSItemSummary> findItems(IPSFolderPath section, String category)
-    {
+    public List<IPSItemSummary> findItems(IPSFolderPath section, String category) throws IPSDataService.DataServiceNotFoundException {
         String path = sectionToPath(section, category);
         PathTarget p = folderHelper.pathTarget(path);
         if ( p.isToNothing())
@@ -177,7 +177,7 @@ public class PSSiteSectionMetaDataService implements IPSSiteSectionMetaDataServi
                         itemId, category));
             }
 
-            List<IPSFolderPath> sections = new ArrayList<IPSFolderPath>();
+            List<IPSFolderPath> sections = new ArrayList<>();
             for (String p : paths)
             {
                 if (endsWith(p, matchPath))

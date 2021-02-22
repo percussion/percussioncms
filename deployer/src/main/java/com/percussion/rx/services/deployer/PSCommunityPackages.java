@@ -130,5 +130,5 @@ public class PSCommunityPackages
     * The list of community package objects, never <code>null</code>, may be
     * empty.
     */
-   private List<PSCommunityPackage> m_communitiesPackages = new ArrayList<PSCommunityPackage>();
+   private List<PSCommunityPackage> m_communitiesPackages = new ArrayList<>();
 }

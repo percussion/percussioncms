@@ -38,7 +38,7 @@ import com.percussion.design.objectstore.PSLiteralSet;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSWorkflowInfo;
 import com.percussion.error.PSException;
 import com.percussion.security.PSAuthenticationFailedException;
@@ -492,14 +492,14 @@ public class PSCms
     * @throws PSAuthorizationException for any failed authorization.
     * @throws PSInternalRequestCallException for any errors making an internal
     *    request.
-    * @throws PSValidationException for any failed validation.
+    * @throws PSSystemValidationException for any failed validation.
     * @throws PSAuthenticationFailedException for any failed authentication.
     * @throws PSNotFoundException for any file not found.
     */
    public static String getNewRequestResource(IPSRequestContext request,
       PSLocator source)
       throws PSRequestValidationException, PSAuthorizationException,
-         PSInternalRequestCallException, PSValidationException,
+         PSInternalRequestCallException, PSSystemValidationException,
          PSAuthenticationFailedException, PSNotFoundException
    {
       if (request == null)
@@ -524,14 +524,14 @@ public class PSCms
     * @throws PSAuthorizationException for any failed authorization.
     * @throws PSInternalRequestCallException for any errors making an internal
     *    request.
-    * @throws PSValidationException for any failed validation.
+    * @throws PSSystemValidationException for any failed validation.
     * @throws PSAuthenticationFailedException for any failed authentication.
     * @throws PSNotFoundException for any file not found.
     */
    public static PSContentType getContentType(IPSRequestContext request,
       PSLocator source)
       throws PSRequestValidationException, PSAuthorizationException,
-      PSInternalRequestCallException, PSValidationException,
+      PSInternalRequestCallException, PSSystemValidationException,
       PSAuthenticationFailedException, PSNotFoundException
    {
       if (request == null)

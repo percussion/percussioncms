@@ -136,10 +136,11 @@ public class RxSaveProperties extends RxIAAction
                   }
 
                   //save the properties
-                  FileOutputStream out =
-                     new FileOutputStream(strPropFilePath);
-                  psProps.store(out, null);
-                  out.close();
+                  try(FileOutputStream out =
+                     new FileOutputStream(strPropFilePath)) {
+                     psProps.store(out, null);
+                     out.close();
+                  }
 
                   //copy the property file if needed
                   String strCopyPropertyFile = iaModel.getCopyPropertyFile();
@@ -159,9 +160,10 @@ public class RxSaveProperties extends RxIAAction
 
                      copyFile.createNewFile();
 
-                     out = new FileOutputStream(strCopyPropertyFile);
-                     psProps.store(out, null);
-                     out.close();
+                     try(FileOutputStream out = new FileOutputStream(strCopyPropertyFile)) {
+                        psProps.store(out, null);
+                        out.close();
+                     }
                   }
                }
                catch(IOException ioExc)
@@ -190,12 +192,7 @@ public class RxSaveProperties extends RxIAAction
          RxFileManager.SERVER_PROPERTIES_FILE;
       File serverPropsFile = new File(serverPropsPath);
       serverPropsFile.getParentFile().mkdirs();
-      
-      FileOutputStream installPropsOut = null;
-      FileOutputStream repositoryPropsOut = null;
-      FileOutputStream serverPropsOut = null;
-      InputStream serverPropsIn = null;
-               
+
       try
       {
          Properties installProps = new Properties();
@@ -205,11 +202,11 @@ public class RxSaveProperties extends RxIAAction
                "$RX_DIR$/config/server.properties");
          if (serverPropsUrl != null)
          {
-            serverPropsIn = serverPropsUrl.openStream();
-            serverPropsOut = new FileOutputStream(serverPropsPath);
-            IOTools.copyStream(serverPropsIn, serverPropsOut);
-            serverPropsIn.close();
-            serverPropsOut.close();
+            try(InputStream serverPropsIn = serverPropsUrl.openStream()) {
+               try (FileOutputStream serverPropsOut = new FileOutputStream(serverPropsPath)) {
+                  IOTools.copyStream(serverPropsIn, serverPropsOut);
+               }
+            }
          }
          
          PSProperties serverProps = new PSProperties();
@@ -247,72 +244,22 @@ public class RxSaveProperties extends RxIAAction
          serverProps.put(RxServerPropertiesModel.RHYTHMYX_SERVER_TYPE,
                RxServerPropertiesModel.getServerType());
          
-         installPropsOut = new FileOutputStream(installPropsFile);
-         installProps.store(installPropsOut, null);
-         repositoryPropsOut = new FileOutputStream(repositoryPropsFile);
-         repositoryProps.store(repositoryPropsOut, null);
-         serverPropsOut = new FileOutputStream(serverPropsPath);
-         serverProps.store(serverPropsOut, null);
+         try(FileOutputStream  installPropsOut = new FileOutputStream(installPropsFile)) {
+            installProps.store(installPropsOut, null);
+         }
+         try( FileOutputStream repositoryPropsOut = new FileOutputStream(repositoryPropsFile)) {
+            repositoryProps.store(repositoryPropsOut, null);
+         }
+         try( FileOutputStream serverPropsOut = new FileOutputStream(serverPropsPath)) {
+            serverProps.store(serverPropsOut, null);
+         }
       }
       catch(IOException e)
       {
          RxLogger.logError(e.getMessage());
          RxLogger.logError(e);
       }
-      finally
-      {
-         if (installPropsOut != null)
-         {
-            try
-            {
-               installPropsOut.close();
-            }
-            catch (IOException e)
-            {
-               RxLogger.logError(e.getMessage());
-               RxLogger.logError(e);
-            }
-         }
-         
-         if (repositoryPropsOut != null)
-         {
-            try
-            {
-               repositoryPropsOut.close();
-            }
-            catch (IOException e)
-            {
-               RxLogger.logError(e.getMessage());
-               RxLogger.logError(e);
-            }
-         }
-         
-         if (serverPropsIn != null)
-         {
-            try
-            {
-               serverPropsIn.close();
-            }
-            catch (IOException e)
-            {
-               RxLogger.logError(e.getMessage());
-               RxLogger.logError(e);
-            }
-         }
-         
-         if (serverPropsOut != null)
-         {
-            try
-            {
-               serverPropsOut.close();
-            }
-            catch (IOException e)
-            {
-               RxLogger.logError(e.getMessage());
-               RxLogger.logError(e);
-            }
-         }
-      }
+
    }
    
    /**
@@ -414,17 +361,17 @@ public class RxSaveProperties extends RxIAAction
    /**
     * The set of installation persisted property names.
     */   
-   private static Set<String> ms_installProps = new HashSet<String>();      
+   private static Set<String> ms_installProps = new HashSet<>();
    
    /**
     * The set of repository persisted property names.
     */
-   private static Set<String> ms_repositoryProps = new HashSet<String>();
+   private static Set<String> ms_repositoryProps = new HashSet<>();
    
    /**
     * The set of server persisted property names.
     */
-   private static Set<String> ms_serverProps = new HashSet<String>();
+   private static Set<String> ms_serverProps = new HashSet<>();
    
    /**
     * Map of products where the key is the product install property loaded as
@@ -433,7 +380,7 @@ public class RxSaveProperties extends RxIAAction
     * product selection.
     */
    private static Map<String, String> ms_productMap = 
-      new HashMap<String, String>();
+      new HashMap<>();
    
    static
    {

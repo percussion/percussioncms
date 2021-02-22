@@ -28,6 +28,7 @@ import com.percussion.pagemanagement.data.PSWidgetDefinition;
 import com.percussion.server.PSServer;
 import com.percussion.share.dao.PSFileDataRepository;
 import com.percussion.share.dao.PSXmlFileDataRepository;
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -44,7 +45,7 @@ import static org.apache.commons.lang.Validate.notNull;
 public class PSWidgetDao extends PSXmlFileDataRepository<PSWidgetDao.PSWidgetDefinitionData, PSWidgetDefinition> implements IPSWidgetDao
 {
     public static class PSWidgetDefinitionData {
-        protected Map<String, PSWidgetDefinition> widgetDefinitionsMap = new HashMap<String, PSWidgetDefinition>();
+        protected Map<String, PSWidgetDefinition> widgetDefinitionsMap = new HashMap<>();
 
         protected void add(PSWidgetDefinition def) {
             notNull(def);
@@ -81,14 +82,12 @@ public class PSWidgetDao extends PSXmlFileDataRepository<PSWidgetDao.PSWidgetDef
     }
 
 
-    public PSWidgetDefinition find(String id) throws com.percussion.share.dao.IPSGenericDao.LoadException
-    {
+    public PSWidgetDefinition find(String id) throws PSDataServiceException {
         return getData().widgetDefinitionsMap.get(id);
     }
 
-    public List<PSWidgetDefinition> findAll() throws com.percussion.share.dao.IPSGenericDao.LoadException
-    {
-        return new ArrayList<PSWidgetDefinition>(getData().widgetDefinitionsMap.values());
+    public List<PSWidgetDefinition> findAll() throws PSDataServiceException {
+        return new ArrayList<>(getData().widgetDefinitionsMap.values());
     }
 
 

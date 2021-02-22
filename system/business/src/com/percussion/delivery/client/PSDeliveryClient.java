@@ -85,7 +85,6 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
 {
 
-   public static final String PERC_TID_HEADER="perc-tid";
    public static final String PERC_VERSION_HEADER="perc-version";
    public static final String TOMCAT_USER="tomcat-user";
    public static final String TOMCAT_PASSWORD="tomcat-password";
@@ -959,9 +958,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
    /**
     * When set, requests send to the delivery tier will use
     * the supplied license number instead of the primary 
-    * instance license id.  This is for remote calls that 
-    * use a dedicated tenant id, such as the remote authorization
-    * configuration service. 
+    * instance license id.
     * 
     * This property will be automatically cleared after method
     * execution to prevent accidental override. 

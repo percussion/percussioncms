@@ -69,7 +69,7 @@ public class PSItemBrowser extends PSContentBrowser
       IPSGuidManager mgr = PSGuidManagerLocator.getGuidMgr();
       IPSGuid id = mgr.makeGuid(new PSLocator(getFolderId()));
       List<PSItemSummary> summaries = cws.findFolderChildren(id, false);
-      List<ChildItem> items = new ArrayList<ChildItem>();
+      List<ChildItem> items = new ArrayList<>();
       for (PSItemSummary item : summaries)
       {
          boolean isFolder = item.getContentTypeId() == 

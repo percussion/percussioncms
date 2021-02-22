@@ -52,7 +52,8 @@ public class PSGetBase64EncodedBody extends PSGetBase64Encoded
    {
       if (conn==null)
          throw new IllegalArgumentException("conn may not be null");
-
-      return new PSHtmlBodyInputStream(conn.getInputStream());
+      try(InputStream in = conn.getInputStream()) {
+         return new PSHtmlBodyInputStream(in);
+      }
    }
 }

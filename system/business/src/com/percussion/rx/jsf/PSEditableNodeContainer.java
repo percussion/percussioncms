@@ -24,6 +24,8 @@
 package com.percussion.rx.jsf;
 
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
+import com.percussion.services.error.PSRuntimeException;
 import com.percussion.utils.string.PSStringUtils;
 
 import java.util.Collection;
@@ -53,12 +55,17 @@ public abstract class PSEditableNodeContainer extends PSCategoryNodeBase
        */
       public void processRangeChange(RangeChangeEvent event)
       {
-         if (getChildren() == null)
-            return;
-         
+         try {
+            if (getChildren() == null)
+               return;
+
+
          for (PSNodeBase node : getChildren())
          {
             node.setSelectedRow(false);
+         }
+         } catch (PSNotFoundException e) {
+            throw new PSRuntimeException(e);
          }
       }
    }
@@ -107,8 +114,7 @@ public abstract class PSEditableNodeContainer extends PSCategoryNodeBase
     * 
     * @return the outcome, determined by the selected node's method.
     */
-   public String copy()
-   {
+   public String copy() throws PSNotFoundException {
       final PSEditableNode selected = findSelectedEditable();
       return selected == null ? PSNavigation.NONE_SELECT_WARNING : selected
             .copy(); 
@@ -164,8 +170,7 @@ public abstract class PSEditableNodeContainer extends PSCategoryNodeBase
     * 
     * @return the outcome, determined by the selected node's method.
     */
-   public String removeSelected()
-   {
+   public String removeSelected() throws PSNotFoundException {
       final PSEditableNode selected = findSelectedEditable();
       return selected == null ? null : selected.delete();
    }
@@ -182,7 +187,7 @@ public abstract class PSEditableNodeContainer extends PSCategoryNodeBase
     * @return <code>true</code> if found an object with the specified name;
     *    return <code>false</code> otherwise.
     */
-   abstract protected boolean findObjectByName(String name);
+   abstract protected boolean findObjectByName(String name) throws PSNotFoundException;
    
    /**
     * Same as <code>findSelected(PSEditableNode.class)</code>.
@@ -234,8 +239,7 @@ public abstract class PSEditableNodeContainer extends PSCategoryNodeBase
     *    
     * @return the created name, never <code>null</code> or empty.
     */
-   public String getUniqueName(String baseName, boolean isCopyFrom)
-   {
+   public String getUniqueName(String baseName, boolean isCopyFrom) throws PSNotFoundException {
       return getUniqueName(baseName, isCopyFrom, null);
    }
 
@@ -256,8 +260,7 @@ public abstract class PSEditableNodeContainer extends PSCategoryNodeBase
     * @return the unique name, never <code>null</code>.
     */
    public String getUniqueName(String baseName, boolean isCopyFrom, 
-         Collection<String> existingNames)
-   {
+         Collection<String> existingNames) throws PSNotFoundException {
       PSStringUtils.notBlank(baseName, "baseName cannot be null or empty.");
       
       String name = getUniqueName(baseName, isCopyFrom, null, existingNames);
@@ -293,8 +296,7 @@ public abstract class PSEditableNodeContainer extends PSCategoryNodeBase
     * @return new name, never <code>null</code> or empty.
     */
    private String getUniqueName(String baseName, boolean isCopyFrom,
-         Random rd, Collection<String> existingNames)
-   {
+         Random rd, Collection<String> existingNames) throws PSNotFoundException {
       final int MAX_ATTEMPTS = 200;
       String name = null;
       int nextNum;

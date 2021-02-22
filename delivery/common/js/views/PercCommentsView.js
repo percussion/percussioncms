@@ -74,9 +74,8 @@
     $(document).ready(function(){
         //Change the form action url to point to the right server
         deliveryServicesURL = getDeliveryServicesDomain(".perc-comments-view");
-        var tenantId = $.isFunction($.getCm1License)?$.getCm1License():"";
-        var version = $.isFunction($.getCm1Version)?$.getCm1Version():"";
-        var url =  joinURL(deliveryServicesURL, "/perc-comments-services/comment?perc-tid=" + tenantId + "&perc-version=" + version);
+        var version = $.isFunction($.getCMSVersion)?$.getCMSVersion():"";
+        var url =  joinURL(deliveryServicesURL, "/perc-comments-services/comment?perc-version=" + version);
         $("form[name = 'commentForm']").attr("action", url);
     });
 
@@ -237,8 +236,7 @@
     */
     function getUrl()
     {
-        var tenantId = $.isFunction($.getCm1License)?$.getCm1License():"";
-        var version = $.isFunction($.getCm1Version)?$.getCm1Version():"";
+        var version = $.isFunction($.getCMSVersion)?$.getCMSVersion():"";
         
         //Build a valid service URL based on the value stored in the delivery
         var url = deliveryServicesURL + "/perc-comments-services/comment/jsonp";

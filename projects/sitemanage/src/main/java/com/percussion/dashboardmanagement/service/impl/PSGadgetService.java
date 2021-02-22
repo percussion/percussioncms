@@ -34,43 +34,36 @@ import java.util.List;
 @PSSiteManageBean("gadgetService")
 public class PSGadgetService implements IPSGadgetService {
 
-    public PSGadget load(String id) throws PSGadgetServiceException {
+    public PSGadget load(String id) {
     	return new PSGadget();
     }
 
-    public PSGadget save(PSGadget gadget) throws PSGadgetServiceException {
+    public PSGadget save(PSGadget gadget)  {
     	return new PSGadget();//"New Gadget", "http://ewq.xml", "New Description");
     }
 
-    public List<PSGadget> findAll() throws PSGadgetNotFoundException, PSGadgetServiceException{
+    public List<PSGadget> findAll(){
     	return createGadgetList(allGadgetUrls);
     }
 
-    public PSGadget find(String id) throws PSGadgetNotFoundException, PSGadgetServiceException{
+    public PSGadget find(String id){
     	return new PSGadget();
     }
 
-    public void delete(String id)throws PSGadgetNotFoundException, PSGadgetServiceException {
-        // TODO Auto-generated method stub
+    public void delete(String id) {
+		throw new UnsupportedOperationException("validate is not yet supported");
     }
  	
     public PSValidationErrors validate(PSGadget object) {
-        // TODO Auto-generated method stub
-        //return null;
         throw new UnsupportedOperationException("validate is not yet supported");
     }
 
     // stub support methods and data
     private ArrayList<PSGadget> createGadgetList(String[] urlList) {
-    	ArrayList<PSGadget> list = new ArrayList<PSGadget>(urlList.length);
+    	ArrayList<PSGadget> list = new ArrayList<>(urlList.length);
     	for(int i=0; i<urlList.length; i++) {
     		String url = urlList[i];
     		PSGadget gadget = new PSGadget();
-    		String name = url.substring(url.lastIndexOf('/')+1, url.lastIndexOf('.'));
-            String firstLetter = name.substring(0,1);  // Get first letter
-            String remainder   = name.substring(1);    // Get remainder of word.
-            String capitalized = firstLetter.toUpperCase() + remainder.toLowerCase();
-//     		gadget.setName(capitalized);
     		gadget.setUrl(url);
     		list.add(gadget);
     	}
@@ -98,6 +91,6 @@ public class PSGadgetService implements IPSGadgetService {
     		"http://www.labpixies.com/campaigns/calendar/calendar.xml",
     		"http://www.labpixies.com/campaigns/wiki/wiki.xml",
    	};
-    ArrayList<PSGadget> alexGadgets = new ArrayList<PSGadget>();
-    ArrayList<PSGadget> bobGadgets = new ArrayList<PSGadget>();
+    ArrayList<PSGadget> alexGadgets = new ArrayList<>();
+    ArrayList<PSGadget> bobGadgets = new ArrayList<>();
 }

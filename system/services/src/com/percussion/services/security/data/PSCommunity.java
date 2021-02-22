@@ -113,7 +113,7 @@ public class PSCommunity implements Serializable, IPSCatalogSummary,
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "Community_Roles")
    @Fetch(FetchMode.SUBSELECT)
    private Set<PSCommunityRoleAssociation> roleAssociations = 
-      new HashSet<PSCommunityRoleAssociation>();
+      new HashSet<>();
 
    /**
     * Default constructor should only be used for serialization.
@@ -270,9 +270,9 @@ public class PSCommunity implements Serializable, IPSCatalogSummary,
       if (isEquals)
       {
          Set<PSCommunityRoleAssociation> roles = 
-            new HashSet<PSCommunityRoleAssociation>(roleAssociations);
+            new HashSet<>(roleAssociations);
          Set<PSCommunityRoleAssociation> otherRoles = 
-            new HashSet<PSCommunityRoleAssociation>(other.roleAssociations);
+            new HashSet<>(other.roleAssociations);
          isEquals = roles.equals(otherRoles);
       }
       
@@ -362,7 +362,7 @@ public class PSCommunity implements Serializable, IPSCatalogSummary,
     */
    public Collection<IPSGuid> getRoleAssociations()
    {
-      Collection<IPSGuid> associations = new ArrayList<IPSGuid>();
+      Collection<IPSGuid> associations = new ArrayList<>();
 
       for (PSCommunityRoleAssociation a : roleAssociations)
          associations.add(new PSGuid(PSTypeEnum.ROLE, a.getRoleId()));
@@ -419,7 +419,7 @@ public class PSCommunity implements Serializable, IPSCatalogSummary,
    public Collection<Long> getRoles()
    {
       Collection<IPSGuid> ras = getRoleAssociations();
-      Collection<Long> rval = new ArrayList<Long>();
+      Collection<Long> rval = new ArrayList<>();
       for(IPSGuid ra : ras)
       {
          rval.add(ra.longValue());

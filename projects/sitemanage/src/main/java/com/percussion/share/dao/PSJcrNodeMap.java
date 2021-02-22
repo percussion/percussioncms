@@ -64,7 +64,7 @@ public class PSJcrNodeMap extends AbstractMap<String, Object>
 
     private Node node;
 
-    private Map<String, Object> override = new HashMap<String, Object>();
+    private Map<String, Object> override = new HashMap<>();
     
     private boolean allowBinary = false;
 
@@ -138,7 +138,6 @@ public class PSJcrNodeMap extends AbstractMap<String, Object>
     
     private Object getNodePropertyValue(String k) {
         Property p = getNodeProperty(k);
-        FileOutputStream fos = null;
         try
         {
             if (p == null) return null;
@@ -154,15 +153,16 @@ public class PSJcrNodeMap extends AbstractMap<String, Object>
                 else
                 {
                     PSPurgableTempFile ptf = new PSPurgableTempFile("tmp", null, null);
-                    fos = new FileOutputStream(ptf);
-                    PSCopyStream.copyStream(p.getStream(), fos);
+                    try(FileOutputStream fos = new FileOutputStream(ptf)) {
+                        PSCopyStream.copyStream(p.getStream(), fos);
+                    }
 
                     return ptf;
                 }
             }
             if(p instanceof PSMultiProperty)
             {
-               List<String> multiValues = new ArrayList<String>();
+               List<String> multiValues = new ArrayList<>();
                Value[] values = p.getValues();
                for(Value value : values)
                {
@@ -176,20 +176,6 @@ public class PSJcrNodeMap extends AbstractMap<String, Object>
         catch (Exception e)
         {
             throw new RuntimeException(e);
-        }
-        finally
-        {
-            if (fos != null)
-            {
-                try
-                {
-                    fos.close();
-                }
-                catch (IOException e)
-                {
-                    
-                }
-            }
         }
     }
 

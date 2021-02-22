@@ -32,9 +32,9 @@ import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
-import com.percussion.services.assembly.data.PSAssemblyWorkItem;
 import com.percussion.services.assembly.jexl.PSLocationUtils;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -43,12 +43,11 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
 
 /**
  * @author adamgent
@@ -126,7 +125,7 @@ public class PSDefaultTemplateLookup extends PSJexlUtilBase {
 				log.error("No Templates Associated with the site.");
 			}
 			List<IPSAssemblyTemplate> defaults = 
-				new ArrayList <IPSAssemblyTemplate> ();
+				new ArrayList <> ();
 			
 			for (IPSAssemblyTemplate c_t : ct_templates) {
 				
@@ -136,7 +135,7 @@ public class PSDefaultTemplateLookup extends PSJexlUtilBase {
 			}
 			return defaults;
 		} 
-		catch (PSAssemblyException e)
+		catch (PSAssemblyException | PSNotFoundException e)
 		{
 			throw new RuntimeException(e);
 		}

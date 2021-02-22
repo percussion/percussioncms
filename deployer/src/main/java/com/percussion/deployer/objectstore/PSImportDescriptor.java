@@ -352,7 +352,7 @@ public class PSImportDescriptor extends PSDescriptor
     * Never <code>null</code>, may be empty, and may be directly modified by
     * obtaining this reference through a call to {@link #getImportPackageList()}
     */
-   List<PSImportPackage> m_packages = new ArrayList<PSImportPackage>();
+   List<PSImportPackage> m_packages = new ArrayList<>();
    
    /**
     * The archive info from the archive this descriptor will install from. 

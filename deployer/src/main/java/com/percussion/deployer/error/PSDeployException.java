@@ -179,7 +179,7 @@ public class PSDeployException extends Exception
          m_originalExceptionClass = sTemp;
        
       // get args
-      List<String> argList = new ArrayList<String>();
+      List<String> argList = new ArrayList<>();
       PSXmlTreeWalker tree = new PSXmlTreeWalker(source);
       Element arg = tree.getNextElement(XML_ELEMENT_ARG,
          PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN);

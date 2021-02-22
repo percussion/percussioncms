@@ -30,8 +30,8 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.security.*;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.utils.xml.IPSXmlSerialization;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -671,7 +671,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
       
       
       // now handle adds, removes, and updates of entries
-      Set<String> matches = new HashSet<String>();
+      Set<String> matches = new HashSet<>();
       Enumeration<AclEntry> entryEnum = acl.entries();
       while (entryEnum.hasMoreElements())
       {
@@ -730,7 +730,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
       else 
       {
          if (entries == null)
-            entries = new HashSet<IPSAclEntry>();
+            entries = new HashSet<>();
          for (PSAclEntryImpl ent : newEntries)
             addEntry(ent);
       }
@@ -822,7 +822,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
     * (non-Javadoc)
     * 
     * @see com.percussion.services.security.IPSAcl#createEntry(java.lang.String,
-    * com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes)
+    * com.percussion.security.IPSTypedPrincipal.PrincipalTypes)
     */
    public IPSAclEntry createEntry(String principalName, PrincipalTypes principalType)
    {
@@ -841,7 +841,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
     * (non-Javadoc)
     * 
     * @see com.percussion.services.security.IPSAcl#createEntry(java.lang.String,
-    * com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes,
+    * com.percussion.security.IPSTypedPrincipal.PrincipalTypes,
     * com.percussion.services.security.PSPermissions[])
     */
    public IPSAclEntry createEntry(String principalName, PrincipalTypes principalType,
@@ -865,7 +865,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
    /*
     * (non-Javadoc)
     * 
-    * @see com.percussion.services.security.IPSAcl#createEntry(com.percussion.utils.security.IPSTypedPrincipal)
+    * @see com.percussion.services.security.IPSAcl#createEntry(com.percussion.security.IPSTypedPrincipal)
     */
    public IPSAclEntry createEntry(IPSTypedPrincipal principal)
    {
@@ -879,7 +879,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
    /*
     * (non-Javadoc)
     * 
-    * @see com.percussion.services.security.IPSAcl#createEntry(com.percussion.utils.security.IPSTypedPrincipal,
+    * @see com.percussion.services.security.IPSAcl#createEntry(com.percussion.security.IPSTypedPrincipal,
     * com.percussion.services.security.PSPermissions[])
     */
    public IPSAclEntry createEntry(IPSTypedPrincipal principal,
@@ -899,7 +899,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
    /*
     * (non-Javadoc)
     * 
-    * @see com.percussion.services.security.IPSAcl#findEntry(com.percussion.utils.security.IPSTypedPrincipal)
+    * @see com.percussion.services.security.IPSAcl#findEntry(com.percussion.security.IPSTypedPrincipal)
     */
    public IPSAclEntry findEntry(IPSTypedPrincipal principal)
    {
@@ -1007,7 +1007,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
            orphanRemoval=true, mappedBy="acl")
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "PSAclImpl_Entries")
    @Fetch(FetchMode.SUBSELECT)
-   private Set<IPSAclEntry> entries = new HashSet<IPSAclEntry>();
+   private Set<IPSAclEntry> entries = new HashSet<>();
 
    /**
     * The hibernate object version

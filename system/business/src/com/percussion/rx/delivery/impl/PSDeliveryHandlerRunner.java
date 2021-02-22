@@ -48,7 +48,7 @@ public class PSDeliveryHandlerRunner extends PSBaseDeliveryHandler
    /**
     * A list of to be dispatched handlers, never <code>null</code>, but may be empty.
     */
-   private List<PSBaseDeliveryHandler> m_handlers = new ArrayList<PSBaseDeliveryHandler>();
+   private List<PSBaseDeliveryHandler> m_handlers = new ArrayList<>();
    
    /**
     * The logger.

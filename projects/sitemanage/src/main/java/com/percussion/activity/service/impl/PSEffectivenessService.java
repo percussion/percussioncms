@@ -35,6 +35,7 @@ import com.percussion.activity.service.IPSContentActivityService.PSUsageEnum;
 import com.percussion.analytics.data.IPSAnalyticsQueryResult;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.service.IPSAnalyticsProviderQueryService;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.utils.date.PSDateRange;
 import com.percussion.utils.date.PSDateRange.Granularity;
 
@@ -53,15 +54,13 @@ public class PSEffectivenessService implements IPSEffectivenessService
         this.activityService = activityService;
         this.analyticsService = analyticsService;
     }
-    
-    @SuppressWarnings("unchecked")
     public List<PSEffectiveness> getEffectiveness(PSEffectivenessRequest request, List<PSContentActivity> activity)
         throws PSAnalyticsProviderException
     {
         notNull(request);
         notNull(activity);
                 
-        List<PSEffectiveness> eList = new ArrayList<PSEffectiveness>();
+        List<PSEffectiveness> eList = new ArrayList<>();
 
         PSDurationTypeEnum durationType = PSDurationTypeEnum.valueOf(request.getDurationType());
         int duration = Integer.parseInt(request.getDuration());
@@ -73,10 +72,10 @@ public class PSEffectivenessService implements IPSEffectivenessService
                 IPSAnalyticsProviderQueryService.FIELD_UNIQUE_PAGEVIEWS :
                     IPSAnalyticsProviderQueryService.FIELD_PAGEVIEWS;
 
-        List<PSAnalyticsProviderException> exceptions = new ArrayList<PSAnalyticsProviderException>();
+        List<Exception> exceptions = new ArrayList<>();
         for (PSContentActivity ca : activity)
         {
-            Long changes = (long) ca.getNewItems() + ca.getUpdatedItems();
+            long changes = (long) ca.getNewItems() + ca.getUpdatedItems();
 
             try
             {
@@ -87,7 +86,7 @@ public class PSEffectivenessService implements IPSEffectivenessService
 
                 eList.add(new PSEffectiveness(ca.getName(), effectiveness));
             }
-            catch (PSAnalyticsProviderException e)
+            catch (PSAnalyticsProviderException | IPSGenericDao.LoadException e)
             {
                 exceptions.add(e);
             }
@@ -95,7 +94,7 @@ public class PSEffectivenessService implements IPSEffectivenessService
         
         if (!exceptions.isEmpty() && exceptions.size() == activity.size())
         {
-            throw exceptions.get(0);
+            throw new PSAnalyticsProviderException(exceptions.get(0));
         }
      
         return eList;
@@ -113,9 +112,8 @@ public class PSEffectivenessService implements IPSEffectivenessService
      * @throws PSAnalyticsProviderException if an error occurs retrieving the analytics data.
      */
     private Long getViews(PSContentActivity ca, PSDateRange range, String resultKey)
-       throws PSAnalyticsProviderException
-    {
-        Long views = 0L;
+            throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
+        long views = 0L;
         
         List<IPSAnalyticsQueryResult> results = analyticsService.getPageViewsByPathPrefix(ca.getSiteName(),
                 ca.getPath(), range);

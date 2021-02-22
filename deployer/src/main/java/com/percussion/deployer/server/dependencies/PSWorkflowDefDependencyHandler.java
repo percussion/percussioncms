@@ -40,6 +40,7 @@ import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.security.IPSBackEndRoleMgr;
 import com.percussion.services.security.PSRoleMgrLocator;
@@ -103,8 +104,7 @@ public class PSWorkflowDefDependencyHandler
    // see base class
    @Override
    public Iterator<PSDependency> getChildDependencies(PSSecurityToken tok,
-         PSDependency dep) throws PSDeployException
-   {
+         PSDependency dep) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -115,7 +115,7 @@ public class PSWorkflowDefDependencyHandler
          throw new IllegalArgumentException("dep wrong type");
 
       String workflowId = dep.getDependencyId();
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
 
       // get LOCAL state child dependencies
       Iterator childIDs = getChildPairIdsFromTable(STATES_TABLE, STATE_ID,
@@ -232,7 +232,7 @@ public class PSWorkflowDefDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       // retrieve data from all tables, add to the list if not empty
       for (int i=0; i < TABLE_ENUM.length; i++)
@@ -390,7 +390,7 @@ public class PSWorkflowDefDependencyHandler
       PSIdMapping wfMapping = getIdMapping(ctx, wfDep);
 
       // transfer ids in all rows
-      List<PSJdbcRowData> tgtRowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> tgtRowList = new ArrayList<>();
 
       while (rows.hasNext())
       {
@@ -399,7 +399,7 @@ public class PSWorkflowDefDependencyHandler
          // walk the columns and build a new row, xform the ids as we go
          // xform the ids for STATE_ID, WORKFLOW_ID
 
-         List<PSJdbcColumnData> tgtColList = new ArrayList<PSJdbcColumnData>();
+         List<PSJdbcColumnData> tgtColList = new ArrayList<>();
          Iterator srcCols = srcRow.getColumns();
          while (srcCols.hasNext())
          {
@@ -465,10 +465,10 @@ public class PSWorkflowDefDependencyHandler
       PSIdMapping wfMapping = getIdMapping(ctx, wfDep);
 
       // transfer ids in all rows
-      List<PSJdbcRowData> tgtRowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> tgtRowList = new ArrayList<>();
 
       // save state idmappings to flip isNew setting only after update
-      List<PSIdMapping> stateMappings = new ArrayList<PSIdMapping>();
+      List<PSIdMapping> stateMappings = new ArrayList<>();
 
       while (rows.hasNext())
       {
@@ -477,7 +477,7 @@ public class PSWorkflowDefDependencyHandler
          // walk the columns and build a new row, xform the ids as we go
          // xform the ids for STATE_ID, WORKFLOW_ID
 
-         List<PSJdbcColumnData> tgtColList = new ArrayList<PSJdbcColumnData>();
+         List<PSJdbcColumnData> tgtColList = new ArrayList<>();
          Iterator srcCols = srcRow.getColumns();
          while (srcCols.hasNext())
          {
@@ -602,10 +602,10 @@ public class PSWorkflowDefDependencyHandler
       PSIdMapping wfMapping = getIdMapping(ctx, wfDep);
 
       // transfer ids in all rows
-      List<PSJdbcRowData> tgtRowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> tgtRowList = new ArrayList<>();
 
       // save transition idmappings to flip isNew setting only after update
-      List<PSIdMapping> transMappings = new ArrayList<PSIdMapping>();
+      List<PSIdMapping> transMappings = new ArrayList<>();
 
       while (rows.hasNext())
       {
@@ -615,7 +615,7 @@ public class PSWorkflowDefDependencyHandler
          // xform the ids for TRANSITION_ID, WORKFLOW_ID,
          // TRANSITIONFROMSTATE_ID, TRANSITIONTOSTATE_ID
 
-         List<PSJdbcColumnData> tgtColList = new ArrayList<PSJdbcColumnData>();
+         List<PSJdbcColumnData> tgtColList = new ArrayList<>();
          Iterator srcCols = srcRow.getColumns();
          while (srcCols.hasNext())
          {
@@ -696,7 +696,7 @@ public class PSWorkflowDefDependencyHandler
 
       // transfer ids in all rows
 
-      List<PSJdbcRowData> tgtRowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> tgtRowList = new ArrayList<>();
 
       while (rows.hasNext())
       {
@@ -705,7 +705,7 @@ public class PSWorkflowDefDependencyHandler
          // walk the columns and build a new row, xform the ids as we go
          // xform the ids for NOTIFICATION_ID and WORKFLOW_ID
 
-         List<PSJdbcColumnData> tgtColList = new ArrayList<PSJdbcColumnData>();
+         List<PSJdbcColumnData> tgtColList = new ArrayList<>();
          Iterator srcCols = srcRow.getColumns();
          while (srcCols.hasNext())
          {
@@ -772,7 +772,7 @@ public class PSWorkflowDefDependencyHandler
 
       // transfer ids in all rows
 
-      List<PSJdbcRowData> tgtRowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> tgtRowList = new ArrayList<>();
 
       while (rows.hasNext())
       {
@@ -781,7 +781,7 @@ public class PSWorkflowDefDependencyHandler
          // walk the columns and build a new row, xform the ids as we go
          // xform the ids for ROLE_ID and WORKFLOW_ID
 
-         List<PSJdbcColumnData> tgtColList = new ArrayList<PSJdbcColumnData>();
+         List<PSJdbcColumnData> tgtColList = new ArrayList<>();
          Iterator srcCols = srcRow.getColumns();
          while (srcCols.hasNext())
          {
@@ -848,7 +848,7 @@ public class PSWorkflowDefDependencyHandler
 
       // transfer ids in all rows
 
-      List<PSJdbcRowData> tgtRowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> tgtRowList = new ArrayList<>();
 
       while (rows.hasNext())
       {
@@ -857,7 +857,7 @@ public class PSWorkflowDefDependencyHandler
          // walk the columns and build a new row, xform the ids as we go
          // xform the ids for WORKFLOW_ID, STATE_ID and ROLE_ID
 
-         List<PSJdbcColumnData> tgtColList = new ArrayList<PSJdbcColumnData>();
+         List<PSJdbcColumnData> tgtColList = new ArrayList<>();
          Iterator srcCols = srcRow.getColumns();
          while (srcCols.hasNext())
          {
@@ -935,7 +935,7 @@ public class PSWorkflowDefDependencyHandler
 
       // transfer ids in all rows
 
-      List<PSJdbcRowData> tgtRowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> tgtRowList = new ArrayList<>();
 
       while (rows.hasNext())
       {
@@ -945,7 +945,7 @@ public class PSWorkflowDefDependencyHandler
          // xform the ids for WORKFLOW_ID, TRANSITIONNOTIFICATION_ID,
          // TRANSITION_ID and NOTIFICATION_ID
 
-         List<PSJdbcColumnData> tgtColList = new ArrayList<PSJdbcColumnData>();
+         List<PSJdbcColumnData> tgtColList = new ArrayList<>();
          Iterator srcCols = srcRow.getColumns();
          while (srcCols.hasNext())
          {
@@ -1023,7 +1023,7 @@ public class PSWorkflowDefDependencyHandler
 
       // transfer ids in all rows
 
-      List<PSJdbcRowData> tgtRowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> tgtRowList = new ArrayList<>();
 
       while (rows.hasNext())
       {
@@ -1033,7 +1033,7 @@ public class PSWorkflowDefDependencyHandler
          // xform the ids for WORKFLOW_ID, TRANSITIONROLE_ID,
          // TRANSITION_ID
 
-         List<PSJdbcColumnData> tgtColList = new ArrayList<PSJdbcColumnData>();
+         List<PSJdbcColumnData> tgtColList = new ArrayList<>();
          Iterator srcCols = srcRow.getColumns();
          while (srcCols.hasNext())
          {
@@ -1077,8 +1077,6 @@ public class PSWorkflowDefDependencyHandler
    /**
     * Reserves ids for a database table.
     *
-    * @param data A dependency data object, it contains the database table name
-    * that need to reserve ids for. It may be <code>null</code>.
     * @param idCol The column name of the reserved id.
     * @param workflowId 
     * @param depData 
@@ -1107,7 +1105,7 @@ public class PSWorkflowDefDependencyHandler
             idCol, WORKFLOW_ID, workflowId, idBlockSize);
 
          String table = tblData.getName();
-         idmap = new HashMap<String, String>(idBlockSize);
+         idmap = new HashMap<>(idBlockSize);
          for (int i=0; i < idBlockSize; i++)
          {
             PSJdbcRowData row = (PSJdbcRowData)rows.get(i);
@@ -1137,7 +1135,7 @@ public class PSWorkflowDefDependencyHandler
    private Map<String, PSDependencyData> getImportDataFromArchive(PSArchiveHandler archive,
       PSDependency dep) throws PSDeployException
    {
-      Map<String, PSDependencyData> dataMap = new HashMap<String, PSDependencyData>();
+      Map<String, PSDependencyData> dataMap = new HashMap<>();
       Iterator files = getDependecyDataFiles(archive, dep);
       while (files.hasNext())
       {
@@ -1192,7 +1190,7 @@ public class PSWorkflowDefDependencyHandler
     * List of child types supported by this handler, never <code>null</code> or
     * empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {
@@ -1206,7 +1204,7 @@ public class PSWorkflowDefDependencyHandler
     * <code>PSJdbcTableSchema</code>, initialized by constructor, will
     * never be <code>null</code> or empty after that.
     */
-   private Map<String, PSJdbcTableSchema> m_schemaMap = new HashMap<String, PSJdbcTableSchema>();
+   private Map<String, PSJdbcTableSchema> m_schemaMap = new HashMap<>();
    
    /**
     * Get the workflow service.

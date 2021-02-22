@@ -79,14 +79,14 @@ public class PSSiteRenameListener implements IPSSiteRenameService, IPSNotificati
     private static final Map<String, String[]> ENDPOINTS;
 
     static {
-        Map<String, String[]> services = new HashMap<String, String[]>(6);
+        Map<String, String[]> services = new HashMap<>(6);
         services.put("perc-form-processor", new String[]{"form"});
         services.put("feeds", new String[]{"rss"});
         services.put("perc-metadata-services", new String[]{"metadata"});
         services.put("perc-comments-services", new String[]{"comment", "likes"});
         services.put("perc-membership-services", new String[]{"membership"});
         services.put("perc-polls-services", new String[]{"polls"});
-        ENDPOINTS = new HashMap<String, String[]>(services);
+        ENDPOINTS = new HashMap<>(services);
     }
 
     @Autowired

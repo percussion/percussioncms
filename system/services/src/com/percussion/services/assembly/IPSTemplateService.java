@@ -25,7 +25,6 @@ package com.percussion.services.assembly;
 
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSTemplateBinding;
-import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 
 import java.util.LinkedHashMap;
@@ -273,21 +272,17 @@ public interface IPSTemplateService
     * @param id the ID of the slot, never <code>null</code>.
     * 
     * @return the slot, never <code>null</code>
-    * 
-    * @throws PSNotFoundException if the slot information is missing from the
-    *            database
+    *
     */
-   IPSTemplateSlot loadSlot(IPSGuid id)  throws PSNotFoundException;
+   IPSTemplateSlot loadSlot(IPSGuid id) throws PSAssemblyException;
 
    /**
     * Load the given slot instance from the database by id.
     * 
     * @param id the id of the slot, never <code>null</code>
     * @return the slot, never <code>null</code>
-    * @throws PSNotFoundException if the slot information is missing from the
-    *            database
     */
-   IPSTemplateSlot loadSlotModifiable(IPSGuid id) throws PSNotFoundException;
+   IPSTemplateSlot loadSlotModifiable(IPSGuid id) throws PSAssemblyException;
 
    /**
     * Load the given slot instance from the database by id string. This is a 
@@ -300,11 +295,9 @@ public interface IPSTemplateService
     *        {@link com.percussion.services.guidmgr.data.PSGuid#PSGuid(String)}.
     *        
     * @return the slot, never <code>null</code>
-    * 
-    * @throws PSNotFoundException if the slot information is missing from the
-    *            database
+    *
     */
-   IPSTemplateSlot loadSlot(String idstr) throws PSNotFoundException;
+   IPSTemplateSlot loadSlot(String idstr) throws PSAssemblyException;
 
    /**
     * Load all template slots for the supplied IDs. 
@@ -315,9 +308,8 @@ public interface IPSTemplateService
     *           <code>null</code> or empty.
     * @return a list with all loaded template slots in the same order as
     *         requested, never <code>null</code> or empty.
-    * @throws PSNotFoundException if failed to load any the of slots.
     */
-   public List<IPSTemplateSlot> loadSlots(List<IPSGuid> ids);
+   public List<IPSTemplateSlot> loadSlots(List<IPSGuid> ids) throws PSAssemblyException;
 
    /**
     * Save the given slot to the database.

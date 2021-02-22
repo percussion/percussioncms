@@ -54,7 +54,7 @@ import static org.apache.commons.lang.Validate.notNull;
 
 public class PSDatabasePubServerFilesService implements IPSDatabasePubServerFilesService
 {
-    private Map<Long, Set<String>> modifiedServer = new HashMap<Long, Set<String>>();
+    private Map<Long, Set<String>> modifiedServer = new HashMap<>();
 
     public Boolean isServerModified(Long siteId, String serverName)
     {
@@ -73,7 +73,7 @@ public class PSDatabasePubServerFilesService implements IPSDatabasePubServerFile
         }
         else
         {
-            Set<String> serverList = new HashSet<String>();
+            Set<String> serverList = new HashSet<>();
             serverList.add(serverName.toUpperCase());
             modifiedServer.put(siteId, serverList);
         }
@@ -81,7 +81,7 @@ public class PSDatabasePubServerFilesService implements IPSDatabasePubServerFile
     
     public List<PSDatabasePubServer> getDatabasePubServers()
     {
-      List<PSDatabasePubServer> result = new ArrayList<PSDatabasePubServer>();
+      List<PSDatabasePubServer> result = new ArrayList<>();
       List<IPSJndiDatasource> datasources;
       try
       {
@@ -104,7 +104,7 @@ public class PSDatabasePubServerFilesService implements IPSDatabasePubServerFile
     
     public List<PSDatabasePubServer> getSiteDatabasePubServers()
     {
-        List<PSDatabasePubServer> servers = new ArrayList<PSDatabasePubServer>();
+        List<PSDatabasePubServer> servers = new ArrayList<>();
         for (PSDatabasePubServer s : getDatabasePubServers())
         {
             if (s.getSiteId() != null)
@@ -113,8 +113,7 @@ public class PSDatabasePubServerFilesService implements IPSDatabasePubServerFile
         return servers;
     }
     
-    public void saveDatabasePubServer(PSDatabasePubServer pubServer)
-    {
+    public void saveDatabasePubServer(PSDatabasePubServer pubServer) throws PSDataServiceException {
         notNull(pubServer); 
         validateName(pubServer);
         
@@ -138,8 +137,7 @@ public class PSDatabasePubServerFilesService implements IPSDatabasePubServerFile
           throw new IllegalArgumentException("Publish server name cannot have space.");
     }
     
-    public void deleteDatabasePubServer(PSDatabasePubServer pubServer)
-    {
+    public void deleteDatabasePubServer(PSDatabasePubServer pubServer) throws PSDataServiceException {
         String jndiDsName = getJndiDsName(pubServer);
         deleteJndiDatasource(jndiDsName);
         
@@ -194,7 +192,7 @@ public class PSDatabasePubServerFilesService implements IPSDatabasePubServerFile
 
     public Map<String, Boolean> getAvailableDrivers()
     {
-        Map<String, Boolean> availableDrivers = new HashMap<String, Boolean>();
+        Map<String, Boolean> availableDrivers = new HashMap<>();
         for (DriverType driverType : DriverType.values())
         {
             availableDrivers.put(driverType.name(), isDriverEnabled(driverType));
@@ -202,8 +200,7 @@ public class PSDatabasePubServerFilesService implements IPSDatabasePubServerFile
         return availableDrivers;
     }
     
-    private void deleteJndiDatasource(String jndiDsName)
-    {
+    private void deleteJndiDatasource(String jndiDsName) throws PSDataServiceException {
         List<IPSJndiDatasource> datasources = getDatasources();
         IPSJndiDatasource ds = findDatasource(jndiDsName, datasources);
         if (ds == null)
@@ -224,8 +221,7 @@ public class PSDatabasePubServerFilesService implements IPSDatabasePubServerFile
         saveResolver(resolver);
     }
 
-    private IPSJndiDatasource saveJndiDatasource(PSDatabasePubServer pubServer)
-    {
+    private IPSJndiDatasource saveJndiDatasource(PSDatabasePubServer pubServer) throws PSDataServiceException {
         IPSJndiDatasource ds = convertToDatasource(pubServer);
         List<IPSJndiDatasource> datasources = getDatasources();
         IPSJndiDatasource existDs = findDatasource(ds.getName(), datasources);
@@ -363,15 +359,14 @@ public class PSDatabasePubServerFilesService implements IPSDatabasePubServerFile
        return PSContainerUtilsFactory.getInstance().getDatasourceResolver();
     }
     
-    private List<IPSJndiDatasource> getDatasources()
-    {
+    private List<IPSJndiDatasource> getDatasources() throws PSDataServiceException {
         try
         {
             return PSContainerUtilsFactory.getInstance().getDatasources();
         }
         catch (Exception e)
         {
-            String msg = "An error ocurred while loading all datasources\n";
+            String msg = "An error occurred while loading all data sources.";
             throw new PSDataServiceException(msg, e);
         }
     }

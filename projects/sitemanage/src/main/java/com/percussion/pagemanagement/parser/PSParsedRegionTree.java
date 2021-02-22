@@ -44,7 +44,7 @@ public class PSParsedRegionTree<REGION extends PSAbstractRegion, CODE extends PS
 {
     private REGION rootNode;
 
-    private Map<String, REGION> regions = new HashMap<String, REGION>();
+    private Map<String, REGION> regions = new HashMap<>();
 
     private static final String ROOT_NODE_ID = "percRoot";
 

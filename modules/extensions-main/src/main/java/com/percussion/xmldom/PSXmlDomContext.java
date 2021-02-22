@@ -191,13 +191,8 @@ public class PSXmlDomContext
       IPSRhythmyxInfo rxInfo = PSRhythmyxInfoLocator.getRhythmyxInfo();
       String rxRootDir = (String) rxInfo
             .getProperty(IPSRhythmyxInfo.Key.ROOT_DIRECTORY);
-      InputStream in = null;
-      try {
-         in = new FileInputStream(rxRootDir + File.separator + FileName);
+      try(InputStream in = new FileInputStream(rxRootDir + File.separator + FileName)){
          m_tidyProperties.load(in);
-      } finally {
-         if (in!=null) 
-            try { in.close();} catch (Exception e) {/*ignore*/ }
       }
    }
 

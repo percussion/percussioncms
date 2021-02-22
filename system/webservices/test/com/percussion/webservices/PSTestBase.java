@@ -30,7 +30,7 @@ import com.percussion.services.security.PSPermissions;
 import com.percussion.testing.IPSUnitTestConfigHelper;
 import com.percussion.testing.PSClientTestCase;
 import com.percussion.testing.PSConfigHelperTestCase;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.content.ContentSOAPStub;
 import com.percussion.webservices.faults.PSErrorResultsFault;
@@ -68,9 +68,7 @@ import junit.framework.AssertionFailedError;
 
 import org.apache.axis.client.Call;
 import org.apache.commons.lang.StringUtils;
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 

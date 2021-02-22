@@ -226,7 +226,7 @@ public class PSSiteimproveEditionTask implements IPSEditionTask {
 
 		JSONObject credentialsJSON = JSONObject.fromObject(credentialsData);
 
-		Map<String, String> credentials = new HashMap<String, String>();
+		Map<String, String> credentials = new HashMap<>();
 
 
 		if (!credentialsJSON.has(SITE_NAME)) {

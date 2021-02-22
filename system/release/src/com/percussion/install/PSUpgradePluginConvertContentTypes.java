@@ -46,7 +46,7 @@ import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.util.IOTools;
 import com.percussion.util.PSCollection;
 import com.percussion.util.PSSqlHelper;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.utils.string.PSStringUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
@@ -54,7 +54,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -641,7 +640,7 @@ public class PSUpgradePluginConvertContentTypes extends PSSpringUpgradePluginBas
          return;
       
       IPSAclService aclService = PSAclServiceLocator.getAclService();
-      List<IPSAcl> aclList = new ArrayList<IPSAcl>();
+      List<IPSAcl> aclList = new ArrayList<>();
             
       log("Creating acl for content type [" + contentTypeId + "]");
       

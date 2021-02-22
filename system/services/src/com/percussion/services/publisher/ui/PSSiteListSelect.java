@@ -27,6 +27,7 @@ import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerException;
@@ -175,8 +176,7 @@ public class PSSiteListSelect
        * 
        * @return the name of the outcome
        */
-      public String edit()
-      {
+      public String edit() throws PSNotFoundException {
          String name = getName();
          System.out.println("Editing this site with id:" +name);
          
@@ -336,7 +336,7 @@ public class PSSiteListSelect
    /**
     * the global template list for this site
     */
-   private List<SelectItem> m_globalTemplateList = new ArrayList<SelectItem>();
+   private List<SelectItem> m_globalTemplateList = new ArrayList<>();
 
    /**
     * the site path on the delivery end
@@ -386,7 +386,7 @@ public class PSSiteListSelect
    /**
     * the assembler site properties as a name, value pair
     */
-   private Map<String, String> m_properties = new HashMap<String, String>();
+   private Map<String, String> m_properties = new HashMap<>();
 
    /**
     * the current selection from the list of sites displayed
@@ -408,7 +408,7 @@ public class PSSiteListSelect
    /**
     * the list of site properties for the current site
     */
-   private List<SiteProperty> m_siteProps = new ArrayList<SiteProperty>();
+   private List<SiteProperty> m_siteProps = new ArrayList<>();
    /**
     * default ctor
     * 
@@ -434,9 +434,9 @@ public class PSSiteListSelect
     */
    protected static Map<String, String> queryForNavThemes() throws Exception
    {
-      Map<String, String> navThemesList = new HashMap<String, String>();
+      Map<String, String> navThemesList = new HashMap<>();
 //      String url = "http://localhost:9992/Rhythmyx/sys_ceSupport/lookup";
-      Map<String, String> reqParams = new HashMap<String, String>();
+      Map<String, String> reqParams = new HashMap<>();
       reqParams.put("key", "331");
 //      PSRequest req = (PSRequest) PSRequestInfo
 //            .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
@@ -485,9 +485,8 @@ public class PSSiteListSelect
     * @return Returns the entries.
     * @throws PSSiteManagerException
     */
-   public List<SiteEntry> getEntries()
-   {
-      List<SiteEntry> rval = new ArrayList<SiteEntry>();
+   public List<SiteEntry> getEntries() throws PSNotFoundException {
+      List<SiteEntry> rval = new ArrayList<>();
       List<IPSSite> sites = ms_siteMgr.loadSitesModifiable();
       for (IPSSite s : sites)
       {
@@ -564,7 +563,7 @@ public class PSSiteListSelect
       }  
       
       //    set site properties for the editor      
-      HashMap<String, String> props = new HashMap<String, String>();
+      HashMap<String, String> props = new HashMap<>();
       if ( m_current != null )
       {
          Set<PSSiteProperty> propSet = ((PSSite)m_current).getProperties();

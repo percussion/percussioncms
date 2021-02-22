@@ -51,8 +51,11 @@ import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.PSJsoupPreserver;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentWs;
@@ -122,7 +125,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     
     private IPSPageCatalogService pageCatalogService;
     
-    private ThreadLocal<List<Long>> newLinkIds = new ThreadLocal<List<Long>>();
+    private ThreadLocal<List<Long>> newLinkIds = new ThreadLocal<>();
     
     @Autowired
     public PSManagedLinkService(IPSManagedLinkDao dao, IPSIdMapper idMapper, IPSContentWs contentWs,
@@ -221,7 +224,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     public String renderLinks(PSRenderLinkContext linkContext, String source, Boolean isStaging, Integer parentId)
     {
         String returnHTML = source;
-        ArrayList<Element> managedLinks = new ArrayList<Element>();
+        ArrayList<Element> managedLinks = new ArrayList<>();
         
         if(parentId == null || parentId == 0){
             log.warn("Rendering managed links for parent item with an invalid contentid");
@@ -437,7 +440,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
         Validate.notNull(source);
         
         // set up new link id list
-        newLinkIds.set(new ArrayList<Long>());
+        newLinkIds.set(new ArrayList<>());
         return manageLinks(getNewItemParentId(), source);
     }
 
@@ -445,7 +448,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     public void initNewItemLinks()
     {
         // set up new link id list
-        newLinkIds.set(new ArrayList<Long>());
+        newLinkIds.set(new ArrayList<>());
     }
     
     @Override
@@ -541,7 +544,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     }
     private Map<Integer, Integer> convertGuidToIntegerMap(Map<String, String> guidMap)
     {
-        Map<Integer, Integer> integerMap = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> integerMap = new HashMap<>();
         for (Map.Entry<String, String> entry : guidMap.entrySet())
         {
             int intKey = idMapper.getContentId(entry.getKey());
@@ -556,12 +559,17 @@ public class PSManagedLinkService implements IPSManagedLinkService
         List<PSManagedLink> links = dao.findLinksByParentId(assetId);
         for (PSManagedLink link : links)
         {
-            updateCopyAssetLink(link, origSiteRoot, copySiteRoot, assetIdMap);
+            try {
+                updateCopyAssetLink(link, origSiteRoot, copySiteRoot, assetIdMap);
+            } catch (IPSGenericDao.SaveException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
+                //Continue processing
+            }
         }
     }
     
-    private void updateCopyAssetLink(PSManagedLink link, String origSiteRoot, String copySiteRoot, Map<Integer, Integer> assetIdMap)
-    {
+    private void updateCopyAssetLink(PSManagedLink link, String origSiteRoot, String copySiteRoot, Map<Integer, Integer> assetIdMap) throws IPSGenericDao.SaveException {
         // handle a cloned asset
         Integer copiedAssetId = assetIdMap.get(link.getChildId());
         if (copiedAssetId != null)
@@ -573,15 +581,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
         
         // handle a cloned page
         String relativePath = null;
-        try {
-            relativePath = getRelativePath(origSiteRoot, link.getChildId());
-        } catch (PSNotFoundException e)
-        {
-            log.error("Managed Cannot find child item "+link.getChildId() 
-                    +" for managed link with parent "+link.getParentId()
-                    + " revision "+ link.getParentRevision() + " and linkid ="+link.getLinkId());
-
-        }
+        relativePath = getRelativePath(origSiteRoot, link.getChildId());
         if (relativePath == null)
             return;
         
@@ -899,7 +899,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
 	 * @return Our completed url to our link.
 	 */
 	private String createHref(PSManagedLink link,
-			PSRenderLinkContext linkContext, Boolean isStaging, String href) {
+			PSRenderLinkContext linkContext, Boolean isStaging, String href) throws PSDataServiceException, PSNotFoundException {
 		IPSLinkableItem linkItem = getLinkItem(linkContext, link.getChildId(), isStaging);
 		//  Add orphaned manage link cleanup somewhere.  catch errors when child does not exist
 		if (linkItem != null)
@@ -1284,8 +1284,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
      * @return The link id of the newly created link.
      *
      */
-    private long createLink(String parentId, int dependentId, String anchor)
-    {
+    private long createLink(String parentId, int dependentId, String anchor) throws IPSGenericDao.SaveException {
         int cid;
         int rev;
         List<Long> newIds = newLinkIds.get();
@@ -1456,7 +1455,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     
     public void cleanupDeletedLinks(List<Element> validLinks, Integer parentId) {
         List<PSManagedLink> currentLinks = dao.findLinksByParentId(parentId);
-        Collection<PSManagedLink> linksToDelete = new ArrayList<PSManagedLink>();
+        Collection<PSManagedLink> linksToDelete = new ArrayList<>();
         
         for (PSManagedLink currentLink : currentLinks) {
             boolean linkMatched = false;
@@ -1489,7 +1488,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     {
         notNull(parentIds);
 
-        List<Integer> convertedParentIds = new ArrayList<Integer>();
+        List<Integer> convertedParentIds = new ArrayList<>();
         for (String parentId : parentIds)
         {
             IPSGuid guid = guidMgr.makeGuid(parentId);
@@ -1497,7 +1496,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
         }
         List<PSManagedLink> links = dao.findLinksByParentIds(convertedParentIds);
         
-        List<String> linkIds = new ArrayList<String>();
+        List<String> linkIds = new ArrayList<>();
         for(PSManagedLink link : links)
         {
             PSLegacyGuid guid = new PSLegacyGuid(link.getChildId());
@@ -1610,8 +1609,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
      * 
      * @return The link item for the current revision, <code>null</code> if no page or asset found for the supplied id.
      */
-    private IPSLinkableItem getLinkItem(PSRenderLinkContext linkContext, int childId, Boolean isStaging)
-    {
+    private IPSLinkableItem getLinkItem(PSRenderLinkContext linkContext, int childId, Boolean isStaging) throws PSValidationException, PSNotFoundException {
         IPSLinkableItem item = null;
         
         // get correct revision
@@ -1705,7 +1703,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     private Node getAssetNode(int childId, PSRenderLinkContext linkContext, Boolean isStaging, String value) {
         IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
         IPSGuid guid = getCorrectRevisionGuid(childId, linkContext, isStaging);
-        List<IPSGuid> guidList = new ArrayList<IPSGuid>();
+        List<IPSGuid> guidList = new ArrayList<>();
         List<Node> nodeList;
         guidList.add(guid);
         try

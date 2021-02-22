@@ -33,7 +33,7 @@ import java.util.List;
 public class PSMetadataRestTagList
 {
     private List<PSMetadataRestTag> properties =
-        new ArrayList<PSMetadataRestTag>();
+        new ArrayList<>();
 
     public List<PSMetadataRestTag> getProperties()
     {

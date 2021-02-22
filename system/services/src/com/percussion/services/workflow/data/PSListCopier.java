@@ -81,7 +81,7 @@ abstract class PSListCopier<S extends IPSCatalogIdentifier, T extends IPSCatalog
       notNull(srcList);
       notNull(tgtList);
       
-      List<S> src = new ArrayList<S>();
+      List<S> src = new ArrayList<>();
       src.addAll(srcList);
       
       Iterator<T> itTgt = tgtList.iterator();

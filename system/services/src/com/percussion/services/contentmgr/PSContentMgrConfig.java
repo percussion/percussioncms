@@ -47,7 +47,7 @@ public class PSContentMgrConfig
     * The options to the content manager control various aspects of retrieving
     * content
     */
-   private Set<PSContentMgrOption> m_options = new HashSet<PSContentMgrOption>();
+   private Set<PSContentMgrOption> m_options = new HashSet<>();
 
    /**
     * if specified, this filters all access to body fields

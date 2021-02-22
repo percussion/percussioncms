@@ -39,6 +39,7 @@ import com.percussion.extension.PSExtensionDef;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -46,7 +47,6 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -116,8 +116,7 @@ public class PSIdTypeManager
     * @throws PSDeployException if there are any errors.
     */
    public static Iterator loadIdTypes(PSSecurityToken tok, Iterator deps)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -143,8 +142,7 @@ public class PSIdTypeManager
     * loadIdTypes(tok, dep, false, null, null)}.
     */
    public static PSApplicationIDTypes loadIdTypes(PSSecurityToken tok, 
-      PSDependency dep) throws PSDeployException
-   {
+      PSDependency dep) throws PSDeployException, PSNotFoundException {
       return loadIdTypes(tok, dep, false, null, null);
    }
    
@@ -182,8 +180,7 @@ public class PSIdTypeManager
     */
    public static PSApplicationIDTypes loadIdTypes(PSSecurityToken tok, 
       PSDependency dep, boolean addDynamicData, Map filterCache, 
-      Map extensionCache) throws PSDeployException
-   {
+      Map extensionCache) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)   
@@ -253,10 +250,7 @@ public class PSIdTypeManager
       
       idTypes.setChoiceFilters(null);
 
-      FileOutputStream out = null;
-      try
-      {
-         Document doc = PSXmlDocumentBuilder.createXmlDocument();
+        Document doc = PSXmlDocumentBuilder.createXmlDocument();
          Element mapEl = idTypes.toXml(doc);
          PSXmlDocumentBuilder.replaceRoot(doc, mapEl);
 
@@ -266,20 +260,13 @@ public class PSIdTypeManager
          File mapFile = new File(PSDeploymentHandler.IDTYPE_DIR,
             depKey + ".xml");
 
-         out = new FileOutputStream(mapFile);
-         PSXmlDocumentBuilder.write(doc, out);
-      }
-      catch (Exception e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
-      }
-      finally
-      {
-         if (out != null)
-            try {out.close();} catch(IOException ex){}
-      }
-      
+         try(FileOutputStream out = new FileOutputStream(mapFile)){
+            PSXmlDocumentBuilder.write(doc, out);
+         }catch (Exception e){
+            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+               e.getLocalizedMessage());
+         }
+
    }
    
    /**
@@ -342,10 +329,7 @@ public class PSIdTypeManager
       Document resultDoc = null;
       if (mapFile.exists())
       {
-         FileInputStream in = null;
-         try
-         {
-            in = new FileInputStream(mapFile);
+        try(FileInputStream in = new FileInputStream(mapFile)){
             resultDoc = PSXmlDocumentBuilder.createXmlDocument(in, false);
          }
          catch (Exception e)
@@ -353,13 +337,7 @@ public class PSIdTypeManager
             throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
                e.getLocalizedMessage());
          }
-         finally
-         {
-            if (in != null)
-               try {in.close();} catch(IOException ex){}
-         }
       }
-      
       return resultDoc;
    }
    
@@ -415,8 +393,7 @@ public class PSIdTypeManager
     * types for an id
     */   
    private static void addChoiceFilters(PSSecurityToken tok, 
-      PSApplicationIDTypes idTypes, Map filterCache) throws PSDeployException
-   {
+      PSApplicationIDTypes idTypes, Map filterCache) throws PSDeployException, PSNotFoundException {
       Map choiceFilters = new HashMap();
       PSDependencyManager depMgr = PSDependencyManager.getInstance();
       Iterator ids = idTypes.getIds().iterator();

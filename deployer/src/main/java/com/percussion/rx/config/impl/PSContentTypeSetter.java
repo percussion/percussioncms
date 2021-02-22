@@ -39,6 +39,7 @@ import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
 import com.percussion.services.contentmgr.data.PSNodeDefinition;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
@@ -149,8 +150,7 @@ public class PSContentTypeSetter extends PSSimplePropertySetter
     */
    @Override
    protected boolean addPropertyDefs(Object obj, String propName,
-         Object pvalue, Map<String, Object> defs)
-   {
+         Object pvalue, Map<String, Object> defs) throws PSNotFoundException {
       if (super.addPropertyDefs(obj, propName, pvalue, defs))
          return true;
       
@@ -169,8 +169,7 @@ public class PSContentTypeSetter extends PSSimplePropertySetter
     * //see base class method for details
     */
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       if (!(obj instanceof PSItemDefinition))
          throw new IllegalArgumentException(
                "obj type must be PSItemDefinition.");
@@ -197,7 +196,7 @@ public class PSContentTypeSetter extends PSSimplePropertySetter
                .getGuid());
          if (nodeDef == null)
             return null;
-         List<String> names = new ArrayList<String>();
+         List<String> names = new ArrayList<>();
          for (IPSGuid id : nodeDef.getVariantGuids())
          {
             String name = getTemplateName(id);
@@ -212,7 +211,7 @@ public class PSContentTypeSetter extends PSSimplePropertySetter
                .getGuid());
          if (nodeDef == null)
             return null;
-         List<String> names = new ArrayList<String>();
+         List<String> names = new ArrayList<>();
          for (IPSGuid id : nodeDef.getWorkflowGuids())
          {
             IPSWorkflowService wfSrv = PSWorkflowServiceLocator.getWorkflowService();
@@ -228,8 +227,8 @@ public class PSContentTypeSetter extends PSSimplePropertySetter
             return Collections.emptyMap();
 
          // return the 1st (parent) field
-         Map<String, Object> resultMap = new HashMap<String, Object>();
-         Map<String, String> fieldMap = new HashMap<String, String>();
+         Map<String, Object> resultMap = new HashMap<>();
+         Map<String, String> fieldMap = new HashMap<>();
          PSField fd = fields.get(0);
          fieldMap.put(PSContentTypeFieldSetter.SEQUENCE, "0");
          resultMap.put(fd.getSubmitName(), fieldMap);
@@ -342,7 +341,7 @@ public class PSContentTypeSetter extends PSSimplePropertySetter
    {
       if (type == PSField.TYPE_SYSTEM)
       {
-         ArrayList<String> names = new ArrayList<String>();
+         ArrayList<String> names = new ArrayList<>();
          Iterator excludes;
          excludes = itemDef.getContentEditorMapper().getSystemFieldExcludes();
          CollectionUtils.addAll(names, excludes);         
@@ -431,7 +430,7 @@ public class PSContentTypeSetter extends PSSimplePropertySetter
    @SuppressWarnings("unchecked")
    private ArrayList<String> iteratorToList(Iterator it)
    {
-      ArrayList<String> list = new ArrayList<String>();
+      ArrayList<String> list = new ArrayList<>();
       CollectionUtils.addAll(list, it);
 
       return list;

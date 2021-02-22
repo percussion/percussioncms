@@ -37,12 +37,24 @@ import com.percussion.cms.objectstore.server.PSRelationshipDbProcessor;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.data.IPSInternalRequestHandler;
 import com.percussion.data.PSTableChangeEvent;
-import com.percussion.design.objectstore.*;
+import com.percussion.design.objectstore.PSBackEndTable;
+import com.percussion.design.objectstore.PSLocator;
+import com.percussion.design.objectstore.PSRelationship;
+import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.error.PSException;
 import com.percussion.fastforward.managednav.IPSManagedNavService;
 import com.percussion.fastforward.managednav.PSManagedNavServiceLocator;
-import com.percussion.server.*;
-import com.percussion.server.cache.*;
+import com.percussion.server.IPSRequestContext;
+import com.percussion.server.PSInternalRequest;
+import com.percussion.server.PSRequest;
+import com.percussion.server.PSRequestContext;
+import com.percussion.server.PSServer;
+import com.percussion.server.cache.IPSCacheHandler;
+import com.percussion.server.cache.PSAssemblerCacheHandler;
+import com.percussion.server.cache.PSCacheManager;
+import com.percussion.server.cache.PSFolderRelationshipCache;
+import com.percussion.server.cache.PSItemSummaryCache;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.legacy.IPSCmsContentSummaries;
 import com.percussion.services.legacy.PSCmsContentSummariesLocator;
@@ -51,10 +63,10 @@ import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.services.purge.IPSSqlPurgeHelper;
-import com.percussion.services.purge.PSSqlPurgeHelperLocator;
 import com.percussion.services.purge.data.RevisionData;
 import com.percussion.services.relationship.IPSRelationshipService;
 import com.percussion.services.relationship.PSRelationshipServiceLocator;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.request.PSRequestInfo;
@@ -71,8 +83,17 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import static com.percussion.cms.objectstore.PSFolder.FOLDER_CONTENT_TYPE_ID;
 
@@ -83,11 +104,6 @@ import static com.percussion.cms.objectstore.PSFolder.FOLDER_CONTENT_TYPE_ID;
 @Transactional
 public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
 {
-
-   /**
-    * The hibernate session factory injected by spring
-    */
-   
    /**
     * Injected hibernate session factory
     */
@@ -104,8 +120,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
     * @return number of items purged
     * @throws PSException
     */
-   public int purge(PSLocator item) throws PSException
-   {
+   public int purge(PSLocator item) throws PSException, PSValidationException {
       return purgeAll(Collections.singleton(item));
    }
 
@@ -118,8 +133,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
     * @return number of items purged
     * @throws PSException
     */
-   public int purgeNavigation(PSLocator item) throws PSException
-   {
+   public int purgeNavigation(PSLocator item) throws PSException, PSValidationException {
       List<Integer> typeFilter = getNavContentTypeIds();
       return purgeAll(null, Collections.singleton(item), typeFilter);
    }
@@ -135,7 +149,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       long navonTypeId = navService.getNavonContentTypeId();
       long navTreeTypeId = navService.getNavtreeContentTypeId();
 
-      List<Integer> typeFilter = new ArrayList<Integer>();
+      List<Integer> typeFilter = new ArrayList<>();
       typeFilter.add((int) navonTypeId);
       typeFilter.add((int) navTreeTypeId);
       return typeFilter;
@@ -152,8 +166,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
     * @return number of items purged
     * @throws PSException
     */
-   public int purgeNavigationAndFolders(List<PSLocator> items) throws PSException
-   {
+   public int purgeNavigationAndFolders(List<PSLocator> items) throws PSException, PSValidationException {
       List<Integer> typeFilter = getNavContentTypeIds();
       typeFilter.add(FOLDER_CONTENT_TYPE_ID);
       return purgeAll(null, items, typeFilter);
@@ -170,8 +183,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
     * @return number of items purged
     * @throws PSException
     */
-   public int purgeAll(PSLocator parent, Collection<PSLocator> items) throws PSException
-   {
+   public int purgeAll(PSLocator parent, Collection<PSLocator> items) throws PSException, PSValidationException {
       return purgeAll(parent, items, null);
    }
 
@@ -186,8 +198,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
     * @return number of items purged
     * @throws PSException
     */
-   public int purgeAll(Collection<PSLocator> items) throws PSException
-   {
+   public int purgeAll(Collection<PSLocator> items) throws PSException, PSValidationException {
       return purgeAll(null, items, null);
    }
 
@@ -207,14 +218,13 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
     * @return number of items purged
     * @throws PSException
     */
-   public int purgeAll(PSLocator parent, Collection<PSLocator> items, List<Integer> typeFilter) throws PSException
-   {
+   public int purgeAll(PSLocator parent, Collection<PSLocator> items, List<Integer> typeFilter) throws PSException, PSValidationException {
       
       Session session = sessionFactory.getCurrentSession();
       
       int count = 0;
-      Map<Integer, List<String>> contentTypeTableMap = new HashMap<Integer, List<String>>();
-      Set<Integer> ids = new HashSet<Integer>();
+      Map<Integer, List<String>> contentTypeTableMap = new HashMap<>();
+      Set<Integer> ids = new HashSet<>();
       for (PSLocator item : items)
       {
          ids.add(item.getId());
@@ -225,7 +235,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       // Get the type tables first. if there are any errors we will throw
       // exception before any relationships
       // processed.
-      List<String> qualifiedTables = new ArrayList<String>();
+      List<String> qualifiedTables = new ArrayList<>();
 
       for (int typeId : contentTypeMap.keySet())
       {
@@ -233,7 +243,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
 
          PSItemDefinition itemDef = itemDefMgr.getItemDef(typeId, -1);
          List<PSBackEndTable> tables = itemDef.getTypeTables();
-         List<String> tableKeys = new ArrayList<String>();
+         List<String> tableKeys = new ArrayList<>();
          for (PSBackEndTable table : tables)
          {
             tableKeys.add(table.getTable());
@@ -263,7 +273,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
 
                List<String> tables = contentTypeTableMap.get(typeId);
 
-               Set<Integer> batch = new HashSet<Integer>();
+               Set<Integer> batch = new HashSet<>();
                for (int id : contentTypeMap.get(typeId))
                {
                   batch.add(id);
@@ -406,7 +416,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
                + "less than keepRevsYoungerThanDays");
       }
 
-      Map<Integer, List<Table>> contentTypeMap = new HashMap<Integer, List<Table>>();
+      Map<Integer, List<Table>> contentTypeMap = new HashMap<>();
       PSItemDefManager itemDefMgr = PSItemDefManager.getInstance();
       Session session = null;
       PreparedStatement pst = null;
@@ -437,7 +447,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
             int contentTypeId = (Integer)rs.next();
             PSItemDefinition itemDef = itemDefMgr.getItemDef(contentTypeId, -1);
             List<PSBackEndTable> tables = itemDef.getTypeTables();
-            List<Table> tableList = new ArrayList<Table>();
+            List<Table> tableList = new ArrayList<>();
             for (PSBackEndTable table : tables)
             {
                String qName = qualify(table.getTable());
@@ -710,7 +720,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       // process any folder items
       if (contentTypeMap.get(FOLDER_CONTENT_TYPE_ID).size() > 0)
       {
-         Map<Integer, Set<Integer>> folderContentTypeMap = new HashMap<Integer, Set<Integer>>();
+         Map<Integer, Set<Integer>> folderContentTypeMap = new HashMap<>();
 
          createContentTypeFolderMap(getDependents(contentTypeMap.get(FOLDER_CONTENT_TYPE_ID)), folderContentTypeMap,
                typeFilter);
@@ -773,7 +783,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       {
          if (!contentTypeMap.containsKey(entry.getKey()))
          {
-            contentTypeMap.put(entry.getKey(), new HashSet<Integer>());
+            contentTypeMap.put(entry.getKey(), new HashSet<>());
          }
          contentTypeMap.get(entry.getKey()).addAll(entry.getValue());
       }
@@ -803,7 +813,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
             // Folders should never be in more than one folder
             if (entry.getKey() != FOLDER_CONTENT_TYPE_ID)
             {
-               Set<Integer> removeItems = new HashSet<Integer>();
+               Set<Integer> removeItems = new HashSet<>();
 
                for (int id : entry.getValue())
                {
@@ -849,8 +859,8 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
     */
    private Map<Integer, Set<Integer>> createContentTypeMap(Set<Integer> ids, List<Integer> typeFilter)
    {
-      Map<Integer, Set<Integer>> contentTypeMap = new HashMap<Integer, Set<Integer>>();
-      contentTypeMap.put(FOLDER_CONTENT_TYPE_ID, new HashSet<Integer>());
+      Map<Integer, Set<Integer>> contentTypeMap = new HashMap<>();
+      contentTypeMap.put(FOLDER_CONTENT_TYPE_ID, new HashSet<>());
       IPSCmsContentSummaries summ = PSCmsContentSummariesLocator.getObjectManager();
 
       List<PSComponentSummary> itemSum = summ.loadComponentSummaries(ids);
@@ -865,7 +875,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
             Set<Integer> typeList = contentTypeMap.get(typeId);
             if (typeList == null)
             {
-               typeList = new HashSet<Integer>();
+               typeList = new HashSet<>();
                contentTypeMap.put(typeId, typeList);
             }
             typeList.add(item.getContentId());
@@ -900,7 +910,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
             Set<Integer> typeList = contentTypeMap.get(typeId);
             if (typeList == null)
             {
-               typeList = new HashSet<Integer>();
+               typeList = new HashSet<>();
                contentTypeMap.put(typeId, typeList);
             }
             typeList.add(item.getContentId());
@@ -915,7 +925,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       }
       if (contentTypeMap.get(FOLDER_CONTENT_TYPE_ID) == null)
       {
-         contentTypeMap.put(FOLDER_CONTENT_TYPE_ID, new HashSet<Integer>());
+         contentTypeMap.put(FOLDER_CONTENT_TYPE_ID, new HashSet<>());
       }
    }
 
@@ -940,7 +950,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
     */
    private Set<Integer> getDependents(Set<Integer> ids) throws PSCmsException
    {
-      Set<Integer> dependents = new HashSet<Integer>();
+      Set<Integer> dependents = new HashSet<>();
       for (int id : ids)
       {
          PSRequest req = (PSRequest) PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
@@ -966,8 +976,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
     * @throws PSException
     */
    
-   public Set<Integer> deleteBatch(List<String> tables, Set<Integer> ids, PSContentEditorHandler ceh) throws PSException
-   {
+   public Set<Integer> deleteBatch(List<String> tables, Set<Integer> ids, PSContentEditorHandler ceh) throws PSException, PSValidationException {
       if (ids == null || ids.isEmpty())
          return Collections.emptySet();
 
@@ -1041,7 +1050,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       
       
       PSItemSummaryCache itemCache = PSItemSummaryCache.getInstance();
-      Map<String, String> cacheData = new HashMap<String,String>();
+      Map<String, String> cacheData = new HashMap<>();
       // Notify purge event.
       for (int id : filteredIds)
       {
@@ -1057,12 +1066,14 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
          // notify other handlers 
 
       }
-      if (localContent.size()>0)
+      if (!localContent.isEmpty())
       {
-         deleteBatch(tables, new HashSet(localContent), ceh);
+         deleteBatch(tables, new HashSet<>(localContent), ceh);
          filteredIds.addAll(localContent);
       }
-      filteredIds.forEach(ceh::notifyPurge);
+      for (Integer filteredId : filteredIds) {
+         ceh.notifyPurge(filteredId);
+      }
       return filteredIds;
    }
 

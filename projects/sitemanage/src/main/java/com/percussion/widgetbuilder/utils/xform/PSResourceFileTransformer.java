@@ -60,7 +60,7 @@ public class PSResourceFileTransformer implements IPSWidgetFileTransformer
         {
             PSResourceDefinitionGroup group = PSSerializerUtils.unmarshal(IOUtils.toString(reader), PSResourceDefinitionGroup.class);
             List<PSFileResource> files = group.getFileResources();
-            Set<String> fileIds = new HashSet<String>();
+            Set<String> fileIds = new HashSet<>();
             String cssDepId = null;
             for (String path : packageSpec.getCssFiles())
             {
@@ -93,7 +93,7 @@ public class PSResourceFileTransformer implements IPSWidgetFileTransformer
         cssFile.setType(type);
         if(dependeeId != null)
         {
-            List<PSResourceDependency> deps = new ArrayList<PSResourceDependency>();
+            List<PSResourceDependency> deps = new ArrayList<>();
             PSResourceDependency dep = new PSResourceDependency();
             dep.setDependeeId(dependeeId);
             deps.add(dep);

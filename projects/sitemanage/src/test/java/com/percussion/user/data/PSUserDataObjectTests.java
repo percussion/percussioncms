@@ -93,7 +93,7 @@ public class PSUserDataObjectTests
             loadXml("BadXmlOrgUnitsLdapConfig.xml");
         }
         
-        private PSSpringValidationException validate(PSLdapConfig c) {
+        private PSSpringValidationException validate(PSLdapConfig c) throws PSSpringValidationException {
             return PSBeanValidationUtils.validate(c.getServer()).throwIfInvalid();
         }
     

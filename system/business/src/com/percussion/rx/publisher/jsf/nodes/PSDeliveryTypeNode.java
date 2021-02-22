@@ -23,6 +23,7 @@
  */
 package com.percussion.rx.publisher.jsf.nodes;
 
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.publisher.IPSDeliveryType;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
@@ -95,8 +96,7 @@ public class PSDeliveryTypeNode extends PSDesignNode
     * @return outcome for navigating to its parent node.
     */
    @Override
-   public String cancel()
-   {
+   public String cancel() throws PSNotFoundException {
       reLoaded(); // reload the object if it has been modified.
       return gotoParentNode();
    }
@@ -200,8 +200,7 @@ public class PSDeliveryTypeNode extends PSDesignNode
    /**
     * Reload the Delivery Type to sync up the object with the persisted one.
     */
-   private void reLoaded()
-   {
+   private void reLoaded() throws PSNotFoundException {
       if (m_isDirty)
       {
          m_deliveryType = getPublisherService().loadDeliveryTypeModifiable(

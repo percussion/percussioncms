@@ -27,8 +27,10 @@ package com.percussion.rest.pages;
 
 import com.percussion.rest.Status;
 import com.percussion.rest.assets.PSCSVStreamingOutput;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.errors.LocationMismatchException;
 import com.percussion.rest.util.APIUtilities;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.annotations.*;
 import org.apache.commons.lang.StringUtils;
@@ -66,7 +68,11 @@ public class PagesResource
     {MediaType.APPLICATION_JSON})
     public Page getPageById(@PathParam("id") String id)
     {
-        return pageAdaptor.getPage(uriInfo.getBaseUri(),id);
+        try {
+            return pageAdaptor.getPage(uriInfo.getBaseUri(), id);
+        } catch (BackendException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     
@@ -103,7 +109,11 @@ public class PagesResource
             apiPath = StringUtils.defaultString(m.group(3));
             pageName = StringUtils.defaultString(m.group(5));
         }
-        return pageAdaptor.getPage(uriInfo.getBaseUri(),siteName, apiPath, pageName);
+        try {
+            return pageAdaptor.getPage(uriInfo.getBaseUri(), siteName, apiPath, pageName);
+        } catch (BackendException | PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     /**
@@ -171,7 +181,11 @@ public class PagesResource
         page.setName(pageName);
         page.setFolderPath(apiPath);
         page.setSiteName(siteName);
-        page = pageAdaptor.updatePage(uriInfo.getBaseUri(),page);
+        try {
+            page = pageAdaptor.updatePage(uriInfo.getBaseUri(), page);
+        } catch (BackendException | PSDataServiceException e) {
+           throw new WebApplicationException(e);
+        }
 
         return page;
     }
@@ -219,9 +233,11 @@ public class PagesResource
             pageName = StringUtils.defaultString(m.group(5));
         }
         
-    
-
-            return pageAdaptor.renamePage(uriInfo.getBaseUri(),siteName, apiPath, pageName, name);
+        try {
+            return pageAdaptor.renamePage(uriInfo.getBaseUri(), siteName, apiPath, pageName, name);
+        } catch (BackendException | PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
   
@@ -259,8 +275,11 @@ public class PagesResource
             pageName = StringUtils.defaultString(m.group(5));
         }
         
-   
-        pageAdaptor.deletePage(uriInfo.getBaseUri(),siteName,apiPath,pageName);
+       try {
+           pageAdaptor.deletePage(uriInfo.getBaseUri(), siteName, apiPath, pageName);
+       } catch (BackendException e) {
+           throw new WebApplicationException();
+       }
         return new Status("Deleted");
     }
     
@@ -286,10 +305,14 @@ public class PagesResource
             @ApiResponse(code = 200, message = "Update OK")})
     public Status approveAllPages(@PathParam("folderPath")String folderPath){
     	Status status = new Status("OK");
-    	
-    	 int ctr = pageAdaptor.approveAllPages(uriInfo.getBaseUri(), folderPath);
-    	 status.setMessage("Approved " + ctr + " Pages");
-    	return status;
+
+    	try {
+            int ctr = pageAdaptor.approveAllPages(uriInfo.getBaseUri(), folderPath);
+            status.setMessage("Approved " + ctr + " Pages");
+            return status;
+        } catch (BackendException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
@@ -301,11 +324,15 @@ public class PagesResource
     {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
             @ApiResponse(code = 200, message = "Update OK")})
     public Status submitAllPages(@PathParam("folderPath")String folderPath){
-    	Status status = new Status("OK");
-    	
-    	 int ctr = pageAdaptor.submitForReviewAllPages(uriInfo.getBaseUri(), folderPath);
-    	 status.setMessage("Submitted " + ctr + " Pages");
-    	return status;
+    	try {
+            Status status = new Status("OK");
+
+            int ctr = pageAdaptor.submitForReviewAllPages(uriInfo.getBaseUri(), folderPath);
+            status.setMessage("Submitted " + ctr + " Pages");
+            return status;
+        } catch (BackendException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @POST
@@ -317,11 +344,15 @@ public class PagesResource
     {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
             @ApiResponse(code = 200, message = "Update OK")})
     public Status archiveAllPages(@PathParam("folderPath")String folderPath){
-    	Status status = new Status("OK");
-    	
-    	 int ctr = pageAdaptor.archiveAllPages(uriInfo.getBaseUri(), folderPath);
-    	 status.setMessage("Archived " + ctr + " Pages");
-    	return status;
+    	try {
+            Status status = new Status("OK");
+
+            int ctr = pageAdaptor.archiveAllPages(uriInfo.getBaseUri(), folderPath);
+            status.setMessage("Archived " + ctr + " Pages");
+            return status;
+        } catch (BackendException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     
@@ -334,7 +365,11 @@ public class PagesResource
     {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
             @ApiResponse(code = 200, message = "Update OK")})
     public Page changePageTemplate(Page p){
-    	 return pageAdaptor.changePageTemplate(uriInfo.getBaseUri(), p);
+        try {
+            return pageAdaptor.changePageTemplate(uriInfo.getBaseUri(), p);
+        } catch (BackendException e) {
+            throw new WebApplicationException();
+        }
     }
     
     @GET

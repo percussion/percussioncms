@@ -50,7 +50,7 @@ public abstract class PSMetadataQueryServiceHelper
      * A set of property keys that are not stored as properties but are instead
      * columns in the metadata entry table.
      */
-    public static final Set<String> ENTRY_PROPERTY_KEYS = new HashSet<String>();
+    public static final Set<String> ENTRY_PROPERTY_KEYS = new HashSet<>();
     static
     {
         ENTRY_PROPERTY_KEYS.add("folder");

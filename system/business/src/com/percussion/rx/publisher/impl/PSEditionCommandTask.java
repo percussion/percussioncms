@@ -82,7 +82,7 @@ public class PSEditionCommandTask implements IPSEditionTask
       }
 
       PSDateFormatISO8601 fmt = new PSDateFormatISO8601();
-      Map<String,String> map = new HashMap<String, String>();
+      Map<String,String> map = new HashMap<>();
       addVar(map, "editionName", edition.getDisplayTitle());
       addVar(map, "siteName", site.getName());
       addVar(map, "sitePublishingPath", site.getRoot());

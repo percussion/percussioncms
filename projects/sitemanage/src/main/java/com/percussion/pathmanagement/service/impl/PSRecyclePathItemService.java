@@ -33,11 +33,14 @@ import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.services.contentmgr.IPSContentMgr;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSItemProperties;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.ui.service.IPSListViewHelper;
 import com.percussion.user.service.IPSUserService;
 import org.apache.commons.logging.Log;
@@ -93,8 +96,7 @@ public class PSRecyclePathItemService extends PSPathItemService {
     }
 
     @Override
-    public PSItemProperties findItemProperties(String path)
-    {
+    public PSItemProperties findItemProperties(String path) throws PSPathNotFoundServiceException {
         notEmpty(path, "path");
         if (log.isDebugEnabled())
             log.debug("find item properties: " + path);
@@ -131,7 +133,7 @@ public class PSRecyclePathItemService extends PSPathItemService {
     }
 
     @Override
-    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException {
+    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, PSNotFoundException {
         PSPathItem folder = findItem(criteria.getPath());
         if (folder.getCategory() == IPSItemSummary.Category.SECTION_FOLDER)
         {
@@ -156,7 +158,7 @@ public class PSRecyclePathItemService extends PSPathItemService {
     }
 
     @Override
-    protected PSPathItem findItem(String path) {
+    protected PSPathItem findItem(String path) throws IPSDataService.DataServiceLoadException {
         String fullPath = getFullFolderPath(path);
         log.debug("findItem path: " + fullPath);
         IPSItemSummary summary = recycleService.findItem(fullPath);

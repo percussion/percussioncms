@@ -104,7 +104,7 @@ public class PSLocaleHandler
             PSMissingApplicationPolicyException
    {
       Document doc = getLocaleDocument(rxroot);
-      List<String> list = new ArrayList<String>();
+      List<String> list = new ArrayList<>();
       NodeList nl = doc.getElementsByTagName("column");
       Element elem = null;
       String temp = null;
@@ -550,7 +550,7 @@ public class PSLocaleHandler
       //List was never built, build it
       if(ms_SupportedLocaleStrings == null)
       {
-         ms_SupportedLocaleStrings = new ArrayList<String>();
+         ms_SupportedLocaleStrings = new ArrayList<>();
          Locale locale[] = Locale.getAvailableLocales();
          for(int i=0; i<locale.length; i++)
          {
@@ -651,8 +651,8 @@ public class PSLocaleHandler
       }
 
       // build the new row with replace action
-      List<PSJdbcRowData> rowList = new ArrayList<PSJdbcRowData>();
-      List<PSJdbcColumnData> colList = new ArrayList<PSJdbcColumnData>();
+      List<PSJdbcRowData> rowList = new ArrayList<>();
+      List<PSJdbcColumnData> colList = new ArrayList<>();
       colList.add(new PSJdbcColumnData(COL_LOCALE_ID, localeId));
       colList.add(new PSJdbcColumnData(COL_LANGUAGE_STRING, languageString));
       colList.add(new PSJdbcColumnData(COL_DISPLAY_NAME, displayName));

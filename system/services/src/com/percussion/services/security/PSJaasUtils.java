@@ -33,11 +33,11 @@ import com.percussion.security.PSUserAttributes;
 import com.percussion.security.PSUserEntry;
 import com.percussion.services.security.loginmods.data.PSGroup;
 import com.percussion.services.security.loginmods.data.PSPrincipal;
-import com.percussion.utils.security.IPSPrincipalAttribute;
-import com.percussion.utils.security.IPSPrincipalAttribute.PrincipalAttributes;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
-import com.percussion.utils.security.PSSecurityCatalogException;
+import com.percussion.security.IPSPrincipalAttribute;
+import com.percussion.security.IPSPrincipalAttribute.PrincipalAttributes;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.PSSecurityCatalogException;
 
 import java.security.Principal;
 import java.security.acl.Group;
@@ -186,8 +186,8 @@ public class PSJaasUtils
       int accessLvl = 0;
    
       // Handle Groups Roles and attributes
-      Collection<PSGroupEntry> gentries = new ArrayList<PSGroupEntry>();
-      Collection<PSRoleEntry> roles = new ArrayList<PSRoleEntry>();
+      Collection<PSGroupEntry> gentries = new ArrayList<>();
+      Collection<PSRoleEntry> roles = new ArrayList<>();
       PSAttributeList attList = new PSAttributeList();
       for (Principal p : subject.getPrincipals())
       {
@@ -237,7 +237,7 @@ public class PSJaasUtils
     */
    private static Collection<PSRoleEntry> getRoleEntries(Group g)
    {
-      Collection<PSRoleEntry> roles = new ArrayList<PSRoleEntry>();
+      Collection<PSRoleEntry> roles = new ArrayList<>();
       Enumeration<? extends Principal> groups = g.members();
       while (groups.hasMoreElements())
       {
@@ -311,7 +311,7 @@ public class PSJaasUtils
          while (entries.hasNext())
          {
             Map.Entry entry = (Map.Entry)entries.next();
-            List<String> values = new ArrayList<String>();
+            List<String> values = new ArrayList<>();
             values.add((String) entry.getValue());
             IPSPrincipalAttribute attr = new PSPrincipalAttribute(
                (String) entry.getKey(), PrincipalAttributes.ANY, values);
@@ -392,7 +392,7 @@ public class PSJaasUtils
       if (attr == null)
          throw new IllegalArgumentException("attr may not be null");
       
-      List<String> values = new ArrayList<String>();
+      List<String> values = new ArrayList<>();
       Iterator valItr = attr.getValues().iterator();
       while (valItr.hasNext())
       {
@@ -548,7 +548,7 @@ public class PSJaasUtils
       if (subject == null)
          throw new IllegalArgumentException("subject may not be null");
       
-      List<IPSTypedPrincipal> groups = new ArrayList<IPSTypedPrincipal>();
+      List<IPSTypedPrincipal> groups = new ArrayList<>();
       for (Principal principal : subject.getPrincipals(
          IPSTypedPrincipal.class))
       {
@@ -638,10 +638,10 @@ public class PSJaasUtils
    private static PSAttributeList convertPrincipalAttributes(
       Set<IPSPrincipalAttribute> principals)
    {
-      Set<IPSPrincipalAttribute> sorted = new TreeSet<IPSPrincipalAttribute>(
+      Set<IPSPrincipalAttribute> sorted = new TreeSet<>(
          new Comparator<IPSPrincipalAttribute>() {
 
-            public int compare(IPSPrincipalAttribute o1, 
+            public int compare(IPSPrincipalAttribute o1,
                IPSPrincipalAttribute o2)
             {
                Collator c = Collator.getInstance();
@@ -747,7 +747,7 @@ public class PSJaasUtils
    public static PSAttribute convertAttribute(IPSPrincipalAttribute attribute)
    {
       PSAttribute attr = new PSAttribute(attribute.getName());
-      List<String> vals = new ArrayList<String>(attribute.getValues());
+      List<String> vals = new ArrayList<>(attribute.getValues());
       attr.setValues(vals);
       
       return attr;

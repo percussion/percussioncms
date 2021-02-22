@@ -23,7 +23,7 @@
  */
 package com.percussion.server.command;
 
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSErrorManager;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSRequest;
@@ -182,7 +182,7 @@ public class PSConsoleCommandFlushCache extends PSConsoleCommandCache
                {
                   cacheHandler.validateKeys(keys);
                }
-               catch (PSValidationException e)
+               catch (PSSystemValidationException e)
                {
                   throw new PSConsoleCommandException(e.getErrorCode(), e
                         .getErrorArguments());
