@@ -60,43 +60,28 @@ public class PSUpgradePluginAddDocTypeServerBeans implements IPSUpgradePlugin
          "server-beans.xml...");
 
       File file = null;
-      PrintWriter pw = null;
-      ByteArrayOutputStream bos = null;
-      FileInputStream fis = null;
-      try
-      {
+      try {
          file = new File(RxUpgrade.getRxRoot() +
-            "AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/"
-               + "spring/server-beans.xml");
+                 "AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/"
+                 + "spring/server-beans.xml");
 
-         fis = new FileInputStream(file);
-         bos = new ByteArrayOutputStream();
-         IOTools.copyStream(fis, bos);
-         String docStr = bos.toString();
-         
-         docStr = InstallUtil.addDocType(docStr, "beans",
-               "PUBLIC", "-//SPRING//DTD BEAN//EN\"" +
-                    " \"http://www.springframework.org/dtd/spring-beans.dtd");
-         pw = new PrintWriter(new FileOutputStream(file));
-         pw.write(docStr);
+         try (FileInputStream fis =new FileInputStream(file)){
+            try( ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+               IOTools.copyStream(fis, bos);
+               String docStr = bos.toString();
+
+               docStr = InstallUtil.addDocType(docStr, "beans",
+                       "PUBLIC", "-//SPRING//DTD BEAN//EN\"" +
+                               " \"http://www.springframework.org/dtd/spring-beans.dtd");
+               try(PrintWriter pw = new PrintWriter(new FileOutputStream(file))) {
+                  pw.write(docStr);
+               }
+            }
+         }
       }
       catch(Exception e)
       {
          e.printStackTrace(config.getLogStream());
-      }
-      finally
-      {
-         try
-         {
-            if(pw != null)
-            {
-               pw.close();
-               pw =null;
-            }
-         }
-         catch(Throwable t)
-         {
-         }
       }
       config.getLogStream().println("leaving the process() of the plugin...");
       return null;

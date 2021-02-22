@@ -199,10 +199,11 @@ public class PSFileUtils
     */
    private static Element loadXmlResource(String name) throws Exception
    {
-      InputStream in = PSFileUtils.class.getResourceAsStream(name);
-      //Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
-      Document doc = createXmlDocument(in, false);
-      return doc.getDocumentElement();
+      try(InputStream in = PSFileUtils.class.getResourceAsStream(name)) {
+         //Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
+         Document doc = createXmlDocument(in, false);
+         return doc.getDocumentElement();
+      }
    }
    
    /**

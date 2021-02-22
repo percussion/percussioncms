@@ -47,10 +47,7 @@ public class RxCreateTableBackupAction extends RxIAAction
             getClass().getName(), SUFFIX_VAR)));
       setDropTables(getInstallValue(InstallUtil.getVariableName(
             getClass().getName(), DROP_TABLES_VAR)).equalsIgnoreCase("true"));
-      
-      FileInputStream in = null;
-      Connection conn = null;
-      
+
       try
       {
          String propFile = "rxconfig/Installer/rxrepository.properties";
@@ -59,54 +56,54 @@ public class RxCreateTableBackupAction extends RxIAAction
          if (!(f.exists() && f.isFile()))
             return;
          
-         in = new FileInputStream(f);
-         Properties props = new Properties();
-         props.load(in);
-         props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
-         PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
-         PSJdbcDataTypeMap dataTypeMap = new PSJdbcDataTypeMap(
-               props.getProperty("DB_BACKEND"),
-               props.getProperty("DB_DRIVER_NAME"), null);
-         conn = RxLogTables.createConnection(props);
-         
-         int maxTblNameLen = MAX_TABLE_NAME_LENGTH - (getSuffix().length() + 1);
-         for (int i=0; i <m_tables.length; i++)
-         {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            PrintStream ps = new PrintStream(baos);
-            
-            try
-            {
-               String tblName = m_tables[i].trim();
-               String backupTblName = tblName;
-               if ((tblName.length() > maxTblNameLen))
-                  backupTblName = tblName.substring(0, maxTblNameLen-1);
-               backupTblName += getSuffix();
-               
-               RxLogger.logInfo("Creating backup of table : " + tblName +
-                     " into table : " + backupTblName);
-               
-               boolean success = PSUpgradeBackupTable.backupTable(
-                     conn, dbmsDef, dataTypeMap,
-                     tblName, backupTblName, ps, true);
-               
-               if (success)
-                  RxLogger.logInfo(
-                        "Successfully created backup of table : " + tblName);
-               else
-                  RxLogger.logInfo(
-                        "Failed to create backup of table : " + tblName);
-               
-               RxLogger.logInfo(baos.toString());
-               
-               if (success && m_dropTables)
-               {
-                  RxLogger.logInfo("Dropping table : " + tblName);
-                  PSJdbcExecutionStep step =
-                     PSJdbcStatementFactory.getDropTableStatement(
-                           dbmsDef, tblName);
-                  step.execute(conn);
-                  RxLogger.logInfo("Successfully dropped table : " + tblName);
+         try(FileInputStream in = new FileInputStream(f)){
+            Properties props = new Properties();
+            props.load(in);
+            props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
+            PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
+            PSJdbcDataTypeMap dataTypeMap = new PSJdbcDataTypeMap(
+                  props.getProperty("DB_BACKEND"),
+                  props.getProperty("DB_DRIVER_NAME"), null);
+            conn = RxLogTables.createConnection(props);
+
+            int maxTblNameLen = MAX_TABLE_NAME_LENGTH - (getSuffix().length() + 1);
+            for (int i=0; i <m_tables.length; i++) {
+               try(ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                  try (PrintStream ps = new PrintStream(baos)) {
+
+                     try {
+                        String tblName = m_tables[i].trim();
+                        String backupTblName = tblName;
+                        if ((tblName.length() > maxTblNameLen))
+                           backupTblName = tblName.substring(0, maxTblNameLen - 1);
+                        backupTblName += getSuffix();
+
+                        RxLogger.logInfo("Creating backup of table : " + tblName +
+                                " into table : " + backupTblName);
+
+                        boolean success = PSUpgradeBackupTable.backupTable(
+                                conn, dbmsDef, dataTypeMap,
+                                tblName, backupTblName, ps, true);
+
+                        if (success)
+                           RxLogger.logInfo(
+                                   "Successfully created backup of table : " + tblName);
+                        else
+                           RxLogger.logInfo(
+                                   "Failed to create backup of table : " + tblName);
+
+                        RxLogger.logInfo(baos.toString());
+
+                        if (success && m_dropTables) {
+                           RxLogger.logInfo("Dropping table : " + tblName);
+                           PSJdbcExecutionStep step =
+                                   PSJdbcStatementFactory.getDropTableStatement(
+                                           dbmsDef, tblName);
+                           step.execute(conn);
+                           RxLogger.logInfo("Successfully dropped table : " + tblName);
+                        }
+                     }
+                  }
                }
             }
             catch (Exception ex)
@@ -114,52 +111,12 @@ public class RxCreateTableBackupAction extends RxIAAction
                RxLogger.logInfo("ERROR : " + ex.getMessage());
                RxLogger.logInfo(ex);
             }
-            finally
-            {
-               try
-               {
-                  if (baos != null)
-                     baos.close();
-               }
-               catch(Exception e)
-               {
-               }
-               try
-               {
-                  if (ps != null)
-                     ps.close();
-               }
-               catch(Exception e)
-               {
-               }
-            }
          }
       }
       catch (Exception ex)
       {
          RxLogger.logInfo("ERROR : " + ex.getMessage());
          RxLogger.logInfo(ex);
-      }
-      finally
-      {
-         try
-         {
-            if (in != null)
-               in.close();
-         }
-         catch(Exception e)
-         {
-         }
-         if (conn != null)
-         {
-            try
-            {
-               conn.close();
-            }
-            catch (SQLException e)
-            {
-            }
-         }
       }
    }
    
