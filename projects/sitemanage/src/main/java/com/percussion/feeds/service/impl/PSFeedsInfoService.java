@@ -23,8 +23,6 @@
  */
 package com.percussion.feeds.service.impl;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
@@ -50,9 +48,26 @@ import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.relationship.IPSRelationshipService;
 import com.percussion.services.relationship.PSRelationshipServiceLocator;
 import com.percussion.services.sitemgr.IPSSite;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSWebserviceUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.jcr.RepositoryException;
+import javax.jcr.Value;
+import javax.jcr.query.InvalidQueryException;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryResult;
+import javax.jcr.query.Row;
+import javax.jcr.query.RowIterator;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -63,23 +78,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import javax.jcr.RepositoryException;
-import javax.jcr.Value;
-import javax.jcr.query.InvalidQueryException;
-import javax.jcr.query.Query;
-import javax.jcr.query.QueryResult;
-import javax.jcr.query.Row;
-import javax.jcr.query.RowIterator;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.apache.commons.lang.Validate.notNull;
 
 
 /**
@@ -109,7 +108,7 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSFeedsInfoService.class);
+    public static final Logger log = LogManager.getLogger(PSFeedsInfoService.class);
 
 
     @Autowired
@@ -171,26 +170,26 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
         Collection<PSFeedInfo> feeds = getFeeds(server.getServerId());
         if (feeds.isEmpty() && emptyFeedSetSent.contains(site.getSiteId()))
         {
-            log.info("No feeds found to push to feeds service for site or server is selected none" + site.getName());
+            log.info("No feeds found to push to feeds service for site or server is selected none {}" , site.getName());
             return;
         }
 
         if(server.getPropertyValue("publishServer")!=null && server.getPropertyValue("publishServer").equalsIgnoreCase(IPSPubServerService.DEFAULT_DTS)){
-            log.info("server is selected none" + site.getName());
+            log.info("server is selected none {}", site.getName());
             return;
         }
         try
         {
 
             String descriptors = createDescriptorsJson(site, feeds, server.getServerType(),server.getPropertyValue("publishServer"));
-            log.info("Queuing " + feeds.size() + " feeds for site " + site.getName());
+            log.info("Queuing " + feeds.size() + " feeds for site {}" , site.getName());
             queue.queueDescriptors(site.getName(), descriptors, server.getServerType());
             if(feeds.isEmpty())
                 emptyFeedSetSent.add(site.getSiteId());
             else if(emptyFeedSetSent.contains(site.getSiteId()))
                 emptyFeedSetSent.remove(site.getSiteId());
         }
-        catch (JSONException e)
+        catch (JSONException | IPSGenericDao.LoadException | IPSGenericDao.SaveException e)
         {
             throw new PSFeedInfoServiceException("Error occurred while trying to create descriptors.", e);
         }

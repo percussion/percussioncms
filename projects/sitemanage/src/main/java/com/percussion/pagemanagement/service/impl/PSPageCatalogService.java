@@ -53,7 +53,6 @@ import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.error.PSSiteImportException;
@@ -247,7 +246,7 @@ public class PSPageCatalogService implements IPSPageCatalogService
     }
 
     @Override
-    public String getCatalogTemplateIdBySite(String siteName) throws PSPageException, IPSTemplateService.PSTemplateException, PSValidationException, PSSiteImportException {
+    public String getCatalogTemplateIdBySite(String siteName) throws PSDataServiceException, PSSiteImportException {
         PSSiteSummary site = siteDao.findSummary(siteName);
         if (site == null)
         {
@@ -409,7 +408,7 @@ public class PSPageCatalogService implements IPSPageCatalogService
         return defaultWorkflowId;
     }
 
-    public String getCatalogTemplateId(PSSiteSummary site) throws PSValidationException, IPSTemplateService.PSTemplateException, PSSiteImportException {
+    public String getCatalogTemplateId(PSSiteSummary site) throws PSDataServiceException, PSSiteImportException {
         String templateId = null;
         String siteId = site.getId();
         

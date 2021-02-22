@@ -35,6 +35,7 @@ import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSDataItemSummary;
@@ -98,7 +99,7 @@ public class PSSitePathItemService extends PSPathItemService
         {
             site = siteDataService.find(sfp.getSiteId());
         }
-        catch (DataServiceLoadException | PSValidationException e)
+        catch (DataServiceLoadException | PSValidationException | IPSGenericDao.LoadException e)
         {
             try {
                 site = siteDataService.findByPath(("/Sites/" + path).replace("//","/"));
@@ -346,7 +347,7 @@ public class PSSitePathItemService extends PSPathItemService
         return filteredItemNames;
     }
     
-    private PSSiteSummary getSite(String id) throws PSPathNotFoundServiceException, DataServiceLoadException, PSValidationException {
+    private PSSiteSummary getSite(String id) throws PSPathNotFoundServiceException, DataServiceLoadException, PSValidationException, IPSGenericDao.LoadException {
         PSSiteSummary site = siteDataService.find(id);
         if(log.isDebugEnabled())
             log.debug("Loaded site: " + site);

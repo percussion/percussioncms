@@ -29,6 +29,7 @@ import com.percussion.share.service.IPSDataService.DataServiceDeleteException;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
 import com.percussion.share.service.IPSDataService.DataServiceSaveException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.theme.data.PSRegionCSS;
 import com.percussion.theme.data.PSRegionCssList;
@@ -184,7 +185,7 @@ public class PSThemeRestService
     {
         try {
             themeService.mergeRegionCSS(theme, templateId, deletedRegions);
-        } catch (IPSDataService.PSThemeNotFoundException e) {
+        } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
            throw new WebApplicationException(e.getMessage());
@@ -222,7 +223,7 @@ public class PSThemeRestService
     /**
      * Logger for this service.
      */
-    public static Logger log = LogManager.getLogger(PSThemeRestService.class);
+    public static final Logger log = LogManager.getLogger(PSThemeRestService.class);
 
     
 

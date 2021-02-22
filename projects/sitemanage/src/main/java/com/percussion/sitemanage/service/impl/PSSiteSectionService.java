@@ -2098,8 +2098,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * 
      * @return id of the new template.
      */
-    private String createBlogTemplate(String name, String srcId, String siteId)
-    {
+    private String createBlogTemplate(String name, String srcId, String siteId) throws PSDataServiceException {
        String tempId = null;
        
        PSTemplateSummary tempSrc = templateSrv.find(srcId);
@@ -2258,8 +2257,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     public class PSCreateSectionValidator extends PSAbstractBeanValidator<PSCreateSiteSection>
     {
         @Override
-        protected void doValidation(PSCreateSiteSection req, PSBeanValidationException e)
-        {
+        protected void doValidation(PSCreateSiteSection req, PSBeanValidationException e) throws PSValidationException {
             String sectionName = req.getPageUrlIdentifier();
             PSSectionTypeEnum sectionType = req.getSectionType();
             
@@ -2270,8 +2268,12 @@ public class PSSiteSectionService implements IPSSiteSectionService
                 {sectionName}, "Cannot create a section with the name \"{0}\" "
                         + "because an object with the same name already exists.");
             }
-            
-            PSTemplateSummary template = templateSrv.find(req.getTemplateId());
+            PSTemplateSummary template  = null;
+            try {
+                 template = templateSrv.find(req.getTemplateId());
+            } catch (PSDataServiceException psDataServiceException) {
+                throw new PSBeanValidationException(e);
+            }
             if (template == null)
             {
                 String msg;
@@ -2292,7 +2294,11 @@ public class PSSiteSectionService implements IPSSiteSectionService
             
             if (sectionType == PSSectionTypeEnum.blog)
             {
-                template = templateSrv.find(req.getBlogPostTemplateId());
+                try {
+                    template = templateSrv.find(req.getBlogPostTemplateId());
+                }catch (PSDataServiceException psDataServiceException) {
+                     throw new PSBeanValidationException(e);
+                }
                 if (template == null)
                 {
                     e.reject("createSiteSection.missingTemplate", new Object[]{sectionName}, "Cannot create a blog "

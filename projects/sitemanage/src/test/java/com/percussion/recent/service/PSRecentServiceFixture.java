@@ -46,6 +46,7 @@ import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.share.test.PSTestDataCleaner;
 import com.percussion.sitemanage.data.PSSite;
@@ -144,8 +145,7 @@ public class PSRecentServiceFixture
         template1 = createTemplate(prefix+"Template1");
     }
     
-    public PSSiteSummary createSite(String prefix, String name)
-    {
+    public PSSiteSummary createSite(String prefix, String name) throws PSDataServiceException {
         PSSite site = new PSSite();
         site.setName(prefix + name);
         site.setLabel("My test site - " + prefix);
@@ -188,7 +188,7 @@ public class PSRecentServiceFixture
         return getSiteTemplateService().save(siteTemplates).get(0);
     }
     
-    public PSPage createPage(PSPage page) {
+    public PSPage createPage(PSPage page) throws PSDataServiceException {
         String fullPath = page.getFolderPath() + "/" + page.getName();
         pageCleaner.add(fullPath);
         return getPageService().save(page);
@@ -202,8 +202,7 @@ public class PSRecentServiceFixture
      * 
      * @return the created page, never null.
      */
-    public PSPage createPage(String name)
-    {
+    public PSPage createPage(String name) throws PSDataServiceException {
         notEmpty(name);
         PSPage page = new PSPage();
         page.setFolderPath(site1.getFolderPath());
@@ -223,7 +222,7 @@ public class PSRecentServiceFixture
         return createTemplateWithSite(templateName, site1.getId());
     }
     
-    public PSAsset saveAsset(PSAsset asset) {
+    public PSAsset saveAsset(PSAsset asset) throws PSDataServiceException {
         asset = getAssetService().save(asset);
         assetCleaner.add(asset.getId());
         return asset;
@@ -331,7 +330,7 @@ public class PSRecentServiceFixture
         return template.getGUID();
     }
     
-    public List<PSWidgetContentType> getWidgetTypes(){
+    public List<PSWidgetContentType> getWidgetTypes() throws PSDataServiceException {
         return assetService.getAssetTypes("yes");
     }
     

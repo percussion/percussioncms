@@ -319,7 +319,7 @@ public class PSAssetRestService
     {
         try {
             return new PSAssetDropCriteriaList(assetService.getWidgetAssetCriteria(id, isPage));
-        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+        } catch (PSDataServiceException e) {
             throw new WebApplicationException(e);
         }
     }
@@ -493,7 +493,7 @@ public class PSAssetRestService
     {
         try {
             return assetService.validate(object);
-        } catch (PSValidationException e) {
+        } catch (PSValidationException | IPSDataService.DataServiceSaveException e) {
            throw new WebApplicationException(e);
         }
     }
@@ -678,9 +678,6 @@ public class PSAssetRestService
             builder.throwIfInvalid();
 
             page = pageService.load(pageId);
-        } catch (IPSDataService.DataServiceLoadException | PSValidationException | IPSDataService.DataServiceNotFoundException e) {
-            throw new WebApplicationException(e);
-        }
 
         PSTemplate template = templateService.load(page.getTemplateId());
         Set<PSOrphanedAssetSummary> unused = getOrphanedAssetsSummaries(page, template);
@@ -700,6 +697,10 @@ public class PSAssetRestService
         Collections.sort(unusedAssets);
         
         return new PSUnusedAssetSummaryList(unusedAssets);
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
+
     }
 
     @POST

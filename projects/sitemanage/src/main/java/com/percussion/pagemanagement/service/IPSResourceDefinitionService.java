@@ -68,7 +68,7 @@ public interface IPSResourceDefinitionService extends IPSCatalogService<PSResour
      * @throws DataServiceLoadException
      * @throws DataServiceNotFoundException
      */
-    List<PSResourceDefinition> findAllResources() throws DataServiceLoadException, DataServiceNotFoundException;
+    List<PSResourceDefinition> findAllResources() throws PSDataServiceException;
 
     /**
      * 
@@ -96,21 +96,21 @@ public interface IPSResourceDefinitionService extends IPSCatalogService<PSResour
      * @return never <code>null</code>.
      * @throws PSResourceDefinitionNotFoundException if a default asset could not be found.
      */
-    PSAssetResource findDefaultAssetResourceForType(String contentType) throws PSResourceDefinitionNotFoundException;
+    PSAssetResource findDefaultAssetResourceForType(String contentType) throws PSDataServiceException;
 
     /**
      * Finds resources based on the content type of the asset.
      * @param contentType never <code>null</code>.
      * @return never <code>null</code> maybe empty.
      */
-    List<PSAssetResource> findAssetResourcesForType(String contentType);
+    List<PSAssetResource> findAssetResourcesForType(String contentType) throws PSDataServiceException;
     
     /**
      * Finds resources associated to a legacy template.
      * @param template never <code>null</code> or empty.
      * @return never <code>null</code>, maybe empty.
      */
-    List<PSAssetResource> findAssetResourcesForLegacyTemplate(String template);
+    List<PSAssetResource> findAssetResourcesForLegacyTemplate(String template) throws PSDataServiceException;
     
     
     /**

@@ -31,19 +31,16 @@ import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.impl.PSPageManagementUtils;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.IPSSitemanageConstants;
-import com.percussion.share.dao.IPSGenericDao.SaveException;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.error.PSTemplateImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitemanage.service.IPSSiteTemplateService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,7 +178,12 @@ public class PSTemplateCreationHelper extends PSImportHelper
             {
                 if (template.getName().equals(context.getTemplateName()))
                 {
-                    templateService.delete(template.getId());
+                    try {
+                        templateService.delete(template.getId());
+                    } catch (PSNotFoundException e) {
+                        log.warn(e.getMessage());
+                        log.debug(e.getMessage(),e);
+                    }
                     break;
                 }
             }

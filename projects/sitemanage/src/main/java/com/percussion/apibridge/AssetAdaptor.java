@@ -66,6 +66,7 @@ import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.PSDateUtils;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.data.IPSItemSummary.Category;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
@@ -314,7 +315,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         }
         try {
             this.assetService.delete(id);
-        } catch (PSDataServiceException e) {
+        } catch (PSDataServiceException | PSNotFoundException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new BackendException(e.getMessage(),e);
@@ -339,7 +340,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
         try {
             this.assetService.delete(item.getId());
-        } catch (PSDataServiceException e) {
+        } catch (PSDataServiceException | PSNotFoundException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new BackendException(e.getMessage(),e);
@@ -589,7 +590,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
         try {
             this.assetService.validate(newAsset);
-        } catch (PSValidationException e) {
+        } catch (PSValidationException | IPSDataService.DataServiceSaveException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException();

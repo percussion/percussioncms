@@ -27,14 +27,19 @@ import com.percussion.itemmanagement.service.IPSItemService;
 import com.percussion.searchmanagement.data.PSSearchCriteria;
 import com.percussion.searchmanagement.error.PSSearchServiceException;
 import com.percussion.searchmanagement.service.IPSSearchService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.useritems.data.PSUserItem;
 import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.data.PSPagedItemPropertiesList;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.webservices.PSWebserviceUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.Contact;
 import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,6 +47,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +71,7 @@ public class PSSearchRestService
     private static final String SEARCH_TYPE_MY_PAGES = "MyPages";
     private IPSSearchService searchService;
     private IPSItemService itemService;
+    private static final Logger log = LogManager.getLogger(PSSearchRestService.class);
 
     @Autowired
     public PSSearchRestService(IPSSearchService finderSearchService, IPSItemService itemService)
@@ -79,24 +86,30 @@ public class PSSearchRestService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPagedItemList search(PSSearchCriteria criteria) throws PSSearchServiceException
     {
-        PSPagedItemList itemList = new PSPagedItemList();
+        try {
+            PSPagedItemList itemList = new PSPagedItemList();
 
 
-        //Don't run a blind search for all items - require some criteria
-        if(!criteria.isEmpty() ){
+            //Don't run a blind search for all items - require some criteria
+            if (!criteria.isEmpty()) {
 
-            if (SEARCH_TYPE_MY_PAGES.equalsIgnoreCase(criteria.getSearchType())) {
-                List<PSUserItem> userItems = itemService.getUserItems(PSWebserviceUtils.getUserName());
-                List<Integer> contentIds = new ArrayList<>();
-                for (PSUserItem userItem : userItems) {
-                    contentIds.add(new Integer(userItem.getItemId()));
+                if (SEARCH_TYPE_MY_PAGES.equalsIgnoreCase(criteria.getSearchType())) {
+                    List<PSUserItem> userItems = itemService.getUserItems(PSWebserviceUtils.getUserName());
+                    List<Integer> contentIds = new ArrayList<>();
+                    for (PSUserItem userItem : userItems) {
+                        contentIds.add(userItem.getItemId());
+                    }
+                    itemList = searchService.search(criteria, contentIds);
+                } else {
+                    itemList = searchService.search(criteria);
                 }
-                itemList = searchService.search(criteria, contentIds);
-            } else {
-                itemList = searchService.search(criteria);
             }
+            return itemList;
+        } catch (PSNotFoundException | IPSDataService.DataServiceLoadException | PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
         }
-        return itemList;
     }
     
     @POST
@@ -105,7 +118,7 @@ public class PSSearchRestService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPagedItemPropertiesList extendedSearch(PSSearchCriteria criteria) throws PSSearchServiceException
     {
-        PSPagedItemPropertiesList itemList = new PSPagedItemPropertiesList();
+        PSPagedItemPropertiesList itemList;
         itemList = searchService.getExtendedSearchResults(criteria);
         return itemList;
     }

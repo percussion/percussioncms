@@ -30,6 +30,7 @@ import com.percussion.integritymanagement.data.PSIntegrityTask;
 import com.percussion.integritymanagement.data.PSIntegrityTask.TaskStatus;
 import com.percussion.integritymanagement.service.IPSIntegrityCheckerService.IntegrityTaskType;
 import com.percussion.server.PSRequest;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.request.PSRequestInfo;
@@ -72,8 +73,7 @@ public class PSIntegrityCheckerServiceTest  extends PSServletTestCase
         securityWs.login(request, response, uid, pwd, null, community, null);
     }
     @Test
-    public void testIntegrityService()
-    {
+    public void testIntegrityService() throws PSDataServiceException {
         if (utilityService.isSaaSEnvironment())
         {
             // Check the start and status methods
@@ -92,8 +92,7 @@ public class PSIntegrityCheckerServiceTest  extends PSServletTestCase
         }
     }
     @Test
-    public void testIntegrityServiceHistory()
-    {
+    public void testIntegrityServiceHistory() throws PSDataServiceException {
         if (utilityService.isSaaSEnvironment())
         {
             List<PSIntegrityStatus> statuses = service.getHistory();
@@ -115,7 +114,7 @@ public class PSIntegrityCheckerServiceTest  extends PSServletTestCase
             assertEquals(statuses.size(), 0);
         }
     }
-    private PSIntegrityStatus start(){
+    private PSIntegrityStatus start() throws PSDataServiceException {
         String token = service.start(IntegrityTaskType.cm1);
         long startTime = new Date().getTime();
         long endTime = startTime;

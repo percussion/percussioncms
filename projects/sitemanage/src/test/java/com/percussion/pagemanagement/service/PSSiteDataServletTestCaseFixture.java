@@ -38,6 +38,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -201,7 +202,7 @@ public class PSSiteDataServletTestCaseFixture
         return getSiteTemplateService().save(siteTemplates).get(0);
     }
     
-    public PSPage createPage(PSPage page) {
+    public PSPage createPage(PSPage page) throws PSDataServiceException {
         String fullPath = page.getFolderPath() + "/" + page.getName();
         pageCleaner.add(fullPath);
         return getPageService().save(page);
@@ -215,8 +216,7 @@ public class PSSiteDataServletTestCaseFixture
      * 
      * @return the created page, never null.
      */
-    public PSPage createPage(String name)
-    {
+    public PSPage createPage(String name) throws PSDataServiceException {
         notEmpty(name);
         PSPage page = new PSPage();
         page.setFolderPath(site1.getFolderPath());
@@ -236,7 +236,7 @@ public class PSSiteDataServletTestCaseFixture
         return createTemplateWithSite(templateName, site1.getId());
     }
     
-    public PSAsset saveAsset(PSAsset asset) {
+    public PSAsset saveAsset(PSAsset asset) throws PSDataServiceException {
         asset = getAssetService().save(asset);
         assetCleaner.add(asset.getId());
         return asset;

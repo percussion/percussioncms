@@ -75,8 +75,7 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
     private PSAssemblyItemBridge assemblyItemBridge;
     
     @Override
-    protected List<PSContentListItem> expandContentListItem(PSContentListItem contentListItem, Map<String, String> parameters)
-    {
+    protected List<PSContentListItem> expandContentListItem(PSContentListItem contentListItem, Map<String, String> parameters) throws PSDataServiceException {
         notNull(contentListItem, "contentListItem");
         String contentTypeName = getContentTypeName(contentListItem);
 
@@ -160,8 +159,7 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
     protected boolean isTemplateType(String contentTypeName) {
         return com.percussion.pagemanagement.service.IPSTemplateService.TPL_CONTENT_TYPE.equals(contentTypeName);
     }
-    protected boolean isContentTypePublishable(String contentTypeName) 
-    {
+    protected boolean isContentTypePublishable(String contentTypeName) throws PSDataServiceException {
         boolean exclude = ! getExcludedContentTypes().contains(contentTypeName);
         if (!exclude) return false;
         List<PSAssetResource> assetResources = 

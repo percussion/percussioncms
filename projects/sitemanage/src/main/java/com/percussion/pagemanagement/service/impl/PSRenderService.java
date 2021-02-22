@@ -93,7 +93,7 @@ public class PSRenderService implements IPSRenderService
 
             return createRenderResult(result, regionId);
 
-        } catch (IPSPageService.PSPageException | PSValidationException e) {
+        } catch (IPSPageService.PSPageException | PSValidationException | IPSDataService.DataServiceSaveException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e);
@@ -108,7 +108,7 @@ public class PSRenderService implements IPSRenderService
         try {
             validateTemplate(template);
             return renderAssemblyBridge.renderTemplate(template, false);
-        } catch (IPSPageService.PSPageException | PSValidationException e) {
+        } catch (IPSPageService.PSPageException | PSValidationException | IPSDataService.DataServiceSaveException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e);
@@ -126,7 +126,7 @@ public class PSRenderService implements IPSRenderService
             validateTemplate(template);
             String result = renderAssemblyBridge.renderTemplate(template, false);
             return createRenderResult(result, regionId);
-        } catch (IPSPageService.PSPageException | PSValidationException e) {
+        } catch (IPSPageService.PSPageException | PSValidationException | IPSDataService.DataServiceSaveException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e);
@@ -156,7 +156,7 @@ public class PSRenderService implements IPSRenderService
                     log.debug(e.getMessage(),e);
                     throw new WebApplicationException(e);
                 }
-            } catch (PSValidationException | IPSDataService.DataServiceLoadException | IPSPageService.PSPageException | IPSDataService.DataServiceNotFoundException e) {
+            } catch (PSValidationException | IPSDataService.DataServiceLoadException | IPSPageService.PSPageException | IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceSaveException e) {
                 log.error(e.getMessage());
                 log.debug(e.getMessage(),e);
                 throw new WebApplicationException(e);
@@ -188,13 +188,11 @@ public class PSRenderService implements IPSRenderService
     }
 
 
-    protected PSValidationErrors validateTemplate(PSTemplate template) throws PSValidationException
-    {
+    protected PSValidationErrors validateTemplate(PSTemplate template) throws PSValidationException, IPSDataService.DataServiceSaveException {
         return templateService.validate(template);
     }
 
-    protected PSValidationErrors validatePage(PSPage page) throws PSValidationException
-    {
+    protected PSValidationErrors validatePage(PSPage page) throws PSValidationException, IPSDataService.DataServiceSaveException {
         return pageService.validate(page);
     }
 

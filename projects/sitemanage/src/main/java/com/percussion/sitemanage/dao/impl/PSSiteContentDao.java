@@ -274,15 +274,13 @@ public class PSSiteContentDao
      *
      * @throws PSAssemblyException if failed to find the base template specified in the site object.
      */
-    private PSTemplateSummary createSiteTemplate(PSSite site) throws PSAssemblyException {
+    private PSTemplateSummary createSiteTemplate(PSSite site) throws PSAssemblyException, PSDataServiceException {
         IPSAssemblyTemplate baseTemplate = assemblyService.findTemplateByName(site.getBaseTemplateName());
         PSTemplateSummary templateSummary = null;
         IPSGuid tempId = null;
-        try {
-            tempId = templateService.findUserTemplateIdByName(site.getTemplateName(), site.getName());
-        } catch (Exception e) {
 
-        }
+        tempId = templateService.findUserTemplateIdByName(site.getTemplateName(), site.getName());
+
         if (tempId == null){
             templateSummary = templateService.createTemplate(site.getTemplateName(),
                     idMapper.getString(baseTemplate.getGUID()),
@@ -424,8 +422,7 @@ public class PSSiteContentDao
         return navTree;
     }
 
-    public void loadTemplateInfo(PSSite site)
-    {
+    public void loadTemplateInfo(PSSite site) throws PSDataServiceException {
         if (site.getBaseTemplateName() != null) {
             PSTemplateSummary tempSummary = templateService.find(site.getBaseTemplateName());
             site.setBaseTemplateName(tempSummary.getSourceTemplateName());
