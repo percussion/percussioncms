@@ -30,11 +30,9 @@ import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResou
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
 import com.percussion.pagemanagement.data.PSThemeResource;
 import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
-import com.percussion.share.dao.IPSGenericDao.DeleteException;
 import com.percussion.share.dao.IPSGenericDao.LoadException;
-import com.percussion.share.dao.IPSGenericDao.SaveException;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
-import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
 import com.percussion.theme.data.PSThemeSummary;
 import com.percussion.theme.service.IPSThemeService;
@@ -62,24 +60,28 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
     /**
      * {@inheritDoc}
      */
-    public String createUniqueId(String groupId, String id) throws PSResourceDefinitionInvalidIdException
-    {
+    public String createUniqueId(String groupId, String id) throws PSResourceDefinitionInvalidIdException {
         PSResourceDefinitionUniqueId uid = new PSResourceDefinitionUniqueId(groupId, id);
         return uid.getUniqueId();
     }
 
-    public void delete(String id) throws DeleteException
-    {
+    public void delete(String id) throws PSDataServiceException {
         dao.delete(id);
     }
     
     /**
      * {@inheritDoc}
      */
+    @Override
     public PSResourceDefinitionGroup find(String id) throws DataServiceLoadException,
             PSResourceDefinitionGroupNotFoundException
     {
-        PSResourceDefinitionGroup rdg =  dao.find(id);
+        PSResourceDefinitionGroup rdg;
+        try {
+           rdg = dao.find(id);
+        } catch (PSDataServiceException e) {
+            throw new DataServiceLoadException(e.getMessage(),e);
+        }
         if (rdg == null)
             throw new PSResourceDefinitionGroupNotFoundException("No resource group found for id: " + id);
         return rdg;
@@ -88,8 +90,7 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
     /**
      * {@inheritDoc}
      */
-    public List<PSResourceDefinitionGroup> findAll() throws LoadException
-    {
+    public List<PSResourceDefinitionGroup> findAll() throws PSDataServiceException {
         return dao.findAll();
     }
     
@@ -98,16 +99,14 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
      * {@inheritDoc}
      */
     @Override
-    public List<PSResourceDefinition> findAllResources() throws DataServiceLoadException, DataServiceNotFoundException
-    {
+    public List<PSResourceDefinition> findAllResources() throws PSDataServiceException {
         return dao.findAllResources();
     }
     
     /**
      * {@inheritDoc}
      */
-    public PSResourceDefinition findResource(String uniqueId) throws PSResourceDefinitionNotFoundException
-    {
+    public PSResourceDefinition findResource(String uniqueId) throws PSDataServiceException {
         PSParameterValidationUtils.rejectIfBlank("findResource", "uniqueId", uniqueId);
         PSResourceDefinition rd = findThemeCSSResource(uniqueId);
         if (rd != null) return rd;
@@ -117,15 +116,14 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
         return rd;
     }
 
-    public PSResourceDefinitionGroup save(PSResourceDefinitionGroup object) throws SaveException
-    {
+    public PSResourceDefinitionGroup save(PSResourceDefinitionGroup object) throws PSDataServiceException {
         return dao.save(object);
     }
 
     /**
      * {@inheritDoc}
      */
-    public PSAssetResource findDefaultAssetResourceForType(String contentType) throws PSResourceDefinitionNotFoundException
+    public PSAssetResource findDefaultAssetResourceForType(String contentType) throws PSDataServiceException
     {
         PSAssetResource resource = dao.findAssetResourceForType(contentType);
         if (resource == null) 
@@ -138,8 +136,7 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
      * {@inheritDoc}
      */
     @Override
-    public List<PSAssetResource> findAssetResourcesForType(String contentType)
-    {
+    public List<PSAssetResource> findAssetResourcesForType(String contentType) throws PSDataServiceException {
         return dao.findAssetResourcesForType(contentType);
     }
     
@@ -148,8 +145,7 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
      * {@inheritDoc}
      */
     @Override
-    public List<PSAssetResource> findAssetResourcesForLegacyTemplate(String template)
-    {
+    public List<PSAssetResource> findAssetResourcesForLegacyTemplate(String template) throws PSDataServiceException {
         return dao.findAssetResourcesForLegacyTemplate(template);
     }
 
@@ -159,14 +155,14 @@ public class PSResourceDefinitionService implements IPSResourceDefinitionService
      * @param uniqueId valid unique id, never <code>null</code> or empty.
      * @return maybe <code>null</code> if no theme is found for the given unique id..
      */
-    private PSResourceDefinition findThemeCSSResource(String uniqueId) {
+    private PSResourceDefinition findThemeCSSResource(String uniqueId) throws PSDataServiceException {
         PSResourceDefinitionUniqueId uid = new PSResourceDefinitionUniqueId(uniqueId);
         if (THEME_GROUP_NAME.equals(uid.getGroupId())) {
             PSThemeSummary sum = themeService.find(uid.getLocalId());
             if (sum != null) {
                 PSThemeResource themeResource = new PSThemeResource();
                 themeResource.setThemeSummary(sum);
-                if (sum != null && sum.getName() != null) {
+                if (sum.getName() != null) {
                     themeResource.setId(sum.getName());
                     themeResource.setGroupId(THEME_GROUP_NAME);
                     themeResource.setUniqueId(uid.getUniqueId());

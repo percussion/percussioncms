@@ -24,13 +24,16 @@
 package com.percussion.servlets;
 
 import com.percussion.deploy.server.PSServerJdbcDbmsDef;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.tablefactory.PSJdbcDataTypeMap;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcTableFactory;
 import com.percussion.tablefactory.PSJdbcTableSchema;
+import com.percussion.util.PSSqlHelper;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSConnectionInfo;
+import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 
@@ -85,13 +88,14 @@ public class PSTdSchemaXmlServlet extends HttpServlet
         pushResponse(response, "PSTdSchemaXmlService is Alive!!!", "text/plain", 200);
          return;
       }
+
       String datasource = request.getParameter("datasource");
       String[] tables =request.getParameterValues("tables");      
       boolean allowChanges = 
          StringUtils.defaultString(
             request.getParameter("allowchanges"), "false").equalsIgnoreCase("true")
             ? true : false;
-      if(StringUtils.isNotBlank(datasource))
+      if(StringUtils.isNotBlank(datasource)  && checkTablesAreValid(tables))
       {
          String xml = createTableSchemaXml(datasource, tables, allowChanges);
          pushResponse(response, xml, "text/xml", 200);
@@ -103,7 +107,15 @@ public class PSTdSchemaXmlServlet extends HttpServlet
       }
             
    }
-   
+
+   private boolean checkTablesAreValid(String[] tables) {
+      for(String t : tables){
+         if(!SecureStringUtils.isValidTableOrColumnName(t))
+            return false;
+      }
+      return true;
+   }
+
    /**
     * Creates an XML file containing the table schema definitions of the
     * selected tables. This XML file conforms to the "sys_Tabledef.dtd" dtd.
@@ -135,6 +147,7 @@ public class PSTdSchemaXmlServlet extends HttpServlet
                new HashMap<String, Element>();
         for(String tableName : tables)
          {
+            PSSqlHelper.isExistingCMSTableName(conn, tableName,false);
             PSJdbcTableSchema tableSchema = PSJdbcTableFactory.catalogTable(
                conn, dbmsDef, dataTypeMap, tableName, false);
 

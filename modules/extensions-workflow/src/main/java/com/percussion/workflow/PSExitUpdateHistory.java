@@ -561,7 +561,7 @@ public class PSExitUpdateHistory implements IPSResultDocumentProcessor
          return;
       }
       
-      Map<String, String> params = new HashMap<String, String>();
+      Map<String, String> params = new HashMap<>();
       params.put(PSApplicationBuilder.REQUEST_TYPE_HTML_PARAMNAME,
             PSApplicationBuilder.REQUEST_TYPE_VALUE_UPDATE);
 

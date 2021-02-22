@@ -191,13 +191,9 @@ public class PSXmlDomContext
       IPSRhythmyxInfo rxInfo = PSRhythmyxInfoLocator.getRhythmyxInfo();
       String rxRootDir = (String) rxInfo
             .getProperty(IPSRhythmyxInfo.Key.ROOT_DIRECTORY);
-      InputStream in = null;
-      try {
-         in = new FileInputStream(rxRootDir + File.separator + FileName);
+
+      try (InputStream in = new FileInputStream(rxRootDir + File.separator + FileName)){
          m_tidyProperties.load(in);
-      } finally {
-         if (in!=null) 
-            try { in.close();} catch (Exception e) {/*ignore*/ }
       }
    }
 
@@ -321,7 +317,7 @@ public class PSXmlDomContext
    public void handleException(Exception e, boolean throwException)
          throws PSExtensionProcessingException
    {
-      StringBuffer estr = new StringBuffer("Unexpected exception in ");
+      StringBuilder estr = new StringBuilder("Unexpected exception in ");
       estr.append(m_function).append("\n");
       estr.append(e.toString()).append("\n");
       estr.append(e.getMessage().toString()).append("\n");

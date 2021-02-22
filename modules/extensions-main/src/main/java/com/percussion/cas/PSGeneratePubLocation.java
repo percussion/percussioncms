@@ -42,6 +42,7 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionParams;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -69,6 +70,7 @@ import com.percussion.utils.exceptions.PSExceptionHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
+import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.utils.timing.PSStopwatchStack;
 
 import java.io.File;
@@ -417,7 +419,7 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
       sws.start("PSGeneratePubLocation#generatePreviewLocation");
       try
       {
-         Map<String, String> paramMap = new HashMap<String, String>(5);
+         Map<String, String> paramMap = new HashMap<>(5);
          paramMap.put(IPSHtmlParameters.SYS_CONTENTID, contentid.toString());
          paramMap.put(IPSHtmlParameters.SYS_REVISION, revision.toString());
          paramMap.put(IPSHtmlParameters.SYS_VARIANTID, variantid.toString());
@@ -481,7 +483,7 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
     * The custom preview URL generator map, which maps the name of the generator to its UDF instance. 
     * It is default to empty and lazily loaded UDF extension as needed.
     */
-    Map<String, PSExtensionWrapper> m_previewUrlGeneratorMap = new HashMap<String, PSExtensionWrapper>();
+    Map<String, PSExtensionWrapper> m_previewUrlGeneratorMap = new HashMap<>();
 
    /**
     * Generates the preview URL from a specified UDF extension.
@@ -824,6 +826,12 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
       // get the unqualified table name
       int sep = table.lastIndexOf('.');
       String unqualTable = sep == -1 ? table : table.substring(sep + 1);
+
+      if(!SecureStringUtils.isValidTableOrColumnName(column))
+         throw new IllegalArgumentException("Invalid column name.");
+
+      if(!SecureStringUtils.isValidTableOrColumnName(unqualTable))
+         throw new IllegalArgumentException("Invalid table name.");
 
       boolean useRevision = !unqualTable.equalsIgnoreCase("CONTENTSTATUS");
       String query = "SELECT " + column + " FROM " + table

@@ -24,6 +24,7 @@
 package com.percussion.utils.timing;
 
 import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A utility class used to log elapsed time.
@@ -32,13 +33,18 @@ public class PSTimer
 {
    PSStopwatch m_watch = new PSStopwatch();
    Log m_log;
-   
+   Logger log;
+
    public PSTimer(Log log)
    {
       m_log = log;
       m_watch.start();
    }
-   
+
+   public PSTimer(Logger log){
+      this.log = log;
+      m_watch.start();
+   }
    /**
     * Log the message along with the elapsed time.
     * @param msg the log message, assumed not <code>null</code>.
@@ -46,6 +52,9 @@ public class PSTimer
    public void logElapsed(String msg)
    {
       m_watch.stop();
-      m_log.debug(msg + " " + m_watch.toString());
+      if(m_log!=null)
+         m_log.debug(msg + " " + m_watch.toString());
+      else
+         log.debug(msg +" " +m_watch.toString());
    }
 }

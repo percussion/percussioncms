@@ -70,7 +70,7 @@ public class PSSecurityUtils
       if (objAcl == null)
          return commNames;
 
-      List<String> retComm = new ArrayList<String>();
+      List<String> retComm = new ArrayList<>();
       Collection<IPSAclEntry> allAclEntries = ((PSAclImpl) objAcl)
          .getEntries();
 
@@ -78,7 +78,7 @@ public class PSSecurityUtils
          return retComm;
 
       IPSAclEntry anyCommAcl = null;
-      List<IPSAclEntry> otherCommAcls = new ArrayList<IPSAclEntry>();
+      List<IPSAclEntry> otherCommAcls = new ArrayList<>();
 
       for (IPSAclEntry aclEntry : allAclEntries)
       {

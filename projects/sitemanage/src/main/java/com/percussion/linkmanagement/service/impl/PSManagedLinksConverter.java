@@ -95,7 +95,7 @@ public class PSManagedLinksConverter extends PSDefaultExtension implements IPSFi
         boolean returnMap = params.length > 1 && Boolean.parseBoolean(ep.getStringParam(1, "false", false));
         if(StringUtils.isBlank(value))
             return value;
-        Map<String, String> attribs = new HashMap<String, String>();
+        Map<String, String> attribs = new HashMap<>();
         String updatedValue = processLinksAndImages(value, attribs);
         return returnMap?attribs:updatedValue;
     }
@@ -190,7 +190,7 @@ public class PSManagedLinksConverter extends PSDefaultExtension implements IPSFi
     /**
      * Setter for dependency injection
      * 
-     * @param service the service to set
+     * @param managedService the service to set
      */
     public void setManagedService(IPSManagedLinkService managedService)
     {
@@ -200,7 +200,7 @@ public class PSManagedLinksConverter extends PSDefaultExtension implements IPSFi
     /**
      * Setter for dependency injection
      * 
-     * @param service the service to set
+     * @param renderService the service to set
      */
     public void setRenderService(IPSRenderLinkService renderService)
     {

@@ -2660,10 +2660,10 @@ public class PSApplication implements IPSDocument
     *
     * @param   cxt
     *
-    * @throws   PSValidationException
+    * @throws PSSystemValidationException
     *
     */
-   public void validate(IPSValidationContext cxt) throws PSValidationException
+   public void validate(IPSValidationContext cxt) throws PSSystemValidationException
    {
       // static validation on all statically validatable fields
       IllegalArgumentException ex = validateName(m_name);

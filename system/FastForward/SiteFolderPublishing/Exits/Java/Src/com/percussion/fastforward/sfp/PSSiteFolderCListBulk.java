@@ -148,7 +148,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
          throws PSUnknownNodeTypeException, PSCmsException,
          PSExtensionProcessingException
    {
-      Map<Integer, Set<ParentFolder>> siteItems = new HashMap<Integer, Set<ParentFolder>>();
+      Map<Integer, Set<ParentFolder>> siteItems = new HashMap<>();
 
       /*
        * Assume the root folder is being published, so the path starts with "/".
@@ -287,7 +287,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
                Set<ParentFolder> pFolderSet = null;
                if(siteItems.get(depId)== null)
                {
-                  pFolderSet = new HashSet<ParentFolder>();
+                  pFolderSet = new HashSet<>();
                }
                else
                {
@@ -386,7 +386,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
       if (m_quickEditCList.isEmpty())
          return;  // do nothing if there is no items in quick-edit state
 
-      List<Integer> idList = new ArrayList<Integer>(m_quickEditCList.keySet());
+      List<Integer> idList = new ArrayList<>(m_quickEditCList.keySet());
       Map<Integer, Integer> fixupItems = null;
       try
       {
@@ -446,7 +446,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
          throws PSExtensionProcessingException, PSCmsException
    {
       // set required parameters.
-      Map<String, String> lookupParams = new HashMap<String, String>(6);
+      Map<String, String> lookupParams = new HashMap<>(6);
       lookupParams.put(IPSHtmlParameters.SYS_SITEID,
             m_request.getParameter(IPSHtmlParameters.SYS_SITEID));
       // must use IPSHtmlParameters.SYS_CONTEXT to lookup the publishable items
@@ -533,7 +533,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
                   Set<PSContentListItem> itemSet = null;
                   if (m_quickEditCList.get(new Integer(contentId)) == null)
                   {
-                     itemSet = new HashSet<PSContentListItem>();
+                     itemSet = new HashSet<>();
                   }
                   else
                   {
@@ -591,7 +591,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
     * <code>Integer</code> objects, which map to the related
     * {@link PSContentListItem} set. Never <code>null</code>.
     */
-   private Map<Integer, Set<PSContentListItem>> m_quickEditCList = new HashMap<Integer, Set<PSContentListItem>>();
+   private Map<Integer, Set<PSContentListItem>> m_quickEditCList = new HashMap<>();
 
    /**
     * Name of the Rhythmyx internal resource used to catalog the published

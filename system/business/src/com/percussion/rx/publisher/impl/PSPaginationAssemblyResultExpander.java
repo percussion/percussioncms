@@ -76,7 +76,7 @@ public class PSPaginationAssemblyResultExpander extends PSAbstractAssemblyResult
       // Create work items for the additional pages.
       // NOTE, the original item entry (in the pub log) will be replaced be
       // the 1st cloned item. so the # of added items are "count" -1.  
-      List<IPSAssemblyItem> clonedItems = new ArrayList<IPSAssemblyItem>();
+      List<IPSAssemblyItem> clonedItems = new ArrayList<>();
       IPSAssemblyResult orig = result;
       for(int i = 0; i < count.intValue(); i++)
       {

@@ -135,7 +135,6 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
    {
       /**
        * The file to be written, it may be <code>null</code> if
-       * {@link #mi_resultStream} is not <code>null</code>.
        */
       private final PSPurgableTempFile mi_file;
 
@@ -270,7 +269,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
             throw new IllegalArgumentException("overrideItem may not be null.");
 
          if (mi_overrideItems == null)
-            mi_overrideItems = new ArrayList<Item>();
+            mi_overrideItems = new ArrayList<>();
 
          // removed the temp file which is the assembled result.
          overrideItem.getFile().delete();
@@ -445,12 +444,12 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
       /**
        * Each item to be delivered has a location and a temp file stored here.
        */
-      public ConcurrentHashMap<String, Item> m_deliveries = new ConcurrentHashMap<String, Item>(8, 0.9f, 1);
+      public ConcurrentHashMap<String, Item> m_deliveries = new ConcurrentHashMap<>(8, 0.9f, 1);
 
       /**
        * Each item to be removed has a location stored in this map.
        */
-      public ConcurrentHashMap<String, Item> m_removals = new ConcurrentHashMap<String, Item>(8, 0.9f, 1);
+      public ConcurrentHashMap<String, Item> m_removals = new ConcurrentHashMap<>(8, 0.9f, 1);
 
       /**
        * Ctor.
@@ -481,7 +480,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
     * This map contains the association from a given job id to the job data for
     * the job. Access to this map requires synchronization.
     */
-   protected Map<Long, JobData> m_jobData = new ConcurrentHashMap<Long, JobData>(8, 0.9f, 1);
+   protected Map<Long, JobData> m_jobData = new ConcurrentHashMap<>(8, 0.9f, 1);
 
    /**
     * Deliver a content item.
@@ -1042,7 +1041,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
       if (ms_log.isDebugEnabled())
          ms_log.debug("Committing buffered files for job " + jobId + " ...");
 
-      Collection<IPSDeliveryResult> rval = new ArrayList<IPSDeliveryResult>();
+      Collection<IPSDeliveryResult> rval = new ArrayList<>();
 
       JobData perJob = m_jobData.get(jobId);
       if (perJob != null)
@@ -1128,7 +1127,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
     */
    private Set<String> getParentDirectories(Set<String> filePaths)
    {
-      Set<String> dirLocations = new HashSet<String>();
+      Set<String> dirLocations = new HashSet<>();
       for (String floc : filePaths)
       {
          File f = new File(floc);
@@ -1165,7 +1164,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
    {
       PSPublishingJob job = PSRxPubServiceInternalLocator.getRxPublisherService().getPublishingJob(jobId);
 
-      Collection<IPSDeliveryResult> rval = new ArrayList<IPSDeliveryResult>();
+      Collection<IPSDeliveryResult> rval = new ArrayList<>();
       for (String location : results.keySet())
       {
          if (job.isCanceled())
@@ -1209,7 +1208,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
       if (item.getOverrideItems() == null)
          return Collections.singletonList(result);
 
-      List<IPSDeliveryResult> reList = new ArrayList<IPSDeliveryResult>();
+      List<IPSDeliveryResult> reList = new ArrayList<>();
       reList.add(result);
       String message;
       for (Item override : item.getOverrideItems())
@@ -1254,7 +1253,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
    protected Collection<IPSDeliveryResult> failAll(long jobId, String message)
    {
       JobData data = m_jobData.get(jobId);
-      Collection<IPSDeliveryResult> results = new ArrayList<IPSDeliveryResult>();
+      Collection<IPSDeliveryResult> results = new ArrayList<>();
       for (Item item : data.m_deliveries.values())
       {
          results.add(getItemResult(Outcome.FAILED, item, jobId, message));
@@ -1346,8 +1345,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
       return combineRootAndPath(root, deliveryPath);
    }
 
-   private String getPublishRoot(IPSDeliveryItem result)
-   {
+   private String getPublishRoot(IPSDeliveryItem result) throws PSNotFoundException {
       if (result.getPubServerId() != null)
       {
          try

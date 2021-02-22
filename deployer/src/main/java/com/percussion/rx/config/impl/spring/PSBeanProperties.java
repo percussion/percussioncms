@@ -152,7 +152,7 @@ public class PSBeanProperties implements IPSBeanPropertiesInternal
    /**
     * All bean properties. Defaults to empty. It never <code>null</code>.
     */
-   Map<String, Object> m_props = new HashMap<String, Object>();
+   Map<String, Object> m_props = new HashMap<>();
    
    /**
     * The properties file, default to <code>null</code>.

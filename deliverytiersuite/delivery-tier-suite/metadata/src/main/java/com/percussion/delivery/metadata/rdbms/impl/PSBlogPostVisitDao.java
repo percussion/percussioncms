@@ -215,7 +215,7 @@ public class PSBlogPostVisitDao  implements IPSBlogPostVisitDao {
 
     private Collection<String> getPagepathHashes(Collection<String> pagepaths)
     {
-        List<String> pagepathHashes = new ArrayList<String>();
+        List<String> pagepathHashes = new ArrayList<>();
 
         for (String pp : pagepaths)
         {
@@ -228,7 +228,7 @@ public class PSBlogPostVisitDao  implements IPSBlogPostVisitDao {
     private Collection<PSDbBlogPostVisit> convertToDbVisits(Collection<IPSBlogPostVisit> visits) {
         Validate.notNull(visits, "list of visits cannot be null");
 
-        Collection<PSDbBlogPostVisit> result = new ArrayList<PSDbBlogPostVisit>();
+        Collection<PSDbBlogPostVisit> result = new ArrayList<>();
         for (IPSBlogPostVisit visit : visits) {
             PSDbBlogPostVisit dbVisit = findBlogPostVisitByDate(visit.getPagepath(), visit.getHitDate());
             if (dbVisit != null) {

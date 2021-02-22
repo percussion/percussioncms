@@ -435,7 +435,7 @@ public class PSObjectSummary implements IPSCatalogSummary
          throw new IllegalArgumentException(
             "ids must be equal or larger than summaries");
       
-      List<IPSCatalogSummary> sortedValues = new ArrayList<IPSCatalogSummary>();
+      List<IPSCatalogSummary> sortedValues = new ArrayList<>();
       for (int i=0; i<ids.length; i++)
       {
          IPSGuid id = ids[i];

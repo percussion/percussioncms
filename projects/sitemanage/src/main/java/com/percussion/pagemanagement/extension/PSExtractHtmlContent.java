@@ -28,6 +28,7 @@ import com.percussion.cms.IPSConstants;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSExtensionException;
+import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.pagemanagement.service.IPSRenderService;
 import com.percussion.search.lucene.textconverter.PSTextConverterHtml;
 import com.percussion.server.IPSRequestContext;
@@ -46,6 +47,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -85,54 +87,35 @@ public class PSExtractHtmlContent implements IPSUdfProcessor
         {
             return "";
         }
-        
         String cTypeIdStr = params[0].toString();
         IPSGuid guid = guidMgr.makeGuid(cTypeIdStr, PSTypeEnum.LEGACY_CONTENT);
-        
+
         if (publishingWs.getItemSites(guid).isEmpty())
         {
             // page is not associated with a site, cannot be assembled
             return "";
         }
-        
-        InputStream is = null;
-        try
+
+        PSWebserviceUtils.setUserName(request.getOriginalSubject().getName());
+
+        // assemble the page
+        String renderedPage = renderService.renderPage(idMapper.getString(guid));
+        if (renderedPage.contains("<html"))
         {
-            PSWebserviceUtils.setUserName(request.getOriginalSubject().getName());
-            
-            // assemble the page
-            String renderedPage = renderService.renderPage(idMapper.getString(guid));
-            if (renderedPage.contains("<html"))
-            {
-                // remove everything before the start of the html tag to allow for proper extraction
-                renderedPage = renderedPage.substring(renderedPage.indexOf("<html"));
-            }
-            
-            // extract the html content
+            // remove everything before the start of the html tag to allow for proper extraction
+            renderedPage = renderedPage.substring(renderedPage.indexOf("<html"));
+        }
+
+        // extract the html content
+
+        try(InputStream bis = new ByteArrayInputStream(renderedPage.getBytes(IPSUtilsConstants.RX_JAVA_ENC)) ){
             PSTextConverterHtml converter = new PSTextConverterHtml();
-            is = new ByteArrayInputStream(renderedPage.getBytes(IPSUtilsConstants.RX_JAVA_ENC));
-                        
-            return converter.getConvertedText(is, "");
+            return converter.getConvertedText(bis,"");
+
+        } catch (IOException | PSExtensionProcessingException  e) {
+            PSConsole.printMsg(this.getClass().getName(), e.getLocalizedMessage());
         }
-        catch (Exception e)
-        {
-            PSConsole.printMsg(this.getClass().getName(), e.getLocalizedMessage());            
-        }
-        finally
-        {
-            if (is != null)
-            {
-                try
-                {
-                    is.close();
-                }
-                catch (IOException e)
-                {
-                    
-                }
-            }
-        }
-        
+
         return "";
     }  
     

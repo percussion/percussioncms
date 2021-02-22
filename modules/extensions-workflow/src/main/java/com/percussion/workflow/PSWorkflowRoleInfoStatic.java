@@ -40,8 +40,8 @@ import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.system.PSAssignmentTypeHelper;
 import com.percussion.util.PSCms;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -1006,11 +1006,11 @@ public class PSWorkflowRoleInfoStatic {
       Map notifyEnabledMap)
    {
       Set<Integer> notifyRoleIds =
-         new HashSet<Integer>(notifyEnabledMap.keySet());
+         new HashSet<>(notifyEnabledMap.keySet());
       PSAssignmentTypeHelper.filterAssignedRolesByCommunity(contentId,
          notifyRoleIds);
       Set<Integer> nonNotifyRoleIds =
-         new HashSet<Integer>(notifyEnabledMap.keySet());
+         new HashSet<>(notifyEnabledMap.keySet());
       nonNotifyRoleIds.removeAll(notifyRoleIds);
       for (Integer roleId : nonNotifyRoleIds)
       {
@@ -1428,9 +1428,9 @@ public class PSWorkflowRoleInfoStatic {
    {
       PSWorkFlowUtils.printWorkflowMessage(
          request, "    Entering Method getRolesEmailAddresses");
-      List<String> membersEmail = new ArrayList<String>();
+      List<String> membersEmail = new ArrayList<>();
       String roleName = "";
-      List<String> roleEmailAddresses = new ArrayList<String>();
+      List<String> roleEmailAddresses = new ArrayList<>();
       if (null == request)
       {
          throw new IllegalArgumentException(
@@ -1543,7 +1543,7 @@ public class PSWorkflowRoleInfoStatic {
             PSWorkFlowUtils.USER_EMAIL_ATTRIBUTE_PROPERTY,
             PSWorkFlowUtils.USER_EMAIL_ATTRIBUTE);
 
-      List<String> emails = new ArrayList<String>();
+      List<String> emails = new ArrayList<>();
       emails.addAll(PSRoleManager.getInstance().getSubjectEmailAddresses(princes, emailAttributeName, null));
 
       return emails;
@@ -1568,7 +1568,7 @@ public class PSWorkflowRoleInfoStatic {
       if ( ! PSCms.isFolderSecurityOverridesWorkflowSecurity()) {
          return commFiltered;
       }
-      final Set<IPSTypedPrincipal> filteredPrinces = new HashSet<IPSTypedPrincipal>();
+      final Set<IPSTypedPrincipal> filteredPrinces = new HashSet<>();
 
       PSRunAsUser<IPSTypedPrincipal> runAsUser = new PSRunAsUser<IPSTypedPrincipal>()
       {
@@ -1605,7 +1605,7 @@ public class PSWorkflowRoleInfoStatic {
       try
       {
          IPSRoleMgr roleMgr = PSRoleMgrLocator.getRoleManager();
-         Set<IPSTypedPrincipal> fromStatePrinces = new HashSet<IPSTypedPrincipal>();
+         Set<IPSTypedPrincipal> fromStatePrinces = new HashSet<>();
          for (String roleName : fromStateRoles) {
             fromStatePrinces.addAll(roleMgr.getRoleMembers(roleName));
          }
@@ -1625,7 +1625,7 @@ public class PSWorkflowRoleInfoStatic {
    public static Set<IPSTypedPrincipal> getPricipalsFromNames(List<String> userNames)
    {
       notNull(userNames);
-      Set<IPSTypedPrincipal> principals = new HashSet<IPSTypedPrincipal>();
+      Set<IPSTypedPrincipal> principals = new HashSet<>();
       for (String user : userNames)
          principals.add(PSTypedPrincipal.createSubject(user));
 

@@ -23,6 +23,7 @@
  */
 package com.percussion.services.error;
 
+import com.percussion.error.PSException;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.utils.guid.IPSGuid;
 
@@ -33,7 +34,7 @@ import com.percussion.utils.guid.IPSGuid;
  *
  * @author Yu-Bing Chen
  */
-public class PSNotFoundException extends PSRuntimeException
+public class PSNotFoundException extends PSException
 {
    /**
     * Create an instance for cannot find object by ID.
@@ -46,7 +47,6 @@ public class PSNotFoundException extends PSRuntimeException
             
       Object[] args = { id.longValue(),
             PSTypeEnum.valueOf(id.getType()).getDisplayName() };
-      setMsgKeyAndArgs("service.exception@ObjectNotFound", args);
    }
    
    /**
@@ -60,7 +60,6 @@ public class PSNotFoundException extends PSRuntimeException
          throw new IllegalArgumentException("type may not be null.");
       
       Object[] args = { name, type.getDisplayName() };
-      setMsgKeyAndArgs("service.exception@ObjectNotFoundByName", args);      
    }
    
    /**

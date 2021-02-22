@@ -57,7 +57,7 @@ public class PSMetadataEntry implements Serializable, IPSMetadataEntry
     
     @XmlElementWrapper(name="property")
     @XmlElement(type=PSMetadataProperty.class)
-    private Set<IPSMetadataProperty> properties = new HashSet<IPSMetadataProperty>();
+    private Set<IPSMetadataProperty> properties = new HashSet<>();
 
     public PSMetadataEntry()
     {
@@ -207,7 +207,7 @@ public class PSMetadataEntry implements Serializable, IPSMetadataEntry
     public void addProperty(IPSMetadataProperty prop)
     {
        if(properties == null)
-           properties = new HashSet<IPSMetadataProperty>();
+           properties = new HashSet<>();
        properties.add(prop);        
     }
     

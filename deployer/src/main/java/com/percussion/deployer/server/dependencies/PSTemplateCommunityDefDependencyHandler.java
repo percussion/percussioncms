@@ -37,6 +37,7 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 
 import java.util.ArrayList;
@@ -132,8 +133,7 @@ public class PSTemplateCommunityDefDependencyHandler
    
    //see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -153,7 +153,7 @@ public class PSTemplateCommunityDefDependencyHandler
    // Empty Implementation
    public Iterator getDependencies(PSSecurityToken tok) throws PSDeployException
    {    
-      List<PSDependency> deps = new ArrayList<PSDependency>(); 
+      List<PSDependency> deps = new ArrayList<>();
       return deps.iterator();
    }
 
@@ -171,7 +171,7 @@ public class PSTemplateCommunityDefDependencyHandler
 
 
       // pack the data into the files
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
       // get the first dep data for the slot object of itself
       PSDependencyData vrData = getDepDataFromTable(dep, VARCOMMUNITYTABLE,
             TEMPLATEID, true);
@@ -185,8 +185,6 @@ public class PSTemplateCommunityDefDependencyHandler
 
    /**
     * Creates a dummy dependency file from a given dependency data object.
-    *
-    * @param depData The dependency data object, may not be <code>null</code>.
     *
     * @return The dependency file object, it will never be <code>null</code>.
     *
@@ -244,7 +242,7 @@ public class PSTemplateCommunityDefDependencyHandler
          IPSNodeDefinition nodeDef = contentMgr.findNodeDefinitionByName(dep
                .getDisplayName());
          nodeDef.addVariantGuid(tmpGuid);
-         List<IPSNodeDefinition> newList = new ArrayList<IPSNodeDefinition>();
+         List<IPSNodeDefinition> newList = new ArrayList<>();
          newList.add(nodeDef);
          contentMgr.saveNodeDefinitions(newList);
       }
@@ -324,7 +322,7 @@ public class PSTemplateCommunityDefDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
    static
    {
       ms_childTypes.add(PSCommunityDependencyHandler.DEPENDENCY_TYPE);

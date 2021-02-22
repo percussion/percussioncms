@@ -37,6 +37,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.annotations.QueryHints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -94,8 +95,7 @@ public class PSUserItemsDao implements IPSUserItemsDao
     * (non-Javadoc)
     * @see com.percussion.services.userpages.IPSUserItemsDao#save(com.percussion.services.userpages.data.PSUserItem)
     */
-   public void save(PSUserItem userItem)
-   {
+   public void save(PSUserItem userItem) throws IPSGenericDao.SaveException {
       Validate.notNull(userItem);
 
       if (userItem.getUserItemId() == -1)
@@ -127,7 +127,7 @@ public class PSUserItemsDao implements IPSUserItemsDao
    @SuppressWarnings("unchecked")
    public List<PSUserItem> find(String userName)
    {
-      List<PSUserItem> userItems = new ArrayList<PSUserItem>();
+      List<PSUserItem> userItems = new ArrayList<>();
       if(StringUtils.isBlank(userName))
          return userItems;
       Session session = sessionFactory.getCurrentSession();
@@ -147,12 +147,12 @@ public class PSUserItemsDao implements IPSUserItemsDao
    @SuppressWarnings("unchecked")
    public List<PSUserItem> find(int itemId)
    {
-      List<PSUserItem> userItems = new ArrayList<PSUserItem>();
+      List<PSUserItem> userItems;
       Session session = sessionFactory.getCurrentSession();
 
           Query query = session.createQuery("from PSUserItem where itemId = :itemId");
           query.setParameter("itemId", itemId);
-
+          query.addQueryHint(QueryHints.CACHEABLE);
           userItems = query.list(); 
           return userItems;
 

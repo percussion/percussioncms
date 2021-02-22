@@ -28,8 +28,11 @@ import com.percussion.pagemanagement.assembler.impl.PSAssemblyRenderLinkContext;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSRenderLinkContext;
 import com.percussion.services.assembly.IPSAssemblyItem;
+import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.publisher.data.PSContentListItem;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSValidationException;
 
 /**
  * 
@@ -52,7 +55,7 @@ public interface IPSRenderLinkContextFactory
      * @param item never <code>null</code>.
      * @return never <code>null</code>.
      */
-    public PSRenderLinkContext create(PSContentListItem listItem, IPSLinkableItem item);
+    public PSRenderLinkContext create(PSContentListItem listItem, IPSLinkableItem item) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, PSValidationException;
     /**
      * 
      * Creates a link context that has not been validated yet.
@@ -61,7 +64,7 @@ public interface IPSRenderLinkContextFactory
      * @param item never <code>null</code>.
      * @return never <code>null</code>.
      */
-    public abstract PSRenderLinkContext create(IPSAssemblyItem assemblyItem, IPSLinkableItem item);
+    public abstract PSRenderLinkContext create(IPSAssemblyItem assemblyItem, IPSLinkableItem item) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, PSFilterException, PSValidationException;
 
     /**
      * 
@@ -70,7 +73,7 @@ public interface IPSRenderLinkContextFactory
      * @param page never <code>null</code>.
      * @return never <code>null</code>.
      */
-    public abstract PSRenderLinkContext createPreview(PSPage page);
+    public abstract PSRenderLinkContext createPreview(PSPage page) throws IPSDataService.DataServiceNotFoundException, PSValidationException;
     
     /**
      * 

@@ -197,7 +197,7 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
         PSRestPoll restPoll = new PSRestPoll();
         restPoll.setPollName(poll.getPollName());
         restPoll.setPollQuestion(poll.getPollQuestion());
-        Map<String, Integer> results = new HashMap<String, Integer>();
+        Map<String, Integer> results = new HashMap<>();
         int totalVotes = 0;
         for (IPSPollAnswer pollAnswer : poll.getPollAnswers())
         {

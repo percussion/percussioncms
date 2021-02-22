@@ -55,7 +55,7 @@ class PSFileDocumentSource extends FileDocumentSource implements IPSDocumentSour
     {
         super(file);
 
-        openInputStream = new ArrayList<InputStream>();
+        openInputStream = new ArrayList<>();
     }
 
     /*

@@ -32,12 +32,14 @@ import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.dao.impl.PSSiteContentDao;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
+import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
@@ -132,8 +134,7 @@ public class PSTemplateExtractorHelperTest extends ServletTestCase
         return tempConfigFile;
     }
     
-    private void createSite()
-    {
+    private void createSite() throws PSSiteImportException {
         siteCreationHelper.process(pageContent, importContext);
     }
 
@@ -144,8 +145,7 @@ public class PSTemplateExtractorHelperTest extends ServletTestCase
     
     // Test if metadata was extracted correctly
     @Test
-    public void test010ExtractMetadata()
-    {
+    public void test010ExtractMetadata() throws PSSiteImportException, PSDataServiceException {
         templateExtractorHelper.process(pageContent, importContext);
 
         PSPage homePage = pageService
@@ -187,8 +187,7 @@ public class PSTemplateExtractorHelperTest extends ServletTestCase
     }
     
     @Test
-    public void test020AddHTMLWidgetToTemplate()
-    {
+    public void test020AddHTMLWidgetToTemplate() throws PSDataServiceException, PSSiteImportException {
         templateExtractorHelper.process(pageContent, importContext);
 
         PSPage homePage = pageService
@@ -335,7 +334,7 @@ public class PSTemplateExtractorHelperTest extends ServletTestCase
      * STATUS: Commented out managed jquery reference from &lt;body&gt; element: &lt;script src="jquery.js" type="text/javascript"&gt; &lt;/script&gt; from &lt;body&gt; element.
      * </pre>
      * 
-     * @param tag {@link String} with the whole tag to build the line. Assumed
+     * @param percussionTag {@link String} with the whole tag to build the line. Assumed
      *            not <code>null</code> nor empty.
      * @return {@link String}, never <code>null</code> or empty.
      */

@@ -64,7 +64,7 @@ public class PSTextToImageServlet extends HttpServlet
 
         // Find the height and width of the image
         Font font = new Font("Verdana", Font.PLAIN, 11);
-        @SuppressWarnings("serial")
+
         FontMetrics metrics = new FontMetrics(font)
         {
         };
@@ -81,10 +81,10 @@ public class PSTextToImageServlet extends HttpServlet
 
         // Write the image to response
         response.setContentType("image/png");
-        OutputStream os = response.getOutputStream();
-        ImageIO.setUseCache(false);
-        ImageIO.write(buffer, "png", os);
-        os.close();
+        try(OutputStream os = response.getOutputStream()) {
+            ImageIO.setUseCache(false);
+            ImageIO.write(buffer, "png", os);
+        }
     }
 
     /**

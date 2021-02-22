@@ -56,7 +56,7 @@ public abstract class PSRegionsValidator<BEAN> extends PSAbstractBeanValidator<B
     
     
     protected void doRegions(Iterator<PSRegion>  it, PSBeanValidationException e) {
-        Set<String> ids = new HashSet<String>();
+        Set<String> ids = new HashSet<>();
         
         while(it.hasNext()) {
             PSRegion region = it.next();

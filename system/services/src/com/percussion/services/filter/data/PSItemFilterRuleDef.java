@@ -124,7 +124,7 @@ public class PSItemFilterRuleDef implements IPSItemFilterRuleDef,
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, 
          region = "PSItemFilterRuleDef_Params")
    @Fetch(FetchMode. SUBSELECT)
-   private Map<String, PSItemFilterRuleParam> params = new HashMap<String, PSItemFilterRuleParam>();
+   private Map<String, PSItemFilterRuleParam> params = new HashMap<>();
 
    /**
     * Default ctor
@@ -390,7 +390,7 @@ public class PSItemFilterRuleDef implements IPSItemFilterRuleDef,
 
    public Map<String, String> getParams()
    {
-      Map<String, String> rval = new HashMap<String, String>();
+      Map<String, String> rval = new HashMap<>();
       for (Map.Entry<String, PSItemFilterRuleParam> e : this.params.entrySet())
       {
          rval.put(e.getKey(), e.getValue().getValue());

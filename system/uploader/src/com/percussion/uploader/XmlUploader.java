@@ -34,8 +34,9 @@ import com.percussion.HTTPClient.ProtocolNotSuppException;
 import com.percussion.tools.Logger;
 import com.percussion.tools.PSHttpRequest;
 import com.percussion.util.IOTools;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -114,10 +115,10 @@ public class XmlUploader
 
       if (propsFile.isFile())
       {
-         try
-         {
-            m_properties.load( new BufferedInputStream( new FileInputStream(
-               propsFile )));
+        try(FileInputStream fis = new FileInputStream(propsFile ) ){
+           try(BufferedInputStream bis = new BufferedInputStream( fis)) {
+              m_properties.load(bis);
+           }
          }
          catch (IOException ioe)
          {
@@ -230,16 +231,17 @@ public class XmlUploader
                   if (encrypted.trim().equalsIgnoreCase(String.valueOf(true)))
                   {
                      // need to decrypt the password
-                     try
-                     {
+
                         try {
-                           PSEncryptor.getInstance().decrypt(m_loginPwd);
+                           PSEncryptor.getInstance("AES",
+                                   PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                           ).decrypt(m_loginPwd);
                         }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                            m_loginPwd = PSCryptographer.decrypt(
-                                   PSLegacyEncrypter.OLD_SECURITY_KEY(),
+                                   PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).OLD_SECURITY_KEY(),
                                    m_loginId, m_loginPwd);
                         }
-                     }
+
                      catch (Exception e)
                      {
                         throw new RuntimeException("Failed to decrypt password.");
@@ -1059,8 +1061,9 @@ public class XmlUploader
             throw new IOException( "Request failed. Returned code " + responseCode );
          ByteArrayOutputStream buf = new ByteArrayOutputStream();
          IOTools.copyStream( req.getResponseContent(), buf );
-         m_content = new ByteArrayInputStream( buf.toByteArray());
-         m_displayName = url.toString();
+         try(ByteArrayInputStream m_content = new ByteArrayInputStream( buf.toByteArray())) {
+            m_displayName = url.toString();
+         }
       }
 
       /**

@@ -186,8 +186,9 @@ public class Codecs
                    (data[sidx] << 4) & 077];
       dest[didx++] = Base64EncMap[(data[sidx+1] << 2) & 077];
        }
-       else
-      dest[didx++] = Base64EncMap[(data[sidx] << 4) & 077];
+       else {
+           dest[didx++] = Base64EncMap[(data[sidx] << 4) & 077];
+       }
    }
 
    // add padding
@@ -393,8 +394,9 @@ public class Codecs
    while ((line = rdr.readLine()) != null  &&  !line.equals("end"))
    {
        byte[] tmp = uudecode(line.toCharArray());
-       if (off + tmp.length > body.length)
-      body = Util.resizeArray(body, off+1000);
+       if (off + tmp.length > body.length) {
+           body = Util.resizeArray(body, off + 1000);
+       }
        System.arraycopy(tmp, 0, body, off, tmp.length);
        off += tmp.length;
    }
@@ -458,13 +460,15 @@ public class Codecs
 
        // skip padding
        while (sidx < data.length  &&
-         data[sidx] != '\n'  &&  data[sidx] != '\r')
-      sidx++;
+         data[sidx] != '\n'  &&  data[sidx] != '\r') {
+           sidx++;
+       }
 
        // skip end of line
        while (sidx < data.length  &&
-         (data[sidx] == '\n'  ||  data[sidx] == '\r'))
-      sidx++;
+         (data[sidx] == '\n'  ||  data[sidx] == '\r')) {
+           sidx++;
+       }
    }
 
    return Util.resizeArray(dest, didx);
@@ -539,8 +543,9 @@ public class Codecs
       cnt = didx;
        }
 
-       if (didx > res.length-5)
-      res = Util.resizeArray(res, res.length+500);
+       if (didx > res.length-5) {
+           res = Util.resizeArray(res, res.length + 500);
+       }
    }
 
    return String.valueOf(res, 1, didx-1);
@@ -592,9 +597,9 @@ public class Codecs
 		{					// Rule #5
           sidx++;
 
-          if (src[sidx-1] == '\r'  &&
-         src[sidx] == '\n')
-         sidx++;
+          if (src[sidx-1] == '\r'  &&  src[sidx] == '\n') {
+              sidx++;
+          }
       }
       else					// Rule #1
       {
@@ -602,13 +607,12 @@ public class Codecs
           int hi = Character.digit(src[sidx], 16),
          lo = Character.digit(src[sidx+1], 16);
 
-          if ((hi | lo) < 0)
-         throw new ParseException(new String(src, sidx-1, 3) +
-                  " is an invalid code");
-          else
-          {
-         repl = (char) (hi << 4 | lo);
-         sidx += 2;
+          if ((hi | lo) < 0) {
+              throw new ParseException(new String(src, sidx - 1, 3) +
+                      " is an invalid code");
+          }else{
+             repl = (char) (hi << 4 | lo);
+             sidx += 2;
           }
 
           res[didx++] = repl;
@@ -630,8 +634,9 @@ public class Codecs
           last = didx;
        }
 
-       if (didx > res.length-nl.length-2)
-      res = Util.resizeArray(res, res.length+500);
+       if (didx > res.length-nl.length-2) {
+           res = Util.resizeArray(res, res.length + 500);
+       }
    }
 
    return new String(res, 0, didx);
@@ -671,8 +676,9 @@ public class Codecs
    for (int sidx=0; sidx<str.length(); sidx++)
    {
        char ch = str.charAt(sidx);
-       if (ch == '+')
-      res[didx++] = ' ';
+       if (ch == '+') {
+           res[didx++] = ' ';
+       }
        else if (ch == '%')
        {
       try
@@ -687,8 +693,9 @@ public class Codecs
                    " is an invalid code");
       }
        }
-       else
-      res[didx++] = ch;
+       else {
+           res[didx++] = ch;
+       }
    }
 
    return String.valueOf(res, 0, didx);
@@ -858,10 +865,12 @@ public class Codecs
       name = filename = null;
       for (int pidx=0; pidx<params.length; pidx++)
       {
-          if (params[pidx].getName().equalsIgnoreCase("name"))
-         name = params[pidx].getValue();
-          if (params[pidx].getName().equalsIgnoreCase("filename"))
-         filename = params[pidx].getValue();
+          if (params[pidx].getName().equalsIgnoreCase("name")) {
+              name = params[pidx].getValue();
+          }
+          if (params[pidx].getName().equalsIgnoreCase("filename")) {
+              filename = params[pidx].getValue();
+          }
       }
       if (name == null)
           throw new ParseException("'name' parameter not found in header: "+hdr);
@@ -870,11 +879,13 @@ public class Codecs
        }
 
        start += 2;
-       if (start > end)
-      throw new ParseException("End of header not found at offset "+end);
+       if (start > end) {
+           throw new ParseException("End of header not found at offset " + end);
+       }
 
-       if (cont_disp == null)
-      throw new ParseException("Missing 'Content-Disposition' header at offset "+start);
+       if (cont_disp == null) {
+           throw new ParseException("Missing 'Content-Disposition' header at offset " + start);
+       }
 
        // handle data for this part
 
@@ -882,13 +893,12 @@ public class Codecs
        {
       if (mangler != null)
           filename = mangler.mangleFilename(filename, name);
-      if (filename != null  &&  filename.length() > 0)
-      {
+      if (filename != null  &&  filename.length() > 0) {
           File file = new File(dir, filename);
-          FileOutputStream out = new FileOutputStream(file);
+          try (FileOutputStream out = new FileOutputStream(file)) {
 
-          out.write(data, start, end-start);
-          out.close();
+              out.write(data, start, end - start);
+          }
       }
 
       value = filename;
@@ -898,8 +908,9 @@ public class Codecs
       value = new String(data, start, end-start, "8859_1");
        }
 
-       if (idx >= res.length)
-      res = Util.resizeArray(res, idx+10);
+       if (idx >= res.length) {
+           res = Util.resizeArray(res, idx + 10);
+       }
        res[idx] = new NVPair(name, value);
 
        start = end + boundary.length;
@@ -1489,20 +1500,16 @@ public class Codecs
              res[pos++] = (byte) '\r';
              res[pos++] = (byte) '\n';
 
-             if(obj instanceof NVPair)
-             {
-             nlen = (int) file.length();
-             FileInputStream fin = new FileInputStream(file);
-             while (nlen > 0)
-             {
-                int got = fin.read(res, pos, nlen);
-                nlen -= got;
-                pos += got;
-             }
-             fin.close();
-             }
-             else
-             {
+             if(obj instanceof NVPair) {
+                 nlen = (int) file.length();
+                 try (FileInputStream fin = new FileInputStream(file)) {
+                     while (nlen > 0) {
+                         int got = fin.read(res, pos, nlen);
+                         nlen -= got;
+                         pos += got;
+                     }
+                 }
+             }else {
                 byte[] data = ((PSBinaryFileData)obj).getData();
                 for(int i = 0; i < data.length; i++)
                    res[pos++] = data[i];
@@ -1569,9 +1576,10 @@ public class Codecs
 
    for (idx = 0; idx < pairs.length; idx++)
    {
-       if (pairs[idx] != null)
-      qbuf.append(URLEncode(pairs[idx].getName()) + "=" +
-             URLEncode(pairs[idx].getValue()) + "&");
+       if (pairs[idx] != null) {
+           qbuf.append(URLEncode(pairs[idx].getName()) + "=" +
+                   URLEncode(pairs[idx].getValue()) + "&");
+       }
    }
 
    if (qbuf.length() > 0)
@@ -1608,9 +1616,10 @@ public class Codecs
 
        if (end == -1)  end = query.length();
 
-       if (eq == -1  ||  eq >= end)
-      throw new ParseException("'=' missing in " +
-                query.substring(idx, end));
+       if (eq == -1  ||  eq >= end) {
+           throw new ParseException("'=' missing in " +
+                   query.substring(idx, end));
+       }
 
        pairs[cnt] =
           new  NVPair(URLDecode(query.substring(idx,eq)),

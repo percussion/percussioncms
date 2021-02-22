@@ -63,7 +63,7 @@ public class PSExtensionHelper
                "extensionName may not be null or empty");
       }
       IPSExtensionManager emgr = PSServer.getExtensionManager(null);
-      List<PSParameter> rval = new ArrayList<PSParameter>();
+      List<PSParameter> rval = new ArrayList<>();
       PSExtensionRef ref = new PSExtensionRef(extensionName);
       try
       {
@@ -142,7 +142,7 @@ public class PSExtensionHelper
    @SuppressWarnings("unchecked")
    public static List<SelectItem> getTaskExtensionChoices(String interfaceName)
    {
-      List<SelectItem> rval = new ArrayList<SelectItem>();
+      List<SelectItem> rval = new ArrayList<>();
       try
       {
          IPSExtensionManager emgr = PSServer.getExtensionManager(null);
@@ -187,7 +187,7 @@ public class PSExtensionHelper
       if (StringUtils.isBlank(extName))
          return tgtParams;
 
-      Map<String, String> savedData = new HashMap<String, String>();
+      Map<String, String> savedData = new HashMap<>();
       savedData.putAll(srcParams);
 
       PSExtensionHelper.saveParameterData(tgtParams, savedData);

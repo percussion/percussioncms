@@ -215,7 +215,7 @@ public class PSDependencyUtils
    // 
    public static Map<String, String> cloneMap(Map<String, String> oldMap)
    {
-      Map<String, String> newMap = new HashMap<String, String>();
+      Map<String, String> newMap = new HashMap<>();
       Set<String> keys = oldMap.keySet();
       Iterator<String> it = keys.iterator();
       while(it.hasNext())
@@ -239,7 +239,7 @@ public class PSDependencyUtils
          Map<String, PSPair<String, String>> oldMap)
    {
       Map<String, PSPair<String, String>> newMap = 
-         new HashMap<String, PSPair<String, String>>();
+         new HashMap<>();
       Set<String> keys = oldMap.keySet();
       Iterator<String> it = keys.iterator();
       while (it.hasNext())
@@ -463,7 +463,7 @@ public class PSDependencyUtils
    public static List<String> getAllContentTypeTables(PSSecurityToken tok)
       throws PSDeployException
    {
-      List<String> tableNames = new ArrayList<String>();
+      List<String> tableNames = new ArrayList<>();
       
       List<IPSNodeDefinition> nodes = PSContentTypeHelper.loadNodeDefs("");
       for (IPSNodeDefinition node : nodes)
@@ -487,7 +487,7 @@ public class PSDependencyUtils
    public static List<String> getContentTypeTables(PSSecurityToken tok,
          IPSNodeDefinition node) throws PSDeployException
    {
-      List<String> tableNames = new ArrayList<String>();
+      List<String> tableNames = new ArrayList<>();
       
       String appName = getColumnAppName(((PSNodeDefinition) node).getNewRequest());
 
@@ -528,7 +528,7 @@ public class PSDependencyUtils
       if (locator == null)
          throw new IllegalArgumentException("locator may not be null");
 
-      List<String> tables = new ArrayList<String>();
+      List<String> tables = new ArrayList<>();
 
       Iterator tableSets = locator.getTableSets();
       while (tableSets.hasNext())
@@ -576,9 +576,9 @@ public class PSDependencyUtils
     */
    public static List<String> getSharedGroupTables() throws PSDeployException
    {
-      List<String> tables = new ArrayList<String>();
+      List<String> tables = new ArrayList<>();
       
-      List<PSSharedFieldGroup> groups = new ArrayList<PSSharedFieldGroup>();
+      List<PSSharedFieldGroup> groups = new ArrayList<>();
       CollectionUtils.addAll(groups, getSharedDef().getFieldGroups());
       for (PSSharedFieldGroup group : groups)
       {

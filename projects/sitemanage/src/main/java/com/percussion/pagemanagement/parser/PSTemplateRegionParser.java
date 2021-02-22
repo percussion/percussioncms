@@ -49,7 +49,7 @@ public class PSTemplateRegionParser extends PSRegionParserAdapter<PSRegion, PSRe
     {
         PSRegion region = regions.get(regionId);
         if(region != null) {
-            region.setChildren(new ArrayList<PSRegionNode>());
+            region.setChildren(new ArrayList<>());
         }
         else {
             region = new PSRegion();
@@ -69,7 +69,7 @@ public class PSTemplateRegionParser extends PSRegionParserAdapter<PSRegion, PSRe
     }
     
     public static PSParsedRegionTree<PSRegion, PSRegionCode> parse(Map<String, PSRegion> regions, String html) {
-        regions = regions == null ? new HashMap<String, PSRegion>() : regions;
+        regions = regions == null ? new HashMap<>() : regions;
         PSTemplateRegionParser parser = new PSTemplateRegionParser(regions);
         PSParsedRegionTree<PSRegion, PSRegionCode> pt = parser.parse(html);
         return pt;

@@ -23,15 +23,13 @@
  */
 package com.percussion.role.service.impl;
 
-import static java.util.Arrays.asList;
-
-import static org.springframework.util.StringUtils.trimWhitespace;
-
 import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
 import com.percussion.role.data.PSRole;
 import com.percussion.role.service.IPSRoleService;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.services.security.IPSBackEndRoleMgr;
 import com.percussion.services.security.IPSRoleMgr;
 import com.percussion.services.security.data.PSBackEndRole;
@@ -41,22 +39,34 @@ import com.percussion.services.workflow.data.PSAssignmentTypeEnum;
 import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.services.workflow.data.PSWorkflowRole;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSStringWrapper;
 import com.percussion.share.service.PSCollectionUtils;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.user.data.PSUserList;
 import com.percussion.user.service.IPSUserService;
 import com.percussion.user.service.impl.PSUserService;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.PSSecurityCatalogException;
 import com.percussion.utils.service.impl.PSBackEndRoleManagerFacade;
 import com.percussion.utils.string.PSStringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,15 +74,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import static java.util.Arrays.asList;
+import static org.springframework.util.StringUtils.trimWhitespace;
 
 /**
  * 
@@ -83,7 +86,7 @@ import org.springframework.stereotype.Component;
 @Lazy
 public class PSRoleService implements IPSRoleService
 {
-    private static Log log = LogFactory.getLog(PSRoleService.class);
+    private static final Logger log = LogManager.getLogger(PSRoleService.class);
 
     private IPSUserService userService;
     private PSBackEndRoleManagerFacade backEndRoleMgr;
@@ -95,7 +98,7 @@ public class PSRoleService implements IPSRoleService
      * A list of pre-defined roles by the system, which should not be exposed to
      * end user.
      */
-    public final static List<String> SYSTEM_ROLES = new ArrayList<String>();
+    public static final List<String> SYSTEM_ROLES = new ArrayList<>();
     static
     {
         SYSTEM_ROLES.add("System");
@@ -105,17 +108,17 @@ public class PSRoleService implements IPSRoleService
     /**
      * Contributor role.
      */
-    protected final static String CONTRIBUTOR_ROLE = "Contributor";
+    protected  static final String CONTRIBUTOR_ROLE = "Contributor";
 
     /**
      * The default roles that are always added to the user.
      */
-    public final static List<String> DEFAULT_ROLES = asList("Default");
+    public  static final List<String> DEFAULT_ROLES = asList("Default");
 
     /**
      * Default imported user roles. The roles set to an imported user.
      */
-    public final static List<String> DEFAULT_IMPORTED_USER_ROLES = new ArrayList<String>();
+    public static final List<String> DEFAULT_IMPORTED_USER_ROLES = new ArrayList<>();
     static
     {
         DEFAULT_IMPORTED_USER_ROLES.addAll(DEFAULT_ROLES);
@@ -212,9 +215,8 @@ public class PSRoleService implements IPSRoleService
      * @param name role name assumed not <code>null</code>
      * @return list of users.
      */
-    private List<String> getUsers(String name)
-    {
-        List<String> userNames = new ArrayList<String>();
+    private List<String> getUsers(String name) throws PSDataServiceException {
+        List<String> userNames = new ArrayList<>();
         try
         {
             Set<IPSTypedPrincipal> users = roleMgr.getRoleMembers(name);
@@ -254,7 +256,7 @@ public class PSRoleService implements IPSRoleService
 
             wfService.copyWorkflowToRole(oldRoleName, role.getName());
 
-            //delete old role;
+            //delete old role
             delete(new PSStringWrapper(oldRoleName));
 
         }
@@ -268,7 +270,7 @@ public class PSRoleService implements IPSRoleService
         PSBackEndRole beRole = backEndRoleMgr.update(name, role.getDescription());
         setHomepage(role.getName(), role.getHomepage());
         
-        List<String> users = new ArrayList<String>(role.getUsers());
+        List<String> users = new ArrayList<>(role.getUsers());
         
         PSRole existingRole = find(role.getName());
         List<String> existingUsers = existingRole.getUsers();
@@ -383,7 +385,7 @@ public class PSRoleService implements IPSRoleService
      * @throws PSBeanValidationException if failed to validate the specified
      *             role.
      */
-    protected void doValidation(PSRole role, boolean isCreateRole) throws PSBeanValidationException
+    protected void doValidation(PSRole role, boolean isCreateRole) throws PSValidationException
     {
         PSRoleValidator validator = new PSRoleValidator(isCreateRole);
 
@@ -395,8 +397,7 @@ public class PSRoleService implements IPSRoleService
      *
      * @param name never <code>null</code> or empty.
      */
-    protected void checkRole(String name)
-    {
+    protected void checkRole(String name) throws PSValidationException {
         PSParameterValidationUtils.rejectIfBlank("checkRole", "name", name);
 
         if (!backEndRoleMgr.getRoles().contains(name))
@@ -413,8 +414,7 @@ public class PSRoleService implements IPSRoleService
      *
      * @param name never <code>null</code> or empty.
      */
-    protected void checkNewRole(String name)
-    {
+    protected void checkNewRole(String name) throws PSValidationException {
         PSParameterValidationUtils.rejectIfBlank("checkRole", "name", name);
 
         if (backEndRoleMgr.getRoles().contains(name))
@@ -448,11 +448,18 @@ public class PSRoleService implements IPSRoleService
         }
 
         @Override
-        protected void doValidation(PSRole role, PSBeanValidationException e)
-        {
-            // make sure all users exist in the system.
-            List<String> allUsers = userService.getUsers().getUsers();
+        protected void doValidation(PSRole role, PSBeanValidationException e) {
+            List<String> allUsers = new ArrayList<>();
+            try {
+                //TODO:  Should this really be getting all users like this?
 
+                // make sure all users exist in the system.
+                allUsers = userService.getUsers().getUsers();
+            } catch (PSDataServiceException psDataServiceException) {
+                log.error("Error listing system users. Error: {}",e.getMessage());
+                log.debug(e.getMessage(),e);
+                e.addSuppressed(e);
+            }
             if (PSCollectionUtils.containsIgnoringCase(SYSTEM_ROLES, role.getName()))
             {
                 e.rejectValue("name", "role.nameRestricted",
@@ -496,7 +503,12 @@ public class PSRoleService implements IPSRoleService
             }
             else
             {
-                cannotRemoveYourselfFromAdminRole(role, e);
+                try {
+                    cannotRemoveYourselfFromAdminRole(role, e);
+                } catch (PSDataServiceException psDataServiceException) {
+                    e.addSuppressed(psDataServiceException);
+                    log.debug(e.getMessage(),e);
+                }
             }
         }
 
@@ -506,8 +518,7 @@ public class PSRoleService implements IPSRoleService
          * @param role the modified role, assumed not <code>null</code>.
          * @param e used to collect validation errors.
          */
-        private void cannotRemoveYourselfFromAdminRole(PSRole role, PSBeanValidationException e)
-        {
+        private void cannotRemoveYourselfFromAdminRole(PSRole role, PSBeanValidationException e) throws PSDataServiceException {
             if (!role.getName().equals("Admin"))
             {
                 return;
@@ -539,8 +550,7 @@ public class PSRoleService implements IPSRoleService
      * @param roleName the name of the role must not be blank.
      * @param homepage the homepage to set if <code>null</code> or not a valid home page, then set to Dashboard.
      */
-    private void setHomepage(String roleName, String homepage)
-    {
+    private void setHomepage(String roleName, String homepage) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException {
     	if(StringUtils.isBlank(roleName))
     		throw new IllegalArgumentException("roleName must not be blank");
     	if(StringUtils.isBlank(homepage) || !(homepage.equals(HOMEPAGE_TYPE_DASHBOARD) || homepage.equals(HOMEPAGE_TYPE_EDITOR) || 
@@ -564,14 +574,12 @@ public class PSRoleService implements IPSRoleService
      * @param roleName the name of the role must not be blank.
      * @return String never <code>null</code>, if it is not set, returns "Dashboard".
      */
-    private String getHomepage(String roleName)
-    {
+    private String getHomepage(String roleName) throws IPSGenericDao.LoadException {
     	if(StringUtils.isBlank(roleName))
     		throw new IllegalArgumentException("roleName must not be blank");
     	String key = META_DATA_HOMEPAGE_PREFIX + roleName;
     	PSMetadata md = mdService.find(key);
-    	String homepage = md == null? HOMEPAGE_TYPE_DASHBOARD : md.getData();
-    	return homepage;
+    	return (md == null? HOMEPAGE_TYPE_DASHBOARD : md.getData());
     }
 
     /**
@@ -583,7 +591,7 @@ public class PSRoleService implements IPSRoleService
      */
     private List<String> getSingleRoleUsers(List<String> users)
     {
-        List<String> singleRoleUsers = new ArrayList<String>();
+        List<String> singleRoleUsers = new ArrayList<>();
         
         for (String user : users)
         {
@@ -596,7 +604,7 @@ public class PSRoleService implements IPSRoleService
             }
             catch (Exception e)
             {
-                log.warn("Failed to get roles for user '" + user + '.');
+                log.warn("Failed to get roles for user '{}'.",  user);
             }
         }
         
@@ -613,7 +621,7 @@ public class PSRoleService implements IPSRoleService
      */
     private List<String> getInUseWorkflows(PSRole role)
     {
-        List<String> inUseWorkflows = new ArrayList<String>();
+        List<String> inUseWorkflows = new ArrayList<>();
         
         String name = role.getName();
                 
@@ -704,13 +712,25 @@ public class PSRoleService implements IPSRoleService
     @GET
     @Path("/userhomepage")
     @Produces(MediaType.TEXT_PLAIN)
-    public String getUserHomepage() {
-        List<String> userRoles = userService.getCurrentUser().getRoles();
-        Set<String> userHomePages = new HashSet<String>();
+    public String getUserHomepage() throws IPSGenericDao.LoadException {
+
+        List<String> userRoles=null;
+        try {
+            userRoles = userService.getCurrentUser().getRoles();
+        } catch (IPSUserService.PSNoCurrentUserException e) {
+            log.error("Error getting roles, No Current User! Error:", e.getMessage());
+            log.debug(e.getMessage(), e);
+        } catch (PSDataServiceException e) {
+            log.error("Error getting roles for current user: {} Error:", e.getMessage());
+            log.debug(e.getMessage(), e);
+        }
+
+        Set<String> userHomePages = new HashSet<>();
         String homepage = null;
-        for (String role : userRoles) 
-        {
-            userHomePages.add(getHomepage(role));
+        if(userRoles != null) {
+            for (String role : userRoles) {
+                userHomePages.add(getHomepage(role));
+            }
         }
         if(userHomePages.isEmpty() || userHomePages.contains(HOMEPAGE_TYPE_DASHBOARD)){
             homepage = HOMEPAGE_TYPE_DASHBOARD;
@@ -721,10 +741,11 @@ public class PSRoleService implements IPSRoleService
         else{
             homepage = HOMEPAGE_TYPE_HOME;
         }
+
         return homepage;
     }
 
-    public IPSRoleMgr getRoleMgr() {
+    public IPSRoleMgr getRoleMgr(){
         return roleMgr;
     }
 

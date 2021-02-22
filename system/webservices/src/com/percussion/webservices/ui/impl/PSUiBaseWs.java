@@ -138,9 +138,12 @@ public class PSUiBaseWs
          {
             // make the internal request, has to get the merged result 
             // in case the child objects are processed by XSL
-            ByteArrayOutputStream os = iReq.getMergedResult();
-            doc = PSXmlDocumentBuilder.createXmlDocument(new StringReader(
-               new String(os.toByteArray(), PSCharSets.rxJavaEnc())), false);
+            try(ByteArrayOutputStream os = iReq.getMergedResult()) {
+               try(StringReader reader = new StringReader(
+                       new String(os.toByteArray(), PSCharSets.rxJavaEnc()))){
+                  doc = PSXmlDocumentBuilder.createXmlDocument(reader, false);
+               }
+            }
          }
 
          // convert XML to action objects

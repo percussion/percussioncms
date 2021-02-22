@@ -27,8 +27,8 @@ package com.percussion.ant.install;
 import com.percussion.delivery.utils.security.PSSecureProperty;
 import com.percussion.install.PSLogger;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.apache.tools.ant.BuildException;
 
@@ -66,10 +66,10 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
             String pwd = props.getProperty("db.password");
             String dpwd = pwd;
             try {
-                dpwd = PSEncryptor.getInstance().decrypt(pwd);
+                dpwd = PSEncryptor.getInstance("AES",null).decrypt(pwd);
             } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
-                dpwd = PSLegacyEncrypter.getInstance().decrypt(pwd,
-                        PSJdbcDbmsDef.getPartOneKey());
+                dpwd = PSLegacyEncrypter.getInstance(null).decrypt(pwd,
+                        PSJdbcDbmsDef.getPartOneKey(),null);
             }
             if(dpwd == null || dpwd.isEmpty()){
                 PSLogger.logError("Password Decryption failed");
@@ -97,7 +97,7 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
                     if(!isSilenceErrors()){
                         PSLogger.logError(ex.getMessage());
                         if(getPrintExceptionStackTrace()){
-                            ex.printStackTrace();
+                            PSLogger.logError(ex);
                         }
                     }
                     return;
@@ -105,7 +105,7 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
                     if(!isSilenceErrors()) {
                         PSLogger.logError(ex.getMessage());
                         if(getPrintExceptionStackTrace()){
-                            ex.printStackTrace();
+                            PSLogger.logError(ex);
                         }
                     }
                     throw new BuildException(ex);

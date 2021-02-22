@@ -28,8 +28,9 @@ import com.percussion.conn.PSDesignerConnection;
 import com.percussion.conn.PSServerException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -338,9 +339,12 @@ public class PSCataloger
    public String prepareCredentials(String uid, String pw)
    {
       try {
-         return PSEncryptor.getInstance().encrypt(pw);
+         return PSEncryptor.getInstance("AES",
+                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).encrypt(pw);
       } catch (PSEncryptionException e) {
-         logger.error("Error encrypting password: " + e.getMessage(),e);
+         logger.error("Error encrypting password: {}", e.getMessage());
+         logger.debug(e);
          return "";
       }
 

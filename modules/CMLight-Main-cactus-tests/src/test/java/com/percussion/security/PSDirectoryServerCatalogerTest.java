@@ -34,7 +34,6 @@ import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.design.objectstore.PSSubject;
 import com.percussion.design.objectstore.PSTextLiteral;
 import com.percussion.services.security.PSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
 

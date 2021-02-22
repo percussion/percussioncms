@@ -371,14 +371,6 @@ public class PSAclHandler
     * @param type The type of Acl entry to locate.  Must be one of the
     * <code>PSAclEntry.ACE_TYPE_xxx</code> value.
     *
-    * @param providerType The provider type of the entry to return.  Pass
-    * <code>null</code> to ignore this parameter, may be empty.  Match is case
-    * sensitive.
-    *
-    * @param providerInstance The name of the provider instance to match.  Pass
-    * <code>null</code> to ignore this parameter, may be empty.  Match is case
-    * sensitive.
-    *
     * @return An Iterator over <code>0</code> or more <code>PSEntry</code>
     * objects.  The specific type of entry will be determined by the type of Acl
     * entry requested.  Never <code>null</code>.

@@ -88,8 +88,7 @@ public class PSGetAssignedFoldersJob extends PSAsyncJob
 
 
     @Override
-    protected void doInit(Object config)
-    {
+    protected void doInit(Object config) throws IPSFolderService.PSWorkflowNotFoundException {
         Object[] args = (Object[]) config;
         workflowName = (String) args[0];
         path = (String) args[1];
@@ -98,14 +97,6 @@ public class PSGetAssignedFoldersJob extends PSAsyncJob
         Validate.notEmpty(path, "path cannot be empty");
         folderService.validateWorkflow(workflowName);
         status = new PSGetAssignedFoldersJobStatus();
-    }
-
-    
-    @Override
-    public void cancelJob()
-    {
-        super.cancelJob();
-        //interruptJob();
     }
 
     @Autowired

@@ -100,12 +100,12 @@ public class PSImportThemeHelper extends PSImportHelper
         IPSSiteImportSummaryService summaryService = (IPSSiteImportSummaryService) getWebApplicationContext().getBean("siteImportSummaryService");
         context.setSummaryService(summaryService);
         
-        Map<String, String> linkPaths = new HashMap<String, String>();
-        Map<String, String> scriptPaths = new HashMap<String, String>();
-        Map<String, String> resources = new HashMap<String, String>();
-        Map<String, String> assets = new HashMap<String, String>();
+        Map<String, String> linkPaths = new HashMap<>();
+        Map<String, String> scriptPaths = new HashMap<>();
+        Map<String, String> resources = new HashMap<>();
+        Map<String, String> assets = new HashMap<>();
         Map<IPSSiteImportSummaryService.SiteImportSummaryTypeEnum, Integer> summaryStats = 
-                new HashMap<IPSSiteImportSummaryService.SiteImportSummaryTypeEnum, Integer>();
+                new HashMap<>();
         
         IPSFileDownloader fileDownloader = new PSFileDownloader();
         
@@ -267,7 +267,7 @@ public class PSImportThemeHelper extends PSImportHelper
      */
     private void removeIfExists(Map<String, String> linkPaths)
     {
-        Set<String> cssURLs = new HashSet<String>(linkPaths.keySet());
+        Set<String> cssURLs = new HashSet<>(linkPaths.keySet());
         for (String cssURL : cssURLs)
         {
             String cssFile = linkPaths.get(cssURL);

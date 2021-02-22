@@ -125,7 +125,7 @@ public class PSGuidManager implements IPSGuidManager
     * <li>The string name of the next number column to use
     * </ul>
     */
-   static ConcurrentHashMap<Object, Allocation> ms_allocation = new ConcurrentHashMap<Object, Allocation>(8, 0.9f, 1);
+   static ConcurrentHashMap<Object, Allocation> ms_allocation = new ConcurrentHashMap<>(8, 0.9f, 1);
 
 
    static Object allocationCreationLock = new Object();
@@ -240,7 +240,7 @@ public class PSGuidManager implements IPSGuidManager
 
    public List<IPSGuid> createGuids(byte repositoryId, PSTypeEnum type, int count)
    {
-      List<IPSGuid> rval = new ArrayList<IPSGuid>();
+      List<IPSGuid> rval = new ArrayList<>();
       for (int i = 0; i < count; i++)
       {
          rval.add(createGuid(repositoryId, type));
@@ -668,7 +668,7 @@ public class PSGuidManager implements IPSGuidManager
       }
       else
       {
-         List<Integer> rval = new ArrayList<Integer>();
+         List<Integer> rval = new ArrayList<>();
          for (IPSGuid g : guids)
          {
             PSLegacyGuid lg = (PSLegacyGuid) g;

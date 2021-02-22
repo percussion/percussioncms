@@ -41,6 +41,7 @@ import com.percussion.deployer.services.PSDeployServiceLocator;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.services.sitemgr.IPSSiteManager;
@@ -79,10 +80,8 @@ public class PSLocSchemeDefDependencyHandler
 
    // see base class
    @Override
-   @SuppressWarnings("unchecked")
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -90,7 +89,7 @@ public class PSLocSchemeDefDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
       
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
 
       IPSLocationScheme scheme = m_siteMgr.loadScheme(PSGuidUtils.makeGuid(
             dep.getDependencyId(), PSTypeEnum.LOCATION_SCHEME));
@@ -141,7 +140,7 @@ public class PSLocSchemeDefDependencyHandler
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       
       Set<IPSLocationScheme> schemes = findAllLocationSchemes();
       for (IPSLocationScheme scheme : schemes)
@@ -227,7 +226,7 @@ public class PSLocSchemeDefDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       // package the dep itself
       IPSLocationScheme scheme = findLocationScheme(dep.getDependencyId());
@@ -283,8 +282,7 @@ public class PSLocSchemeDefDependencyHandler
    @SuppressWarnings("unchecked")
    public void doInstallDependencyFiles(PSSecurityToken tok,
          PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (archive == null)
@@ -441,7 +439,7 @@ public class PSLocSchemeDefDependencyHandler
     */
    private Set<IPSLocationScheme> findAllLocationSchemes()
    {
-      Set<IPSLocationScheme> schemes = new HashSet<IPSLocationScheme>(
+      Set<IPSLocationScheme> schemes = new HashSet<>(
             m_siteMgr.findAllSchemes());
         
       return schemes;
@@ -509,7 +507,7 @@ public class PSLocSchemeDefDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    /**
     * Get the site manager.

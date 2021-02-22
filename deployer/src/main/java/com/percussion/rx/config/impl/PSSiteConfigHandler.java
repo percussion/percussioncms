@@ -27,6 +27,7 @@ import com.percussion.rx.design.IPSDesignModel;
 import com.percussion.rx.design.IPSDesignModelFactory;
 import com.percussion.rx.design.PSDesignModelFactoryLocator;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
@@ -140,20 +141,18 @@ public class PSSiteConfigHandler extends PSObjectConfigHandler
     */
    @Override
    public List<PSPair<Object, ObjectState>> getDesignObjects(
-         Map<String, Object> cachedObjs)
-   {
-      List<PSPair<Object, ObjectState>> result = new ArrayList<PSPair<Object, ObjectState>>();
+         Map<String, Object> cachedObjs) throws PSNotFoundException {
+      List<PSPair<Object, ObjectState>> result = new ArrayList<>();
       for (PSPair<String, ObjectState> name : getObjectNames())
       {
          Object site = getSite(name.getFirst(), cachedObjs, getSiteModel());
-         result.add(new PSPair<Object, ObjectState>(site, name.getSecond()));
+         result.add(new PSPair<>(site, name.getSecond()));
       }
       return result;
    }
 
    @Override
-   public Object getDefaultDesignObject(Map<String, Object> cachedObjs)
-   {
+   public Object getDefaultDesignObject(Map<String, Object> cachedObjs) throws PSNotFoundException {
       Object site = null;
       String siteName = getName();
       // if the name property is blank get the first available name from site
@@ -189,7 +188,7 @@ public class PSSiteConfigHandler extends PSObjectConfigHandler
       Collection<String> names;
       if (StringUtils.isNotBlank(getName()))
       {
-         names = new ArrayList<String>();
+         names = new ArrayList<>();
          names.add(getName());
       }
       else
@@ -208,7 +207,7 @@ public class PSSiteConfigHandler extends PSObjectConfigHandler
       Collection<String> names = null;
       if (StringUtils.isNotBlank(getName()))
       {
-         names = new ArrayList<String>();
+         names = new ArrayList<>();
          names.add(getName());
       }
       else
@@ -238,7 +237,7 @@ public class PSSiteConfigHandler extends PSObjectConfigHandler
     * This method does the actual work for {@link #getDesignObjects(Map)}.
     * The cached object map will be updated by this method.
     * 
-    * @param ctxName the context name, assumed not <code>null</code> or empty.
+    * @param name the context name, assumed not <code>null</code> or empty.
     * @param cachedObjs the cached Location Scheme objects, never 
     * <code>null</code>, may be empty.
     * @param model the Location Scheme model, never <code>null</code>.
@@ -247,8 +246,7 @@ public class PSSiteConfigHandler extends PSObjectConfigHandler
     * <code>null</code>.
     */
    private Object getSite(String name,
-         Map<String, Object> cachedObjs, IPSDesignModel model)
-   {
+         Map<String, Object> cachedObjs, IPSDesignModel model) throws PSNotFoundException {
       if (cachedObjs.get(name) != null)
          return cachedObjs.get(name);
       
@@ -290,7 +288,7 @@ public class PSSiteConfigHandler extends PSObjectConfigHandler
     * value is a list of Site names, a string with pattern names, or 
     * <code>null</code> if the property is not defined. 
     */
-   private Map<String, Object> m_siteNames = new HashMap<String, Object>();
+   private Map<String, Object> m_siteNames = new HashMap<>();
    
    /**
     * The list of Site names property. See {@link #getNames()} for detail.

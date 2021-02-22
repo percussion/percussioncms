@@ -39,6 +39,7 @@ import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.tablefactory.PSJdbcColumnData;
 import com.percussion.tablefactory.PSJdbcRowData;
 import com.percussion.tablefactory.PSJdbcTableData;
@@ -80,8 +81,7 @@ public class PSComponentDefDependencyHandler extends PSDataObjectDependencyHandl
 
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -89,7 +89,7 @@ public class PSComponentDefDependencyHandler extends PSDataObjectDependencyHandl
       if (! dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
 
       // get the LOCAL app child dependency
       Iterator ids = getChildIdsFromTable(COMPONENT_TABLE, COMPONENT_URL, 
@@ -202,7 +202,7 @@ public class PSComponentDefDependencyHandler extends PSDataObjectDependencyHandl
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       // get the component itself
       PSDependencyData compData = getDepDataFromTable(dep, COMPONENT_TABLE, 
@@ -296,14 +296,14 @@ public class PSComponentDefDependencyHandler extends PSDataObjectDependencyHandl
       PSIdMapping compMapping = getIdMapping(ctx, compDep);
 
       // get the source row
-      List<PSJdbcRowData> tgtRowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> tgtRowList = new ArrayList<>();
       for (int i=0; i < rows.size(); i++)
       {
          PSJdbcRowData srcRow = (PSJdbcRowData)rows.get(i);
 
          // walk the columns and build a new row, xform the ids as we go
          // xform the ids for COMPPROP_ID and COMPONENT_ID
-         List<PSJdbcColumnData> tgtColList = new ArrayList<PSJdbcColumnData>();
+         List<PSJdbcColumnData> tgtColList = new ArrayList<>();
          Iterator srcCols = srcRow.getColumns();
          while (srcCols.hasNext())
          {
@@ -368,7 +368,7 @@ public class PSComponentDefDependencyHandler extends PSDataObjectDependencyHandl
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {

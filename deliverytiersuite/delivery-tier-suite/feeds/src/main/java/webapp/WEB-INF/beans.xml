@@ -122,12 +122,6 @@
         </property>
     </bean>
 
-
-    <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
-        <constructor-arg index="0"><null/></constructor-arg>
-        <constructor-arg index="1"><null/></constructor-arg>
-    </bean>
-
     <bean id="httpClient"
           class="com.percussion.delivery.utils.security.PSHttpClient"
           autowire="constructor">

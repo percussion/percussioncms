@@ -30,8 +30,9 @@ import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.impl.DeliveryServer.Password;
 import com.percussion.server.config.PSServerConfigException;
 import com.percussion.share.dao.PSSerializerUtils;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 
 import java.io.BufferedWriter;
@@ -40,7 +41,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,7 +80,7 @@ public class PSDeliveryInfoLoader
     {
         notNull(configFile);
         
-        deliveryServers = new ArrayList<PSDeliveryInfo>();
+        deliveryServers = new ArrayList<>();
 
         if (configFile.exists())
             readAndEncryptConfigFile(configFile);
@@ -111,9 +111,15 @@ public class PSDeliveryInfoLoader
             {
                 String decryptedPassword = "";
                 try{
-                    decryptedPassword = PSEncryptor.getInstance().decrypt(pwdVal);
+                    decryptedPassword = PSEncryptor.getInstance("AES",
+                            PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                    ).decrypt(pwdVal);
                 }catch(Exception e){
-                     decryptedPassword = PSLegacyEncrypter.getInstance().decrypt(pwdVal, PSLegacyEncrypter.getPartOneKey());
+                     decryptedPassword = PSLegacyEncrypter.getInstance(
+                             PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                     ).decrypt(pwdVal, PSLegacyEncrypter.getInstance(
+                             PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                     ).getPartOneKey(),null);
                 }
                 serverInfo.setPassword(decryptedPassword);
                 
@@ -122,7 +128,9 @@ public class PSDeliveryInfoLoader
 
             String enc = "";
             try {
-                enc = PSEncryptor.getInstance().encrypt(pwdVal);
+                enc = PSEncryptor.getInstance("AES",
+                        PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                ).encrypt(pwdVal);
             } catch (PSEncryptionException e) {
                 log.error("Error encrypting password: " + e.getMessage(),e);
             }

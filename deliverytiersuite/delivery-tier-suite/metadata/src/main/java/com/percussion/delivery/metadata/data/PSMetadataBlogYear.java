@@ -60,7 +60,7 @@ public class PSMetadataBlogYear
         Integer currentYear = cal.get(Calendar.YEAR);
         Integer currentMonth = cal.get(Calendar.MONTH);
                 
-        List<PSMetadataBlogMonth> emptyMonths = new ArrayList<PSMetadataBlogMonth>();
+        List<PSMetadataBlogMonth> emptyMonths = new ArrayList<>();
         String[] localeMonths = new DateFormatSymbols(Locale.getDefault()).getMonths();
         Integer indexMonth = localeMonths.length-2;
         if (currentYear.equals(year))

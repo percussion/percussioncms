@@ -227,7 +227,7 @@ public class PSMetadataExtractorService implements IPSMetadataExtractorService
       {
          // Create metadata entry
          PSMetadataEntry metadataEntry = new PSMetadataEntry();
-         Set<IPSMetadataProperty> propSet = new HashSet<IPSMetadataProperty>();
+         Set<IPSMetadataProperty> propSet = new HashSet<>();
 
 
          if (documentSource != null)

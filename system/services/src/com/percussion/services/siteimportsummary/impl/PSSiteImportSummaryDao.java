@@ -36,6 +36,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.annotations.QueryHints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,8 +67,7 @@ public class PSSiteImportSummaryDao implements IPSSiteImportSummaryDao
 
 
 
-   public void save(PSSiteImportSummary summary)
-   {
+   public void save(PSSiteImportSummary summary) throws IPSGenericDao.SaveException {
       Validate.notNull(summary);
       if (summary.getSummaryId() == -1)
       {
@@ -99,7 +99,7 @@ public class PSSiteImportSummaryDao implements IPSSiteImportSummaryDao
 
           Query query = session.createQuery("from PSSiteImportSummary where summaryId = :summaryId");
           query.setParameter("summaryId", summaryId);
-          
+          query.addQueryHint(QueryHints.CACHEABLE);
 
           List<PSSiteImportSummary> results = query.list(); 
           if (!results.isEmpty())

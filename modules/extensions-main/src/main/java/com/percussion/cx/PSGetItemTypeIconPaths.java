@@ -124,7 +124,7 @@ public class PSGetItemTypeIconPaths implements IPSResultDocumentProcessor
    private List<PSLocator> getLocators(String itemsXml) throws IOException,
          SAXException
    {
-      List<PSLocator> locs = new ArrayList<PSLocator>();
+      List<PSLocator> locs = new ArrayList<>();
       Document doc = PSXmlDocumentBuilder.createXmlDocument(new StringReader(
             itemsXml), false);
       NodeList nl = doc.getElementsByTagName("PSXLocator");

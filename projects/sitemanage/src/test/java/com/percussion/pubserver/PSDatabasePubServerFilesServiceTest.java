@@ -32,6 +32,7 @@ import com.percussion.services.pubserver.IPSDatabasePubServerFilesService;
 import com.percussion.services.pubserver.data.PSDatabasePubServer;
 import com.percussion.services.pubserver.data.PSDatabasePubServer.DriverType;
 import com.percussion.services.pubserver.impl.PSDatabasePubServerFilesService;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.util.PSPurgableTempFile;
 
 import java.io.IOException;
@@ -74,8 +75,7 @@ public class PSDatabasePubServerFilesServiceTest
      * Test add created database pub servers
      */
     @Test
-    public void testAdd()
-    {
+    public void testAdd() throws PSDataServiceException {
         addDatabasePubServer(DriverType.MSSQL, "mssql", 1000L);
 
         addDatabasePubServer(DriverType.ORACLE, "oracle", 200L);
@@ -90,8 +90,7 @@ public class PSDatabasePubServerFilesServiceTest
      * Test delete existing database pub servers
      */
     @Test
-    public void testDelete()
-    {
+    public void testDelete() throws PSDataServiceException {
         PSDatabasePubServer myServer = addDatabasePubServer(DriverType.MSSQL, "mssql", 1000L);
         List<PSDatabasePubServer> dbServers = m_fileService.getDatabasePubServers();
         m_fileService.deleteDatabasePubServer(myServer);
@@ -103,8 +102,7 @@ public class PSDatabasePubServerFilesServiceTest
      * Test to modify an existing database, but keep the driver type the same.
      */
     @Test
-    public void testModifySameType()
-    {
+    public void testModifySameType() throws PSDataServiceException {
         // same type, but different database, user, ...etc.
         PSDatabasePubServer myServer = addDatabasePubServer(DriverType.MSSQL, "mssql", 1000L);
         PSDatabasePubServer pubServer = (PSDatabasePubServer) myServer.clone();
@@ -129,8 +127,7 @@ public class PSDatabasePubServerFilesServiceTest
      * Test modify an existing database pub server to different driver type
      */
     @Test
-    public void testModifyDifferentType()
-    {
+    public void testModifyDifferentType() throws PSDataServiceException {
         // same type, but different database, user, ...etc.
         PSDatabasePubServer myServer = addDatabasePubServer(DriverType.MSSQL, "mssql", 1000L);
         PSDatabasePubServer pubServer = (PSDatabasePubServer) myServer.clone();
@@ -210,8 +207,7 @@ public class PSDatabasePubServerFilesServiceTest
         assertTrue(m_fileService.isServerModified(siteId, "Server1"));
     }
    
-    private PSDatabasePubServer addDatabasePubServer(DriverType type, String namePrefix, Long siteId)
-    {
+    private PSDatabasePubServer addDatabasePubServer(DriverType type, String namePrefix, Long siteId) throws PSDataServiceException {
         List<PSDatabasePubServer> dbServers = m_fileService.getDatabasePubServers();
 
         PSDatabasePubServer pubServer = createDbPubServer(type, namePrefix, siteId);

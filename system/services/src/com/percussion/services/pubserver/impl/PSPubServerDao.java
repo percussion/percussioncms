@@ -33,8 +33,8 @@ import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.pubserver.data.PSPubServerProperty;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.utils.guid.IPSGuid;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,7 +60,7 @@ public class PSPubServerDao
    /**
     * Logger for the site manager
     */
-   static Log ms_log = LogFactory.getLog("PSPubServerDao");
+   static Logger log = LogManager.getLogger("PSPubServerDao");
 
    /**
     * Default server name when a new server is created
@@ -184,7 +184,7 @@ public class PSPubServerDao
    {
       notNull(siteId);
 
-      List<PSPubServer> pubServers = new ArrayList<PSPubServer>();
+      List<PSPubServer> pubServers = new ArrayList<>();
 
       pubServers = sessionFactory.getCurrentSession().createQuery(
             "from PSPubServer where siteId = :siteid").setParameter("siteid",

@@ -27,7 +27,7 @@ package com.percussion.services.security;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.security.data.PSUserAccessLevel;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal;
 
 import java.util.Collection;
 import java.util.List;

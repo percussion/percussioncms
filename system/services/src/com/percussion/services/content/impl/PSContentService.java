@@ -313,7 +313,7 @@ public class PSContentService
       String sortProperty)
    {
 
-         List<PSKeywordChoice> choiceList = new ArrayList<PSKeywordChoice>();
+         List<PSKeywordChoice> choiceList = new ArrayList<>();
          
          //only look for choices if it is a keyword
          if (keyword.getKeywordType().equals(PSKeyword.KEYWORD_TYPE))
@@ -442,7 +442,7 @@ public class PSContentService
     */
    private List<PSKeyword> filterKeywordExcludes(List<PSKeyword> keywords)
    {
-      List<PSKeyword> filteredKeywords = new ArrayList<PSKeyword>(keywords);
+      List<PSKeyword> filteredKeywords = new ArrayList<>(keywords);
       
       for (PSKeyword keyword : keywords)
       {
@@ -465,7 +465,7 @@ public class PSContentService
     * types.
     */
    private static final List<IPSGuid> ms_keywordExcludes = 
-      new ArrayList<IPSGuid>();
+      new ArrayList<>();
    
    static
    {
@@ -492,8 +492,8 @@ public class PSContentService
    @SuppressWarnings("unchecked")
    public List<PSFolderProperty>  getFolderProperties(String property) {
       Session session = sessionFactory.getCurrentSession();
-      List<PSFolderProperty> pSFolderPropertyList = new ArrayList<PSFolderProperty>();
-      List<Object[]> list = new ArrayList<Object[]>();
+      List<PSFolderProperty> pSFolderPropertyList = new ArrayList<>();
+      List<Object[]> list = new ArrayList<>();
       
       try
       {

@@ -39,6 +39,7 @@ import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
+import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.importer.helpers.impl.PSImportHelper;
 import com.percussion.sitemanage.importer.helpers.impl.PSSiteCreationHelper;
 import com.percussion.sitemanage.service.IPSSiteImportService;
@@ -127,7 +128,7 @@ public class PSSiteImportServiceTest extends PSSiteImportTestBase
             importedSite = siteImportService.importSiteFromUrl(importedSite, USER_AGENT).getSite();
             siteCreated = true;
         }
-        catch (RuntimeException e)
+        catch (RuntimeException | PSSiteImportException e)
         {
             fail();
         }

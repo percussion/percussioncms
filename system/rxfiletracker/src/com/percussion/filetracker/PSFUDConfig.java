@@ -75,11 +75,12 @@ public class PSFUDConfig
          throw new PSFUDConfigFileNotFoundException();
 
       DocumentBuilder db = RXFileTracker.getDocumentBuilder();
-      m_ConfigDoc = db.parse(new InputSource(new FileInputStream(file)));
-      if (m_ConfigDoc != null)
-      {
-         m_ElementCurrent = PSFUDDocMerger.createChildElement(
-                           m_ConfigDoc.getDocumentElement(), ELEM_CURRENT);
+      try(FileInputStream fi = new FileInputStream(file)) {
+         m_ConfigDoc = db.parse(new InputSource(fi));
+         if (m_ConfigDoc != null) {
+            m_ElementCurrent = PSFUDDocMerger.createChildElement(
+                    m_ConfigDoc.getDocumentElement(), ELEM_CURRENT);
+         }
       }
    }
 
@@ -280,7 +281,7 @@ public class PSFUDConfig
    {
       if(null == serverAlias || serverAlias.trim().length() < 1)
          throw new PSFUDEmptyServerAliasException(
-            MainFrame.getRes().getString("errorServerAliasEmpty"));
+            MainFrame.getRes().getString(ERROR_SERVER_ALIAS));
 
       setCurrentURL(serverAlias);
       m_ElementCurrent.setAttribute(ATTRIB_SERVERALIAS, serverAlias);
@@ -299,13 +300,13 @@ public class PSFUDConfig
    {
       if(null == serverAlias || serverAlias.trim().length() < 1)
          throw new PSFUDEmptyServerAliasException(
-            MainFrame.getRes().getString("errorServerAliasEmpty"));
+            MainFrame.getRes().getString(ERROR_SERVER_ALIAS));
 
       NodeList nl = m_ConfigDoc.getElementsByTagName(ELEM_URL);
       if(null == nl || nl.getLength() < 1)
       {
          throw new PSFUDInvalidConfigFileException(
-            MainFrame.getRes().getString("errorServerAliasEmpty"));
+            MainFrame.getRes().getString(ERROR_SERVER_ALIAS));
       }
 
       Element elem = null;
@@ -360,7 +361,7 @@ public class PSFUDConfig
     */
    public void setIsPurgeLocalCopy(boolean bPurge)
    {
-      Boolean value = new Boolean(bPurge);
+      Boolean value = Boolean.valueOf(bPurge);
       setOption(OPTION_PURGELOCAL, value);
    }
 
@@ -388,7 +389,7 @@ public class PSFUDConfig
     */
    public void setIsPromptBeforePurge(boolean bPrompt)
    {
-      Boolean value = new Boolean(bPrompt);
+      Boolean value = Boolean.valueOf(bPrompt);
       setOption(OPTION_PROMPTPURGE, value);
    }
 
@@ -416,7 +417,7 @@ public class PSFUDConfig
     */
    public void setIsPromptBeforeOverwrite(boolean bPrompt)
    {
-      Boolean value = new Boolean(bPrompt);
+      Boolean value = Boolean.valueOf(bPrompt);
       setOption(OPTION_PROMPTOVERWRITE, value);
    }
 
@@ -449,17 +450,18 @@ public class PSFUDConfig
       }
       NodeList nl = m_ConfigDoc.getElementsByTagName(tagname);
       if(null == nl || nl.getLength() < 1)
-         return new Boolean(false);
+         return Boolean.FALSE;
 
       Element elem = (Element)nl.item(0);
       Node node = elem.getFirstChild();
       if(node instanceof Text)
       {
          String tmp = ((Text)node).getData();
-         if(tmp.equalsIgnoreCase(OPTION_YES))
-         return new Boolean(true);
+         if(tmp.equalsIgnoreCase(OPTION_YES)) {
+            return Boolean.TRUE;
+         }
       }
-      return new Boolean(false);
+      return Boolean.FALSE;
    }
 
    /**
@@ -505,7 +507,7 @@ public class PSFUDConfig
       }
       NodeList nl = m_ConfigDoc.getElementsByTagName(tagname);
       Element elem = null;
-      int len = nl.getLength();
+
       if(null == nl || nl.getLength() < 1)
       {
          elem = m_ConfigDoc.createElement(tagname);
@@ -622,6 +624,8 @@ public class PSFUDConfig
     * configuration file name - predefined
     */
    public static final String FUDCONFIGFILE = "rxftconfig.xml";
+
+   private static final String ERROR_SERVER_ALIAS = "errorServerAliasEmpty";
 
    /**
     * Elements and attributes in the configuration document as per the DTD.

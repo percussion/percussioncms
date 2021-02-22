@@ -106,7 +106,7 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
     @Override
     public Collection<IPSCookieConsent> getAllCookieConsentStats() {
         
-        Collection<IPSCookieConsent> consents = new ArrayList<IPSCookieConsent>();
+        Collection<IPSCookieConsent> consents = new ArrayList<>();
         
         try {
             Session session = getSession();
@@ -130,7 +130,7 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
     @Transactional
     @Override
     public Collection<IPSCookieConsent> getAllCookieStatsForSite(String siteName) {
-        Collection<IPSCookieConsent> consents = new ArrayList<IPSCookieConsent>();
+        Collection<IPSCookieConsent> consents = new ArrayList<>();
         try {
             Session session = getSession();
             
@@ -225,7 +225,7 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
     @Override
     public Map<String, Integer> getTotalsForSite(String siteName) throws Exception {
         try {
-            Map<String, Integer> results = new HashMap<String, Integer>();
+            Map<String, Integer> results = new HashMap<>();
             
             Session session = getSession();
             

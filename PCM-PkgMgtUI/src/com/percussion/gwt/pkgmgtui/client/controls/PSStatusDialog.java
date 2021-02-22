@@ -24,7 +24,7 @@
 package com.percussion.gwt.pkgmgtui.client.controls;
 
 import com.google.gwt.user.client.Window;
-import com.percussion.gwt.pkgmgtui.client.IPSConstants;
+import com.percussion.gwt.pkgmgtui.client.PSConstants;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.VerticalAlignment;
@@ -58,7 +58,7 @@ public class PSStatusDialog extends Dialog
       setIsModal(true);
       setCanDragReposition(true);
       setCanDragResize(true);
-      setResizeFrom(IPSConstants.DIALOG_RESIZE_OPTIONS);
+      setResizeFrom(PSConstants.getDialogResizeOptions());
       setAutoCenter(true);
       setShowToolbar(true);
       HLayout hlLabel = new HLayout();

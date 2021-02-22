@@ -48,6 +48,7 @@ import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pathmanagement.data.PSFolderPermission.Access;
 import com.percussion.pathmanagement.data.PSFolderProperties;
+import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.content.data.PSItemStatus;
@@ -70,6 +71,8 @@ import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.PSSiteCopyUtils;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
@@ -100,8 +103,8 @@ import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.publishing.IPSPublishingWs;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -274,8 +277,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     /*
      * see base interface method for details
      */
-    public PSSiteSection create(PSCreateSiteSection req)
-    {
+    public PSSiteSection create(PSCreateSiteSection req) throws PSDataServiceException {
         if (log.isDebugEnabled())
             log.debug("Received create site section: " + req.toString());
 
@@ -340,8 +342,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     /*
      * see base interface method for details
      */
-    public PSSiteSection createExternalLinkSection(PSCreateExternalLinkSection req)
-    {
+    public PSSiteSection createExternalLinkSection(PSCreateExternalLinkSection req) throws PSValidationException, IPSPathService.PSPathNotFoundServiceException, PSSiteSectionException {
         if (log.isDebugEnabled())
             log.debug("Received create site section: " + req.toString());
 
@@ -357,7 +358,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
 
         updateExternalLinkSection(req.getLinkTitle(), idMapper.getString(navonId), req.getExternalUrl(),
                 PSSectionTargetEnum._self, null);
-        Set<String> idSet = new HashSet<String>();
+        Set<String> idSet = new HashSet<>();
         idSet.add(idMapper.getString(navonId));
         workflowHelper.transitionToPending(idSet);
         PSSiteSection section = new PSSiteSection();
@@ -373,8 +374,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * see base interface method for details
      */
     public PSSiteSection createSectionLink(String targetSectionGuid,
-            String parentSectionGuid)
-    {
+            String parentSectionGuid) throws PSSiteSectionException {
         IPSGuid targetGuid = idMapper.getGuid(targetSectionGuid);
         IPSGuid parentGuid = idMapper.getGuid(parentSectionGuid);
 
@@ -389,8 +389,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     }
     
     @Override
-    public PSSiteSection createSectionFromFolder(PSCreateSectionFromFolderRequest req)
-    {
+    public PSSiteSection createSectionFromFolder(PSCreateSectionFromFolderRequest req) throws PSDataServiceException {
         //validate the input
     	PSCreateSectionFromFolderValidator val = new PSCreateSectionFromFolderValidator();
         val.validate(req).throwIfInvalid();
@@ -418,12 +417,8 @@ public class PSSiteSectionService implements IPSSiteSectionService
         }
         
         PSPage landingPage = pageDao.find(landingPageId.toString());
-        
-    
- 
-       
-        
-        //Add novon to folder
+
+        //Add navon to folder
         IPSGuid navonId = navSrv.addNavonToFolder(parentId, childId, folderName + "-Navon", landingPage.getLinkTitle(), workflowId);
         
         
@@ -459,7 +454,12 @@ public class PSSiteSectionService implements IPSSiteSectionService
         // approve the navon if landing page is pending or live but navon is not
         if (workflowHelper.isItemInApproveState(idMapper.getContentId(landingPageId)) && !workflowHelper.isItemInApproveState(idMapper.getContentId(navonId)))
         {
-            itemWorkflowService.performApproveTransition(idMapper.getString(navonId), false, null);
+            try {
+                itemWorkflowService.performApproveTransition(idMapper.getString(navonId), false, null);
+            } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | com.percussion.services.error.PSNotFoundException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
+            }
         }
         
         //Create a section object to return
@@ -520,11 +520,10 @@ public class PSSiteSectionService implements IPSSiteSectionService
 
     @Override
     public PSSiteSection updateExternalLink(String sectionGuid,
-            PSCreateExternalLinkSection req)
-    {
+            PSCreateExternalLinkSection req) throws PSSiteSectionException, PSValidationException {
         notNull(sectionGuid);
         updateExternalLinkSection(req.getLinkTitle(), sectionGuid, req.getExternalUrl(), req.getTarget(), req.getCssClassNames());
-        Set<String> idSet = new HashSet<String>();
+        Set<String> idSet = new HashSet<>();
         idSet.add(sectionGuid);
         workflowHelper.transitionToPending(idSet);
         PSSiteSection section = loadSiteSection(idMapper.getGuid(sectionGuid), null, null, true, false, null);
@@ -532,8 +531,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     }
 
     @Override
-    public PSSiteSection updateSectionLink(PSUpdateSectionLink req)
-    {
+    public PSSiteSection updateSectionLink(PSUpdateSectionLink req) throws PSSiteSectionException {
         notNull(req);
         String oldSectionId = req.getOldSectionId();
         if (oldSectionId.indexOf("_") != -1)
@@ -555,8 +553,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     
 
     @Override
-    public List<PSSiteBlogProperties> getBlogsForSite(String siteName)
-    {
+    public List<PSSiteBlogProperties> getBlogsForSite(String siteName) throws PSValidationException {
         notNull(siteName, "Site Name cannot be null.");
         notEmpty(siteName, "Site Name cannot be empty.");
         IPSSite site = siteMgr.findSite(siteName);
@@ -567,26 +564,26 @@ public class PSSiteSectionService implements IPSSiteSectionService
             builder.reject("siteName", msg).throwIfInvalid();
         }
         
-        List<PSSiteBlogProperties> siteBlogsList = new ArrayList<PSSiteBlogProperties>();
+        List<PSSiteBlogProperties> siteBlogsList = new ArrayList<>();
         try
         {
         	siteBlogsList = getBlogsForSingleSite(site.getName());
         }
-        catch (PSNotFoundException e)
+        catch (PSNotFoundException | PSDataServiceException e)
         {
-           log.error("Failed to load the root section for the site  :" + siteName,e); 
-        }  
+           log.error("Failed to load the root section for the site:{} Error:{}" , siteName,e.getMessage());
+           log.debug(e.getMessage(),e);
+        }
         return siteBlogsList;
     }
     
     @Override
-    public List<PSSiteBlogProperties> getAllBlogs()
-    {
-        List<PSSiteBlogProperties> allBlogsList = new ArrayList<PSSiteBlogProperties>();
+    public List<PSSiteBlogProperties> getAllBlogs() throws PSDataServiceException {
+        List<PSSiteBlogProperties> allBlogsList = new ArrayList<>();
         List<PSSite> sites = siteDao.findAll();
         for(PSSite site:sites)
         {
-            List<PSSiteBlogProperties> siteBlogsList = new ArrayList<PSSiteBlogProperties>();
+            List<PSSiteBlogProperties> siteBlogsList = new ArrayList<>();
             try
             {
                 siteBlogsList = getBlogsForSingleSite(site.getName());
@@ -604,10 +601,9 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * //see base interface method for details
      */
     @Override
-    public List<String> findAllTemplatesUsedByBlogs(String siteName) throws PSSiteSectionException
-    {
-       List<String> blogTemplateId = new ArrayList<String>();
-       List<PSSite> sites = new ArrayList<PSSite>();
+    public List<String> findAllTemplatesUsedByBlogs(String siteName) throws PSDataServiceException, com.percussion.services.error.PSNotFoundException {
+       List<String> blogTemplateId = new ArrayList<>();
+       List<PSSite> sites = new ArrayList<>();
        if(StringUtils.isNotBlank(siteName))
        {
            //load the site
@@ -630,22 +626,12 @@ public class PSSiteSectionService implements IPSSiteSectionService
        return blogTemplateId;
     }
 
-    public PSSiteBlogPosts getBlogPosts(String id)
-    {
+    public PSSiteBlogPosts getBlogPosts(String id) throws PSValidationException, PSSiteSectionException {
         notEmpty(id);
         
         PSSiteSection blog = null;
-        try
-        {
-            blog = load(id);
-        }
-        catch (PSSiteSectionException e)
-        {
-            PSValidationErrorsBuilder builder = validateParameters("getBlogPosts");
-            builder.reject("missing.blog", "Cannot find blog with id = " + id);
-            builder.throwIfInvalid();
-        }
-        
+        blog = load(id);
+
         PSServerFolderProcessor fProc = PSServerFolderProcessor.getInstance();
         
         String blogPath = blog.getFolderPath();
@@ -655,7 +641,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         blogPosts.setBlogSectionPath(blogPath);
         blogPosts.setBlogTitle(blog.getTitle());
         
-        List<PSItemProperties> posts = new ArrayList<PSItemProperties>();
+        List<PSItemProperties> posts = new ArrayList<>();
         if (blog.getSectionType() == PSSectionTypeEnum.section)
         {
             String blogPostTemplateId = getBlogPostTemplateId(blogPath);
@@ -670,7 +656,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
                     PSComponentSummary summary = getItemSummary(((PSLegacyGuid) postPage.getGuid()).getContentId());
 
                     final String tagsError = "Error getting tags from node with id: " + postPage.getGuid();
-                    Collection<String> multiValues = new ArrayList<String>();
+                    Collection<String> multiValues = new ArrayList<>();
                     Value[] values;
                     try {
                         values = postPage.getProperty("page_tags").getValues();
@@ -761,7 +747,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      */
     private Map<String, PSCommentsSummary> getSiteCommentCounts(String siteName)
     {
-        Map<String, PSCommentsSummary> commentsMap = new HashMap<String, PSCommentsSummary>();
+        Map<String, PSCommentsSummary> commentsMap = new HashMap<>();
         
         try
         {
@@ -811,12 +797,12 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * @throws PSNotFoundException If the specified site does not exist.
      */
     private List<PSSiteBlogProperties> getBlogsForSingleSite(String siteName)
-            throws PSNotFoundException {
+            throws PSNotFoundException, PSDataServiceException {
         List<PSFolder> allBlogs = contentSrv
                 .getFoldersByProperty("blogPostTemplate");
 
         // Only return blogs for the specified site
-        List<PSFolder> filteredBlogs = new ArrayList<PSFolder>();
+        List<PSFolder> filteredBlogs = new ArrayList<>();
         for (PSFolder f : allBlogs) {
             List<IPSSite> sites = this.folderHelper.getItemSites(f.getGuid()
                     .toString());
@@ -827,7 +813,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
             }
         }
 
-        List<PSSiteBlogProperties> blogList = new ArrayList<PSSiteBlogProperties>();
+        List<PSSiteBlogProperties> blogList = new ArrayList<>();
         PSSiteBlogProperties blogProperties = null;
 
         for (PSFolder folder : filteredBlogs) {
@@ -845,8 +831,8 @@ public class PSSiteSectionService implements IPSSiteSectionService
                 IPSGuid landingPageId = navSrv
                         .getLandingPageFromNavnode(sectionId);
                 if (landingPageId == null) {
-                    log.warn("Cannot find landing page for blog section with template id: "
-                            + blogPostTemplateId);
+                    log.warn("Cannot find landing page for blog section with template id: {}"
+                            , blogPostTemplateId);
                     continue;
                 }
                 PSPage landingPage = pageDao.find(idMapper
@@ -878,8 +864,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     /*
      * Used for site copy,  modify the blog templates to the new ids passed in with the template id map.
      */
-    public void updateSectionBlogTemplates(String siteName, Map<String, String> tempMap)
-    {
+    public void updateSectionBlogTemplates(String siteName, Map<String, String> tempMap) throws PSSiteSectionException, com.percussion.services.error.PSNotFoundException {
         List<PSSiteSection> allSections = loadAllSectionsForSingleSite(siteName);
 
         for (PSSiteSection siteSection : allSections)
@@ -933,9 +918,8 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * @param siteName assumed not blank.
      * @return list of blog template ids never null may be empty.
      */
-    private List<String> getBlogTemplateIdsForSite(String siteName)
-    {
-       List<String> blogTemplateIds = new ArrayList<String>();
+    private List<String> getBlogTemplateIdsForSite(String siteName) throws PSSiteSectionException, com.percussion.services.error.PSNotFoundException {
+       List<String> blogTemplateIds = new ArrayList<>();
        List<PSSiteSection> allSections =loadAllSectionsForSingleSite(siteName);
        
        for(PSSiteSection siteSection : allSections)
@@ -993,8 +977,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
          * 
          * @param request the request, assumed not <code>null</code>.
          */
-        private ReplaceLandingPageHelper(PSReplaceLandingPage request)
-        {
+        private ReplaceLandingPageHelper(PSReplaceLandingPage request) throws PSDataServiceException {
             navNodeId = idMapper.getGuid(request.getSectionId());
             newLandingPageId = idMapper.getGuid(request.getNewLandingPageId());
             oldLandingPageId = navSrv.getLandingPageFromNavnode(navNodeId);
@@ -1009,8 +992,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
          * the items. The workflow state and the revision of the items may be
          * changed after this call.
          */
-        private void prepareForEdit()
-        {
+        private void prepareForEdit() throws PSValidationException {
             oldPageStatus = prepareForEdit(oldLandingPageId, true);
             newPageStatus = prepareForEdit(newLandingPageId, true);
             navNodeStatus = prepareForEdit(navNodeId, false);
@@ -1031,8 +1013,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
          * 
          * @return the prepared status of the item, never <code>null</code>.
          */
-        private PSItemStatus prepareForEdit(IPSGuid id, boolean isPage)
-        {
+        private PSItemStatus prepareForEdit(IPSGuid id, boolean isPage) throws PSValidationException {
             try
             {
                 return contentSrv.prepareForEdit(id);
@@ -1097,8 +1078,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         /**
          * Performs the actual landing page replacement operation.
          */
-        private void doReplace()
-        {
+        private void doReplace() throws PSDataServiceException {
             // rename old landing page to old-name(#)
             renamedLandingPageName = renameLandingPage(oldLandingPage);
 
@@ -1118,8 +1098,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
          * @param newLinkTitle the new link text of the landing page, assumed
          *            not blank.
          */
-        private void updateLandingPageFields(IPSGuid pageId, String newName, String newLinkTitle)
-        {
+        private void updateLandingPageFields(IPSGuid pageId, String newName, String newLinkTitle) throws PSDataServiceException {
             PSPage landingPage = pageDao.find(idMapper.getString(pageId));
             landingPage.setName(newName);
             landingPage.setLinkTitle(newLinkTitle);
@@ -1139,8 +1118,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
          * @param newLinkTitle the new link text of the landing page, assumed
          * not blank.
          */
-        private void updateLandingPage(IPSGuid pageId, IPSGuid navigationNodeId, String newName, String newLinkTitle)
-        {
+        private void updateLandingPage(IPSGuid pageId, IPSGuid navigationNodeId, String newName, String newLinkTitle) throws PSDataServiceException {
             IPSGuid navParentId = folderHelper.getParentFolderId(navigationNodeId);
             IPSGuid pageParentId = folderHelper.getParentFolderId(pageId);
             if (navParentId.equals(pageParentId))
@@ -1194,8 +1172,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     /*
      * see base interface method for details
      */
-    public PSReplaceLandingPage replaceLandingPage(PSReplaceLandingPage request)
-    {
+    public PSReplaceLandingPage replaceLandingPage(PSReplaceLandingPage request) throws PSDataServiceException {
         ReplaceLandingPageHelper helper = new ReplaceLandingPageHelper(request);
 
         try
@@ -1213,8 +1190,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     /*
      * see base interface method for details
      */
-    public PSSiteSection move(PSMoveSiteSection req)
-    {
+    public PSSiteSection move(PSMoveSiteSection req) throws PSValidationException, PSSiteSectionException {
         moveRequestValidator.validate(req).throwIfInvalid();
          
         if (req.getSourceId().indexOf("_") > -1)
@@ -1232,8 +1208,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * Move a specified section from the source location to a new location.
      * @param req the request info, assumed not <code>null</code>.
      */
-    private void moveSection(PSMoveSiteSection req)
-    {
+    private void moveSection(PSMoveSiteSection req) throws PSSiteSectionException, PSValidationException {
         validateMoveSection(req.getSourceId());
         
         IPSGuid sourceParentId = idMapper.getGuid(req.getSourceParentId());
@@ -1249,7 +1224,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         }
         catch (Exception ex)
         {
-            log.error("Failed to move the source navigation node "+ req.getSourceId() + " to the target navigation node " + req.getTargetId() + " Error was:" + ex.getMessage());
+            log.error("Failed to move the source navigation node {} to the target navigation node {} Error was: {}",req.getSourceId() , req.getTargetId() , ex.getMessage());
             throw new PSSiteSectionException(ex.getMessage());
 
         }
@@ -1260,10 +1235,9 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * It is invalid if the section is under more than 1 site.
      * @param sourceId the ID of the section, assumed not <code>null</code>.
      */
-    private void validateMoveSection(String sourceId)
-    {
+    private void validateMoveSection(String sourceId) throws PSValidationException {
         List<IPSSite> sites = publishingWs.getItemSites(idMapper.getGuid(sourceId));
-        if((sites != null) && (sites.size() >= 1))
+        if((sites != null) && (!sites.isEmpty()))
         { 
            PSSiteCopyUtils.throwCopySiteMessageIfNotAllowed(sites.get(0).getName(), "move",
                 PSSiteCopyUtils.CAN_NOT_MOVE_SECTION);
@@ -1274,8 +1248,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * Move a specified section link from the source location to a new location.
      * @param req the request info, assumed not <code>null</code>.
      */
-    private void moveSectionLink(PSMoveSiteSection req)
-    {
+    private void moveSectionLink(PSMoveSiteSection req) throws PSSiteSectionException, PSValidationException {
         String sectionId = req.getSourceId().split("_")[0]; 
         validateMoveSection(sectionId);
 
@@ -1300,8 +1273,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         navSrv.addNavonToParentNavon(sectionGuid, targetGuid, req.getTargetIndex());
     }
 
-    public PSSiteSectionProperties getSectionProperties(String id)
-    {
+    public PSSiteSectionProperties getSectionProperties(String id) throws PSSiteSectionException {
         IPSGuid guid = contentDsSrv.getItemGuid(idMapper.getGuid(id));
         String title = navSrv.getNavTitle(guid);
 
@@ -1311,7 +1283,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
 
         IPSGuid folderId = contentSrv.getIdByPath(paths[0]);
         PSFolder folder = contentSrv.loadFolder(folderId, false);
-        List<String> temp = new ArrayList<String>();
+        List<String> temp = new ArrayList<>();
         temp.add(NAVON_FIELD_TARGET);
         temp.add(NAVON_FIELD_REQUIRESLOGIN);
         temp.add(NAVON_FIELD_ALLOWACCESSTO);
@@ -1393,7 +1365,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      */
     private Map<String, String> getSectionSecurityProperties(String guid)
     {
-        List<String> temp = new ArrayList<String>();
+        List<String> temp = new ArrayList<>();
         temp.add(NAVON_FIELD_REQUIRESLOGIN);
         temp.add(NAVON_FIELD_ALLOWACCESSTO);
         return  navSrv.getNavonProperties(idMapper.getGuid(guid), temp);
@@ -1402,8 +1374,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     /*
      * see base interface method for details
      */
-    public PSSiteSection update(PSSiteSectionProperties req)
-    {
+    public PSSiteSection update(PSSiteSectionProperties req) throws PSDataServiceException {
         updateRequestValidator.validate(req).throwIfInvalid().getValidationErrors();
         List<IPSSite> sites = publishingWs.getItemSites(idMapper.getGuid(req.getId()));
         if((sites != null) && (sites.size() >= 1))
@@ -1418,7 +1389,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         PSSectionTargetEnum target = req.getTarget();
         String tgt = target == null || target == PSSectionTargetEnum._self ? "" : target.name();
        
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(NAVON_FIELD_DISPLAYTITLE, req.getTitle());
         map.put(NAVON_FIELD_TARGET, tgt);
         map.put(NAVON_FIELD_REQUIRESLOGIN, Boolean.toString(req.isRequiresLogin()));
@@ -1441,8 +1412,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * 
      * @param sitename
      */
-    private void removeSiteTouchedFile(String sitename)
-    {
+    private void removeSiteTouchedFile(String sitename) throws DataServiceSaveException {
         try
         {
             removeTouchedFile(sitename);
@@ -1457,8 +1427,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     }
 
     @Override
-    public void generateSecurityConfigurationFiles(IPSSite site)
-    {
+    public void generateSecurityConfigurationFiles(IPSSite site) throws DataServiceSaveException, PSSiteSectionException, com.percussion.services.error.PSNotFoundException {
         PSSectionNode tree = loadTree(site.getName());
         try
         {
@@ -1477,8 +1446,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * @see com.percussion.sitemanage.service.IPSSiteSectionService#clearSectionsSecurityInfo(java.lang.String)
      */
     @Override
-    public void clearSectionsSecurityInfo(String sitename)
-    {
+    public void clearSectionsSecurityInfo(String sitename) throws PSSiteSectionException, com.percussion.services.error.PSNotFoundException {
         PSSectionNode tree = loadTree(sitename);
         unsecureChildNode(tree);
     }
@@ -1522,7 +1490,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
 
         IPSGuid navonId = idMapper.getGuid(sectionTree.getId());
         
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(NAVON_FIELD_REQUIRESLOGIN, Boolean.toString(false));
         map.put(NAVON_FIELD_ALLOWACCESSTO, null);
         
@@ -1541,8 +1509,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * @return the starting state of the landing page, which may be transitioned
      *         into different state after this call.
      */
-    private long setLinkTitleForLandingPage(IPSGuid navonId, String linkTitle)
-    {
+    private long setLinkTitleForLandingPage(IPSGuid navonId, String linkTitle) throws PSDataServiceException {
         IPSGuid id = navSrv.getLandingPageFromNavnode(navonId);
         if(id == null){
             return 0;
@@ -1582,8 +1549,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * 
      * @param req the new section properties, assumed not <code>null</code>.
      */
-    private void updateSectionFolder(PSSiteSectionProperties req)
-    {
+    private void updateSectionFolder(PSSiteSectionProperties req) throws PSValidationException {
         IPSGuid folderId = folderHelper.getParentFolderId(idMapper.getGuid(req.getId()));
 
         PSFolderProperties folderProps = new PSFolderProperties();
@@ -1597,8 +1563,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     /*
      * //see base interface method for details
      */
-    public PSSiteSection loadRoot(String siteName)
-    {
+    public PSSiteSection loadRoot(String siteName) throws PSSiteSectionException, com.percussion.services.error.PSNotFoundException {
         IPSSite site = siteMgr.loadSite(siteName);
         IPSGuid navTreeId = navSrv.findNavigationIdFromFolder(site.getFolderRoot());
         if (navTreeId == null)
@@ -1622,7 +1587,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      */
     public List<PSSiteSection> loadChildSections(PSSiteSection section)
     {
-        List<PSSiteSection> result = new ArrayList<PSSiteSection>();
+        List<PSSiteSection> result = new ArrayList<>();
         
         if (section.getSectionType() == PSSectionTypeEnum.section)
         {
@@ -1661,8 +1626,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * @return the specified site section, never <code>null</code>.
      */
     private PSSiteSection loadSiteSection(IPSGuid id, IPSGuid parentGuid, String folderPath, boolean resolvePath,
-            boolean resolveDisplayPath, String parentDisplayPath)
-    {
+            boolean resolveDisplayPath, String parentDisplayPath) throws PSSiteSectionException {
         String idStr = idMapper.getString(id);
         if (idStr.indexOf("_") != -1)
         {
@@ -1679,7 +1643,6 @@ public class PSSiteSectionService implements IPSSiteSectionService
         }
         catch (Exception e)
         {
-        	//FB: NP_NULL_ON_SOME_PATH NC 1=16-16
             throw new PSSiteSectionException("Cannot get guid for nav-id = " + idStr, e);
         }
         List<String> childIds = new ArrayList<>();
@@ -1689,7 +1652,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
                 childIds.add(ids);
             }
         }
-        List<String> temp = new ArrayList<String>();
+        List<String> temp = new ArrayList<>();
         temp.add(NAVON_FIELD_DISPLAYTITLE);
         temp.add(NAVON_FIELD_TYPE);
         temp.add(NAVON_FIELD_TARGET);
@@ -1775,7 +1738,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     }
 
     /**
-     * @param targetId
+     * @param navonId
      * @return
      */
     private String buildDisplayTitlePath(IPSGuid navonId)
@@ -1795,8 +1758,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     /*
      * //see base interface method for details
      */
-    public PSSectionNode loadTree(String siteName)
-    {
+    public PSSectionNode loadTree(String siteName) throws PSSiteSectionException, com.percussion.services.error.PSNotFoundException {
         PSSiteSection root = loadRoot(siteName);
         PSSectionNode tree = loadSectionTree(root);
         return tree;
@@ -1810,8 +1772,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * @return the section node and its descendant nodes, never
      *         <code>null</code> .
      */
-    private PSSectionNode loadSectionTree(PSSiteSection section)
-    {
+    private PSSectionNode loadSectionTree(PSSiteSection section) throws PSSiteSectionException {
         PSSectionNode node = new PSSectionNode();
         node.setId(section.getId());
         node.setTitle(section.getTitle());
@@ -1819,7 +1780,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         node.setRequiresLogin(section.isRequiresLogin());
         node.setAllowAccessTo(section.getAllowAccessTo());
         node.setFolderPath(section.getFolderPath());
-        List<PSSectionNode> childNodes = new ArrayList<PSSectionNode>();
+        List<PSSectionNode> childNodes = new ArrayList<>();
         if (section.getSectionType() == PSSectionTypeEnum.section)
         {
             IPSGuid sectionGuid = idMapper.getGuid(section.getId());
@@ -1870,17 +1831,16 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * @param siteName
      * @return
      */
-    private List<PSSiteSection> loadAllSectionsForSingleSite(String siteName)
-    {
+    private List<PSSiteSection> loadAllSectionsForSingleSite(String siteName) throws PSSiteSectionException, com.percussion.services.error.PSNotFoundException {
         PSSiteSection  rootSection = new PSSiteSection();
-        List<PSSiteSection> allSections = new ArrayList<PSSiteSection>();
-        List<PSSiteSection> childSections = new ArrayList<PSSiteSection>();
+        List<PSSiteSection> allSections = new ArrayList<>();
+        List<PSSiteSection> childSections = new ArrayList<>();
         rootSection = loadRoot(siteName);
         childSections = loadChildSections(rootSection);
         for(PSSiteSection section :childSections)
         {
             allSections.add(section);
-            List<PSSiteSection> sections = new ArrayList<PSSiteSection>();
+            List<PSSiteSection> sections = new ArrayList<>();
             sections = getAllDescendantSections(sections,section);
             allSections.addAll(sections);
         }
@@ -1905,8 +1865,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         return sections;
     }
 
-    public PSSiteSection load(String sId)
-    {
+    public PSSiteSection load(String sId) throws PSSiteSectionException {
         IPSGuid id = idMapper.getGuid(sId);
         PSSiteSection section = loadSiteSection(id, null, null, true, true, null);
         return section;
@@ -1923,8 +1882,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * 
      * @return the created folder, never <code>null</code>.
      */
-    private PSFolder createFolder(String name, String parentPath, String templateId)
-    {
+    private PSFolder createFolder(String name, String parentPath, String templateId) throws PSSiteSectionException {
         if (contentSrv.isChildExistInFolder(parentPath, name))
         {
             throw new PSSiteSectionException("Cannot create a folder (name=" + name + ") under parent folder: "
@@ -1970,8 +1928,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * 
      * @return the created landing page, never <code>null</code>.
      */
-    private PSPage createLandingPage(PSCreateSiteSection req, String folderPath, IPSGuid navonId)
-    {
+    private PSPage createLandingPage(PSCreateSiteSection req, String folderPath, IPSGuid navonId) throws PSDataServiceException {
         PSPage page = new PSPage();
         page.setFolderPath(folderPath);
         
@@ -2002,8 +1959,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     /*
      * //see base interface method for details
      */
-    public void delete(String id)
-    {
+    public void delete(String id) throws PSValidationException, DataServiceSaveException {
         IPSGuid guid = idMapper.getGuid(id);
         IPSGuid folderId = folderHelper.getParentFolderId(guid);
         
@@ -2016,7 +1972,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
        	contentSrv.deleteFolders(Collections.singletonList(folderId), true);
     }
 
-    public void convertToFolder(String id) {
+    public void convertToFolder(String id) throws PSValidationException {
         PSSiteSection section = null;
         try{
             section = load(id);
@@ -2026,13 +1982,13 @@ public class PSSiteSectionService implements IPSSiteSectionService
             throw new RuntimeException("Failed to find the selected section, it might have been deleted in another session.",e);
         }
         //Group all child sections as different type of sections require different treatment
-        List<String> externalLinkSections = new ArrayList<String>();
-        Map<String, String> sectionLinks = new HashMap<String, String>();
-        List<String> sections = new ArrayList<String>();
+        List<String> externalLinkSections = new ArrayList<>();
+        Map<String, String> sectionLinks = new HashMap<>();
+        List<String> sections = new ArrayList<>();
         groupChildSectionsByType(section, externalLinkSections,sectionLinks,sections);
         
         //For external links we need to delete the parent folders
-        List<IPSGuid> parentFolderIds = new ArrayList<IPSGuid>();
+        List<IPSGuid> parentFolderIds = new ArrayList<>();
         for (String guid : externalLinkSections) {
             parentFolderIds.add(folderHelper.getParentFolderId(idMapper.getGuid(guid)));
         }
@@ -2045,7 +2001,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         }
         
         //For sections we need to delete the navons
-        List<IPSGuid> sectionIds = new ArrayList<IPSGuid>();
+        List<IPSGuid> sectionIds = new ArrayList<>();
         for (String guid : sections) {
             sectionIds.add(idMapper.getGuid(guid));
         }
@@ -2104,8 +2060,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * 
      * @return the new name of the landing page, never blank.
      */
-    private String renameLandingPage(PSPage landingPage)
-    {
+    private String renameLandingPage(PSPage landingPage) throws PSDataServiceException {
         String landingPageName = landingPage.getName();
         String sectionFolderPath = landingPage.getFolderPath();
 
@@ -2143,8 +2098,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * 
      * @return id of the new template.
      */
-    private String createBlogTemplate(String name, String srcId, String siteId)
-    {
+    private String createBlogTemplate(String name, String srcId, String siteId) throws PSDataServiceException {
        String tempId = null;
        
        PSTemplateSummary tempSrc = templateSrv.find(srcId);
@@ -2193,7 +2147,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     
     private List<IPSNode> getPostPages(String path, String templateId)
     {
-        Map<String, String> whereFields = new HashMap<String, String>();
+        Map<String, String> whereFields = new HashMap<>();
         whereFields.put("templateid", templateId);
         List<IPSNode> nodes = jcrNodeFinder.find(path, whereFields);
         return nodes;
@@ -2219,8 +2173,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         }
         
         @Override
-        protected void doValidation(PSSiteSectionProperties req, PSBeanValidationException e)
-        {
+        protected void doValidation(PSSiteSectionProperties req, PSBeanValidationException e) throws PSValidationException {
             IPSGuid sectionFolderId = folderHelper.getParentFolderId(idMapper.getGuid(req.getId()));
             String newFolderName = req.getFolderName();
             List<PSItemSummary> sums = contentSrv.findItems(Collections.singletonList(sectionFolderId), false);
@@ -2304,8 +2257,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     public class PSCreateSectionValidator extends PSAbstractBeanValidator<PSCreateSiteSection>
     {
         @Override
-        protected void doValidation(PSCreateSiteSection req, PSBeanValidationException e)
-        {
+        protected void doValidation(PSCreateSiteSection req, PSBeanValidationException e) throws PSValidationException {
             String sectionName = req.getPageUrlIdentifier();
             PSSectionTypeEnum sectionType = req.getSectionType();
             
@@ -2316,8 +2268,12 @@ public class PSSiteSectionService implements IPSSiteSectionService
                 {sectionName}, "Cannot create a section with the name \"{0}\" "
                         + "because an object with the same name already exists.");
             }
-            
-            PSTemplateSummary template = templateSrv.find(req.getTemplateId());
+            PSTemplateSummary template  = null;
+            try {
+                 template = templateSrv.find(req.getTemplateId());
+            } catch (PSDataServiceException psDataServiceException) {
+                throw new PSBeanValidationException(e);
+            }
             if (template == null)
             {
                 String msg;
@@ -2338,7 +2294,11 @@ public class PSSiteSectionService implements IPSSiteSectionService
             
             if (sectionType == PSSectionTypeEnum.blog)
             {
-                template = templateSrv.find(req.getBlogPostTemplateId());
+                try {
+                    template = templateSrv.find(req.getBlogPostTemplateId());
+                }catch (PSDataServiceException psDataServiceException) {
+                     throw new PSBeanValidationException(e);
+                }
                 if (template == null)
                 {
                     e.reject("createSiteSection.missingTemplate", new Object[]{sectionName}, "Cannot create a blog "
@@ -2416,21 +2376,12 @@ public class PSSiteSectionService implements IPSSiteSectionService
             }            
         }
     }
-    
-    
-   /* *//**
-     * @param siteDataService the siteDataService to set
-     *//*
-    public void setSiteDataService(IPSSiteDataService siteDataService)
-    {
-        this.siteDataService = siteDataService;
-    }
-*/
+
     private void updateExternalLinkSection(String title, String navonId, String url, PSSectionTargetEnum target, String cssClassNames)
     {
         notNull(navonId);
         String tgt = target == null || target == PSSectionTargetEnum._self ? "" : target.name();
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(NAVON_FIELD_DISPLAYTITLE, title);
         map.put(NAVON_FIELD_TYPE, PSSectionTypeEnum.externallink.name());
         map.put(NAVON_FIELD_EXTERNALURL, (url == null ? "" : url));
@@ -2454,7 +2405,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     /**
      * The logger.
      */
-    private static final Log log = LogFactory.getLog(PSSiteSectionService.class);
+    private static final Logger log = LogManager.getLogger(PSSiteSectionService.class);
 
     public PSValidationErrors validate(PSSiteSection object)
     {

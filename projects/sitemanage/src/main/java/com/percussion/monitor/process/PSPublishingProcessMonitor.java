@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -45,7 +45,7 @@ public class PSPublishingProcessMonitor implements IPSPublishingJobStatusCallbac
     
     private static IPSMonitor monitor = null;
     
-    private static Set<Long> jobIds = new HashSet<Long>();
+    private static Set<Long> jobIds = new HashSet<>();
     
     private static IPSPublishingJobStatusCallback callback = null;
     
@@ -106,7 +106,7 @@ public class PSPublishingProcessMonitor implements IPSPublishingJobStatusCallbac
     }
 
     /**
-     * @param editionId
+     * @param jobId
      */
     public static void startPublishingJob(long jobId)
     {

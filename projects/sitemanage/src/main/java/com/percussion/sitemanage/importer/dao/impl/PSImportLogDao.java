@@ -64,8 +64,7 @@ public class PSImportLogDao implements IPSImportLogDao
 
     @Override
     @Transactional
-    public void save(PSImportLogEntry logEntry)
-    {
+    public void save(PSImportLogEntry logEntry) throws IPSGenericDao.SaveException {
         Validate.notNull(logEntry);
         if (logEntry.getLogEntryId() == -1)
         {
@@ -108,8 +107,7 @@ public class PSImportLogDao implements IPSImportLogDao
     }
 
     @Override
-    public void delete(PSImportLogEntry logEntry)
-    {
+    public void delete(PSImportLogEntry logEntry) throws IPSGenericDao.SaveException {
         Validate.notNull(logEntry);
         
         Session session = getSession();
@@ -145,7 +143,7 @@ public class PSImportLogDao implements IPSImportLogDao
         Validate.notNull(objectIds);
         Validate.notNull(type);
         
-        List<Long> results = new ArrayList<Long>();
+        List<Long> results = new ArrayList<>();
         
         if (objectIds.isEmpty())
             return results;

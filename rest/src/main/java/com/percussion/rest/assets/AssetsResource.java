@@ -25,6 +25,7 @@
 package com.percussion.rest.assets;
 
 import com.percussion.rest.Status;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.util.APIUtilities;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.annotations.Api;
@@ -32,9 +33,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tika.config.TikaConfig;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.io.TikaInputStream;
@@ -42,9 +43,22 @@ import org.apache.tika.metadata.Metadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.StreamingOutput;
+import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,9 +81,16 @@ public class AssetsResource
     @Context
     private UriInfo uriInfo;
     
-    private Pattern p = Pattern.compile("^\\/?([^\\/]+)(\\/(.*?))??(\\/([^\\/]+))?$");
+    private static final Pattern p = Pattern.compile("^\\/?([^\\/]+)(\\/(.*?))??(\\/([^\\/]+))?$");
 
-    public static Log log = LogFactory.getLog(AssetsResource.class);
+    public static final Logger log = LogManager.getLogger(AssetsResource.class);
+
+    private static final String UTF8="UTF-8";
+    private static final String HTML_HEADER_CONTENT_TYPE="Content-Type";
+    private static final String HTML_HEADER_CONTENT_DISPOSITION="Content-Disposition";
+    private static final String HTML_HEADER_CONTENT_TYPE_VAL= "application/csv";
+    private static final String HTML_HEADER_CONTENT_VAL="attachment; filename=";
+    private static final String ERROR_NO_FILE="No File Sent";
 
     private static class TikaConfigHolder {
         public static final TikaConfig INSTANCE = TikaConfig.getDefaultConfig();
@@ -93,13 +114,17 @@ public class AssetsResource
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
         try
         {
-            path = java.net.URLDecoder.decode(path, "UTF-8");
+            path = java.net.URLDecoder.decode(path, UTF8);
         }
         catch (UnsupportedEncodingException e)
         {
             // UTF-8 always supported
         }
-        return assetAdaptor.getSharedAssetByPath(uriInfo.getBaseUri(), path);
+        try {
+            return assetAdaptor.getSharedAssetByPath(uriInfo.getBaseUri(), path);
+        } catch (BackendException e) {
+            throw new WebApplicationException();
+        }
     }
 
     @GET
@@ -125,8 +150,8 @@ public class AssetsResource
         
         ResponseBuilder r = Response.ok(out);
         
-        r.header("Content-Type", "application/csv");
-        r.header("Content-Disposition", "attachment; filename=" + APIUtilities.getReportFileName("asset-import-preview","csv"));
+        r.header(HTML_HEADER_CONTENT_TYPE, HTML_HEADER_CONTENT_TYPE_VAL);
+        r.header(HTML_HEADER_CONTENT_DISPOSITION, HTML_HEADER_CONTENT_VAL + APIUtilities.getReportFileName("asset-import-preview","csv"));
   
         return r.build();
 	}
@@ -152,14 +177,14 @@ public class AssetsResource
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
         try
         {
-            path = java.net.URLDecoder.decode(path, "UTF-8");
+            path = java.net.URLDecoder.decode(path, UTF8);
         }
         catch (UnsupportedEncodingException e)
         {
             // UTF-8 always supported
         }
         if (body == null || body.isEmpty())
-            throw new RuntimeException("No file sent");
+            throw new RuntimeException(ERROR_NO_FILE);
         Attachment att = body.get(0);
 
         String uploadFilename = att.getContentDisposition().getFilename();
@@ -171,15 +196,17 @@ public class AssetsResource
 
         Detector det = getTikaConfig().getDetector();
 
-        TikaInputStream tis = TikaInputStream.get(att.getObject(InputStream.class));
-
-        Metadata metadata = new Metadata();
-
-        org.apache.tika.mime.MediaType mimeType = det.detect(tis, metadata);
-        String fileMimeType = mimeType.toString();
-
-        return assetAdaptor.uploadBinary(uriInfo.getBaseUri(), path, assetType, tis,
-                uploadFilename, fileMimeType, forceCheckOut);
+        try(TikaInputStream tis = TikaInputStream.get(att.getObject(InputStream.class))) {
+            Metadata metadata = new Metadata();
+            org.apache.tika.mime.MediaType mimeType = det.detect(tis, metadata);
+            String fileMimeType = mimeType.toString();
+            try {
+                return assetAdaptor.uploadBinary(uriInfo.getBaseUri(), path, assetType, tis,
+                        uploadFilename, fileMimeType, forceCheckOut);
+            } catch (BackendException e) {
+                throw new WebApplicationException(e.getMessage());
+            }
+        }
     }
 
     @GET
@@ -196,35 +223,39 @@ public class AssetsResource
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
         try
         {
-            path = java.net.URLDecoder.decode(path, "UTF-8");
+            path = java.net.URLDecoder.decode(path, UTF8);
         }
         catch (UnsupportedEncodingException e)
         {
             // UTF-8 always supported
         }
-        
-        StreamingOutput out = assetAdaptor.getBinary(path);
-        Asset asset = assetAdaptor.getSharedAssetByPath(uriInfo.getBaseUri(), path);
 
-        ResponseBuilder r = Response.ok(out);
-        String filename = StringUtils.substringAfter(path, "/");
-        boolean thumbReq = filename.startsWith("thumb_");
+        try {
+            StreamingOutput out = assetAdaptor.getBinary(path);
+            Asset asset = assetAdaptor.getSharedAssetByPath(uriInfo.getBaseUri(), path);
 
-        String type = "application/octet-stream";
+            ResponseBuilder r = Response.ok(out);
+            String filename = StringUtils.substringAfter(path, "/");
+            boolean thumbReq = filename.startsWith("thumb_");
 
-        if (asset.getImage() != null && thumbReq)
-            type = asset.getThumbnail().getType();
-        else if (asset.getFile() != null)
-            type = asset.getFile().getType();
-        else if (asset.getImage() != null)
-            type = asset.getImage().getType();
-        else if (asset.getFlash() != null)
-            type = asset.getFlash().getType();
+            String type = "application/octet-stream";
 
-        r.header("Content-Type", type);
+            if (asset.getImage() != null && thumbReq)
+                type = asset.getThumbnail().getType();
+            else if (asset.getFile() != null)
+                type = asset.getFile().getType();
+            else if (asset.getImage() != null)
+                type = asset.getImage().getType();
+            else if (asset.getFlash() != null)
+                type = asset.getFlash().getType();
 
-        r.header("Content-Disposition", "attachment; filename=" + filename);
-        return r.build();
+            r.header(HTML_HEADER_CONTENT_TYPE, type);
+
+            r.header(HTML_HEADER_CONTENT_DISPOSITION, HTML_HEADER_CONTENT_VAL + filename);
+            return r.build();
+        } catch (BackendException e) {
+            throw new WebApplicationException();
+        }
     }
 
     @PUT
@@ -239,19 +270,16 @@ public class AssetsResource
     public Asset upsertAssetByPath(Asset asset, @PathParam("assetpath") String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
-        try
-        {
-            path = java.net.URLDecoder.decode(path, "UTF-8");
+        try {
+            path = java.net.URLDecoder.decode(path, UTF8);
+
+            String filename = StringUtils.substringAfterLast(path, "/");
+            asset.setName(filename);
+            asset.setFolderPath(StringUtils.substringBeforeLast(path, "/"));
+            return assetAdaptor.createOrUpdateSharedAsset(uriInfo.getBaseUri(), path, asset);
+        } catch (BackendException | UnsupportedEncodingException e) {
+           throw new WebApplicationException();
         }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-        
-        String filename = StringUtils.substringAfterLast(path, "/");
-        asset.setName(filename);
-        asset.setFolderPath(StringUtils.substringBeforeLast(path, "/"));
-        return assetAdaptor.createOrUpdateSharedAsset(uriInfo.getBaseUri(), path, asset);
     }
     
     @DELETE
@@ -265,15 +293,12 @@ public class AssetsResource
     public Status deleteSingleAsset(@PathParam("assetpath") String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
-        try
-        {
-            path = java.net.URLDecoder.decode(path, "UTF-8");
+        try {
+            path = java.net.URLDecoder.decode(path, UTF8);
+            return assetAdaptor.deleteSharedAssetByPath(path);
+        } catch (BackendException | UnsupportedEncodingException e) {
+            throw new WebApplicationException();
         }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-        return assetAdaptor.deleteSharedAssetByPath(path);
     }
     
    
@@ -288,28 +313,26 @@ public class AssetsResource
     public Asset renameAsset(@PathParam("assetpath") String path, @PathParam("name") String newName)
     {
    	 	// Path param should be url decoded by default.  CXF jars interacting when running in cm1
-        try
-        {
-            path = java.net.URLDecoder.decode(path, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-        
-        Matcher m = p.matcher(path);
-        String siteName = "";
-        String assetName = "";
-        String apiPath = "";
+        try {
+            path = java.net.URLDecoder.decode(path, UTF8);
 
-        if(m.matches()) {
-            siteName = StringUtils.defaultString(m.group(1));
-            apiPath = StringUtils.defaultString(m.group(3));
-            assetName = StringUtils.defaultString(m.group(5));
-        }
-        
 
-        return assetAdaptor.renameSharedAsset(uriInfo.getBaseUri(), siteName,apiPath,assetName, newName);
+            Matcher m = p.matcher(path);
+            String siteName = "";
+            String assetName = "";
+            String apiPath = "";
+
+            if (m.matches()) {
+                siteName = StringUtils.defaultString(m.group(1));
+                apiPath = StringUtils.defaultString(m.group(3));
+                assetName = StringUtils.defaultString(m.group(5));
+            }
+
+
+            return assetAdaptor.renameSharedAsset(uriInfo.getBaseUri(), siteName, apiPath, assetName, newName);
+        } catch (BackendException | UnsupportedEncodingException e) {
+            throw new WebApplicationException();
+        }
     }
     
     @GET
@@ -332,8 +355,7 @@ public class AssetsResource
 		     out = new PSCSVStreamingOutput(rows);
 		
 		} catch (Exception e) {
-		    log.error("Error occurred while generating Non ADA compliant images report, cause: {}", e);
-			//e.printStackTrace();
+		    log.error("Error occurred while generating Non ADA compliant images report, cause: {}", e.getMessage());
 			return Response.serverError().build();
 		}
 		// check for empty resultset, if empty then return No Content message | CMS-3216
@@ -344,8 +366,8 @@ public class AssetsResource
         else {
             r = Response.ok(out);
 
-            r.header("Content-Type", "application/csv");
-            r.header("Content-Disposition", "attachment; filename=" + APIUtilities.getReportFileName("non-ada-images", "csv"));
+            r.header(HTML_HEADER_CONTENT_TYPE, HTML_HEADER_CONTENT_TYPE_VAL);
+            r.header(HTML_HEADER_CONTENT_DISPOSITION, HTML_HEADER_CONTENT_VAL + APIUtilities.getReportFileName("non-ada-images", "csv"));
         }
         return r.build();
     }
@@ -371,8 +393,7 @@ public class AssetsResource
 		     out = new PSCSVStreamingOutput(rows);
 		
 		} catch (Exception e) {
-		    log.error("Error occurred while generating Non ADA compliant files report, cause: {}", e);
-			//e.printStackTrace(); //added in logger, so not required here
+		    log.error("Error occurred while generating Non ADA compliant files report, cause:{}", e.getMessage());
 			return Response.serverError().build();
 		}
         // check for empty resultset, if empty then return No Content message | CMS-3216
@@ -383,8 +404,8 @@ public class AssetsResource
         else {
             r = Response.ok(out);
 
-            r.header("Content-Type", "application/csv");
-            r.header("Content-Disposition", "attachment; filename=" + APIUtilities.getReportFileName("non-ada-files", "csv"));
+            r.header(HTML_HEADER_CONTENT_TYPE, HTML_HEADER_CONTENT_TYPE_VAL);
+            r.header(HTML_HEADER_CONTENT_DISPOSITION, HTML_HEADER_CONTENT_VAL + APIUtilities.getReportFileName("non-ada-files", "csv"));
         }
         return r.build();
         
@@ -411,7 +432,7 @@ public class AssetsResource
 		     out = new PSCSVStreamingOutput(rows);
 		
 		} catch (Exception e) {
-            log.error("Error occurred while generating All images report, cause: {}", e);
+            log.error("Error occurred while generating All images report, cause: {}", e.getMessage());
 			return Response.serverError().build();
 		}
         // check for empty resultset, if empty then return No Content message | CMS-3216
@@ -422,8 +443,8 @@ public class AssetsResource
         else {
             r = Response.ok(out);
 
-            r.header("Content-Type", "application/csv");
-            r.header("Content-Disposition", "attachment; filename=" + APIUtilities.getReportFileName("all-images", "csv"));
+            r.header(HTML_HEADER_CONTENT_TYPE, HTML_HEADER_CONTENT_TYPE_VAL);
+            r.header(HTML_HEADER_CONTENT_DISPOSITION, HTML_HEADER_CONTENT_VAL + APIUtilities.getReportFileName("all-images", "csv"));
         }
         return r.build();
     }
@@ -449,7 +470,7 @@ public class AssetsResource
 		     out = new PSCSVStreamingOutput(rows);
 		
 		} catch (Exception e) {
-            log.error("Error occurred while generating All files report, cause: {}", e);
+            log.error("Error occurred while generating All files report, cause: {}", e.getMessage());
 			return Response.serverError().build();
 		}
         // check for empty resultset, if empty then return No Content message | CMS-3216
@@ -460,8 +481,8 @@ public class AssetsResource
         else {
             r = Response.ok(out);
 
-            r.header("Content-Type", "application/csv");
-            r.header("Content-Disposition", "attachment; filename=" + APIUtilities.getReportFileName("all-files", "csv"));
+            r.header(HTML_HEADER_CONTENT_TYPE, HTML_HEADER_CONTENT_TYPE_VAL);
+            r.header(HTML_HEADER_CONTENT_DISPOSITION, HTML_HEADER_CONTENT_VAL + APIUtilities.getReportFileName("all-files", "csv"));
         }
 		return r.build();
     
@@ -481,19 +502,15 @@ public class AssetsResource
     public Status bulkupdateNonADACompliantImages(List<Attachment> atts)
     {
     	  if (atts == null || atts.isEmpty())
-              throw new RuntimeException("No file sent");
+              throw new RuntimeException(ERROR_NO_FILE);
         
     	  Attachment att = atts.get(0);
-          String uploadFilename = att.getContentDisposition().getFilename();
-          InputStream stream = att.getObject(InputStream.class);
-          
-          // Strip out any path portion of the uploaded filename as per rfc spec.
-          uploadFilename = StringUtils.replace(uploadFilename, "\\", "/");
-
-          if (StringUtils.contains(uploadFilename, "/"))
-              uploadFilename = StringUtils.substringAfter(uploadFilename, "/");
-
-          return assetAdaptor.bulkupdateNonADACompliantImages(uriInfo.getBaseUri(),stream);
+          try(InputStream stream = att.getObject(InputStream.class)) {
+              return assetAdaptor.bulkupdateNonADACompliantImages(uriInfo.getBaseUri(), stream);
+          } catch (IOException e) {
+              log.error("Error Reading File {}",e.getMessage());
+          }
+          return null;
     }
     
     
@@ -508,20 +525,12 @@ public class AssetsResource
     {
       
         if (atts == null || atts.isEmpty())
-            throw new RuntimeException("No file sent");
+            throw new RuntimeException(ERROR_NO_FILE);
       
         Attachment att = atts.get(0);
-        
-        String uploadFilename = att.getContentDisposition().getFilename();
-        InputStream stream = att.getObject(InputStream.class);
-        
-        // Strip out any path portion of the uploaded filename as per rfc spec.
-        uploadFilename = StringUtils.replace(uploadFilename, "\\", "/");
-
-        if (StringUtils.contains(uploadFilename, "/"))
-            uploadFilename = StringUtils.substringAfter(uploadFilename, "/");
-
-        return assetAdaptor.bulkupdateNonADACompliantFiles(uriInfo.getBaseUri(),stream);
+        try(InputStream stream = att.getObject(InputStream.class)) {
+            return assetAdaptor.bulkupdateNonADACompliantFiles(uriInfo.getBaseUri(), stream);
+        }
     }
     
     
@@ -536,20 +545,12 @@ public class AssetsResource
     public Status bulkupdateImageAssets(List<Attachment> atts) throws IOException
     {
         if (atts == null || atts.isEmpty())
-            throw new RuntimeException("No file sent");
+            throw new RuntimeException(ERROR_NO_FILE);
       
         Attachment att = atts.get(0);
-        
-        String uploadFilename = att.getContentDisposition().getFilename();
-        InputStream stream = att.getObject(InputStream.class);
-        
-          // Strip out any path portion of the uploaded filename as per rfc spec.
-          uploadFilename = StringUtils.replace(uploadFilename, "\\", "/");
-
-          if (StringUtils.contains(uploadFilename, "/"))
-              uploadFilename = StringUtils.substringAfter(uploadFilename, "/");
-
-          return assetAdaptor.bulkupdateImageAssets(uriInfo.getBaseUri(),stream);
+        try(InputStream stream = att.getObject(InputStream.class)) {
+            return assetAdaptor.bulkupdateImageAssets(uriInfo.getBaseUri(), stream);
+        }
     }
     
     @POST
@@ -564,20 +565,13 @@ public class AssetsResource
     public Status bulkupdateFileAssets(List<Attachment> atts) throws IOException
     {
     	  if (atts == null || atts.isEmpty())
-              throw new RuntimeException("No file sent");
+              throw new RuntimeException(ERROR_NO_FILE);
           
           Attachment att = atts.get(0);
-          
-          String uploadFilename = att.getContentDisposition().getFilename();
-          InputStream stream = att.getObject(InputStream.class);
-          
-          // Strip out any path portion of the uploaded filename as per rfc spec.
-          uploadFilename = StringUtils.replace(uploadFilename, "\\", "/");
+          try(InputStream stream = att.getObject(InputStream.class)){
+              return assetAdaptor.bulkupdateFileAssets(uriInfo.getBaseUri(),stream);
+          }
 
-          if (StringUtils.contains(uploadFilename, "/"))
-              uploadFilename = StringUtils.substringAfter(uploadFilename, "/");
-
-          return assetAdaptor.bulkupdateFileAssets(uriInfo.getBaseUri(),stream);
     }
     
     @POST
@@ -589,11 +583,17 @@ public class AssetsResource
     {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
             @ApiResponse(code = 200, message = "Update OK")})
     public Status approveAllAssets(@PathParam("folderPath") String folder){
-    	Status status = new Status("OK");
-    	
-    	int ctr = assetAdaptor.approveAllAssets(uriInfo.getBaseUri(), folder);
-    	status.setMessage("Approved " + ctr + " Assets");
-    	return status;
+    	try {
+            Status status = new Status("OK");
+
+            int ctr = assetAdaptor.approveAllAssets(uriInfo.getBaseUri(), folder);
+            status.setMessage("Approved " + ctr + " Assets");
+            return status;
+        }catch(BackendException e){
+    	    log.error(e.getMessage());
+    	    log.debug(e.getMessage(),e);
+    	    throw new WebApplicationException(e.getMessage());
+        }
     }
     
 
@@ -606,11 +606,17 @@ public class AssetsResource
     {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
             @ApiResponse(code = 200, message = "Update OK")})
     public Status archiveAllAssets(@PathParam("folderPath") String folder){
-    	Status status = new Status("OK");
-    	
-    	int ctr = assetAdaptor.archiveAllAsets(uriInfo.getBaseUri(), folder);
-    	status.setMessage("Archived " + ctr + " Assets");
-    	return status;
+    	try {
+            Status status = new Status("OK");
+
+            int ctr = assetAdaptor.archiveAllAssets(uriInfo.getBaseUri(), folder);
+            status.setMessage("Archived " + ctr + " Assets");
+            return status;
+        }catch(BackendException e){
+    	    log.error(e.getMessage());
+    	    log.debug(e.getMessage(),e);
+    	    throw new WebApplicationException(e.getMessage());
+        }
     }
 
     public void setAssetAdaptor(IAssetAdaptor assetAdaptor){
@@ -626,10 +632,16 @@ public class AssetsResource
     {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
             @ApiResponse(code = 200, message = "Update OK")})
     public Status submitAllAssets(@PathParam("folderPath") String folder){
-    	Status status = new Status("OK");
-    	
-    	int ctr = assetAdaptor.submitForReviewAllAsets(uriInfo.getBaseUri(), folder);
-    	status.setMessage("Submitted " + ctr + " Assets");
-    	return status;
+    	try {
+            Status status = new Status("OK");
+
+            int ctr = assetAdaptor.submitForReviewAllAssets(uriInfo.getBaseUri(), folder);
+            status.setMessage("Submitted " + ctr + " Assets");
+            return status;
+        }catch(BackendException e){
+    	    log.error(e.getMessage());
+    	    log.debug(e.getMessage(),e);
+    	    throw new WebApplicationException(e.getMessage());
+        }
     }
 }

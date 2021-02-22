@@ -40,8 +40,8 @@ import com.percussion.services.security.data.PSUserAccessLevel;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
@@ -451,7 +451,7 @@ public class PSAclService implements IPSAclService
             .add( Restrictions.eq("permission", (int)PSPermissions.RUNTIME_VISIBLE.getOrdinal()))
             .setCacheable(true).list();
 
-      Collection<IPSTypedPrincipal> principals = new ArrayList<IPSTypedPrincipal>();
+      Collection<IPSTypedPrincipal> principals = new ArrayList<>();
       for (String comm : communityNames)
       {
          principals

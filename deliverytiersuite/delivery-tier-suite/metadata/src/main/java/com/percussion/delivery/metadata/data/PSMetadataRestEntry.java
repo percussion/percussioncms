@@ -55,7 +55,7 @@ public class PSMetadataRestEntry
 
     private String site;
 
-    private HashMap<String, Object> properties = new HashMap<String, Object>();
+    private HashMap<String, Object> properties = new HashMap<>();
 
     public String getPagepath()
     {
@@ -160,7 +160,7 @@ public class PSMetadataRestEntry
     		Object value = this.properties.get(metadataProperty.getName());
     		if (value instanceof String)
     		{
-    			List<String> multiValued = new ArrayList<String>();
+    			List<String> multiValued = new ArrayList<>();
     			multiValued.add((String)value);
     			multiValued.add(newValue);
     			this.properties.put(metadataProperty.getName(), multiValued);

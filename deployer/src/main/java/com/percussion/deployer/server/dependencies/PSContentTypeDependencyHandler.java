@@ -63,6 +63,7 @@ import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.contentmgr.data.PSContentTemplateDesc;
 import com.percussion.services.contentmgr.data.PSNodeDefinition;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.PSGuidUtils;
@@ -125,14 +126,13 @@ public class PSContentTypeDependencyHandler
     */
    @SuppressWarnings("unchecked")
    private List<PSDependency> getCEChildDependencies(PSSecurityToken tok,
-         String name) throws PSDeployException
-   {
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+         String name) throws PSDeployException, PSNotFoundException {
+      List<PSDependency> childDeps = new ArrayList<>();
       PSApplication app = PSAppObjectDependencyHandler
             .getApplication(tok, name);
 
       // add application deps
-      Set<PSDependency> appChildDeps = new HashSet<PSDependency>();
+      Set<PSDependency> appChildDeps = new HashSet<>();
       addApplicationDependencies(tok, appChildDeps,
             app.toXml().getDocumentElement());
       childDeps.addAll(appChildDeps);
@@ -229,14 +229,13 @@ public class PSContentTypeDependencyHandler
     * @throws PSDeployException
     */
    private Set<PSDependency> getTemplateDependencies(PSSecurityToken tok,
-         PSDependency dep) throws PSDeployException
-   {
+         PSDependency dep) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
          throw new IllegalArgumentException("dependency may not be null");
 
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
       PSDependencyHandler varHandler = getDependencyHandler(
             PSVariantDefDependencyHandler.DEPENDENCY_TYPE);
       PSDependencyHandler tmpPkgHandler = getDependencyHandler(
@@ -288,8 +287,7 @@ public class PSContentTypeDependencyHandler
    @SuppressWarnings("unchecked")
    @Override
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -299,7 +297,7 @@ public class PSContentTypeDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
       IPSNodeDefinition node = findNodeDefByDependencyID(dep.getDependencyId());
 
       String appName = PSDependencyUtils
@@ -440,8 +438,7 @@ public class PSContentTypeDependencyHandler
    @SuppressWarnings("unchecked")
    @Override
    public Iterator getDependencyFiles(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -453,7 +450,7 @@ public class PSContentTypeDependencyHandler
       checkServerControls(tok, dep);
       
       // Now build list of dependency files
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
@@ -483,13 +480,12 @@ public class PSContentTypeDependencyHandler
     */
    @SuppressWarnings("unchecked")
    private List<PSDependencyFile> getSchemaDepFiles(PSSecurityToken tok, 
-         PSDependency dep) throws PSDeployException
-   {
+         PSDependency dep) throws PSDeployException, PSNotFoundException {
       IPSNodeDefinition node = findNodeDefByDependencyID(dep.getDependencyId());      
       PSDependencyHandler schemaHandler = getDependencyHandler(
          PSSchemaDependencyHandler.DEPENDENCY_TYPE);
 
-      List<PSDependencyFile> depFiles = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> depFiles = new ArrayList<>();
       for (String tableName : PSDependencyUtils.getContentTypeTables(tok, node))
       {
          PSDependency schemaDep =
@@ -730,7 +726,7 @@ public class PSContentTypeDependencyHandler
       try
       {
          IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
-         List<IPSNodeDefinition> nodes = new ArrayList<IPSNodeDefinition>();
+         List<IPSNodeDefinition> nodes = new ArrayList<>();
          nodes.add(s);
          mgr.saveNodeDefinitions(nodes);
       }
@@ -802,7 +798,7 @@ public class PSContentTypeDependencyHandler
    private Set<String> catalogTemplates() throws PSDeployException
    {
       IPSAssemblyService aSvc = PSAssemblyServiceLocator.getAssemblyService();
-      Set<String> tmpGuids = new HashSet<String>();
+      Set<String> tmpGuids = new HashSet<>();
       Set<IPSAssemblyTemplate> tmpSet;
       try
       {
@@ -920,7 +916,7 @@ public class PSContentTypeDependencyHandler
 
       // assumes one nodedef and one itemdef CAN THERE BE MANY? WHY NOT????
       PSDependencyFile itemFile = null;
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
       CollectionUtils.addAll(files, archive.getFiles(dep));
       for (PSDependencyFile file : files)
       {
@@ -973,7 +969,7 @@ public class PSContentTypeDependencyHandler
       // merge the current schema into the new schema, this is to preserve the
       // data in the current table (not to remove column)
 
-      List<PSJdbcColumnDef> columns = new ArrayList<PSJdbcColumnDef>();
+      List<PSJdbcColumnDef> columns = new ArrayList<>();
       CollectionUtils.addAll(columns, curSchema.getColumns());
       for (PSJdbcColumnDef col : columns)
       {
@@ -1277,7 +1273,7 @@ public class PSContentTypeDependencyHandler
    {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       Iterator<IPSNodeDefinition> ctIt = getContentTypes().iterator();
       while (ctIt.hasNext())
       {
@@ -1404,7 +1400,7 @@ public class PSContentTypeDependencyHandler
       PSWorkflowInfo wfInfo = ce.getWorkflowInfo();
       if (wfInfo != null)
       {
-         List<Integer> newIds = new ArrayList<Integer>();
+         List<Integer> newIds = new ArrayList<>();
          Iterator ids = wfInfo.getValues();
          while (ids.hasNext())
          {
@@ -1570,7 +1566,7 @@ public class PSContentTypeDependencyHandler
     * List of child types supported by this handler, never <code>null</code>
     * or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    /**
     * Get the workflow service.

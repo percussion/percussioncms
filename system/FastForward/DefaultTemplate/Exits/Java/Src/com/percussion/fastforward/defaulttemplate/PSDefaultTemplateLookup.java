@@ -112,7 +112,7 @@ public class PSDefaultTemplateLookup extends PSJexlUtilBase {
 				log.error("No Templates Associated with the site.");
 			}
 			List<IPSAssemblyTemplate> defaults = 
-				new ArrayList <IPSAssemblyTemplate> ();
+				new ArrayList <> ();
 			
 			for (IPSAssemblyTemplate c_t : ct_templates) {
 				

@@ -81,7 +81,7 @@ public class PSClassNameMatchingMigrationRule extends PSBaseMatchingMigrationRul
             return null; 
         }
         
-        List<PSClassNameMatcher> matches = new ArrayList<PSClassNameMatcher>();
+        List<PSClassNameMatcher> matches = new ArrayList<>();
         for (Element elem : elems)
         {
             matches.add(new PSClassNameMatcher(elem));

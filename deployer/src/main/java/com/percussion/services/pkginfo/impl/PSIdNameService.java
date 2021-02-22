@@ -182,8 +182,8 @@ public class PSIdNameService
                + requiredMap);
       }
            
-      Map<String, IPSGuid> ntMap = new HashMap<String, IPSGuid>();
-      Map<IPSGuid, String> idMap = new HashMap<IPSGuid, String>();
+      Map<String, IPSGuid> ntMap = new HashMap<>();
+      Map<IPSGuid, String> idMap = new HashMap<>();
       
       loadMaps(ntMap, idMap);
 

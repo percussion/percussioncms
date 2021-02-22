@@ -24,6 +24,7 @@
 
 package com.percussion.utils.container.adapters;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSProperties;
 import com.percussion.utils.container.DefaultConfigurationContextImpl;
 import com.percussion.utils.container.IPSConfigurationAdapter;
@@ -33,17 +34,18 @@ import com.percussion.utils.container.PSJndiDatasourceImpl;
 import com.percussion.utils.container.PSStaticContainerUtils;
 import com.percussion.utils.container.config.ContainerConfig;
 import com.percussion.utils.container.config.model.impl.BaseContainerUtils;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSDatasourceResolver;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -78,17 +80,16 @@ import java.util.stream.Collectors;
 
 public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdapter<DefaultConfigurationContextImpl> {
 
-    public static Log ms_log = LogFactory.getLog(JettyDatasourceConfigurationAdapter.class);
+    public static Logger ms_log = LogManager.getLogger(JettyDatasourceConfigurationAdapter.class);
 
 
     private Path dsPropertiesFile = Paths.get("jetty","base","etc","perc-ds.properties");
     private Path dsXmlFile = Paths.get("jetty","base","etc","perc-ds.xml");
 
     private static String dsTemplate = null;
-    private static int DEFAULT_IDLE_TIMEOUT=30;
+    private static final int DEFAULT_IDLE_TIMEOUT=30;
 
-    static {
-
+     static  {
         try (ByteArrayOutputStream result = new ByteArrayOutputStream(); InputStream is = JettyDatasourceConfigurationAdapter.class.getClassLoader().getResourceAsStream("com/percussion/utils/container/jetty/jetty-ds-template.xml")) {
             byte[] buffer = new byte[1024];
             int length;
@@ -131,7 +132,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
 
     @Override
-    public void save(DefaultConfigurationContextImpl configurationContext) {
+    public synchronized void save(DefaultConfigurationContextImpl configurationContext) {
         BaseContainerUtils containerUtils = configurationContext.getConfig();
 
         Path rxDir = configurationContext.getRootDir();
@@ -141,10 +142,8 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
             saveDatasourceResolver(rxDir,containerUtils.getDatasourceResolver());
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
+        } catch (IOException | SAXException e) {
+            ms_log.error("Error saving jetty datasoruce file: {0}" , PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -196,9 +195,17 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
                 if (encrypted != null && encrypted.equalsIgnoreCase("Y")) {
                     try {
-                        pwd = PSEncryptor.getInstance().decrypt(pwd);
+                        pwd = PSEncryptor.getInstance("AES",
+                                PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                                PSEncryptor.SECURE_DIR)
+                        ).decrypt(pwd);
                     }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-                        pwd = PSLegacyEncrypter.getInstance().decrypt(pwd, PSLegacyEncrypter.getPartOneKey());
+                        pwd = PSLegacyEncrypter.getInstance(
+                                PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                                PSEncryptor.SECURE_DIR)
+                        ).decrypt(pwd, PSLegacyEncrypter.getInstance(
+                                PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                                        PSEncryptor.SECURE_DIR)).getPartOneKey(),null);
                     }
                 } else {
                     needsEncryption = true;
@@ -250,14 +257,6 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
                 dsList.clear();
                 dsList.addAll(newDSList);
             }
-            /*
-            if (needsEncryption)
-                saveRxDatasources(dsFile, propertyFile, dsList, secretKey);
-
-
-            if (dataSources == null)
-                dataSources = dsList;
-            */
 
         };
     }
@@ -329,7 +328,10 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
                 props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_SERVER_SUFFIX, datasource.getServer());
                 try {
                     props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_SUFFIX,
-                            PSEncryptor.getInstance().encrypt(datasource.getPassword()));
+                            PSEncryptor.getInstance("AES",
+                                    PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                                            PSEncryptor.SECURE_DIR
+                                    )).encrypt(datasource.getPassword()));
                     props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_ENCRYPTED_SUFFIX, "Y");
                 } catch (PSEncryptionException e) {
                     props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_SUFFIX,
@@ -350,7 +352,9 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
             success = true;
         } catch (IOException e) {
-            ms_log.error("error saving properties file propertyFile", e);
+            ms_log.error("error saving properties file propertyFile {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            ms_log.debug(e);
         }
 
         if (success) {

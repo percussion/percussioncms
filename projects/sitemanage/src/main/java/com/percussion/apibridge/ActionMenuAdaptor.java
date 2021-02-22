@@ -93,7 +93,7 @@ public class ActionMenuAdaptor implements IActionMenuAdaptor {
 
     private ActionMenuVisibilityContext[] copyVisibilityContexts(PSActionVisibilityContexts visibilityContexts) {
 
-        ArrayList<ActionMenuVisibilityContext> ctxs = new ArrayList<ActionMenuVisibilityContext>();
+        ArrayList<ActionMenuVisibilityContext> ctxs = new ArrayList<>();
 
         while(visibilityContexts.iterator().hasNext()){
             PSActionVisibilityContext  v = (PSActionVisibilityContext)visibilityContexts.iterator().next();
@@ -112,7 +112,7 @@ public class ActionMenuAdaptor implements IActionMenuAdaptor {
     }
 
     private ActionMenuModeUIContext[] copyUIContexts(PSDbComponentCollection modeUIContexts) {
-        ArrayList<ActionMenuModeUIContext> uictx = new ArrayList<ActionMenuModeUIContext>();
+        ArrayList<ActionMenuModeUIContext> uictx = new ArrayList<>();
 
         while(modeUIContexts.iterator().hasNext()){
             PSMenuModeContextMapping mode = (PSMenuModeContextMapping)modeUIContexts.iterator().next();
@@ -132,7 +132,7 @@ public class ActionMenuAdaptor implements IActionMenuAdaptor {
     }
 
     private ActionMenuParameter[] copyParameters(PSActionParameters parameters) {
-        ArrayList<ActionMenuParameter> ret = new ArrayList<ActionMenuParameter>();
+        ArrayList<ActionMenuParameter> ret = new ArrayList<>();
 
         while(parameters.iterator().hasNext()){
             PSActionParameter  psap = (PSActionParameter)parameters.iterator().next();
@@ -150,7 +150,7 @@ public class ActionMenuAdaptor implements IActionMenuAdaptor {
 
     private ActionMenuProperty[] copyProperties(PSActionProperties properties) {
 
-        ArrayList<ActionMenuProperty> ret = new ArrayList<ActionMenuProperty>();
+        ArrayList<ActionMenuProperty> ret = new ArrayList<>();
 
         while(properties.iterator().hasNext()){
             PSActionProperty p = (PSActionProperty) properties.iterator().next();

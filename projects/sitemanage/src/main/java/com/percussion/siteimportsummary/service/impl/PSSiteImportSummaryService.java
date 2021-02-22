@@ -26,6 +26,7 @@ package com.percussion.siteimportsummary.service.impl;
 
 import com.percussion.services.siteimportsummary.IPSSiteImportSummaryDao;
 import com.percussion.services.siteimportsummary.data.PSSiteImportSummary;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.sitesummaryservice.service.IPSSiteImportSummaryService;
 
 import java.util.Map;
@@ -51,8 +52,7 @@ public class PSSiteImportSummaryService implements IPSSiteImportSummaryService
     }
 
     @Override
-    public PSSiteImportSummary create(int siteId)
-    {
+    public PSSiteImportSummary create(int siteId) throws IPSGenericDao.SaveException {
         PSSiteImportSummary summary = new PSSiteImportSummary();
         summary.setSiteId(siteId);
         summaryDao.save(summary);
@@ -68,8 +68,7 @@ public class PSSiteImportSummaryService implements IPSSiteImportSummaryService
     }
 
     @Override
-    public PSSiteImportSummary update(int siteId, Map<SiteImportSummaryTypeEnum, Integer> fields)
-    {
+    public PSSiteImportSummary update(int siteId, Map<SiteImportSummaryTypeEnum, Integer> fields) throws IPSGenericDao.SaveException {
         Validate.notNull(fields);
         PSSiteImportSummary summary = find(siteId);
         if(summary == null)

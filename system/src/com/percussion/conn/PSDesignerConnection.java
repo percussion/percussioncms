@@ -31,8 +31,9 @@ import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.util.*;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
@@ -1295,7 +1296,9 @@ public class PSDesignerConnection
 
       try {
          //If running on server - we will get a key if not an exception
-         return  PSEncryptor.getInstance().encrypt(str);
+         return  PSEncryptor.getInstance("AES",
+                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).encrypt(str);
       } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
 
          try {

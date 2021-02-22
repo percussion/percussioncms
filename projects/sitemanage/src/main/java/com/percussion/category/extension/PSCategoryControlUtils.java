@@ -39,6 +39,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Attribute;
@@ -52,7 +53,7 @@ public class PSCategoryControlUtils {
     
 	public static Log log = LogFactory.getLog(PSCategoryControlUtils.class);
 	
-	public static PSCategory getCategories(String siteName, String rootPath, boolean includeDeleted, boolean includeNotSelectable) {
+	public static PSCategory getCategories(String siteName, String rootPath, boolean includeDeleted, boolean includeNotSelectable) throws PSDataServiceException {
 		
 	    if (categoryService== null)
 	        categoryService = (IPSCategoryService) getWebApplicationContext().getBean("categoryService");
@@ -129,7 +130,7 @@ public class PSCategoryControlUtils {
 	 */
 	private static PSCategoryNode filterNode(PSCategoryNode parentNode) {
 		
-		List<PSCategoryNode> childNodeList = new ArrayList<PSCategoryNode>();
+		List<PSCategoryNode> childNodeList = new ArrayList<>();
 		
 		if(parentNode.getChildNodes() != null && !parentNode.getChildNodes().isEmpty()) {
 			for(PSCategoryNode node : parentNode.getChildNodes()) {

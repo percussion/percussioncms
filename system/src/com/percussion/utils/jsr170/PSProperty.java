@@ -28,6 +28,7 @@ import com.percussion.utils.beans.PSPropertyWrapper;
 import com.percussion.utils.io.PSReaderInputStream;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -403,9 +404,12 @@ public class PSProperty extends PSPropertyWrapper
             try
             {
                Clob clob = (Clob) m_value;
-               StringWriter w = new StringWriter((int) clob.length());
-               IOUtils.copy(clob.getCharacterStream(), w);
-               m_strValue = w.toString();
+               try(StringWriter w = new StringWriter((int) clob.length())) {
+                  try (Reader r = clob.getCharacterStream()) {
+                     IOUtils.copy(r, w);
+                     m_strValue = w.toString();
+                  }
+               }
             }
             catch (Exception e)
             {
@@ -422,10 +426,12 @@ public class PSProperty extends PSPropertyWrapper
             try
             {
                Blob blob = (Blob) m_value;
-               StringWriter w = new StringWriter((int) blob.length() * 2);
-               Reader r = new InputStreamReader(blob.getBinaryStream(), "UTF8");
-               IOUtils.copy(r, w);
-               m_strValue = w.toString();
+               try(StringWriter w = new StringWriter((int) blob.length() * 2)) {
+                  try (Reader r = new InputStreamReader(blob.getBinaryStream(), "UTF8")) {
+                     IOUtils.copy(r, w);
+                     m_strValue = w.toString();
+                  }
+               }
             }
             catch (Exception e)
             {
@@ -451,19 +457,28 @@ public class PSProperty extends PSPropertyWrapper
 
       try
       {
-         if (m_value instanceof byte[])
-            return new ByteArrayInputStream((byte[]) m_value);
-         else if (m_value instanceof Clob)
+         if (m_value instanceof byte[]) {
+            try (ByteArrayInputStream bs = new ByteArrayInputStream((byte[]) m_value)) {
+               return bs;
+            }
+         }else if (m_value instanceof Clob)
          {
-            return new PSReaderInputStream(((Clob) m_value)
-                     .getCharacterStream());
+            try(InputStream ism = new PSReaderInputStream(((Clob) m_value)
+                     .getCharacterStream())){
+               return ism;
+            }
          }
-         else if (m_value instanceof Blob)
-            return ((Blob) m_value).getBinaryStream();
-         else
-            return PSValueConverter.convertToStream(getString());
+         else if (m_value instanceof Blob) {
+            try (InputStream ism = ((Blob) m_value).getBinaryStream()) {
+               return ism;
+            }
+         }else {
+            try(InputStream ism = PSValueConverter.convertToStream(getString()){
+               return ism;
+            };
+         }
       }
-      catch (SQLException e)
+      catch (SQLException| IOException e)
       {
          throw new RepositoryException("Couldn't retrieve LOB value", e);
       }

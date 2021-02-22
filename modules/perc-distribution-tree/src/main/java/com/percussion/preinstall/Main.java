@@ -235,52 +235,53 @@ public class Main {
             builder.environment().put(JAVA_TEMP, System.getProperty("java.io.tmpdir"));
             Process process = builder.inheritIO().start();
 
-            InputStream inStream = process.getInputStream();
-            InputStream inErrStream = process.getErrorStream();
+            try(InputStream inStream = process.getInputStream()) {
+                try (InputStream inErrStream = process.getErrorStream()) {
 
-            InputStreamLineBuffer outBuff = new InputStreamLineBuffer(inStream);
-            InputStreamLineBuffer errBuff = new InputStreamLineBuffer(inErrStream);
-            Thread streamReader = new Thread(new Runnable() {
-                public void run() {
-                    // start the input reader buffer threads
-                    outBuff.start();
-                    errBuff.start();
+                    InputStreamLineBuffer outBuff = new InputStreamLineBuffer(inStream);
+                    InputStreamLineBuffer errBuff = new InputStreamLineBuffer(inErrStream);
+                    Thread streamReader = new Thread(new Runnable() {
+                        public void run() {
+                            // start the input reader buffer threads
+                            outBuff.start();
+                            errBuff.start();
 
-                    // while an input reader buffer thread is alive
-                    // or there are unconsumed data left
-                    while (outBuff.isAlive() || outBuff.hasNext() ||
-                            errBuff.isAlive() || errBuff.hasNext()) {
+                            // while an input reader buffer thread is alive
+                            // or there are unconsumed data left
+                            while (outBuff.isAlive() || outBuff.hasNext() ||
+                                    errBuff.isAlive() || errBuff.hasNext()) {
 
-                        // get the normal output if at least 50 millis have passed
-                        if (outBuff.timeElapsed() > 50)
-                            while (outBuff.hasNext()) {
-                                currentLineNo++;
+                                // get the normal output if at least 50 millis have passed
+                                if (outBuff.timeElapsed() > 50)
+                                    while (outBuff.hasNext()) {
+                                        currentLineNo++;
+                                        if (MainIAInstall.installerProxy != null) {
+                                            MainIAInstall.showProgress(MainIAInstall.installerProxy, currentLineNo, "Installing files...", outBuff.getNext());
+                                        } else {
+                                            System.out.println(errBuff.getNext());
+                                        }
+                                    }
+                                // get the error output if at least 50 millis have passed
+                                if (errBuff.timeElapsed() > 50)
+                                    while (errBuff.hasNext())
+                                        currentErrLineNo++;
+
                                 if (MainIAInstall.installerProxy != null) {
-                                    MainIAInstall.showProgress(MainIAInstall.installerProxy, currentLineNo, "Installing files...", outBuff.getNext());
+                                    MainIAInstall.showProgress(MainIAInstall.installerProxy, currentErrLineNo, "Installing files...", errBuff.getNext());
                                 } else {
-                                    System.out.println(errBuff.getNext());
+                                    System.err.println(errBuff.getNext());
+                                }
+                                // sleep a bit bofore next run
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException e) {
+                                    Thread.currentThread().interrupt();
                                 }
                             }
-                        // get the error output if at least 50 millis have passed
-                        if (errBuff.timeElapsed() > 50)
-                            while (errBuff.hasNext())
-                                currentErrLineNo++;
+                            System.out.println("Finish reading error and output stream");
+                        }
+                    });
 
-                        if (MainIAInstall.installerProxy != null) {
-                            MainIAInstall.showProgress(MainIAInstall.installerProxy, currentErrLineNo, "Installing files...", errBuff.getNext());
-                        } else {
-                            System.err.println(errBuff.getNext());
-                        }
-                        // sleep a bit bofore next run
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-                    System.out.println("Finish reading error and output stream");
-                }
-            });
             streamReader.start();
 
             process.waitFor();
@@ -299,6 +300,8 @@ public class Main {
                 error=true;
             }
 
+        }
+            }
         }
 
         catch(Exception ex){
@@ -380,42 +383,43 @@ public class Main {
     public static void updateJettyServerPortAndSSLToPreUpgradeSettings(Path installDir) throws ParserConfigurationException, IOException, SAXException {
         String oldServerXMLDir = installDir.toAbsolutePath().toString()+"/JBossServerXML_BAK/";
         File oldServerXMLFile=  new File(oldServerXMLDir+"server.xml");
-        if(oldServerXMLFile.exists()){
+        if(oldServerXMLFile.exists()) {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             dbf.setValidating(false);
             DocumentBuilder db = dbf.newDocumentBuilder();
-
-            Document doc = db.parse(new FileInputStream(oldServerXMLFile));
-            NodeList nodeList = doc.getElementsByTagName("Connector");
-            for(int i=0;i<nodeList.getLength();i++){
-                Element e = (Element) nodeList.item(i);
-                boolean hasAttribute = e.hasAttribute("scheme");
-                if(hasAttribute && e.getAttribute("scheme").equalsIgnoreCase("http")){
-                    writeInstallationPropertiesForJetty(installDir,"jetty.http.port=",e.getAttribute("port"));
-                }
-                if(hasAttribute && e.getAttribute("scheme").equalsIgnoreCase("https")){
-                    writeInstallationPropertiesForJetty(installDir,"jetty.ssl.port=",e.getAttribute("port"));
-                    String keyStorefileAttr = e.getAttribute("keystoreFile");
-                    String keyStorefileName = "";
-                    String keyStoreFilePath = "";
-                    String keystorePassWord = e.getAttribute("keystorePass");
-                    String[] splitArr;
-                    if(keyStorefileAttr!="") {
-                        splitArr = keyStorefileAttr.split("/");
-                        keyStorefileName = splitArr[splitArr.length - 1];
-                        if(System.getProperty("file.separator").equals("/")){
-                            keyStoreFilePath="etc/"+keyStorefileName;
-                        }else{
-                            String wPath = installDir.toAbsolutePath().toString().replace("\\","\\\\");
-                            keyStoreFilePath="etc\\\\"+keyStorefileName;
-                        }
+            try (FileInputStream fis = new FileInputStream(oldServerXMLFile)) {
+                Document doc = db.parse(fis);
+                NodeList nodeList = doc.getElementsByTagName("Connector");
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    Element e = (Element) nodeList.item(i);
+                    boolean hasAttribute = e.hasAttribute("scheme");
+                    if (hasAttribute && e.getAttribute("scheme").equalsIgnoreCase("http")) {
+                        writeInstallationPropertiesForJetty(installDir, "jetty.http.port=", e.getAttribute("port"));
                     }
-                    writeInstallationPropertiesForJetty(installDir,"jetty.sslContext.keyStorePath=",keyStoreFilePath);
-                    writeInstallationPropertiesForJetty(installDir,"jetty.sslContext.trustStorePath=",keyStoreFilePath);
-                    writeInstallationPropertiesForJetty(installDir,"jetty.sslContext.keyStorePassword=",keystorePassWord);
-                    writeInstallationPropertiesForJetty(installDir,"jetty.sslContext.keyManagerPassword=",keystorePassWord);
-                    writeInstallationPropertiesForJetty(installDir,"jetty.sslContext.trustStorePassword=",keystorePassWord);
-                    writeInstallationPropertiesForJetty(installDir,"perc.ssl.protocols=",e.getAttribute("protocols"));
+                    if (hasAttribute && e.getAttribute("scheme").equalsIgnoreCase("https")) {
+                        writeInstallationPropertiesForJetty(installDir, "jetty.ssl.port=", e.getAttribute("port"));
+                        String keyStorefileAttr = e.getAttribute("keystoreFile");
+                        String keyStorefileName = "";
+                        String keyStoreFilePath = "";
+                        String keystorePassWord = e.getAttribute("keystorePass");
+                        String[] splitArr;
+                        if (keyStorefileAttr != "") {
+                            splitArr = keyStorefileAttr.split("/");
+                            keyStorefileName = splitArr[splitArr.length - 1];
+                            if (System.getProperty("file.separator").equals("/")) {
+                                keyStoreFilePath = "etc/" + keyStorefileName;
+                            } else {
+                                String wPath = installDir.toAbsolutePath().toString().replace("\\", "\\\\");
+                                keyStoreFilePath = "etc\\\\" + keyStorefileName;
+                            }
+                        }
+                        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyStorePath=", keyStoreFilePath);
+                        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.trustStorePath=", keyStoreFilePath);
+                        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyStorePassword=", keystorePassWord);
+                        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyManagerPassword=", keystorePassWord);
+                        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.trustStorePassword=", keystorePassWord);
+                        writeInstallationPropertiesForJetty(installDir, "perc.ssl.protocols=", e.getAttribute("protocols"));
+                    }
                 }
             }
         }

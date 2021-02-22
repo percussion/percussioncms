@@ -88,7 +88,7 @@ public class PSHibernateInterceptor extends EmptyInterceptor
     * use thread local storage because transactions are bound to threads.
     */
    private static ThreadLocal<Stack<Set<IPSGuid>>> ms_pendingChanges = 
-      new ThreadLocal<Stack<Set<IPSGuid>>>();
+      new ThreadLocal<>();
 
    /**
     * Empty array of classes for method lookup
@@ -210,10 +210,10 @@ public class PSHibernateInterceptor extends EmptyInterceptor
       Stack<Set<IPSGuid>> stack = ms_pendingChanges.get();
       if (stack == null)
       {
-         stack = new Stack<Set<IPSGuid>>();
+         stack = new Stack<>();
          ms_pendingChanges.set(stack);
       }
-      stack.push(new HashSet<IPSGuid>());
+      stack.push(new HashSet<>());
    }
 
    @Override

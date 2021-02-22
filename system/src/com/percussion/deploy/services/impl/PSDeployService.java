@@ -249,7 +249,7 @@ public class PSDeployService implements IPSDeployService {
             if (!isNew) {
                 fName = filter.getName();
 
-                List<IPSGuid> ids = new ArrayList<IPSGuid>();
+                List<IPSGuid> ids = new ArrayList<>();
                 ids.add(filter.getGUID());
 
                 IPSFilterService filterSvc = PSFilterServiceLocator.getFilterService();
@@ -350,7 +350,7 @@ public class PSDeployService implements IPSDeployService {
 
         try {
             service.doInstallDependencyFiles(tok, archive, dep, ctx);
-        } catch (PSDeployException e) {
+        } catch (PSDeployException | PSNotFoundException e) {
             throw new PSDeployServiceException(e);
         }
     }

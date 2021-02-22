@@ -27,6 +27,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.error.PSException;
 import com.percussion.services.purge.data.RevisionData;
+import com.percussion.share.service.exception.PSValidationException;
 
 import java.util.Collection;
 import java.util.List;
@@ -44,7 +45,7 @@ public interface IPSSqlPurgeHelper
     * @return
     * @throws PSException
     */
-   public int purge(PSLocator item) throws PSException;
+   public int purge(PSLocator item) throws PSException, PSValidationException;
   
    /**
     * This is a fast Database method for purging Navon and Navtree items from a
@@ -55,7 +56,7 @@ public interface IPSSqlPurgeHelper
     * @return
     * @throws PSException
     */
-   public int purgeNavigation(PSLocator item) throws PSException;
+   public int purgeNavigation(PSLocator item) throws PSException, PSValidationException;
  
 
    
@@ -70,7 +71,7 @@ public interface IPSSqlPurgeHelper
     * @return
     * @throws PSException
     */
-   public int purgeNavigationAndFolders(List<PSLocator> items) throws PSException;
+   public int purgeNavigationAndFolders(List<PSLocator> items) throws PSException, PSValidationException;
  
 
    /**
@@ -84,7 +85,7 @@ public interface IPSSqlPurgeHelper
     * @return 
     * @throws PSException
     */
-    public int purgeAll(PSLocator parent, Collection<PSLocator> items) throws PSException;
+    public int purgeAll(PSLocator parent, Collection<PSLocator> items) throws PSException, PSValidationException;
    
 
    /**
@@ -98,7 +99,7 @@ public interface IPSSqlPurgeHelper
     * @return
     * @throws PSException
     */
-   public  int purgeAll(Collection<PSLocator> items) throws PSException;
+   public  int purgeAll(Collection<PSLocator> items) throws PSException, PSValidationException;
 
    /**
     * This is a fast Database method for purging items and folders from the
@@ -117,7 +118,7 @@ public interface IPSSqlPurgeHelper
     * @throws PSException
     */
    public int purgeAll(PSLocator parent, Collection<PSLocator> items,
-         List<Integer> typeFilter) throws PSException;
+         List<Integer> typeFilter) throws PSException, PSValidationException;
   
    /**
    * Uses direct database access to purge revision items matching provided

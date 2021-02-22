@@ -24,6 +24,8 @@
 package com.percussion.rx.design.impl;
 
 import com.percussion.rx.design.IPSAssociationSet;
+import com.percussion.services.error.PSNotFoundException;
+import com.percussion.services.error.PSRuntimeException;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.publisher.IPSEditionTaskDef;
 import com.percussion.services.publisher.IPSPublisherService;
@@ -41,14 +43,12 @@ import java.util.List;
 public class PSEditionModel extends PSDesignModel
 {
    @Override
-   public Object load(IPSGuid id)
-   {
+   public Object load(IPSGuid id) throws PSNotFoundException {
       return load(id, false);
    }
 
    @Override
-   public Object loadModifiable(IPSGuid id)
-   {
+   public Object loadModifiable(IPSGuid id) throws PSNotFoundException {
       return load(id, true);
    }
 
@@ -60,8 +60,7 @@ public class PSEditionModel extends PSDesignModel
     * 
     * @return the loaded Edition, never <code>null</code>.
     */
-   public Object load(IPSGuid id, boolean isModifiable)
-   {
+   public Object load(IPSGuid id, boolean isModifiable) throws PSNotFoundException {
       if (id == null)
          throw new IllegalArgumentException("ID of an Edition cannot be null.");
       
@@ -122,7 +121,7 @@ public class PSEditionModel extends PSDesignModel
       IPSPublisherService srv = (IPSPublisherService) getService();
       IPSEdition edition = srv.findEditionByName(name);
       if (edition == null)
-         throw new RuntimeException("Cannot find Edition with name \"" + name
+         throw new PSRuntimeException("Cannot find Edition with name \"" + name
                + "\".");
       
       return edition.getGUID(); 
@@ -190,7 +189,7 @@ public class PSEditionModel extends PSDesignModel
    private List<IPSEditionTaskDef> getTasks(List<IPSEditionTaskDef> allTasks,
          boolean isPreTask)
    {
-      List<IPSEditionTaskDef> tasks = new ArrayList<IPSEditionTaskDef>();
+      List<IPSEditionTaskDef> tasks = new ArrayList<>();
       for (IPSEditionTaskDef task : allTasks)
       {
          if (isPreTask)
@@ -208,16 +207,15 @@ public class PSEditionModel extends PSDesignModel
    }
 
    @Override
-   public void delete(IPSGuid guid)
-   {
+   public void delete(IPSGuid guid) throws PSNotFoundException {
       if (guid == null || !isValidGuid(guid))
          throw new IllegalArgumentException("guid is not valid for this model");
       PSEditionWrapper wrapper = (PSEditionWrapper) loadModifiable(guid);
       loadTasks(wrapper);
-      List<IPSEditionTaskDef> tasks = new ArrayList<IPSEditionTaskDef>();
+      List<IPSEditionTaskDef> tasks = new ArrayList<>();
       deleteTasks(getTasks(tasks,true));
       deleteTasks(getTasks(tasks,false));
       IPSPublisherService srv = (IPSPublisherService) getService();
       srv.deleteEdition(wrapper.getEdition());
-   };
+   }
 }

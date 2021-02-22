@@ -24,8 +24,8 @@
 package com.percussion.services.security;
 
 
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 
 import java.security.Principal;
 import java.security.acl.Group;
@@ -169,7 +169,7 @@ public class PSServletRequestWrapper extends HttpServletRequestWrapper
    {
       if (m_roles == null)
       {
-         m_roles = new HashSet<String>();
+         m_roles = new HashSet<>();
          Group roles = PSJaasUtils.findOrCreateGroup(m_subject.getPrincipals(),
             PSJaasUtils.ROLE_GROUP_NAME);
          Enumeration<? extends Principal> renum = roles.members();

@@ -66,7 +66,7 @@ public class PSMetadataCategoriesHelper
         try
         {
             PSMetadataRestCategory categoryTree = new PSMetadataRestCategory("dummyRoot");
-            List<String> parsedCategories = new ArrayList<String>();
+            List<String> parsedCategories = new ArrayList<>();
 
             for (IPSMetadataEntry entryPage : results)
             {
@@ -85,7 +85,7 @@ public class PSMetadataCategoriesHelper
                         }
                     }
                 }
-                parsedCategories = new ArrayList<String>();
+                parsedCategories = new ArrayList<>();
             }
 
             alphaOrderCategories(categoryTree);

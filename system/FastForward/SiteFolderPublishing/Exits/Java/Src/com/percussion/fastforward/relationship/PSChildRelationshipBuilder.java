@@ -158,7 +158,7 @@ public class PSChildRelationshipBuilder extends PSChildRelationshipBase
     */
    private Collection<PSLocator> buildOwnerLocators(Collection<Integer> ownerIds)
    {
-      Collection<PSLocator> owners = new ArrayList<PSLocator>(ownerIds.size());
+      Collection<PSLocator> owners = new ArrayList<>(ownerIds.size());
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
       for (Integer contentid : ownerIds)
       {
@@ -210,7 +210,7 @@ public class PSChildRelationshipBuilder extends PSChildRelationshipBase
    protected List<Integer> createComplement(final List<Integer> retain,
          final List<Integer> suppress)
    {
-      List<Integer> complement = new ArrayList<Integer>();
+      List<Integer> complement = new ArrayList<>();
       for (Integer id : retain)
       {
          if (!suppress.contains(id))
@@ -233,9 +233,9 @@ public class PSChildRelationshipBuilder extends PSChildRelationshipBase
    private List<Integer> convert(Object[] ids)
    {
       if (ids == null)
-         return new ArrayList<Integer>();
+         return new ArrayList<>();
 
-      List<Integer> convertedList = new ArrayList<Integer>(ids.length);
+      List<Integer> convertedList = new ArrayList<>(ids.length);
       for (int i = 0; i < ids.length; i++)
       {
          Object id = ids[i];

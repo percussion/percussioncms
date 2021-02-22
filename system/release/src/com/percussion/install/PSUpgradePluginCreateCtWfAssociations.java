@@ -203,7 +203,7 @@ public class PSUpgradePluginCreateCtWfAssociations extends
          String SQL_END = ")";
          IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
          // Create a set of Integers to avoid duplicates.
-         Set<Integer> wfSet = new HashSet<Integer>();
+         Set<Integer> wfSet = new HashSet<>();
          while (wfs.hasNext())
          {
             Integer wf = (Integer) wfs.next();
@@ -254,7 +254,7 @@ public class PSUpgradePluginCreateCtWfAssociations extends
     */
    private List<Integer> getWorkflows()
    {
-      List<Integer> wfList = new ArrayList<Integer>();
+      List<Integer> wfList = new ArrayList<>();
       Connection conn = null;
       try
       {
@@ -292,7 +292,7 @@ public class PSUpgradePluginCreateCtWfAssociations extends
     */
    private List<CtWfAssociation> getCtWfAssociations()
    {
-      List<CtWfAssociation> ctWfs = new ArrayList<CtWfAssociation>();
+      List<CtWfAssociation> ctWfs = new ArrayList<>();
       Connection conn = null;
       try
       {

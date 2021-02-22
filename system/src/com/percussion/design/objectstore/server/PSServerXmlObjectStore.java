@@ -60,11 +60,12 @@ import com.percussion.design.objectstore.PSObjectFactory;
 import com.percussion.design.objectstore.PSRoleConfiguration;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.design.objectstore.PSSharedFieldGroup;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSTableSet;
 import com.percussion.design.objectstore.PSTextLiteral;
 import com.percussion.design.objectstore.PSUnknownDocTypeException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.error.PSException;
 import com.percussion.security.PSAclHandler;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthenticationRequiredException;
@@ -206,8 +207,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
        * 
        * @param src the source file or directory, never <code>null</code>.
        */
-      RecoverableFile(File src)
-      {
+      RecoverableFile(File src) throws PSException {
          if (src == null)
             throw new IllegalArgumentException("src may not be null.");
 
@@ -219,8 +219,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
        * Renames the original file or directory to a temporary file or directory
        * if the original file or directory exists; otherwise does nothing.
        */
-      void renameSrcToBackup()
-      {
+      void renameSrcToBackup() throws PSException {
          if (!m_src.exists())
             return;
 
@@ -242,7 +241,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          String errorMsg = "failed to make backup for '"
                + m_src.getAbsolutePath() + "' file/directory.";
          ms_log.error(errorMsg);
-         throw new RuntimeException(errorMsg);
+         throw new PSException(errorMsg);
       }
 
       /**
@@ -951,8 +950,6 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * @param overWrite If <code>true</code> and file already exists, it will
     * be overwritten. If <code>false</code> and the file already exists, no
     * action will be taken.
-    * @param lockId The id used to lock the app. It must already be locked with
-    * this id.
     * @param tok The security token to use for authorization, may not be
     * <code>null</code>.
     * @param isFolder flag indicating that this app file is a folder
@@ -1361,7 +1358,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * @param tok The user's security token. May not be <code>null</code>.
     * @param validate If <code>true</code>, runtime validation will be
     * performed.
-    * @throws PSValidationException If app fails validation
+    * @throws PSSystemValidationException If app fails validation
     * @throws PSUnknownDocTypeException If the app exists on disk already and
     * that file has an invalid format.
     * @throws PSUnknownNodeTypeException If the app does not have a valid name
@@ -1381,7 +1378,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     */
    public void saveApplication(Document appDoc, IPSLockerId lockId,
          PSSecurityToken tok, boolean validate)
-      throws PSServerException, PSNotLockedException, PSValidationException,
+      throws PSServerException, PSNotLockedException, PSSystemValidationException,
       PSUnknownDocTypeException, PSUnknownNodeTypeException, IOException,
       PSLockedException, PSNonUniqueException, PSAuthorizationException,
       PSAuthenticationRequiredException, PSNotFoundException
@@ -1514,7 +1511,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       {
          m_objectStoreHandler.notifyApplicationListeners(app, false, true);
       }
-      catch (PSValidationException e)
+      catch (PSSystemValidationException e)
       {
          // ignore, should never happen or matter if it does happen
       }
@@ -1554,7 +1551,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * @param tok The user's security token. May not be <code>null</code>.
     * @param validate If <code>true</code>, runtime validation will be
     * performed.
-    * @throws PSValidationException If app fails validation
+    * @throws PSSystemValidationException If app fails validation
     * @throws IOException If there is an error reading or writing the app to or
     * from disk.
     * @throws PSNotLockedException If the app is not already locked by the
@@ -1571,7 +1568,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     */
    public void saveApplication(PSApplication app, IPSLockerId lockId,
          PSSecurityToken tok, boolean validate)
-      throws PSServerException, PSNotLockedException, PSValidationException,
+      throws PSServerException, PSNotLockedException, PSSystemValidationException,
       IOException, PSLockedException, PSNonUniqueException,
       PSAuthorizationException, PSAuthenticationRequiredException,
       PSNotFoundException
@@ -1780,7 +1777,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          m_objectStoreHandler.notifyApplicationListeners(app, isNewApp, false);
          success = true;
       }
-      catch (IllegalArgumentException e)
+      catch (IllegalArgumentException | PSException e)
       {
          throw new PSServerException(e);
       }
@@ -2109,12 +2106,12 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * @throws PSNotLockedException If the config is not already locked by the
     * supplied Id.
     * @throws PSLockedException If there is a problem extending the lock.
-    * @throws PSValidationException if the config is invalid.
+    * @throws PSSystemValidationException if the config is invalid.
     * @throws PSServerException for any other errors encountered.
     */
    public void saveServerConfig(PSServerConfiguration config,
          IPSLockerId lockId, PSSecurityToken tok)
-      throws PSNotLockedException, PSServerException, PSValidationException,
+      throws PSNotLockedException, PSServerException, PSSystemValidationException,
       PSLockedException, PSAuthorizationException,
       PSAuthenticationRequiredException
    {
@@ -2194,13 +2191,13 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * @throws PSNotLockedException If the config is not already locked by the
     * supplied Id.
     * @throws PSLockedException If there is a problem extending the lock.
-    * @throws PSValidationException if the config is invalid.
+    * @throws PSSystemValidationException if the config is invalid.
     * @throws PSServerException for any other errors encountered.
     */
    public void saveServerConfig(Document config, IPSLockerId lockId,
          PSSecurityToken tok)
       throws PSNotLockedException, PSServerException, PSLockedException,
-      PSValidationException, PSAuthorizationException,
+           PSSystemValidationException, PSAuthorizationException,
       PSAuthenticationRequiredException
    {
       // validate inputs
@@ -2955,7 +2952,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
             {
                throw new RuntimeException(se.getLocalizedMessage());
             }
-            catch (PSValidationException ve)
+            catch (PSSystemValidationException ve)
             {
                // this should never happen
                throw new RuntimeException(ve.getLocalizedMessage());
@@ -3615,7 +3612,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
                            .getTable().getAlias().toLowerCase());
                      if (null == table)
                      {
-                        PSValidationException e = new PSValidationException(
+                        PSSystemValidationException e = new PSSystemValidationException(
                               IPSObjectStoreErrors.BE_TABLE_NULL);
                         throw new SQLException(e.getLocalizedMessage());
                      }

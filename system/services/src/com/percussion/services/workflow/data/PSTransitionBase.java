@@ -61,7 +61,7 @@ public abstract class PSTransitionBase implements IPSTransitionBase
    
    private String transitionAction;
 
-   private List<PSNotification> notifications = new ArrayList<PSNotification>();
+   private List<PSNotification> notifications = new ArrayList<>();
 
    /* (non-Javadoc)
     * @see IPSCatalogSummary#getGUID()
@@ -231,7 +231,7 @@ public abstract class PSTransitionBase implements IPSTransitionBase
    public void setNotifications(List<PSNotification> notificationList)
    {
       if (notificationList == null)
-         notificationList = new ArrayList<PSNotification>();
+         notificationList = new ArrayList<>();
       
       notifications = notificationList;
    }

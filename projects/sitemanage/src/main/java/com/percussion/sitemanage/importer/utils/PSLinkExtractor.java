@@ -115,7 +115,7 @@ public final class PSLinkExtractor
             PSSiteQueue siteQueue, String siteUrl)
     {
 
-        final ArrayList<PSLink> outList = new ArrayList<PSLink>();
+        final ArrayList<PSLink> outList = new ArrayList<>();
 
         final Elements links = doc.select(A_HREF);
         for (Element link : links)
@@ -176,7 +176,7 @@ public final class PSLinkExtractor
      */
     public static List<PSLink> getImagesForDocument(final Document doc, final IPSSiteImportLogger log)
     {
-        final ArrayList<PSLink> outList = new ArrayList<PSLink>();
+        final ArrayList<PSLink> outList = new ArrayList<>();
 
         final Elements images = doc.select(IMG_SOURCE);
 

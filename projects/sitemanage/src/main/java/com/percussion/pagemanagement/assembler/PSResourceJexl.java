@@ -46,7 +46,7 @@ public class PSResourceJexl implements IPSJexlExpression
     }
     
     public List<PSResourceLinkAndLocation> createLinkAndLocations() {
-        return new ArrayList<PSResourceLinkAndLocation>();
+        return new ArrayList<>();
     }
     public List<PSResourceLinkAndLocation> createDefaultLinkAndLocations(
             PSResourceScriptEvaluatorContext evalContext) {

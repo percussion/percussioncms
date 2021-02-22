@@ -40,6 +40,7 @@ import com.percussion.services.assembly.IPSAssemblyErrors;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
@@ -105,7 +106,7 @@ public class PSTranslationSlotFinder extends PSSlotContentFinderBase
    private Set<ContentItem> assumeChild(IPSAssemblyItem sourceItem)
          throws PSAssemblyException
    {
-      Set<ContentItem> rval = new HashSet<ContentItem>();
+      Set<ContentItem> rval = new HashSet<>();
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
       try
       {
@@ -147,7 +148,7 @@ public class PSTranslationSlotFinder extends PSSlotContentFinderBase
             }
          }
       }
-      catch (PSCmsException e)
+      catch (PSCmsException | PSNotFoundException e)
       {
          ms_log.error("Problem retrieving relationship information", e);
          throw new PSAssemblyException(IPSAssemblyErrors.FINDER_ERROR,
@@ -175,7 +176,7 @@ public class PSTranslationSlotFinder extends PSSlotContentFinderBase
    private Set<ContentItem> assumeParent(IPSAssemblyItem sourceItem)
          throws PSAssemblyException
    {
-      Set<ContentItem> rval = new HashSet<ContentItem>();
+      Set<ContentItem> rval = new HashSet<>();
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
       try
       {
@@ -198,7 +199,13 @@ public class PSTranslationSlotFinder extends PSSlotContentFinderBase
             PSRelationship rel = (PSRelationship) relationships.get(i);
             IPSGuid childguid = gmgr.makeGuid(rel.getDependent());
             ContentItem slotItem = new ContentItem(childguid, null, 0);
-            setSiteFolderId(slotItem, false);
+
+            try {
+               setSiteFolderId(slotItem, false);
+            } catch (PSNotFoundException e) {
+               ms_log.warn(e.getMessage());
+               //continue processing
+            }
             rval.add(slotItem);
          }
 

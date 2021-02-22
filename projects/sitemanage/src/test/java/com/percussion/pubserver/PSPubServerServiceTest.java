@@ -25,6 +25,7 @@ package com.percussion.pubserver;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -92,8 +93,7 @@ public class PSPubServerServiceTest extends PSRestTestCase<PSPubServerServiceRes
     }
     
     @Test
-    public void test010GetServer()
-    {
+    public void test010GetServer() throws IPSPubServerService.PSPubServerServiceException {
         String siteId = testSiteData.getSiteRestClient().getProperties(testSiteData.site1.getName()).getId();
         
         // Returned servers list, the call to the service
@@ -108,13 +108,12 @@ public class PSPubServerServiceTest extends PSRestTestCase<PSPubServerServiceRes
         // Returned servers list, the call to the service
         // Default server should have the same name as the site.
         PSPublishServerInfo returnedServer = pubServerRestServiceClient.getPubServer(siteId, serverId);
-        
-        assertTrue(returnedServer != null);
+
+        assertNotNull(returnedServer);
     }
 
     @Test
-    public void test020GetServersList()
-    {
+    public void test020GetServersList() throws IPSPubServerService.PSPubServerServiceException {
         String siteId = testSiteData.getSiteRestClient().getProperties(testSiteData.site1.getName()).getId();
 
         // Returned servers list, the call to the service
@@ -134,8 +133,7 @@ public class PSPubServerServiceTest extends PSRestTestCase<PSPubServerServiceRes
     }
     
     @Test
-    public void test030CreateServer()
-    {
+    public void test030CreateServer() throws IPSPubServerService.PSPubServerServiceException {
         String serverNameNoSpace = "testCreateServer";
         String serverName = " " + serverNameNoSpace + " ";
         PSPublishServerInfo server = createPubServerInfo(serverName, "File");
@@ -154,8 +152,7 @@ public class PSPubServerServiceTest extends PSRestTestCase<PSPubServerServiceRes
     }
 
     @Test
-    public void test040CreateStagingServer()
-    {
+    public void test040CreateStagingServer() throws IPSPubServerService.PSPubServerServiceException {
         String serverNameNoSpace = "testCreateStagingServer" + System.currentTimeMillis();
         String serverName = " " + serverNameNoSpace + " ";
         PSPublishServerInfo server = createPubServerInfo(serverName, "File");
@@ -238,8 +235,7 @@ public class PSPubServerServiceTest extends PSRestTestCase<PSPubServerServiceRes
     
 
     @Test
-    public void test060UpdateServer()
-    {
+    public void test060UpdateServer() throws IPSPubServerService.PSPubServerServiceException {
         String siteId = testSiteData.getSiteRestClient().getProperties(testSiteData.site1.getName()).getId();
         
         // Returned servers list, the call to the service
@@ -266,8 +262,7 @@ public class PSPubServerServiceTest extends PSRestTestCase<PSPubServerServiceRes
     }
     
     @Test
-    public void test070UpdateServerToFTPPublishing()
-    {
+    public void test070UpdateServerToFTPPublishing() throws IPSPubServerService.PSPubServerServiceException {
         String siteId = testSiteData.getSiteRestClient().getProperties(testSiteData.site1.getName()).getId();
         
         // Returned servers list, the call to the service
@@ -386,8 +381,7 @@ public class PSPubServerServiceTest extends PSRestTestCase<PSPubServerServiceRes
     }
     
     @Test
-    public void test080UpdateServerToSFTPPublishingWithPrivateKey()
-    {
+    public void test080UpdateServerToSFTPPublishingWithPrivateKey() throws IPSPubServerService.PSPubServerServiceException {
         String siteId = testSiteData.getSiteRestClient().getProperties(testSiteData.site1.getName()).getId();
         
         // Returned servers list, the call to the service
@@ -506,8 +500,7 @@ public class PSPubServerServiceTest extends PSRestTestCase<PSPubServerServiceRes
     }
     
     @Test
-    public void test090DeleteServer()
-    {
+    public void test090DeleteServer() throws IPSPubServerService.PSPubServerServiceException {
         String serverNameNoSpace = "testCreateServerForDeletion";
         String serverName = " " + serverNameNoSpace + " ";
         PSPublishServerInfo server = createPubServerInfo(serverName, "File");
@@ -530,8 +523,7 @@ public class PSPubServerServiceTest extends PSRestTestCase<PSPubServerServiceRes
     }
     
     @Test
-    public void test100AmazonS3Server()
-    {
+    public void test100AmazonS3Server() throws IPSPubServerService.PSPubServerServiceException {
         String siteId = testSiteData.getSiteRestClient().getProperties(testSiteData.site1.getName()).getId();
         PSPublishServerInfo server = new PSPublishServerInfo();
         String serverName = "AmazonS3Server";

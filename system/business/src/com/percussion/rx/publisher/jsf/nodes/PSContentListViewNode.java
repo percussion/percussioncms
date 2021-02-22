@@ -28,6 +28,7 @@ import com.percussion.rx.jsf.PSNodeBase;
 import com.percussion.rx.publisher.PSPublisherUtils;
 import com.percussion.rx.publisher.jsf.beans.PSDesignNavigation;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
@@ -127,8 +128,7 @@ public class PSContentListViewNode extends PSEditableNodeContainer
    }
 
    @Override
-   public List<? extends PSNodeBase> getChildren()
-   {
+   public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
       if (m_children == null)
       {
          m_children = new ArrayList<PSNodeBase>();
@@ -143,7 +143,7 @@ public class PSContentListViewNode extends PSEditableNodeContainer
             {
                return o1.getName().compareToIgnoreCase(o2.getName());
             }});
-         Set<IPSGuid> clistshown = new HashSet<IPSGuid>();
+         Set<IPSGuid> clistshown = new HashSet<>();
          for (IPSContentList c : clists)
          {
             if (clistshown.contains(c.getGUID()))
@@ -163,8 +163,7 @@ public class PSContentListViewNode extends PSEditableNodeContainer
     * @return the outcome, <code>null</code> in this case.
     * @throws PSPublisherException
     */
-   public String createContentList() throws PSPublisherException
-   {
+   public String createContentList() throws PSPublisherException, PSNotFoundException {
       PSContentListNode newcln = create();
       IPSContentList cl = newcln.getContentList();
       cl.setUrl(PSPublisherUtils.SERVLET_URL_PATH + "?sys_deliverytype=filesystem"
@@ -194,8 +193,7 @@ public class PSContentListViewNode extends PSEditableNodeContainer
     * @return the outcome, <code>null</code> in this case.
     * @throws PSPublisherException
     */
-   public String createLegacyContentList() throws PSPublisherException
-   {
+   public String createLegacyContentList() throws PSPublisherException, PSNotFoundException {
       PSContentListNode newcln = create();
       IPSContentList cl = newcln.getContentList();
       cl.setUrl("/Rhythmyx/<yourapplication>/<yourresource>?"
@@ -209,10 +207,8 @@ public class PSContentListViewNode extends PSEditableNodeContainer
     * Create a new content list and persist it.
     * 
     * @return the content list node, never <code>null</code>.
-    * @throws PSPublisherException
     */
-   protected PSContentListNode create()
-   {
+   protected PSContentListNode create() throws PSNotFoundException {
       IPSContentList newcl = getPublisherService().createContentList("new");
       newcl.setName(getUniqueName("ContentList", false));
       return new PSContentListNode(newcl);
@@ -220,8 +216,7 @@ public class PSContentListViewNode extends PSEditableNodeContainer
 
    // see base
    @Override
-   protected boolean findObjectByName(String name)
-   {
+   protected boolean findObjectByName(String name) throws PSNotFoundException {
       IPSPublisherService pub = PSPublisherServiceLocator.getPublisherService();
       return pub.findContentListByName(name) != null;
    }
@@ -253,7 +248,7 @@ public class PSContentListViewNode extends PSEditableNodeContainer
    @Override
    public Set<Object> getAllNames()
    {
-      final Set<Object> names = new HashSet<Object>();
+      final Set<Object> names = new HashSet<>();
       try
       {
          for (final IPSContentList contentList :

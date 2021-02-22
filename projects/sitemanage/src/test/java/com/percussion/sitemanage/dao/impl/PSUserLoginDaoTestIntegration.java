@@ -27,6 +27,7 @@
  */
 package com.percussion.sitemanage.dao.impl;
 
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.user.data.PSUserLogin;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -75,8 +76,7 @@ public class PSUserLoginDaoTestIntegration extends AbstractTransactionalJUnit4Sp
      * Test method for {@link com.percussion.sitemanage.dao.impl.PSUserLoginDao#delete(java.lang.String)}.
      */
     @Test
-    public void testDelete()
-    {
+    public void testDelete() throws IPSGenericDao.DeleteException {
         int count = countRows();
         assertEquals("user xyzzy already exists", 0, count); 
         addRow(); 
@@ -93,8 +93,7 @@ public class PSUserLoginDaoTestIntegration extends AbstractTransactionalJUnit4Sp
      * Test method for {@link com.percussion.sitemanage.dao.impl.PSUserLoginDao#find(java.lang.String)}.
      */
     @Test
-    public void testFind()
-    {
+    public void testFind() throws IPSGenericDao.LoadException {
         int count = countRows();  
         assertEquals("user xyzzy already exists", 0, count);
         addRow();
@@ -111,8 +110,7 @@ public class PSUserLoginDaoTestIntegration extends AbstractTransactionalJUnit4Sp
      * Test method for {@link com.percussion.sitemanage.dao.impl.PSUserLoginDao#findAll()}.
      */
     @Test
-    public void testFindAll()
-    {
+    public void testFindAll() throws IPSGenericDao.LoadException {
         int count = countRows(); 
         assertEquals("user xyzzy already exists", 0, count);
         addRow(); 
@@ -133,8 +131,7 @@ public class PSUserLoginDaoTestIntegration extends AbstractTransactionalJUnit4Sp
      * Test method for {@link com.percussion.sitemanage.dao.impl.PSUserLoginDao#save(com.percussion.user.data.PSUserLogin)}.
      */
     @Test
-    public void testSave()
-    {
+    public void testSave() throws IPSGenericDao.SaveException {
         int count = countRows(); 
         assertEquals("user xyzzy already exists", 0, count);
         addRow(); 
@@ -160,8 +157,7 @@ public class PSUserLoginDaoTestIntegration extends AbstractTransactionalJUnit4Sp
      * Test method for {@link com.percussion.sitemanage.dao.impl.PSUserLoginDao#create(com.percussion.user.data.PSUserLogin)}.
      */
     @Test
-    public void testCreate()
-    {
+    public void testCreate() throws IPSGenericDao.SaveException {
         PSUserLogin myLogin = new PSUserLogin();
         myLogin.setUserid("xyzzy");
         myLogin.setPassword("demo");

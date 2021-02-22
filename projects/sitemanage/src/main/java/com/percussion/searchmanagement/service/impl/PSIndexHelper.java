@@ -59,7 +59,7 @@ public class PSIndexHelper implements Runnable
 
     public PSIndexHelper()
     {
-        ids = new CopyOnWriteArrayList<PSLocator>();
+        ids = new CopyOnWriteArrayList<>();
         thread = new Thread(this);
         thread.setDaemon(true);
         thread.start();

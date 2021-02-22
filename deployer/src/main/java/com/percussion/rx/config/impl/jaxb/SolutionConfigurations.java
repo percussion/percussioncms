@@ -100,7 +100,7 @@ public class SolutionConfigurations {
      */
     public List<SolutionConfig> getSolutionConfig() {
         if (solutionConfig == null) {
-            solutionConfig = new ArrayList<SolutionConfig>();
+            solutionConfig = new ArrayList<>();
         }
         return this.solutionConfig;
     }

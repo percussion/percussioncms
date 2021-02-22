@@ -81,17 +81,19 @@ public class XPathExtractor implements IResponseExit
       
       // clone the input stream, as it is consumed by the xpath evaluator
       // and we need to return the stream
-      ByteArrayOutputStream ourData = new ByteArrayOutputStream();
-      try
-      {
+      try(ByteArrayOutputStream ourData = new ByteArrayOutputStream()){
+
          IOTools.copyStream(input, ourData);
       
-         PSXPathEvaluator xp = new PSXPathEvaluator( 
-            new ByteArrayInputStream( ourData.toByteArray() ) );
-     
-         ctx.setMacro( macroName, xp.evaluate( xpath ) );
-      
-         return new ByteArrayInputStream( ourData.toByteArray() );
+         try(PSXPathEvaluator xp = new PSXPathEvaluator(
+            new ByteArrayInputStream( ourData.toByteArray() ) )) {
+
+            ctx.setMacro(macroName, xp.evaluate(xpath));
+
+            try(InputStream is = new ByteArrayInputStream(ourData.toByteArray())){
+               return is;
+            }
+         }
       } catch (Exception e)
       {
          throw new ScriptTestErrorException( e.toString() );

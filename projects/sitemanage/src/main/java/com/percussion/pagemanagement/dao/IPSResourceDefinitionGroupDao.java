@@ -26,10 +26,11 @@ package com.percussion.pagemanagement.dao;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
-import com.percussion.pagemanagement.service.IPSResourceDefinitionService.PSResourceDefinitionGroupNotFoundException;
+import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
 import com.percussion.pagemanagement.service.IPSResourceDefinitionService.PSResourceDefinitionNotFoundException;
+import com.percussion.pagemanagement.service.PSResourceServiceException;
 import com.percussion.share.dao.IPSGenericDao;
-import com.percussion.share.service.IPSDataService.DataServiceLoadException;
+import com.percussion.share.service.exception.PSDataServiceException;
 
 import java.util.List;
 
@@ -43,17 +44,10 @@ import java.util.List;
 public interface IPSResourceDefinitionGroupDao extends IPSGenericDao<PSResourceDefinitionGroup, String>
 {
 
-    /**
-     * 
-     * Will find a resource definition group.
-     *
-     * @param id the id is the filename minus the extension.
-     * @return a resource definition group.
-     * @throws DataServiceLoadException TODO
-     */
-    PSResourceDefinitionGroup find(String id) throws DataServiceLoadException, PSResourceDefinitionGroupNotFoundException;
-    
-    List<PSResourceDefinition> findAllResources();
+
+    PSResourceDefinitionGroup find(String id) throws PSDataServiceException;
+
+    List<PSResourceDefinition> findAllResources() throws PSResourceServiceException, PSDataServiceException;
     
     /**
      * Finds a resource based on the uniqueId.
@@ -62,7 +56,7 @@ public interface IPSResourceDefinitionGroupDao extends IPSGenericDao<PSResourceD
      * @return maybe <code>null</code>.
      * @throws PSResourceDefinitionNotFoundException 
      */
-    PSResourceDefinition findResource(String uniqueId) throws PSResourceDefinitionNotFoundException;
+    PSResourceDefinition findResource(String uniqueId) throws PSDataServiceException;
     
     /**
      * Finds the primary {@link PSAssetResource} for the given content type.
@@ -70,20 +64,20 @@ public interface IPSResourceDefinitionGroupDao extends IPSGenericDao<PSResourceD
      * @return maybe <code>null</code>.
      * @throws PSResourceDefinitionNotFoundException
      */
-    PSAssetResource findAssetResourceForType(String contentType) throws PSResourceDefinitionNotFoundException;
+    PSAssetResource findAssetResourceForType(String contentType) throws PSDataServiceException;
     
     /**
      * Finds all asset resources definitions for a given content type.
      * @param contentType
      * @return never <code>null</code>, maybe empty.
      */
-    List<PSAssetResource> findAssetResourcesForType(String contentType);
+    List<PSAssetResource> findAssetResourcesForType(String contentType) throws PSResourceServiceException, PSDataServiceException;
     
     /**
      * Finds resources associated to a legacy template.
      * @param template never <code>null</code>.
      * @return never <code>null</code>, maybe empty.
      */
-    List<PSAssetResource> findAssetResourcesForLegacyTemplate(String template);
+    List<PSAssetResource> findAssetResourcesForLegacyTemplate(String template) throws PSResourceServiceException, PSDataServiceException;;
     
 }

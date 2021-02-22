@@ -58,7 +58,7 @@ public class PSTransition extends PSTransitionBase implements IPSTransition
    private String transitionRoles = 
       IPSTransitionsContext.NO_TRANSITION_ROLE_RESTRICTION;
    
-   private List<PSTransitionRole> roles = new ArrayList<PSTransitionRole>();
+   private List<PSTransitionRole> roles = new ArrayList<>();
    
 
    /*
@@ -180,7 +180,7 @@ public class PSTransition extends PSTransitionBase implements IPSTransition
    public void setTransitionRoles(List<PSTransitionRole> roleList)
    {
       if (roleList == null)
-         roleList = new ArrayList<PSTransitionRole>();
+         roleList = new ArrayList<>();
       
       roles = roleList;
    }

@@ -61,7 +61,7 @@ public class PSLikesDao implements IPSLikesDao {
 
     public void delete(Collection<String> ids) throws Exception
 	{
-		Collection<Long> longIds = new ArrayList<Long>(ids.size());
+		Collection<Long> longIds = new ArrayList<>(ids.size());
     	for(String s : ids)
     		longIds.add(Long.valueOf(s));
     	Session session = getSession();

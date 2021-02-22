@@ -38,6 +38,7 @@ import com.percussion.error.PSException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSIteratorUtils;
 
 import java.io.FileInputStream;
@@ -76,8 +77,7 @@ public class PSAuthTypeDependencyHandler extends PSDependencyHandler
    
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       List deps = new ArrayList();
       
       // get entry
@@ -121,8 +121,7 @@ public class PSAuthTypeDependencyHandler extends PSDependencyHandler
 
    // see base class
    public Iterator getDependencies(PSSecurityToken tok)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       Set deps = new HashSet();
       Properties props = getAuthTypesProps();
       Map nameMap = getAuthtypeNames();
@@ -156,8 +155,7 @@ public class PSAuthTypeDependencyHandler extends PSDependencyHandler
 
    // see base class
    public PSDependency getDependency(PSSecurityToken tok, String id)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -226,9 +224,8 @@ public class PSAuthTypeDependencyHandler extends PSDependencyHandler
     * 
     * @throws PSDeployException if there are any errors.
     */
-   private PSDependency getAppDep(PSSecurityToken tok, String resource) 
-      throws PSDeployException
-   {
+   private PSDependency getAppDep(PSSecurityToken tok, String resource)
+           throws PSDeployException, PSNotFoundException {
       PSDependency appDep = null;
       
       String appName = PSDeployComponentUtils.getAppName(resource);
@@ -284,12 +281,9 @@ public class PSAuthTypeDependencyHandler extends PSDependencyHandler
     */
    private Properties getAuthTypesProps() throws PSDeployException
    {
-      FileInputStream in = null;
-      try
-      {
-         Properties props = new Properties();
-         in = new FileInputStream(PSServer.getRxDir().getAbsolutePath() + "/"
-               + IPSConstants.AUTHTYPE_PROP_FILE);
+      Properties props = new Properties();
+      try(FileInputStream in = new FileInputStream(PSServer.getRxDir().getAbsolutePath() + "/"
+               + IPSConstants.AUTHTYPE_PROP_FILE)){
          props.load(in);
          return props;
       }
@@ -298,13 +292,7 @@ public class PSAuthTypeDependencyHandler extends PSDependencyHandler
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
             e.getLocalizedMessage());
       }
-      finally
-      {
-         if (in != null)
-         {
-            try {in.close();} catch (IOException e) {}
-         }
-      }
+
    }
 
    /**
@@ -332,8 +320,7 @@ public class PSAuthTypeDependencyHandler extends PSDependencyHandler
 
    // see base class
    public boolean doesDependencyExist(PSSecurityToken tok, String id)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       return (getDependency(tok, id) != null);
    }
 

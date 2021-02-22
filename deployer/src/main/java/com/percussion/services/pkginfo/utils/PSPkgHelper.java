@@ -66,8 +66,7 @@ public class PSPkgHelper
     * the set will specify the design object, see
     * {@link #validatePkgElement(PSPkgElement, Collection)}.
     */
-   public static Set<String> validatePackage(IPSGuid guid)
-   {
+   public static Set<String> validatePackage(IPSGuid guid) throws PSNotFoundException {
       if (guid == null)
       {
          throw new IllegalArgumentException("guid may not be null");
@@ -76,7 +75,7 @@ public class PSPkgHelper
       Collection<String> comms = getCommunityVisibility(guid);            
       
       // validating each package element
-      Set<String> objects = new HashSet<String>();
+      Set<String> objects = new HashSet<>();
       List<IPSGuid> pkgElemGuids = getPkgInfoService().findPkgElementGuids(
             guid);
       for (IPSGuid pkgElemGuid : pkgElemGuids)
@@ -102,8 +101,7 @@ public class PSPkgHelper
     * 
     * @param pkgName The package name, may not be blank.
     */
-   public static void updatePkgElementVersions(String pkgName)
-   {
+   public static void updatePkgElementVersions(String pkgName) throws PSNotFoundException {
       if (!ms_enabled)
          return;
       
@@ -136,10 +134,9 @@ public class PSPkgHelper
     * 
     * @return See {@link #validatePackage(IPSGuid)}.
     */
-   public static Set<String> validatePackage(String pkgName)
-   {
+   public static Set<String> validatePackage(String pkgName) throws PSNotFoundException {
       if (!ms_enabled)
-         return new HashSet<String>();
+         return new HashSet<>();
       
       if (StringUtils.isBlank(pkgName))
       {
@@ -167,21 +164,10 @@ public class PSPkgHelper
     * the design object has not been modified outside of allowed configuration.
     */
    private static void updatePkgElementVersion(IPSGuid id,
-      boolean forceUpdate)
-   {
+      boolean forceUpdate) throws PSNotFoundException {
       PSPkgElement pkgElem = null;
-      try
-      {
-         pkgElem = getPkgInfoService().loadPkgElementModifiable(id);
-      }
-      catch (PSNotFoundException e)
-      {
-         // should never happen
-         String msg = "Failed to get the package element for guid {0}";
-         Object[] args = { id.toString() };
-         throw new RuntimeException(MessageFormat.format(msg, args), e);
-      }
-      
+      pkgElem = getPkgInfoService().loadPkgElementModifiable(id);
+
       Long version = null;
       try
       {
@@ -214,8 +200,7 @@ public class PSPkgHelper
     * @param ids the IDs of the Design Objects, never <code>null</code>, may be
     * empty.
     */
-   public static void updatePkgElementVersions(Collection<IPSGuid> ids)
-   {
+   public static void updatePkgElementVersions(Collection<IPSGuid> ids) throws PSNotFoundException {
       if (!ms_enabled)
          return;
       
@@ -263,14 +248,13 @@ public class PSPkgHelper
     * may be empty if the object has not been modified externally.
     */
    public static List<String> validatePkgElement(PSPkgElement pkgElem,
-         Collection<String> comms)
-   {
+         Collection<String> comms) throws PSNotFoundException {
       if (pkgElem == null)
       {
          throw new IllegalArgumentException("pkgElem may not be null");
       }
             
-      List<String> warnList = new ArrayList<String>();
+      List<String> warnList = new ArrayList<>();
       
       IPSGuid objGuid = pkgElem.getObjectGuid();
       PSTypeEnum objType = PSTypeEnum.valueOf(pkgElem.getObjectType());
@@ -450,8 +434,7 @@ public class PSPkgHelper
     * @return A collection of community names in which the package is visible.
     * Never <code>null</code>, may be empty.
     */
-   private static Collection<String> getCommunityVisibility(IPSGuid guid)
-   {
+   private static Collection<String> getCommunityVisibility(IPSGuid guid) throws PSNotFoundException {
       // get community visibility configuration
       PSPkgInfo pkg = getPkgInfoService().loadPkgInfo(guid);
       IPSConfigService srv = PSConfigServiceLocator.getConfigService();

@@ -25,6 +25,7 @@ package com.percussion.data;
 
 import com.percussion.error.PSErrorException;
 import com.percussion.error.PSIllegalArgumentException;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestStatistics;
 import com.percussion.util.IOTools;
@@ -655,7 +656,7 @@ public class PSOracleUpdateStatement extends PSUpdateStatement
          {
             String rowid = (String) i.next();
 
-            String query = queryBegin + "'" + rowid + "'";
+            String query = queryBegin + "'" + SecureStringUtils.sanitizeStringForSQLStatement(rowid) + "'";
 
             Statement s = PSSQLStatement.getStatement(conn);
             rs = s.executeQuery( query );

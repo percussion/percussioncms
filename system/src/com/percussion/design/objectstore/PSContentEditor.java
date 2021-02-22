@@ -1017,10 +1017,10 @@ public class PSContentEditor extends PSDataSet
     * </ol>
     * 
     * @param context The validation context, not <code>null</code>.
-    * @throws PSValidationException if a validation error or warning occurs.
+    * @throws PSSystemValidationException if a validation error or warning occurs.
     */
    public void validate(IPSValidationContext context)
-         throws PSValidationException
+         throws PSSystemValidationException
    {
       if (!context.startValidation(this, null))
          return;
@@ -1068,7 +1068,7 @@ public class PSContentEditor extends PSDataSet
          {
             throw e;
          }
-         catch (PSValidationException e)
+         catch (PSSystemValidationException e)
          {
             throw e;
          }

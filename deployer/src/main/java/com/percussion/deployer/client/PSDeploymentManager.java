@@ -354,7 +354,7 @@ public class PSDeploymentManager
 
       try
       {
-         List<Map<String, String>> results = new ArrayList<Map<String, String>>();
+         List<Map<String, String>> results = new ArrayList<>();
          // Create a dummy request doc as it is required.
          Document reqDoc = PSXmlDocumentBuilder.createXmlDocument();
          PSXmlDocumentBuilder.createRoot(reqDoc, "PSXDummy");
@@ -367,7 +367,7 @@ public class PSDeploymentManager
          for (int i = 0; i < len; i++)
          {
             Element current = (Element) nl.item(i);
-            Map<String, String> entry = new HashMap<String, String>();
+            Map<String, String> entry = new HashMap<>();
             entry.put("dependencyId", current.getAttribute("dependencyId"));
             entry.put("objectType", current.getAttribute("objectType"));
             entry.put("package", current.getAttribute("package"));
@@ -1059,7 +1059,7 @@ public class PSDeploymentManager
          Document respDoc = m_conn.execute(reqType, reqDoc);
          PSXmlTreeWalker tree = new PSXmlTreeWalker(respDoc);
          Element el = null;
-         List<String> errors = new ArrayList<String>();
+         List<String> errors = new ArrayList<>();
          while((el = tree.getNextElement("error")) != null)
          {
             errors.add(PSXmlTreeWalker.getElementData(el));
@@ -1108,7 +1108,7 @@ public class PSDeploymentManager
       String reqType = getDeployReqType("validateArchive");
       
       PSMultiValueHashMap<String, String> validationMap = 
-         new PSMultiValueHashMap<String, String>();
+         new PSMultiValueHashMap<>();
 
       try
       {

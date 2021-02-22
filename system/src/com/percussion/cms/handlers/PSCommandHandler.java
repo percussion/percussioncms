@@ -61,8 +61,9 @@ import com.percussion.design.objectstore.PSFieldTranslation;
 import com.percussion.design.objectstore.PSFieldValidationRules;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSSingleHtmlParameter;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSErrorException;
+import com.percussion.error.PSRuntimeException;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.IPSUdfProcessor;
@@ -76,6 +77,7 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCollection;
 
@@ -92,8 +94,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 /**
@@ -105,7 +107,7 @@ public abstract class PSCommandHandler extends PSDataHandler
    /**
     * The error log.
     */
-   private static Log ms_log = LogFactory.getLog(PSCommandHandler.class); 
+   private static final Logger log = LogManager.getLogger(PSCommandHandler.class);
 
    public static String fixProxiedUrl(String url, String serverName, int serverPort) throws MalformedURLException {
       URL proxyTest = new URL(url);
@@ -196,16 +198,16 @@ public abstract class PSCommandHandler extends PSDataHandler
     */
    public int[] getNextIdBlock(String key, int blockSize) throws SQLException
    {
-      if (key == null || key.length() == 0)
-         throw new IllegalArgumentException("key may not be null or empty");
+      synchronized (PSCommandHandler.class) {
+         if (key == null || key.length() == 0)
+            throw new IllegalArgumentException("key may not be null or empty");
 
-      if (blockSize <= 0)
-         throw new IllegalArgumentException(
-            "blockSize must be greater than zero");
+         if (blockSize <= 0)
+            throw new IllegalArgumentException(
+                    "blockSize must be greater than zero");
 
-      int[] idBlock = PSIdGenerator.getNextIdBlock(key, blockSize);
-
-      return idBlock;
+         return PSIdGenerator.getNextIdBlock(key, blockSize);
+      }
    }
 
    /**
@@ -254,7 +256,7 @@ public abstract class PSCommandHandler extends PSDataHandler
       if ( null == req )
          throw new IllegalArgumentException( "request can't be null" );
 
-      req.setParameter( MIN_ACCESS_PARAM_NAME, new Integer( level ));
+      req.setParameter( MIN_ACCESS_PARAM_NAME, level);
    }
 
 
@@ -322,12 +324,12 @@ public abstract class PSCommandHandler extends PSDataHandler
     * @throws PSNotFoundException if an udf specified in a rule does not exist.
     * @throws PSExtensionException if there is an error preparing an extension
     * or a rule.
-    * @throws PSValidationException if no redirects are found for the specified
+    * @throws PSSystemValidationException if no redirects are found for the specified
     * commandName.
     */
    protected void prepareRedirects(String commandName)
       throws PSNotFoundException,
-      PSExtensionException, PSValidationException
+      PSExtensionException, PSSystemValidationException
    {
       if (commandName == null || commandName.trim().length() == 0)
          throw new IllegalArgumentException(
@@ -339,7 +341,7 @@ public abstract class PSCommandHandler extends PSDataHandler
       Iterator requests = appFlow.getRedirects(commandName);
 
       if (requests == null || !requests.hasNext())
-         throw new PSValidationException(IPSServerErrors.CE_MISSING_REDIRECTS,
+         throw new PSSystemValidationException(IPSServerErrors.CE_MISSING_REDIRECTS,
             commandName);
 
       while (requests.hasNext())
@@ -734,11 +736,11 @@ public abstract class PSCommandHandler extends PSDataHandler
     * @throws PSNotFoundException if an udf specified in a rule does not exist.
     * @throws PSExtensionException if there is an error preparing an extension
     *    or a rule.
-    * @throws PSValidationException if there are any mismatches between the
+    * @throws PSSystemValidationException if there are any mismatches between the
     *    fieldset list and the display mappings
     */
    protected void prepareOutputFieldTranslations(PSContentEditor ce)
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       if (ce == null)
          throw new IllegalArgumentException("ce cannot be null");
@@ -757,12 +759,12 @@ public abstract class PSCommandHandler extends PSDataHandler
     * @param ce the content editor, assumed not <code>null</code>.
     * @param dispMapper the display mapper, assumed not <code>null</code>.
     * @throws PSNotFoundException if a udf or extension cannot be located.
-    * @throws PSValidationException if there are any mismatches between the
+    * @throws PSSystemValidationException if there are any mismatches between the
     *    fieldset list and the display mappings
     */
    private void prepareOutputFieldTranslations(PSContentEditor ce,
       PSDisplayMapper dispMapper)
-      throws PSNotFoundException, PSExtensionException, PSValidationException
+      throws PSNotFoundException, PSExtensionException, PSSystemValidationException
    {
       PSContentEditorPipe pipe = (PSContentEditorPipe) ce.getPipe();
       PSFieldSet fieldSet =
@@ -770,7 +772,7 @@ public abstract class PSCommandHandler extends PSDataHandler
 
       if ( null == fieldSet )
       {
-         throw new PSValidationException( IPSServerErrors.CE_MISSING_FIELDSET,
+         throw new PSSystemValidationException( IPSServerErrors.CE_MISSING_FIELDSET,
                dispMapper.getFieldSetRef());
       }
 
@@ -794,7 +796,7 @@ public abstract class PSCommandHandler extends PSDataHandler
                fieldName,
                label
             };
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                   IPSServerErrors.CE_MISSING_FIELD, args );
          }
 
@@ -1444,8 +1446,7 @@ public abstract class PSCommandHandler extends PSDataHandler
     * PSExecutionData, int, PSChangeEventProcessor) 
     * notifyEditorChangeListeners(data, action, null)}. 
     */
-   protected void notifyEditorChangeListeners(PSExecutionData data, int action)
-   {
+   protected void notifyEditorChangeListeners(PSExecutionData data, int action) throws PSSystemValidationException {
       notifyEditorChangeListeners(data, action, null);
    }
    
@@ -1461,8 +1462,7 @@ public abstract class PSCommandHandler extends PSDataHandler
     * listeners are notified with it.  May be <code>null</code>.
     */
    protected void notifyEditorChangeListeners(PSExecutionData data, int action, 
-      PSChangeEventProcessor proc)
-   {
+      PSChangeEventProcessor proc) throws PSSystemValidationException {
       if (data == null)
          throw new IllegalArgumentException("data may not be null");
 
@@ -1491,7 +1491,7 @@ public abstract class PSCommandHandler extends PSDataHandler
          }
          else
          {
-            ms_log.warn("No listeners were notified. "
+            log.warn("No listeners were notified. "
                   + " A child field was specified,"
                   + " but no child row ids provided "
                   + " for content item " + strContentId
@@ -1535,7 +1535,7 @@ public abstract class PSCommandHandler extends PSDataHandler
                //don't throw an error if the action is DELETE, since the item is
                // deleted due to the Delete Plans
                if ( action != PSEditorChangeEvent.ACTION_DELETE )   
-                   throw new RuntimeException(msg);
+                   throw new PSRuntimeException(-1,msg);
             }            
          }
 
@@ -1558,18 +1558,17 @@ public abstract class PSCommandHandler extends PSDataHandler
       {
          // all id's should have already been checked by the command handler
          // before reaching this method, so this would be some kind of bug
-         throw new RuntimeException("Invalid id supplied to change event");
+         throw new PSRuntimeException(-1,"Invalid id supplied to change event");
       }
    }
    
-   public void updateChangeListners(PSEditorChangeEvent e)
-   {
-      Iterator listeners = m_changeListeners.iterator();
-      while (listeners.hasNext())
-      {
-         IPSEditorChangeListener listener =
-            (IPSEditorChangeListener)listeners.next();
-         listener.editorChanged(e);
+   public void updateChangeListners(PSEditorChangeEvent e) throws PSSystemValidationException {
+      for (IPSEditorChangeListener listener : m_changeListeners) {
+         try {
+            listener.editorChanged(e);
+         } catch (PSValidationException psValidationException) {
+            log.warn(psValidationException.getMessage());
+         }
       }
    }
    /**

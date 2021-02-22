@@ -123,7 +123,7 @@ public class PSPublisherUI
    {
       IPSFilterService fsvc = PSFilterServiceLocator.getFilterService();
       List<IPSItemFilter> filters = fsvc.findAllFilters();
-      SortedSet<String> names = new TreeSet<String>();
+      SortedSet<String> names = new TreeSet<>();
       for (IPSItemFilter filter : filters)
       {
          names.add(filter.getName());
@@ -171,7 +171,7 @@ public class PSPublisherUI
       {
          Iterator<PSExtensionRef> refiter = mgr.getExtensionNames(null, null,
                iface, null);
-         List<String> rval = new ArrayList<String>();
+         List<String> rval = new ArrayList<>();
          while (refiter.hasNext())
          {
             PSExtensionRef ref = refiter.next();
@@ -200,7 +200,7 @@ public class PSPublisherUI
       IPSExtensionManager mgr = PSServer.getExtensionManager(null);
       try
       {
-         ArrayList<PSPair<String, String>> params = new ArrayList<PSPair<String, String>>();
+         ArrayList<PSPair<String, String>> params = new ArrayList<>();
          PSExtensionRef ref = new PSExtensionRef(extensionName);
          IPSExtensionDef def = mgr.getExtensionDef(ref);
          Iterator<String> pnames = def.getRuntimeParameterNames();
@@ -209,7 +209,7 @@ public class PSPublisherUI
             String pname = pnames.next();
             IPSExtensionParamDef pdef = def.getRuntimeParameter(pname);
             params
-                  .add(new PSPair<String, String>(pname, pdef.getDescription()));
+                  .add(new PSPair<>(pname, pdef.getDescription()));
          }
 
          PSPair<String, String> rval[] = new PSPair[params.size()];

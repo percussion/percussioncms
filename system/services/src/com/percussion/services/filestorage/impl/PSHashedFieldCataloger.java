@@ -79,8 +79,8 @@ public class PSHashedFieldCataloger implements IPSHashedFieldCataloger
    {
       PSContentEditorSharedDef sharedDef = PSServer.getContentEditorSharedDef();
       PSContentEditorSystemDef systemDef = PSServer.getContentEditorSystemDef();
-      HashSet<PSHashedColumn> columns = new HashSet<PSHashedColumn>();
-      HashSet<PSField> fields = new HashSet<PSField>();
+      HashSet<PSHashedColumn> columns = new HashSet<>();
+      HashSet<PSField> fields = new HashSet<>();
       for (PSField fs : systemDef.getFieldSet().getAllFields())
       {
          fields.add(fs);

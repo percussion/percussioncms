@@ -23,17 +23,12 @@
  */
 package com.percussion.tablefactory;
 
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.ToDoVulnerability;
-import com.percussion.utils.security.IPSDecryptor;
-import com.percussion.utils.security.IPSKey;
-import com.percussion.utils.security.IPSSecretKey;
-import com.percussion.utils.security.PSEncryptionKeyFactory;
-import com.percussion.util.PSCharSetsConstants;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.container.*;
 import com.percussion.utils.container.jboss.PSJbossProperties;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.*;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.xml.PSInvalidXmlException;
@@ -167,9 +162,16 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
       String isEncrypted = serverProps.getProperty(PWD_ENCRYPTED_PROPERTY);
       if (isEncrypted != null && isEncrypted.equalsIgnoreCase("Y"))
          try{
-            m_pw = PSEncryptor.getInstance().decrypt(m_pw);
+
+            m_pw = PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(m_pw);
          } catch (PSEncryptionException e) {
-            m_pw = PSLegacyEncrypter.getInstance().decrypt(m_pw, getPartOneKey());
+            m_pw = PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(m_pw, PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).getPartOneKey(),null);
          }
 
    }
@@ -311,7 +313,9 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
          if (creds == null)
          {
             try {
-               strPw = PSEncryptor.getInstance().encrypt(
+               strPw = PSEncryptor.getInstance("AES",
+                       PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+               ).encrypt(
                        repositoryJndiDataSource.getPassword());
                encrypted = true;
             } catch (PSEncryptionException e) {
@@ -324,7 +328,9 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
       else
       {
          try {
-            strPw = PSEncryptor.getInstance().encrypt(
+            strPw = PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).encrypt(
                     repositoryJndiDataSource.getPassword());
             encrypted = true;
          } catch (PSEncryptionException e) {
@@ -961,7 +967,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
     * constant is encrytped by the {@link #rot13(char)} method.
     */
    @Deprecated
-   private static final String PART_ONE = PSLegacyEncrypter.PART_ONE();
+   private static final String PART_ONE = PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).PART_ONE();
 
    /**
     * The alias for the backend database type.  Initialized in the ctor, may be

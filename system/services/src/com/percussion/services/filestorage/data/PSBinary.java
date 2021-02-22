@@ -112,7 +112,7 @@ public class PSBinary implements Serializable
    @OneToMany(mappedBy = "binary", cascade = CascadeType.ALL)
    @Fetch(FetchMode.SELECT)
    // @JoinColumn( name="BINARY_ID", referencedColumnName="ID", nullable=false)
-   Set<PSBinaryMetaEntry> metaEntries = new HashSet<PSBinaryMetaEntry>();
+   Set<PSBinaryMetaEntry> metaEntries = new HashSet<>();
 
    /**
     * The mimetype for the item.  should not include encoding

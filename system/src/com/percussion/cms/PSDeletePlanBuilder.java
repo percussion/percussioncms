@@ -25,33 +25,16 @@
 package com.percussion.cms;
 
 import com.percussion.cms.handlers.PSContentEditorHandler;
-import com.percussion.data.PSConditionalEvaluator;
 import com.percussion.design.objectstore.PSApplication;
-import com.percussion.design.objectstore.PSConditional;
 import com.percussion.design.objectstore.PSContentEditor;
-import com.percussion.design.objectstore.PSContentEditorPipe;
-import com.percussion.design.objectstore.PSContentEditorSystemDef;
 import com.percussion.design.objectstore.PSDataMapper;
-import com.percussion.design.objectstore.PSDataMapping;
 import com.percussion.design.objectstore.PSDisplayMapper;
-import com.percussion.design.objectstore.PSDisplayMapping;
-import com.percussion.design.objectstore.PSExtensionCallSet;
-import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
-import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.design.objectstore.PSSingleHtmlParameter;
-import com.percussion.design.objectstore.PSTextLiteral;
-import com.percussion.design.objectstore.PSValidationException;
-import com.percussion.extension.PSExtensionException;
-import com.percussion.util.PSCollection;
-import com.percussion.util.PSUniqueObjectGenerator;
+import com.percussion.design.objectstore.PSSystemValidationException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Plan builder for performing delete/purge operation.
@@ -72,7 +55,7 @@ public class PSDeletePlanBuilder extends PSModifyPlanBuilder
     * super.createModifyPlan()} for details.
     */
    public PSModifyPlan createModifyPlan(PSDisplayMapper mapper,
-      PSFieldSet fieldSet) throws PSValidationException, SQLException
+      PSFieldSet fieldSet) throws PSSystemValidationException, SQLException
    {
 
       if (mapper == null || fieldSet == null)

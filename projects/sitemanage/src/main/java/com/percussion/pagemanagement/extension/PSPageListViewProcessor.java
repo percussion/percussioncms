@@ -28,6 +28,7 @@ import com.percussion.pagemanagement.dao.IPSTemplateDao;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.ui.data.PSDisplayPropertiesCriteria;
 import com.percussion.ui.service.IPSListViewProcessor;
 
@@ -42,6 +43,8 @@ import java.util.Set;
 import com.percussion.util.PSSiteManageBean;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -55,6 +58,7 @@ public class PSPageListViewProcessor implements IPSListViewProcessor
     private IPSPageDaoHelper pageDaoHelper;
     private IPSTemplateDao templateDao;
     private IPSIdMapper idMapper;
+    private static final Logger log = LogManager.getLogger(PSPageListViewProcessor.class);
 
     @Autowired
     public PSPageListViewProcessor(IPSPageDaoHelper pageDaoHelper, IPSTemplateDao templateDao, IPSIdMapper idMapper)
@@ -101,13 +105,13 @@ public class PSPageListViewProcessor implements IPSListViewProcessor
      * Get a map of page content id to path item for all of the supplied items that are 
      * pages.
      * 
-     * @param criteria The items, not <code>null</code>.
+     * @param items The items, not <code>null</code>.
      * 
      * @return The map, not <code>null</code>.
      */
     private Map<String, PSPathItem> getPageMap(List<PSPathItem> items)
     {
-        Map<String, PSPathItem> pageMap = new HashMap<String, PSPathItem>();
+        Map<String, PSPathItem> pageMap = new HashMap<>();
         
         for (PSPathItem item : items)
         {
@@ -123,7 +127,7 @@ public class PSPageListViewProcessor implements IPSListViewProcessor
 
     private List<Integer> getPageIdList(Set<String> pageIds)
     {
-        List<Integer> contentIds = new ArrayList<Integer>();
+        List<Integer> contentIds = new ArrayList<>();
         for (String id : pageIds)
         {
             contentIds.add(Integer.parseInt(id));
@@ -141,13 +145,17 @@ public class PSPageListViewProcessor implements IPSListViewProcessor
      */
     private Map<String, String> getTemplateMap(Collection<String> templateIds)
     {
-        Map<String, String> templateMap = new HashMap<String, String>();
+        Map<String, String> templateMap = new HashMap<>();
         for (String templateId : templateIds)
         {
             String templateName = templateMap.get(templateId);
             if (templateName == null)
-            {
-                PSTemplate template = templateDao.find(templateId);
+            {PSTemplate template = null;
+                try {
+                    template = templateDao.find(templateId);
+                } catch (PSDataServiceException e) {
+                    log.warn("Template {} not found.",templateName);
+                }
                 if (template != null)
                     templateMap.put(templateId, template.getName());
             }

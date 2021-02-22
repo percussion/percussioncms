@@ -124,7 +124,7 @@ public class PSJexlMethodsForScheme
       }
       pattern = pattern.toLowerCase();
 
-      List<JexlMethod> methods = new ArrayList<JexlMethod>();
+      List<JexlMethod> methods = new ArrayList<>();
       for (JexlMethod m : PSJexlMethodsForScheme.getJexlMethods())
       {
          if (Pattern.matches(pattern, m.getName().toLowerCase()))
@@ -145,7 +145,7 @@ public class PSJexlMethodsForScheme
       if (ms_allMethodsVars != null)
          return ms_allMethodsVars;
       
-      List<IPSExtensionDef> defList = new ArrayList<IPSExtensionDef>();
+      List<IPSExtensionDef> defList = new ArrayList<>();
       Collection<IPSExtensionDef> defs;
       defs = PSJexlExtensionHelper.getJexlExtensionDefs();
       if (defs != null)
@@ -153,7 +153,7 @@ public class PSJexlMethodsForScheme
       defs = PSJexlExtensionHelper.getVelocityTools();
       defList.addAll(defs);
       
-      ms_allMethodsVars = new ArrayList<JexlMethod>();
+      ms_allMethodsVars = new ArrayList<>();
       for (IPSExtensionDef def : defList)
       {
          ms_allMethodsVars.addAll(getMethodsFromExtensionDef(def));
@@ -167,7 +167,7 @@ public class PSJexlMethodsForScheme
       }
       
       // filter out the methods defined in NONE_JEXL_METHODS
-      List<JexlMethod> nonJexlMethods = new ArrayList<JexlMethod>();
+      List<JexlMethod> nonJexlMethods = new ArrayList<>();
       for (JexlMethod m : ms_allMethodsVars)
       {
          if (isNotJexlMethod(m.mi_name))
@@ -188,7 +188,7 @@ public class PSJexlMethodsForScheme
    private static List<JexlMethod> getMethodsFromExtensionDef(
          IPSExtensionDef def)
    {
-      List<JexlMethod> methods = new ArrayList<JexlMethod>();
+      List<JexlMethod> methods = new ArrayList<>();
 
       // get the start name
       PSExtensionRef ref = def.getRef();

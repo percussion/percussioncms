@@ -29,6 +29,7 @@ import com.percussion.rx.config.PSConfigValidation;
 import com.percussion.rx.design.IPSAssociationSet;
 import com.percussion.rx.design.IPSDesignModel;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
@@ -95,9 +96,8 @@ public class PSObjectConfigHandler implements IPSConfigHandler
     * (non-Javadoc)
     * @see com.percussion.rx.config.IPSConfigHandler#getPropertyDefs(java.lang.Object)
     */
-   public Map<String, Object> getPropertyDefs(Object obj)
-   {
-      Map<String, Object> propDefs = new HashMap<String, Object>();
+   public Map<String, Object> getPropertyDefs(Object obj) throws PSNotFoundException {
+      Map<String, Object> propDefs = new HashMap<>();
       for (IPSPropertySetter setter : m_setters)
       {
          setter.addPropertyDefs(obj, propDefs);
@@ -184,8 +184,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
     */
    public List<PSPair<Object, ObjectState>> getDesignObjects(
          @SuppressWarnings("unused")
-         Map<String, Object> cachedObjs)
-   {
+         Map<String, Object> cachedObjs) throws PSNotFoundException {
       throw new UnsupportedOperationException(
             "getDesignObjects() methed is not supported.");
    }
@@ -194,8 +193,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
     * (non-Javadoc)
     * @see com.percussion.rx.config.IPSConfigHandler#getDefaultDesignObject(java.util.Map)
     */
-   public Object getDefaultDesignObject(Map<String, Object> cachedObjs)
-   {
+   public Object getDefaultDesignObject(Map<String, Object> cachedObjs) throws PSNotFoundException {
       throw new UnsupportedOperationException(
       "getDefaultDesignObject() methed is not supported.");
    }
@@ -211,7 +209,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
       if (getType() == null)
          return Collections.emptyList();
       
-      PSPair<String, ObjectState> pair = new PSPair<String, ObjectState>(
+      PSPair<String, ObjectState> pair = new PSPair<>(
             getName(), ObjectState.BOTH);
       return Collections.singletonList(pair);
    }
@@ -230,7 +228,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
     */
    private List<PSPair<String, ObjectState>> getObjectNamesFromHandlerImpl()
    {
-      List<PSPair<String, ObjectState>> result = new ArrayList<PSPair<String, ObjectState>>();
+      List<PSPair<String, ObjectState>> result = new ArrayList<>();
       Collection<String> curNames = getCurNames();
       Collection<String> prevNames = getPrevNames();
       
@@ -242,30 +240,30 @@ public class PSObjectConfigHandler implements IPSConfigHandler
       {
          for (String name : curNames)
             result
-                  .add(new PSPair<String, ObjectState>(name, ObjectState.CURRENT));
+                  .add(new PSPair<>(name, ObjectState.CURRENT));
          return result;
       }
 
       // get object names in both current and previous
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
       names.addAll(curNames);
       names.retainAll(prevNames);
       for (String name : names)
-         result.add(new PSPair<String, ObjectState>(name, ObjectState.BOTH));
+         result.add(new PSPair<>(name, ObjectState.BOTH));
       
       // get object names in current only
       names.clear();
       names.addAll(curNames);
       names.removeAll(prevNames);
       for (String name : names)
-         result.add(new PSPair<String, ObjectState>(name, ObjectState.CURRENT));
+         result.add(new PSPair<>(name, ObjectState.CURRENT));
       
       // get object names in previous only
       names.clear();
       names.addAll(prevNames);
       names.removeAll(curNames);
       for (String name : names)
-         result.add(new PSPair<String, ObjectState>(name, ObjectState.PREVIOUS));
+         result.add(new PSPair<>(name, ObjectState.PREVIOUS));
       
       return result;
    }
@@ -342,8 +340,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
     */
    public IPSGuid saveResult(IPSDesignModel model, Object obj,
          @SuppressWarnings("unused")
-         ObjectState state, List<IPSAssociationSet> assocList)
-   {
+         ObjectState state, List<IPSAssociationSet> assocList) throws PSNotFoundException {
       model.save(obj, assocList);
       return model.getGuid(obj);
    }
@@ -355,7 +352,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
    public List<PSConfigValidation> validate(IPSConfigHandler other)
    {
       List<PSPair<String, ObjectState>> commonNames = getCommonObjectNames(other);
-      List<PSConfigValidation> result = new ArrayList<PSConfigValidation>();
+      List<PSConfigValidation> result = new ArrayList<>();
       List<PSConfigValidation> subResult;
       for (PSPair<String, ObjectState> pair : commonNames)
       {
@@ -385,7 +382,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
          IPSConfigHandler.ObjectState state, List<IPSPropertySetter> oSetters)
    {
       // validate all setters, one at a time
-      List<PSConfigValidation> result = new ArrayList<PSConfigValidation>();
+      List<PSConfigValidation> result = new ArrayList<>();
       for (IPSPropertySetter mySetter : getPropertySetters())
       {
          List<PSConfigValidation> setterResult;
@@ -432,14 +429,14 @@ public class PSObjectConfigHandler implements IPSConfigHandler
          return Collections.emptyList();
 
       // find names in both names
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
       names.addAll(myNames.keySet());
       names.retainAll(otherNames.keySet());
 
-      List<PSPair<String, ObjectState>> result = new ArrayList<PSPair<String, ObjectState>>();
+      List<PSPair<String, ObjectState>> result = new ArrayList<>();
       for (String name : names)
       {
-         PSPair<String, ObjectState> pair = new PSPair<String, ObjectState>(
+         PSPair<String, ObjectState> pair = new PSPair<>(
                name, myNames.get(name));
          result.add(pair);
       }
@@ -457,7 +454,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
    private Map<String, ObjectState> getObjectNames(IPSConfigHandler h)
    {
       List<PSPair<String, ObjectState>> pairs = h.getObjectNames();
-      Map<String, ObjectState> map = new HashMap<String, ObjectState>();
+      Map<String, ObjectState> map = new HashMap<>();
       for (PSPair<String, ObjectState> p : pairs)
       {
          map.put(p.getFirst(), p.getSecond());
@@ -482,7 +479,7 @@ public class PSObjectConfigHandler implements IPSConfigHandler
     * List of property setters, wired in by spring from bean definition.
     */   
    private List<IPSPropertySetter> m_setters = 
-      new ArrayList<IPSPropertySetter>();
+      new ArrayList<>();
    
    /**
     * The handler specific properties used in previous configuration. It may

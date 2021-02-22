@@ -78,28 +78,28 @@ public class JettyStartUtils {
             // process the response
             String line = "";
             String errorLine = "";
-            try (BufferedReader error = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-                 BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()))) {
-
-                while ((errorLine = error.readLine()) != null) {
-                    debug("get pid error line=%s", errorLine);
-                }
-                while ((line = input.readLine()) != null) {
-                    String idString = line;
-                    if (idString.startsWith("java.exe")) {
-                        idString = line.split("java.exe")[1];
+            try (BufferedReader error = new BufferedReader(new InputStreamReader(proc.getErrorStream()))){
+                 try(BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()))){
+                        while ((errorLine = error.readLine()) != null) {
+                            debug("get pid error line=%s", errorLine);
+                        }
+                        while ((line = input.readLine()) != null) {
+                            String idString = line;
+                            if (idString.startsWith("java.exe")) {
+                                idString = line.split("java.exe")[1];
+                            }
+                            try {
+                                pid = Integer.parseInt(idString.trim());
+                                break;
+                            } catch (NumberFormatException | NullPointerException e) {
+                                continue;
+                            }
+                        }
                     }
-                    try {
-                        pid = Integer.parseInt(idString.trim());
-                        break;
-                    } catch (NumberFormatException | NullPointerException e) {
-                        continue;
-                    }
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         return pid;
     }

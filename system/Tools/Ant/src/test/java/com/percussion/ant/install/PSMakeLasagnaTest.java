@@ -23,11 +23,10 @@
  */
 package com.percussion.ant.install;
 
-import com.percussion.server.PSServer;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.testing.UnitTest;
 
@@ -43,7 +42,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
@@ -110,7 +108,9 @@ public class PSMakeLasagnaTest
       
       // verify encryption was successful
       assertFalse(newPWD.equals(originalPWD));
-      newPWD = PSEncryptor.getInstance().decrypt(newPWD);
+      newPWD = PSEncryptor.getInstance("AES",
+              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).decrypt(newPWD);
       assertTrue(newPWD.equals(originalPWD));
    }
    

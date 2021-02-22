@@ -28,6 +28,7 @@ import com.percussion.rx.config.IPSPropertySetter;
 import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.config.PSConfigValidation;
 import com.percussion.rx.design.IPSAssociationSet;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -174,8 +175,7 @@ public class PSSimplePropertySetter implements IPSPropertySetter
    /*
     * //see base interface method for details
     */
-   public void addPropertyDefs(Object obj, Map<String, Object> defs)
-   {
+   public void addPropertyDefs(Object obj, Map<String, Object> defs) throws PSNotFoundException {
       if (defs == null)
          throw new IllegalArgumentException("defs may not be null.");
       
@@ -203,8 +203,7 @@ public class PSSimplePropertySetter implements IPSPropertySetter
     * otherwise return <code>true</code>.
     */
    protected boolean addPropertyDefs(Object obj, String propName,
-         Object pvalue, Map<String, Object> defs)
-   {
+         Object pvalue, Map<String, Object> defs) throws PSNotFoundException {
       if (obj == null)
          throw new IllegalArgumentException("obj may not be null.");
       if (StringUtils.isBlank(propName))
@@ -276,8 +275,7 @@ public class PSSimplePropertySetter implements IPSPropertySetter
     * 
     * @throws Exception if failed to get the property value.
     */
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       if (obj == null)
          throw new IllegalArgumentException("obj may not be null.");
       if (StringUtils.isBlank(propName))

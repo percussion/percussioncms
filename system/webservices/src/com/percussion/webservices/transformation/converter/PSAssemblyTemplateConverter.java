@@ -25,6 +25,7 @@ package com.percussion.webservices.transformation.converter;
 
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSTemplateSlot;
+import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSTemplateBinding;
@@ -44,6 +45,8 @@ import java.util.Set;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Converts objects between the classes
@@ -52,6 +55,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public class PSAssemblyTemplateConverter extends PSConverter
 {
+
+   private static final Logger log = LogManager.getLogger(PSAssemblyTemplateConverter.class);
 
    public PSAssemblyTemplateConverter(BeanUtilsBean beanUtils) {
       super(beanUtils);
@@ -101,11 +106,17 @@ public class PSAssemblyTemplateConverter extends PSConverter
 
          // convert slots
          Reference[] origSlots = orig.getSlots();
-         List<IPSGuid> slotIds = new ArrayList<IPSGuid>();
+         List<IPSGuid> slotIds = new ArrayList<>();
          for (Reference origSlot : origSlots)
             slotIds.add(new PSDesignGuid(origSlot.getId()));
-         if (!slotIds.isEmpty())
-            dest.setSlots(new HashSet<IPSTemplateSlot>(loadSlots(slotIds)));
+         if (!slotIds.isEmpty()) {
+            try {
+               dest.setSlots(new HashSet<>(loadSlots(slotIds)));
+            } catch (PSAssemblyException e) {
+               log.warn(e.getMessage());
+               log.debug(e.getMessage(),e);
+            }
+         }
 
          // convert stylesheet
          dest.setStyleSheetPath(orig.getStylesheet());
@@ -143,7 +154,7 @@ public class PSAssemblyTemplateConverter extends PSConverter
          List<PSTemplateBinding> bindings = (List) orig.getBindings();
          if (bindings != null)
          {
-            PSAssemblyTemplateBindingsBinding barr[] =
+            PSAssemblyTemplateBindingsBinding[] barr =
                new PSAssemblyTemplateBindingsBinding[bindings.size()];
             int count = 0;
             for (PSTemplateBinding binding : bindings)
@@ -178,7 +189,7 @@ public class PSAssemblyTemplateConverter extends PSConverter
          // convert publish type
          Converter converter = PSTransformerFactory.getInstance().getConverter(
                IPSAssemblyTemplate.PublishWhen.class);
-         dest.setWhenToPublish((PublishType) converter.convert(
+         dest.setWhenToPublish( converter.convert(
                PublishType.class, orig.getPublishWhen()));
       }
 
@@ -193,9 +204,8 @@ public class PSAssemblyTemplateConverter extends PSConverter
     *           <code>null</code> or empty.
     * @return collection of loaded slots, never <code>null</code> or empty.
     */
-   protected Collection<IPSTemplateSlot> loadSlots(List<IPSGuid> slotIds)
-   {
-      if (slotIds == null || slotIds.size() == 0)
+   protected Collection<IPSTemplateSlot> loadSlots(List<IPSGuid> slotIds) throws PSAssemblyException {
+      if (slotIds == null || slotIds.isEmpty())
       {
          throw new IllegalArgumentException("slotIds must not be null or empty");
       }

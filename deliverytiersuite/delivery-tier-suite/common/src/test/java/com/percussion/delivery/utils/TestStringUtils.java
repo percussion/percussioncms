@@ -36,10 +36,10 @@ public class TestStringUtils {
 
     @Test
     public void testJoinURL(){
-        String ret = StringUtils.joinURL("https://test.com/","/parttwo?perc-tid=xyz");
+        String ret = StringUtils.joinURL("https://test.com/","/parttwo");
 
      assertNotNull(ret);
-     assertEquals("https://test.com/parttwo?perc-tid=xyz",ret);
+     assertEquals("https://test.com/parttwo",ret);
 
     }
 }

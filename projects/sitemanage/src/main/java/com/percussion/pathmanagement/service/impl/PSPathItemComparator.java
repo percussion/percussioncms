@@ -35,7 +35,6 @@ public class PSPathItemComparator implements Comparator<PSPathItem>
     private static PSPathItemComparator instance;
     
     /**
-     * @param psPathItemService
      */
     private PSPathItemComparator()
     {

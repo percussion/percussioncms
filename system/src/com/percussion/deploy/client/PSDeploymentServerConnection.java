@@ -45,8 +45,9 @@ import com.percussion.server.IPSCgiVariables;
 import com.percussion.server.PSServerLockException;
 import com.percussion.server.job.PSJobException;
 import com.percussion.util.PSCharSetsConstants;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.util.PSFormatVersion;
 import com.percussion.util.PSPurgableTempFile;
@@ -1082,14 +1083,18 @@ public class PSDeploymentServerConnection
       if (pwd == null || pwd.trim().length() == 0)
          return "";
 
-      String key = uid == null || uid.trim().length() == 0 ? PSLegacyEncrypter.INVALID_DRIVER() :
+      String key = uid == null || uid.trim().length() == 0 ? PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).INVALID_DRIVER() :
          uid;
 
       try {
          //This code is executed client side so the key will be unique per client.
          return PSEncryptor.getInstance(ENC_ALGO,SECURE_DIR).decrypt(pwd);
       } catch (PSEncryptionException e) {
-         return PSCryptographer.decrypt(PSLegacyEncrypter.INVALID_CRED(), key, pwd);
+         return PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
+                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).INVALID_CRED(), key, pwd);
       }
 
    }

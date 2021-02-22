@@ -29,28 +29,24 @@ import com.percussion.services.catalog.PSCatalogException;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
 import com.percussion.services.error.PSNotFoundException;
-import com.percussion.services.filter.*;
+import com.percussion.services.filter.IPSFilterService;
+import com.percussion.services.filter.IPSFilterServiceErrors;
+import com.percussion.services.filter.IPSItemFilter;
+import com.percussion.services.filter.IPSItemFilterRuleDef;
+import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.filter.data.PSItemFilter;
 import com.percussion.services.filter.data.PSItemFilterRuleDef;
-import com.percussion.services.guidmgr.IPSGuidManager;
-import com.percussion.services.guidmgr.PSGuidManagerLocator;
-import com.percussion.services.memory.IPSCacheAccess;
-import com.percussion.services.notification.IPSNotificationListener;
-import com.percussion.services.notification.IPSNotificationService;
-import com.percussion.services.notification.PSNotificationEvent;
-import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
@@ -61,7 +57,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Filter service manager performs CRUD operations on item filters.
@@ -89,10 +84,7 @@ public class PSFilterManager
    /**
     * Logger for filter manager
     */
-   private static Log ms_log = LogFactory.getLog(PSFilterManager.class);
-   
-   private static volatile Object filterLock = new Object();
-
+   private static final Logger log = LogManager.getLogger(PSFilterManager.class);
 
    /*
     * (non-Javadoc)
@@ -118,11 +110,11 @@ public class PSFilterManager
    public List<IPSItemFilter> loadFilter(List<IPSGuid> ids) 
       throws PSNotFoundException
    {
-      if (ids == null || ids.size() == 0)
+      if (ids == null || ids.isEmpty())
       {
          throw new IllegalArgumentException("ids may not be null or empty");
       }
-      List<IPSItemFilter> rval = new ArrayList<IPSItemFilter>();
+      List<IPSItemFilter> rval = new ArrayList<>();
       for (IPSGuid g : ids)
       {
          rval.add(loadFilter(g));
@@ -135,7 +127,6 @@ public class PSFilterManager
     * 
     * @see com.percussion.services.filter.IPSFilterService#findFilterByName(java.lang.String)
     */
-   @SuppressWarnings("unchecked")
    public IPSItemFilter findFilterByName(String name) throws PSFilterException
    {
       if (StringUtils.isBlank(name))
@@ -150,8 +141,7 @@ public class PSFilterManager
     * @see com.percussion.services.filter.IPSFilterService#findFilterByID(
     * com.percussion.utils.guid.IPSGuid)
     */
-   public IPSItemFilter findFilterByID(IPSGuid id)
-   {
+   public IPSItemFilter findFilterByID(IPSGuid id) throws PSNotFoundException {
       return loadUnmodifiableFilter(id);
    }
 
@@ -225,7 +215,7 @@ public class PSFilterManager
             {
               if(e.getErrorCode()!=IPSFilterServiceErrors.FILTER_MISSING)
               {
-                 ms_log.error("Exception finding item filter "+f.getName(),e);
+                 log.error("Exception finding item filter "+f.getName(),e);
               }
             }
             if (current != null)
@@ -239,7 +229,7 @@ public class PSFilterManager
       }
       catch (Exception e)
       {
-         ms_log.error("Problem saving filter: " + filter.getName(), e);
+         log.error("Problem saving filter: " + filter.getName(), e);
          throw new RuntimeException(e);
       }
 
@@ -305,7 +295,7 @@ public class PSFilterManager
    @SuppressWarnings("unchecked")
    public List<IPSCatalogSummary> getSummaries(PSTypeEnum type)
    {
-      List<IPSCatalogSummary> rval = new ArrayList<IPSCatalogSummary>();
+      List<IPSCatalogSummary> rval = new ArrayList<>();
 
       Session s = sessionFactory.getCurrentSession();
 
@@ -339,7 +329,7 @@ public class PSFilterManager
             IPSGuid guid = PSXmlSerializationHelper.getIdFromXml(
                   PSTypeEnum.ITEM_FILTER, item);
             IPSItemFilter temp = null;
-            List<IPSGuid> guids = new ArrayList<IPSGuid>();
+            List<IPSGuid> guids = new ArrayList<>();
             guids.add(guid);
             temp = loadFilter(guids).get(0);
 
@@ -352,15 +342,11 @@ public class PSFilterManager
                   .toString());
          }
       }
-      catch (IOException e)
+      catch (IOException | PSNotFoundException e)
       {
          throw new PSCatalogException(IPSCatalogErrors.IO, e, type);
       }
-      catch (SAXException e)
-      {
-         throw new PSCatalogException(IPSCatalogErrors.XML, e, item);
-      }
-      catch (PSInvalidXmlException e)
+      catch (SAXException | PSInvalidXmlException e)
       {
          throw new PSCatalogException(IPSCatalogErrors.XML, e, item);
       }
@@ -378,7 +364,7 @@ public class PSFilterManager
 
          if (id.getType() == PSTypeEnum.ITEM_FILTER.getOrdinal())
          {
-            List<IPSGuid> ids = new ArrayList<IPSGuid>();
+            List<IPSGuid> ids = new ArrayList<>();
             ids.add(id);
             IPSItemFilter temp = loadFilter(ids).get(0);
             return temp.toXML();
@@ -390,7 +376,7 @@ public class PSFilterManager
                   .toString());
          }
       }
-      catch (IOException e)
+      catch (IOException | PSNotFoundException e)
       {
          throw new PSCatalogException(IPSCatalogErrors.IO, e, id);
       }
@@ -416,7 +402,7 @@ public class PSFilterManager
             filters.add(findFilterByName(name));
             return filters;
          } catch (PSFilterException e) {
-            ms_log.error("Cannot find filter",e);
+            log.error("Cannot find filter",e);
          }
       }
 

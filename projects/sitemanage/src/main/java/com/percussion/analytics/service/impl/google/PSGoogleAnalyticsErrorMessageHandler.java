@@ -62,7 +62,7 @@ public class PSGoogleAnalyticsErrorMessageHandler
       return preMsg + errorMsg;
   }
    
-   private static Map<CAUSETYPE, String> messages = new HashMap<CAUSETYPE, String>();
+   private static Map<CAUSETYPE, String> messages = new HashMap<>();
    static
    {
       messages.put(CAUSETYPE.ACCOUNT_DELETED, "The analytics account has been deleted.");

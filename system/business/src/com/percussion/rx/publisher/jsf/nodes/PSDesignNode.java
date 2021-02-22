@@ -27,6 +27,7 @@ import com.percussion.rx.jsf.PSCategoryNodeBase;
 import com.percussion.rx.jsf.PSEditableNode;
 import com.percussion.rx.jsf.PSEditableNodeContainer;
 import com.percussion.rx.jsf.PSNodeBase;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 
 import java.util.ArrayList;
@@ -119,8 +120,7 @@ public abstract class PSDesignNode extends PSEditableNode
     * @param nodeName the node name, assumed not <code>null</code> or empty. 
     * @return the specified node, never <code>null</code>.
     */
-   private PSNodeBase getToplevelNode(String nodeName)
-   {
+   private PSNodeBase getToplevelNode(String nodeName) throws PSNotFoundException {
       PSNodeBase root = getRoot();
 
       for (PSNodeBase n : root.getChildren())
@@ -141,15 +141,14 @@ public abstract class PSDesignNode extends PSEditableNode
     * @return the list of selectable items, never <code>null</code>, but may
     *    be empty.
     */
-   protected List<SelectItem> getSelectionFromContainer(String name)
-   {
+   protected List<SelectItem> getSelectionFromContainer(String name) throws PSNotFoundException {
       if (StringUtils.isBlank(name))
          throw new IllegalArgumentException("name may not be null or empty.");
       
       PSCategoryNodeBase container = (PSCategoryNodeBase) getToplevelNode(name);
 
       // get all delivery type's title/names
-      List<SelectItem> rval = new ArrayList<SelectItem>();
+      List<SelectItem> rval = new ArrayList<>();
       for (PSNodeBase n : container.getChildren())
       {
          rval.add(new SelectItem(n.getTitle(), n.getTitle()));

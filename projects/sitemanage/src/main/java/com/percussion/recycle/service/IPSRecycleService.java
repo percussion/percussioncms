@@ -25,6 +25,7 @@
 package com.percussion.recycle.service;
 
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.utils.guid.IPSGuid;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public interface IPSRecycleService {
 
     List<IPSItemSummary> findChildren(String path);
 
-    IPSItemSummary findItem(String path);
+    IPSItemSummary findItem(String path) throws IPSDataService.DataServiceLoadException;
 
     /***
      * Returns a boolean indicating if the specified guid is in the Recycler.

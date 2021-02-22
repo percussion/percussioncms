@@ -116,8 +116,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -326,7 +326,7 @@ public class PSPublisherService
    /**
     * Logger used for publisher service.
     */
-   private static Log ms_log = LogFactory.getLog(PSPublisherService.class);
+   private static Logger log = LogManager.getLogger(PSPublisherService.class);
    
    /**
     * These ids are stored by the demand publishing system. These are stored
@@ -337,7 +337,7 @@ public class PSPublisherService
     * @deprecated only used for deprecated calls in this service. Use the
     * business publisher service instead.
     */
-   private Map<Integer, int[]> m_demandids = new HashMap<Integer, int[]>();
+   private Map<Integer, int[]> m_demandids = new HashMap<>();
 
    /**
     * As with the demand id above, the demand folder stores the relevant parent
@@ -348,7 +348,7 @@ public class PSPublisherService
     * business publisher service instead.
     */
    private Map<Integer, Integer> m_demandfolder =
-         new HashMap<Integer, Integer>();
+         new HashMap<>();
 
    /**
     * Service configuration bean. It is fired by Spring bean configuration.
@@ -390,17 +390,20 @@ public class PSPublisherService
          throw new IllegalArgumentException("ids may not be null or empty");
       }
       // @TODO load from cache
-      List<IPSContentList> rval = new ArrayList<IPSContentList>();
+      List<IPSContentList> rval = new ArrayList<>();
       for (IPSGuid g : ids)
       {
-         rval.add(loadContentList(g));
+         try {
+            rval.add(loadContentList(g));
+         } catch (PSNotFoundException e) {
+            log.warn("Content not found for Guid: {}, skipping Guid",g.toStringUntyped());
+         }
       }
       return rval;
    }
    
    @Transactional
-   public IPSContentList loadContentList(IPSGuid id)
-   {
+   public IPSContentList loadContentList(IPSGuid id) throws PSNotFoundException {
       // @TODO load from cache
       IPSContentList clist = loadContentListModifiable(id);
       loadItemFilterIfNeeded(clist);
@@ -409,8 +412,7 @@ public class PSPublisherService
    }
 
    @Transactional
-   public IPSContentList loadContentListModifiable(IPSGuid id)
-   {
+   public IPSContentList loadContentListModifiable(IPSGuid id) throws PSNotFoundException {
       if (id == null)
       {
          throw new IllegalArgumentException("id may not be null");
@@ -493,8 +495,7 @@ public class PSPublisherService
     * @see com.percussion.services.publisher.IPSPublisherService#findContentListByName(java.lang.String)
     */
    @Transactional
-   public IPSContentList findContentListByName(String name)
-   {
+   public IPSContentList findContentListByName(String name) throws PSNotFoundException {
       if (StringUtils.isBlank(name))
       {
          throw new IllegalArgumentException("name may not be null or empty");
@@ -518,8 +519,7 @@ public class PSPublisherService
     * Loads the referenced item filter for the given Content List if it has one.
     * @param clist the Content List in question, assumed not <code>null</code>.
     */
-   private void loadItemFilterIfNeeded(IPSContentList clist)
-   {
+   private void loadItemFilterIfNeeded(IPSContentList clist) throws PSNotFoundException {
       if (clist.getFilterId() == null)
          return;
       
@@ -550,7 +550,11 @@ public class PSPublisherService
       List<IPSContentList> results = c.list();
       for (IPSContentList clist : results)
       {
-         loadItemFilterIfNeeded(clist);
+         try {
+            loadItemFilterIfNeeded(clist);
+         } catch (PSNotFoundException e) {
+            log.warn("Skipping item filter: {}",e.getMessage());
+         }
       }
       return results;
 
@@ -574,7 +578,7 @@ public class PSPublisherService
       c.addOrder(Order.asc("name"));
       c.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
       List<IPSContentList> results = c.list();
-      List<String> nameList = new ArrayList<String>();
+      List<String> nameList = new ArrayList<>();
       for (IPSContentList clist : results)
       {
          nameList.add(clist.getName());
@@ -585,8 +589,7 @@ public class PSPublisherService
    }
    
    @Transactional
-   public IPSContentList findContentListById(IPSGuid contListID)
-   {
+   public IPSContentList findContentListById(IPSGuid contListID) throws PSNotFoundException {
       if (contListID == null)
       {
          throw new IllegalArgumentException("contListID may not be null");
@@ -633,7 +636,7 @@ public class PSPublisherService
       }
       catch (Exception e)
       {
-         ms_log.error("Bad site id found " + siteidstr, e);
+         log.error("Bad site id found " + siteidstr, e);
       }
       IPSGuid deliveryContextId = new PSGuid(PSTypeEnum.CONTEXT,
             deliveryContext);
@@ -655,9 +658,9 @@ public class PSPublisherService
       
       final Map<String,String> overrideParams;
       if (overrides == null)
-         overrideParams = new HashMap<String,String>();
+         overrideParams = new HashMap<>();
       else
-         overrideParams = new HashMap<String,String>(overrides);      
+         overrideParams = new HashMap<>(overrides);
       // override the context & site IDs parameters to keep them in sync 
       overrideParams.put(IPSHtmlParameters.SYS_CONTEXT,
             "" + deliveryContextId.getUUID());
@@ -699,7 +702,7 @@ public class PSPublisherService
       {
          final long size = result.getRows().getSize();
          final long chunks = size == 0 ? 0 : (long) Math.ceil(((double) size / (double) contentListChunkSize()));
-         ms_log.debug("Splitting content list size: " + size + " into " + chunks + " chunks.");
+         log.debug("Splitting content list size: " + size + " into " + chunks + " chunks.");
          final Iterator<QueryResult> splitResults = PSQueryResultUtils.splitQueryResults(result, contentListChunkSize());
          final Iterator<List<PSContentListItem>> li = 
             Iterators.transform(splitResults, new Function<QueryResult, List<PSContentListItem>>()
@@ -709,10 +712,10 @@ public class PSPublisherService
             {
                try
                      {
-                        PSTimer swTemp2 = new PSTimer(ms_log);
+                        PSTimer swTemp2 = new PSTimer(log);
 
                         chunk++;
-                        ms_log.debug("Pulling chunk: " + chunk + " of " + chunks);
+                        log.debug("Pulling chunk: " + chunk + " of " + chunks);
                         // allow transaction by not going via "this" which is
                         // not seen by spring
 
@@ -796,7 +799,7 @@ public class PSPublisherService
 
          // create filter items
          swTemp = new Timer();
-         Map<Row, IPSFilterItem> rowToItem = new HashMap<Row, IPSFilterItem>();
+         Map<Row, IPSFilterItem> rowToItem = new HashMap<>();
          List<IPSFilterItem> items = createContentListFilterItems(result,
                  cidToSum, rowToItem, siteId);
          swTemp.logElapsed("Create filter items");
@@ -804,7 +807,7 @@ public class PSPublisherService
          // filter items
          swTemp = new Timer();
          Map<Object, IPSFilterItem> okitems =
-                 new HashMap<Object, IPSFilterItem>();
+                 new HashMap<>();
 
          PSQueryResult filteredresults = filterContentListItems(list, result,
                  items, cidToSum, rowToItem, okitems, overrideParams,
@@ -870,7 +873,7 @@ public class PSPublisherService
          }
          catch (PSInvalidContentTypeException e)
          {
-            ms_log.error("Unable to locate Page content type for Select Item sorting", e);
+            log.error("Unable to locate Page content type for Select Item sorting", e);
          }
       }
       
@@ -918,9 +921,9 @@ public class PSPublisherService
          ValueFormatException
    {
       Map<Integer, PSComponentSummary> cidToSum =
-            new HashMap<Integer, PSComponentSummary>();
+            new HashMap<>();
       RowIterator riter = result.getRows();
-      List<Integer> cids = new ArrayList<Integer>();
+      List<Integer> cids = new ArrayList<>();
       boolean first = true;
 
       while (riter.hasNext())
@@ -977,7 +980,7 @@ public class PSPublisherService
          throws RepositoryException, ItemNotFoundException,
          ValueFormatException
    {
-      List<IPSFilterItem> items = new ArrayList<IPSFilterItem>();
+      List<IPSFilterItem> items = new ArrayList<>();
       RowIterator riter;
       riter = result.getRows();
       while (riter.hasNext())
@@ -988,13 +991,13 @@ public class PSPublisherService
          try {
             fid = r.getValue(RX_SYS_FOLDERID);
          } catch (ItemNotFoundException e) {
-            ms_log.debug("No Folder id used in query");
+            log.debug("No Folder id used in query");
          }
          int contentId = (int) cid.getLong();
          PSComponentSummary sum = cidToSum.get(contentId);
          if (sum==null)
          {
-            ms_log.debug("Item "+contentId +" may have been deleted, will filter");
+            log.debug("Item "+contentId +" may have been deleted, will filter");
             break;
          }
          PSLegacyGuid itemid = new PSLegacyGuid(contentId, sum
@@ -1057,7 +1060,7 @@ public class PSPublisherService
       Collection<IPSSiteItem> siteitems = findSiteItems(siteid,
             deliveryContextId.getUUID());
       // Create a map from the content information to a location
-      Map<PubItem, Object> pubitems = new HashMap<PubItem, Object>();
+      Map<PubItem, Object> pubitems = new HashMap<>();
       for (IPSSiteItem si : siteitems)
       {
          PubItem pitem = new PubItem(si);
@@ -1070,7 +1073,7 @@ public class PSPublisherService
          {
             if (v instanceof IPSSiteItem)
             {
-               List<IPSSiteItem> vlist = new ArrayList<IPSSiteItem>();
+               List<IPSSiteItem> vlist = new ArrayList<>();
                vlist.add((IPSSiteItem)v);
                vlist.add(si);
                pubitems.put(pitem, vlist);
@@ -1084,7 +1087,7 @@ public class PSPublisherService
 
       // Walk the content list items and set the location if we have one
       // otherwise remove the item as it isn't available for unpublishing
-      List<PSContentListItem> result = new ArrayList<PSContentListItem>();
+      List<PSContentListItem> result = new ArrayList<>();
       for (PSContentListItem ci : contentListItems)
       {
          Object v = pubitems.get(new PubItem(ci));
@@ -1178,10 +1181,10 @@ public class PSPublisherService
                + items.size() + " items.");
       }
       
-      PSTimer timer = new PSTimer(ms_log);
+      PSTimer timer = new PSTimer(log);
       if (list.getFilter() != null)
       {
-         timer = new PSTimer(ms_log);
+         timer = new PSTimer(log);
          items = list.getFilter().filter(items, overrides);
          timer.logElapsed("Items Filtered: " + items.size() + " with filter: " + list.getFilter().getName());
 
@@ -1194,7 +1197,7 @@ public class PSPublisherService
       }
 
       PSRowComparator rcomp = new PSRowComparator(
-            new ArrayList<PSPair<String, Boolean>>());
+            new ArrayList<>());
       String[] origcnames = sourceItems.getColumnNames();
       boolean found = false;
       for (String c : origcnames)
@@ -1226,7 +1229,7 @@ public class PSPublisherService
          Row r = riter.nextRow();
          Value cid = r.getValue(RX_SYS_CONTENTID);
          PSComponentSummary sum = cidToSum.get((int) cid.getLong());
-         Map<String, Object> rowdata = new HashMap<String, Object>();
+         Map<String, Object> rowdata = new HashMap<>();
          for (int i = 0; i < origcnames.length; i++)
          {
             String c = origcnames[i];
@@ -1245,7 +1248,7 @@ public class PSPublisherService
             filteredresults.addRow(nrow);
          }
          }catch(NullPointerException npe){
-            ms_log.warn("Removing content item from list.", npe);
+            log.warn("Removing content item from list.", npe);
          }
       }
       return filteredresults;
@@ -1291,7 +1294,7 @@ public class PSPublisherService
    @Transactional
    public List<IPSCatalogSummary> getSummaries(PSTypeEnum type)
    {
-      List<IPSCatalogSummary> rval = new ArrayList<IPSCatalogSummary>();
+      List<IPSCatalogSummary> rval = new ArrayList<>();
 
       Session s = sessionFactory.getCurrentSession();
 
@@ -1325,7 +1328,7 @@ public class PSPublisherService
          {
             IPSContentList temp = new PSContentList();
             temp.fromXML(item);
-            List<IPSContentList> lists = new ArrayList<IPSContentList>();
+            List<IPSContentList> lists = new ArrayList<>();
             lists.add(temp);
             saveContentLists(lists);
          }
@@ -1361,7 +1364,7 @@ public class PSPublisherService
 
          if (id.getType() == PSTypeEnum.CONTENT_LIST.getOrdinal())
          {
-            List<IPSGuid> ids = new ArrayList<IPSGuid>();
+            List<IPSGuid> ids = new ArrayList<>();
             ids.add(id);
             IPSContentList temp = loadContentLists(ids).get(0);
             return temp.toXML();
@@ -1436,7 +1439,7 @@ public class PSPublisherService
       PSLegacyGuid cid = (PSLegacyGuid) contentid;
       PSLegacyGuid fid = folderguid != null ? (PSLegacyGuid) folderguid : null;
 
-      Map<String, String> params = new HashMap<String, String>();
+      Map<String, String> params = new HashMap<>();
       StringBuilder b = new StringBuilder();
       b.append(protocol);
       b.append("://");
@@ -1668,7 +1671,7 @@ public class PSPublisherService
          IPSGuid siteId, int deliveryContext, Collection<Integer> cids)
    {
       if (cids.isEmpty())
-         return new ArrayList<Integer>();
+         return new ArrayList<>();
 
       Session s = getSessionFactory().getCurrentSession();
       long idset = 0;
@@ -1717,10 +1720,10 @@ public class PSPublisherService
       List<Integer> contentIds = (idset != 0) ? (List)executeQuery(q) : q.list();
 
       // dedupe IDs
-      Set<Integer> results = new HashSet<Integer>();
+      Set<Integer> results = new HashSet<>();
       results.addAll(contentIds);
 
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
          swTemp.logElapsed("Find " + results.size() + " modified items.");
 
       return results;
@@ -1766,10 +1769,10 @@ public class PSPublisherService
       List<Integer> contentIds = (idset != 0) ? (List)executeQuery(q) : q.list();
 
       // dedupe IDs
-      Set<Integer> results = new HashSet<Integer>();
+      Set<Integer> results = new HashSet<>();
       results.addAll(contentIds);
 
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
          swTemp.logElapsed("Found " + results.size() + " new items.");
 
       return results;
@@ -1785,7 +1788,7 @@ public class PSPublisherService
     */
    private Collection<IPSSiteItem> createSiteItemsList(List<PSSiteItem> rows)
    {
-      Collection<IPSSiteItem> rval = new ArrayList<IPSSiteItem>();
+      Collection<IPSSiteItem> rval = new ArrayList<>();
       for(PSSiteItem row : rows)
       {
          PSSiteItem si = row;
@@ -2058,7 +2061,7 @@ public class PSPublisherService
          stmt.setParameter(i++, siteId.getUUID());
          stmt.setString(i++, clistGenerator);
          rs = stmt.list().iterator();
-         List<IPSGuid> results = new ArrayList<IPSGuid>();
+         List<IPSGuid> results = new ArrayList<>();
          IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
 
          while (rs.hasNext())
@@ -2084,7 +2087,7 @@ public class PSPublisherService
          PSTouchParentItemsHandler handler = new PSTouchParentItemsHandler(
             session);
          handler.addSpecificIds(cids);
-         ms_log.debug("List of items to update is: " + handler.toString());
+         log.debug("List of items to update is: " + handler.toString());
          handler.touchContentItems();
 
    }
@@ -2103,7 +2106,7 @@ public class PSPublisherService
          PSTouchParentItemsHandler handler =
                new PSTouchParentItemsHandler(session);
          handler.addParents(cids);
-         ms_log.debug("List of items to update is: " + handler.toString());
+         log.debug("List of items to update is: " + handler.toString());
          return handler.touchContentItems();
 
       }
@@ -2118,7 +2121,7 @@ public class PSPublisherService
                new PSTouchParentItemsHandler(session);
          handler.addSpecificIds(cids);
          handler.addParents(cids);
-         ms_log.debug("List of items to update is: " + handler.toString());
+         log.debug("List of items to update is: " + handler.toString());
          return handler.touchContentItems();
 
       }
@@ -2132,7 +2135,7 @@ public class PSPublisherService
    public Collection<Integer> touchActiveAssemblyParentsByGuids(
          Collection<IPSGuid> cids)
    {
-      Set<Integer> contentids = new HashSet<Integer>();
+      Set<Integer> contentids = new HashSet<>();
       for (IPSGuid cid : cids)
       {
          PSLegacyGuid lg = (PSLegacyGuid) cid;
@@ -2188,7 +2191,7 @@ public class PSPublisherService
          Collection<IPSGuid> ctypeids, PSTouchParentItemsHandler handler)
    {
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
-      Set<Integer> cids = new HashSet<Integer>();
+      Set<Integer> cids = new HashSet<>();
 
       for (IPSGuid ctid : ctypeids)
       {
@@ -2198,7 +2201,7 @@ public class PSPublisherService
          }
          catch (PSORMException e)
          {
-            ms_log.error(
+            log.error(
                   "Problem getting item ids for content type " + ctid);
          }
       }
@@ -2214,8 +2217,7 @@ public class PSPublisherService
     *      String, java.lang.String, boolean)
     */
    public boolean executeDemandPublish(String[] ids, String parentFolderId,
-         final String edition, boolean wait)
-   {
+         final String edition, boolean wait) throws PSNotFoundException {
       if (ids == null)
       {
          throw new IllegalArgumentException("ids may not be null");
@@ -2289,7 +2291,7 @@ public class PSPublisherService
             }
             catch (InterruptedException e)
             {
-               ms_log.warn("Wait interrupted for demand publish", e);
+               log.warn("Wait interrupted for demand publish", e);
             }
          }
       }
@@ -2504,7 +2506,7 @@ public class PSPublisherService
       }
       catch(Exception e)
       {
-         ms_log.error("Problem updating publishing info", e);
+         log.error("Problem updating publishing info", e);
       }
 
       }
@@ -2604,7 +2606,7 @@ public class PSPublisherService
       
       if (! status.getState().isPersistable())
       {
-         ms_log.warn(
+         log.warn(
                "Request to persist an item in unexpected state: " + status);
          return null;
       }
@@ -2620,7 +2622,7 @@ public class PSPublisherService
          IPSGuid cid = status.getId();
          if (cid == null)
          {
-            ms_log.warn("No content id in status: " + status);
+            log.warn("No content id in status: " + status);
             return null;
          }
          PSLocator loc = gmgr.makeLocator(cid);
@@ -2750,7 +2752,7 @@ public class PSPublisherService
          siteItem = (PSSiteItem) crit.uniqueResult();
       } catch (RuntimeException e)
       {
-         ms_log.error("Non unique site item entry",e);
+         log.error("Non unique site item entry",e);
          throw e;
       }
       if (siteItem != null)
@@ -2789,8 +2791,7 @@ public class PSPublisherService
    }
    
    @Transactional
-   public void initPublishingStatus(long statusid, Date start, IPSGuid edition)
-   {
+   public void initPublishingStatus(long statusid, Date start, IPSGuid edition) throws PSNotFoundException {
       if (start == null)
       {
          throw new IllegalArgumentException("start may not be null");
@@ -2902,8 +2903,7 @@ public class PSPublisherService
    }
 
    @Transactional
-   public List<IPSContentList> findAllContentListsBySite(IPSGuid siteId)
-   {
+   public List<IPSContentList> findAllContentListsBySite(IPSGuid siteId) throws PSNotFoundException {
       if (siteId == null)
       {
          throw new IllegalArgumentException("siteId may not be null");
@@ -3305,7 +3305,7 @@ public class PSPublisherService
          Query q =session.createQuery("select p from PSPubItem p where p.statusId = :statusId");
          q.setParameter("statusId", new Long(jobid));
          Iterator<IPSPubItemStatus> values = q.iterate();
-         PSXStreamObjectStream<IPSPubItemStatus> rvalue = new PSXStreamObjectStream<IPSPubItemStatus>();
+         PSXStreamObjectStream<IPSPubItemStatus> rvalue = new PSXStreamObjectStream<>();
          rvalue.writeObjects(values);
          return rvalue;
       }
@@ -3320,7 +3320,7 @@ public class PSPublisherService
    public List<IPSPubStatus> findPubStatusBySite(IPSGuid siteId)
    {
       List<IPSEdition> editions = findAllEditionsBySite(siteId);
-      List<Long> editionIds = new ArrayList<Long>();
+      List<Long> editionIds = new ArrayList<>();
       if (editions.isEmpty())
          return Collections.EMPTY_LIST;
       
@@ -3336,7 +3336,7 @@ public class PSPublisherService
    public List<IPSPubStatus> findPubStatusBySiteWithFilters(IPSGuid siteId, int numDays, int maxCount)
    {
       List<IPSEdition> editions = findAllEditionsBySite(siteId);
-      List<Long> editionIds = new ArrayList<Long>();
+      List<Long> editionIds = new ArrayList<>();
       if (editions.isEmpty())
          return Collections.EMPTY_LIST;
       
@@ -3405,7 +3405,7 @@ public class PSPublisherService
    {
       Session s = getSessionFactory().getCurrentSession();
       Calendar cal = Calendar.getInstance();
-      List<IPSPubStatus> stati = new ArrayList<IPSPubStatus>();
+      List<IPSPubStatus> stati = new ArrayList<>();
       
       if (days != -1)
           cal.add(Calendar.DAY_OF_YEAR, -days);
@@ -3429,7 +3429,7 @@ public class PSPublisherService
       
       sqlQuery += "order by status.startDate desc";
       
-      ms_log.debug("Query is: " + sqlQuery);
+      log.debug("Query is: " + sqlQuery);
       
       Query query = null;
       try 
@@ -3438,7 +3438,7 @@ public class PSPublisherService
       }
       catch (HibernateException hibernateException)
       {
-          ms_log.error(hibernateException.getMessage());
+          log.error(hibernateException.getMessage());
       }
       
       query.setParameter("siteid", siteId.longValue());
@@ -3451,7 +3451,7 @@ public class PSPublisherService
          query.setMaxResults(maxCount);
       }
       
-      ms_log.debug("HQL query string is: " + query.getQueryString());
+      log.debug("HQL query string is: " + query.getQueryString());
       List<Object[]> result = query.list();
       for(Object r : result) {
           stati.add((IPSPubStatus)r);
@@ -3513,7 +3513,7 @@ public class PSPublisherService
       List<IPSPubStatus> pubStatuses = findPubStatusByServer(serverId);
       if(!pubStatuses.isEmpty())
       {
-         List<Long> jobIds = new ArrayList<Long>();
+         List<Long> jobIds = new ArrayList<>();
          for (IPSPubStatus ipsPubStatus : pubStatuses)
          {
             jobIds.add(ipsPubStatus.getStatusId());
@@ -3554,7 +3554,7 @@ public class PSPublisherService
    public List<PSItemPublishingHistory> findItemPublishingHistory(IPSGuid id)
    {
       notNull(id, "id cannot be null.");
-      List<PSItemPublishingHistory> results = new ArrayList<PSItemPublishingHistory>();
+      List<PSItemPublishingHistory> results = new ArrayList<>();
       if (!(id instanceof PSLegacyGuid))
       {
          throw new IllegalArgumentException(
@@ -3568,7 +3568,7 @@ public class PSPublisherService
          Query q =session.createQuery("select sr.name, p.date, p.operation, p.status, p.message, p.statusId from PSPubItem p, PSPubStatus s, PSPubServer sr where p.statusId = s.statusId and s.pubServerId = sr.serverId and p.contentId = :contentId order by p.date desc");
          q.setParameter("contentId", new Integer(lguid.getContentId()));
          List<Object[]> rows = q.list();
-         Set<Integer> statusIds = new HashSet<Integer>();
+         Set<Integer> statusIds = new HashSet<>();
          for(Object[] row : rows){
             int statusId = Integer.valueOf(StringUtils.EMPTY + row[5]);
             if(!statusIds.contains(statusId)) {
@@ -3581,7 +3581,7 @@ public class PSPublisherService
                }
                catch(Exception e){
                   //This should not happen, in case happens log the details and send the operation as error
-                  ms_log.error("Error occurred converting the operation for publishing entry for content id: "
+                  log.error("Error occurred converting the operation for publishing entry for content id: "
                   + lguid.toString() + " and publishing date " + date.toString(), e);
                }
                String status = "Error";
@@ -3591,7 +3591,7 @@ public class PSPublisherService
                }
                catch(Exception e){
                   //This should not happen, in case happens log the details and send the operation as error
-                  ms_log.error("Error occurred converting the status for publishing entry for content id: "
+                  log.error("Error occurred converting the status for publishing entry for content id: "
                   + lguid.toString() + " and publishing date " + date.toString(), e);
                }
                String message = StringUtils.EMPTY + row[4];
@@ -3748,8 +3748,8 @@ public class PSPublisherService
     */
    @Transactional
    public void init() {
-      ms_log.info("Initializing Publisher Service");
-       ms_log.info("TODO: Move fixPubStatus to rxFix Job.");
+      log.info("Initializing Publisher Service");
+       log.info("TODO: Move fixPubStatus to rxFix Job.");
       //fixPubStatus(false);
    }
 
@@ -3783,12 +3783,12 @@ public class PSPublisherService
          session.flush();
          fixed = true;
          if (i != 0)
-            ms_log.info("Fixed aborted pubstatus total: " + i);
+            log.info("Fixed aborted pubstatus total: " + i);
          return i;
       }
       catch (Throwable e)
       {
-         ms_log.warn("Failed to fix update publish status", e);
+         log.warn("Failed to fix update publish status", e);
          return 0;
       }
    }
@@ -3965,12 +3965,12 @@ public class PSPublisherService
          throw new IllegalArgumentException("flags may not be null or empty.");
       
       String[] unpublishFlags = flags.split(",");
-      List<String> upflagList = new ArrayList<String>();
+      List<String> upflagList = new ArrayList<>();
       for(String flag : unpublishFlags)
       {
          upflagList.add(flag);
       }
-      List<Long> rval = new ArrayList<Long>();
+      List<Long> rval = new ArrayList<>();
       Session s = getSessionFactory().getCurrentSession();
 
          // Note that in all cases, we're looking for either successfully 
@@ -3990,14 +3990,14 @@ public class PSPublisherService
          List<Long> purgedItems = q.list();
          rval.addAll(purgedItems);
 
-         ms_log.debug("Found purged items for unpublish: " + purgedItems.size());
+         log.debug("Found purged items for unpublish: " + purgedItems.size());
          
          // Items not in their original folder
          List movedItems = new ArrayList<Long>();
          if (isHandleChangedLocation())
             movedItems = findMovedItems(objectId, true);
          
-         ms_log.debug("Found moved items for unpublish: " + movedItems.size());
+         log.debug("Found moved items for unpublish: " + movedItems.size());
          
          rval.addAll(movedItems);
          
@@ -4016,7 +4016,7 @@ public class PSPublisherService
          List<Long> archiveItems = q.list();
          rval.addAll(archiveItems);
 
-         ms_log.debug("Found archived items for unpublish: " + archiveItems.size());
+         log.debug("Found archived items for unpublish: " + archiveItems.size());
 
       return rval;
    }
@@ -4061,7 +4061,7 @@ public class PSPublisherService
    public List<IPSPubItemStatus> findPubItemStatusForReferenceIds(
          List<Long> refs)
    {
-      List<IPSPubItemStatus> rval = new ArrayList<IPSPubItemStatus>();
+      List<IPSPubItemStatus> rval = new ArrayList<>();
       Session s = getSessionFactory().getCurrentSession();
 
          final int interval = 300;
@@ -4081,7 +4081,7 @@ public class PSPublisherService
    @Transactional
    public List<PSSiteItem> findSiteItemsForReferenceIds(List<Long> refs)
    {
-      List<PSSiteItem> rval = new ArrayList<PSSiteItem>();
+      List<PSSiteItem> rval = new ArrayList<>();
       Session s = getSessionFactory().getCurrentSession();
 
          final int interval = 300;
@@ -4190,7 +4190,7 @@ public class PSPublisherService
    {
       Timer()
       {
-         super(ms_log);
+         super(log);
       }
    }
    
@@ -4240,7 +4240,7 @@ public class PSPublisherService
       }
       catch (Exception e)
       {
-         ms_log.error("Failed to determine database type", e);
+         log.error("Failed to determine database type", e);
          return false;
       }
    }
@@ -4250,7 +4250,7 @@ public class PSPublisherService
    public boolean isSitePublished(IPSGuid siteId)
    {
       List<IPSEdition> editions = findAllEditionsBySite(siteId);
-      List<Long> editionIds = new ArrayList<Long>();
+      List<Long> editionIds = new ArrayList<>();
       if (editions.isEmpty())
          return false;
       for(IPSEdition e : editions)

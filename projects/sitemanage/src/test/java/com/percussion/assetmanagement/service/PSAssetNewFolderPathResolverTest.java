@@ -29,6 +29,8 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSValidationException;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -100,8 +102,7 @@ public class PSAssetNewFolderPathResolverTest
     }
 
     @Test
-    public void shouldResolveForPageUsingAssetsPath()
-    {
+    public void shouldResolveForPageUsingAssetsPath() throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
 
         owner = pageItem;
         context.checking(new Expectations()
@@ -121,8 +122,7 @@ public class PSAssetNewFolderPathResolverTest
     }
     
     @Test
-    public void shouldResolveForPageUsingSitePath()
-    {
+    public void shouldResolveForPageUsingSitePath() throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
 
         pageItem = createItemSummary("blah", IPSPageService.PAGE_CONTENT_TYPE, asList("//SITE/blah"));
         owner = pageItem;
@@ -145,8 +145,7 @@ public class PSAssetNewFolderPathResolverTest
     
 
     @Test
-    public void shouldResolveForTemplateUsingAssetsPath()
-    {
+    public void shouldResolveForTemplateUsingAssetsPath() throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
 
         owner = template;
         context.checking(new Expectations()
@@ -164,8 +163,7 @@ public class PSAssetNewFolderPathResolverTest
     }
 
     @Test
-    public void shouldResolveForTemplateUsingSitePath()
-    {
+    public void shouldResolveForTemplateUsingSitePath() throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
 
         owner = template;
         siteSummary.setFolderPath("//SITE");

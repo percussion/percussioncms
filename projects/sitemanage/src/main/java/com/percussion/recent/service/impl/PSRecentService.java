@@ -26,7 +26,6 @@ package com.percussion.recent.service.impl;
 
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.extension.IPSWorkflowAction;
 import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.data.PSWidgetContentType;
@@ -40,26 +39,23 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.service.IPSSiteTemplateService;
 import com.percussion.webservices.PSWebserviceUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.FormParam;
-import javax.ws.rs.PathParam;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Transactional(propagation=Propagation.REQUIRED)
 @Component("recentService")
@@ -85,7 +81,7 @@ public class PSRecentService implements IPSRecentService
     @Autowired
     private IPSSiteTemplateService siteTemplateService;
 
-    static Log ms_log = LogFactory.getLog(PSRecentService.class);
+    private static final Logger log = LogManager.getLogger(PSRecentService.class);
 
     /*
     @Autowired
@@ -106,27 +102,31 @@ public class PSRecentService implements IPSRecentService
     {
         String user = PSWebserviceUtils.getUserName();
         List<String> recentEntries = recentService.findRecent(user, null, RecentType.ITEM);
-        List<PSItemProperties> items = new ArrayList<PSItemProperties>();
-        List<String> toDelete = new ArrayList<String>();
+        List<PSItemProperties> items = new ArrayList<>();
+        List<String> toDelete = new ArrayList<>();
         for (String entry : recentEntries)
         {
             PSItemProperties itemProps = null;
             try
             {
                 itemProps = folderHelper.findItemPropertiesById(entry);
-                if (itemProps != null )
+                if (itemProps != null ) {
                     //don't return archived items and items with no path on home page.
-                    if(ignoreArchivedItems && (itemProps.getStatus().equals(PSWorkflowHelper.WF_STATE_ARCHIVE) || itemProps.getPath() == null)) {
+                    if (ignoreArchivedItems && (itemProps.getStatus().equals(PSWorkflowHelper.WF_STATE_ARCHIVE) || itemProps.getPath() == null)) {
                         continue;
-                    }else{
+                    } else {
                         items.add(itemProps);
                     }
-                else
-                    ms_log.debug("Removing recent item find returned null :" + entry);
+                }else {
+                    log.debug("Removing recent item find returned null : {}",
+                            entry);
+                }
             }
             catch (Exception e)
             {
-                ms_log.debug("removing error entry from recent item list " + entry + " ", e);
+                log.debug("removing error entry from recent item list {} Error: {}",
+                        entry,
+                        e.getMessage());
             }
             if (itemProps == null)
                 toDelete.add(entry);
@@ -137,15 +137,14 @@ public class PSRecentService implements IPSRecentService
     }
 
     @Override
-    public List<PSTemplateSummary> findRecentTemplate(@PathParam("siteName")
-    String siteName)
+    public List<PSTemplateSummary> findRecentTemplate(String siteName)
     {
         String user = PSWebserviceUtils.getUserName();
         List<String> recentEntries = recentService.findRecent(user, siteName, RecentType.TEMPLATE);
-        List<PSTemplateSummary> templates = new ArrayList<PSTemplateSummary>();
-        List<String> toDelete = new ArrayList<String>();
+        List<PSTemplateSummary> templates = new ArrayList<>();
+        List<String> toDelete = new ArrayList<>();
 
-        Map<String,PSTemplateSummary> siteTemplateMap = new HashMap<String,PSTemplateSummary>();
+        Map<String,PSTemplateSummary> siteTemplateMap = new HashMap<>();
         // if we do not find site we will remove all entries for site that no
         // longer exist
 
@@ -164,7 +163,7 @@ public class PSRecentService implements IPSRecentService
             // Cleanup old or invalid entries
             if (template == null)
             {
-                ms_log.debug("Removing recent template not a current site template :" + entry);
+                log.debug("Removing recent template not a current site template :" + entry);
                 toDelete.add(entry);
             }
             else 
@@ -183,8 +182,8 @@ public class PSRecentService implements IPSRecentService
     {
         String user = PSWebserviceUtils.getUserName();
         List<String> recentEntries = recentService.findRecent(user, siteName, RecentType.SITE_FOLDER);
-        List<PSPathItem> pathItems = new ArrayList<PSPathItem>();
-        List<String> toDelete = new ArrayList<String>();
+        List<PSPathItem> pathItems = new ArrayList<>();
+        List<String> toDelete = new ArrayList<>();
 
         for (String entry : recentEntries)
         {
@@ -195,11 +194,11 @@ public class PSRecentService implements IPSRecentService
                 if (pathItem != null)
                     pathItems.add(pathItem);
                 else
-                    ms_log.debug("Removing recent siteFolder entry find returned null :" + entry);
+                    log.debug("Removing recent siteFolder entry find returned null : {}" , entry);
             }
             catch (Exception e)
             {
-                ms_log.debug("removing error entry from recent siteFolder list " + entry + " ", e);
+                log.debug("removing error entry from recent siteFolder list {}", entry, e);
             }
             if (pathItem == null)
                 toDelete.add(entry);
@@ -214,9 +213,9 @@ public class PSRecentService implements IPSRecentService
     {
         String user = PSWebserviceUtils.getUserName();
         List<String> recentEntries = recentService.findRecent(user, null, RecentType.ASSET_FOLDER);
-        List<PSPathItem> pathItems = new ArrayList<PSPathItem>();
+        List<PSPathItem> pathItems = new ArrayList<>();
 
-        List<String> toDelete = new ArrayList<String>();
+        List<String> toDelete = new ArrayList<>();
 
         for (String entry : recentEntries)
         {
@@ -227,13 +226,13 @@ public class PSRecentService implements IPSRecentService
                 if (pathItem != null)
                     pathItems.add(pathItem);
                 else
-                    ms_log.debug("Removing recent assetFolder entry find returned null :" + entry);
+                    log.debug("Removing recent assetFolder entry find returned null :" + entry);
 
                 // FB:NP_NULL_ON_SOME_PATH, UNUSED - NC 1-16-16 -  pathItem.getType();
             }
             catch (Exception e)
             {
-                ms_log.debug("removing error entry from recent assetFolder list " + entry + " ", e);
+                log.debug("removing error entry from recent assetFolder list " + entry + " ", e);
             }
             if (pathItem == null)
                 toDelete.add(entry);
@@ -244,8 +243,7 @@ public class PSRecentService implements IPSRecentService
     }
 
     @Override
-    public void addRecentItem(@FormParam("value")
-    String value)
+    public void addRecentItem(String value)
     {
         String user = PSWebserviceUtils.getUserName();
         if (PSTypeEnum.LEGACY_CONTENT.getOrdinal() != idMapper.getGuid(value).getType())
@@ -258,8 +256,8 @@ public class PSRecentService implements IPSRecentService
     }
 
     @Override
-    public void addRecentTemplate(@PathParam("siteName")
-    String siteName, @FormParam("value")
+    public void addRecentTemplate(
+    String siteName,
     String value)
     {
         String user = PSWebserviceUtils.getUserName();
@@ -275,8 +273,7 @@ public class PSRecentService implements IPSRecentService
     }
 
     @Override
-    public void addRecentSiteFolder(@FormParam("value")
-    String value)
+    public void addRecentSiteFolder(String value)
     {
         String user = PSWebserviceUtils.getUserName();
         if(StringUtils.isBlank(value) || !(StringUtils.startsWith(value, "//") || StringUtils.startsWith(value, "/")))
@@ -292,8 +289,7 @@ public class PSRecentService implements IPSRecentService
     }
 
     @Override
-    public void addRecentAssetFolder(@FormParam("value")
-    String value)
+    public void addRecentAssetFolder(String value)
     {
         String user = PSWebserviceUtils.getUserName();
         int pos = value.indexOf("Assets");
@@ -317,13 +313,12 @@ public class PSRecentService implements IPSRecentService
     }
     
     @Override
-    public List<PSWidgetContentType> findRecentAssetType()
-    {
-        List<PSWidgetContentType> resultList = new ArrayList<PSWidgetContentType>();
+    public List<PSWidgetContentType> findRecentAssetType() throws PSDataServiceException {
+        List<PSWidgetContentType> resultList = new ArrayList<>();
         String user = PSWebserviceUtils.getUserName();
         List<String> recentEntries = recentService.findRecent(user, null, RecentType.ASSET_TYPE);
-        List<String> toDelete = new ArrayList<String>();
-        Map<String, PSWidgetContentType> widgetTypeMap = new HashMap<String, PSWidgetContentType>();
+        List<String> toDelete = new ArrayList<>();
+        Map<String, PSWidgetContentType> widgetTypeMap = new HashMap<>();
         List<PSWidgetContentType> widgetTypes = assetService.getAssetTypes("yes");
         for (PSWidgetContentType wt : widgetTypes)
         {
@@ -337,7 +332,7 @@ public class PSRecentService implements IPSRecentService
             // Cleanup old or invalid entries
             if (wtype == null)
             {
-                ms_log.debug("Removing recent template not a current site template :" + entry);
+                log.debug("Removing recent template not a current site template :" + entry);
                 toDelete.add(entry);
             }
             else 
@@ -352,13 +347,13 @@ public class PSRecentService implements IPSRecentService
     }
 
     @Override
-    public void deleteUserRecent(@PathParam("user") String user)
+    public void deleteUserRecent(String user)
     {
         recentService.deleteRecent(user, null, null);
     }
 
     @Override
-    public void deleteSiteRecent(@PathParam("siteName") String siteName)
+    public void deleteSiteRecent(String siteName)
     {
         recentService.deleteRecent(null, siteName, null);
     }
@@ -368,7 +363,7 @@ public class PSRecentService implements IPSRecentService
         try {
             recentService.renameSiteRecent(oldSiteName, newSiteName);
         } catch (Exception e) {
-            ms_log.error("Error updating PSX_RECENT table to rename site from: " + oldSiteName +
+            log.error("Error updating PSX_RECENT table to rename site from: " + oldSiteName +
                     " to: " + newSiteName, e);
         }
     }

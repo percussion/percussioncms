@@ -40,6 +40,7 @@ import com.percussion.deploy.server.PSDependencyMap;
 import com.percussion.deploy.server.PSImportCtx;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.security.IPSBackEndRoleMgr;
 import com.percussion.services.security.PSRoleMgrLocator;
@@ -87,15 +88,14 @@ public class PSCommunityDefDependencyHandler
       m_commCPSchema = dbmsHelper.catalogTable(COMM_CP_TABLE, false);
       m_commRLSchema = dbmsHelper.catalogTable(COMM_RL_TABLE, false);
       // initialize m_childTypes
-      m_childTypes = new ArrayList<String>();
+      m_childTypes = new ArrayList<>();
       m_childTypes.add(PSRoleDefDependencyHandler.DEPENDENCY_TYPE);
       m_childTypes.add(PSComponentDependencyHandler.DEPENDENCY_TYPE);     
    }
 
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -128,9 +128,8 @@ public class PSCommunityDefDependencyHandler
     * @throws PSDeployException 
     */
    private List<PSDependency> getRoleChildDeps(PSSecurityToken tok, String parentId)
-      throws PSDeployException
-   {
-      List<PSDependency> roleDeps = new ArrayList<PSDependency>();
+           throws PSDeployException, PSNotFoundException {
+      List<PSDependency> roleDeps = new ArrayList<>();
 
       Iterator ids = getChildIdsFromTable(COMM_RL_TABLE, COMM_RL_ID,
          COMMUNITY_ID, parentId);
@@ -231,7 +230,7 @@ public class PSCommunityDefDependencyHandler
          throw new IllegalArgumentException("dep wrong type");
 
       PSDependencyData depData;
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       // get the first dep data for the content object of itself
       depData = getDepDataFromTable(dep, COMMUNITY_TABLE, COMMUNITY_ID, true);
@@ -507,7 +506,7 @@ public class PSCommunityDefDependencyHandler
       PSIdMapping commMapping = getIdMapping(ctx, dep);
 
       // get the source row
-      List<PSJdbcRowData> tgtRowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> tgtRowList = new ArrayList<>();
       Iterator rows = data.getRows();
       if (!rows.hasNext())
       {
@@ -521,7 +520,7 @@ public class PSCommunityDefDependencyHandler
          // walk the columns and build a new row, xform the ids as we go
          // xform the ids for COMMUNITY_ID, COMM_CP_ID, COMM_CT_ID,
          // COMM_ST_ID, COMM_VR_ID and COMM_WF_ID
-         List<PSJdbcColumnData> tgtColList = new ArrayList<PSJdbcColumnData>();
+         List<PSJdbcColumnData> tgtColList = new ArrayList<>();
          Iterator srcCols = srcRow.getColumns();
          while (srcCols.hasNext())
          {
@@ -545,10 +544,9 @@ public class PSCommunityDefDependencyHandler
          tgtRowList.add(tgtRow);
       }
 
-      PSJdbcTableData newData = new PSJdbcTableData(data.getName(),
+      return new PSJdbcTableData(data.getName(),
          tgtRowList.iterator());
 
-      return newData;
    }
 
    /**

@@ -24,6 +24,7 @@
 package com.percussion.deployer.server;
 
 import com.percussion.deployer.error.PSDeployException;
+import com.percussion.services.error.PSNotFoundException;
 
 import java.io.File;
 
@@ -40,7 +41,7 @@ public interface IPSPackageInstaller
      * 
      * @throws PSDeployException If there are any errors
      */
-    void installPackage(File packageFile) throws PSDeployException;
+    void installPackage(File packageFile) throws PSDeployException, PSNotFoundException;
     
     /**
      * Install a package file.
@@ -51,5 +52,5 @@ public interface IPSPackageInstaller
      * 
      * @throws PSDeployException If there are any errors
      */
-    void installPackage(File packageFile, boolean shouldValidateVersion) throws PSDeployException;
+    void installPackage(File packageFile, boolean shouldValidateVersion) throws PSDeployException, PSNotFoundException;
 }

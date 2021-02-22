@@ -48,7 +48,7 @@ public class PSReaderDocumentSource extends ByteArrayDocumentSource implements I
     /**
      * All InputStream object returned by the openInputStream() method.
      */
-    private List<InputStream> openInputStream = new Vector<InputStream>();
+    private List<InputStream> openInputStream = new Vector<>();
 
     public PSReaderDocumentSource(Reader reader, String mimeType) throws IOException
     {

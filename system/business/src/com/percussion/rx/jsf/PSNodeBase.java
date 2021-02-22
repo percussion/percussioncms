@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.percussion.services.error.PSNotFoundException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.trinidad.model.RowKeyIndex;
 
@@ -169,8 +170,7 @@ public class PSNodeBase implements RowKeyIndex
     * 
     * @return the registered outcome, may be <code>null</code>.
     */
-   public String performOnTreeNode()
-   {
+   public String performOnTreeNode() throws PSNotFoundException {
       return perform();
    }
    
@@ -231,8 +231,7 @@ public class PSNodeBase implements RowKeyIndex
     *    for non-containers or a container does not have any children.
     */
    @SuppressWarnings("unchecked")
-   public List<? extends PSNodeBase> getChildren()
-   {
+   public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
       return Collections.EMPTY_LIST;
    }
 

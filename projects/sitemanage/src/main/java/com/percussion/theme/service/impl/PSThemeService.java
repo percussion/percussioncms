@@ -28,18 +28,21 @@ import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.server.PSRequest;
 import com.percussion.share.service.IPSDataService.*;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.theme.data.*;
 import com.percussion.theme.service.IPSThemeService;
 import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -69,37 +72,28 @@ public class PSThemeService implements IPSThemeService
      */
     public List<PSThemeSummary> findAll()
     {
-        List<PSThemeSummary> themes = new ArrayList<PSThemeSummary>();
+        List<PSThemeSummary> themes = new ArrayList<>();
         File root = getThemesRoot();
         if (!root.exists())
         {
             return themes;
         }
-        
-        for (File thFile : root.listFiles())
-        {
-            if (thFile.isDirectory())
-            {
-                try
-                {
+
+        for (File thFile : Objects.requireNonNull(root.listFiles())) {
+            if (thFile.isDirectory()) {
+                try {
                     themes.add(find(thFile.getName()));
-                }
-                catch (DataServiceLoadException e)
-                {
-                    log.error("Failed to load theme: " + thFile.getName());
-                }
-                catch (DataServiceNotFoundException e)
-                {
-                    log.error("Failed to load theme: " + thFile.getName());
+                } catch (DataServiceLoadException | DataServiceNotFoundException | PSValidationException e) {
+                    log.error("Failed to load theme: {}" ,thFile.getName());
+                    log.debug(e);
                 }
             }
         }
-        
+
         return themes;
     }
     
-    protected void loadThemeSummary(File file, PSThemeSummary summary) 
-    {
+    protected void loadThemeSummary(File file, PSThemeSummary summary) throws PSThemeNotFoundException {
         File root = getThemesRoot();
         String themeName = file.getName();
         String url = getThumbUrl(root, themeName);
@@ -118,8 +112,7 @@ public class PSThemeService implements IPSThemeService
         }
     }
 
-    private File getRegionCssFileOrNull(String themeName)
-    {
+    private File getRegionCssFileOrNull(String themeName) throws PSThemeNotFoundException {
         File regionCss = getRegionCssFile(themeName);
         if (regionCss.exists())
             return regionCss;
@@ -127,11 +120,9 @@ public class PSThemeService implements IPSThemeService
             return null;
     }
 
-    private File getRegionCssFile(String themeName)
-    {
+    private File getRegionCssFile(String themeName) throws PSThemeNotFoundException {
         File themeFolder = getThemeFolder(themeName);
-        File regionCss = new File(themeFolder, THEME_REGION_CSS_PATH);
-        return regionCss;
+        return  new File(themeFolder, THEME_REGION_CSS_PATH);
     }
 
     /**
@@ -143,8 +134,7 @@ public class PSThemeService implements IPSThemeService
      * 
      * @return the URL, not blank.
      */
-    public String getCachedRegionCSSRelativeURL(String theme)
-    {
+    public String getCachedRegionCSSRelativeURL(String theme) throws PSThemeNotFoundException {
         // in server environment, make sure to cache the region CSS (or copy it to the temp location
         getCachedRegionCSSFile(theme, false);
         return getCachedRegionCSSRelativePath(theme);
@@ -166,11 +156,10 @@ public class PSThemeService implements IPSThemeService
     private File getCachedRegionCSSFileOnly(String theme)
     {
         String path = getCachedRegionCSSRelativePath(theme);
-        return new File(getThemesTempRootDirectory() + "/" + path);
+        return new File(getThemesTempRootDirectory() + File.separator  + path);
 
     }
-    private File getCachedRegionCSSFile(String theme, boolean overrideCachedFile)
-    {
+    private File getCachedRegionCSSFile(String theme, boolean overrideCachedFile) throws PSThemeNotFoundException {
         File tempFile = getCachedRegionCSSFileOnly(theme);
         if (tempFile.exists() && (!overrideCachedFile))
             return tempFile;
@@ -192,9 +181,7 @@ public class PSThemeService implements IPSThemeService
      */  
     protected File getOriginalThemeFolder() 
     {
-        File defaultThemeFolder = getDefaultThemeRoot();
-        
-        return defaultThemeFolder;
+        return getDefaultThemeRoot();
     }
     
     /**
@@ -224,8 +211,7 @@ public class PSThemeService implements IPSThemeService
     
     }
     
-    protected File getThemeFolder(String themeName) 
-    {
+    protected File getThemeFolder(String themeName) throws PSThemeNotFoundException {
         File root = getThemesRoot();
         File themeFolder = new File(root, themeName);
         if (! themeFolder.isDirectory() )
@@ -247,12 +233,11 @@ public class PSThemeService implements IPSThemeService
      * @return the CSS file. Never <code>null</code>.
      * @throws PSThemeNotFoundException If the css file cannot be found
      */
-    private File getCssFile(String themeName) 
-    {        
+    private File getCssFile(String themeName) throws PSThemeNotFoundException {
         File themeFolder = getThemeFolder(themeName);
         ThemeFileFilter filter = new ThemeFileFilter(new String[]{THEME_CSS_EXTENSION});
         File[] cssFiles = themeFolder.listFiles(filter);
-        if (cssFiles.length == 1)
+        if (cssFiles != null && cssFiles.length == 1)
         {
             return cssFiles[0];
         }
@@ -263,7 +248,7 @@ public class PSThemeService implements IPSThemeService
             return namedCssFile;
         }
         
-        if (cssFiles.length > 0)
+        if (cssFiles != null && cssFiles.length > 0)
         {
             Arrays.sort(cssFiles);
             return cssFiles[0];
@@ -277,8 +262,7 @@ public class PSThemeService implements IPSThemeService
     /*
      * //see base interface method for details
      */
-    public PSTheme load(String name)
-    {
+    public PSTheme load(String name) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         PSTheme themeCSS = new PSTheme();
         themeCSS.setTheme(name);
         
@@ -289,7 +273,7 @@ public class PSThemeService implements IPSThemeService
         String css;
         try
         {
-            css = FileUtils.readFileToString(cssFile);
+            css = FileUtils.readFileToString(cssFile, StandardCharsets.UTF_8);
         }
         catch (IOException e)
         {
@@ -353,27 +337,26 @@ public class PSThemeService implements IPSThemeService
      */
     private String getThumbUrl(File themesRoot, String themeName)
     {
-        String imgDirPath = "/" + themeName;
+        String imgDirPath = File.separator  + themeName;
         File imgDir = new File(themesRoot, imgDirPath);
         if (!imgDir.exists())
             return null;
         
         ThemeFileFilter filter = new ThemeFileFilter(THEME_THUMB_EXTENSIONS);
         File[] imgs = imgDir.listFiles(filter);
-        if (imgs.length > 0)
-        {
-            File imgFile = imgs[0];
-            return getThemesRootRelativeUrl() + imgDirPath + "/" + imgFile.getName();
+        if(imgs != null) {
+            if (imgs.length > 0) {
+                File imgFile = imgs[0];
+                return getThemesRootRelativeUrl() + imgDirPath + "/" + imgFile.getName();
+            }
         }
-        
-        log.debug("Cannot find thumbnail image for theme \"" + themeName + "\".");
+        log.debug("Cannot find thumbnail image for theme '{}'", themeName );
         
         return null;
     }
     
     @Override
-    public PSThemeSummary find(String id) throws DataServiceLoadException, DataServiceNotFoundException
-    {
+    public PSThemeSummary find(String id) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         rejectIfNull("find", "id", id);
     
         File themeFolder = getThemeFolder(id);
@@ -402,7 +385,7 @@ public class PSThemeService implements IPSThemeService
             
             return find(newTheme);
         }
-        catch (IOException e)
+        catch (IOException | PSValidationException e)
         {
             throw new DataServiceSaveException("Could not create theme : " + newTheme, e);
         }
@@ -429,16 +412,14 @@ public class PSThemeService implements IPSThemeService
             
             return find(newThemeFolder.getName());
         }
-        catch (IOException e)
+        catch (IOException | PSValidationException e)
         {
             throw new DataServiceSaveException("Could not create theme : " + newTheme, e);
         }
     }
     
 
-    public void delete(String theme) throws DataServiceNotFoundException,
-          DataServiceDeleteException
-    {
+    public void delete(String theme) throws DataServiceNotFoundException, DataServiceDeleteException {
         notEmpty(theme);
         
         // check if the theme folder exists or not
@@ -485,8 +466,7 @@ public class PSThemeService implements IPSThemeService
 
  
     public PSRegionCSS getRegionCSS(String theme, String templatename,
-           String outerregion,  String region)
-    {
+           String outerregion,  String region) throws PSThemeNotFoundException {
         File cssFile = getCachedRegionCSSFile(theme, false);        
         PSRegionCSS regionCSS = cssFileService.findRegionCSS(outerregion, region, cssFile.getAbsolutePath());
         if (regionCSS == null)
@@ -497,8 +477,7 @@ public class PSThemeService implements IPSThemeService
 
   
     public void saveRegionCSS( String theme,  String templatename,
-            PSRegionCSS regionCSS)
-    {
+            PSRegionCSS regionCSS) throws PSThemeNotFoundException {
         log.debug("save region CSS: " + regionCSS.getOuterRegionName() + ", " + regionCSS.getRegionName());
         
         File cssFile = getCachedRegionCSSFile(theme, false);
@@ -507,18 +486,16 @@ public class PSThemeService implements IPSThemeService
 
     
     public void deleteRegionCSS(String theme, String templatename,
-             String outerregion, String region)
-    {
-        log.debug("delete region CSS: " + outerregion + ", " + region);
+             String outerregion, String region) throws PSThemeNotFoundException {
+        log.debug("delete region CSS:{} , {}",outerregion ,region);
 
         File cssFile = getCachedRegionCSSFile(theme, false);
         cssFileService.delete(outerregion, region, cssFile.getAbsolutePath());
     }
 
 
-    public void mergeRegionCSS( String theme, String templateId, PSRegionCssList deletedRegions)
-    {
-        log.debug("merge region CSS: /" + theme + "/" + templateId);
+    public void mergeRegionCSS( String theme, String templateId, PSRegionCssList deletedRegions) throws PSDataServiceException {
+        log.debug("merge region CSS: {} {} ", theme , templateId);
         
         File tempFile = getCachedRegionCSSFile(theme, false);
         File cssFile = getRegionCssFile(theme); 
@@ -546,9 +523,8 @@ public class PSThemeService implements IPSThemeService
         }
     }
 
-    public void prepareForEditRegionCSS(String theme, String templatename)
-    {
-        log.debug("prepareForEdit for '" + theme + "'");
+    public void prepareForEditRegionCSS(String theme, String templatename) throws PSThemeNotFoundException {
+        log.debug("prepareForEdit for '{}'", theme );
         
         getCachedRegionCSSFile(theme, true);
     }
@@ -556,9 +532,9 @@ public class PSThemeService implements IPSThemeService
     
     public void clearCacheRegionCSS( String theme, String templatename)
     {
-        log.debug("clearCache for '" + theme + "'");
+        log.debug("clearCache for '{}", theme );
         
-        File sessionDir = new File(getThemesTempRootDirectory() + "/" + getCurrentSessionId());
+        File sessionDir = new File(getThemesTempRootDirectory() + File.separator + getCurrentSessionId());
         if (sessionDir.exists())
         {
             FileUtils.deleteQuietly(sessionDir);
@@ -568,8 +544,7 @@ public class PSThemeService implements IPSThemeService
     @Override
     public List<PSRichTextCustomStyle> getRichTextCustomStyles()
     {
-        List<PSRichTextCustomStyle> customStyles = getCustomStyles();
-        return customStyles;
+        return getCustomStyles();
     }
 
     /**
@@ -580,7 +555,7 @@ public class PSThemeService implements IPSThemeService
      */
     private List<PSRichTextCustomStyle> getCustomStyles()
     {
-        List<PSRichTextCustomStyle> rtStyles = new ArrayList<PSRichTextCustomStyle>();
+        List<PSRichTextCustomStyle> rtStyles = new ArrayList<>();
         if(richTextStylesFile == null)
         {
             try
@@ -603,7 +578,10 @@ public class PSThemeService implements IPSThemeService
             Properties props = new Properties();
             try
             {
-                props.load(new FileInputStream(richTextStylesFile));
+                try(FileInputStream fis = new FileInputStream(richTextStylesFile)) {
+                    props.load(fis);
+                }
+
                 richTextStylesLastModified = richTextStylesFile.lastModified();
                 for(Entry<Object,Object> prop : props.entrySet())
                 {
@@ -734,7 +712,7 @@ public class PSThemeService implements IPSThemeService
     private String themesTempRootRelativeUrl;
     private Long richTextStylesLastModified;
     private File richTextStylesFile;
-    private List<PSRichTextCustomStyle> rtCustomStyles = new ArrayList<PSRichTextCustomStyle>();
+    private List<PSRichTextCustomStyle> rtCustomStyles = new ArrayList<>();
     private String customStylesFolderPath;
     
     private PSRegionCSSFileService cssFileService = new PSRegionCSSFileService();
@@ -763,12 +741,12 @@ public class PSThemeService implements IPSThemeService
     /**
      * The relative path to the region CSS file. This is relative to current theme folder.  
      */
-    public static String THEME_REGION_CSS_PATH = "perc/perc_region.css";
+    public static final String THEME_REGION_CSS_PATH = "perc/perc_region.css";
     
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSThemeService.class);
+    public static final Logger log = LogManager.getLogger(PSThemeService.class);
 
     
 

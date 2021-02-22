@@ -30,8 +30,10 @@ import com.percussion.membership.data.rdbms.impl.PSMembership;
 import com.percussion.membership.services.IPSMembershipDao;
 import com.percussion.membership.services.PSMemberExistsException;
 import org.apache.commons.lang.Validate;
-import org.hibernate.HibernateException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.jpa.QueryHints;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,28 +51,32 @@ import java.util.List;
  * @author jayseletz
  *
  */
-@Transactional
 public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershipDao
 {
+
+    private static final Logger log = LogManager.getLogger(PSMembershipDao.class);
 
     private static final String ACTION_ACTIVATE = "Activate";
     private static final String ACTION_BLOCK = "Block";
 
     @Override
-    public IPSMembership findMemberBySessionId(String sessionId) throws Exception
+    @Transactional(readOnly = true)
+    public IPSMembership findMemberBySessionId(String sessionId)
     {
         Validate.notEmpty(sessionId);
 
         Session session = getSession();
-        try
-        {
+
             IPSMembership membership = null;
 
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<PSMembership> criteriaQuery = criteriaBuilder.createQuery(PSMembership.class);
             Root<PSMembership> root = criteriaQuery.from(PSMembership.class);
             criteriaQuery.select(root).where(criteriaBuilder.like(root.get("sessionId"), sessionId));
-            List<PSMembership> result = session.createQuery(criteriaQuery).getResultList();
+            List<PSMembership> result = session.createQuery(criteriaQuery).
+                    addQueryHint(QueryHints.HINT_READONLY).
+                    addQueryHint(QueryHints.HINT_CACHEABLE).
+                    getResultList();
 
             if (!result.isEmpty())
             {
@@ -80,15 +86,11 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
                     throw new IllegalStateException("More than one membership entry found for sessionID: " + sessionId);
                 }
 
-                membership = (IPSMembership) result.get(0);
+                membership = result.get(0);
             }
 
             return membership;
-        }
-        finally
-        {
-            // session.close();
-        }
+
     }
 
     private Session getSession(){
@@ -98,37 +100,35 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
     }
 
     @Override
+    @Transactional()
     public IPSMembership findMemberByUserId(String userId)
     {
         Validate.notEmpty(userId);
 
         Session session = getSession();
-        try
-        {
-            return findMember(userId, session);
-        }
-        finally
-        {
-            // session.close();
-        }
+
+       return findMember(userId, session);
+
     }
 
 
     @Override
+    @Transactional(readOnly = true)
     public IPSMembership findMemberByPwdResetKey(String pwdResetKey)
     {
         Validate.notEmpty(pwdResetKey);
 
         Session session = getSession();
-        try
-        {
             IPSMembership membership = null;
 
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<PSMembership> criteriaQuery = criteriaBuilder.createQuery(PSMembership.class);
             Root<PSMembership> root = criteriaQuery.from(PSMembership.class);
             criteriaQuery.select(root).where(criteriaBuilder.like(root.get("pwdResetKey"), pwdResetKey));
-            List<PSMembership> result = session.createQuery(criteriaQuery).getResultList();
+            List<PSMembership> result = session.createQuery(criteriaQuery).
+                    addQueryHint(QueryHints.HINT_CACHEABLE).
+                    addQueryHint(QueryHints.HINT_READONLY).
+                    getResultList();
             if (!result.isEmpty())
             {
                 if (result.size() > 1)
@@ -137,33 +137,23 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
                     throw new IllegalStateException("More than one membership entry found for pwdResetKey: " + pwdResetKey);
                 }
 
-                membership = (IPSMembership) result.get(0);
+                membership = result.get(0);
             }
 
             return membership;
-        }
-        finally
-        {
-            // session.close();
-        }
+
     }
 
-    @Override
+    @Transactional
     public IPSMembership createMember(String userId, String password, PSMemberStatus status) throws Exception
     {
         Validate.notEmpty(userId, "userId may not be null or empty");
         Validate.notEmpty(password, "password may not be null or empty");
         Validate.notNull(status, "status must not be null");
         Session session = getSession();
-        try
-        {
-            validateNewMember(userId, session);
 
-        }
-        finally
-        {
-            // session.close();
-        }
+        validateNewMember(userId, session);
+
 
         IPSMembership membership = new PSMembership();
         membership.setUserId(userId);
@@ -175,48 +165,43 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
     }
 
     @Override
+    @Transactional
     public void saveMember(IPSMembership member) throws Exception
     {
         Validate.notNull(member);
 
         Session session = getSession();
-        try
-        {
-            if (member.getId().equals("0"))
-                validateNewMember(member.getUserId(), session);
-            session.saveOrUpdate(member);
-            session.flush();
-        }
-        finally
-        {
-            // session.close();
-        }
+
+        if (member.getId().equals("0"))
+            validateNewMember(member.getUserId(), session);
+        session.saveOrUpdate(member);
+        session.flush();
     }
 
 
     @Override
-    public List<IPSMembership> findMembers() throws Exception
+    @Transactional(readOnly = true)
+    public List<IPSMembership> findMembers()
     {
-        Session session = getSession();
-        try
-        {
+        try{
+            Session session = getSession();
+
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<IPSMembership> criteriaQuery = criteriaBuilder.createQuery(IPSMembership.class);
             Root<PSMembership> root = criteriaQuery.from(PSMembership.class);
             criteriaQuery.select(root).orderBy(criteriaBuilder.asc(root.get("userId")));
 
-            List<IPSMembership> resultList = session.createQuery(criteriaQuery).getResultList();
-
-            return resultList;
+            return  session.createQuery(criteriaQuery).
+                    addQueryHint(QueryHints.HINT_READONLY).
+                    addQueryHint(QueryHints.HINT_CACHEABLE).
+                    getResultList();
 
         }catch (Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e);
             return new ArrayList<>();
         }
-        finally
-        {
-            // session.close();
-        }
+
     }
 
     /* (non-Javadoc)
@@ -224,6 +209,7 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
      * com.percussion.membership.data.PSAccountSummary)
      */
     @Override
+    @Transactional
     public void changeStatusAccount(PSAccountSummary account) throws Exception
     {
         // Validates the parameters
@@ -231,8 +217,7 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
         Validate.notEmpty(account.getAction(), "Action may not be null or empty");
 
         Session session = getSession();
-        try
-        {
+
             IPSMembership member = findMemberByUserId(account.getEmail());
 
             if (member == null)
@@ -256,42 +241,32 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
 
             session.saveOrUpdate(member);
             session.flush();
-        }
-        finally
-        {
-            //  session.close();
-        }
+
     }
 
     /* (non-Javadoc)
      * @see com.percussion.membership.services.IPSMembershipDao#deleteAccount(java.lang.String)
      */
     @Override
+    @Transactional
     public void deleteAccount(String email) throws Exception
     {
         // Validates the parameters
         Validate.notEmpty(email, "User email may not be null or empty");
 
         Session session = getSession();
-        try
+        IPSMembership member = findMemberByUserId(email);
+        if (member == null)
         {
-            IPSMembership member = findMemberByUserId(email);
-            if (member == null)
-            {
-                throw new Exception("Member not found.");
-            }
-
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaDelete<PSMembership> deleteQuery = builder.createCriteriaDelete(PSMembership.class);
-            Root<PSMembership> root = deleteQuery.from(PSMembership.class);
-            deleteQuery.where(root.get("id").in(Long.valueOf(member.getId())));
-            session.createQuery(deleteQuery).executeUpdate();
-
+            throw new Exception("Member not found.");
         }
-        finally
-        {
-            //  session.close();
-        }
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaDelete<PSMembership> deleteQuery = builder.createCriteriaDelete(PSMembership.class);
+        Root<PSMembership> root = deleteQuery.from(PSMembership.class);
+        deleteQuery.where(root.get("id").in(Long.valueOf(member.getId())));
+        session.createQuery(deleteQuery).executeUpdate();
+
     }
 
     /**
@@ -318,7 +293,8 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
      *
      * @return The member, or <code>null</code> if not found.
      */
-    private IPSMembership findMember(String userId, Session session)
+    @Transactional
+    public IPSMembership findMember(String userId, Session session)
     {
         IPSMembership membership = null;
 
@@ -331,8 +307,9 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
         Predicate ctfPredicate = criteriaBuilder.like(upper,userId.toUpperCase());
         criteriaQuery.select(root).where(criteriaBuilder.and(ctfPredicate));
 
-        // criteriaQuery.select(root).where(criteriaBuilder.like(root.get("userId"), userId));
-        List<PSMembership> result = session.createQuery(criteriaQuery).getResultList();
+        List<PSMembership> result = session.createQuery(criteriaQuery).
+                addQueryHint(QueryHints.HINT_CACHEABLE).
+                getResultList();
 
         if (!result.isEmpty())
         {
@@ -342,11 +319,8 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
                 throw new IllegalStateException("More than one membership entry found for userId: " + userId);
             }
 
-            membership = (IPSMembership) result.get(0);
-//            //because we need to do case matching
-//            if(!membership.getUserId().equals(userId)){
-//                return null;
-//            }
+            membership = result.get(0);
+
         }
 
         return membership;

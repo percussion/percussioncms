@@ -38,6 +38,7 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.server.webservices.PSServerFolderProcessor;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.util.IPSHtmlParameters;
@@ -130,8 +131,7 @@ public class PSSchemeJexlTestPanel
     * Invokes the Item Browser.
     * @return the outcome of the Item Browser, never <code>null</code> or empty.
     */
-   public String browseItem()
-   {
+   public String browseItem() throws PSNotFoundException {
       m_itemBrowser = new PSItemBrowser(this);
       m_itemBrowser.setPath(getStartingFolderPath());
       
@@ -162,8 +162,7 @@ public class PSSchemeJexlTestPanel
    /**
     * @return the starting folder of the item browser.
     */
-   private String getStartingFolderPath()
-   {
+   private String getStartingFolderPath() throws PSNotFoundException {
       if (!StringUtils.isBlank(m_itemPath))
       {
          try
@@ -228,8 +227,7 @@ public class PSSchemeJexlTestPanel
    /**
     * @return the current site id, may be <code>null</code>.
     */
-   public IPSGuid getSiteId()
-   {
+   public IPSGuid getSiteId() throws PSNotFoundException {
       if (m_siteId == null)
       {
          List<PSSiteNode> allSites = getAllSites();
@@ -274,9 +272,8 @@ public class PSSchemeJexlTestPanel
    /**
     * @return all available sites, never <code>null</code>, but may be empty.
     */
-   public SelectItem[] getSites()
-   {
-      List<SelectItem> siteList = new ArrayList<SelectItem>();
+   public SelectItem[] getSites() throws PSNotFoundException {
+      List<SelectItem> siteList = new ArrayList<>();
 
       for (PSSiteNode s : getAllSites())
       {
@@ -292,8 +289,7 @@ public class PSSchemeJexlTestPanel
     * @return all site nodes, never <code>null</code>, but may be empty.
     */
    @SuppressWarnings("unchecked")
-   private List<PSSiteNode> getAllSites()
-   {
+   private List<PSSiteNode> getAllSites() throws PSNotFoundException {
       if (m_allSites != null)
          return m_allSites;
       

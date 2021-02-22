@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -33,12 +33,12 @@ import com.percussion.design.objectstore.server.IPSLockerId;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.design.objectstore.server.PSXmlObjectStoreLockerId;
 import com.percussion.rx.design.IPSAssociationSet;
+import com.percussion.rx.design.IPSAssociationSet.AssociationAction;
+import com.percussion.rx.design.IPSAssociationSet.AssociationType;
 import com.percussion.rx.design.IPSDesignModel;
 import com.percussion.rx.design.IPSDesignModelFactory;
 import com.percussion.rx.design.PSDesignModelFactoryLocator;
 import com.percussion.rx.design.PSDesignModelUtils;
-import com.percussion.rx.design.IPSAssociationSet.AssociationAction;
-import com.percussion.rx.design.IPSAssociationSet.AssociationType;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSCustomControlManager;
 import com.percussion.server.PSRequest;
@@ -49,6 +49,7 @@ import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.data.PSNodeDefinition;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -61,6 +62,8 @@ import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.utils.types.PSPair;
 import com.percussion.webservices.IPSWebserviceErrors;
 import com.percussion.webservices.PSWebserviceUtils;
+import org.apache.cactus.ServletTestCase;
+import org.junit.experimental.categories.Category;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -75,14 +78,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.cactus.ServletTestCase;
-import org.junit.experimental.categories.Category;
-
 @Category(IntegrationTest.class)
 public class PSDesignModelFactoryTest extends ServletTestCase
 {
-   public void testDesignModelFactory()
-   {
+   public void testDesignModelFactory() throws PSNotFoundException {
       for (IPSGuid guid : testGuids)
       {
          PSTypeEnum type = PSTypeEnum.valueOf(guid.getType());
@@ -114,8 +113,7 @@ public class PSDesignModelFactoryTest extends ServletTestCase
       }
    }
    
-   public void testContentTypeAssociations()
-   {
+   public void testContentTypeAssociations() throws PSNotFoundException {
       IPSDesignModelFactory factory = PSDesignModelFactoryLocator
       .getDesignModelFactory();
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -163,8 +161,7 @@ public class PSDesignModelFactoryTest extends ServletTestCase
       assertTrue(numWflAssns == nodeDef.getWorkflowGuids().size());
    }
    
-   public void testTemplateSlotAssociations()
-   {
+   public void testTemplateSlotAssociations() throws PSNotFoundException {
       IPSDesignModelFactory factory = PSDesignModelFactoryLocator
       .getDesignModelFactory();
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -205,8 +202,7 @@ public class PSDesignModelFactoryTest extends ServletTestCase
    }
    
    @SuppressWarnings("unchecked")
-   public void testSlotTemplateAssociations()
-   {
+   public void testSlotTemplateAssociations() throws PSNotFoundException {
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
       IPSGuid slotguid = gmgr.makeGuid(502, PSTypeEnum.SLOT);
       IPSDesignModel model = getModel(PSTypeEnum.SLOT);
@@ -261,8 +257,7 @@ public class PSDesignModelFactoryTest extends ServletTestCase
       }
    }
          
-   public void testGetVersionByName()
-   {
+   public void testGetVersionByName() throws PSNotFoundException {
       for (IPSGuid guid : testGuids)
       {
          PSTypeEnum type = PSTypeEnum.valueOf(guid.getType());
@@ -456,15 +451,14 @@ public class PSDesignModelFactoryTest extends ServletTestCase
     * @param guid The id of the design object to be queried, assumed not
     * <code>null</code>.
     */
-   private void testVersionByGuid(IPSDesignModel model, IPSGuid guid)
-   {
+   private void testVersionByGuid(IPSDesignModel model, IPSGuid guid) throws PSNotFoundException {
       Object obj = model.load(guid);
       Long version = model.getVersion(guid);
       assertFalse(version == null);
       try
       {
-         Method method = obj.getClass().getMethod("getVersion",
-               new Class[0]);
+         Method method = obj.getClass().getMethod("getVersion"
+         );
          Integer oversion = (Integer) method.invoke(obj, new Object[0]);
          assertEquals(version.longValue(), oversion.longValue());
       }

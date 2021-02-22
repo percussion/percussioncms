@@ -145,7 +145,7 @@ public class PSPubServer extends PSAbstractDataObject implements Serializable, I
    @JoinColumn(name = "PUBSERVERID", nullable = false, insertable = false, updatable = false)
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "PSPubServerProperty")
    @Fetch(FetchMode. SUBSELECT)
-   private Set<PSPubServerProperty> properties = new HashSet<PSPubServerProperty>();  
+   private Set<PSPubServerProperty> properties = new HashSet<>();
    
    /**
     * The default constructor.

@@ -81,8 +81,8 @@ public class EmpireTestServerClientPool extends UnicastRemoteObject
    public EmpireTestServerClientPool(EmpireTestServer server) 
       throws RemoteException
    {
-      m_clientStateList = new Vector<ClientState>();
-      m_tasks = new LinkedList<ThreadTask>();
+      m_clientStateList = new Vector<>();
+      m_tasks = new LinkedList<>();
       m_server = server;
       m_tasks.add(new ThreadTask()
       {
@@ -626,7 +626,7 @@ public class EmpireTestServerClientPool extends UnicastRemoteObject
     * might be empty.
     */
    private List<QAClientPoolListener> m_clientPoolListener =
-         new Vector<QAClientPoolListener>();
+         new Vector<>();
 
    /**
     * Flag to indicate if the pool is in the process of shutting down.  If

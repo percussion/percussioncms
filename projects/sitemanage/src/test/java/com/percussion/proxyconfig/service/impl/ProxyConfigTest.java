@@ -27,7 +27,7 @@ import com.percussion.delivery.service.impl.PSDeliveryInfoLoader;
 import com.percussion.proxyconfig.service.impl.ProxyConfig.Password;
 import com.percussion.server.PSServer;
 import com.percussion.share.dao.PSSerializerUtils;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -140,11 +140,15 @@ public class ProxyConfigTest
             String origPwVal = s.getPassword().getValue();
 
             origPw.setEncrypted(Boolean.TRUE);
-            String enc = PSEncryptor.getInstance().encrypt(origPwVal);
+            String enc = PSEncryptor.getInstance("AES",
+                    rxdeploydir.concat(PSEncryptor.SECURE_DIR)
+            ).encrypt(origPwVal);
             origPw.setValue(enc);
 
             // make sure password can be decrypted  
-            String pw = PSEncryptor.getInstance().decrypt(enc);
+            String pw = PSEncryptor.getInstance("AES",
+                    rxdeploydir.concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(enc);
             assertTrue(origPwVal.equals(pw));
         }
         

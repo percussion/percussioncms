@@ -23,22 +23,34 @@
  */
 package com.percussion.workflow.service.impl;
 
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.workflow.data.PSState;
 import com.percussion.share.data.PSEnumVals;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSStringComparator;
 import com.percussion.workflow.data.PSUiWorkflow;
 import com.percussion.workflow.data.PSUiWorkflowList;
 import com.percussion.workflow.service.IPSSteppedWorkflowService;
 import com.percussion.workflow.service.IPSSteppedWorkflowService.PSWorkflowEditorServiceException;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
@@ -57,6 +69,7 @@ public class PSSteppedWorkflowRestService
 {
     private IPSSteppedWorkflowService service;
 
+    private static final Logger log = LogManager.getLogger(PSSteppedWorkflowRestService.class);
     /**
      * The comparator to use when ordering the list of states.
      */
@@ -145,7 +158,13 @@ public class PSSteppedWorkflowRestService
     public PSUiWorkflow createWorflow(@PathParam("workflowName") String workflowName, PSUiWorkflow uiWorkflow) 
             throws PSWorkflowEditorServiceException
     {
-        return service.createWorkflow(getReadableName(workflowName), uiWorkflow);
+        try {
+            return service.createWorkflow(getReadableName(workflowName), uiWorkflow);
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
     
     /**
@@ -164,7 +183,13 @@ public class PSSteppedWorkflowRestService
     public PSUiWorkflow updateWorkflow(@PathParam("workflowName") String workflowName, PSUiWorkflow uiWorkflow) 
             throws PSWorkflowEditorServiceException
     {
-        return service.updateWorkflow(getReadableName(workflowName), uiWorkflow);
+        try {
+            return service.updateWorkflow(getReadableName(workflowName), uiWorkflow);
+        } catch (PSDataServiceException | PSNotFoundException  e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
     
     /**
@@ -185,7 +210,7 @@ public class PSSteppedWorkflowRestService
     /**
      * Creates a new step with the information provided in the supplied workflow object.
      * 
-     * @param the name of the workflow
+     * @param workflowName name of the workflow
      * @param stepName the name of the step to be created
      * @param uiWorkflow the <code>PSUiWorkflow</code> object containing the state to add to
      * that workflow. Must not be empty or <code>null</code>
@@ -199,17 +224,21 @@ public class PSSteppedWorkflowRestService
     public PSUiWorkflow createStep(@PathParam("workflowName") String workflowName, @PathParam("stepName") String stepName, PSUiWorkflow uiWorkflow) 
             throws PSWorkflowEditorServiceException
     {
-        return service.createStep(getReadableName(workflowName), getReadableName(stepName), uiWorkflow);
+        try {
+            return service.createStep(getReadableName(workflowName), getReadableName(stepName), uiWorkflow);
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
     
     /**
      * Updates the step with the information provided in the supplied workflow object.
      * @param uiWorkflow the <code>PSUiWorkflow</code> object containing the state to add to
      * that workflow. Must not be <code>null</code>
-     * 
      * @param workflowName the name of the workflow
      * @param stepName the name of the step to be updated
-     * @param uiWorkflow the <code>PSUiWorkflow</code> object containing the state to update
      * that step (previous and actual step name). Must not be empty or <code>null</code>
      * @return PSUiWorkflow The updated workflow, never empty or <code>null</code>.
      * @throws PSWorkflowEditorServiceException, if the supplied object is invalid.
@@ -221,7 +250,13 @@ public class PSSteppedWorkflowRestService
     public PSUiWorkflow updateStep(@PathParam("workflowName") String workflowName, @PathParam("stepName") String stepName, PSUiWorkflow uiWorkflow) 
             throws PSWorkflowEditorServiceException
     {
-        return service.updateStep(getReadableName(workflowName), getReadableName(stepName), uiWorkflow);
+        try {
+            return service.updateStep(getReadableName(workflowName), getReadableName(stepName), uiWorkflow);
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /**
@@ -258,29 +293,31 @@ public class PSSteppedWorkflowRestService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSEnumVals getStatesChoices(@PathParam("workflowName") String workflowName)
     {
-        rejectIfBlank("getStateChoices", "workflowName", workflowName);
-        
-        // get the states and build the PSEnumVals object
-        List<PSState> states = service.getStates(workflowName);
-        
-        if (states == null){
-        	PSEnumVals workflows = service.getWorkflowList();
-        	states = service.getStates(workflows.getEntries().get(0).getValue());
-        }
+        try {
+            rejectIfBlank("getStateChoices", "workflowName", workflowName);
 
-        PSEnumVals choices = new PSEnumVals();
-        
-        if(states != null)
-        {
-            //List<String> orderedNames = orderStateNames(states);
-            
-            for(PSState state : states)
-            {
-                choices.addEntry(state.getName(), String.valueOf(state.getGUID().longValue()));
+            // get the states and build the PSEnumVals object
+            List<PSState> states = service.getStates(workflowName);
+
+            if (states == null) {
+                PSEnumVals workflows = service.getWorkflowList();
+                states = service.getStates(workflows.getEntries().get(0).getValue());
             }
+
+            PSEnumVals choices = new PSEnumVals();
+
+            if (states != null) {
+                for (PSState state : states) {
+                    choices.addEntry(state.getName(), String.valueOf(state.getGUID().longValue()));
+                }
+            }
+
+            return choices;
+        } catch (PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
         }
-        
-        return choices;
     }
 
     /**
@@ -294,14 +331,14 @@ public class PSSteppedWorkflowRestService
     @SuppressWarnings("unchecked")
     private List<String> orderStateNames(List<PSState> states)
     {
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         
         for(PSState state : states)
         {
             names.add(state.getName());
         }
         
-        Collections.sort(names, stringComparator);
+        names.sort(stringComparator);
         
         return names;
     }
@@ -311,20 +348,19 @@ public class PSSteppedWorkflowRestService
      * Cleans up a given name, in order to make it readable
      * and then returns it to the caller.
      * 
-     * @param encodedName. The encoded name to be cleaned up. Assumed not <code>null</code>
+     * @param encodedName The encoded name to be cleaned up. Assumed not <code>null</code>
      * @return the readable name without double quotes
      */
-    private String getReadableName(String encodedName)
-    {
+    private String getReadableName(String encodedName) throws PSDataServiceException {
         String decodedName = StringUtils.EMPTY;
         
         try
         {
-            decodedName = encodedName.replaceAll("\"", "");
+            decodedName = encodedName.replace("\"", "");
         }
         catch (Exception e)
         {
-            throw new RuntimeException("Failed to decode name = " + encodedName, e);
+            throw new PSDataServiceException("Failed to decode name = " + encodedName, e);
         }
         return decodedName;
     }

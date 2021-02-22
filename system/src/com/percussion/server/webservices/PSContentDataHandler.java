@@ -34,18 +34,19 @@ import com.percussion.cms.objectstore.server.PSServerItem;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.error.PSException;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.services.purge.IPSSqlPurgeHelper;
 import com.percussion.services.purge.PSSqlPurgeHelperLocator;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSXMLDomUtil;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang.math.NumberUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * This class is used to handle all content data related operations for 
@@ -58,7 +59,7 @@ public class PSContentDataHandler extends PSSearchHandler
 {
    /**
     * This operation is used to retrieve a content item in standard item format.
-    * @see sys_StandardItem.xsd for more info.
+    * see sys_StandardItem.xsd for more info.
     *
     * @param request The request object. It may not be <code>null</code>.
     * @param parent The parent document to add the response element to,
@@ -247,10 +248,19 @@ public class PSContentDataHandler extends PSSearchHandler
       PSItemDefinition itemDef =
          mgr.getItemDef(contentTypeId, request.getSecurityToken());
 
+
+      String id = SecureStringUtils.srp(
+              request.getParameter(IPSHtmlParameters.SYS_CONTENTID));
+
+      String revision = SecureStringUtils.srp(
+              request.getParameter(IPSHtmlParameters.SYS_REVISION));
+
+      if(!NumberUtils.isCreatable(id) || !NumberUtils.isCreatable(revision)){
+         throw new PSException("Not a valid id.");
+      }
+
       PSLocator loc =
-         new PSLocator(
-            request.getParameter(IPSHtmlParameters.SYS_CONTENTID),
-            request.getParameter(IPSHtmlParameters.SYS_REVISION));
+         new PSLocator(id,revision);
 
       // get the content item
       PSServerItem theItem = new PSServerItem(itemDef);
@@ -370,8 +380,7 @@ public class PSContentDataHandler extends PSSearchHandler
     *    not <code>null</code>.
     * @throws PSException if any error occurs.
     */
-   void purgeItemsAction(PSRequest request, Document parent) throws PSException
-   {
+   void purgeItemsAction(PSRequest request, Document parent) throws PSException, PSValidationException {
       if (request == null)
          throw new IllegalArgumentException("request may not be null");
          
@@ -396,8 +405,7 @@ public class PSContentDataHandler extends PSSearchHandler
     *    request does nothing.
     * @throws PSException if anything goes wrong making the request.
     */
-   static void purgeItems(PSRequest request) throws PSException
-   {
+   static void purgeItems(PSRequest request) throws PSException, PSValidationException {
       if (request == null)
          throw new IllegalArgumentException("request may not be null");
       
@@ -427,9 +435,8 @@ public class PSContentDataHandler extends PSSearchHandler
     *    
     * @throws PSException if anything goes wrong making the request.
     */
-   public static void purgeItems(PSRequest request, List<String>itemIds) 
-      throws PSException
-   {
+   public static void purgeItems(PSRequest request, List<String>itemIds)
+           throws PSException, PSValidationException {
       if (request == null)
          throw new IllegalArgumentException("request may not be null.");
       if (itemIds == null)
@@ -439,7 +446,7 @@ public class PSContentDataHandler extends PSSearchHandler
          return; // do nothing
 
       IPSSqlPurgeHelper purgeHelper = PSSqlPurgeHelperLocator.getPurgeHelper();
-      List<PSLocator> locatorList = new ArrayList<PSLocator>();
+      List<PSLocator> locatorList = new ArrayList<>();
       for (String item : itemIds) {
          int id = NumberUtils.toInt(item);
          if (id>0)

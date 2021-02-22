@@ -42,6 +42,7 @@ import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
+import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.service.IPSSiteImportService;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
@@ -65,7 +66,7 @@ import org.springframework.stereotype.Component;
 public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 		implements IPSPageImportQueue, IPSNotificationListener,
 		IPSPerformPageImport {
-	private Map<Long, PSSiteQueue> m_siteCache = new ConcurrentHashMap<Long, PSSiteQueue>();
+	private Map<Long, PSSiteQueue> m_siteCache = new ConcurrentHashMap<>();
 	private PSSiteQueue m_importingSite;
 	private PSSiteImportCtx m_importContext = new PSSiteImportCtx();
 
@@ -293,7 +294,7 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 	 * @throws InterruptedException
 	 */
 	public void performPageImport(PSSite site, Integer id, String userAgent)
-			throws InterruptedException {
+			throws InterruptedException, PSSiteImportException {
 		String pageId = m_idMapper.getString(new PSLegacyGuid(id, -1));
 		PSSiteImportCtx siteImportContext = new PSSiteImportCtx();
 		siteImportContext.setCanceled(this.m_importContext.isCanceled());
@@ -320,7 +321,7 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 	}
 
 	protected PSPair<PSSiteQueue, Integer> getNextEvent() {
-		PSPair<PSSiteQueue, Integer> pair = new PSPair<PSSiteQueue, Integer>();
+		PSPair<PSSiteQueue, Integer> pair = new PSPair<>();
 		if (m_importingSite == null) {
 			PSSiteQueue sq = getNextWaitingSite();
 			if (sq == null)
@@ -430,7 +431,7 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 	 *         <code>null</code>, but may be empty.
 	 */
 	private List<Integer> getContentIds(List<String> ids) {
-		List<Integer> contentIds = new ArrayList<Integer>();
+		List<Integer> contentIds = new ArrayList<>();
 		for (String id : ids) {
 			contentIds.add(((PSLegacyGuid) m_idMapper.getGuid(id))
 					.getContentId());

@@ -26,11 +26,14 @@ package com.percussion.sitemanage.importer;
 import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.service.IPSPageCatalogService;
+import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.share.dao.IPSGenericDao.LoadException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.error.PSSiteImportException;
+import com.percussion.sitemanage.error.PSTemplateImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
 import com.percussion.sitemanage.importer.dao.IPSImportLogDao;
@@ -84,14 +87,14 @@ public class PSSiteImportService implements IPSSiteImportService
             PSPageContent importedPageContent = PSSiteImporter.getPageContentFromSite(siteImportCtx);
 
             // List to keep the executed helpers in case and rollback is needed.
-            executedHelpers = new ArrayList<PSImportHelper>();
+            executedHelpers = new ArrayList<>();
             
             // Run Helpers.
             runHelpers(siteImportCtx, importedPageContent);
             
             return siteImportCtx;
         }
-        catch (IOException e)
+        catch (IOException | PSDataServiceException e)
         {
             throw new PSSiteImportException("The URL is invalid or unreachable.", e);
         }
@@ -143,14 +146,14 @@ public class PSSiteImportService implements IPSSiteImportService
             PSPageContent importedPageContent = PSSiteImporter.getPageContentFromSite(context);
             
             // List to keep the executed helpers in case and rollback is needed.
-            executedHelpers = new ArrayList<PSImportHelper>();
+            executedHelpers = new ArrayList<>();
             
             // Run Helpers.
             runHelpers(context, importedPageContent);
 
             return context;
         }
-        catch (LoadException e)
+        catch (PSDataServiceException e)
         {
             throw new PSSiteImportException("The page doesn't exist in the system.");
         }
@@ -220,8 +223,7 @@ public class PSSiteImportService implements IPSSiteImportService
      * @param siteImportCtx
      * @param importedPageContent
      */
-    private void runHelpers(PSSiteImportCtx siteImportCtx, PSPageContent importedPageContent)
-    {   
+    private void runHelpers(PSSiteImportCtx siteImportCtx, PSPageContent importedPageContent) throws PSDataServiceException, PSSiteImportException {
         // Run helpers
         for (PSImportHelper mandatoryHelper : mandatoryHelpers)
         {
@@ -230,7 +232,7 @@ public class PSSiteImportService implements IPSSiteImportService
                 executedHelpers.add(mandatoryHelper);
                 mandatoryHelper.process(importedPageContent, siteImportCtx);
             }
-            catch (PSSiteImportException e)
+            catch (PSSiteImportException | PSTemplateImportException | IPSPageService.PSPageException e)
             {
                 for (int i = executedHelpers.size() - 1; i < 0; i--)
                 {

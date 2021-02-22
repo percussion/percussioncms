@@ -41,6 +41,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import com.percussion.security.SecureStringUtils;
+import com.percussion.utils.security.PSSecurityUtility;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -258,10 +260,10 @@ public class PSAutotuneCache
          PSConnectionDetail detail = PSConnectionHelper.getConnectionDetail();
          for (Entry<String, String> entry : cacheRelationships.entrySet())
          {
-            if(PSSqlHelper.isExistingCMSTableName(entry.getKey(),false)){
+            if(PSSqlHelper.isExistingCMSTableName(conn,(String) entry.getKey(),false)){
                String table = PSSqlHelper.qualifyTableName(entry.getKey(), detail.getDatabase(), detail.getOrigin(),
                        detail.getDriver());
-               String stmt = "SELECT COUNT(*) FROM " + table;
+               String stmt = "SELECT COUNT(*) FROM " + SecureStringUtils.sanitizeStringForSQLStatement(table);
 
                stmt1 = PSPreparedStatement.getPreparedStatement(conn, stmt);
                resultSet = stmt1.executeQuery();

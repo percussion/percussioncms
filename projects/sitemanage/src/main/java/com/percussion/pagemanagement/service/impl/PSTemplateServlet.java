@@ -23,29 +23,27 @@
  */
 
 package com.percussion.pagemanagement.service.impl;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.percussion.pagemanagement.data.PSTemplate;
+import com.percussion.pagemanagement.service.IPSTemplateService;
+import com.percussion.share.dao.PSSerializerUtils;
+import com.percussion.share.service.exception.PSExtractHTMLException;
+import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.percussion.pagemanagement.data.PSTemplate;
-import com.percussion.pagemanagement.service.IPSTemplateService;
-import com.percussion.pagemanagement.service.IPSTemplateService.PSTemplateException;
-import com.percussion.share.dao.PSSerializerUtils;
-import com.percussion.share.service.exception.PSExtractHTMLException;
-import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
 
 /**
  * Servlet that allows to import or export a given template from the system
@@ -102,7 +100,7 @@ private static final int DEFAULT_BUFFER_SIZE = 20480; // 20KB.
        }
        catch (Exception ex)
        {
-    	   throw new PSTemplateException("Failed to find Template with name = " + templateName, ex);
+    	   throw new ServletException("Failed to find Template with name = " + templateName, ex);
        }      
    }
    
@@ -199,27 +197,28 @@ private static final int DEFAULT_BUFFER_SIZE = 20480; // 20KB.
 	   private PSTemplate importTemplate(String siteId, FileItem item)
 	      throws IOException, PSExtractHTMLException
 	   {
-	      InputStream fileInput = null;
+
 	      PSTemplate convertedTemplate = new PSTemplate();
-	      
-	      try
-	      {
-	    	  fileInput = item.getInputStream();
+
+	      try(InputStream fileInput = item.getInputStream()){
 	    	  //Build a string with the InputStream
-	    	  BufferedReader br = new BufferedReader(new InputStreamReader(item.getInputStream()));
-	    	  StringBuilder sb = new StringBuilder();
-	    	  String line = null;
-	    	  while ((line = br.readLine()) != null) {
-	    	        sb.append(line + "\n");
-	    	  }
-	    	  br.close();
-	    	 
-	    	  String validStringXml = sb.toString();
-	    	  validStringXml = validStringXml.trim().replaceFirst("^([\\W]+)<","<");
-	    	  convertedTemplate = PSSerializerUtils.unmarshal(validStringXml, PSTemplate.class);
-	    	  //Import the template
-	          PSTemplate importedTemplate = templateService.importTemplate(convertedTemplate,siteId);
-	          return importedTemplate;
+			  try(InputStream is = item.getInputStream()) {
+				  try(BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+					  StringBuilder sb = new StringBuilder();
+					  String line = null;
+					  while ((line = br.readLine()) != null) {
+						  sb.append(line + "\n");
+					  }
+					  br.close();
+
+					  String validStringXml = sb.toString();
+					  validStringXml = validStringXml.trim().replaceFirst("^([\\W]+)<", "<");
+					  convertedTemplate = PSSerializerUtils.unmarshal(validStringXml, PSTemplate.class);
+					  //Import the template
+					  PSTemplate importedTemplate = templateService.importTemplate(convertedTemplate, siteId);
+					  return importedTemplate;
+				  }
+			  }
 	      }
 	      catch (Exception e)
 	        {
@@ -236,13 +235,7 @@ private static final int DEFAULT_BUFFER_SIZE = 20480; // 20KB.
 	           log.error("Error getting the content from file: " +  msg);
 	           return new PSTemplate();
 	        }
-	      finally
-	      {
-	          if (fileInput != null)
-	          {
-	              fileInput.close();
-	          }
-	      }
+
    }
    
    public IPSTemplateService getTemplateService() {

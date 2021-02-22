@@ -118,7 +118,7 @@ public class PSUpgradePluginUniqueContextSchemeName implements IPSUpgradePlugin
     */
    private List<PSPair<Long, String>> getDedupSchemeNames(Map<Long, List<PSPair<Long, String>>> ctxMap)
    {
-      List<PSPair<Long, String>> dedupNames = new ArrayList<PSPair<Long, String>>();
+      List<PSPair<Long, String>> dedupNames = new ArrayList<>();
       for (Long k : ctxMap.keySet())
       {
          dedupNames.addAll(getDedupPairs(ctxMap.get(k)));
@@ -137,12 +137,12 @@ public class PSUpgradePluginUniqueContextSchemeName implements IPSUpgradePlugin
     */
    private List<PSPair<Long, String>> getDedupPairs(List<PSPair<Long, String>> src)
    {
-      Set<String> names = new HashSet<String>();
-      List<PSPair<Long, String>> result = new ArrayList<PSPair<Long, String>>();
+      Set<String> names = new HashSet<>();
+      List<PSPair<Long, String>> result = new ArrayList<>();
       for (PSPair<Long, String> p : src)
       {
          boolean addToResult = false;
-         PSPair<Long, String> pcopy = new PSPair<Long, String>(p.getFirst(), p
+         PSPair<Long, String> pcopy = new PSPair<>(p.getFirst(), p
                .getSecond());
          // update Location Schemes with blank name
          if (StringUtils.isBlank(pcopy.getSecond()))
@@ -154,7 +154,7 @@ public class PSUpgradePluginUniqueContextSchemeName implements IPSUpgradePlugin
          {
             String unique = getUniqueName(pcopy.getSecond(), names);
             names.add(unique);
-            result.add(new PSPair<Long, String>(pcopy.getFirst(), unique));
+            result.add(new PSPair<>(pcopy.getFirst(), unique));
          }
          else
          {
@@ -236,7 +236,7 @@ public class PSUpgradePluginUniqueContextSchemeName implements IPSUpgradePlugin
    private Map<Long, List<PSPair<Long, String>>> getContextSchemeMap(
          Connection conn) throws Exception
    {
-      Map<Long, List<PSPair<Long, String>>> result = new HashMap<Long, List<PSPair<Long, String>>>();
+      Map<Long, List<PSPair<Long, String>>> result = new HashMap<>();
       PSConnectionObject connObj = new PSConnectionObject();
       
       try
@@ -257,10 +257,10 @@ public class PSUpgradePluginUniqueContextSchemeName implements IPSUpgradePlugin
             List<PSPair<Long, String>> schemeList = result.get(ctxId);
             if (schemeList == null)
             {
-               schemeList = new ArrayList<PSPair<Long, String>>();
+               schemeList = new ArrayList<>();
                result.put(ctxId, schemeList);
             }
-            schemeList.add(new PSPair<Long, String>(schemeId, schemeName));
+            schemeList.add(new PSPair<>(schemeId, schemeName));
          }
       }
       finally

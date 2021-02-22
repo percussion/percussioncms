@@ -140,7 +140,7 @@ public class PSDebugAssembler implements IPSAssembler, IPSExtension
     */
    public List<IPSAssemblyResult> assemble(List<IPSAssemblyItem> items)
    {
-      List<IPSAssemblyResult> results = new ArrayList<IPSAssemblyResult>();
+      List<IPSAssemblyResult> results = new ArrayList<>();
       for (IPSAssemblyItem item : items)
       {
          try
@@ -194,7 +194,7 @@ public class PSDebugAssembler implements IPSAssembler, IPSExtension
       if (templ != null
             && item.getTemplate().getAssembler().endsWith("dispatchAssembler"))
       {
-         Map<String, String> params = new HashMap<String, String>();
+         Map<String, String> params = new HashMap<>();
          String template = templ.toString();
          params.put(IPSHtmlParameters.SYS_TEMPLATE, template);
          if (item.getFolderId() > 0)
@@ -396,9 +396,9 @@ public class PSDebugAssembler implements IPSAssembler, IPSExtension
          try
          {
             List<IPSAssemblyItem> relitems = finder.find(item, slot,
-                  new HashMap<String, Object>());
+                  new HashMap<>());
             pw.println("<tr><th>Id</th><th>Title</th><th>Template</th></tr>");
-            List<IPSGuid> ids = new ArrayList<IPSGuid>();
+            List<IPSGuid> ids = new ArrayList<>();
             for (IPSAssemblyItem ritem : relitems)
             {
                ids.clear();
@@ -495,7 +495,7 @@ public class PSDebugAssembler implements IPSAssembler, IPSExtension
       if (toggleprops)
          outputToggler(pw, "<b>Properties:</b>", true);
       PropertyIterator iter = node.getProperties();
-      Set<String> alphabetized = new TreeSet<String>();
+      Set<String> alphabetized = new TreeSet<>();
       while (iter.hasNext())
       {
          Property p = iter.nextProperty();

@@ -106,7 +106,7 @@ public class PSLegacyAutoSlotContentFinder extends PSSlotContentFinderBase
    protected Set<ContentItem> getContentItems(IPSAssemblyItem sourceItem,
          IPSTemplateSlot slot, Map<String, Object> selectors)
    {
-      Set<ContentItem> rval = new TreeSet<ContentItem>(new ContentItemOrder());
+      Set<ContentItem> rval = new TreeSet<>(new ContentItemOrder());
       String path = getValue(selectors, PARAM_RESOURCE, null);
       if (StringUtils.isBlank(path))
       {
@@ -115,7 +115,7 @@ public class PSLegacyAutoSlotContentFinder extends PSSlotContentFinderBase
       }
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
       PSRequest req = (PSRequest) PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
-      Map<String,Object> overrides = new HashMap<String,Object>();
+      Map<String,Object> overrides = new HashMap<>();
       for(String key : selectors.keySet())
       {
          overrides.put(key, getValue(selectors, key, ""));
@@ -126,7 +126,7 @@ public class PSLegacyAutoSlotContentFinder extends PSSlotContentFinderBase
       }
       PSInternalRequest ireq = PSServer.getInternalRequest(path, req,
             overrides, false, null);
-      List<Integer> cids = new ArrayList<Integer>();
+      List<Integer> cids = new ArrayList<>();
       try
       {
          Document result = ireq.getResultDoc();

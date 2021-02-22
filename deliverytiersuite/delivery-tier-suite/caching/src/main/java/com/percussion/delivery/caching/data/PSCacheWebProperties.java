@@ -45,7 +45,7 @@ public class PSCacheWebProperties
     {
         if (webProperty == null)
         {
-            webProperty = new ArrayList<PSCacheWebProperty>();
+            webProperty = new ArrayList<>();
         }
         return this.webProperty;
     }

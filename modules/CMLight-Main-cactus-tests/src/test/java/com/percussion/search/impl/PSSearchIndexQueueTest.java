@@ -104,9 +104,7 @@ public class PSSearchIndexQueueTest extends ServletTestCase
    }
 
    /**
-    * Test method for {@link
-    * com.percussion.search.impl.PSSearchIndexQueue#deleteItems(Collection<
-    * Integer> queueIds) } .
+    * Test method for: .
     */
    public void fixme_testDeleteItems()
    {

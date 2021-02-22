@@ -63,6 +63,8 @@ import com.percussion.rx.config.impl.PSDefaultConfigGenerator;
 import com.percussion.security.IPSSecurityErrors;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.security.PSUserEntry;
 import com.percussion.server.IPSCgiVariables;
 import com.percussion.server.IPSLoadableRequestHandler;
@@ -74,6 +76,7 @@ import com.percussion.server.PSServer;
 import com.percussion.server.PSServerBrand;
 import com.percussion.server.PSUserSessionManager;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -88,15 +91,14 @@ import com.percussion.services.pkginfo.utils.PSIdNameHelper;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.util.IOTools;
 import com.percussion.util.IPSBrandCodeConstants;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.util.PSFormatVersion;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.codec.PSXmlDecoder;
 import com.percussion.utils.collections.PSMultiValueHashMap;
 import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.io.PathUtils;
+import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
@@ -139,7 +141,7 @@ import java.util.Set;
 public class PSDeploymentHandler implements IPSLoadableRequestHandler
 {
 
-   private final static Logger ms_log = Logger.getLogger(PSDeploymentHandler.class);
+   private  static final Logger ms_log = Logger.getLogger(PSDeploymentHandler.class);
    
    /**
     * Parameterless ctor used by server to construct this loadable handler.
@@ -312,8 +314,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * @throws PSDeployException if there are any errors.
     */
    public Document getDeployableElements(PSRequest req)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (req == null)
          throw new IllegalArgumentException("req may not be null");
 
@@ -452,8 +453,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * @throws PSDeployException if the descriptor cannot be located or there are
     *             any errors.
     */
-   public Document getExportDescriptor(PSRequest req) throws PSDeployException
-   {
+   public Document getExportDescriptor(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
          throw new IllegalArgumentException("req may not be null");
 
@@ -606,8 +606,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     *             <code>null</code>.
     * @throws PSDeployException if there are any errors.
     */
-   public Document getIdTypes(PSRequest req) throws PSDeployException
-   {
+   public Document getIdTypes(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
          throw new IllegalArgumentException("req may not be null");
 
@@ -795,7 +794,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
 
          File xsdFile = new File(PSServer.getRxDir(),
                IPSDeployConstants.DEPLOYMENT_ROOT + "/schema/localConfig.xsd");
-         List<Exception> errors = new ArrayList<Exception>();
+         List<Exception> errors = new ArrayList<>();
          boolean isValid = PSXmlValidator.validateXmlAgainstSchema(tempFile,
                xsdFile, errors);
 
@@ -908,8 +907,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
             createRoot(respDoc, XML_AV_ROOT_NAME);
          
          
-         List<String> errorList = new ArrayList<String>();
-         List<String> warningList = new ArrayList<String>();
+         List<String> errorList = new ArrayList<>();
+         List<String> warningList = new ArrayList<>();
          errorList.addAll(validationMap.get(IPSDeployConstants.ERROR_KEY));
          warningList.addAll(validationMap.get(IPSDeployConstants.WARNING_KEY));
          
@@ -983,7 +982,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     {
          Validate.notNull(info);
         
-         PSMultiValueHashMap<String, String> validationMap = new PSMultiValueHashMap<String, String>();
+         PSMultiValueHashMap<String, String> validationMap = new PSMultiValueHashMap<>();
          String message = "";
     
          // Checks if the package is already installed and if version is greater
@@ -1106,8 +1105,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
             .getPkgInfoService();
 
       List<Map<String, String>> pkgDepList = expDesc.getPkgDepList();
-      ArrayList<String> pkgNotInstalled = new ArrayList<String>();
-      ArrayList<String> pkgVersionMismatch = new ArrayList<String>();
+      ArrayList<String> pkgNotInstalled = new ArrayList<>();
+      ArrayList<String> pkgVersionMismatch = new ArrayList<>();
 
       // Loop through all dependency packages
       for (Map<String, String> pkgDep : pkgDepList)
@@ -1708,7 +1707,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       IPSPkgInfoService pkgInfoSvc = 
          PSPkgInfoServiceLocator.getPkgInfoService();
       List<PSPkgInfo> pkgInfos = pkgInfoSvc.findAllPkgInfos();
-      List<String[]> index = new ArrayList<String[]>();
+      List<String[]> index = new ArrayList<>();
       for(PSPkgInfo info : pkgInfos)
       {
         if(PackageAction.UNINSTALL.equals(info.getType()))
@@ -1849,8 +1848,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     *             <code>null</code>.g
     * @throws PSDeployException if there are any other errors.
     */
-   public Document saveExportDescriptor(PSRequest req) throws PSDeployException
-   {
+   public Document saveExportDescriptor(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
          throw new IllegalArgumentException("req may not be null");
 
@@ -2458,8 +2456,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * 
     * @throws PSDeployException if there are any errors.
     */
-   public Document loadDependencies(PSRequest req) throws PSDeployException
-   {
+   public Document loadDependencies(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
          throw new IllegalArgumentException("req may not be null");
 
@@ -2512,8 +2509,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * 
     * @throws PSDeployException if there are any errors.
     */
-   public Document loadAncestors(PSRequest req) throws PSDeployException
-   {
+   public Document loadAncestors(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
          throw new IllegalArgumentException("req may not be null");
 
@@ -2888,8 +2884,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * not be <code>null</code> or empty.
     * @return results of the uninstallation.
     */
-   public List<IPSUninstallResult> uninstallPackages(List<String> packageNames)
-   {
+   public List<IPSUninstallResult> uninstallPackages(List<String> packageNames) throws PSNotFoundException {
       return uninstallPackages(packageNames, false);
    }
    
@@ -2902,8 +2897,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * @param isRevertEntry <code>true</code> if the package has been marked for REVERT
     * @return results of the uninstallation.
     */
-   public List<IPSUninstallResult> uninstallPackages(List<String> packageNames, boolean isRevertEntry)
-   {
+   public List<IPSUninstallResult> uninstallPackages(List<String> packageNames, boolean isRevertEntry) throws PSNotFoundException {
       if (packageNames == null || packageNames.isEmpty())
          throw new IllegalArgumentException(
                "packageNames must not be null or empty");
@@ -3623,10 +3617,14 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          return "";
 
       String key = uid == null || uid.trim().length() == 0
-            ? PSLegacyEncrypter.INVALID_DRIVER()
+            ? PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).INVALID_DRIVER()
             : uid;
 
-      return decryptPwd(pwd, PSLegacyEncrypter.INVALID_CRED(), key);
+      return decryptPwd(pwd, PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).INVALID_CRED(), key);
    }
 
    /**
@@ -3650,7 +3648,9 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          return "";
 
       try{
-         ret = PSEncryptor.getInstance().decrypt(pwd);
+         ret = PSEncryptor.getInstance("AES",
+                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).decrypt(pwd);
       } catch (PSEncryptionException e) {
         ret = PSCryptographer.decrypt(key1, key2, pwd);
       }
@@ -3939,8 +3939,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * 
     */
    private void updateCreatePackageInfoService(PSExportDescriptor desc,
-         String installerName)
-   {
+         String installerName) throws PSNotFoundException {
 
       IPSPkgInfoService pkgInfoService = PSPkgInfoServiceLocator
             .getPkgInfoService();
@@ -3978,12 +3977,12 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
 
       // Create and save all elements
       // N.B. - these 'packages' are the old MSM concept, not the new concept
-      Set<IPSGuid> savedObjs = new HashSet<IPSGuid>();
+      Set<IPSGuid> savedObjs = new HashSet<>();
       Iterator<PSDeployableElement> it = desc.getPackages();
       while (it.hasNext())
       {
          PSDeployableElement elem = it.next();
-         Collection<PSDependency> deps = new ArrayList<PSDependency>();
+         Collection<PSDependency> deps = new ArrayList<>();
          getIncludedDependencies(elem.getDependencies(), deps);
          for (PSDependency d : deps)
          {
@@ -4009,7 +4008,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       }
       
       List<Map<String, String>> pkgDeps = desc.getPkgDepList();
-      Map<String, IPSGuid> pkgNameToGuid = new HashMap<String, IPSGuid>();
+      Map<String, IPSGuid> pkgNameToGuid = new HashMap<>();
       if (pkgDeps.size() > 0)
          pkgNameToGuid = getPkgNameToGuidMap();
       for (Map<String, String> pkgDep : pkgDeps)
@@ -4041,7 +4040,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       IPSPkgInfoService svc = PSPkgInfoServiceLocator
          .getPkgInfoService();
       List<PSPkgInfo> infos = svc.findAllPkgInfos();
-      Map<String, IPSGuid> results = new HashMap<String, IPSGuid>();
+      Map<String, IPSGuid> results = new HashMap<>();
       for (PSPkgInfo info : infos)
       {
          results.put(info.getPackageDescriptorName(), info.getGuid());

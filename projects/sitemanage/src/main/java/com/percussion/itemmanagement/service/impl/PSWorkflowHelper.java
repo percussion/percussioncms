@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -30,7 +30,6 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.fastforward.managednav.IPSManagedNavService;
 import com.percussion.itemmanagement.data.PSItemStateTransition;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
-import com.percussion.itemmanagement.service.IPSItemWorkflowService.PSItemWorkflowServiceException;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
@@ -47,25 +46,38 @@ import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSTransition;
 import com.percussion.services.workflow.data.PSTransitionRole;
 import com.percussion.services.workflow.data.PSWorkflow;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.workflow.service.IPSSteppedWorkflowService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.percussion.itemmanagement.service.IPSItemWorkflowService.TRANSITION_TRIGGER_APPROVE;
 import static com.percussion.itemmanagement.service.IPSItemWorkflowService.TRANSITION_TRIGGER_LIVE;
 import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
 import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfNull;
-import static com.percussion.webservices.PSWebserviceUtils.*;
+import static com.percussion.webservices.PSWebserviceUtils.getItemSummary;
+import static com.percussion.webservices.PSWebserviceUtils.getStateById;
+import static com.percussion.webservices.PSWebserviceUtils.getUserRoles;
+import static com.percussion.webservices.PSWebserviceUtils.getWorkflow;
+import static com.percussion.webservices.PSWebserviceUtils.isItemCheckedOutToSomeoneElse;
+import static com.percussion.webservices.PSWebserviceUtils.isItemCheckedOutToUser;
+import static com.percussion.webservices.PSWebserviceUtils.transitionItem;
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableCollection;
 import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
@@ -129,11 +141,11 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
         if (!isPage(idMapper.getString(id)))
             return;  // do nothing if not a page
         }
-        catch (PSNotFoundException e)
+        catch (PSNotFoundException | PSValidationException e)
         {
             // if we have caught this exception, the item has
             // no content type and we can do nothing.
-            log.error("Error transitioning landing/navigation page with id: " + id, e);
+            log.error("Error transitioning landing/navigation page with id: {} Error: {}", id, e.getMessage());
             return;
         }
         
@@ -205,26 +217,18 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     }
 
     @Override
-    public void transitionToPending(Set<String> ids)
-    {
+    public void transitionToPending(Set<String> ids) throws PSValidationException {
         rejectIfNull("transitionToPending", "ids", ids);
         
-        Set<String> tids = new HashSet<String>();
+        Set<String> tids = new HashSet<>();
         
         for (String id : ids)
         {
-            try
+            // the item will be transitioned if the trigger is available
+            PSItemStateTransition trans = getTransitions(id);
+            if (trans.getTransitionTriggers().contains(WF_TRIGGER_APPROVE))
             {
-                // the item will be transitioned if the trigger is available
-                PSItemStateTransition trans = getTransitions(id);
-                if (trans.getTransitionTriggers().contains(WF_TRIGGER_APPROVE))
-                {
-                    tids.add(id);
-                }
-            }
-            catch (PSItemWorkflowServiceException e)
-            {
-                // failed to get available transitions for a shared asset, warning already logged                          
+                tids.add(id);
             }
         }
         
@@ -235,7 +239,8 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
 	            PSLegacyGuid guid = (PSLegacyGuid)idMapper.getGuid(tid);
 	            transitionItem(guid.getContentId(), WF_TRIGGER_APPROVE, null, null);
         	}catch(Exception e){
-        		log.error("An error occurred while transitioning item id:" + tid + " to Pending.",  e);
+        		log.error("An error occurred while transitioning item id: {} to Pending.  Error: {}",tid , e.getMessage());
+        		log.debug(e.getMessage(),e);
         	}
         }
     }
@@ -247,8 +252,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
      * @return The transitions or null if no transitions found.
      */
     @Override
-    public PSItemStateTransition getTransitions(String id)
-    {
+    public PSItemStateTransition getTransitions(String id) throws PSValidationException {
         rejectIfBlank("getTransitions", "id", id);
       
         IPSItemEntry item = getItemEntry(id);
@@ -261,7 +265,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
             Set<Integer> userRoleIds = wf.getRoleIds(userRoles);
 
             int stateId = item.getContentStateId();
-            List<String> triggers = new ArrayList<String>();
+            List<String> triggers = new ArrayList<>();
             PSState state = getState(id);
             for (PSTransition t : state.getTransitions()) {
                 if (isAllowedTransition(t, userRoleIds)) {
@@ -283,24 +287,21 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     }
     
     @Override
-    public boolean isPending(String id)
-    {
+    public boolean isPending(String id) throws PSValidationException {
         rejectIfBlank("isPending", "id", id);
         
         return getState(id).getName().equals(WF_STATE_PENDING);
     }
     
     @Override
-    public boolean isLive(String id)
-    {
+    public boolean isLive(String id) throws PSValidationException {
         rejectIfBlank("isLive", "id", id);
         
         return getState(id).getName().equals(WF_STATE_LIVE);
     }
     
     @Override
-    public boolean isQuickEdit(String id)
-    {
+    public boolean isQuickEdit(String id) throws PSValidationException {
         rejectIfBlank("isQuickEdit", "id", id);
         
         return getState(id).getName().equals(WF_STATE_QUICKEDIT);
@@ -308,24 +309,21 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     
     
     @Override
-    public boolean isArchived(String id)
-    {
+    public boolean isArchived(String id) throws PSValidationException {
         rejectIfBlank("isArchive", "id", id);
         
         return getState(id).getName().equals(WF_STATE_ARCHIVE);
     }
 
     @Override
-    public boolean isApproved(String id)
-    {
+    public boolean isApproved(String id) throws PSValidationException {
         rejectIfBlank("isApproved", "id", id);
         
         return isPending(id) || isLive(id) || isQuickEdit(id);
     }
     
     @Override
-    public boolean isCheckedOutToCurrentUser(String id)
-    {
+    public boolean isCheckedOutToCurrentUser(String id) throws PSValidationException {
         rejectIfBlank("isCheckedOutToCurrentUser", "id", id);
         PSComponentSummary summary = getComponentSummary(id);
         return isItemCheckedOutToUser(summary);
@@ -350,8 +348,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     }
 
     @Override
-    public boolean isTipRevision(String id)
-    {
+    public boolean isTipRevision(String id) throws PSValidationException {
         rejectIfBlank("isTipRevision", "id", id);
         
         PSLocator locator = idMapper.getLocator(id);
@@ -363,8 +360,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     }
     
     @Override
-    public PSComponentSummary getComponentSummary(String id)
-    {
+    public PSComponentSummary getComponentSummary(String id) throws PSValidationException {
         rejectIfBlank("getComponentSummary", "id", id);
         PSLegacyGuid guid = (PSLegacyGuid) idMapper.getGuid(id);
         return getItemSummary(guid.getContentId());
@@ -377,8 +373,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     }
     
     @Override
-    public PSState getState(String id)
-    {
+    public PSState getState(String id) throws PSValidationException {
         rejectIfBlank("getState", "id", id);
         
         IPSItemEntry item = getItemEntry(id);
@@ -388,8 +383,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     }
     
     @Override
-    public boolean isCheckedOutToSomeoneElse(String id)
-    {
+    public boolean isCheckedOutToSomeoneElse(String id) throws PSValidationException {
         rejectIfBlank("isCheckedOutToSomeoneElse", "id", id);
         PSComponentSummary summary = getComponentSummary(id);
         return isItemCheckedOutToSomeoneElse(summary);
@@ -437,8 +431,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     }
     
     @Override
-    public boolean isPage(String id) throws PSNotFoundException
-    {
+    public boolean isPage(String id) throws PSNotFoundException, PSValidationException {
         rejectIfBlank("isPage", "id", id);
         
         String ctId = getContentType(id);
@@ -451,15 +444,13 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     }
 
     @Override
-    public boolean isTemplate(String id)
-    {
+    public boolean isTemplate(String id) throws PSValidationException {
         rejectIfBlank("isTemplate", "id", id);
         
         return IPSTemplateService.TPL_CONTENT_TYPE.equals(getContentType(id));
     }
     
-    public boolean isAsset(String id) throws PSNotFoundException
-    {
+    public boolean isAsset(String id) throws PSNotFoundException, PSValidationException {
         rejectIfBlank("isAsset", "id", id);
         
         if (!isPage(id) && !isTemplate(id))
@@ -482,8 +473,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     
     
     @Override
-    public boolean isLocalAsset(String id) throws PSNotFoundException
-    {
+    public boolean isLocalAsset(String id) throws PSNotFoundException, PSValidationException {
         boolean isLocalAsset = false;
         if (isAsset(id))
         {
@@ -499,8 +489,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     }
 
     @Override
-    public PSItemTypeEnum getItemType(String id)
-    {
+    public PSItemTypeEnum getItemType(String id) throws PSValidationException {
         rejectIfBlank("getItemType", "id", id);
         PSItemTypeEnum type = PSItemTypeEnum.UNKNOWN;
         
@@ -643,8 +632,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     }
 
     @Override
-    public boolean isApproveAvailableToCurrentUser(String itemId)
-    {
+    public boolean isApproveAvailableToCurrentUser(String itemId) throws PSValidationException {
         PSItemStateTransition stateTrans = getTransitions(itemId);
         List<String> trans = stateTrans.getTransitionTriggers();
         for (String tran : trans)
@@ -656,9 +644,8 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     }
     
     @Override
-    public List<String> getStagingRoles(int workflowId) 
-    {
-    	List<String> roleNames = new ArrayList<String>();
+    public List<String> getStagingRoles(int workflowId) throws IPSGenericDao.LoadException {
+    	List<String> roleNames = new ArrayList<>();
     	PSMetadata md = metadataService.find(IPSSteppedWorkflowService.METADATA_STAGING_ROLES_KEY_PREFIX + workflowId);
     	if(md != null)
     	{
@@ -672,7 +659,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSWorkflowHelper.class);
+    public static Logger log = LogManager.getLogger(PSWorkflowHelper.class);
 
     /**
      * Constant for the name of the pending workflow state.
@@ -731,27 +718,20 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
         unmodifiableCollection(asList(WF_STATE_LIVE, WF_STATE_PENDING));
 
 	@Override
-	public void transitionToArchive(Set<String> ids) {
+	public void transitionToArchive(Set<String> ids) throws PSValidationException {
 		 rejectIfNull("transitionToArchive", "ids", ids);
 	        
-	        Set<String> tids = new HashSet<String>();
+	        Set<String> tids = new HashSet<>();
 	        
 	        for (String id : ids)
 	        {
-	            try
-	            {
-	                // the item will be transitioned if the trigger is available
-	                PSItemStateTransition trans = getTransitions(id);
-	                if (trans.getTransitionTriggers().contains(WF_TAKE_DOWN_TRANSITION))
-	                {
-	                    tids.add(id);
-	                }
-	            }
-	            catch (PSItemWorkflowServiceException e)
-	            {
-	                // failed to get available transitions for a shared asset, warning already logged                          
-	            }
-	        }
+                // the item will be transitioned if the trigger is available
+                PSItemStateTransition trans = getTransitions(id);
+                if (trans.getTransitionTriggers().contains(WF_TAKE_DOWN_TRANSITION))
+                {
+                    tids.add(id);
+                }
+            }
 	        
 	        for (String tid : tids)
 	        {
@@ -767,27 +747,20 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
 	}
 
 	@Override
-	public void transitionToReview(Set<String> ids) {
+	public void transitionToReview(Set<String> ids) throws PSValidationException {
 		 rejectIfNull("transitionToReview", "ids", ids);
 	        
-	        Set<String> tids = new HashSet<String>();
+	        Set<String> tids = new HashSet<>();
 	        
 	        for (String id : ids)
 	        {
-	            try
-	            {
-	                // the item will be transitioned if the trigger is available
-	                PSItemStateTransition trans = getTransitions(id);
-	                if (trans.getTransitionTriggers().contains(WF_TRIGGER_REVIEW))
-	                {
-	                    tids.add(id);
-	                }
-	            }
-	            catch (PSItemWorkflowServiceException e)
-	            {
-	                // failed to get available transitions for a shared asset, warning already logged                          
-	            }
-	        }
+                // the item will be transitioned if the trigger is available
+                PSItemStateTransition trans = getTransitions(id);
+                if (trans.getTransitionTriggers().contains(WF_TRIGGER_REVIEW))
+                {
+                    tids.add(id);
+                }
+            }
 	        
 	        for (String tid : tids)
 	        {

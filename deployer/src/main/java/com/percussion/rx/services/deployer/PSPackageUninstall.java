@@ -30,6 +30,7 @@ import com.percussion.rx.design.IPSDesignModel;
 import com.percussion.rx.design.IPSDesignModelFactory;
 import com.percussion.rx.design.PSDesignModelFactoryLocator;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pkginfo.IPSPkgInfoService;
 import com.percussion.services.pkginfo.PSPkgInfoServiceLocator;
 import com.percussion.services.pkginfo.data.PSPkgElement;
@@ -64,17 +65,16 @@ public class PSPackageUninstall implements IPSPackageUninstaller
 	 * empty.
 	 */
     @Override
-    public List<PSUninstallMessage> uninstallPackages(String packageNames)
-    {
+    public List<PSUninstallMessage> uninstallPackages(String packageNames) throws PSNotFoundException {
         return uninstallPackages(packageNames, false);
     }
     
     @Override
     public List<PSUninstallMessage> uninstallPackages(String packageName,
-            boolean isRevertEntry) {
-        List<PSUninstallMessage> messages = new ArrayList<PSUninstallMessage>();
+            boolean isRevertEntry) throws PSNotFoundException {
+        List<PSUninstallMessage> messages = new ArrayList<>();
         String[] pkgNames = packageName.split(PSPackageService.NAME_SEPARATOR);
-        List<String> pkgNameList = new ArrayList<String>();
+        List<String> pkgNameList = new ArrayList<>();
         for (String pkgname : pkgNames)
         {
             if (StringUtils.isNotBlank(pkgname))
@@ -140,11 +140,10 @@ public class PSPackageUninstall implements IPSPackageUninstaller
     * @return list {@link PSUninstallMessage} messages, will be empty if there
     * are no dependencies found.
     */
-   public List<PSUninstallMessage> checkPackageDepedencies(String packageName)
-   {
+   public List<PSUninstallMessage> checkPackageDepedencies(String packageName) throws PSNotFoundException {
       if (StringUtils.isBlank(packageName))
          throw new IllegalArgumentException("packageName must not be blank");
-      List<PSUninstallMessage> messages = new ArrayList<PSUninstallMessage>();
+      List<PSUninstallMessage> messages = new ArrayList<>();
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
       PSPkgInfo pinfo = pkgService.findPkgInfo(packageName);
@@ -177,8 +176,7 @@ public class PSPackageUninstall implements IPSPackageUninstaller
     * @return A message corresponding to all the dependent packages, may be
     * <code>null</code>, if no dependencies found.
     */
-   private PSUninstallMessage checkPkgDependencies(PSPkgInfo pinfo)
-   {
+   private PSUninstallMessage checkPkgDependencies(PSPkgInfo pinfo) throws PSNotFoundException {
       PSUninstallMessage msg = null;
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
@@ -214,8 +212,7 @@ public class PSPackageUninstall implements IPSPackageUninstaller
     * @return A message corresponding to all the objects that have dependencies,
     * may be <code>null</code>, if no dependencies found.
     */
-   private PSUninstallMessage checkContentDependencies(PSPkgInfo pinfo)
-   {
+   private PSUninstallMessage checkContentDependencies(PSPkgInfo pinfo) throws PSNotFoundException {
       PSUninstallMessage msg = null;
       List<IPSGuid> objGuids = getPackageObjectGuids(pinfo);
       IPSSystemService sysSrvc = PSSystemServiceLocator.getSystemService();
@@ -262,13 +259,12 @@ public class PSPackageUninstall implements IPSPackageUninstaller
     * @return List of IPSGuids of objects of the supplied package, never
     * <code>null</code>, may be empty.
     */
-   private List<IPSGuid> getPackageObjectGuids(PSPkgInfo pkgInfo)
-   {
+   private List<IPSGuid> getPackageObjectGuids(PSPkgInfo pkgInfo) throws PSNotFoundException {
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
       .getPkgInfoService();
       List<IPSGuid> pkgElems = pkgService.findPkgElementGuids(pkgInfo
             .getGuid());
-      List<IPSGuid> objGuids = new ArrayList<IPSGuid>();
+      List<IPSGuid> objGuids = new ArrayList<>();
       for (IPSGuid guid : pkgElems)
       {
          PSPkgElement pkgElem = pkgService.loadPkgElement(guid);
@@ -280,6 +276,6 @@ public class PSPackageUninstall implements IPSPackageUninstaller
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("PSPackageUninstall");
+   private static final Logger ms_logger = Logger.getLogger("PSPackageUninstall");
 
 }

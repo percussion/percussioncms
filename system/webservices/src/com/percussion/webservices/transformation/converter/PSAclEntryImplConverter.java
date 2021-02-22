@@ -26,7 +26,7 @@ package com.percussion.webservices.transformation.converter;
 import com.percussion.services.security.PSPermissions;
 import com.percussion.services.security.data.PSAccessLevelImpl;
 import com.percussion.services.security.data.PSAclEntryImpl;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 
 import java.util.ArrayList;
 import java.util.Collection;

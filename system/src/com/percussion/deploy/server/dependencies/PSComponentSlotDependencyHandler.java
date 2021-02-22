@@ -38,6 +38,7 @@ import com.percussion.deploy.server.PSDependencyDef;
 import com.percussion.deploy.server.PSDependencyMap;
 import com.percussion.deploy.server.PSImportCtx;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.tablefactory.PSJdbcColumnData;
 import com.percussion.tablefactory.PSJdbcRowData;
 import com.percussion.tablefactory.PSJdbcSelectFilter;
@@ -73,8 +74,7 @@ public class PSComponentSlotDependencyHandler extends PSPairIdDependencyHandler
 
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -89,15 +89,14 @@ public class PSComponentSlotDependencyHandler extends PSPairIdDependencyHandler
          CR_TABLE, new String[] {CR_CHILD_ID}, filter);
       
       Iterator ids = getIdsFromTableData(data, CR_TABLE, CR_CHILD_ID);      
-      List childDeps = getDepsFromIds(ids, 
+      List<PSDependency> childDeps = getDepsFromIds(ids,
          PSComponentDefDependencyHandler.DEPENDENCY_TYPE, tok, -1);
             
       return childDeps.iterator();
     }
 
    // see base class
-   public Iterator getDependencies(PSSecurityToken tok) throws PSDeployException
-   {
+   public Iterator getDependencies(PSSecurityToken tok) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 

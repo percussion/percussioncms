@@ -44,11 +44,11 @@ import com.percussion.design.objectstore.PSHtmlParameter;
 import com.percussion.design.objectstore.PSLiteralSet;
 import com.percussion.design.objectstore.PSRequestor;
 import com.percussion.design.objectstore.PSSingleHtmlParameter;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSTableRef;
 import com.percussion.design.objectstore.PSTableSet;
 import com.percussion.design.objectstore.PSUrlRequest;
 import com.percussion.design.objectstore.PSUserContext;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.design.objectstore.PSViewSet;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.i18n.PSI18nUtils;
@@ -188,7 +188,7 @@ abstract public class PSEditorDocumentBuilder
     * @param pageId The unique id for this particular editor within the
     *    collection of editors that make up a content editor.
     *
-    * @throws PSValidationException If anything is not kosher with the editor
+    * @throws PSSystemValidationException If anything is not kosher with the editor
     *    def.
     *
     * @throws PSExtensionException If an extension is used by the definition
@@ -196,7 +196,7 @@ abstract public class PSEditorDocumentBuilder
     */
    protected PSEditorDocumentBuilder( PSContentEditor ce,
          PSEditorDocumentContext ctx, int pageId )
-      throws PSExtensionException, PSValidationException
+      throws PSExtensionException, PSSystemValidationException
    {
       if ( null == ce || null == ctx )
          throw new IllegalArgumentException( "One or more params was null." );
@@ -274,13 +274,13 @@ abstract public class PSEditorDocumentBuilder
          PSRequestor requestor = ce.getRequestor();
          if ( null == requestor )
          {
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                   IPSServerErrors.CE_MISSING_REQUESTOR, ce.getName());
          }
          m_formAction = requestor.getRequestPage();
          if ( null == m_formAction || m_formAction.trim().length() == 0 )
          {
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                   IPSServerErrors.CE_MISSING_FORMACTION, ce.getName());
          }
          m_formAction += ".html";
@@ -291,7 +291,7 @@ abstract public class PSEditorDocumentBuilder
          PSViewSet viewSet = ce.getViewSet();
          if (viewSet == null)
          {
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSServerErrors.CE_VIEW_SET_MISSING);
          }
          m_viewEvaluator = new PSViewEvaluator(viewSet);
@@ -1062,9 +1062,9 @@ abstract public class PSEditorDocumentBuilder
     *
     * @return <code>true</code> if the supplied field is a binary column
     *
-    * @throws PSValidationException if there are any errors
+    * @throws PSSystemValidationException if there are any errors
     */
-   public boolean isBinaryField( PSField field ) throws PSValidationException
+   public boolean isBinaryField( PSField field ) throws PSSystemValidationException
    {
       if ( null == field )
          throw new IllegalArgumentException( "field cannot be null" );
@@ -1106,7 +1106,7 @@ abstract public class PSEditorDocumentBuilder
 
             if (tableSet == null)
             {
-               throw new PSValidationException(IPSServerErrors.CE_MISSING_TABLE,
+               throw new PSSystemValidationException(IPSServerErrors.CE_MISSING_TABLE,
                   col.getTable().getAlias());
             }
 
@@ -1129,7 +1129,7 @@ abstract public class PSEditorDocumentBuilder
                   next = next.getNextException();
                }
 
-               throw new PSValidationException(IPSServerErrors.CE_SQL_ERRORS,
+               throw new PSSystemValidationException(IPSServerErrors.CE_SQL_ERRORS,
                   buf.toString());
             }
          }

@@ -25,6 +25,7 @@ package com.percussion.rx.config;
 
 import com.percussion.rx.config.IPSConfigHandler.ObjectState;
 import com.percussion.rx.design.IPSAssociationSet;
+import com.percussion.services.error.PSNotFoundException;
 
 import java.util.List;
 import java.util.Map;
@@ -147,5 +148,5 @@ public interface IPSPropertySetter
     * @param defs the holder for created property definitions, never 
     * <code>null</code>.
     */
-   void addPropertyDefs(Object obj, Map<String, Object> defs);
+   void addPropertyDefs(Object obj, Map<String, Object> defs) throws PSNotFoundException;
 }

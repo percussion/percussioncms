@@ -49,7 +49,7 @@ public class PSSimpleTenantCache implements IPSTenantCache {
 	/***
 	 * Thread safe Hash map to hold the cache
 	 */
-	private ConcurrentHashMap<String, IPSTenantInfo> cache = new ConcurrentHashMap<String, IPSTenantInfo>();
+	private ConcurrentHashMap<String, IPSTenantInfo> cache = new ConcurrentHashMap<>();
 	
 	/***
 	 * Minutes cache entries have before needing re-authorization
