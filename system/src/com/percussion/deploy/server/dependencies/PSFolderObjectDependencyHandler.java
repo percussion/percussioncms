@@ -25,15 +25,6 @@
 
 package com.percussion.deploy.server.dependencies;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-
-import org.w3c.dom.Element;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
 import com.percussion.cms.objectstore.PSComponentProcessorProxy;
@@ -45,7 +36,6 @@ import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSKey;
 import com.percussion.cms.objectstore.PSObjectAclEntry;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.deploy.error.IPSDeploymentErrors;
 import com.percussion.deploy.error.PSDeployException;
@@ -61,7 +51,16 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.IPSHtmlParameters;
+import org.w3c.dom.Element;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 /**
  * Base class for all dependency handlers dealing with <code>PSFolder</code>
@@ -102,7 +101,7 @@ public abstract class PSFolderObjectDependencyHandler
       if (!dep.getObjectType().equals(getType()))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       PSFolder folder = getFolderObject(getRelationshipProcessor(tok),
          getComponentProcessor(tok), dep.getDependencyId());
@@ -144,7 +143,7 @@ public abstract class PSFolderObjectDependencyHandler
          PSFolder newFolder = (PSFolder)srcFolder.clone();
 
          // see if target exists and if so, update with source folder
-         Map<String, String> params = new HashMap<String, String>();
+         Map<String, String> params = new HashMap<>();
          // disable nav folder effect when creating folder relationships
          params.put(IPSHtmlParameters.RXS_DISABLE_NAV_FOLDER_EFFECT, "y");
          PSRelationshipProcessor relProc = getRelationshipProcessor(tok, 
@@ -187,7 +186,7 @@ public abstract class PSFolderObjectDependencyHandler
             action = PSTransactionSummary.ACTION_CREATED;
             if (parentSum != null)
             {
-               List<PSLocator> children = new ArrayList<PSLocator>(1);
+               List<PSLocator> children = new ArrayList<>(1);
                children.add(newFolder.getLocator());
                relProc.add(FOLDER_TYPE, null, children, parentSum.getLocator());
             }
@@ -313,15 +312,14 @@ public abstract class PSFolderObjectDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    protected List getChildDependencies(PSSecurityToken tok,
-      String path, int folderDepType) throws PSDeployException
-   {
+      String path, int folderDepType) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
       if (path == null || path.trim().length() == 0)
          throw new IllegalArgumentException("path may not be null or empty");
 
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
 
       PSRelationshipProcessor proc = getRelationshipProcessor(tok);
       PSComponentSummary sum = getFolderSummary(proc, path);
@@ -812,8 +810,7 @@ public abstract class PSFolderObjectDependencyHandler
     */
    protected PSDependency getDisplayFormatDep(PSSecurityToken tok,
       PSComponentProcessorProxy proc, String formatId)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (proc == null)

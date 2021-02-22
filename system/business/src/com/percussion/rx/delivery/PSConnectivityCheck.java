@@ -26,11 +26,10 @@ package com.percussion.rx.delivery;
 
 
 import com.percussion.rx.delivery.impl.PSBaseFtpDeliveryHandler;
-import com.percussion.rx.delivery.impl.PSFtpDeliveryHandler;
-import com.percussion.rx.delivery.impl.PSSFtpDeliveryHandler;
 import com.percussion.rx.publisher.impl.PSPublishingJob;
 import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.publisher.IPSDeliveryType;
 import com.percussion.services.publisher.IPSPublisherService;
@@ -42,8 +41,7 @@ import com.percussion.utils.guid.IPSGuid;
 public class PSConnectivityCheck
 {
    public static boolean checkFTPConnectivity(IPSGuid edition, PSPublishingJob job, 
-         PSPubServer pubServer, String pubServerType, boolean isSSH)
-   {
+         PSPubServer pubServer, String pubServerType, boolean isSSH) throws PSNotFoundException {
       
       IPSDeliveryHandler handler;
       IPSDeliveryType t;

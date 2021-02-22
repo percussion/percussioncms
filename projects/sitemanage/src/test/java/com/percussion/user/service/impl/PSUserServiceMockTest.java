@@ -24,8 +24,47 @@
 
 package com.percussion.user.service.impl;
 
-import static java.util.Arrays.asList;
+import com.percussion.role.service.impl.PSRoleService;
+import com.percussion.security.IPSPasswordFilter;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.PSSecurityCatalogException;
+import com.percussion.services.notification.IPSNotificationService;
+import com.percussion.services.security.IPSBackEndRoleMgr;
+import com.percussion.services.security.IPSRoleMgr;
+import com.percussion.services.security.PSTypedPrincipal;
+import com.percussion.services.workflow.IPSWorkflowService;
+import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.sitemanage.dao.IPSUserLoginDao;
+import com.percussion.user.data.PSCurrentUser;
+import com.percussion.user.data.PSRoleList;
+import com.percussion.user.data.PSUser;
+import com.percussion.user.data.PSUserList;
+import com.percussion.user.data.PSUserLogin;
+import com.percussion.user.data.PSUserProviderType;
+import com.percussion.utils.service.IPSUtilityService;
+import com.percussion.webservices.content.IPSContentWs;
+import com.percussion.webservices.security.IPSSecurityWs;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hamcrest.Matcher;
+import org.hamcrest.core.CombinableMatcher;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
+import javax.security.auth.Subject;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -35,52 +74,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import com.percussion.role.service.impl.PSRoleService;
-import com.percussion.security.IPSPasswordFilter;
-import com.percussion.services.notification.IPSNotificationService;
-import com.percussion.services.security.IPSBackEndRoleMgr;
-import com.percussion.services.security.IPSRoleMgr;
-import com.percussion.services.security.PSTypedPrincipal;
-import com.percussion.services.workflow.IPSWorkflowService;
-import com.percussion.share.dao.IPSFolderHelper;
-import com.percussion.share.service.IPSIdMapper;
-import com.percussion.share.service.exception.PSValidationException;
-import com.percussion.sitemanage.dao.IPSUserLoginDao;
-import com.percussion.user.data.PSCurrentUser;
-import com.percussion.user.data.PSRoleList;
-import com.percussion.user.data.PSUser;
-import com.percussion.user.data.PSUserList;
-import com.percussion.user.data.PSUserLogin;
-import com.percussion.user.data.PSUserProviderType;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
-import com.percussion.utils.security.PSSecurityCatalogException;
-import com.percussion.utils.service.IPSUtilityService;
-import com.percussion.webservices.content.IPSContentWs;
-import com.percussion.webservices.security.IPSSecurityWs;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import javax.security.auth.Subject;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hamcrest.Matcher;
-import org.hamcrest.core.CombinableMatcher;
-import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
-
 
 @Ignore
 public class PSUserServiceMockTest
 {
-    private static Log log = LogFactory.getLog(PSUserServiceMockTest.class); 
+    private static Logger log = LogManager.getLogger(PSUserServiceMockTest.class);
     
     Mockery context; 
     PSUserService cut; 
@@ -136,7 +134,7 @@ public class PSUserServiceMockTest
         }});
     }
     
-    private void expectFindByName(final String name) {
+    private void expectFindByName(final String name) throws IPSGenericDao.LoadException {
         final PSUserLogin user = new PSUserLogin();
         user.setUserid(name);
         context.checking(new Expectations(){{
@@ -146,8 +144,7 @@ public class PSUserServiceMockTest
     }
 
     @Test
-    public void testValid()
-    {
+    public void testValid() throws IPSGenericDao.LoadException, PSValidationException {
         PSUser user = new PSUser();
         user.setName("Fred9");
         user.getRoles().add("a");
@@ -158,8 +155,7 @@ public class PSUserServiceMockTest
     }
     
     @Test(expected = PSValidationException.class)
-    public void testValidBadUser()
-    {
+    public void testValidBadUser() throws PSValidationException {
         PSUser user = new PSUser();
         user.setName("Fred9!Z");
         user.getRoles().add("a");
@@ -167,8 +163,7 @@ public class PSUserServiceMockTest
     }
     
     @Test
-    public void testValidDirectoryUserWithBadCharactersForInternalNames()
-    {
+    public void testValidDirectoryUserWithBadCharactersForInternalNames() throws PSValidationException {
         PSUser user = new PSUser();
         user.setName("Fred9!Z");
         user.getRoles().add("a");
@@ -177,8 +172,7 @@ public class PSUserServiceMockTest
     }
     
     @Test(expected=PSValidationException.class) 
-    public void shouldFailCreatingUserWithNoRoles()
-    {  
+    public void shouldFailCreatingUserWithNoRoles() throws PSValidationException {
         PSUser user = new PSUser();
         user.setName("Fred9!Z");
         assertTrue(user.getRoles().isEmpty());
@@ -186,8 +180,7 @@ public class PSUserServiceMockTest
     }
 
     @Test(expected=PSValidationException.class)
-    public void testValidNoUser()
-    {  
+    public void testValidNoUser() throws PSValidationException {
         PSUser user = new PSUser();
         user.setName(null);
         user.getRoles().add("a"); 
@@ -196,8 +189,7 @@ public class PSUserServiceMockTest
     
 
     @Test(expected=PSValidationException.class) 
-    public void testValidTooLongUser()
-    {  
+    public void testValidTooLongUser() throws PSValidationException {
         PSUser user = new PSUser();
         user.setName("Fred123456789012345678901234567890123456789012345678901234567890");
         user.getRoles().add("a"); 
@@ -205,8 +197,7 @@ public class PSUserServiceMockTest
     }
     
     @Test(expected=PSValidationException.class) 
-    public void testValidBadRole()
-    {  
+    public void testValidBadRole() throws IPSGenericDao.LoadException, PSValidationException {
         PSUser user = new PSUser();
         user.setName("fred");
         user.getRoles().add("q");
@@ -215,8 +206,7 @@ public class PSUserServiceMockTest
     }
     
     @Test
-    public void testCreate()
-    {
+    public void testCreate() throws PSDataServiceException {
         PSUser user = new PSUser();
         user.setName("fred");
         user.setPassword("secret");
@@ -339,8 +329,7 @@ public class PSUserServiceMockTest
     }
     
     @Test
-    public void testGetRoles()
-    {
+    public void testGetRoles() throws PSDataServiceException {
         PSRoleList rl = cut.getRoles();
         List<String> roles = rl.getRoles(); 
         assertNotNull(roles); 
@@ -392,8 +381,7 @@ public class PSUserServiceMockTest
     }
 
     @Test
-    public void testUpdate()
-    {
+    public void testUpdate() throws PSDataServiceException {
         PSUser user = new PSUser();
         final PSUserLogin login = new PSUserLogin();
         user.setName("fred");
@@ -417,8 +405,7 @@ public class PSUserServiceMockTest
     }
 
     @Test
-    public void testChangePassword()
-    {
+    public void testChangePassword() throws PSDataServiceException {
         PSUser user = new PSUser();
         final PSUserLogin login = new PSUserLogin();
         user.setName("fred");
@@ -438,8 +425,7 @@ public class PSUserServiceMockTest
     }
 
     @Test(expected=PSValidationException.class)
-    public void testUpdateSelfNoAdmin()
-    {
+    public void testUpdateSelfNoAdmin() throws PSDataServiceException {
         PSUser user = new PSUser();
         user.setName("dummy-admin");
         user.setPassword("secret"); 
@@ -484,8 +470,7 @@ public class PSUserServiceMockTest
     }
 
     @Test(expected=PSValidationException.class)
-    public void testCheckUser() throws PSSecurityCatalogException
-    {
+    public void testCheckUser() throws PSSecurityCatalogException, PSDataServiceException {
         context.checking(new Expectations(){{
             one(dao).find("fred");
             will(returnValue(null)); 

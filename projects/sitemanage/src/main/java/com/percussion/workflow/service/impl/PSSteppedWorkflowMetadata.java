@@ -57,13 +57,13 @@ public class PSSteppedWorkflowMetadata implements IPSSteppedWorkflowMetadata
     static String[] excludedWorkflowsArray =
         {"LocalContent", "Standard Workflow", "Simple Workflow"};
     static final Set<String> excludedWorkflows = 
-        new HashSet<String>(Arrays.asList(excludedWorkflowsArray));
+        new HashSet<>(Arrays.asList(excludedWorkflowsArray));
 
     // Steps names to exclude from the list to show
     static String[] excludedStatesArray =
         {"Pending", "Live", "Quick Edit"};
     static final Set<String> excludedStates = 
-        new HashSet<String>(Arrays.asList(excludedStatesArray));
+        new HashSet<>(Arrays.asList(excludedStatesArray));
     
     // Constant for Draft step
     static final String DRAFT_STATE = "Draft";
@@ -106,7 +106,7 @@ public class PSSteppedWorkflowMetadata implements IPSSteppedWorkflowMetadata
     static String[] defaultTransitionsValues =
         {TRANSITION_NAME_SUBMIT, TRANSITION_NAME_REJECT, TRANSITION_NAME_APPROVE, TRANSITION_NAME_PUBLISH};
     static List<String> defaultTransitions = 
-        new ArrayList<String>(Arrays.asList(defaultTransitionsValues));
+        new ArrayList<>(Arrays.asList(defaultTransitionsValues));
     
     //Ordered list of transitions names
     static String[] orderedTransitionsValues =
@@ -114,7 +114,7 @@ public class PSSteppedWorkflowMetadata implements IPSSteppedWorkflowMetadata
         TRANSITION_NAME_PUBLISH, TRANSITION_NAME_ARCHIVE};
     
     static List<String> orderedTransitions = 
-        new ArrayList<String>(Arrays.asList(orderedTransitionsValues));
+        new ArrayList<>(Arrays.asList(orderedTransitionsValues));
     
     // Steps names that are locked down to the system
     static String[] systemStatesArray =

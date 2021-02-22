@@ -45,6 +45,7 @@ import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSRequest;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -83,8 +84,7 @@ public abstract class PSCmsObjectDependencyHandler
 
    // see base class
    public boolean doesDependencyExist(PSSecurityToken tok, String id)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -360,8 +360,7 @@ public abstract class PSCmsObjectDependencyHandler
     */
    protected List<PSDependency> getDepsFromMultiValuedProperty(PSSecurityToken tok,
       PSMultiValuedProperty prop, PSDependencyHandler handler)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (prop == null)
@@ -369,7 +368,7 @@ public abstract class PSCmsObjectDependencyHandler
       if (handler == null)
          throw new IllegalArgumentException("handler may not be null");
 
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       Iterator vals = prop.iterator();
       while (vals.hasNext())
       {

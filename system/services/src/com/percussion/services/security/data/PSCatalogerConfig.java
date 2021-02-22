@@ -24,6 +24,8 @@
 
 package com.percussion.services.security.data;
 
+import com.percussion.security.IPSRoleCataloger;
+import com.percussion.security.IPSSubjectCataloger;
 import com.percussion.utils.spring.IPSBeanConfig;
 import com.percussion.utils.spring.PSSpringBeanUtils;
 import com.percussion.utils.xml.PSInvalidXmlException;
@@ -39,8 +41,8 @@ import org.w3c.dom.Element;
 
 /**
  * Object representation of the Spring bean configuration of an 
- * {@link com.percussion.utils.security.IPSSubjectCataloger} or an
- * {@link com.percussion.utils.security.IPSRoleCataloger}.
+ * {@link IPSSubjectCataloger} or an
+ * {@link IPSRoleCataloger}.
  */
 public class PSCatalogerConfig implements IPSBeanConfig, Cloneable
 {
@@ -166,7 +168,7 @@ public class PSCatalogerConfig implements IPSBeanConfig, Cloneable
       m_description = PSSpringBeanUtils.getBeanPropertyValue(propEl, false);
       
       // now get any user defined properties that remain
-      m_props = new HashMap<String, String>();
+      m_props = new HashMap<>();
       propEl = PSSpringBeanUtils.getNextPropertyElement(source, propEl);
       while (propEl != null)
       {
@@ -287,7 +289,7 @@ public class PSCatalogerConfig implements IPSBeanConfig, Cloneable
    {
       // need to manually deep clone the props Map
       PSCatalogerConfig clone = (PSCatalogerConfig) super.clone();
-      Map<String, String> cloneProps = new HashMap<String, String>();
+      Map<String, String> cloneProps = new HashMap<>();
       for (Map.Entry<String, String> entry : m_props.entrySet())
       {
          cloneProps.put(entry.getKey(), entry.getValue());

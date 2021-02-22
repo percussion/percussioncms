@@ -89,7 +89,7 @@ public class ActiveAssemblyLinkbackController extends GenericLinkbackController 
         }
 
         // build new map
-        Map<String, String> nmap = new HashMap<String, String>();
+        Map<String, String> nmap = new HashMap<>();
         nmap.put(IPSHtmlParameters.SYS_CONTENTID, sys_contentid);
         nmap.put(IPSHtmlParameters.SYS_FOLDERID, sys_folderid);
         nmap.put(IPSHtmlParameters.SYS_SITEID, sys_siteid);

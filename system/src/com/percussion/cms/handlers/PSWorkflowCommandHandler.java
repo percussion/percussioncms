@@ -26,7 +26,6 @@ package com.percussion.cms.handlers;
 
 import com.percussion.auditlog.PSActionOutcome;
 import com.percussion.auditlog.PSAuditLogService;
-import com.percussion.auditlog.PSAuthenticationEvent;
 import com.percussion.auditlog.PSWorkflowEvent;
 import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSApplicationBuilder;
@@ -53,8 +52,8 @@ import com.percussion.design.objectstore.PSDataMapper;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSRelationship;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.error.PSBackEndQueryProcessingError;
 import com.percussion.error.PSErrorException;
 import com.percussion.error.PSException;
@@ -76,13 +75,11 @@ import com.percussion.server.PSRequestContext;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.server.PSServer;
 import com.percussion.server.PSUserSession;
-import com.percussion.services.content.data.PSItemStatus;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSWorkflow;
-import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCms;
 import com.percussion.util.PSUniqueObjectGenerator;
@@ -98,7 +95,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -145,7 +141,7 @@ public class PSWorkflowCommandHandler extends PSCommandHandler
                                    PSContentEditorHandler ceh,
                                    PSContentEditor ce,
                                    PSApplication app)
-         throws PSNotFoundException, PSIllegalArgumentException,PSExtensionException, PSValidationException
+         throws PSNotFoundException, PSIllegalArgumentException,PSExtensionException, PSSystemValidationException
    {
       super(ah, ceh, ce, app);
       if (app == null)
@@ -496,7 +492,7 @@ public class PSWorkflowCommandHandler extends PSCommandHandler
     * @throws PSAuthorizationException if the user is not authorized.
     * @throws PSAuthenticationFailedException if the user failed to
     *    authenticate.
-    * @throws PSValidationException for any failed validation.
+    * @throws PSSystemValidationException for any failed validation.
     * @throws IOException for any IO error occurred.
     * @throws PSUnknownNodeTypeException if the requested document does not
     *    contain a valid relationship set.
@@ -512,7 +508,7 @@ public class PSWorkflowCommandHandler extends PSCommandHandler
          PSInternalRequestCallException, PSExtensionProcessingException,
          PSAuthorizationException, PSAuthenticationFailedException,
          PSDataExtractionException, PSParameterMismatchException,
-         PSNotFoundException, SQLException, PSValidationException, IOException,
+         PSNotFoundException, SQLException, PSSystemValidationException, IOException,
          PSUnknownNodeTypeException, PSCmsException,
          PSRelationshipProcessorException, PSRejectTransition,
          PSExtensionException, PSIllegalArgumentException
@@ -665,10 +661,10 @@ public class PSWorkflowCommandHandler extends PSCommandHandler
     * Creates dataset used to perform the actual updates against the backend
     * data.
     *
-    * @throws PSValidationException if there the app is not properly defined.
+    * @throws PSSystemValidationException if there the app is not properly defined.
     */
    private void prepareStatusUpdate()
-         throws PSValidationException
+         throws PSSystemValidationException
    {
       // make the content status update data mappings
       List<PSSystemMapping> updateSysMappings =
@@ -712,7 +708,7 @@ public class PSWorkflowCommandHandler extends PSCommandHandler
     * copy.
     * @throws SQLException if there is an error generating new Ids for any
     * item children.
-    * @throws PSValidationException for any failed validation.
+    * @throws PSSystemValidationException for any failed validation.
     * @throws IOException for any IO error occurred.
     * @throws PSUnknownNodeTypeException if the requested document does not
     *    contain a valid relationship set.
@@ -723,7 +719,7 @@ public class PSWorkflowCommandHandler extends PSCommandHandler
    private boolean createCheckedOutRevision(PSExecutionData data)
          throws PSRequestValidationException, PSAuthorizationException,
          PSInternalRequestCallException, PSAuthenticationFailedException,
-         PSNotFoundException, SQLException, PSValidationException, IOException,
+         PSNotFoundException, SQLException, PSSystemValidationException, IOException,
          PSUnknownNodeTypeException, PSCmsException
    {
       boolean result = false;

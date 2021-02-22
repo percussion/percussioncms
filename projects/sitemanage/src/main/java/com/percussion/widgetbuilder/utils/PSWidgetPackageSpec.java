@@ -58,8 +58,8 @@ public class PSWidgetPackageSpec
 
     private List<PSWidgetBuilderFieldData> fields;
     private String widgetHtml = "";
-    private List<String> cssFiles = new ArrayList<String>();
-    private List<String> jsFiles = new ArrayList<String>();
+    private List<String> cssFiles = new ArrayList<>();
+    private List<String> jsFiles = new ArrayList<>();
    
     /**
      * Ctor
@@ -87,7 +87,7 @@ public class PSWidgetPackageSpec
         this.widgetVersion = widgetVersion;
         this.cm1Version = cm1Version;
         
-        resolverTokenMap = new HashMap<String, String>();
+        resolverTokenMap = new HashMap<>();
         
         generateWidgetName();
     }

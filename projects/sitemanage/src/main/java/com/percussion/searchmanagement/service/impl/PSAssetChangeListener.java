@@ -37,6 +37,7 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
 
@@ -71,15 +72,14 @@ public class PSAssetChangeListener implements IPSEditorChangeListener, IPSHandle
      * Called to notify listeners when there is a change on a page, template or shared asset 
      * @param changeEvent The change event object, never <code>null</code>.
      */
-    public void editorChanged(PSEditorChangeEvent changeEvent)
-    {
+    public void editorChanged(PSEditorChangeEvent changeEvent) throws PSValidationException {
         if (changeEvent.getActionType() == PSEditorChangeEvent.ACTION_DELETE)
         {
             return;
         }
         
         int contentId = changeEvent.getContentId();
-        Set<Integer> pageContentIds = new HashSet<Integer>();
+        Set<Integer> pageContentIds = new HashSet<>();
         
         IPSGuid myGuid = PSGuidUtils.makeGuid(contentId, PSTypeEnum.LEGACY_CONTENT);
         String myGuidStr =  idMapper.getString(myGuid);
@@ -134,7 +134,7 @@ public class PSAssetChangeListener implements IPSEditorChangeListener, IPSHandle
      */
     private Set<Integer> getAssetOwners(String assetId)
     {
-        Set<Integer> contentIds = new HashSet<Integer>(); 
+        Set<Integer> contentIds = new HashSet<>();
         
         Set<String> owners = widgetAssetRelationshipService.getRelationshipOwners(assetId);
         for (String owner : owners)

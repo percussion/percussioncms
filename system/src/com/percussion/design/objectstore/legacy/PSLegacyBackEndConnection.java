@@ -29,8 +29,8 @@ import com.percussion.design.objectstore.IPSDocument;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.IPSValidationContext;
 import com.percussion.design.objectstore.PSComponent;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.error.PSException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
@@ -617,7 +617,7 @@ public class PSLegacyBackEndConnection extends PSComponent
 
    /**
     * Validates this object within the given validation context. The method
-    * signature declares that it throws PSValidationException, but the
+    * signature declares that it throws PSSystemValidationException, but the
     * implementation must not directly throw any exceptions. Instead, it
     * should register any errors with the validation context, which will
     * decide whether to throw the exception (in which case the implementation
@@ -626,10 +626,10 @@ public class PSLegacyBackEndConnection extends PSComponent
     *
     * @param   cxt The validation context.
     *
-    * @throws   PSValidationException According to the implementation of the
+    * @throws PSSystemValidationException According to the implementation of the
     * validation context (on warnings and/or errors).
     */
-   public void validate(IPSValidationContext cxt) throws PSValidationException
+   public void validate(IPSValidationContext cxt) throws PSSystemValidationException
    {
       if (!cxt.startValidation(this, null))
          return;

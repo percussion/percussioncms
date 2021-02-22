@@ -22,6 +22,8 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/perc-security-utils/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/perc-exceptions-spring/pom.xml" />
       </list>
     </option>
   </component>

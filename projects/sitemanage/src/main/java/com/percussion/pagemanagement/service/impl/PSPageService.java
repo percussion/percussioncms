@@ -56,6 +56,7 @@ import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSPageTemplateService;
 import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.pathmanagement.data.PSPathItem;
+import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.queue.IPSPageImportQueue;
 import com.percussion.queue.impl.PSSiteQueue;
@@ -63,6 +64,7 @@ import com.percussion.recent.service.rest.IPSRecentService;
 import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.recycle.service.impl.PSRecycleService;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.PSGuidUtils;
@@ -75,7 +77,6 @@ import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.share.dao.IPSContentItemDao;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.PSFolderPathUtils;
-import com.percussion.share.dao.impl.PSFolderHelper;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.data.PSPagedItemList;
@@ -90,7 +91,9 @@ import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.PSAbstractDataService;
 import com.percussion.share.service.PSSiteCopyUtils;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
@@ -106,8 +109,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -183,7 +186,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
     
     private IPSPublishingWs publishingWs;
     
-    private List<IPSPageChangeListener> pageChangeListeners = new ArrayList<IPSPageChangeListener>();
+    private List<IPSPageChangeListener> pageChangeListeners = new ArrayList<>();
     /**
      * The widget asset relationship service. Initialized by constructor, never <code>null</code> after that.
      */
@@ -260,8 +263,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
      * @{inheritDoc}
      */
     @Override
-    public void delete(String id)
-    {
+    public void delete(String id) throws PSValidationException {
        // List<IPSSite> sites = folderHelper.getItemSites(id);  
         List<IPSSite> sites = publishingWs.getItemSites(idMapper.getGuid(id));
         if((sites != null) && (sites.size() > 1))
@@ -272,26 +274,16 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         delete(id, false);
     }
 
-    public String copy(String id, boolean addToRecent) throws DataServiceSaveException{
+    public String copy(String id, boolean addToRecent) throws PSDataServiceException, IPSPathService.PSPathNotFoundServiceException {
         return copy(id, null, addToRecent);
     }
 
     /**
      *    Copies a page given its ID. Returns ID of copied page
      */
-    public String copy(String id, String targetFolder, boolean addToRecent) throws DataServiceSaveException
-    {
+    public String copy(String id, String targetFolder, boolean addToRecent) throws PSDataServiceException, IPSPathService.PSPathNotFoundServiceException {
         PSPage page = null;
-        try
-        {
-            page = load(id);
-        }
-        catch (DataServiceNotFoundException notFound)
-        {
-            PSValidationErrorsBuilder builder = validateParameters("copy");
-            String msg = "Cannot copy PAGE_NAME. Page no longer exists.";
-            builder.reject("id", msg).throwIfInvalid();
-        }
+        page = load(id);
         String path = page.getFolderPath();
 
         //Allow for copying to new folder
@@ -301,11 +293,12 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         String base = page.getName();
         IPSGuid guid = idMapper.getGuid(id);
         String suffix = "copy";
+
         String newName = folderHelperWs.getUniqueNameInFolder(path, base, suffix, 1, true);
         
-        ArrayList<IPSGuid> guids = new ArrayList<IPSGuid>();
+        ArrayList<IPSGuid> guids = new ArrayList<>();
         guids.add(guid);
-        ArrayList<String> paths = new ArrayList<String>();
+        ArrayList<String> paths = new ArrayList<>();
         paths.add(path);
         
         List<PSCoreItem> items;
@@ -326,15 +319,26 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         PSLocator locator = (PSLocator)newPageCoreItem.getLocator();
         String newPageId = idMapper.getString(locator);
 
-        itemWorkflowService.checkOut(newPageId);
+        try {
+            itemWorkflowService.checkOut(newPageId);
+        } catch (PSItemWorkflowServiceException e) {
+            log.warn(e.getMessage());
+            log.debug(e.getMessage(),e);
+        }
         PSPage newPage = load(newPageId);
         newPage.setName(newName);
         newPage.setWorkflowId(page.getWorkflowId());
         save(newPage);
         if(addToRecent)
             recentService.addRecentItem(newPage.getId());
-        itemWorkflowService.checkIn(newPageId);
-        log.info("newPageId: "+newPageId);
+
+        try {
+            itemWorkflowService.checkIn(newPageId);
+        } catch (PSItemWorkflowServiceException e) {
+            log.warn(e.getMessage());
+            log.debug(e.getMessage(),e);
+        }
+        log.info("newPageId: {}",newPageId);
         
         String pagePath = newPage.getFolderPath();
         pagePath += "/" + newName;
@@ -357,7 +361,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
      * {@inheritDoc}
      */
     @Override
-    public void delete(String id, boolean force) {
+    public void delete(String id, boolean force) throws PSValidationException {
         // last pararm is false because of recycle feature.  not purging is recycling.
         delete(id, force, false);
     }
@@ -367,7 +371,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
      * {@inheritDoc}
      */
     @Override
-    public void delete(String id, boolean force, boolean purgeItem) {
+    public void delete(String id, boolean force, boolean purgeItem) throws PSValidationException {
         PSValidationErrorsBuilder builder = validateParameters("delete").rejectIfBlank("id", id).throwIfInvalid();
         List<IPSSite> sites = publishingWs.getItemSites(idMapper.getGuid(id));
         if((sites != null) && (sites.size() > 1))
@@ -398,18 +402,19 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
 
             if (purgeItem) {
                 pageDao.delete(id, force);
-                log.info("Page: '" + purgeItemPaths.toString() + "' has been deleted by: " + currentUser);
+                log.info("Page: '{}' has been deleted by: {}",purgeItemPaths,  currentUser);
 
             } else {
                 IPSGuid guid = idMapper.getGuid(page.getId());
                 int dependentId = idMapper.getContentId(guid);
                 recycleService.recycleItem(dependentId);
-                log.info("Page: '" + page.getFolderPath() + '/' + page.getName() + "' has been recycled by: " + currentUser);
+                log.info("Page: '{}' has been recycled by: {}",page.getFolderPath() + '/' + page.getName(),  currentUser);
             }
         }
-        catch (DataServiceNotFoundException e)
+        catch (PSItemWorkflowServiceException | PSNotFoundException | PSDataServiceException e)
         {
-            log.debug("Page: " + id + " not found for delete.", e);
+            log.error("Page: {} not found for delete. Error: {}",id,e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
     
@@ -417,13 +422,11 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
      * 
      * @{inheritDoc}
      */
-    public PSPage find(String id)
-    {
+    public PSPage find(String id) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         return super.load(id);
     }
 
-    public PSPage findPageByPath(String fullPath) throws PSPageException
-    {
+    public PSPage findPageByPath(String fullPath) throws PSPageException, PSValidationException {
         PSParameterValidationUtils.validateParameters("findPageByFullFolderPath")
             .rejectIfNull("fullPath", fullPath)
             .throwIfInvalid();
@@ -433,8 +436,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
 
  
 
-    public boolean isPageItem(String id)
-    {
+    public boolean isPageItem(String id) throws PSPageException {
         if (isBlank(id))
             return false;
         
@@ -446,8 +448,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
     
 
     @Override
-    public void updateTemplateMigrationVersion(String pageId)
-    {
+    public void updateTemplateMigrationVersion(String pageId) throws PSDataServiceException {
         PSPage page = find(pageId);
         PSTemplate template = templateDao.find(page.getTemplateId());
         if (template == null)
@@ -466,8 +467,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
             Integer startIndex, Integer maxResults,
             String sortColumn, String sortOrder,
             String pageId)
-            throws PSPageException
-    {
+            throws PSDataServiceException {
         //Check the required parammeters are not null
         notNull(templateId, "templateId is required");
         
@@ -520,7 +520,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         Integer resultingStartIndex = pageGroup.getStartIndex();
 
         // Get page of Path Items
-        List<PSPathItem> itemsInPage = new ArrayList<PSPathItem>();
+        List<PSPathItem> itemsInPage = new ArrayList<>();
         for (IPSItemEntry pageEntry : pagedItemEntries)
         {
             // Get path for each page entry.
@@ -576,8 +576,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
      */
     @Override
     public PSUnassignedResults getUnassignedPagesBySite(String sitename,
-            Integer startIndex, Integer maxResults)
-    {
+            Integer startIndex, Integer maxResults) throws PSPageException {
         try
         {
             return unassignedPagesHelper.getUnassignedResults(sitename, startIndex, maxResults);
@@ -592,14 +591,12 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         }
     }
 
-    public PSNoContent clearMigrationEmptyFlag(String pageid)
-    {
+    public PSNoContent clearMigrationEmptyFlag(String pageid) throws PSDataServiceException {
         updateMigrationEmptyWidgetFlag(pageid, false);
         return new PSNoContent("Successfully cleared migration flag");
     }
     
-    public Boolean getMigrationEmptyFlag(String pageid)
-    {
+    public Boolean getMigrationEmptyFlag(String pageid) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         return getMigrationEmptyWidgetFlag(pageid);
     }
     
@@ -661,14 +658,12 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         return index < list.size() ? index : null;
     }
     
-    public PSPage findPage(String name, String folderPath) throws PSPageException
-    {
+    public PSPage findPage(String name, String folderPath) throws PSDataServiceException {
         return pageDao.findPage(name, folderPath);
     }
     
     @Override
-    public PSPage save(PSPage page)
-    {
+    public PSPage save(PSPage page) throws PSDataServiceException {
         validate(page);
         
         boolean isExistingPage = page.getId() != null;
@@ -740,8 +735,7 @@ try {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
  
-    public PSNoContent changeTemplate(String pageId, String templateId)
-    {
+    public PSNoContent changeTemplate(String pageId, String templateId) throws PSDataServiceException {
         isTrue(isNotBlank(pageId), "pageId may not be blank");
         isTrue(isNotBlank(templateId), "templateId may not be blank");
         
@@ -772,13 +766,11 @@ try {
     }
     
     @Override
-    public PSValidationErrors validate(PSPage object)
-    {
+    public PSValidationErrors validate(PSPage object) throws PSValidationException {
         return pageValidator.validate(object).throwIfInvalid().getValidationErrors();
     }
 
-    public PSNoContent validateDelete(String id)
-    {
+    public PSNoContent validateDelete(String id) throws PSValidationException {
         String opName = "validateDelete";
         PSValidationErrorsBuilder builder = 
             validateParameters(opName).rejectIfBlank("id", id).throwIfInvalid();
@@ -788,7 +780,7 @@ try {
             PSPage page = super.load(id);
             validateForDelete(page, builder);  
         }
-        catch (DataServiceLoadException e)
+        catch (DataServiceLoadException | DataServiceNotFoundException | PSValidationException | PSItemWorkflowServiceException | PSNotFoundException e)
         {
             log.debug("Page: " + id + " not found for delete validation.", e);
         }
@@ -804,10 +796,9 @@ try {
         throw new UnsupportedOperationException("findAll is not yet supported");
     }
     
-    public List<PSSEOStatistics> findNonSEOPages(PSNonSEOPagesRequest request) throws PSPageException
-    {
-        List<PSSEOStatistics> nonSEOStats = new ArrayList<PSSEOStatistics>();
-        List<PSPageSummary> sums = new ArrayList<PSPageSummary>();
+    public List<PSSEOStatistics> findNonSEOPages(PSNonSEOPagesRequest request) throws PSDataServiceException {
+        List<PSSEOStatistics> nonSEOStats = new ArrayList<>();
+        List<PSPageSummary> sums = new ArrayList<>();
         
         // find the workflow, state id's
         int workflowId = -1;
@@ -817,7 +808,7 @@ try {
             workflowId = itemWorkflowService.getWorkflowId(request.getWorkflow());
             stateId = itemWorkflowService.getStateId(request.getWorkflow(),request.getState());
         }
-        catch (PSItemWorkflowServiceException e)
+        catch (PSItemWorkflowServiceException | PSValidationException e)
         {
             throw new PSPageException(e);
         }
@@ -971,8 +962,7 @@ try {
      * @param page the page to validate, assumed not <code>null</code>.
      * @param builder used to capture and throw validation errors, assumed not <code>null</code>.
      */
-    private void validateForDelete(PSPage page, PSValidationErrorsBuilder builder)
-    {
+    private void validateForDelete(PSPage page, PSValidationErrorsBuilder builder) throws PSValidationException, PSItemWorkflowServiceException, PSNotFoundException {
         String id = page.getId();
         
         if (!itemWorkflowService.isModifiableByUser(id))
@@ -1019,7 +1009,7 @@ try {
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSPageService.class);
+    public static final Logger log = LogManager.getLogger(PSPageService.class);
     
     
     /**
@@ -1044,7 +1034,7 @@ try {
         public Iterator<PSRegion> getRegions(PSPage wa, PSBeanValidationException e)
         {
             
-            List<PSRegion> regions = new ArrayList<PSRegion>();
+            List<PSRegion> regions = new ArrayList<>();
             if (wa.getRegionBranches() != null && wa.getRegionBranches().getRegions() != null) {
                 
                 List<PSRegion> br = wa.getRegionBranches().getRegions();
@@ -1111,7 +1101,7 @@ try {
        private CompareItemEntry(String sortColumn, String sortOrder)
        {
            this.sortColumn = sortColumn;
-           this.sortOrderNumber =  sortOrder.toLowerCase().equals("desc") ? -1 : 1;
+           this.sortOrderNumber =  sortOrder.equalsIgnoreCase("desc") ? -1 : 1;
        }
        
        @Override
@@ -1166,7 +1156,7 @@ try {
      */
     private class PSUnassignedPagesDataHelper
     {
-        private Map<String, PSMockDataForUnassignedPages> mockDataMap = new HashMap<String, PSMockDataForUnassignedPages>();
+        private Map<String, PSMockDataForUnassignedPages> mockDataMap = new HashMap<>();
         
         public PSUnassignedResults getUnassignedResults(String siteName, int startIndex, int maxResults) throws Exception
         {
@@ -1228,10 +1218,9 @@ try {
          *            greater than 0.
          * @return {@link PSUnassignedResults} with the results, never <code>null</code>
          */
-        private PSUnassignedResults buildUnassignedResults(List<Integer> catalogedIds, List<Integer> importedIds, List<Integer> importingIds, Integer startIndex, Integer maxResults)
-        {
+        private PSUnassignedResults buildUnassignedResults(List<Integer> catalogedIds, List<Integer> importedIds, List<Integer> importingIds, Integer startIndex, Integer maxResults) throws PSPageException {
             // Build a unique list
-            List<Integer> pageIds = new ArrayList<Integer>();
+            List<Integer> pageIds = new ArrayList<>();
             pageIds.addAll(catalogedIds);
             pageIds.addAll(importedIds);
             pageIds.addAll(importingIds);
@@ -1245,7 +1234,7 @@ try {
             // build Item list
             PSPagedObjectList<Integer> pageGroup = PSPagedObjectList.getPage(pageIds, startIndex, maxResults);
 
-            List<UnassignedItem> items = new ArrayList<UnassignedItem>();
+            List<UnassignedItem> items = new ArrayList<>();
             for (Integer id : pageGroup.getChildrenInPage())
             {
                 items.add(getUnassignedPage(id, importingIds, importedIds));
@@ -1270,8 +1259,7 @@ try {
      * @return {@link UnassignedItem} the unassigned item. Never
      *         <code>null</code>, or empty.
      */
-    private UnassignedItem getUnassignedPage(Integer id, List<Integer> importingIds, List<Integer> importedIds)
-    {
+    private UnassignedItem getUnassignedPage(Integer id, List<Integer> importingIds, List<Integer> importedIds) throws PSPageException {
         try
         {
             boolean isImported = importedIds.contains(id);
@@ -1310,8 +1298,7 @@ try {
      * @return {@link String} the link title for the item. Never
      *         <code>null</code>, or empty.
      */
-    private String getLinkTitleForUnassignedPage(String path, boolean isImported)
-    {
+    private String getLinkTitleForUnassignedPage(String path, boolean isImported) throws PSPageException {
         String pagePath = path;
 
         if (isImported)
@@ -1370,8 +1357,7 @@ try {
      *         or empty.
      * 
      */
-    public String generateNewPageName(String pageName, String folderPath)
-    {
+    public String generateNewPageName(String pageName, String folderPath) throws PSPageException {
         int count = 0;
 
         String fullPath = folderPath + PATH_SEPARATOR + pageName;
@@ -1389,19 +1375,16 @@ try {
     }
 
     @Override
-    public void updateMigrationEmptyWidgetFlag(String pageId, boolean flag)
-    {
+    public void updateMigrationEmptyWidgetFlag(String pageId, boolean flag) throws PSDataServiceException {
         PSPage page = find(pageId);
         page.setMigrationEmptyWidgetFlag(flag);
         super.save(page);          
     }
 
     @Override
-    public boolean getMigrationEmptyWidgetFlag(String pageId)
-    {
+    public boolean getMigrationEmptyWidgetFlag(String pageId) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
         PSPage page = find(pageId);
-        boolean flagStatus = page.isMigrationEmptyWidgetFlag();
-        return flagStatus;          
+        return  page.isMigrationEmptyWidgetFlag();
     }
 
     public IPSRecentService getRecentService() {
@@ -1414,15 +1397,15 @@ try {
         this.recentService = recentService;
     }
 	@Override
-	public List<PSPageReportLine> findAllPages(String sitePath) throws PSReportFailedToRunException {
-		List<PSPageReportLine> ret = new ArrayList<PSPageReportLine>();
+	public List<PSPageReportLine> findAllPages(String sitePath) throws PSReportFailedToRunException, PSDataServiceException {
+		List<PSPageReportLine> ret = new ArrayList<>();
 		List<PSPage> pages = pageDao.findAllPagesBySite(sitePath);
 		
 		List<PSCoreItem> nodes = null;
 		for(PSPage p : pages){
 			PSPageReportLine line = new PSPageReportLine();
 			try {
-				nodes = this.contentWs.loadItems(new ArrayList<IPSGuid>(), false, true, false, true);
+				nodes = this.contentWs.loadItems(new ArrayList<>(), false, true, false, true);
 			} catch (PSErrorResultsException e) {
 				log.error("Error retrieving");
 			}

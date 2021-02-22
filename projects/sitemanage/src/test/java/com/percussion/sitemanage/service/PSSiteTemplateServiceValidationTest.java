@@ -92,8 +92,7 @@ public class PSSiteTemplateServiceValidationTest
     
     
     @Test
-    public void shouldValidateSiteTemplatesAndNOTFailForEmptySiteTemplates()
-    {
+    public void shouldValidateSiteTemplatesAndNOTFailForEmptySiteTemplates() throws PSBeanValidationException {
         /*
          * Given: empty site templates.
          */
@@ -117,8 +116,7 @@ public class PSSiteTemplateServiceValidationTest
     }
     
     @Test(expected=PSBeanValidationException.class)
-    public void shouldValidateCreateTemplatesAndFailIfNoSourceTemplateId()
-    {
+    public void shouldValidateCreateTemplatesAndFailIfNoSourceTemplateId() throws PSBeanValidationException {
         /*
          * Given: Site templates with a bad create template.
          */
@@ -146,8 +144,7 @@ public class PSSiteTemplateServiceValidationTest
     }
     
     
-    public void shouldValidateCreateTemplates()
-    {
+    public void shouldValidateCreateTemplates() throws PSBeanValidationException {
         /*
          * Given: Site templates with a valid create template.
          */

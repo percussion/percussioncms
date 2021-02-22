@@ -160,7 +160,7 @@ public class User {
 
 	public List<LinkRef> getBookmarkedPages() {
 		if(bookmarkedPages == null)
-			bookmarkedPages = new ArrayList<LinkRef>();
+			bookmarkedPages = new ArrayList<>();
 		
 		return bookmarkedPages;
 	}
@@ -171,7 +171,7 @@ public class User {
 
 	public List<LinkRef> getRecentPages() {
 		if(recentPages == null)
-			recentPages = new ArrayList<LinkRef>();
+			recentPages = new ArrayList<>();
 		
 		return recentPages;
 	}
@@ -182,7 +182,7 @@ public class User {
 
 	public List<LinkRef> getRecentAssetTypes() {
 		if(recentAssetTypes == null)
-			recentAssetTypes = new ArrayList<LinkRef>();
+			recentAssetTypes = new ArrayList<>();
 		
 		return recentAssetTypes;
 	}
@@ -193,7 +193,7 @@ public class User {
 
 	public List<LinkRef> getRecentAssetFolders() {
 		if(recentAssetFolders==null)
-			recentAssetFolders = new ArrayList<LinkRef>();
+			recentAssetFolders = new ArrayList<>();
 		
 		return recentAssetFolders;
 	}
@@ -204,7 +204,7 @@ public class User {
 
 	public List<LinkRef> getRecentSiteFolders() {
 		if(recentSiteFolders == null)
-			recentSiteFolders = new ArrayList<LinkRef>();
+			recentSiteFolders = new ArrayList<>();
 
 		return recentSiteFolders;
 	}
@@ -215,7 +215,7 @@ public class User {
 
 	public List<LinkRef> getRecentTemplates() {
 		if(recentTemplates == null)
-			recentTemplates = new ArrayList<LinkRef>();
+			recentTemplates = new ArrayList<>();
 		
 		return recentTemplates;
 	}
@@ -236,7 +236,7 @@ public class User {
 
 	public List<LinkRef> getPersonAssets() {
 		if(personAssets == null){
-			personAssets = new ArrayList<LinkRef>();
+			personAssets = new ArrayList<>();
 		}
 		return personAssets;
 	}
@@ -247,7 +247,7 @@ public class User {
 
 	public List<String> getRoles() {
 		if(roles == null)
-			roles = new ArrayList<String>();
+			roles = new ArrayList<>();
 		return roles;
 	}
 

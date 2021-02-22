@@ -33,6 +33,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.core.io.Resource;
 
@@ -85,8 +87,8 @@ import org.springframework.core.io.Resource;
  */
 public class PSPropertiesFactoryBean extends PropertiesFactoryBean
 {
-   
-   private final List<Resource> resList = new ArrayList<Resource>();
+   private static final Logger log = LogManager.getLogger(PSPropertiesFactoryBean.class);
+   private final List<Resource> resList = new ArrayList<>();
    private String[] securedProperties;
    private boolean autoSecure;
 
@@ -185,9 +187,9 @@ public class PSPropertiesFactoryBean extends PropertiesFactoryBean
    
    /**
     * Loops through all resources and secures the properties by encryption.
- * @param encrytionType
+ * @param encryptionType Type of encryption
     */
-   private void encryptProps(String  encrytionType)
+   private void encryptProps(String  encryptionType)
    {
       Collection<String> names = Arrays.asList(securedProperties);
       
@@ -197,11 +199,12 @@ public class PSPropertiesFactoryBean extends PropertiesFactoryBean
          {
             try
             {
-               PSSecureProperty.secureProperties(r.getFile(), names, key, encrytionType);
+               PSSecureProperty.secureProperties(r.getFile(), names, key, encryptionType);
             }
             catch (IOException e)
             {
-               e.printStackTrace();
+               log.error(e.getMessage());
+               log.debug(e);
             }
          }
       }

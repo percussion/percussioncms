@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,27 +23,6 @@
  */
 package com.percussion.itemmanagement.service.impl;
 
-import static java.text.MessageFormat.format;
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
@@ -60,8 +39,6 @@ import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.rx.publisher.IPSEditionTaskStatusCallback;
 import com.percussion.services.contentchange.IPSContentChangeService;
-import com.percussion.services.contentchange.PSContentChangeServiceLocator;
-import com.percussion.services.contentchange.data.PSContentChangeEvent;
 import com.percussion.services.contentchange.data.PSContentChangeType;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -73,13 +50,34 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.task.impl.PSWorkflowEditionTask;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.publishing.IPSPublishingWs;
 import com.percussion.webservices.system.IPSSystemWs;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static java.text.MessageFormat.format;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * 
@@ -164,7 +162,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
         }
         
         public static enum AssetType {
-            PAGE,RESOURCE,LOCAL,SHARED;
+            PAGE,RESOURCE,LOCAL,SHARED
         }
         
         /**
@@ -216,12 +214,12 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
     {
         private Map<String, String> params;
         // used to keep track of template ids that have already been searched for shared assets
-        private final HashSet<String> seenIds = new HashSet<String>();
+        private final HashSet<String> seenIds = new HashSet<>();
         
         /**
          * @see #isAlreadyWorkflowed(WorkflowItem)
          */
-        private Set<IPSGuid> successfullyWorkflowedIds = new HashSet<IPSGuid>();
+        private Set<IPSGuid> successfullyWorkflowedIds = new HashSet<>();
         
         public void processItem(IPSPubItemStatus item)
         {
@@ -264,8 +262,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
          * Called from a workflow action.
          * @param workflowContext never <code>null</code>.
          */
-        public void processItem(IPSWorkFlowContext workflowContext)
-        {
+        public void processItem(IPSWorkFlowContext workflowContext) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
             notNull(workflowContext, "workflowContext cannot be null");
             IPSGuid guid = getId(workflowContext.getContentID(), null);
             WorkflowItem wfItem = getWorkflowItem(guid);
@@ -594,7 +591,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
          * @param page never <code>null</code>.
          * @return never <code>null</code>.
          */
-        protected List<WorkflowItem> getLocalAssetWorkflowItems(WorkflowItem page) {
+        protected List<WorkflowItem> getLocalAssetWorkflowItems(WorkflowItem page) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException {
             IPSGuid guid = page.guid;
             String newId = idMapper.getString(guid);
             Set<String> ids =  widgetAssetRelationshipService.getLocalAssets(newId);
@@ -616,7 +613,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
         }
         
         private List<WorkflowItem> loadWorkflowItems(Collection<String> ids, AssetType assetType) {
-            List<WorkflowItem> items = new ArrayList<WorkflowItem>();
+            List<WorkflowItem> items = new ArrayList<>();
             for (String id : ids) {
                 IPSGuid guid = getIdMapper().getGuid(id);
                 WorkflowItem item = getWorkflowItem(guid);
@@ -631,7 +628,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
          * @param page never <code>null</code>.
          * @return never <code>null</code>.
          */
-        protected List<WorkflowItem> getSharedAssetWorkflowItems(WorkflowItem page) {
+        protected List<WorkflowItem> getSharedAssetWorkflowItems(WorkflowItem page) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSValidationException {
             IPSGuid guid = page.guid;
             String newId = getIdMapper().getString(guid);
             Set<String> ids =  getWidgetAssetRelationshipService().getSharedAssets(newId);

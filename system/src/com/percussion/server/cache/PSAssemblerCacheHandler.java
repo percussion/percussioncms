@@ -26,12 +26,9 @@ package com.percussion.server.cache;
 import com.percussion.cms.IPSConstants;
 import com.percussion.cms.IPSEditorChangeListener;
 import com.percussion.cms.IPSRelationshipChangeListener;
-import com.percussion.cms.PSCmsException;
 import com.percussion.cms.PSEditorChangeEvent;
 import com.percussion.cms.PSRelationshipChangeEvent;
 import com.percussion.cms.handlers.PSContentEditorHandler;
-import com.percussion.cms.objectstore.PSRelationshipFilter;
-import com.percussion.cms.objectstore.server.PSRelationshipDbProcessor;
 import com.percussion.data.IPSTableChangeListener;
 import com.percussion.data.PSTableChangeEvent;
 import com.percussion.data.PSUpdateHandler;
@@ -39,9 +36,8 @@ import com.percussion.design.objectstore.PSBackEndTable;
 import com.percussion.design.objectstore.PSDataSet;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.design.objectstore.PSServerCacheSettings;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.server.IPSRequestHandler;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSInternalRequest;
@@ -51,7 +47,6 @@ import com.percussion.server.PSUserSession;
 import com.percussion.server.PSUserSessionManager;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCollection;
-import com.percussion.util.PSStopwatch;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.io.InputStream;
@@ -320,7 +315,7 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
             cache.flush(keyset);
          }
       }
-      catch(PSValidationException e)
+      catch(PSSystemValidationException e)
       {
          //ignore this as the keys may not be valid for this handler.
       }
@@ -563,10 +558,10 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
     *
     * @throws IllegalArgumentException if keys is <code>null</code>.
     *
-    * @throws PSValidationException if the validation fails.
+    * @throws PSSystemValidationException if the validation fails.
     */
    public void validateKeys(Map keys)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if(keys == null)
          throw new IllegalArgumentException("keys may not be null.");
@@ -576,7 +571,7 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
       //validates the minimum number of keys.
       if(keys.size() < numKeys )
       {
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSServerErrors.INSUFFICIENT_NUM_CACHE_KEYS,
             new Object[] { String.valueOf(numKeys) });
       }
@@ -588,7 +583,7 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
 
          if( !keys.containsKey( keyName ) )
          {
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSServerErrors.MISSING_CACHE_KEY,
                new Object[] { keyName } );
          }
@@ -604,7 +599,7 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
                }
                catch(NumberFormatException e)
                {
-                  throw new PSValidationException(
+                  throw new PSSystemValidationException(
                      IPSServerErrors.INVALID_NUMBER_CACHE_KEY,
                      new Object[] { value, keyName } );
                }
@@ -618,7 +613,7 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
       if ((contentid == null || contentid.trim().length() == 0) &&
          (revisionid != null) && revisionid.trim().length() > 0)
       {
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSServerErrors.INVALID_REVISION_CACHE_KEY );
       }
    }

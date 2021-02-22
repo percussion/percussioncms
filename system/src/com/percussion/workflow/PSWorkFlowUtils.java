@@ -31,6 +31,7 @@ import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.IPSServerErrors;
@@ -54,7 +55,7 @@ import com.percussion.utils.exceptions.PSORMException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSConnectionHelper;
-import com.percussion.utils.security.PSEncryptProperties;
+import com.percussion.security.PSEncryptProperties;
 import com.percussion.utils.string.PSStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -2216,7 +2217,7 @@ public class PSWorkFlowUtils
     * Set the property value of the specified key.
     * 
     * @param key the key of the property, never <code>null</code>.
-    * @param name the name of the property, never <code>null</code>.
+    * @param value the name of the property, never <code>null</code>.
     */
    public static void setProperty(String key, String value)
    {
@@ -2275,8 +2276,7 @@ public class PSWorkFlowUtils
     * 
     * @param workflowName the name of the workflow, never empty or <code>null</code>.
     */
-   public static void setDefaultWorkflowName(String workflowName)
-   {
+   public static void setDefaultWorkflowName(String workflowName) throws com.percussion.services.error.PSNotFoundException {
       if (StringUtils.isBlank(workflowName))
          throw new IllegalArgumentException("worklfow name may not be null.");
       
@@ -2291,8 +2291,7 @@ public class PSWorkFlowUtils
     * 
     * @return the workflow, never <code>null</code>.
     */
-   private static PSWorkflow loadDefaultWorkflow(String wfName)
-   {
+   private static PSWorkflow loadDefaultWorkflow(String wfName) throws com.percussion.services.error.PSNotFoundException {
       IPSWorkflowService wfService = PSWorkflowServiceLocator.getWorkflowService();
       List<PSWorkflow> wfs = wfService.findWorkflowsByName(wfName);
       if (!wfs.isEmpty())
@@ -2317,7 +2316,7 @@ public class PSWorkFlowUtils
       }
       File workflowProps = new File(PathUtils.getRxDir(null),
               WORKFLOW_PROPS_PATH + "/" + WORKFLOW_PROPS_FILE_NAME);
-      PSEncryptProperties.encryptFile(workflowProps, props);
+      PSEncryptProperties.encryptFile(workflowProps, props,PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
    }
 
    /**

@@ -99,27 +99,11 @@ public class IOTools
          throw new IllegalArgumentException(
             "Supplied output file must not be null.");
       
-      OutputStream out = null;
       long copiedBytes = 0L;
-      try
-      {
-         out = new FileOutputStream(outFile);
+      try(FileOutputStream out = new FileOutputStream(outFile)){
          copiedBytes =  copyStream(in, out);
       }
-      finally
-      {
-         if (out != null)
-         {
-            try
-            {
-               out.close();
-            }
-            catch (IOException e)
-            {
-               // ignore
-            }
-         }
-      }  
+
       return copiedBytes;
    }
 

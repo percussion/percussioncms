@@ -40,8 +40,9 @@ import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.error.PSAnalyticsProviderException.CAUSETYPE;
 import com.percussion.utils.date.PSDateRange;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 
 import java.io.IOException;
 import java.io.Reader;
@@ -67,6 +68,19 @@ import java.util.Map;
 public class PSGoogleAnalyticsProviderHelper
 {
 
+    private static PSGoogleAnalyticsProviderHelper INSTANCE;
+
+    public static PSGoogleAnalyticsProviderHelper getInstance(){
+        synchronized(PSGoogleAnalyticsProviderHelper.class) {
+            if (INSTANCE == null) {
+                INSTANCE = new PSGoogleAnalyticsProviderHelper();
+            }
+        }
+        return INSTANCE;
+    }
+
+    private PSGoogleAnalyticsProviderHelper(){ }
+
     /**
      * Helper method to retrieve an <code>AnalyticsService</code> object for communication
      * to the Google Analytics services. This will check credentials and throw an exception
@@ -79,7 +93,7 @@ public class PSGoogleAnalyticsProviderHelper
      * @throws PSAnalyticsProviderException if an error occurs when getting the service.
 
      */
-    public static Analytics getAnalyticsService(String email, String key) throws PSAnalyticsProviderException
+    public Analytics getAnalyticsService(String email, String key) throws PSAnalyticsProviderException
     {
         JacksonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
         com.google.api.services.analytics.Analytics service = null;
@@ -107,10 +121,8 @@ public class PSGoogleAnalyticsProviderHelper
             throw e;
 
         }
-
         catch (GeneralSecurityException e) {
-            e.printStackTrace();
-            log.error("Google Auth error:",e);
+            log.error("Google Auth error: {}",e.getMessage());
             throw new PSAnalyticsProviderException(e.getMessage(), CAUSETYPE.AUTHENTICATION_ERROR);
 
         }
@@ -121,7 +133,14 @@ public class PSGoogleAnalyticsProviderHelper
         }
         return service;
     }
-    public static AnalyticsReporting initializeAnalyticsReporting(String email, String key) {
+
+    /**
+     *
+     * @param email
+     * @param key
+     * @return
+     */
+    public  AnalyticsReporting initializeAnalyticsReporting(String email, String key) throws PSAnalyticsProviderException {
         // Construct a GoogleCredential object with the service account email
         JacksonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
         AnalyticsReporting analyticsReporting = null;
@@ -162,18 +181,15 @@ public class PSGoogleAnalyticsProviderHelper
     * @param range the date range, cannot be <code>null</code>.
     * @return the ReportRequest  object, never <code>null</code>.
     */
-
-    public static ReportRequest createNewDataQuery(PSDateRange range)
+    public  ReportRequest createNewDataQuery(PSDateRange range)
     {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         DateRange dateRange = new DateRange();
         dateRange.setStartDate(formatter.format(range.getStart()));
         dateRange.setEndDate(formatter.format(range.getEnd()));
 
-        ReportRequest request = new ReportRequest()
+        return new ReportRequest()
         .setDateRanges(Arrays.asList(dateRange));
-
-        return request;
     }
    /**
     * Helper method to parse a google date string into a <code>java.util.Date</code> object.
@@ -181,14 +197,13 @@ public class PSGoogleAnalyticsProviderHelper
     * @return the date object, never <code>null</code>
     * @throws PSAnalyticsProviderException if a date parse error occurs.
     */
-   public static Date parseDate(String googleDate) throws PSAnalyticsProviderException
+   public Date parseDate(String googleDate) throws PSAnalyticsProviderException
    {
       if(StringUtils.isBlank(googleDate))
          throw new IllegalArgumentException("googleDate cannot be null or empty.");
       try
       {
     	  Date ret = null;
-    	  //FB: STCAL_STATIC_SIMPLE_DATE_FORMAT_INSTANCE NC - 1/16/16
     	  synchronized(PSGoogleAnalyticsProviderHelper.class){
     		  ret = DATE_FORMAT.parse(googleDate);
     		  }
@@ -206,10 +221,10 @@ public class PSGoogleAnalyticsProviderHelper
     * Checks if the start date of the range is not before google analytics launch date.
     * if that is the case set the start date to analytics launch date
     */
-    public static PSDateRange createValidPSDateRange(PSDateRange range) throws PSAnalyticsProviderException
+    public PSDateRange createValidPSDateRange(PSDateRange range) throws PSAnalyticsProviderException
     {
 
-        DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");;
+        DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
         try
         {
@@ -230,21 +245,25 @@ public class PSGoogleAnalyticsProviderHelper
    /**
     * Date format to use to parse date from a google query. Never <code>null</code>.
     */
-   public static  volatile DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
+   private final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
 
    public static final String  ANALYTICS_LAUNCH_DATE = "11/14/2005";
 
     public static final String APPLICATION_NAME = "Percussion CMS";
+
+    public synchronized DateFormat getDateFormat(){
+        return DATE_FORMAT;
+    }
    /**
     * Mappings of Google exceptions to are own cause enums.
     */
    public static final Map<String, PSAnalyticsProviderException.CAUSETYPE> CAUSE_MAPPINGS =
-      new HashMap<String, CAUSETYPE>();
+      new HashMap<>();
 
    /**
     * Helper to convert from a PKCS#8 String to an RSA private key
     */
-   static PrivateKey privateKeyFromPkcs8(String privateKeyPkcs8) throws IOException {
+   static PrivateKey privateKeyFromPkcs8(String privateKeyPkcs8) throws IOException, PSAnalyticsProviderException {
      Reader reader = new StringReader(privateKeyPkcs8);
      Section section = PemReader.readFirstSectionAndClose(reader, "PRIVATE KEY");
      if (section == null) {
@@ -255,14 +274,12 @@ public class PSGoogleAnalyticsProviderHelper
      Exception unexpectedException = null;
      try {
        KeyFactory keyFactory = SecurityUtils.getRsaKeyFactory();
-       PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
-       return privateKey;
-     } catch (NoSuchAlgorithmException exception) {
-       unexpectedException = exception;
-     } catch (InvalidKeySpecException exception) {
+       return keyFactory.generatePrivate(keySpec);
+
+     } catch (NoSuchAlgorithmException | InvalidKeySpecException exception) {
        unexpectedException = exception;
      }
-     throw new PSAnalyticsProviderException(unexpectedException.getMessage(), CAUSETYPE.AUTHENTICATION_ERROR);
+       throw new PSAnalyticsProviderException(unexpectedException.getMessage(), CAUSETYPE.AUTHENTICATION_ERROR);
    }
 
    static
@@ -277,6 +294,6 @@ public class PSGoogleAnalyticsProviderHelper
       CAUSE_MAPPINGS.put("TermsNotAgreedException", CAUSETYPE.TERMS_NOT_AGREED);
    }
 
-   private static Log log = LogFactory.getLog(PSGoogleAnalyticsProviderHelper.class);
+   private static Logger log = LogManager.getLogger(PSGoogleAnalyticsProviderHelper.class);
 
 }

@@ -52,10 +52,12 @@ public class PSGoogleAnalyticsProviderHandler
     */
     public Map<String, String> getProfiles(String uid, String password) throws PSAnalyticsProviderException
     {
-        Map<String, String> profiles = new LinkedHashMap<String, String>();
-        Map<String, String[]> temp = new TreeMap<String, String[]>();
+        Map<String, String> profiles = new LinkedHashMap<>();
+        Map<String, String[]> temp = new TreeMap<>();
         try {
-            Analytics analytics = PSGoogleAnalyticsProviderHelper.getAnalyticsService(uid, password);
+            Analytics analytics = PSGoogleAnalyticsProviderHelper.getInstance()
+                    .getAnalyticsService(uid, password);
+
             Accounts accounts =  analytics.management().accounts().list().execute();
             if (accounts.getItems().isEmpty()) {
                 log.error("No accounts found");
@@ -118,7 +120,8 @@ public class PSGoogleAnalyticsProviderHandler
    {
       try
       {
-         PSGoogleAnalyticsProviderHelper.getAnalyticsService(uid, password);
+         PSGoogleAnalyticsProviderHelper.getInstance().
+                 getAnalyticsService(uid, password);
          getProfiles(uid, password);
       }     
       catch (PSAnalyticsProviderException e)

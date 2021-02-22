@@ -27,6 +27,7 @@ import com.percussion.auditlog.PSActionOutcome;
 import com.percussion.auditlog.PSAuditLogService;
 import com.percussion.auditlog.PSContentEvent;
 import com.percussion.i18n.ui.PSI18NTranslationKeyValues;
+import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
 import com.percussion.pathmanagement.data.PSFolderProperties;
 import com.percussion.pathmanagement.data.PSItemByWfStateRequest;
@@ -37,6 +38,7 @@ import com.percussion.pathmanagement.data.PSRenameFolderItem;
 import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.share.dao.IPSFolderHelper;
@@ -45,25 +47,35 @@ import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSItemPropertiesList;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.data.PSPagedItemList;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.PSSiteCopyUtils;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.ui.service.IPSUiService;
 import com.percussion.ui.service.impl.PSCm1ListViewHelper;
 import com.percussion.user.service.IPSUserService;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.webservices.publishing.IPSPublishingWs;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeansException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -114,11 +126,16 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @GET
     @Path("/item/{path:.*}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSPathItem find(@PathParam("path") String path) throws PSPathNotFoundServiceException,
-            PSPathServiceException {
-        if(log.isDebugEnabled()) log.debug("Attempting to find item for path: " + path);
-        PSPathItem item = super.find(path);
-        return folderHelper.setFolderAccessLevel(item);
+    public PSPathItem find(@PathParam("path") String path) {
+        try {
+            log.debug("Attempting to find item for path: {}", path);
+            PSPathItem item = super.find(path);
+            return folderHelper.setFolderAccessLevel(item);
+        } catch (PSPathServiceException | PSDataServiceException | PSNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
 
     @GET
@@ -126,17 +143,28 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPathItem findById(@PathParam("id") String id)
     {
-        return folderHelper.findItemById(id);
+        try {
+            return folderHelper.findItemById(id);
+        } catch (IPSDataService.DataServiceLoadException | PSValidationException | PSNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
 
     @Override
     @GET
     @Path("/itemProperties/{path:.*}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSItemProperties findItemProperties(@PathParam("path") String path) throws PSPathNotFoundServiceException,
-            PSPathServiceException {
-        if(log.isDebugEnabled()) log.debug("Attempting to find item properties for path: " + path);
-        return super.findItemProperties(path);
+    public PSItemProperties findItemProperties(@PathParam("path") String path) {
+        try {
+            log.debug("Attempting to find item properties for path: {}", path);
+            return super.findItemProperties(path);
+        } catch (PSPathServiceException | PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
 
     @GET
@@ -144,7 +172,13 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSFolderProperties findFolderProperties(@PathParam("id") String id)
     {
-        return folderHelper.findFolderProperties(id);
+        try {
+            return folderHelper.findFolderProperties(id);
+        } catch (PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
 
     @POST
@@ -153,15 +187,20 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSNoContent saveFolderProperties(PSFolderProperties props)
     {
-        List<IPSSite> sites = publishingWs.getItemSites(idMapper.getGuid(props.getId()));
-        if((sites != null) && (sites.size() >= 1))
-        {
-            PSSiteCopyUtils.throwCopySiteMessageIfNotAllowed(sites.get(0).getName(), "saveFolderProperties",
-                    PSI18NTranslationKeyValues.getInstance().
-                            getTranslationValue(PSSiteCopyUtils.class.getName() + PSSiteCopyUtils.CAN_NOT_UPDATE_FOLDER_PROPERTIES) );
+        try {
+            List<IPSSite> sites = publishingWs.getItemSites(idMapper.getGuid(props.getId()));
+            if ((sites != null) && (!sites.isEmpty())) {
+                PSSiteCopyUtils.throwCopySiteMessageIfNotAllowed(sites.get(0).getName(), "saveFolderProperties",
+                        PSI18NTranslationKeyValues.getInstance().
+                                getTranslationValue(PSSiteCopyUtils.class.getName() + PSSiteCopyUtils.CAN_NOT_UPDATE_FOLDER_PROPERTIES));
+            }
+            folderHelper.saveFolderProperties(props);
+            return new PSNoContent("saveFolderProperties");
+        } catch (PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException();
         }
-        folderHelper.saveFolderProperties(props);
-        return new PSNoContent("saveFolderProperties");
     }
 
     /**
@@ -228,52 +267,54 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
                                         @QueryParam("type") String type, @QueryParam("mustExist") boolean mustExist) throws PSPathNotFoundServiceException,
             PSPathServiceException {
 
-        if(log.isDebugEnabled())
-        {
-            log.debug("Attempting to find children for path: " + path);
-            log.debug("Parameters set for find children: startIndex=" + startIndex +
-                    "; maxResults=" + maxResults + "; child=" + child);
-        }
+        try {
+            log.debug("Attempting to find children for path: {}", path);
+            log.debug(
+                    "Parameters set for find children: startIndex={}; maxResults={}; child={}",
+                    startIndex, maxResults, child);
 
-        PSPathItem psPathItem;
+            PSPathItem psPathItem;
 
-        //CMS-5620 - Handle file not there.
-        if(mustExist == true) {
-            try {
-                psPathItem = find(path);
-            } catch (Exception e) {
-                throw new WebApplicationException(e, 404);
+            //CMS-5620 - Handle file not there.
+            if (mustExist) {
+                try {
+                    psPathItem = find(path);
+                } catch (Exception e) {
+                    throw new WebApplicationException(e, 404);
+                }
+                if (psPathItem == null) {
+                    throw new WebApplicationException("Folder not found.", 404);
+                }
             }
-            if (psPathItem == null) {
-                throw new WebApplicationException("Folder not found.", 404);
+
+            /*
+             * Depending on the parameters sent by the client, call different methods in
+             * the super class.
+             */
+            PSPagedItemList extendedPathItem = null;
+            if (child != null && maxResults != null)
+                extendedPathItem = super.findChildren(path, maxResults, child, displayFormatId);
+            else if (startIndex != null)
+                extendedPathItem = super.findChildren(path, startIndex, maxResults, displayFormatId, sortColumn, sortOrder, category, type);
+            else {
+                List<PSPathItem> allItems = super.findChildren(path, displayFormatId, sortColumn, sortOrder);
+                extendedPathItem = new PSPagedItemList(allItems, allItems.size(), 1);
             }
+
+            extendedPathItem.setChildrenInPage(folderHelper.setFolderAccessLevel(extendedPathItem.getChildrenInPage()));
+
+            return extendedPathItem;
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
         }
-
-        /*
-         * Depending on the parameters sent by the client, call different methods in
-         * the super class.
-         */
-        PSPagedItemList extendedPathItem = null;
-        if (child != null && maxResults != null)
-            extendedPathItem = super.findChildren(path, maxResults, child, displayFormatId);
-        else if (startIndex != null)
-            extendedPathItem = super.findChildren(path, startIndex, maxResults, displayFormatId, sortColumn, sortOrder, category, type);
-        else
-        {
-            List<PSPathItem> allItems = super.findChildren(path, displayFormatId, sortColumn, sortOrder);
-            extendedPathItem = new PSPagedItemList(allItems, allItems.size(), 1);
-        }
-
-        extendedPathItem.setChildrenInPage(folderHelper.setFolderAccessLevel(extendedPathItem.getChildrenInPage()));
-
-        return extendedPathItem;
     }
 
     @GET
     @Path("/folder/{path:.*}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<PSPathItem> findChildren(@PathParam("path") String path) throws PSPathNotFoundServiceException,
-            PSPathServiceException
+    public List<PSPathItem> findChildren(@PathParam("path") String path)
     {
         try
         {
@@ -281,8 +322,11 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
             // check child types
             PSPathOptions.setShouldCheckChildTypes(true);
             return new PSPathItemList(findChildren(path, null, null, null, null, null, null, null, null, false).getChildrenInPage());
-        }
-        finally
+        } catch (PSPathServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        } finally
         {
             PSPathOptions.setShouldCheckChildTypes(false);
         }
@@ -292,8 +336,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @GET
     @Path("/childFolders/{path:.*}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<PSPathItem> findChildFolders(@PathParam("path") String path) throws PSPathNotFoundServiceException,
-            PSPathServiceException
+    public List<PSPathItem> findChildFolders(@PathParam("path") String path)
     {
         try
         {
@@ -312,22 +355,32 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @GET
     @Path("/addFolder/{path:.*}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSPathItem addFolder(@PathParam("path") String path) throws PSPathNotFoundServiceException,
-            PSPathServiceException {
-        if(log.isDebugEnabled()) log.debug("Attempting to add folder: " + path);
-        PSPathItem folder = super.addFolder(path);
-        return folderHelper.setFolderAccessLevel(folder);
+    public PSPathItem addFolder(@PathParam("path") String path)  {
+       try {
+           log.debug("Attempting to add folder: {}", path);
+           PSPathItem folder = super.addFolder(path);
+           return folderHelper.setFolderAccessLevel(folder);
+       } catch (PSPathServiceException | PSValidationException | IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceLoadException | PSNotFoundException e) {
+          log.error(e.getMessage());
+          log.debug(e.getMessage(),e);
+          throw new WebApplicationException(e.getMessage());
+       }
     }
 
     @Override
     @GET
     @Path("/addNewFolder/{path:.*}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSPathItem addNewFolder(@PathParam("path") String path) throws PSPathNotFoundServiceException,
-            PSPathServiceException, PSBeanValidationException {
-        if(log.isDebugEnabled()) log.debug("Attempting to add new folder to: " + path);
-        PSPathItem folder = super.addNewFolder(path);
-        return folderHelper.setFolderAccessLevel(folder);
+    public PSPathItem addNewFolder(@PathParam("path") String path)  {
+        try {
+            log.debug("Attempting to add new folder to: {}", path);
+            PSPathItem folder = super.addNewFolder(path);
+            return folderHelper.setFolderAccessLevel(folder);
+        } catch (PSPathServiceException | PSDataServiceException | PSNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
 
 
@@ -338,11 +391,20 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPathItem renameFolder(PSRenameFolderItem item) throws PSPathNotFoundServiceException,
             PSPathServiceException, PSBeanValidationException {
-        if(log.isDebugEnabled()) log.debug("Attempting to rename folder: " + item.getPath() + " to: " + item.getName());
-        PSSiteCopyUtils.throwCopySiteMessageIfNotAllowed(getSiteNameFromFolderPath(item.getPath()), "renameFolder",
-                PSSiteCopyUtils.CAN_NOT_EDIT_FOLDER_NAME);
-        PSPathItem folder = super.renameFolder(item);
-        return folderHelper.setFolderAccessLevel(folder);
+
+        try {
+            log.debug("Attempting to rename folder: {} to: {}",
+                    item.getPath(),
+                    item.getName());
+            PSSiteCopyUtils.throwCopySiteMessageIfNotAllowed(getSiteNameFromFolderPath(item.getPath()), "renameFolder",
+                    PSSiteCopyUtils.CAN_NOT_EDIT_FOLDER_NAME);
+            PSPathItem folder = super.renameFolder(item);
+            return folderHelper.setFolderAccessLevel(folder);
+        } catch (PSDataServiceException | PSNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
 
     @Override
@@ -352,17 +414,23 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSNoContent moveItem(PSMoveFolderItem request)
     {
-        PSSiteCopyUtils.throwCopySiteMessageIfNotAllowed(getSiteNameFromFolderPath(request.getItemPath()), "moveItem",
-                PSSiteCopyUtils.CAN_NOT_MOVE_FOLDER);
-        stripLeadingSlashForPaths(request);
-        return super.moveItem(request);
+        try {
+            PSSiteCopyUtils.throwCopySiteMessageIfNotAllowed(getSiteNameFromFolderPath(request.getItemPath()), "moveItem",
+                    PSSiteCopyUtils.CAN_NOT_MOVE_FOLDER);
+            stripLeadingSlashForPaths(request);
+            return super.moveItem(request);
+        } catch (PSPathServiceException | PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
+        }
     }
 
     @GET
     @Path("/lastExisting/{path:.*}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,MediaType.TEXT_PLAIN})
     public String findLastExistingPath(@PathParam("path") String path) throws PSPathServiceException {
-        if(log.isDebugEnabled()) log.debug("Attempting to find last existing path: " + path);
+        log.debug("Attempting to find last existing path: {}", path);
         return super.findLastExistingPath(path);
     }
 
@@ -370,7 +438,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Path("/validate/{path:.*}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,MediaType.TEXT_PLAIN})
     public String validateEnteredPath(@PathParam("path") String path) throws PSPathServiceException {
-        if(log.isDebugEnabled()) log.debug("Attempting to find existing path: " + path);
+        log.debug("Attempting to find existing path: {}",  path);
         return super.validateEnteredPath(path);
     }
 
@@ -378,8 +446,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Path("/getAssetPaginationConfig")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,MediaType.TEXT_PLAIN})
     public String getAssetPaginationConfig() {
-        String assetPagination  = PSServer.getProperty("enablePagination", "false");
-        return assetPagination;
+        return PSServer.getProperty("enablePagination", "false");
     }
 
     /**
@@ -403,12 +470,16 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
         }
         String currentUser = (String)PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
         log.info(criteria.getPath() + " has been deleted by: " + currentUser);
-
+        try {
         PSSiteCopyUtils.throwCopySiteMessageIfNotAllowed(getSiteNameFromFolderPath(criteria.getPath()),
                 "deleteFolderService" , PSSiteCopyUtils.CAN_NOT_DELETE_FOLDER);
         psContentEvent=new PSContentEvent(criteria.getGuid(),String.valueOf(iGuid),criteria.getPath(), PSContentEvent.ContentEventActions.delete, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
         psAuditLogService.logContentEvent(psContentEvent);
-        return String.valueOf( super.deleteFolder(criteria) );
+
+            return String.valueOf(super.deleteFolder(criteria));
+        } catch (PSValidationException | IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceLoadException | PSNotFoundException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     @PUT
@@ -426,8 +497,12 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,MediaType.TEXT_PLAIN})
     public String validateFolderDelete(@PathParam("path") String path) throws PSPathNotFoundServiceException,
             PSPathServiceException {
-        if(log.isDebugEnabled()) log.debug("Attempting to validate folder: " + path + " for delete");
-        return super.validateFolderDelete(path);
+       try {
+           log.debug("Attempting to validate folder: {} for delete", path);
+           return super.validateFolderDelete(path);
+       } catch (PSValidationException | IPSDataService.DataServiceNotFoundException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSDataService.DataServiceLoadException | PSNotFoundException e) {
+           throw new WebApplicationException(e);
+       }
     }
 
     @Override
@@ -436,14 +511,16 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSItemProperties> findItemProperties(PSItemByWfStateRequest request)
-            throws PSPathNotFoundServiceException, PSPathServiceException
+            throws PSPathServiceException
     {
-        if(log.isDebugEnabled())
-        {
+        try {
             log.debug("Attempting to find item properties for: " + request.getPath() + ", " + request.getWorkflow()
                     + ", " + request.getState());
+
+            return new PSItemPropertiesList(super.findItemProperties(request));
+        } catch (PSValidationException | IPSDataService.DataServiceNotFoundException e) {
+            throw new WebApplicationException(e);
         }
-        return new PSItemPropertiesList(super.findItemProperties(request));
     }
 
     /**
@@ -484,10 +561,10 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSPathService.class);
+    private static final Logger log = LogManager.getLogger(PSPathService.class);
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException
+    public void setApplicationContext(ApplicationContext applicationContext)
     {
         this.applicationContext=applicationContext;
 

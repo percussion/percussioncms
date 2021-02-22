@@ -26,6 +26,7 @@ package com.percussion.rx.jsf;
 import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.rx.publisher.jsf.nodes.PSSiteContainerNode;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
@@ -219,8 +220,7 @@ public class PSNavigation
     *            <code>null</code> or empty.
     * @return the filtered list, never <code>null</code>.
     */
-   public List<PSNodeBase> getFilteredNodeList(String key)
-   {
+   public List<PSNodeBase> getFilteredNodeList(String key) throws PSNotFoundException {
       return getCategoryNode(key).getFilteredNodes();
    }
 
@@ -258,8 +258,7 @@ public class PSNavigation
     * 
     * @return the site nodes, never <code>null</code>.
     */
-   public List<PSNodeBase> getList()
-   {
+   public List<PSNodeBase> getList() throws PSNotFoundException {
       return getFilteredNodeList(m_currentCategoryKey);
    }
 

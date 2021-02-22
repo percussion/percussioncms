@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,9 +23,6 @@
  */
 package com.percussion.services.assembly.jexl;
 
-import static com.percussion.utils.xml.PSSaxHelper.canBeSelfClosedElement;
-import static com.percussion.utils.xml.PSSaxHelper.newSAXParser;
-
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
 import com.percussion.extension.PSJexlUtilBase;
@@ -35,30 +32,33 @@ import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
+import com.percussion.services.assembly.PSTemplateNotImplementedException;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.util.IPSHtmlParameters;
-
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Stack;
-
-import javax.jcr.Property;
-import javax.jcr.RepositoryException;
-import javax.jcr.ValueFormatException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DefaultHandler2;
 import org.xml.sax.helpers.DefaultHandler;
+
+import javax.jcr.Property;
+import javax.jcr.RepositoryException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Stack;
+
+import static com.percussion.utils.xml.PSSaxHelper.canBeSelfClosedElement;
+import static com.percussion.utils.xml.PSSaxHelper.newSAXParser;
 
 /**
  * Jexl methods for paginating content items.
@@ -67,20 +67,15 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class PSPaginateUtils extends PSJexlUtilBase
 {
-   /**
-    * @param property
-    * @return count of pages present
-    * @throws RepositoryException
-    * @throws ValueFormatException
-    * @throws SAXException
-    */
+
+
    @IPSJexlMethod(description = "Count the number of pages present in the property. If blank, 0 is returned.", params = { @IPSJexlParam(name = "content", description = "the input string") })
    public Number fieldContentPageCount(Property property)
-      throws ValueFormatException, RepositoryException, SAXException
    {
       if (property == null)
       {
-         throw new IllegalArgumentException("property may not be null");
+         log.error(LOG_ERROR_DEFAULT,"isLinkGood", "property can't be null or empty.");
+         return 0;
       }
       try
       {
@@ -93,10 +88,11 @@ public class PSPaginateUtils extends PSJexlUtilBase
          return counter.getCount(new InputSource(new StringReader(
                xmlWrap(content))));
       }
-      catch (IOException e)
+      catch (IOException | RepositoryException | SAXException e)
       {
-         // this should never happen as the source is a string
-         throw new RuntimeException("Unexpected IOException: " + e.toString());
+         log.error(LOG_ERROR_DEFAULT,"isLinkGood", e.getMessage());
+         log.debug(e.getMessage(),e);
+         return 0;
       }
    }
 
@@ -133,18 +129,18 @@ public class PSPaginateUtils extends PSJexlUtilBase
       return xmlUnwrap(result);
    }
 
-   private final String WRAP_TAG_NAME = "rx_wrap_tag";
+   private static final String WRAP_TAG_NAME = "rx_wrap_tag";
    
    /**
     * The opening tag used by {@link #xmlWrap(String)}.
     */
-   private final String START_TAG = "<" + WRAP_TAG_NAME + ">";
+   private static final String START_TAG = "<" + WRAP_TAG_NAME + ">";
 
    /**
     * The closing tag used by {@link #xmlWrap(String)}. A proper closing tag
     * for {@link #START_TAG}.
     */
-   private final String END_TAG = "</" + WRAP_TAG_NAME + ">";
+   private static final String END_TAG = "</" + WRAP_TAG_NAME + ">";
 
    /**
     * Adds the supplied content as a child of another element and returns the
@@ -180,15 +176,6 @@ public class PSPaginateUtils extends PSJexlUtilBase
             - END_TAG.length());
    }
 
-   /**
-    * @param item
-    * @param slotName
-    * @param itemsPerPage
-    * @param pageNumber
-    * @param params
-    * @return
-    * @throws Exception
-    */
    @IPSJexlMethod(description = "Extract the given page for the contents of the given slot. The returned snipped are disabled for Active Assembly, e.g. $sys.activeAssembly = false.", params = {
          @IPSJexlParam(name = "item", description = "the assembly item, not the node"),
          @IPSJexlParam(name = "slotName", description = "the name of the slot to expand"),
@@ -197,25 +184,28 @@ public class PSPaginateUtils extends PSJexlUtilBase
          @IPSJexlParam(name = "params", description = "optional parameters to pass to the slot") }, returns = "a list of assembly results for the slot")
    public List<IPSAssemblyResult> getSlotPage(IPSAssemblyItem item,
          String slotName, int itemsPerPage, Number pageNumber,
-         Map<String, Object> params) throws Exception
+         Map<String, Object> params)
    {
-      int pageZeroBased = pageNumber.intValue() - 1;
-      IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
-      int start = itemsPerPage * pageZeroBased;
-      List<IPSAssemblyItem> items = getSlotContents(item, slotName, params);
-      int end = Math.min(start + itemsPerPage, items.size());
-      List<IPSAssemblyItem> pagedItems = items.subList(start, end);
-      
-      // Disable Active Assembly for the paged slot items. This has to be done
-      // before assemble the items, so that the binding "$sys.activeAssembly"
-      // will be set to "false" in the assembled results.
-      for (IPSAssemblyItem pitem : pagedItems)
-      {
-         pitem.setParameterValue(IPSHtmlParameters.SYS_FORAASLOT, Boolean
-               .toString(false));
+      try {
+         int pageZeroBased = pageNumber.intValue() - 1;
+         IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
+         int start = itemsPerPage * pageZeroBased;
+         List<IPSAssemblyItem> items = getSlotContents(item, slotName, params);
+         int end = Math.min(start + itemsPerPage, items.size());
+         List<IPSAssemblyItem> pagedItems = items.subList(start, end);
+
+         // Disable Active Assembly for the paged slot items. This has to be done
+         // before assemble the items, so that the binding "$sys.activeAssembly"
+         // will be set to "false" in the assembled results.
+         for (IPSAssemblyItem pitem : pagedItems) {
+            pitem.setParameterValue(IPSHtmlParameters.SYS_FORAASLOT, Boolean
+                    .toString(false));
+         }
+
+         return asm.assemble(pagedItems);
+      } catch (RepositoryException | PSTemplateNotImplementedException | PSFilterException | PSAssemblyException | PSNotFoundException e) {
+         return new ArrayList<>();
       }
-      
-      return asm.assemble(pagedItems);
    }
 
    /**
@@ -233,8 +223,7 @@ public class PSPaginateUtils extends PSJexlUtilBase
     */
    private List<IPSAssemblyItem> getSlotContents(IPSAssemblyItem item,
          String slotName, Map<String, Object> params)
-      throws PSAssemblyException, PSFilterException, RepositoryException
-   {
+           throws PSAssemblyException, PSFilterException, RepositoryException, PSNotFoundException {
       if (item == null)
       {
          throw new IllegalArgumentException("item may not be null");
@@ -287,13 +276,12 @@ public class PSPaginateUtils extends PSJexlUtilBase
          @IPSJexlParam(name = "params", description = "optional parameters to pass to the slot") }, returns = "how many pages worth of items are in the slot")
    public Number slotContentPageCount(IPSAssemblyItem item, String slotName,
          int itemsPerPage, Map<String, Object> params)
-      throws PSAssemblyException, PSFilterException, RepositoryException
-   {
+           throws PSAssemblyException, PSFilterException, RepositoryException, PSNotFoundException {
       if (itemsPerPage <= 0)
          throw new IllegalArgumentException("itemsPerPage must be > 0.");
       
       List<IPSAssemblyItem> items = getSlotContents(item, slotName, params);
-      if (items.size() == 0)
+      if (items.isEmpty())
       {
          return 1;
       }
@@ -374,7 +362,7 @@ public class PSPaginateUtils extends PSJexlUtilBase
       /**
        * Logger for this class
        */
-      private final Log log = LogFactory.getLog(HTMLPaginator.class);
+      private final Logger log = LogManager.getLogger(HTMLPaginator.class);
 
       /**
        * Counter of how many page breaks have been seen so far + 1.
@@ -391,7 +379,7 @@ public class PSPaginateUtils extends PSJexlUtilBase
        * Stores data about each element found in the processed document. Never
        * <code>null</code>.
        */
-      private Stack<HtmlTag> mi_htmlTags = new Stack<HtmlTag>();
+      private Stack<HtmlTag> mi_htmlTags = new Stack<>();
 
       /**
        * The page that was requested. Set only by
@@ -438,8 +426,8 @@ public class PSPaginateUtils extends PSJexlUtilBase
          }
          catch (ParserConfigurationException p)
          {
-            log.error("Paginator-Couldn't acquire SAX parser: "
-                        + p.toString());
+            log.error("Paginator-Couldn't acquire SAX parser: {}"
+                        , p.toString());
             return "";
          }
       }
@@ -494,7 +482,7 @@ public class PSPaginateUtils extends PSJexlUtilBase
       private String getSelfClosedTagText(HtmlTag h)
       {
          int closeTag = h.mi_tagText.length() - 1;
-         if (h.mi_tagType == TagType.BEGIN_TAG && (!(h.mi_tagText.charAt(closeTag) == '>')))
+         if (h.mi_tagType == TagType.BEGIN_TAG && ((h.mi_tagText.charAt(closeTag) != '>')))
             throw new IllegalStateException("Expecting a begin tag ends with '>' character.");
 
          // some tag, such as "br" must be self close with " />"
@@ -528,7 +516,6 @@ public class PSPaginateUtils extends PSJexlUtilBase
       
       @Override
       public void processingInstruction(String target,
-            @SuppressWarnings("unused")
             String data)
       {
          if (target.equals(PAGE_BREAK_TEXT))
@@ -734,7 +721,7 @@ public class PSPaginateUtils extends PSJexlUtilBase
       /**
        * Logger for this class
        */
-      private final Log log = LogFactory.getLog(HTMLPageCounter.class);
+      private final Logger log = LogManager.getLogger(HTMLPageCounter.class);
 
       /**
        * Stores the number of page breaks currently encountered +1.
@@ -764,8 +751,8 @@ public class PSPaginateUtils extends PSJexlUtilBase
          }
          catch (ParserConfigurationException p)
          {
-            log.error("PageCounter-Couldn't acquire SAX parser: "
-                  + p.toString());
+            log.error("PageCounter-Couldn't acquire SAX parser: {}"
+                  , p.toString());
             return 0;
          }
       }

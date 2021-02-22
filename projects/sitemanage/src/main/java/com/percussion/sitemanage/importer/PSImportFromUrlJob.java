@@ -26,6 +26,7 @@ package com.percussion.sitemanage.importer;
 import com.percussion.search.PSSearchIndexEventQueue;
 import com.percussion.share.async.IPSAsyncJob;
 import com.percussion.share.async.impl.PSAsyncJob;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.error.PSSiteImportException;
@@ -109,7 +110,7 @@ public class PSImportFromUrlJob extends PSAsyncJob
 
             // List to keep the executed helpers in case and rollback is
             // needed.
-            executedHelpers = new ArrayList<PSImportHelper>();
+            executedHelpers = new ArrayList<>();
 
             // Run helpers
             for (PSImportHelper mandatoryHelper : mandatoryHelpers)
@@ -155,7 +156,7 @@ public class PSImportFromUrlJob extends PSAsyncJob
 
             setResult(importContext);
         }
-        catch (IOException e)
+        catch (IOException | PSDataServiceException | PSSiteImportException e)
         {
             setStatus(IPSAsyncJob.ABORT_STATUS);
             setStatusMessage("The URL is invalid or unreachable.");

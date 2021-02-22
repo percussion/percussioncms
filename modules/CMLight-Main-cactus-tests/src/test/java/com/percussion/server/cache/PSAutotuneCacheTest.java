@@ -24,21 +24,10 @@
 
 package com.percussion.server.cache;
 
-import com.percussion.design.objectstore.PSServerCacheSettings;
-import com.percussion.server.PSServer;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
 import com.percussion.utils.testing.IntegrationTest;
-import org.apache.any23.plugin.Author;
-import org.apache.cactus.ServletTestCase;
-
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.apache.cactus.ServletTestCase;
 import org.junit.experimental.categories.Category;
 
 @Category(IntegrationTest.class)

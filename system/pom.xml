@@ -382,23 +382,30 @@
 
     </build>
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.apache.derby/derbyclient -->
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derbyclient</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-security-utils</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-legacy</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
             <version>8.0.3-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>servlet-utils</artifactId>
-            <version>8.0.3-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -422,28 +429,21 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
-
-
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>tablefactory</artifactId>
             <version>8.0.3-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>webservices</artifactId>
             <version>8.0.3-SNAPSHOT</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>org.jmock</groupId>
             <artifactId>jmock</artifactId>
-
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jmock/jmock-junit4 -->
         <dependency>
             <groupId>org.jmock</groupId>
             <artifactId>jmock-junit4</artifactId>
@@ -602,8 +602,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+            <version>1.6.2</version>
         </dependency>
 
 
@@ -612,15 +613,11 @@
             <artifactId>httpclient-cache</artifactId>
         </dependency>
 
-
-        <!-- https://mvnrepository.com/artifact/org.apache.geronimo.specs/geronimo-jms_1.1_spec -->
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-jms_1.1_spec</artifactId>
 
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -1421,6 +1418,11 @@
             <groupId>com.yahoo.platform.yui</groupId>
             <artifactId>yuicompressor</artifactId>
             <version>2.4.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-exceptions-spring</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 
     </dependencies>

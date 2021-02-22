@@ -59,7 +59,7 @@ public class PSLikes
     public List<IPSLikes> getLikes()
     {
         if (likes == null)
-            likes = new ArrayList<IPSLikes>();
+            likes = new ArrayList<>();
         return likes;
     }
 

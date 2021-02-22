@@ -427,7 +427,7 @@ public class PSSolrDeliveryHandler
 
    private Set<IPSMetadataProperty> transform(SolrServer solrConfig,IPSMetadataEntry entry)
    {
-      Set<IPSMetadataProperty> transformed = new HashSet<IPSMetadataProperty>();
+      Set<IPSMetadataProperty> transformed = new HashSet<>();
       
       transformed.add(new PSMetadataProperty("name", entry.getName()));
       transformed.add(new PSMetadataProperty("linktext", entry.getLinktext()));

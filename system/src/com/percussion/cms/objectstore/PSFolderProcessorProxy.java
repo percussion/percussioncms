@@ -26,6 +26,7 @@ package com.percussion.cms.objectstore;
 import com.percussion.cms.PSCmsException;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.services.error.PSNotFoundException;
 
 import java.util.List;
 import java.util.Set;
@@ -88,8 +89,7 @@ public class PSFolderProcessorProxy extends PSProcessorProxy
 
    //see IPSFolderProcessor interface
    public void removeChildren(PSLocator sourceFolderId, List children)
-         throws PSCmsException
-   {
+           throws PSCmsException, PSNotFoundException {
       getProcessor().removeChildren(sourceFolderId, children);
    }
 
@@ -171,8 +171,7 @@ public class PSFolderProcessorProxy extends PSProcessorProxy
 
    // implement the interface method
    public void removeChildren(PSLocator sourceFolderId, List children,
-      boolean force) throws PSCmsException
-   {
+      boolean force) throws PSCmsException, PSNotFoundException {
       getProcessor().removeChildren(sourceFolderId, children, force);
    }
 

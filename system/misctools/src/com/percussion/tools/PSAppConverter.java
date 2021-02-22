@@ -29,13 +29,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.StringTokenizer;
+
+import com.percussion.utils.io.PathUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import javax.xml.parsers.DocumentBuilder;
 
 import com.percussion.install.RxAppConverter;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -180,7 +182,8 @@ public class PSAppConverter
             String pwd = props.getProperty(DB_PWD, "");
             //assumes the attribute "encrypted" is always set to "yes"
             try {
-               setElementData(elem, PASSWORD, PSEncryptor.getInstance().encrypt(pwd));
+               setElementData(elem, PASSWORD, PSEncryptor.getInstance("AES",
+                       PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).encrypt(pwd));
             } catch (PSEncryptionException e) {
                logger.error("Error encrypting password: " + e.getMessage(),e);
                setElementData(elem, PASSWORD, "");

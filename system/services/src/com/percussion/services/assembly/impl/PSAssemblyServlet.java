@@ -391,7 +391,7 @@ public class PSAssemblyServlet extends HttpServlet
    {
       Locale.getDefault();
       
-      Map<String, String> vars = new HashMap<String, String>();
+      Map<String, String> vars = new HashMap<>();
       vars.put("AAMODE", getAAMode(request));
       vars.put("RXROOT", getRoot(request));
       vars.put("ROOT", "..");
@@ -419,7 +419,7 @@ public class PSAssemblyServlet extends HttpServlet
       throws PSStringTemplateException, PSAssemblyException,
       PSMissingBeanConfigurationException, JSONException
    {
-      Map<String, String> vars = new HashMap<String, String>();
+      Map<String, String> vars = new HashMap<>();
       vars.put("RXROOT", getRoot(request));
       vars.put("ROOT", "..");
       vars.put("LOCALE", getLocale());

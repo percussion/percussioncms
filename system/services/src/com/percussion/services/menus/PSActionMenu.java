@@ -80,12 +80,12 @@ public class PSActionMenu implements Serializable {
     @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private Set<PSActionMenuProperty> properties = new  LinkedHashSet<PSActionMenuProperty>();
+    private Set<PSActionMenuProperty> properties = new  LinkedHashSet<>();
 
     @OneToMany(mappedBy = "menu",fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private Set<PSActionMenuVisibility> visibility = new  LinkedHashSet<PSActionMenuVisibility>();
+    private Set<PSActionMenuVisibility> visibility = new  LinkedHashSet<>();
 
 
     /***

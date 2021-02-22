@@ -103,7 +103,7 @@ public class PSCookieConsentService implements IPSCookieConsentService {
      * Never <code>null</code>, may be empty.
      */
     private Collection<PSDbCookieConsent> convertToDbCookieConsents(Collection<PSCookieConsentQuery> consentQueries) {
-        Collection<PSDbCookieConsent> consents = new ArrayList<PSDbCookieConsent>();
+        Collection<PSDbCookieConsent> consents = new ArrayList<>();
         
         for (PSCookieConsentQuery query : consentQueries) {
             for (String service : query.getServices()) {

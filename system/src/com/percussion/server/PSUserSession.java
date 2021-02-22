@@ -28,13 +28,14 @@ import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.i18n.PSLocale;
 import com.percussion.security.PSRoleEntry;
 import com.percussion.security.PSUserEntry;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.ToDoVulnerability;
-import com.percussion.utils.security.IPSEncryptor;
-import com.percussion.utils.security.IPSKey;
-import com.percussion.utils.security.IPSSecretKey;
-import com.percussion.utils.security.PSEncryptionKeyFactory;
+import com.percussion.security.IPSEncryptor;
+import com.percussion.security.IPSKey;
+import com.percussion.security.IPSSecretKey;
+import com.percussion.security.PSEncryptionKeyFactory;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -696,7 +697,10 @@ public class PSUserSession
    public void addAuthentication(String uid, String auth)
    {
       try {
-         m_authentications.put(uid, PSEncryptor.getInstance().encrypt(auth));
+         m_authentications.put(uid, PSEncryptor.getInstance(
+                 "AES",PSServer.getRxDir().getAbsolutePath().concat(
+                         PSEncryptor.SECURE_DIR)
+         ).encrypt(auth));
       } catch (PSEncryptionException e) {
          ms_log.error("Error encrypting authentication: " + e.getMessage(),e);
          m_authentications.put(uid,"");
@@ -935,10 +939,14 @@ public class PSUserSession
          {
             IPSSecretKey secretKey = (IPSSecretKey)key;
 
-            int partone = PSLegacyEncrypter.OLD_SECURITY_KEY().hashCode();
+            int partone = PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).OLD_SECURITY_KEY().hashCode();
             int parttwo;
             if (uid == null || uid.equals("")) {
-               parttwo = PSLegacyEncrypter.OLD_SECURITY_KEY2().hashCode();
+               parttwo = PSLegacyEncrypter.getInstance(
+                       PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+               ).OLD_SECURITY_KEY2().hashCode();
             }
             else
                parttwo = uid.hashCode();

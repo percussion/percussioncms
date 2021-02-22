@@ -73,6 +73,7 @@ import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.design.objectstore.server.PSXmlObjectStoreLockerId;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSCollection;
 
 import java.io.File;
@@ -110,8 +111,7 @@ public class PSApplicationDependencyHandler
 
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -122,7 +122,7 @@ public class PSApplicationDependencyHandler
          throw new IllegalArgumentException("dep wrong type");
 
       // use set to ensure we don't add dupes
-      Set childDeps = new HashSet();
+      Set childDeps = new HashSet<>();
 
       // don't get dependencies if a system app
       if (isSystemApp(dep.getDependencyId()))
@@ -1114,8 +1114,7 @@ public class PSApplicationDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    private List getStyleSheetDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       List deps = new ArrayList();
 
       String appName = dep.getDependencyId();
@@ -1160,7 +1159,7 @@ public class PSApplicationDependencyHandler
     *
     * @param app The application to check, assumed not <code>null</code>.
     * @param resourceName A resource name returned by
-    * {@link PSApplicationIDTypes#getResourceList()}, assumed not
+    * , assumed not
     * <code>null</code> or empty.
     *
     * @return The dataset, or <code>null</code> if not found.

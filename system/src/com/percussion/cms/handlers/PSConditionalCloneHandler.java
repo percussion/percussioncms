@@ -41,7 +41,7 @@ import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.relationship.IPSExecutionContext;
@@ -717,17 +717,16 @@ public class PSConditionalCloneHandler extends PSCloneHandler
    private static PSPair<Integer, Integer> selectSiteFolderIds(
          List<IPSSite> sites, IPSGuid itemId, Integer origSiteId,
          IPSSiteManager smgr)
-      throws PSSiteManagerException
-   {
+           throws PSSiteManagerException, com.percussion.services.error.PSNotFoundException {
       if (origSiteId != null)
       {
          // use the original site ID if it is one of the sites
          for (IPSSite s : sites)
          {
-            if (s.getGUID().getUUID() == origSiteId.intValue())
+            if (s.getGUID().getUUID() == origSiteId)
             {
                IPSGuid folderId = smgr.getSiteFolderId(s.getGUID(), itemId);
-               return new PSPair<Integer, Integer>(s.getGUID().getUUID(),
+               return new PSPair<>(s.getGUID().getUUID(),
                      folderId.getUUID());
             }
          }
@@ -736,7 +735,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
       // just pick the 1st site (if the original site ID is not in the "sites"
       IPSGuid siteId = sites.get(0).getGUID();
       IPSGuid folderId = smgr.getSiteFolderId(siteId, itemId);
-      return new PSPair<Integer, Integer>(siteId.getUUID(), folderId
+      return new PSPair<>(siteId.getUUID(), folderId
             .getUUID());
    }
    
@@ -1207,7 +1206,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
     * @throws PSNotFoundException for any file not found.
     * @throws SQLException for any failed SQL operation.
     * @throws PSRequestValidationException if the supplied request is invalid.
-    * @throws PSValidationException for any validation failed.
+    * @throws PSSystemValidationException for any validation failed.
     * @throws IOException for any IO operation that failed.
     * @throws PSUnknownNodeTypeException for objectstore XML parsing errors.
     */
@@ -1215,7 +1214,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
       boolean useDependentRevision)
       throws PSAuthorizationException, PSInternalRequestCallException,
          PSAuthenticationFailedException, PSNotFoundException, SQLException,
-         PSRequestValidationException, PSValidationException, IOException,
+         PSRequestValidationException, PSSystemValidationException, IOException,
          PSUnknownNodeTypeException
    {
       // assume the current item is our dependent

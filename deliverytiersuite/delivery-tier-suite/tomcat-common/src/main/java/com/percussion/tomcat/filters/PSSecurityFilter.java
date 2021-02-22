@@ -27,6 +27,8 @@
 
 package com.percussion.tomcat.filters;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -43,6 +45,8 @@ import java.util.Properties;
 
 @Component
 public class PSSecurityFilter extends GenericFilterBean {
+
+    private static final Logger log = LogManager.getLogger(PSSecurityFilter.class);
 
     private static String PERC_SECURITY_PROPS_ROOT = "/conf/perc/perc-security.properties";
     private String CONTENT_SECURITY_POLICY_NAME= "ContentSecurityPolicy";
@@ -67,44 +71,39 @@ public class PSSecurityFilter extends GenericFilterBean {
 
     @Override
     protected void initFilterBean() throws ServletException {
-        try {
+
             Properties props = new Properties();
             //Find in local Webapp,
-            InputStream in = null;
             String tomcatBase = System.getProperty(CATALINA_BASE);
             if (tomcatBase != null) {
-                in = new FileInputStream(tomcatBase + PERC_SECURITY_PROPS_ROOT);
-            }
-
-            if (in != null) {
-                props.load(in);
-                String val = props.getProperty(CONTENT_SECURITY_POLICY_NAME);
-                if (val != null && val.trim() != "") {
-                    CONTENT_SECURITY_POLICY_VALUE = val;
+                try (
+                        InputStream in = new FileInputStream(
+                                tomcatBase + PERC_SECURITY_PROPS_ROOT)) {
+                    props.load(in);
+                } catch (IOException e) {
+                    log.error(e.getMessage());
+                    log.debug(e);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+            String val = props.getProperty(CONTENT_SECURITY_POLICY_NAME);
+            if (val != null && val.trim() != "") {
+                CONTENT_SECURITY_POLICY_VALUE = val;
+            }
+
     }
 
     private Properties readPropertiesFile(String fileName) throws IOException {
-        FileInputStream fis = null;
         Properties prop = null;
-        try {
-            fis = new FileInputStream(fileName);
+        try(FileInputStream fis = new FileInputStream(fileName) ) {
             prop = new Properties();
             prop.load(fis);
-        } catch(FileNotFoundException fnfe) {
-            fnfe.printStackTrace();
-        } catch(IOException ioe) {
-            ioe.printStackTrace();
-        } finally {
-            fis.close();
+        } catch(IOException e) {
+            log.error(e.getMessage());
+            log.debug(e);
         }
+
         return prop;
     }
-
-        public void destroy() {}
 
 }

@@ -743,7 +743,7 @@ public class EmpireTestClient
    private String m_name;
    private String m_clientPropertiesFilename;
    private final List<QAClientListener> m_clientListeners =
-      new ArrayList<QAClientListener>();
+      new ArrayList<>();
    private boolean m_logToScreen;
    private boolean m_isExecuting;
    private Object m_statusLock;
@@ -753,7 +753,7 @@ public class EmpireTestClient
    private int m_startRetryInterval;
    private Thread m_executionThread;
    private final Map<String, String> m_globalMacros =
-         new HashMap<String, String>();
+         new HashMap<>();
 
    /**
     * Flag to indicate that {@link #shutDown(boolean) shutDown(true)} was called

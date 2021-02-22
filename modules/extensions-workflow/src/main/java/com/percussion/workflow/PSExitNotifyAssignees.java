@@ -71,7 +71,7 @@ import com.percussion.util.PSStringTemplate.PSStringTemplateException;
 import com.percussion.util.PSUrlUtils;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jexl.PSJexlEvaluator;
-import com.percussion.utils.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.workflow.mail.IPSMailMessageContext;
 import com.percussion.workflow.mail.PSMailException;
 import com.percussion.workflow.mail.PSMailMessageContext;
@@ -508,9 +508,9 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
    {
       PSWorkFlowUtils.printWorkflowMessage(request, "  Entering Method sendNotifications");
 
-      List<String> toStateUserList = new ArrayList<String>();
-      List<String> fromStateUserList = new ArrayList<String>();
-      List<String> emailToList = new ArrayList<String>();
+      List<String> toStateUserList = new ArrayList<>();
+      List<String> fromStateUserList = new ArrayList<>();
+      List<String> emailToList = new ArrayList<>();
       Map<String, PSSubject> psSubjects = new HashMap<>();
       String emailToString = "";
       List<String> CCList = null;
@@ -613,7 +613,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
              * Don't need to get state role info if this is a self
              * transition and from state role info was required.
              */
-            Set<IPSTypedPrincipal> princes = new HashSet<IPSTypedPrincipal>();
+            Set<IPSTypedPrincipal> princes = new HashSet<>();
             if (fromStateID == toStateID && null != fromStateRoleContext)
             {
                toStateRoleContext = fromStateRoleContext;
@@ -851,7 +851,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
          body = nc.getBody();
 
          // get field names from content item
-         Set<String> fieldNames = new HashSet<String>();
+         Set<String> fieldNames = new HashSet<>();
          parseFields(subject, fieldNames);
          parseFields(body, fieldNames);
 
@@ -983,7 +983,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
       PSContentEditorSystemDef sysDef = PSServer.getContentEditorSystemDef();
       PSFieldSet sysFieldSet = sysDef.getFieldSet();
 
-      List<Integer> ids = new ArrayList<Integer>();
+      List<Integer> ids = new ArrayList<>();
       ids.add(contentId);
       IPSExecutableSearch search = PSExecutableSearchFactory
               .createExecutableSearch(PSRequest.getContextForRequest(),
@@ -1112,7 +1112,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
    @SuppressWarnings({"deprecation"})
    private static Map<String,String> getTokenValues(IPSRequestContext request)
    {
-      Map<String, String> tokenValues = new HashMap<String, String>(
+      Map<String, String> tokenValues = new HashMap<>(
               MAIL_TOKENS_DEFAULT_VALUE);
       for (int i = 0; i < PSWorkFlowUtils.MAIL_TOKENS.length; i++)
       {
@@ -1196,7 +1196,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
                                              Set<IPSTypedPrincipal> nonAddHocUsers,
                                              Set<IPSTypedPrincipal> addHocUsers, Map<String, PSSubject> psSubjects) throws Exception {
 
-      Set<IPSTypedPrincipal> principals = new HashSet<IPSTypedPrincipal>();
+      Set<IPSTypedPrincipal> principals = new HashSet<>();
 
       // ignore non-addHoc users if "notify add-hoc users only" is enabled
       if (!PSWorkflowRoleInfoStatic.isNotifyAddHocOnly() || (!hasAddHocRole(workflowId, stateId)))
@@ -1407,7 +1407,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
     * value for the token.
     */
    private static final Map<String, String> MAIL_TOKENS_DEFAULT_VALUE =
-           new HashMap<String, String>();
+           new HashMap<>();
 
    static
    {

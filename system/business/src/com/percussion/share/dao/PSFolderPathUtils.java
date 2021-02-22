@@ -246,8 +246,8 @@ public class PSFolderPathUtils
      * @return a new list never <code>null</code>.
      */
     public static List<String> matchingDescedentPaths(String sitePath, Collection<String> folderPaths) {
-        if (folderPaths == null) return new ArrayList<String>();
-        List<String> paths = new ArrayList<String>();
+        if (folderPaths == null) return new ArrayList<>();
+        List<String> paths = new ArrayList<>();
         for(String folderPath : folderPaths) {
             if (isDescedentPath(folderPath, sitePath)) {
                 paths.add(folderPath);
@@ -293,7 +293,7 @@ public class PSFolderPathUtils
         if (item.getFolderPaths() == null || item.getFolderPaths().isEmpty())
             return null;
         
-        List<String> matchingPaths = new ArrayList<String>();
+        List<String> matchingPaths = new ArrayList<>();
         for (IPSFolderPath p : paths) {
             if (p == null || isBlank(p.getFolderPath())) 
                 continue;

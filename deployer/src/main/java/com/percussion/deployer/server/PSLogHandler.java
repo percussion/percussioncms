@@ -148,7 +148,7 @@ public class PSLogHandler
       if (archiveRef != null && archiveRef.trim().length() == 0)
          throw new IllegalArgumentException("archiveRef may not be empty");
       
-      List<PSArchiveSummary> asList = new ArrayList<PSArchiveSummary>();
+      List<PSArchiveSummary> asList = new ArrayList<>();
 
       if (tgtServer == null)
          tgtServer = PSServer.getHostName() + ":" + PSServer.getListenerPort();
@@ -316,7 +316,7 @@ public class PSLogHandler
     */
    private Iterator getArchivePackages(int archiveId) throws PSDeployException
    {
-      List<PSArchivePackage> pkgList = new ArrayList<PSArchivePackage>();
+      List<PSArchivePackage> pkgList = new ArrayList<>();
 
       PSJdbcSelectFilter filter = new PSJdbcSelectFilter(AP_ARCHIVE_LOG_ID,
          PSJdbcSelectFilter.EQUALS, Integer.toString(archiveId), Types.INTEGER);
@@ -369,7 +369,7 @@ public class PSLogHandler
          throw new IllegalArgumentException(
             "tgtServer may not be null or empty");
 
-      List<PSLogSummary> logSmryList = new ArrayList<PSLogSummary>();
+      List<PSLogSummary> logSmryList = new ArrayList<>();
 
       PSJdbcTableData tableData = getLogSummariesTableData(tgtServer);
 
@@ -571,7 +571,7 @@ public class PSLogHandler
       {
          // build sorted map
          TreeMap<Integer, PSTransactionSummary> txnMap = 
-                                 new TreeMap<Integer, PSTransactionSummary>();
+                                 new TreeMap<>();
          boolean hasSeq = true;
          int seq = 0;
          
@@ -737,7 +737,7 @@ public class PSLogHandler
    private void deleteArchiveIdFromTable(int archiveId, String column,
       String table, PSJdbcTableSchema schema) throws PSDeployException
    {
-      List<PSJdbcRowData> rowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> rowList = new ArrayList<>();
 
       PSJdbcRowData rowData = m_dbmsHandle.getRowDataForOneColumn(column,
          Integer.toString(archiveId), PSJdbcRowData.ACTION_DELETE);
@@ -980,7 +980,7 @@ public class PSLogHandler
       PSArchiveInfo archiveInfo, PSArchiveManifest archiveManifest)
    {
       // prepare the row data
-      List<PSJdbcColumnData> cols = new ArrayList<PSJdbcColumnData>();
+      List<PSJdbcColumnData> cols = new ArrayList<>();
 
       PSJdbcColumnData col = new PSJdbcColumnData(ALS_ARCHIVE_LOG_ID,
          Integer.toString(id));
@@ -1033,7 +1033,7 @@ public class PSLogHandler
          PSJdbcRowData.ACTION_INSERT);
 
       // prepare the table data
-      List<PSJdbcRowData> rDataList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> rDataList = new ArrayList<>();
       rDataList.add(rData);
       PSJdbcTableData tData = new PSJdbcTableData(ALS_TABLE_NAME,
          rDataList.iterator(), false);
@@ -1089,7 +1089,7 @@ public class PSLogHandler
       String pkgId, int status) throws PSDeployException
    {
       // prepare the row data
-      List<PSJdbcColumnData> cols = new ArrayList<PSJdbcColumnData>();
+      List<PSJdbcColumnData> cols = new ArrayList<>();
       PSJdbcColumnData col = new PSJdbcColumnData(LS_LOG_SUMMARY_ID,
          Integer.toString(logId));
       cols.add(col);
@@ -1124,7 +1124,7 @@ public class PSLogHandler
       String pkgId, int status, int logId) throws PSDeployException
    {
       // prepare the row data
-      List<PSJdbcColumnData> cols = new ArrayList<PSJdbcColumnData>();
+      List<PSJdbcColumnData> cols = new ArrayList<>();
       PSJdbcColumnData col = new PSJdbcColumnData(AP_ARCHIVE_LOG_ID,
          Integer.toString(archiveId));
       cols.add(col);
@@ -1203,7 +1203,7 @@ public class PSLogHandler
       throws PSDeployException
    {
       // prepare row data
-      List<PSJdbcColumnData> cols = new ArrayList<PSJdbcColumnData>();
+      List<PSJdbcColumnData> cols = new ArrayList<>();
 
       PSJdbcColumnData col = new PSJdbcColumnData(LS_LOG_SUMMARY_ID,
          Integer.toString(logId));
@@ -1266,7 +1266,7 @@ public class PSLogHandler
    private PSJdbcTableData getTableDataForAddPackages(int archiveLogId,
       Iterator pkgList)
    {
-      List<PSJdbcRowData> rowDataList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> rowDataList = new ArrayList<>();
       PSJdbcRowData rowData;
 
       while (pkgList.hasNext())
@@ -1295,7 +1295,7 @@ public class PSLogHandler
    private PSJdbcRowData getRowDataForAddPackage(int archiveLogId,
       PSDependency pkg)
    {
-      List<PSJdbcColumnData> cols = new ArrayList<PSJdbcColumnData>();
+      List<PSJdbcColumnData> cols = new ArrayList<>();
 
       PSJdbcColumnData col = new PSJdbcColumnData(AP_ARCHIVE_LOG_ID,
          Integer.toString(archiveLogId));
@@ -1358,7 +1358,7 @@ public class PSLogHandler
          throw new IllegalArgumentException(
             "action must be one of the PSTransactionSummary.ACTION_XXX values");
       
-      List<PSJdbcColumnData> cols = new ArrayList<PSJdbcColumnData>();
+      List<PSJdbcColumnData> cols = new ArrayList<>();
       PSJdbcColumnData col;
 
       // prepare column data

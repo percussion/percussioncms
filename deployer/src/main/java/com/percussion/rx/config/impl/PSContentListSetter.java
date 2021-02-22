@@ -26,6 +26,7 @@ package com.percussion.rx.config.impl;
 import com.percussion.rx.config.IPSConfigHandler.ObjectState;
 import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.design.IPSAssociationSet;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.IPSItemFilter;
 import com.percussion.services.filter.PSFilterException;
@@ -85,21 +86,20 @@ public class PSContentListSetter extends PSSimplePropertySetter
     */
    @Override
    protected boolean addPropertyDefs(Object obj, String propName,
-         Object pvalue, Map<String, Object> defs)
-   {
+         Object pvalue, Map<String, Object> defs) throws PSNotFoundException {
       if (super.addPropertyDefs(obj, propName, pvalue, defs))
          return true;
       
       IPSContentList cList = (IPSContentList) obj;
       if (EXPANDER_PARAMS.equals(propName))
       {
-         Map<String, Object> params = new HashMap<String, Object>();
+         Map<String, Object> params = new HashMap<>();
          params.putAll(cList.getExpanderParams());
          addPropertyDefsForMap(propName, pvalue, params, defs);
       }
       else if (GEN_PARAMS.equals(propName))
       {
-         Map<String, Object> params = new HashMap<String, Object>();
+         Map<String, Object> params = new HashMap<>();
          params.putAll(cList.getGeneratorParams());
          addPropertyDefsForMap(propName, pvalue, params, defs);
       }
@@ -110,8 +110,7 @@ public class PSContentListSetter extends PSSimplePropertySetter
     * //see base class method for details
     */
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       IPSContentList cList = (IPSContentList) obj;
       if (DELIVERY_TYPE.equals(propName))
       {
@@ -143,8 +142,7 @@ public class PSContentListSetter extends PSSimplePropertySetter
     * @param cList the Content List, assumed not <code>null</code>.
     * @param value the value of the new property, assumed not <code>null</code>.
     */
-   private void setDeliveryType(IPSContentList cList, Object value)
-   {
+   private void setDeliveryType(IPSContentList cList, Object value) throws PSNotFoundException {
       // make sure the delivery type name exists
       String deliveryName = value.toString();
       IPSPublisherService srv = PSPublisherServiceLocator.getPublisherService();

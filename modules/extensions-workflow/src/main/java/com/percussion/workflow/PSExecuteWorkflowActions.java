@@ -43,6 +43,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.w3c.dom.Document;
 /**
  * The PSExecuteWorkflowActions class implements extension handling for the
@@ -58,12 +59,12 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
    /**
     * The fully qualified name of this extension.
     */
-   static private String m_fullExtensionName = "";
+   private static  String m_fullExtensionName = "";
 
    /*
     * Flag to indicate indicating that this exit has not been initialized yet.
     */
-   static private boolean  m_extensionInitialized = false;
+    private static  boolean  m_extensionInitialized = false;
 
    /* *************  IPSExtension Interface Implementation ************* */
 
@@ -289,9 +290,15 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
                m_fullExtensionName,
                new Exception(msg));
          }
-      
-         // Perform the action!!
-         wfActionExtension.performAction(wfContext, requestContext);
+
+         try {
+             // Perform the action!!
+             wfActionExtension.performAction(wfContext, requestContext);
+         } catch (com.percussion.services.error.PSNotFoundException | PSDataServiceException e) {
+             throw new PSExtensionProcessingException(
+                     m_fullExtensionName,
+                     e);
+         }
       }
       
       PSWorkFlowUtils.printWorkflowMessage(

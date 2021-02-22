@@ -154,6 +154,7 @@ public abstract class PSIteratorUtils
          return ret;
       }
 
+      @Override
       public void remove()
       {
          throw new UnsupportedOperationException();
@@ -174,7 +175,8 @@ public abstract class PSIteratorUtils
       DoubleIterator(Object a, Object b) { m_a = a; m_b = b; m_next = 0; }
       
       public boolean hasNext() { return (m_next != 2); }
-      
+
+      @Override
       public void remove() { throw new UnsupportedOperationException(); }
       
       public Object next()
@@ -218,7 +220,8 @@ public abstract class PSIteratorUtils
       }
 
       public boolean hasNext() { return (m_idx < m_len); }
-      
+
+      @Override
       public void remove() { throw new UnsupportedOperationException(); }
       
       public Object next()
@@ -254,7 +257,7 @@ public abstract class PSIteratorUtils
          }
          return false;
       }
-
+      @Override
       public void remove() { throw new UnsupportedOperationException(); }
       
       public Object next()
@@ -325,6 +328,7 @@ public abstract class PSIteratorUtils
        *
        * @throws UnsupportedOperationException always.
        */
+      @Override
       public void remove()
       {
          throw new UnsupportedOperationException(

@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.percussion.services.error.PSNotFoundException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -91,7 +92,7 @@ public class PSTreeModel extends MenuModel
     * Each added node is put in this map so it can be found, and removed
     * if the node is removed from its container.
     */
-   Map<String,PSNodeBase> m_rowmap = new HashMap<String, PSNodeBase>();
+   Map<String,PSNodeBase> m_rowmap = new HashMap<>();
 
    /**
     * The focus row key. 
@@ -211,18 +212,20 @@ public class PSTreeModel extends MenuModel
    @Override
    public int getRowCount()
    {
-      PSNodeBase container = getCurrentContainer();
-      
-      if (container == null || container.getChildren() == null)
-      {
-         ms_log.debug("Get row count: no container or no children");
+      try {
+         PSNodeBase container = getCurrentContainer();
+
+         if (container == null || container.getChildren() == null) {
+            ms_log.debug("Get row count: no container or no children");
+            return -1;
+         } else {
+            int count = container.getChildren().size();
+            ms_log.debug("Get row count: " + count);
+            return count;
+         }
+      } catch (PSNotFoundException e) {
+         ms_log.error(e.getMessage());
          return -1;
-      }
-      else
-      {
-         int count = container.getChildren().size();
-         ms_log.debug("Get row count: " + count);
-         return count;
       }
    }
 
@@ -385,7 +388,7 @@ public class PSTreeModel extends MenuModel
    private List<String> createExternalKey(Object internalKey)
    {      
       PSNodeBase base = m_rowmap.get(internalKey);
-      List<String> rval = new ArrayList<String>();
+      List<String> rval = new ArrayList<>();
       while(base != null && base.getParent() != null)
       {
          rval.add(0, (String) base.getKey());

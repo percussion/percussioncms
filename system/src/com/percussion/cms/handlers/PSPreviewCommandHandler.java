@@ -36,7 +36,7 @@ import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.design.objectstore.PSContentEditorPipe;
 import com.percussion.design.objectstore.PSDisplayMapper;
 import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.server.IPSServerErrors;
@@ -88,7 +88,7 @@ public class PSPreviewCommandHandler extends PSQueryCommandHandler
          PSContentEditorHandler ceh, PSContentEditor ce,
          PSApplication dynamicApp, PSEditCommandHandler eh)
       throws PSNotFoundException, PSIllegalArgumentException,
-         PSExtensionException, PSServerException, PSValidationException
+         PSExtensionException, PSServerException, PSSystemValidationException
    {
       super( ah, ceh, ce, dynamicApp, COMMAND_NAME );
 
@@ -106,7 +106,7 @@ public class PSPreviewCommandHandler extends PSQueryCommandHandler
                ce.getName(),
                ah.getApplicationDefinition().getName()
          };
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
                IPSServerErrors.APP_NO_QUERY_PIPES_IN_DATASET, args );
       }
       PSDisplayMapper dispMapper =

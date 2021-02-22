@@ -290,7 +290,7 @@ public class PSContentMgr  implements IPSContentMgr
          }
          
          // Make unique
-         Set<IPSNodeDefinition> bdefs = new HashSet<IPSNodeDefinition>();
+         Set<IPSNodeDefinition> bdefs = new HashSet<>();
          bdefs.addAll(defs);
          
          // Convert back to a list
@@ -321,7 +321,7 @@ public class PSContentMgr  implements IPSContentMgr
          List defs = c.list();
          //there may be an entry for every template association
          HashSet deduped = new HashSet<IPSNodeDefinition>(defs);
-         return new ArrayList<IPSNodeDefinition>(deduped);
+         return new ArrayList<>(deduped);
       }
       catch (Exception e)
       {
@@ -394,7 +394,7 @@ public class PSContentMgr  implements IPSContentMgr
          List<IPSNodeDefinition> defs = c.list();
          //there may be an entry for every template association
          Set deduped = new HashSet<IPSNodeDefinition>(defs);
-         return new ArrayList<IPSNodeDefinition>(deduped);
+         return new ArrayList<>(deduped);
 
    }
 
@@ -421,7 +421,7 @@ public class PSContentMgr  implements IPSContentMgr
          List<IPSNodeDefinition> defs = c.list();
          //there may be an entry for every workflow association
          Set deduped = new HashSet<IPSNodeDefinition>(defs);
-         return new ArrayList<IPSNodeDefinition>(deduped);
+         return new ArrayList<>(deduped);
 
    }
    
@@ -429,7 +429,7 @@ public class PSContentMgr  implements IPSContentMgr
    {
       PSNodeDefinition psdef = (PSNodeDefinition) def;
       
-      Collection<IPSGuid> guids = new ArrayList<IPSGuid>();
+      Collection<IPSGuid> guids = new ArrayList<>();
       String query = "select c.m_contentId, c.m_currRevision"
             + " from PSComponentSummary c where c.m_contentTypeId = :ctid";
 
@@ -555,14 +555,14 @@ public class PSContentMgr  implements IPSContentMgr
          throw new IllegalArgumentException("ids may not be null");
       }
       // Build new collection
-      Collection<IPSGuid> rval = new ArrayList<IPSGuid>();
+      Collection<IPSGuid> rval = new ArrayList<>();
       
       if (types.size() > 0 && ids.size() > 0)
       {
          String query = "select c.m_contentId, c.m_contentTypeId"
                + " from PSComponentSummary c where c.m_contentId in (:ids)";
    
-         List<Integer> cids = new ArrayList<Integer>();
+         List<Integer> cids = new ArrayList<>();
          for (IPSGuid i : ids)
          {
             PSLegacyGuid lg = (PSLegacyGuid) i;
@@ -571,7 +571,7 @@ public class PSContentMgr  implements IPSContentMgr
          List<Object[]> results = sessionFactory.getCurrentSession().createQuery(query).setParameter(
                "ids", cids).list();
          // Build a map
-         Map<Integer,IPSGuid> idToType = new HashMap<Integer,IPSGuid>();
+         Map<Integer,IPSGuid> idToType = new HashMap<>();
          for(Object[] result : results)
          {
             Integer cid = (Integer) result[0];
@@ -603,7 +603,7 @@ public class PSContentMgr  implements IPSContentMgr
    throws RepositoryException
    {
       org.hibernate.Session s = sessionFactory.getCurrentSession();
-      List<String> contentIds = new ArrayList<String>();
+      List<String> contentIds = new ArrayList<>();
       try
       {
          Criteria c = s.createCriteria(PSComponentSummary.class);
@@ -665,7 +665,7 @@ public class PSContentMgr  implements IPSContentMgr
    public List<Integer> findItemsByLocalFieldValue(long contentTypeId,
          String fieldName, String fieldValue)
    {
-      List<Integer> contentIds = new ArrayList<Integer>();
+      List<Integer> contentIds = new ArrayList<>();
       PSItemDefManager itemDefMgr = PSItemDefManager.getInstance();
       long[] ctypeIds = new long[]{contentTypeId};
       Collection<PSField> fields = itemDefMgr.getFieldsByName(ctypeIds, fieldName);

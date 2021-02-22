@@ -56,8 +56,8 @@ import com.percussion.design.objectstore.PSNotifier;
 import com.percussion.design.objectstore.PSSearchConfig;
 import com.percussion.design.objectstore.PSServerCacheSettings;
 import com.percussion.design.objectstore.PSServerConfiguration;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.design.objectstore.server.IPSApplicationListener;
 import com.percussion.design.objectstore.server.IPSObjectStoreHandler;
 import com.percussion.design.objectstore.server.IPSServerConfigurationListener;
@@ -98,12 +98,12 @@ import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSSecurityProviderPool;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSThreadRequestUtils;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.IPSDecryptor;
-import com.percussion.utils.security.IPSKey;
-import com.percussion.utils.security.IPSSecretKey;
-import com.percussion.utils.security.PSEncryptionKeyFactory;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.security.IPSDecryptor;
+import com.percussion.security.IPSKey;
+import com.percussion.security.IPSSecretKey;
+import com.percussion.security.PSEncryptionKeyFactory;
 import com.percussion.server.cache.PSCacheException;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.server.content.PSFormContentParser;
@@ -151,7 +151,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.io.StringWriter;
@@ -222,12 +221,12 @@ public class PSServer {
     *
     * leaveLink - Link will be left broken
     */
-   final static String BROKEN_MANAGED_LINK_BEHAVIOR = "brokenManagedLinkBehavior";
+    public static final String BROKEN_MANAGED_LINK_BEHAVIOR = "brokenManagedLinkBehavior";
 
    //Three options defined for above Property
-   public final static String BROKEN_MANAGED_LINK_BEHAVIOR_DEADLINK = "deadLink";
-   public final static String BROKEN_MANAGED_LINK_BEHAVIOR_REMOVELINK = "removeLink";
-   public final static String BROKEN_MANAGED_LINK_BEHAVIOR_LEAVELINK = "leaveLink";
+   public static final String BROKEN_MANAGED_LINK_BEHAVIOR_DEADLINK = "deadLink";
+   public static final String BROKEN_MANAGED_LINK_BEHAVIOR_REMOVELINK = "removeLink";
+   public static final String BROKEN_MANAGED_LINK_BEHAVIOR_LEAVELINK = "leaveLink";
 
    /**
     * No external construction of this allowed.
@@ -298,7 +297,7 @@ public class PSServer {
       if (url.getProtocol().equals("file") && url.getFile().startsWith("/") == false)
       {
          File absFile = new File(getRxDir(), url.getFile());
-         if (absFile.exists() == false)
+         if (!absFile.exists())
          {
             throw new IOException("File not found for URL: " + absFile);
          }
@@ -535,7 +534,7 @@ public class PSServer {
             com.percussion.log.PSLogServerStart(ms_serverName);
          ms_serverLogHandler.write(msg);
 
-         /* initialize the error manager / handler */
+         /* initialize the error mananger/handler */
          if (0 != (toInit & INITED_ERROR))
             initErrorHandling();
 
@@ -1230,7 +1229,9 @@ public class PSServer {
             // The server will then redirect every request that arrives for
             // appname/resourceName to appName2/resourceName2
             Properties map = new Properties();
-            map.load(new FileInputStream(f));
+            try(FileInputStream fis = new FileInputStream(f)) {
+               map.load(fis);
+            }
             Enumeration e = map.propertyNames();
             while (e.hasMoreElements())
             {
@@ -1852,7 +1853,7 @@ public class PSServer {
                // decrypt the password
                String password = "";
                try {
-                  password = PSEncryptor.getInstance().decrypt(ms_serverProps.getProperty("loginPw"));
+                  password = PSEncryptor.getInstance(PSEncryptionKeyFactory.AES_GCM_ALGORIYTHM,null).decrypt(ms_serverProps.getProperty("loginPw"));
                }catch(PSEncryptionException | java.lang.IllegalArgumentException e) {
                   password = eatLasagna(ms_serverProps.getProperty("loginId"),
                           ms_serverProps.getProperty("loginPw"));
@@ -2093,13 +2094,13 @@ public class PSServer {
    }
 
    public static void startApplication(String appName)
-      throws PSNotFoundException, PSServerException, PSValidationException
+      throws PSNotFoundException, PSServerException, PSSystemValidationException
    {
       startApplication(ms_objectStore.getApplicationObject(appName));
    }
 
    public static PSApplicationHandler startApplication(PSApplication app)
-      throws PSNotFoundException, PSValidationException
+      throws PSNotFoundException, PSSystemValidationException
    {
       PSValidatorAdapter validateContext = new PSValidatorAdapter(ms_objectStore);
       validateContext.throwOnErrors(true);
@@ -2386,7 +2387,7 @@ public class PSServer {
             {
                startApplication(app);
             }
-            catch (PSValidationException e)
+            catch (PSSystemValidationException e)
             {
                PSConsole.printMsg("Server",
                   e.getErrorCode(), e.getErrorArguments());
@@ -3622,7 +3623,7 @@ public class PSServer {
    public static String getPartOneKey()
    {
       // get the encrypted constant and decrypt.
-      return PSLegacyEncrypter.getPartOneKey();
+      return PSLegacyEncrypter.getInstance(null).getPartOneKey();
    }
 
    /**
@@ -3635,7 +3636,7 @@ public class PSServer {
    public static String getPartTwoKey()
    {
       // get the encrypted constant and decrypt.
-      return PSLegacyEncrypter.getPartTwoKey();
+      return PSLegacyEncrypter.getInstance(null).getPartTwoKey();
    }
 
 
@@ -3664,7 +3665,7 @@ public class PSServer {
 
          for (PSCmsObject obj : cmsObjects)
          {
-            m.put(new Integer(obj.getTypeId()), obj);
+            m.put(obj.getTypeId(), obj);
          }
          m_cmsObjectMap = m;
       }
@@ -4203,33 +4204,18 @@ public class PSServer {
             // save updated server config
             File rxconfig = new File(getRxConfigDir());
             File config = new File(rxconfig, "config.xml");
-            OutputStream out = null;
-            
+
             try
             {
                ms_srvConfig.setSearchConfig(searchConfig);
-               Log logger = LogFactory.getLog(PSServer.class);
                PSConsole.printMsg(PSSearchEngine.SUBSYSTEM_NAME,"resetting index_on_startup property");
-               out = new FileOutputStream(config);
-               PSXmlDocumentBuilder.write(ms_srvConfig.toXml(), out);
+                try(FileOutputStream out = new FileOutputStream(config)) {
+                   PSXmlDocumentBuilder.write(ms_srvConfig.toXml(), out);
+                }
             }
             catch (IOException e)
             {
                PSConsole.printMsg(PSSearchEngine.SUBSYSTEM_NAME, e);
-            }
-            finally
-            {
-               if (out != null)
-               {
-                  try
-                  {
-                     out.close();
-                  }
-                  catch (IOException e)
-                  {
-                     
-                  }
-               }
             }
          }
       }
@@ -4620,7 +4606,7 @@ public class PSServer {
        * @param   app         the application object
        */
       public void applicationUpdated(PSApplication app)
-         throws PSValidationException, PSServerException, PSNotFoundException
+         throws PSSystemValidationException, PSServerException, PSNotFoundException
       {
          String appName = app.getName();
          shutdownApplication(appName);
@@ -4636,7 +4622,7 @@ public class PSServer {
        * @param   app         the application object
        */
       public void applicationCreated(PSApplication app)
-         throws PSValidationException, PSServerException, PSNotFoundException
+         throws PSSystemValidationException, PSServerException, PSNotFoundException
       {
          String appName = app.getName();
          if (app.isEnabled()){
@@ -4782,17 +4768,23 @@ public class PSServer {
       }
    }
 
-   // decrypt the provided string
+   /***
+    * Decrypts the specified string
+    * @deprecated since 8.0.2
+    * @param uid user name
+    * @param str password
+    * @return encrypted password
+    */
    @Deprecated
    private static String eatLasagna(String uid, String str)
    {
       if ((str == null) || (str.equals("")))
          return "";
 
-      int partone = PSLegacyEncrypter.OLD_SECURITY_KEY().hashCode();
+      int partone = PSLegacyEncrypter.getInstance(null).OLD_SECURITY_KEY().hashCode();
       int parttwo;
       if (uid == null || uid.equals(""))
-         parttwo = PSLegacyEncrypter.OLD_SECURITY_KEY2().hashCode();
+         parttwo = PSLegacyEncrypter.getInstance(null).OLD_SECURITY_KEY2().hashCode();
       else
          parttwo = uid.hashCode();
 
@@ -4806,7 +4798,7 @@ public class PSServer {
             new ByteArrayInputStream(str.getBytes(PSCharSets.rxJavaEnc())), bOut);
 
          IPSKey key = PSEncryptionKeyFactory.getKeyGenerator(PSEncryptionKeyFactory.DES_ALGORITHM);
-         if ((key != null) && (key instanceof IPSSecretKey))
+         if ( key instanceof IPSSecretKey)
          {
             IPSSecretKey secretKey = (IPSSecretKey)key;
             byte[] baOuter = new byte[8];
@@ -4840,7 +4832,7 @@ public class PSServer {
 
          String ret = bOut.toString(PSCharSets.rxJavaEnc());
          // pad must be between 1 and 7 bytes, fix for bug id Rx-99-11-0049
-         if ((padLen > 0) & (padLen  < 8))
+         if ((padLen > 0) && (padLen  < 8))
             ret = ret.substring(0, ret.length() - padLen);
 
          return ret;

@@ -69,7 +69,7 @@ implements IPSUdfProcessor
          return "";
       }
       String pageLinkText = "";
-      List<IPSGuid> ids = new ArrayList<IPSGuid>();
+      List<IPSGuid> ids = new ArrayList<>();
       IPSGuid guid = PSGuidManagerLocator.getGuidMgr().makeGuid(pageId);
       ids.add(guid);
       IPSContentDesignWs service = 

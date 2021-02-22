@@ -37,7 +37,7 @@ public class InputStreamLineBuffer{
 
     public InputStreamLineBuffer(InputStream is){
         inputStream = is;
-        lines = new ConcurrentLinkedQueue<String>();
+        lines = new ConcurrentLinkedQueue<>();
         lastTimeModified = System.currentTimeMillis();
         isAlive = false;
         inputCatcher = new Thread(new Runnable(){

@@ -26,7 +26,7 @@ package com.percussion.cms;
 
 import com.percussion.data.PSExecutionData;
 import com.percussion.data.PSInternalRequestCallException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.PSServer;
@@ -101,13 +101,13 @@ public class PSModifyPlan
     * perform a step.
     * @throws PSAuthenticationFailedException if the user cannot be
     * authenticated.
-    * @throws PSValidationException if the step does any validation and the
+    * @throws PSSystemValidationException if the step does any validation and the
     * validation fails.
     * @throws PSInternalRequestCallException if there are any other errors.
     */
    public int execute(PSExecutionData data, String appName)
       throws PSInternalRequestCallException, PSAuthorizationException,
-      PSAuthenticationFailedException, PSValidationException
+      PSAuthenticationFailedException, PSSystemValidationException
    {
       if (data == null || appName == null)
          throw new IllegalArgumentException(

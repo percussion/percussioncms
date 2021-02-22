@@ -26,21 +26,17 @@ package com.percussion.ant.install;
 
 import com.percussion.install.InstallUtil;
 import com.percussion.install.PSLogger;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
-import com.percussion.utils.jdbc.PSJdbcUtils;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.util.PSSqlHelper;
+import com.percussion.utils.jdbc.PSJdbcUtils;
+import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.apache.tools.ant.BuildException;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -121,10 +117,10 @@ public class PSExecSQLStmt extends PSAction
             }
             String pw = props.getProperty("PWD");
             try {
-               pw = PSEncryptor.getInstance().decrypt(pw);
+               pw = PSEncryptor.getInstance( "AES", null).decrypt(pw);
             } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
-               pw = PSLegacyEncrypter.getInstance().decrypt(pw,
-                       PSJdbcDbmsDef.getPartOneKey());
+               pw = PSLegacyEncrypter.getInstance(null).decrypt(pw,
+                       PSJdbcDbmsDef.getPartOneKey(),null);
             }
             try( Connection conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
                     props.getProperty("DB_SERVER"),
@@ -177,7 +173,7 @@ public class PSExecSQLStmt extends PSAction
             if(!isSilenceErrors()){
                PSLogger.logError(ex.getMessage());
                if(getPrintExceptionStackTrace()){
-                  ex.printStackTrace();
+                  PSLogger.logError(ex);
                }
             }
             return;
@@ -185,7 +181,7 @@ public class PSExecSQLStmt extends PSAction
             if(!isSilenceErrors()) {
                PSLogger.logError(ex.getMessage());
                if(getPrintExceptionStackTrace()){
-                  ex.printStackTrace();
+                  PSLogger.logError(ex);
                }
             }
 
@@ -396,7 +392,7 @@ public class PSExecSQLStmt extends PSAction
       this.sqlDerby = sqlDerby;
    }
 
-   
+
    /**
     * The sql statement to execute for Mysql database. If empty,
     * <code>sql</code> is executed if it is not empty.
@@ -432,7 +428,6 @@ public class PSExecSQLStmt extends PSAction
     * @return <code>true</code> if the stack trace should be printed,
     * <code>false</code> otherwise.
     *
-    * @see setPrintExceptionStackTrace
     */
    public boolean getPrintExceptionStackTrace()
    {
@@ -445,8 +440,6 @@ public class PSExecSQLStmt extends PSAction
     *
     * @param print <code>true</code> if the stack trace should be printed,
     * <code>false</code> otherwise.
-    *
-    * @see getPrintExceptionStackTrace
     */
    public void setPrintExceptionStackTrace(boolean print)
    {
@@ -478,7 +471,7 @@ public class PSExecSQLStmt extends PSAction
             if (token.compareTo(name) == 0)
             {
                token = PSSqlHelper.qualifyTableName(name, dbmsDef.getDataBase(),
-                     dbmsDef.getSchema(), dbmsDef.getDriver());
+                       dbmsDef.getSchema(), dbmsDef.getDriver());
                break;
             }
          }
@@ -517,7 +510,7 @@ public class PSExecSQLStmt extends PSAction
             if (token.compareTo(name) == 0)
             {
                token = PSSqlHelper.qualifyViewName(name, dbmsDef.getDataBase(),
-                     dbmsDef.getSchema(), dbmsDef.getDriver());
+                       dbmsDef.getSchema(), dbmsDef.getDriver());
                break;
             }
          }
@@ -579,7 +572,7 @@ public class PSExecSQLStmt extends PSAction
     * may be empty. If empty, <code>sql</code> is executed if it is not empty
     */
    private String sqlDerby = "";
-   
+
    /**
     * sql statement to use for Mysql database, never <code>null</code>,
     * may be empty. If empty, <code>sql</code> is executed if it is not empty
@@ -600,5 +593,3 @@ public class PSExecSQLStmt extends PSAction
 
 
 }
-
-

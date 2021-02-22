@@ -27,17 +27,25 @@ package com.percussion.utils.security;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 import com.percussion.utils.io.PathUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
+import com.percussion.utils.container.PSContainerUtilsFactory;
 import com.percussion.util.PSProperties;
 
 public class PSSecurityUtility {
@@ -48,7 +56,7 @@ public class PSSecurityUtility {
     public static final String REQUIRE_CONTENT_SECURITY_POLICY="requireContentSecurityPolicy";
     public static final String REQUIRE_CONTENT_SECURITY_POLICY_DEFAULT = "false";
     public static final String CONTENT_SECURITY_POLICY = "contentSecurityPolicy";
-    public static final String CONTENT_SECURITY_POLICY_DEFAULT="default-src 'self' *.percussion.com *.percussion.marketing *.percussion.services 'unsafe-inline' 'unsafe-eval'; script-src 'self' *.siteimprove.net  'unsafe-inline' 'unsafe-eval'";
+    public static final String CONTENT_SECURITY_POLICY_DEFAULT="default-src * data: https: *.percussion.com *.percussion.marketing *.percussion.services ; img-src * 'self' data: https: 'unsafe-inline' 'unsafe-eval'; font-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval' *.siteimprove.net ; style-src * 'unsafe-inline' 'unsafe-eval'; frame-src * 'self' data: https: http: *.percussion.com *.percussion.marketing *.percussion.services 'unsafe-inline' 'unsafe-eval'; frame-ancestors * 'self' ;";
     public static final String REQUIRE_XFRAME_OPTIONS = "requireXFrameOptions";
     public static final String REQUIRE_XFRAME_OPTIONS_DEFAULT = "true";
     public static final String XFRAME_OPTIONS="xFrameOptions";
@@ -83,7 +91,7 @@ public class PSSecurityUtility {
     
     private Boolean isHTTPSRequired = null;
     private Boolean isStrictTransportSecurityRequired = null;
-    private Boolean isContentSecurityPolicyRequired   = null;;
+    private Boolean isContentSecurityPolicyRequired   = null;
     private Boolean isxFrameOptionsRequired = null;
     private Boolean isXXSSProtectionRequired = null;
     private Boolean isXContentTypeOptionsRequired = null;
@@ -107,7 +115,7 @@ public class PSSecurityUtility {
         public boolean httpsRequired()
        {
           if(isHTTPSRequired != null){
-             return isHTTPSRequired.booleanValue();
+             return isHTTPSRequired;
           }
           boolean result = false;
           Properties serverProps = getServerProperties();
@@ -127,7 +135,7 @@ public class PSSecurityUtility {
          public boolean isCacheControlRequired()
            {
                if(cacheControlRequired != null) {
-                   return cacheControlRequired.booleanValue();
+                   return cacheControlRequired;
                }
 
                Properties serverProps = getServerProperties();
@@ -159,7 +167,7 @@ public class PSSecurityUtility {
        public boolean contentSecurityPolicyRequired()
        {
            if(isContentSecurityPolicyRequired != null) {
-               return isContentSecurityPolicyRequired.booleanValue();
+               return isContentSecurityPolicyRequired;
            }
            boolean result = false;
            Properties serverProps = getServerProperties();

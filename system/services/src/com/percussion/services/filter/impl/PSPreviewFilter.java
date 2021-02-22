@@ -64,7 +64,7 @@ public class PSPreviewFilter extends PSBaseFilter
       noNullElements(items, "items");
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
       IPSGuidManager gm = PSGuidManagerLocator.getGuidMgr();
-      List<IPSFilterItem> rval = new ArrayList<IPSFilterItem>();
+      List<IPSFilterItem> rval = new ArrayList<>();
       
       String user = getUserName(params);
       

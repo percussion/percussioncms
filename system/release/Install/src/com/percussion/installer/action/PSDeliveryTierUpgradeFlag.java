@@ -113,7 +113,7 @@ public class PSDeliveryTierUpgradeFlag extends RxIAAction
    public static SortedSet<String> getValidDTSInstallations(String dirs){
 
 
-      SortedSet<String>ret = new TreeSet<String>();
+      SortedSet<String>ret = new TreeSet<>();
 
       if(dirs==null || dirs.equals("")){
          RxLogger.logInfo("No valid installations to detect!");
@@ -251,7 +251,7 @@ public class PSDeliveryTierUpgradeFlag extends RxIAAction
     * objects, never <code>null</code>, may be empty,
     * modified in the <code>execute()</code> method.
     */
-   public static SortedSet<String> ms_upgDirs = new TreeSet<String>();
+   public static SortedSet<String> ms_upgDirs = new TreeSet<>();
    
    /**
     * The variable name for the property name parameter passed in via the IDE.

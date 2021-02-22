@@ -54,7 +54,7 @@ import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.security.data.*;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal;
 
 import java.security.Principal;
 import java.util.*;
@@ -94,7 +94,7 @@ public class ApiUtils {
     public static Community convertPSCommunity(PSCommunity c) {
         Community ret = new Community(c.getId(),convertGuid(c.getGUID()),c.getName(),c.getDescription(),c.getLabel());
 
-        ArrayList<CommunityRole> roles = new ArrayList<CommunityRole>();
+        ArrayList<CommunityRole> roles = new ArrayList<>();
         Iterator it = c.getRoleAssociations().iterator();
         while(it.hasNext()){
             CommunityRole assoc = new CommunityRole();
@@ -117,7 +117,7 @@ public class ApiUtils {
      */
     public static List<IPSGuid> convertGuids(GuidList ids) {
 
-        List<IPSGuid> ret = new ArrayList<IPSGuid>();
+        List<IPSGuid> ret = new ArrayList<>();
 
         for(Guid g : ids){
             PSGuid ps_g = new PSGuid();
@@ -137,7 +137,7 @@ public class ApiUtils {
      */
     public static CommunityList convertPSCommunities(List<PSCommunity> ps_communities) {
 
-        ArrayList<Community> communities = new ArrayList<Community>();
+        ArrayList<Community> communities = new ArrayList<>();
         for(PSCommunity p : ps_communities){
             communities.add(convertPSCommunity(p));
         }
@@ -151,7 +151,7 @@ public class ApiUtils {
      */
     public static List<PSCommunity> convertCommunityList(CommunityList communities) {
 
-        ArrayList<PSCommunity> ret = new ArrayList<PSCommunity>();
+        ArrayList<PSCommunity> ret = new ArrayList<>();
         for(Community c: communities){
             ret.add(convertCommunity(c));
         }
@@ -189,7 +189,7 @@ public class ApiUtils {
      */
     public static Collection<PSCommunityRoleAssociation> convertCommunityRoleList(CommunityRoleList roleList) {
 
-        ArrayList<PSCommunityRoleAssociation> ret = new ArrayList<PSCommunityRoleAssociation>();
+        ArrayList<PSCommunityRoleAssociation> ret = new ArrayList<>();
 
         for(CommunityRole r: roleList){
             PSCommunityRoleAssociation p_r = new PSCommunityRoleAssociation(
@@ -212,7 +212,7 @@ public class ApiUtils {
     public static Collection<? extends CommunityVisibility> convertPSCommunityVisibilities(List<PSCommunityVisibility> ps_visibilities) {
 
         CommunityVisibilityList ret = null;
-        ArrayList<CommunityVisibility> visibilities = new ArrayList<CommunityVisibility>();
+        ArrayList<CommunityVisibility> visibilities = new ArrayList<>();
         Iterator it = ps_visibilities.iterator();
         while(it.hasNext()){
             PSCommunityVisibility pv = (PSCommunityVisibility)it.next();
@@ -226,7 +226,7 @@ public class ApiUtils {
 
         CommunityVisibility ret = new CommunityVisibility(pv.getGUID().longValue(),convertGuid(pv.getGUID()));
 
-        ArrayList<ObjectSummary> visObjects = new ArrayList<ObjectSummary>();
+        ArrayList<ObjectSummary> visObjects = new ArrayList<>();
         for(PSObjectSummary s : pv.getVisibleObjects()){
             visObjects.add(convertPSObjectSummary(s));
         }
@@ -320,7 +320,7 @@ public class ApiUtils {
     if(scheme != null){
 
         List<String> p_params = scheme.getParameterNames();
-        ArrayList<LocationSchemeParameter> params = new ArrayList<LocationSchemeParameter>();
+        ArrayList<LocationSchemeParameter> params = new ArrayList<>();
         for(String s : p_params){
             LocationSchemeParameter p = new LocationSchemeParameter();
             p.setName(s);
@@ -400,7 +400,7 @@ public class ApiUtils {
      */
     public static Collection<PSAclEntryImpl> convertAclEntries(AclEntryList aclEntries) {
 
-        HashSet<PSAclEntryImpl> ret = new HashSet<PSAclEntryImpl>();
+        HashSet<PSAclEntryImpl> ret = new HashSet<>();
 
         for(AclEntry entry:aclEntries){
             PSAclEntryImpl p_entry = new PSAclEntryImpl();
@@ -445,7 +445,7 @@ public class ApiUtils {
     }
 
     public static AclList convertAcls(List<IPSAcl> loadAcls) {
-        ArrayList<Acl> acls = new ArrayList<Acl>();
+        ArrayList<Acl> acls = new ArrayList<>();
         for(IPSAcl p_acl : loadAcls){
             acls.add(convertAcl((PSAclImpl)p_acl));
         }
@@ -476,7 +476,7 @@ public class ApiUtils {
      */
     public static AclEntryList convertAclEntries(Collection<IPSAclEntry> p_entries) {
 
-        ArrayList<AclEntry> entries = new ArrayList<AclEntry>();
+        ArrayList<AclEntry> entries = new ArrayList<>();
         for(IPSAclEntry p_e : p_entries){
             entries.add(convertAclEntry((PSAclEntryImpl)p_e));
         }
@@ -500,7 +500,7 @@ public class ApiUtils {
 
     public static UserAccessLevelList convertPermissions(Collection<PSAccessLevelImpl> permissions) {
 
-        ArrayList<UserAccessLevel> access = new ArrayList<UserAccessLevel>();
+        ArrayList<UserAccessLevel> access = new ArrayList<>();
         for(PSAccessLevelImpl p_a : permissions){
             UserAccessLevel u = new UserAccessLevel();
             u.setId(p_a.getId());
@@ -520,7 +520,7 @@ public class ApiUtils {
     }
 
     public static List<IPSAcl> convertAcls(AclList aclList) {
-        ArrayList<IPSAcl> p_acls = new ArrayList<IPSAcl>();
+        ArrayList<IPSAcl> p_acls = new ArrayList<>();
 
         for(Acl a : aclList){
             PSAclImpl p_a = new PSAclImpl();
@@ -538,7 +538,7 @@ public class ApiUtils {
 
     public static GuidList convertGuids(Collection<IPSGuid> p_guids) {
 
-        ArrayList<Guid> guids = new ArrayList<Guid>();
+        ArrayList<Guid> guids = new ArrayList<>();
 
         for(IPSGuid p_g : p_guids){
             Guid g = new Guid();
@@ -578,7 +578,7 @@ public class ApiUtils {
     public static UserPreferenceList convertUserProperties(Collection userProperties) {
 
         Iterator properties = userProperties.iterator();
-        ArrayList<UserPreference> up = new ArrayList<UserPreference>();
+        ArrayList<UserPreference> up = new ArrayList<>();
         while(properties.hasNext()){
             PSPersistentProperty prop = (PSPersistentProperty) properties.next();
             up.add(ApiUtils.convertPSPersistentProperty(prop));
@@ -587,7 +587,7 @@ public class ApiUtils {
     }
 
     public static Collection<PSPersistentProperty> convertUserPreferences(UserPreferenceList prefs){
-            ArrayList<PSPersistentProperty> ret = new ArrayList<PSPersistentProperty>();
+            ArrayList<PSPersistentProperty> ret = new ArrayList<>();
             for(UserPreference up : prefs){
                 ret.add(ApiUtils.convertUserPreference(up));
             }

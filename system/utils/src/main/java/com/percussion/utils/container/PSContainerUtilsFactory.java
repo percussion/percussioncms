@@ -24,6 +24,7 @@
 
 package com.percussion.utils.container;
 
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.container.adapters.JBossConnectorConfigurationAdapter;
 import com.percussion.utils.container.adapters.JBossDatasourceConfigurationAdapter;
 import com.percussion.utils.container.adapters.JettyDatasourceConfigurationAdapter;
@@ -63,7 +64,7 @@ public class PSContainerUtilsFactory {
     }
 
     public static DefaultConfigurationContextImpl getConfigurationContextInstance(Path path) {
-        DefaultConfigurationContextImpl value = factoryInstances.computeIfAbsent(path.normalize().toAbsolutePath().toString(), k-> addNew(k, PSLegacyEncrypter.getPartOneKey()));
+        DefaultConfigurationContextImpl value = factoryInstances.computeIfAbsent(path.normalize().toAbsolutePath().toString(), k-> addNew(k, PSLegacyEncrypter.getInstance(PathUtils.getRxPath().toAbsolutePath().toString().concat(PSEncryptor.SECURE_DIR)).getPartOneKey()));
         return value;
     }
 

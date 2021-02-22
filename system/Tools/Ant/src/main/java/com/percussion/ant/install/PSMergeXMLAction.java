@@ -32,7 +32,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
@@ -105,7 +104,6 @@ public class PSMergeXMLAction extends PSAction
                //get the source resource file
                URL urlSource = null;
                InputStream inSource = null;
-               OutputStream out = null;
                try
                {
                   urlSource = getResource(m_strSourceDoc);
@@ -166,28 +164,27 @@ public class PSMergeXMLAction extends PSAction
                   }
 
                   //now write the dest xml doc
-                  FileOutputStream os = new FileOutputStream(destFile);
-                  outWriter = new OutputStreamWriter(os, PSCharSets.rxJavaEnc());
+                  try(FileOutputStream os = new FileOutputStream(destFile)) {
+                     outWriter = new OutputStreamWriter(os, PSCharSets.rxJavaEnc());
 
-                  PSXmlDocumentBuilder.write(destDoc, outWriter);
-
+                     PSXmlDocumentBuilder.write(destDoc, outWriter);
+                  }
                   inSource.close();
                   inSource = null;
 
                   outWriter.close();
                   outWriter = null;
+
                }
                catch (IOException io)
                {
-                  PSLogger.logInfo("ERROR : " + io.getMessage());
+                  PSLogger.logInfo(ERROR + io.getMessage());
                   PSLogger.logInfo(io);
-                  return;
                }
                catch(SAXException e)
                {
-                  PSLogger.logInfo("ERROR : " + e.getMessage());
+                  PSLogger.logInfo(ERROR + e.getMessage());
                   PSLogger.logInfo(e);
-                  return;
                }
                finally
                {
@@ -199,12 +196,10 @@ public class PSMergeXMLAction extends PSAction
                      if (outWriter!=null)
                         outWriter.close();
 
-                     if(out != null)
-                        out.close();
                   }
                   catch (IOException io)
                   {
-                     PSLogger.logInfo("ERROR : " + io.getMessage());
+                     PSLogger.logInfo(ERROR + io.getMessage());
                      PSLogger.logInfo(io);
                   }
                }
@@ -305,4 +300,7 @@ public class PSMergeXMLAction extends PSAction
     * You can add a file to the resources through <code>RxISResourceFiles</code>.
     */
    private String m_strSourceDoc = null;
+
+
+   private static final String ERROR = "ERROR: ";
 }

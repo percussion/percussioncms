@@ -40,7 +40,7 @@ import com.percussion.design.objectstore.PSPipe;
 import com.percussion.design.objectstore.PSQueryPipe;
 import com.percussion.design.objectstore.PSResourceCacheSettings;
 import com.percussion.design.objectstore.PSServerCacheSettings;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.server.IPSRequestHandler;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSRequest;
@@ -150,10 +150,10 @@ public class PSResourceCacheHandler extends PSCacheHandler
     * @param keys A map of key names and their values. May not be <code>null
     * </code> or empty.
     *
-    * @throws PSValidationException if the validation fails.
+    * @throws PSSystemValidationException if the validation fails.
     */
    public void validateKeys(Map keys)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if(keys == null)
          throw new IllegalArgumentException("keys may not be null.");
@@ -163,7 +163,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
       //validates the minimum number of keys.
       if(keys.size() < numKeys )
       {
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSServerErrors.INSUFFICIENT_NUM_CACHE_KEYS,
             new Object[] { String.valueOf(numKeys) });
       }
@@ -175,7 +175,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
 
          if( !keys.containsKey( keyName ) )
          {
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSServerErrors.MISSING_CACHE_KEY,
                new Object[] { keyName } );
          }
@@ -319,7 +319,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
             cache.flush(keyset);
          }
       }
-      catch(PSValidationException e)
+      catch(PSSystemValidationException e)
       {
          //ignore this as the keys may not be valid for this handler.
       }

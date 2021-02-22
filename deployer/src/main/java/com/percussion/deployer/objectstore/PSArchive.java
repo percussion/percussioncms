@@ -338,17 +338,17 @@ public class PSArchive
       // archive manifest may not have been read yet
       if (getArchiveManifest() != null)
       {
-         Iterator pkgs = detail.getPackages();
+         Iterator<PSDeployableElement> pkgs = detail.getPackages();
          while (pkgs.hasNext())
          {
             Set infoSet = new HashSet();
-            PSDeployableElement pkg = (PSDeployableElement)pkgs.next();
-            Iterator deps = pkg.getDependencies();
+            PSDeployableElement pkg = pkgs.next();
+            Iterator<PSDependency> deps = pkg.getDependencies();
             if (deps != null)
             {
                while (deps.hasNext())
                {
-                  PSDependency dep = (PSDependency)deps.next();
+                  PSDependency dep = deps.next();
                   updateDbmsInfoList(dep, infoSet);
                }
             }
@@ -379,12 +379,12 @@ public class PSArchive
          }
 
          // recurse children even if not included
-         Iterator deps = dep.getDependencies();
+         Iterator<PSDependency> deps = dep.getDependencies();
          if (deps != null)
          {
             while (deps.hasNext())
             {
-               PSDependency child = (PSDependency)deps.next();
+               PSDependency child = deps.next();
                updateDbmsInfoList(child, infoSet);
             }
          }
@@ -412,30 +412,19 @@ public class PSArchive
    private void storeXmlDocument(Document doc, String archivePath, byte[] extra)
       throws PSDeployException
    {
-      PSPurgableTempFile file = null;
-      FileOutputStream out = null;
-      try
-      {
-         file = new PSPurgableTempFile("dpl_", ".xml", null);
-         out = new FileOutputStream(file);
-         PSXmlDocumentBuilder.write(doc, out);
-         out.close();
-         out = null;
+
+       try(PSPurgableTempFile file = new PSPurgableTempFile("dpl_", ".xml", null)){
+            try(FileOutputStream out = new FileOutputStream(file)){
+                PSXmlDocumentBuilder.write(doc, out);
+             }
+
          storeFile(file, archivePath, extra);
       }
-      catch (IOException e)
-      {
-         Object args[] = {m_archiveFile.getPath(), e.getLocalizedMessage()};
-         throw new PSDeployException(IPSDeploymentErrors.ARCHIVE_WRITE_ERROR,
-            args);
-      }
-      finally
-      {
-         if (out != null)
-            try {out.close();} catch (IOException ioe){}
-         if (file != null)
-            file.release();
-      }
+       catch (Exception e) {
+          Object args[] = {m_archiveFile.getPath(), e.getLocalizedMessage()};
+          throw new PSDeployException(IPSDeploymentErrors.ARCHIVE_WRITE_ERROR,
+                  args);
+       }
    }
 
    /**
@@ -487,9 +476,8 @@ public class PSArchive
          throw new IllegalArgumentException(
             "archiveEntryPath may not be null or empty");
 
-      try
-      {
-         PSArchiveFiles.archiveFile(getZipOutputStream(), archiveEntryPath,
+      try(ZipOutputStream zs = getZipOutputStream()){
+         PSArchiveFiles.archiveFile(zs, archiveEntryPath,
             file, extra);
       }
       catch (IOException e)

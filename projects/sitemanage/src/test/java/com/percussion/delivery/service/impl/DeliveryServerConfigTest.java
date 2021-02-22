@@ -27,20 +27,43 @@ package com.percussion.delivery.service.impl;
 import static org.junit.Assert.assertTrue;
 
 import com.percussion.delivery.service.impl.DeliveryServer.Password;
-import com.percussion.server.PSServer;
 import com.percussion.share.dao.PSSerializerUtils;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 public class DeliveryServerConfigTest
 {
+
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+    private String rxdeploydir;
+
+    @Before
+    public void setUp()
+    {
+        rxdeploydir = System.getProperty("rxdeploydir");
+        System.setProperty("rxdeploydir",temporaryFolder.getRoot().getAbsolutePath());
+    }
+
+    @After
+    public void teardown(){
+        //Reset the deploy dir property if it was set prior to test
+        if(rxdeploydir != null)
+            System.setProperty("rxdeploydir",rxdeploydir);
+    }
+
     @Test
     public void testLoadXml() throws Exception
     {
@@ -85,11 +108,15 @@ public class DeliveryServerConfigTest
             String origPwVal = s.getPassword().getValue();
 
             origPw.setEncrypted(Boolean.TRUE);
-            String enc = PSEncryptor.getInstance().encrypt(origPwVal);
+            String enc = PSEncryptor.getInstance("AES",
+                    rxdeploydir.concat(PSEncryptor.SECURE_DIR)
+                    ).encrypt(origPwVal);
             origPw.setValue(enc);
 
             // make sure password can be decrypted  
-            String pw = PSEncryptor.getInstance().decrypt(enc);
+            String pw = PSEncryptor.getInstance("AES",
+                    rxdeploydir.concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(enc);
             assertTrue(origPwVal.equals(pw));
         }
         

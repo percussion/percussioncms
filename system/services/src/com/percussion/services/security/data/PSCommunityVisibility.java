@@ -62,7 +62,7 @@ public class PSCommunityVisibility implements Serializable, IPSCatalogItem
     * community, never <code>null</code>, may be empty.
     */
    private Set<PSObjectSummary> visibleObjects = 
-      new HashSet<PSObjectSummary>();
+      new HashSet<>();
    
    /**
     * The bean pattern requires an empty constructor, for internal use only.
@@ -102,7 +102,7 @@ public class PSCommunityVisibility implements Serializable, IPSCatalogItem
    public void setVisibleObjects(Set<PSObjectSummary> visibleObjects)
    {
       if (visibleObjects == null)
-         this.visibleObjects = new HashSet<PSObjectSummary>();
+         this.visibleObjects = new HashSet<>();
       else
          this.visibleObjects = visibleObjects;
    }

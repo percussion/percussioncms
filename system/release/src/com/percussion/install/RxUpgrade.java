@@ -30,7 +30,7 @@ import com.percussion.util.PSFilenameFilter;
 import com.percussion.util.PSProperties;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
@@ -723,8 +723,8 @@ public class RxUpgrade
     * This uses the javax.xml.parsers to parse an XML file into a
     * DOM, and create an output DOM.
     *
-    * @param srcDoc source XML file, must not be <code>null</code>.
-    * @param xslFile xsl file for transforming, must not be <code>null</code>.
+    * @param sourceID source XML file, must not be <code>null</code>.
+    * @param xslID xsl file for transforming, must not be <code>null</code>.
     * @throws TransformerException
     * @throws TransformerConfigurationException
     * @throws SAXException
@@ -890,10 +890,14 @@ public class RxUpgrade
       Properties props = getRxRepositoryProps();
       String password;
       try{
-         password = PSEncryptor.getInstance().decrypt(props.getProperty("PWD"));
+         password = PSEncryptor.getInstance("AES",
+                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).decrypt(props.getProperty("PWD"));
       }catch(Exception e){
-         password = PSLegacyEncrypter.getInstance().decrypt(props.getProperty("PWD"),
-                 PSJdbcDbmsDef.getPartOneKey());
+         password = PSLegacyEncrypter.getInstance(
+                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).decrypt(props.getProperty("PWD"),
+                 PSJdbcDbmsDef.getPartOneKey(),null);
       }
       Connection conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
               props.getProperty("DB_SERVER"),

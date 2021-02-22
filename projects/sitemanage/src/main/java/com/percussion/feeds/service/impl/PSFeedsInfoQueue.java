@@ -28,10 +28,11 @@ import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
-import com.percussion.delivery.service.impl.PSDeliveryInfoService;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptor;
+import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.utils.io.PathUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -47,8 +48,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Set;
 
 /**
@@ -90,8 +89,7 @@ public class PSFeedsInfoQueue implements InitializingBean
      * @param descriptors the descriptors json object string, cannot be <code>null</code>
      * or empty.
      */
-    public void queueDescriptors(String site, String descriptors, String serverType)
-    {
+    public void queueDescriptors(String site, String descriptors, String serverType) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException {
         if(StringUtils.isBlank(site))
             throw new IllegalArgumentException("site cannot be null or empty.");
         if(StringUtils.isBlank(descriptors))
@@ -130,7 +128,8 @@ public class PSFeedsInfoQueue implements InitializingBean
             super();
 
             //Register to get notified if encryption key changes
-            PSEncryptor.getInstance().addPropertyChangeListener(this);
+            PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).addPropertyChangeListener(this);
         }
 
         /*
@@ -180,12 +179,14 @@ public class PSFeedsInfoQueue implements InitializingBean
                     Thread.sleep(30000);
                 }
 
-            } catch (InterruptedException ignore){
+            } catch (InterruptedException | IPSGenericDao.LoadException ignore){
                 Thread.currentThread().interrupt();
             }
             finally
             {
-                PSEncryptor.getInstance().removePropertyChangeListener(this);
+                PSEncryptor.getInstance("AES",
+                        PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                ).removePropertyChangeListener(this);
                 log.info("Feed queue shutdown. interrupted="+Thread.currentThread().isInterrupted());
             }
 
@@ -264,7 +265,7 @@ public class PSFeedsInfoQueue implements InitializingBean
 
             try
             {
-                Set<Integer> successfullHttpStatusCodes = new HashSet<Integer>();
+                Set<Integer> successfullHttpStatusCodes = new HashSet<>();
                 successfullHttpStatusCodes.add(204);
                 deliveryClient.push(
                         new PSDeliveryActionOptions()
@@ -310,7 +311,7 @@ public class PSFeedsInfoQueue implements InitializingBean
             if( evt != null && evt.getPropertyName().equalsIgnoreCase(PSEncryptor.SECRETKEY_PROPNAME)){
                     lastChangeEvent = evt;
                     List<PSDeliveryInfo> servers = deliveryInfoService.findAll();
-                    List<String> processed = new ArrayList<String>();
+                    List<String> processed = new ArrayList<>();
                     //There can be more than one DTS server.  Make sure we process each one.
                     boolean failed = false;
                     for(PSDeliveryInfo info : servers) {
@@ -320,7 +321,7 @@ public class PSFeedsInfoQueue implements InitializingBean
                                 PSDeliveryClient deliveryClient = new PSDeliveryClient();
 
                                 try {
-                                    Set<Integer> successfullHttpStatusCodes = new HashSet<Integer>();
+                                    Set<Integer> successfullHttpStatusCodes = new HashSet<>();
                                     successfullHttpStatusCodes.add(204);
                                     deliveryClient.push(
                                             new PSDeliveryActionOptions()

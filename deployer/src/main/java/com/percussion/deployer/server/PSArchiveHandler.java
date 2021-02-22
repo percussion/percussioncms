@@ -148,9 +148,9 @@ public class PSArchiveHandler
            
       // Can only loop through the Iterator once, but it is needed twice here,
       // So let's build a list from it, which will be used later.
-      List<PSDependencyFile> dupFiles = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> dupFiles = new ArrayList<>();
 
-      List<File> tmpFiles = new ArrayList<File>();
+      List<File> tmpFiles = new ArrayList<>();
       try
       {
          // Adds to the archive first
@@ -478,7 +478,7 @@ public class PSArchiveHandler
    /**
     * Map of dependency file type to meaningful name.
     */
-   private static Map<Integer, String> ms_depFileTypeMap = new HashMap<Integer, String>();
+   private static Map<Integer, String> ms_depFileTypeMap = new HashMap<>();
    
    static
    {

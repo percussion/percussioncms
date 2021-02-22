@@ -24,11 +24,6 @@
 
 package com.percussion.assetmanagement.forms.service.impl;
 
-import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
-import static com.percussion.share.web.service.PSRestServicePathConstants.FIND_ALL_PATH;
-
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.assetmanagement.forms.data.PSFormSummary;
 import com.percussion.assetmanagement.forms.data.PSFormSummaryList;
 import com.percussion.assetmanagement.forms.service.IPSFormDataService;
@@ -37,13 +32,16 @@ import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.percussion.pubserver.IPSPubServerService;
+import com.percussion.services.error.PSNotFoundException;
+import com.percussion.share.service.exception.PSValidationException;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -53,16 +51,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.percussion.pubserver.IPSPubServerService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
+import static com.percussion.share.web.service.PSRestServicePathConstants.FIND_ALL_PATH;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * @author peterfrontiero
@@ -106,12 +104,10 @@ public class PSFormDataService implements IPSFormDataService
      * @return the server, it may be <code>null</code> if cannot find the
      *         server.
      */
-    private PSDeliveryInfo findServer(String site)
-    {
+    private PSDeliveryInfo findServer(String site) throws IPSPubServerService.PSPubServerServiceException, PSNotFoundException {
         String adminURl= pubServerService.getDefaultAdminURL(site);
-        PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_FORMS,null,adminURl);
 
-       // PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_FORMS);
+        PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_FORMS,null,adminURl);
         if (server == null)
             log.debug("Cannot find server with service of: " + PSDeliveryInfo.SERVICE_FORMS);
 
@@ -131,18 +127,19 @@ public class PSFormDataService implements IPSFormDataService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSFormSummary> getAllFormData(String site)
     {
-        PSDeliveryInfo server = findServer(site);
+        String procUrl = null;
 
-        if (server == null)
-            return Collections.emptyList();
+        try {
+            PSDeliveryInfo server = findServer(site);
 
-        Map<String, PSFormSummary> formDataMap = new HashMap<String, PSFormSummary>();
-        String procUrl = server.getUrl() + FORM_INFO_URL;
+            if (server == null)
+                return Collections.emptyList();
 
-        List<PSFormSummary> result = new ArrayList<PSFormSummary>();
+            Map<String, PSFormSummary> formDataMap = new HashMap<>();
+            procUrl = server.getUrl() + FORM_INFO_URL;
 
-        try
-        {
+            List<PSFormSummary> result = new ArrayList<>();
+
             PSDeliveryClient deliveryClient = new PSDeliveryClient();
             JSONObject getJson = new JSONObject();
             getJson = deliveryClient.getJsonObject(new PSDeliveryActionOptions(server, FORM_INFO_URL,
@@ -170,13 +167,15 @@ public class PSFormDataService implements IPSFormDataService
             result.addAll(formDataMap.values());
             CompareFormSummary compare = new CompareFormSummary();
             Collections.sort(result, compare);
+            return new PSFormSummaryList(result);
         }
         catch (Exception e)
         {
-            log.warn("Error getting all form data from processor at : " + procUrl, e);
+            log.warn("Error getting all form data from processor at : {} Error: {}",
+                    procUrl, e.getMessage());
             throw new WebApplicationException(e, Response.serverError().build());
         }
-        return new PSFormSummaryList(result);
+
     }
 
     /**
@@ -207,40 +206,39 @@ public class PSFormDataService implements IPSFormDataService
     @GET
     @Path("/{name}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSFormSummary getFormData(@PathParam("name") String name) throws PSFormDataServiceException
+    public PSFormSummary getFormData(@PathParam("name") String name)
     {
-        rejectIfBlank("getFormData", "name", name);
+        try {
+            rejectIfBlank("getFormData", "name", name);
 
-        PSFormSummary sum = null;
+            PSFormSummary sum = null;
 
-        PSDeliveryInfo processor = findServer("");
-        if (processor == null)
+            PSDeliveryInfo processor = findServer("");
+            if (processor == null)
+                return sum;
+
+            String url = processor.getUrl() + FORM_INFO_URL + name;
+            PSDeliveryClient deliveryClient = new PSDeliveryClient();
+            JSONObject getJson = new JSONObject();
+
+                getJson = deliveryClient.getJsonObject(new PSDeliveryActionOptions(processor, FORM_INFO_URL + name,
+                        HttpMethodType.GET, true));
+                JSONArray formInfo = (JSONArray) getJson.get("formsInfo");
+
+                if (!formInfo.isEmpty()) {
+                    sum = new PSFormSummary();
+                    sum.setName(name);
+
+                    mergeFormData(formInfo.getJSONObject(0), sum);
+                }
+
+
             return sum;
-
-        String url = processor.getUrl() + FORM_INFO_URL + name;
-        PSDeliveryClient deliveryClient = new PSDeliveryClient();
-        JSONObject getJson = new JSONObject();
-
-        try
-        {
-            getJson = deliveryClient.getJsonObject(new PSDeliveryActionOptions(processor, FORM_INFO_URL + name,
-                    HttpMethodType.GET, true));
-            JSONArray formInfo = (JSONArray) getJson.get("formsInfo");
-
-            if (!formInfo.isEmpty())
-            {
-                sum = new PSFormSummary();
-                sum.setName(name);
-
-                mergeFormData(formInfo.getJSONObject(0), sum);
-            }
+        } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e.getMessage());
         }
-        catch (Exception e)
-        {
-            log.warn("Error getting form data from processor at : " + url, e);
-        }
-
-        return sum;
     }
 
     /**
@@ -253,13 +251,19 @@ public class PSFormDataService implements IPSFormDataService
     @Path("/{name}/{site}")
     public void clearFormData(@PathParam("name") String name,@PathParam("site") String site) throws PSFormDataServiceException
     {
-        PSDeliveryInfo deliveryServer = findServer(site);
-        if (deliveryServer == null)
-            throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_FORMS);
+        try {
+            PSDeliveryInfo deliveryServer = findServer(site);
+            if (deliveryServer == null)
+                throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_FORMS);
 
-        PSDeliveryClient deliveryClient = new PSDeliveryClient();
-        deliveryClient.push(new PSDeliveryActionOptions(deliveryServer, FORM_INFO_URL + name, HttpMethodType.DELETE,
-                true), null);
+            PSDeliveryClient deliveryClient = new PSDeliveryClient();
+            deliveryClient.push(new PSDeliveryActionOptions(deliveryServer, FORM_INFO_URL + name, HttpMethodType.DELETE,
+                    true), null);
+        } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+           throw new WebApplicationException(e.getMessage());
+        }
     }
 
     /**
@@ -272,32 +276,30 @@ public class PSFormDataService implements IPSFormDataService
     @GET
     @Path("submissions/{site}/{name}")
     @Produces("text/csv")
-    public String exportFormData(@PathParam("site") String site,@PathParam("name") String name)
+    public String exportFormData(@PathParam("site") String site,
+                                 @PathParam("name") String name)
     {
-        rejectIfBlank("exportFormData", "name", name);
+        try {
+            rejectIfBlank("exportFormData", "name", name);
 
-        PSDeliveryInfo deliveryServer = findServer(site);
-        if (deliveryServer == null)
-            throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_FORMS);
+            PSDeliveryInfo deliveryServer = findServer(site);
+            if (deliveryServer == null)
+                throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_FORMS);
 
-        String formPath = createFormNamePath(name);
-        List<String> formsData = new ArrayList<String>();
+            String formPath = createFormNamePath(name);
+            List<String> formsData = new ArrayList<>();
 
-        PSDeliveryClient deliveryClient = new PSDeliveryClient();
-        String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
-                FORM_INFO_URL + formPath, HttpMethodType.GET, true));
+            PSDeliveryClient deliveryClient = new PSDeliveryClient();
+            String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
+                    FORM_INFO_URL + formPath, HttpMethodType.GET, true));
 
-        if (response != null)
-            formsData.add(response);
+            if (response != null)
+                formsData.add(response);
 
-        try
-        {
+
             return formDataJoiner.joinFormData(formsData.toArray(new String[0]));
-        }
-        catch (Exception e)
-        {
-            log.error("Error while joining forms data: " + e.getMessage());
-            return "";
+        } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
+           throw new WebApplicationException(e.getMessage());
         }
     }
 
@@ -362,6 +364,6 @@ public class PSFormDataService implements IPSFormDataService
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSFormDataService.class);
+    public static final Logger log = LogManager.getLogger(PSFormDataService.class);
 
 }

@@ -29,7 +29,7 @@ import com.percussion.security.PSSecurityProviderPool;
 import com.percussion.server.PSServer;
 import com.percussion.services.security.data.PSCatalogerConfig;
 import com.percussion.services.security.data.PSCatalogerConfig.ConfigTypes;
-import com.percussion.utils.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
 

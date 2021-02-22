@@ -38,23 +38,28 @@ import com.percussion.membership.data.PSUserGroup;
 import com.percussion.membership.data.PSUserSummaries;
 import com.percussion.membership.data.PSUserSummary;
 import com.percussion.membership.service.IPSMembershipService;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import com.percussion.pubserver.IPSPubServerService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.percussion.services.error.PSNotFoundException;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author JaySeletz
@@ -75,18 +80,17 @@ public class PSMembershipService implements IPSMembershipService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSUserSummaries getUsers(@PathParam("site") String site)
     {
+        try
+        {
         String adminURl= pubServerService.getDefaultAdminURL(site);
         IPSDeliveryInfoService deliveryService  = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
-
-        //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP);
         if (server == null)
-            throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);        
+            throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);
         
         String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_USERS;
-        try
-        {
-            List<PSUserSummary> summaries = new ArrayList<PSUserSummary>();
+
+            List<PSUserSummary> summaries = new ArrayList<>();
             
             PSDeliveryClient deliveryClient = new PSDeliveryClient();
             JSONArray users = deliveryClient.getJsonArray(new PSDeliveryActionOptions(server, url));
@@ -105,9 +109,8 @@ public class PSMembershipService implements IPSMembershipService
         }
         catch (Exception e)
         {
-            String urlStr = server.getUrl() + url;
-            log.warn("Error getting all users from the service: " + urlStr, e);
-            throw new WebApplicationException(e, Response.serverError().build());
+            log.warn("Error getting all users from the membership service: Error: {}" ,  e.getMessage());
+            throw new WebApplicationException(e);
         }
     }
     
@@ -118,15 +121,16 @@ public class PSMembershipService implements IPSMembershipService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSUserSummaries changeStateAccount(PSAccountSummary account,@PathParam("site") String site)
     {
-        String adminURl= pubServerService.getDefaultAdminURL(site);
-        IPSDeliveryInfoService deliveryService = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
-        PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
-        if (server == null)
-            throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);        
-        
-        String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_ACCOUNT;
         try
-        {            
+        {
+            String adminURl= pubServerService.getDefaultAdminURL(site);
+            IPSDeliveryInfoService deliveryService = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
+            PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
+            if (server == null)
+                throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);
+
+        String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_ACCOUNT;
+
             PSDeliveryClient deliveryClient = new PSDeliveryClient();
             JSONObject accountJson = new JSONObject();
             accountJson.put("email", account.getEmail());
@@ -138,9 +142,8 @@ public class PSMembershipService implements IPSMembershipService
         }
         catch (Exception e)
         {
-            String urlStr = server.getUrl() + url;
-            log.warn("Error getting all users from the service: " + urlStr, e);
-            throw new WebApplicationException(e, Response.serverError().build());
+            log.warn("Error changing membership account type: {}" , e.getMessage());
+            throw new WebApplicationException(e);
         }
     }
     
@@ -151,26 +154,26 @@ public class PSMembershipService implements IPSMembershipService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSUserSummaries deleteAccount(@PathParam("email") String email,@PathParam("site") String site)
     {
-        String adminURl= pubServerService.getDefaultAdminURL(site);
-        IPSDeliveryInfoService deliveryService = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
-        PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
-        if (server == null)
-            throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);        
-        
-        String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_ACCOUNT + "/" + email;
         try
-        {            
+        {
+            String adminURl= pubServerService.getDefaultAdminURL(site);
+            IPSDeliveryInfoService deliveryService = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
+            PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
+            if (server == null)
+                throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);
+
+            String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_ACCOUNT + "/" + email;
+
             PSDeliveryClient deliveryClient = new PSDeliveryClient();
             deliveryClient.push(new PSDeliveryActionOptions(server, url, HttpMethodType.DELETE, true), "");
             
             return getUsers(site);
+        } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
+            log.warn("Error deleting user(s) from the membership service.  Error: {}",  e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
         }
-        catch (Exception e)
-        {
-            String urlStr = server.getUrl() + url;
-            log.warn("Error getting all users from the service: " + urlStr, e);
-            throw new WebApplicationException(e, Response.serverError().build());
-        }
+
     }
     
     @Override
@@ -180,15 +183,16 @@ public class PSMembershipService implements IPSMembershipService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSUserSummaries updateGroupAccount(PSUserGroup userGroup,@PathParam("site") String site)
     {
-        String adminURl= pubServerService.getDefaultAdminURL(site);
-        IPSDeliveryInfoService deliveryService = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
-        PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
-        if (server == null)
-            throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);        
-        
-        String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_USER_GROUP+"/"+site;
-        try
-        {            
+        try {
+
+            String adminURl= pubServerService.getDefaultAdminURL(site);
+            IPSDeliveryInfoService deliveryService = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
+            PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
+            if (server == null)
+                throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);
+
+            String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_USER_GROUP+"/"+site;
+
             PSDeliveryClient deliveryClient = new PSDeliveryClient();
             JSONObject accountJson = new JSONObject();
             accountJson.put("email", userGroup.getEmail());
@@ -197,11 +201,9 @@ public class PSMembershipService implements IPSMembershipService
                     accountJson.toString());
             
             return getUsers(site);
-        }
-        catch (Exception e)
-        {
-            String urlStr = server.getUrl() + url;
-            log.warn("Error getting all users from the service: " + urlStr, e);
+        } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
+            log.warn("Error updating group account.  Error: {}",  e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -209,6 +211,6 @@ public class PSMembershipService implements IPSMembershipService
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSMembershipService.class);    
+    public static final Logger log = LogManager.getLogger(PSMembershipService.class);
 
 }

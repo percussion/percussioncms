@@ -38,7 +38,10 @@ import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.services.contentchange.IPSContentChangeService;
 import com.percussion.services.contentchange.PSContentChangeServiceLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.data.PSPagedItemList;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.share.test.PSTestDataCleaner;
 import com.percussion.test.PSServletTestCase;
@@ -223,8 +226,7 @@ public class PSIncrementalPublishTest extends PSServletTestCase
     }
 
 
-    private PSAsset createAndApproveAsset(String name)
-    {
+    private PSAsset createAndApproveAsset(String name) throws PSDataServiceException, PSNotFoundException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         InputStream in = IOUtils.toInputStream("This is my file content");
         PSAbstractAssetRequest ar = new PSBinaryAssetRequest("/Assets/Test", AssetType.FILE, "test.txt", "text/plain", in);
         PSAsset resource = assetService.createAsset(ar);
@@ -234,8 +236,7 @@ public class PSIncrementalPublishTest extends PSServletTestCase
         return resource;
     }
 
-    private PSPage createAndApprovePage(String name)
-    {
+    private PSPage createAndApprovePage(String name) throws PSDataServiceException, PSNotFoundException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         PSPage page = createPage(name, fixture.template1.getId());
         String pageId = pageService.save(page).getId();
         pageCleaner.add(pageId);

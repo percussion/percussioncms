@@ -2265,22 +2265,12 @@ public class ContentSOAPImpl extends PSBaseSOAPImpl implements Content
             
             PSPurgableTempFile tempFile = new PSPurgableTempFile("psx", 
                                                                  ".bin", null);
-            InputStream stream = null;
-            
-            try
-            {
-               stream = attachment.getActivationDataHandler().getInputStream();
+
+            try(InputStream stream = attachment.getActivationDataHandler().getInputStream()){
                IOTools.copyStreamToFile(stream, tempFile);
                tempFiles.add(tempFile);
             }
-            finally
-            {
-               if(stream != null)
-               {
-                  stream.close();
-               }
-            }
-            
+
             PSBinaryValue value = new PSPurgableFileValue(tempFile);
             field.addValue(value);
             return true;

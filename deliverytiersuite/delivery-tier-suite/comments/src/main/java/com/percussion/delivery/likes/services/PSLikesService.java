@@ -43,7 +43,7 @@ public class PSLikesService implements IPSLikesService
     
 	private IPSLikesDao dao;
 
-    private List<IPSServiceDataChangeListener> listeners = new ArrayList<IPSServiceDataChangeListener>();
+    private List<IPSServiceDataChangeListener> listeners = new ArrayList<>();
     private final String[] PERC_LIKES_SERVICES = {"perc-likes-services"};
 
     /**
@@ -132,7 +132,7 @@ public class PSLikesService implements IPSLikesService
         Validate.notEmpty(likeId);
         Validate.notEmpty(type);
 
-        Set<String> sites = new HashSet<String>(1);
+        Set<String> sites = new HashSet<>(1);
         sites.add(site);
         fireDataChangeRequestedEvent(sites);
 
@@ -227,8 +227,8 @@ public class PSLikesService implements IPSLikesService
     @Override
     public void updateLikesForSiteAfterRename(String prevSiteName,
                                               String newSiteName) {
-        List<IPSLikes> likes = new ArrayList<IPSLikes>();
-        List<IPSLikes> newLikes = new ArrayList<IPSLikes>();
+        List<IPSLikes> likes = new ArrayList<>();
+        List<IPSLikes> newLikes = new ArrayList<>();
         try {
             likes = dao.findLikesForSite(prevSiteName);
             for (IPSLikes like : likes) {

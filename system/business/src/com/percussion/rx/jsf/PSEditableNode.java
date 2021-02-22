@@ -25,6 +25,7 @@ package com.percussion.rx.jsf;
 
 import com.percussion.rx.publisher.jsf.nodes.PSDesignNode;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 
 import java.util.HashMap;
@@ -95,14 +96,14 @@ public abstract class PSEditableNode extends PSLockableNode
     * @return the outcome, should navigate back to the appropriate view or 
     * editor.
     */
-   public abstract String delete();
+   public abstract String delete() throws PSNotFoundException;
 
    /**
     * Copy this object, and return the appropriate outcome. 
     * @return the outcome, should navigate back to the appropriate view or 
     * editor.
     */
-   public abstract String copy();
+   public abstract String copy() throws PSNotFoundException;
 
    /**
     * Get the properties for the node. The properties are set by the node's
@@ -220,8 +221,7 @@ public abstract class PSEditableNode extends PSLockableNode
     * 
     * @return <code>cancel</code> as the outcome of the cancel action
     */
-   public String cancel()
-   {
+   public String cancel() throws PSNotFoundException {
       exitEditMode();
       return "cancel";
    }
@@ -262,5 +262,5 @@ public abstract class PSEditableNode extends PSLockableNode
     * The properties are available primarily to add extra information for
     * use in list views of nodes. 
     */
-   private Map<String,String> m_properties = new HashMap<String, String>();
+   private Map<String,String> m_properties = new HashMap<>();
 }

@@ -33,12 +33,12 @@ import com.percussion.design.objectstore.IPSValidationContext;
 import com.percussion.design.objectstore.PSComponent;
 import com.percussion.design.objectstore.PSConditional;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSException;
 import com.percussion.util.PSCollection;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
@@ -401,7 +401,9 @@ public class PSLegacyBackEndCredential extends PSComponent
    private String makeLasagna(String pwd)
    {
       try {
-         return PSEncryptor.getInstance().encrypt(pwd);
+         return PSEncryptor.getInstance("AES",
+                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).encrypt(pwd);
       } catch (PSEncryptionException e) {
          return "";
       }
@@ -655,7 +657,7 @@ public class PSLegacyBackEndCredential extends PSComponent
 
    /**
     * Validates this object within the given validation context. The method
-    * signature declares that it throws PSValidationException, but the
+    * signature declares that it throws PSSystemValidationException, but the
     * implementation must not directly throw any exceptions. Instead, it
     * should register any errors with the validation context, which will
     * decide whether to throw the exception (in which case the implementation
@@ -664,10 +666,10 @@ public class PSLegacyBackEndCredential extends PSComponent
     *
     * @param   cxt The validation context.
     *
-    * @throws   PSValidationException According to the implementation of the
+    * @throws PSSystemValidationException According to the implementation of the
     * validation context (on warnings and/or errors).
     */
-   public void validate(IPSValidationContext cxt) throws PSValidationException
+   public void validate(IPSValidationContext cxt) throws PSSystemValidationException
    {
       if (!cxt.startValidation(this, null))
          return;

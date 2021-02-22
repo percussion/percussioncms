@@ -43,6 +43,7 @@ import com.percussion.deploy.server.PSImportCtx;
 import com.percussion.design.objectstore.PSAclEntry;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.security.IPSAcl;
 import com.percussion.services.security.IPSAclEntry;
@@ -57,8 +58,8 @@ import com.percussion.services.security.data.PSAclEntryImpl;
 import com.percussion.services.security.data.PSAclImpl;
 import com.percussion.services.security.data.PSCommunity;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 
 /**
  * Class to handle packaging and deploying an ACL definition.
@@ -104,8 +105,7 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
    // see base class
    @Override
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 

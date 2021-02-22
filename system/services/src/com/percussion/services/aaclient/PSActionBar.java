@@ -162,21 +162,19 @@ public class PSActionBar implements IPSWidgetHandler
     */
    private String buildSlotActions(HttpServletRequest request,
       JSONObject jsObjId) throws PSStringTemplateException,
-      NumberFormatException, PSMissingBeanConfigurationException
-   {
+           NumberFormatException, PSMissingBeanConfigurationException, PSAssemblyException {
       String slotid = (String) jsObjId.get(IPSHtmlParameters.SYS_SLOTID);
       IPSTemplateSlot slot = PSAssemblyServiceLocator.getAssemblyService()
          .loadSlot(new PSGuid(PSTypeEnum.SLOT, Long.parseLong(slotid)));
       PSStringTemplate template = PSAAStubUtil.getSlotActions();
-      Map vars = new HashMap();
+      Map<String,String> vars = new HashMap<>();
       vars
          .put("IMAGE_URL", PSWidgetNodeType.WIDGET_NODE_TYPE_SLOT.getIconUrl());
       vars.put("TITLE", slot.getLabel());
       String activeCaption = (String) jsObjId.get("activeCaption");
       if (!StringUtils.isEmpty(activeCaption))
          vars.put("ACTIVATE_CAPTION", activeCaption);
-      String result = template.expand(vars);
-      return result;
+      return template.expand(vars);
    }
 
    /**
@@ -185,7 +183,7 @@ public class PSActionBar implements IPSWidgetHandler
     * @param jsObjId
     * @return
     */
-   private Map buildWorkflowActions(HttpServletRequest request,
+   private Map<String,String> buildWorkflowActions(HttpServletRequest request,
       JSONObject jsObjId)
    {
       String cid = (String) jsObjId.get(IPSHtmlParameters.SYS_CONTENTID);
@@ -194,7 +192,7 @@ public class PSActionBar implements IPSWidgetHandler
          .createRoot(doc, "workflowactions");
       rootElem.setAttribute(ATTRIB_CONTENTID, cid);
 
-      Map vars = new HashMap();
+      Map<String,String> vars = new HashMap<>();
 
      boolean isPublic = PSWorkFlowUtils.isPublic(Integer.parseInt(cid));
      if (isPublic)

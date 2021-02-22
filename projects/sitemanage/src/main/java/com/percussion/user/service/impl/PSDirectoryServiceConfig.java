@@ -105,8 +105,7 @@ public class PSDirectoryServiceConfig
      */
     @Override
     protected LdapConfigData update(Set<PSFileDataRepository.PSFileEntry> files)
-            throws IOException, PSValidationException
-    {
+            throws IOException, PSValidationException, PSXmlFileDataRepositoryException {
         LdapConfigData data = new LdapConfigData();
         if ( ! files.isEmpty() ) {
             PSLdapConfig config = fileToObject(files.iterator().next());

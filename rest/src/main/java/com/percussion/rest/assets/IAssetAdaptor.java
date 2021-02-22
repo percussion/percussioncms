@@ -25,6 +25,7 @@
 package com.percussion.rest.assets;
 
 import com.percussion.rest.Status;
+import com.percussion.rest.errors.BackendException;
 
 import javax.ws.rs.core.StreamingOutput;
 import java.io.InputStream;
@@ -42,7 +43,7 @@ public interface IAssetAdaptor
      * @param path
      * @return Asset Collection
      */
-    public Collection<Asset> getSharedAssets(URI baseURI, String path, String type);
+    public Collection<Asset> getSharedAssets(URI baseURI, String path, String type) throws BackendException;
 
     /**
      * Fetches a single asset by its ID.
@@ -50,15 +51,16 @@ public interface IAssetAdaptor
      * @param id
      * @return an Asset
      */
-    public Asset getSharedAsset(URI baseURI, String id);
+    public Asset getSharedAsset(URI baseURI, String id) throws BackendException;
 
     /**
      * Fetches a single asset by its path.  Can handle if filename starts with thumb_
      * 
-     * @param id
+     * @param baseURI
+     * @param path
      * @return an Asset
      */
-    public Asset getSharedAssetByPath(URI baseURI, String path);
+    public Asset getSharedAssetByPath(URI baseURI, String path) throws BackendException;
     
     /**
      * Deletes a single shared asset by its ID.
@@ -66,7 +68,7 @@ public interface IAssetAdaptor
      * @param id
      * @return operation status
      */
-    public Status deleteSharedAsset(String id);
+    public Status deleteSharedAsset(String id) throws BackendException;
 
     /**
      * Deletes a single shared asset by its ID.
@@ -74,7 +76,7 @@ public interface IAssetAdaptor
      * @param path
      * @return operation status
      */
-    public Status deleteSharedAssetByPath(String path);
+    public Status deleteSharedAssetByPath(String path) throws BackendException;
 
     /**
      * Creates or updates a shared asset based on its path. The path in the
@@ -85,7 +87,7 @@ public interface IAssetAdaptor
      * @param asset New Asset or fields to update.
      * @return Asset with updates or new asset.
      */
-    public Asset createOrUpdateSharedAsset(URI baseURI, String path, Asset asset);
+    public Asset createOrUpdateSharedAsset(URI baseURI, String path, Asset asset) throws BackendException;
 
     /**
      * Update an asset directly given its ID
@@ -94,7 +96,7 @@ public interface IAssetAdaptor
      * @param asset
      * @return Asset as updated
      */
-    public Asset updateSharedAsset(URI baseURI, String id, Asset asset);
+    public Asset updateSharedAsset(URI baseURI, String id, Asset asset) throws BackendException;
 
     /**
      * Creates a new asset at the given path
@@ -103,22 +105,22 @@ public interface IAssetAdaptor
      * @param asset
      * @return new asset
      */
-    public Asset createSharedAsset(URI baseURI, String path, Asset asset);
+    public Asset createSharedAsset(URI baseURI, String path, Asset asset) throws BackendException;
 
     /**
      * Updates an asset with a binary
      *
      * @param baseURI used to generate full paths
      * @param path path to asset
-     * @param AssetType to upload to.  if null or empty defaults based upon mime type.
+     * @param assetType to upload to.  if null or empty defaults based upon mime type.
      * @param inputStream
-     * @param fileMimeType
-     * @param filename of original uploaded file
-     * @param force check out if the item is in use by another user
+     * @param uploadFilename of original uploaded file
+     * @param fileMimeType  mime type of the file
+     * @param forceCheckOut check out if the item is in use by another user
      * @return That asset
      * 
      */
-    public Asset uploadBinary(URI baseURI, String path, String assetType, InputStream inputStream, String uploadFilename, String fileMimeType, boolean forceCheckOut);
+    public Asset uploadBinary(URI baseURI, String path, String assetType, InputStream inputStream, String uploadFilename, String fileMimeType, boolean forceCheckOut) throws BackendException;
 
     /**
      * Streams an asset binary to an output stream
@@ -127,7 +129,7 @@ public interface IAssetAdaptor
      *            thumb_ then thumbnail will be returned
      * @return output stream
      */
-    public StreamingOutput getBinary(String path);
+    public StreamingOutput getBinary(String path) throws BackendException;
 
     /***
      * Renames the shared Asset.
@@ -139,7 +141,7 @@ public interface IAssetAdaptor
      * @param newName
      * @return
      */
-    public Asset renameSharedAsset(URI baseURI, String Site, String folder, String name, String newName);
+    public Asset renameSharedAsset(URI baseURI, String Site, String folder, String name, String newName) throws BackendException;
 
 
     // TODO PXA Add methods to delete assets by path wildcards and type filter,
@@ -152,28 +154,28 @@ public interface IAssetAdaptor
      * @param baseUri
      * @return
      */
-    public List<String> nonADACompliantImagesReport(URI baseUri);
+    public List<String> nonADACompliantImagesReport(URI baseUri) throws BackendException;
     
     /***
      * Returns a CSV file containing a complete list of non compliant File assets in the Asset repository.
      * @param baseUri
      * @return
      */
-    public List<String> nonADACompliantFilesReport(URI baseUri);
+    public List<String> nonADACompliantFilesReport(URI baseUri) throws BackendException;
 
     /***
      * Returns a CSV file containing a complete list of all Image assets on the system.
      * @param baseUri
      * @return
      */
-    public List<String> allImagesReport(URI baseUri);
+    public List<String> allImagesReport(URI baseUri) throws BackendException;
     
     /***
      * Returns a CSV file containing a complete list of all File assets on the system.
      * @param baseUri
      * @return
      */
-    public List<String> allFilesReport(URI baseUri);
+    public List<String> allFilesReport(URI baseUri) throws BackendException;
 
     /***
      * Using the CSV format provided in the non ADA compliant Images report,bulk update Asset fields based on the contents of the CSV. 
@@ -213,7 +215,7 @@ public interface IAssetAdaptor
      * @param folder A valid Folder resource.
      * @return  A count of the number of assets that were approved.
      */
-    public int approveAllAssets(URI baseUri, String folder);
+    public int approveAllAssets(URI baseUri, String folder) throws BackendException;
     
     /***
      * Archives all Assets in the specified folder.
@@ -222,7 +224,7 @@ public interface IAssetAdaptor
      * @param folder
      * @return
      */
-    public int archiveAllAsets(URI baseUri, String folder);
+    public int archiveAllAssets(URI baseUri, String folder) throws BackendException;
     
     /***
      * Submits all Assets to the Review state in the specified folder.
@@ -231,7 +233,7 @@ public interface IAssetAdaptor
      * @param folder
      * @return
      */
-    public int submitForReviewAllAsets(URI baseUri, String folder);
+    public int submitForReviewAllAssets(URI baseUri, String folder) throws BackendException;
     
     
    /***
@@ -246,7 +248,7 @@ public interface IAssetAdaptor
     * @param autoApprove  When true Assets should be auto approved after import
     * @return a list of csv rows. May be empty, never null.
     */
-    public List<String> previewAssetImport(URI baseUri,String osFolder, String assetFolder, boolean replace, boolean onlyIfDifferent, boolean autoApprove);
+    public List<String> previewAssetImport(URI baseUri,String osFolder, String assetFolder, boolean replace, boolean onlyIfDifferent, boolean autoApprove) throws BackendException;
 
    /***
     * Executes an Asset import using the specified options asynchronously .

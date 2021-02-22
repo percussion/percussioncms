@@ -59,7 +59,7 @@ public class PSI18nUtils implements IPSI18nUtils {
     *
     * @see #makeLookupKey
     */
-   static public String getLastSubKey(String key)
+   public static  String getLastSubKey(String key)
    {
       if(key==null || key.length() < 1)
          return "";
@@ -75,7 +75,7 @@ public class PSI18nUtils implements IPSI18nUtils {
     * @return lookup value for the given key.
     * @see PSTmxResourceBundle
     */
-   static public String getString(String key)
+    public static String getString(String key)
    {
          return PSTmxResourceBundle.getInstance().getString(key);
    }
@@ -368,7 +368,7 @@ public class PSI18nUtils implements IPSI18nUtils {
       if(locale == null)
          locale = Locale.getDefault();
 
-      StringBuffer patternUsed = new StringBuffer();
+      StringBuilder patternUsed = new StringBuilder();
       return PSDataTypeConverter.parseStringToDate(inputDateString,
          patternUsed, locale);
    }
@@ -391,7 +391,7 @@ public class PSI18nUtils implements IPSI18nUtils {
     * @return parsed Date object
     * 
     * @see com.percussion.util.PSDataTypeConverter#parseStringToDate(String,
-    * StringBuffer, Locale)
+    * StringBuilder, Locale)
     * 
     * @throws IllegalArgumentException if the supplied date string is
     * <code>null</code> or empty.

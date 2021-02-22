@@ -84,7 +84,7 @@ public abstract class PSXmlFileDataRepository<T, ITEM> extends PSFileDataReposit
      * @author adamgent
      *
      */
-    public static class PSXmlFileDataRepositoryException extends RuntimeException
+    public static class PSXmlFileDataRepositoryException extends Exception
     {
 
         private static final long serialVersionUID = 1L;

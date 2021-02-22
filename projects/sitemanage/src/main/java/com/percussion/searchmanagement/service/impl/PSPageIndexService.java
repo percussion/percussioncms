@@ -35,6 +35,7 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
 
@@ -72,11 +73,10 @@ public class PSPageIndexService implements IPSPageIndexService
         this.pageDaoHelper = pageDaoHelper;
     }
 
-    public void index(Set<Integer> ids)
-    {
+    public void index(Set<Integer> ids) throws PSValidationException {
         notNull(ids);
 
-        Set<PSLocator> locators = new HashSet<PSLocator>();
+        Set<PSLocator> locators = new HashSet<>();
 
         for (Integer id : ids)
         {

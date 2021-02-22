@@ -30,10 +30,11 @@ import com.percussion.utils.container.IPSJndiDatasource;
 import com.percussion.utils.container.PSMissingApplicationPolicyException;
 import com.percussion.utils.container.PSSecureCredentials;
 import com.percussion.utils.container.jboss.PSJBossJndiDatasource;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSDatasourceResolver;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.spring.PSSpringConfiguration;
 import com.percussion.utils.xml.PSInvalidXmlException;
@@ -258,10 +259,16 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
             ds.setUserId(creds.getUserId());
             String pw = "";
             try{
-                pw = PSEncryptor.getInstance().decrypt(creds.getPassword());
+                pw = PSEncryptor.getInstance("AES",
+                        PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                                PSEncryptor.SECURE_DIR)
+                ).decrypt(creds.getPassword());
             }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-                pw = PSLegacyEncrypter.getInstance().decrypt(creds.getPassword(),
-                        secretKey);
+                pw = PSLegacyEncrypter.getInstance(
+                        PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                        PSEncryptor.SECURE_DIR)
+                ).decrypt(creds.getPassword(),
+                        secretKey,null);
             }
             ds.setPassword(pw);
 
@@ -326,8 +333,10 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
             {
                 String pw =  ds.getPassword();
                 try{
-                    pw = PSEncryptor.getInstance().encrypt(
-                            ds.getPassword());
+                    pw = PSEncryptor.getInstance("AES",
+                            PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                                    PSEncryptor.SECURE_DIR)
+                    ).encrypt(ds.getPassword());
                 } catch (PSEncryptionException e) {
                     ms_log.error("Error encrypting password: " + e.getMessage(),e);
                 }

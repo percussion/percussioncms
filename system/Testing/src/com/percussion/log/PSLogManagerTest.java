@@ -23,19 +23,15 @@
  */
 package com.percussion.log;
 
-import com.percussion.server.PSRequest;
 import com.percussion.testing.IPSServerBasedJunitTest;
 import com.percussion.testing.PSConfigHelperTestCase;
-import com.percussion.testing.PSRequestHandlerTestSuite;
-
-import java.io.File;
-import java.util.Properties;
-
 import com.percussion.utils.testing.IntegrationTest;
-import junit.framework.TestSuite;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import java.io.File;
+import java.util.Properties;
 
 import static org.junit.Assert.assertTrue;
 

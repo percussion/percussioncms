@@ -38,6 +38,7 @@ import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSServerFolderProcessor;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
@@ -96,8 +97,7 @@ public abstract class PSCrossSiteFolderActionProcessor
     * @throws PSCmsException if initialization fails for any reason.
     */
    protected PSCrossSiteFolderActionProcessor(
-      PSLocator sourceFolderId, List<PSLocator> children) throws PSCmsException
-   {
+      PSLocator sourceFolderId, List<PSLocator> children) throws PSCmsException, PSNotFoundException {
       
       m_logger.debug("Initializing cross site link folder action processor...");
       if (sourceFolderId == null)
@@ -243,8 +243,7 @@ public abstract class PSCrossSiteFolderActionProcessor
     * supplied folder.
     */
    protected Integer[] computeSiteForFolder(PSLocator siteFolderId)
-      throws PSCmsException
-   {
+           throws PSCmsException, PSNotFoundException {
       m_logger.debug("Finding the site id(s) for the folder with id: "
          + siteFolderId.getId() + "...");
 
@@ -300,11 +299,6 @@ public abstract class PSCrossSiteFolderActionProcessor
     * Helper method to walk through each of the supplied child nodes to get its
     * folder descendants and build a complete list. This also includes the
     * suppled children too.
-    * 
-    * @param isGrandChildren flag that indicates if the supplied grand children
-    * of the root folder (beginning of this recursive call). It will be
-    * <code>false</code> during the first call and <code>true</code> for
-    * further recursive calls.
     * 
     * @throws PSCmsException any error during the walk through.
     */
@@ -408,8 +402,7 @@ public abstract class PSCrossSiteFolderActionProcessor
     * {@link #modifyLinks(PSAaFolderDependent)}. Does not save the links to
     * server until {@link #saveLinks()} is called. Returns immediately if there
     * are no cross site links associated with the dependent items.
-    * 
-    * @param force this parameter is not used.
+    *
     */
    public void processLinks() throws PSCmsException
    {

@@ -25,8 +25,11 @@
 package com.percussion.rest.users;
 
 import com.percussion.rest.Status;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.annotations.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
@@ -43,6 +46,8 @@ import java.util.List;
 @XmlRootElement
 @Api(value = "/users", description = "User operations")
 public class UsersResource {
+
+	private static final Logger log = LogManager.getLogger(UsersResource.class);
 
 	 @Autowired
      private IUserAdaptor userAdaptor;
@@ -133,21 +138,20 @@ public class UsersResource {
 	            @ApiParam(value= "The userName to be updated or created" ,  name="userName" ) @PathParam("userName")
 	    String userName)
 	    {
-	    	User ret = null;
-	    	
-	        try
-	        {
-	            userName = java.net.URLDecoder.decode(userName, "UTF-8");
-	        }
-	        catch (UnsupportedEncodingException e)
-	        {
-	            // UTF-8 always supported
-	        }
-	     
-	        ret = userAdaptor.updateOrCreateUser(uriInfo.getBaseUri(), user);
-	        
-	        return ret;
-	 	 }
+	    	try {
+				User ret = null;
+
+				userName = java.net.URLDecoder.decode(userName, "UTF-8");
+
+				ret = userAdaptor.updateOrCreateUser(uriInfo.getBaseUri(), user);
+
+				return ret;
+			} catch (BackendException | UnsupportedEncodingException e) {
+	    		log.error(e.getMessage());
+	    		log.debug(e.getMessage(),e);
+				throw new WebApplicationException(e);
+			}
+		}
 	    
 	    
 	    @GET
@@ -163,22 +167,22 @@ public class UsersResource {
 	    })
 	    public List<String> findUsers(@PathParam("pattern") String pattern)
 	    {
-	    	List<String> ret = new ArrayList<String>();
-	    	
-	        try
-	        {
-	            pattern = java.net.URLDecoder.decode(pattern, "UTF-8");
-	        }
-	        catch (UnsupportedEncodingException e)
-	        {
-	            // UTF-8 always supported
-	        }
-	        	
-	    	ret = userAdaptor.findUsers(uriInfo.getBaseUri(), pattern);
-	    	
-	        return ret;
-	        
-	    }
+	    	try {
+				List<String> ret = new ArrayList<>();
+
+				pattern = java.net.URLDecoder.decode(pattern, "UTF-8");
+
+
+				ret = userAdaptor.findUsers(uriInfo.getBaseUri(), pattern);
+
+				return ret;
+			} catch (BackendException | UnsupportedEncodingException e) {
+				log.error(e.getMessage());
+				log.debug(e.getMessage(),e);
+				throw new WebApplicationException(e);
+			}
+
+		}
 	    
 
 	    @GET
@@ -232,7 +236,7 @@ public class UsersResource {
 	    	ret = userAdaptor.searchDirectory(pattern);
 	    
 	    	if(ret == null)
-	    		ret = new ArrayList<String>();
+	    		ret = new ArrayList<>();
 	    	return ret;
 	    }
 	    

@@ -85,7 +85,7 @@ public interface IPSFilterService extends IPSCataloger
     * @param id id of filter, never <code>null</code>.
     * @return the item filter, may be <code>null</code> if filter not found.
     */
-   IPSItemFilter findFilterByID(IPSGuid id);
+   IPSItemFilter findFilterByID(IPSGuid id) throws PSNotFoundException;
 
    /**
     * Find all filters for the supplied name.

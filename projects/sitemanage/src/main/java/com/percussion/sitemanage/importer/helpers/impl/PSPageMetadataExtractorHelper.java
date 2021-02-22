@@ -32,7 +32,11 @@ import com.percussion.pagemanagement.service.IPSPageCatalogService;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.impl.PSPageManagementUtils;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
+import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -60,7 +64,7 @@ public class PSPageMetadataExtractorHelper extends PSGenericMetadataExtractorHel
 
     private IPSItemWorkflowService itemWorkflowService;
 
-    private static HashMap<String, PSTemplate> unassignedTemplateCache = new HashMap<String, PSTemplate>();
+    private static HashMap<String, PSTemplate> unassignedTemplateCache = new HashMap<>();
 
     @Autowired
     public PSPageMetadataExtractorHelper(IPSTemplateService templateService, IPSPageService pageService,
@@ -80,8 +84,7 @@ public class PSPageMetadataExtractorHelper extends PSGenericMetadataExtractorHel
      * #saveTargetItem(com.percussion.pagemanagement.data.IPSHtmlMetadata)
      */
     @Override
-    protected void saveTargetItem(IPSHtmlMetadata targetItem)
-    {
+    protected void saveTargetItem(IPSHtmlMetadata targetItem) throws IPSItemWorkflowService.PSItemWorkflowServiceException, PSDataServiceException {
         PSPage page = (PSPage) targetItem;
         // the target Item in this case is a PSPage
         
@@ -102,8 +105,7 @@ public class PSPageMetadataExtractorHelper extends PSGenericMetadataExtractorHel
      * #addHtmlWidgetToTemplate(com.percussion.sitemanage.data.PSSiteImportCtx)
      */
     @Override
-    protected void addHtmlWidgetToTemplate(PSSiteImportCtx context)
-    {
+    protected void addHtmlWidgetToTemplate(PSSiteImportCtx context) throws PSDataServiceException, PSSiteImportException {
         PSTemplate template = unassignedTemplateCache.get(context.getSite().getName());
 
         if (template == null)
@@ -151,8 +153,7 @@ public class PSPageMetadataExtractorHelper extends PSGenericMetadataExtractorHel
      * #getTargetItem(com.percussion.sitemanage.data.PSSiteImportCtx)
      */
     @Override
-    protected IPSHtmlMetadata getTargetItem(PSSiteImportCtx context)
-    {
+    protected IPSHtmlMetadata getTargetItem(PSSiteImportCtx context) throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         return pageService.find(context.getCatalogedPageId());
     }
 

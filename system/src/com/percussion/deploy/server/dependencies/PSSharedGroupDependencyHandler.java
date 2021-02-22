@@ -48,6 +48,7 @@ import com.percussion.design.objectstore.PSUIDefinition;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSCollection;
 import com.percussion.util.PSIteratorUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -165,9 +166,8 @@ public class PSSharedGroupDependencyHandler
    }
    
    // see base class
-   public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep) 
-      throws PSDeployException
-   {
+   public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
          

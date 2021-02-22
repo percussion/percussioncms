@@ -87,7 +87,7 @@ public class PSSysTemplateToSysVariantid implements IPSRequestPreProcessor
    private Map<String, String> getVariantMap(IPSRequestContext request)
       throws PSExtensionProcessingException
    {
-      Map<String, String> results = new HashMap<String, String>();
+      Map<String, String> results = new HashMap<>();
       IPSInternalRequest ir = 
          request.getInternalRequest(VARIANT_LIST_RESOURCE);
       try

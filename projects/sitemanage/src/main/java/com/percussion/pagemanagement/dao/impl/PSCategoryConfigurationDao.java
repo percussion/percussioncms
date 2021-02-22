@@ -45,8 +45,7 @@ public class PSCategoryConfigurationDao extends PSXmlFileDataRepository<PSCatego
 
     @Override
     protected PSCategoryConfiguration update(Set<PSFileDataRepository.PSFileEntry> files)
-            throws IOException
-    {
+            throws IOException, PSXmlFileDataRepositoryException {
         if (files.isEmpty()) {
             return new PSCategoryConfiguration();
         }

@@ -122,7 +122,7 @@ public class PSBlogsHelper
                 }
             }
 
-            List<PSMetadataBlogYear> blogYearsList = new ArrayList<PSMetadataBlogYear>();
+            List<PSMetadataBlogYear> blogYearsList = new ArrayList<>();
 
             for (PSMetadataBlogYear year : blogs.getYears())
             {

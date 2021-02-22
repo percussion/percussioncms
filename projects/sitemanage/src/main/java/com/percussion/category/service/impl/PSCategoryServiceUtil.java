@@ -30,6 +30,7 @@ import com.percussion.category.data.PSCategory;
 import com.percussion.category.data.PSCategoryNode;
 import com.percussion.category.marshaller.PSCategoryMarshaller;
 import com.percussion.category.marshaller.PSCategoryUnMarshaller;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 
 import java.util.ArrayList;
@@ -66,29 +67,29 @@ public class PSCategoryServiceUtil {
         // Check for duplicate names,  merge.
 
         //Map id to path
-        HashMap<String, PSCategoryNode> titleMap = new HashMap<String, PSCategoryNode>();
-        HashMap<String, PSCategoryNode> idMap = new HashMap<String, PSCategoryNode>();
+        HashMap<String, PSCategoryNode> titleMap = new HashMap<>();
+        HashMap<String, PSCategoryNode> idMap = new HashMap<>();
 
         for (PSCategoryNode category : oldCategories) {
             titleMap.put(category.getTitle(), category);
             idMap.put(category.getId(), category);
         }
 
-        HashSet<String> newCategoryIds = new HashSet<String>();
+        HashSet<String> newCategoryIds = new HashSet<>();
 
         checkAndMapIds(newCategories, titleMap, idMap, newCategoryIds);
 
-        HashSet<String> processedIds = new HashSet<String>();
-        HashSet<String> processedTitles = new HashSet<String>();
+        HashSet<String> processedIds = new HashSet<>();
+        HashSet<String> processedTitles = new HashSet<>();
 
         Iterator<PSCategoryNode> oldCatIt = oldCategories.iterator();
         Iterator<PSCategoryNode> newCatIt = newCategories.iterator();
 
-        ArrayList<PSCategoryNode> fullCategories = new ArrayList<PSCategoryNode>();
+        ArrayList<PSCategoryNode> fullCategories = new ArrayList<>();
 
         PSCategoryNode nextOld = getNext(oldCatIt);
         PSCategoryNode nextNew = getNext(newCatIt);
-        HashMap<String, PSCategoryNode> oldIdMap = new HashMap<String, PSCategoryNode>();
+        HashMap<String, PSCategoryNode> oldIdMap = new HashMap<>();
 
         while (nextOld != null || nextNew != null) {
             // Skip if category has no id (we have already added these ids to the new Items), if id has already been processed, or we
@@ -211,7 +212,7 @@ public class PSCategoryServiceUtil {
         log.debug("Total nodes for removal : " + childNodes.size());
 
         Set<String> removedNodes = nodesToRemove;
-        List<PSCategoryNode> tempList = new ArrayList<PSCategoryNode>();
+        List<PSCategoryNode> tempList = new ArrayList<>();
         tempList.addAll(childNodes);
 
         for (PSCategoryNode node : tempList) {
@@ -238,7 +239,7 @@ public class PSCategoryServiceUtil {
         return categoryJson;
     }
 
-    public static void publishToDTS(String category, String sitename, String deliveryServer, IPSDeliveryInfoService deliveryService) {
+    public static void publishToDTS(String category, String sitename, String deliveryServer, IPSDeliveryInfoService deliveryService) throws PSValidationException {
 
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER, deliveryServer.toUpperCase());
         //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER);
@@ -340,7 +341,7 @@ public class PSCategoryServiceUtil {
 
 
     private static List<String> getAllowedSitesAsList(List<String> parentSites, PSCategoryNode node) {
-        List<String> nodeAllowedSites = new ArrayList<String>();
+        List<String> nodeAllowedSites = new ArrayList<>();
         if (node.getAllowedSites() != null) {
             for (String string : StringUtils.split(node.getAllowedSites(), ",")) {
                 nodeAllowedSites.add(string.trim());
@@ -402,7 +403,7 @@ public class PSCategoryServiceUtil {
         if (!StringUtils.equals(currentNode.getId(), DUMMYROOT) && pathElement == null && !includeNotSelectable && !currentNode.isSelectable())
             return null;
 
-        List<PSCategoryNode> filteredChildList = new ArrayList<PSCategoryNode>();
+        List<PSCategoryNode> filteredChildList = new ArrayList<>();
         for (PSCategoryNode child : currentNode.getChildNodes()) {
             PSCategoryNode testNode = filterForSite(child, sitename,
                     null, nodeAllowedSites, relativePath, includeDeleted,

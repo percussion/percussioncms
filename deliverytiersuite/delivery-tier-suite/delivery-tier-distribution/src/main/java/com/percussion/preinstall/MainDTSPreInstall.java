@@ -149,7 +149,7 @@ public class MainDTSPreInstall {
             Path execPath = installSrc.resolve(Paths.get("rxconfig","Installer"));
             Path installAntJarPath = execPath.resolve(
                     getVersionLessJarFilePath(
-                    execPath,PERC_ANT_JAR + "-*.jar"));
+                            execPath,PERC_ANT_JAR + "-*.jar"));
 
             exitCode =  execJar(installAntJarPath,execPath,installPath,isProduction);
 
@@ -228,4 +228,4 @@ public class MainDTSPreInstall {
     }
 
 
-            }
+}

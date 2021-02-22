@@ -35,6 +35,7 @@ import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSSiteManageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -66,9 +67,7 @@ public class PSSharedRelationshipDeleteListener implements IPSNotificationListen
         this.indexService = indexService;
     }
 
-    @SuppressWarnings("unchecked")
-    public void notifyEvent(PSNotificationEvent event)
-    {
+    public void notifyEvent(PSNotificationEvent event) throws PSValidationException {
         notNull(event, "event");
         isTrue(EventType.RELATIONSHIP_CHANGED == event.getType(), 
                 "Should only be registered for relationship changes.");
@@ -81,7 +80,7 @@ public class PSSharedRelationshipDeleteListener implements IPSNotificationListen
         }
         
         // filter out all relationships except shared
-        Set<Integer> sharedOwnerIds = new HashSet<Integer>();
+        Set<Integer> sharedOwnerIds = new HashSet<>();
         
         Iterator iter = relEvent.getRelationships().iterator();
         while (iter.hasNext())

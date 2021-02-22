@@ -80,9 +80,9 @@ public class PSCSSParser
 
     private static final Pattern URL_PATTERN = Pattern.compile(URL_REGEX);
 
-    private List<String> processed = new ArrayList<String>();
+    private List<String> processed = new ArrayList<>();
 
-    private Map<String, String> imagesToDownload = new HashMap<String, String>();
+    private Map<String, String> imagesToDownload = new HashMap<>();
 
     private String siteName;
     
@@ -190,7 +190,7 @@ public class PSCSSParser
                     "Failed to process inline css for " + urlBase + ": " + e.getLocalizedMessage());
         }
 
-        return new PSPair<Map<String, String>, String>(imagesToDownload, cssParsed);
+        return new PSPair<>(imagesToDownload, cssParsed);
     }
 
     /**
@@ -462,13 +462,10 @@ public class PSCSSParser
      */
     private void saveFile(StringBuffer sb, String path) throws IOException
     {
-        FileWriter fstream = null;
         PrintWriter out = null;
-        try
-        {
-            fstream = new FileWriter(path);
-            out = new PrintWriter(fstream);
 
+        try(FileWriter fstream = new FileWriter(path)){
+            out = new PrintWriter(fstream);
             out.write(sb.toString());
         }
         catch (IOException e)
@@ -504,10 +501,8 @@ public class PSCSSParser
     private String loadFileFromDisk(String path) throws IOException
     {
         String cssText = "";
-        InputStream in = null;
-        try
-        {
-            in = new FileInputStream(new File(path));
+
+        try(FileInputStream in = new FileInputStream(new File(path))){
 
             cssText = IOUtils.toString(in);
         }
@@ -515,11 +510,6 @@ public class PSCSSParser
         {
             throw e;
         }
-        finally
-        {
-            IOUtils.closeQuietly(in);
-        }
-
         return cssText;
     }
     

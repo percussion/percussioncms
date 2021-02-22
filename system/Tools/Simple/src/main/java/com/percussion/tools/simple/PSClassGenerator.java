@@ -24,22 +24,27 @@
 
 package com.percussion.tools.simple;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.lang.reflect.*;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 
 /**
  * This class is used to create dummy classes with stubbed out methods.
  */
 public class PSClassGenerator
 {
+   private static final Logger log = LogManager.getLogger(PSClassGenerator.class);
+
    /**
     * Generates stub classes for each class in the given directory.
     *
@@ -51,8 +56,7 @@ public class PSClassGenerator
     * @throws IOException if any io error occurs
     * @throws FileNotFoundException if any file cannot be located.
     */
-   public void createClasses(File srcClassDirectory, File srcJavaDirectory, File tgtDirectory, String srcPackage) throws IOException,
-         IllegalArgumentException, FileNotFoundException
+   public void createClasses(File srcClassDirectory, File srcJavaDirectory, File tgtDirectory, String srcPackage) throws IOException
    {
       // validate params
       if (srcClassDirectory == null || !srcClassDirectory.exists())
@@ -74,7 +78,7 @@ public class PSClassGenerator
       File[] srcJavaFiles = srcJavaDirectory.listFiles();
       int i;
       String name = "";
-      ArrayList tempFiles = new ArrayList();
+      ArrayList<File> tempFiles = new ArrayList<>();
       
       // remove $ classes, directories, non-class files, test classes from class
       // list
@@ -94,10 +98,10 @@ public class PSClassGenerator
       
       for (i=0; i<tempFiles.size(); i++)
       {
-         srcClassFiles[i] = (File) tempFiles.get(i);
+         srcClassFiles[i] = tempFiles.get(i);
       }
           
-      tempFiles = new ArrayList();
+      tempFiles = new ArrayList<>();
       
       // remove directories, non-java files, test files from java file list
       for (i=0; i<srcJavaFiles.length; i++)
@@ -115,7 +119,7 @@ public class PSClassGenerator
       
       for (i=0; i<tempFiles.size(); i++)
       {
-         srcJavaFiles[i] = (File) tempFiles.get(i);
+         srcJavaFiles[i] = tempFiles.get(i);
       }      
       
       // user reflection to generate classes
@@ -131,91 +135,82 @@ public class PSClassGenerator
             Class c = Class.forName(srcPackage + "." + name);
             srcClasses[i] = c;
          }
-         catch (Throwable e) {
-            System.err.println(e);
+         catch (Exception e) {
+            log.error(e.getMessage());
+            log.debug(e);
          }
 
       }
       
       // read in java class, write out after removing comments, bad imports
       String result = null;
-      FileInputStream in = null;
-      FileOutputStream out = null;
-      BufferedReader b = null;
-      FileWriter writer = null;
       Class srcClass = null;
       Method methods[] = null;
-      try
-      {
-         for (i=0; i<srcClasses.length; i++)
-         {
-            in = new FileInputStream(srcJavaFiles[i].getPath());
-            b = new BufferedReader(new InputStreamReader(in));
-            writer = new FileWriter(tgtDirectory.getPath() + File.separator + srcJavaFiles[i].getName());
-            String output = null;
-            String imports = "";
-            
-            while ((output = b.readLine()) != null){
-               
-               if (output.indexOf("public") != -1)
-               {
-                  if (output.indexOf("class") != -1)
-                     break;
-               }
-               
-               // keep only installshield and java imports
-               if (output.indexOf("import") != -1)
-               {
-                  if ((output.indexOf("installshield") != -1) ||
-                        (output.indexOf("java") != -1))
-                  {
-                     imports += output + "\n";
-                     continue;
-                  }
-               }
-               
-               if ((output.indexOf("/*") != -1) ||
-                     (output.indexOf("*") != -1))
-                     continue;
-            }
-            
-            srcClass = srcClasses[i];
-            Package srcPack = srcClass.getPackage();
-            Class[] srcInterfaces = srcClass.getInterfaces();
-            Class srcSuper = srcClass.getSuperclass();
-            String header = "";
-            String srcClassName = srcClass.getName();
-            ArrayList beanProps = new ArrayList();
-            
-            // build class declaration
-            header = "package " + srcPack.getName() + ";\n\n";
-            header += imports + "\n\n";
-            
-            int dotIndex = srcClassName.lastIndexOf('.');
-            String className = srcClassName.substring(dotIndex + 1, srcClassName.length());
-            String realClassName = className;
-            
-            String classLabel = "class";
-            int classMods = srcClass.getModifiers();
-            
-            if (Modifier.isInterface(classMods))
-            {
-               header += "public interface " + className + " ";
-               header += "\n{}";
-               writer.write(header);
-               writer.close();
-               continue;
-            }
-            
-            header += "public " + classLabel + " " + className + " ";
-            
-            if (srcSuper != null && !srcSuper.getName().equals("Object"))
-            {
-               String srcSuperName = srcSuper.getName();
-               dotIndex = srcSuperName.lastIndexOf('.');
-               className = srcSuperName.substring(dotIndex + 1, srcSuperName.length());
-               header += "extends " + className + " ";
-            }
+
+         for (i=0; i<srcClasses.length; i++) {
+            try (FileInputStream in = new FileInputStream(srcJavaFiles[i].getPath())) {
+               try (BufferedReader b = new BufferedReader(new InputStreamReader(in))) {
+                  try (FileWriter writer = new FileWriter(tgtDirectory.getPath() + File.separator + srcJavaFiles[i].getName())) {
+
+                     String output = null;
+                     String imports = "";
+
+                     while ((output = b.readLine()) != null) {
+
+                        if (output.indexOf("public") != -1) {
+                           if (output.indexOf("class") != -1)
+                              break;
+                        }
+
+                        // keep only installshield and java imports
+                        if (output.indexOf("import") != -1) {
+                           if ((output.indexOf("installshield") != -1) ||
+                                   (output.indexOf("java") != -1)) {
+                              imports += output + "\n";
+                              continue;
+                           }
+                        }
+
+                        if ((output.indexOf("/*") != -1) ||
+                                (output.indexOf("*") != -1))
+                           continue;
+                     }
+
+                     srcClass = srcClasses[i];
+                     Package srcPack = srcClass.getPackage();
+                     Class[] srcInterfaces = srcClass.getInterfaces();
+                     Class srcSuper = srcClass.getSuperclass();
+                     String header = "";
+                     String srcClassName = srcClass.getName();
+                     ArrayList beanProps = new ArrayList();
+
+                     // build class declaration
+                     header = "package " + srcPack.getName() + ";\n\n";
+                     header += imports + "\n\n";
+
+                     int dotIndex = srcClassName.lastIndexOf('.');
+                     String className = srcClassName.substring(dotIndex + 1, srcClassName.length());
+                     String realClassName = className;
+
+                     String classLabel = "class";
+                     int classMods = srcClass.getModifiers();
+
+                     if (Modifier.isInterface(classMods)) {
+                        header += "public interface " + className + " ";
+                        header += "\n{}";
+                        writer.write(header);
+                        writer.close();
+                        continue;
+                     }
+
+                     header += "public " + classLabel + " " + className + " ";
+
+                     if (srcSuper != null && !srcSuper.getName().equals("Object")) {
+                        String srcSuperName = srcSuper.getName();
+                        dotIndex = srcSuperName.lastIndexOf('.');
+                        className = srcSuperName.substring(dotIndex + 1, srcSuperName.length());
+                        header += "extends " + className + " ";
+                     }
             
             /*if (srcInterfaces.length > 0)
             {
@@ -230,211 +225,185 @@ public class PSClassGenerator
                      header += ",";
                }
             }*/
-            
-            writer.write(header);
-            writer.write("\n{\n");
-            
-            // build method declarations
-            methods = srcClass.getDeclaredMethods();
-            String methOut = "";
-            for (int j=0; j<methods.length; j++)
-            {
-               Method meth = methods[j];
-               int mods = meth.getModifiers();
-               
-               // skip if private
-               if (Modifier.isPrivate(mods))
-                  continue;
-               
-               methOut = Modifier.toString(mods) + " ";
-               
-               // get return type
-               Class returnType = meth.getReturnType();
-               String cleanType = returnType.getName();
-               int methMods = returnType.getModifiers();
-               
-               if (returnType.isArray())
-               {
-                  Class arrType = returnType.getComponentType();
-                  String arrTypeName = arrType.getName();
+
+                     writer.write(header);
+                     writer.write("\n{\n");
+
+                     // build method declarations
+                     methods = srcClass.getDeclaredMethods();
+                     String methOut = "";
+                     for (int j = 0; j < methods.length; j++) {
+                        Method meth = methods[j];
+                        int mods = meth.getModifiers();
+
+                        // skip if private
+                        if (Modifier.isPrivate(mods))
+                           continue;
+
+                        methOut = Modifier.toString(mods) + " ";
+
+                        // get return type
+                        Class returnType = meth.getReturnType();
+                        String cleanType = returnType.getName();
+                        int methMods = returnType.getModifiers();
+
+                        if (returnType.isArray()) {
+                           Class arrType = returnType.getComponentType();
+                           String arrTypeName = arrType.getName();
                   /*cleanType = cleanType.substring(
                         cleanType.indexOf("[") + 2,
                         cleanType.length() - 1);*/
-                  cleanType = arrTypeName;
-                  methOut += cleanType + "[] ";
-               }
-               else
-                  methOut += cleanType + " ";
-               
-               String methName = meth.getName();
-               methOut += methName;
-               
-               boolean exists = false;
-               
-               String propName = "";
-               
-               // if getter method and bean property doesn't exist, add
-               if (methName.startsWith("get"))
-               {
-                  propName = methName.substring(3, methName.length());
-                  exists = beanPropExists(propName, beanProps);
-                  
-                  if (!exists)
-                  {
-                     if (!returnType.getName().equals("void"))
-                        beanProps.add(new BeanProperty(propName, returnType, mods));
-                  }
-               }
-              
-               if (methName.startsWith("is"))
-               {
-                  propName = methName.substring(2, methName.length());
-                  exists = beanPropExists(propName, beanProps);
-                  
-                  if (!exists)
-                     beanProps.add(new BeanProperty(propName, returnType, mods));
-                  else
-                  {
-                     getBeanProp(propName, beanProps).setbMods(mods);
-                  }
-               }
-               
-               // if setter method and bean property doesn't exist, add
-               if (methName.startsWith("set"))
-               {
-                  propName = methName.substring(3, methName.length());
-                  exists = beanPropExists(propName, beanProps);
-                  
-                  if (!exists)
-                  {
-                     if (meth.getParameterTypes().length == 1)
-                        beanProps.add(new BeanProperty(propName, meth.getParameterTypes()[0], mods));
-                  }
-               }
-               
-               // get parameters
-               Class paramTypes[] = meth.getParameterTypes();
-               String paramName = "param";
-               
-               methOut += "(";
-               int k;
-               for (k=0; k<paramTypes.length; k++)
-               {
-                  String pType = paramTypes[k].getName();
-                  
-                  if (paramTypes[k].isArray())
-                  {
-                     Class arrType = paramTypes[k].getComponentType();
-                     String arrTypeName = arrType.getName();
+                           cleanType = arrTypeName;
+                           methOut += cleanType + "[] ";
+                        } else
+                           methOut += cleanType + " ";
+
+                        String methName = meth.getName();
+                        methOut += methName;
+
+                        boolean exists = false;
+
+                        String propName = "";
+
+                        // if getter method and bean property doesn't exist, add
+                        if (methName.startsWith("get")) {
+                           propName = methName.substring(3, methName.length());
+                           exists = beanPropExists(propName, beanProps);
+
+                           if (!exists) {
+                              if (!returnType.getName().equals("void"))
+                                 beanProps.add(new BeanProperty(propName, returnType, mods));
+                           }
+                        }
+
+                        if (methName.startsWith("is")) {
+                           propName = methName.substring(2, methName.length());
+                           exists = beanPropExists(propName, beanProps);
+
+                           if (!exists)
+                              beanProps.add(new BeanProperty(propName, returnType, mods));
+                           else {
+                              getBeanProp(propName, beanProps).setbMods(mods);
+                           }
+                        }
+
+                        // if setter method and bean property doesn't exist, add
+                        if (methName.startsWith("set")) {
+                           propName = methName.substring(3, methName.length());
+                           exists = beanPropExists(propName, beanProps);
+
+                           if (!exists) {
+                              if (meth.getParameterTypes().length == 1)
+                                 beanProps.add(new BeanProperty(propName, meth.getParameterTypes()[0], mods));
+                           }
+                        }
+
+                        // get parameters
+                        Class paramTypes[] = meth.getParameterTypes();
+                        String paramName = "param";
+
+                        methOut += "(";
+                        int k;
+                        for (k = 0; k < paramTypes.length; k++) {
+                           String pType = paramTypes[k].getName();
+
+                           if (paramTypes[k].isArray()) {
+                              Class arrType = paramTypes[k].getComponentType();
+                              String arrTypeName = arrType.getName();
                      /*pType = pType.substring(
                            pType.indexOf("[") + 2,
                            pType.length() - 1);*/
-                     pType = arrTypeName;
-                     pType += "[]";
-                  }
-                                  
-                  methOut += pType + " " + paramName + (k + 1);
-                  if (k < paramTypes.length - 1)
-                     methOut += ",";
-               }
-               methOut += ") ";
-               
-               // get exceptions thrown
-               Class execTypes[] = meth.getExceptionTypes();
-               
-               if (execTypes.length > 0)
-                  methOut += "throws ";
-               
-               for (k=0; k<execTypes.length; k++)
-               {
-                  methOut += execTypes[k].getName();
-                  if (k < execTypes.length - 1)
-                     methOut += ",";
-               }
-               methOut += "\n";
-               
-               methOut += "{";
-               
-               // construct body
-               
-               String bProp = "";
-               
-               // if getter method, return bean property
-               if (methName.startsWith("get") && !meth.getReturnType().getName().equals("void"))
-               {
-                  bProp = methName.substring(3, methName.length());
-                  methOut += "return m_" + bProp + ";";
-               }
-               else if (methName.startsWith("is") && !meth.getReturnType().getName().equals("void"))
-               {
-                  bProp = methName.substring(2, methName.length());
-                  methOut += "return m_" + bProp + ";";
-               }
-               else if (methName.startsWith("set") && meth.getParameterTypes().length == 1)
-               {  // if setter method, set bean property
-                  boolean match = true;
-                  bProp = methName.substring(3, methName.length());
-                  for (int l = 0; l < beanProps.size(); l++)
-                  {
-                     BeanProperty prop = (BeanProperty) beanProps.get(l);
-                     if (bProp.equalsIgnoreCase(prop.getbName()))
-                     {
-                        Class type = prop.getbType();
-                        if (!type.getName().equalsIgnoreCase(
-                              meth.getParameterTypes()[0].getName()))
-                        {
-                           match = false;
-                           methOut += "m_" + bProp + " = null;";
-                           break;
+                              pType = arrTypeName;
+                              pType += "[]";
+                           }
+
+                           methOut += pType + " " + paramName + (k + 1);
+                           if (k < paramTypes.length - 1)
+                              methOut += ",";
                         }
-                     }
-                  }
-                  
-                  if (match)
-                     methOut += "m_" + bProp + " = " + "param1;";
-               }
-               else if (methName.equals("defaultName"))
-               {
-                  // this is default name of condition bean
-                  methOut += "return new " + cleanType + "(\"" + realClassName + "\");";
-               }
-               else
-               {
-                  if (returnType.isArray())
-                     methOut += "return new " + cleanType + "[0];";
-                  else 
-                  {
-                     if (cleanType.equals("int") ||
-                          cleanType.equals("byte") ||
-                          cleanType.equals("double") ||
-                          cleanType.equals("float") ||
-                          cleanType.equals("long") ||
-                          cleanType.equals("short"))
-                        methOut += "return -1;";
-                     else if (cleanType.equals("boolean"))
-                        methOut += "return false;";
-                     else if (cleanType.equals("void"))
-                        methOut += "return;";
-                     else if (cleanType.equals("char"))
-                        methOut += "return 'c';";
-                     else
-                     {
-                        if (Modifier.isAbstract(methMods))
-                           methOut += "return null;";
-                        else if (cleanType.equals("com.percussion.install.Code") ||
-                              cleanType.equals("java.net.URL") ||
-                              cleanType.equals("java.awt.Color") ||
-                              cleanType.equals("java.lang.Class"))
-                           methOut += "return null;";
-                        else
-                           //methOut += "return null;";
-                           methOut += "return new " + cleanType + "();";
-                     }
-                  }
-               }
-               methOut += "}";
-               
-               writer.write(methOut + "\n\n");
+                        methOut += ") ";
+
+                        // get exceptions thrown
+                        Class execTypes[] = meth.getExceptionTypes();
+
+                        if (execTypes.length > 0)
+                           methOut += "throws ";
+
+                        for (k = 0; k < execTypes.length; k++) {
+                           methOut += execTypes[k].getName();
+                           if (k < execTypes.length - 1)
+                              methOut += ",";
+                        }
+                        methOut += "\n";
+
+                        methOut += "{";
+
+                        // construct body
+
+                        String bProp = "";
+
+                        // if getter method, return bean property
+                        if (methName.startsWith("get") && !meth.getReturnType().getName().equals("void")) {
+                           bProp = methName.substring(3, methName.length());
+                           methOut += "return m_" + bProp + ";";
+                        } else if (methName.startsWith("is") && !meth.getReturnType().getName().equals("void")) {
+                           bProp = methName.substring(2, methName.length());
+                           methOut += "return m_" + bProp + ";";
+                        } else if (methName.startsWith("set") && meth.getParameterTypes().length == 1) {  // if setter method, set bean property
+                           boolean match = true;
+                           bProp = methName.substring(3, methName.length());
+                           for (int l = 0; l < beanProps.size(); l++) {
+                              BeanProperty prop = (BeanProperty) beanProps.get(l);
+                              if (bProp.equalsIgnoreCase(prop.getbName())) {
+                                 Class type = prop.getbType();
+                                 if (!type.getName().equalsIgnoreCase(
+                                         meth.getParameterTypes()[0].getName())) {
+                                    match = false;
+                                    methOut += "m_" + bProp + " = null;";
+                                    break;
+                                 }
+                              }
+                           }
+
+                           if (match)
+                              methOut += "m_" + bProp + " = " + "param1;";
+                        } else if (methName.equals("defaultName")) {
+                           // this is default name of condition bean
+                           methOut += "return new " + cleanType + "(\"" + realClassName + "\");";
+                        } else {
+                           if (returnType.isArray())
+                              methOut += "return new " + cleanType + "[0];";
+                           else {
+                              if (cleanType.equals("int") ||
+                                      cleanType.equals("byte") ||
+                                      cleanType.equals("double") ||
+                                      cleanType.equals("float") ||
+                                      cleanType.equals("long") ||
+                                      cleanType.equals("short"))
+                                 methOut += "return -1;";
+                              else if (cleanType.equals("boolean"))
+                                 methOut += "return false;";
+                              else if (cleanType.equals("void"))
+                                 methOut += "return;";
+                              else if (cleanType.equals("char"))
+                                 methOut += "return 'c';";
+                              else {
+                                 if (Modifier.isAbstract(methMods))
+                                    methOut += "return null;";
+                                 else if (cleanType.equals("com.percussion.install.Code") ||
+                                         cleanType.equals("java.net.URL") ||
+                                         cleanType.equals("java.awt.Color") ||
+                                         cleanType.equals("java.lang.Class"))
+                                    methOut += "return null;";
+                                 else
+                                    //methOut += "return null;";
+                                    methOut += "return new " + cleanType + "();";
+                              }
+                           }
+                        }
+                        methOut += "}";
+
+                        writer.write(methOut + "\n\n");
                
                
               
@@ -453,54 +422,47 @@ public class PSClassGenerator
                               System.out.println("return type = " +
                                     m.getReturnType());
                               System.out.println("-----"); */
+                     }
+
+                     writer.write("\n\n");
+
+                     // write out bean properties
+                     int k;
+                     for (k = 0; k < beanProps.size(); k++) {
+                        BeanProperty bp = (BeanProperty) beanProps.get(k);
+                        String cleanBpType = "";
+
+                        if (bp.getbType().isArray())
+                           cleanBpType = bp.getbType().getComponentType().getName() + "[]";
+                        else
+                           cleanBpType = bp.getbType().getName();
+
+                        if (cleanBpType.equals("void"))
+                           continue;
+
+                        String propOut = "";
+
+                        if (Modifier.isStatic(bp.getMods()))
+                           propOut = "private static " + cleanBpType;
+                        else
+                           propOut = "private " + cleanBpType;
+
+                        propOut += " m_" + bp.getbName();
+
+                        if (bp.getbType().isArray())
+                           propOut += " = new " + bp.getbType().getComponentType().getName() + "[0]";
+
+                        propOut += ";";
+
+                        writer.write(propOut + "\n");
+                     }
+
+                     writer.write("}");
+                     writer.close();
+                  }
+               }
             }
-            
-            writer.write("\n\n");
-            
-            // write out bean properties
-            int k;
-            for (k = 0; k < beanProps.size(); k++)
-            {
-               BeanProperty bp = (BeanProperty) beanProps.get(k);
-               String cleanBpType = "";
-               
-               if (bp.getbType().isArray())
-                  cleanBpType = bp.getbType().getComponentType().getName() + "[]";
-               else
-                  cleanBpType = bp.getbType().getName();
-               
-               if (cleanBpType.equals("void"))
-                  continue;
-               
-               String propOut = "";
-                   
-               if (Modifier.isStatic(bp.getMods()))
-                  propOut = "private static " + cleanBpType;
-               else
-                  propOut = "private " + cleanBpType;
-               
-               propOut += " m_" + bp.getbName();
-                                   
-               if (bp.getbType().isArray())
-                  propOut += " = new " + bp.getbType().getComponentType().getName() + "[0]";
-               
-               propOut += ";";
-               
-               writer.write(propOut + "\n");
-            }
-            
-            writer.write("}");
-            writer.close();
          }
-      }
-      finally
-      {
-         if (in != null)
-         {
-            try {in.close();} catch (Exception e){}
-            try {writer.close();} catch (Exception e){}
-         }
-      }
    }
    
    /**
@@ -527,7 +489,6 @@ public class PSClassGenerator
     * 
     * </ol>
     *
-    * Any errors are written to System.out
     */
    public static void main(String[] args)
    {

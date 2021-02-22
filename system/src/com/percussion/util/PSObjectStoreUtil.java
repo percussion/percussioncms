@@ -32,7 +32,7 @@ import com.percussion.design.objectstore.PSLockedException;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSNotLockedException;
 import com.percussion.design.objectstore.PSObjectStore;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 
@@ -109,7 +109,7 @@ public class PSObjectStoreUtil
     * on the application
     * @throws PSNotLockedException If a lock is not currently held on the
     * application
-    * @throws PSValidationException if a validation error is encountered
+    * @throws PSSystemValidationException if a validation error is encountered
     * @throws PSLockedException if another user already has the application
     * locked
     * @throws PSNotFoundException if an application by the name
@@ -119,7 +119,7 @@ public class PSObjectStoreUtil
       File appFile, boolean overwriteIfExists, boolean releaseLock)
       throws PSServerException, PSAuthorizationException,
          PSAuthenticationFailedException, PSNotLockedException,
-         PSValidationException, PSLockedException,
+           PSSystemValidationException, PSLockedException,
          PSNotFoundException
    {
       if ((appName == null) || (appName.trim().length() < 1))

@@ -24,12 +24,8 @@
 
 package com.percussion.category.dao.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import com.percussion.services.guidmgr.IPSGuidManager;
+import com.percussion.category.dao.IPSCategoryDao;
+import com.percussion.services.contentmgr.impl.IPSContentRepository;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.log4j.Logger;
@@ -41,8 +37,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.percussion.category.dao.IPSCategoryDao;
-import com.percussion.services.contentmgr.impl.IPSContentRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author chriswright

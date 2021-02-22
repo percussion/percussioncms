@@ -67,7 +67,7 @@ public class PSInvalidateRequest
      */
     @XmlElementWrapper(name = "Paths")
     @XmlElement(name = "Path")
-    private List<String> paths = new ArrayList<String>();
+    private List<String> paths = new ArrayList<>();
     
     /**
      * Map of custom properties. These will be specific for a particular plug-in 
@@ -75,7 +75,7 @@ public class PSInvalidateRequest
      */
     @XmlElement(name = "CustomProperties")
     @XmlJavaTypeAdapter(PSMapAdapter.class)
-    private Map<String, String> customProperties = new HashMap<String, String>();
+    private Map<String, String> customProperties = new HashMap<>();
 
     /**
      * The invalidation request type.

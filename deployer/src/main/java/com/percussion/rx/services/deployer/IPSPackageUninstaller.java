@@ -24,6 +24,8 @@
 
 package com.percussion.rx.services.deployer;
 
+import com.percussion.services.error.PSNotFoundException;
+
 import java.util.List;
 
 
@@ -35,7 +37,7 @@ public interface IPSPackageUninstaller {
      * @param packageName the package name to uninstall, i.e. perc.widget.form
      * @return a list of package uninstall messages
      */
-    List<PSUninstallMessage> uninstallPackages(String packageName);
+    List<PSUninstallMessage> uninstallPackages(String packageName) throws PSNotFoundException;
     
     /**
      * Uninstalls a package
@@ -48,6 +50,6 @@ public interface IPSPackageUninstaller {
      * 
      * @return the list of uninstall messages
      */
-    List<PSUninstallMessage> uninstallPackages(String packageName, boolean isRevertEntry);
+    List<PSUninstallMessage> uninstallPackages(String packageName, boolean isRevertEntry) throws PSNotFoundException;
 
 }

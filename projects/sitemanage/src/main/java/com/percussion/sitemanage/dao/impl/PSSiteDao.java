@@ -29,10 +29,12 @@ import com.percussion.fastforward.managednav.IPSNavigationErrors;
 import com.percussion.fastforward.managednav.PSNavException;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
-import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.pubserver.IPSPubServerService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.data.PSItemSummaryUtils;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSitePublishProperties;
@@ -44,14 +46,13 @@ import com.percussion.webservices.PSErrorsException;
 import com.percussion.webservices.publishing.IPSPublishingWs;
 import com.percussion.webservices.publishing.PSPublishingWsLocator;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -78,10 +79,8 @@ public class PSSiteDao implements IPSiteDao
         this.sitePublishDao = sitePublishDao;
     }
 
-    public PSSite find(String id)
-    {
-        PSSite site = loadSite(id);
-        return site;
+    public PSSite find(String id) throws LoadException, DeleteException {
+        return loadSite(id);
     }
     
     @Override
@@ -97,13 +96,12 @@ public class PSSiteDao implements IPSiteDao
     {
         List<PSSiteSummary> sums = sitePublishDao.findAllSummaries();
         
-        Collections.sort(sums, siteComp);
+        sums.sort(siteComp);
         
         return sums;
     }
 
-    public PSSiteSummary findSummary(String id)
-    {
+    public PSSiteSummary findSummary(String id) throws LoadException {
         return sitePublishDao.findSummary(id);
     }
     
@@ -113,7 +111,7 @@ public class PSSiteDao implements IPSiteDao
      */
     public List<PSSite> findAll()
     {
-        List<PSSite> sites = new ArrayList<PSSite>();
+        List<PSSite> sites = new ArrayList<>();
 
         List<PSSiteSummary> sums = findAllSummaries();
         
@@ -125,22 +123,22 @@ public class PSSiteDao implements IPSiteDao
             {
                 PSSite site = find(name);
                 sites.add(site);
+            } catch (DeleteException | LoadException e) {
+                log.error("#findAll: Failed to load site: {}... skipping it.  Error: {}",
+                        name , e.getMessage());
+                log.debug(e.getMessage(),e);
             }
-            catch (Throwable e)
-            {
-                log.error("#findAll: Failed to load site: " + name + " ... skipping it.", e);
-            }
+
 
         }
 
-        Collections.sort(sites, siteComp);
+        sites.sort(siteComp);
         
         return sites;
     }
     
 
-    public void delete(String id)
-    {
+    public void delete(String id) throws DeleteException {
         try
         {
         	deleteSite(id);
@@ -151,8 +149,7 @@ public class PSSiteDao implements IPSiteDao
         }
     }
 
-    public PSSite save(PSSite site)
-    {
+    public PSSite save(PSSite site) throws SaveException {
         try
         {
             saveSite(site, null);
@@ -165,8 +162,7 @@ public class PSSiteDao implements IPSiteDao
     }
 
 
-    protected PSSite loadSite(String name) throws LoadException,PSNavException
-    {
+    protected PSSite loadSite(String name) throws LoadException, PSNavException, DeleteException {
 
         PSSiteSummary sum = findSummary(name);
         if(sum == null) return null;
@@ -200,8 +196,7 @@ public class PSSiteDao implements IPSiteDao
      * 
      * @throws PSErrorsException If an error occurs deleting related items.
      */
-    protected void deleteSite(String name) throws PSErrorsException
-    {
+    protected void deleteSite(String name) throws PSErrorsException, DeleteException {
     	log.info("Starting delete of site "+name);
     	IPSPublishingWs publishWs = PSPublishingWsLocator.getPublishingWebservice();
     	IPSSite site = publishWs.findSite(name);
@@ -224,10 +219,8 @@ public class PSSiteDao implements IPSiteDao
      * not being created from an existing site.
      * 
      * @throws PSErrorException If an error occurs creating related items.
-     * @throws PSAssemblyException If an error occurs creating related items.
      */
-    protected void saveSite(PSSite site, PSSite origSite)
-    {
+    protected void saveSite(PSSite site, PSSite origSite) throws IPSPubServerService.PSPubServerServiceException, PSNotFoundException {
         notNull(site,"site may not be null");
         boolean isNew = sitePublishDao.saveSite(site);
         if (isNew) {
@@ -245,31 +238,27 @@ public class PSSiteDao implements IPSiteDao
     /*
      * //see base interface method for details
      */
-    public boolean updateSite(IPSSite site, String newName, String newDescrption)
-    {
+    public boolean updateSite(IPSSite site, String newName, String newDescrption) throws PSNotFoundException {
         return sitePublishDao.updateSite(site, newName, newDescrption);
     }
 
     /**
      * Details can be found on the base interface
      */
-    public void updateSitePublishProperties(IPSSite site, PSSitePublishProperties publishProps)
-    {
+    public void updateSitePublishProperties(IPSSite site, PSSitePublishProperties publishProps) throws PSNotFoundException {
         notNull(site, "site may not be null");
         notNull(publishProps, "publishProps may not be null");
         
         sitePublishDao.updateSitePublishProperties(site, publishProps);  
     }
 
-    public void addPublishNow(IPSSite site)
-    {
+    public void addPublishNow(IPSSite site) throws PSNotFoundException {
         notNull(site, "site may not be null");
         
         sitePublishDao.addPublishNow(site);
     }
 
-    public void addUnpublishNow(IPSSite site)
-    {
+    public void addUnpublishNow(IPSSite site) throws PSNotFoundException {
         notNull(site, "site may not be null");
         
         sitePublishDao.addUnpublishNow(site);
@@ -278,19 +267,17 @@ public class PSSiteDao implements IPSiteDao
     /**
      * Details can be found on the base interface
      */
-    public String getSiteDeliveryType(IPSSite site)
-    {
+    public String getSiteDeliveryType(IPSSite site) throws PSNotFoundException {
         return sitePublishDao.getSiteDeliveryType(site); 
     }
     
-    public PSSite createSiteWithContent(String origId, String newName)
-    {
+    public PSSite createSiteWithContent(String origId, String newName) throws PSDataServiceException, IPSPubServerService.PSPubServerServiceException, PSNotFoundException {
         notEmpty(origId, "origId may not be blank");
         notEmpty(newName, "newName may not be blank");
         
         PSSite orig = find(origId);
         if (orig==null)
-            throw new RuntimeException("Trying to copy site that no longer exists "+origId);
+            throw new PSDataServiceException();
         
         PSSite copy = new PSSite();
         copy.setBaseTemplateName(orig.getBaseTemplateName());
@@ -359,12 +346,9 @@ public class PSSiteDao implements IPSiteDao
      * 
      * @param site The site, may not be <code>null</code>.
      * @return The site model representing the site.
-     * 
-     * @throws Exception If an error occurs finding related items.
-
+     *
      */
-    protected PSSite summaryToFull(PSSiteSummary site) throws PSNavException
-    {
+    protected PSSite summaryToFull(PSSiteSummary site) throws PSNavException, PSDataServiceException {
         notNull(site,"site may not be null");
         PSSite s = new PSSite();
         PSItemSummaryUtils.copyProperties(site, s);
@@ -384,7 +368,7 @@ public class PSSiteDao implements IPSiteDao
             s.setHomePageTitle(homepage.getTitle());
         }
         else {
-            log.error("No homepage for site: " + site.getName());
+            log.error("No homepage for site: {}", site.getName());
         }
         s.setDescription(site.getDescription());
         
@@ -441,7 +425,7 @@ public class PSSiteDao implements IPSiteDao
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSiteDao.class);
+    private static final Logger log = LogManager.getLogger(PSSiteDao.class);
 
 
 }

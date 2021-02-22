@@ -52,6 +52,7 @@ import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.IPSItemFilter;
 import com.percussion.services.filter.PSFilterException;
@@ -148,7 +149,7 @@ public class PSDependencyHelper
       List<PSDependent> dependents;
 
       // use a set to keep results unique
-      Set<PSDependent> dependentSet = new HashSet<PSDependent>();
+      Set<PSDependent> dependentSet = new HashSet<>();
       
       // check for deps not handled by MSM
       dependentSet.addAll(checkContentDependencies(guid)); 
@@ -157,7 +158,7 @@ public class PSDependencyHelper
       if (false) // allow reference to code
          dependentSet.addAll(checkMSMDependencies(guid));
       
-      dependents = new ArrayList<PSDependent>(dependentSet);
+      dependents = new ArrayList<>(dependentSet);
       
       return dependents;
    }
@@ -188,7 +189,7 @@ public class PSDependencyHelper
          }
       }
       
-      List<PSDependent> results = new ArrayList<PSDependent>();
+      List<PSDependent> results = new ArrayList<>();
       
       // currently only supports 2 guids, a content type and a template
       if (guids.length != 2)
@@ -214,10 +215,10 @@ public class PSDependencyHelper
          return results;
       
       // find matching items based on dependent and content type
-      List<PSSearchField> flds = new ArrayList<PSSearchField>();
+      List<PSSearchField> flds = new ArrayList<>();
       flds.add(getContentTypeSearchField(ctypeGuid));
       
-      Set<String> ids = new HashSet<String>();
+      Set<String> ids = new HashSet<>();
       for (PSRelationship rel : rels)
       {
          ids.add(String.valueOf(rel.getDependent().getId()));
@@ -246,7 +247,7 @@ public class PSDependencyHelper
    private Collection<PSDependent> checkMSMDependencies(IPSGuid guid) 
       throws PSDeployException, PSException, PSFilterException
    {
-      List<PSDependent> dependents = new ArrayList<PSDependent>();
+      List<PSDependent> dependents = new ArrayList<>();
       
       // TODO: This is not the best place for this. It should be in the
       // MSM checking instead 
@@ -356,7 +357,7 @@ public class PSDependencyHelper
    private Collection<PSDependent> checkContentDependencies(IPSGuid guid) 
       throws PSAssemblyException, PSException
    {
-      List<PSDependent> deps = new ArrayList<PSDependent>();
+      List<PSDependent> deps = new ArrayList<>();
 
       // check for content item and folder ancestors
       // do folder
@@ -407,7 +408,7 @@ public class PSDependencyHelper
       throws PSCmsException, PSSearchException
    {
       PSRequest req = PSRequest.getContextForRequest();
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
       names.add(IPSHtmlParameters.SYS_CONTENTID);      
       PSSearch searchObj = new PSSearch("findDeps");
       searchObj.setMaximumNumber(1);         
@@ -462,7 +463,7 @@ public class PSDependencyHelper
          return relservice.findByFilter(filter);
       }
       
-      return new ArrayList<PSRelationship>();
+      return new ArrayList<>();
    }
 
    /**
@@ -473,9 +474,8 @@ public class PSDependencyHelper
     * @throws PSFilterException 
     */
    private Collection<PSDependent> checkItemFilterDependencies(IPSGuid guid)
-   throws PSFilterException
-   {
-      Collection<PSDependent> rval = new ArrayList<PSDependent>();
+           throws PSFilterException, PSNotFoundException {
+      Collection<PSDependent> rval = new ArrayList<>();
       IPSFilterService fsvc = PSFilterServiceLocator.getFilterService();
       
       IPSItemFilter filter = fsvc.loadFilter(guid);
@@ -560,7 +560,7 @@ public class PSDependencyHelper
     */
    private Iterator<PSSearchField> getItemSearchFields(IPSGuid guid)
    {
-      List<PSSearchField> flds = new ArrayList<PSSearchField>();
+      List<PSSearchField> flds = new ArrayList<>();
       
       // add criteria based on guid type
       PSTypeEnum type = PSTypeEnum.valueOf(guid.getType());
@@ -616,7 +616,7 @@ public class PSDependencyHelper
    private Iterator<PSSearchField> getFolderSearchFields(IPSGuid guid) 
       throws PSAssemblyException
    {
-      List<PSSearchField> flds = new ArrayList<PSSearchField>();
+      List<PSSearchField> flds = new ArrayList<>();
       PSSearchField fldct = new PSSearchField(
          IPSHtmlParameters.SYS_CONTENTTYPEID, "ct", "o", 
          PSSearchField.TYPE_NUMBER, null);
@@ -942,6 +942,6 @@ public class PSDependencyHelper
     * construction.
     */
    private Map<PSTypeEnum, IPSGuidConverter> m_guidConverters = 
-      new HashMap<PSTypeEnum, IPSGuidConverter>();
+      new HashMap<>();
 }
 

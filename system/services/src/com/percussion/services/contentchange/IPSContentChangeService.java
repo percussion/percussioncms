@@ -25,6 +25,7 @@ package com.percussion.services.contentchange;
 
 import com.percussion.services.contentchange.data.PSContentChangeEvent;
 import com.percussion.services.contentchange.data.PSContentChangeType;
+import com.percussion.share.dao.IPSGenericDao;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public interface IPSContentChangeService
     * 
     * @param changeEvent The change to store, not <code>null</code>.
     */
-   void contentChanged(PSContentChangeEvent changeEvent);
+   void contentChanged(PSContentChangeEvent changeEvent) throws IPSGenericDao.SaveException;
 
    /**
     * Get all stored changes for the supplied parameters.

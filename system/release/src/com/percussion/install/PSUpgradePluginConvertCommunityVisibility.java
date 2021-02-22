@@ -34,7 +34,6 @@ import com.percussion.services.security.IPSBackEndRoleMgr;
 import com.percussion.services.security.PSAclServiceLocator;
 import com.percussion.services.security.PSPermissions;
 import com.percussion.services.security.PSRoleMgrLocator;
-import com.percussion.services.security.PSSecurityException;
 import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.security.data.PSAclImpl;
 import com.percussion.services.security.data.PSCommunity;
@@ -43,8 +42,8 @@ import com.percussion.utils.jdbc.IPSConnectionInfo;
 import com.percussion.utils.jdbc.IPSDatasourceManager;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionInfo;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

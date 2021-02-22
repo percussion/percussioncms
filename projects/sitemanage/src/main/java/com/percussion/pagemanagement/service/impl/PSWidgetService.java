@@ -39,6 +39,7 @@ import com.percussion.services.pkginfo.data.PSPkgElement;
 import com.percussion.services.pkginfo.data.PSPkgInfo;
 import com.percussion.services.pkginfo.utils.PSIdNameHelper;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.validation.PSAbstractPropertiesValidator;
 import com.percussion.share.validation.PSValidationErrors;
@@ -110,12 +111,12 @@ public class PSWidgetService implements IPSWidgetService {
      * Sets default values.
      * @param item never <code>null</code>.
      */
-    public void normalizeWidgetItem(PSWidgetItem item) {
+    public void normalizeWidgetItem(PSWidgetItem item) throws PSDataServiceException {
         PSWidgetDefinition def = load(item.getDefinitionId());
         PSWidgetUtils.setDefaultValuesFromDefinition(item, def);
     }
 
-    public PSWidgetSummary find(String id) throws com.percussion.share.service.IPSDataService.DataServiceLoadException
+    public PSWidgetSummary find(String id) throws PSDataServiceException
     {
         PSWidgetDefinition full = load(id);
         if (full == null) throw new DataServiceLoadException("Cannot find widget for id: " + id);
@@ -124,19 +125,19 @@ public class PSWidgetService implements IPSWidgetService {
         return summary;
     }
     
-    public List<PSWidgetSummary> findAll() {
+    public List<PSWidgetSummary> findAll() throws PSDataServiceException {
         return findByType("All");
     }
 
     @Override
-    public List<PSWidgetSummary> findByType(String type) {
+    public List<PSWidgetSummary> findByType(String type) throws PSDataServiceException {
         return findByType(type, null);
     }
     
-    public List<PSWidgetSummary> findByType(String type, String filterDisabledWidgets) {
+    public List<PSWidgetSummary> findByType(String type, String filterDisabledWidgets) throws PSDataServiceException {
     	if(StringUtils.isBlank(type))
     		type = "All";
-    	List<String> disabledWidgets = new ArrayList<String>();
+    	List<String> disabledWidgets = new ArrayList<>();
     	boolean filter = StringUtils.isNotBlank(filterDisabledWidgets) && filterDisabledWidgets.equalsIgnoreCase("yes");
     	//If filter get the disabled widgets from metadata service
     	if(filter){
@@ -154,7 +155,7 @@ public class PSWidgetService implements IPSWidgetService {
     		}
     	}
         
-        List<PSWidgetSummary> summaries = new ArrayList<PSWidgetSummary>();
+        List<PSWidgetSummary> summaries = new ArrayList<>();
         List<PSWidgetDefinition> fulls = widgetDao.findAll();
         for (PSWidgetDefinition full : fulls) {
             PSWidgetSummary sum = createWidgetSummary();
@@ -224,26 +225,22 @@ public class PSWidgetService implements IPSWidgetService {
      */
     private Map<String, String> loadWidgetTypeMap()
     {
-        Map<String, String> widgetTypeMap = new HashMap<String, String>();
-        InputStream in = null;
-        in = this.getClass().getClassLoader()
-                .getResourceAsStream("com/percussion/pagemanagement/service/impl/WidgetRegistry.xml");
-        try
-        {
+        Map<String, String> widgetTypeMap = new HashMap<>();
+        try(InputStream in = this.getClass().getClassLoader()
+                .getResourceAsStream("com/percussion/pagemanagement/service/impl/WidgetRegistry.xml")){
             Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
             NodeList groupElems = doc.getElementsByTagName("group");
-            for (int i = 0; i < groupElems.getLength(); i++)
-            {
+            for (int i = 0; i < groupElems.getLength(); i++) {
                 Element groupElem = (Element) groupElems.item(i);
                 String groupName = groupElem.getAttribute("name");
                 NodeList widgetElems = groupElem.getElementsByTagName("widget");
-                for (int j = 0; j < widgetElems.getLength(); j++)
-                {
+                for (int j = 0; j < widgetElems.getLength(); j++) {
                     Element widgetElem = (Element) widgetElems.item(j);
                     String wdgName = widgetElem.getAttribute("name");
                     widgetTypeMap.put(wdgName, groupName);
                 }
             }
+
         }
         catch (IOException e)
         {
@@ -269,7 +266,7 @@ public class PSWidgetService implements IPSWidgetService {
     }
 
 
-    public PSWidgetDefinition load(String id) throws com.percussion.share.service.IPSDataService.DataServiceLoadException
+    public PSWidgetDefinition load(String id) throws PSDataServiceException
     {
         PSWidgetDefinition wd =  widgetDao.find(id);
         if (wd == null) throw new DataServiceLoadException("No widget found for id: " + id);

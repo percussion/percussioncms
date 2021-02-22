@@ -24,18 +24,33 @@
 
 package com.percussion.activity.service.impl;
 
-import com.percussion.activity.data.*;
+import com.percussion.activity.data.PSActivityNode;
+import com.percussion.activity.data.PSContentActivity;
+import com.percussion.activity.data.PSContentActivityList;
+import com.percussion.activity.data.PSContentActivityRequest;
+import com.percussion.activity.data.PSContentTraffic;
+import com.percussion.activity.data.PSContentTrafficRequest;
+import com.percussion.activity.data.PSEffectiveness;
+import com.percussion.activity.data.PSEffectivenessComparator;
+import com.percussion.activity.data.PSEffectivenessList;
+import com.percussion.activity.data.PSEffectivenessRequest;
+import com.percussion.activity.data.PSTrafficDetails;
+import com.percussion.activity.data.PSTrafficDetailsList;
+import com.percussion.activity.data.PSTrafficDetailsRequest;
 import com.percussion.activity.service.IPSActivityService;
 import com.percussion.activity.service.IPSContentActivityService;
 import com.percussion.activity.service.IPSEffectivenessService;
-import com.percussion.activity.service.IPSEffectivenessService.PSEffectivenessServiceException;
 import com.percussion.activity.service.IPSTrafficService;
 import com.percussion.analytics.data.PSAnalyticsProviderConfig;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.error.PSAnalyticsProviderException.CAUSETYPE;
 import com.percussion.analytics.service.IPSAnalyticsProviderService;
+import com.percussion.pathmanagement.service.IPSPathService;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -48,8 +63,13 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
 
@@ -92,13 +112,14 @@ public class PSContentActivityService implements IPSContentActivityService
     @Override
     public List<PSContentActivity> getContentActivity(PSContentActivityRequest request)
     {
-    	//validate the request
-    	contentActivityReqvalidator.validate(request);
+        try {
+            //validate the request
+            contentActivityReqvalidator.validate(request);
 
-    	//Test Data, remove after implementation
-        //fillTestData(request.getPath(), caList);
-    
-    	return new PSContentActivityList(getContentActivity(request.getPath(), request.getDurationType(), request.getDuration(), true));
+            return new PSContentActivityList(getContentActivity(request.getPath(), request.getDurationType(), request.getDuration(), true));
+        } catch (PSValidationException | IPSActivityService.PSActivityServiceException | IPSPathService.PSPathServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @POST
@@ -109,11 +130,12 @@ public class PSContentActivityService implements IPSContentActivityService
     @Override
     public List<PSEffectiveness> getEffectiveness(PSEffectivenessRequest request)
     {
-        //validate the request
-        contentActivityReqvalidator.validate(request);
-
         try
         {
+            //validate the request
+            contentActivityReqvalidator.validate(request);
+
+
             //check if analytics is configured
             PSAnalyticsProviderConfig config = analyticsProviderService.loadConfig(false);
             if (config == null)
@@ -122,7 +144,7 @@ public class PSContentActivityService implements IPSContentActivityService
                         CAUSETYPE.ANALYTICS_NOT_CONFIG);
             }
             
-            List<PSEffectiveness> eList = new ArrayList<PSEffectiveness>();
+            List<PSEffectiveness> eList = new ArrayList<>();
             String durationType = request.getDurationType();
             String duration = request.getDuration();
             String path = request.getPath();
@@ -152,9 +174,9 @@ public class PSContentActivityService implements IPSContentActivityService
             
             return new PSEffectivenessList(eList);
         }
-        catch (PSAnalyticsProviderException e)
+        catch (PSAnalyticsProviderException | PSValidationException | IPSActivityService.PSActivityServiceException | IPSPathService.PSPathServiceException | IPSGenericDao.LoadException e)
         {
-            throw new PSEffectivenessServiceException(analyticsProviderService.getErrorMessageHandler().getMessage(e));
+            throw new WebApplicationException(e);
         }
     }
     
@@ -165,7 +187,11 @@ public class PSContentActivityService implements IPSContentActivityService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSContentTraffic getContentTraffic(PSContentTrafficRequest request) 
     {
-        return trafficService.getContentTraffic(request);
+        try {
+            return trafficService.getContentTraffic(request);
+        } catch (PSTrafficServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @Override
@@ -175,7 +201,11 @@ public class PSContentActivityService implements IPSContentActivityService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSTrafficDetails> getTrafficDetails(PSTrafficDetailsRequest request)
     {
-        return new PSTrafficDetailsList(trafficService.getTrafficDetails(request));
+        try {
+            return new PSTrafficDetailsList(trafficService.getTrafficDetails(request));
+        } catch (IPSPathService.PSPathServiceException | PSTrafficServiceException | PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     /**
@@ -209,9 +239,8 @@ public class PSContentActivityService implements IPSContentActivityService
     }
     
     private List<PSContentActivity> getContentActivity(String path, String durationType, String duration,
-            boolean includeSite)
-    {
-        List<PSContentActivity> caList = new ArrayList<PSContentActivity>();
+            boolean includeSite) throws IPSActivityService.PSActivityServiceException, IPSPathService.PSPathServiceException {
+        List<PSContentActivity> caList = new ArrayList<>();
         
         int timeoutSeconds = NumberUtils.toInt(systemProperties.getProperty(IPSSystemProperties.CONTENT_ACTIVITY_TIME_OUT), DEFAULT_TIMEOUT);
         if (timeoutSeconds <= 0)
@@ -250,14 +279,17 @@ public class PSContentActivityService implements IPSContentActivityService
         PSContentActivityRequest req,
         PSBeanValidationException e)
         {
-            String path = req.getPath();
-            String durationType = req.getDurationType();
-            String duration = req.getDuration();
-            rejectIfBlank("contentactivity", "path", path);
-            rejectIfBlank("contentactivity", "durationType", durationType);
-            rejectIfBlank("contentactivity", "duration", duration);
-            try
-            {
+            String duration="0";
+
+            try {
+
+                String path = req.getPath();
+                String durationType = req.getDurationType();
+                duration = req.getDuration();
+                rejectIfBlank("contentactivity", "path", path);
+                rejectIfBlank("contentactivity", "durationType", durationType);
+                rejectIfBlank("contentactivity", "duration", duration);
+
             	PSDurationTypeEnum dtype = PSDurationTypeEnum.valueOf(req.getDurationType());
             	if(dtype == null)
                 	e.rejectValue("Duration Type", "durationtype", "Invalid duration type, valid values are days, weeks, " +

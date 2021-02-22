@@ -74,7 +74,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -92,7 +92,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -109,7 +109,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -132,7 +132,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -161,7 +161,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -181,7 +181,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -201,7 +201,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -217,7 +217,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -234,7 +234,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -256,7 +256,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -273,7 +273,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -290,7 +290,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -307,7 +307,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -323,7 +323,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -345,7 +345,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -365,7 +365,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -382,7 +382,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -411,7 +411,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -431,7 +431,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -448,7 +448,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -464,7 +464,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -480,7 +480,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -497,7 +497,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -513,7 +513,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -530,7 +530,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -547,7 +547,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -564,7 +564,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -588,7 +588,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -616,7 +616,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -633,7 +633,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -656,7 +656,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -683,7 +683,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -713,7 +713,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -729,7 +729,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -752,7 +752,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -775,7 +775,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -792,7 +792,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -808,7 +808,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -824,7 +824,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -852,7 +852,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -878,7 +878,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -908,7 +908,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -933,7 +933,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -953,7 +953,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -970,7 +970,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -993,7 +993,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1011,7 +1011,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1033,7 +1033,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1056,7 +1056,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1079,7 +1079,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1096,7 +1096,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1116,7 +1116,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1133,7 +1133,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1157,7 +1157,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1189,7 +1189,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1203,7 +1203,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1221,7 +1221,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1245,7 +1245,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1265,7 +1265,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1281,7 +1281,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1299,7 +1299,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1316,7 +1316,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1339,7 +1339,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1361,7 +1361,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1378,7 +1378,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1400,7 +1400,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1430,7 +1430,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1447,7 +1447,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1469,7 +1469,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1492,7 +1492,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1516,7 +1516,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1533,7 +1533,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1550,7 +1550,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1579,7 +1579,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1597,7 +1597,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1613,7 +1613,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1637,7 +1637,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1657,7 +1657,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1677,7 +1677,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1695,7 +1695,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1717,7 +1717,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1733,7 +1733,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1749,7 +1749,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1766,7 +1766,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1783,7 +1783,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1803,7 +1803,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1828,7 +1828,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -1845,7 +1845,7 @@ public class ServiceSoap12Impl implements ServiceSoap {
             java.lang.String _return = "";
             return _return;
         } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             throw new RuntimeException(ex);
         }
     }

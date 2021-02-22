@@ -78,7 +78,7 @@ public class Metric extends CADFType
     {
         if (this.annotations == null)
         {
-            this.annotations = new HashMap<String, String>();
+            this.annotations = new HashMap<>();
         }
         this.annotations.put(key, value);
     }

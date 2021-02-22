@@ -34,11 +34,15 @@ import com.percussion.pagemanagement.assembler.impl.finder.PSRelationshipWidgetC
 import com.percussion.pagemanagement.data.PSWidgetDefinition;
 import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.IPSWidgetService;
+import com.percussion.services.error.PSNotFoundException;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -121,7 +125,7 @@ public class PSWidgetContentFinderUtils
         if (relationshipName == null)
             return rels;
         
-        Set<PSRelationship> sortSet = new HashSet<PSRelationship>();
+        Set<PSRelationship> sortSet = new HashSet<>();
         for (PSRelationship r : rels)
         {
             String name = r.getConfig().getName();
@@ -131,7 +135,7 @@ public class PSWidgetContentFinderUtils
             }
         }
         
-        return new ArrayList<PSRelationship>(sortSet);
+        return new ArrayList<>(sortSet);
     }
     
     /**
@@ -145,7 +149,7 @@ public class PSWidgetContentFinderUtils
      */
     public static Collection<PSRelationship> getMatchRelationships(Collection<PSRelationship> srcRels, Collection<PSWidgetItem> widgets)
     {
-        List<PSRelationship> result = new ArrayList<PSRelationship>();
+        List<PSRelationship> result = new ArrayList<>();
         for (PSWidgetItem w : widgets)
         {
             PSRelationship r = getMatchRelationship(srcRels, w);
@@ -166,36 +170,42 @@ public class PSWidgetContentFinderUtils
      */
     public static PSRelationship getMatchRelationship(Collection<PSRelationship> srcRels, PSWidgetItem widget)
     {
-        PSWidgetInstance wi = new PSWidgetInstance();
-        wi.setItem(widget);
-        String widgetDefId = widget.getDefinitionId();
-        PSWidgetDefinition widgetDef = getWidgetService().load(widgetDefId);
-        wi.setDefinition(widgetDef);
-        WidgetCriteria criteria = new WidgetCriteria(wi);
-        
-        TreeSet<PSRelationship> rels = new TreeSet<PSRelationship>(new RelationshipOrder(criteria));
-        for (PSRelationship r : srcRels)
-        {
-            if (getFinder().isMatchRelationship(r, criteria, null)) {
-                if (StringUtils.isNotBlank(widget.getId()) 
-                        && StringUtils.isNotBlank(r.getProperty("sys_slotid"))
-                        && !r.getProperty("sys_slotid").equals(widget.getId())) {
-                    PSRelationshipSet relationships = new PSRelationshipSet();
-                    r.setProperty("sys_slotid", widget.getId());
-                    relationships.add(r);
-                    try {
-                        PSRelationshipProcessor.getInstance().save(relationships);
-                    } catch (PSCmsException e) {
-                        log.error("Error saving relationship when matching content relationships.", e);
+        try {
+            PSWidgetInstance wi = new PSWidgetInstance();
+            wi.setItem(widget);
+            String widgetDefId = widget.getDefinitionId();
+            PSWidgetDefinition widgetDef = getWidgetService().load(widgetDefId);
+            wi.setDefinition(widgetDef);
+            WidgetCriteria criteria = new WidgetCriteria(wi);
+
+            TreeSet<PSRelationship> rels = new TreeSet<>(new RelationshipOrder(criteria));
+            for (PSRelationship r : srcRels) {
+                if (getFinder().isMatchRelationship(r, criteria, null)) {
+                    if (StringUtils.isNotBlank(widget.getId())
+                            && StringUtils.isNotBlank(r.getProperty("sys_slotid"))
+                            && !r.getProperty("sys_slotid").equals(widget.getId())) {
+                        PSRelationshipSet relationships = new PSRelationshipSet();
+                        r.setProperty("sys_slotid", widget.getId());
+                        relationships.add(r);
+                        try {
+                            PSRelationshipProcessor.getInstance().save(relationships);
+                        } catch (PSCmsException e) {
+                            log.error("Error saving relationship when matching content relationships.", e);
+                        }
                     }
+                    rels.add(r);
                 }
-                rels.add(r);
             }
+            if (!rels.isEmpty())
+                return null;
+
+            return rels.first();
+        } catch (PSDataServiceException | PSNotFoundException e) {
+            log.error("Error getting Widget Definition for: {} Error: {}",widget.getDefinitionId(),e.getMessage());
+            log.debug(e.getMessage(),e);
         }
-        if (rels.size() == 0)
-            return null;
-        
-        return rels.first();
+
+        return null;
     }
     
     private static IPSIdMapper getIdMapper()
@@ -315,6 +325,6 @@ public class PSWidgetContentFinderUtils
     /**
      * Logger for this class
      */
-    private static Log log = LogFactory.getLog(PSWidgetContentFinderUtils.class);
+    private static Logger log = LogManager.getLogger(PSWidgetContentFinderUtils.class);
 
 }

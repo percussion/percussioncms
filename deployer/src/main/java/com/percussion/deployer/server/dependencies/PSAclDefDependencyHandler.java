@@ -38,6 +38,7 @@ import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.design.objectstore.PSAclEntry;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.security.IPSAcl;
 import com.percussion.services.security.IPSAclEntry;
@@ -52,8 +53,8 @@ import com.percussion.services.security.data.PSAclEntryImpl;
 import com.percussion.services.security.data.PSAclImpl;
 import com.percussion.services.security.data.PSCommunity;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 
 import java.security.acl.NotOwnerException;
 import java.util.ArrayList;
@@ -104,8 +105,7 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
    // see base class
    @Override
    public Iterator<PSDependency> getChildDependencies(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -115,7 +115,7 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
       PSAclImpl acl = findAclByDependencyID(dep.getDependencyId());
 
       if ( acl != null )    
@@ -302,7 +302,7 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
          throw new IllegalArgumentException("dep wrong type");
 
       // pack the data into the files
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       PSAclImpl acl = findAclByDependencyID(dep.getDependencyId());
 
@@ -403,7 +403,7 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
 
       PSTypeEnum type = PSTypeEnum.valueOf(acl.getObjectType());
       
-      List<String> depTypes = new ArrayList<String>();
+      List<String> depTypes = new ArrayList<>();
       List<String> depTypesForType = PSDeploymentHandler.getInstance().
          getDependencyManager().getDeploymentType(type);
       for (String t : depTypesForType)
@@ -481,7 +481,7 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
          PSAclImpl tmp = generateAclFromFile(archive, depFile);
          doTransforms(tok, archive, dep, ctx, tmp);
          
-         ArrayList<IPSAcl> aclList = new ArrayList<IPSAcl>();
+         ArrayList<IPSAcl> aclList = new ArrayList<>();
          boolean requireSave = false;
          try
          {
@@ -629,7 +629,7 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {

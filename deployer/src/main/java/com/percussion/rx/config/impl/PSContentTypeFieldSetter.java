@@ -47,6 +47,7 @@ import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.design.IPSAssociationSet;
 import com.percussion.rx.utils.PSContentTypeUtils;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSCollection;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.collections.CollectionUtils;
@@ -69,7 +70,7 @@ public class PSContentTypeFieldSetter extends PSSimplePropertySetter
    /**
     * Default constructor, invoked by Spring framework. This can only used for
     * an existing field. Must call {@link #setFieldName(String)} before calling
-    * {@link #applyProperty(Object, String, Object)}.
+    * .
     */
    public PSContentTypeFieldSetter()
    {
@@ -176,8 +177,7 @@ public class PSContentTypeFieldSetter extends PSSimplePropertySetter
     */
    @Override
    protected boolean addPropertyDefs(Object obj, String propName,
-         Object pvalue, Map<String, Object> defs)
-   {
+         Object pvalue, Map<String, Object> defs) throws PSNotFoundException {
       if (super.addPropertyDefs(obj, propName, pvalue, defs))
          return true;
       
@@ -190,7 +190,7 @@ public class PSContentTypeFieldSetter extends PSSimplePropertySetter
          else if (pvalue instanceof Map)
          {
             PSItemDefinition itemDef = (PSItemDefinition) obj;
-            Map<String, Object> srcMap = new HashMap<String, Object>();
+            Map<String, Object> srcMap = new HashMap<>();
             for (PSPair<String, String> pair : getControlParams(itemDef))
                srcMap.put(pair.getFirst(), pair.getSecond());
             addPropertyDefsForMap(propName, pvalue, srcMap, defs);
@@ -204,8 +204,7 @@ public class PSContentTypeFieldSetter extends PSSimplePropertySetter
     */
    @SuppressWarnings({ "unchecked", "cast" })
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       validateObjAndPropertyName(obj, propName);
 
       PSItemDefinition itemDef = (PSItemDefinition) obj;
@@ -246,13 +245,13 @@ public class PSContentTypeFieldSetter extends PSSimplePropertySetter
          PSItemDefinition itemDef)
    {
       PSControlRef control = getControl(itemDef).getFirst();
-      List<PSPair<String, String>> result = new ArrayList<PSPair<String, String>>();
+      List<PSPair<String, String>> result = new ArrayList<>();
       List<PSParam> params = (List<PSParam>) IteratorUtils.toList(control
             .getParameters());
       PSPair<String, String> pair;
       for (PSParam p : params)
       {
-         pair = new PSPair<String, String>(p.getName(), p.getValue()
+         pair = new PSPair<>(p.getName(), p.getValue()
                .getValueText());
          result.add(pair);
       }
@@ -371,7 +370,7 @@ public class PSContentTypeFieldSetter extends PSSimplePropertySetter
       PSSharedFieldGroup shGroup = PSContentTypeHelper.getSharedGroup(fieldName);
       PSContentEditorMapper mapper = itemDef.getContentEditorMapper();
       Iterator includes = mapper.getSharedFieldIncludes();
-      ArrayList<String> names = new ArrayList<String>();
+      ArrayList<String> names = new ArrayList<>();
       CollectionUtils.addAll(names, includes);
       
       if (names.contains(shGroup.getName()))
@@ -382,7 +381,7 @@ public class PSContentTypeFieldSetter extends PSSimplePropertySetter
       mapper.setSharedFieldIncludes(names);
       
       // update excludes
-      ArrayList<String> excNames = new ArrayList<String>();
+      ArrayList<String> excNames = new ArrayList<>();
       Iterator excludes = mapper.getSharedFieldExcludes();
       CollectionUtils.addAll(excNames, excludes);
       for (PSField f : shGroup.getFieldSet().getAllFields())
@@ -449,7 +448,7 @@ public class PSContentTypeFieldSetter extends PSSimplePropertySetter
          String fieldName, int type)
    {
       Iterator excludes;
-      ArrayList<String> names = new ArrayList<String>();
+      ArrayList<String> names = new ArrayList<>();
       if (type == PSField.TYPE_SYSTEM)
          excludes = itemDef.getContentEditorMapper().getSystemFieldExcludes();
       else
@@ -624,7 +623,7 @@ public class PSContentTypeFieldSetter extends PSSimplePropertySetter
       if (control == null) // it must be a system/shared field
          control = getControlRef(m_fieldName);      
       
-      return new PSPair<PSControlRef, PSUISet>(control, uiSet);
+      return new PSPair<>(control, uiSet);
    }
    
    /**
@@ -732,7 +731,7 @@ public class PSContentTypeFieldSetter extends PSSimplePropertySetter
       IPSExtensionManager mgr = PSServer.getExtensionManager(null);
       Iterator it = mgr.getExtensionNames(null, null,
             com.percussion.extension.IPSFieldValidator.class.getName(), null);
-      List<PSExtensionRef> extensions = new ArrayList<PSExtensionRef>();
+      List<PSExtensionRef> extensions = new ArrayList<>();
       CollectionUtils.addAll(extensions, it);
       
       // set the property

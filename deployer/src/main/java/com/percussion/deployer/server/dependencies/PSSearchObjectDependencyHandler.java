@@ -49,6 +49,7 @@ import com.percussion.design.objectstore.PSProperty;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.IPSHtmlParameters;
 import org.w3c.dom.Element;
 
@@ -86,8 +87,7 @@ public abstract class PSSearchObjectDependencyHandler
 
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -97,7 +97,7 @@ public abstract class PSSearchObjectDependencyHandler
       if (! dep.getObjectType().equals(getType()))
          throw new IllegalArgumentException("dep wrong type");
 
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
       PSComponentProcessorProxy proc = getComponentProcessor(tok);
       PSSearch search = loadSearch(proc, dep.getDependencyId());
       if (search == null)
@@ -183,7 +183,7 @@ public abstract class PSSearchObjectDependencyHandler
 
       try
       {
-         List<PSDependency> deps = new ArrayList<PSDependency>();
+         List<PSDependency> deps = new ArrayList<>();
 
          PSComponentProcessorProxy proc = getComponentProcessor(tok);
          Element[] elements = proc.load(PSSearch.getComponentType(
@@ -290,7 +290,7 @@ public abstract class PSSearchObjectDependencyHandler
       if (!dep.getObjectType().equals(getType()))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       // load the component
       PSSearch search = loadSearch(getComponentProcessor(tok), dep.getDependencyId());
@@ -418,7 +418,7 @@ public abstract class PSSearchObjectDependencyHandler
    private List<PSProperty> mapToProps(Map map)
    {
       Iterator props = map.entrySet().iterator();
-      List<PSProperty> propList = new ArrayList<PSProperty>();
+      List<PSProperty> propList = new ArrayList<>();
       while (props.hasNext())
       {
          Map.Entry entry = (Map.Entry)props.next();
@@ -514,10 +514,9 @@ public abstract class PSSearchObjectDependencyHandler
     * @throws PSDeployException
     */
    private List<PSDependency> getSystemFieldDeps(PSSecurityToken tok,
-         PSSearch search) throws PSDeployException
-   {
-      List<PSDependency> deps = new ArrayList<PSDependency>();
-      List<String[]> childList = new ArrayList<String[]>();
+         PSSearch search) throws PSDeployException, PSNotFoundException {
+      List<PSDependency> deps = new ArrayList<>();
+      List<String[]> childList = new ArrayList<>();
       Iterator fields = getSystemDefFields(search, false).entrySet().iterator();
       while (fields.hasNext())
       {
@@ -698,7 +697,7 @@ public abstract class PSSearchObjectDependencyHandler
          PSSearchField field = (PSSearchField)entry.getValue();
          Iterator vals = field.getFieldValues().iterator();
          // build list of new values to replace current list
-         List<String> newVals = new ArrayList<String>();
+         List<String> newVals = new ArrayList<>();
          while (vals.hasNext())
          {
             String val = (String)vals.next();
@@ -760,7 +759,7 @@ public abstract class PSSearchObjectDependencyHandler
     */
    private Map getSystemDefFields(PSSearch search, boolean forTransform)
    {
-      Map<String, PSSearchField> values = new HashMap<String, PSSearchField>();
+      Map<String, PSSearchField> values = new HashMap<>();
 
       Iterator fields = search.getFields();
       while (fields.hasNext())
@@ -855,7 +854,7 @@ public abstract class PSSearchObjectDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    /**
     * Map of system fields and the corresponding child dependency type.  Key is
@@ -865,7 +864,7 @@ public abstract class PSSearchObjectDependencyHandler
     * conditions.
     */
    private static Map<String, String> ms_sysChildDepFieldTypes = 
-                                                new HashMap<String, String>();
+                                                new HashMap<>();
 
    /**
     * Map of system fields and the corresponding transform dependency type.  Key
@@ -877,7 +876,7 @@ public abstract class PSSearchObjectDependencyHandler
     * flaw that should be resolved at some point).
     */
    private static Map<String, String> ms_sysTransformDepFieldTypes = 
-                                                new HashMap<String, String>();
+                                                new HashMap<>();
 
    static
    {

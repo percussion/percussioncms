@@ -34,7 +34,7 @@ public class PSBlogEntry
     public PSBlogEntry()
     {
         super();
-        this.years = new HashSet<PSBlogYear>();
+        this.years = new HashSet<>();
     }
 
     /**

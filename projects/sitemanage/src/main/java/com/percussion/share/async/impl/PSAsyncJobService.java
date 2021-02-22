@@ -23,6 +23,7 @@
  */
 package com.percussion.share.async.impl;
 
+import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.share.async.IPSAsyncJob;
 import com.percussion.share.async.IPSAsyncJobFactory;
 import com.percussion.share.async.IPSAsyncJobListener;
@@ -42,7 +43,7 @@ public class PSAsyncJobService implements IPSAsyncJobService, IPSAsyncJobListene
 {
     private IPSAsyncJobFactory m_jobFactory;
     
-    private ConcurrentMap<Long, IPSAsyncJob> m_jobMap = new ConcurrentHashMap<Long, IPSAsyncJob>();
+    private ConcurrentMap<Long, IPSAsyncJob> m_jobMap = new ConcurrentHashMap<>();
     
     private final AtomicLong m_jobIdCounter = new AtomicLong();
 
@@ -54,8 +55,7 @@ public class PSAsyncJobService implements IPSAsyncJobService, IPSAsyncJobListene
     }
     
     @Override
-    public long startJob(String jobType, Object config)
-    {
+    public long startJob(String jobType, Object config) throws IPSFolderService.PSWorkflowNotFoundException {
         IPSAsyncJob job = m_jobFactory.getJob(jobType);
         long jobId = m_jobIdCounter.incrementAndGet();
         job.setId(jobId);

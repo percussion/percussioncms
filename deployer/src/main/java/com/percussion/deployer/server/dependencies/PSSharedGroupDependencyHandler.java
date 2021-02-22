@@ -41,6 +41,7 @@ import com.percussion.design.objectstore.PSUIDefinition;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSCollection;
 import com.percussion.util.PSIteratorUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -157,9 +158,8 @@ public class PSSharedGroupDependencyHandler
    }
    
    // see base class
-   public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep) 
-      throws PSDeployException
-   {
+   public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
          
@@ -179,7 +179,7 @@ public class PSSharedGroupDependencyHandler
       }
       
       // use set to ensure we don't add dupes
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
       
       // get dependencies specified by id type map
       childDeps.addAll(getIdTypeDependencies(tok, dep));
@@ -207,8 +207,7 @@ public class PSSharedGroupDependencyHandler
    @SuppressWarnings("unchecked")
    private List<PSDependency> checkLocatorTables(PSSecurityToken tok,
       PSContainerLocator locator)
-        throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -218,7 +217,7 @@ public class PSSharedGroupDependencyHandler
       PSDependencyHandler schemaHandler = getDependencyHandler(
          PSSchemaDependencyHandler.DEPENDENCY_TYPE);
 
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
       for (String tableName : PSDependencyUtils.getLocatorTables(locator))
       {
          PSDependency schemaDep =
@@ -250,7 +249,7 @@ public class PSSharedGroupDependencyHandler
       checkServerControls(tok, dep);
       
       // Build list of dependency files
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();         
+      List<PSDependencyFile> files = new ArrayList<>();
       PSServerXmlObjectStore os = PSServerXmlObjectStore.getInstance();
       
       // get group and figure out which file it's from

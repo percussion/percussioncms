@@ -24,7 +24,7 @@
 
 package com.percussion.tools.simple;
 
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.w3c.dom.Document;
@@ -186,37 +186,39 @@ public class PSPrepForConvert
                 props.getProperty(USERID_PROP_KEY)));
           rxprops.setProperty("UID", props.getProperty(USERID_PROP_KEY));
 
-          FileOutputStream fout = null;
-          try
+
+          try(FileOutputStream fout =new FileOutputStream(file))
           {
-             fout = new FileOutputStream(file);
              rxprops.store(fout, null);
           }
-          finally
-          {
-             if(fout != null)
-                fout.close();
-          }
-
 
        }
 
     }
 
+   /***
+    * @deprecated
+    * @param pwd
+    * @param uid
+    * @return
+    */
     @Deprecated
     private String decrypt(String pwd, String uid)
     {
        String ret;
 
        try {
-          ret = PSEncryptor.getInstance().decrypt(pwd);
+          ret = PSEncryptor.getInstance("AES",
+                  m_serverBase.getPath().concat(PSEncryptor.SECURE_DIR)).decrypt(pwd);
        }catch(Exception ex){
           ret = PSCryptographer.decrypt(
-                  PSLegacyEncrypter.OLD_SECURITY_KEY(),
+                  PSLegacyEncrypter.getInstance(
+                          m_serverBase.getPath().concat(PSEncryptor.SECURE_DIR)
+                  ).OLD_SECURITY_KEY(),
                   uid,
                   pwd);
        }
-       return pwd;
+       return ret;
     }
 
    /**

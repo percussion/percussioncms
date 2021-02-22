@@ -47,7 +47,7 @@ public interface IPSAssemblyLocation extends IPSExtension
     *    the implementing class.
     */
    public String createLocation(Object[] params, IPSRequestContext request)
-      throws PSExtensionException;
+           throws PSExtensionException;
    
    /**
     * Supported parameter type String, never <code>null</code>.

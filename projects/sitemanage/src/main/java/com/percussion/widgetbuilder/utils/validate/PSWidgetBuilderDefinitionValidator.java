@@ -39,7 +39,7 @@ public class PSWidgetBuilderDefinitionValidator
 {
     public static List<PSWidgetBuilderValidationResult> validate(PSWidgetBuilderDefinitionData definition, List<PSWidgetBuilderDefinitionData> existing)
     {
-        List<PSWidgetBuilderValidationResult> results = new ArrayList<PSWidgetBuilderValidationResult>();
+        List<PSWidgetBuilderValidationResult> results = new ArrayList<>();
         
         results.addAll(PSWidgetBuilderGeneralValidator.validate(definition, existing));
         results.addAll(PSWidgetBuilderFieldsValidator.validate(definition.getFieldsList()));

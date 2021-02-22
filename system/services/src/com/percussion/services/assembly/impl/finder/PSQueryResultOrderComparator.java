@@ -47,7 +47,7 @@ public class PSQueryResultOrderComparator implements Comparator<ContentItem>
    /**
     * Store the ordering information
     */
-   private Map<Integer, Integer> m_order = new HashMap<Integer, Integer>();
+   private Map<Integer, Integer> m_order = new HashMap<>();
 
    /**
     * Ctor - extract the ordering information from the results

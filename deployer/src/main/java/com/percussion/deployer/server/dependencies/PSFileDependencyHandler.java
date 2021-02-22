@@ -40,6 +40,7 @@ import com.percussion.util.IOTools;
 import com.percussion.util.PSIteratorUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -172,45 +173,29 @@ public abstract class PSFileDependencyHandler extends PSDependencyHandler
       File parentDir = tgtFile.getParentFile();
       if (parentDir != null)
          parentDir.mkdirs();
-      
-      // install the file
-      InputStream in = null;
-      FileOutputStream out = null;
-      try 
-      {
+
          // ensure the timestamp is updated
          tgtFile.setLastModified(System.currentTimeMillis());
-          if(tgtFile.exists()){
-              try { //trying to handle the jvm file lock case..
-                  out = new FileOutputStream(tgtFile);
-                  in = archive.getFileData(depFile);
-                  IOTools.copyStream(in, out);
-              }catch(Exception e){;}
 
-          }else { //default previous code
-              out = new FileOutputStream(tgtFile);
-              in = archive.getFileData(depFile);
-              IOTools.copyStream(in, out);
+          try (FileOutputStream out = new FileOutputStream(tgtFile)) {
+             try (InputStream in = archive.getFileData(depFile)) {
+                IOTools.copyStream(in, out);
+             }
+          } catch (FileNotFoundException e) {
+             throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                     e.getLocalizedMessage());
+          } catch (IOException e) {
+             throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                     e.getLocalizedMessage());
           }
+
          addTransactionLogEntry(dep, ctx, tgtFile.getPath(),
             PSTransactionSummary.TYPE_FILE, transAction);
 
          // notify whoever interested after a the file is successful installed
          PSNotificationHelper.notifyFile(tgtFile);                  
       }
-      catch (IOException e) 
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
-            e.getLocalizedMessage());
-      }
-      finally 
-      {
-         if (in != null)
-            try{in.close();} catch (IOException e){}
-         if (out != null)
-            try{out.close();} catch (IOException e){}
-      }
-   }
+
    
    // see base class
    public Iterator getDependencies(PSSecurityToken tok) throws PSDeployException

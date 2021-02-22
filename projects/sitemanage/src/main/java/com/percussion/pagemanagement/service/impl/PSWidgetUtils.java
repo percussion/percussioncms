@@ -107,7 +107,7 @@ public class PSWidgetUtils
     public static Set<Object> getEnums(AbstractUserPref userPref) {
         notNull(userPref, "userPref");
         List<EnumValue> ev = userPref.getEnumValue();
-        Set<Object> enums = new HashSet<Object>();
+        Set<Object> enums = new HashSet<>();
         if (ev != null) {
             for(EnumValue e : ev) {
                 Object validValue = PSSerializerUtils.getObjectFromJson(e.getValue());

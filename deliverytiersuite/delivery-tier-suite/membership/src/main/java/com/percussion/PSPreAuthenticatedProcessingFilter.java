@@ -65,7 +65,7 @@ public class PSPreAuthenticatedProcessingFilter extends AbstractPreAuthenticated
                 String userName = request.getHeader("tomcat-user");
                 String password = request.getHeader("tomcat-password");
                 if(userName != null && userName.equalsIgnoreCase("ps_manager")){
-                    List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+                    List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
                     grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_deliverymanager"));
                     return new PreAuthenticatedAuthenticationToken(userName,password,grantedAuthorities);
                 }else{
@@ -73,7 +73,7 @@ public class PSPreAuthenticatedProcessingFilter extends AbstractPreAuthenticated
                 }
             }else{
                 MemoryUser memoryUser = (MemoryUser) principal;
-                List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+                List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
                 Iterator roles = memoryUser.getRoles();
                 while (roles.hasNext()){
                     MemoryRole role = (MemoryRole) roles.next();

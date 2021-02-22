@@ -104,9 +104,9 @@ public class PSFolderPermissionUtils
                 permission.setAccessLevel(PSFolderPermission.Access.READ);
         }
         
-        List<Principal> adminPrincipals = new ArrayList<Principal>();
-        List<Principal> readPrincipals = new ArrayList<Principal>();
-        List<Principal> writePrincipals = new ArrayList<Principal>();
+        List<Principal> adminPrincipals = new ArrayList<>();
+        List<Principal> readPrincipals = new ArrayList<>();
+        List<Principal> writePrincipals = new ArrayList<>();
         
         // Walk the folder acl, adding users to the appropriate list
         Iterator<?> acls = acl.iterator();
@@ -176,12 +176,12 @@ public class PSFolderPermissionUtils
         PSObjectAcl folderAcl = folder.getAcl();
         
         if (folderAcl == null)
-            return new PSPair<PSFolderPermission.Access, Boolean>(Access.ADMIN, false);
+            return new PSPair<>(Access.ADMIN, false);
         
         boolean didAdd = ensureAdminAccess(folder);
             
         if (roles.contains(ADMINISTRATOR_ROLE))
-            return new PSPair<PSFolderPermission.Access, Boolean>(Access.ADMIN, didAdd);       
+            return new PSPair<>(Access.ADMIN, didAdd);
         
         PSFolderPermission.Access userAcl = getUserAcl(folderAcl, userName);
         for (String role : roles)
@@ -192,13 +192,13 @@ public class PSFolderPermissionUtils
         
         if (userAcl != null)
         {
-            return new PSPair<PSFolderPermission.Access, Boolean>(userAcl, didAdd);
+            return new PSPair<>(userAcl, didAdd);
         }
         
         PSObjectAclEntry virtualAcl = getVirtualAcl(folderAcl);
         userAcl = (virtualAcl == null) ? PSFolderPermission.Access.ADMIN : convertAcl(virtualAcl);
         
-        return new PSPair<PSFolderPermission.Access, Boolean>(userAcl, didAdd);
+        return new PSPair<>(userAcl, didAdd);
     }
     
     /**
@@ -522,7 +522,7 @@ public class PSFolderPermissionUtils
         if (acl == null)
             return;
         
-        List<PSObjectAclEntry> entries = new ArrayList<PSObjectAclEntry>();
+        List<PSObjectAclEntry> entries = new ArrayList<>();
         Iterator<?> acls = acl.iterator();
         while (acls.hasNext())
         {

@@ -115,7 +115,7 @@ public class PSMockDataForUnassignedPages
         PSPagedObjectList<PSPair<Integer, ItemStatus>> pageGroup = null;
         pageGroup = PSPagedObjectList.getPage(itemList, startIndex, maxResults);
         
-        List<UnassignedItem> items = new ArrayList<UnassignedItem>();
+        List<UnassignedItem> items = new ArrayList<>();
         for (PSPair<Integer, ItemStatus> p : pageGroup.getChildrenInPage())
         {
             UnassignedItem item = getUnassignedItem(p.getFirst(), p.getSecond());
@@ -146,7 +146,7 @@ public class PSMockDataForUnassignedPages
     
     private List<PSPair<Integer, ItemStatus>> createItemList()
     {
-        List<PSPair<Integer, ItemStatus>> result = new ArrayList<PSPair<Integer, ItemStatus>>();
+        List<PSPair<Integer, ItemStatus>> result = new ArrayList<>();
         
         for (int i = 0; i < totalCount; i++)
         {
@@ -158,7 +158,7 @@ public class PSMockDataForUnassignedPages
                 else if (i == importedCount)
                     status = ItemStatus.Importing;
             }
-            PSPair<Integer, ItemStatus> item = new PSPair<Integer, ItemStatus>(i, status);
+            PSPair<Integer, ItemStatus> item = new PSPair<>(i, status);
             result.add(item);
         }
         

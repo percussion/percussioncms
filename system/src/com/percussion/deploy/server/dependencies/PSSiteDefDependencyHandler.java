@@ -43,6 +43,7 @@ import com.percussion.security.PSSecurityToken;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.publisher.IPSEdition;
@@ -243,9 +244,8 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
     * @throws PSDeployException
     */
    private List<PSDependency> getTemplateDependencies(
-         PSSecurityToken tok, PSDependency dep, IPSSite site) 
-         throws PSDeployException
-   {
+         PSSecurityToken tok, PSDependency dep, IPSSite site)
+           throws PSDeployException, PSNotFoundException {
             
       List<PSDependency> deps = new ArrayList<PSDependency>();
       Iterator<IPSAssemblyTemplate> it = 
@@ -283,9 +283,8 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
     * @throws PSDeployException
     */
    private Set<PSDependency> getContextDependencies(
-         PSSecurityToken tok, PSDependency dep, IPSSite site) 
-         throws PSDeployException
-   {
+         PSSecurityToken tok, PSDependency dep, IPSSite site)
+           throws PSDeployException, PSNotFoundException {
       Set<PSDependency> deps = new HashSet<PSDependency>();
       PSDependencyHandler  ctxHandler = getDependencyHandler(
             PSContextDefDependencyHandler.DEPENDENCY_TYPE);
@@ -313,9 +312,8 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
     * @throws PSDeployException
     */
    private List<PSDependency> getEditionDependencies(
-         PSSecurityToken tok, PSDependency dep, IPSSite site) 
-         throws PSDeployException
-   {
+         PSSecurityToken tok, PSDependency dep, IPSSite site)
+           throws PSDeployException, PSNotFoundException {
       List<PSDependency> deps = new ArrayList<PSDependency>();
       PSDependencyHandler  edtnHandler = getDependencyHandler(
             PSEditionDefDependencyHandler.DEPENDENCY_TYPE);
@@ -336,8 +334,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
    // see base class
    @Override
    public Iterator<PSDependency> getChildDependencies(PSSecurityToken tok,
-         PSDependency dep) throws PSDeployException
-   {
+         PSDependency dep) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -654,8 +651,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
    @Override
    public void installDependencyFiles(PSSecurityToken tok,
          PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
-   throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       Iterator<PSDependencyFile> files = getSiteDependecyFilesFromArchive(
             archive, dep);
       PSDependencyFile depFile = files.next();

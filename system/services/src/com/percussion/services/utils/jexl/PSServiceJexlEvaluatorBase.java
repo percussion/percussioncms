@@ -106,7 +106,7 @@ public class PSServiceJexlEvaluatorBase extends PSJexlEvaluator
     * Holds information about the jexl functions. This is invalidated by a
     * callback from the extensions manager
     */
-   private static Map<String, Map<String, Object>> ms_functionCache = new HashMap<String, Map<String, Object>>();
+   private static Map<String, Map<String, Object>> ms_functionCache = new HashMap<>();
 
    /**
     * Used to determine if the initial query from the extensions manager has
@@ -195,8 +195,8 @@ public class PSServiceJexlEvaluatorBase extends PSJexlEvaluator
          }
       }
       Map<String, Object> rval = ms_functionCache.get(context);
-      return rval != null ? new HashMap<String, Object>(rval) 
-            : new HashMap<String, Object>();
+      return rval != null ? new HashMap<>(rval)
+            : new HashMap<>();
    }
 
    /**
@@ -214,7 +214,7 @@ public class PSServiceJexlEvaluatorBase extends PSJexlEvaluator
 
          if (functionMap == null)
          {
-            functionMap = new HashMap<String, Object>();
+            functionMap = new HashMap<>();
             ms_functionCache.put(context, functionMap);
          }
 

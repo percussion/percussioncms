@@ -214,7 +214,7 @@ public class PSMetadataDao implements IPSMetadataDao
             CriteriaQuery<PSDbMetadataEntry> criteriaQuery = criteriaBuilder.createQuery(PSDbMetadataEntry.class);
             Root<PSDbMetadataEntry> root = criteriaQuery.from(PSDbMetadataEntry.class);
             List<PSDbMetadataEntry> result = session.createQuery(criteriaQuery).getResultList();
-            List<IPSMetadataEntry> entries = new ArrayList<IPSMetadataEntry>();
+            List<IPSMetadataEntry> entries = new ArrayList<>();
             if (result != null) {
                 for (PSDbMetadataEntry e : result)
                     entries.add(e);
@@ -301,7 +301,7 @@ public class PSMetadataDao implements IPSMetadataDao
             // the Derby built-in regular expression functionality if this is too
             // slow.
             Matcher matcher;
-            Set<String> indexedDirectories = new HashSet<String>();
+            Set<String> indexedDirectories = new HashSet<>();
 
             for (String dataEntry : resultList) {
                 matcher = patternToGetDirectoryFromPagepath.matcher(dataEntry);
@@ -328,7 +328,7 @@ public class PSMetadataDao implements IPSMetadataDao
 
     private Collection<String> getPagepathHashes(Collection<String> pagepaths)
     {
-        List<String> pagepathHashes = new ArrayList<String>();
+        List<String> pagepathHashes = new ArrayList<>();
 
         for (String pp : pagepaths)
         {
@@ -360,7 +360,7 @@ public class PSMetadataDao implements IPSMetadataDao
         Set<IPSMetadataProperty> props1 = existing.getProperties();
         Set<IPSMetadataProperty> props2 = entry.getProperties();
 
-        Map<Object, IPSMetadataProperty> propMap = new HashMap<Object, IPSMetadataProperty>();
+        Map<Object, IPSMetadataProperty> propMap = new HashMap<>();
         for(IPSMetadataProperty p : props2)
             propMap.put(((PSDbMetadataProperty)p).getId(), p);
         for(IPSMetadataProperty prop : props1)
@@ -391,7 +391,7 @@ public class PSMetadataDao implements IPSMetadataDao
     private Collection<PSDbMetadataEntry> convertRestEntriesToDb(Collection<IPSMetadataEntry> entries)
     {
         Validate.notNull(entries, "list of metadata entries cannot be null");
-        Collection<PSDbMetadataEntry> result = new ArrayList<PSDbMetadataEntry>();
+        Collection<PSDbMetadataEntry> result = new ArrayList<>();
 
         for (IPSMetadataEntry metadataEntry : entries)
         {

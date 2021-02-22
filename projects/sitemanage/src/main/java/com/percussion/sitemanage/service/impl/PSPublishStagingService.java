@@ -26,7 +26,10 @@ package com.percussion.sitemanage.service.impl;
 
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSSystemProperties;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.helper.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -36,6 +39,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
 @Path("/publish/staging")
@@ -43,7 +47,8 @@ import javax.ws.rs.core.MediaType;
 @Lazy
 public class PSPublishStagingService {
 
-   
+    private static final Logger log = LogManager.getLogger(PSPublishStagingService.class);
+
     private IPSSystemProperties systemProps;
     
     private IPSMetadataService metadata;
@@ -93,34 +98,52 @@ public class PSPublishStagingService {
     @Path("/server/enabled")
     @Produces(MediaType.TEXT_PLAIN)
     public boolean isStagingServerEnabled() {
-	boolean stagingServerEnabled = false;
-	PSMetadata metadataItem = metadata.find(STAGING_SERVER_ENABLED);
-	if (metadataItem == null) {
-	    setStagingOff();
-	} else {
-	    try {
-		stagingServerEnabled = Boolean.parseBoolean(metadataItem
-			.getData());
-	    } catch (Exception e) {
-		setStagingOff();
-	    }
-	}
-	return stagingServerEnabled;
+        try {
+            boolean stagingServerEnabled = false;
+            PSMetadata metadataItem = metadata.find(STAGING_SERVER_ENABLED);
+            if (metadataItem == null) {
+                setStagingOff();
+            } else {
+                try {
+                    stagingServerEnabled = Boolean.parseBoolean(metadataItem
+                            .getData());
+                } catch (Exception e) {
+                    setStagingOff();
+                }
+            }
+            return stagingServerEnabled;
+        } catch (IPSGenericDao.LoadException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @PUT
     @Path("/server/on")
     public void setStagingOn() {
-	setStagingServerEnabledMetadataState(true);
+        try {
+            setStagingServerEnabledMetadataState(true);
+        } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @PUT
     @Path("/server/off")
     public void setStagingOff() {
-	setStagingServerEnabledMetadataState(false);
+        try {
+            setStagingServerEnabledMetadataState(false);
+        } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
-    private void setStagingServerEnabledMetadataState(boolean state) {
+    private void setStagingServerEnabledMetadataState(boolean state) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException {
 	PSMetadata metadataItem = new PSMetadata();
 	metadataItem.setKey(STAGING_SERVER_ENABLED);
 	metadataItem.setData(Boolean.toString(state));

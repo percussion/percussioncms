@@ -130,8 +130,7 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler
    @Override
    @SuppressWarnings("unchecked")
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -144,7 +143,7 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler
       
       PSDependencyHandler handler = null;
       IPSItemFilter filter = findFilterByDependencyID(dep.getDependencyId());
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
       
       // Add any parent filters..
       IPSItemFilter pfilter = filter.getParentFilter();
@@ -226,7 +225,7 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler
    {
       init();   
       Iterator names   = getFilterNames(); 
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       PSDependency dep;
       while (names.hasNext())
       {
@@ -254,7 +253,7 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler
       init();
 
       // pack the data into the files
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       IPSItemFilter f = m_namedFiltersMap.get(dep.getDisplayName());
       files.add(getDepFileFromFilter(f));
@@ -561,10 +560,10 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler
          .getFilterService();
    
    private HashMap<String, IPSItemFilter> m_namedFiltersMap = 
-                        new HashMap<String, IPSItemFilter>(); 
+                        new HashMap<>();
    
    private HashMap<IPSGuid, IPSItemFilter> m_guidFiltersMap = 
-                        new HashMap<IPSGuid, IPSItemFilter>(); 
+                        new HashMap<>();
 
 
    /**
@@ -576,7 +575,7 @@ public class PSFilterDefDependencyHandler extends PSDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();  
+   private static List<String> ms_childTypes = new ArrayList<>();
    
    static
    {

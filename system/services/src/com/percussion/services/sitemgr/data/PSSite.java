@@ -126,12 +126,12 @@ public class PSSite implements IPSSite, IPSCatalogItem
       is_canonical_replace = site.is_canonical_replace;
 
       //deal w/ collections
-      templates = new HashSet<IPSAssemblyTemplate>();
+      templates = new HashSet<>();
       for (IPSAssemblyTemplate t : site.templates)
       {
          addTemplateGuidToCollection(t.getGUID());
       }
-      properties = new HashSet<PSSiteProperty>();
+      properties = new HashSet<>();
       for (PSSiteProperty prop : site.properties)
       {
          setProperty(prop.getName(), prop.getContextId(), prop.getValue());
@@ -326,7 +326,7 @@ public class PSSite implements IPSSite, IPSCatalogItem
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
          region = "PSSite_Property")
    @Fetch(FetchMode. SUBSELECT)
-   Set<PSSiteProperty> properties = new HashSet<PSSiteProperty>();
+   Set<PSSiteProperty> properties = new HashSet<>();
 
    @ManyToMany(targetEntity = PSAssemblyTemplate.class,
     cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.EAGER)
@@ -336,7 +336,7 @@ public class PSSite implements IPSSite, IPSCatalogItem
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
          region = "PSSite_Template")
    @Fetch(FetchMode. SUBSELECT)
-   Set<IPSAssemblyTemplate> templates = new HashSet<IPSAssemblyTemplate>();
+   Set<IPSAssemblyTemplate> templates = new HashSet<>();
 
 
    public String getBaseUrl()
@@ -725,7 +725,7 @@ public class PSSite implements IPSSite, IPSCatalogItem
     */
    public Set<String> getPropertyNames(IPSGuid contextId)
    {
-      Set<String> rval = new HashSet<String>();
+      Set<String> rval = new HashSet<>();
       for(PSSiteProperty p : properties)
       {
          if (p.getContextId().equals(contextId))
@@ -793,7 +793,7 @@ public class PSSite implements IPSSite, IPSCatalogItem
          }
       }
       if (properties == null)
-         properties = new HashSet<PSSiteProperty>();
+         properties = new HashSet<>();
 
       properties.add(prop);
    }
@@ -960,7 +960,7 @@ public class PSSite implements IPSSite, IPSCatalogItem
     */
    public Set<String> getTemplateIds()
    {
-      Set<String> ids = new HashSet<String>();
+      Set<String> ids = new HashSet<>();
       if ( templates !=  null && !templates.isEmpty() )
       {
          for (IPSAssemblyTemplate tmp : templates)
@@ -1016,7 +1016,7 @@ public class PSSite implements IPSSite, IPSCatalogItem
          templates.clear();
          return;
       }
-      Set<IPSGuid>newTmps = new HashSet<IPSGuid>();
+      Set<IPSGuid>newTmps = new HashSet<>();
       for (String t : newT)
          newTmps.add(new PSGuid(t));
 
@@ -1030,7 +1030,7 @@ public class PSSite implements IPSSite, IPSCatalogItem
          return;
       }
       // get all existing tmp guids associated with this site
-      Set<IPSGuid> curTmps = new HashSet<IPSGuid>();
+      Set<IPSGuid> curTmps = new HashSet<>();
       for (IPSAssemblyTemplate t : templates)
          curTmps.add(t.getGUID());
       /**
@@ -1318,7 +1318,7 @@ public class PSSite implements IPSSite, IPSCatalogItem
       if (StringUtils.isBlank(siteStr))
          throw new IllegalArgumentException("siteStr may not be null or empty");
 
-      Set<IPSGuid> tmpGuids = new HashSet<IPSGuid>();
+      Set<IPSGuid> tmpGuids = new HashSet<>();
       Document doc = PSXmlDocumentBuilder.createXmlDocument(new StringReader(
             siteStr), false);
       Element root = doc.getDocumentElement();

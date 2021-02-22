@@ -127,7 +127,7 @@ IPSEditionTaskDef
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, 
          region = "PSEditionTask_params")
    @Fetch(FetchMode. SUBSELECT)
-   private Map<String, PSEditionTaskParam> params = new HashMap<String, PSEditionTaskParam>();
+   private Map<String, PSEditionTaskParam> params = new HashMap<>();
 
    /**
     * Default constructor, required by hibernate implementation.
@@ -280,7 +280,7 @@ IPSEditionTaskDef
     */
    public Map<String, String> getParams()
    {
-      Map<String, String> rval = new HashMap<String, String>();
+      Map<String, String> rval = new HashMap<>();
       for (Map.Entry<String, PSEditionTaskParam> e : this.params.entrySet())
       {
          rval.put(e.getKey(), e.getValue().getValue());

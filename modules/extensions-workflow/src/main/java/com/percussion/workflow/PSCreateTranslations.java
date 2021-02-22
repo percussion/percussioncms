@@ -192,7 +192,7 @@ public class PSCreateTranslations implements IPSWorkflowAction
          PSRelationshipSet dependents = relProxy.getRelationships(filter);
          if (dependents != null && !dependents.isEmpty())
          {
-            Set<Integer> ids = new HashSet<Integer>(dependents.size());
+            Set<Integer> ids = new HashSet<>(dependents.size());
             Iterator iter = dependents.iterator();
             int i = 0;
             while (iter.hasNext())
@@ -397,13 +397,14 @@ public class PSCreateTranslations implements IPSWorkflowAction
    {
       try
       {
-         ms_props.load(
-            new FileInputStream(
-               "rxconfig"
-                  + File.separator
-                  + "I18n"
-                  + File.separator
-                  + CONFIG_FILE_NAME));
+         try(FileInputStream fis = new FileInputStream(
+                 "rxconfig"
+                         + File.separator
+                         + "I18n"
+                         + File.separator
+                         + CONFIG_FILE_NAME)) {
+            ms_props.load(fis);
+         }
       }
       catch (FileNotFoundException e)
       {

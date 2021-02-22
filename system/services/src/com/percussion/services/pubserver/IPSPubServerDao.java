@@ -27,6 +27,7 @@ import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.security.ToDoVulnerability;
 
 import java.util.List;
 
@@ -60,8 +61,12 @@ public interface IPSPubServerDao
    public static final String PUBLISH_AS3_SECURITYKEY_PROPERTY = "securitykey";
    public static final String PUBLISH_AS3_ACCESSKEY_PROPERTY = "accesskey";
    public static final String PUBLISH_RELATED_PROPERTY = "publishRelatedItems";
+
+   @ToDoVulnerability
+   @Deprecated
    public static final String encryptionKey = "p3$Y&ND8#Zdefghl";
-    public static final String PUBLISH_SECURE_SITE_CONF = "publishSecureSiteConfigOnExactPath";
+
+   public static final String PUBLISH_SECURE_SITE_CONF = "publishSecureSiteConfigOnExactPath";
    
    /**
     * Create a publish server for the given site.
@@ -74,7 +79,7 @@ public interface IPSPubServerDao
 
    /**
     * Load a server object from the cache, it may not be modified and saved
-    * through {@link #savePubServer(IPSServer)}.
+    * through {@link #savePubServer(PSPubServer)}.
     * 
     * @param serverId the server ID, never <code>null</code>
     * 
@@ -97,7 +102,7 @@ public interface IPSPubServerDao
 
    /**
     * Load a server object from the cache, it may not be modified and saved
-    * through {@link #savePubServer(IPSServer)}.
+    * through {@link #savePubServer(PSPubServer)}.
     * 
     * @param serverId the server ID, never <code>null</code>
     * 
@@ -138,7 +143,7 @@ public interface IPSPubServerDao
    /**
     * Delete the publishing servers from the database for the given site
     * 
-    * @param site the site, never <code>null</code>
+    * @param pubServer the pub server, never <code>null</code>
     */
    void deletePubServer(PSPubServer pubServer);
 }

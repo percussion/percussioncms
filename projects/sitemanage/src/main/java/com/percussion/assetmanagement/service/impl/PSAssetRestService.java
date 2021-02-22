@@ -24,7 +24,21 @@
 package com.percussion.assetmanagement.service.impl;
 
 import com.percussion.activity.service.IPSActivityService;
-import com.percussion.assetmanagement.data.*;
+import com.percussion.assetmanagement.data.PSAsset;
+import com.percussion.assetmanagement.data.PSAssetDropCriteriaList;
+import com.percussion.assetmanagement.data.PSAssetEditUrlRequest;
+import com.percussion.assetmanagement.data.PSAssetEditor;
+import com.percussion.assetmanagement.data.PSAssetEditorList;
+import com.percussion.assetmanagement.data.PSAssetFolderRelationship;
+import com.percussion.assetmanagement.data.PSAssetSummary;
+import com.percussion.assetmanagement.data.PSAssetWidgetRelationship;
+import com.percussion.assetmanagement.data.PSContentEditCriteria;
+import com.percussion.assetmanagement.data.PSCreateAssetRequest;
+import com.percussion.assetmanagement.data.PSInspectedElementsData;
+import com.percussion.assetmanagement.data.PSOrphanAssetsSummary;
+import com.percussion.assetmanagement.data.PSOrphanedAssetSummary;
+import com.percussion.assetmanagement.data.PSUnusedAssetSummary;
+import com.percussion.assetmanagement.data.PSUnusedAssetSummaryList;
 import com.percussion.assetmanagement.forms.data.PSFormSummary;
 import com.percussion.assetmanagement.forms.service.IPSFormDataService;
 import com.percussion.assetmanagement.service.IPSAssetService;
@@ -38,41 +52,63 @@ import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.itemmanagement.data.IPSEditableItem;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
-import com.percussion.pagemanagement.data.*;
+import com.percussion.pagemanagement.data.PSPage;
+import com.percussion.pagemanagement.data.PSTemplate;
+import com.percussion.pagemanagement.data.PSWidgetContentType;
+import com.percussion.pagemanagement.data.PSWidgetContentTypeList;
+import com.percussion.pagemanagement.data.PSWidgetSummary;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.IPSWidgetService;
-import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.recycle.service.impl.PSRecycleService;
 import com.percussion.server.PSServer;
 import com.percussion.services.content.data.PSItemStatus;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.impl.PSFolderHelper;
 import com.percussion.share.data.PSDataItemSummary;
 import com.percussion.share.data.PSNoContent;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
-import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.share.web.service.PSRestServicePathConstants;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentWs;
 import org.apache.commons.lang.StringUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static com.percussion.assetmanagement.service.impl.PSPreviewPageUtils.getOrphanedAssetsSummaries;
 import static com.percussion.share.service.exception.PSParameterValidationUtils.validateParameters;
@@ -82,12 +118,13 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.Validate.isTrue;
 import static org.apache.commons.lang.Validate.notNull;
 
-
 @Path("/asset")
 @Component("assetRestService")
 @Lazy
 public class PSAssetRestService
 {
+    private static final Logger log = LogManager.getLogger(PSAssetRestService.class);
+
     private IPSAssetService assetService;
     private IPSItemWorkflowService itemWorkflowService;
     private IPSWidgetAssetRelationshipService widgetAssetRelationshipService;
@@ -154,7 +191,11 @@ public class PSAssetRestService
     @Produces(MediaType.TEXT_PLAIN)
     public String createAssetWidgetRelationship(PSAssetWidgetRelationship awRel) 
     {
-        return assetService.createAssetWidgetRelationship(awRel);
+        try {
+            return assetService.createAssetWidgetRelationship(awRel);
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     
     @POST
@@ -163,7 +204,11 @@ public class PSAssetRestService
     @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSNoContent promoteAssetWidget(PSAssetWidgetRelationship awRel) 
     {
-        return assetService.promoteAssetWidget(awRel);
+        try {
+            return assetService.promoteAssetWidget(awRel);
+        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+            throw new WebApplicationException(e.getMessage());
+        }
     }
 
     @POST
@@ -172,7 +217,11 @@ public class PSAssetRestService
     @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public String updateAssetWidgetRelationship(PSAssetWidgetRelationship awRel) 
     {
-        return assetService.updateAssetWidgetRelationship(awRel);
+        try {
+            return assetService.updateAssetWidgetRelationship(awRel);
+        } catch (PSAssetServiceException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException | PSValidationException e) {
+            throw new WebApplicationException(e.getMessage());
+        }
     }
 
     @POST
@@ -181,7 +230,12 @@ public class PSAssetRestService
     @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSAssetWidgetRelationship deleteAssetWidgetRelationship(PSAssetWidgetRelationship awRel) 
     {
-        assetService.clearAssetWidgetRelationship(awRel);
+
+        try {
+            assetService.clearAssetWidgetRelationship(awRel);
+        } catch (PSAssetServiceException | PSValidationException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
+            throw new WebApplicationException(e.getMessage());
+        }
         return awRel;
     }
     
@@ -191,7 +245,11 @@ public class PSAssetRestService
     @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSNoContent updateInspectedElements(PSInspectedElementsData inspectedElementsData)
     {
-        assetService.updateInspectedElements(inspectedElementsData);
+        try {
+            assetService.updateInspectedElements(inspectedElementsData);
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
         return new PSNoContent("Successfully created new assets and associated them with the owner.");
     }
     
@@ -204,7 +262,12 @@ public class PSAssetRestService
         
         for(PSAssetWidgetRelationship awRel : awRelList)
         {
-            assetService.clearAssetWidgetRelationship(awRel);
+            try {
+                assetService.clearAssetWidgetRelationship(awRel);
+            } catch (IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException | PSAssetServiceException | PSValidationException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
+            }
         }
     }
    
@@ -214,7 +277,11 @@ public class PSAssetRestService
     @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSContentEditCriteria getContentEditCriteria(PSAssetEditUrlRequest request)
     {
-        return assetService.getContentEditCriteria(request);
+        try {
+            return assetService.getContentEditCriteria(request);
+        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     /**
@@ -232,7 +299,7 @@ public class PSAssetRestService
         try {
             List<String> paths = folderHelper.findPaths(assetId, RECYCLED_TYPE);
             path = paths.get(0);
-            System.out.println(paths);
+            log.debug(paths);
         } catch (Exception e) {
             hasErrors = true;
         }
@@ -250,7 +317,11 @@ public class PSAssetRestService
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSAssetDropCriteriaList getAssetWidgetDropCriteria(@PathParam("id") String id, @PathParam("isPage") Boolean isPage)
     {
-        return new PSAssetDropCriteriaList(assetService.getWidgetAssetCriteria(id, isPage));
+        try {
+            return new PSAssetDropCriteriaList(assetService.getWidgetAssetCriteria(id, isPage));
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @GET
@@ -258,13 +329,16 @@ public class PSAssetRestService
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSAssetEditorList getAssetEditors(@PathParam("parentFolderPath") String parentFolderPath, @QueryParam("filterDisabledWidgets") String filterDisabledWidgets, @QueryParam("widgetId") String widgetId)
     {
-        List<PSAssetEditor> assetEditors = new ArrayList<PSAssetEditor>();
-                
-        if(StringUtils.isNotBlank(widgetId)){
-            assetEditors = Collections.singletonList(assetService.getAssetEditor(widgetId, parentFolderPath));
-        }
-        else{
-            assetEditors = assetService.getAssetEditors(parentFolderPath, filterDisabledWidgets);
+        List<PSAssetEditor> assetEditors;
+
+        try {
+            if (StringUtils.isNotBlank(widgetId)) {
+                assetEditors = Collections.singletonList(assetService.getAssetEditor(widgetId, parentFolderPath));
+            } else {
+                assetEditors = assetService.getAssetEditors(parentFolderPath, filterDisabledWidgets);
+            }
+        } catch (IPSItemWorkflowService.PSItemWorkflowServiceException | PSDataServiceException e) {
+            throw new WebApplicationException(e);
         }
         return new PSAssetEditorList(assetEditors);
     }
@@ -274,7 +348,11 @@ public class PSAssetRestService
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSAssetEditor getAssetEditor(@PathParam("widgetId") String widgetId)
     {
-        return assetService.getAssetEditor(widgetId);
+        try {
+            return assetService.getAssetEditor(widgetId);
+        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @GET
@@ -282,7 +360,11 @@ public class PSAssetRestService
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSAssetEditor getAssetEditor(@PathParam("widgetId") String widgetId, @QueryParam("parentFolderPath") String parentFolderPath)
     {
-        return assetService.getAssetEditor(widgetId, parentFolderPath);
+        try {
+            return assetService.getAssetEditor(widgetId, parentFolderPath);
+        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     @GET
@@ -290,13 +372,22 @@ public class PSAssetRestService
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public List<PSWidgetContentType>   getAssetType(@QueryParam("filterDisabledWidgets") String filterDisabledWidgets)
     {
-        List<PSWidgetContentType>  responseList = assetService.getAssetTypes(filterDisabledWidgets);
+        List<PSWidgetContentType>  responseList = null;
+        try {
+            responseList = assetService.getAssetTypes(filterDisabledWidgets);
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
         return responseList ;
     }
 
     public PSWidgetContentTypeList getAssetTypes(String filterDisabledWidgets)
     {
-        return new PSWidgetContentTypeList(assetService.getAssetTypes(filterDisabledWidgets));
+        try {
+            return new PSWidgetContentTypeList(assetService.getAssetTypes(filterDisabledWidgets));
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @GET
@@ -304,7 +395,11 @@ public class PSAssetRestService
     @Produces(MediaType.TEXT_PLAIN)
     public String getAssetEditUrl(@PathParam("id") String id)
     {
-        return assetService.getAssetUrl(id, false);
+        try {
+            return assetService.getAssetUrl(id, false);
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @GET
@@ -312,57 +407,82 @@ public class PSAssetRestService
     @Produces(MediaType.TEXT_PLAIN)
     public String getAssetViewUrl(@PathParam("id") String id)
     {
-        return assetService.getAssetUrl(id, true);
+        try {
+            return assetService.getAssetUrl(id, true);
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @DELETE
     @Path(PSRestServicePathConstants.DELETE_PATH)
-    public void delete(@PathParam(PSRestServicePathConstants.ID_PATH_PARAM)String id) 
-        throws com.percussion.share.service.IPSDataService.DataServiceDeleteException
+    public void delete(@PathParam(PSRestServicePathConstants.ID_PATH_PARAM)String id)
     {
-        delete(id, false);
+        try {
+            delete(id, false);
+        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSNotFoundException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     @GET
     @Path("/forceDelete/{id}")
     public void forceDelete(@PathParam(PSRestServicePathConstants.ID_PATH_PARAM) String id)
     {
-        delete(id, true);
+        try {
+            delete(id, true);
+        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSNotFoundException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     @DELETE
     @Path("/purge/{id}")
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSNoContent purgeItem(@PathParam("id") String id) {
-        delete(id, false, true);
-        return new PSNoContent("Purged asset with id: " + id);
+        try {
+            delete(id, false, true);
+            return new PSNoContent("Purged asset with id: " + id);
+        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSNotFoundException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     @DELETE
     @Path("/forcePurge/{id}")
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSNoContent forcePurgeItem(@PathParam("id") String id) {
-        delete(id, true, true);
-        return new PSNoContent("Purged asset with id: " + id);
+        try {
+            delete(id, true, true);
+            return new PSNoContent("Purged asset with id: " + id);
+        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSNotFoundException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @GET
     @Path(PSRestServicePathConstants.LOAD_PATH)
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public PSAsset load(@PathParam(PSRestServicePathConstants.ID_PATH_PARAM) String id) 
-        throws com.percussion.share.service.IPSDataService.DataServiceLoadException
+    public PSAsset load(@PathParam(PSRestServicePathConstants.ID_PATH_PARAM) String id)
     {
-        return assetService.load(id);
+        try {
+            return assetService.load(id);
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
     @Path(PSRestServicePathConstants.SAVE_PATH)
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public PSAsset save(PSAsset object) throws PSBeanValidationException,
-            com.percussion.share.service.IPSDataService.DataServiceSaveException
+    public PSAsset save(PSAsset object)
     {
-        return assetService.save(object);
+        try {
+            return assetService.save(object);
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
@@ -371,23 +491,27 @@ public class PSAssetRestService
     @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_JSON})
     public PSValidationErrors validate(PSAsset object)
     {
-        return assetService.validate(object);
+        try {
+            return assetService.validate(object);
+        } catch (PSValidationException | IPSDataService.DataServiceSaveException e) {
+           throw new WebApplicationException(e);
+        }
     }
 
     @GET
     @Path(PSRestServicePathConstants.FIND_PATH)
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSAssetSummary find(@PathParam(PSRestServicePathConstants.ID_PATH_PARAM) String id)
-            throws com.percussion.share.service.IPSDataService.DataServiceLoadException,
-            com.percussion.share.service.IPSDataService.DataServiceNotFoundException
     {
-        return assetService.find(id);
+        try {
+            return assetService.find(id);
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     public List<PSAssetSummary> findAll()
-            throws com.percussion.share.service.IPSDataService.DataServiceLoadException,
-            com.percussion.share.service.IPSDataService.DataServiceNotFoundException
-    {
+            throws PSDataServiceException {
         return assetService.findAll();
     }
     
@@ -396,31 +520,42 @@ public class PSAssetRestService
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSAssetFolderRelationship addAssetToFolder(PSAssetFolderRelationship assetFolderRelationship)
-           throws PSDataServiceException
     {
-        assetService.addAssetToFolder(assetFolderRelationship);
-        
-        // update the relationship with the real asset id
-        PSAssetSummary sum = assetService.find(assetFolderRelationship.getAssetId());
-        assetFolderRelationship.setAssetId(sum.getId());
-        
-        return assetFolderRelationship;
+        try {
+            assetService.addAssetToFolder(assetFolderRelationship);
+
+            // update the relationship with the real asset id
+            PSAssetSummary sum = assetService.find(assetFolderRelationship.getAssetId());
+            assetFolderRelationship.setAssetId(sum.getId());
+
+            return assetFolderRelationship;
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @POST
     @Path("/remove/")
     @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public void remove(PSAssetFolderRelationship assetFolderRelationship) throws PSDataServiceException
+    public void remove(PSAssetFolderRelationship assetFolderRelationship)
     {
-        remove(assetFolderRelationship, false);
+        try {
+            remove(assetFolderRelationship, false);
+        } catch (IPSItemWorkflowService.PSItemWorkflowServiceException | PSDataServiceException | PSNotFoundException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @POST
     @Path("/forceRemove/")
     @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public void forceRemove(PSAssetFolderRelationship assetFolderRelationship) throws PSDataServiceException
+    public void forceRemove(PSAssetFolderRelationship assetFolderRelationship)
     {
-        remove(assetFolderRelationship, true);
+        try {
+            remove(assetFolderRelationship, true);
+        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSNotFoundException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @GET
@@ -428,15 +563,19 @@ public class PSAssetRestService
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSNoContent validateDelete(@PathParam(PSRestServicePathConstants.ID_PATH_PARAM) String id)
     {
-        String opName = "validateDelete";
-        PSValidationErrorsBuilder builder = 
-            validateParameters(opName).rejectIfBlank("id", id).throwIfInvalid();
-        
-        validateForDelete(id, builder);  
+        try {
+            String opName = "validateDelete";
+            PSValidationErrorsBuilder builder =
+                    validateParameters(opName).rejectIfBlank("id", id).throwIfInvalid();
 
-        PSNoContent noContent =  new PSNoContent(opName);
-        noContent.setResult("SUCCESS");
-        return noContent;
+            validateForDelete(id, builder);
+
+            PSNoContent noContent = new PSNoContent(opName);
+            noContent.setResult("SUCCESS");
+            return noContent;
+        } catch (PSValidationException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSNotFoundException e) {
+           throw new WebApplicationException(e);
+        }
     }
     
     @GET
@@ -450,10 +589,21 @@ public class PSAssetRestService
      */
     public Collection<PSFormSummary> getForms(@PathParam("site") String site)
     {
-        List<PSFormSummary> sums = new ArrayList<PSFormSummary>();
-        
-        Map<String, PSFormSummary> formAssetSums = getPublishedForms();
-        List<PSFormSummary> formDataSums = formDataService.getAllFormData(site);
+        List<PSFormSummary> sums = new ArrayList<>();
+
+        Map<String, PSFormSummary> formAssetSums;
+        try {
+            formAssetSums = getPublishedForms();
+        } catch (PSAssetServiceException | IPSGenericDao.LoadException | PSValidationException e) {
+            throw new WebApplicationException(e);
+        }
+
+        List<PSFormSummary> formDataSums;
+        try {
+            formDataSums = formDataService.getAllFormData(site);
+        } catch (IPSFormDataService.PSFormDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
         for (PSFormSummary formDataSum : formDataSums)
         {
             String name = formDataSum.getName().toLowerCase();
@@ -482,7 +632,11 @@ public class PSAssetRestService
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSNoContent updateAsset(@PathParam("pageId")String pageId, @PathParam("assetId")String assetId)
     {
-        assetService.updateAsset(pageId, assetId);
+        try {
+            assetService.updateAsset(pageId, assetId);
+        } catch (PSAssetServiceException e) {
+            throw new WebApplicationException(e);
+        }
         return new PSNoContent();
     }
     
@@ -504,7 +658,11 @@ public class PSAssetRestService
     @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public String shareLocalContent(@PathParam("name")String name, @PathParam("path") String path, PSAssetWidgetRelationship awRel) 
     {
-        return assetService.shareLocalContent(name, path, awRel);
+        try {
+            return assetService.shareLocalContent(name, path, awRel);
+        } catch (PSAssetServiceException e) {
+            throw new WebApplicationException(e);
+        }
     }
     
     @GET
@@ -513,36 +671,47 @@ public class PSAssetRestService
     @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public PSUnusedAssetSummaryList getUnusedAssets(@PathParam("pageId") String pageId)
     {
-        PSValidationErrorsBuilder builder = 
-            validateParameters("unusedAssets").rejectIfBlank("pageId", pageId);
-        builder.throwIfInvalid();
-        
-        PSPage page = pageService.load(pageId);
+        PSPage page;
+        try {
+            PSValidationErrorsBuilder builder =
+                    validateParameters("unusedAssets").rejectIfBlank("pageId", pageId);
+            builder.throwIfInvalid();
+
+            page = pageService.load(pageId);
+
         PSTemplate template = templateService.load(page.getTemplateId());
         Set<PSOrphanedAssetSummary> unused = getOrphanedAssetsSummaries(page, template);
         
-        List<PSUnusedAssetSummary> unusedAssets = new ArrayList<PSUnusedAssetSummary>();
-        Map<String, Integer> assetOcurrences = new HashMap<String, Integer>();
+        List<PSUnusedAssetSummary> unusedAssets = new ArrayList<>();
+        Map<String, Integer> assetOcurrences = new HashMap<>();
         for(PSOrphanedAssetSummary orphanedAsset : unused)
         {
-            PSDataItemSummary summary = assetService.load(orphanedAsset.getId(), true);
-            unusedAssets.add(getUnusedAssetSummary(summary, assetOcurrences, orphanedAsset));
+            try {
+                PSDataItemSummary summary = assetService.load(orphanedAsset.getId(), true);
+                unusedAssets.add(getUnusedAssetSummary(summary, assetOcurrences, orphanedAsset));
+            } catch (PSDataServiceException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
+            }
         }
         Collections.sort(unusedAssets);
         
         return new PSUnusedAssetSummaryList(unusedAssets);
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
+
     }
 
     @POST
     @Path("/createWidgetAsset")
     @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public void createWidgetAsset(PSCreateAssetRequest cvtReq)
-    {
+    public void createWidgetAsset(PSCreateAssetRequest cvtReq) {
+     try{
         notNull(cvtReq);
 
         // nothing to do if we have no original asset
-        if (isBlank(cvtReq.getOriginalAssetId()))
-        {
+        if (isBlank(cvtReq.getOriginalAssetId())) {
             return;
         }
         //Make sure we have non revision specific guid for the owner.
@@ -551,16 +720,15 @@ public class PSAssetRestService
         loc.setRevision(-1);
         guid = idMapper.getGuid(loc);
         cvtReq.setOwnerId(guid.toString());
-        
+
         boolean isPage = pageService.isPageItem(cvtReq.getOwnerId());
         validateOwnerIsCheckedOut(cvtReq.getOwnerId(), isPage);
-        
+
         PSItemStatus status = null;
-        if(isPage)
-        {
+        if (isPage) {
             status = contentWs.prepareForEdit(idMapper.getGuid(cvtReq.getOwnerId()));
         }
-        
+
         PSAsset richText = assetService.createAssetFromSourceAsset(cvtReq.getOriginalAssetId(),
                 cvtReq.getTargetAssetType());
 
@@ -568,15 +736,16 @@ public class PSAssetRestService
                 cvtReq.getOwnerId(), cvtReq.getWidgetId(), cvtReq.getWidgetName(),
                 cvtReq.isSharedAsset());
 
-        if (cvtReq.isSharedAsset())
-        {
+        if (cvtReq.isSharedAsset()) {
             itemWorkflowService.transition(richText.getId(), IPSItemWorkflowService.TRANSITION_TRIGGER_APPROVE);
         }
 
-        if(isPage)
-        {
+        if (isPage) {
             contentWs.releaseFromEdit(Arrays.asList(status), false);
         }
+    } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+         throw new WebApplicationException(e);
+     }
     }
 
     /**
@@ -591,8 +760,8 @@ public class PSAssetRestService
      *            asset is a page. If <code>false</code> it indicates that the
      *            owner of the asset is a template.
      */
-    private void validateOwnerIsCheckedOut(String ownerId, boolean isPage)
-    {
+    private void validateOwnerIsCheckedOut(String ownerId, boolean isPage) throws IPSItemWorkflowService.PSItemWorkflowServiceException, PSValidationException, PSAssetServiceException {
+
         if(!isPage)
         {
             return;
@@ -622,8 +791,7 @@ public class PSAssetRestService
      * @return a {@link PSUnusedAssetSummary}, never <code>null</code>.
      */
     private PSUnusedAssetSummary getUnusedAssetSummary(PSDataItemSummary summary, Map<String, Integer> assetOcurrences,
-            PSOrphanedAssetSummary orphanedAsset)
-    {
+            PSOrphanedAssetSummary orphanedAsset) throws PSDataServiceException {
         PSUnusedAssetSummary unused = new PSUnusedAssetSummary(summary);
         unused.setLabel(getContentTypeLabel(summary.getType()));
         unused.setTitle(getAssetName(unused, orphanedAsset.getWidgetName(), assetOcurrences));
@@ -669,8 +837,7 @@ public class PSAssetRestService
      * @return a {@link String} representing the path to the asset icon. May be
      *         blank.
      */
-    private String getWidgetIcon(String type)
-    {
+    private String getWidgetIcon(String type) throws PSDataServiceException {
         IPSWidgetService widgetService = (IPSWidgetService) getWebApplicationContext().getBean("widgetService");
         
         List<PSWidgetSummary> widgetList = widgetService.findAll();
@@ -759,14 +926,12 @@ public class PSAssetRestService
      * @param id never blank.
      * @param force <code>true</code> to delete without validation, <code>false</code> to validate before deleting.
      */
-    private void delete(String id, boolean force)
-    {
+    private void delete(String id, boolean force) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, PSNotFoundException {
         // not purging is recycling.
         delete(id, force, false);
     }
 
-    private void delete(String id, boolean force, boolean purgeItem)
-    {
+    private void delete(String id, boolean force, boolean purgeItem) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, PSNotFoundException {
         PSValidationErrorsBuilder builder = validateParameters("delete").rejectIfBlank("id", id).throwIfInvalid();
 
         if (!force && !purgeItem)
@@ -790,8 +955,7 @@ public class PSAssetRestService
      * 
      * @throws PSDataServiceException if an error occurs.
      */
-    private void remove(PSAssetFolderRelationship assetFolderRelationship, boolean force) throws PSDataServiceException
-    {
+    private void remove(PSAssetFolderRelationship assetFolderRelationship, boolean force) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, PSNotFoundException {
         PSValidationErrorsBuilder builder = validateParameters("remove").rejectIfNull("assetFolderRelationship",
                 assetFolderRelationship).throwIfInvalid();
         
@@ -823,8 +987,7 @@ public class PSAssetRestService
      * @param id the asset to validate, assumed not <code>null</code>.
      * @param builder used to capture and throw validation errors, assumed not <code>null</code>.
      */
-    private void validateForDelete(String id, PSValidationErrorsBuilder builder)
-    {
+    private void validateForDelete(String id, PSValidationErrorsBuilder builder) throws IPSItemWorkflowService.PSItemWorkflowServiceException, PSValidationException, PSNotFoundException {
         if (!itemWorkflowService.isModifiableByUser(id))
         {
             builder.reject("asset.deleteNotAuthorized", "The current user is not authorized to delete this asset");
@@ -853,9 +1016,8 @@ public class PSAssetRestService
      * @return map of form name to summary object, never <code>null</code>, may be empty.  The key of this map is the
      * name of the form in lower-case.
      */
-    private Map<String, PSFormSummary> getPublishedForms()
-    {
-        Map<String, PSFormSummary> sumMap = new HashMap<String, PSFormSummary>();
+    private Map<String, PSFormSummary> getPublishedForms() throws PSAssetServiceException, IPSGenericDao.LoadException, PSValidationException {
+        Map<String, PSFormSummary> sumMap = new HashMap<>();
         
         Map<Long, PSAsset> assetMap = new HashMap<Long, PSAsset>();
         Collection<Integer> assetIds = new ArrayList<Integer>();
@@ -886,8 +1048,7 @@ public class PSAssetRestService
      * 
      * @return a new form summary object, never <code>null</code>.
      */
-    private PSFormSummary createFormSummary(PSAsset asset)
-    {
+    private PSFormSummary createFormSummary(PSAsset asset) throws PSValidationException {
         PSFormSummary sum = new PSFormSummary();
         
         String name = asset.getName();

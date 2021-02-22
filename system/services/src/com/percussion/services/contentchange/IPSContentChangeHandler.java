@@ -25,6 +25,9 @@ package com.percussion.services.contentchange;
 
 import com.percussion.cms.PSEditorChangeEvent;
 import com.percussion.cms.PSRelationshipChangeEvent;
+import com.percussion.services.error.PSNotFoundException;
+import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSDataServiceException;
 
 /**
  * Handle changes to items in the system
@@ -40,13 +43,13 @@ public interface IPSContentChangeHandler
     * 
     * @param e The event, not <code>null</code>.
     */
-   public void handleEvent(PSEditorChangeEvent e);
+   public void handleEvent(PSEditorChangeEvent e) throws PSDataServiceException, PSNotFoundException ;
 
    /**
     * Handle the supplied change to a relationship
     *  
     * @param e The event, not <code>null</code>.
     */
-   public void handleEvent(PSRelationshipChangeEvent e);
+   public void handleEvent(PSRelationshipChangeEvent e) throws PSDataServiceException, PSNotFoundException;
 
 }

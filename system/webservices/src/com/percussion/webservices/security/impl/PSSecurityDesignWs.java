@@ -32,6 +32,7 @@ import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSCatalogException;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSDesignGuid;
 import com.percussion.services.locking.IPSObjectLockService;
@@ -53,8 +54,8 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
-import com.percussion.utils.security.PSSecurityCatalogException;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.webservices.IPSWebserviceErrors;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorResultsException;
@@ -788,7 +789,7 @@ public class PSSecurityDesignWs extends PSSecurityBaseWs implements
                {
                   s = siteMgr.getSummaries(objectType);   
                }
-               catch (PSCatalogException e)
+               catch (PSCatalogException | PSNotFoundException e)
                {
                   s = new ArrayList<IPSCatalogSummary>();
                }

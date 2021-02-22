@@ -304,7 +304,7 @@ public class PSExtensionParamsHelper {
     @SuppressWarnings("unchecked")
     protected void doParameters()
     {  
-       extensionParameters = new HashMap<String, String>();
+       extensionParameters = new HashMap<>();
        
        if (params != null)
        {

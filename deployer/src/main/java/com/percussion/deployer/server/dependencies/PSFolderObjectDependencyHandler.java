@@ -49,6 +49,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.IPSHtmlParameters;
 import org.w3c.dom.Element;
 
@@ -98,7 +99,7 @@ public abstract class PSFolderObjectDependencyHandler
       if (!dep.getObjectType().equals(getType()))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       PSFolder folder = getFolderObject(getRelationshipProcessor(tok),
          getComponentProcessor(tok), dep.getDependencyId());
@@ -140,7 +141,7 @@ public abstract class PSFolderObjectDependencyHandler
          PSFolder newFolder = (PSFolder)srcFolder.clone();
 
          // see if target exists and if so, update with source folder
-         Map<String, String> params = new HashMap<String, String>();
+         Map<String, String> params = new HashMap<>();
          // disable nav folder effect when creating folder relationships
          params.put(IPSHtmlParameters.RXS_DISABLE_NAV_FOLDER_EFFECT, "y");
          PSRelationshipProcessor relProc = getRelationshipProcessor(tok, 
@@ -179,7 +180,7 @@ public abstract class PSFolderObjectDependencyHandler
             action = PSTransactionSummary.ACTION_CREATED;
             if (parentSum != null)
             {
-               List<PSLocator> children = new ArrayList<PSLocator>(1);
+               List<PSLocator> children = new ArrayList<>(1);
                children.add(newFolder.getLocator());
                relProc.add(FOLDER_TYPE, null, children, parentSum.getLocator());
             }
@@ -305,15 +306,14 @@ public abstract class PSFolderObjectDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    protected List getChildDependencies(PSSecurityToken tok,
-      String path, int folderDepType) throws PSDeployException
-   {
+      String path, int folderDepType) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
       if (path == null || path.trim().length() == 0)
          throw new IllegalArgumentException("path may not be null or empty");
 
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
 
       PSRelationshipProcessor proc = getRelationshipProcessor(tok);
       PSComponentSummary sum = getFolderSummary(proc, path);
@@ -548,7 +548,7 @@ public abstract class PSFolderObjectDependencyHandler
       Iterator result = null;
       if (exists)
       {
-         List<String> paths = new ArrayList<String>();
+         List<String> paths = new ArrayList<>();
          Iterator children = getChildFolderSummaries(processor, loc);
          while (children.hasNext())
          {
@@ -586,7 +586,7 @@ public abstract class PSFolderObjectDependencyHandler
 
       try
       {
-         List<PSComponentSummary> summaries = new ArrayList<PSComponentSummary>();
+         List<PSComponentSummary> summaries = new ArrayList<>();
          PSComponentSummary[] sums = processor.getChildren(FOLDER_TYPE,
             locator);
          for (int i = 0; i < sums.length; i++)
@@ -628,7 +628,7 @@ public abstract class PSFolderObjectDependencyHandler
 
       try
       {
-         List<PSComponentSummary> summaries = new ArrayList<PSComponentSummary>();
+         List<PSComponentSummary> summaries = new ArrayList<>();
          PSComponentSummary[] sums = processor.getChildren(FOLDER_TYPE,
             locator);
          for (int i = 0; i < sums.length; i++)
@@ -792,8 +792,7 @@ public abstract class PSFolderObjectDependencyHandler
     */
    protected PSDependency getDisplayFormatDep(PSSecurityToken tok,
       PSComponentProcessorProxy proc, String formatId)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (proc == null)
@@ -919,7 +918,7 @@ public abstract class PSFolderObjectDependencyHandler
     */
    private String[] parseFolderPath(String path)
    {
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
 
       StringTokenizer tok = new StringTokenizer(path, PATH_SEP);
       while (tok.hasMoreTokens())

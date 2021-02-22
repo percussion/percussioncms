@@ -156,7 +156,7 @@ public class Resource extends CADFType
     {
         if (addresses == null)
         {
-            addresses = new ArrayList<EndPoint>();
+            addresses = new ArrayList<>();
         }
         addresses.add(endpoint);
     }
@@ -165,7 +165,7 @@ public class Resource extends CADFType
     {
         if (attachments == null)
         {
-            attachments = new ArrayList<Attachment>();
+            attachments = new ArrayList<>();
         }
         attachments.add(attachment);
     }

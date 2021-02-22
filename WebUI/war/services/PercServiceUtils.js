@@ -127,8 +127,7 @@
      */
     function makeJsonRequest(url, type, sync, callback, dataObject, abortCallback, timeout) {
         var self = this;
-        var tenantId = $.isFunction($.getCm1License) ? $.getCm1License() : "";
-        var version = $.isFunction($.getCm1Version) ? $.getCm1Version() : "";
+        var version = $.isFunction($.getCMSVersion) ? $.getCMSVersion() : "";
         var ajaxTimeout = $.perc_utils.percParseInt(timeout);
         var args = {
             dataType: 'json',
@@ -136,7 +135,7 @@
             contentType: 'application/json',
             type: type,
             url: url,
-            headers: {"perc-tid": tenantId, "perc-version": version},
+            headers: {"perc-version": version},
             success: function (data, textstatus) {
                 var result = {
                     data: data,
@@ -146,7 +145,7 @@
             },
             error: function (request, textstatus, error) {
                 // look for status 204 which should not be an error
-                if (request.status == 204 || request.status == 1223) {
+                if (request.status === 204 || request.status === 1223) {
                     var result = {
                         data: {},
                         textstatus: request.statusText
@@ -155,7 +154,7 @@
                     return;
                 }
                 else if (request.status > 0) {
-                    var result = {
+                     let result = {
                         request: request,
                         textstatus: textstatus,
                         error: error
@@ -182,8 +181,7 @@
      */
     function makeRequest(url, type, sync, callback, dataObject, contentType, dataType, noEscape, abortCallback) {
         var self = this;
-        var tenantId = $.isFunction($.getCm1License) ? $.getCm1License() : "";
-        var version = $.isFunction($.getCm1Version) ? $.getCm1Version() : "";
+        var version = $.isFunction($.getCMSVersion) ? $.getCMSVersion() : "";
         if (dataType == null || typeof dataType == "undefined") {
             dataType = "text";
 
@@ -202,7 +200,7 @@
             contentType: contentType,
             type: type,
             url: (noEscape) ? url : escape(url),
-            headers: {"perc-tid": tenantId, "perc-version": version},
+            headers: {"perc-version": version},
             success: function (data, textstatus) {
                 var result = {
                     data: data,
@@ -212,7 +210,7 @@
             },
             error: function (request, textstatus, error) {
                 // look for status 204 which should not be an error
-                if (request.status == 204 || request.status == 1223) {
+                if (request.status === 204 || request.status === 1223) {
                     var result = {
                         data: {},
                         textstatus: request.statusText
@@ -221,7 +219,7 @@
                     return;
                 }
                 else if (request.status > 0) {
-                    var result = {
+                    let result = {
                         request: request,
                         textstatus: textstatus,
                         error: error
@@ -266,8 +264,7 @@
      */
     async function makeXdmXmlRequest(servicebase, url, type, callback, dataObject) {
         let self = this;
-        let tenantId = $.isFunction($.getCm1License) ? $.getCm1License() : "";
-        let version = $.isFunction($.getCm1Version) ? $.getCm1Version() : "";
+        let version = $.isFunction($.getCMSVersion) ? $.getCMSVersion() : "";
 
         if (null === callback || 'undefined' === typeof (callback)) {
             alert("Callback cannot be null or undefined");
@@ -299,7 +296,6 @@
             headers: {
                 'Content-Type': 'application/json',
                 "Accept": "application/xml",
-                "perc-tid": tenantId,
                 "perc-version": version
             },
             redirect: 'follow', // manual, *follow, error
@@ -359,8 +355,7 @@
      */
     async function makeXdmJsonRequest(servicebase, url, type, callback, dataObject) {
         let self = this;
-        const tenantId = $.isFunction($.getCm1License) ? $.getCm1License() : "";
-        const version = $.isFunction($.getCm1Version) ? $.getCm1Version() : "";
+        const version = $.isFunction($.getCMSVersion) ? $.getCMSVersion() : "";
 
         if(null === callback || 'undefined' === typeof (callback))
 		{
@@ -400,7 +395,6 @@
             headers: {
                 'Content-Type': 'application/json',
                 "Accept": "application/json,text/plain",
-                "perc-tid": tenantId,
                 "perc-version": version
             },
             redirect: 'follow', // manual, *follow, error
@@ -464,8 +458,7 @@
      */
     function makeXmlRequest(url, type, sync, callback, dataString, abortCallback) {
         var self = this;
-        var tenantId = $.isFunction($.getCm1License) ? $.getCm1License() : "";
-        var version = $.isFunction($.getCm1Version) ? $.getCm1Version() : "";
+        var version = $.isFunction($.getCMSVersion) ? $.getCMSVersion() : "";
 
         var args = {
             dataType: 'xml',
@@ -473,7 +466,7 @@
             contentType: 'application/xml',
             type: type,
             url: url,
-            headers: {"perc-tid": tenantId, "perc-version": version},
+            headers: {"perc-version": version},
             success: function (data, textstatus) {
                 var result = {
                     data: data,
@@ -528,8 +521,7 @@
      */
     function makeDeleteRequest(url, sync, callback, dataString, abortCallback) {
         var self = this;
-        var tenantId = $.isFunction($.getCm1License) ? $.getCm1License() : "";
-        var version = $.isFunction($.getCm1Version) ? $.getCm1Version() : "";
+        var version = $.isFunction($.getCMSVersion) ? $.getCMSVersion() : "";
 
         var args = {
             dataType: 'text',
@@ -537,7 +529,7 @@
             contentType: 'application/xml',
             type: self.TYPE_DELETE,
             url: url,
-            headers: {"perc-tid": tenantId, "perc-version": version},
+            headers: {"perc-version": version},
             success: function (data, textstatus) {
                 var result = {
                     data: data,
@@ -577,13 +569,13 @@
      */
     function extractDefaultErrorMessage(request) {
         var buff = "";
-        if (request == null || typeof(request) == 'undefined')
+        if (request === null || typeof(request) === 'undefined')
             return "";
         //Handle responses from cross domain requests
-        if (typeof(request.responseText) == 'undefined' && typeof(request.message) != 'undefined') {
-            request["responseText"] = request.message;
+        if (typeof(request.responseText) === 'undefined' && typeof(request.message) !== 'undefined') {
+            request.responseText = request.message;
         }
-        if (request.responseText == null || request.responseText.length == 0) {
+        if (request.responseText === null || request.responseText.length === 0) {
             if (request.statusText && request.statusText !== '') {
                 return request.statusText;
             }
@@ -606,21 +598,21 @@
         catch (e) {
         }
 
-        if (error != null && error.ValidationErrors != undefined) {
+        if (error !== null && error.ValidationErrors !== undefined) {
             var verrors = error.ValidationErrors;
-            if (verrors.fieldErrors != undefined ) {
+            if (verrors.fieldErrors !== undefined ) {
                 buff += objectErrorToString(verrors.fieldErrors);
             }
-            else if (verrors.globalErrors != undefined) {
+            else if (verrors.globalErrors !== undefined) {
                 buff += objectErrorToString(verrors.globalErrors);
             }
-            else if (verrors.globalError != undefined) {
+            else if (verrors.globalError !== undefined) {
                 buff += objectErrorToString(verrors.globalError);
             }
         }
         else if (error != null) {
             if (typeof(error.defaultMessage) != 'undefined' && error.Errors)
-                error = error.Errors
+                error = error.Errors;
 
             var def = "";
             if (typeof(error.defaultMessage) != 'undefined') {
@@ -636,7 +628,7 @@
                 def = error.localizedMessage;
             }
             else if (error.Errors && typeof(error.globalError.code) != 'undefined') {
-                var prefix = request.status == 500 ? "Server Error: " : "";
+                var prefix = request.status === 500 ? "Server Error: " : "";
                 def = prefix + error.Errors.globalError.code;
             }
             buff += def;
@@ -644,24 +636,24 @@
 
         //XML section. for the moment just parse validation errors
         var xmlResponse;
-        if (typeof(request.responseText) != 'undefined' && request.responseText.indexOf('<?xml') != -1) {
+        if (typeof(request.responseText) != 'undefined' && request.responseText.indexOf('<?xml') !== -1) {
             xmlResponse = $(request.responseText);
         }
-        else if (typeof(request) == 'string' && request.indexOf('<?xml') != -1) {
+        else if (typeof(request) == 'string' && request.indexOf('<?xml') !== -1) {
             xmlResponse = $(request);
         }
         if (typeof(xmlResponse) != 'undefined' && xmlResponse.is('ValidationErrors')) {
-            if (xmlResponse.find('globalErrors').find('defaultMessage').text() != "") {
+            if (xmlResponse.find('globalErrors').find('defaultMessage').text() !== "") {
                 buff += xmlResponse.find('globalErrors').find('defaultMessage').text();
             }
-            else if (xmlResponse.find('globalError').find('defaultMessage').text() != "") {
-                buff += xmlResponse.find('globalError').find('defaultMessage').text() != "";
+            else if (xmlResponse.find('globalError').find('defaultMessage').text() !== "") {
+                buff += xmlResponse.find('globalError').find('defaultMessage').text() !== "";
             }
             else if (xmlResponse.next('defaultMessage')) {
                 buff += xmlResponse.next('defaultMessage')[0].nextSibling.nodeValue;
             }
         }
-        if (buff == "") {
+        if (buff === "") {
             buff = request.responseText;
         }
         return buff;
@@ -712,11 +704,11 @@
      */
     function extractFieldErrorCode(request) {
         var error = JSON.parse(request.responseText);
-        if (error.ValidationErrors == undefined)
+        if (error.ValidationErrors === undefined)
             return "";
 
         var verrors = error.ValidationErrors;
-        if (verrors.fieldErrors != undefined)
+        if (verrors.fieldErrors !== undefined)
             return verrors.fieldErrors.code;
 
         return "";

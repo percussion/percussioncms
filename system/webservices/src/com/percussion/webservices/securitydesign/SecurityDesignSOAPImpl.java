@@ -26,7 +26,7 @@ package com.percussion.webservices.securitydesign;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.PSSecurityCatalogException;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.webservices.IPSWebserviceErrors;
 import com.percussion.webservices.PSBaseSOAPImpl;
 import com.percussion.webservices.PSErrorResultsException;

@@ -26,24 +26,17 @@ package com.percussion.services.security.loginmods;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.security.PSSecurityProviderPool;
 import com.percussion.server.PSRequest;
-import com.percussion.services.security.IPSRoleMgr;
-import com.percussion.services.security.PSJaasUtils;
-import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.utils.security.PSSecurityCatalogException;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Map;
 
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
-import javax.security.auth.login.LoginException;
 
 import org.junit.Test;
 import org.junit.experimental.categories.Category;

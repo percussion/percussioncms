@@ -43,7 +43,7 @@ import java.util.Map;
 public class Asset
 {
     @ApiModelProperty(value = "fields")
-	private Map<String, String> fields = new HashMap<String, String>();
+	private Map<String, String> fields = new HashMap<>();
 	@ApiModelProperty(value = "id", notes = "id must match the id of the item for the same server path, usually best not to send id to server.")
 	private String id;
 	private String name;

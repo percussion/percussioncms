@@ -44,7 +44,7 @@ public class PSCacheProvider
 {
     @XmlElement(name = "Properties")
     @XmlJavaTypeAdapter(PSMapAdapter.class)
-    protected Map<String, String> properties = new HashMap<String, String>();
+    protected Map<String, String> properties = new HashMap<>();
 
     @XmlAttribute
     protected String plugin;

@@ -69,18 +69,18 @@ public class PSContentUtils
       if (mapped != null)
       {
          fieldname = "cs.m_" + mapped;
-         return new PSPair<String, Class>(fieldname, null);
+         return new PSPair<>(fieldname, null);
       }
       else if (fieldname.equals("sys_contentid")
             || fieldname.equals("sys_revision"))
       {
          fieldname = "id." + fieldname;
-         return new PSPair<String, Class>(fieldname, type.getMainClass());
+         return new PSPair<>(fieldname, type.getMainClass());
       }
       else if (isNonPropertyRef(fieldname)
             || fieldname.startsWith("sys_componentsummary."))
       {
-         return new PSPair<String, Class>(fieldname, null);
+         return new PSPair<>(fieldname, null);
       }
       if (type != null)
       {
@@ -91,12 +91,12 @@ public class PSContentUtils
             List<String> props = type.getProperties().get(clazz);
             if (props != null && props.contains(fieldname))
             {
-               return new PSPair<String, Class>(fieldname, clazz);
+               return new PSPair<>(fieldname, clazz);
             }
          }
          if (type.getSimpleChildProperties().contains(fieldname))
          {
-            return new PSPair<String, Class>(fieldname, type.getMainClass());
+            return new PSPair<>(fieldname, type.getMainClass());
          }
       }
       return null;

@@ -100,15 +100,18 @@ public class MainProxy {
                 if (timeout > 0)
                 {
                     info("Waiting %,d seconds for jetty to stop%n",timeout);
-                    LineNumberReader lin = new LineNumberReader(new InputStreamReader(s.getInputStream()));
-                    String response;
-                    while ((response = lin.readLine()) != null)
-                    {
-                        debug("Received \"%s\"",response);
-                        if ("Stopped".equals(response))
-                        {
-                            debug(String.format("Server reports itself as Stopped"));
-                            return true;
+                    try(InputStream io = s.getInputStream()) {
+                        try(InputStreamReader isr = new InputStreamReader(io)){
+                            try(LineNumberReader lin = new LineNumberReader(isr)) {
+                                String response;
+                                while ((response = lin.readLine()) != null) {
+                                    debug("Received \"%s\"", response);
+                                    if ("Stopped".equals(response)) {
+                                        debug(String.format("Server reports itself as Stopped"));
+                                        return true;
+                                    }
+                                }
+                            }
                         }
                     }
                 }

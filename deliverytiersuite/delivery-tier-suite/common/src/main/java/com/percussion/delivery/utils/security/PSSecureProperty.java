@@ -33,6 +33,7 @@ import org.jasypt.util.text.BasicTextEncryptor;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -81,46 +82,36 @@ public class PSSecureProperty
        if (validateFilePath(filepath)) {
 
            Properties props = new Properties();
-           InputStream is = null;
-           OutputStream os = null;
            boolean modified = false;
            String ky = k == null ? ERROR_VALUE : k;
 
-           try {
-               log.debug("loading properties from file: " + filepath.getAbsolutePath());
-               is = new FileInputStream(filepath);
+
+           log.debug("loading properties from file: " + filepath.getAbsolutePath());
+           try (FileInputStream is = new FileInputStream(filepath)) {
                props.load(is);
-               is.close();
-               is = null;
-               for (String regex : propnames) {
-                   String[] expandedKeys = expandMatchingKeys(regex, props);
-                   if (expandedKeys == null)
-                       continue;
-                   for (String key : expandedKeys) {
-                       boolean enc = isValueClouded((String) props.get(key));
-                       if (!enc) {
-                           props.put(key, getClouded((String) props.get(key), ky, encryptionType));
-                           modified = true;
-                       }
+           } catch (IOException e) {
+               log.error("ERROR: " + e.getMessage());
+               log.debug(e);
+           }
+           for (String regex : propnames) {
+               String[] expandedKeys = expandMatchingKeys(regex, props);
+               if (expandedKeys == null)
+                   continue;
+               for (String key : expandedKeys) {
+                   boolean enc = isValueClouded((String) props.get(key));
+                   if (!enc) {
+                       props.put(key, getClouded((String) props.get(key), ky, encryptionType));
+                       modified = true;
                    }
                }
-               if (modified) {
-                   os = new FileOutputStream(filepath);
+           }
+           if (modified) {
+               try (FileOutputStream os = new FileOutputStream(filepath)) {
                    props.store(os, "");
+               } catch (IOException e) {
+                   log.error("ERROR: " + e.getMessage());
+                   log.debug(e);
                }
-           } catch (IOException ioe) {
-               log.error(ioe.getLocalizedMessage(), ioe);
-           } finally {
-               if (is != null)
-                   try {
-                       is.close();
-                   } catch (IOException ignore) {
-                   }
-               if (os != null)
-                   try {
-                       os.close();
-                   } catch (IOException ignore) {
-                   }
            }
        }
    }
@@ -144,43 +135,30 @@ public class PSSecureProperty
         if(validateFilePath(filepath)) {
 
             Properties props = new Properties();
-            InputStream is = null;
-            OutputStream os = null;
             boolean modified = false;
-
-            try {
                 log.debug("loading properties from file: " + filepath.getAbsolutePath());
-                is = new FileInputStream(filepath);
-                props.load(is);
-                is.close();
-                is = null;
-                for (Object key : props.keySet()) {
-                    String value = (String)props.get(key);
-                    if(value!= null){
-                        if(isValueClouded(value)){
-                            props.put(key, getValue(value,null));
-                            modified=true;
-                        }
-                    }
-                    }
-
-                if (modified) {
-                    os = new FileOutputStream(filepath);
-                    props.store(os, "");
+                try(FileInputStream is = new FileInputStream(filepath)) {
+                    props.load(is);
+                } catch (IOException e) {
+                    log.error("ERROR : {}",e);
                 }
-            } catch (IOException ioe) {
-                log.error(ioe.getLocalizedMessage(), ioe);
-            } finally {
-                if (is != null)
-                    try {
-                        is.close();
-                    } catch (IOException ignore) {
+
+            for (Object key : props.keySet()) {
+                    String value = (String)props.get(key);
+                    if(value != null && isValueClouded(value)){
+                         props.put(key, getValue(value,null));
+                         modified=true;
+
                     }
-                if (os != null)
-                    try {
-                        os.close();
-                    } catch (IOException ignore) {
-                    }
+            }
+
+            if (modified) {
+                try(FileOutputStream os = new FileOutputStream(filepath)) {
+                    props.store(os, "");
+                } catch (IOException e) {
+                    log.error("ERROR: " + e.getMessage());
+                    log.debug(e);
+                }
             }
         }
     }
@@ -283,7 +261,7 @@ public class PSSecureProperty
     */
    private static String[] expandMatchingKeys(String regex, Properties props)
    {
-       List<String> results = new ArrayList<String>();
+       List<String> results = new ArrayList<>();
        Pattern pattern = Pattern.compile(regex);
        Matcher matcher = null;
        for(Object key : props.keySet())

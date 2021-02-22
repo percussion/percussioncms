@@ -39,7 +39,7 @@ public class PSMetadataBlogEntry
     public PSMetadataBlogEntry()
     {
         super();
-        this.years = new HashSet<PSMetadataBlogYear>();
+        this.years = new HashSet<>();
     }
 
     /**

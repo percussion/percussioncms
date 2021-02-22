@@ -83,7 +83,8 @@ public class PSServerInstallEndPanel extends PSAction
       {
          try
          {
-            propFile.createNewFile();
+            if(!propFile.createNewFile())
+               throw new IOException();
          }
          catch(IOException ioe)
          {
@@ -98,11 +99,18 @@ public class PSServerInstallEndPanel extends PSAction
       try
       {
          Properties prop = new Properties();
-         prop.load(new FileInputStream(strPropFile));
+
+         try(FileInputStream fis = new FileInputStream(strPropFile)) {
+            prop.load(fis);
+         }
+
          prop.setProperty(InstallUtil.RHYTHMYX_SVC_NAME, svcName);
          if (!((svcDesc == null) || (svcDesc.trim().length() == 0)))
             prop.setProperty(InstallUtil.RHYTHMYX_SVC_DESC, svcDesc);
-         prop.store(new FileOutputStream(strPropFile), null);
+
+         try(FileOutputStream fos = new FileOutputStream(strPropFile)) {
+            prop.store(fos, null);
+         }
       }
       catch(Exception excp)
       {

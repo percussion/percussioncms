@@ -31,13 +31,14 @@ import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.ToDoVulnerability;
-import com.percussion.utils.security.IPSDecryptor;
-import com.percussion.utils.security.IPSKey;
-import com.percussion.utils.security.IPSSecretKey;
-import com.percussion.utils.security.PSEncryptionKeyFactory;
+import com.percussion.security.IPSDecryptor;
+import com.percussion.security.IPSKey;
+import com.percussion.security.IPSSecretKey;
+import com.percussion.security.PSEncryptionKeyFactory;
 import com.percussion.server.IPSRequestHandler;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSResponse;
@@ -163,7 +164,9 @@ public class PSDesignerConnectionHandler implements IPSRequestHandler
          loginPw = "";
       else if (isEncrypted) { // fix bug #Rx-99-12-0016
          try {
-            loginPw = PSEncryptor.getInstance().decrypt(loginPw);
+            loginPw = PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(loginPw);
          } catch (PSEncryptionException e) {
             loginPw = eatLasagna(loginId, sessId, loginPw);
          }
@@ -244,10 +247,12 @@ public class PSDesignerConnectionHandler implements IPSRequestHandler
       if ((str == null) || (str.equals("")))
          return "";
 
-      int partone = PSLegacyEncrypter.OLD_SECURITY_KEY().hashCode();
+      int partone = PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).OLD_SECURITY_KEY().hashCode();
       int parttwo;
       if (uid == null || uid.equals(""))
-         parttwo = PSLegacyEncrypter.OLD_SECURITY_KEY2().hashCode();
+         parttwo = PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+         ).OLD_SECURITY_KEY2().hashCode();
       else
          parttwo = uid.hashCode();
 

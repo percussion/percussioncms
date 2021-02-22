@@ -44,6 +44,13 @@
   <build>
 
        <plugins>
+           <plugin>
+           <groupId>com.github.spotbugs</groupId>
+           <artifactId>spotbugs-maven-plugin</artifactId>
+               <configuration>
+                   <skip>true</skip>
+               </configuration>
+           </plugin>
       <!--
       Copies the additional distribution content over the unpacked jetty-home
       artifact contents, after the antrun execution that initially populates
@@ -118,7 +125,7 @@
 
           <execution>
             <id>unpack-perc-war</id>
-            <phase>process-resources</phase>
+            <phase>package</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
@@ -189,7 +196,7 @@
                         <artifactItem>
                             <groupId>com.oracle</groupId>
                             <artifactId>ojdbc6</artifactId>
-                            <version>${orale.version}</version>
+                            <version>${oracle.version}</version>
                             <type>jar</type>
                             <overWrite>true</overWrite>
                             <outputDirectory>${assembly-directory}/base/lib/jdbc</outputDirectory>

@@ -141,8 +141,6 @@ public class PSFileDeliveryHandler extends PSBaseDeliveryHandler
       File destination = new File(destPath);
       File directory = destination.getParentFile();
 
-      InputStream is = null;
-      OutputStream os = null;
       PSDeliveryException de = null;
       try
       {
@@ -156,16 +154,25 @@ public class PSFileDeliveryHandler extends PSBaseDeliveryHandler
                   de.getLocalizedMessage());
          }
 
-         if (item.getFile() != null)
-            is = new FileInputStream(item.getFile());
-         else
-            is = item.getResultStream();
-         os = new FileOutputStream(destination);
-
-         // Copy temp file to permanent location.
-         // a small buffer size splits the smb data sent when saving to a share.  Default for ioutils is 4096
-         // Analysis showed that windows can send a 1M smb block so we will use that size
-         copy(is,os);
+         if (item.getFile() != null) {
+            try (InputStream is = new FileInputStream(item.getFile())) {
+               try(FileOutputStream os = new FileOutputStream(destination)) {
+                  // Copy temp file to permanent location.
+                  // a small buffer size splits the smb data sent when saving to a share.  Default for ioutils is 4096
+                  // Analysis showed that windows can send a 1M smb block so we will use that size
+                  copy(is, os);
+               }
+            }
+         }else{
+            try(InputStream is = item.getResultStream()){
+               try(FileOutputStream os = new FileOutputStream(destination)) {
+                  // Copy temp file to permanent location.
+                  // a small buffer size splits the smb data sent when saving to a share.  Default for ioutils is 4096
+                  // Analysis showed that windows can send a 1M smb block so we will use that size
+                  copy(is, os);
+               }
+            }
+         }
       }
       catch (SecurityException e)
       {
@@ -182,13 +189,6 @@ public class PSFileDeliveryHandler extends PSBaseDeliveryHandler
                destination.getAbsolutePath(), (StringUtils.isBlank(e
                      .getLocalizedMessage()) ? e.getClass().getName() : e
                      .getLocalizedMessage()));
-      }
-      finally
-      {
-         IOUtils.closeQuietly(is);
-         IOUtils.closeQuietly(os);
-         
-         item.release();
       }
       if (de != null)
       {

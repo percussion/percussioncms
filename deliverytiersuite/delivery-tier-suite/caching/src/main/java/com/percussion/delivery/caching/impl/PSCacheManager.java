@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -36,8 +36,8 @@ import com.percussion.delivery.utils.security.PSSecureProperty;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.springframework.context.ApplicationContext;
@@ -76,7 +76,7 @@ public class PSCacheManager implements IPSCacheManager
     /**
      * Log for this class.
      */
-    private Log log = LogFactory.getLog(getClass());
+    private static final Logger log = LogManager.getLogger(PSCacheManager.class);
     
     /**
      * Cache configuration content. It's quietly closed once
@@ -99,7 +99,7 @@ public class PSCacheManager implements IPSCacheManager
      * qualified).
      */
     private Map<String, IPSCacheProviderPlugin> providersMap =
-        new HashMap<String, IPSCacheProviderPlugin>();
+        new HashMap<>();
     
     /**
      * Array of all provider properties who's values should be encrypted within the
@@ -150,15 +150,7 @@ public class PSCacheManager implements IPSCacheManager
     {
         this.cacheConfigStream = cacheConfigStream;
     }
-    
-    /* (non-Javadoc)
-     * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
-     */
-//    public void setApplicationContext(ApplicationContext appContext) throws BeansException
-//    {
-//        this.appContext = appContext;
-//    }
-    
+
     /**
      * @return an unmodifiable map of the providers map
      */
@@ -266,17 +258,11 @@ public class PSCacheManager implements IPSCacheManager
     {
         File config = resource.getFile();
         PSCacheConfig configObj = null;
-        InputStream is = null;
-        try
-        {
-            is = new FileInputStream(config);
+
+        try(InputStream is = new FileInputStream(config)){
             configObj = PSJaxbUtils.unmarshall(is, PSCacheConfig.class, false);    
         }
-        finally
-        {
-            if(is != null)
-                is.close();
-        }
+
         if(configObj != null)
         {
             boolean modified = false;
@@ -295,20 +281,13 @@ public class PSCacheManager implements IPSCacheManager
             }
             if(modified)
             {
-                
-                PrintStream os = null;
-                try
-                {
-                    String xml = PSJaxbUtils.marshall(configObj, false);
-                    os = new PrintStream(config);
+
+                String xml = PSJaxbUtils.marshall(configObj, false);
+                try(PrintStream os = new PrintStream(config)) {
                     os.print(format(xml));
                     os.flush();
                 }
-                finally
-                {
-                    if(os != null)
-                        os.close();
-                }
+
             }
         }
     }
@@ -397,12 +376,7 @@ public class PSCacheManager implements IPSCacheManager
             this.cacheConfig = PSJaxbUtils.unmarshall(cacheConfigStream, PSCacheConfig.class, true);
             
             log.info("Cache manager configuration loaded successfully");
-        }
-        catch (FileNotFoundException e)
-        {
-            log.error("Configuration XML file was not found", e);
-        }
-        catch (UnmarshalException e)
+        } catch (UnmarshalException e)
         {
             String message = e.getMessage();
             

@@ -74,11 +74,11 @@ public class PSCacheManagerConnector implements IPSServiceDataChangeListener
     private int maxWait = 360;
     
     // Map tasks to cache regions. Hashtable because thread safe
-    Hashtable<String, FlushTask> tasks = new Hashtable<String, FlushTask>();
+    Hashtable<String, FlushTask> tasks = new Hashtable<>();
     private final String PERC_CACHING_MANAGER_CONFIG = "/perc-caching/manager/config";
     Set<String> cacheRegions;
     
-    public static Log log = LogFactory.getLog(PSCacheManagerConnector.class);
+    public static final Log log = LogFactory.getLog(PSCacheManagerConnector.class);
     
     public PSCacheManagerConnector()
     {
@@ -323,12 +323,13 @@ public class PSCacheManagerConnector implements IPSServiceDataChangeListener
         try {
             cacheConfig = PSJaxbUtils.unmarshall(in.toString(), PSCacheConfig.class, false);
         } catch(Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e);
             return null;
         }
 
-        Set<PSCacheRegion> cacheRegions = new HashSet<PSCacheRegion>(cacheConfig.getCacheRegion());
-        HashSet<String> cacheRegionNames = new HashSet<String>(cacheRegions.size());
+        Set<PSCacheRegion> cacheRegions = new HashSet<>(cacheConfig.getCacheRegion());
+        HashSet<String> cacheRegionNames = new HashSet<>(cacheRegions.size());
 
         for(PSCacheRegion cacheRegion : cacheRegions)
         {
@@ -415,13 +416,15 @@ public class PSCacheManagerConnector implements IPSServiceDataChangeListener
                     try {
                         doFlushRequest();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        log.error(e.getMessage());
+                        log.debug(e);
                     }
                     active = false;
                 }
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException ignore) {
+
                 }
             }
         }
@@ -442,7 +445,7 @@ public class PSCacheManagerConnector implements IPSServiceDataChangeListener
             Client client = getHttpClient();
 
             WebTarget webTarget = client.target(cacheManagerHost + "/perc-caching/manager/invalidate");
-            Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML).header("perc-tid", "1");
+            Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML);
             Response response = invocationBuilder.post(Entity.text(reqString));
 
             final HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder().build();

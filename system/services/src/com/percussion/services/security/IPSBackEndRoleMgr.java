@@ -28,7 +28,7 @@ import com.percussion.services.security.data.PSCommunity;
 import com.percussion.services.security.data.PSBackEndRole;
 import com.percussion.services.security.data.PSCommunityRoleAssociation;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSPrincipalAttribute;
+import com.percussion.security.IPSPrincipalAttribute;
 
 import java.util.Collection;
 import java.util.List;

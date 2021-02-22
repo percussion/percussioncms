@@ -54,6 +54,7 @@ import com.percussion.design.objectstore.PSProperty;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.IPSHtmlParameters;
 
 import java.util.ArrayList;
@@ -92,8 +93,7 @@ public abstract class PSSearchObjectDependencyHandler
 
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -132,12 +132,7 @@ public abstract class PSSearchObjectDependencyHandler
                childDeps.add(dfDep);
          }
       }
-      catch (PSCmsException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
-      }
-      catch (PSUnknownNodeTypeException e)
+      catch (PSCmsException | PSNotFoundException | PSUnknownNodeTypeException e)
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
@@ -209,12 +204,7 @@ public abstract class PSSearchObjectDependencyHandler
 
          return deps.iterator();
       }
-      catch (PSCmsException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
-      }
-      catch (PSUnknownNodeTypeException e)
+      catch (PSCmsException | PSUnknownNodeTypeException e)
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
@@ -648,8 +638,7 @@ public abstract class PSSearchObjectDependencyHandler
     * @throws PSDeployException
     */
    private List<PSDependency> getSystemFieldDeps(PSSecurityToken tok,
-         PSSearch search) throws PSDeployException
-   {
+         PSSearch search) throws PSDeployException, PSNotFoundException {
       List<PSDependency> deps = new ArrayList<PSDependency>();
       List<String[]> childList = new ArrayList<String[]>();
       Iterator fields = getSystemDefFields(search, false).entrySet().iterator();

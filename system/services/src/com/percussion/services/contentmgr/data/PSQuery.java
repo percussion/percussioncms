@@ -91,18 +91,18 @@ public class PSQuery implements Query
     * Result fields to return from the query. The query may take the specified
     * field "*" which indicates that it should return nodes
     */
-   private List<PSQueryNodeIdentifier> m_projection = new ArrayList<PSQueryNodeIdentifier>();
+   private List<PSQueryNodeIdentifier> m_projection = new ArrayList<>();
 
    /**
     * The content types that are filtered for in the query
     */
-   private List<PSQueryNodeIdentifier> m_typeConstraints = new ArrayList<PSQueryNodeIdentifier>();
+   private List<PSQueryNodeIdentifier> m_typeConstraints = new ArrayList<>();
 
    /**
     * The fields that should be used to order the results, never <code>null</code>
     * after construction.
     */
-   private List<PSPair<PSQueryNodeIdentifier, SortOrder>> m_sortFields = new ArrayList<PSPair<PSQueryNodeIdentifier, SortOrder>>();
+   private List<PSPair<PSQueryNodeIdentifier, SortOrder>> m_sortFields = new ArrayList<>();
 
    /**
     * The initial tree of query nodes used to construct the actual database
@@ -212,7 +212,7 @@ public class PSQuery implements Query
          List<PSPair<PSQueryNodeIdentifier, SortOrder>> sortFields)
    {
       if (sortFields == null)
-         m_sortFields = new ArrayList<PSPair<PSQueryNodeIdentifier, SortOrder>>();
+         m_sortFields = new ArrayList<>();
       else
          m_sortFields = sortFields;
    }
@@ -288,7 +288,7 @@ public class PSQuery implements Query
       boolean first = true;
 
       rval.append("new map("); //$NON-NLS-1$
-      Set<String> seen = new HashSet<String>();
+      Set<String> seen = new HashSet<>();
       for (String col : columns)
       {
          // Skip jcr:path, synthetic value
@@ -460,10 +460,10 @@ public class PSQuery implements Query
     */
    public PSRowComparator getSorter()
    {
-      List<PSPair<String, Boolean>> comparisons = new ArrayList<PSPair<String, Boolean>>();
+      List<PSPair<String, Boolean>> comparisons = new ArrayList<>();
       for (PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder> sf : m_sortFields)
       {
-         comparisons.add(new PSPair<String, Boolean>(sf.getFirst().getName(),
+         comparisons.add(new PSPair<>(sf.getFirst().getName(),
                sf.getSecond().equals(PSQuery.SortOrder.ASC)));
       }
 

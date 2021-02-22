@@ -36,11 +36,11 @@ import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSContentItemUtils;
 import com.percussion.share.service.IPSIdMapper;
-import com.percussion.share.service.exception.PSPropertiesValidationException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -48,7 +48,11 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.Validate.isTrue;
@@ -60,7 +64,7 @@ public class PSAssetDao implements IPSAssetDao
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSAssetDao.class);
+    public static Logger log = LogManager.getLogger(PSAssetDao.class);
     
     private IPSContentItemDao contentItemDao;
     private IPSContentMgr contentMgr;
@@ -76,18 +80,15 @@ public class PSAssetDao implements IPSAssetDao
     }
 
     
-    public IPSItemSummary addItemToPath(IPSItemSummary item, String folderPath)
-    {
+    public IPSItemSummary addItemToPath(IPSItemSummary item, String folderPath) throws PSDataServiceException {
         return contentItemDao.addItemToPath(item, folderPath);
     }
 
-    public void removeItemFromPath(IPSItemSummary item, String folderPath)
-    {
+    public void removeItemFromPath(IPSItemSummary item, String folderPath) throws PSDataServiceException {
         contentItemDao.removeItemFromPath(item, folderPath);
     }    
 
-    public void delete(String id) throws com.percussion.share.dao.IPSGenericDao.DeleteException
-    {
+    public void delete(String id) throws PSDataServiceException {
         // Local content is not in a folder, also orphaned content.  Both of these types of asset should
         // be able to be deleted without validation.  Local content validation is based upon the page.
         boolean localOrOrphanedContent=false;
@@ -106,31 +107,23 @@ public class PSAssetDao implements IPSAssetDao
                 
         } catch (Exception e)
         {
-          log.error("Error trying to find folder paths for item id " + id);
+          log.error("Error trying to find folder paths for item id {}",id);
         }
-        
-        if (!localOrOrphanedContent)
-        {
-            PSPropertiesValidationException pve = new PSPropertiesValidationException(null,"delete");
-            contentItemDao.validateDelete(id, pve);
-            pve.throwIfInvalid();
-        }
+
         contentItemDao.delete(id);
         if (StringUtils.isNotBlank(itemName))
         {
             String currentUser = (String)PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
-            log.info(itemName + " has been deleted by: " + currentUser);
+            log.info( "{} has been deleted by: {} ",itemName,  currentUser);
         }
         PSNotificationHelper.notifyEvent(EventType.ASSET_DELETED, id);
     }
 
-    public PSAsset find(String id) throws com.percussion.share.dao.IPSGenericDao.LoadException
-    {
+    public PSAsset find(String id) throws PSDataServiceException {
         return find(id, false);
     }
 
-    public PSAsset find(String id, boolean isSummary) throws com.percussion.share.dao.IPSGenericDao.LoadException
-    {
+    public PSAsset find(String id, boolean isSummary) throws PSDataServiceException {
         PSContentItem contentItem = contentItemDao.find(id, isSummary);
         if (contentItem == null) return null;
         PSAsset asset = createAsset(contentItem);
@@ -140,23 +133,20 @@ public class PSAssetDao implements IPSAssetDao
     public List<PSAsset> findAll() throws com.percussion.share.dao.IPSGenericDao.LoadException
     {
         // TODO Auto-generated method stub
-        //return null;
         throw new UnsupportedOperationException("findAll is not yet supported");
     }
 
-    public synchronized PSAsset save(PSAsset object) throws com.percussion.share.dao.IPSGenericDao.SaveException
-    {
+    public synchronized PSAsset save(PSAsset object) throws PSDataServiceException {
         PSContentItem contentItem = new PSContentItem();
         PSContentItemUtils.copyProperties(object, contentItem);
         contentItem = contentItemDao.save(contentItem);
         return createAsset(contentItem);
     }
 
-    public Collection<PSAsset> findByTypeAndWf(String type, int workflowId, int stateId)
-    {
+    public Collection<PSAsset> findByTypeAndWf(String type, int workflowId, int stateId) throws LoadException {
         isTrue(isNotBlank(type), "type may not be blank");
         
-        Map<String, String> whereFields = new HashMap<String, String>();
+        Map<String, String> whereFields = new HashMap<>();
         whereFields.put("sys_workflowid", String.valueOf(workflowId));
         if (stateId != -1)
         {
@@ -166,22 +156,20 @@ public class PSAssetDao implements IPSAssetDao
         return find(type, whereFields);
     }
     
-    public Collection<PSAsset> findByTypeAndName(String type, String name)
-    {
+    public Collection<PSAsset> findByTypeAndName(String type, String name) throws LoadException {
         isTrue(isNotBlank(type), "type may not be blank");
         isTrue(isNotBlank(name), "name may not be blank");
         
-        Map<String, String> whereFields = new HashMap<String, String>();
+        Map<String, String> whereFields = new HashMap<>();
         whereFields.put("sys_title", name);
                 
         return find(type, whereFields);
     }
     
-    public Collection<PSAsset> findByType(String type)
-    {
+    public Collection<PSAsset> findByType(String type) throws LoadException {
         isTrue(isNotBlank(type), "type may not be blank");
         
-        Map<String, String> whereFields = new HashMap<String, String>();
+        Map<String, String> whereFields = new HashMap<>();
                 
         return find(type, whereFields);
     }
@@ -200,16 +188,21 @@ public class PSAssetDao implements IPSAssetDao
      * @param whereFields map of where field -> value, assumed not <code>null</code>.
      * @return collection of <code>PSAsset</code> objects, never <code>null</code>.
      */
-    private Collection<PSAsset> find(String type, Map<String, String> whereFields)
-    {
+    private Collection<PSAsset> find(String type, Map<String, String> whereFields) throws LoadException {
     	
-    	List<PSAsset> assets = new ArrayList<PSAsset>();
+    	List<PSAsset> assets = new ArrayList<>();
         
         PSJcrNodeFinder jcrNodeFinder = new PSJcrNodeFinder(contentMgr, type, "sys_title");
         List<IPSNode> nodes = jcrNodeFinder.find(whereFields);
         for (IPSNode node : nodes)
         {
-            assets.add(find(idMapper.getString(node.getGuid())));            
+            try {
+                assets.add(find(idMapper.getString(node.getGuid())));
+            } catch (PSDataServiceException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
+                //continue processing
+            }
         }        
         
         return assets;
@@ -217,8 +210,7 @@ public class PSAssetDao implements IPSAssetDao
 
 
     @Override
-    public void revisionControlOn(String id)
-    {
+    public void revisionControlOn(String id) throws LoadException {
         contentItemDao.revisionControlOn(id);
     }
 
@@ -254,7 +246,7 @@ public class PSAssetDao implements IPSAssetDao
 	}
 	
     private List<PSAsset> runReport(String query, String reportName) throws PSReportFailedToRunException{
-	ArrayList<PSAsset> ret = new ArrayList<PSAsset>();
+	ArrayList<PSAsset> ret = new ArrayList<>();
 		
 		Query q = null;
 		try {
@@ -276,7 +268,9 @@ public class PSAssetDao implements IPSAssetDao
 		try {
 			it = results.getNodes();
 		} catch (RepositoryException e) {
-			log.error("An error occurred retrieving the " + reportName + " report from the Content Repository.", e);
+			log.error("An error occurred retrieving the {} report from the Content Repository. Error: {}",  reportName,
+                    e.getMessage());
+			log.debug(e.getMessage(),e);
 			return ret;
 		}
 		
@@ -287,8 +281,10 @@ public class PSAssetDao implements IPSAssetDao
              
 			try {
 				contentItem = contentItemDao.find(idMapper.getString(node.getGuid()), true);
-			} catch (com.percussion.share.dao.IPSGenericDao.LoadException e) {
-				log.error("An error occurred retrieving an Image Asset for the  " + reportName + " report from the Content Repository.", e);
+			} catch (PSDataServiceException e) {
+				log.error("An error occurred retrieving an Image Asset for the  {} report from the Content Repository. Error: {}",reportName,
+                        e.getMessage());
+				log.debug(e.getMessage(),e);
 			}
             
 			if(null != contentItem ){

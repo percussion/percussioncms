@@ -87,7 +87,7 @@ public class PSSiteItemsGenerator extends PSBaseGenerator
       IPSGuid siteid = ms_gmgr.makeGuid(siteidstr, PSTypeEnum.SITE);
       Collection<IPSSiteItem> items = ms_pubsvc.findSiteItems(siteid, context);
       // Create potential unpublish list
-      List<IPSFilterItem> potentials = new ArrayList<IPSFilterItem>();
+      List<IPSFilterItem> potentials = new ArrayList<>();
       for (IPSSiteItem item : items)
       {
          int contentid = item.getContentId();

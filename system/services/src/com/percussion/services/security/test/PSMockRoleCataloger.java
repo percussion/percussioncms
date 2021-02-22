@@ -24,10 +24,10 @@
 package com.percussion.services.security.test;
 
 import com.percussion.services.security.PSTypedPrincipal;
-import com.percussion.utils.security.IPSRoleCataloger;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
-import com.percussion.utils.security.PSSecurityCatalogException;
+import com.percussion.security.IPSRoleCataloger;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.PSSecurityCatalogException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -107,7 +107,7 @@ public class PSMockRoleCataloger implements IPSRoleCataloger
          throw new IllegalArgumentException(
             "roleName may not be null or empty");
       
-      Set<IPSTypedPrincipal> members = new HashSet<IPSTypedPrincipal>();
+      Set<IPSTypedPrincipal> members = new HashSet<>();
       
       for (int i = 0; i < ROLES.length; i++)
       {
@@ -131,7 +131,7 @@ public class PSMockRoleCataloger implements IPSRoleCataloger
       if (user == null)
          throw new IllegalArgumentException("user may not be null");
       
-      Set<String> roles = new HashSet<String>();
+      Set<String> roles = new HashSet<>();
       
       for (int i = 0; i < ROLEMEMBERS.length; i++)
       {
