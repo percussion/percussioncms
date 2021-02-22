@@ -26,7 +26,7 @@ package com.percussion.cms.objectstore;
 
 import com.percussion.design.objectstore.IPSComponent;
 import com.percussion.design.objectstore.IPSValidationContext;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 
 
 /**
@@ -73,9 +73,9 @@ public abstract class PSCmsComponent implements IPSComponent
    /**
     * The CMS won't be using this initially.
     *
-    * @throws PSValidationException Never thrown.
+    * @throws PSSystemValidationException Never thrown.
     */
-   public void validate(IPSValidationContext cxt) throws PSValidationException
+   public void validate(IPSValidationContext cxt) throws PSSystemValidationException
    {}
 
    /**

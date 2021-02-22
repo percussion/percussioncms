@@ -128,7 +128,7 @@ public class PSDatasourceManager implements IPSDatasourceManager
    // see IPSDatasourceManager
    public List<String> getDatasources()
    {
-      List<String> dsList = new ArrayList<String>();
+      List<String> dsList = new ArrayList<>();
       for (IPSDatasourceConfig config : getDatasourceResolver().getDatasourceConfigurations())
       {
          dsList.add(config.getName());

@@ -30,7 +30,7 @@ import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.IPSValidationContext;
 import com.percussion.design.objectstore.PSComponent;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
@@ -392,7 +392,7 @@ public class PSLegacyTableLocator extends PSComponent
 
    // see IPSComponent
    public void validate(IPSValidationContext context)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (!context.startValidation(this, null))
          return;

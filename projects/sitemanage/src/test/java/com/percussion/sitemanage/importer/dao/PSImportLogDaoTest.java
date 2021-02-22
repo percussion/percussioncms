@@ -23,6 +23,7 @@
  */
 package com.percussion.sitemanage.importer.dao;
 
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.importer.data.PSImportLogEntry;
 
@@ -131,8 +132,9 @@ public class PSImportLogDaoTest extends ServletTestCase
             PSImportLogEntry found = dao.findLogEntryById(entry1.getLogEntryId());
             assertNotNull(found);
             assertEquals(entry1.getLogEntryId(), found.getLogEntryId());
-        }
-        finally
+        } catch (IPSGenericDao.SaveException e) {
+            e.printStackTrace();
+        } finally
         {
             // clean up
             if (allentries != null && !allentries.isEmpty())

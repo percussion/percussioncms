@@ -487,7 +487,7 @@ public class HttpRequest
       m_sock = null;
    }
 
-   public void finalize() throws Throwable
+   protected void finalize() throws Throwable
    {
       disconnect();
       super.finalize();

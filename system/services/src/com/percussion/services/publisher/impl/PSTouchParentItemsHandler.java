@@ -90,17 +90,17 @@ public class PSTouchParentItemsHandler
    /**
     * Inline slots
     */
-   Set<Long> m_inlineSlots = new HashSet<Long>();
+   Set<Long> m_inlineSlots = new HashSet<>();
 
    /**
     * Templates with slots
     */
-   Set<Long> m_templatesWithSlots = new HashSet<Long>();
+   Set<Long> m_templatesWithSlots = new HashSet<>();
 
    /**
     * Items to be touched.
     */
-   Set<Integer> m_items = new HashSet<Integer>();
+   Set<Integer> m_items = new HashSet<>();
 
    /**
     * Create a handler
@@ -163,7 +163,7 @@ public class PSTouchParentItemsHandler
       try
       {
          List<PSRelationship> rels = getParentRelationships(ids);
-         Set<Integer> parents = new HashSet<Integer>();
+         Set<Integer> parents = new HashSet<>();
          for (PSRelationship rel : rels)
          {
             Integer parentid = rel.getOwner().getId();
@@ -291,7 +291,7 @@ public class PSTouchParentItemsHandler
          return;
       
       // Get the relationships
-      Set<Integer> grandperes = new HashSet<Integer>();
+      Set<Integer> grandperes = new HashSet<>();
       Integer cparent = null;
 
       try

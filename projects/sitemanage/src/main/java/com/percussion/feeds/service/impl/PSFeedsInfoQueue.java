@@ -31,6 +31,7 @@ import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
 import com.percussion.security.PSEncryptor;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.utils.io.PathUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -88,8 +89,7 @@ public class PSFeedsInfoQueue implements InitializingBean
      * @param descriptors the descriptors json object string, cannot be <code>null</code>
      * or empty.
      */
-    public void queueDescriptors(String site, String descriptors, String serverType)
-    {
+    public void queueDescriptors(String site, String descriptors, String serverType) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException {
         if(StringUtils.isBlank(site))
             throw new IllegalArgumentException("site cannot be null or empty.");
         if(StringUtils.isBlank(descriptors))
@@ -179,7 +179,7 @@ public class PSFeedsInfoQueue implements InitializingBean
                     Thread.sleep(30000);
                 }
 
-            } catch (InterruptedException ignore){
+            } catch (InterruptedException | IPSGenericDao.LoadException ignore){
                 Thread.currentThread().interrupt();
             }
             finally

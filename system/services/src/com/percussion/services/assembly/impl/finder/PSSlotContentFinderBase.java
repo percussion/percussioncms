@@ -84,7 +84,7 @@ implements IPSSlotContentFinder
          Map<String, Object> params)
    {
       Map<String, ? extends Object> args = slot.getFinderArguments();
-      Map<String, Object> mergedParams = new HashMap<String, Object>();
+      Map<String, Object> mergedParams = new HashMap<>();
       mergedParams.putAll(args);
       mergedParams.putAll(params);
       return mergedParams;

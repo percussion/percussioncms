@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,8 +23,6 @@
  */
 package com.percussion.share.validation;
 
-import com.percussion.server.PSServer;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -63,21 +61,19 @@ public class PSErrorCause
 
     public PSErrorCause(Throwable cause)
     {
-        init(cause);
+        init(cause,false);
     }
     
-    protected void init(Throwable t)
+    protected void init(Throwable t,boolean sendErrorStackToClient)
     {
         setLocalizedMessage(t.getLocalizedMessage());
         setMessage(t.getMessage());
-        if (PSServer.getServerProps()!=null)
+
+        if (sendErrorStackToClient=true)
         {
-            String prop = PSServer.getServerProps().getProperty("sendErrorStackToClient");
-            if (StringUtils.equalsIgnoreCase(prop, "true"))
-            {
-                setStackTrace(t.getStackTrace());
-            }
+            setStackTrace(t.getStackTrace());
         }
+
         setCause(t.getCause());
     }
     

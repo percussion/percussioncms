@@ -29,6 +29,7 @@ import com.percussion.pagemanagement.assembler.PSWidgetInstance;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.impl.finder.PSContentFinderBase;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.PSFilterException;
 
 import javax.jcr.RepositoryException;
@@ -74,8 +75,7 @@ public abstract class PSWidgetContentFinder extends PSContentFinderBase<PSWidget
    @Override
    public List<IPSAssemblyItem> find(IPSAssemblyItem sourceItem,
            PSWidgetInstance widget, Map<String, Object> params)
-         throws RepositoryException, PSFilterException, PSAssemblyException
-   {
+           throws RepositoryException, PSFilterException, PSAssemblyException, PSNotFoundException {
       return super.find(sourceItem, widget, params);
    }   
 }

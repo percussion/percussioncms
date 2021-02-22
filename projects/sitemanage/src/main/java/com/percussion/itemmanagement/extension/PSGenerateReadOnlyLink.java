@@ -24,6 +24,7 @@
 
 package com.percussion.itemmanagement.extension;
 
+import com.percussion.data.PSConversionException;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -31,11 +32,13 @@ import com.percussion.itemmanagement.service.IPSWorkflowHelper;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.util.PSUrlUtils;
 import com.percussion.utils.guid.IPSGuid;
@@ -51,13 +54,15 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Gets the url parameters which can be used to generate the read-only editor view link for a page or asset.
  */
 public class PSGenerateReadOnlyLink extends com.percussion.extension.PSSimpleJavaUdfExtension
 {
-    private static Log ms_log = LogFactory.getLog(PSGenerateReadOnlyLink.class);
+    private static final Logger log = LogManager.getLogger(PSGenerateReadOnlyLink.class);
     
     private IPSIdMapper idMapper;
     private IPSWorkflowHelper workflowHelper;
@@ -79,91 +84,81 @@ public class PSGenerateReadOnlyLink extends com.percussion.extension.PSSimpleJav
      * @param request the parameter request, never <code>null</code>.
      * @return URL object, may be <code>null</code>.
      */
-    public Object processUdf(Object[] params, IPSRequestContext request)
-    {
-        if (params.length < 5)
-        {
-            throw new IllegalArgumentException("params must contain 5 parameters.");
-        }
-        
-        URL url = null;
-                
-        IPSGuid id = getContentId(params);
-                
-        IPSContentWs service = PSContentWsLocator.getContentWebservice();
-        String[] paths = service.findItemPaths(id);
-        if (paths.length == 0)
-        {
-            String msg1 = "Failed to generate read-only link for content ID = " + id;
-            IPSCmsObjectMgr cmsMgr = PSCmsObjectMgrLocator.getObjectManager();
-            if (cmsMgr.findItemEntry(id.getUUID()) != null)
-                ms_log.warn(msg1 + " as the item does not exist.");
-            else
-                ms_log.warn(msg1 + " as the item is not under a folder.");
-            
-            return url;            
-        }
-        
-        String host = getStringParameter(params, 2);
-        Integer port = getIntParameter(params, 3);
-        Boolean useHttps = getBooleanParameter(params, 4);
-        
-        String itemId = idMapper.getString(id);
-        String finderPath = PSPathUtils.getFinderPath(paths[0]);
-        
-        String site = null;
-        String view;
-        String pathType;
-                
-        if (workflowHelper.isPage(itemId))
-        {
-            site = StringUtils.split(finderPath, "/")[1];
-            view = "editor";
-            pathType = "page";
-        }
-        else
-        {
-            view = "editAsset";
-            pathType = "asset";
-        }
-       
-        Map<String, String> urlParams = new HashMap<>();
-        urlParams.put("view", view);
-        
-        if (site != null)
-        {
-            urlParams.put("site", site);
-        }
-        
-        urlParams.put("mode", "readonly");
-        urlParams.put("id", itemId);
-        urlParams.put("name", PSFolderPathUtils.getName(finderPath));
-        urlParams.put("path", finderPath);
-        urlParams.put("pathType", pathType);
-        
-        try
-        {
-            url = PSUrlUtils.createUrl(host, port, "/cm/app/", urlParams.entrySet().iterator(), null, request);
-        
-            //If we have to use SSL modify the URL to use https
-
-            if(PSServer.isRequestBehindProxy(null)){
-                String proxyScheme  = PSServer.getProperty("proxyScheme",url.getProtocol());
-                url = new URL(proxyScheme, url.getHost(), url.getPort(), url.getFile()); // host and prot is already commming as proxy configured
-            }else{
-                if (useHttps)
-                {
-                    url = new URL("https", url.getHost(), url.getPort(), url.getFile());
-                }
+    public Object processUdf(Object[] params, IPSRequestContext request) throws PSConversionException {
+        try {
+            if (params.length < 5) {
+                throw new IllegalArgumentException("params must contain 5 parameters.");
             }
 
+            URL url = null;
+
+            IPSGuid id = getContentId(params);
+
+            IPSContentWs service = PSContentWsLocator.getContentWebservice();
+            String[] paths = service.findItemPaths(id);
+            if (paths.length == 0) {
+                String msg1 = "Failed to generate read-only link for content ID = " + id;
+                IPSCmsObjectMgr cmsMgr = PSCmsObjectMgrLocator.getObjectManager();
+                if (cmsMgr.findItemEntry(id.getUUID()) != null)
+                    log.warn(msg1 + " as the item does not exist.");
+                else
+                    log.warn(msg1 + " as the item is not under a folder.");
+
+                return url;
+            }
+
+            String host = getStringParameter(params, 2);
+            Integer port = getIntParameter(params, 3);
+            Boolean useHttps = getBooleanParameter(params, 4);
+
+            String itemId = idMapper.getString(id);
+            String finderPath = PSPathUtils.getFinderPath(paths[0]);
+
+            String site = null;
+            String view;
+            String pathType;
+
+            if (workflowHelper.isPage(itemId)) {
+                site = StringUtils.split(finderPath, "/")[1];
+                view = "editor";
+                pathType = "page";
+            } else {
+                view = "editAsset";
+                pathType = "asset";
+            }
+
+            Map<String, String> urlParams = new HashMap<>();
+            urlParams.put("view", view);
+
+            if (site != null) {
+                urlParams.put("site", site);
+            }
+
+            urlParams.put("mode", "readonly");
+            urlParams.put("id", itemId);
+            urlParams.put("name", PSFolderPathUtils.getName(finderPath));
+            urlParams.put("path", finderPath);
+            urlParams.put("pathType", pathType);
+
+                url = PSUrlUtils.createUrl(host, port, "/cm/app/", urlParams.entrySet().iterator(), null, request);
+
+                //If we have to use SSL modify the URL to use https
+
+                if (PSServer.isRequestBehindProxy(null)) {
+                    String proxyScheme = PSServer.getProperty("proxyScheme", url.getProtocol());
+                    url = new URL(proxyScheme, url.getHost(), url.getPort(), url.getFile()); // host and prot is already commming as proxy configured
+                } else {
+                    if (useHttps) {
+                        url = new URL("https", url.getHost(), url.getPort(), url.getFile());
+                    }
+                }
+
+            return url;
+        } catch (PSNotFoundException | PSValidationException | MalformedURLException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new PSConversionException(e);
         }
-        catch (MalformedURLException e)
-        {
-            ms_log.error("Failed to generate read-only link for content ID = " + id + ": " + e.getLocalizedMessage());
-        }
-        
-        return url;
     }
 
     public IPSIdMapper getIdMapper()

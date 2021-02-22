@@ -56,8 +56,8 @@ import com.percussion.design.objectstore.PSNotifier;
 import com.percussion.design.objectstore.PSSearchConfig;
 import com.percussion.design.objectstore.PSServerCacheSettings;
 import com.percussion.design.objectstore.PSServerConfiguration;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.design.objectstore.server.IPSApplicationListener;
 import com.percussion.design.objectstore.server.IPSObjectStoreHandler;
 import com.percussion.design.objectstore.server.IPSServerConfigurationListener;
@@ -151,7 +151,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.io.StringWriter;
@@ -2095,13 +2094,13 @@ public class PSServer {
    }
 
    public static void startApplication(String appName)
-      throws PSNotFoundException, PSServerException, PSValidationException
+      throws PSNotFoundException, PSServerException, PSSystemValidationException
    {
       startApplication(ms_objectStore.getApplicationObject(appName));
    }
 
    public static PSApplicationHandler startApplication(PSApplication app)
-      throws PSNotFoundException, PSValidationException
+      throws PSNotFoundException, PSSystemValidationException
    {
       PSValidatorAdapter validateContext = new PSValidatorAdapter(ms_objectStore);
       validateContext.throwOnErrors(true);
@@ -2388,7 +2387,7 @@ public class PSServer {
             {
                startApplication(app);
             }
-            catch (PSValidationException e)
+            catch (PSSystemValidationException e)
             {
                PSConsole.printMsg("Server",
                   e.getErrorCode(), e.getErrorArguments());
@@ -4607,7 +4606,7 @@ public class PSServer {
        * @param   app         the application object
        */
       public void applicationUpdated(PSApplication app)
-         throws PSValidationException, PSServerException, PSNotFoundException
+         throws PSSystemValidationException, PSServerException, PSNotFoundException
       {
          String appName = app.getName();
          shutdownApplication(appName);
@@ -4623,7 +4622,7 @@ public class PSServer {
        * @param   app         the application object
        */
       public void applicationCreated(PSApplication app)
-         throws PSValidationException, PSServerException, PSNotFoundException
+         throws PSSystemValidationException, PSServerException, PSNotFoundException
       {
          String appName = app.getName();
          if (app.isEnabled()){

@@ -82,7 +82,7 @@ public class PSBaseMetadataRestServiceTest extends JerseyTest {
 
         Client client = ClientBuilder.newClient();
         WebTarget webTarget = client.target("/membership/version");
-        Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON).header("perc-tid", "1");
+        Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.get();
 
 

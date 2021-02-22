@@ -112,7 +112,7 @@ public class PSItemUtilities
 
       try
       {
-         Set<String> foundpaths = new HashSet<String>();
+         Set<String> foundpaths = new HashSet<>();
          String paths[] = fproc.getFolderPaths(sum.getCurrentLocator());
          List<IPSSite> sites = smgr.findAllSites();
          for (IPSSite site : sites)

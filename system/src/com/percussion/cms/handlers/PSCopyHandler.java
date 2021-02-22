@@ -59,10 +59,10 @@ import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSHtmlParameter;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSTableLocator;
 import com.percussion.design.objectstore.PSTableRef;
 import com.percussion.design.objectstore.PSTableSet;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.design.objectstore.PSWorkflowInfo;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
@@ -111,7 +111,7 @@ class PSCopyHandler implements IPSCopyHandler
     *    PSApplication, PSCommandHandler, boolean) this(ceh, ce, app, cmd, false)}.
     */
    public PSCopyHandler(PSContentEditorHandler ceh, PSContentEditor ce,
-      PSApplication app, PSCommandHandler cmd) throws PSValidationException
+      PSApplication app, PSCommandHandler cmd) throws PSSystemValidationException
    {
       this(ceh, ce, app, cmd, false);
    }
@@ -134,11 +134,11 @@ class PSCopyHandler implements IPSCopyHandler
     * @param skipRelationships set to <code>true</code> will not, set to
     *    <code>false</code> will recreate all related content relationships
     *    from the original.
-    * @throws PSValidationException for any other errors.
+    * @throws PSSystemValidationException for any other errors.
     */
    public PSCopyHandler(PSContentEditorHandler ceh, PSContentEditor ce,
       PSApplication app, PSCommandHandler cmd, boolean skipRelationships)
-         throws PSValidationException
+         throws PSSystemValidationException
    {
       if (ceh == null || ce == null || app == null || cmd == null)
          throw new IllegalArgumentException("one or more params was null");
@@ -558,12 +558,12 @@ class PSCopyHandler implements IPSCopyHandler
     *    <code>false</code> it will recreate all related content relationships
     *    from the original.
     *
-    * @throws PSValidationException If anything used by this method is missing
+    * @throws PSSystemValidationException If anything used by this method is missing
     *    or misconfigured.
     */
    private void createDataSets(PSDisplayMapper mapper, PSContentEditorPipe pipe,
       PSDataMapper updateMapper, PSDtdBuilder updateDtd,
-      boolean skipRelationships) throws PSValidationException
+      boolean skipRelationships) throws PSSystemValidationException
    {
       if (mapper == null || pipe == null)
          throw new IllegalArgumentException(
@@ -583,7 +583,7 @@ class PSCopyHandler implements IPSCopyHandler
             pipe.getMapper().getFieldSet(mapper.getFieldSetRef());
 
       if (fieldSet == null)
-         throw new PSValidationException(IPSServerErrors.CE_MISSING_FIELDSET,
+         throw new PSSystemValidationException(IPSServerErrors.CE_MISSING_FIELDSET,
             mapper.getFieldSetRef());
 
       // create list of system mappings to process later
@@ -645,7 +645,7 @@ class PSCopyHandler implements IPSCopyHandler
                   label = mapping.getUISet().getLabel().getText();
                String [] args = { fieldRef, label };
 
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                   IPSServerErrors.CE_MISSING_FIELD, args );
             }
          }
@@ -721,12 +721,12 @@ class PSCopyHandler implements IPSCopyHandler
     * @param isSystemTable <code>true</code> if this will query a system table,
     * <code>false</code> if not.
     *
-    * @throws PSValidationException if anything specified in the supplied
+    * @throws PSSystemValidationException if anything specified in the supplied
     * mappings or fieldSet is invalid.
     */
    private void createDataSet(Iterator mappings, PSFieldSet fieldSet,
       PSDataMapper updateMapper, PSDtdBuilder updateDtd, boolean isSystemTable)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       try
       {
@@ -769,7 +769,7 @@ class PSCopyHandler implements IPSCopyHandler
                tableAlias.toLowerCase());
             if (beTable == null)
             {
-               throw new PSValidationException(IPSServerErrors.CE_MISSING_TABLE,
+               throw new PSSystemValidationException(IPSServerErrors.CE_MISSING_TABLE,
                   tableAlias);
             }
             beCol.setTable(beTable);
@@ -795,7 +795,7 @@ class PSCopyHandler implements IPSCopyHandler
          {
             Object[] args = {fieldSet.getName(), ((PSBackEndTable)tables.get(0)
                ).getAlias(), ((PSBackEndTable)tables.get(1)).getAlias()};
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSServerErrors.CE_MULTIPLE_TABLES_NOT_SUPPORTED, args);
          }
 
@@ -836,11 +836,11 @@ class PSCopyHandler implements IPSCopyHandler
     * query resource dtd's that will be used to query the item's data and build
     * the input document for these queries.  Assumed not <code>null</code>.
     *
-    * @throws PSValidationException If anything used by this method is missing
+    * @throws PSSystemValidationException If anything used by this method is missing
     *    or misconfigured.
     */
    private void createUpdateDatasets(PSDataMapper updateMapper,
-      PSDtdBuilder updateDtd) throws PSValidationException
+      PSDtdBuilder updateDtd) throws PSSystemValidationException
    {
       m_updateResourceNames = new HashMap();
 
@@ -1917,12 +1917,12 @@ class PSCopyHandler implements IPSCopyHandler
        * @param isSystemTable <code>true</code> if this will query a system
        * table, <code>false</code> if not.
        *
-       * @throws PSValidationException If anything used by this method is
+       * @throws PSSystemValidationException If anything used by this method is
        * missing or misconfigured.
        */
       public PSBinaryQueryHandler(PSMappingContext ctx, PSFieldSet fieldSet,
          String xmlFieldName, PSBackEndColumn beCol, boolean isSystemTable)
-         throws PSValidationException
+         throws PSSystemValidationException
       {
          if (ctx == null || xmlFieldName == null ||
             xmlFieldName.trim().length() == 0 || fieldSet == null ||

@@ -78,7 +78,7 @@ public class PSTestingExtension implements IPSExtension
       newFile.delete();
    }
 
-   public void finalize() throws Throwable
+   protected void finalize() throws Throwable
    {
       System.err.println("Finalizing PSTestingExtension instance " + toString());
       super.finalize();

@@ -179,7 +179,7 @@ public class PSSchedulerBean implements FactoryBean, InitializingBean
     */
    private static Map<String, String> createDelegates()
    {
-      final Map<String, String> delegates = new HashMap<String, String>();
+      final Map<String, String> delegates = new HashMap<>();
       final String msSqlDelegate = "org.quartz.impl.jdbcjobstore.MSSQLDelegate";
       final String oracleDelegate = "org.quartz.impl.jdbcjobstore.oracle.OracleDelegate";
       final String db2Delegate = "org.quartz.impl.jdbcjobstore.DB2v8Delegate";

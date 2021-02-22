@@ -81,7 +81,7 @@ public class PSItemSummary
     * empty.
     */
    protected Collection<OperationEnum> operations = 
-      new ArrayList<OperationEnum>();
+      new ArrayList<>();
    
    /**
     * Use this constructor to create an item.

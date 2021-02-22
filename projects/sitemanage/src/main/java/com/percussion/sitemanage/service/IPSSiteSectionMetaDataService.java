@@ -27,6 +27,7 @@ import java.util.List;
 
 import com.percussion.share.data.IPSFolderPath;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.IPSDataService;
 
 /**
  * Adds and removes items associated with a  folder path. This is a low level 
@@ -58,7 +59,7 @@ public interface IPSSiteSectionMetaDataService
     
     public void removeCategory(IPSFolderPath siteSection, String category);
     
-    public List<IPSItemSummary> findItems(IPSFolderPath siteSection, String category);
+    public List<IPSItemSummary> findItems(IPSFolderPath siteSection, String category) throws IPSDataService.DataServiceNotFoundException;
     
     public List<IPSFolderPath> findSections(String category, String itemId);
     

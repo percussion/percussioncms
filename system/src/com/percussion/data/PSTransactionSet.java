@@ -36,7 +36,7 @@ import com.percussion.design.objectstore.PSExtensionCall;
 import com.percussion.design.objectstore.PSExtensionParamValue;
 import com.percussion.design.objectstore.PSHtmlParameter;
 import com.percussion.design.objectstore.PSPageDataTank;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSXmlField;
 import com.percussion.error.PSBackEndUpdateProcessingError;
 import com.percussion.error.PSErrorException;
@@ -101,7 +101,7 @@ public class PSTransactionSet implements IPSExecutionStep
     */
    public PSTransactionSet(PSApplicationHandler ah, PSDataSet ds)
       throws PSInvalidRequestTypeException, PSIllegalArgumentException,
-            java.sql.SQLException, PSValidationException
+            java.sql.SQLException, PSSystemValidationException
    {
       super();
 
@@ -140,7 +140,7 @@ public class PSTransactionSet implements IPSExecutionStep
          // for unknown exceptions, it's useful to log the stack trace
          Object[] args = { ah.getName(),
             com.percussion.error.PSException.getStackTraceAsString(e) };
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSServerErrors.APPLICATION_INIT_EXCEPTION, args,
             ah.getApplicationDefinition(), ds);
       }
@@ -664,7 +664,7 @@ public class PSTransactionSet implements IPSExecutionStep
    }
 
    private void prepareDataWalker(PSDataSet ds)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       /* before we start building the plan, we need to check if the action
        * type field was set. By having at least two elements in the tree,

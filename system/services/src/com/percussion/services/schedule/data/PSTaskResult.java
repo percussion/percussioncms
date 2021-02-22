@@ -118,5 +118,5 @@ public class PSTaskResult implements IPSTaskResult
    /**
     * See ctor, default to empty.
     */
-   private Map<String,Object> m_variables = new HashMap<String,Object>();
+   private Map<String,Object> m_variables = new HashMap<>();
 }

@@ -1514,12 +1514,12 @@ public class PSField extends PSComponent
     * @param occurrenceDimension the new occurrence dimension. Must be one of
     * the OCCURRENCE_DIMENSION_XXX values.
     * @param transitionId The transition id, may be <code>null</code>.
-    * @throws PSValidationException if the provided occurrence setting is not
+    * @throws PSSystemValidationException if the provided occurrence setting is not
     *    supported.
     */
    public void setOccurrenceDimension(int occurrenceDimension, Integer
       transitionId)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       (getOccurrenceSetting(transitionId, true)).setOccurrenceDimension(
          occurrenceDimension);
@@ -1542,12 +1542,12 @@ public class PSField extends PSComponent
     *
     * @param occurrenceMultiValuedType the new occurrence multi valued type.
     * @param transitionId The transition id, may be <code>null</code>.
-    * @throws PSValidationException if the provided multi valued type is not
+    * @throws PSSystemValidationException if the provided multi valued type is not
     *    supported.
     */
    public void setOccurrenceMultiValuedType(int occurrenceMultiValuedType,
       Integer transitionId)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       (getOccurrenceSetting(transitionId, true)).setOccurrenceMultiValuedType(
          occurrenceMultiValuedType);
@@ -2062,7 +2062,7 @@ public class PSField extends PSComponent
                            occurrenceSetting.setOccurrenceDimension(i);
                            found = true;
                         }
-                        catch(PSValidationException e)
+                        catch(PSSystemValidationException e)
                         {
                            // let node error handling deal with it.
                         }
@@ -2124,7 +2124,7 @@ public class PSField extends PSComponent
                            occurrenceSetting.setOccurrenceMultiValuedType(i);
                            found = true;
                         }
-                        catch (PSValidationException e)
+                        catch (PSSystemValidationException e)
                         {
                            // let node error handling deal with it.
                         }
@@ -2479,7 +2479,7 @@ public class PSField extends PSComponent
    // see IPSComponent
    @Override
    public void validate(IPSValidationContext context)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (!context.startValidation(this, null))
          return;
@@ -2488,7 +2488,7 @@ public class PSField extends PSComponent
       {
          validateType(m_type);
       }
-      catch (PSValidationException e)
+      catch (PSSystemValidationException e)
       {
          context.validationError(
             this, e.getErrorCode(), e.getErrorArguments());
@@ -2503,7 +2503,7 @@ public class PSField extends PSComponent
             setting.validate();
          }
       }
-      catch (PSValidationException e)
+      catch (PSSystemValidationException e)
       {
          context.validationError(
             this, e.getErrorCode(), e.getErrorArguments());
@@ -2544,13 +2544,13 @@ public class PSField extends PSComponent
     * Validates the provided field type.
     *
     * @param type the field type.
-    * @throws PSValidationException if the provided field type is not
+    * @throws PSSystemValidationException if the provided field type is not
     *    supported.
     */
-   public static void validateType(int type) throws PSValidationException
+   public static void validateType(int type) throws PSSystemValidationException
    {
       if (type != TYPE_SYSTEM && type != TYPE_SHARED && type != TYPE_LOCAL)
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSObjectStoreErrors.UNSUPPORTED_FIELD_TYPE, TYPE_ENUM);
    }
 
@@ -2639,10 +2639,10 @@ public class PSField extends PSComponent
     *
     * @throws IllegalArgumentException if source is <code>null</code> or does
     * not have same name as this field name.
-    * @throws PSValidationException if the source or this field fails to meet
+    * @throws PSSystemValidationException if the source or this field fails to meet
     * one of the above rules.
     */
-   public PSField merge(PSField source) throws PSValidationException
+   public PSField merge(PSField source) throws PSSystemValidationException
    {
       if(source == null)
          throw new IllegalArgumentException("source may not be null");
@@ -2673,7 +2673,7 @@ public class PSField extends PSComponent
             setting = "data type";
          else if (fbOverride)
             setting = "force binary";
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSObjectStoreErrors.CE_INVALID_FIELD_OVERRIDE, 
             new Object[] {getSubmitName(), TYPE_ENUM[source.getType()], 
                setting});
@@ -2696,14 +2696,14 @@ public class PSField extends PSComponent
 
             if(!local.doesMatch(other))
             {
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                   IPSObjectStoreErrors.CE_INVALID_FIELD_OVERRIDE,
                   new Object[] { getSubmitName(), TYPE_ENUM[source.getType()], 
                   "backend data locator" });
             }
          }
          else //the locator instances itself didn't match
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSObjectStoreErrors.CE_INVALID_FIELD_OVERRIDE, new Object[] 
                { getSubmitName(), TYPE_ENUM[source.getType()], "data locator" });
       }
@@ -3667,11 +3667,11 @@ public class PSField extends PSComponent
        * Set the occurrence dimension. See {@link #getOccurrenceDimension}
        *
        * @param occurrenceDimension the new occurrence dimension.
-       * @throws PSValidationException if the provided occurrence setting is not
+       * @throws PSSystemValidationException if the provided occurrence setting is not
        *    supported.
        */
       public void setOccurrenceDimension(int occurrenceDimension)
-         throws PSValidationException
+         throws PSSystemValidationException
       {
          validateOccurrenceDimension(occurrenceDimension);
 
@@ -3692,11 +3692,11 @@ public class PSField extends PSComponent
        * Set the occurrence multi valued type.
        *
        * @param occurrenceMultiValuedType the new occurrence multi valued type.
-       * @throws PSValidationException if the provided multi valued type is not
+       * @throws PSSystemValidationException if the provided multi valued type is not
        *    supported.
        */
       public void setOccurrenceMultiValuedType(int occurrenceMultiValuedType)
-         throws PSValidationException
+         throws PSSystemValidationException
       {
          validateOccurrenceMultiValuedType(occurrenceMultiValuedType);
 
@@ -3708,9 +3708,9 @@ public class PSField extends PSComponent
       /**
        * Validates the data in this object.
        *
-       * @throws PSValidationException if any data is invalid.
+       * @throws PSSystemValidationException if any data is invalid.
        */
-      public void validate() throws PSValidationException
+      public void validate() throws PSSystemValidationException
       {
          validateOccurrenceDimension(m_occurrenceDimension);
          validateOccurrenceMultiValuedType(m_occurrenceMultiValuedType);
@@ -3720,18 +3720,18 @@ public class PSField extends PSComponent
        * Validates the occurrence dimension.
        *
        * @param dimension occurrence dimension.
-       * @throws PSValidationException if the provided occurrence dimension is
+       * @throws PSSystemValidationException if the provided occurrence dimension is
        *    not supported.
        */
       public void validateOccurrenceDimension(int dimension)
-         throws PSValidationException
+         throws PSSystemValidationException
       {
          if (dimension != OCCURRENCE_DIMENSION_COUNT &&
              dimension != OCCURRENCE_DIMENSION_ONE_OR_MORE &&
              dimension != OCCURRENCE_DIMENSION_OPTIONAL &&
              dimension != OCCURRENCE_DIMENSION_REQUIRED &&
              dimension != OCCURRENCE_DIMENSION_ZERO_OR_MORE)
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSObjectStoreErrors.UNSUPPORTED_OCCURRENCE_DIMENSION,
                OCCURRENCE_DIMENSION_ENUM);
       }
@@ -3740,15 +3740,15 @@ public class PSField extends PSComponent
        * Validates the occurrence multi valued type.
        *
        * @param multiValuedType the occurrence multi valued type to validate.
-       * @throws PSValidationException if the provided occurrence multi valued
+       * @throws PSSystemValidationException if the provided occurrence multi valued
        *    type is not supported.
        */
       public void validateOccurrenceMultiValuedType(int multiValuedType)
-         throws PSValidationException
+         throws PSSystemValidationException
       {
          if (multiValuedType != OCCURRENCE_MULTI_VALUED_TYPE_DELIMITED &&
              multiValuedType != OCCURRENCE_MULTI_VALUED_TYPE_SEPARATE)
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSObjectStoreErrors.UNSUPPORTED_OCCURRENCE_MULTI_VALUED_TYPE,
                OCCURRENCE_MULTI_VALUED_TYPE_ENUM);
       }

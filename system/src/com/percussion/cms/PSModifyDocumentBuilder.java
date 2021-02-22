@@ -29,7 +29,7 @@ import com.percussion.data.PSExecutionData;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
@@ -64,7 +64,7 @@ abstract public class PSModifyDocumentBuilder extends PSEditorDocumentBuilder
     */
    public PSModifyDocumentBuilder( PSContentEditor ce,
          PSEditorDocumentContext ctx, int pageId, boolean isError )
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       super( ce, ctx, pageId );
    }

@@ -207,7 +207,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
       {
          IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
          NodeIterator niter = node.getNodes(childname);
-         List<IPSAssemblyItem> items = new ArrayList<IPSAssemblyItem>();
+         List<IPSAssemblyItem> items = new ArrayList<>();
          IPSAssemblyTemplate template = asm.findTemplateByName(templatename);
          while (niter.hasNext())
          {
@@ -319,7 +319,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
 
          PSRequest req = (PSRequest) PSRequestInfo
                .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
-         Map<String, Object> extraParams = new HashMap<String, Object>();
+         Map<String, Object> extraParams = new HashMap<>();
          extraParams.put("sys_contentid", lg.getContentId());
          if (siteid != null)
          {
@@ -513,7 +513,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
       {
          // Parse the query
          String pairs[] = urlquery.split("&");
-         Map<String, Object> urlmap = new HashMap<String, Object>();
+         Map<String, Object> urlmap = new HashMap<>();
          for (String pair : pairs)
          {
             String parts[] = pair.split("=");
@@ -523,7 +523,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
                List<String> value = (List<String>) urlmap.get(key);
                if (value == null)
                {
-                  value = new ArrayList<String>();
+                  value = new ArrayList<>();
                   urlmap.put(key, value);
                }
                value.add(parts[1]);
@@ -573,8 +573,8 @@ public class PSAssemblerUtils extends PSJexlUtilBase
       sws.start(getClass().getCanonicalName() + "#combine");
       try
       {
-         Map<String, Object> rval = new HashMap<String, Object>();
-         Set<String> keys = new HashSet<String>();
+         Map<String, Object> rval = new HashMap<>();
+         Set<String> keys = new HashSet<>();
          keys.addAll(input.keySet());
          keys.addAll(extra.keySet());
 
@@ -637,7 +637,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
          throw new IllegalArgumentException(
                "propertyName may not be null or empty");
       }
-      List<Object> rval = new ArrayList<Object>();
+      List<Object> rval = new ArrayList<>();
 
       NodeIterator niter = parentNode.getNodes(childName);
       while (niter.hasNext())
@@ -674,7 +674,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
       {
          throw new IllegalArgumentException("key may not be null or empty");
       }
-      List<String> rval = new ArrayList<String>();
+      List<String> rval = new ArrayList<>();
 
       for (Map<String, Object> map : maplist)
       {
@@ -804,7 +804,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
                returns = "a map where the key is the value passed to includeStart")
    public Map<String,String> readMultiIncludeFile(String path)
    {
-      Map<String,String> includeMap = new HashMap<String,String>();
+      Map<String,String> includeMap = new HashMap<>();
     
       if (StringUtils.isEmpty(path))
       {
@@ -921,7 +921,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
    public HashMap<String,Double> timerOutput(IPSAssemblyItem item)
    {
       HashMap<String, PSStopwatch> timers = getTimers(item);
-      HashMap<String,Double> results = new HashMap<String,Double>();
+      HashMap<String,Double> results = new HashMap<>();
       StringBuilder sb = new StringBuilder();
       sb.append("<div class=\"perc_timers\">");
       for (Map.Entry<String, PSStopwatch> entry : timers.entrySet())
@@ -946,7 +946,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
       HashMap<String,PSStopwatch> timers = (HashMap<String,PSStopwatch>)sys.get("percTimers");
       if (timers == null)
       {
-         timers = new HashMap<String,PSStopwatch>();  
+         timers = new HashMap<>();
          sys.put("percTimers",timers);
       }
 
@@ -995,7 +995,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
 	   if (req != null)
 		   return req.getUserSession().getUserRoles();
 	   
-	return new ArrayList<String>();
+	return new ArrayList<>();
 
    }
 }

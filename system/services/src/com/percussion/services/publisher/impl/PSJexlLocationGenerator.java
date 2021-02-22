@@ -185,7 +185,7 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
 
       Iterator<Map.Entry<String, Object>> iter = request
             .getParametersIterator();
-      Map<String, Object> parammap = new HashMap<String, Object>();
+      Map<String, Object> parammap = new HashMap<>();
       while (iter.hasNext())
       {
          Map.Entry<String, Object> entry = iter.next();
@@ -228,7 +228,7 @@ public class PSJexlLocationGenerator implements IPSAssemblyLocation
       int contentid = Integer.parseInt(cidstr);
       int revision = Integer.parseInt(revstr);
       IPSGuid cguid = new PSLegacyGuid(contentid, revision);
-      List<IPSGuid> guids = new ArrayList<IPSGuid>();
+      List<IPSGuid> guids = new ArrayList<>();
       String fidstr = request.getParameter(IPSHtmlParameters.SYS_FOLDERID);
       guids.add(cguid);
       boolean set_dummy_site_paths = false;

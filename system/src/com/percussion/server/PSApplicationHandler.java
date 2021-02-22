@@ -47,9 +47,9 @@ import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSPipe;
 import com.percussion.design.objectstore.PSQueryPipe;
 import com.percussion.design.objectstore.PSRequestor;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSTraceInfo;
 import com.percussion.design.objectstore.PSUpdatePipe;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.design.objectstore.server.IPSApplicationListener;
 import com.percussion.design.objectstore.server.IPSObjectStoreHandler;
 import com.percussion.error.PSErrorHandler;
@@ -170,7 +170,7 @@ public class PSApplicationHandler implements IPSRootedHandler
     *
     * @throws  IllegalArgumentException If any param is invalid.
     *
-    * @throws PSValidationException If an error occurs validating the contents
+    * @throws PSSystemValidationException If an error occurs validating the contents
     * of the data sets.
     */
    public PSApplicationHandler(
@@ -178,7 +178,7 @@ public class PSApplicationHandler implements IPSRootedHandler
       IPSObjectStoreHandler objectStoreHandler,
       IPSExtensionManager extMgr
       )
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       super();
 
@@ -269,11 +269,11 @@ public class PSApplicationHandler implements IPSRootedHandler
     * Enable data request handling for the specified data set.
     *
     * @param ds the data set to activate, not <code>null</code>.
-    * @throws PSValidationException if an error occurs validating the 
+    * @throws PSSystemValidationException if an error occurs validating the
     *    contents of the supplied data set.
     */
    public synchronized void addDataHandler(PSDataSet ds)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (ds == null)
          throw new IllegalArgumentException("ds cannot be null");
@@ -295,23 +295,23 @@ public class PSApplicationHandler implements IPSRootedHandler
          }
          catch (PSIllegalArgumentException e)
          {
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                e.getErrorCode(), e.getErrorArguments(), m_application, ds);
          }
          catch (PSNotFoundException e)
          {
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                e.getErrorCode(), e.getErrorArguments(), m_application, ds);
          }
          catch (SQLException e)
          {
             Object[] args = { ds.getName(), m_name, e.toString() };
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSServerErrors.APP_DATASET_INVALID, args, m_application, ds);
          }
          catch (PSException e)
          {
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                e.getErrorCode(), e.getErrorArguments(), m_application, ds);
          }
       }
@@ -329,13 +329,13 @@ public class PSApplicationHandler implements IPSRootedHandler
          }
          catch (PSException e)
          {
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                e.getErrorCode(), e.getErrorArguments(), m_application, ds);
          }
          catch (SQLException e)
          {
             Object[] args = { ds.getName(), m_name, e.toString() };
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSServerErrors.APP_DATASET_INVALID, args, m_application, ds);
          }
       }
@@ -362,9 +362,9 @@ public class PSApplicationHandler implements IPSRootedHandler
                   IPSServerErrors.APP_ADDED_SYSTEM_MANDATORY_FIELDS, args);
             }
          }
-         catch (PSValidationException e)
+         catch (PSException e)
          {
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                e.getErrorCode(), e.getErrorArguments(), m_application, ds);
          }
       }
@@ -374,7 +374,7 @@ public class PSApplicationHandler implements IPSRootedHandler
       {
          // two data sets of the same name not allowed!!!
          Object[] args = { ds.getName(), m_name };
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSServerErrors.EMPTY_DATASET, args, m_application, ds);
       }
    }
@@ -1957,10 +1957,10 @@ public class PSApplicationHandler implements IPSRootedHandler
     *
     * @param app the app definition for which to initialize an application 
     *    handler, assumed not <code>null</code>.
-    * @throws PSValidationException if an error occurs validating the 
+    * @throws PSSystemValidationException if an error occurs validating the
     *    contents of the supplied application.
     */
-   private void init(PSApplication app) throws PSValidationException
+   private void init(PSApplication app) throws PSSystemValidationException
    {
       boolean abnormalExit = true;  // log app stopped if we exception
 
@@ -2013,7 +2013,7 @@ public class PSApplicationHandler implements IPSRootedHandler
             {
                Object[] args = { m_name, err.getErrorCode(),
                   ((url == null) ? "" : url.toExternalForm()), e.toString() };
-               throw new PSValidationException(
+               throw new PSSystemValidationException(
                   IPSObjectStoreErrors.CUSTOM_ERROR_URL_INVALID,
                   args, m_application, errPages);
             }
@@ -2085,7 +2085,7 @@ public class PSApplicationHandler implements IPSRootedHandler
          // for unknown exceptions, it's useful to log the stack trace
          Object[] args = { m_name,
             com.percussion.error.PSException.getStackTraceAsString(e) };
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSServerErrors.APPLICATION_INIT_EXCEPTION, args, m_application, null);
       }
       finally
@@ -2106,12 +2106,12 @@ public class PSApplicationHandler implements IPSRootedHandler
     *
     * @param      app         the app definition to use
     *
-    * @throws  PSValidationException
+    * @throws PSSystemValidationException
     *                         if an error occurs validating the contents of
     *                         the data sets
     */
    private void initSecurity(PSApplication app)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
    /* initialize application security by:
     *    - start ACL handler
@@ -2127,7 +2127,7 @@ public class PSApplicationHandler implements IPSRootedHandler
    }
 
    private void addMap(PSDataSet ds, IPSRequestHandler rh)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       try
       {
@@ -2150,7 +2150,7 @@ public class PSApplicationHandler implements IPSRootedHandler
       catch (PSIllegalArgumentException e)
       {
          Object[] args = { ds.getName(), m_name, e.getMessage() };
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
             IPSServerErrors.APP_DATASET_INVALID, args, m_application, ds);
       }
    }
@@ -2349,7 +2349,7 @@ public class PSApplicationHandler implements IPSRootedHandler
                   {
                      init(app);
                   }
-                  catch (PSValidationException e)
+                  catch (PSSystemValidationException e)
                   {
                      PSConsole.printMsg("Server", e);
                   }

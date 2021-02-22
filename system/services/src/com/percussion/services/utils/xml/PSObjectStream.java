@@ -56,7 +56,7 @@ public abstract class PSObjectStream<T> implements Iterable<T>, Closeable
    private State m_state = State.INIT;
    private long m_size = 0;
    private PSObjectStream<?> self = this; 
-   private Vector<It<?>> openIterators = new Vector<PSObjectStream<T>.It<?>>();
+   private Vector<It<?>> openIterators = new Vector<>();
    
    /**
     * State that the class can be in.
@@ -167,7 +167,7 @@ public abstract class PSObjectStream<T> implements Iterable<T>, Closeable
    public Iterator<T> iterator() 
    {
       isTrue(m_state == State.WRITTEN);
-      return new It<T>();
+      return new It<>();
    }
    
    /**

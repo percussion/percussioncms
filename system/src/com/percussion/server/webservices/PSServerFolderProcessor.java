@@ -103,6 +103,7 @@ import com.percussion.services.purge.PSSqlPurgeHelperLocator;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCms;
 import com.percussion.util.PSHttpConnection;
@@ -1191,7 +1192,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
                      }
                   }
                }
-               catch (PSException e)
+               catch (PSException | PSValidationException e)
                {
                   getLogger().error(
                      "Failed to delete Navon(s) with contentids: " + cids, e);
@@ -1264,7 +1265,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
       {
          purgeHelper.purge(folderLocator);
       }
-      catch (PSException e)
+      catch (PSException | PSValidationException e)
       {
          throw new PSCmsException(e);
       }
@@ -6354,7 +6355,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
        {
            PSSqlPurgeHelperLocator.getPurgeHelper().purgeAll(items);
        }
-       catch (PSException e)
+       catch (PSException | PSValidationException e)
        {
            throw new PSCmsException(e);
        }
@@ -6388,7 +6389,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
                purgeHelper.purgeAll(items);
            }
        }
-       catch (PSException e)
+       catch (PSException | PSValidationException e)
        {
            throw new PSCmsException(e);
        }
@@ -6409,7 +6410,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
        {
            PSSqlPurgeHelperLocator.getPurgeHelper().purgeNavigation(folder);
        }
-       catch (PSException e)
+       catch (PSException | PSValidationException e)
        {
            throw new PSCmsException(e);
        }

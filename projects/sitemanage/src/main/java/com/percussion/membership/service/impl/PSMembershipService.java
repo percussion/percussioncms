@@ -38,25 +38,28 @@ import com.percussion.membership.data.PSUserGroup;
 import com.percussion.membership.data.PSUserSummaries;
 import com.percussion.membership.data.PSUserSummary;
 import com.percussion.membership.service.IPSMembershipService;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import com.percussion.pubserver.IPSPubServerService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.percussion.services.error.PSNotFoundException;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author JaySeletz
@@ -81,7 +84,7 @@ public class PSMembershipService implements IPSMembershipService
         {
         String adminURl= pubServerService.getDefaultAdminURL(site);
         IPSDeliveryInfoService deliveryService  = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
-        PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);;
+        PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
         if (server == null)
             throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);
         
@@ -165,7 +168,7 @@ public class PSMembershipService implements IPSMembershipService
             deliveryClient.push(new PSDeliveryActionOptions(server, url, HttpMethodType.DELETE, true), "");
             
             return getUsers(site);
-        } catch (IPSPubServerService.PSPubServerServiceException e) {
+        } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
             log.warn("Error deleting user(s) from the membership service.  Error: {}",  e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e);
@@ -198,7 +201,7 @@ public class PSMembershipService implements IPSMembershipService
                     accountJson.toString());
             
             return getUsers(site);
-        } catch (IPSPubServerService.PSPubServerServiceException e) {
+        } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
             log.warn("Error updating group account.  Error: {}",  e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e, Response.serverError().build());

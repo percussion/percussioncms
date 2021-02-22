@@ -41,7 +41,7 @@ import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.relationship.IPSExecutionContext;
@@ -1206,7 +1206,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
     * @throws PSNotFoundException for any file not found.
     * @throws SQLException for any failed SQL operation.
     * @throws PSRequestValidationException if the supplied request is invalid.
-    * @throws PSValidationException for any validation failed.
+    * @throws PSSystemValidationException for any validation failed.
     * @throws IOException for any IO operation that failed.
     * @throws PSUnknownNodeTypeException for objectstore XML parsing errors.
     */
@@ -1214,7 +1214,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
       boolean useDependentRevision)
       throws PSAuthorizationException, PSInternalRequestCallException,
          PSAuthenticationFailedException, PSNotFoundException, SQLException,
-         PSRequestValidationException, PSValidationException, IOException,
+         PSRequestValidationException, PSSystemValidationException, IOException,
          PSUnknownNodeTypeException
    {
       // assume the current item is our dependent

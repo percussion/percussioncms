@@ -234,7 +234,7 @@ public class PSJavaPluginConfig implements IPSJavaPluginConfig
    /**
     * See IPSComponent.
     */
-   public void validate(IPSValidationContext cxt) throws PSValidationException
+   public void validate(IPSValidationContext cxt) throws PSSystemValidationException
    {
       throw new UnsupportedOperationException("validate is not implemented");
    }

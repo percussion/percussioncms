@@ -105,7 +105,7 @@ public class PSNavFinderUtils
       {
          IPSNode internalNode = (IPSNode) navon.getProperty("nav:proxiedNode")
                .getNode();
-         Map<String, IPSGuid> optionalParams = new HashMap<String, IPSGuid>();
+         Map<String, IPSGuid> optionalParams = new HashMap<>();
          IPSGuid templateId = StringUtils.isBlank(templateNameId) ? sourceItem
                .getTemplate().getGUID() : null;
          clone = PSContentFinderBase.getCloneAssemblyItem(sourceItem, asm,

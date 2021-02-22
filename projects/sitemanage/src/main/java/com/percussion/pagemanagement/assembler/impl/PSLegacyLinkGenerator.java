@@ -24,6 +24,7 @@
 package com.percussion.pagemanagement.assembler.impl;
 
 import com.percussion.assetmanagement.data.PSAsset;
+import com.percussion.error.PSException;
 import com.percussion.pagemanagement.data.*;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -34,6 +35,7 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
@@ -102,8 +104,7 @@ public class PSLegacyLinkGenerator
      * @param l never <code>null</code>.
      * @return never <code>null</code> or empty.
      */
-    public String generate(PSLegacyLink l)
-    {
+    public String generate(PSLegacyLink l) throws PSBeanValidationException {
         PSBeanValidationUtils.getValidationErrorsOrFailIfInvalid(l);
         String url = getLocationUtils().generate(l.getLegacyTemplate(), l.getNode(), l.getFolderPath(), l.getFilter(),
                 l.getSiteId(), l.getContext());
@@ -206,13 +207,12 @@ public class PSLegacyLinkGenerator
 
     }
     
-    private Node getNode(IPSLinkableItem item)
-    {
+    private Node getNode(IPSLinkableItem item) throws PSException {
         IPSGuid guid = idMapper.getGuid(item.getId());
         List<Node> nodes = contentDesignWs.findNodesByIds(asList(guid), true);
         if (nodes == null || nodes.isEmpty())
         {
-            throw new RuntimeException("Cannot generate link. Item does not have a node. Item: " + item);
+            throw new PSException("Cannot generate link. Item does not have a node. Item: " + item);
         }
         return nodes.get(0);
     }
@@ -232,8 +232,7 @@ public class PSLegacyLinkGenerator
             PSRenderLinkContext legacyContext, 
             IPSLinkableItem item, 
             PSAssetResource resourceDefinition, 
-            PSLegacyLink link) throws ValidationException
-    {
+            PSLegacyLink link) throws ValidationException, PSException {
         notNull(legacyContext);
         notNull(link);
         notNull(resourceDefinition);

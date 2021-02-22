@@ -23,6 +23,7 @@
  */
 package com.percussion.sitemanage.importer.dao;
 
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.sitemanage.importer.data.PSImportLogEntry;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public interface IPSImportLogDao
      * 
      * @param logEntry The entry to log, may not be <code>null</code>. 
      */
-    public void save(PSImportLogEntry logEntry);
+    public void save(PSImportLogEntry logEntry) throws IPSGenericDao.SaveException;
     
     /**
      * Find all log entries for a site or template.  
@@ -51,7 +52,7 @@ public interface IPSImportLogDao
      * 
      * @param logEntry the entry to delete, may not be <code>null</code>.
      */
-    public void delete(PSImportLogEntry logEntry);
+    public void delete(PSImportLogEntry logEntry) throws IPSGenericDao.SaveException;
 
     /**
      * Finds log entry ids for the supplied objects ids.  Lightweight method that avoids loading all log entries.

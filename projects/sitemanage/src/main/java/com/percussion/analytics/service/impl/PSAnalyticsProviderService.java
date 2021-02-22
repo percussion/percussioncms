@@ -32,6 +32,7 @@ import com.percussion.analytics.service.impl.google.PSGoogleAnalyticsErrorMessag
 import com.percussion.analytics.service.impl.google.PSGoogleAnalyticsProviderHandler;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
@@ -64,8 +65,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
     * @see com.percussion.analytics.service.IPSAnalyticsProviderService#storeConfig(
     *  com.percussion.analytics.data.PSAnalyticsProviderConfig)
     */
-   public void saveConfig(PSAnalyticsProviderConfig config)
-   {
+   public void saveConfig(PSAnalyticsProviderConfig config) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException {
       /* Storing configuration to metadata service as a JSON string in the following format:
        *  {"uid": "userid",
        *   "password": "encryptedPassword",
@@ -105,7 +105,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
        try {
            objectToJson = objectMapper.writeValueAsString(config);
        } catch (JsonProcessingException e) {
-           log.error("Exception occurred while parsing - > {}" + e.getMessage());
+           log.error("Exception occurred while parsing - > {}" , e.getMessage());
            log.debug(e);
        }
 
@@ -117,8 +117,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
     *  (non-Javadoc)
     * @see com.percussion.analytics.service.IPSAnalyticsProviderService#deleteConfig()
     */
-   public void deleteConfig()
-   {
+   public void deleteConfig() throws IPSGenericDao.LoadException, IPSGenericDao.DeleteException {
        metadataService.delete(METADATA_KEY);
    }
    
@@ -126,8 +125,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
    /* (non-Javadoc)
     * @see com.percussion.analytics.service.IPSAnalyticsProviderService#getStoredConfig(boolean)
     */
-   public PSAnalyticsProviderConfig loadConfig(boolean encrypted)
-   {
+   public PSAnalyticsProviderConfig loadConfig(boolean encrypted) throws IPSGenericDao.LoadException {
 
       PSMetadata metadata = metadataService.find(METADATA_KEY);
        PSAnalyticsProviderConfig config = null;
@@ -169,9 +167,8 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
    /* (non-Javadoc)
     * @see com.percussion.analytics.service.IPSAnalyticsProviderService#getProfiles(java.lang.String, java.lang.String)
     */
-   public Map<String, String> getProfiles(String uid, String password) 
-     throws PSAnalyticsProviderException
-   {
+   public Map<String, String> getProfiles(String uid, String password)
+           throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
       if(StringUtils.isBlank(uid) || StringUtils.isBlank(password))
       {
          //one of the creds is null, try to use stored cred
@@ -194,8 +191,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
    /* (non-Javadoc)
     * @see com.percussion.analytics.service.IPSAnalyticsProviderService#testConnection(java.lang.String, java.lang.String)
     */
-   public void testConnection(String uid, String password) throws PSAnalyticsProviderException
-   {
+   public void testConnection(String uid, String password) throws PSAnalyticsProviderException, IPSGenericDao.LoadException, IPSGenericDao.SaveException {
       if(StringUtils.isBlank(uid) || StringUtils.isBlank(password))
       {
          //one of the creds is null, try to use stored cred
@@ -230,8 +226,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
    /* (non-Javadoc)
     * @see com.percussion.analytics.service.IPSAnalyticsProviderService#isProfileConfigured(java.lang.String)
     */
-   public boolean isProfileConfigured(String sitename)
-   {
+   public boolean isProfileConfigured(String sitename) throws IPSGenericDao.LoadException {
       return getSiteProfile(sitename) != null;     
    }   
    
@@ -239,8 +234,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
    /* (non-Javadoc)
     * @see com.percussion.analytics.service.IPSAnalyticsProviderService#getProfileId(java.lang.String)
     */
-   public String getProfileId(String sitename)
-   {
+   public String getProfileId(String sitename) throws IPSGenericDao.LoadException {
        return getProfileProperty(sitename, 0);
    }
 
@@ -248,8 +242,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
     * (non-Javadoc)
     * @see com.percussion.analytics.service.IPSAnalyticsProviderService#getTrackingCode(java.lang.String)
     */
-   public String getWebPropertyId(String sitename)
-   {
+   public String getWebPropertyId(String sitename) throws IPSGenericDao.LoadException {
        return getProfileProperty(sitename, 1);
    }
    
@@ -257,8 +250,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
     * (non-Javadoc)
     * @see com.percussion.analytics.service.IPSAnalyticsProviderService#getApiKey(java.lang.String)
     */
-   public String getGoogleApiKey(String sitename)
-   {
+   public String getGoogleApiKey(String sitename) throws IPSGenericDao.LoadException {
        return getProfileProperty(sitename, 2);
    }
    
@@ -271,8 +263,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
     * 
     * @return the profile property. It is <code>null</code> if it is not configured for the site.
     */
-   private String getProfileProperty(String sitename, int propertyIndex)
-   {
+   private String getProfileProperty(String sitename, int propertyIndex) throws IPSGenericDao.LoadException {
        String profile = getSiteProfile(sitename);
        if (profile == null)
            return null;
@@ -293,8 +284,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
     * 
     * @return the profile of the site. It may be <code>null</code> if it is not configured for the site.
     */
-   private String getSiteProfile(String sitename)
-   {
+   private String getSiteProfile(String sitename) throws IPSGenericDao.LoadException {
        if(StringUtils.isBlank(sitename))
            throw new IllegalArgumentException("sitename cannot be null or empty.");
         PSAnalyticsProviderConfig config = loadConfig(false);

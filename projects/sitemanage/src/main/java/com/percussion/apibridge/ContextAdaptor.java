@@ -26,7 +26,9 @@ package com.percussion.apibridge;
 
 import com.percussion.rest.contexts.Context;
 import com.percussion.rest.contexts.IContextsAdaptor;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.locationscheme.LocationScheme;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.services.sitemgr.IPSPublishingContext;
@@ -55,10 +57,14 @@ public class ContextAdaptor implements IContextsAdaptor {
      * @param id id of the Context to delete
      */
     @Override
-    public void deleteContext(URI baseURI, String id) {
-        PSGuid guid = new PSGuid(id);
-        IPSPublishingContext context = siteManager.loadContext(guid);
-        siteManager.deleteContext(context);
+    public void deleteContext(URI baseURI, String id) throws BackendException {
+        try {
+            PSGuid guid = new PSGuid(id);
+            IPSPublishingContext context = siteManager.loadContext(guid);
+            siteManager.deleteContext(context);
+        } catch (PSNotFoundException e) {
+           throw new BackendException(e);
+        }
     }
 
     /***
@@ -68,11 +74,15 @@ public class ContextAdaptor implements IContextsAdaptor {
      * @return The publishing Conext
      */
     @Override
-    public Context getContextById(URI baseUri, String id) {
-        PSGuid guid = new PSGuid(id);
-        IPSPublishingContext context = siteManager.loadContext(guid);
+    public Context getContextById(URI baseUri, String id) throws BackendException {
+        try {
+            PSGuid guid = new PSGuid(id);
+            IPSPublishingContext context = siteManager.loadContext(guid);
 
-        return copyContext(context);
+            return copyContext(context);
+        } catch (PSNotFoundException e) {
+           throw new BackendException(e);
+        }
     }
 
     /***
@@ -81,15 +91,19 @@ public class ContextAdaptor implements IContextsAdaptor {
      * @return a list of publishing contexts
      */
     @Override
-    public List<Context> listContexts(URI baseURI) {
-        List<Context> ret = new ArrayList<>();
-        List<IPSPublishingContext> contexts = siteManager.findAllContexts();
+    public List<Context> listContexts(URI baseURI) throws BackendException {
+        try {
+            List<Context> ret = new ArrayList<>();
+            List<IPSPublishingContext> contexts = siteManager.findAllContexts();
 
-        for(IPSPublishingContext c : contexts){
-            ret.add(copyContext(c));
+            for (IPSPublishingContext c : contexts) {
+                ret.add(copyContext(c));
+            }
+
+            return ret;
+        } catch (PSNotFoundException e) {
+            throw new BackendException(e);
         }
-
-        return ret;
     }
 
     /***
@@ -99,17 +113,21 @@ public class ContextAdaptor implements IContextsAdaptor {
      * @return The updated context
      */
     @Override
-    public Context createOrUpdateContext(URI baseURI, Context context) {
-        IPSPublishingContext ctx = null;
-        if(context.getId() == null || StringUtils.isBlank(context.getId().getStringValue())){
-           ctx = siteManager.createContext();
-        }else{
-            PSGuid guid = new PSGuid(context.getId().getStringValue());
-            ctx = siteManager.loadContext(guid);
-        }
+    public Context createOrUpdateContext(URI baseURI, Context context) throws BackendException {
+        try {
+            IPSPublishingContext ctx = null;
+            if (context.getId() == null || StringUtils.isBlank(context.getId().getStringValue())) {
+                ctx = siteManager.createContext();
+            } else {
+                PSGuid guid = new PSGuid(context.getId().getStringValue());
+                ctx = siteManager.loadContext(guid);
+            }
 
-        return copyContext(ctx);
+            return copyContext(ctx);
+        } catch (PSNotFoundException e) {
+            throw new BackendException(e);
         }
+    }
 
     private Context copyContext(IPSPublishingContext context) {
         Context ret = new Context();

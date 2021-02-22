@@ -167,7 +167,7 @@ public abstract class PSBaseSlotContentFinder extends PSContentFinderBase<IPSTem
          IPSTemplateSlot slot, Map<String, Object> selectors)
            throws RepositoryException, PSFilterException, PSAssemblyException, PSNotFoundException {
       Map<String, ? extends Object> args = slot.getFinderArguments();
-      Map<String, Object> params = new HashMap<String, Object>();
+      Map<String, Object> params = new HashMap<>();
       params.putAll(args);
       params.putAll(selectors);
 
@@ -207,7 +207,7 @@ public abstract class PSBaseSlotContentFinder extends PSContentFinderBase<IPSTem
    protected Set<ContentItem> getContentItems(IPSAssemblyItem sourceItem,
          IPSTemplateSlot slot, Map<String, Object> selectors)
    {
-      Set<ContentItem> rval = new TreeSet<ContentItem>(new ContentItemOrder());
+      Set<ContentItem> rval = new TreeSet<>(new ContentItemOrder());
       
       IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
       
@@ -273,7 +273,7 @@ public abstract class PSBaseSlotContentFinder extends PSContentFinderBase<IPSTem
          throw new IllegalArgumentException("selectors may not be null");
       }
       
-      Map<String, Object> params = new HashMap<String, Object>();
+      Map<String, Object> params = new HashMap<>();
       params.putAll(args);
       params.putAll(selectors);
 
@@ -315,13 +315,13 @@ public abstract class PSBaseSlotContentFinder extends PSContentFinderBase<IPSTem
    protected Set<SlotItem> reorder(Set<SlotItem> srcItems, String orderby, 
          String locale)
    {
-      Set<ContentItem> items = new TreeSet<ContentItem>(new ContentItemOrder());
+      Set<ContentItem> items = new TreeSet<>(new ContentItemOrder());
       for (SlotItem item : srcItems)
       {
          items.add(new ContentItem(item.getItemId(), item.getTemplate(), item.getSortrank()));
       }
       Set<ContentItem> tgtItems = reorderItems(items, orderby, locale);
-      Set<SlotItem> reItems = new TreeSet<SlotItem>(new SlotItemOrder());
+      Set<SlotItem> reItems = new TreeSet<>(new SlotItemOrder());
       for (ContentItem item : tgtItems)
       {
          reItems.add(new SlotItem(item));

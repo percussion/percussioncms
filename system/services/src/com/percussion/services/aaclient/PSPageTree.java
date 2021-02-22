@@ -223,7 +223,7 @@ public class PSPageTree implements IPSWidgetHandler
 
       IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
       PSComponentSummary summary = objMgr.loadComponentSummary(cid);
-      Map<String, String> vars = new HashMap<String, String>();
+      Map<String, String> vars = new HashMap<>();
       vars.put("TITLE", summary.getName());
       vars.put("OBJECTID", jsObj.toString());
       resp = TREE_ROOT_NODE_TEMPLATE.expand(vars);
@@ -284,7 +284,7 @@ public class PSPageTree implements IPSWidgetHandler
            PSAssemblyException, PSFilterException, RepositoryException, PSNotFoundException {
       IPSAssemblyItem aItem = loadAssemblyItem(objectId);
       PSAssemblerUtils autils = new PSAssemblerUtils();
-      Map<String, Object> p = new HashMap<String, Object>();
+      Map<String, Object> p = new HashMap<>();
       return autils.getSlotItems(aItem, slotObj, p);
    }
 
@@ -296,7 +296,7 @@ public class PSPageTree implements IPSWidgetHandler
    private IPSAssemblyItem loadAssemblyItem(JSONObject objectId)
       throws PSAssemblyException
    {
-      Map<String, String[]> params = new HashMap<String, String[]>();
+      Map<String, String[]> params = new HashMap<>();
       Object temp = objectId.get(IPSHtmlParameters.SYS_CONTENTID);
 
       if (temp != null)

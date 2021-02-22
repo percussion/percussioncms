@@ -271,7 +271,7 @@ public class PSSessionFactoryBean extends LocalSessionFactoryBean
     * The list of events will be intercepted and logged to the console for aid
     * in debugging issues
     */
-   private List<String> m_interceptEvents = new ArrayList<String>();
+   private List<String> m_interceptEvents = new ArrayList<>();
 
    /**
     * Cached hibernate properties saved by overriden

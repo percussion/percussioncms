@@ -557,8 +557,7 @@ public class PSDispatchingPathServiceTest
     }
 
     @Test
-    public void shouldFindByDispatchingToA()
-    {
+    public void shouldFindByDispatchingToA() throws PSPathServiceException, PSDataServiceException {
         /*
          * Given: See setup. We have a path item that the service will return that is valid.
          */
@@ -587,8 +586,7 @@ public class PSDispatchingPathServiceTest
     }
     
     @Test(expected=PSPathServiceException.class)
-    public void shouldFailIfDispatchedServiceReturnsAPathItemWithOutPathSet()
-    {
+    public void shouldFailIfDispatchedServiceReturnsAPathItemWithOutPathSet() throws PSPathServiceException, PSDataServiceException {
         /*
          * Given: See setup. We have a path item that the service will return that is INVALID
          * Because the path is null.
@@ -617,8 +615,7 @@ public class PSDispatchingPathServiceTest
     }
     
     @Test(expected=PSPathServiceException.class)
-    public void shouldFailIfDispatchedServiceReturnsAPathItemWithPathNotStartingWithRelative()
-    {
+    public void shouldFailIfDispatchedServiceReturnsAPathItemWithPathNotStartingWithRelative() throws PSPathServiceException, PSDataServiceException {
         /*
          * Given: See setup. We have a path item that the service will return that is INVALID
          * Because the path should begin with /b/c/.
@@ -646,8 +643,7 @@ public class PSDispatchingPathServiceTest
          */
     }
     
-    public void shouldNotFailIfDispatchedServiceReturnsAPathItemWithPathStartingWithIncorrectCasing()
-    {
+    public void shouldNotFailIfDispatchedServiceReturnsAPathItemWithPathStartingWithIncorrectCasing() throws PSPathServiceException, PSDataServiceException {
         /*
          * Given: See setup. We have a path item that the service will return that has different
          * casing then the path request /b/c/
@@ -676,8 +672,7 @@ public class PSDispatchingPathServiceTest
     }
     
     @Test
-    public void shouldFindChildrenByDispatchingToB()
-    {
+    public void shouldFindChildrenByDispatchingToB() throws PSPathServiceException, PSDataServiceException {
         /*
          * Given: path service B has the following children under its root.
          */
@@ -713,8 +708,7 @@ public class PSDispatchingPathServiceTest
     }
     
     @Test
-    public void shouldFindRootChildrenByCallingFindOnEachPathService()
-    {
+    public void shouldFindRootChildrenByCallingFindOnEachPathService() throws PSPathServiceException, PSDataServiceException {
         /*
          * Given: path service B has the following children under its root.
          */
@@ -755,8 +749,7 @@ public class PSDispatchingPathServiceTest
     }
     
     @Test
-    public void shouldFindRoot()
-    {
+    public void shouldFindRoot() throws PSPathServiceException, PSDataServiceException {
         /*
          * Given: nothing see setup.
          */

@@ -403,7 +403,7 @@ public class PSXMLDomUtil
       }
       else
       {
-         return PSDataTypeConverter.parseStringToDate(val, new StringBuffer(), null);
+         return PSDataTypeConverter.parseStringToDate(val, new StringBuilder(), null);
       }
    }
 

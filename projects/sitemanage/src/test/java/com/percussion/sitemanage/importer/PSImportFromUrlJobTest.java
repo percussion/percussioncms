@@ -23,6 +23,7 @@
  */
 package com.percussion.sitemanage.importer;
 
+import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.PSSiteDataServletTestCaseFixture;
 import com.percussion.share.async.IPSAsyncJob;
@@ -132,7 +133,7 @@ public class PSImportFromUrlJobTest extends PSSiteImportTestBase
             // teardown.
             siteCreated = true;
         }
-        catch (RuntimeException e)
+        catch (RuntimeException | IPSFolderService.PSWorkflowNotFoundException e)
         {
             fail();
         }

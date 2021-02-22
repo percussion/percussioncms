@@ -203,7 +203,7 @@ public class PSWorkflowActionsHelper
          }
       }
 
-      List<PSMenuAction> results = new ArrayList<PSMenuAction>();
+      List<PSMenuAction> results = new ArrayList<>();
       if (result != null)
          results.add(result);
       
@@ -300,7 +300,7 @@ public class PSWorkflowActionsHelper
    @SuppressWarnings("unchecked")
    public List<PSMenuAction> getTranstionActions()
    {
-      List<PSMenuAction> results = new ArrayList<PSMenuAction>();
+      List<PSMenuAction> results = new ArrayList<>();
       
       IPSWorkflowService svc = PSWorkflowServiceLocator.getWorkflowService();
       boolean isFirst = true;
@@ -338,7 +338,7 @@ public class PSWorkflowActionsHelper
     */
    private List<PSMenuAction> removeAdhocActions(List<PSMenuAction> actions)
    {
-      List<PSMenuAction> results = new ArrayList<PSMenuAction>();
+      List<PSMenuAction> results = new ArrayList<>();
       
       for (PSMenuAction action : actions)
       {
@@ -365,7 +365,7 @@ public class PSWorkflowActionsHelper
    private List<PSMenuAction> getTransitionActions(IPSWorkflowService svc, 
       PSItemInfo info)
    {
-      List<PSMenuAction> results = new ArrayList<PSMenuAction>();
+      List<PSMenuAction> results = new ArrayList<>();
       
       // no access if 
       if (!info.hasAssigneeAccess())
@@ -523,7 +523,7 @@ public class PSWorkflowActionsHelper
       PSWorkflow wf = svc.loadWorkflow(info.getWorkflowId());
       Set<Integer> roleIds = wf.getRoleIds(m_userRoles);
       List<PSTransitionRole> transRoles = trans.getTransitionRoles();
-      Set<Integer> actingRoles = new HashSet<Integer>();
+      Set<Integer> actingRoles = new HashSet<>();
       
       for (PSTransitionRole transRole : transRoles)
       {
@@ -558,7 +558,7 @@ public class PSWorkflowActionsHelper
     * A list of item information objects representing the items supplied during
     * construction, never <code>null</code> or modified after that.
     */
-   private List<PSItemInfo> m_itemInfoList = new ArrayList<PSItemInfo>();
+   private List<PSItemInfo> m_itemInfoList = new ArrayList<>();
 
    /**
     * The user name supplied during construction, never <code>null</code>, empty 

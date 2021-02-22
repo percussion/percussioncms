@@ -199,7 +199,7 @@ public interface IPSPubServer
     */
    static String[] encodedPropertyNames = {PSPubServerDao.PUBLISH_PASSWORD_PROPERTY};
 
-   static final Set<String> encodedPropertyNamesList = new HashSet<String>(
+   static final Set<String> encodedPropertyNamesList = new HashSet<>(
          Arrays.asList(encodedPropertyNames));
 
    String getServerType();

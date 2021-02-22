@@ -24,7 +24,6 @@
 package com.percussion.pagemanagement.assembler;
 
 import com.percussion.analytics.service.IPSAnalyticsProviderService;
-import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.category.data.PSCategory;
 import com.percussion.category.data.PSCategoryNode;
 import com.percussion.category.extension.PSCategoryControlUtils;
@@ -89,6 +88,7 @@ import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.share.dao.IPSContentItemDao;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.PSHtmlUtils;
 import com.percussion.share.dao.PSJcrNodeFinder;
 import com.percussion.share.dao.impl.PSContentItem;
@@ -122,8 +122,6 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -292,7 +290,7 @@ public class PSPageUtils extends PSJexlUtilBase
     {
         try{
             return renderLinkService.renderLink(linkContext, linkableItem);
-        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | IPSAssetService.PSAssetServiceException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException | PSValidationException e) {
+        } catch (PSDataServiceException e) {
             log.error(LOG_ERROR_DEFAULT,"itemLink", e.getMessage());
             log.debug(e.getMessage(),e);
             return new PSRenderLink("#",null);
@@ -307,7 +305,7 @@ public class PSPageUtils extends PSJexlUtilBase
         try {
             Set<String> widgetDefIds = getWidgetDefIds(item);
             return renderLinkService.renderJavascriptLinks(linkContext, widgetDefIds);
-        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException e) {
+        } catch (PSDataServiceException | RepositoryException e) {
             log.error(LOG_ERROR_DEFAULT,"javascriptLinks", e.getMessage());
             log.debug(e.getMessage(),e);
             return new ArrayList<>();
@@ -322,7 +320,7 @@ public class PSPageUtils extends PSJexlUtilBase
         try {
             Set<String> widgetDefIds = getWidgetDefIds(item);
             return renderLinkService.renderCssLinks(linkContext, widgetDefIds);
-        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException e) {
+        } catch (PSDataServiceException | RepositoryException e) {
             log.error(LOG_ERROR_DEFAULT,"cssLinks", e.getMessage());
             log.debug(e.getMessage(),e);
             return new ArrayList<>();
@@ -469,7 +467,7 @@ public class PSPageUtils extends PSJexlUtilBase
             PSRegionBranches pageRegionBranches = page.getRegionBranches();
             regionTree =  new PSMergedRegionTree(widgetService ,templateRegionTree , pageRegionBranches);
         }
-        catch (RepositoryException e)
+        catch (RepositoryException | PSDataServiceException e)
         {
             log.error("Error getting RegionTree for item ", e);
         }
@@ -550,13 +548,10 @@ public class PSPageUtils extends PSJexlUtilBase
      * @return Set of widget definition ids, never <code>null</code>, may be
      *         empty.
      */
-    private Set<String> getWidgetDefIds(IPSAssemblyItem item)
-    {
+    private Set<String> getWidgetDefIds(IPSAssemblyItem item) throws PSDataServiceException, RepositoryException {
         Set<String> widgetDefIds = new HashSet<>();
         if (item == null)
             return widgetDefIds;
-        try
-        {
             PSPage page = getAssemblyItemBridge().getTemplateAndPage(item).getPage();
             PSTemplate template = getAssemblyItemBridge().getTemplateAndPage(item).getTemplate();
             List<PSWidgetItem> widgetList = page.getWidgets(template);
@@ -565,13 +560,7 @@ public class PSPageUtils extends PSJexlUtilBase
             {
                 widgetDefIds.add(psWidgetItem.getDefinitionId());
             }
-        }
-        catch (RepositoryException e)
-        {
-            String errMsg = "Failed to find content for widget definitions for item =" + item.getId().toString();
-            log.error(errMsg, e);
-            throw new RuntimeException(errMsg, e);
-        }
+
         return widgetDefIds;
     }
 
@@ -624,7 +613,7 @@ public class PSPageUtils extends PSJexlUtilBase
                 log.debug("Failed to find the landing page for nav node id = {}", navId);
             }
         }
-        catch (RepositoryException | IPSDataService.DataServiceLoadException | IPSAssetService.PSAssetServiceException | IPSDataService.DataServiceNotFoundException | IllegalArgumentException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException | PSValidationException e)
+        catch (RepositoryException | IllegalArgumentException | PSDataServiceException e)
         {
             IPSGuid navId = ((IPSNode) navNode).getGuid();
 
@@ -644,7 +633,7 @@ public class PSPageUtils extends PSJexlUtilBase
     {
         try {
             return renderLinkService.renderLink(linkContext, linkableItem, resourceDefinitionId);
-        } catch (IPSDataService.DataServiceLoadException | IPSAssetService.PSAssetServiceException | IPSDataService.DataServiceNotFoundException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException | PSValidationException e) {
+        } catch (PSDataServiceException e) {
             log.error(LOG_ERROR_DEFAULT,"itemLink", e.getMessage());
             log.debug(e.getMessage(),e);
             return new PSRenderLink("#",null);
@@ -1782,17 +1771,21 @@ public class PSPageUtils extends PSJexlUtilBase
             {@IPSJexlParam(name = "templateIds", description = "String of comma separated template ids")}, returns = "List of template names")
     public List<String> templateNames(String templateIds)
     {
-        List<String> templateNames = new ArrayList<>();
-        String[] ids = StringUtils.split(templateIds, ',');
-        for (String id : ids)
-        {
-            PSTemplateSummary summary = templateService.find(id);
-            if (summary != null)
-            {
-                templateNames.add(summary.getName());
+        try {
+            List<String> templateNames = new ArrayList<>();
+            String[] ids = StringUtils.split(templateIds, ',');
+            for (String id : ids) {
+                PSTemplateSummary summary = templateService.find(id);
+                if (summary != null) {
+                    templateNames.add(summary.getName());
+                }
             }
+            return templateNames;
+        } catch (PSDataServiceException e) {
+            log.error(LOG_ERROR_DEFAULT,"templateNames",e.getMessage());
+            log.debug(e.getMessage(),e);
+            return new ArrayList<>();
         }
-        return templateNames;
     }
 
     /**
@@ -2861,8 +2854,7 @@ public class PSPageUtils extends PSJexlUtilBase
      * @return the web property ID. It may be empty if it is not configured for
      *         the site.
      */
-    public String getWebPropertyId(String sitename)
-    {
+    public String getWebPropertyId(String sitename) throws IPSGenericDao.LoadException {
         if (StringUtils.isBlank(sitename))
             return "";
         String webPropertyId = analyticsProviderService.getWebPropertyId(sitename);
@@ -2880,8 +2872,7 @@ public class PSPageUtils extends PSJexlUtilBase
      * @return the API key. It may be empty if the site name is blank or the
      *         google API key is not configure for the site.
      */
-    public String getGoogleApiKey(String sitename)
-    {
+    public String getGoogleApiKey(String sitename) throws IPSGenericDao.LoadException {
         if (StringUtils.isBlank(sitename))
             return "";
 
@@ -3025,15 +3016,9 @@ public class PSPageUtils extends PSJexlUtilBase
         this.pubServerService = pubServerService;
     }
 
-    public PSPageUtils(){ }
-
-    private static final String  VELOCITY_LOGGER="velocity";
-    private static final String LOG_ERROR_DEFAULT="Error in $rx.pageutils.{}: {}";
-
-    /**
-     * Logger for this class - write to the Velocity Log as this code is used by templates
-     */
-    private static final Logger log = LogManager.getLogger(VELOCITY_LOGGER);
+    public PSPageUtils(){
+        //default ctor
+    }
 
     private static Object metalock = new Object();
 

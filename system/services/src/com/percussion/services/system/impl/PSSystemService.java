@@ -155,10 +155,10 @@ public class PSSystemService
          criteria.add(Restrictions.like("name", name));
          criteria.addOrder(Order.asc("name"));
 
-         Set<PSSharedProperty> properties = new HashSet<PSSharedProperty>(
+         Set<PSSharedProperty> properties = new HashSet<>(
             criteria.list());
 
-         return new ArrayList<PSSharedProperty>(properties);
+         return new ArrayList<>(properties);
 
    }
 
@@ -240,7 +240,7 @@ public class PSSystemService
       if (ids == null)
          throw new IllegalArgumentException("ids may not be null");
 
-      List<PSDependency> results = new ArrayList<PSDependency>(ids.size());
+      List<PSDependency> results = new ArrayList<>(ids.size());
 
       PSDependencyHelper depHelper = new PSDependencyHelper();
       depHelper.enableCache();
@@ -279,7 +279,7 @@ public class PSSystemService
       if (ids == null)
          throw new IllegalArgumentException("ids may not be null");
 
-      List<PSDependency> results = new ArrayList<PSDependency>(ids.size());
+      List<PSDependency> results = new ArrayList<>(ids.size());
 
       PSDependencyHelper depHelper = new PSDependencyHelper();
       depHelper.enableCache();
@@ -769,7 +769,7 @@ public class PSSystemService
 
          List<Integer> countList = (idset != 0) ? (List)executeQuery(q) : q.list();
          
-         List<Long> convertList = new ArrayList<Long>();
+         List<Long> convertList = new ArrayList<>();
          for(int val:countList)
          {
             convertList.add(new Long(val));
@@ -844,7 +844,7 @@ public class PSSystemService
       if (m_mimeContentMap != null)
          return;
 
-      m_mimeContentMap = new HashMap<PSConfigurationTypes, PSMimeContentDescriptor>();
+      m_mimeContentMap = new HashMap<>();
 
       m_mimeContentMap.put(PSConfigurationTypes.SERVER_PAGE_TAGS,
          new PSMimeContentDescriptor(new PSGuid(PSTypeEnum.CONFIGURATION,
@@ -979,7 +979,7 @@ public class PSSystemService
       }
       PSAssignmentTypeHelper helper = new PSAssignmentTypeHelper( 
             user, roles, community);
-      List<PSAssignmentTypeEnum> rval = new ArrayList<PSAssignmentTypeEnum>();
+      List<PSAssignmentTypeEnum> rval = new ArrayList<>();
       for (int i = 0; i < ids.size(); i++)
       {
          rval.add(helper.getAssignmentType(ids.get(i)));
@@ -1009,7 +1009,7 @@ public class PSSystemService
       if (transitionId == null)
          throw new IllegalArgumentException("transitionId may not be null");
       
-      List<String> results = new ArrayList<String>();
+      List<String> results = new ArrayList<>();
       
       // get the component summary
       PSComponentSummary sum = getComponentSummary(contentId);
@@ -1024,7 +1024,7 @@ public class PSSystemService
       // start by adding adhoc normal roles only, but if we come across 
       // anonymous, then just add all roles on the system
       List<PSAssignedRole> assignedRoles = toState.getAssignedRoles();
-      List<IPSGuid> roleIds = new ArrayList<IPSGuid>();
+      List<IPSGuid> roleIds = new ArrayList<>();
       boolean anonymous = false;
       for (PSAssignedRole role : assignedRoles)
       {
@@ -1074,7 +1074,7 @@ public class PSSystemService
          throw new IllegalArgumentException(
             "roleName may not be null or empty");
       
-      List<String> results = new ArrayList<String>();
+      List<String> results = new ArrayList<>();
       
       // get the component summary
       PSComponentSummary sum = getComponentSummary(contentId);
@@ -1087,7 +1087,7 @@ public class PSSystemService
          return results;
       
       // see if normal adhoc role or anonymous
-      List<IPSGuid> roleIds = new ArrayList<IPSGuid>();
+      List<IPSGuid> roleIds = new ArrayList<>();
       boolean anonymous = false;
       for (PSAssignedRole role : toState.getAssignedRoles())
       {

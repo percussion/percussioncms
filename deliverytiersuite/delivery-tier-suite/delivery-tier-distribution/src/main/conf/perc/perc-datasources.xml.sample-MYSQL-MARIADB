@@ -15,6 +15,7 @@
 	    <property name="password" value="${db.password}" />
 		<property name="driverClassName" value="${jdbcDriver}" />
 		<property name="maximumPoolSize" value="${maximumPoolSize}" />
+		<property name="transactionIsolation" value="TRANSACTION_READ_UNCOMMITTED" />
 	</bean>
 
    <!-- DataSource -->
