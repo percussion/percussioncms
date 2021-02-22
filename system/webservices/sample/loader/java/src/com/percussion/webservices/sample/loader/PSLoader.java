@@ -411,21 +411,21 @@ public class PSLoader
       }
     
       // Retrieves the attachment with the attachment id
-      InputStream reader = null;
       Object[] attachments = binding.getAttachments();
       for (Object attachment : attachments)
       {
          AttachmentPart part = (AttachmentPart) attachment;
          if (part.getContentId().equals(attachmentId))
          {
-            reader = (InputStream) part.getContent();
-            break;
+            try(InputStream reader = (InputStream) part.getContent()){
+               byte[] content = new byte[reader.available()];
+               reader.read(content);
+               return content;
+            }
          }
       }
+      return null;
 
-      byte[] content = new byte[reader.available()];
-      reader.read(content);
-      return content;
    }
 
    /**
