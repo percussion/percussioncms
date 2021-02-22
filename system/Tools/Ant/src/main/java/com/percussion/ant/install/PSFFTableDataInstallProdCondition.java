@@ -78,9 +78,7 @@ implements Condition
    public boolean eval()
    {
       boolean isFFTableDataInstall = false;
-      FileInputStream in = null;
-      Connection conn = null;
-      try
+    try
       {
          String strRootDir = getRootDir();
          
@@ -88,74 +86,49 @@ implements Condition
          File propFile = new File(rxfm.getRepositoryFile());
          if (propFile.exists())
          {
-            in = new FileInputStream(propFile);
-            Properties props = new Properties();
-            props.load(in);
-            
-            props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
-            conn = RxLogTables.createConnection(props);
-            
-            if (conn != null)
-            {
-               String db = props.getProperty(PSJdbcDbmsDef.DB_NAME_PROPERTY);
-               String schema = props.getProperty(PSJdbcDbmsDef.DB_SCHEMA_PROPERTY);
-               
-               if (db.trim().length() < 1)
-                  db = null;
-               
-               // First check to see if FF table exists
-               DatabaseMetaData dbmd = conn.getMetaData();
-               ResultSet rs = dbmd.getTables(db, schema, FF_TABLE,
-                     new String[] {"TABLE"});
-               
-               if ((rs != null) && (rs.next()))
-               {  
-                  // Now check if FastForward data has been installed
-                  String qualTableName = PSSqlHelper.qualifyTableName(FF_TABLE,
-                        db, schema, props.getProperty(PSJdbcDbmsDef.DB_DRIVER_NAME_PROPERTY));
-                  
-                  String queryStmt = "SELECT CONTENTID FROM " + qualTableName;
-                  
-                  try(PreparedStatement stmt = conn.prepareStatement(queryStmt)) {
+            try(FileInputStream in = new FileInputStream(propFile)) {
+               Properties props = new Properties();
+               props.load(in);
 
-                     rs = stmt.executeQuery();
+               props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
+               try(Connection conn = RxLogTables.createConnection(props)) {
 
-                     if ((rs != null) && (rs.next()))
-                        isFFTableDataInstall = true;
+                  if (conn != null) {
+                     String db = props.getProperty(PSJdbcDbmsDef.DB_NAME_PROPERTY);
+                     String schema = props.getProperty(PSJdbcDbmsDef.DB_SCHEMA_PROPERTY);
+
+                     if (db.trim().length() < 1)
+                        db = null;
+
+                     // First check to see if FF table exists
+                     DatabaseMetaData dbmd = conn.getMetaData();
+                     ResultSet rs = dbmd.getTables(db, schema, FF_TABLE,
+                             new String[]{"TABLE"});
+
+                     if ((rs != null) && (rs.next())) {
+                        // Now check if FastForward data has been installed
+                        String qualTableName = PSSqlHelper.qualifyTableName(FF_TABLE,
+                                db, schema, props.getProperty(PSJdbcDbmsDef.DB_DRIVER_NAME_PROPERTY));
+
+                        String queryStmt = "SELECT CONTENTID FROM " + qualTableName;
+
+                        try (PreparedStatement stmt = conn.prepareStatement(queryStmt)) {
+
+                           rs = stmt.executeQuery();
+
+                           if ((rs != null) && (rs.next()))
+                              isFFTableDataInstall = true;
+                        }
+                     }
                   }
                }
-            }  
+            }
             
          }
       }
       catch (Exception e)
       {
          log(e.getMessage());
-      }
-      finally
-      {
-         if (in != null)
-         {
-            try
-            {
-               in.close();
-            }
-            catch (Exception e)
-            {
-               log(e.getMessage());
-            }
-         }
-         if (conn != null)
-         {
-            try
-            {
-               conn.close();
-            }
-            catch (SQLException e)
-            {
-               log(e.getMessage());
-            }
-         }
       }
       return isFFTableDataInstall;
    }
