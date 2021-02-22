@@ -478,15 +478,9 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
 
     private PSPackageFileList getPackageFileList() throws IOException
     {
-        FileInputStream in = new FileInputStream(new File(PSServer.getRxDir(),packageFileListPath));
-        try
-        {
+        try(FileInputStream in = new FileInputStream(new File(PSServer.getRxDir(),packageFileListPath))){
             String xmlString = IOUtils.toString(in);
             return PSPackageFileList.fromXml(xmlString);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(in);
         }
     }
     
@@ -496,20 +490,14 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
      */
     private void savePackageFileList(PSPackageFileList packageFileList)
     {
-        FileOutputStream out = null;
-        try
-        {
-           out = new  FileOutputStream(new File(PSServer.getRxDir(),packageFileListPath));
+        try(FileOutputStream out =  new  FileOutputStream(new File(PSServer.getRxDir(),packageFileListPath))){
            IOUtils.write(packageFileList.toXml(), out);
         }
         catch (Exception e)
         {
             log.error("Failed to save package installer results to file " + packageFileListPath + ":" + e.getLocalizedMessage(), e);
         }
-        finally
-        {
-            IOUtils.closeQuietly(out);
-        }
+
     }
 
     @Override

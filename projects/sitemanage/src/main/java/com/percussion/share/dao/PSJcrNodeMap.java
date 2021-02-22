@@ -138,7 +138,6 @@ public class PSJcrNodeMap extends AbstractMap<String, Object>
     
     private Object getNodePropertyValue(String k) {
         Property p = getNodeProperty(k);
-        FileOutputStream fos = null;
         try
         {
             if (p == null) return null;
@@ -154,8 +153,9 @@ public class PSJcrNodeMap extends AbstractMap<String, Object>
                 else
                 {
                     PSPurgableTempFile ptf = new PSPurgableTempFile("tmp", null, null);
-                    fos = new FileOutputStream(ptf);
-                    PSCopyStream.copyStream(p.getStream(), fos);
+                    try(FileOutputStream fos = new FileOutputStream(ptf)) {
+                        PSCopyStream.copyStream(p.getStream(), fos);
+                    }
 
                     return ptf;
                 }
@@ -176,20 +176,6 @@ public class PSJcrNodeMap extends AbstractMap<String, Object>
         catch (Exception e)
         {
             throw new RuntimeException(e);
-        }
-        finally
-        {
-            if (fos != null)
-            {
-                try
-                {
-                    fos.close();
-                }
-                catch (IOException e)
-                {
-                    
-                }
-            }
         }
     }
 

@@ -226,25 +226,21 @@ public class PSWidgetService implements IPSWidgetService {
     private Map<String, String> loadWidgetTypeMap()
     {
         Map<String, String> widgetTypeMap = new HashMap<>();
-        InputStream in = null;
-        in = this.getClass().getClassLoader()
-                .getResourceAsStream("com/percussion/pagemanagement/service/impl/WidgetRegistry.xml");
-        try
-        {
+        try(InputStream in = this.getClass().getClassLoader()
+                .getResourceAsStream("com/percussion/pagemanagement/service/impl/WidgetRegistry.xml")){
             Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
             NodeList groupElems = doc.getElementsByTagName("group");
-            for (int i = 0; i < groupElems.getLength(); i++)
-            {
+            for (int i = 0; i < groupElems.getLength(); i++) {
                 Element groupElem = (Element) groupElems.item(i);
                 String groupName = groupElem.getAttribute("name");
                 NodeList widgetElems = groupElem.getElementsByTagName("widget");
-                for (int j = 0; j < widgetElems.getLength(); j++)
-                {
+                for (int j = 0; j < widgetElems.getLength(); j++) {
                     Element widgetElem = (Element) widgetElems.item(j);
                     String wdgName = widgetElem.getAttribute("name");
                     widgetTypeMap.put(wdgName, groupName);
                 }
             }
+
         }
         catch (IOException e)
         {

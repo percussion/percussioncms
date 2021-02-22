@@ -62,82 +62,63 @@ public class PSPreUpgradePluginRelationship implements IPSUpgradePlugin
     * @param module IPSUpgradeModule object. may not be <code>null<code>.
     * @param elemData data element of plugin.
     */
-   public PSPluginResponse process(IPSUpgradeModule module, Element elemData)
-   {
-      PrintStream logger = module.getLogStream();
-      logger.println("Running Validating Relationships plugin");
+   public PSPluginResponse process(IPSUpgradeModule module, Element elemData) {
+      try (PrintStream logger = module.getLogStream()) {
+         logger.println("Running Validating Relationships plugin");
 
-      Connection conn = null;
-      boolean successValidated = true;
-      String log = module.getLogFile();
-      int respType = PSPluginResponse.SUCCESS;
-      String respMessage = null;
-      try
-      {
-         PSUpgradePluginRelationship util = new PSUpgradePluginRelationship();
-         util.setDbProperties(RxUpgrade.getRxRepositoryProps());
-         conn = RxUpgrade.getJdbcConnection();
 
-         Document doc = util.getRelationshipConfigs(logger, conn);
-         PSRelationshipConfigSet configs = util.getConfigSet(doc);
+         boolean successValidated = true;
+         String log = module.getLogFile();
+         int respType = PSPluginResponse.SUCCESS;
+         String respMessage = null;
+         try {
+            PSUpgradePluginRelationship util = new PSUpgradePluginRelationship();
+            util.setDbProperties(RxUpgrade.getRxRepositoryProps());
+            try (Connection conn = RxUpgrade.getJdbcConnection()) {
 
-         successValidated = validateExtensionSet(logger, doc);
+               Document doc = util.getRelationshipConfigs(logger, conn);
+               PSRelationshipConfigSet configs = util.getConfigSet(doc);
 
-         if (! validateEmptyExpiretime(logger, configs))
-            successValidated = false;
-         
-         if (!validateRelationshipName(logger, configs, conn, util))
-            successValidated = false;
-         
-         if (!validateUnknownRelationshipProperties(logger, configs, conn, util))
-            successValidated = false;
-         
-         if (successValidated)
-         {
-            respType = PSPluginResponse.SUCCESS;
-            respMessage = "Successfully validated relationship data.";
-         }
-         else
-         {
-            respType = PSPluginResponse.WARNING;
-            respMessage = "Finished validating relationship data, see the "
-                  + "\"" + log + "\" located in " + RxUpgrade.getPreLogFileDir()
-                  + " for warnings during this process.";
-         }
-      }
-      catch (Exception e)
-      {
-         successValidated = false;
-         logger.println("Caught exception: " + e.getMessage());
-         e.printStackTrace(logger);
-         
-         respType = PSPluginResponse.EXCEPTION;
-         respMessage = "<<<ERROR>>>: Failed to validate relationship data, see "
-            + "the \"" + log + "\" located in " + RxUpgrade.getPreLogFileDir()
-            + " for errors.";
-      }
-      finally
-      {
-         if (conn != null)
-         {
-            try
-            {
-               conn.close();
+               successValidated = validateExtensionSet(logger, doc);
+
+               if (!validateEmptyExpiretime(logger, configs))
+                  successValidated = false;
+
+               if (!validateRelationshipName(logger, configs, conn, util))
+                  successValidated = false;
+
+               if (!validateUnknownRelationshipProperties(logger, configs, conn, util))
+                  successValidated = false;
+
+               if (successValidated) {
+                  respType = PSPluginResponse.SUCCESS;
+                  respMessage = "Successfully validated relationship data.";
+               } else {
+                  respType = PSPluginResponse.WARNING;
+                  respMessage = "Finished validating relationship data, see the "
+                          + "\"" + log + "\" located in " + RxUpgrade.getPreLogFileDir()
+                          + " for warnings during this process.";
+               }
             }
-            catch (SQLException e)
-            {
-            }
-            conn = null;
+         } catch (Exception e) {
+            successValidated = false;
+            logger.println("Caught exception: " + e.getMessage());
+            e.printStackTrace(logger);
+
+            respType = PSPluginResponse.EXCEPTION;
+            respMessage = "<<<ERROR>>>: Failed to validate relationship data, see "
+                    + "the \"" + log + "\" located in " + RxUpgrade.getPreLogFileDir()
+                    + " for errors.";
+         } finally {
+            if (successValidated)
+               logger.println("leaving the process() of the Validating Relationships plugin, successfully validated without warning or error.");
+            else
+               logger.println("leaving the process() of the Validating Relationships plugin with WARNINGs.");
          }
-
-         if (successValidated)
-            logger.println("leaving the process() of the Validating Relationships plugin, successfully validated without warning or error.");
-         else
-            logger.println("leaving the process() of the Validating Relationships plugin with WARNINGs.");
+         return new PSPluginResponse(respType, respMessage);
       }
-
-      return new PSPluginResponse(respType, respMessage);
    }
+
 
    /**
     * @param logger the logger used to log messages, assumed not
