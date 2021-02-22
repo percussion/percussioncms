@@ -28,7 +28,6 @@ import com.percussion.delivery.feeds.services.IPSConnectionInfo;
 import com.percussion.delivery.feeds.services.IPSFeedDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +46,9 @@ import java.util.List;
  *
  */
 @Repository
-@Transactional
 public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 
-	final static Logger log = LogManager.getLogger(PSFeedDao.class);
+	private static final Logger log = LogManager.getLogger(PSFeedDao.class);
 
 	public PSFeedDao(){}
 
@@ -65,8 +63,8 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 	 * @see com.percussion.feeds.services.IPSFeedDao#find(java.lang.String,
 	 * java.lang.String)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional
 	public IPSFeedDescriptor find(String name, String site) {
 
 			Session session = getSession();
@@ -76,7 +74,8 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 			criteriaQuery.select(root).where(criteriaBuilder.and(criteriaBuilder.equal(root.get("site"), site),
 					criteriaBuilder.equal(root.get("name"), name)));
 
-			List<IPSFeedDescriptor> results = session.createQuery(criteriaQuery).getResultList();
+			List<IPSFeedDescriptor> results = session.createQuery(criteriaQuery).
+					getResultList();
 
 			if (results.isEmpty())
 				return null;
@@ -95,6 +94,7 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 	 * com.percussion.feeds.services.IPSFeedDao#findBySite(java.lang.String)
 	 */
 	@Override
+	@Transactional
 	public List<IPSFeedDescriptor> findBySite(String site) {
 
 			Session session = getSession();
@@ -103,8 +103,8 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 			Root<PSFeedDescriptor> root = criteriaQuery.from(PSFeedDescriptor.class);
 			criteriaQuery.where(criteriaBuilder.equal(root.get("site"),site));
 			criteriaQuery.select(root);
-			List<IPSFeedDescriptor> results = session.createQuery(criteriaQuery).getResultList();
-			return results;
+			return  session.createQuery(criteriaQuery).
+					getResultList();
 
 	}
 
@@ -113,8 +113,8 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 	 * 
 	 * @see com.percussion.feeds.services.IPSFeedDao#getConnectionInfo()
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional
 	public IPSConnectionInfo getConnectionInfo() {
 
 			Session session = getSession();
@@ -123,7 +123,8 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 			CriteriaQuery<PSConnectionInfo> criteriaQuery = criteriaBuilder.createQuery(PSConnectionInfo.class);
 			Root<PSConnectionInfo> root = criteriaQuery.from(PSConnectionInfo.class);
 			criteriaQuery.select(root);
-			List<PSConnectionInfo> results = session.createQuery(criteriaQuery).getResultList();
+			List<PSConnectionInfo> results = session.createQuery(criteriaQuery).
+					getResultList();
 			if (results.isEmpty())
 				return null;
 			return results.get(0);
@@ -138,6 +139,7 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 	 * String, java.lang.String, java.lang.String, boolean)
 	 */
 	@Override
+	@Transactional
 	public void saveConnectionInfo(String url, String user, String pass, boolean encrypted) {
 
 			Session session = getSession();
@@ -151,6 +153,7 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 	 * @see
 	 * com.percussion.feeds.services.IPSFeedDao#saveDescriptors(java.util.List)
 	 */
+	@Transactional
 	public void saveDescriptors(List<IPSFeedDescriptor> descriptors) {
 
 			Session session = getSession();
@@ -169,6 +172,7 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 	 * List)
 	 */
 	@Override
+	@Transactional
 	public void deleteDescriptors(List<IPSFeedDescriptor> descriptors) {
 
 		Session session = getSession();
@@ -184,8 +188,8 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 	 * 
 	 * @see com.percussion.feeds.services.IPSFeedDao#findAll()
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional
 	public List<IPSFeedDescriptor> findAll() {
 		Session session = getSession();
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -193,14 +197,13 @@ public class PSFeedDao extends HibernateDaoSupport implements IPSFeedDao {
 			Root<PSFeedDescriptor> root = criteriaQuery.from(PSFeedDescriptor.class);
 			criteriaQuery.select(root);
 
-			List<IPSFeedDescriptor> results = session.createQuery(criteriaQuery).getResultList();
-
-			return results;
+		return session.createQuery(criteriaQuery).
+					getResultList();
 
 	}
 
 	private List<IPSFeedDescriptor> prepareDescriptors(List<IPSFeedDescriptor> descriptors) {
-		List<IPSFeedDescriptor> prepared = new ArrayList<IPSFeedDescriptor>(descriptors.size());
+		List<IPSFeedDescriptor> prepared = new ArrayList<>(descriptors.size());
 		for (IPSFeedDescriptor d : descriptors) {
 			prepared.add(new PSFeedDescriptor(d));
 		}

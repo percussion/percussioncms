@@ -425,7 +425,6 @@
     </patternset>
 
     <patternset id="upgrade.preserve">
-        <exclude name="web_resources/**"/>
         <include name="**/**"/>
     </patternset>
 
@@ -496,6 +495,27 @@
         <ant antfile="removeOldPatches.xml" target="removeOldPatches" inheritAll="true" inheritRefs="true" />
         <antcall target="alwaysCopyIfMissing" inheritall="true" inheritrefs="true"/>
         <ant antfile="updateConfiguration.xml" target="updateConfiguration" inheritAll="true" inheritRefs="true" />
+        <antcall target="renameCamelCasedFontAwsomeFolder"  inheritall="true" inheritrefs="true"/>
+    </target>
+
+    <target name="renameCamelCasedFontAwsomeFolder">
+        <if>
+        <available file="${install.dir}/web_resources/cm/css/FontAwesome/" type="dir" />
+            <then>
+                <echo>Camel cased FonTAwesome folder found...</echo>
+                <echo>Renaming Font Awesome Folder....</echo>
+                <mkdir dir="${install.dir}/web_resources/cm/css/tempFontAwesome/"/>
+                <move todir="${install.dir}/web_resources/cm/css/tempFontAwesome/">
+                    <fileset dir="${install.dir}/web_resources/cm/css/FontAwesome/"/>
+                </move>
+                <delete dir="${install.dir}/web_resources/cm/css/FontAwesome/"/>
+                <mkdir dir="${install.dir}/web_resources/cm/css/fontawesome/"/>
+                <move todir="${install.dir}/web_resources/cm/css/fontawesome/">
+                    <fileset dir="${install.dir}/web_resources/cm/css/tempFontAwesome/"/>
+                </move>
+                <delete dir="${install.dir}/web_resources/cm/css/tempFontAwesome/"/>
+            </then>
+        </if>
     </target>
 
     <target name="backup">
@@ -559,12 +579,6 @@
                 <patternset refid="upgrade.excludes"/>
                 <exclude name="**/Assets.json"/>
                 <exclude name="**/Pages.json"/>
-            </fileset>
-            <fileset dir="${install.src}/web_resources/" followsymlinks="false" includes="**">
-                <present present="srconly" targetdir="${install.dir}/web_resources/"/>
-            </fileset>
-            <fileset dir="${install.src}/rx_resources/" followsymlinks="false" includes="**">
-                <present present="srconly" targetdir="${install.dir}/rx_resources/"/>
             </fileset>
         </copy>
 

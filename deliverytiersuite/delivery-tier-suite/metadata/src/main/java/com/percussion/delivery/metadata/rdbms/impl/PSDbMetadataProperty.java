@@ -67,8 +67,8 @@ public class PSDbMetadataProperty implements IPSMetadataProperty, Serializable
 
 
     @Column(length = Integer.MAX_VALUE)
-    @Lob
     @Nationalized
+    @Lob
     private String textvalue;
 
     @Basic

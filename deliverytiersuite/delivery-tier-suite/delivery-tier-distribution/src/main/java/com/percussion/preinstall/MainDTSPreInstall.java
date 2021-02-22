@@ -107,15 +107,16 @@ public class MainDTSPreInstall {
             String isProduction="true";
             isProduction=System.getProperty("install.prod.dts");
             System.out.println("====Will remove below code if value of is Production comes fine PSDeliveryTierServerTYpePanel"+isProduction);
-            if(isProduction!=null){
-                if(isProduction.equals("$DTS_SERVER_TYPE$")){
-                    isProduction="true";
-                }
-            }else{
+            String staging = installPath.toFile() + File.separator + "Staging";
+            File f = new File(staging);
+            String prod = installPath.toFile() + File.separator + "Deployment";
+            File f2 = new File(prod);
+            if(Files.exists(f.toPath()) && !Files.exists(f2.toPath())){
+                isProduction="false";
+            }
+            if(isProduction == null || isProduction.isEmpty()){
                 isProduction="true";//change done for dev environment
             }
-
-
 
             Path installSrc;
             Path currentJar = Paths.get(MainDTSPreInstall.class.getProtectionDomain().getCodeSource().getLocation().toURI());
@@ -154,11 +155,11 @@ public class MainDTSPreInstall {
 
         } catch (Exception e) {
             System.out.println("An unexpected error occurred processing installation files. " + e.getMessage());
-            throw  new AntJobFailedException("Ant Job Got Failed.");
+            throw  new AntJobFailedException(String.format("Installation failed. %s", e.getMessage()));
         }
-        System.out.println("Done extracting exit code "+exitCode);
+        System.out.println(String.format("Done extracting exit code %d", exitCode));
         if(exitCode != 0){
-            throw  new AntJobFailedException("Ant Job Got Failed.");
+            throw  new AntJobFailedException(String.format("Installation failed. Exit code: %d ",exitCode));
         }
     }
 

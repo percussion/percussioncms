@@ -249,17 +249,14 @@
                         </goals>
                         <configuration>
                             <target>
-
                                 <delete>
                                     <fileset dir="${project.build.directory}/generated-sources/axistools/wsdl2java" includes="**/*SOAPImpl.java" />
                                 </delete>
-
                             </target>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
     <dependencies>
