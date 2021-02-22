@@ -25,11 +25,14 @@
 package com.percussion.rest.contexts;
 
 import com.percussion.rest.Status;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.locationscheme.ILocationSchemeAdaptor;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
@@ -42,6 +45,8 @@ import java.util.List;
 @XmlRootElement
 @Api(value = "/contexts", description = "Publishing Context operations")
 public class ContextsResource {
+
+    private static final Logger log = LogManager.getLogger(ContextsResource.class);
 
     @Autowired
     private IContextsAdaptor adaptor;
@@ -68,9 +73,8 @@ public class ContextsResource {
             response = new Status(200,"OK");
         }catch(Exception e){
             response =  new Status(500, e.getMessage());
-        }finally{
-            return response;
         }
+        return response;
     }
 
     /***
@@ -82,7 +86,13 @@ public class ContextsResource {
     @Path("/{id}")
     @ApiOperation(value="Get a publishing Context by id", response = Context.class)
     public Context getContextById(@PathParam(value="id") @ApiParam(name="id",value="The guid id for the Publishing Context to return") String id) {
-        return adaptor.getContextById(uriInfo.getBaseUri(),id);
+        try {
+            return adaptor.getContextById(uriInfo.getBaseUri(), id);
+        } catch (BackendException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /***
@@ -93,7 +103,13 @@ public class ContextsResource {
     @Path("/")
     @ApiOperation(value="Get the available Publishing Contexts", response = Context.class, responseContainer = "List")
     public List<Context> listContexts() {
-        return new ContextList(adaptor.listContexts(uriInfo.getBaseUri()));
+        try {
+            return new ContextList(adaptor.listContexts(uriInfo.getBaseUri()));
+        } catch (BackendException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /***
@@ -105,7 +121,13 @@ public class ContextsResource {
     @Path("/")
     @ApiOperation(value="Create or update the publishing Context", notes="Returns the updated Context, id should not be set for new Contexts",response=Context.class)
     public Context createOrUpdateContext(Context context){
-        return adaptor.createOrUpdateContext(uriInfo.getBaseUri(),context);
+        try {
+            return adaptor.createOrUpdateContext(uriInfo.getBaseUri(), context);
+        } catch (BackendException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
 }

@@ -218,7 +218,7 @@ public class PSNavonNodeInvocationHandler implements InvocationHandler
                (PSPropertyIterator) method.invoke(m_containedNode, args);
 
             // Add nav properties
-            Map<String,Property> map = new HashMap<String,Property>(iter.getMap());
+            Map<String,Property> map = new HashMap<>(iter.getMap());
             for(String prop : NAV_PROPERTIES)
             {
                Property p = getNavProperty((Node) proxy, prop);
@@ -406,7 +406,7 @@ public class PSNavonNodeInvocationHandler implements InvocationHandler
    private List<Node> getAncestors() throws ItemNotFoundException,
          AccessDeniedException, RepositoryException
    {
-      List<Node> ancesters = new ArrayList<Node>();
+      List<Node> ancesters = new ArrayList<>();
       Node node = m_containedNode;
       while (node.getParent() != null)
       {

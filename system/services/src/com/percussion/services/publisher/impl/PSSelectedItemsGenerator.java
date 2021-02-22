@@ -106,7 +106,7 @@ public class PSSelectedItemsGenerator extends PSBaseGenerator
       if (sum.getObjectType() == 1)
       {
          // Item
-         Map<String, Object> data = new HashMap<String, Object>();
+         Map<String, Object> data = new HashMap<>();
          Value idval = new PSLongValue(sum.getContentId());
          Value folderval = new PSLongValue(folderid);
          data.put(IPSContentPropertyConstants.RX_SYS_CONTENTID, idval);

@@ -23,8 +23,11 @@
  */
 package com.percussion.sitemanage.dao;
 
+import com.percussion.pubserver.IPSPubServerService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSitePublishProperties;
 import com.percussion.sitemanage.data.PSSiteSummary;
@@ -41,7 +44,7 @@ public interface IPSiteDao extends IPSGenericDao<PSSite, String> {
      */
     public PSSiteSummary findByName(String name);
 
-    public PSSiteSummary findSummary(String id);
+    public PSSiteSummary findSummary(String id) throws LoadException;
     
     public List<PSSiteSummary> findAllSummaries();
     
@@ -66,7 +69,7 @@ public interface IPSiteDao extends IPSGenericDao<PSSite, String> {
      * @param newDescrption the new description of the site, may be blank.
      * @return <code>true</code> if a pubserver was modified as a result of the change, <code>false</code> if not.
      */
-    public boolean updateSite(IPSSite site, String newName, String newDescrption);
+    public boolean updateSite(IPSSite site, String newName, String newDescrption) throws PSNotFoundException;
     
     /**
      * Updates the specified site with passed in publishing properties and updates 
@@ -75,28 +78,28 @@ public interface IPSiteDao extends IPSGenericDao<PSSite, String> {
      * @param site the existing site, not <code>null</code>.
      * @param publishProps publishing properties to be updated on the site. not <code>null</code>.
      */
-    public void updateSitePublishProperties(IPSSite site, PSSitePublishProperties publishProps);
+    public void updateSitePublishProperties(IPSSite site, PSSitePublishProperties publishProps) throws PSNotFoundException;
     
     /**
      * The delivery type is the type of publishing which will be used for the specified site.
      * @param site the existing site, not <code>null</code>.
      * @return delivery type of the given site. not <code>null</code>. or not <code>empty</code>.
      */
-    public String getSiteDeliveryType(IPSSite site);
+    public String getSiteDeliveryType(IPSSite site) throws PSNotFoundException;
     
     /**
      * Adds the publish-now infrastructure (edition, content list) for the specified site.  It is assumed that support
      * for publish now does not exist for the site.
      * @param site the existing site, not <code>null</code>.
      */
-    public void addPublishNow(IPSSite site);
+    public void addPublishNow(IPSSite site) throws PSNotFoundException;
     
     /**
      * Adds the unpublish-now infrastructure (edition, content list) for the specified site.  It is assumed that support
      * for un-publish now does not exist for the site.
      * @param site the existing site, not <code>null</code>.
      */
-    public void addUnpublishNow(IPSSite site);
+    public void addUnpublishNow(IPSSite site) throws PSNotFoundException;
 
     /**
      * Creates a site with content copied from an existing site.  The result will be a new site visible in the Finder
@@ -108,7 +111,7 @@ public interface IPSiteDao extends IPSGenericDao<PSSite, String> {
      * 
      * @return the newly created site, never <code>null</code>.
      */
-    public PSSite createSiteWithContent(String origId, String newName);
+    public PSSite createSiteWithContent(String origId, String newName) throws PSDataServiceException, IPSPubServerService.PSPubServerServiceException, PSNotFoundException;
     
     /**
      * Finds the parent site of the specified path.

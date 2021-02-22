@@ -33,6 +33,7 @@ import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.pubserver.IPSPubServerService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.service.exception.PSValidationException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -103,11 +104,10 @@ public class PSFormDataService implements IPSFormDataService
      * @return the server, it may be <code>null</code> if cannot find the
      *         server.
      */
-    private PSDeliveryInfo findServer(String site) throws IPSPubServerService.PSPubServerServiceException {
+    private PSDeliveryInfo findServer(String site) throws IPSPubServerService.PSPubServerServiceException, PSNotFoundException {
         String adminURl= pubServerService.getDefaultAdminURL(site);
-        PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_FORMS,null,adminURl);
 
-       // PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_FORMS);
+        PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_FORMS,null,adminURl);
         if (server == null)
             log.debug("Cannot find server with service of: " + PSDeliveryInfo.SERVICE_FORMS);
 
@@ -234,7 +234,7 @@ public class PSFormDataService implements IPSFormDataService
 
 
             return sum;
-        } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException e) {
+        } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -259,7 +259,7 @@ public class PSFormDataService implements IPSFormDataService
             PSDeliveryClient deliveryClient = new PSDeliveryClient();
             deliveryClient.push(new PSDeliveryActionOptions(deliveryServer, FORM_INFO_URL + name, HttpMethodType.DELETE,
                     true), null);
-        } catch (IPSPubServerService.PSPubServerServiceException e) {
+        } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
            throw new WebApplicationException(e.getMessage());
@@ -298,7 +298,7 @@ public class PSFormDataService implements IPSFormDataService
 
 
             return formDataJoiner.joinFormData(formsData.toArray(new String[0]));
-        } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException e) {
+        } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
            throw new WebApplicationException(e.getMessage());
         }
     }

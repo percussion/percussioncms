@@ -68,14 +68,14 @@ public class PSLegacyGuid extends PSGuid
     * already been given an in-memory id
     */
    private static Map<List<Number>,Long> ms_childIdsAllocated = 
-      new HashMap<List<Number>,Long>();
+      new HashMap<>();
    
    /**
     * Holds the reverse mapping from a given child id to a key. This is
     * used to obtain the original information back from the child id.
     */
    private static Map<Long,List<Number>> ms_keysFromIds = 
-      new HashMap<Long,List<Number>>();
+      new HashMap<>();
 
    /**
     * Create a legacy guid for a content item. The revision uses the site slot,
@@ -172,7 +172,7 @@ public class PSLegacyGuid extends PSGuid
     */
    private long mapChildType(long contenttypeid, int childid)
    {
-      List<Number> key = new ArrayList<Number>();
+      List<Number> key = new ArrayList<>();
       key.add(contenttypeid);
       key.add(childid);
       Long rval = null;

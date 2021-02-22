@@ -26,19 +26,17 @@ package com.percussion.ant.install;
 
 import com.percussion.install.InstallUtil;
 import com.percussion.install.PSLogger;
-import com.percussion.tablefactory.PSJdbcDbmsDef;
-import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.util.PSSqlHelper;
+import com.percussion.utils.jdbc.PSJdbcUtils;
+import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.apache.tools.ant.BuildException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -99,108 +97,83 @@ public class PSExecSQLStmt extends PSAction
    @Override
    public void execute()
    {
-      FileInputStream in = null;
-      Connection conn = null;
-      Statement stmt = null;
       String driver=null;
 
-      try
-      {
+      try {
          String propFile = getRootDir() + File.separator
-         + "rxconfig/Installer/rxrepository.properties";
+                 + "rxconfig/Installer/rxrepository.properties";
 
          File f = new File(propFile);
          if (!(f.exists() && f.isFile()))
             return;
 
-         in = new FileInputStream(f);
-         Properties props = new Properties();
-         props.load(in);
-         props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
-         PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
-         if (getRootDir() != null && !"".equals(getRootDir())) {
-             InstallUtil.setRootDir(getRootDir());
-         }
-         String pw = props.getProperty("PWD");
-         try{
-            pw = PSEncryptor.getInstance("AES",
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).decrypt(pw);
-         }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-            pw = PSLegacyEncrypter.getInstance(
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).decrypt(pw,
-                    PSJdbcDbmsDef.getPartOneKey(),null);
-         }
-         conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
-                 props.getProperty("DB_SERVER"),
-                 props.getProperty("DB_NAME"),
-                 props.getProperty("UID"),
-                 pw
-                 );
+         try (FileInputStream in =new FileInputStream(f)){
+            Properties props = new Properties();
+            props.load(in);
+            props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
+            PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
+            if (getRootDir() != null && !"".equals(getRootDir())) {
+               InstallUtil.setRootDir(getRootDir());
+            }
+            String pw = props.getProperty("PWD");
+            try {
+               pw = PSEncryptor.getInstance( "AES", null).decrypt(pw);
+            } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
+               pw = PSLegacyEncrypter.getInstance(null).decrypt(pw,
+                       PSJdbcDbmsDef.getPartOneKey(),null);
+            }
+            try( Connection conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
+                    props.getProperty("DB_SERVER"),
+                    props.getProperty("DB_NAME"),
+                    props.getProperty("UID"),
+                    pw
+            )) {
 
-         String strStmt = sql;
-         String dbStrStmt = "";
-         driver = dbmsDef.getDriver();
+               String strStmt = sql;
+               String dbStrStmt = "";
+               driver = dbmsDef.getDriver();
 
-         PSLogger.logInfo("PSExecSQLStmt got DB driver: " + driver);
+               PSLogger.logInfo("PSExecSQLStmt got DB driver: " + driver);
 
-         if (driver.equalsIgnoreCase(PSJdbcUtils.DB2))
-            dbStrStmt = sqlUDB;
-         else if (driver.equalsIgnoreCase(PSJdbcUtils.DERBY_DRIVER))
-            dbStrStmt = sqlDerby;
-         else if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL_DRIVER))
-            dbStrStmt = sqlMysql;
-         else if (driver.equalsIgnoreCase(PSJdbcUtils.JTDS_DRIVER) ||
-               driver.equalsIgnoreCase(PSJdbcUtils.SPRINTA))
-            dbStrStmt = sqlSqlServer;
-         else if (driver.startsWith(PSJdbcUtils.ORACLE_PRIMARY))
-            dbStrStmt = sqlOracle;
+               if (driver.equalsIgnoreCase(PSJdbcUtils.DB2))
+                  dbStrStmt = sqlUDB;
+               else if (driver.equalsIgnoreCase(PSJdbcUtils.DERBY_DRIVER))
+                  dbStrStmt = sqlDerby;
+               else if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL_DRIVER))
+                  dbStrStmt = sqlMysql;
+               else if (driver.equalsIgnoreCase(PSJdbcUtils.JTDS_DRIVER) ||
+                       driver.equalsIgnoreCase(PSJdbcUtils.SPRINTA))
+                  dbStrStmt = sqlSqlServer;
+               else if (driver.startsWith(PSJdbcUtils.ORACLE_PRIMARY))
+                  dbStrStmt = sqlOracle;
 
-         if (dbStrStmt.trim().length() > 0)
-            strStmt = dbStrStmt;
+               if (dbStrStmt.trim().length() > 0)
+                  strStmt = dbStrStmt;
 
-         if (strStmt.trim().length() < 1)
-            return;
+               if (strStmt.trim().length() < 1)
+                  return;
 
-         // replace the table names with fully qualified names
-         strStmt = qualifyTableNames(strStmt, dbmsDef);
+               // replace the table names with fully qualified names
+               strStmt = qualifyTableNames(strStmt, dbmsDef);
 
-         // replace the view names with fully qualified names
-         strStmt = qualifyViewNames(strStmt, dbmsDef);
+               // replace the view names with fully qualified names
+               strStmt = qualifyViewNames(strStmt, dbmsDef);
 
-         PSLogger.logInfo("Executing statement : " + strStmt);
-         stmt = conn.createStatement();
-         stmt.execute(strStmt);
-         PSLogger.logInfo("Successfully executed statement.");
-      }
-      catch( SQLException ex ) {
-         if(!isFailonerror()){
-            if(!isSilenceErrors()){
-               PSLogger.logError(ex.getMessage());
-               if(getPrintExceptionStackTrace()){
-                  ex.printStackTrace();
+               PSLogger.logInfo("Executing statement : " + strStmt);
+               try(Statement stmt = conn.createStatement()) {
+                  stmt.execute(strStmt);
+                  PSLogger.logInfo("Successfully executed statement.");
                }
             }
-            return;
-         }else{
-            if(!isSilenceErrors()) {
-               PSLogger.logError(ex.getMessage());
-               if(getPrintExceptionStackTrace()){
-                  ex.printStackTrace();
-               }
-            }
-            throw new BuildException(ex);
          }
       }
-
       catch (Exception ex)
       {
          if(!isFailonerror()){
             if(!isSilenceErrors()){
                PSLogger.logError(ex.getMessage());
                if(getPrintExceptionStackTrace()){
-                  ex.printStackTrace();
+                  PSLogger.logError(ex);
                }
             }
             return;
@@ -208,42 +181,11 @@ public class PSExecSQLStmt extends PSAction
             if(!isSilenceErrors()) {
                PSLogger.logError(ex.getMessage());
                if(getPrintExceptionStackTrace()){
-                  ex.printStackTrace();
+                  PSLogger.logError(ex);
                }
             }
 
             throw new BuildException(ex);
-         }
-      }
-      finally
-      {
-         try
-         {
-            if (in != null)
-               in.close();
-         }
-         catch(Exception e)
-         {
-         }
-         if (stmt != null)
-         {
-            try
-            {
-               stmt.close();
-            }
-            catch (SQLException e)
-            {
-            }
-         }
-         if (conn != null)
-         {
-            try
-            {
-               conn.close();
-            }
-            catch (SQLException e)
-            {
-            }
          }
       }
    }
@@ -251,7 +193,6 @@ public class PSExecSQLStmt extends PSAction
    /*******************************************************************
     * Private functions.
     *******************************************************************/
-
 
    /*******************************************************************
     * Property accessors and mutators.
@@ -451,7 +392,7 @@ public class PSExecSQLStmt extends PSAction
       this.sqlDerby = sqlDerby;
    }
 
-   
+
    /**
     * The sql statement to execute for Mysql database. If empty,
     * <code>sql</code> is executed if it is not empty.
@@ -487,7 +428,6 @@ public class PSExecSQLStmt extends PSAction
     * @return <code>true</code> if the stack trace should be printed,
     * <code>false</code> otherwise.
     *
-    * @see setPrintExceptionStackTrace
     */
    public boolean getPrintExceptionStackTrace()
    {
@@ -500,8 +440,6 @@ public class PSExecSQLStmt extends PSAction
     *
     * @param print <code>true</code> if the stack trace should be printed,
     * <code>false</code> otherwise.
-    *
-    * @see getPrintExceptionStackTrace
     */
    public void setPrintExceptionStackTrace(boolean print)
    {
@@ -533,7 +471,7 @@ public class PSExecSQLStmt extends PSAction
             if (token.compareTo(name) == 0)
             {
                token = PSSqlHelper.qualifyTableName(name, dbmsDef.getDataBase(),
-                     dbmsDef.getSchema(), dbmsDef.getDriver());
+                       dbmsDef.getSchema(), dbmsDef.getDriver());
                break;
             }
          }
@@ -572,7 +510,7 @@ public class PSExecSQLStmt extends PSAction
             if (token.compareTo(name) == 0)
             {
                token = PSSqlHelper.qualifyViewName(name, dbmsDef.getDataBase(),
-                     dbmsDef.getSchema(), dbmsDef.getDriver());
+                       dbmsDef.getSchema(), dbmsDef.getDriver());
                break;
             }
          }
@@ -634,7 +572,7 @@ public class PSExecSQLStmt extends PSAction
     * may be empty. If empty, <code>sql</code> is executed if it is not empty
     */
    private String sqlDerby = "";
-   
+
    /**
     * sql statement to use for Mysql database, never <code>null</code>,
     * may be empty. If empty, <code>sql</code> is executed if it is not empty
@@ -655,5 +593,3 @@ public class PSExecSQLStmt extends PSAction
 
 
 }
-
-

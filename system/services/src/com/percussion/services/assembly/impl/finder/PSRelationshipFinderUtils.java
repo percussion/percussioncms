@@ -73,7 +73,7 @@ public abstract class PSRelationshipFinderUtils<T extends Object> extends PSCont
          IPSNotificationListener
 {
    
-   private ConcurrentMap<IPSGuid, IPSGuid> locks = new ConcurrentHashMap<IPSGuid, IPSGuid>();
+   private ConcurrentMap<IPSGuid, IPSGuid> locks = new ConcurrentHashMap<>();
    
    /**
     * Initialize the finder, set up notification for evicting cached
@@ -102,7 +102,7 @@ public abstract class PSRelationshipFinderUtils<T extends Object> extends PSCont
       
       Iterator it = rset.iterator();
       // de-dup owner IDs
-      Set<PSLegacyGuid> ownerIds = new HashSet<PSLegacyGuid>();
+      Set<PSLegacyGuid> ownerIds = new HashSet<>();
       while (it.hasNext())
       {
          PSRelationship rel = (PSRelationship)it.next();
@@ -144,7 +144,7 @@ public abstract class PSRelationshipFinderUtils<T extends Object> extends PSCont
       notNull(sourceItem, "sourcItem may not be null.");
 
       List<PSRelationship> rels = getRelationships(sourceItem.getId());
-      Set<ContentItem> rval = new HashSet<ContentItem>();
+      Set<ContentItem> rval = new HashSet<>();
       
       // Now get the relevant relationships for the particular slot. These
       // will have properties that match the slot id for the given template
@@ -292,7 +292,7 @@ public abstract class PSRelationshipFinderUtils<T extends Object> extends PSCont
             }
             else
             {
-               relationships = new ArrayList<PSRelationship>(rels);
+               relationships = new ArrayList<>(rels);
             }
 
       }

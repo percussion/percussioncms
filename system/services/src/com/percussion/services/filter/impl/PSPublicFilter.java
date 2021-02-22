@@ -51,7 +51,7 @@ public class PSPublicFilter extends PSBaseFilter
          Map<String, String> params) throws PSFilterException
    {
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
-      List<IPSFilterItem> rval = new ArrayList<IPSFilterItem>();
+      List<IPSFilterItem> rval = new ArrayList<>();
       for(IPSFilterItem item : items)
       {
          PSLegacyGuid guid = (PSLegacyGuid) item.getItemId();

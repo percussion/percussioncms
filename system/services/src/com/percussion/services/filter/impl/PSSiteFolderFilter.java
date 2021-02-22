@@ -73,7 +73,7 @@ public class PSSiteFolderFilter extends PSBaseFilter
       // Get default site id from parameters
       String siteidstr = params.get(IPSHtmlParameters.SYS_SITEID);
          
-      List<IPSFilterItem> removals = new ArrayList<IPSFilterItem>();
+      List<IPSFilterItem> removals = new ArrayList<>();
       PSServerFolderProcessor fproc = PSServerFolderProcessor.getInstance();
       IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
       

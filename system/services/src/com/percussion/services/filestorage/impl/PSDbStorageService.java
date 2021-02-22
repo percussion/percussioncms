@@ -691,7 +691,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
    @Transactional
    public List<String> getMetaKeys()
    {
-      List<String> keys = new ArrayList<String>();
+      List<String> keys = new ArrayList<>();
       for (PSBinaryMetaKey key : this.hashDao.getMetaKeys())
       {
          if (key.isEnabled())
@@ -751,7 +751,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
    @Transactional
    public List<String> getDisabledMetaKeys()
    {
-      List<String> keys = new ArrayList<String>();
+      List<String> keys = new ArrayList<>();
       for (PSBinaryMetaKey key : this.hashDao.getMetaKeys())
       {
          if (!key.isEnabled())
@@ -1258,7 +1258,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
       String prop = PSServer.getProperty(AUTO_ENABLE_BINARY_METADATA_KEYS);
       boolean autoEnable = (prop!=null && prop.equalsIgnoreCase("false"))? false: true;  
       
-      Set<PSBinaryMetaEntry> entries = new HashSet<PSBinaryMetaEntry>();
+      Set<PSBinaryMetaEntry> entries = new HashSet<>();
 
       for (Entry<String, String> entry : meta.entrySet())
       {
@@ -1346,12 +1346,12 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
    public Set<PSBinaryMetaEntry> getDbMeta(String hash)
    {
       notEmpty(hash);
-      Set<PSBinaryMetaEntry> dbmeta = new HashSet<PSBinaryMetaEntry>();
+      Set<PSBinaryMetaEntry> dbmeta = new HashSet<>();
       PSBinary binary = hashDao.getBinary(hash);
       if (binary != null)
       {
          dbmeta = binary.getMetaEntries();
-         Set<PSBinaryMetaEntry> filteredDbmeta = new HashSet<PSBinaryMetaEntry>();
+         Set<PSBinaryMetaEntry> filteredDbmeta = new HashSet<>();
          for (PSBinaryMetaEntry meta : dbmeta)
          {
             if (meta.getKey().isEnabled())
@@ -1398,7 +1398,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
    {
 
       List<String> hashesToTouch = hashDao.getAllHashes(columns);
-      List<String> hashesToTouchBatch = new ArrayList<String>();
+      List<String> hashesToTouchBatch = new ArrayList<>();
       for (Object result : hashesToTouch)
       {
          String hash = (String) result;

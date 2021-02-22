@@ -148,7 +148,7 @@ public class PSSchedulingService
    // see base
    public Collection<PSScheduledTask> findAllSchedules() throws PSSchedulingException
    {
-      final List<PSScheduledTask> schedules = new ArrayList<PSScheduledTask>();
+      final List<PSScheduledTask> schedules = new ArrayList<>();
       try
       {
          
@@ -424,7 +424,7 @@ public class PSSchedulingService
    @Transactional(readOnly = true, noRollbackFor = Exception.class)
    public Set<String> findAllNotificationTemplatesNames()
    {
-      final Set<String> labels = new HashSet<String>(); 
+      final Set<String> labels = new HashSet<>();
       for (PSNotificationTemplate n : findAllNotificationTemplates())
       {
          labels.add(n.getName());
@@ -595,7 +595,7 @@ public class PSSchedulingService
          
          List<Object[]> results = c.list();
          
-         List<PSScheduledTaskLog> retval = new ArrayList<PSScheduledTaskLog>();
+         List<PSScheduledTaskLog> retval = new ArrayList<>();
          for (Object[] props : results)
          {
             retval.add(getScheduledTask(props));

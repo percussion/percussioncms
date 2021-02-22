@@ -117,7 +117,7 @@ public class PSAclUtils
    {
       if (acl == null)
          throw new IllegalArgumentException("acl cannot be null.");
-      List<IPSAclEntry> removeList = new ArrayList<IPSAclEntry>();
+      List<IPSAclEntry> removeList = new ArrayList<>();
       Enumeration enumEntries = acl.entries();
       while (enumEntries.hasMoreElements())
       {
@@ -239,14 +239,14 @@ public class PSAclUtils
    /**
     * Set of types that support acls, never <code>null</code>, or modified.
     */
-   private static Set<PSTypeEnum> ms_aclTypes = new HashSet<PSTypeEnum>();
+   private static Set<PSTypeEnum> ms_aclTypes = new HashSet<>();
    
    /**
     * Set of types that support acls with an entry with 
     * {@link IPSAccessLevel.PERMISSION#RUNTIME_VISIBLE}, never 
     * <code>null</code>, or modified.
     */
-   private static Set<PSTypeEnum> ms_runtimeTypes = new HashSet<PSTypeEnum>();
+   private static Set<PSTypeEnum> ms_runtimeTypes = new HashSet<>();
    
    static
    {

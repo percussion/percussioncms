@@ -320,7 +320,7 @@ public class PSTmxResourceBundle
     * <code>false</code> otherwise.
     * {@link #ms_Debug}
     */
-   public boolean getDebugMode()
+   public synchronized boolean getDebugMode()
    {
       return ms_Debug;
    }

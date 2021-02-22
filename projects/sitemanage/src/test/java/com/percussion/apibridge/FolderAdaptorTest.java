@@ -32,12 +32,14 @@ import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.pagemanagement.service.PSSiteDataServletTestCaseFixture;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.folders.Folder;
 import com.percussion.rest.folders.SectionInfo;
 import com.percussion.rest.pages.Page;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.testing.IntegrationTest;
@@ -94,7 +96,7 @@ public class FolderAdaptorTest extends PSServletTestCase
    /**
     * Test renaming folders.  This test should be self contained and clean up after itself.
     */
-   public void testRenameFolder(){
+   public void testRenameFolder() throws BackendException {
 	   Folder folder = new Folder();
 	   Folder mFolder = new Folder();
 	   Folder testRoot = new Folder();
@@ -134,7 +136,7 @@ public class FolderAdaptorTest extends PSServletTestCase
    /**
     * Test moving a folder.  This test should be self contained and clean up after itself. 
     */
-   public void testMoveFolder(){
+   public void testMoveFolder() throws BackendException {
 	   Folder folder = new Folder();
 	   Folder folder2 = new Folder();
 	   Folder testRoot = new Folder();
@@ -184,7 +186,7 @@ public class FolderAdaptorTest extends PSServletTestCase
    /***
     * Tests moving an item from one folder to the other. Test should be self contained and cleanup after itself. 
     */
-   public void testMoveFolderItem(){
+   public void testMoveFolderItem() throws BackendException, PSDataServiceException {
 	
 	   Folder folder = new Folder();
 	   Folder folder2 = new Folder();

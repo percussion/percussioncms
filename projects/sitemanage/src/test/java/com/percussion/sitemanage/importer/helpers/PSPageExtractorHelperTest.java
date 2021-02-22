@@ -42,12 +42,14 @@ import com.percussion.pagemanagement.service.PSSiteDataServletTestCaseFixture;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSNameGenerator;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.dao.impl.PSSiteContentDao;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
+import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
@@ -105,8 +107,7 @@ public class PSPageExtractorHelperTest extends ServletTestCase
     }
     
     @Test
-    public void test010AddBodyContentToPageWhenImportingSite()
-    {
+    public void test010AddBodyContentToPageWhenImportingSite() throws PSDataServiceException, PSSiteImportException {
         PSSite site = new PSSite();
         site.setBaseUrl(TEST_SITE_URL);
         site.setName(TEST_SITE_NAME);
@@ -412,8 +413,6 @@ public class PSPageExtractorHelperTest extends ServletTestCase
      * <pre>
      * STATUS: Commented out managed jquery reference from &lt;body&gt; element: &lt;script src="jquery.js" type="text/javascript"&gt; &lt;/script&gt; from &lt;body&gt; element.
      * </pre>
-     * 
-     * @param tag {@link String} with the whole tag to build the line. Assumed
      *            not <code>null</code> nor empty.
      * @return {@link String}, never <code>null</code> or empty.
      */

@@ -29,6 +29,7 @@ import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.IPSCataloger;
 import com.percussion.services.catalog.PSCatalogException;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.PSFilterServiceLocator;
 import com.percussion.services.publisher.IPSPublisherService;
@@ -146,8 +147,7 @@ public class PSCatalogingTest extends ServletTestCase
     * @param cat
     * @throws PSCatalogException
     */
-   private void testCataloging(IPSCataloger cat) throws PSCatalogException
-   {
+   private void testCataloging(IPSCataloger cat) throws PSCatalogException, PSNotFoundException {
       for(PSTypeEnum type : cat.getTypes())
       {
          testCataloging(cat, type);
@@ -160,8 +160,7 @@ public class PSCatalogingTest extends ServletTestCase
     * @throws PSCatalogException
     */
    private void testCataloging(IPSCataloger cat, PSTypeEnum type)
-         throws PSCatalogException
-   {
+           throws PSCatalogException, PSNotFoundException {
       List<IPSCatalogSummary> sums = cat.getSummaries(type);
 
       assertNotNull(sums);

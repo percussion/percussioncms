@@ -54,7 +54,7 @@ public interface IPSPageDao extends IPSGenericDao<PSPage, String>
      * 
      * @return list of pages, never <code>null</code>, may be empty.
      */
-    List<PSPage> findPagesBySiteAndTemplate(String path, String templateId) throws IPSPageService.PSPageException, LoadException;
+    List<PSPage> findPagesBySiteAndTemplate(String path, String templateId) throws PSDataServiceException;
     
     /**
      * Finds all pages which are located under the specified path in the specified workflow and state.
@@ -65,7 +65,7 @@ public interface IPSPageDao extends IPSGenericDao<PSPage, String>
      * 
      * @return list of pages, never <code>null</code>, may be empty.
      */
-    List<PSPageSummary> findPagesBySiteAndWf(String path, int workflowId, int stateId) throws IPSPageService.PSPageException, LoadException;
+    List<PSPageSummary> findPagesBySiteAndWf(String path, int workflowId, int stateId) throws PSDataServiceException;
     
     /**
      * 
@@ -73,7 +73,7 @@ public interface IPSPageDao extends IPSGenericDao<PSPage, String>
      * @param force <code>true</code> to delete the page even if it is being edited by another user, <code>false</code>
      * otherwise. 
      */
-    public void delete(String id, boolean force) throws LoadException, DeleteException;
+    public void delete(String id, boolean force) throws PSDataServiceException;
 
     /**
      * Get the pages' ids by field name and field value.
@@ -99,5 +99,5 @@ public interface IPSPageDao extends IPSGenericDao<PSPage, String>
      * @param sitePath //Sites/SiteName
      * @return Never null.  A list of Pages for the specified site. 
      */
-    public List<PSPage> findAllPagesBySite(String sitePath) throws IPSPageService.PSPageException, LoadException;
+    public List<PSPage> findAllPagesBySite(String sitePath) throws PSDataServiceException;
 }

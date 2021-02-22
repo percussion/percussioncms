@@ -148,7 +148,7 @@ public class PSLocationScheme implements IPSCatalogItem, IPSLocationScheme,
     @JoinColumn(name = "SCHEMEID", nullable = false)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "PSLocationScheme_Parameters")
     @Fetch(FetchMode.SUBSELECT)
-    Set<PSLocationSchemeParameter> parameters = new HashSet<PSLocationSchemeParameter>();
+    Set<PSLocationSchemeParameter> parameters = new HashSet<>();
 
     /**
      * Provide backward compatible. See {@link #getContext()}.
@@ -407,7 +407,7 @@ public class PSLocationScheme implements IPSCatalogItem, IPSLocationScheme,
     public List<String> getParameterNames() {
         List<PSLocationSchemeParameter> sorted = getSortedParameters();
 
-        List<String> rval = new ArrayList<String>();
+        List<String> rval = new ArrayList<>();
 
         for (PSLocationSchemeParameter p : sorted) {
             rval.add(p.getName());
@@ -427,7 +427,7 @@ public class PSLocationScheme implements IPSCatalogItem, IPSLocationScheme,
             return Collections.EMPTY_LIST;
         }
 
-        List<PSLocationSchemeParameter> sorted = new ArrayList<PSLocationSchemeParameter>();
+        List<PSLocationSchemeParameter> sorted = new ArrayList<>();
         sorted.addAll(parameters);
 
         if (sorted.size() == 1) {
@@ -587,7 +587,7 @@ public class PSLocationScheme implements IPSCatalogItem, IPSLocationScheme,
     @Override
     public Object clone() throws CloneNotSupportedException {
         PSLocationScheme copy = (PSLocationScheme) super.clone();
-        copy.parameters = new HashSet<PSLocationSchemeParameter>(parameters);
+        copy.parameters = new HashSet<>(parameters);
         copy.m_isCloned = true;
 
         return copy;

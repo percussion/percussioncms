@@ -137,14 +137,14 @@ public class PSTrackAssemblyError
     * problems for previews.
     */
    private static ThreadLocal<List<Problem>> ms_problems = 
-      new ThreadLocal<List<Problem>>();
+      new ThreadLocal<>();
 
    /**
     * Initialize the stored list of problems to empty.
     */
    public static void init()
    {
-      ms_problems.set(new ArrayList<Problem>());
+      ms_problems.set(new ArrayList<>());
    }
 
    /**

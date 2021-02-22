@@ -459,7 +459,7 @@ public class PSPersistentPropertyManager
     * <code>category</code> are both <code>null</code> or empty, or if 
     * <code>request</code> is <code>null</code>.
     */
-   public Collection getPersistedProperty( String category, 
+   public synchronized Collection getPersistedProperty( String category,
       PSUserSession userSession, String propertyName)
    {
       if ((category == null || category.length() == 0) &&

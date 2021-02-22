@@ -65,6 +65,7 @@ import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.recycle.service.impl.PSRecycleService;
 import com.percussion.server.PSServer;
 import com.percussion.services.content.data.PSItemStatus;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.share.dao.IPSFolderHelper;
@@ -318,7 +319,7 @@ public class PSAssetRestService
     {
         try {
             return new PSAssetDropCriteriaList(assetService.getWidgetAssetCriteria(id, isPage));
-        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+        } catch (PSDataServiceException e) {
             throw new WebApplicationException(e);
         }
     }
@@ -419,7 +420,7 @@ public class PSAssetRestService
     {
         try {
             delete(id, false);
-        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSNotFoundException e) {
             throw new WebApplicationException(e);
         }
     }
@@ -430,7 +431,7 @@ public class PSAssetRestService
     {
         try {
             delete(id, true);
-        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSNotFoundException e) {
             throw new WebApplicationException(e);
         }
     }
@@ -442,7 +443,7 @@ public class PSAssetRestService
         try {
             delete(id, false, true);
             return new PSNoContent("Purged asset with id: " + id);
-        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSNotFoundException e) {
             throw new WebApplicationException(e);
         }
     }
@@ -454,7 +455,7 @@ public class PSAssetRestService
         try {
             delete(id, true, true);
             return new PSNoContent("Purged asset with id: " + id);
-        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSNotFoundException e) {
             throw new WebApplicationException(e);
         }
     }
@@ -492,7 +493,7 @@ public class PSAssetRestService
     {
         try {
             return assetService.validate(object);
-        } catch (PSValidationException e) {
+        } catch (PSValidationException | IPSDataService.DataServiceSaveException e) {
            throw new WebApplicationException(e);
         }
     }
@@ -540,7 +541,7 @@ public class PSAssetRestService
     {
         try {
             remove(assetFolderRelationship, false);
-        } catch (IPSItemWorkflowService.PSItemWorkflowServiceException | PSDataServiceException e) {
+        } catch (IPSItemWorkflowService.PSItemWorkflowServiceException | PSDataServiceException | PSNotFoundException e) {
             throw new WebApplicationException(e);
         }
     }
@@ -552,7 +553,7 @@ public class PSAssetRestService
     {
         try {
             remove(assetFolderRelationship, true);
-        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+        } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSNotFoundException e) {
             throw new WebApplicationException(e);
         }
     }
@@ -572,7 +573,7 @@ public class PSAssetRestService
             PSNoContent noContent = new PSNoContent(opName);
             noContent.setResult("SUCCESS");
             return noContent;
-        } catch (PSValidationException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+        } catch (PSValidationException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSNotFoundException e) {
            throw new WebApplicationException(e);
         }
     }
@@ -677,9 +678,6 @@ public class PSAssetRestService
             builder.throwIfInvalid();
 
             page = pageService.load(pageId);
-        } catch (IPSDataService.DataServiceLoadException | PSValidationException | IPSDataService.DataServiceNotFoundException e) {
-            throw new WebApplicationException(e);
-        }
 
         PSTemplate template = templateService.load(page.getTemplateId());
         Set<PSOrphanedAssetSummary> unused = getOrphanedAssetsSummaries(page, template);
@@ -699,6 +697,10 @@ public class PSAssetRestService
         Collections.sort(unusedAssets);
         
         return new PSUnusedAssetSummaryList(unusedAssets);
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(e);
+        }
+
     }
 
     @POST
@@ -924,12 +926,12 @@ public class PSAssetRestService
      * @param id never blank.
      * @param force <code>true</code> to delete without validation, <code>false</code> to validate before deleting.
      */
-    private void delete(String id, boolean force) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
+    private void delete(String id, boolean force) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, PSNotFoundException {
         // not purging is recycling.
         delete(id, force, false);
     }
 
-    private void delete(String id, boolean force, boolean purgeItem) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
+    private void delete(String id, boolean force, boolean purgeItem) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, PSNotFoundException {
         PSValidationErrorsBuilder builder = validateParameters("delete").rejectIfBlank("id", id).throwIfInvalid();
 
         if (!force && !purgeItem)
@@ -953,7 +955,7 @@ public class PSAssetRestService
      * 
      * @throws PSDataServiceException if an error occurs.
      */
-    private void remove(PSAssetFolderRelationship assetFolderRelationship, boolean force) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
+    private void remove(PSAssetFolderRelationship assetFolderRelationship, boolean force) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, PSNotFoundException {
         PSValidationErrorsBuilder builder = validateParameters("remove").rejectIfNull("assetFolderRelationship",
                 assetFolderRelationship).throwIfInvalid();
         
@@ -985,7 +987,7 @@ public class PSAssetRestService
      * @param id the asset to validate, assumed not <code>null</code>.
      * @param builder used to capture and throw validation errors, assumed not <code>null</code>.
      */
-    private void validateForDelete(String id, PSValidationErrorsBuilder builder) throws IPSItemWorkflowService.PSItemWorkflowServiceException, PSValidationException {
+    private void validateForDelete(String id, PSValidationErrorsBuilder builder) throws IPSItemWorkflowService.PSItemWorkflowServiceException, PSValidationException, PSNotFoundException {
         if (!itemWorkflowService.isModifiableByUser(id))
         {
             builder.reject("asset.deleteNotAuthorized", "The current user is not authorized to delete this asset");

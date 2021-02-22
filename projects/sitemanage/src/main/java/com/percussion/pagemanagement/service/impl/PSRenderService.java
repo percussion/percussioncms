@@ -36,16 +36,24 @@ import com.percussion.pagemanagement.parser.PSTemplateRegionParser;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSRenderService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
-import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
 import static org.apache.commons.lang.Validate.notEmpty;
@@ -77,23 +85,34 @@ public class PSRenderService implements IPSRenderService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML,MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML})
     public PSRenderResult renderRegion(PSPage page, @PathParam("regionId") String regionId) throws PSRenderServiceException
     {
+        try {
 
-        validateRegionId(regionId);
-        validatePage(page);
-        String result = renderAssemblyBridge.renderPage(page, true, false);
+            validateRegionId(regionId);
+            validatePage(page);
+            String result = renderAssemblyBridge.renderPage(page, true, false);
 
-        PSRenderResult renderResult = createRenderResult(result, regionId);
-        return renderResult;
+            return createRenderResult(result, regionId);
+
+        } catch (IPSPageService.PSPageException | PSValidationException | IPSDataService.DataServiceSaveException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
     @Path("/templateAll")
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML,MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML,MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML})
-    public String renderRegionAll( PSTemplate template ) throws PSRenderServiceException {
-        validateTemplate(template);
-        String result = renderAssemblyBridge.renderTemplate( template, false );
-        return result;
+    public String renderRegionAll( PSTemplate template ) {
+        try {
+            validateTemplate(template);
+            return renderAssemblyBridge.renderTemplate(template, false);
+        } catch (IPSPageService.PSPageException | PSValidationException | IPSDataService.DataServiceSaveException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
@@ -102,12 +121,16 @@ public class PSRenderService implements IPSRenderService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML,MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML})
     public PSRenderResult renderRegion(PSTemplate template, @PathParam("regionId") String regionId) throws PSRenderServiceException
     {
-
-        validateRegionId(regionId);
-        validateTemplate(template);
-        String result = renderAssemblyBridge.renderTemplate(template, false);
-        PSRenderResult renderResult = createRenderResult(result, regionId);
-        return renderResult;
+        try {
+            validateRegionId(regionId);
+            validateTemplate(template);
+            String result = renderAssemblyBridge.renderTemplate(template, false);
+            return createRenderResult(result, regionId);
+        } catch (IPSPageService.PSPageException | PSValidationException | IPSDataService.DataServiceSaveException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
@@ -116,20 +139,28 @@ public class PSRenderService implements IPSRenderService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML,MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML})
     public PSRenderResult renderRegionWithPage(PSTemplate template, @PathParam("pageId") String pageId, @PathParam("regionId") String regionId) throws PSRenderServiceException
     {
-try {
-    validateRegionId(regionId);
-    validateTemplate(template);
-    PSParameterValidationUtils.rejectIfBlank("renderRegionWithPage", "pageId", pageId);
-    PSPage page = pageService.find(pageId);
-    String result = renderAssemblyBridge.renderTemplateWithPage(template, page, false);
-    PSRenderResult renderResult = createRenderResult(result, regionId);
-    return renderResult;
-}
-catch (IPSRenderAssemblyBridge.PSRenderAssemblyBridgeException e){
-    String result = renderAssemblyBridge.renderTemplate(template, false);
-    PSRenderResult renderResult = createRenderResult(result, regionId);
-    return renderResult;
-}
+            try {
+                validateRegionId(regionId);
+                validateTemplate(template);
+                PSParameterValidationUtils.rejectIfBlank("renderRegionWithPage", "pageId", pageId);
+                PSPage page = pageService.find(pageId);
+                String result = renderAssemblyBridge.renderTemplateWithPage(template, page, false);
+                return createRenderResult(result, regionId);
+            }
+            catch (IPSRenderAssemblyBridge.PSRenderAssemblyBridgeException  e){
+                try {
+                    String result = renderAssemblyBridge.renderTemplate(template, false);
+                    return createRenderResult(result, regionId);
+                } catch (IPSPageService.PSPageException psPageException) {
+                    log.error(e.getMessage());
+                    log.debug(e.getMessage(),e);
+                    throw new WebApplicationException(e);
+                }
+            } catch (PSValidationException | IPSDataService.DataServiceLoadException | IPSPageService.PSPageException | IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceSaveException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
+                throw new WebApplicationException(e);
+            }
     }
 
     private PSRenderResult createRenderResult(String result, String regionId)
@@ -151,18 +182,17 @@ catch (IPSRenderAssemblyBridge.PSRenderAssemblyBridgeException e){
         return PSRegionTreeUtils.treeToString(region);
     }
 
-    private void validateRegionId(String regionId) {
+    private void validateRegionId(String regionId) throws PSValidationException {
+
         PSParameterValidationUtils.rejectIfBlank("renderRegion", "regionId", regionId);
     }
 
 
-    protected PSValidationErrors validateTemplate(PSTemplate template) throws PSBeanValidationException
-    {
+    protected PSValidationErrors validateTemplate(PSTemplate template) throws PSValidationException, IPSDataService.DataServiceSaveException {
         return templateService.validate(template);
     }
 
-    protected PSValidationErrors validatePage(PSPage page) throws PSBeanValidationException
-    {
+    protected PSValidationErrors validatePage(PSPage page) throws PSValidationException, IPSDataService.DataServiceSaveException {
         return pageService.validate(page);
     }
 
@@ -176,8 +206,14 @@ catch (IPSRenderAssemblyBridge.PSRenderAssemblyBridgeException e){
     @Consumes({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML,MediaType.TEXT_PLAIN, MediaType.APPLICATION_XML})
     public String renderPage(@PathParam("id") String id)
     {
-        log.debug("renderPage, pageId: " + id);
-        return renderAssemblyBridge.renderPage(id, false, false);
+        try {
+            log.debug("renderPage, pageId: {}", id);
+            return renderAssemblyBridge.renderPage(id, false, false);
+        } catch (PSValidationException | IPSPageService.PSPageException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /**
@@ -189,14 +225,20 @@ catch (IPSRenderAssemblyBridge.PSRenderAssemblyBridgeException e){
     public String renderPageForEdit(@PathParam("id") String id, @QueryParam("editType") String editType)
     {
         try{
-            log.debug("renderPageForEditing, pageId: " + id);
+            log.debug("renderPageForEditing, pageId: {}" , id);
             notEmpty(id, "id");
             return renderAssemblyBridge.renderPage(id, true, false, getEditType(editType));
         }
-        catch (IPSPageService.PSPageException e){
-            PSPage page = pageService.find(id);
-            page.getTemplateId();
-            return renderAssemblyBridge.renderTemplate(page.getTemplateId(), false);
+        catch (IPSPageService.PSPageException | PSValidationException e){
+            try {
+                PSPage page = pageService.find(id);
+                page.getTemplateId();
+                return renderAssemblyBridge.renderTemplate(page.getTemplateId(), false);
+            } catch (IPSDataService.DataServiceLoadException | IPSPageService.PSPageException | PSValidationException | IPSDataService.DataServiceNotFoundException dataServiceLoadException) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
+                throw new WebApplicationException(e);
+            }
         }
 
     }
@@ -217,9 +259,15 @@ catch (IPSRenderAssemblyBridge.PSRenderAssemblyBridgeException e){
     @Produces( {MediaType.APPLICATION_XML,MediaType.TEXT_HTML,MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON} )
     public String renderPageForEditScriptsOff(@PathParam("id") String id, @QueryParam("editType") String editType)
     {
-        log.debug("renderPageForEditing, pageId: " + id);
-        notEmpty(id, "id");
-        return renderAssemblyBridge.renderPage(id, true, true, getEditType(editType));
+        try {
+            log.debug("renderPageForEditing, pageId: {}", id);
+            notEmpty(id, "id");
+            return renderAssemblyBridge.renderPage(id, true, true, getEditType(editType));
+        } catch (PSValidationException | IPSPageService.PSPageException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
 
 
     }
@@ -231,8 +279,14 @@ catch (IPSRenderAssemblyBridge.PSRenderAssemblyBridgeException e){
     @Produces( {MediaType.APPLICATION_XML,MediaType.TEXT_HTML,MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON} )
     public String renderTemplate(@PathParam("id") String id)
     {
-        log.debug("renderTemplate, templateId: " + id);
-        return renderAssemblyBridge.renderTemplate(id, false);
+        try {
+            log.debug("renderTemplate, templateId: {}",  id);
+            return renderAssemblyBridge.renderTemplate(id, false);
+        } catch (PSValidationException | IPSPageService.PSPageException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @GET
@@ -240,8 +294,14 @@ catch (IPSRenderAssemblyBridge.PSRenderAssemblyBridgeException e){
     @Produces( {MediaType.APPLICATION_XML,MediaType.TEXT_HTML,MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON} )
     public String renderTemplateScriptsOff(@PathParam("id") String id)
     {
-        log.debug("renderTemplate, templateId: " + id);
-        return renderAssemblyBridge.renderTemplate(id, true);
+        try {
+            log.debug("renderTemplate, templateId: {}", id);
+            return renderAssemblyBridge.renderTemplate(id, true);
+        } catch (PSValidationException | IPSPageService.PSPageException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
@@ -266,7 +326,7 @@ catch (IPSRenderAssemblyBridge.PSRenderAssemblyBridgeException e){
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSRenderService.class);
+    private static final Logger log = LogManager.getLogger(PSRenderService.class);
 
 
 

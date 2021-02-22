@@ -37,9 +37,9 @@ import com.percussion.design.objectstore.PSContentEditorSystemDef;
 import com.percussion.design.objectstore.PSContentTypeHelper;
 import com.percussion.design.objectstore.PSContentTypeHelper.IPSSaveNodeDefListener;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUnknownDocTypeException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.design.objectstore.PSWorkflowInfo;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.i18n.PSLocale;
@@ -2144,7 +2144,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
                merged.validateSharedFieldDuplication(sharedDef, merged
                   .getSharedFieldIncludes());
             }
-            catch (PSValidationException e)
+            catch (PSSystemValidationException e)
             {
                String msg = e.getLocalizedMessage();
                List<String> ctypes = errorsMap.get(msg);

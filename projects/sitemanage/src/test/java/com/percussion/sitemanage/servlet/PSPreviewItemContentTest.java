@@ -35,6 +35,7 @@ import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.PSSiteDataServletTestCaseFixture;
 import com.percussion.server.PSServer;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.testing.IntegrationTest;
@@ -238,8 +239,7 @@ public class PSPreviewItemContentTest extends PSServletTestCase
      * @return the id of the created page, never blank.
      */
     private String createPage(String name, String title, String templateId, String folderPath, String linkTitle,
-            String url, String noindex, String description)
-    {
+            String url, String noindex, String description) throws PSDataServiceException {
         PSPage page = new PSPage();
         page.setFolderPath(folderPath);
         page.setName(name);

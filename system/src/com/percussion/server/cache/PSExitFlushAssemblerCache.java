@@ -24,7 +24,7 @@
 
 package com.percussion.server.cache;
 
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSParameterMismatchException;
@@ -133,7 +133,7 @@ public class PSExitFlushAssemblerCache extends PSDefaultExtension
       {
          handler.validateKeys( keyMap );
       }
-      catch(PSValidationException e)
+      catch(PSSystemValidationException e)
       {
          throw new PSParameterMismatchException( e.getLocalizedMessage() );
       }

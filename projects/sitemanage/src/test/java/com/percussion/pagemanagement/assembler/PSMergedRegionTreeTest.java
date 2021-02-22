@@ -41,6 +41,7 @@ import com.percussion.pagemanagement.service.IPSWidgetService;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -105,8 +106,7 @@ public class PSMergedRegionTreeTest
     }
 
     @Test
-    public void shouldOverrideTemplateRegionsWithPageWidgets()
-    {
+    public void shouldOverrideTemplateRegionsWithPageWidgets() throws PSDataServiceException {
         
         branches.setRegionWidgets("A/c", asList(widgetItem));
 
@@ -125,8 +125,7 @@ public class PSMergedRegionTreeTest
     
     
     @Test
-    public void shouldOverrideTemplateRegionsWithPageRegions()
-    {
+    public void shouldOverrideTemplateRegionsWithPageRegions() throws PSDataServiceException {
         
         mergedTree.merge(tree, branches);
         
@@ -138,8 +137,7 @@ public class PSMergedRegionTreeTest
     
     
     @Test
-    public void shouldOverridePageRegionsWithTemplateWidgets()
-    {
+    public void shouldOverridePageRegionsWithTemplateWidgets() throws PSDataServiceException {
         
         tree.setRegionWidgets("A/c", asList(treeWidgetItem));
         
@@ -157,8 +155,7 @@ public class PSMergedRegionTreeTest
     }
     
     @Test
-    public void shouldOverridePageWidgetsWithTemplateWidgets()
-    {
+    public void shouldOverridePageWidgetsWithTemplateWidgets() throws PSDataServiceException {
         
         tree.setRegionWidgets("A/c", asList(treeWidgetItem));
         branches.setRegionWidgets("A/c", asList(widgetItem));

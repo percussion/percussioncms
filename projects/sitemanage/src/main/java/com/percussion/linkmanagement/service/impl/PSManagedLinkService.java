@@ -23,7 +23,6 @@
  */
 package com.percussion.linkmanagement.service.impl;
 
-import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.cms.PSSingleValueBuilder;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
@@ -36,7 +35,6 @@ import com.percussion.pagemanagement.data.PSRenderLinkContext.Mode;
 import com.percussion.pagemanagement.service.IPSPageCatalogService;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSRenderLinkService;
-import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.services.assembly.impl.AssemblerInfoUtils;
 import com.percussion.services.assembly.impl.PSReplacementFilter;
@@ -54,9 +52,9 @@ import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.share.dao.IPSGenericDao;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.PSJsoupPreserver;
 import com.percussion.utils.guid.IPSGuid;
@@ -901,7 +899,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
 	 * @return Our completed url to our link.
 	 */
 	private String createHref(PSManagedLink link,
-			PSRenderLinkContext linkContext, Boolean isStaging, String href) throws IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSAssetService.PSAssetServiceException, IPSDataService.DataServiceLoadException, PSNotFoundException {
+			PSRenderLinkContext linkContext, Boolean isStaging, String href) throws PSDataServiceException, PSNotFoundException {
 		IPSLinkableItem linkItem = getLinkItem(linkContext, link.getChildId(), isStaging);
 		//  Add orphaned manage link cleanup somewhere.  catch errors when child does not exist
 		if (linkItem != null)

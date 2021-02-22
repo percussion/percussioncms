@@ -52,7 +52,6 @@
                     <beans:bean class="org.springframework.web.cors.CorsConfiguration">
                         <beans:property name="allowedHeaders">
                             <beans:list>
-                                <beans:value>perc-tid</beans:value>
                                 <beans:value>perc-version</beans:value>
                                 <beans:value>Content-Type</beans:value>
                                 <beans:value>Origin</beans:value>
@@ -79,7 +78,6 @@
                         </beans:property>
                         <beans:property name="exposedHeaders">
                             <beans:list>
-                                <beans:value>perc-tid</beans:value>
                                 <beans:value>perc-version</beans:value>
                             </beans:list>
                         </beans:property>

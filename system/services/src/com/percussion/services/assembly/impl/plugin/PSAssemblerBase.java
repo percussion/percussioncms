@@ -159,7 +159,7 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
     */
    public List<IPSAssemblyResult> assemble(List<IPSAssemblyItem> items)
    {
-      List<IPSAssemblyResult> results = new ArrayList<IPSAssemblyResult>();
+      List<IPSAssemblyResult> results = new ArrayList<>();
 
       // Spawn futures if needed
       for (IPSAssemblyItem item : items)
@@ -355,7 +355,7 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
 
          PSJexlEvaluator e = new PSJexlEvaluator(globalitem.getBindings());
          e.bind("$sys.innercontent", ms_docutils.extractBody(rval));
-         List<IPSAssemblyItem> singleitemlist = new ArrayList<IPSAssemblyItem>();
+         List<IPSAssemblyItem> singleitemlist = new ArrayList<>();
          List<IPSAssemblyResult> singleitemresult;
 
          globalitem.setTemplate(global);

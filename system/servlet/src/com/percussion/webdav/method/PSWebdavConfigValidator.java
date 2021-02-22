@@ -70,13 +70,13 @@ public class PSWebdavConfigValidator
     * List of String exception msgs generated during the 
     * validation routines
     */
-   List<String> m_exceptionsList = new ArrayList<String>();
+   List<String> m_exceptionsList = new ArrayList<>();
 
    /**
     * List of String warning msgs generated during the 
     * validation routines
     */
-   List<String> m_warningsList = new ArrayList<String>();
+   List<String> m_warningsList = new ArrayList<>();
 
    /**
     * Constructs a new WebDav configuration validator
@@ -482,7 +482,7 @@ public class PSWebdavConfigValidator
       // get the excluded field names, which include the value of the fields
       // are set by WebDAV or the Backend server.
       String fieldName;
-      List<String> excludeFieldNames = new ArrayList<String>();
+      List<String> excludeFieldNames = new ArrayList<>();
       fieldName = ctType.getFieldName(IPSWebdavConstants.P_DISPLAYNAME);
       if (fieldName != null)
          excludeFieldNames.add(fieldName);

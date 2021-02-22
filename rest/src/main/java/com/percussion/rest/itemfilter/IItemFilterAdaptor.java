@@ -25,6 +25,7 @@
 package com.percussion.rest.itemfilter;
 
 import com.percussion.rest.Guid;
+import com.percussion.services.error.PSNotFoundException;
 
 import java.util.List;
 
@@ -47,13 +48,13 @@ public interface IItemFilterAdaptor {
 	 * Delete the specified item filter.
 	 * @param itemFilterId A valid ItemFilter id.  Filter must not be associated with any ContentLists or it won't be deleted.
 	 */
-	public void deleteItemFilter(Guid itemFilterId);
+	public void deleteItemFilter(Guid itemFilterId) throws PSNotFoundException;
 	
 	/***
 	 * Get a single ItemFilter by id.
 	 * @param itemFilterId  A Valid ItemFilter id
 	 * @return The ItemFilter
 	 */
-	public ItemFilter getItemFilter(Guid itemFilterId);
+	public ItemFilter getItemFilter(Guid itemFilterId) throws PSNotFoundException;
 	
 }

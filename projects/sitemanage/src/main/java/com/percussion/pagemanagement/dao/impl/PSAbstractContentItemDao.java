@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -74,12 +75,12 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
     }
 
 
-    public void delete(String id) throws DeleteException, LoadException {
+    public void delete(String id) throws PSDataServiceException {
         find(id);
         contentItemDao.delete(id);
     }
 
-    public List<T> findAll() throws LoadException
+    public List<T> findAll() throws PSDataServiceException
     {
         
         Collection<Integer> ids = getContentItemDao().findAllItemIdsByType(getType());
@@ -93,7 +94,7 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
         return results;
     }
 
-    public T find(String id) throws LoadException
+    public T find(String id) throws PSDataServiceException
     {
         notNull(id, "id");
         PSContentItem contentItem = contentItemDao.find(id);
@@ -128,7 +129,7 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
     }
 
 
-    public T save(T object) throws SaveException, LoadException {
+    public T save(T object) throws PSDataServiceException {
         PSContentItem item = new PSContentItem();
         item.setId(object.getId());
         item.setType(getType());

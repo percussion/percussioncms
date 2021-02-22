@@ -45,8 +45,7 @@ import java.net.URL;
  *
  */
 public class PSMultiAppVersionRedirectorValveTest {
-	
-	private static String PERC_TID_HEADER="perc-tid";
+
 	private static String PERC_VERSION_HEADER="perc-version";
 	private static String TEST_SERVICE = "perc-comments-services";
 	
@@ -58,7 +57,6 @@ public class PSMultiAppVersionRedirectorValveTest {
 
 		org.apache.coyote.Request cr = new org.apache.coyote.Request();
 
-		cr.getMimeHeaders().addValue(PERC_TID_HEADER).setString("1");
 		cr.getMimeHeaders().addValue(PERC_VERSION_HEADER).setString("2.9.0");
 		ret.setCoyoteRequest(cr);
 		
@@ -72,8 +70,6 @@ public class PSMultiAppVersionRedirectorValveTest {
 		Assert.assertEquals("Remote address was changed by valve.", r.getRemoteAddr(), "10.10.10.10");
 		Assert.assertEquals("Remote origin was changed by valve", r.getRemoteHost(), "remote-origin");
 		Assert.assertEquals("Version was changed by valve", r.getHeader(PERC_VERSION_HEADER), "2.9.0");
-		Assert.assertEquals("Tenant ID was changed by valve", r.getHeader(PERC_TID_HEADER), "1");
-		
 	}
 	
 	/***

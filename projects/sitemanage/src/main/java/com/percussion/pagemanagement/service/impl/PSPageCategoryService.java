@@ -28,6 +28,7 @@ import com.percussion.pagemanagement.dao.impl.PSCategoryConfigurationDao;
 import com.percussion.pagemanagement.data.PSCategoryConfiguration;
 import com.percussion.pagemanagement.service.IPSPageCategoryService;
 
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,8 +47,7 @@ public class PSPageCategoryService implements IPSPageCategoryService
 
 
     @Override
-    public PSCategoryConfiguration loadConfiguration()
-    {
+    public PSCategoryConfiguration loadConfiguration() throws PSDataServiceException {
         return categoryConfigurationDao.getData();
     }
 

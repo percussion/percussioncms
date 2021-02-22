@@ -74,12 +74,12 @@ public class PSModifyCommandHandler extends PSCommandHandler
     *
     * @throws PSExtensionException if there is an error preparing an extension.
     * @throws PSNotFoundException if a udf or extension cannot be located.
-    * @throws PSValidationException if there is a problem starting an internal
+    * @throws PSSystemValidationException if there is a problem starting an internal
     * application.
     */
    public PSModifyCommandHandler(PSApplicationHandler appHandler,
       PSContentEditorHandler ceh, PSDataSet ds, PSApplication app)
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       super(appHandler, ceh, (PSContentEditor)ds, app);
 
@@ -109,7 +109,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
             IPSConstants.HIDDEN_CONTROL_PARAM_NAME,
             "InitParam is empty or missing from system def"
          };
-         throw new PSValidationException( IPSServerErrors.CE_INVALID_PARAM,
+         throw new PSSystemValidationException( IPSServerErrors.CE_INVALID_PARAM,
                args );
       }
 
@@ -160,7 +160,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
             buf.append( next.getLocalizedMessage());
             next = next.getNextException();
          }
-         throw new PSValidationException( IPSServerErrors.CE_SQL_ERRORS,
+         throw new PSSystemValidationException( IPSServerErrors.CE_SQL_ERRORS,
                buf.toString());
       }
    }
@@ -268,7 +268,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
     * @throws PSAuthorizationException if the user is not authorize to perform
     *    the request.
     * @throws PSRequestValidationException for any failed request validation.
-    * @throws PSValidationException for any failed validation.
+    * @throws PSSystemValidationException for any failed validation.
     * @throws SQLException for any failed SQL operation.
     * @throws PSInternalRequestCallException if any error occurs processing
     *    the internal request call.
@@ -282,7 +282,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
       throws PSRequestValidationException, PSAuthorizationException,
          PSErrorException, PSConversionException, PSDataExtractionException,
          SQLException, PSInternalRequestCallException, IOException,
-         PSAuthenticationFailedException, PSValidationException, PSCmsException
+         PSAuthenticationFailedException, PSSystemValidationException, PSCmsException
    {
 
       PSUserSession userSession = request.getUserSession();
@@ -1225,15 +1225,15 @@ public class PSModifyCommandHandler extends PSCommandHandler
     * @param mainFieldSet The parent fieldSet.  Assumed not <code>null</code>.
     *
     * @throws SQLException if there is an error determining a column's datatype.
-    * @throws PSValidationException if there is an error creating a dataset.
+    * @throws PSSystemValidationException if there is an error creating a dataset.
     * @throws PSNotFoundException if a udf or extension cannot be located.
-    * @throws PSValidationException if there is a problem starting an internal
+    * @throws PSSystemValidationException if there is a problem starting an internal
     *    application.
     */
    @SuppressWarnings("unchecked")
    private void createDataSets(PSDisplayMapper mapper,
       PSFieldSet mainFieldSet)
-      throws SQLException, PSValidationException, PSExtensionException,
+      throws SQLException, PSSystemValidationException, PSExtensionException,
          PSNotFoundException
    {
       // create a plan set to hold all modify plans
@@ -1348,11 +1348,11 @@ public class PSModifyCommandHandler extends PSCommandHandler
     * @return The resource name of a query resource that will query
     * for SYSID and SORTRANK, with SYSID as the key.
     *
-    * @throws PSValidationException if there is an error creating the dataset.
+    * @throws PSSystemValidationException if there is an error creating the dataset.
     */
    @SuppressWarnings("unchecked")
    private String createSequenceQueryDataSet(PSDisplayMapper mapper,
-      PSFieldSet fieldSet) throws PSValidationException
+      PSFieldSet fieldSet) throws PSSystemValidationException
    {
       // get the table
       PSBackEndTable beTable = PSModifyPlanBuilder.getMapperTable(mapper,

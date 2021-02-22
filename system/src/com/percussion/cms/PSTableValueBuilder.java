@@ -41,8 +41,8 @@ import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSHtmlParameter;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSParam;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUISet;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSServerErrors;
@@ -77,7 +77,7 @@ public class PSTableValueBuilder extends PSDisplayFieldBuilder
     */
    public PSTableValueBuilder( PSFieldSet fieldSet, PSUISet ui,
          PSDisplayMapper mapper, PSEditorDocumentBuilder parentBuilder )
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       this(fieldSet, ui, mapper, parentBuilder, false);
    }
@@ -106,7 +106,7 @@ public class PSTableValueBuilder extends PSDisplayFieldBuilder
    public PSTableValueBuilder( PSFieldSet fieldSet, PSUISet ui,
          PSDisplayMapper mapper, PSEditorDocumentBuilder parentBuilder,
          boolean showAllFields )
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       super( fieldSet, ui, parentBuilder );
       if ( null == mapper || null == parentBuilder )
@@ -118,7 +118,7 @@ public class PSTableValueBuilder extends PSDisplayFieldBuilder
       Iterator mappings = mapper.iterator();
       if ( !mappings.hasNext())
       {
-         throw new PSValidationException( IPSServerErrors.CE_MISSING_MAPPINGS,
+         throw new PSSystemValidationException( IPSServerErrors.CE_MISSING_MAPPINGS,
                fieldSet.getName());
       }
       m_showAllFields = showAllFields;
@@ -160,7 +160,7 @@ public class PSTableValueBuilder extends PSDisplayFieldBuilder
                fieldRef,
                label,
             };
-            throw new PSValidationException( IPSServerErrors.CE_MISSING_FIELD,
+            throw new PSSystemValidationException( IPSServerErrors.CE_MISSING_FIELD,
                    params );
          }
 
@@ -177,7 +177,7 @@ public class PSTableValueBuilder extends PSDisplayFieldBuilder
          IPSBackEndMapping locator = field.getLocator();
          if ( !( locator instanceof IPSReplacementValue ))
          {
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                   IPSServerErrors.CE_UNSUPPORTED_MAPPING_TYPE,
                   field.getSubmitName());
          }
@@ -247,7 +247,7 @@ public class PSTableValueBuilder extends PSDisplayFieldBuilder
 
       if ( null == column )
       {
-         throw new PSValidationException(
+         throw new PSSystemValidationException(
                IPSServerErrors.CE_BACKEND_COL_REQUIRED );
       }
 

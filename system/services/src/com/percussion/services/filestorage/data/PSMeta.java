@@ -98,7 +98,7 @@ public class PSMeta
     */
    public static final String PARSE_ERROR = "PARSE_ERROR";
 
-   private TreeMap<String, String> properties = new TreeMap<String, String>((String.CASE_INSENSITIVE_ORDER));
+   private TreeMap<String, String> properties = new TreeMap<>((String.CASE_INSENSITIVE_ORDER));
 
    /**
     * Constructor creating the base metadata object from the main properties.
@@ -143,7 +143,7 @@ public class PSMeta
    {
       // some attributes come through with a different case. We want to match these. Also
       // Db Collation is case insensitive by default
-      this.properties = new TreeMap<String, String>((String.CASE_INSENSITIVE_ORDER));;
+      this.properties = new TreeMap<>((String.CASE_INSENSITIVE_ORDER));;
       for (String name : metadata.names())
       {
          String[] values = metadata.getValues(name);

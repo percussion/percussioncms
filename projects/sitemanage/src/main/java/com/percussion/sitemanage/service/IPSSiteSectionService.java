@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.percussion.pathmanagement.service.IPSPathService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSNoContent;
@@ -60,7 +61,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
      * 
      * @return the created site section, never <code>null</code>.
      */
-    public PSSiteSection create(PSCreateSiteSection req) throws PSValidationException, DataServiceSaveException, IPSGenericDao.SaveException, IPSGenericDao.DeleteException, IPSGenericDao.LoadException, PSSiteSectionException;
+    public PSSiteSection create(PSCreateSiteSection req) throws PSDataServiceException;
 
     /**
      * Creates an external link section according to the specified request info.
@@ -126,7 +127,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
      * 
      * @return the updated section object, never <code>null</code>.
      */
-    public PSSiteSection updateExternalLink(String sectionGuid, PSCreateExternalLinkSection req) throws PSSiteSectionException;
+    public PSSiteSection updateExternalLink(String sectionGuid, PSCreateExternalLinkSection req) throws PSSiteSectionException, PSValidationException;
     
     /**
      * Replaces the landing page for the specified section.
@@ -177,7 +178,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
       * 
       * @return the root of the navigation, never <code>null</code>.
       */
-     public PSSiteSection loadRoot(String siteName) throws PSSiteSectionException;
+     public PSSiteSection loadRoot(String siteName) throws PSSiteSectionException, PSNotFoundException;
 
      /**
       * Loads the entire tree nodes for the specified site.
@@ -186,7 +187,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
       * 
       * @return the tree nodes of the site, never <code>null</code>.
       */
-     public PSSectionNode loadTree(String siteName) throws PSSiteSectionException;
+     public PSSectionNode loadTree(String siteName) throws PSSiteSectionException, PSNotFoundException;
 
      /**
       * Loads all child sections of the specified site section.
@@ -219,7 +220,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
       * @return The list of the template ids, never <code>null</code> may be empty.
       * @throws PSSiteSectionException if the supplied siteName is not blank and failed to load that site.
       */
-     public List<String> findAllTemplatesUsedByBlogs(String siteName) throws PSDataServiceException;
+     public List<String> findAllTemplatesUsedByBlogs(String siteName) throws PSDataServiceException, PSNotFoundException;
 
      /**
       * Gets posts for the specified blog.
@@ -246,18 +247,18 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
      * @param site the site (assumed not <code>null</code>) for which we want to
      *            create the configuration files.
      */
-   public void generateSecurityConfigurationFiles(IPSSite site) throws DataServiceSaveException, PSSiteSectionException;
+   public void generateSecurityConfigurationFiles(IPSSite site) throws DataServiceSaveException, PSSiteSectionException, PSNotFoundException;
 
     /**
      * @param sitename
      */
-    public void clearSectionsSecurityInfo(String sitename) throws PSSiteSectionException;
+    public void clearSectionsSecurityInfo(String sitename) throws PSSiteSectionException, PSNotFoundException;
     
     /**
      * @param siteName
      * @param tempMap a map of to and from template ids to modify.
      */
-    public void updateSectionBlogTemplates(String siteName, Map<String, String> tempMap) throws PSSiteSectionException;
+    public void updateSectionBlogTemplates(String siteName, Map<String, String> tempMap) throws PSSiteSectionException, PSNotFoundException;
 
     /**
      * (Runtime) Exception is thrown when an unexpected error occurs in this

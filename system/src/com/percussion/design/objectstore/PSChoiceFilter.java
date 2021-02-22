@@ -143,7 +143,7 @@ public class PSChoiceFilter extends PSComponent
     * See IPSComponent.
     */
    public void validate(IPSValidationContext context)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (!context.startValidation(this, null))
          return;
@@ -351,7 +351,7 @@ public class PSChoiceFilter extends PSComponent
        * See IPSComponent.
        */
       public void validate(IPSValidationContext context)
-         throws PSValidationException
+         throws PSSystemValidationException
       {
          if (!context.startValidation(this, null))
             return;

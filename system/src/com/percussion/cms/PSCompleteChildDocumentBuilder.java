@@ -30,7 +30,7 @@ import com.percussion.design.objectstore.PSContentEditorPipe;
 import com.percussion.design.objectstore.PSDisplayMapping;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.server.IPSServerErrors;
 
@@ -68,7 +68,7 @@ public class PSCompleteChildDocumentBuilder extends PSEditorDocumentBuilder
    public PSCompleteChildDocumentBuilder( PSContentEditor ce,
          PSEditorDocumentContext ctx, PSDisplayMapping mapping,
          int pageId, boolean isError )
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       super( ce, ctx, pageId );
       if ( null == mapping )

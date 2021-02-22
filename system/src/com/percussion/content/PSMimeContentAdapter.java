@@ -146,7 +146,7 @@ public class PSMimeContentAdapter implements IPSMimeContent
    }
 
    @Override
-   public void finalize() throws Throwable
+   protected void finalize() throws Throwable
    {
       super.finalize();
       if (m_in != null)

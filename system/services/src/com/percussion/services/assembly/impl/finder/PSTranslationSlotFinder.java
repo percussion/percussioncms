@@ -106,7 +106,7 @@ public class PSTranslationSlotFinder extends PSSlotContentFinderBase
    private Set<ContentItem> assumeChild(IPSAssemblyItem sourceItem)
          throws PSAssemblyException
    {
-      Set<ContentItem> rval = new HashSet<ContentItem>();
+      Set<ContentItem> rval = new HashSet<>();
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
       try
       {
@@ -176,7 +176,7 @@ public class PSTranslationSlotFinder extends PSSlotContentFinderBase
    private Set<ContentItem> assumeParent(IPSAssemblyItem sourceItem)
          throws PSAssemblyException
    {
-      Set<ContentItem> rval = new HashSet<ContentItem>();
+      Set<ContentItem> rval = new HashSet<>();
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
       try
       {

@@ -32,6 +32,7 @@ import static org.junit.Assert.assertTrue;
 import com.percussion.rx.publisher.IPSPublisherJobStatus;
 import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.publisher.IPSEdition;
@@ -90,7 +91,7 @@ public class PSSitePublishStatusServiceTest {
 	}
 	
 	@Test
-	public void testBuildCurrentJobs() {
+	public void testBuildCurrentJobs() throws PSNotFoundException {
 		final IPSPublisherJobStatus status = context.mock(IPSPublisherJobStatus.class);
 		final IPSGuid editionId = context.mock(IPSGuid.class,"editionId");
 		
@@ -133,7 +134,7 @@ public class PSSitePublishStatusServiceTest {
 	}
 	
 	@Test
-    public void testBuildCurrentJobsByServerId() {
+    public void testBuildCurrentJobsByServerId() throws PSNotFoundException {
         final IPSPublisherJobStatus status = context.mock(IPSPublisherJobStatus.class);
         final IPSGuid editionId = context.mock(IPSGuid.class,"editionId");
         final IPSGuid siteId = context.mock(IPSGuid.class,"1");
@@ -177,8 +178,7 @@ public class PSSitePublishStatusServiceTest {
         context.assertIsSatisfied();
     }
 
-	protected void siteExpectations(final IPSGuid editionId)
-	{
+	protected void siteExpectations(final IPSGuid editionId) throws PSNotFoundException {
 		
 		final IPSEdition edition = context.mock(IPSEdition.class);
 		final IPSGuid siteId = context.mock(IPSGuid.class, "siteId");
@@ -204,7 +204,7 @@ public class PSSitePublishStatusServiceTest {
 		
 	}
 	@Ignore
-	public void testBuildLogs() {
+	public void testBuildLogs() throws PSNotFoundException {
 		final IPSPubStatus pubStatus = context.mock(IPSPubStatus.class);
 	    final IPSGuid editionId = context.mock(IPSGuid.class, "editionId"); 	
 		final Date startDate = new Date(); 
@@ -247,7 +247,7 @@ public class PSSitePublishStatusServiceTest {
 	}
 	
 	@Ignore
-    public void testBuildLogsByServerId() {
+    public void testBuildLogsByServerId() throws PSNotFoundException {
         final IPSPubStatus pubStatus = context.mock(IPSPubStatus.class);
         final IPSGuid editionId = context.mock(IPSGuid.class, "editionId");     
         final Date startDate = new Date(); 
@@ -294,7 +294,7 @@ public class PSSitePublishStatusServiceTest {
 
 	@SuppressWarnings("serial")
     @Ignore
-	public void testBuildLogsFailuresOnly() {
+	public void testBuildLogsFailuresOnly() throws PSNotFoundException {
 		final IPSPubStatus pubStatusGood = context.mock(IPSPubStatus.class,"pubStatusGood");
 		final IPSPubStatus pubStatusBad = context.mock(IPSPubStatus.class,"pubStatusBad");
 
@@ -351,7 +351,7 @@ public class PSSitePublishStatusServiceTest {
 
 	@SuppressWarnings("serial")
     @Ignore
-	public void testBuildLogsSkip() {
+	public void testBuildLogsSkip() throws PSNotFoundException {
 		final IPSPubStatus pubStatusGood = context.mock(IPSPubStatus.class,"pubStatusGood");
 		final IPSPubStatus pubStatusBad = context.mock(IPSPubStatus.class,"pubStatusBad");
 
@@ -572,7 +572,7 @@ public class PSSitePublishStatusServiceTest {
 	}
 
 	@Test
-	public void testGetSiteNameLong() {
+	public void testGetSiteNameLong() throws PSNotFoundException {
 		
 		final IPSGuid editionGuid = new PSGuid(PSTypeEnum.EDITION, 42L );
 		final IPSEdition edition = context.mock(IPSEdition.class); 
