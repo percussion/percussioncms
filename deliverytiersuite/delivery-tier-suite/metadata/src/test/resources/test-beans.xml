@@ -141,6 +141,12 @@
    <import resource="perc-datasources.xml" />
    <import resource="perc-metadata-services.xml" />
 
+   <bean id="metadataLiquibase"
+         class="liquibase.integration.spring.SpringLiquibase">
+      <property name="dataSource" ref="percDataSource" />
+      <property name="changeLog" value="classpath:liquibase-diff-latest.xml" />
+   </bean>
+
    <!-- <context:component-scan base-package="com.percussion.delivery.metadata.impl" /> -->
 
    <!-- Hibernate SessionFactory -->
@@ -178,7 +184,7 @@
 
    <bean id="visitService" class="com.percussion.delivery.metadata.impl.PSBlogPostVisitService"
          autowire="constructor">
-         <constructor-arg type="Integer" value="${blogpost.scheduler.interval}" index="2" />
+         <constructor-arg type="java.lang.Integer" value="${blogpost.scheduler.interval}" index="2" />
    </bean>
    
    <bean id="cookieConsentService" class="com.percussion.delivery.metadata.impl.PSCookieConsentService"
@@ -199,7 +205,7 @@
    
    <bean id="metadataQueryService" class="com.percussion.delivery.metadata.rdbms.impl.PSMetadataQueryService"
          autowire="constructor">
-         <constructor-arg type="Integer" value="1000" index="1" />
+         <constructor-arg type="java.lang.Integer" value="1000" index="1" />
       <property name="sessionFactory">
          <ref bean="metadataSessionFactory" />
       </property>   

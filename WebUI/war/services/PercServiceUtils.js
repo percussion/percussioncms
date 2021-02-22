@@ -57,7 +57,7 @@
     var TYPE_PUT = "PUT";
 
     $.ajaxSetup({
-        timeout: 60000
+        timeout: 300000
     });
 
     function joinURL(firstPart, secondPart){

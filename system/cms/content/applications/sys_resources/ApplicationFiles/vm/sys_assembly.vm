@@ -798,8 +798,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 #end
 <script>(function() { jQuery.getDeliveryServiceBase = function(){ return '$dServiceBase';};jQuery.getCMSVersion = function(){ return '$!{cm1Version}';};})();</script>
 #end##
-
-
+##
+##
 ## Macro, perc_processCategoryNodeExpanded, used by Category List widget, recursively renders a list of lists of categories for Expanded hierarchy option
 ## categories: List of nodes
 ## maxRow: limit the rows of the tree. (0 = no limit)
