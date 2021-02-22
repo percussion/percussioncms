@@ -267,7 +267,7 @@ public class PSFileLogReader implements IPSLogReader
    /**
     * Make sure we close everything when we get garbage collected
     */
-   public void finalize() throws Throwable
+   protected void finalize() throws Throwable
    {
       close();
       super.finalize();

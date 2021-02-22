@@ -577,7 +577,7 @@ public class PSFileSystemConnection implements Connection
       checkClosed();
    }
 
-   public void finalize() throws Throwable
+   protected void finalize() throws Throwable
    {
       close();
       super.finalize();
