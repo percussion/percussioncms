@@ -25,6 +25,7 @@ package com.percussion.user.service.impl;
 
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.security.IPSPasswordFilter;
+import com.percussion.utils.security.ToDoVulnerability;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.Lazy;
@@ -38,6 +39,7 @@ import java.io.File;
  */
 @Component("defaultPasswordEncryptionBean")
 @Lazy
+@ToDoVulnerability
 public class PSDefaultPasswordEncryptionBean implements IPSPasswordFilter
 {
 

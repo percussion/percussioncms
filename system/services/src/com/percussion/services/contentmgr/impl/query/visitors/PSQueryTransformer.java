@@ -88,7 +88,7 @@ public class PSQueryTransformer extends PSQueryNodeVisitor
    /**
     * See {@link #getIdCollections()} for information.
     */
-   private List<Long> m_idCollections = new ArrayList<Long>();
+   private List<Long> m_idCollections = new ArrayList<>();
    
    /**
     * This counts the number of ids used for paths. This is used to decide when
@@ -120,7 +120,7 @@ public class PSQueryTransformer extends PSQueryNodeVisitor
       }
       if (parameters == null)
       {
-         m_parameters = new HashMap<String, Object>();
+         m_parameters = new HashMap<>();
       }
       m_folderExpander = folderExpander;
       m_cm = PSContentMgrLocator.getContentMgr();

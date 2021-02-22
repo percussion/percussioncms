@@ -31,7 +31,7 @@ package com.percussion.design.objectstore;
  * This usually occurs when an application is being opened by a workbench
  * and an invalid value is detected.
 */
-public class PSMinorValidationException extends PSValidationException {
+public class PSMinorValidationException extends PSSystemValidationException {
    /**
     * Construct an exception for messages taking only a single argument.
     *

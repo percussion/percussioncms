@@ -24,6 +24,7 @@
 package com.percussion.sitemanage.importer;
 
 import com.percussion.server.IPSHttpErrors;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
@@ -330,13 +331,12 @@ public class PSSiteImporter
      * 
      * @param objectId The object id to use, not empty
      * @param logger the logger to use, not <code>null</code>.
-     * @param The log dao, not <code>null</code>.
+     * @param logDao log dao, not <code>null</code>.
      * @param siteId The id of the site being imported into, if <code>null</code> empty, no additional error logging
      * is performed.
      * @param desc The description of the object being imported, not <code>null<code/> or empty.
      */
-    public static void saveImportLog(String objectId, IPSSiteImportLogger logger, IPSImportLogDao logDao, String siteId, String desc)
-    {
+    public static void saveImportLog(String objectId, IPSSiteImportLogger logger, IPSImportLogDao logDao, String siteId, String desc) throws IPSGenericDao.SaveException {
         Validate.notEmpty(objectId);
         Validate.notNull(logger);
         Validate.notNull(logDao);

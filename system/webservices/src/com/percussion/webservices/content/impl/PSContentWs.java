@@ -125,6 +125,7 @@ import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSTransition;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.share.dao.PSFolderPathUtils;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.exceptions.PSORMException;
 import com.percussion.utils.guid.IPSGuid;
@@ -163,7 +164,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -210,7 +212,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
     */
    private Map<Long, String> getNameMap(List<? extends IPSCatalogSummary> sums)
    {
-      Map<Long, String> map = new HashMap<Long, String>();
+      Map<Long, String> map = new HashMap<>();
 
       for (IPSCatalogSummary summary : sums)
       {
@@ -373,7 +375,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          PSItemDefinition itemDef = getItemDefinition(contentType);
 
          PSSecurityToken securityToken = getRequest().getSecurityToken();
-         List<PSCoreItem> items = new ArrayList<PSCoreItem>();
+         List<PSCoreItem> items = new ArrayList<>();
          for (int i = 0; i < count; i++)
          {
             /*
@@ -422,22 +424,12 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          {
             PSLegacyGuid guid = handleRevision((PSLegacyGuid) id);
 
-            List<String> itemIds = new ArrayList<String>();
+            List<String> itemIds = new ArrayList<>();
             itemIds.add(String.valueOf(guid.getContentId()));
 
             PSContentDataHandler.purgeItems(request, itemIds);
          }
-         catch (PSException e)
-         {
-            int code = IPSWebserviceErrors.DELETE_FAILED;
-            PSErrorException error = new PSErrorException(code,
-               PSWebserviceErrors.createErrorMessage(code, PSCoreItem.class
-                  .getName(), id.getUUID(), e.getLocalizedMessage()),
-               ExceptionUtils.getFullStackTrace(e));
-
-            errors.addError(id, error);
-         }
-         catch (PSErrorException e)
+         catch (PSException | PSValidationException | PSErrorException e)
          {
             int code = IPSWebserviceErrors.DELETE_FAILED;
             PSErrorException error = new PSErrorException(code,
@@ -476,7 +468,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          PSWSSearchResponse response = searchHandler.search(getNewRequest(),
             search);
 
-         List<PSSearchSummary> results = new ArrayList<PSSearchSummary>();
+         List<PSSearchSummary> results = new ArrayList<>();
          String user = PSWebserviceUtils.getUserName();
          for (IPSSearchResultRow row : response.getRowList())
          {
@@ -509,16 +501,15 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       PSLocator locator = new PSLocator(((PSLegacyGuid) id).getContentId(), -1);
       try
       {
-         String[] paths = getFolderProcessor().getItemPaths(locator);
-         return paths;
+         return getFolderProcessor().getItemPaths(locator);
       }
-      catch (PSCmsException e)
+      catch (PSCmsException | PSNotFoundException e)
       {
          int code = IPSWebserviceErrors.FAILED_FIND_PATH_FROM_ID;
          PSErrorException error = new PSErrorException(code,
             PSWebserviceErrors.createErrorMessage(code, locator.getId(), e
                .getLocalizedMessage()), ExceptionUtils.getFullStackTrace(e));
-         ms_logger.error(error.getMessage(), e);
+         logger.error(error.getMessage(), e);
 
          throw error;
       }
@@ -529,7 +520,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    {
 
       IPSCmsObjectMgr mgr = PSCmsObjectMgrLocator.getObjectManager();
-      List<Integer> contentIds = new ArrayList<Integer>();
+      List<Integer> contentIds = new ArrayList<>();
       for(IPSGuid id: ids)
       {
          PSWebserviceUtils.validateLegacyGuid(id);
@@ -568,7 +559,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          return results;
 
       PSLocator folderLoc = new PSLocator(folderId);
-      results = new ArrayList<Integer>();
+      results = new ArrayList<>();
       try
       {
          Set<Integer> ids = processor.getChildIds(folderLoc, true);
@@ -585,7 +576,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          int code = IPSWebserviceErrors.UNEXPECTED_ERROR;
          PSErrorException error =  new PSErrorException(code, PSWebserviceErrors.createErrorMessage(
                code, e.getLocalizedMessage()), ExceptionUtils.getFullStackTrace(e));
-         ms_logger.error(error.getMessage(), e);
+         logger.error(error.getMessage(), e);
 
          throw error;
       }
@@ -649,17 +640,17 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          }
          catch (PSSystemException e)
          {
-            ms_logger.error("Problems calculating assignment type" , e);
+            logger.error("Problems calculating assignment type" , e);
             assignmentType = PSAssignmentTypeEnum.NONE.getValue();
          }
          catch (NumberFormatException e)
          {
-            ms_logger.error("Problems calculating assignment type" , e);
+            logger.error("Problems calculating assignment type" , e);
             assignmentType = PSAssignmentTypeEnum.NONE.getValue();
          }
          catch (PSInternalRequestCallException e)
          {
-            ms_logger.error("Problems calculating assignment type" , e);
+            logger.error("Problems calculating assignment type" , e);
             assignmentType = PSAssignmentTypeEnum.NONE.getValue();
          }
          if (assignmentType == PSWorkFlowUtils.ASSIGNMENT_TYPE_ADMIN
@@ -838,7 +829,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSNotFoundException e)
       {
-         e.printStackTrace();
          throw new IllegalArgumentException(
             "Failed to find a site with name = " + siteName
                + ", the underlying error was: " + e.getLocalizedMessage());
@@ -1539,9 +1529,9 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       long fromStateId = summary.getContentStateId();
       itemStatus.setFromStateId(fromStateId);
 
-      if (ms_logger.isDebugEnabled())
+      if (logger.isDebugEnabled())
       {
-         ms_logger.debug("prepareForEdit() id=" + id + ", workflowId="
+         logger.debug("prepareForEdit() id=" + id + ", workflowId="
                + summary.getWorkflowAppId() + ", currentStateId="
                + summary.getContentStateId());
       }
@@ -1559,9 +1549,9 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          itemStatus.setDidCheckout(true);
       }
 
-      if (ms_logger.isDebugEnabled())
+      if (logger.isDebugEnabled())
       {
-         ms_logger.debug("prepareForEdit() itemStatus=" + itemStatus.toString());
+         logger.debug("prepareForEdit() itemStatus=" + itemStatus.toString());
       }
 
       return itemStatus;
@@ -1596,9 +1586,9 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          throw error;
       }
 
-      if (ms_logger.isDebugEnabled())
+      if (logger.isDebugEnabled())
       {
-         ms_logger.debug("workflowId=" + summary.getWorkflowAppId()
+         logger.debug("workflowId=" + summary.getWorkflowAppId()
                + ", stateId=" + stateId + ", isPublishable="
                + currState.isPublishable());
       }
@@ -1847,9 +1837,9 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       throws PSErrorException
    {
       notNull(itemStatus, "itemStatus may not be null");
-      if (ms_logger.isDebugEnabled())
+      if (logger.isDebugEnabled())
       {
-         ms_logger.debug("releaseFromEdit() itemStatus=" + itemStatus.toString());
+         logger.debug("releaseFromEdit() itemStatus=" + itemStatus.toString());
       }
 
       int id = itemStatus.getId();
@@ -1862,9 +1852,9 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          PSComponentSummary summary = PSWebserviceUtils
             .getItemSummary(id);
 
-         if (ms_logger.isDebugEnabled())
+         if (logger.isDebugEnabled())
          {
-            ms_logger.debug("releaseFromEdit() id=" + id
+            logger.debug("releaseFromEdit() id=" + id
                   + ", workflowId=" + summary.getWorkflowAppId()
                   + ", currentStateId=" + summary.getContentStateId());
          }
@@ -1882,9 +1872,9 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
             .getToStateId());
          PSTransition trans = getTransition(fromState, toState, wf);
 
-         if (ms_logger.isDebugEnabled())
+         if (logger.isDebugEnabled())
          {
-            ms_logger.debug("releaseFromEdit() transition="
+            logger.debug("releaseFromEdit() transition="
                   + trans.toString());
          }
 
@@ -1899,7 +1889,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
     *
     * @param item the item in question, assumed not <code>null</code>.
     * @param itemStatus the item status in question, assumed not <code>null</code>.
-    * @param results the error results for collection errors, assumed not
     * <code>null</code>.
     *
     * @return <code>true</code> if current state of the item is the same as
@@ -3344,7 +3333,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
          int code = IPSWebserviceErrors.FAILED_FIND_CHILD_ITEMS;
          PSErrorException error = new PSErrorException(code, PSWebserviceErrors
             .createErrorMessage(code, id.toString(), e.getLocalizedMessage()),
@@ -3384,7 +3372,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          }
          catch (PSInvalidContentTypeException e)
          {
-            e.printStackTrace();
             throw new RuntimeException(e.getLocalizedMessage(), e);
          }
 
@@ -3429,7 +3416,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
          int code = IPSWebserviceErrors.FAILED_FIND_PARENT_ITEMS;
          PSErrorException error = new PSErrorException(code, PSWebserviceErrors
             .createErrorMessage(code, id.toString(), e.getLocalizedMessage()),
@@ -3575,10 +3561,9 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          }
          return paths[0];
       }
-      catch (PSCmsException e)
+      catch (PSCmsException | PSNotFoundException e)
       {
          // error occurred while finding folder path, may caused by a bad data.
-         e.printStackTrace();
          int code = IPSWebserviceErrors.FAILED_LOAD_FOLDER_PATH;
          PSErrorException error = new PSErrorException(code, PSWebserviceErrors
             .createErrorMessage(code, folderId.toString(), e
@@ -3703,7 +3688,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          catch (PSNotFoundException e)
          {
             // cannot find site, may caused by bad data.
-            e.printStackTrace();
             int code = IPSWebserviceErrors.OBJECT_NOT_FOUND;
             PSDesignGuid guid = new PSDesignGuid(siteId);
             PSErrorException error = new PSErrorException(code,
@@ -3908,7 +3892,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
          int errorCode = IPSWebserviceErrors.FAILED_LOAD_RELATIONSHIP;
          PSErrorException error = new PSErrorException(errorCode,
             PSWebserviceErrors.createErrorMessage(errorCode, rid.longValue(), e
@@ -4020,7 +4003,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       {
          // this should not happen.
          // set to the default display format (id=0) if it does
-         ms_logger.warn("Cannot find display format property from Folder id='"
+         logger.warn("Cannot find display format property from Folder id='"
             + folders.get(0).getLocator() + "'.");
          folder.setDisplayFormatId(0);
       }
@@ -4073,7 +4056,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
          // remove the orphan data if failed to create Folder Relationship
          try
          {
@@ -4081,7 +4063,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          }
          catch (PSCmsException e1)
          {
-            e1.printStackTrace();
          }
          int code = IPSWebserviceErrors.FAILED_SAVE_RELATIONSHIPS;
          PSErrorException error = new PSErrorException(code, PSWebserviceErrors
@@ -4112,7 +4093,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
          int code = IPSWebserviceErrors.FAILED_ADD_FOLDER_CHILDREN;
          PSErrorException error = new PSErrorException(code, PSWebserviceErrors
             .createErrorMessage(code, childIds.toString(), parentId.toString(),
@@ -4265,9 +4245,8 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
             }
             errors.addResult(id);
          }
-         catch (PSException e)
+         catch (PSException | PSValidationException e)
          {
-            e.printStackTrace();
             int code = IPSWebserviceErrors.DELETE_FAILED;
             PSErrorException error = new PSErrorException(code,
                PSWebserviceErrors.createErrorMessage(code, PSFolder.class
@@ -4308,7 +4287,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
          throw new RuntimeException("Failed to find folder parent for id="
                + id.toString(), e);
       }
@@ -4333,7 +4311,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
          int code = IPSWebserviceErrors.FAILED_FIND_FOLDER_CHILDREN;
          PSErrorException error = new PSErrorException(code, PSWebserviceErrors
             .createErrorMessage(code, id.toString(), e.getLocalizedMessage()),
@@ -4357,7 +4334,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
          int code = IPSWebserviceErrors.FAILED_FIND_FOLDER_CHILDREN;
          PSErrorException error = new PSErrorException(code, PSWebserviceErrors
             .createErrorMessage(code, id.toString(), e.getLocalizedMessage()),
@@ -4426,7 +4402,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
          int code = IPSWebserviceErrors.FAILED_FIND_PATH_FROM_ID;
          PSErrorException error = new PSErrorException(code,
             PSWebserviceErrors.createErrorMessage(code, locator.getId(), e
@@ -4447,7 +4422,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
          int code = IPSWebserviceErrors.FAILED_FIND_PATH_FROM_ID;
          PSErrorException error = new PSErrorException(code,
                  PSWebserviceErrors.createErrorMessage(code, locator.getId(), e
@@ -4646,7 +4620,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          }
          catch (PSSecurityException e)
          {
-            e.printStackTrace();
             int code = IPSWebserviceErrors.LOAD_FAILED;
             PSErrorException error = new PSErrorException(code,
                PSWebserviceErrors.createErrorMessage(code, PSCommunity.class
@@ -4673,7 +4646,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          }
          catch (PSErrorResultsException e)
          {
-            e.printStackTrace();
             int code = IPSWebserviceErrors.LOAD_FAILED;
             PSErrorException error = new PSErrorException(code,
                PSWebserviceErrors.createErrorMessage(code,
@@ -4799,7 +4771,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
          int code = IPSWebserviceErrors.FAILED_FIND_ID_FROM_PATH;
          PSErrorException error = new PSErrorException(code, PSWebserviceErrors
             .createErrorMessage(code, path, e.getLocalizedMessage()),
@@ -4847,8 +4818,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSErrorResultsException e)
       {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
+
       }
 
       return folders;
@@ -4946,7 +4916,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
                   + ", id="
                   + ((PSLegacyGuid) folderId).getContentId()
                   + ") because a child item with the same name already exists in the folder.";
-            ms_logger.warn(msg);
+            logger.warn(msg);
             throw new PSErrorException(msg);
          }
       }
@@ -5045,16 +5015,14 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          }
          catch (PSCmsException e1) // failed to attach folder children
          {
-            e1.printStackTrace();
             int errorCode = IPSWebserviceErrors.FAILED_DELETE_RELATIONSHIPS;
             PSErrorException error = new PSErrorException(errorCode,
                     PSWebserviceErrors.createErrorMessage(errorCode, e1
                             .getLocalizedMessage()), ExceptionUtils.getFullStackTrace(e1));
             results.addError(id, error);
          }
-         catch (PSException e) // failed to delete item
+         catch (PSException | PSValidationException e) // failed to delete item
          {
-            e.printStackTrace();
             int code = IPSWebserviceErrors.DELETE_FAILED;
             PSErrorException error = new PSErrorException(code,
                     PSWebserviceErrors.createErrorMessage(code, "Item", id
@@ -5151,7 +5119,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
          int code = IPSWebserviceErrors.FAILED_FIND_CHILD_ITEMS;
          PSErrorException error = new PSErrorException(code, PSWebserviceErrors
             .createErrorMessage(code, parent.getId(), e.getLocalizedMessage()),
@@ -5253,7 +5220,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
          int code = IPSWebserviceErrors.SAVE_FAILED;
          PSErrorException error = new PSErrorException(code, PSWebserviceErrors
             .createErrorMessage(code, PSFolder.class.getName(), folder
@@ -5409,7 +5375,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       if (StringUtils.isBlank(type))
          type = PSRelationshipConfig.TYPE_TRANSLATION;
 
-      Map<String, String> params = new HashMap<String, String>();
+      Map<String, String> params = new HashMap<>();
       params.put(IPSHtmlParameters.SYS_LANG, locale);
 
       return createRelatedItem(id, type, resource, params);
@@ -5455,7 +5421,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       if (parameters != null)
          params = parameters;
       else
-         params = new HashMap<String, String>();
+         params = new HashMap<>();
       params.put(IPSHtmlParameters.SYS_COMMAND,
          PSRelationshipCommandHandler.COMMAND_NAME);
       params.put(IPSHtmlParameters.SYS_CONTENTID, String
@@ -5475,9 +5441,9 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
             data.release();
       }
 
-      return new PSLegacyGuid(Integer.valueOf(request
+      return new PSLegacyGuid(Integer.parseInt(request
          .getParameter(IPSHtmlParameters.SYS_CONTENTID)), Integer
-         .valueOf(request.getParameter(IPSHtmlParameters.SYS_REVISION)));
+         .parseInt(request.getParameter(IPSHtmlParameters.SYS_REVISION)));
    }
 
    public IPSGuid getIdByPath(String path) throws PSErrorException
@@ -5509,7 +5475,6 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
          int code = IPSWebserviceErrors.FAILED_FIND_ID_FROM_PATH;
          PSErrorException error = new PSErrorException(code, PSWebserviceErrors
             .createErrorMessage(code, path, e.getLocalizedMessage()),
@@ -5534,15 +5499,15 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       filter.setProperty(IPSHtmlParameters.SYS_SLOTID, String.valueOf(slotid.longValue()));
       filter.setCategory(PSRelationshipConfig.CATEGORY_ACTIVE_ASSEMBLY);
 
-      List<PSAaRelationship> rels = loadContentRelations(filter, false);
+      return loadContentRelations(filter, false);
 
-      return rels;
    }
 
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger(PSContentWs.class);
+   private static final Logger logger = LogManager.getLogger(PSContentWs.class);
+
 
    private static final String FOLDER_RELATE_TYPE = PSRelationshipConfig.TYPE_FOLDER_CONTENT;
    private static final String RECYCLE_RELATE_TYPE = PSRelationshipConfig.TYPE_RECYCLED_CONTENT;

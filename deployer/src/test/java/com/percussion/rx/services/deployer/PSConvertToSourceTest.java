@@ -23,6 +23,7 @@
  */
 package com.percussion.rx.services.deployer;
 
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pkginfo.IPSPkgInfoService;
 import com.percussion.services.pkginfo.PSPkgInfoServiceLocator;
 import com.percussion.services.pkginfo.data.PSPkgInfo;
@@ -45,8 +46,7 @@ public class PSConvertToSourceTest
 {
 
    @Test
-   public void testConvert()
-   {
+   public void testConvert() throws PSNotFoundException {
       PSPair<Boolean, String> results = new PSPair<Boolean, String>();
       PSConvertToSource converter = new PSConvertToSource();
       

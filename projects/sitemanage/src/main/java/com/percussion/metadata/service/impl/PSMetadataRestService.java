@@ -27,9 +27,12 @@ import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.data.PSMetadataList;
 import com.percussion.metadata.service.IPSMetadataService;
 import com.percussion.server.PSServer;
+import com.percussion.share.dao.IPSGenericDao;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -62,7 +65,12 @@ public class PSMetadataRestService
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public PSMetadata find(@PathParam("key") String key)
    {
-      return service.find(key);
+       try {
+           return service.find(key);
+       } catch (IPSGenericDao.LoadException e) {
+
+           throw new WebApplicationException(e);
+       }
    }
    
    @GET
@@ -70,21 +78,33 @@ public class PSMetadataRestService
    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public List<PSMetadata> findByPrefix(@PathParam("prefix") String prefix)
    {
-      return new PSMetadataList(service.findByPrefix(prefix));
+       try {
+           return new PSMetadataList(service.findByPrefix(prefix));
+       } catch (IPSGenericDao.LoadException e) {
+           throw new WebApplicationException(e);
+       }
    }
    
    @DELETE
    @Path("/{key}")
    public void delete(@PathParam("key") String key)
    {
-      service.delete(key);
+       try {
+           service.delete(key);
+       } catch (IPSGenericDao.DeleteException | IPSGenericDao.LoadException e) {
+           throw new WebApplicationException(e);
+       }
    }
    
    @DELETE
    @Path("/byprefix/{prefix}")
    public void deleteByPrefix(@PathParam("prefix") String prefix)
    {
-      service.deleteByPrefix(prefix);
+       try {
+           service.deleteByPrefix(prefix);
+       } catch (IPSGenericDao.DeleteException | IPSGenericDao.LoadException e) {
+           throw new WebApplicationException(e);
+       }
    }
    
    @POST
@@ -92,7 +112,11 @@ public class PSMetadataRestService
    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
    public void save(PSMetadata data)
    {
-      service.save(data);
+       try {
+           service.save(data);
+       } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
+           throw new WebApplicationException(e);
+       }
    }
    
    @POST
@@ -100,20 +124,23 @@ public class PSMetadataRestService
    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public void saveGlobalVariables(PSMetadata data)
     {
-        // First save the metadata using the metadata service
-        service.save(data);
         try
         {
+            // First save the metadata using the metadata service
+            service.save(data);
+
             String msg = "/**** This is a system generated content, any modifications will be overwritten by the next save of global variables. *****/\n";
             String msg1 = "var PercGlobalVariablesData = ";
             FileUtils.writeStringToFile(new File(PSServer.getRxDir().getAbsolutePath()
                             + "/web_resources/cm/common/js/PercGlobalVariablesData.js"),
                             msg + msg1 + data.getData() + ";", StandardCharsets.UTF_8);
         }
-        catch (IOException e)
+        catch (IOException | IPSGenericDao.LoadException | IPSGenericDao.SaveException e)
         {
-            log.warn("Error saving the global variables: " + data.getData(), e);
-            throw new WebApplicationException(e, Response.serverError().build());
+            log.warn("Error saving the global variables: {} Error: {}",
+                    data.getData(), e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
         }
     }
    
@@ -122,5 +149,5 @@ public class PSMetadataRestService
    /**
     * Logger for this service.
     */
-   public static Log log = LogFactory.getLog(PSMetadataRestService.class);
+   public static Logger log = LogManager.getLogger(PSMetadataRestService.class);
 }

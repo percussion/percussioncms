@@ -224,7 +224,7 @@ public class RxServerConnectionModel extends RxIAModel
       {
          String driver = RxProtocolModel.fetchDriver();
          
-         Map<String, String> vars = new HashMap<String, String>();
+         Map<String, String> vars = new HashMap<>();
          vars.put("HostName", InstallUtil.getMyHostName());
          
          //escape ':' in the driver name by underscore

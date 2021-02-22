@@ -2109,10 +2109,10 @@ public class PSServerConfiguration implements IPSDocument
     *
     * @param   cxt
     *
-    * @throws   PSValidationException
+    * @throws PSSystemValidationException
     *
     */
-   public void validate(IPSValidationContext cxt) throws PSValidationException
+   public void validate(IPSValidationContext cxt) throws PSSystemValidationException
    {
       if (m_acl != null)
          m_acl.validate(cxt);
@@ -2133,7 +2133,7 @@ public class PSServerConfiguration implements IPSDocument
    }
 
    private void validateCollection(PSCollection coll, IPSValidationContext cxt)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       for (int i = 0; i < coll.size(); i++)
       {

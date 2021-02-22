@@ -25,16 +25,15 @@
 package com.percussion.server.webservices.crosssite;
 
 import com.percussion.cms.PSCmsException;
-import com.percussion.cms.objectstore.PSUserInfo;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.IPSHtmlParameters;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.Iterator;
 import java.util.List;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * This class handles the modifcation of the AA relationships of the dependent
@@ -55,13 +54,10 @@ public class PSCrossSiteFolderRemoveActionProcessor extends
 
    /**
     * Only ctor. Invokes base class version.
-    * 
-    * @see PSCrossSiteFolderActionProcessor#PSCrossSiteFolderActionProcessor(PSUserInfo,
-    * PSLocator, List)
+    *
     */
    public PSCrossSiteFolderRemoveActionProcessor(
-      PSLocator sourceFolderId, List<PSLocator> children) throws PSCmsException
-   {
+      PSLocator sourceFolderId, List<PSLocator> children) throws PSCmsException, PSNotFoundException {
       super(sourceFolderId, children);
       buildDescendents();
    }

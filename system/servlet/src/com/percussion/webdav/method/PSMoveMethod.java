@@ -194,7 +194,7 @@ public class PSMoveMethod
       PSRelationshipProcessorProxy proxy = getFolderProxy();
       String srcParentPath = PSWebdavUtils.getParentPath(m_sourcePath);
       PSComponentSummary srcParent = getComponentByPathRqd(srcParentPath);
-      List<PSLocator> sourceList = new ArrayList<PSLocator>();
+      List<PSLocator> sourceList = new ArrayList<>();
       sourceList.add(m_sourceSummary.getCurrentLocator());
       proxy.move(
             PSRelationshipConfig.TYPE_FOLDER_CONTENT,

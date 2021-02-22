@@ -33,6 +33,7 @@ import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSWidgetItem;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.data.PSAbstractPersistantObject;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
@@ -72,7 +73,7 @@ public interface IPSWidgetAssetRelationshipService
      * 
      * @throws PSWidgetAssetRelationshipServiceException if the relationship cannot be created.
      */    
-    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSWidgetAssetRelationshipServiceException;
+    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSWidgetAssetRelationshipServiceException, PSValidationException;
     
     /**
      * Creates the relationship defined by the specified asset widget relationship.
@@ -98,7 +99,7 @@ public interface IPSWidgetAssetRelationshipService
             PSAssetResourceType resourceType,
             int order, 
             String widgetName,
-            int replacedRelationshipId) throws PSWidgetAssetRelationshipServiceException;
+            int replacedRelationshipId) throws PSWidgetAssetRelationshipServiceException, PSValidationException;
     
     /**
      * Clears the specified relationship.  If no other asset widget relationships exist for the asset, the item will
@@ -231,7 +232,7 @@ public interface IPSWidgetAssetRelationshipService
      * 
      * @return a set of linked asset item id's for the given item.  Never <code>null</code>, may be empty.
      */
-    public Set<String> getLinkedAssets(String id) throws PSWidgetAssetRelationshipServiceException;
+    public Set<String> getLinkedAssets(String id) throws PSWidgetAssetRelationshipServiceException, PSValidationException, PSNotFoundException;
     
     /**
      * Gets all content (assets) associated with the specified asset via an inline link. 
@@ -240,7 +241,7 @@ public interface IPSWidgetAssetRelationshipService
      * 
      * @return a set of linked asset item id's for the given item.  Never <code>null</code>, may be empty.
      */
-    public Set<String> getLinkedAssetsForAsset(String id);
+    public Set<String> getLinkedAssetsForAsset(String id) throws PSValidationException, PSNotFoundException;
     
     /**
      * Gets all pages associated with the specified item via an inline link.
@@ -249,7 +250,7 @@ public interface IPSWidgetAssetRelationshipService
      * 
      * @return a set of linked page item id's for the given item.  Never <code>null</code>, may be empty.
      */
-    public Set<String> getLinkedPages(String id);
+    public Set<String> getLinkedPages(String id) throws PSValidationException, PSNotFoundException;
     
     /**
      * Updates the dependent of all shared relationships between the specified owner and dependent.
@@ -259,7 +260,7 @@ public interface IPSWidgetAssetRelationshipService
      * @param newDepId the new dependent id, never blank.
      * @throws PSCmsException 
      */
-    public void updateSharedRelationshipDependent(String ownerId, String depId, String newDepId) ;
+    public void updateSharedRelationshipDependent(String ownerId, String depId, String newDepId) throws PSValidationException;
     
 
     /**
@@ -270,7 +271,7 @@ public interface IPSWidgetAssetRelationshipService
      * @param newDepId the new dependent id, never blank.
      * @throws PSCmsException 
      */
-    public void updateSharedRelationshipDependent(String ownerId, String depId, String newDepId, boolean checkInOut) ;
+    public void updateSharedRelationshipDependent(String ownerId, String depId, String newDepId, boolean checkInOut) throws PSValidationException;
 
     /**
      * Determines if the specified item is used directly or indirectly (via an inline link) by a template.
@@ -279,7 +280,7 @@ public interface IPSWidgetAssetRelationshipService
      * 
      * @return <code>true</code> if the item is being used by a template, <code>false</code> otherwise.
      */
-    public boolean isUsedByTemplate(String id) throws PSValidationException;
+    public boolean isUsedByTemplate(String id) throws PSValidationException, PSNotFoundException;
     
     /**
      * For a given asset, the current local content relationship will be updated with the tip revision of the asset if
@@ -287,14 +288,14 @@ public interface IPSWidgetAssetRelationshipService
      * 
      * @param id never blank.
      */
-    public void updateLocalRelationshipAsset(String id);
+    public void updateLocalRelationshipAsset(String id) throws PSValidationException;
     
     /**
      * Gets the local content relationships for the supplied parent and resets the dependent revision of local content 
      * to the tip revision. 
      * @param id The string representation of the parent guid. Must not be blank.
      */
-    public void adjustLocalContentRelationships(String id);
+    public void adjustLocalContentRelationships(String id) throws PSValidationException;
     
     /**
      * Gets all resource assets associated with the specified item.  This includes local, shared, and linked resources.
@@ -315,7 +316,7 @@ public interface IPSWidgetAssetRelationshipService
      *            {@link String}, {@link String}>> maps the widgetId (slot id)
      *            to the new name of the widget. Assumed not <code>null</code>.
      */
-    public void updateWidgetsNames(String templateId, Map<String, PSPair<String, String>> changedWidgets);
+    public void updateWidgetsNames(String templateId, Map<String, PSPair<String, String>> changedWidgets) throws PSValidationException;
 
     /**
      * Creates a relationship based on the specified source relationship, asset

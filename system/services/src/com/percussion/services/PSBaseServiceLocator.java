@@ -109,7 +109,7 @@ public class PSBaseServiceLocator
     * them down during shutdown.
     */
    private static ArrayList<ConfigurableApplicationContext> ms_ctxList = 
-         new ArrayList<ConfigurableApplicationContext>();
+         new ArrayList<>();
    /**
     * Initialize the configuration for the server context. Only call this within
     * a J2EE container.
@@ -138,7 +138,7 @@ public class PSBaseServiceLocator
                     ctx.setServletContext(servletCtx);
 
                     String sysConfigDir = PSServletUtils.getSpringConfigPath();
-                    List<String> configFiles = new ArrayList<String>();
+                    List<String> configFiles = new ArrayList<>();
                     configFiles.add(sysConfigDir + "/" + PSServletUtils.SERVER_BEANS_FILE_NAME);
                     configFiles.add(sysConfigDir + "/" + PSServletUtils.DESIGN_BEANS_FILE_NAME);
                     configFiles.add(sysConfigDir + "/" + PSServletUtils.DEPLOYER_BEANS_FILE_NAME);
@@ -314,7 +314,7 @@ public class PSBaseServiceLocator
     */
    private static List<String> getUserConfigFiles()
    {
-      List<String> results = new ArrayList<String>();
+      List<String> results = new ArrayList<>();
 
       String userConfigPath = PSServletUtils.getUserSpringConfigPath();
       File userConfigDir = PSServletUtils.getUserSpringConfigDir();

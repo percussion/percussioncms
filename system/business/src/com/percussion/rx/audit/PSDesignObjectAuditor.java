@@ -95,7 +95,7 @@ public class PSDesignObjectAuditor
       
       IPSDesignObjectAuditService svc = 
          PSDesignObjectAuditServiceLocator.getAuditService();
-      Collection<PSAuditLogEntry> entries = new ArrayList<PSAuditLogEntry>();
+      Collection<PSAuditLogEntry> entries = new ArrayList<>();
       
       // assume we are auditing the first argument since all service method
       // signatures follow this pattern
@@ -137,7 +137,7 @@ public class PSDesignObjectAuditor
    public Collection<PSAuditData> createAuditData(String methodName, 
       Object arg)
    {
-      Collection<PSAuditData> dataList = new ArrayList<PSAuditData>();
+      Collection<PSAuditData> dataList = new ArrayList<>();
       
       if (methodName == null)
          return dataList;

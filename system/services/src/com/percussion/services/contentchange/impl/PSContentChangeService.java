@@ -36,12 +36,14 @@ import com.percussion.services.contentchange.PSContentChangeServiceLocator;
 import com.percussion.services.contentchange.data.PSContentChangeEvent;
 import com.percussion.services.contentchange.data.PSContentChangePK;
 import com.percussion.services.contentchange.data.PSContentChangeType;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
@@ -73,7 +75,7 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
    
    private IPSGuidManager m_guidMgr;
    
-   private List<IPSContentChangeHandler> changeHandlers = new ArrayList<IPSContentChangeHandler>();
+   private List<IPSContentChangeHandler> changeHandlers = new ArrayList<>();
    
    
    public PSContentChangeService()
@@ -213,8 +215,7 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
    /* (non-Javadoc)
     * @see com.percussion.services.notification.IPSNotificationListener#notifyEvent(com.percussion.services.notification.PSNotificationEvent)
     */
-   public void notifyEvent(PSNotificationEvent notification)
-   {
+   public void notifyEvent(PSNotificationEvent notification) throws PSDataServiceException, PSNotFoundException {
       Object target = notification.getTarget();
       if (target instanceof PSRelationshipChangeEvent)
       {

@@ -31,6 +31,7 @@ import com.percussion.pagemanagement.data.PSWidgetContentType;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.recent.service.rest.IPSRecentService;
 import com.percussion.share.data.PSItemProperties;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
 
@@ -163,8 +164,7 @@ public class PSRecentServiceTest extends PSServletTestCase
     }
     
     @Test
-    public void testUpdateRecentAssetTypes()
-    {
+    public void testUpdateRecentAssetTypes() throws PSDataServiceException {
      
         for (PSWidgetContentType type : widgetTypes)
         {

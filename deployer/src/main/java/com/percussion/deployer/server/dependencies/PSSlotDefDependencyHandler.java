@@ -44,6 +44,7 @@ import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.data.PSTemplateSlot;
 import com.percussion.services.assembly.data.PSTemplateTypeSlotAssociation;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
@@ -164,8 +165,7 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
    @Override
    @SuppressWarnings("unchecked")
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -379,8 +379,7 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
    @Override
    public void installDependencyFiles(PSSecurityToken tok,
          PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
-   throws PSDeployException
-   {
+           throws PSDeployException, PSAssemblyException, PSNotFoundException {
       Iterator files = getSlotDependecyFilesFromArchive(archive, dep);
       PSDependencyFile depFile = (PSDependencyFile) files.next();
       String tgtId = findTargetId(dep, ctx);
@@ -515,8 +514,7 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
     * @throws PSDeployException
     */
    private void removeInvalidAssociations(PSSecurityToken tok,
-         IPSTemplateSlot slot) throws PSDeployException
-   {
+         IPSTemplateSlot slot) throws PSDeployException, PSNotFoundException {
       if (slot == null)
          throw new IllegalArgumentException(
                "Slot Definition cannot be null for idtype mapping");
@@ -605,8 +603,7 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
     */
    private void doTransforms(PSSecurityToken tok, PSArchiveHandler archive,
          PSDependency dep, PSImportCtx ctx, IPSTemplateSlot slot)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (slot == null)
          throw new IllegalArgumentException(
                "Slot Definition cannot be null");

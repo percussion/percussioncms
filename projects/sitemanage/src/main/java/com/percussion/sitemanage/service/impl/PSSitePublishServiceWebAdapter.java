@@ -38,6 +38,7 @@ import com.percussion.services.content.data.PSItemSummary;
 import com.percussion.services.contentchange.IPSContentChangeService;
 import com.percussion.services.contentchange.data.PSContentChangeEvent;
 import com.percussion.services.contentchange.data.PSContentChangeType;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationServiceLocator;
@@ -134,7 +135,7 @@ public class PSSitePublishServiceWebAdapter
             throw new IllegalArgumentException("name may not be blank");
 
          return sitePublishService.publish(name, PubType.FULL, null, false, server);
-      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException e) {
+      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
          log.error(e.getMessage());
          log.debug(e.getMessage(),e);
          throw new WebApplicationException(e.getMessage());
@@ -159,7 +160,7 @@ public class PSSitePublishServiceWebAdapter
             throw new IllegalArgumentException("id may not be blank");
 
          return sitePublishService.publish(null, PubType.PUBLISH_NOW, id, false, null);
-      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException e) {
+      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
          log.error(e.getMessage());
          log.debug(e.getMessage(),e);
          throw new WebApplicationException(e.getMessage());
@@ -183,7 +184,7 @@ public class PSSitePublishServiceWebAdapter
             throw new IllegalArgumentException("name may not be blank");
 
          return sitePublishService.publish(null, PubType.PUBLISH_NOW, id, true, null);
-      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException e) {
+      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
          log.error(e.getMessage());
          log.debug(e.getMessage(),e);
          throw new WebApplicationException(e.getMessage());
@@ -207,7 +208,7 @@ public class PSSitePublishServiceWebAdapter
             throw new IllegalArgumentException("id may not be blank");
 
          return sitePublishService.publish(null, PubType.STAGE_NOW, id, false, null);
-      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException e) {
+      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
          log.error(e.getMessage());
          log.debug(e.getMessage(),e);
          throw new WebApplicationException(e.getMessage());
@@ -231,7 +232,7 @@ public class PSSitePublishServiceWebAdapter
             throw new IllegalArgumentException("name may not be blank");
 
          return sitePublishService.publish(null, PubType.STAGE_NOW, id, true, null);
-      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException e) {
+      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
          throw new WebApplicationException(e.getMessage());
       }
    }
@@ -251,7 +252,7 @@ public class PSSitePublishServiceWebAdapter
          if (StringUtils.isBlank(id))
             throw new IllegalArgumentException("id may not be blank");
          return new PSPublishingActionList(sitePublishService.getPublishingActions(id));
-      } catch (PSDataServiceException e) {
+      } catch (PSDataServiceException | PSNotFoundException e) {
          throw new WebApplicationException(e);
       }
    }
@@ -337,7 +338,7 @@ public class PSSitePublishServiceWebAdapter
             throw new IllegalArgumentException("id may not be blank");
 
          return sitePublishService.publish(null, PubType.TAKEDOWN_NOW, id, false, null);
-      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException e) {
+      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
          throw new WebApplicationException(e.getMessage());
       }
    }
@@ -359,7 +360,7 @@ public class PSSitePublishServiceWebAdapter
             throw new IllegalArgumentException("id may not be blank");
 
          return sitePublishService.publish(null, PubType.TAKEDOWN_NOW, id, true, null);
-      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException e) {
+      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
          throw new WebApplicationException(e.getMessage());
       }
    }
@@ -381,7 +382,7 @@ public class PSSitePublishServiceWebAdapter
             throw new IllegalArgumentException("id may not be blank");
 
          return sitePublishService.publish(null, PubType.REMOVE_FROM_STAGING_NOW, id, false, null);
-      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException e) {
+      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
          throw new WebApplicationException(e.getMessage());
       }
    }
@@ -403,7 +404,7 @@ public class PSSitePublishServiceWebAdapter
             throw new IllegalArgumentException("id may not be blank");
 
          return sitePublishService.publish(null, PubType.REMOVE_FROM_STAGING_NOW, id, true, null);
-      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException e) {
+      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
          throw new WebApplicationException(e.getMessage());
       }
    }
@@ -475,7 +476,7 @@ public class PSSitePublishServiceWebAdapter
          Validate.notEmpty(server);
 
          return sitePublishService.publishIncremental(name, null, false, server);
-      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException e) {
+      } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
          log.error(e.getMessage());
          log.debug(e.getMessage(),e);
          throw new WebApplicationException(e.getMessage());
@@ -499,7 +500,7 @@ public class PSSitePublishServiceWebAdapter
          Validate.notEmpty(server);
 
          return sitePublishService.publishIncrementalWithApproval(name, null, false, server, itemsToApprove);
-      } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemService.PSItemServiceException e) {
+      } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
          log.error(e.getMessage());
          log.debug(e.getMessage(),e);
          throw new WebApplicationException(e.getMessage());

@@ -53,13 +53,12 @@ import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.searchmanagement.service.IPSPageIndexService;
 import com.percussion.server.PSRequest;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidHelper;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.memory.IPSCacheAccess;
-import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSAbstractPersistantObject;
 import com.percussion.share.data.PSContentItemUtils;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSNameGenerator;
 import com.percussion.share.service.exception.PSDataServiceException;
@@ -186,7 +185,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         this.ehCache = ehCache;
     }
     
-    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSWidgetAssetRelationshipServiceException {
+    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSWidgetAssetRelationshipServiceException, PSValidationException {
         // delete the original asset relationship if there is any
         if (awRel.getReplacedRelationshipId() >= 0)
         {
@@ -277,7 +276,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
             PSAssetResourceType resourceType,
             int order, 
             String widgetName,
-            int replacedRelationshipId) throws PSWidgetAssetRelationshipServiceException {
+            int replacedRelationshipId) throws PSWidgetAssetRelationshipServiceException, PSValidationException {
         notNull(owner, "owner");
         notNull(asset, "asset");
         notEmpty(widgetId, "widgetId");
@@ -337,7 +336,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
 
            return idMapper.getString(rel.getGuid());
         }
-        catch (PSErrorException | IPSPageService.PSPageException e)
+        catch (PSErrorException | IPSPageService.PSPageException | PSValidationException e)
         {
             throw new PSWidgetAssetRelationshipServiceException("Failed to create asset-widget relationship", e);
         }
@@ -371,8 +370,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         }
     }
     
-    private void deleteAssetRelationship(PSRelationship r)
-    {
+    private void deleteAssetRelationship(PSRelationship r) throws PSValidationException {
         deleteRelationship(r);
         if (r.getConfig().getName().equals(PSRelationshipConfig.TYPE_ACTIVE_ASSEMBLY))
             return; // no more things to do for shared asset relationship
@@ -660,7 +658,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
                 }
             }
         }
-        catch (PSErrorException | PSWidgetAssetRelationshipServiceException e)
+        catch (PSErrorException | PSWidgetAssetRelationshipServiceException | PSValidationException | PSNotFoundException e)
         {
             throw new PSWidgetAssetRelationshipServiceException("Failed to find resource assets", e);
         }
@@ -669,7 +667,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     }
     
     @Override
-    public boolean isUsedByTemplate(String id) throws PSValidationException {
+    public boolean isUsedByTemplate(String id) throws PSValidationException, PSNotFoundException {
         rejectIfBlank("isUsedByTemplate", "id", id);
         
         Set<String> owners = getRelationshipOwners(id);
@@ -693,8 +691,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     }
     
     @Override
-    public void updateLocalRelationshipAsset(String id)
-    {
+    public void updateLocalRelationshipAsset(String id) throws PSValidationException {
         notNull(id, "id");
         notEmpty(id, "id");
                 
@@ -727,7 +724,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     }
     
     @Override
-    public Set<String> getLinkedAssets(String id) throws PSWidgetAssetRelationshipServiceException {
+    public Set<String> getLinkedAssets(String id) throws PSWidgetAssetRelationshipServiceException, PSValidationException, PSNotFoundException {
         notNull(id, "id");
         notEmpty(id, "id");
         
@@ -754,8 +751,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         return linkedAssets;
     }
     
-    public Set<String> getLinkedAssetsForAsset(String id)
-    {
+    public Set<String> getLinkedAssetsForAsset(String id) throws PSValidationException, PSNotFoundException {
         notNull(id, "id");
         notEmpty(id, "id");
         
@@ -777,8 +773,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     }
     
     @Override
-    public void adjustLocalContentRelationships(String id) 
-    {
+    public void adjustLocalContentRelationships(String id) throws PSValidationException {
         notNull(id, "id");
         notEmpty(id, "id");
                 
@@ -802,8 +797,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         saveRelationships(rels);
     }
     
-    public Set<String> getLinkedPages(String id)
-    {
+    public Set<String> getLinkedPages(String id) throws PSValidationException, PSNotFoundException {
         notEmpty(id, "id");
         
         Set<String> inlinePages = new HashSet<>();
@@ -823,13 +817,11 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         return inlinePages;
     }
     
-    public void updateSharedRelationshipDependent(String ownerId, String depId, String newDepId) 
-    {
+    public void updateSharedRelationshipDependent(String ownerId, String depId, String newDepId) throws PSValidationException {
     	updateSharedRelationshipDependent(ownerId, depId, newDepId, false); 
     }
     
-    public void updateSharedRelationshipDependent(String ownerId, String depId, String newDepId, boolean checkInOut) 
-    {
+    public void updateSharedRelationshipDependent(String ownerId, String depId, String newDepId, boolean checkInOut) throws PSValidationException {
         notEmpty(ownerId, "ownerId may not be empty");
         notEmpty(depId, "depId may not be empty");
         notEmpty(newDepId, "newDepId may not be empty");
@@ -878,8 +870,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
     }    
     
     
-    public void updateWidgetsNames(String templateId, Map<String, PSPair<String, String>> changedWidgets)
-    {
+    public void updateWidgetsNames(String templateId, Map<String, PSPair<String, String>> changedWidgets) throws PSValidationException {
         // get the assets from the template
         List<PSRelationship> assetRelationships = getAssetRelationships(templateId, null);
 
@@ -981,8 +972,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
      * 
      * @return set of id's (string representation) of the inline image and managed link assets, never <code>null</code>, may be empty.
      */
-    private Set<String> getInlineImagesAndManagedLinks(String id)
-    {
+    private Set<String> getInlineImagesAndManagedLinks(String id) throws PSValidationException, PSNotFoundException {
         Set<String> inlineImages = new HashSet<>();
         
         PSRelationshipFilter filter = getAssetRelationshipFilter(id, null, null);
@@ -1337,8 +1327,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
      * 
      * @param rels list of relationships to save.
      */
-    private void saveRelationships(List<PSRelationship> rels)
-    {
+    private void saveRelationships(List<PSRelationship> rels) throws PSValidationException {
         systemWs.saveRelationships(rels);
         
         Set<Integer> ownerIds = new HashSet<>();
@@ -1355,8 +1344,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
      * 
      * @param rel the relationship to delete.
      */
-    private void deleteRelationship(PSRelationship rel)
-    {
+    private void deleteRelationship(PSRelationship rel) throws PSValidationException {
         systemWs.deleteRelationships(Collections.singletonList(rel.getGuid()));
         
         if (rel.getConfig().getName().equals(LOCAL_ASSET_WIDGET_REL_TYPE))

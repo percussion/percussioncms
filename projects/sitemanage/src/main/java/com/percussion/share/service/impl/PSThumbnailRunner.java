@@ -473,7 +473,7 @@ public class PSThumbnailRunner implements Runnable {
 		return isPageFunc;
 	}
 
-	private PSTemplateSummary getTemplate(PSWorkPackage workPackage) throws IPSDataService.DataServiceLoadException, IPSDataService.DataServiceNotFoundException, PSValidationException {
+	private PSTemplateSummary getTemplate(PSWorkPackage workPackage) throws PSDataServiceException {
 		PSTemplateSummary template = null;
 		if (workPackage.getTemplate() == null) {
 

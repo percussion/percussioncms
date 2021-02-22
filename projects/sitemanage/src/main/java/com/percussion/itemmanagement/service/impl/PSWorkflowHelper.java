@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -46,6 +46,7 @@ import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSTransition;
 import com.percussion.services.workflow.data.PSTransitionRole;
 import com.percussion.services.workflow.data.PSWorkflow;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
@@ -643,8 +644,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     }
     
     @Override
-    public List<String> getStagingRoles(int workflowId) 
-    {
+    public List<String> getStagingRoles(int workflowId) throws IPSGenericDao.LoadException {
     	List<String> roleNames = new ArrayList<>();
     	PSMetadata md = metadataService.find(IPSSteppedWorkflowService.METADATA_STAGING_ROLES_KEY_PREFIX + workflowId);
     	if(md != null)

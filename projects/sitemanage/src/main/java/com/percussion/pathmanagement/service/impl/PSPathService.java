@@ -38,6 +38,7 @@ import com.percussion.pathmanagement.data.PSRenameFolderItem;
 import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.share.dao.IPSFolderHelper;
@@ -130,7 +131,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
             log.debug("Attempting to find item for path: {}", path);
             PSPathItem item = super.find(path);
             return folderHelper.setFolderAccessLevel(item);
-        } catch (PSPathServiceException| PSDataServiceException e) {
+        } catch (PSPathServiceException | PSDataServiceException | PSNotFoundException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -144,7 +145,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     {
         try {
             return folderHelper.findItemById(id);
-        } catch (IPSDataService.DataServiceLoadException | PSValidationException e) {
+        } catch (IPSDataService.DataServiceLoadException | PSValidationException | PSNotFoundException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -359,7 +360,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
            log.debug("Attempting to add folder: {}", path);
            PSPathItem folder = super.addFolder(path);
            return folderHelper.setFolderAccessLevel(folder);
-       } catch (PSPathServiceException | PSValidationException | IPSDataService.DataServiceNotFoundException e) {
+       } catch (PSPathServiceException | PSValidationException | IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceLoadException | PSNotFoundException e) {
           log.error(e.getMessage());
           log.debug(e.getMessage(),e);
           throw new WebApplicationException(e.getMessage());
@@ -375,7 +376,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
             log.debug("Attempting to add new folder to: {}", path);
             PSPathItem folder = super.addNewFolder(path);
             return folderHelper.setFolderAccessLevel(folder);
-        } catch (PSPathServiceException | PSDataServiceException e) {
+        } catch (PSPathServiceException | PSDataServiceException | PSNotFoundException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -399,7 +400,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
                     PSSiteCopyUtils.CAN_NOT_EDIT_FOLDER_NAME);
             PSPathItem folder = super.renameFolder(item);
             return folderHelper.setFolderAccessLevel(folder);
-        } catch (PSDataServiceException e) {
+        } catch (PSDataServiceException | PSNotFoundException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
@@ -469,14 +470,14 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
         }
         String currentUser = (String)PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
         log.info(criteria.getPath() + " has been deleted by: " + currentUser);
-
+        try {
         PSSiteCopyUtils.throwCopySiteMessageIfNotAllowed(getSiteNameFromFolderPath(criteria.getPath()),
                 "deleteFolderService" , PSSiteCopyUtils.CAN_NOT_DELETE_FOLDER);
         psContentEvent=new PSContentEvent(criteria.getGuid(),String.valueOf(iGuid),criteria.getPath(), PSContentEvent.ContentEventActions.delete, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
         psAuditLogService.logContentEvent(psContentEvent);
-        try {
+
             return String.valueOf(super.deleteFolder(criteria));
-        } catch (PSValidationException | IPSDataService.DataServiceNotFoundException e) {
+        } catch (PSValidationException | IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceLoadException | PSNotFoundException e) {
             throw new WebApplicationException(e);
         }
     }
@@ -499,7 +500,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
        try {
            log.debug("Attempting to validate folder: {} for delete", path);
            return super.validateFolderDelete(path);
-       } catch (PSValidationException | IPSDataService.DataServiceNotFoundException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
+       } catch (PSValidationException | IPSDataService.DataServiceNotFoundException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSDataService.DataServiceLoadException | PSNotFoundException e) {
            throw new WebApplicationException(e);
        }
     }

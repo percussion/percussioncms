@@ -33,6 +33,7 @@ import com.percussion.rx.config.PSConfigValidation;
 import com.percussion.rx.config.data.PSConfigStatus;
 import com.percussion.rx.config.data.PSConfigStatus.ConfigStatus;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.IOTools;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.utils.guid.IPSGuid;
@@ -258,7 +259,7 @@ public class PSConfigService implements IPSConfigService
     * configure file after merging the properties.
     * 
     * @param localConfigFile local configure file, must not be <code>null</code>.
-    * @param changeOnly <code>true</code> if the delta is empty, then do
+    * @param changesOnly <code>true</code> if the delta is empty, then do
     * nothing otherwise always apply all configured properties.
     */
    public void applyLocalConfiguration(File localConfigFile,
@@ -284,7 +285,7 @@ public class PSConfigService implements IPSConfigService
     * @param localConfigFile local configure file, must not be <code>null</code>.
     * @param prevProps the previously applied properties, not <code>null</code>,
     * may be empty.
-    * @param changeOnly <code>true</code> if the delta of the local and
+    * @param changesOnly <code>true</code> if the delta of the local and
     * previous properties is empty, then do nothing; otherwise always apply all
     * configured properties.
     */
@@ -634,8 +635,7 @@ public class PSConfigService implements IPSConfigService
     * The caller is responsible to close this input stream.
     */
    public void deApplyConfiguration(String configName, String configDefPath,
-         InputStream defaultCfg, InputStream localCfg)
-   {
+         InputStream defaultCfg, InputStream localCfg) throws PSNotFoundException {
       if (defaultCfg == null)
          throw new IllegalArgumentException("defaultCfg must not be null");
       if (localCfg == null)
@@ -711,8 +711,7 @@ public class PSConfigService implements IPSConfigService
     * @param status the status of the configuration, never <code>null</code>.
     */
    private void notifyConfigChanges(Collection<IPSGuid> ids,
-         ConfigStatus status)
-   {
+         ConfigStatus status) throws PSNotFoundException {
       for (IPSConfigChangeListener ls : m_configChangeListeners)
       {
          ls.configChanged(ids, status);
@@ -725,8 +724,7 @@ public class PSConfigService implements IPSConfigService
     * @param name The name of the package to be configured, assumed not
     * <code>null</code>.
     */
-   private void notifyPreConfig(String name)
-   {
+   private void notifyPreConfig(String name) throws PSNotFoundException {
       for (IPSConfigChangeListener ls : m_configChangeListeners)
       {
          ls.preConfiguration(name);

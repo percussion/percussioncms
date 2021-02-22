@@ -198,7 +198,7 @@ public class PSUpgradePluginAddLicenseMonitorToDashboard implements IPSUpgradePl
    {
       logger.println("Searching for existing admins usernames");
       
-      ArrayList<String> admins = new ArrayList<String>();
+      ArrayList<String> admins = new ArrayList<>();
       
       String tables = " FROM PSX_ROLES as r, PSX_ROLE_SUBJECTS as r_s, PSX_SUBJECTS as s";
       String where = " WHERE r_s.ROLEID = r.ID AND r_s.SUBJECTID = s.ID AND r.NORMALNAME = 'admin'";

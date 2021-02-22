@@ -27,6 +27,7 @@ import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.dao.impl.PSSiteContentDao;
 import com.percussion.sitemanage.data.PSPageContent;
@@ -62,8 +63,7 @@ public class PSThemeTemplateHelper extends PSImportHelper
      * @see com.percussion.sitemanage.importer.helpers.IPSSiteImportHelper#process(PSPageContent, PSSiteImportCtx)
      */    
     @Override
-    public void process(PSPageContent pageContent, PSSiteImportCtx context) throws PSSiteImportException
-    {
+    public void process(PSPageContent pageContent, PSSiteImportCtx context) throws PSSiteImportException, PSDataServiceException {
         startTimer();
         if(context.isCanceled())
         {

@@ -31,6 +31,7 @@ import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSIdTypeManager;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -65,9 +66,8 @@ public abstract class PSIdTypeDependencyHandler extends PSDependencyHandler
     * PSSecurityToken, PSDependency, PSDependencyHandler) 
     * getIdTypeDependencies(tok, dep, this)}
     */
-   protected List<PSDependency> getIdTypeDependencies(PSSecurityToken tok, PSDependency dep) 
-      throws PSDeployException
-   {
+   protected List<PSDependency> getIdTypeDependencies(PSSecurityToken tok, PSDependency dep)
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       
@@ -92,8 +92,7 @@ public abstract class PSIdTypeDependencyHandler extends PSDependencyHandler
     * @throws PSDeployException if there are any errors.
     */   
    public static final List<PSDependency> getIdTypeDependencies(PSSecurityToken tok, 
-      PSDependency dep, PSDependencyHandler handler) throws PSDeployException
-   {
+      PSDependency dep, PSDependencyHandler handler) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
          

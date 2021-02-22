@@ -48,7 +48,7 @@ public class PSDemandWork
     * content id.
     */
    private final List<PSPair<IPSGuid, IPSGuid>> m_content =
-         new ArrayList<PSPair<IPSGuid, IPSGuid>>();
+         new ArrayList<>();
 
    /**
     * The request that this work is associated with. Set when the work is
@@ -72,7 +72,7 @@ public class PSDemandWork
       {
          throw new IllegalArgumentException("contentitem may not be null");
       }
-      m_content.add(new PSPair<IPSGuid, IPSGuid>(folderid, contentitem));
+      m_content.add(new PSPair<>(folderid, contentitem));
    }
 
    /**

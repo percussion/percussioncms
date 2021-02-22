@@ -46,7 +46,7 @@ import com.percussion.design.objectstore.PSConditionalStylesheet;
 import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSSingleHtmlParameter;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSBackEndQueryProcessingError;
 import com.percussion.error.PSErrorException;
 import com.percussion.error.PSException;
@@ -151,7 +151,7 @@ public abstract class PSQueryCommandHandler extends PSCommandHandler implements
          PSContentEditorHandler ceh, PSContentEditor ce, PSApplication app,
          String cmdName )
       throws PSNotFoundException, PSIllegalArgumentException,
-         PSExtensionException, PSValidationException
+         PSExtensionException, PSSystemValidationException
    {
       super( ah, ceh, ce, app );
 

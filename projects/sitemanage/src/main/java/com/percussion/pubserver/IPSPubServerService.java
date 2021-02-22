@@ -25,6 +25,7 @@ package com.percussion.pubserver;
 
 import com.percussion.error.PSException;
 import com.percussion.pubserver.data.PSPublishServerInfo;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.service.exception.PSDataServiceException;
@@ -80,7 +81,7 @@ public interface IPSPubServerService
      * @throws PSPubServerServiceException, if the supplied object is invalid.
      */
      PSPublishServerInfo createPubServer(String siteId, String serverName, PSPublishServerInfo pubServerInfo)
-             throws PSPubServerServiceException, PSDataServiceException;
+             throws PSPubServerServiceException, PSDataServiceException, PSNotFoundException;
 
     /**
      * Updates a publish server with the provided name.
@@ -95,7 +96,7 @@ public interface IPSPubServerService
      * @throws PSPubServerServiceException, if the supplied object is invalid.
      */
      PSPublishServerInfo updatePubServer(String siteId, String serverId, PSPublishServerInfo pubServerInfo)
-             throws PSPubServerServiceException, PSDataServiceException;
+             throws PSPubServerServiceException, PSDataServiceException, PSNotFoundException;
 
     /**
      *
@@ -104,7 +105,7 @@ public interface IPSPubServerService
      * @return
      * @throws PSPubServerServiceException
      */
-     List<PSPublishServerInfo> deleteServer(String siteId, String serverId) throws PSPubServerServiceException, PSDataServiceException;
+     List<PSPublishServerInfo> deleteServer(String siteId, String serverId) throws PSPubServerServiceException, PSDataServiceException, PSNotFoundException;
 
     /**
      * Deletes all publish-servers that belong to the specified site.
@@ -154,7 +155,7 @@ public interface IPSPubServerService
      * @return a <code>PSPubServer</code> object never empty or
      *         <code>null</code>
      */
-     PSPubServer getDefaultPubServer(IPSGuid siteId);
+     PSPubServer getDefaultPubServer(IPSGuid siteId) throws PSNotFoundException;
 
     /**
      * Returns the staging publish server defined for the site.
@@ -162,7 +163,7 @@ public interface IPSPubServerService
      * @param siteId site guid must not be <code>null</code>.
      * @return a <code>PSPubServer</code> object may be <code>null</code> if a staging server has not been created.
      */
-     PSPubServer getStagingPubServer(IPSGuid siteId);
+     PSPubServer getStagingPubServer(IPSGuid siteId) throws PSNotFoundException;
 
     /**
      * Create a new server with the default settings based on the site name.
@@ -225,7 +226,7 @@ public interface IPSPubServerService
      * @return PSPubInfo of amazon s3 pub server, may be <code>null</code>.
      * @throws PSPubServerServiceException
      */
-     PSPubInfo getS3PubInfo(IPSGuid siteId) throws PSPubServerServiceException;
+     PSPubInfo getS3PubInfo(IPSGuid siteId) throws PSPubServerServiceException, PSNotFoundException;
 
     /**
      * Finds the pub server for the supplied server id, returns null if server doesn't exist.
@@ -235,6 +236,6 @@ public interface IPSPubServerService
      */
      PSPubServer findPubServer(long serverId) throws PSPubServerServiceException;
 
-     String getDefaultAdminURL(String siteName) throws PSPubServerServiceException;
+     String getDefaultAdminURL(String siteName) throws PSPubServerServiceException, PSNotFoundException;
 
 }

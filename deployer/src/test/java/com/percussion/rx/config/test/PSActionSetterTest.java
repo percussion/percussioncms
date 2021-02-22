@@ -29,6 +29,7 @@ import com.percussion.rx.design.IPSDesignModel;
 import com.percussion.rx.design.IPSDesignModelFactory;
 import com.percussion.rx.design.PSDesignModelFactoryLocator;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.utils.testing.IntegrationTest;
@@ -52,8 +53,7 @@ public class PSActionSetterTest extends PSConfigurationTest
    }
 
    @SuppressWarnings("unchecked")
-   private void validateDefaultConfiguration()
-   {
+   private void validateDefaultConfiguration() throws PSNotFoundException {
       IPSDesignModelFactory dm = PSDesignModelFactoryLocator
             .getDesignModelFactory();
       IPSDesignModel model = dm.getDesignModel(PSTypeEnum.ACTION);
@@ -142,8 +142,7 @@ public class PSActionSetterTest extends PSConfigurationTest
    }
 
    @SuppressWarnings("unchecked")
-   private void validateLocalConfiguration()
-   {
+   private void validateLocalConfiguration() throws PSNotFoundException {
       IPSDesignModelFactory dm = PSDesignModelFactoryLocator
             .getDesignModelFactory();
       IPSDesignModel model = dm.getDesignModel(PSTypeEnum.ACTION);

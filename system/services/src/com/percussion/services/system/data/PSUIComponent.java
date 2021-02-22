@@ -66,7 +66,7 @@ public class PSUIComponent
 
    @JoinColumn(name = "COMPONENTID", nullable = false, insertable = false, updatable = false)
    @Fetch(FetchMode. SUBSELECT)
-   Set<PSUIComponentProperty> properties = new HashSet<PSUIComponentProperty>();
+   Set<PSUIComponentProperty> properties = new HashSet<>();
 
    /**
     * Empty ctor

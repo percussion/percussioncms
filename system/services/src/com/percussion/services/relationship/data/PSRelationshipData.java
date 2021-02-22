@@ -351,7 +351,7 @@ public class PSRelationshipData implements Serializable
          throw new IllegalStateException("there is no (additional) child properties for this relationship.");
 
       if (m_childProps == Collections.EMPTY_LIST)
-         m_childProps = new ArrayList<PSRelationshipPropertyData>();
+         m_childProps = new ArrayList<>();
       else
          m_childProps.clear();
       
@@ -370,7 +370,7 @@ public class PSRelationshipData implements Serializable
    public void addProperty (PSRelationshipPropertyData prop)
    {
       if (m_childProps == Collections.EMPTY_LIST)
-         m_childProps = new ArrayList<PSRelationshipPropertyData>();
+         m_childProps = new ArrayList<>();
 
       prop.setPersisted(isPersisted());
       m_childProps.add(prop);

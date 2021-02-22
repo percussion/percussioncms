@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -21,28 +21,39 @@
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
+
 package com.percussion.share.service.exception;
 
-public class PSDataServiceException extends Exception {
+import org.springframework.validation.BeanPropertyBindingResult;
 
-    private static final long serialVersionUID = 1L;
-
+/**
+ * 
+ * Used to validate Java Bean data objects (aka POJOs with out behavior).
+ * 
+ * @author adamgent
+ *
+ */
+public class PSBeanValidationException extends PSSpringValidationException {
     
-    public PSDataServiceException() {
-        super();
-    }
 
-    public PSDataServiceException(String message) {
-        super(message);
-    }
+    private static final long serialVersionUID = 8097878230304938879L;
 
-    public PSDataServiceException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public PSDataServiceException(Throwable cause) {
+    public PSBeanValidationException(Throwable cause){
         super(cause);
     }
 
+    public PSBeanValidationException(Object target, String methodName) {
+        super(methodName);
+        init(target, methodName);
+    }
+    
+    public PSBeanValidationException(Object target, String methodName, String message, Throwable cause) {
+        super(message, cause);
+        init(target, methodName);
+        
+    }
+    
+    protected void init(Object target, String objectName) {
+        setSpringValidationErrors(new BeanPropertyBindingResult(target,objectName));
+    }
 }
-

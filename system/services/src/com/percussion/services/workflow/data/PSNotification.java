@@ -165,7 +165,7 @@ public class PSNotification implements Serializable, IPSCatalogItem
    public List<String> getRecipients()
    {
       if (recipients == null)
-         return new ArrayList<String>();
+         return new ArrayList<>();
       else
          return Arrays.asList(StringUtils.split(recipients, ','));
    }
@@ -178,7 +178,7 @@ public class PSNotification implements Serializable, IPSCatalogItem
    public void setRecipients(List<String> recipientList)
    {
       if (recipientList == null)
-         recipientList = new ArrayList<String>();
+         recipientList = new ArrayList<>();
       
       recipients = PSStringUtils.listToString(recipientList, ",");
    }
@@ -210,7 +210,7 @@ public class PSNotification implements Serializable, IPSCatalogItem
    public List<String> getCCRecipients()
    {
       if (ccRecipients == null)
-         return new ArrayList<String>();
+         return new ArrayList<>();
       else
          return Arrays.asList(StringUtils.split(ccRecipients, ','));
    }
@@ -224,7 +224,7 @@ public class PSNotification implements Serializable, IPSCatalogItem
    public void setCCRecipients(List<String> ccRecipientList)
    {
       if (ccRecipientList == null)
-         ccRecipientList = new ArrayList<String>();
+         ccRecipientList = new ArrayList<>();
       
       this.ccRecipients = PSStringUtils.listToString(ccRecipientList, ",");
    }

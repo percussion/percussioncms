@@ -391,7 +391,7 @@ public class PSSFtpClientJSch
       if (isAbsolutePath)
       {
  
-         List<String> aList = new ArrayList<String>();
+         List<String> aList = new ArrayList<>();
          aList.add("/");
          aList.addAll(Arrays.asList(pathElements));
          String[] aaList = new String[aList.size()];

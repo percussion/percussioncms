@@ -28,6 +28,7 @@ import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.data.PSWidgetContentType;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.share.data.PSItemProperties;
+import com.percussion.share.service.exception.PSDataServiceException;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public interface IPSRecentService
     List<PSTemplateSummary> findRecentTemplate(String siteName);
     List<PSPathItem> findRecentSiteFolder(String siteName);
     List<PSPathItem> findRecentAssetFolder();
-    List<PSWidgetContentType> findRecentAssetType();
+    List<PSWidgetContentType> findRecentAssetType() throws PSDataServiceException;
 
     void addRecentItem(String value);
     void addRecentTemplate(String siteName, String value);

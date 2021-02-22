@@ -33,8 +33,14 @@ import com.percussion.pathmanagement.data.PSPathItemList;
 import com.percussion.recent.service.rest.IPSRecentRestService;
 import com.percussion.recent.service.rest.IPSRecentService;
 import com.percussion.share.data.PSItemProperties;
-
-import java.util.List;
+import com.percussion.share.data.PSItemPropertiesList;
+import com.percussion.share.service.exception.PSDataServiceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -43,15 +49,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-
-import com.percussion.share.data.PSItemPropertiesList;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 @Path("/recent")
 @Transactional(propagation=Propagation.REQUIRED)
@@ -60,7 +60,7 @@ public class PSRecentRestService implements IPSRecentRestService
 {
     private IPSRecentService recentService;
 
-    static Log ms_log = LogFactory.getLog(PSRecentRestService.class);
+    static Logger log = LogManager.getLogger(PSRecentRestService.class);
 
     @Autowired
     public PSRecentRestService(IPSRecentService recentService)
@@ -121,7 +121,13 @@ public class PSRecentRestService implements IPSRecentRestService
     @Path("/asset-type")
     public List<PSWidgetContentType> findRecentAssetType()
     {
-        return new PSWidgetContentTypeList(recentService.findRecentAssetType());
+        try {
+            return new PSWidgetContentTypeList(recentService.findRecentAssetType());
+        } catch (PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST

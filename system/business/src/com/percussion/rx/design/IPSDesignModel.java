@@ -23,6 +23,7 @@
  */
 package com.percussion.rx.design;
 
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 
 import java.util.Collection;
@@ -50,7 +51,7 @@ public interface IPSDesignModel
     * <code>null</code>, throws <code>RunTimeException</code> in case of
     * error.
     */
-   public Object load(IPSGuid guid);
+   public Object load(IPSGuid guid) throws PSNotFoundException;
 
    /**
     * Convenient method to load the read only design object with the given name
@@ -60,7 +61,7 @@ public interface IPSDesignModel
     * or empty.
     * @see #load(IPSGuid) for details.
     */
-   public Object load(String name);
+   public Object load(String name) throws PSNotFoundException;
 
    /**
     * Loads the modifiable design object of the supplied guid.
@@ -72,7 +73,7 @@ public interface IPSDesignModel
     * <code>null</code>, throws <code>RunTimeException</code> in case of
     * error.
     */
-   public Object loadModifiable(IPSGuid guid);
+   public Object loadModifiable(IPSGuid guid) throws PSNotFoundException;
 
    /**
     * Convenient method to load the modifiable design object with the given name
@@ -82,7 +83,7 @@ public interface IPSDesignModel
     * or empty.
     * @see #load(IPSGuid) for details.
     */
-   public Object loadModifiable(String name);
+   public Object loadModifiable(String name) throws PSNotFoundException;
 
    /**
     * Saves the supplied design object.
@@ -116,7 +117,7 @@ public interface IPSDesignModel
     * been instantiated, throws <code>RunTimeException</code> in case of
     * error.
     */
-   public void delete(IPSGuid guid);
+   public void delete(IPSGuid guid) throws PSNotFoundException;
 
    /**
     * Convenient method to delete the design object with the given name of the
@@ -126,7 +127,7 @@ public interface IPSDesignModel
     * or empty.
     * @see #delete(IPSGuid) for details
     */
-   public void delete(String name);
+   public void delete(String name) throws PSNotFoundException;
 
    /**
     * Gets the guid of the design object corresponding to the supplied name.
@@ -147,7 +148,7 @@ public interface IPSDesignModel
     * @return String name of the design object. Never <code>null</code>, may
     * be empty.
     */
-   public String guidToName(IPSGuid guid);
+   public String guidToName(IPSGuid guid) throws PSNotFoundException;
    
    /**
     * Returns the list of association sets that are available for the design

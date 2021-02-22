@@ -258,7 +258,7 @@ public class PSCopyMethod extends PSWebdavMethod
       IPSDbComponent[] comps = { targetFolder };
       proxy.save(comps);
       PSRelationshipProcessorProxy rsProxy = getFolderProxy();
-      List<PSLocator> sourceList = new ArrayList<PSLocator>();
+      List<PSLocator> sourceList = new ArrayList<>();
       sourceList.add(m_sourceSummary.getCurrentLocator());
       rsProxy.add(
          PSRelationshipConfig.TYPE_FOLDER_CONTENT,
@@ -275,7 +275,7 @@ public class PSCopyMethod extends PSWebdavMethod
    {
       PSRelationshipProcessorProxy proxy = getFolderProxy();
       
-      List<PSLocator> sourceList = new ArrayList<PSLocator>();
+      List<PSLocator> sourceList = new ArrayList<>();
       PSLocator srcLoc = m_sourceSummary.getCurrentLocator();
       String targetName = PSWebdavUtils.getFileName(m_targetPath);
       PSLocatorWithName locator = new PSLocatorWithName(srcLoc.getId(), 

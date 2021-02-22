@@ -23,29 +23,27 @@
  */
 
 package com.percussion.pagemanagement.service.impl;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.percussion.pagemanagement.data.PSTemplate;
+import com.percussion.pagemanagement.service.IPSTemplateService;
+import com.percussion.share.dao.PSSerializerUtils;
+import com.percussion.share.service.exception.PSExtractHTMLException;
+import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.percussion.pagemanagement.data.PSTemplate;
-import com.percussion.pagemanagement.service.IPSTemplateService;
-import com.percussion.pagemanagement.service.IPSTemplateService.PSTemplateException;
-import com.percussion.share.dao.PSSerializerUtils;
-import com.percussion.share.service.exception.PSExtractHTMLException;
-import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
 
 /**
  * Servlet that allows to import or export a given template from the system
@@ -102,7 +100,7 @@ private static final int DEFAULT_BUFFER_SIZE = 20480; // 20KB.
        }
        catch (Exception ex)
        {
-    	   throw new PSTemplateException("Failed to find Template with name = " + templateName, ex);
+    	   throw new ServletException("Failed to find Template with name = " + templateName, ex);
        }      
    }
    

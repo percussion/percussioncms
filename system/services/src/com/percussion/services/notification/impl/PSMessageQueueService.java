@@ -61,7 +61,7 @@ public final class PSMessageQueueService implements MessageListener, IPSMessageQ
          PSMessageQueueService.class);
    
    private IPSQueueSender m_queueSender;
-   private ConcurrentHashMap<String, IPSMessageQueueListener<?>> queueMap = new ConcurrentHashMap<String, IPSMessageQueueListener<?>>();
+   private ConcurrentHashMap<String, IPSMessageQueueListener<?>> queueMap = new ConcurrentHashMap<>();
    
    /**
     * Associates a Class with a single listener replacing any existing listener bound for that message

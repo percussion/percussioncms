@@ -45,6 +45,10 @@ import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
 import com.percussion.util.PSIteratorUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.net.URL;
@@ -54,11 +58,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
 /**
  * Class to handle packaging and deploying an exit defintion.
  */
@@ -67,7 +66,7 @@ public class PSExitDefDependencyHandler extends PSDependencyHandler
    /**
     * Logger for this class
     */
-   private static Log log = LogFactory.getLog(PSExitDefDependencyHandler.class);
+   private static final Logger log = LogManager.getLogger(PSExitDefDependencyHandler.class);
 
 
    /**
@@ -91,8 +90,7 @@ public class PSExitDefDependencyHandler extends PSDependencyHandler
    
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, com.percussion.services.error.PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
          
@@ -102,7 +100,7 @@ public class PSExitDefDependencyHandler extends PSDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
       
-      Set appDeps = new HashSet();
+      Set appDeps = new HashSet<>();
       
       // Get the def
       IPSExtensionDef def;

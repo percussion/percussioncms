@@ -703,5 +703,15 @@
           <artifactId>commons-httpclient</artifactId>
           <scope>compile</scope>
       </dependency>
+      <dependency>
+          <groupId>com.percussion</groupId>
+          <artifactId>perc-exceptions-spring</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>com.percussion</groupId>
+          <artifactId>perc-exceptions-spring</artifactId>
+          <version>${project.parent.version}</version>
+          <scope>compile</scope>
+      </dependency>
   </dependencies>
 </project>

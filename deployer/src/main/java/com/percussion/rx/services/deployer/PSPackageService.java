@@ -29,6 +29,7 @@ import com.percussion.rx.config.data.PSConfigStatus;
 import com.percussion.rx.config.data.PSConfigStatus.ConfigStatus;
 import com.percussion.rx.services.deployer.PSPkgUiResponse.PSPkgUiResponseType;
 import com.percussion.server.PSServer;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pkginfo.IPSPkgInfoService;
 import com.percussion.services.pkginfo.PSPkgInfoServiceLocator;
 import com.percussion.services.pkginfo.data.PSPkgElement;
@@ -245,8 +246,7 @@ public class PSPackageService
    @Path("/uninstallPackage")
    @Consumes("application/x-www-form-urlencoded")
    public PSUninstallMessages postUninstallPackage(@QueryParam("packageName")
-   String packageNames)
-   {
+   String packageNames) throws PSNotFoundException {
       PSUninstallMessages msgs = new PSUninstallMessages();
       PSPackageUninstall pkgUninstall = new PSPackageUninstall();
       msgs.setMessages(pkgUninstall.uninstallPackages(packageNames));
@@ -258,8 +258,7 @@ public class PSPackageService
    @Consumes("application/x-www-form-urlencoded")
    public PSUninstallMessages postCheckPackageDependencies(
          @QueryParam("packageName")
-         String packageName)
-   {
+         String packageName) throws PSNotFoundException {
       PSUninstallMessages msgs = new PSUninstallMessages();
       PSPackageUninstall pkgUninstall = new PSPackageUninstall();
       msgs.setMessages(pkgUninstall.checkPackageDepedencies(packageName));

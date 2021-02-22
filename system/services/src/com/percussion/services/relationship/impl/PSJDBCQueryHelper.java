@@ -135,7 +135,7 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
      * The parameter values list, used to record the values of the above
      * parameter names. Never <code>null</code>, may be empty.
      */
-    private List<Object> m_paramValues = new ArrayList<Object>();
+    private List<Object> m_paramValues = new ArrayList<>();
 
     /**
      * Determines whether to append a {@link #AND} before add further
@@ -195,8 +195,8 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
         // separate pre-defined user properties and custom properties
         if (m_filter.getProperties().size() > 0) {
             Collection<String> pduPropNames = PSRelationshipConfig.getPreDefinedUserPropertyNames();
-            m_pduProps = new ArrayList<Map.Entry<String, String>>();
-            m_customProps = new ArrayList<Map.Entry<String, String>>();
+            m_pduProps = new ArrayList<>();
+            m_customProps = new ArrayList<>();
 
             // separate pre-defined and customer properties
             Set<Map.Entry<String, String>> props = m_filter.getProperties()
@@ -575,7 +575,7 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
 
             rs = stmt.list().iterator();
 
-            List<PSRelationshipData> dataList = new ArrayList<PSRelationshipData>();
+            List<PSRelationshipData> dataList = new ArrayList<>();
             PSRelationshipData rdata;
 
             // retrieve the list of relationships
@@ -854,7 +854,7 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
             return (Set<Integer>) Collections.EMPTY_SET;
         }
 
-        HashSet<Integer> ids = new HashSet<Integer>();
+        HashSet<Integer> ids = new HashSet<>();
         Integer id;
 
         // get the names first
@@ -914,7 +914,7 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
      * @return the config ids, may be empty, but never <code>null</code>.
      */
     private Set<Integer> getConfigIdsFromType(String type) {
-        Set<Integer> ids = new HashSet<Integer>();
+        Set<Integer> ids = new HashSet<>();
 
         Collection<PSRelationshipConfig> configs = m_configMap.values();
 

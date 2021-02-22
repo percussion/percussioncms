@@ -38,7 +38,9 @@ import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.deployer.server.PSLogHandler;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.security.IPSAclService;
 import com.percussion.services.security.PSAclServiceLocator;
@@ -223,7 +225,7 @@ public abstract class PSDependencyHandler
     */
    public abstract Iterator getChildDependencies(PSSecurityToken tok,
       PSDependency dep)
-      throws PSDeployException;
+           throws PSDeployException, PSNotFoundException;
 
    /**
     * Gets all deployable files that define this dependency from the Rhythmyx
@@ -241,8 +243,7 @@ public abstract class PSDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    public Iterator getDependencyFiles(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -276,8 +277,7 @@ public abstract class PSDependencyHandler
     */
    public void installDependencyFiles(PSSecurityToken tok,
       PSArchiveHandler archive, PSDependency dep, PSImportCtx ctx)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSAssemblyException, PSNotFoundException {
       throw new UnsupportedOperationException("method not supported");
    }
 
@@ -293,7 +293,7 @@ public abstract class PSDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    public abstract Iterator<PSDependency> getDependencies(PSSecurityToken tok)
-      throws PSDeployException;
+           throws PSDeployException, PSNotFoundException;
       
    /**
     * Gets all dependencies of this type that exist on the Rhythmyx server with
@@ -345,8 +345,7 @@ public abstract class PSDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    public PSDependency getDependency(PSSecurityToken tok, String id)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (m_def.supportsParentId())
       {
          throw new IllegalStateException("type supports parent id");
@@ -414,8 +413,7 @@ public abstract class PSDependencyHandler
     */
    public void addAclDependency(PSSecurityToken tok, PSTypeEnum key,
          PSDependency dep, Collection<PSDependency> childDeps)
-         throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
       if (dep == null)
@@ -501,8 +499,7 @@ public abstract class PSDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    public boolean doesDependencyExist(PSSecurityToken tok, String id)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (m_def.supportsParentId())
       {
          throw new IllegalStateException("type supports parent id");
@@ -1290,7 +1287,7 @@ public abstract class PSDependencyHandler
       // If the exception is an due to a Missing ID Mapping,
       // that is acceptable, set the idMapping and continue.
       // Any other exception should be rethrown.
-      catch (PSDeployException de)
+      catch (PSDeployException  de)
       {
          if (de.getErrorCode() == IPSDeploymentErrors.MISSING_ID_MAPPING)
          {
@@ -1298,10 +1295,11 @@ public abstract class PSDependencyHandler
          }
          else 
          {
-            throw new PSDeployException(de.getErrorCode());
+            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR);
          }
-      }
-      finally
+      } catch (PSNotFoundException e) {
+         throw new PSDeployException(0);
+      } finally
       {
          if (idMapping != null)
             value = idMapping.getTargetId();         

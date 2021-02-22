@@ -23,11 +23,7 @@
  */
 package com.percussion.services.utils.hibernate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.IPSItemFilter;
 import com.percussion.services.filter.PSFilterException;
@@ -39,14 +35,18 @@ import com.percussion.services.memory.IPSCacheAccess;
 import com.percussion.services.memory.PSCacheAccessLocator;
 import com.percussion.utils.exceptions.PSORMException;
 import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.testing.IntegrationTest;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.Random;
 
-import com.percussion.utils.testing.IntegrationTest;
-import junit.framework.JUnit4TestAdapter;
-
-import org.junit.*;
-import org.junit.experimental.categories.Category;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 
 /**
  * Test that the event listener is evicting things from the object cache for all
@@ -119,8 +119,7 @@ public class PSHibernateInterceptorTest
     */
    @Test
    public void testInitialConditions() throws PSFilterException,
-         InterruptedException
-   {
+           InterruptedException, PSNotFoundException {
       // Get the filter and the unmodifiable filter. Compare for equality
       IPSItemFilter db_filter = ms_fmgr.loadFilter(ms_fid);
       IPSItemFilter ro_filter = ms_fmgr.loadUnmodifiableFilter(ms_fid);
@@ -150,8 +149,7 @@ public class PSHibernateInterceptorTest
     */
    @Test
    public void testCacheEviction() throws PSFilterException,
-         InterruptedException, PSORMException
-   {
+           InterruptedException, PSORMException, PSNotFoundException {
       // Get the filter and the unmodifiable filter. Compare for equality
       IPSItemFilter db_filter = ms_fmgr.loadFilter(ms_fid);
       IPSItemFilter ro_filter = ms_fmgr.loadUnmodifiableFilter(ms_fid);
@@ -181,8 +179,7 @@ public class PSHibernateInterceptorTest
     * @throws PSFilterException
     */
    @Test
-   public void testCacheClear() throws PSFilterException
-   {
+   public void testCacheClear() throws PSFilterException, PSNotFoundException {
       IPSItemFilter db_filter = ms_fmgr.loadUnmodifiableFilter(ms_fid);
       assertNotNull(db_filter);
 
@@ -200,8 +197,7 @@ public class PSHibernateInterceptorTest
     */
    @Test
    public void testDeletion() throws PSFilterException, InterruptedException,
-         PSORMException
-   {
+           PSORMException, PSNotFoundException {
       IPSItemFilter db_filter = ms_fmgr.loadFilter(ms_fid);
       ms_fmgr.deleteFilter(db_filter);
       System.out.println("Removed filter: " + db_filter.getGUID());

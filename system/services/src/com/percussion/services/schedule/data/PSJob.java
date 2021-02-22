@@ -356,7 +356,7 @@ public class PSJob implements Serializable
    /**
     * @see #getParameters()
     */
-   private Map<String, String> m_parameters = new HashMap<String, String>();
+   private Map<String, String> m_parameters = new HashMap<>();
 
    /**
     * @see #getNotifyWhen()

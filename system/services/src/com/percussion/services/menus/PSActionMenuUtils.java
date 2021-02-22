@@ -92,7 +92,7 @@ public class PSActionMenuUtils {
         try
         {
             IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
-            List<Integer> ids = new ArrayList<Integer>();
+            List<Integer> ids = new ArrayList<>();
             ids.add(new Integer(contentid));
             List<PSComponentSummary> summaries = cms.loadComponentSummaries(ids);
             if (ids.size() == 0)

@@ -32,6 +32,7 @@ import com.percussion.rx.design.IPSDesignModelFactory;
 import com.percussion.rx.design.PSDesignModelFactoryLocator;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.utils.guid.IPSGuid;
@@ -47,8 +48,7 @@ public class PSConfigServiceTest extends PSConfigurationTest
 {
    PSConfigService m_srv;
    
-   public void testProcessLocalSpecChanges()
-   {
+   public void testProcessLocalSpecChanges() throws PSNotFoundException {
       m_cfgFactory.applyConfig(false);
 
       // Load the model and check whether the label has been changed or not.

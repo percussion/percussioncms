@@ -25,14 +25,12 @@ package com.percussion.security;
 
 import com.percussion.design.objectstore.PSConditional;
 import com.percussion.design.objectstore.PSTextLiteral;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.cactus.ServletTestCase;
+import org.junit.experimental.categories.Category;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.cactus.ServletTestCase;
-import org.junit.Ignore;
-import org.junit.experimental.categories.Category;
 
 /**
  * Test case for the {@link PSBackEndDirectoryCataloger}.

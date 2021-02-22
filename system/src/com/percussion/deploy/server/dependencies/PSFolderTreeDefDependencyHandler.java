@@ -35,6 +35,7 @@ import com.percussion.deploy.objectstore.PSDependency;
 import com.percussion.deploy.server.PSDependencyDef;
 import com.percussion.deploy.server.PSDependencyMap;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSIteratorUtils;
 
 /**
@@ -65,8 +66,7 @@ public class PSFolderTreeDefDependencyHandler
 
    // see base class
    public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -144,7 +144,7 @@ public class PSFolderTreeDefDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List ms_childTypes = new ArrayList();
+   private static List ms_childTypes = new ArrayList<>();
 
    static
    {

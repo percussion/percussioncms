@@ -254,7 +254,7 @@ public class PSAttributeValue extends PSDatabaseComponent
    }
 
    // see IPSComponent interface   
-   public void validate(IPSValidationContext cxt) throws PSValidationException
+   public void validate(IPSValidationContext cxt) throws PSSystemValidationException
    {
       //no-op
    }

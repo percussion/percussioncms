@@ -55,7 +55,7 @@ import com.percussion.design.objectstore.PSTableLocator;
 import com.percussion.design.objectstore.PSTableRef;
 import com.percussion.design.objectstore.PSTableSet;
 import com.percussion.design.objectstore.PSTextLiteral;
-import com.percussion.design.objectstore.PSValidationException;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSWhereClause;
 import com.percussion.design.objectstore.PSXmlField;
 import com.percussion.error.PSBackEndQueryProcessingError;
@@ -101,12 +101,12 @@ public class PSBinaryCommandHandler extends PSCommandHandler implements
     *    this application. Never <code>null</code>.
     * @throws PSNotFoundException If an exit cannot be found.
     * @throws PSExtensionException If an exit init failed.
-    * @throws PSValidationException if anything is wrong creating the binary
+    * @throws PSSystemValidationException if anything is wrong creating the binary
     *    application
     */
    public PSBinaryCommandHandler(PSApplicationHandler ah,
       PSContentEditorHandler ceh, PSContentEditor ce, PSApplication app)
-         throws PSNotFoundException, PSExtensionException, PSValidationException
+         throws PSNotFoundException, PSExtensionException, PSSystemValidationException
    {
       super(ah, ceh, ce, app);
       if (app == null)
@@ -341,13 +341,13 @@ public class PSBinaryCommandHandler extends PSCommandHandler implements
     * @param dispMapper The mapper with the editor for which this method will
     *    initialize the datasets and other information, assumed not
     *    <code>null</code>.
-    * @throws PSValidationException If anything used by this method is missing
+    * @throws PSSystemValidationException If anything used by this method is missing
     *    or misconfigured.
     */
    private void createBinaryResources(PSApplication app,
       PSContentEditorHandler ceh, PSContentEditor ce,
       PSDisplayMapper dispMapper)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       try
       {
@@ -413,7 +413,7 @@ public class PSBinaryCommandHandler extends PSCommandHandler implements
       }
       catch (SQLException e)
       {
-         throw new PSValidationException(e.getErrorCode(),
+         throw new PSSystemValidationException(e.getErrorCode(),
             e.getLocalizedMessage());
       }
    }
@@ -496,11 +496,11 @@ public class PSBinaryCommandHandler extends PSCommandHandler implements
     *    <code>null</code>. Each element in the set must be a Map.Entry,
     *    whose key is the backend column name and whose value is the HTML
     *    parameter name from which the key will be obtained.
-    * @throws PSValidationException if a duplicate submit name was found.
+    * @throws PSSystemValidationException if a duplicate submit name was found.
     */
    private void addBinaryResource(PSApplication app, PSTableSet tableSet,
       PSField field, PSField mimeField, Set keys)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       try
       {
@@ -546,13 +546,13 @@ public class PSBinaryCommandHandler extends PSCommandHandler implements
     *    all binary resources created.
     * @return the new binary dataset or <code>null</code> if anything went
     *    wrong.
-    * @throws PSValidationException if a duplicate submit name was found.
+    * @throws PSSystemValidationException if a duplicate submit name was found.
     */
    private PSDataSet createBinaryDataset(PSTableSet tableSet,
                                          PSBackEndColumn column,
                                          PSBackEndColumn mimeColumn,
                                          Set keys, String submitName)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       try
       {
@@ -651,7 +651,7 @@ public class PSBinaryCommandHandler extends PSCommandHandler implements
           * resource map.
           */
          if (m_resourceMap.containsKey(submitName))
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSServerErrors.CE_DUPLICATE_SUBMIT_NAME, submitName);
          else
             m_resourceMap.put(submitName.toLowerCase(), dataset.getName());

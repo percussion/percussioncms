@@ -220,10 +220,10 @@ public class ProxyConfig
       {
          if (protocol == null)
          {
-            protocol = new ArrayList<String>();
+            protocol = new ArrayList<>();
          }
 
-         List<String> copy = new ArrayList<String>(protocol.size());
+         List<String> copy = new ArrayList<>(protocol.size());
 
          for (String proto : protocol)
          {
@@ -234,7 +234,7 @@ public class ProxyConfig
       
       public void setProtocols(List<String> newProtocols)
       {
-         protocol = new ArrayList<String>();
+         protocol = new ArrayList<>();
 
          for (String proto : newProtocols)
          {

@@ -168,7 +168,7 @@ public class PSCatalogerConfig implements IPSBeanConfig, Cloneable
       m_description = PSSpringBeanUtils.getBeanPropertyValue(propEl, false);
       
       // now get any user defined properties that remain
-      m_props = new HashMap<String, String>();
+      m_props = new HashMap<>();
       propEl = PSSpringBeanUtils.getNextPropertyElement(source, propEl);
       while (propEl != null)
       {
@@ -289,7 +289,7 @@ public class PSCatalogerConfig implements IPSBeanConfig, Cloneable
    {
       // need to manually deep clone the props Map
       PSCatalogerConfig clone = (PSCatalogerConfig) super.clone();
-      Map<String, String> cloneProps = new HashMap<String, String>();
+      Map<String, String> cloneProps = new HashMap<>();
       for (Map.Entry<String, String> entry : m_props.entrySet())
       {
          cloneProps.put(entry.getKey(), entry.getValue());

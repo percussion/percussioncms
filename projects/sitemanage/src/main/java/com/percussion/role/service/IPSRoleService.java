@@ -24,6 +24,7 @@
 package com.percussion.role.service;
 
 import com.percussion.role.data.PSRole;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSStringWrapper;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.user.data.PSUserList;
@@ -112,5 +113,5 @@ public interface IPSRoleService
      * Gets the homepage for the logged in user.
      * @return String never <code>null</code>, if it is not set for any of the user roles, returns "Dashboard".
      */
-    public String getUserHomepage();     
+    public String getUserHomepage() throws IPSGenericDao.LoadException;
 }

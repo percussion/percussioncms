@@ -148,7 +148,7 @@ public interface IPSValidationContext
 
    /**
     * Registers a validation warning with the validation context. The context
-    * may choose to discard warnings or to raise a PSValidationException,
+    * may choose to discard warnings or to raise a PSSystemValidationException,
     * which must not be caught by the validate method.
     * <P>
     * Warnings are caused by conditions that may produce inefficient or
@@ -168,7 +168,7 @@ public interface IPSValidationContext
       IPSComponent component,
       int errorCode,
       Object[] args)
-      throws PSValidationException;
+      throws PSSystemValidationException;
 
    /**
     * Calls {@link #validationWarning(IPSComponent, int, Object[]) validationWarning}
@@ -178,7 +178,7 @@ public interface IPSValidationContext
     * 
     * @version 1.0 1999/6/28
     * 
-    * @throws   PSValidationException
+    * @throws PSSystemValidationException
     *
     * @see #validationWarning(IPSComponent, int, Object[])
     */
@@ -186,11 +186,11 @@ public interface IPSValidationContext
       IPSComponent component,
       int errorCode,
       Object arg)
-      throws PSValidationException;
+      throws PSSystemValidationException;
 
    /**
     * Registers a validation error with the validation context. The context
-    * may choose to discard errors or to raise a PSValidationException,
+    * may choose to discard errors or to raise a PSSystemValidationException,
     * which must not be caught by the validate method.
     * <P>
     * Validation errors are caused by conditions that will produce incorrect
@@ -210,7 +210,7 @@ public interface IPSValidationContext
       IPSComponent component,
       int errorCode,
       Object[] args)
-      throws PSValidationException;
+      throws PSSystemValidationException;
 
    /**
     * Calls {@link #validationError(IPSComponent, int, Object[]) validationError}
@@ -220,7 +220,7 @@ public interface IPSValidationContext
     * 
     * @version 1.0 1999/6/28
     * 
-    * @throws   PSValidationException
+    * @throws PSSystemValidationException
     *
     * @see #validationError(IPSComponent, int, Object[])
     */
@@ -228,7 +228,7 @@ public interface IPSValidationContext
       IPSComponent component,
       int errorCode,
       Object arg)
-      throws PSValidationException;
+      throws PSSystemValidationException;
 
    /**
     * Marks the start of an object's validation. Returns <CODE>true</CODE>

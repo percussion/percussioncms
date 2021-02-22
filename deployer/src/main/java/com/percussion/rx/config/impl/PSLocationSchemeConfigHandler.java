@@ -32,6 +32,7 @@ import com.percussion.rx.design.impl.PSLocationSchemeModel;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
@@ -149,7 +150,7 @@ public class PSLocationSchemeConfigHandler extends PSObjectConfigHandler
     * 
     * @return a list of Context names as a {@link List List&lt;String>} type or 
     * it may be a string that contains a ${place-holder}. It may be 
-    * <code>null</code> if the {@link #setNames(Object)} has never been called
+    * <code>null</code> if the  has never been called
     * or wired by Spring framework.
     */
    public Object getContexts()
@@ -230,8 +231,7 @@ public class PSLocationSchemeConfigHandler extends PSObjectConfigHandler
     */
    @Override
    public List<PSPair<Object, ObjectState>> getDesignObjects(
-         Map<String, Object> cachedObjs)
-   {
+         Map<String, Object> cachedObjs) throws PSNotFoundException {
       if (StringUtils.isBlank(getName()))
          throw new PSConfigException(
                "Location Scheme name may not be null or empty.");
@@ -252,8 +252,7 @@ public class PSLocationSchemeConfigHandler extends PSObjectConfigHandler
     * @see com.percussion.rx.config.impl.PSObjectConfigHandler#getDefaultDesignObject(java.util.Map)
     */
    @Override
-   public Object getDefaultDesignObject(Map<String, Object> cachedObjs)
-   {
+   public Object getDefaultDesignObject(Map<String, Object> cachedObjs) throws PSNotFoundException {
       Collection<String> names;
       Object contextsObj = getContexts();
       // if the contexts object has replacement value, we get all the location
@@ -282,8 +281,7 @@ public class PSLocationSchemeConfigHandler extends PSObjectConfigHandler
     */
    @Override
    public IPSGuid saveResult(IPSDesignModel model, Object obj, ObjectState state,
-         List<IPSAssociationSet> assocList)
-   {
+         List<IPSAssociationSet> assocList) throws PSNotFoundException {
       if (m_isUnProcess || state.equals(ObjectState.PREVIOUS))
       {
          IPSLocationScheme scheme = (IPSLocationScheme) obj;
@@ -392,8 +390,7 @@ public class PSLocationSchemeConfigHandler extends PSObjectConfigHandler
     * <code>null</code>.
     */
    private Object getLocationScheme(String uniqueSchemeName,
-         PSLocationSchemeModel model, Map<String, Object> cachedObjs)
-   {
+         PSLocationSchemeModel model, Map<String, Object> cachedObjs) throws PSNotFoundException {
       String ctxName = getContextFromUniqueName(uniqueSchemeName);
       
       // get Location Scheme from cache
@@ -511,7 +508,7 @@ public class PSLocationSchemeConfigHandler extends PSObjectConfigHandler
     * @param model the model used to create the Location Scheme, assumed not
     * <code>null</code>.
     * @param ctxName the Context name, assumed not <code>null</code> or empty.
-    * @param the cached, loaded or created Location Scheme, never 
+    * @param cachedObjs cached, loaded or created Location Scheme, never
     * <code>null</code>.
     * 
     * @return the created Location Scheme, never <code>null</code>.
@@ -539,7 +536,7 @@ public class PSLocationSchemeConfigHandler extends PSObjectConfigHandler
     * @param tpId the Template ID, assumed not <code>null</code>.
     * @param model the Location Scheme model, assumed not <code>null</code>.
     * @param ctxName the Context name, assumed not <code>null</code> or empty.
-    * @param the cached, loaded or created Location Scheme, never 
+    * @param cachedObjs cached, loaded or created Location Scheme, never
     * <code>null</code>.
     */
    private void validateUniqueContentTypeTemplateAssoc(IPSGuid ctId,

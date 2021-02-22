@@ -28,6 +28,7 @@ import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.design.IPSAssociationSet;
 import com.percussion.services.content.data.PSKeyword;
 import com.percussion.services.content.data.PSKeywordChoice;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.types.PSPair;
 
 import java.util.ArrayList;
@@ -65,8 +66,7 @@ public class PSKeywordSetter extends PSSimplePropertySetter
     * //see base class method for details
     */
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       if (CHOICES_PAIRS.equals(propName))
       {
          PSKeyword kw = (PSKeyword) obj;

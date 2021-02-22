@@ -46,14 +46,11 @@ public class PSDeliveryTypeContainerNode extends PSEditableNodeContainer
    /**
     * The node title
     */
-   public static String NODE_TITLE = "Delivery Types";
+   public static final String NODE_TITLE = "Delivery Types";
    
    /**
     * Constructs an instance.
-    * 
-    * @param title the title for the node, never <code>null</code> or empty.
-    * @param key the key for this node in the data model, never
-    *            <code>null</code> or empty.
+    *
     */
    public PSDeliveryTypeContainerNode() 
    {
@@ -61,8 +58,7 @@ public class PSDeliveryTypeContainerNode extends PSEditableNodeContainer
    }
 
    @Override
-   public List<? extends PSNodeBase> getChildren()
-   {
+   public List<? extends PSNodeBase> getChildren() throws PSNotFoundException {
       if (m_children == null)
       {               
          List<IPSDeliveryType> dtypes = getAllDeliveryTypes();
@@ -114,7 +110,7 @@ public class PSDeliveryTypeContainerNode extends PSEditableNodeContainer
    @Override
    public Set<Object> getAllNames()
    {
-      final Set<Object> names = new HashSet<Object>();
+      final Set<Object> names = new HashSet<>();
       for (final IPSDeliveryType dtype :
             getPublisherService().findAllDeliveryTypes())
       {
@@ -137,8 +133,7 @@ public class PSDeliveryTypeContainerNode extends PSEditableNodeContainer
     * @return the perform action for the Delivery Type node, which will 
     * navigate to the editor.
     */
-   public String create()
-   {
+   public String create() throws PSNotFoundException {
       IPSDeliveryType dtype = getPublisherService().createDeliveryType();
       dtype.setName(getUniqueName("DeliveryType", false));
       getPublisherService().saveDeliveryType(dtype);

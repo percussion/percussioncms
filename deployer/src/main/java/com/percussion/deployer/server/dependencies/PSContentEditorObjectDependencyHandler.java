@@ -38,6 +38,7 @@ import com.percussion.design.objectstore.PSDisplayMapping;
 import com.percussion.design.objectstore.PSUIDefinition;
 import com.percussion.design.objectstore.PSUISet;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -77,8 +78,7 @@ public abstract class PSContentEditorObjectDependencyHandler
     */
    @SuppressWarnings("unchecked")
    protected List<PSDependency> checkUIDef(PSSecurityToken tok,
-      PSUIDefinition uiDef) throws PSDeployException
-   {
+      PSUIDefinition uiDef) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -114,8 +114,7 @@ public abstract class PSContentEditorObjectDependencyHandler
     */
    @SuppressWarnings("unchecked")
    protected List<PSDependency> checkDisplayMapper(PSSecurityToken tok,
-      PSDisplayMapper mapper) throws PSDeployException
-   {
+      PSDisplayMapper mapper) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -155,8 +154,7 @@ public abstract class PSContentEditorObjectDependencyHandler
     * @throws PSDeployException if there are any errors.
     */
    protected List<PSDependency> checkUiSet(PSSecurityToken tok, PSUISet uiSet)
-      throws PSDeployException
-   {
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 

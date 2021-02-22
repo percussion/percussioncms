@@ -41,8 +41,8 @@ import com.percussion.design.objectstore.PSHtmlParameter;
 import com.percussion.design.objectstore.PSLocation;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSParam;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSTextLiteral;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSServerErrors;
@@ -91,7 +91,7 @@ public class PSSummaryEditorDocumentBuilder extends PSModifyDocumentBuilder
    public PSSummaryEditorDocumentBuilder( PSContentEditor ce,
          PSEditorDocumentContext ctx, PSDisplayMapping mapping,
          int pageId, boolean isError )
-      throws PSExtensionException, PSNotFoundException, PSValidationException
+      throws PSExtensionException, PSNotFoundException, PSSystemValidationException
    {
       super( ce, ctx, pageId, isError );
       if ( null == mapping )
@@ -131,7 +131,7 @@ public class PSSummaryEditorDocumentBuilder extends PSModifyDocumentBuilder
             IPSConstants.HIDDEN_CONTROL_PARAM_NAME,
             "InitParam is empty or missing from system def"
          };
-         throw new PSValidationException( IPSServerErrors.CE_INVALID_PARAM,
+         throw new PSSystemValidationException( IPSServerErrors.CE_INVALID_PARAM,
                args );
       }
 

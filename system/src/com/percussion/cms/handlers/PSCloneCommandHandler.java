@@ -36,8 +36,8 @@ import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSRelationship;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSValidationException;
 import com.percussion.error.PSBackEndUpdateProcessingError;
 import com.percussion.error.PSException;
 import com.percussion.error.PSIllegalArgumentException;
@@ -80,7 +80,7 @@ public class PSCloneCommandHandler extends PSCommandHandler
     * @throws PSIllegalArgumentException if there is any invalid data
     * @throws PSExtensionException if there is an error preparing an exception.
     * @throws PSNotFoundException if a udf or extension cannot be located.
-    * @throws PSValidationException if there is a problem starting an internal
+    * @throws PSSystemValidationException if there is a problem starting an internal
     * application.
     * @throws IllegalArgumentException if any param is <code>null</code>.
     */
@@ -88,7 +88,7 @@ public class PSCloneCommandHandler extends PSCommandHandler
       PSContentEditorHandler ceh, PSContentEditor ce,
          PSApplication app)
       throws PSIllegalArgumentException, PSExtensionException,
-         PSNotFoundException, PSValidationException
+         PSNotFoundException, PSSystemValidationException
    {
       super(ah, ceh, ce, app);
 
@@ -211,7 +211,7 @@ public class PSCloneCommandHandler extends PSCommandHandler
     * @throws PSAuthorizationException if the user is not authorize to perform
     *    the request.
     * @throws PSRequestValidationException for any failed request validation.
-    * @throws PSValidationException for any failed validation.
+    * @throws PSSystemValidationException for any failed validation.
     * @throws SQLException for any failed SQL operation.
     * @throws PSNotFoundException for any file not found.
     * @throws PSInternalRequestCallException if any error occurs processing
@@ -227,7 +227,7 @@ public class PSCloneCommandHandler extends PSCommandHandler
    private int executeCloneRequest(PSRequest request,
       PSExecutionData execData)
       throws PSRequestValidationException, PSAuthorizationException,
-         PSInternalRequestCallException, PSValidationException, SQLException,
+         PSInternalRequestCallException, PSSystemValidationException, SQLException,
          PSAuthenticationFailedException, PSNotFoundException, IOException,
          PSUnknownNodeTypeException, PSCmsException
    {
@@ -360,7 +360,7 @@ public class PSCloneCommandHandler extends PSCommandHandler
     * @throws PSAuthorizationException if the user is not authorized.
     * @throws PSInternalRequestCallException if any error occurs processing
     *    the internal request call.
-    * @throws PSValidationException for any failed validation.
+    * @throws PSSystemValidationException for any failed validation.
     * @throws SQLException for any failed SQL operation.
     * @throws PSAuthenticationFailedException if the user failed to
     *    authenticate.
@@ -374,7 +374,7 @@ public class PSCloneCommandHandler extends PSCommandHandler
    public static Map copyRelatedContent(int fromCid, int fromRid, 
       int toCid, int toRid, PSExecutionData data, PSContentEditorHandler ceh)
       throws PSRequestValidationException, PSAuthorizationException, 
-      PSInternalRequestCallException, PSValidationException, SQLException,
+      PSInternalRequestCallException, PSSystemValidationException, SQLException,
       PSAuthenticationFailedException, PSNotFoundException, IOException,
       PSUnknownNodeTypeException, PSCmsException
    {

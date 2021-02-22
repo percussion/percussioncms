@@ -119,11 +119,11 @@ public class PSContainerLocator extends PSComponent
     * tablesets are to be merged into this locator, may be <code>null</code> only
     * if <code>sharedDef</code> is <code>null</code>, may be empty.
     * 
-    * @throws PSValidationException If there is a table alias collision. 
+    * @throws PSSystemValidationException If there is a table alias collision.
     */
    public void mergeTableSets(PSContentEditorSystemDef systemDef, 
       PSContentEditorSharedDef sharedDef, Collection sharedFieldIncludes) 
-         throws PSValidationException
+         throws PSSystemValidationException
    {
       if (systemDef == null)
          throw new IllegalArgumentException("systemDef may not be null");
@@ -228,10 +228,10 @@ public class PSContainerLocator extends PSComponent
     * tableset of that ref as the value. Used to check for alias collisions, 
     * assumed not <code>null</code>
     *
-    * @throws PSValidationException if there is an alias collision.
+    * @throws PSSystemValidationException if there is an alias collision.
     */
    private void mergeTableSet(PSTableSet source, Map refMap) 
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       // copy the source cause we're going to modify it
       PSTableSet tmpSource = new PSTableSet( source );
@@ -287,7 +287,7 @@ public class PSContainerLocator extends PSComponent
             // if we are here, then this is a duplicate alias
             Object[] args = {sourceRef.getAlias(), badTableName,
                sourceRef.getName()};
-            throw new PSValidationException(
+            throw new PSSystemValidationException(
                IPSServerErrors.CE_TABLE_ALIAS_DUPLICATE, args);
          }
       }
@@ -473,7 +473,7 @@ public class PSContainerLocator extends PSComponent
 
    // see IPSComponent
    public void validate(IPSValidationContext context)
-      throws PSValidationException
+      throws PSSystemValidationException
    {
       if (!context.startValidation(this, null))
          return;

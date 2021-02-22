@@ -44,6 +44,7 @@ import com.percussion.design.objectstore.PSDisplayMapping;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSUISet;
 import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.guidmgr.data.PSDesignGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
@@ -683,8 +684,7 @@ public class PSItemConverterUtils
     *    grouped by slots, never <code>null</code>, may be empty.
     */
    public static PSItemSlots[] toClientRelatedContent(
-      Iterator<PSItemRelatedItem> relatedItems, PSConverter callingConverter) 
-   {
+      Iterator<PSItemRelatedItem> relatedItems, PSConverter callingConverter) throws PSAssemblyException {
       Map<String, List<PSRelatedItem>> relatedItemsBySlot = 
          new HashMap<String, List<PSRelatedItem>>();
       Map<IPSGuid, String> slotIdName = new HashMap<IPSGuid, String>();
@@ -740,8 +740,7 @@ public class PSItemConverterUtils
     * @return the slot name, never <code>null</code>.
     */
    private static String getSlotName(PSItemRelatedItem relatedItem,
-         Map<IPSGuid, String> slotIdName, IPSAssemblyService asrv)
-   {
+         Map<IPSGuid, String> slotIdName, IPSAssemblyService asrv) throws PSAssemblyException {
       PSAaRelationship rel = relatedItem.getRelationship();
       if (rel == null)
          throw new IllegalArgumentException(

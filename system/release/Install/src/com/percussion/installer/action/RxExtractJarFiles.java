@@ -65,7 +65,7 @@ public class RxExtractJarFiles extends RxIAAction
          IASys.out.print(output);
          setProgressStatusText(output);
          
-         List<String> fileList = new ArrayList<String>();
+         List<String> fileList = new ArrayList<>();
          JarFile jar = new JarFile(m_jarFile);
          
          for (Enumeration entries = jar.entries(); entries.hasMoreElements(); )

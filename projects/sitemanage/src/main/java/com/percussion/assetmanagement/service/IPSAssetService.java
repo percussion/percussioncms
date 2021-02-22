@@ -113,7 +113,7 @@ public interface IPSAssetService extends IPSDataService<PSAsset, PSAssetSummary,
      * 
      * @return PSAssetDropCriteria
      */
-    public List<PSAssetDropCriteria> getWidgetAssetCriteria(String id, Boolean isPage) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException;
+    public List<PSAssetDropCriteria> getWidgetAssetCriteria(String id, Boolean isPage) throws PSDataServiceException;
 
     /**
      * Gets list of asset editors and their URLs.
