@@ -23,16 +23,37 @@
  */
 package com.percussion.utils.jsr170;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.percussion.utils.beans.IPSPropertyLoader;
 import com.percussion.utils.beans.PSPropertyWrapper;
 import com.percussion.utils.io.PSReaderInputStream;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.jcr.Item;
+import javax.jcr.ItemNotFoundException;
+import javax.jcr.ItemVisitor;
+import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.PropertyType;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+import javax.jcr.Value;
+import javax.jcr.ValueFormatException;
+import javax.jcr.nodetype.NodeType;
+import javax.jcr.nodetype.PropertyDefinition;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.SQLException;
@@ -42,33 +63,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-
-import javax.jcr.InvalidItemStateException;
-import javax.jcr.Item;
-import javax.jcr.ItemNotFoundException;
-import javax.jcr.ItemVisitor;
-import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
-import javax.jcr.Property;
-import javax.jcr.PropertyType;
-import javax.jcr.ReferentialIntegrityException;
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
-import javax.jcr.Value;
-import javax.jcr.ValueFormatException;
-import javax.jcr.lock.LockException;
-import javax.jcr.nodetype.ConstraintViolationException;
-import javax.jcr.nodetype.NodeType;
-import javax.jcr.nodetype.PropertyDefinition;
-import javax.jcr.version.VersionException;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Represents a single property for a node. The actual data is held in loaded
@@ -80,6 +74,9 @@ import org.apache.commons.logging.LogFactory;
 public class PSProperty extends PSPropertyWrapper 
    implements IPSProperty, IPSJcrCacheItem
 {
+   private static final Logger log = LogManager.getLogger(PSProperty.class);
+
+   private static final String SET_NOT_SUPPORTED="Set is not supported";
    /**
     * The name of this property, never <code>null</code> after construction
     */
@@ -218,10 +215,10 @@ public class PSProperty extends PSPropertyWrapper
          }
          catch (Exception e)
          {
-            Log log = LogFactory.getLog(PSProperty.class);
+
             log.warn(
-                  "Setting property to null as the interceptor threw an error",
-                  e);
+                  "Setting property to null as the interceptor threw an error: {}",e.getMessage());
+            log.debug(e.getMessage(),e);
             m_value = null;
          }
       }
@@ -259,10 +256,9 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#setValue(javax.jcr.Value)
     */
-   public void setValue(Value arg0) throws ValueFormatException,
-         VersionException, LockException, RepositoryException
+   public void setValue(Value arg0) throws RepositoryException
    {
-      throw new RepositoryException("Set is not supported");
+      throw new RepositoryException(SET_NOT_SUPPORTED);
    }
 
    /*
@@ -270,10 +266,9 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#setValue(javax.jcr.Value[])
     */
-   public void setValue(Value[] arg0) throws ValueFormatException,
-         VersionException, LockException, RepositoryException
+   public void setValue(Value[] arg0) throws RepositoryException
    {
-      throw new RepositoryException("Set is not supported");
+      throw new RepositoryException(SET_NOT_SUPPORTED);
    }
 
    /*
@@ -281,10 +276,9 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#setValue(java.lang.String)
     */
-   public void setValue(String arg0) throws ValueFormatException,
-         VersionException, LockException, RepositoryException
+   public void setValue(String arg0) throws RepositoryException
    {
-      throw new RepositoryException("Set is not supported");
+      throw new RepositoryException(SET_NOT_SUPPORTED);
    }
 
    /*
@@ -292,10 +286,9 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#setValue(java.lang.String[])
     */
-   public void setValue(String[] arg0) throws ValueFormatException,
-         VersionException, LockException, RepositoryException
+   public void setValue(String[] arg0) throws RepositoryException
    {
-      throw new RepositoryException("Set is not supported");
+      throw new RepositoryException(SET_NOT_SUPPORTED);
    }
 
    /*
@@ -303,10 +296,9 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#setValue(java.io.InputStream)
     */
-   public void setValue(InputStream arg0) throws ValueFormatException,
-         VersionException, LockException, RepositoryException
+   public void setValue(InputStream arg0) throws RepositoryException
    {
-      throw new RepositoryException("Set is not supported");
+      throw new RepositoryException(SET_NOT_SUPPORTED);
    }
 
    /*
@@ -314,10 +306,9 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#setValue(long)
     */
-   public void setValue(long arg0) throws ValueFormatException,
-         VersionException, LockException, RepositoryException
+   public void setValue(long arg0) throws RepositoryException
    {
-      throw new RepositoryException("Set is not supported");
+      throw new RepositoryException(SET_NOT_SUPPORTED);
    }
 
    /*
@@ -325,10 +316,9 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#setValue(double)
     */
-   public void setValue(double arg0) throws ValueFormatException,
-         VersionException, LockException, RepositoryException
+   public void setValue(double arg0) throws RepositoryException
    {
-      throw new RepositoryException("Set is not supported");
+      throw new RepositoryException(SET_NOT_SUPPORTED);
    }
 
    /*
@@ -336,10 +326,9 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#setValue(java.util.Calendar)
     */
-   public void setValue(Calendar arg0) throws ValueFormatException,
-         VersionException, LockException, RepositoryException
+   public void setValue(Calendar arg0) throws RepositoryException
    {
-      throw new RepositoryException("Set is not supported");
+      throw new RepositoryException(SET_NOT_SUPPORTED);
    }
 
    /*
@@ -347,10 +336,9 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#setValue(boolean)
     */
-   public void setValue(boolean arg0) throws ValueFormatException,
-         VersionException, LockException, RepositoryException
+   public void setValue(boolean arg0) throws RepositoryException
    {
-      throw new RepositoryException("Set is not supported");
+      throw new RepositoryException(SET_NOT_SUPPORTED);
    }
 
    /*
@@ -358,10 +346,9 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#setValue(javax.jcr.Node)
     */
-   public void setValue(Node arg0) throws ValueFormatException,
-         VersionException, LockException, RepositoryException
+   public void setValue(Node arg0) throws RepositoryException
    {
-      throw new RepositoryException("Set is not supported");
+      throw new RepositoryException(SET_NOT_SUPPORTED);
    }
 
    /*
@@ -369,7 +356,7 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#getValue()
     */
-   public Value getValue() throws ValueFormatException, RepositoryException
+   public Value getValue() throws RepositoryException
    {
       init();
       return PSValueFactory.createValue(m_value);
@@ -381,7 +368,7 @@ public class PSProperty extends PSPropertyWrapper
     * @see javax.jcr.Property#getValues()
     */
    @JsonIgnore
-   public Value[] getValues() throws ValueFormatException, RepositoryException
+   public Value[] getValues() throws RepositoryException
    {
       throw new ValueFormatException("This is a single valued property");
    }
@@ -391,7 +378,7 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#getString()
     */
-   public String getString() throws ValueFormatException, RepositoryException
+   public String getString() throws RepositoryException
    {
       init();
 
@@ -427,7 +414,7 @@ public class PSProperty extends PSPropertyWrapper
             {
                Blob blob = (Blob) m_value;
                try(StringWriter w = new StringWriter((int) blob.length() * 2)) {
-                  try (Reader r = new InputStreamReader(blob.getBinaryStream(), "UTF8")) {
+                  try (Reader r = new InputStreamReader(blob.getBinaryStream(), StandardCharsets.UTF_8)) {
                      IOUtils.copy(r, w);
                      m_strValue = w.toString();
                   }
@@ -450,7 +437,7 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#getStream()
     */
-   public InputStream getStream() throws ValueFormatException,
+   public InputStream getStream() throws
          RepositoryException
    {
       init();
@@ -473,9 +460,9 @@ public class PSProperty extends PSPropertyWrapper
                return ism;
             }
          }else {
-            try(InputStream ism = PSValueConverter.convertToStream(getString()){
+            try(InputStream ism = PSValueConverter.convertToStream(getString())){
                return ism;
-            };
+            }
          }
       }
       catch (SQLException| IOException e)
@@ -489,14 +476,14 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#getLong()
     */
-   public long getLong() throws ValueFormatException, RepositoryException
+   public long getLong() throws RepositoryException
    {
       init();
 
       if (m_value == null || m_value=="")
          return 0;
       else if (m_value instanceof Long)
-         return ((Long) m_value).longValue();
+         return (Long) m_value;
       else
       {
          try
@@ -515,14 +502,14 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#getDouble()
     */
-   public double getDouble() throws ValueFormatException, RepositoryException
+   public double getDouble() throws RepositoryException
    {
       init();
 
       if (m_value == null || m_value=="")
          return 0;
       else if (m_value instanceof Double)
-         return ((Double) m_value).doubleValue();
+         return (Double) m_value;
       else
       {
          try
@@ -541,7 +528,7 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#getDate()
     */
-   public Calendar getDate() throws ValueFormatException, RepositoryException
+   public Calendar getDate() throws RepositoryException
    {
       init();
 
@@ -572,7 +559,7 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#getBoolean()
     */
-   public boolean getBoolean() throws ValueFormatException, RepositoryException
+   public boolean getBoolean() throws RepositoryException
    {
       init();
 
@@ -591,7 +578,7 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#getNode()
     */
-   public Node getNode() throws ValueFormatException, RepositoryException
+   public Node getNode() throws RepositoryException
    {
       init();
 
@@ -606,7 +593,7 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Property#getLength()
     */
-   public long getLength() throws ValueFormatException, RepositoryException
+   public long getLength() throws RepositoryException
    {
       init();
 
@@ -651,7 +638,7 @@ public class PSProperty extends PSPropertyWrapper
     * @see javax.jcr.Property#getLengths()
     */
     @JsonIgnore
-   public long[] getLengths() throws ValueFormatException, RepositoryException
+   public long[] getLengths() throws RepositoryException
    {
       throw new ValueFormatException("This is a single valued property");
    }
@@ -674,7 +661,7 @@ public class PSProperty extends PSPropertyWrapper
       {
          throw new IllegalStateException("Missing nodetype information");
       }
-      PropertyDefinition defs[] = nodetype.getPropertyDefinitions();
+      PropertyDefinition[] defs = nodetype.getPropertyDefinitions();
       for (PropertyDefinition def : defs)
       {
          if (m_name.equals(def.getName()))
@@ -731,8 +718,7 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Item#getAncestor(int)
     */
-   public Item getAncestor(int index) throws ItemNotFoundException,
-         javax.jcr.AccessDeniedException, RepositoryException
+   public Item getAncestor(int index) throws RepositoryException
    {
       if (m_depth < index)
       {
@@ -754,8 +740,7 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Item#getParent()
     */
-   public Node getParent() throws ItemNotFoundException,
-         javax.jcr.AccessDeniedException, RepositoryException
+   public Node getParent() throws RepositoryException
    {
       return m_parent;
    }
@@ -765,7 +750,7 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Item#getDepth()
     */
-   public int getDepth() throws RepositoryException
+   public int getDepth()
    {
       return m_depth;
    }
@@ -835,10 +820,7 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Item#save()
     */
-   public void save() throws javax.jcr.AccessDeniedException,
-         ConstraintViolationException, InvalidItemStateException,
-         ReferentialIntegrityException, VersionException, LockException,
-         RepositoryException
+   public void save() throws RepositoryException
    {
       throw new RepositoryException("Save not implemented");
    }
@@ -848,7 +830,7 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Item#refresh(boolean)
     */
-   public void refresh(boolean arg0) throws InvalidItemStateException,
+   public void refresh(boolean arg0) throws
          RepositoryException
    {
       throw new RepositoryException("Refresh not implemented");
@@ -859,7 +841,7 @@ public class PSProperty extends PSPropertyWrapper
     * 
     * @see javax.jcr.Item#remove()
     */
-   public void remove() throws VersionException, LockException,
+   public void remove() throws
          RepositoryException
    {
       throw new RepositoryException("Remove not implemented");
@@ -917,13 +899,12 @@ public class PSProperty extends PSPropertyWrapper
       }
       if (m_interceptors == null)
       {
-         m_interceptors = new ArrayList<IPSPropertyInterceptor>();
+         m_interceptors = new ArrayList<>();
       }
       m_interceptors.add(interceptor);
    }
 
-   public long getSizeInBytes() 
-   {
+   public long getSizeInBytes() throws RepositoryException {
       try
       {
          if (m_value == null)
@@ -941,7 +922,9 @@ public class PSProperty extends PSPropertyWrapper
       }
       catch (SQLException e)
       {
-         throw new RuntimeException("Unexpected problem getting size", e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
+         throw new RepositoryException(e);
       }
    }
 
