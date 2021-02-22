@@ -196,17 +196,16 @@ public class AssetsResource
 
         Detector det = getTikaConfig().getDetector();
 
-        TikaInputStream tis = TikaInputStream.get(att.getObject(InputStream.class));
-
-        Metadata metadata = new Metadata();
-
-        org.apache.tika.mime.MediaType mimeType = det.detect(tis, metadata);
-        String fileMimeType = mimeType.toString();
-        try {
-            return assetAdaptor.uploadBinary(uriInfo.getBaseUri(), path, assetType, tis,
-                    uploadFilename, fileMimeType, forceCheckOut);
-        } catch (BackendException e) {
-            throw new WebApplicationException(e.getMessage());
+        try(TikaInputStream tis = TikaInputStream.get(att.getObject(InputStream.class))) {
+            Metadata metadata = new Metadata();
+            org.apache.tika.mime.MediaType mimeType = det.detect(tis, metadata);
+            String fileMimeType = mimeType.toString();
+            try {
+                return assetAdaptor.uploadBinary(uriInfo.getBaseUri(), path, assetType, tis,
+                        uploadFilename, fileMimeType, forceCheckOut);
+            } catch (BackendException e) {
+                throw new WebApplicationException(e.getMessage());
+            }
         }
     }
 

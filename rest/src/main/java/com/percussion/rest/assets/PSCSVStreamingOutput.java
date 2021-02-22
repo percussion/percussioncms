@@ -46,12 +46,13 @@ public class PSCSVStreamingOutput implements StreamingOutput{
 	
 	@Override
 	public void write(OutputStream os) throws IOException, WebApplicationException {
-		 OutputStreamWriter writer = new OutputStreamWriter(os,"UTF-8");
-         writer.write(UTF8BOM);
-         for(String s : rows){
-       	  writer.write(s);
-         }
-         writer.flush();
+		 try(OutputStreamWriter writer = new OutputStreamWriter(os,"UTF-8")) {
+			 writer.write(UTF8BOM);
+			 for (String s : rows) {
+				 writer.write(s);
+			 }
+			 writer.flush();
+		 }
 	}
 	
 }

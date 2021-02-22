@@ -32,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -880,7 +881,9 @@ public class PSJdbcStatementFactory
       do {
          File binaryFile = new File(bucket, hash);
          if (binaryFile.exists()) {
-            return new PSJdbcBinaryColumnValue(new FileInputStream(binaryFile),binaryFile.length());
+            try(FileInputStream is = new FileInputStream(binaryFile)) {
+               return new PSJdbcBinaryColumnValue(is, binaryFile.length());
+            }
          }
 
          bucket = new File(dbmsDef.getBinaryStorageLocation(), PSJdbcImportExportHelper.BINARY_DATA_BUCKET + "_" + count++);
