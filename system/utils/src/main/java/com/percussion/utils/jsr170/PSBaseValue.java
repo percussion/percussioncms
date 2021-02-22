@@ -23,6 +23,7 @@
  */
 package com.percussion.utils.jsr170;
 
+import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -86,8 +87,7 @@ public abstract class PSBaseValue<Type> implements Value, IPSJcrCacheItem
     * (non-Javadoc)
     * @see com.percussion.utils.jsr170.IPSJcrCacheItem#getSizeInBytes()
     */
-   public long getSizeInBytes()
-   {
+   public long getSizeInBytes() throws RepositoryException {
       return 8;
    } 
 }
