@@ -23,6 +23,8 @@
  */
 package com.percussion.utils.jsr170;
 
+import javax.jcr.RepositoryException;
+
 /**
  * Interface to be implemented by jcr objects that need to report a size to
  * determine cache status for the assembly service. This is generally used to
@@ -42,5 +44,5 @@ public interface IPSJcrCacheItem
     * 
     * @return the size in bytes, might be <code>0</code>
     */
-   long getSizeInBytes();
+   long getSizeInBytes() throws RepositoryException;
 }
