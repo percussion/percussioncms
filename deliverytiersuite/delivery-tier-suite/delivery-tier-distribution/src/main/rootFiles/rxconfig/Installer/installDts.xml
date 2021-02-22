@@ -34,7 +34,7 @@
     <property name="temp.dts.zip.location" location="${install.dir}/rxconfig/Installer/optional/delivery-tier-distribution.jar"/>
     <property name="temp.perc.version" value="${project.parent.version}"/>
     <property name="temp.perc.java.home" value="${install.dir}/JRE" />
-    <property name="temp.perc.dts.backup" value="${install.dir}/PreInstall/Backups" />
+    <property name="perc.dts.backup" value="${install.dir}/PreInstall/Backups" />
 
     <echo>Setting up TaskDefs</echo>
     <path id="ant.deps">
@@ -132,10 +132,18 @@
         </if>
 
         <if>
-            <or>
-                <istrue value="${stage.dts.upgrade}"/>
-                <isfalse value="${install.prod.dts}"/>
-            </or>
+            <isfalse value="${install.prod.dts}"/>
+            <then>
+                <echo>Installing stage dts </echo>
+                <install-dts type="Staging" upgrade="${stage.dts.upgrade}"/>
+            </then>
+        </if>
+
+        <if>
+            <and>
+                <istrue value="${install.prod.dts}"/>
+                <istrue value="${istage.dts.upgrade}"/>
+            </and>
             <then>
                 <echo>Installing stage dts </echo>
                 <install-dts type="Staging" upgrade="${stage.dts.upgrade}"/>
@@ -226,7 +234,6 @@
             <condition property="staging.dir" value="/Staging" else="">
                 <and>
                     <equals arg1="@{type}" arg2="Staging" />
-                    <equals arg1="@{upgrade}" arg2="true" />
                 </and>
             </condition>
 
@@ -429,7 +436,7 @@
                     <echo>Restore mysql-connector if present again on re-upgrading upgraded environment............................................</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/common/lib"
                           verbose="true" failonerror="false">
-                        <fileset dir="${new.backup.dir}${staging.dir}/Server/common/lib">
+                        <fileset dir="${new.backup.dir}${staging.dir}/Server/perc-lib">
                             <include name="mysql-connector*.jar"/>
                         </fileset>
                     </copy>

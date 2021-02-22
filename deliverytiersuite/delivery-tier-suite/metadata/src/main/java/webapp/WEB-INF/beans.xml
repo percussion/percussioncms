@@ -140,7 +140,7 @@
 
    <bean id="visitService" class="com.percussion.delivery.metadata.impl.PSBlogPostVisitService"
          autowire="constructor">
-         <constructor-arg type="Integer" value="${blogpost.scheduler.interval}" index="2" />
+         <constructor-arg type="java.lang.Integer" value="${blogpost.scheduler.interval}" index="2" />
    </bean>
    
    <bean id="cookieConsentService" class="com.percussion.delivery.metadata.impl.PSCookieConsentService"
@@ -161,7 +161,7 @@
    <!-- Define MetadataQueryServicee Metadata Indexer Service bean -->
    <bean id="metadataQueryService" class="com.percussion.delivery.metadata.rdbms.impl.PSMetadataQueryService"
          autowire="constructor">
-         <constructor-arg type="Integer" value="${query.limit}" index="1" />
+         <constructor-arg type="java.lang.Integer" value="${query.limit}" index="1" />
       <property name="sessionFactory">
          <ref bean="metadataSessionFactory" />
       </property>
@@ -175,15 +175,4 @@
       autowire="constructor">
    </bean>
 
-  <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
-   	<constructor-arg index="0"><null/></constructor-arg>
-   	<constructor-arg index="1"><null/></constructor-arg>
-   </bean>
-
- <!--  <bean id="metadataLiquibase"
-         class="liquibase.integration.spring.SpringLiquibase">
-      <property name="dataSource" ref="percDataSource" />
-      <property name="changeLog" value="classpath:liquibase-diff-latest.xml" />
-   </bean>
-   -->
 </beans>

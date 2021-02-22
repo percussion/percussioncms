@@ -134,7 +134,7 @@ public abstract class PSFeedServiceTestsBase extends JerseyTest {
 
         Client client = ClientBuilder.newClient();
         WebTarget webTarget = client.target("/rss/version");
-        Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON).header("perc-tid", "1");
+        Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.get();
 
         Assert.assertNotNull(response);

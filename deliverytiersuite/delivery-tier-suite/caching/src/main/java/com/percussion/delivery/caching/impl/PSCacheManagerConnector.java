@@ -445,7 +445,7 @@ public class PSCacheManagerConnector implements IPSServiceDataChangeListener
             Client client = getHttpClient();
 
             WebTarget webTarget = client.target(cacheManagerHost + "/perc-caching/manager/invalidate");
-            Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML).header("perc-tid", "1");
+            Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_XML);
             Response response = invocationBuilder.post(Entity.text(reqString));
 
             final HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder().build();

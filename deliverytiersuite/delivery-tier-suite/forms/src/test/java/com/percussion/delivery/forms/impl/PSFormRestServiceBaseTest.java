@@ -86,7 +86,7 @@ public class PSFormRestServiceBaseTest extends JerseyTest {
 	public void testGetRestVersion(){
 		Client client = ClientBuilder.newClient();
 		WebTarget webTarget = client.target("/form/version");
-		Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON).header("perc-tid", "1");
+		Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
         Assert.assertNotNull(response);
         Assert.assertEquals(200,response.getStatus());
