@@ -75,11 +75,12 @@ public class PSFUDConfig
          throw new PSFUDConfigFileNotFoundException();
 
       DocumentBuilder db = RXFileTracker.getDocumentBuilder();
-      m_ConfigDoc = db.parse(new InputSource(new FileInputStream(file)));
-      if (m_ConfigDoc != null)
-      {
-         m_ElementCurrent = PSFUDDocMerger.createChildElement(
-                           m_ConfigDoc.getDocumentElement(), ELEM_CURRENT);
+      try(FileInputStream fi = new FileInputStream(file)) {
+         m_ConfigDoc = db.parse(new InputSource(fi));
+         if (m_ConfigDoc != null) {
+            m_ElementCurrent = PSFUDDocMerger.createChildElement(
+                    m_ConfigDoc.getDocumentElement(), ELEM_CURRENT);
+         }
       }
    }
 

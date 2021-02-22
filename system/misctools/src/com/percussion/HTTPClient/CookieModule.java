@@ -175,15 +175,13 @@ public class CookieModule implements HTTPClientModule
 
 	    if (cookie_list.size() > 0)
 	    {
-		try
-		{
-		    ObjectOutputStream oos =
-			new ObjectOutputStream(new FileOutputStream(cookie_jar));
-		    oos.writeObject(cookie_list);
-		    oos.close();
-		}
-		catch (Throwable t)
-		    { }
+
+			try(ObjectOutputStream oos =
+				new ObjectOutputStream(new FileOutputStream(cookie_jar))){
+				oos.writeObject(cookie_list);
+			}
+			catch (Throwable t)
+				{ }
 	    }
 	}
     }

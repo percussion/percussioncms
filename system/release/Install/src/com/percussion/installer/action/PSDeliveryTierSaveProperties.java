@@ -91,8 +91,7 @@ public class PSDeliveryTierSaveProperties extends RxIAAction
 
             if (extProp != null && strPropFilePath != null)
             {
-               try
-               {
+               try {
                   //get the property object
                   PSProperties psProps = (PSProperties) extProp;
 
@@ -100,32 +99,27 @@ public class PSDeliveryTierSaveProperties extends RxIAAction
                   File propFile = new File(strPropFilePath);
                   if (!propFile.exists())
                      propFile.createNewFile();
-                  else
-                  {
+                  else {
                      //load in the properties and merge
-                     psProps =  new PSProperties(strPropFilePath);
+                     psProps = new PSProperties(strPropFilePath);
                      iaModel.setValue(
-                           RxIAModel.PROPS_VAR_NAME,
-                           psProps);
+                             RxIAModel.PROPS_VAR_NAME,
+                             psProps);
 
                      iaModel.saveToPropFile();
                   }
 
-                  if (shouldRegisterProps(model))
-                  {
+                  if (shouldRegisterProps(model)) {
                      //register the properties as replay variables
                      VarCategoryType category = getReplayVarCategory(model);
                      Enumeration keys = psProps.keys();
-                     while (keys.hasMoreElements())
-                     {
+                     while (keys.hasMoreElements()) {
                         String key = (String) keys.nextElement();
                         String val = psProps.getProperty(key);
 
                         if (model instanceof PSDeliveryTierDatabaseModel ||
-                              model instanceof PSDeliveryTierServerConnectionModel)
-                        {
-                           if (key.equals(PSDeliveryTierProtocolModel.PWD))
-                           {
+                                model instanceof PSDeliveryTierServerConnectionModel) {
+                           if (key.equals(PSDeliveryTierProtocolModel.PWD)) {
                               //store dummy value
                               val = "password";
                            }
@@ -136,32 +130,31 @@ public class PSDeliveryTierSaveProperties extends RxIAAction
                   }
 
                   //save the properties
-                  FileOutputStream out =
-                     new FileOutputStream(strPropFilePath);
-                  psProps.store(out, null);
-                  out.close();
-
-                  //copy the property file if needed
-                  String strCopyPropertyFile = iaModel.getCopyPropertyFile();
-                  if (strCopyPropertyFile != null &&
-                        strCopyPropertyFile.length() > 0)
-                  {
-                     strCopyPropertyFile =  m_strRootDir + File.separator +
-                     strCopyPropertyFile;
-
-                     File copyFile = new File(strCopyPropertyFile);
-
-                     if (copyFile.exists())
-                        copyFile.delete();
-
-                     if (copyFile.getParentFile() != null)
-                        FileUtils.createDirs(copyFile.getParentFile());
-
-                     copyFile.createNewFile();
-
-                     out = new FileOutputStream(strCopyPropertyFile);
+                  try (FileOutputStream out =
+                               new FileOutputStream(strPropFilePath)) {
                      psProps.store(out, null);
-                     out.close();
+
+                     //copy the property file if needed
+                     String strCopyPropertyFile = iaModel.getCopyPropertyFile();
+                     if (strCopyPropertyFile != null &&
+                             strCopyPropertyFile.length() > 0) {
+                        strCopyPropertyFile = m_strRootDir + File.separator +
+                                strCopyPropertyFile;
+
+                        File copyFile = new File(strCopyPropertyFile);
+
+                        if (copyFile.exists())
+                           copyFile.delete();
+
+                        if (copyFile.getParentFile() != null)
+                           FileUtils.createDirs(copyFile.getParentFile());
+
+                        copyFile.createNewFile();
+
+                        try(FileOutputStream out = new FileOutputStream(strCopyPropertyFile)) {
+                           psProps.store(out, null);
+                        }
+                     }
                   }
                }
                catch(IOException ioExc)
