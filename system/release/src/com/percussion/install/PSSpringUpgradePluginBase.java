@@ -79,7 +79,7 @@ public abstract class PSSpringUpgradePluginBase implements IPSUpgradePlugin
          return;
       }
       
-      String rxRoot = PathUtils.getRxDir().getAbsolutePath();
+      String rxRoot = PathUtils.getRxDir(null).getAbsolutePath();
       File spring = new File(rxRoot,PSServletUtils.getSpringConfigPath());
       File beansXml = new File(spring + "/beans.xml");
       File deployerBeansXml = new File(spring

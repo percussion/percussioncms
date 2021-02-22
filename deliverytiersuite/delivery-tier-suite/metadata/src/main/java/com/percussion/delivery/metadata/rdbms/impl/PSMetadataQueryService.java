@@ -233,7 +233,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             }
         }
  
-        StringBuffer queryBuf = new StringBuffer();    
+        StringBuilder queryBuf = new StringBuilder();
         if(isCount)
         {
            queryBuf.append("select count(distinct me) from PSDbMetadataEntry as me");
@@ -291,13 +291,14 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         for (int i = 0; i < propsCrit.size(); i++)
              queryBuf.append(" join me.properties as p" + i);
         
-        if (entryCrit.size() > 0 || propsCrit.size() > 0)
+        if (!entryCrit.isEmpty() || ! propsCrit.isEmpty())
             queryBuf.append(" where");
         
         if((isSortingOnProperty))
         {
-            queryBuf.append(" prop.id.name = ");
-            queryBuf.append("'"+ PSMetadataQueryServiceHelper.getSortPropertyName(orderBy)+"'");
+            queryBuf.append(" prop.id.name = ").append("'")
+                    .append(PSMetadataQueryServiceHelper.getSortPropertyName(orderBy))
+                    .append("'");
         }
         String clauseTemplate = " me.{0} {1} :{2}";
         String inClauseTemplate = " me.{0} {1} (:{2})";

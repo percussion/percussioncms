@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -22,10 +22,17 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package com.percussion.delivery.metadata.rdbms.impl;
+package com.percussion.ant.install;
 
-import org.springframework.context.annotation.Bean;
+import java.io.File;
 
-public class PSSpringLiquibase {
+public class PSExecStagingDTSSqlStmt  extends PSExecDTSSqlStmt {
+
+    protected  String getDBPropertyFile(){
+        String propFile = getRootDir() + File.separator
+                + "/Staging/Deployment/Server/conf/perc/perc-datasources.properties";
+        return propFile;
+    }
 
 }
+

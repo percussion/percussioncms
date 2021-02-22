@@ -33,9 +33,12 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PathUtilsTests {
 
@@ -62,13 +65,44 @@ public class PathUtilsTests {
     //TODO: Finish adding various test cases.
     @Test
     @Ignore
-    public void testDTS() throws IOException {
+    public void testAutodetect() throws IOException {
         System.setProperty("rxdeploydir","");
+        System.setProperty("user.dir", System.getProperty("user.home"));
+        PathUtils.clearRxDir();
+
+        Path p = Paths.get(
+                System.getProperty("user.home"), PathUtils.USER_FOLDER_CHECK_ITEM);
+        if(!Files.exists(p))
+            Files.createDirectory(p);
+
+        assertEquals(String.format("%s%s%s", System.getProperty("user.home"),
+                File.separator, ".perc_config"), PathUtils.getRxDir(null).getAbsolutePath());
+
+
         File dtsBase = temporaryFolder.newFolder("Deployment","Server");
         File rxconfig = temporaryFolder.newFolder("rxconfig");
+        PathUtils.clearRxDir();
 
-        assertEquals(temporaryFolder.getRoot().getAbsolutePath(), PathUtils.getRxDir().getAbsolutePath());
+        assertEquals(temporaryFolder.getRoot().getAbsolutePath(),
+                PathUtils.getRxDir(rxconfig.getAbsolutePath()).getAbsolutePath());
+
+
+        System.setProperty("rxdeploydir","");
+        System.setProperty("user.dir", dtsBase.getAbsolutePath());
+        PathUtils.clearRxDir();
+
+        assertEquals(temporaryFolder.getRoot().getAbsolutePath(), PathUtils.getRxDir(dtsBase.getAbsolutePath()).getAbsolutePath());
+
+        File jettyBase = temporaryFolder.newFolder("jetty","base");
+        System.setProperty("user.dir", jettyBase.getAbsolutePath());
+        PathUtils.clearRxDir();
+
+        assertEquals(temporaryFolder.getRoot().getAbsolutePath(), PathUtils.getRxDir(jettyBase.getAbsolutePath()).getAbsolutePath());
+
+
+
     }
+
 
     public void testNoObjectStore() throws IOException {
 
