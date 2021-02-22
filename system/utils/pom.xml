@@ -31,11 +31,11 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.2-SNAPSHOT</version>
+        <version>8.0.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>rxutils</artifactId>
-  <version>8.0.2-SNAPSHOT</version>
+  <version>8.0.2</version>
     <packaging>jar</packaging>
     <properties>
         <skipTests>false</skipTests>
