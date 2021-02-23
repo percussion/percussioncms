@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -31,6 +31,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
@@ -82,11 +83,15 @@ public class PSConfigurableApplicationContext extends XmlWebApplicationContext
     public static void switchContextLocation(String location) throws IOException, URISyntaxException{
         
         Properties p = new Properties();
-        p.load(PSConfigurableApplicationContext.class.getResourceAsStream(PERC_CONTEXT_PROPS)); 
-        p.setProperty(PERC_CONTEXT_LOC, location);    
+        try (InputStream rs = PSConfigurableApplicationContext.class.getResourceAsStream(PERC_CONTEXT_PROPS)){
+            p.load(rs);
+            p.setProperty(PERC_CONTEXT_LOC, location);
+        }
     
         URL url = PSConfigurableApplicationContext.class.getResource(PERC_CONTEXT_PROPS);
-        p.store(new FileOutputStream(new File(url.toURI())), null);      
+        try (OutputStream fs = new FileOutputStream(new File(url.toURI()))) {
+            p.store(fs,null);
+        }
     }
 
     @Override
