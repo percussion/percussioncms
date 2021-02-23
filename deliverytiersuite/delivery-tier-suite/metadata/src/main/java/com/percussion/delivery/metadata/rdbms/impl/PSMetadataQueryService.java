@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -33,19 +33,17 @@ import com.percussion.delivery.metadata.impl.PSPropertyDatatypeMappings;
 import com.percussion.delivery.metadata.impl.utils.PSPair;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.internal.SessionImpl;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.DatatypeConverter;
 import java.sql.Connection;
@@ -58,8 +56,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -82,7 +78,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
    /**
     * Logger for this class.
     */
-    public static final Logger log = LogManager.getLogger(PSMetadataQueryService.class);
+    private static final Logger log = LogManager.getLogger(PSMetadataQueryService.class);
     
     /**
      * Property datatype mappings, loaded by Spring.
@@ -112,13 +108,12 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
     // I think this is leaking transactions
  //   @Transactional(propagation = Propagation.REQUIRES_NEW,isolation = Isolation.READ_COMMITTED)
     public PSPair<List<IPSMetadataEntry>, Integer> executeQuery(PSMetadataQuery query)
-             throws Exception       
    {
        log.debug("Executing query for metadata entries");
        Transaction tx = null;
 
        PSPair<List<IPSMetadataEntry>, Integer>  searchResults = new PSPair<>();
-       PSPair<Query, SORTTYPE>  queryInfo = new PSPair<>();
+       PSPair<Query, SORTTYPE>  queryInfo;
 
        try(Session session = getSession())
        {
@@ -137,11 +132,10 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
              //total count already so no need to get the count again
              if(query.getStartIndex() == 0 || query.getReturnTotalEntries())
              {
-                 //Query countQuery = buildHibernateQuery(session, query,true);
                  queryInfo = buildHibernateQuery(session, query,true);
                  
                  Long count = (Long) queryInfo.getFirst().list().get(0);
-                 totalResults = new Integer(count.intValue());
+                 totalResults = count.intValue();
              }
 
              // call the method for second time to get list of objects based on the query
@@ -164,15 +158,15 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
              searchResults.setSecond(totalResults);
          }
          tx.commit();
-      }
-      catch(Exception e){
-           log.error(e.getMessage(),e);
-           if(tx != null && tx.isActive()){
-               tx.rollback();
-           }
-      }
-      
-      return searchResults;
+      } catch (ParseException | PSMalformedMetadataQueryException e) {
+               log.error(e.getMessage());
+               log.debug(e.getMessage(),e);
+               if(tx != null && tx.isActive()){
+                   tx.rollback();
+               }
+       }
+
+       return searchResults;
    }
  
     /**
@@ -220,7 +214,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         // Process criteria
         if (rawQuery.getCriteria() != null)
         {
-            PSCriteriaElement el = null;
+            PSCriteriaElement el;
             for (String s : rawQuery.getCriteria()) {
                 if(!s.isEmpty()){
                     el = new PSCriteriaElement(s);
@@ -289,16 +283,16 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         }
         
         for (int i = 0; i < propsCrit.size(); i++)
-             queryBuf.append(" join me.properties as p" + i);
+             queryBuf.append(" join me.properties as p").append(i);
         
         if (!entryCrit.isEmpty() || ! propsCrit.isEmpty())
             queryBuf.append(" where");
         
         if((isSortingOnProperty))
         {
-            queryBuf.append(" prop.id.name = ").append("'")
+            queryBuf.append(" prop.id.name = ").append('\'')
                     .append(PSMetadataQueryServiceHelper.getSortPropertyName(orderBy))
-                    .append("'");
+                    .append('\'');
         }
         String clauseTemplate = " me.{0} {1} :{2}";
         String inClauseTemplate = " me.{0} {1} (:{2})";
@@ -381,7 +375,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
                 if(!sortColumns.isEmpty())
                 {
                     String orderByFirstOrder = "asc";
-                    if (orderBy.indexOf(",") != -1)
+                    if (orderBy.contains(","))
                     {
                         orderByFirstOrder = orderBy.substring(0, orderBy.indexOf(","));
                     }
@@ -389,23 +383,22 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
                     
                     for (Map.Entry<String,String> entry : sortColumns.entrySet())
                     {
-                        // queryBuf.append(", " + "lower(me." + entry.getKey() + ") " + entry.getValue());
-                        queryBuf.append(", " + "me." + entry.getKey() + " " + entry.getValue());
+                        queryBuf.append(", ").append( "me.").append( entry.getKey()).append(" ").append(entry.getValue());
                     }
                 }
             }
             else
             {
                 //Make it case insensitive
-                // queryBuf.append(" order by " + "lower(me." + PSMetadataQueryServiceHelper.getSortPropertyName(orderBy) + ") ");
-                queryBuf.append(" order by " + "me." + PSMetadataQueryServiceHelper.getSortPropertyName(orderBy) + " ");
+                queryBuf.append(" order by ").append( "me.").append(
+                        PSMetadataQueryServiceHelper.getSortPropertyName(orderBy) ).append( " ");
             }
 
             if(sortColumns.isEmpty())
                 queryBuf.append(PSMetadataQueryServiceHelper.getSortingOrder(orderBy));
         }
 
-        log.debug(queryBuf.toString());
+        log.debug("{}",queryBuf);
         
         Query q = sess.createQuery(queryBuf.toString());
         int useLimit=queryLimit;
@@ -430,7 +423,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         {
             Object value = paramValues.get(key);
             PSCriteriaElement.OPERATION_TYPE opType = paramOps.get(key);
-            if(opType != null && opType == PSCriteriaElement.OPERATION_TYPE.IN)
+            if(opType == PSCriteriaElement.OPERATION_TYPE.IN)
             {
                q.setParameterList(key, 
                    PSMetadataQueryServiceHelper.parseToList(key, value.toString(), datatypeMappings));
@@ -453,7 +446,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
     {
         List<String> specialChars = getCharactersToEscape();
 
-        String escapedString = new String(value);
+        String escapedString = value;
 
         // If the value starts or ends with a wildcard, leave those unescaped.
         boolean startsWithWildcard = escapedString.startsWith("%");
@@ -628,12 +621,12 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
     private static String jdbcConnectionUrl = null;
 
 	@Override
-	public Integer getQueryLimit() {
+	public synchronized Integer getQueryLimit() {
 		return this.queryLimit;
 	}
 
 	@Override
-	public void setQueryLimit(Integer limit) {
+	public synchronized void setQueryLimit(Integer limit) {
 		this.queryLimit = limit;
 	}
 
