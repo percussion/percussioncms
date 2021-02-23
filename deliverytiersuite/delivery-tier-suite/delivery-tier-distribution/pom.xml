@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -115,7 +115,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-ant</artifactId>
-            <version>${project.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
@@ -600,11 +600,6 @@
                                 <groupId>org.apache.logging.log4j</groupId>
                                 <artifactId>log4j-appserver</artifactId>
                             </dependency>
-                            <!--<dependency>
-                                <groupId>org.apache.logging.log4j</groupId>
-                                <artifactId>log4j-web</artifactId>
-                            </dependency> -->
-
                             <dependency>
                                     <groupId>com.percussion.deliverytier</groupId>
                                     <artifactId>perc-tomcat-common</artifactId>
@@ -948,7 +943,7 @@
                         <artifactItem>
                             <groupId>com.percussion</groupId>
                             <artifactId>perc-ant</artifactId>
-                            <version>${project.version}</version>
+                            <version>${project.parent.version}</version>
                             <type>jar</type>
                             <overWrite>true</overWrite>
                             <outputDirectory>${ant-installer}</outputDirectory>

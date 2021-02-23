@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,18 +23,19 @@
  */
 package com.percussion.delivery.comments.services;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Profanity filter to find if text contains profanity.
@@ -42,7 +43,7 @@ import org.apache.commons.logging.LogFactory;
 public class PSProfanityFilter 
 {
 
-    private static Log log = LogFactory.getLog(PSProfanityFilter.class);
+    private static Logger log = LogManager.getLogger(PSProfanityFilter.class);
 
     /*
      * Comma separated word list of profanity words.
@@ -107,14 +108,14 @@ public class PSProfanityFilter
     /**
      * Read in profanityFile and create array list of profanity.
      */
-    private void setProfanity()
+    private synchronized void setProfanity()
     {
         String profanityWords = "";
         try
         {
         	if(profanityFile.exists()){
-        		log.info(String.format("Initializing the Comment Profanity Filter from file: %s",profanityFile.getAbsolutePath()));
-        		profanityWords = FileUtils.readFileToString(profanityFile);
+        		log.info("Initializing the Comment Profanity Filter from file: {}",profanityFile.getAbsolutePath());
+        		profanityWords = FileUtils.readFileToString(profanityFile, StandardCharsets.UTF_8);
 	        }else{
 	        	log.info("Initializing the Comment Profanity Filter from default resource file.");        		
 	        	profanityWords = new Scanner(PSProfanityFilter.class.getResourceAsStream(PROFANITY_FILE_CP)).useDelimiter("\\A").next();
@@ -124,7 +125,8 @@ public class PSProfanityFilter
         {
             log.error("Error initializing the Comment Profanity Filter.",e);
         }
-        profanity = Arrays.asList(StringUtils.split(profanityWords, ","));
+
+        PSProfanityFilter.profanity = Arrays.asList(StringUtils.split(profanityWords, ","));
     }
     
 }
