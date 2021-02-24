@@ -194,7 +194,7 @@ public class PSCms
       }
       else
       {
-        tgtFolders = new ArrayList<Object>();
+        tgtFolders = new ArrayList<>();
         tgtFolders.add(obj.toString());
       }
       if(tgtFolders.size()<1)
@@ -436,7 +436,7 @@ public class PSCms
 
       try
       {
-         Map<String,Object> htmlParams = new HashMap<String,Object>();
+         Map<String,Object> htmlParams = new HashMap<>();
          htmlParams.put(IPSHtmlParameters.SYS_CONTENTID, contentid);
          if (revision != null && revision.trim().length() > 0)
             htmlParams.put(IPSHtmlParameters.SYS_REVISION, revision);
@@ -543,7 +543,7 @@ public class PSCms
       String resource = PSRelationshipUtils.SYS_PSXRELATIONSHIPSUPPORT + "/" +
          PSRelationshipUtils.GET_CONTENTTYPEINFO;
 
-      Map<String,Object> params = new HashMap<String,Object>();
+      Map<String,Object> params = new HashMap<>();
       params.put(IPSHtmlParameters.SYS_CONTENTID, 
          Integer.toString(source.getId()));
       params.put(IPSHtmlParameters.SYS_REVISION,
@@ -614,7 +614,7 @@ public class PSCms
       if (context == null || context.length() < 1)
          context = "0";
 
-      Map<String,Object> params = new HashMap<String,Object>();
+      Map<String,Object> params = new HashMap<>();
       params.put(IPSHtmlParameters.SYS_CONTENTID, contentid);
       params.put(IPSHtmlParameters.SYS_VARIANTID, variantid);
       params.put(IPSHtmlParameters.SYS_CONTEXT, context);
@@ -665,7 +665,7 @@ public class PSCms
       Object context = "0";
       Object authtype = "0";
 
-      Map<String,Object> params = new HashMap<String,Object>();
+      Map<String,Object> params = new HashMap<>();
       params.put(IPSHtmlParameters.SYS_CONTENTID, contentid);
       params.put(IPSHtmlParameters.SYS_VARIANTID, variantid);
       Iterator<String> iter = assemblyParamMap.keySet().iterator();
@@ -788,7 +788,7 @@ public class PSCms
          List<String> workflowIds = findCommunityWorkflows(communityId);
 
          // Get the workflow intersection list
-         Collection<Integer> resultWorkflows = new ArrayList<Integer>();
+         Collection<Integer> resultWorkflows = new ArrayList<>();
 
          Iterator<String> it = workflowIds.iterator();
          boolean haveWorkflowInfo = info != null 
@@ -903,7 +903,7 @@ public class PSCms
    {
       try
       {
-         List<String> workflowIds = new ArrayList<String>();
+         List<String> workflowIds = new ArrayList<>();
 
          IPSBackEndRoleMgr beRoleMgr = PSRoleMgrLocator.getBackEndRoleManager();
          PSCommunity comm = beRoleMgr.loadCommunity(

@@ -300,7 +300,7 @@ public class PSCommunityDefDependencyHandler
       //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 
       // prepare a map between a child table and its id
-      Map<String, String> columnMap = new HashMap<String, String>();
+      Map<String, String> columnMap = new HashMap<>();
       columnMap.put(COMM_CP_TABLE, COMM_CP_ID);
 
       // retrieve the files and install them
@@ -348,7 +348,7 @@ public class PSCommunityDefDependencyHandler
       PSJdbcTableData data = depData.getData();
 
       // get the source row
-      List<PSJdbcRowData> tgtRowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> tgtRowList = new ArrayList<>();
       Iterator rows = data.getRows();
       if (!rows.hasNext())
       {
@@ -361,7 +361,7 @@ public class PSCommunityDefDependencyHandler
 
          // walk the columns and build a new row, xform the COMM_RL_ID to its
          // corresponding ROLE_NAME in ROLE_TABLE
-         List<PSJdbcColumnData> tgtColList = new ArrayList<PSJdbcColumnData>();
+         List<PSJdbcColumnData> tgtColList = new ArrayList<>();
          Iterator srcCols = srcRow.getColumns();
          while (srcCols.hasNext())
          {
@@ -427,7 +427,7 @@ public class PSCommunityDefDependencyHandler
       PSIdMapping commMapping = getIdMapping(ctx, dep);
 
       // get the source row
-      List<PSJdbcRowData> tgtRowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> tgtRowList = new ArrayList<>();
       Iterator rows = data.getRows();
       if (!rows.hasNext())
       {
@@ -440,7 +440,7 @@ public class PSCommunityDefDependencyHandler
 
          // walk the columns and build a new row, xform the id for
          // COMMUNITY_ID, convert role-name to role-id for COMM_RL_ID
-         List<PSJdbcColumnData> tgtColList = new ArrayList<PSJdbcColumnData>();
+         List<PSJdbcColumnData> tgtColList = new ArrayList<>();
          Iterator srcCols = srcRow.getColumns();
          while (srcCols.hasNext())
          {

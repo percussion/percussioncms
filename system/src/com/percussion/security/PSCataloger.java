@@ -469,7 +469,7 @@ public abstract class PSCataloger
       getGroupProviderInstances(PSServerConfiguration config)
    {
       Map<String, IPSGroupProviderInstance> result = 
-         new HashMap<String, IPSGroupProviderInstance>();
+         new HashMap<>();
       Iterator i = config.getGroupProviderInstances().iterator();
       while (i.hasNext())
       {
@@ -511,7 +511,7 @@ public abstract class PSCataloger
             additionals.addAll(attributeNames);
          Set<String> requestedReturns = directory.getReturnAttributeNames(
             additionals);
-         Set<String> returns = new HashSet<String>(requestedReturns);
+         Set<String> returns = new HashSet<>(requestedReturns);
          returns.add(getObjectAttributeName());
          String[] returnAttrs = returns.toArray(new String[returns.size()]);
    
@@ -570,5 +570,5 @@ public abstract class PSCataloger
     * never <code>null</code> after construction, may be empty.
     */
    private List<IPSGroupProvider> m_groupProviders = 
-      new ArrayList<IPSGroupProvider>();      
+      new ArrayList<>();
 }

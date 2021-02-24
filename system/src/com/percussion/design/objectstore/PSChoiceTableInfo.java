@@ -219,7 +219,7 @@ public class PSChoiceTableInfo extends PSComponent
     */
    public Iterator<PSEntry> getChoiceEntries()
    {
-      List<PSEntry> choices = new ArrayList<PSEntry>();
+      List<PSEntry> choices = new ArrayList<>();
       if(StringUtils.isBlank(m_tableName))
       {
          ms_log.error("Unable to build entries as the table name is empty");
