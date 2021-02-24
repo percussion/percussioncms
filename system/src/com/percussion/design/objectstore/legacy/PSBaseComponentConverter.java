@@ -111,5 +111,5 @@ public abstract class PSBaseComponentConverter extends PSBaseDSConverter
     * Stores the current conversion context in thread local storage, never 
     * <code>null</code>.
     */
-   private ThreadLocal<String> m_conversionContext = new ThreadLocal<String>();
+   private ThreadLocal<String> m_conversionContext = new ThreadLocal<>();
 }

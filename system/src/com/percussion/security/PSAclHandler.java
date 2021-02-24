@@ -70,9 +70,9 @@ public class PSAclHandler
        * of objects containing the security.PSEntry subclass entries, such as
        * userEntry, groupEntry, or roleEntry.
        */
-      m_aclUserEntries  = new HashMap<String, PSUserEntry>();
-      m_aclGroupEntries = new HashMap<String, PSGroupEntry>();
-      m_aclRoleEntries  = new HashMap<String, PSRoleEntry>();
+      m_aclUserEntries  = new HashMap<>();
+      m_aclGroupEntries = new HashMap<>();
+      m_aclRoleEntries  = new HashMap<>();
 
       PSCollection aces = acl.getEntries();
       PSAclEntry   cur;
@@ -158,15 +158,15 @@ public class PSAclHandler
    {
       PSUserEntry[] users = sess.getAuthenticatedUserEntries();
          int usersLength = (users == null) ? 0 : users.length;
-      List<PSUserEntry> usersLoggedIn = new ArrayList<PSUserEntry>(usersLength);
+      List<PSUserEntry> usersLoggedIn = new ArrayList<>(usersLength);
 
       // get all the group entries from the session based on the above
       PSGroupEntry[] groups = new PSGroupEntry[0];
       PSRoleEntry[] roles = new PSRoleEntry[0];
       if (sess != null)
       {
-         Collection<PSGroupEntry> groupList = new HashSet<PSGroupEntry>();
-         Collection<PSRoleEntry> roleList = new HashSet<PSRoleEntry>();
+         Collection<PSGroupEntry> groupList = new HashSet<>();
+         Collection<PSRoleEntry> roleList = new HashSet<>();
          for ( int i = 0; i < users.length; i++ )
          {
             PSGroupEntry[] groupEntryArray = users[i].getGroups();
@@ -183,7 +183,7 @@ public class PSAclHandler
       }
 
       List<PSEntry> groupRoleMatch =
-            new ArrayList<PSEntry>( (groups != null) ? groups.length : 0 );
+            new ArrayList<>( (groups != null) ? groups.length : 0 );
 
 
       String testProvider = null;
@@ -216,7 +216,7 @@ public class PSAclHandler
 
       // get the role matches
       List<PSRoleEntry> roleMatchEntries = 
-         new ArrayList<PSRoleEntry>();
+         new ArrayList<>();
       for (int i = 0; i < roles.length; i++)
       {
          testName = roles[i].getName().toLowerCase();
@@ -397,7 +397,7 @@ public class PSAclHandler
       }
 
 
-      List<PSEntry> matches = new ArrayList<PSEntry>(entryMap.values());
+      List<PSEntry> matches = new ArrayList<>(entryMap.values());
       
       // no worries, PSEntry objects are immutable
       return matches.iterator();

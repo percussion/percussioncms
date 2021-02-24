@@ -291,7 +291,7 @@ public class PSCataloger
     */
    public static final String TYPE_REQ_USER_DEP = "UserDependencies";   
 
-   public static List<String> ms_supportedReqTypes = new ArrayList<String>();
+   public static List<String> ms_supportedReqTypes = new ArrayList<>();
    static 
    {
       ms_supportedReqTypes.add(TYPE_REQ_ARCHIVES);

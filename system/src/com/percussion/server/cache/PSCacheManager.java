@@ -680,7 +680,7 @@ public class PSCacheManager implements IPSHandlerInitListener
     */
    private Iterator<PSCacheHandler> getCacheHandlers()
    {
-      List<PSCacheHandler> handlers = new ArrayList<PSCacheHandler>();
+      List<PSCacheHandler> handlers = new ArrayList<>();
       if (getServerCacheSettings().isEnabled())
       {
          synchronized (m_handlerMonitor)
@@ -700,7 +700,7 @@ public class PSCacheManager implements IPSHandlerInitListener
     */
    private List<PSCacheHandler> removeHandlers()
    {
-      List<PSCacheHandler> handlers = new ArrayList<PSCacheHandler>();
+      List<PSCacheHandler> handlers = new ArrayList<>();
       synchronized (m_handlerMonitor)
       {
          handlers.addAll(m_cacheHandlers);
@@ -790,7 +790,7 @@ public class PSCacheManager implements IPSHandlerInitListener
     * The list of cache handlers, never <code>null</code>, handlers are added
     * and removed during calls to <code>init()</code>.
     */
-   private List<PSCacheHandler> m_cacheHandlers = new ArrayList<PSCacheHandler>();
+   private List<PSCacheHandler> m_cacheHandlers = new ArrayList<>();
 
    /**
     * Flag to indicate if <code>init</code> has been called at least once.
@@ -819,7 +819,7 @@ public class PSCacheManager implements IPSHandlerInitListener
     * <code>init()</code> method, never <code>null</code> or modified after
     * that.
     */
-   private Set<String> m_handlerTypes = new HashSet<String>();
+   private Set<String> m_handlerTypes = new HashSet<>();
    
    /**
     * The folder relationship cache. Initialized by {@link #start()} 
