@@ -65,8 +65,12 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
             String user = props.getProperty("db.username");
             String pwd = props.getProperty("db.password");
             String dpwd = pwd;
+            if (getRootDir() == null || "".equals(getRootDir())) {
+                PSLogger.logError("Root RootDir is missing");
+                return;
+            }
             try {
-                dpwd = PSEncryptor.getInstance().decrypt(pwd);
+                dpwd = PSEncryptor.getInstance("AES",null).decrypt(pwd);
             } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
                 dpwd = PSLegacyEncrypter.getInstance().decrypt(pwd,
                         PSJdbcDbmsDef.getPartOneKey());
