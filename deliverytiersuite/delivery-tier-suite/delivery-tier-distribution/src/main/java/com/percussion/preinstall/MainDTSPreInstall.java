@@ -221,7 +221,7 @@ public class MainDTSPreInstall {
 
 
         ProcessBuilder builder = new ProcessBuilder(
-                javabin,"-Dinstall.prod.dts="+isProduction,"-Dfile.encoding=UTF8","-Dsun.jnu.encoding=UTF8","-Dinstall.dir="+dir, "-jar", jar.toAbsolutePath().toString(),"-f",ANT_INSTALL).directory(execPath.toFile());
+                javabin,"-Dinstall.prod.dts="+isProduction,"-Dfile.encoding=UTF8","-Dsun.jnu.encoding=UTF8","-Dinstall.dir="+dir, "-Drxdeploydir="+dir,"-jar", jar.toAbsolutePath().toString(),"-f",ANT_INSTALL).directory(execPath.toFile());
         Process process = builder.inheritIO().start();
         process.waitFor();
         return process.exitValue();
