@@ -155,7 +155,7 @@ public abstract class PSBaseDSConverter
       PSDatasourceResolver resolver;
 
 
-      Set<String> configNames = new HashSet<String>();
+      Set<String> configNames = new HashSet<>();
        BaseContainerUtils containerUtils = PSContainerUtilsFactory.getInstance();
       List<IPSDatasourceConfig> configs = containerUtils.getDatasourceResolver().getDatasourceConfigurations();
 
@@ -229,7 +229,7 @@ public abstract class PSBaseDSConverter
          throw new IllegalArgumentException("server may not be null or empty");
       
       IPSJndiDatasource datasource = null;
-      Set<String> dsNames = new HashSet<String>(); // build set of names 
+      Set<String> dsNames = new HashSet<>(); // build set of names
 
       List<IPSJndiDatasource> dsList = m_configCtx.getJndiDatasources();
       for (IPSJndiDatasource testDs : dsList)

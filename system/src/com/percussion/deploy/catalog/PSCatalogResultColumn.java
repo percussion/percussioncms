@@ -394,7 +394,7 @@ public class PSCatalogResultColumn implements IPSDeployComponent
     * #TYPE_NUMERIC numeric}, {@link #TYPE_DATE date} and {@link #TYPE_BOOL 
     * boolean} for the corresponding supported object types(classes).
     */
-   private static Map<Class, Integer> ms_typeObjects = new HashMap<Class, Integer>();
+   private static Map<Class, Integer> ms_typeObjects = new HashMap<>();
    static
    {      
       ms_typeObjects.put(String.class,  PSCatalogResultColumn.TYPE_TEXT);

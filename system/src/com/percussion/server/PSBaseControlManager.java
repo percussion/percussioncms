@@ -88,7 +88,7 @@ public abstract class PSBaseControlManager
     */
    protected List<PSControlMeta> getControls(File ctrlFile)
    {
-      List<PSControlMeta> ctrls = new ArrayList<PSControlMeta>();
+      List<PSControlMeta> ctrls = new ArrayList<>();
       FileInputStream fin = null;
       
       try
@@ -178,7 +178,7 @@ public abstract class PSBaseControlManager
     */
    public List<PSControlMeta> getAllControls()
    {
-      List<PSControlMeta> controls = new ArrayList<PSControlMeta>();
+      List<PSControlMeta> controls = new ArrayList<>();
       
       List<File> ctrlFiles = getControlFiles();
       for (File ctrlFile : ctrlFiles)
