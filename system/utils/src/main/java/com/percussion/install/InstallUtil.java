@@ -31,17 +31,21 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.PSDriverHelper;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.string.PSStringUtils;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.PrefixFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.*;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.net.*;
 import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -873,6 +877,8 @@ public class InstallUtil
       DocumentBuilder docBuilder;
       try
       {
+         docBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING,true);
+         docBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
          docBuilder = docBuilderFactory.newDocumentBuilder();
          Document doc = docBuilder.parse(new File(pathToRsDx));
          NodeList driverList = doc.getElementsByTagName("driver-class");
@@ -908,6 +914,7 @@ public class InstallUtil
     * 
     * @param port the port to check for availability
     */
+   @SuppressFBWarnings("UNENCRYPTED_SERVER_SOCKET") //Is just a port check no TLS required
    public static boolean portAvailable(int port)
    {
 
@@ -959,6 +966,8 @@ public class InstallUtil
       DocumentBuilder docBuilder;
       try
       {
+         docBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING,true);
+         docBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
          docBuilder = docBuilderFactory.newDocumentBuilder();
          Document doc = docBuilder.parse(new File(pathToServerConf));
          NodeList connectorList = doc.getElementsByTagName("Connector");
@@ -1292,7 +1301,15 @@ public class InstallUtil
                      URL urlList[] = new URL[size];
                      for (int i = 0; i < size; i++)
                         urlList[i] = m_jarUrls.get(i);
-                     ClassLoader loader = new URLClassLoader(urlList);
+
+                     ClassLoader loader = (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {
+                        @Override
+                        public Object run() {
+                           ClassLoader loader = new URLClassLoader(urlList);
+                           return loader;
+                        }
+                     });
+
                      driverClass = Class.forName(className, true, loader);
                      if (driverClass != null)
                      {
@@ -1635,6 +1652,7 @@ public class InstallUtil
     * @return <code>true</code> if server socket was successfully bound to a
     *         given port, <code>false</code> otherwise.
     */
+   @SuppressFBWarnings("UNENCRYPTED_SERVER_SOCKET") //Is just a port check no TLS required
    public static boolean isBindableTcpPort(String port)
    {
       if (port == null || port.trim().length() == 0)
