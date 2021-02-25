@@ -397,8 +397,6 @@
         <include name="jetty/upstream/**"/>
         <include name="jetty/defaults/**"/>
         <include name="jetty/base/webapps/**"/>
-        <include name="**/*.bat"/>
-        <include name="**/*.sh"/>
     </patternset>
 
     <patternset id="upgrade.excludes">
