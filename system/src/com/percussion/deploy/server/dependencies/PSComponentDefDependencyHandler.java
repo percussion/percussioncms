@@ -202,7 +202,7 @@ public class PSComponentDefDependencyHandler extends PSDataObjectDependencyHandl
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       // get the component itself
       PSDependencyData compData = getDepDataFromTable(dep, COMPONENT_TABLE, 
@@ -296,14 +296,14 @@ public class PSComponentDefDependencyHandler extends PSDataObjectDependencyHandl
       PSIdMapping compMapping = getIdMapping(ctx, compDep);
 
       // get the source row
-      List<PSJdbcRowData> tgtRowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> tgtRowList = new ArrayList<>();
       for (int i=0; i < rows.size(); i++)
       {
          PSJdbcRowData srcRow = (PSJdbcRowData)rows.get(i);
 
          // walk the columns and build a new row, xform the ids as we go
          // xform the ids for COMPPROP_ID and COMPONENT_ID
-         List<PSJdbcColumnData> tgtColList = new ArrayList<PSJdbcColumnData>();
+         List<PSJdbcColumnData> tgtColList = new ArrayList<>();
          Iterator srcCols = srcRow.getColumns();
          while (srcCols.hasNext())
          {
@@ -368,7 +368,7 @@ public class PSComponentDefDependencyHandler extends PSDataObjectDependencyHandl
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {
