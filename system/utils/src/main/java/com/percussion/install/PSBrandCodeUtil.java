@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -183,9 +184,12 @@ public class PSBrandCodeUtil
       // We will use xerces to create the document, as we do not want
       // this class to depend upon com.percussion.xml package.
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+      dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING,true);
+      dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
       dbf.setNamespaceAware(true);
       dbf.setValidating(false);
       DocumentBuilder db = dbf.newDocumentBuilder();
+
       return db.parse(in);
    }
 

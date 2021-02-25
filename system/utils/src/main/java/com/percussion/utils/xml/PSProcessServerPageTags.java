@@ -35,6 +35,8 @@ import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -59,6 +61,7 @@ import org.xml.sax.SAXException;
  */
 public class PSProcessServerPageTags extends Object
 {
+   private static final Logger log = LogManager.getLogger(PSProcessServerPageTags.class);
     /**
     * Constructs and initializes the state machine.
     *
@@ -150,7 +153,7 @@ public class PSProcessServerPageTags extends Object
             if (pos != -1)
                xslTarget.replace(pos, pos+key.length(), serverPageBlock);
             else
-               System.out.println("ERROR - postProcess: missing XSpLit markup key!" + key);
+               log.error("ERROR - postProcess: missing XSpLit markup key! {}" , key);
          }
       }
 
@@ -161,7 +164,7 @@ public class PSProcessServerPageTags extends Object
       {
          for (int i=0; i<topElements.size(); i++)
          {
-            String strTop = (String) topElements.elementAt(i);
+            String strTop = topElements.elementAt(i);
 
             xslTarget.insert(pos++, "\n");
             xslTarget.insert(pos, strTop);
@@ -220,7 +223,7 @@ public class PSProcessServerPageTags extends Object
 
       String strClosingTag = (String) m_closingTags.elementAt(tagIndex);
       String strOpeningTag = (String) m_openingTags.elementAt(tagIndex);
-      //System.out.println("Opening Tag is: " + strOpeningTag);
+      log.debug("Opening Tag is: {}" , strOpeningTag);
       int nextOpening = getNextOpeningTag(m_nextOpen+strOpeningTag.length(), tagIndex);
       int nextClosing = m_htmlSource.indexOf(strClosingTag,
                                              m_nextOpen+strOpeningTag.length());
@@ -237,7 +240,7 @@ public class PSProcessServerPageTags extends Object
       {
          // skip this and report error
          m_current = m_nextOpen+strOpeningTag.length();
-         System.out.println("ERROR - scriptIt: illegal source HTML! Missing closing tag.");
+         log.error("ERROR - scriptIt: illegal source HTML! Missing closing tag.");
       }
 
       while (nextOpening != -1 && (nextClosing > nextOpening || nextClosing == -1))
@@ -256,7 +259,7 @@ public class PSProcessServerPageTags extends Object
 
          String strKey = getPostProcessKey(isAttr);
          m_codeMap.put(strKey, m_htmlSource.substring(oldCurrent, m_current));
-         m_escapeMap.put(strKey, (String) m_disableEscaping.elementAt(tagIndex));
+         m_escapeMap.put(strKey, m_disableEscaping.elementAt(tagIndex));
 
          m_lastClose = m_current;
       }
@@ -264,7 +267,7 @@ public class PSProcessServerPageTags extends Object
       {
          // make sure we skip this and report error
          m_current = m_nextOpen+strOpeningTag.length();
-         System.out.println("ERROR - scriptIt: illegal source HTML! Unbalanced closing tags.");
+         log.error("ERROR - scriptIt: illegal source HTML! Unbalanced closing tags.");
       }
    }
 
@@ -279,7 +282,7 @@ public class PSProcessServerPageTags extends Object
    private boolean isAttribute(int end)
    {
       int close = m_lastClose;
-      int open = m_lastClose;
+      int open;
       while (close < end && close != -1)
       {
          open = m_htmlSource.indexOf("<", close);
@@ -344,7 +347,7 @@ public class PSProcessServerPageTags extends Object
          m_htmlTarget.append(m_htmlSource.substring(oldCurrent, m_current));
       }
       else
-         System.out.println("ERROR - skipIt: illegal state!");
+         log.error("ERROR - skipIt: illegal state!");
    }
 
    /**
@@ -444,7 +447,6 @@ public class PSProcessServerPageTags extends Object
     *
     * @throws IOException if the server page tag file is invalid.
     */
-   @SuppressWarnings("unchecked")
    private void initTagVectors() throws IOException
    {
       NodeList openings = m_serverPageTags.getElementsByTagName("opening");
@@ -458,9 +460,9 @@ public class PSProcessServerPageTags extends Object
       if (count != closings.getLength() || count != disableEscaping.getLength())
          throw new IOException("Unbalanced TagFile");
 
-      m_openingTags = new Vector(count);
-      m_closingTags = new Vector(count);
-      m_disableEscaping = new Vector(count);
+      m_openingTags = new Vector<>(count);
+      m_closingTags = new Vector<>(count);
+      m_disableEscaping = new Vector<>(count);
       for (int i=0; i<count; i++)
       {
          Node openingNode = openings.item(i).getFirstChild();
@@ -476,7 +478,7 @@ public class PSProcessServerPageTags extends Object
             m_disableEscaping.add(((Text) disableEscapingNode).getData());
       }
 
-      m_skipTags = new Vector(2);
+      m_skipTags = new Vector<>(2);
       m_skipTags.add("\"");
       m_skipTags.add("'");
    }
@@ -496,22 +498,24 @@ public class PSProcessServerPageTags extends Object
          FileReader reader = new FileReader(xmlFile);
          InputSource src = new InputSource(reader);
          DocumentBuilder db = PSXmlDocumentBuilder.getDocumentBuilder(false);
+
          return db.parse(src);
       }
       catch (FileNotFoundException e)
       {
-         System.err.println("Error: Could not find the JSP / APS tags file: " +
+         log.error("Error: Could not find the JSP / ASP tags file: {}" ,
                             xmlFile.getAbsolutePath());
       }
       catch (IOException e)
       {
-         System.err.println("Error: Could not initialize JSP / APS tags: " +
-                            e.toString());
+         log.error("Error: Could not initialize JSP / ASP tags: {}",
+                            e.getMessage());
+         log.debug(e.getMessage(),e);
       }
       catch (SAXException e)
       {
-         System.err.println("Error: Could not initialize JSP / APS tags: " +
-                            e.toString());
+         log.error("Error: Could not initialize JSP / ASP tags: {}",
+                            e.getMessage());
       }
 
       return null;
@@ -521,12 +525,12 @@ public class PSProcessServerPageTags extends Object
     * This is the hash table which will be used to store the removed server
     * page code.
     */
-   private Hashtable m_codeMap = new Hashtable();
+   private Hashtable m_codeMap = new Hashtable<>();
    /**
     * This is the hash table which will be used to store the enable/disable
     * escape information. The keys correspond to the keys in the code map.
     */
-   private Hashtable m_escapeMap = new Hashtable();
+   private Hashtable m_escapeMap = new Hashtable<>();
    /**
     * The key prefix used to mark removed server page code.
     */
@@ -580,11 +584,11 @@ public class PSProcessServerPageTags extends Object
    /**
     * All documentation opening tags.
     */
-   private static final Vector<String> ms_openDocTags = new Vector<String>();
+   private static final Vector<String> ms_openDocTags = new Vector<>();
    /**
     * All documentation closing tags.
     */
-   private static final Vector<String> ms_closeDocTags = new Vector<String>();
+   private static final Vector<String> ms_closeDocTags = new Vector<>();
    /**
     * Initialize the documentation tags.
     */

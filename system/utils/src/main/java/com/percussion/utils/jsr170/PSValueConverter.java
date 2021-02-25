@@ -23,8 +23,11 @@
  */
 package com.percussion.utils.jsr170;
 
+import com.percussion.utils.date.PSConcurrentDateFormat;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,7 +43,7 @@ import javax.jcr.ValueFormatException;
  */
 public class PSValueConverter
 {
-   static final SimpleDateFormat ms_sdf = new SimpleDateFormat(
+   static final PSConcurrentDateFormat ms_sdf = new PSConcurrentDateFormat(
          "yyyy-MM-dd HH:mm:ss");
 
    /**
@@ -121,7 +124,7 @@ public class PSValueConverter
     * @param millis number of millis
     * @return a calendar object, never <code>null</code>
     */
-   public static Calendar convertToCalendar(long millis)
+   public static synchronized Calendar convertToCalendar(long millis)
    {
       Calendar cal = new GregorianCalendar();
       cal.setTimeInMillis(millis);
@@ -155,6 +158,6 @@ public class PSValueConverter
       {
          throw new IllegalArgumentException("val may not be null");
       }
-      return new ByteArrayInputStream(val.getBytes());
+      return new ByteArrayInputStream(val.getBytes(StandardCharsets.UTF_8));
    }
 }

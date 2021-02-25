@@ -23,22 +23,9 @@
  */
 package com.percussion.utils.servlet;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -48,9 +35,21 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * The input validator filter "intercepts" a pre-defined set of input parameters
@@ -109,14 +108,12 @@ public class PSInputValidatorFilter implements Filter
     private enum RestrictType
     {
         // Only allow true, false, yes, or no
-        BOOLEAN(Pattern.compile("yes|no|true|false", Pattern.CASE_INSENSITIVE)), 
-        // Only allow valid guid/uuid values, so either 334 or 2-10-334
-        GUID(Pattern.compile("^([-]?\\d+[-]{1}\\d+[-]{1}\\d+)|(\\d+)$")), 
+        BOOLEAN(Pattern.compile("yes|no|true|false", Pattern.CASE_INSENSITIVE)),
         NOCONTROLCODE(Pattern.compile("[^\\x00\\x0a\\x0d]*")), // Do not allow control codes x00, x0a, or x0d
         NOLTGT(Pattern.compile("[^<>]*")), // Do not allow less than(<) or greater than (>)
         NOQUOTES(Pattern.compile("[^\"']*")), // Do not allow quotes or apostrophes
         // Only allow a numeric, i.e. 10 or 4.5
-        NUMERIC(Pattern.compile("(((-|\\+)?[0-9]+(\\.[0-9]+)?)+|[.]?[0-9]+)")); 
+        NUMERIC(Pattern.compile("\\d+.\\d+"));
         
         private Pattern pattern;
 
@@ -135,6 +132,7 @@ public class PSInputValidatorFilter implements Filter
 
     public PSInputValidatorFilter()
     {
+        //ctor
     }
     
     /**
@@ -154,9 +152,11 @@ public class PSInputValidatorFilter implements Filter
        }
        else
        {
-          log.warn("IP: " + request.getRemoteAddr() + " Bad Parameter \"" + badParam.getParameterName() +
-                "\" with value: " + badParam.getParameterValue() + " isIllegalParameterName: " 
-                + badParam.isIllegalParameterName());
+          log.warn("IP: {}  Bad Parameter {} with value: {} isIllegalParameterName: {}",  request.getRemoteAddr(),
+                  badParam.getParameterName() ,
+                  badParam.getParameterValue(),
+                  badParam.isIllegalParameterName());
+
           modifyResponse(response, badParam);
           return false;
        }      
@@ -167,14 +167,14 @@ public class PSInputValidatorFilter implements Filter
     {
        try
        {
-          String pname = badParam.isIllegalParameterName() ? "" : badParam.getParameterName();
-          response.sendError(RESPONSE_ERROR_STATUS, "Unprocessable value for parameter \"" + pname + "\"");
+          response.sendError(RESPONSE_ERROR_STATUS, "Unprocessable value for parameter.");
        }
        catch (IOException e)
        {
           // We're already stopping the request, the error response is just a formality.
           // It doesn't matter if we can't print to a client.
-          log.error(e.getLocalizedMessage(), e);
+          log.error("Bad Parameter: {} Error: {}",badParam,e.getMessage());
+          log.debug(e.getMessage(),e);
        }
     }
 
@@ -185,9 +185,9 @@ public class PSInputValidatorFilter implements Filter
      */
     private static class ParamError
     {
-        private String parameterName;
+        private final String parameterName;
 
-        private String parameterValue;
+        private final String parameterValue;
 
         private boolean illegalParameterName;
 
@@ -246,8 +246,9 @@ public class PSInputValidatorFilter implements Filter
 
         }
         return null;
-    }    
-   
+    }
+
+    @SuppressFBWarnings("URLCONNECTION_SSRF_FD")
     private void doLoadCustomProps(String propsFilePath)
     {
         // Load custom restrictions file
@@ -258,7 +259,7 @@ public class PSInputValidatorFilter implements Filter
         }
         try {
             URL url = new URL(propsFilePath);
-            log.info("Loading custom properties: " + url.toString());
+            log.info("Loading custom properties: {}" , url);
             try (InputStream is = url.openStream()) {
                 this.doLoadProperties(is); // It will be closed by loadProperties.
             }
