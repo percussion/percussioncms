@@ -28,10 +28,11 @@ import java.io.File;
 
 public class PSExecStagingDTSSqlStmt  extends PSExecDTSSqlStmt {
 
+    @Override
     protected  String getDBPropertyFile(){
-        String propFile = getRootDir() + File.separator
+        return getRootDir() + File.separator
                 + "/Staging/Deployment/Server/conf/perc/perc-datasources.properties";
-        return propFile;
+
     }
 
 }
