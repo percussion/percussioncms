@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,7 +25,12 @@ package com.percussion.utils.jdbc;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Utility class for JDBC operations
@@ -178,7 +183,10 @@ public class PSJdbcUtils
     * The path to the mysql database driver, relative to the root directory.
     */
    public static final String MYSQL_DRIVER_LOCATION = "/jetty/base/lib/jdbc/mysql-connector.jar";
-   
+   public static final String MYSQL_DTS_DRIVER_LOCATION="/Deployment/Server/common/lib/mysql-connector.jar";
+   public static final String MYSQL_STAGING_DTS_DRIVER_LOCATION="/Staging/Deployment/Server/common/lib/mysql-connector.jar";
+
+
    /**
     * Additional connection url parameters required to use unicode (UTF-8) with mysql. 
     */
