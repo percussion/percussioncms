@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -131,8 +131,6 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     private IPSWidgetAssetRelationshipService widgetAssetRelationshipService;
     
     private IPSPageCatalogService pageCatalogService;
-    
-    //private IPSTemplateDao templateDao;
     
     public static final String REGION_CONTENT = "perc-content";
     
@@ -512,9 +510,8 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
             importContext.setUserAgent(userAgent);
 
             // Execute the Job to import the template from URL
-            Long jobId = asyncJobService.startJob(IMPORT_TEMPLATE_JOB_BEAN, importContext);
+            return asyncJobService.startJob(IMPORT_TEMPLATE_JOB_BEAN, importContext);
 
-            return new Long(jobId);
         } catch (IPSFolderService.PSWorkflowNotFoundException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
@@ -539,8 +536,8 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
             if (jobResult != null)
             {
                 PSSiteImportCtx importContext = (PSSiteImportCtx) jobResult;
-                PSTemplateSummary newTemplate = findTemplateById(importContext.getTemplateId());
-                return newTemplate;
+                return findTemplateById(importContext.getTemplateId());
+
             }
         }
         return null;
@@ -607,8 +604,8 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
         }
         
         String siteId = ct.getSiteIds().get(0); // ID is name for now
-        PSTemplateSummary sum = templateService.createTemplate(ct.getName(), ct.getSourceTemplateId(), siteId);
-        return sum;
+        return templateService.createTemplate(ct.getName(), ct.getSourceTemplateId(), siteId);
+
     }
     
     protected List<PSTemplateSummary> assignTemplates(List<AssignTemplate> assignTemplates) throws PSDataServiceException {
@@ -671,7 +668,7 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
                 templateService.save(fullTemplate);
         }
         PSTemplateSummary templateSummary = templateService.find(templateId);
-        if (newSites.size() > 0)
+        if (!newSites.isEmpty())
         {
             templateSummary.setImageThumbPath(templateService.getTemplateThumbPath(templateSummary, newSites.get(0).getName()));
         }
