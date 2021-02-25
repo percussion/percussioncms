@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -46,6 +47,7 @@ import org.junit.rules.TemporaryFolder;
  * @author erikserating
  *
  */
+@SuppressFBWarnings({"HARD_CODE_PASSWORD", "HARD_CODE_PASSWORD", "PATH_TRAVERSAL_IN", "PATH_TRAVERSAL_IN", "PATH_TRAVERSAL_IN", "PATH_TRAVERSAL_IN"})
 public class PSSecurePropertyTest
 {
 

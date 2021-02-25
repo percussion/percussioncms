@@ -25,7 +25,7 @@
 package com.percussion.delivery.utils.security;
 
 
-import com.percussion.delivery.utils.spring.PSPropertiesFactoryBean;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,11 +41,12 @@ import java.util.stream.Stream;
  * the JRE so that they can be re-encrypted by the new version
  * of the JRE after upgrade.
  */
+@SuppressFBWarnings({"PATH_TRAVERSAL_IN", "PATH_TRAVERSAL_IN"})
 public class PSDecryptPropertiesPostUpgrade {
 
     private static final Logger log = LogManager.getLogger(PSDecryptPropertiesPostUpgrade.class);
 
-    public static String[] CONF_DIRS={"Deployment/Server/conf/perc", "Staging/Deployment/Server/conf/perc"};
+    protected static final String[] CONF_DIRS={"Deployment/Server/conf/perc", "Staging/Deployment/Server/conf/perc"};
 
     public static void main(String[] args){
 
@@ -58,7 +59,7 @@ public class PSDecryptPropertiesPostUpgrade {
         if(prodDTSConf.toFile().exists() && prodDTSConf.toFile().isDirectory()){
            try (Stream<Path> files = Files.list(prodDTSConf)){
 
-               files.forEach(p -> decryptProperties(p));
+               files.forEach(PSDecryptPropertiesPostUpgrade::decryptProperties);
 
            } catch (IOException e) {
                log.error(e.getMessage());
@@ -69,7 +70,7 @@ public class PSDecryptPropertiesPostUpgrade {
         if(stageDTSConf.toFile().exists() && stageDTSConf.toFile().isDirectory()){
             try (Stream<Path> files = Files.list(stageDTSConf)){
 
-                files.forEach(p -> decryptProperties(p));
+                files.forEach(PSDecryptPropertiesPostUpgrade::decryptProperties);
 
             } catch (IOException e) {
                 log.error(e.getMessage());
@@ -83,7 +84,8 @@ public class PSDecryptPropertiesPostUpgrade {
     public static void decryptProperties(Path p){
 
         if (p.getFileName().endsWith(".properties")) {
-            System.out.println("Processing property file: " + p.toString());
+
+            log.info("Processing property file: {}" , p);
             PSSecureProperty.unsecureProperties(p.toFile());
 
         }

@@ -28,6 +28,7 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSXMLDomUtil;
+import com.percussion.utils.date.PSConcurrentDateFormat;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.net.URL;
@@ -240,7 +241,7 @@ public class PSContentListItem implements Comparable
       Element modifyDateElem = PSXMLDomUtil.getNextElementSibling(deliveryElem,
             IPSDTDPublisherEdition.ELEM_MODIFYDATE);
       String modifyDate = PSXMLDomUtil.getElementData(modifyDateElem);
-      SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+      PSConcurrentDateFormat dateFormat = new PSConcurrentDateFormat(DATE_FORMAT_PATTERN);
       if (modifyDate.trim().length() > 0)
       {
          try
