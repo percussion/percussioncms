@@ -63,12 +63,23 @@ public class PSConcurrentDateFormat {
 
     };
 
+    public Date parse(String date) throws ParseException {
+        return toDate(date);
+    }
+
     public Date toDate(String dateString) throws ParseException {
         return df.get().parse(dateString);
+    }
+
+    public String format(Date d){
+        return toString(d);
     }
 
     public String toString(Date d) {
         return df.get().format(d);
     }
 
+    public String format(Object value) {
+        return df.get().format(value);
+    }
 }
