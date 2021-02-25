@@ -606,7 +606,7 @@ public class PSAaRelationship extends PSRelationship
    public List<PSRelationshipPropertyData> getAllAaUserProperties()
    {
       List<PSRelationshipPropertyData> result = 
-         new ArrayList<PSRelationshipPropertyData>(
+         new ArrayList<>(
                super.getAllUserProperties().size());
       for (PSRelationshipPropertyData prop : super.getAllUserProperties())
       {

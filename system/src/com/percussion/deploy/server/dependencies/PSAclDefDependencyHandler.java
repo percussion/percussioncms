@@ -115,7 +115,7 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
       PSAclImpl acl = findAclByDependencyID(dep.getDependencyId());
 
       if ( acl != null )    
@@ -310,7 +310,7 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
          throw new IllegalArgumentException("dep wrong type");
 
       // pack the data into the files
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       PSAclImpl acl = findAclByDependencyID(dep.getDependencyId());
 
@@ -418,7 +418,7 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
 
       PSTypeEnum type = PSTypeEnum.valueOf(acl.getObjectType());
       
-      List<String> depTypes = new ArrayList<String>();
+      List<String> depTypes = new ArrayList<>();
       for (String t : PSDeploymentHandler.getInstance()
          .getDependencyManager().getDeploymentType(type))
       {
@@ -500,7 +500,7 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
          
          
          
-         List<IPSAcl> aclList = new ArrayList<IPSAcl>();
+         List<IPSAcl> aclList = new ArrayList<>();
          aclList.add(tmp2);
          boolean requireSave = false;
          try
@@ -609,7 +609,7 @@ public class PSAclDefDependencyHandler extends PSDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {

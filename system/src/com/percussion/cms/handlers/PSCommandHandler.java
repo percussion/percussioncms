@@ -337,7 +337,7 @@ public abstract class PSCommandHandler extends PSDataHandler
 
       PSApplicationFlow appFlow = m_ce.getApplicationFlow();
       List<PSConditionalUrlEvaluator> reqEvaluators = 
-         new ArrayList<PSConditionalUrlEvaluator>(4);
+         new ArrayList<>(4);
       Iterator requests = appFlow.getRedirects(commandName);
 
       if (requests == null || !requests.hasNext())
@@ -405,7 +405,7 @@ public abstract class PSCommandHandler extends PSDataHandler
       String paramDelimiter = "=";
 
       // 1st collect all parameters that define replacement values
-      Map<String, String> replaceParameters = new HashMap<String, String>();
+      Map<String, String> replaceParameters = new HashMap<>();
       if (url.indexOf(replacementParamName) >= 0)
       {
          StringTokenizer parameters = new StringTokenizer(url, "?&");
@@ -851,7 +851,7 @@ public abstract class PSCommandHandler extends PSDataHandler
             return null;
 
          List<PSExtensionRunner> preparedExits = 
-            new ArrayList<PSExtensionRunner>();
+            new ArrayList<>();
          PSDataHandler.loadExtensions(m_appHandler, exitSet,
             IPSUdfProcessor.class.getName(), preparedExits);
          if (preparedExits.isEmpty())
@@ -1721,7 +1721,7 @@ public abstract class PSCommandHandler extends PSDataHandler
     * {@link #prepareInputTranslations()}, never modified after that.
     */
    protected List<PSConditionalExitEvaluator> m_itemInputTranslations = 
-      new ArrayList<PSConditionalExitEvaluator>();
+      new ArrayList<>();
 
    /**
     * List of PSConditionalExitEvaluator objects to use for item output
@@ -1729,7 +1729,7 @@ public abstract class PSCommandHandler extends PSDataHandler
     * {@link #prepareOutputTranslations()}, never modified after that.
     */
    protected List<PSConditionalExitEvaluator> m_itemOutputTranslations = 
-      new ArrayList<PSConditionalExitEvaluator>();
+      new ArrayList<>();
 
    /**
     * Key in the next number table for new content ids.
@@ -1753,7 +1753,7 @@ public abstract class PSCommandHandler extends PSDataHandler
     * field's submitName as the key.
     * Never <code>null</code> or empty.
     */
-   protected Map<Integer, Map<Integer, Object>>  m_fieldEvaluatorMap = new HashMap<Integer, Map<Integer, Object>>();
+   protected Map<Integer, Map<Integer, Object>>  m_fieldEvaluatorMap = new HashMap<>();
 
    /**
     * This is the (temporary) HTML parameter that is used to pass the access
@@ -1798,7 +1798,7 @@ public abstract class PSCommandHandler extends PSDataHandler
     */
    protected Map<String, Map<String, PSTransformRunner>> 
       m_inputFieldTranslations = 
-         new HashMap<String, Map<String, PSTransformRunner>>();
+         new HashMap<>();
 
    /**
     * The store for all field output translations of the entire item. Stored
@@ -1807,7 +1807,7 @@ public abstract class PSCommandHandler extends PSDataHandler
     * <code>null</code> after that.
     */
    protected Map<String, PSTransformRunner> m_outputFieldTranslations = 
-      new HashMap<String, PSTransformRunner>();
+      new HashMap<>();
 
    /**
     * List of {@link IPSEditorChangeListener} objects to notify when item is
@@ -1815,7 +1815,7 @@ public abstract class PSCommandHandler extends PSDataHandler
     * Listeners are added using
     * {@link #addEditorChangeListener(IPSEditorChangeListener)}.
     */
-   protected List<IPSEditorChangeListener> m_changeListeners = new CopyOnWriteArrayList<IPSEditorChangeListener>();
+   protected List<IPSEditorChangeListener> m_changeListeners = new CopyOnWriteArrayList<>();
 
    /**
     * An extractor to get the workflowid of the processed content item from

@@ -378,7 +378,7 @@ public class PSBackendCataloger
    public static List getRhythmyxRoles(String subjectName, int subjectType)
    {
       // use a set to remove duplicates
-      Set<String> resultSet = new HashSet<String>(); 
+      Set<String> resultSet = new HashSet<>();
       resultSet.addAll(
          PSRoleMgrLocator.getBackEndRoleManager().getRhythmyxRoles(subjectName, 
             subjectType));
@@ -458,7 +458,7 @@ public class PSBackendCataloger
       TreeSet results = new TreeSet(PSSubject.getSubjectIdentifierComparator());
 
       Map<String, PSSubject> subjectMap = 
-         new LinkedHashMap<String, PSSubject>();
+         new LinkedHashMap<>();
       
       PSXmlTreeWalker tree = new PSXmlTreeWalker(parent);
 

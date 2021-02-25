@@ -460,7 +460,7 @@ public class PSAutotuneCache
     * Maintains relationships between the ehcache region name and the
     * corresponding SELECT COUNT(*) result from the database.
     */
-   private HashMap<String, Integer> ehcacheDbRowCountValues = new HashMap<String, Integer>();
+   private HashMap<String, Integer> ehcacheDbRowCountValues = new HashMap<>();
 
    /**
     * Access to the cache manager.

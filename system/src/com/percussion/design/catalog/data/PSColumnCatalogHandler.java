@@ -210,7 +210,7 @@ public class PSColumnCatalogHandler implements IPSCatalogHandler
       Document doc = cataloger.catalog(req);
 
       // store the column definitions in a list
-      List<PSCatalogedColumn> l = new ArrayList<PSCatalogedColumn>();
+      List<PSCatalogedColumn> l = new ArrayList<>();
       PSXmlTreeWalker w = new PSXmlTreeWalker(doc);
       for (Element e = w.getNextElement("Column",
          PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN
