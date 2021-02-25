@@ -31,7 +31,7 @@
     <parent>
         <artifactId>delivery-tier-suite</artifactId>
         <groupId>com.percussion.deliverytier</groupId>
-        <version>8.0.2.1</version>
+        <version>8.0.2.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>perc-tomcat-common</artifactId>

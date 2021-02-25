@@ -27,11 +27,11 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.2.1</version>
+        <version>8.0.2.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>perc-system</artifactId>
-  <version>8.0.2.1</version>
+  <version>8.0.2.2</version>
     <packaging>jar</packaging>
     <build>
         <sourceDirectory>src</sourceDirectory>
@@ -398,21 +398,21 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>servlet-utils</artifactId>
-            <version>8.0.2.1</version>
+            <version>8.0.2.2</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>servlet-utils</artifactId>
-            <version>8.0.2.1</version>
+            <version>8.0.2.2</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-simple</artifactId>
-            <version>8.0.2.1</version>
+            <version>8.0.2.2</version>
         </dependency>
 
         <dependency>
@@ -427,13 +427,13 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>tablefactory</artifactId>
-            <version>8.0.2.1</version>
+            <version>8.0.2.2</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>webservices</artifactId>
-            <version>8.0.2.1</version>
+            <version>8.0.2.2</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->
