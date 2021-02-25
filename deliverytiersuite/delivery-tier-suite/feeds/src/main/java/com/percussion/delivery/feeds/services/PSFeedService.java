@@ -31,11 +31,12 @@ import com.percussion.delivery.feeds.data.PSFeedItem;
 import com.percussion.delivery.listeners.IPSServiceDataChangeListener;
 import com.percussion.delivery.services.PSAbstractRestService;
 import com.percussion.delivery.utils.security.PSHttpClient;
-import com.percussion.security.SecureStringUtils;
 import com.percussion.security.PSEncryptor;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.security.ToDoVulnerability;
 import com.rometools.rome.io.FeedException;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.validator.routines.InetAddressValidator;
@@ -56,7 +57,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -90,6 +90,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
 
+import static com.percussion.security.SecureStringUtils.stripNonHttpProtocols;
+
 /**
  * The feed service is responsible for generating RSS/ATOM feeds. The service
  * also collects feed descriptors from the CM1 which provide meta data about the
@@ -99,6 +101,7 @@ import java.util.TimeZone;
  * @author erikserating
  * 
  */
+@SuppressFBWarnings("URLCONNECTION_SSRF_FD") // It is validated - only http and https urls are allowed.
 @Path("/rss")
 @Component
 @Scope("singleton")
@@ -274,7 +277,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
                 throw new WebApplicationException(403);
               }
 
-            decodedUrl = SecureStringUtils.stripNonHttpProtocols(decodedUrl);
+            decodedUrl = stripNonHttpProtocols(decodedUrl);
 
             if(StringUtils.isEmpty(decodedUrl)){
                 //Url provided was not valid http or https
@@ -297,11 +300,9 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
             url = new URL(decodedUrl);
             // properly encode
             url = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef()).toURL();
-            
-            if(log.isDebugEnabled()){
-        		log.debug("The Url for external feed : {}" , url.toString());
-        	}
-            
+
+            log.debug("The Url for external feed : {}" , url);
+
             con = (HttpURLConnection) url.openConnection();
             con.setRequestProperty("Accept-Charset", "utf-8, ISO-8859-1;q=0.7,*;q=0.7");
             con.setRequestMethod("GET");
