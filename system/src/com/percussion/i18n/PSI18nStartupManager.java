@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,24 +25,22 @@ package com.percussion.i18n;
 
 import com.percussion.i18n.rxlt.PSCommandLineProcessor;
 import com.percussion.i18n.rxlt.PSRxltMain;
-
 import com.percussion.server.PSServer;
-
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
-
+import com.percussion.utils.date.PSConcurrentDateFormat;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
-import java.io.*;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.Properties;
 
@@ -61,7 +59,7 @@ public class PSI18nStartupManager implements IPSNotificationListener {
 
 
     private static final String pattern = "dd_M_yyyy-hh_mm_ss.";
-    private static final DateFormat dateFormat = new SimpleDateFormat(pattern);
+    private static final PSConcurrentDateFormat dateFormat = new PSConcurrentDateFormat(pattern);
 
 
     public void setNotificationService(
@@ -72,10 +70,9 @@ public class PSI18nStartupManager implements IPSNotificationListener {
     private static File generateBackupFile(File file) {
         String fileName = FilenameUtils.getBaseName(file.getAbsolutePath());
         String fileExtension = FilenameUtils.getExtension(file.getName());
-        return new File(file.getParent(),new StringBuilder().append(fileName).append("-invalid-")
-                .append(dateFormat.format(new Date()))
-                .append(fileExtension)
-                .toString());
+        return new File(file.getParent(), fileName + "-invalid-" +
+                dateFormat.format(new Date()) +
+                fileExtension);
     }
 
 
@@ -162,10 +159,8 @@ public class PSI18nStartupManager implements IPSNotificationListener {
 
         if (propFile.exists()) {
             Properties props = new Properties();
-            InputStream in = null;
 
-            try {
-                in = new FileInputStream(propFile);
+            try(InputStream in = new FileInputStream(propFile)) {
                 props.load(in);
                 doRun = "true".equalsIgnoreCase(props.getProperty(
                             RUN_AT_STARTUP, "false"));
@@ -177,8 +172,6 @@ public class PSI18nStartupManager implements IPSNotificationListener {
             } catch (IOException e) {
                 m_log.warn("Unable to load file " + propFile +
                     ", Language Tool will not run.", e);
-            } finally {
-                IOUtils.closeQuietly(in);
             }
         } else {
             m_log.warn("Unable to locate file " + propFile +
@@ -200,16 +193,11 @@ public class PSI18nStartupManager implements IPSNotificationListener {
         Properties props = new Properties();
         props.setProperty(RUN_AT_STARTUP, Boolean.toString(value));
 
-        OutputStream out = null;
-
-        try {
-            out = new FileOutputStream(propFile);
+        try(OutputStream out =new FileOutputStream(propFile) ) {
             props.store(out, null);
         } catch (IOException e) {
             m_log.warn("Unable to write to file " + propFile + ": " +
                 e.getLocalizedMessage(), e);
-        } finally {
-            IOUtils.closeQuietly(out);
         }
     }
 }
