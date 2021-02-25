@@ -1212,7 +1212,7 @@ public class PSAction extends PSVersionableDbComponent
    /**
     * The list of action/menu types.
     */
-   private static final List<String> ms_menuTypes = new ArrayList<String>();
+   private static final List<String> ms_menuTypes = new ArrayList<>();
    static
    {
       ms_menuTypes.add(TYPE_MENUITEM);
@@ -1223,7 +1223,7 @@ public class PSAction extends PSVersionableDbComponent
    /**
     * The list of action handlers.
     */
-   private static final List<String> ms_handlers = new ArrayList<String>();
+   private static final List<String> ms_handlers = new ArrayList<>();
    static
    {
       ms_handlers.add(HANDLER_CLIENT);

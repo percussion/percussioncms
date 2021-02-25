@@ -67,7 +67,7 @@ public class PSBackEndDirectoryCataloger extends PSDirectoryCataloger
    public String getAttribute(PSSubject user, String attributeName)
    {
       String attributeVal = null;
-      Collection<String> attrs = new ArrayList<String>(1);
+      Collection<String> attrs = new ArrayList<>(1);
       attrs.add(attributeName);
       PSSubject subject = getAttributes(user, attrs);
       PSAttribute attr = subject.getAttributes().getAttribute(
@@ -166,7 +166,7 @@ public class PSBackEndDirectoryCataloger extends PSDirectoryCataloger
     */
    private PSSubject getMatchingSubject(String name, Collection attributeNames)
    {
-      HashMap<String, String> filters = new HashMap<String, String>();
+      HashMap<String, String> filters = new HashMap<>();
       filters.put(PSBackendCataloger.FILTER_SUBJECT_NAME, name);
       Set subjects = PSBackendCataloger.getSubjects(filters, attributeNames);
       if (subjects.isEmpty())

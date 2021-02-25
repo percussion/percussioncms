@@ -283,7 +283,7 @@ public class PSColumnCatalogHandler
    private static final int COLNO_ALLOWS_NULL      = 18;
    
    private static Map<String, String> ms_driverMap = 
-      new HashMap<String, String>();
+      new HashMap<>();
    static 
    {
       ms_driverMap.put("psxml", "com.percussion.data.jdbc.PSXmlDriver");

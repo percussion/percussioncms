@@ -116,8 +116,8 @@ public class PSAllowAllCtypeWorkflowsUpdater implements IPSComponentUpdater
          public List<Integer> getValues()
          {
             // load all workflow summaries
-            List<Integer> wfIds = new ArrayList<Integer>();
-            List<IPSGuid> wfGuids = new ArrayList<IPSGuid>();
+            List<Integer> wfIds = new ArrayList<>();
+            List<IPSGuid> wfGuids = new ArrayList<>();
             IPSWorkflowService wfSvc = PSWorkflowServiceLocator.getWorkflowService();
             List<PSObjectSummary> sums = wfSvc.findWorkflowSummariesByName(null);
             for (PSObjectSummary sum : sums)

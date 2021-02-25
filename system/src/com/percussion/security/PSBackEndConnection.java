@@ -123,7 +123,7 @@ public class PSBackEndConnection
        * Save the properties that remain - this is the password column, plus
        * any user defined attributes.
        */
-      m_columns = new ArrayList<Object>();
+      m_columns = new ArrayList<>();
       m_columns.addAll(localProps.values());
       
       /**
