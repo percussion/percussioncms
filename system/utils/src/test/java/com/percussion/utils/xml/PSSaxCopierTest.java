@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
@@ -75,6 +76,8 @@ public class PSSaxCopierTest extends TestCase
    public void testCopier() throws Exception
    {
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+      dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+      dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
       SAXParserFactory spf = SAXParserFactory.newInstance();
       StringWriter stringWriter = new StringWriter();
 

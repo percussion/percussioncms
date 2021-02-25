@@ -24,9 +24,12 @@
 
 package com.percussion.utils.testing;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 
+@SuppressFBWarnings("UNENCRYPTED_SERVER_SOCKET")
 public class PSTestNetUtils {
 
     /**
@@ -39,6 +42,7 @@ public class PSTestNetUtils {
      * @return a free port number on localhost
      * @throws IllegalStateException if unable to find a free port
      */
+    @SuppressFBWarnings("UNENCRYPTED_SERVER_SOCKET") //Is just a port check no TLS required
     public static int findFreePort() {
         ServerSocket socket = null;
         try {

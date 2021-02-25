@@ -80,7 +80,7 @@ import java.util.stream.Collectors;
 
 public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdapter<DefaultConfigurationContextImpl> {
 
-    public static Logger ms_log = LogManager.getLogger(JettyDatasourceConfigurationAdapter.class);
+    public static final Logger ms_log = LogManager.getLogger(JettyDatasourceConfigurationAdapter.class);
 
 
     private Path dsPropertiesFile = Paths.get("jetty","base","etc","perc-ds.properties");
@@ -120,7 +120,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
         List<IPSJndiDatasource> dataSources = containerUtils.getDatasources();
 
         loadRxDatasources(rxDir.resolve(dsXmlFile).toFile(), configurationContext.getEncKey(), properties, dataSources);
-        if (dataSources!=null || dataSources.size()<1)
+        if (dataSources!=null && !dataSources.isEmpty())
             containerUtils.setDatasources(dataSources);
         PSDatasourceResolver resolver = getDataSourceResolver(rxDir);
 
@@ -143,7 +143,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
 
         } catch (IOException | SAXException e) {
-            ms_log.error("Error saving jetty datasoruce file: {0}" , PSExceptionUtils.getMessageForLog(e));
+            ms_log.error("Error saving jetty datasource file: {}" , PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -408,23 +408,23 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
                     for (int i = 0; i < childNodes.getLength(); i++) {
                         Node argNode = childNodes.item(i);
-                        if (argNode.getNodeName() == "Arg") {
+                        if (argNode.getNodeName().equals("Arg")) {
                             if (argCount++ == 1) {
-                                ms_log.debug("Found datasource name arg=" + argNode.getTextContent());
+                                ms_log.debug("Found datasource name arg={}", argNode.getTextContent());
                                 dsValue = StringUtils.substringAfter(argNode.getTextContent(), "java:");
 
                                 if (dsValue != null) {
                                     IPSJndiDatasource ds = idNameMap.get(dsValue);
                                     if (ds == null) {
                                         node.getParentNode().removeChild(node);
-                                        ms_log.debug("Removing ds entry " + dsValue);
+                                        ms_log.debug("Removing ds entry {}", dsValue);
                                         updated = true;
                                     } else {
                                         if (propIndex != ds.getId())
                                             ds.setId(propIndex);
 
                                         idNameMap.remove(dsValue);
-                                        ms_log.debug("Found " + dsValue);
+                                        ms_log.debug("Found {}", dsValue);
                                     }
 
                                 }
@@ -457,7 +457,8 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
                 Node entryNode = xml.getElementsByTagName("New").item(0);
 
                 PSXmlDocumentBuilder.copyTree(doc, root, entryNode);
-                ms_log.debug("New items " + PSXmlDocumentBuilder.toString(doc));
+                String d = PSXmlDocumentBuilder.toString(doc);
+                ms_log.debug("New items {}", d);
                 idNameMap.get(ds.getName()).setId(maxId);
             }
 
@@ -504,7 +505,8 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
                 }
                 updated = updateJettyDatasourceXml(datasources, doc);
             } catch (IOException | SAXException e) {
-                ms_log.error("Could not parse or update jetty datasource configuration, so recreating " + file.getAbsolutePath(), e);
+                ms_log.error("Could not parse or update jetty datasource configuration, so recreating {} Error: {}", file.getAbsolutePath(), e.getMessage());
+                ms_log.debug(e.getMessage(),e);
                 //Incase File is corrupted, create a new file.
                 doc = createNewDatasourceXml();
                 updated = updateJettyDatasourceXml(datasources, doc);
@@ -581,7 +583,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
         }
         catch (IOException e)
         {
-            ms_log.error("Unable to save properties file "+ dbPropertiesFile.getAbsolutePath());
+            ms_log.error("Unable to save properties file {}", dbPropertiesFile.getAbsolutePath());
         }
     }
 
