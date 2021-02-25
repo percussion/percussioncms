@@ -186,7 +186,7 @@ public class PSBackEndTableDirectoryCataloger extends PSDirectoryCataloger
    public Collection findUsers(PSConditional[] criteria,
       Collection attributeNames)
    {
-      Collection<PSSubject> subjects = new ArrayList<PSSubject>();
+      Collection<PSSubject> subjects = new ArrayList<>();
       
       if (criteria == null || criteria.length == 0)
          criteria = new PSConditional[] {null};

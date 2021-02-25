@@ -263,7 +263,7 @@ public class PSActionPanelServlet extends HttpServlet
          List<PSAssemblyTemplateWs> templates = 
             mgr.loadAssemblyTemplates(null, ctypeName);
          List<PSAssemblyTemplateWs> siteTemplates = 
-            new ArrayList<PSAssemblyTemplateWs>();
+            new ArrayList<>();
          IPSGuid siteGuid = PSGuidManagerLocator.getGuidMgr()
          .makeGuid(siteId, PSTypeEnum.SITE);
          //Filter the templates by site first
@@ -347,7 +347,7 @@ public class PSActionPanelServlet extends HttpServlet
          Filter filter)
    {
       List<IPSAssemblyTemplate> possibilities = 
-         new ArrayList<IPSAssemblyTemplate>();
+         new ArrayList<>();
       for (PSAssemblyTemplateWs t : templates)
       {
          if (filter.accept(t.getTemplate()))

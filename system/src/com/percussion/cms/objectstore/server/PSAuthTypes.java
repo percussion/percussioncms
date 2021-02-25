@@ -229,7 +229,7 @@ public class PSAuthTypes implements Observer
     * the resource in the syntax of <RxApp>/<resource>. Never <code>null</code>
     * and rebuilt everytime the config file is modified.
     */
-   private Map<String,String> m_authTypeMap = new HashMap<String,String>();
+   private Map<String,String> m_authTypeMap = new HashMap<>();
 
    /**
     * Logger to write the error log.

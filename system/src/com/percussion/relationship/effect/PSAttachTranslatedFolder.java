@@ -246,8 +246,8 @@ public class PSAttachTranslatedFolder extends PSEffect
           * down, then follow the relationship up to find all translated 
           * parent folders.
           */
-         List<PSLocator> originalParents = new ArrayList<PSLocator>();
-         List<PSLocator> newParents = new ArrayList<PSLocator>();
+         List<PSLocator> originalParents = new ArrayList<>();
+         List<PSLocator> newParents = new ArrayList<>();
          Iterator walker = folderParents.iterator();
          while (walker.hasNext())
          {
@@ -285,7 +285,7 @@ public class PSAttachTranslatedFolder extends PSEffect
          newParents.addAll(originalParents);
 
          // create the new relationships
-         List<PSLocator> list = new ArrayList<PSLocator>();
+         List<PSLocator> list = new ArrayList<>();
          list.add(depLocator);
          PSServerFolderProcessor folderProc = PSServerFolderProcessor.getInstance();
          for (int i=0; i<newParents.size(); i++)

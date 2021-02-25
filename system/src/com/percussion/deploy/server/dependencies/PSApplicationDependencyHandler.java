@@ -306,7 +306,7 @@ public class PSApplicationDependencyHandler
       if (!dep.getObjectType().equals(getType()))
          throw new IllegalArgumentException("dep wrong type for this handler");
 
-      List<PSDatasourceMap> infoList = new ArrayList<PSDatasourceMap>();
+      List<PSDatasourceMap> infoList = new ArrayList<>();
 
       try
       {
