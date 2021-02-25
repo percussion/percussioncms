@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -34,15 +34,39 @@ import com.percussion.utils.string.PSStringUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.PrefixFileFilter;
 import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.*;
-import java.net.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.ServerSocket;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -60,10 +84,12 @@ public class InstallUtil
    private static final String JETTY_BASE_LIB="jetty/base/lib/";
    private static final String JETTY_BASE_JDBC="jetty/base/lib/jdbc";
    private static final String JETTY_BASE_PERC="jetty/base/lib/perc";
+   private static final String DTS_COMMON_LIB="Deployment/Server/common/lib";
+   private static final String STAGING_DTS_COMMON_LIB="Staging/Deployment/Server/common/lib";
 
    private static ClassLoader expandClasspath(){
 
-      URL[] urlList = new URL[5];
+      URL[] urlList = new URL[7];
 
 
       try {
@@ -72,8 +98,10 @@ public class InstallUtil
          urlList[2] = Paths.get(InstallUtil.m_rootDir + File.separator + JETTY_BASE_LIB).toAbsolutePath().toUri().toURL();
          urlList[3] = Paths.get(InstallUtil.m_rootDir + File.separator + JETTY_BASE_JDBC).toAbsolutePath().toUri().toURL();
          urlList[4] = Paths.get(InstallUtil.m_rootDir + File.separator + JETTY_BASE_PERC).toAbsolutePath().toUri().toURL();
+         urlList[5] = Paths.get(InstallUtil.m_rootDir + File.separator + DTS_COMMON_LIB).toAbsolutePath().toUri().toURL();
+         urlList[6] = Paths.get(InstallUtil.m_rootDir + File.separator + STAGING_DTS_COMMON_LIB).toAbsolutePath().toUri().toURL();
       } catch (MalformedURLException e) {
-         e.printStackTrace();
+         PSLogger.logError(e.getMessage());
       }
 
       return new URLClassLoader(urlList,ClassLoader.getSystemClassLoader());
@@ -103,8 +131,8 @@ public class InstallUtil
          File file = new File(strFile);
          FileInputStream in = new FileInputStream(file);
 
-         String strReadData = new String();
-         String strWriteData = new String();
+         String strReadData = "";
+         String strWriteData = "";
          int iAvail = in.available();
          byte[] bData = new byte[iAvail];
          in.read(bData, 0, iAvail);
@@ -126,11 +154,11 @@ public class InstallUtil
       }
       catch (java.io.FileNotFoundException e)
       {
-         e.printStackTrace();
+         PSLogger.logError(e.getMessage());
       }
       catch (java.io.IOException e)
       {
-         e.printStackTrace();
+         PSLogger.logError(e.getMessage());
       }
    }
 
@@ -1264,7 +1292,19 @@ public class InstallUtil
                if (m_jarUrls == null || m_jarUrls.isEmpty())
                {
                   // Likely an upgrade, set default driver
+                  //CMS location
                   File extDriver = new File(m_rootDir + PSJdbcUtils.MYSQL_DRIVER_LOCATION);
+
+                  //DTS Location
+                  if(!extDriver.exists()){
+                     extDriver = new File(m_rootDir + PSJdbcUtils.MYSQL_DTS_DRIVER_LOCATION);
+                   }
+
+                  //Staging DTS location
+                  if(!extDriver.exists()){
+                     extDriver = new File(m_rootDir + PSJdbcUtils.MYSQL_STAGING_DTS_DRIVER_LOCATION);
+                  }
+
                   String extDriverLocation = extDriver.getAbsolutePath();
                   if (!extDriver.exists())
                   {
@@ -1781,6 +1821,11 @@ public class InstallUtil
    public static void setRootDir(String rootDir)
    {
       m_rootDir = rootDir;
+      if(m_rootDir.equals(".")){
+         String test = System.getProperty("rxdeploydir");
+         if(test != null)
+            m_rootDir = test;
+      }
    }
    
    /**
