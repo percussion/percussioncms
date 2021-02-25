@@ -356,7 +356,7 @@ public class PSAddVariantSiteFolder extends PSDefaultExtension
          return rows;
 
       Set contentIdSet = new HashSet();
-      Map<String,Integer> folderIdMap = new HashMap<String,Integer>();
+      Map<String,Integer> folderIdMap = new HashMap<>();
       boolean hasFolderId = false;
       for (int i = 0; i < size; i++)
       {
@@ -504,7 +504,7 @@ public class PSAddVariantSiteFolder extends PSDefaultExtension
             // lazy load ContentId & Site map
             if (contentIdSiteMap == null)
             {
-               Set<String> contentIdSet = new HashSet<String>();
+               Set<String> contentIdSet = new HashSet<>();
                for (int j = 0; j < size; j++)
                {
                   IPSSearchResultRow r = (IPSSearchResultRow) rows.get(j);
@@ -734,7 +734,7 @@ public class PSAddVariantSiteFolder extends PSDefaultExtension
          {
             // Keep any with at least one registered slot
             List<IPSAssemblyTemplate> twithslots = 
-               new ArrayList<IPSAssemblyTemplate>();
+               new ArrayList<>();
             for(IPSAssemblyTemplate t : templates)
             {
                if (t.getSlots().size() > 0)
@@ -749,8 +749,7 @@ public class PSAddVariantSiteFolder extends PSDefaultExtension
 
             templates = filterTemplates(slotAssocColl, templates);
          }
-         Map<String, Map<String, String>> varMap = new HashMap<String, 
-            Map<String, String>>();
+         Map<String, Map<String, String>> varMap = new HashMap<>();
          for (IPSAssemblyTemplate template : templates)
          {
             List<IPSNodeDefinition> defs = cmgr
@@ -764,7 +763,7 @@ public class PSAddVariantSiteFolder extends PSDefaultExtension
                   def.getGUID().longValue()));
                if (variantMap == null)
                {
-                  variantMap = new HashMap<String, String>();
+                  variantMap = new HashMap<>();
                   varMap.put(Long.toString(def.getGUID().longValue()),
                         variantMap);
                }
@@ -812,7 +811,7 @@ public class PSAddVariantSiteFolder extends PSDefaultExtension
       if (slotAssocColl == null)
          return defs;
 
-      List<IPSNodeDefinition> filtered = new ArrayList<IPSNodeDefinition>();
+      List<IPSNodeDefinition> filtered = new ArrayList<>();
       for (IPSNodeDefinition def : defs)
       {
         for (PSPair<IPSGuid, IPSGuid> pair : slotAssocColl)
@@ -847,7 +846,7 @@ public class PSAddVariantSiteFolder extends PSDefaultExtension
          Collection<PSPair<IPSGuid, IPSGuid>> coll,
          Collection<IPSAssemblyTemplate> templates)
    {
-      Set<IPSGuid> set = new HashSet<IPSGuid>();
+      Set<IPSGuid> set = new HashSet<>();
       for (PSPair<IPSGuid, IPSGuid> pair : coll)
          set.add(pair.getSecond());
       Iterator iter = templates.iterator();
@@ -877,7 +876,7 @@ public class PSAddVariantSiteFolder extends PSDefaultExtension
          throws PSExtensionProcessingException
    {
      Map<String, Set<PSSiteRef>> cidSiteMap = 
-        new HashMap<String, Set<PSSiteRef>>();
+        new HashMap<>();
 
      Map cidFolderMap = getParentFolderPaths(request, cids);
      Map siteMap = getSiteMap();
@@ -927,7 +926,7 @@ public class PSAddVariantSiteFolder extends PSDefaultExtension
    private Map<String, Set<SiteFolder>> getSiteMap()
    {
       IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
-      Map<String, Set<SiteFolder>> siteMap = new HashMap<String, Set<SiteFolder>>();
+      Map<String, Set<SiteFolder>> siteMap = new HashMap<>();
 
       for (IPSSite site : smgr.findAllSites())
       {

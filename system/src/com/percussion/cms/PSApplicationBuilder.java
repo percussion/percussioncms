@@ -1664,7 +1664,7 @@ public class PSApplicationBuilder
    public static ArrayList<PSSystemMapping> getSystemInsertMappings(PSContentEditorHandler
       ceHandler, PSContentEditor ce)
    {
-      ArrayList<PSSystemMapping> mappings = new ArrayList<PSSystemMapping>();
+      ArrayList<PSSystemMapping> mappings = new ArrayList<>();
       PSSystemMapping mapping;
 
 
@@ -1814,7 +1814,7 @@ public class PSApplicationBuilder
    public static ArrayList<PSSystemMapping> getSystemUpdateMappings(PSContentEditorHandler
       ceHandler, PSContentEditor ce)
    {
-      ArrayList<PSSystemMapping> mappings = new ArrayList<PSSystemMapping>();
+      ArrayList<PSSystemMapping> mappings = new ArrayList<>();
       PSSystemMapping mapping;
 
       try

@@ -140,7 +140,7 @@ public class PSCatalogServerObjectHandler implements IPSLoadableRequestHandler
                   controlFlags | PSLocalCataloger.FLAG_EXCLUDE_CHOICES;
             }            
 
-            Set<String> fieldNames = new HashSet<String>();
+            Set<String> fieldNames = new HashSet<>();
             Object obj = request.getParameters().get(
                IPSHtmlParameters.SYS_CE_FIELD_NAME);
             if (obj instanceof List)

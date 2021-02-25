@@ -276,8 +276,8 @@ public class PSActionVisibilityChecker
          {
             Iterator roleIter = globalState.getRoles().iterator();
             Iterator valIter = vc.iterator();
-            List<String> roleList = new ArrayList<String>();
-            List<String> valueList = new ArrayList<String>();
+            List<String> roleList = new ArrayList<>();
+            List<String> valueList = new ArrayList<>();
             while (roleIter.hasNext())
             {
                String role = (String) roleIter.next();
