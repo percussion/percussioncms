@@ -24,9 +24,8 @@
 package com.percussion.delivery.metadata.data;
 
 import com.percussion.delivery.metadata.IPSMetadataProperty;
+import com.percussion.utils.date.PSConcurrentDateFormat;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +40,7 @@ public class PSMetadataRestEntry
     /**
      * Date format used for string serialized date. 2011-01-21T09:36:05
      */
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    PSConcurrentDateFormat dateFormat = new PSConcurrentDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     
     private String pagepath;
 

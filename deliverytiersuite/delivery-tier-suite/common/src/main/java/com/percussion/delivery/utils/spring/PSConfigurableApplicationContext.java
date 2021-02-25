@@ -34,7 +34,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.MessageFormat;
+import java.util.Objects;
 import java.util.Properties;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  * Provides a configurable Context loader that can be used as the contextClass param
@@ -55,18 +59,20 @@ import java.util.Properties;
  *  # NOSQL - MongoDB Application Context
  *  #contextLocation=/WEB-INF/beans_mongodb.xml
  *  #############################################
- * @author natechadwick
  *
  */
 @Configuration
 public class PSConfigurableApplicationContext extends XmlWebApplicationContext
 {
 
-    private static String DEFAULT_CONTEXT_CONFIG = "/WEB-INF/beans.xml";
-    private static String PERC_CONTEXT_PROPS = "/WEB-INF/perc-context.properties";
-    private static String PERC_CONTEXT_PROPS_USER = "/conf/perc/perc-context.properties";
-    private static String PERC_CONTEXT_LOC = "contextLocation";
-    private static String CATALINA_BASE = "catalina.base";
+    private static final String DEFAULT_CONTEXT_CONFIG = "/WEB-INF/beans.xml";
+    private static final String PERC_CONTEXT_PROPS = "/WEB-INF/perc-context.properties";
+    private static final String PERC_CONTEXT_PROPS_USER = "/conf/perc/perc-context.properties";
+    private static final String PERC_CONTEXT_LOC = "contextLocation";
+    private static final String CATALINA_BASE = "catalina.base";
+
+    //Log4j2 may not be present when this is run - so use java basic logger
+    private static final Logger log = LogManager.getLogManager().getLogger(PSConfigurableApplicationContext.class.getName());
 
     PSConfigurableApplicationContext(){
 
@@ -103,77 +109,44 @@ public class PSConfigurableApplicationContext extends XmlWebApplicationContext
     @Override
     protected String[] getDefaultConfigLocations() {
 
-
-        
         Properties props = new Properties();
-        InputStream in = null;
-        FileInputStream fs = null;
         String tomcatBase=null;
         String targetContext = null;
-        
-        
+
+        //Get the properties from the server perc/conf dir
+        tomcatBase = System.getProperty(CATALINA_BASE);
+
         //User configured properties
-        try{
-            
-            //Get the properties from the server perc/conf dir
-            tomcatBase = System.getProperty(CATALINA_BASE);
-            
+        try(FileInputStream fs = new FileInputStream(tomcatBase + PERC_CONTEXT_PROPS_USER)){
+
             if(tomcatBase != null){
-                fs = new FileInputStream(tomcatBase + PERC_CONTEXT_PROPS_USER);                
                 props.load(fs);
             }
                 
             targetContext = props.getProperty(PERC_CONTEXT_LOC, null);
-            // logger.info("Selected " + targetContext + " from " + tomcatBase + PERC_CONTEXT_PROPS_USER );
-        }catch(Exception e){
-            // logger.debug("Couldn't load " + tomcatBase + PERC_CONTEXT_PROPS_USER, e);
-        }finally{
-         
-            if(fs!=null)
-                try
-                {
-                    fs.close();
-                }
-                catch (IOException e)
-                {
-                    // logger.debug("Error releasing " + tomcatBase + PERC_CONTEXT_PROPS_USER, e);
-                }
+        } catch (IOException e) {
+            log.severe(e.getMessage());
         }
-        
-        //WEB-IF properties
-        try
-        {
-            if(targetContext == null){
-                in = this.getServletContext().getResourceAsStream(PERC_CONTEXT_PROPS);
-                props.load(in);
-                targetContext = props.getProperty(PERC_CONTEXT_LOC,null);
-                // logger.info("Selected " + targetContext + " from " + PERC_CONTEXT_LOC );
-            }
-            
-        }catch(Exception ex){
-            // logger.debug("Problem loading context from " + PERC_CONTEXT_PROPS,ex);
-        }finally{
-            //Make sure the input stream is closed. 
-            try
+
+        if(targetContext == null){
+            //WEB-IF properties
+            try(InputStream in = Objects.requireNonNull(this.getServletContext()).getResourceAsStream(PERC_CONTEXT_PROPS))
             {
-                if(in!=null)
-                    in.close();
-            }
-            catch (IOException e)
-            {
-                // logger.debug("Error releasing "+ PERC_CONTEXT_PROPS, e);
+                    props.load(in);
+                    targetContext = props.getProperty(PERC_CONTEXT_LOC,null);
+                    log.info(MessageFormat.format("Selected {0} from {1}",
+                            targetContext , PERC_CONTEXT_LOC ));
+            } catch (IOException e) {
+                log.severe(e.getMessage());
             }
         }
         
         //Fall back to defaults if none of the properties are found.
         if(targetContext == null || targetContext.equals("")){
-
-            //Make sure the file actually exists - if not revert to default.
-            if(!(new File(targetContext).isFile())){
-                    
-            // logger.info("Unable to find a configured ContextLocation - selecting default: " + DEFAULT_CONTEXT_CONFIG);
+            log.info(MessageFormat.format(
+                    "Unable to find a configured ContextLocation - selecting default: {0}",
+                    DEFAULT_CONTEXT_CONFIG));
             targetContext = DEFAULT_CONTEXT_CONFIG;
-            }
         }
 
         return new String[]{targetContext};
