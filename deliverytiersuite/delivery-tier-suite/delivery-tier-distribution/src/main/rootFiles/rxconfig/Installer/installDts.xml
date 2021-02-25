@@ -27,24 +27,24 @@
 
 <project name="install" default="install" >
 
-    <property name="temp.install.dir" value="C:\DevEnv\Installs\dev"/>
-    <property name="temp.install.src" location="..\.."/>
-    <property name="temp.install.dts" value="true"/> <!-- This is set from PSDeliveryTierInstall installanywhere action -->
+    <property name="install.dir" value="C:\DevEnv\Installs\dev"/>
+    <property name="install.src" location="..\.."/>
+    <property name="install.dts" value="true"/> <!-- This is set from PSDeliveryTierInstall installanywhere action -->
     <property name="dts.servertype" value="Production"/> <!-- This is set from PSDeliveryTierInstall install anywhere action -->
-    <property name="temp.dts.zip.location" location="${install.dir}/rxconfig/Installer/optional/delivery-tier-distribution.jar"/>
-    <property name="temp.perc.version" value="${project.parent.version}"/>
-    <property name="temp.perc.java.home" value="${install.dir}/JRE" />
+    <property name="dts.zip.location" location="${install.dir}/rxconfig/Installer/optional/delivery-tier-distribution.jar"/>
+    <property name="perc.version" value="${project.parent.version}"/>
+    <property name="perc.java.home" value="${install.dir}/JRE" />
     <property name="perc.dts.backup" value="${install.dir}/PreInstall/Backups" />
 
     <echo>Setting up TaskDefs</echo>
     <path id="ant.deps">
         <fileset dir="${basedir}">
-            <include name="perc-ant-${temp.perc.version}.jar" />
+            <include name="perc-ant-${perc.version}.jar" />
         </fileset>
-        <fileset dir="${temp.install.src}/Deployment/Server/perc-lib" erroronmissingdir="false">
+        <fileset dir="${install.src}/Deployment/Server/perc-lib" erroronmissingdir="false">
             <include name="**/*.jar" />
         </fileset>
-        <fileset dir="${temp.install.src}/Deployment/Server/common/lib" erroronmissingdir="false">
+        <fileset dir="${install.src}/Deployment/Server/common/lib" erroronmissingdir="false">
             <include name="**/*.jar" />
         </fileset>
     </path>
@@ -150,7 +150,7 @@
             </then>
         </if>
 
-        <copy file="${temp.install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
+        <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
 
         <if>
             <available file="${install.dir}" type="dir"/>
@@ -243,7 +243,7 @@
             <mkdir dir="${install.dir}${staging.dir}/Deployment/Server/log4j2/lib"/>
 
             <copy verbose="true" todir="${install.dir}${staging.dir}/Deployment/Server/log4j2/lib">
-                <fileset dir="${temp.install.src}/Deployment/Server/common/lib">
+                <fileset dir="${install.src}/Deployment/Server/common/lib">
                     <include name="log4j*.jar"/>
                     <include name="commons-logging*.jar"/>
                     <include name="slf4j*.jar"/>
@@ -266,7 +266,7 @@
             </if>
 
             <copy verbose="true" todir="${install.dir}${staging.dir}/Deployment/Server/conf">
-                <fileset dir="${temp.install.src}/Deployment/Server/conf/">
+                <fileset dir="${install.src}/Deployment/Server/conf/">
                     <include name="server.xml"/>
                 </fileset>
             </copy>
@@ -285,14 +285,14 @@
 
 
                     <copy todir="${install.dir}${staging.dir}" verbose="true">
-                        <fileset dir="${temp.install.src}">
+                        <fileset dir="${install.src}">
                             <include name="Deployment/**" />
                         </fileset>
                     </copy>
 
 
                     <copy todir="${install.dir}${staging.dir}/" verbose="true">
-                        <fileset dir="${temp.install.src}">
+                        <fileset dir="${install.src}">
                             <include name="*" />
                             <exclude name="*.bat" if="${isLinux}"/>
                             <exclude name="*.sh" if="${isWindows}"/>
@@ -310,14 +310,14 @@
                     </copy>
 
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server">
-                        <fileset dir="${temp.install.src}">
+                        <fileset dir="${install.src}">
                             <include name="${serviceFileName}" if="${isWindows}"/>
                             <include name="${serviceFileNameLinux}" if="${isLinux}"/>
                         </fileset>
                     </copy>
 
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/bin">
-                        <fileset dir="${temp.install.src}">
+                        <fileset dir="${install.src}">
                             <include name="tomcat9.exe" if="${isWindows}"/>
                             <include name="tomcat9w.exe" if="${isWindows}"/>
                         </fileset>
@@ -375,7 +375,7 @@
 
                     <echo>Installing new DTS files...</echo>
                     <copy todir="${install.dir}${staging.dir}/" failonerror="true" verbose="true" overwrite="true" force="true">
-                        <fileset dir="${temp.install.src}">
+                        <fileset dir="${install.src}">
                             <include name="Deployment/**" />
                             <exclude name="Deployment/Server/conf/tomcat-users.xml"/>
                             <exclude name="Deployment/Server/conf/.keystore"/>
@@ -384,14 +384,14 @@
                     </copy>
 
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server" overwrite="true" verbose="true">
-                        <fileset dir="${temp.install.src}">
+                        <fileset dir="${install.src}">
                             <include name="${serviceFileName}" if="${isWindows}"/>
                             <include name="${serviceFileNameLinux}" if="${isLinux}"/>
                         </fileset>
                     </copy>
 
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/bin" overwrite="true" verbose="true">
-                        <fileset dir="${temp.install.src}">
+                        <fileset dir="${install.src}">
                             <include name="tomcat9.exe" if="${isWindows}"/>
                             <include name="tomcat9w.exe" if="${isWindows}"/>
                         </fileset>
@@ -426,23 +426,30 @@
 
                     <!-- Restore mysql-connector if present -->
 
-                    <echo>Restore mysql-connector if present............................................</echo>
+                    <echo>Restore mysql-connector if present in Server/common/lib.....................</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/common/lib"
                           verbose="true" failonerror="false">
                         <fileset dir="${new.backup.dir}${staging.dir}/Server/common/lib">
                             <include name="mysql-connector*.jar"/>
                         </fileset>
                     </copy>
-                    <echo>Restore mysql-connector if present again on re-upgrading upgraded environment............................................</echo>
+                    <echo>Restore mysql-connector if present in Server/perc-lib again on re-upgrading upgraded environment............................................</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/common/lib"
                           verbose="true" failonerror="false">
                         <fileset dir="${new.backup.dir}${staging.dir}/Server/perc-lib">
                             <include name="mysql-connector*.jar"/>
                         </fileset>
                     </copy>
+                    <echo>Restore mysql-connector if present in Server/lib re-upgrading upgraded environment............................................</echo>
+                    <copy todir="${install.dir}${staging.dir}/Deployment/Server/common/lib"
+                          verbose="true" failonerror="false">
+                        <fileset dir="${new.backup.dir}${staging.dir}/Server/lib">
+                            <include name="mysql-connector*.jar"/>
+                        </fileset>
+                    </copy>
 
                     <copy todir="${install.dir}${staging.dir}" overwrite="true" force="true" verbose="true">
-                        <fileset dir="${temp.install.src}">
+                        <fileset dir="${install.src}">
                             <include name="*" />
                             <exclude name="*.bat" if="${isLinux}"/>
                             <exclude name="*.sh" if="${isWindows}"/>
