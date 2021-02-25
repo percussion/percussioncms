@@ -34,8 +34,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 /**
@@ -47,7 +47,8 @@ import org.w3c.dom.Document;
  */
 public class PSComponentUrls
 {
-   static Log ms_log = LogFactory.getLog(PSComponentUrls.class);
+
+   private static final Logger log = LogManager.getLogger(PSComponentUrls.class);
 
    PSExtractComponentUrls m_extractor = null;
 
@@ -62,7 +63,7 @@ public class PSComponentUrls
       {
          throw new IllegalArgumentException("request may not be null");
       }
-      Map<String, String> requestparams = new HashMap<String, String>();
+      Map<String, String> requestparams = new HashMap<>();
       for (Map.Entry<String, String[]> e : ((Map<String, String[]>) request
             .getParameterMap()).entrySet())
       {
@@ -84,7 +85,8 @@ public class PSComponentUrls
       }
       catch (PSInternalRequestCallException e1)
       {
-         ms_log.error("Couldn't get the component info", e1);
+         log.error("Couldn't get the component info Error: {}", e1.getMessage());
+         log.debug(e1.getMessage(), e1);
       }
    }
 

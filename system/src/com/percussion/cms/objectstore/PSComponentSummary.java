@@ -1653,7 +1653,7 @@ public String toString()
    @Filter(name="relationshipConfigFilter",
          condition="CONFIG_ID = " + PSRelationshipConfig.ID_FOLDER_CONTENT)
    private Set<PSRelationshipData> parentFolders =
-      new HashSet<PSRelationshipData>();
+      new HashSet<>();
 
    /**
     * Specifies the permissions set on the item encapsulated by this object for

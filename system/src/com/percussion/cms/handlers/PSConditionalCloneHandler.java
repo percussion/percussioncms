@@ -84,7 +84,8 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Creates clones based on conditions specified in a clone handler
@@ -139,10 +140,8 @@ public class PSConditionalCloneHandler extends PSCloneHandler
                (PSLocator) source.clone(), (PSLocator) clone.clone(),
                requestedConfig));
          }
-         
-         ms_logger.debug("Creating " + relationshipType
-               + " for the item with contentid = " + source.getId()
-               + " and revision = " + source.getRevision() + "...");
+         log.debug("Creating {}, for the item with content id = {}, and revision = {} ", relationshipType, source.getId(), source.getRevision());
+
 
          /*
           * No clone exists based on the user effect(s) attached to the 
@@ -489,7 +488,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
    private void fixupRelationships(PSRequest request, PSLocator clone,
          List<ProcessedRelationship> psRelationships, Map childRowMappings) throws PSException
    {
-      List<PSRelationship> createdRels = new ArrayList<PSRelationship>();
+      List<PSRelationship> createdRels = new ArrayList<>();
       CollectionUtils.addAll(createdRels, request.getRelationships());
       psRelationships = removeFolderRelationships(psRelationships);
       if (psRelationships.isEmpty())
@@ -532,7 +531,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
    private List<ProcessedRelationship> removeFolderRelationships(
          List<ProcessedRelationship> psRelationships)
    {
-      List<ProcessedRelationship> result = new ArrayList<ProcessedRelationship>();
+      List<ProcessedRelationship> result = new ArrayList<>();
       for (ProcessedRelationship r : psRelationships)
       {
          if (r.m_relationship.getConfig().getCategory().equals(
@@ -679,7 +678,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
          if (origFolderId == null)
          {
             int folderId = proc.getIdByPath(paths[0]);
-            return new PSPair<Integer, Integer>(null, folderId);
+            return new PSPair<>(null, folderId);
          }
             
          Integer folderId = null;
@@ -689,12 +688,14 @@ public class PSConditionalCloneHandler extends PSCloneHandler
             if (folderId == origFolderId.intValue())
                break;
          }
-         return new PSPair<Integer, Integer>(null, folderId);
+         return new PSPair<>(null, folderId);
       }
       catch (Exception e)
       {
-         ms_logger.error("Failed to get site and folder IDs for item: "
-               + loc.toString(), e);
+
+         log.error("Failed to get site and folder IDs for item: {}, Error: {}", loc.toString(), e.getMessage());
+         log.debug(e.getMessage(),e);
+
          throw new RuntimeException(e);
       }
    }
@@ -758,7 +759,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
          .append(rel1.getConfig().getName(), rel2.getConfig().getName());
 
       Map<String, String> userProps1 = rel1.getUserProperties();
-      Map<String, String> tmpProps1 = new HashMap<String, String>();
+      Map<String, String> tmpProps1 = new HashMap<>();
       for (String propName : userProps1.keySet())
       {
          if (!ms_ignorePropNames.contains(propName))
@@ -766,7 +767,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
       }
 
       Map<String, String> userProps2 = rel2.getUserProperties();
-      Map<String, String> tmpProps2 = new HashMap<String, String>();
+      Map<String, String> tmpProps2 = new HashMap<>();
       for (String propName : userProps2.keySet())
       {
          if (!ms_ignorePropNames.contains(propName))
@@ -980,7 +981,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
          Iterator relationships, List psRelationships)
    {
       Map<Integer, PSRelationship> relateMap = 
-         new HashMap<Integer, PSRelationship>();
+         new HashMap<>();
 
       while (relationships.hasNext())
       {
@@ -1131,8 +1132,8 @@ public class PSConditionalCloneHandler extends PSCloneHandler
    private boolean doesRelPropertiesMatch(Map<String, String> origProps,
          Map<String, String> newProps)
    {
-      Map<String,String> op = new HashMap<String,String>();
-      Map<String,String> np = new HashMap<String,String>();
+      Map<String,String> op = new HashMap<>();
+      Map<String,String> np = new HashMap<>();
 
       op.putAll(origProps);
       np.putAll(newProps);
@@ -1307,8 +1308,8 @@ public class PSConditionalCloneHandler extends PSCloneHandler
    /**
     * The log4j logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger(
-      PSConditionalCloneHandler.class);
+
+   private static final Logger log = LogManager.getLogger(PSConditionalCloneHandler.class);
 
    /**
     * This is used in
@@ -1316,7 +1317,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
     * is the name of a user relationship property that should be ignored when
     * performing a comparison.
     */
-   static Set<String> ms_ignorePropNames = new HashSet<String>();
+   static Set<String> ms_ignorePropNames = new HashSet<>();
    {
       ms_ignorePropNames.add(PSRelationshipConfig.PDU_FOLDERID);
       ms_ignorePropNames.add(PSRelationshipConfig.PDU_SITEID);
