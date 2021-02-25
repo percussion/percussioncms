@@ -226,9 +226,9 @@ public class PSMetadataDao implements IPSMetadataDao
     {
         Validate.notNull(entries, "entries cannot be null");
 
-        if (entries.size() == 0)
+        if (entries.isEmpty())
             return;
-        ;
+
 
         Transaction tx = null;
         try(Session session = getSession()) {
