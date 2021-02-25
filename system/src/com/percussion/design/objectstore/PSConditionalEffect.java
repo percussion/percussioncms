@@ -36,7 +36,8 @@ import java.util.Iterator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -215,8 +216,7 @@ public class PSConditionalEffect extends PSComponent
                if (id != null)
                   m_exeContexts.add(id);
                else
-                  ms_logger.warn("Ignore invalid Execution Context, '" + name
-                        + "'.");
+                  log.warn("Ignore invalid Execution Context, ' {} ,'.",name);
 
                node = PSXMLDomUtil.getNextElementSibling(node);
             }
@@ -480,7 +480,7 @@ public class PSConditionalEffect extends PSComponent
     * A list of Execution Contexts that is relevent for this effect. It may be
     * EMPTY if unknown, never <code>null</code>.
     */
-   private Collection<Integer> m_exeContexts = new ArrayList<Integer>();
+   private Collection<Integer> m_exeContexts = new ArrayList<>();
 
    /**
     * Computed number
@@ -490,7 +490,8 @@ public class PSConditionalEffect extends PSComponent
    /**
     * The logger of this class.
     */
-   private static Logger ms_logger = Logger.getLogger("ConditionalEffect");
+
+   private static Logger log = LogManager.getLogger(PSConditionalEffect.class);
 
    /**
     * It maps context name (in lower case) to its related id that is defined in
@@ -498,7 +499,7 @@ public class PSConditionalEffect extends PSComponent
     * <code>ExecutionContext</code> element that are defined in
     * <code>sys_RelationshipConfig.dtd</code>.
     */
-   private static HashMap<String, Integer> ms_ContextNameIdMapper = new HashMap<String, Integer>();
+   private static HashMap<String, Integer> ms_ContextNameIdMapper = new HashMap<>();
 
    /**
     * It maps context id to its related name. The id is defined in
@@ -506,7 +507,7 @@ public class PSConditionalEffect extends PSComponent
     * <code>ExecutionContext</code> element that are defined in
     * <code>sys_RelationshipConfig.dtd</code>.
     */
-   private static HashMap<Integer, String> ms_ContextIdNameMapper = new HashMap<Integer, String>();
+   private static HashMap<Integer, String> ms_ContextIdNameMapper = new HashMap<>();
 
    /**
     * A list of allowed attribute names for Execution Context element that is
