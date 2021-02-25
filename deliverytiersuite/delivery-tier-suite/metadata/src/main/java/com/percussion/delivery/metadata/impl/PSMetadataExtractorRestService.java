@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -28,13 +28,14 @@ import com.percussion.delivery.metadata.IPSMetadataProperty;
 import com.percussion.delivery.metadata.IPSMetadataProperty.VALUETYPE;
 import com.percussion.delivery.metadata.extractor.data.PSMetadataEntry;
 import com.percussion.delivery.metadata.extractor.data.PSMetadataProperty;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
@@ -58,11 +59,12 @@ import java.util.Iterator;
 @Scope("singleton")
 public class PSMetadataExtractorRestService
 {
-    public static Log log = LogFactory.getLog(PSMetadataExtractorRestService.class);
+    public static final Logger log = LogManager.getLogger(PSMetadataExtractorRestService.class);
 
     private final PSPropertyDatatypeMappings datatypeMappings;
     private IPSMetadataIndexerService indexer;
-    
+
+    @Inject
     @Autowired
     public PSMetadataExtractorRestService(IPSMetadataIndexerService indexer, PSPropertyDatatypeMappings datatypeMappings)
     {
@@ -78,10 +80,10 @@ public class PSMetadataExtractorRestService
             @PathParam("pagePath") String path,
             PSMetadataEntry entry)
     {
-        log.debug("Indexing file: " + path);
+        log.debug("Indexing file: {}", path);
         try {
             String contentType = headers.getMediaType().toString();
-            log.debug("Content type: " + contentType);
+            log.debug("Content type: {}" , contentType);
 
             if (entry != null){
                 // Get property value type
@@ -109,7 +111,7 @@ public class PSMetadataExtractorRestService
         }
         catch (Exception e)
         {
-            log.error("An error when saving index", e);
+            log.error("An error when saving index {}", e.getMessage());
             throw new WebApplicationException(e, Response.serverError().build());
         }
        
@@ -120,7 +122,7 @@ public class PSMetadataExtractorRestService
     @RolesAllowed("deliverymanager")
     public void delete(@PathParam("pagePath") String path)
     {
-        log.debug("Deleting file: " + path);
+        log.debug("Deleting file: {}" , path);
         
         try
         {
@@ -129,7 +131,7 @@ public class PSMetadataExtractorRestService
         }
         catch (Exception e)
         {
-            log.error("An error when deleting the file", e);
+            log.error("An error when deleting the file {}", e.getMessage());
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,9 +25,8 @@
 package com.percussion.delivery.metadata.rdbms.impl;
 
 import com.percussion.delivery.metadata.IPSCookieConsent;
-
-import java.io.Serializable;
-import java.util.Date;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -37,10 +36,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Optional;
 
 /**
  * 
@@ -124,12 +122,20 @@ public class PSDbCookieConsent implements IPSCookieConsent, Serializable {
 
     @Override
     public void setConsentDate(Date consentDate) {
-        this.consentDate = consentDate;
+        this.consentDate = Optional
+                .ofNullable(consentDate)
+                .map(Date::getTime)
+                .map(Date::new)
+                .orElse(null);
     }
 
     @Override
     public Date getConsentDate() {
-        return consentDate;
+        return Optional
+                .ofNullable(consentDate)
+                .map(Date::getTime)
+                .map(Date::new)
+                .orElse(null);
     }
 
     @Override

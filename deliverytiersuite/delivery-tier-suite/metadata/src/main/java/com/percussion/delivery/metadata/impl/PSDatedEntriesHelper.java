@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -27,11 +27,10 @@ import com.percussion.delivery.metadata.IPSMetadataEntry;
 import com.percussion.delivery.metadata.IPSMetadataProperty;
 import com.percussion.delivery.metadata.data.PSMetadataDatedEntries;
 import com.percussion.delivery.metadata.data.PSMetadataDatedEvent;
-
-import java.text.SimpleDateFormat;
-import java.util.List;
-
+import com.percussion.utils.date.PSConcurrentDateFormat;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.List;
 
 /**
  * This class is responsible for process the dates of the page and return
@@ -53,7 +52,7 @@ public class PSDatedEntriesHelper
     /**
      * Constant for the date formater. 
      */
-    private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    private PSConcurrentDateFormat formatter = new PSConcurrentDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
     /**
      * This method is responsible for return the list with entries with their
@@ -102,12 +101,12 @@ public class PSDatedEntriesHelper
                     
                     if (START_DATE_PROPERTY_NAME.equals(prop.getName()) && prop.getDatevalue() != null)
                     {
-                        event.setStart(formatter.format(prop.getDatevalue()));
+                            event.setStart(formatter.toString(prop.getDatevalue()));
                     }
                     
                     if (END_DATE_PROPERTY_NAME.equals(prop.getName()) && prop.getDatevalue() != null)
                     {
-                        event.setEnd(formatter.format(prop.getDatevalue()));
+                            event.setEnd(formatter.toString(prop.getDatevalue()));
                     }
                 }
                 

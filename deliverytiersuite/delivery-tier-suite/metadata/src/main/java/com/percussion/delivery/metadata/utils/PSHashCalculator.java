@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,11 +23,13 @@
  */
 package com.percussion.delivery.metadata.utils;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang.Validate;
+
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import org.apache.commons.lang.Validate;
 
 /**
  * Responsible for calculating a hash over a value. It uses SHA-1 by default
@@ -36,11 +38,12 @@ import org.apache.commons.lang.Validate;
  * @author miltonpividori
  *
  */
+@SuppressFBWarnings("WEAK_MESSAGE_DIGEST_SHA1") //Is used to create a hash of a CLOB/long string for indexing not for security
 public class PSHashCalculator
 {
     private static final String HEXES = "0123456789ABCDEF";
     private static final String HASH_ALGORITHM = "SHA-1";
-    private static final String CONTENT_ENCODING = "UTF-8";
+    private static final String CONTENT_ENCODING = StandardCharsets.UTF_8.name();
 
     private MessageDigest digest;
     

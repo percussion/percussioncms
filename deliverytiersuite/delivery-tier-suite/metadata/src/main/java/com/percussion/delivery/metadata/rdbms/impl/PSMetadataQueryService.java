@@ -84,7 +84,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
      * Property datatype mappings, loaded by Spring.
      */
     protected PSPropertyDatatypeMappings datatypeMappings;
-    private Integer queryLimit=500;
+    private volatile Integer queryLimit=500;
     
     /**
      * ctor
@@ -262,7 +262,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             queryBuf.append("select distinct me");
             if(isSortingOnProperty)
             {
-                if (sortColumnName.equals(PROP_STRINGVALUE_COLUMN_NAME))
+                if (PROP_STRINGVALUE_COLUMN_NAME.equals(sortColumnName))
                 {
                     queryBuf.append(", lower(prop.");
                     queryBuf.append(sortColumnName);
@@ -336,7 +336,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             Object value = ce.getValue();
             String valueColumn = PSMetadataQueryServiceHelper.getValueColumnName(ce.getName(), datatypeMappings);
             
-            if(valueColumn.equals(PROP_DATEVALUE_COLUMN_NAME))
+            if(PROP_DATEVALUE_COLUMN_NAME.equals(valueColumn))
             {
                 Calendar date = DatatypeConverter.parseDate(value.toString().replace(' ', 'T'));
                 value = new Date(date.getTimeInMillis());
@@ -401,9 +401,9 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         log.debug("{}",queryBuf);
         
         Query q = sess.createQuery(queryBuf.toString());
-        int useLimit=queryLimit;
+        int useLimit=getQueryLimit();
         //All caller to set a query limit, but they can't allow higher than the server limit. 
-        if(rawQuery.getTotalMaxResults() > 0 && rawQuery.getTotalMaxResults() < queryLimit){
+        if(rawQuery.getTotalMaxResults() > 0 && rawQuery.getTotalMaxResults() < getQueryLimit()){
         	log.debug("Setting max query limit to client provided value : {}" , rawQuery.getTotalMaxResults());
         	useLimit=rawQuery.getTotalMaxResults();
         }
@@ -486,17 +486,14 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         specialChars.add("%");
 
         String jdbcProvider = getJdbcProvider();
-        if (StringUtils.isNotBlank(jdbcProvider))
+        if (StringUtils.isNotBlank(jdbcProvider) && jdbcProvider.contains(JDBC_SQLSERVER_DRIVER))
         {
-            if (jdbcProvider.contains(JDBC_SQLSERVER_DRIVER))
-            {
                 // Characters that are relevant to regex need to be escaped, to
                 // work properly with replaceAll.
                 specialChars.add("\\[");
                 specialChars.add("\\]");
                 specialChars.add("\\^");
                 specialChars.add("'");
-            }
             // Derby, ORACLE and MySQL only support escaping "%" and "_"
             // characters.
         }
