@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -30,9 +30,22 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Nationalized;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Represents a metadata property namnatue value pair.
@@ -414,7 +427,11 @@ public class PSDbMetadataProperty implements IPSMetadataProperty, Serializable
      */
     public Date getDatevalue()
     {
-        return datevalue;
+        return Optional
+                .ofNullable(datevalue)
+                .map(Date::getTime)
+                .map(Date::new)
+                .orElse(null);
     }
 
     /**
@@ -423,7 +440,11 @@ public class PSDbMetadataProperty implements IPSMetadataProperty, Serializable
     public void setDatevalue(Date datevalue)
     {
         this.valuetype = VALUETYPE.DATE;
-        this.datevalue = datevalue;
+        this.datevalue = Optional
+                .ofNullable(datevalue)
+                .map(Date::getTime)
+                .map(Date::new)
+                .orElse(null);
 
         calculateHash(this.datevalue);
     }

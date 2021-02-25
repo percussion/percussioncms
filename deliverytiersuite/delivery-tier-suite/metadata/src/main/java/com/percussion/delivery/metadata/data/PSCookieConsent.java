@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -27,6 +27,7 @@ package com.percussion.delivery.metadata.data;
 import com.percussion.delivery.metadata.IPSCookieConsent;
 
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Provides model for cookie consent
@@ -92,12 +93,20 @@ public class PSCookieConsent implements IPSCookieConsent {
     
     @Override
     public void setConsentDate(Date consentDate) {
-        this.consentDate = consentDate;
+        this.consentDate = Optional
+                .ofNullable(consentDate)
+                .map(Date::getTime)
+                .map(Date::new)
+                .orElse(null);
     }
 
     @Override
     public Date getConsentDate() {
-        return consentDate;
+        return Optional
+                .ofNullable(consentDate)
+                .map(Date::getTime)
+                .map(Date::new)
+                .orElse(null);
     }
 
     @Override

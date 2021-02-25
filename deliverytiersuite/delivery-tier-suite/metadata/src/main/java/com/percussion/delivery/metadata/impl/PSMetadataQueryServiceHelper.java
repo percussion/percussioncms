@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,13 +23,13 @@
  */
 package com.percussion.delivery.metadata.impl;
 
-import com.percussion.delivery.metadata.IPSMetadataQueryService;
 import com.percussion.delivery.metadata.IPSMetadataProperty.VALUETYPE;
+import com.percussion.delivery.metadata.IPSMetadataQueryService;
+import com.percussion.utils.date.PSConcurrentDateFormat;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,23 +50,25 @@ public abstract class PSMetadataQueryServiceHelper
      * A set of property keys that are not stored as properties but are instead
      * columns in the metadata entry table.
      */
-    public static final Set<String> ENTRY_PROPERTY_KEYS = new HashSet<>();
+    private static final Set<String> INTERNAL_PROPERTY_KEYS = new HashSet<>();
     static
     {
-        ENTRY_PROPERTY_KEYS.add("folder");
-        ENTRY_PROPERTY_KEYS.add("name");
-        ENTRY_PROPERTY_KEYS.add("type");
-        ENTRY_PROPERTY_KEYS.add("linktext");
-        ENTRY_PROPERTY_KEYS.add("linktext_lower");
-        ENTRY_PROPERTY_KEYS.add("pagepath");
-        ENTRY_PROPERTY_KEYS.add("site");
+        INTERNAL_PROPERTY_KEYS.add("folder");
+        INTERNAL_PROPERTY_KEYS.add("name");
+        INTERNAL_PROPERTY_KEYS.add("type");
+        INTERNAL_PROPERTY_KEYS.add("linktext");
+        INTERNAL_PROPERTY_KEYS.add("linktext_lower");
+        INTERNAL_PROPERTY_KEYS.add("pagepath");
+        INTERNAL_PROPERTY_KEYS.add("site");
     }
-    
-    
+
+    public static final Set<String> ENTRY_PROPERTY_KEYS = Collections.unmodifiableSet(INTERNAL_PROPERTY_KEYS);
+
+
     /**
      * 2011-01-21T09:36:05
      */
-    public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private static PSConcurrentDateFormat dateFormat = new PSConcurrentDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     public static VALUETYPE getDatatype(String name, PSPropertyDatatypeMappings datatypeMappings)
     {
@@ -80,7 +82,6 @@ public abstract class PSMetadataQueryServiceHelper
           return datatypeMappings.getDatatype(nameWithOutNamespace);
     }
 
-    @SuppressWarnings("unchecked")
     public static List parseToList(String key, String val,  PSPropertyDatatypeMappings datatypeMappings) throws ParseException
     {
        VALUETYPE type = datatypeMappings.getDatatype(key);
@@ -99,7 +100,8 @@ public abstract class PSMetadataQueryServiceHelper
           {
              if(s.trim().equals(",") || s.trim().equals(""))
                 continue;
-             results.add(dateFormat.parse(s));
+
+                 results.add(dateFormat.toDate(s));
           }
        }
        else
