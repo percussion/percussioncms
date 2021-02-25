@@ -27,13 +27,13 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.0.2.1</version>
+        <version>8.0.2.2</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>perc-simple</artifactId>
-  <version>8.0.2.1</version>
+  <version>8.0.2.2</version>
 
     <build>
         <plugins>
