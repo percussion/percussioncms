@@ -23,6 +23,8 @@
  */
 package com.percussion.delivery.utils.security;
 
+import com.percussion.utils.security.ToDoVulnerability;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
@@ -36,6 +38,8 @@ import javax.ws.rs.client.ClientBuilder;
  * @author leonardohildt
  * 
  */
+@ToDoVulnerability
+@Deprecated
 public class PSHttpClient
 {
     public PSHttpClient()
@@ -51,14 +55,15 @@ public class PSHttpClient
     public Client getSSLClient() throws Exception
     {
 
+        SSLContext ctx = SSLContext.getInstance("TLS");
 
-
-        //TODO: This looks like a security issue - isn't this whitelisting all ssl certificates?
-        SSLContext ctx = SSLContext.getInstance("SSL");
         ctx.init(null, new TrustManager[]
         {new PSSimpleTrustManager(null)}, null);
 
-
+        /* TODO: This looks like a security issue - isn't this whitelisting all ssl certificates?
+        Seems so.  This is used in PSFeedsService and PSMembershipService. I am assuming this is to
+        handle services calling each other with a self signed certificate.  Needs to be refactored.
+         */
         Client client = ClientBuilder.newBuilder()
                 .sslContext(ctx)
                 .hostnameVerifier(new HostnameVerifier(){

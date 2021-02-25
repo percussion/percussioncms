@@ -49,7 +49,7 @@ public abstract class PSAbstractRestService implements IPSRestService {
 	public String getVersion() {
 		try
 	      {
-			log.info("Version from PSAbstractRestService.class : " + PSVersionHelper.getVersion(this.getClass()));
+			log.info("Version from PSAbstractRestService.class : {}" , PSVersionHelper.getVersion(this.getClass()));
 			
 			return PSVersionHelper.getVersion(this.getClass());
 			

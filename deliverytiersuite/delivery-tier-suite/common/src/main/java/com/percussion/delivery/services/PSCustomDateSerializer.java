@@ -23,13 +23,12 @@
  */
 package com.percussion.delivery.services;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.percussion.utils.date.PSConcurrentDateFormat;
+
+import java.io.IOException;
 
 /**
  * Custom date serializer to put the serialized date into a non numeric
@@ -40,7 +39,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 public class PSCustomDateSerializer extends JsonSerializer<Object>
 {
 
-   private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+   private final PSConcurrentDateFormat formatter = new PSConcurrentDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
    
    /* (non-Javadoc)
     * @see org.codehaus.jackson.map.JsonSerializer#serialize(
@@ -48,8 +47,8 @@ public class PSCustomDateSerializer extends JsonSerializer<Object>
     */
    @Override
    public void serialize(Object value, JsonGenerator gen,
-            @SuppressWarnings("unused") SerializerProvider provider) throws IOException,
-            JsonProcessingException
+            @SuppressWarnings("unused") SerializerProvider provider) throws
+           IOException
    {
       String formattedDate = formatter.format(value);
 

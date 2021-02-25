@@ -103,7 +103,7 @@ public class PSPersistentPropertyManager
       Collection c = null;
       try
       {
-         c = new ArrayList();
+         c = new ArrayList<>();
          String userName = getUserName(userSession);
          if (userName.length() == 0)
             return c;
@@ -114,7 +114,7 @@ public class PSPersistentPropertyManager
          synchronized(this)
          {
             populateCache(userSession, true);
-            ConcurrentHashMap cMap = (ConcurrentHashMap)m_mergedMetaCache.get(userName);
+            ConcurrentHashMap cMap = m_mergedMetaCache.get(userName);
             if (cMap == null)
                return c;
             PSPatternMatcher pm = PSPatternMatcher.SQLPatternMatcher(null);

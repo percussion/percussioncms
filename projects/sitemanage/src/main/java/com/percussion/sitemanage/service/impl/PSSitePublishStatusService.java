@@ -49,6 +49,7 @@ import com.percussion.sitemanage.data.PSSitePublishLogDetailsRequest;
 import com.percussion.sitemanage.data.PSSitePublishLogRequest;
 import com.percussion.sitemanage.data.PSSitePublishPurgeRequest;
 import com.percussion.sitemanage.service.IPSSitePublishStatusService;
+import com.percussion.utils.date.PSConcurrentDateFormat;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.string.PSStringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -131,8 +132,8 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
             List<PSSitePublishJob> jobs = new ArrayList<>();
 
             if (dummyData) {
-                final SimpleDateFormat format = new SimpleDateFormat(dateFormat);
-                final SimpleDateFormat tformat = new SimpleDateFormat(timeFormat);
+                final PSConcurrentDateFormat format = new PSConcurrentDateFormat(dateFormat);
+                final PSConcurrentDateFormat tformat = new PSConcurrentDateFormat(timeFormat);
                 final GregorianCalendar today = new GregorianCalendar();
                 PSSitePublishJob job1 = new PSSitePublishJob() {
                     {
