@@ -45,6 +45,7 @@
 
     <modules>
         <module>modules/perc-security-utils</module>
+        <module>modules/perc-xml-security</module>
         <module>modules/jcadf-master</module>
         <module>modules/build-tools</module>
         <module>modules/perc-auditlog</module>
