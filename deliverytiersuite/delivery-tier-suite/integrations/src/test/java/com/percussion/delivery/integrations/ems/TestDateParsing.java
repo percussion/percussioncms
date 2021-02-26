@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,12 +24,11 @@
 
 package com.percussion.delivery.integrations.ems;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
+import junit.framework.TestCase;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.junit.Test;
 
-import junit.framework.TestCase;
+import java.text.ParseException;
 
 public class TestDateParsing extends TestCase{
 
@@ -38,6 +37,6 @@ public class TestDateParsing extends TestCase{
 		
 		// and format: yyyy-MM-dd'T'HH:mm:ss.SSSXXX
 	
-		System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-05-21T10:42:00".replace("T"," ")));
+		System.out.println(FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss").parse("2018-05-21T10:42:00".replace("T"," ")));
 	}
 }

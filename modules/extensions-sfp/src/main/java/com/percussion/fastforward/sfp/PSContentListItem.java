@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -28,19 +28,17 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSXMLDomUtil;
-import com.percussion.utils.date.PSConcurrentDateFormat;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Set;
-
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import java.net.URL;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.Set;
 
 /**
  * Represents a single content item/variant in a publishing content list.
@@ -241,7 +239,7 @@ public class PSContentListItem implements Comparable
       Element modifyDateElem = PSXMLDomUtil.getNextElementSibling(deliveryElem,
             IPSDTDPublisherEdition.ELEM_MODIFYDATE);
       String modifyDate = PSXMLDomUtil.getElementData(modifyDateElem);
-      PSConcurrentDateFormat dateFormat = new PSConcurrentDateFormat(DATE_FORMAT_PATTERN);
+      FastDateFormat dateFormat = FastDateFormat.getInstance(DATE_FORMAT_PATTERN);
       if (modifyDate.trim().length() > 0)
       {
          try
@@ -442,7 +440,7 @@ public class PSContentListItem implements Comparable
 
       /* include last modified date in the datetime format needed by incremental
          publishing filter */
-      SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+      FastDateFormat format = FastDateFormat.getInstance(DATE_FORMAT_PATTERN);
       if (m_lastModifiedDate != null)
          PSXmlDocumentBuilder.addElement(
             doc,
@@ -561,7 +559,7 @@ public class PSContentListItem implements Comparable
    {
       if (m_lastModifiedDate != null)
       {
-         SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+         FastDateFormat format = FastDateFormat.getInstance(DATE_FORMAT_PATTERN);
          return format.format(m_lastModifiedDate);
       }
       else

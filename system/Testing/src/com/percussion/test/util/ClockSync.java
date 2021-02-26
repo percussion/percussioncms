@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,13 +24,13 @@
 package com.percussion.test.util;
 
 import com.percussion.test.statistics.AverageAccumulator;
+import org.apache.commons.lang3.time.FastDateFormat;
 
-import java.net.Socket;
-import java.util.Date;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.BufferedReader;
-import java.text.SimpleDateFormat;
+import java.net.Socket;
+import java.util.Date;
 
 /**
  * This class retrieves the exact time and date according to a server
@@ -88,7 +88,7 @@ public class ClockSync
          return;
       }
 
-      SimpleDateFormat dosFmt = new SimpleDateFormat("HH:mm:ss.SS");
+      FastDateFormat dosFmt = FastDateFormat.getInstance("HH:mm:ss.SS");
       String dosTime = dosFmt.format(correctedTime);
       String timeCmd = "command";
       String os = System.getProperty("os.name");

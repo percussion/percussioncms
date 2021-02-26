@@ -122,6 +122,7 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -140,9 +141,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -873,13 +872,13 @@ public class PSPageUtils extends PSJexlUtilBase
         {
             try
             {
-                DateFormat dFormat = new SimpleDateFormat(format);
+                FastDateFormat dFormat = FastDateFormat.getInstance(format);
                 dFormat.format(new Date());
                 resultFormat = format;
             }
             catch (Exception e)
             {
-                log.error("Failed for the user entered format : " + format);
+                log.error("Failed for the user entered format : {}" , format);
             }
         }
         // If user entered format doesn't work then go to the following
@@ -888,13 +887,13 @@ public class PSPageUtils extends PSJexlUtilBase
         {
             try
             {
-                DateFormat dFormat = new SimpleDateFormat(defaultFormat);
+                FastDateFormat dFormat = FastDateFormat.getInstance(defaultFormat);
                 dFormat.format(new Date());
                 resultFormat = defaultFormat;
             }
             catch (Exception e)
             {
-                log.error("Failed for the default format: " + defaultFormat);
+                log.error("Failed for the default format: {}" , defaultFormat);
             }
         }
         return resultFormat != null ? resultFormat : "EEE MMM d, yyyy 'at' hh:mm a";
@@ -1590,11 +1589,11 @@ public class PSPageUtils extends PSJexlUtilBase
             List<Integer> ids = pageDao.getPageIdsByFieldNameAndValue("page_calendar", calendarName);
 
             // Convert input string into a date
-            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+            FastDateFormat inputFormat = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss.S");
 
             // don't output time-zone as the application is not time-zone aware
             // fullCalendar.js lib supports ISO-8601 formatted date/time values
-            DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            FastDateFormat outputFormat = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss");
 
             for (Integer id : ids) {
                 PSLegacyGuid guid = new PSLegacyGuid(id, -1);

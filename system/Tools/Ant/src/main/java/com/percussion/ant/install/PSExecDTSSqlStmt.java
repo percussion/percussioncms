@@ -72,7 +72,7 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
             try {
                 dpwd = PSEncryptor.getInstance("AES",null).decrypt(pwd);
             } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
-                dpwd = PSLegacyEncrypter.getInstance(null).decrypt(pwd,
+                dpwd = PSLegacyEncrypter.getInstance(getRootDir()).decrypt(pwd,
                         PSJdbcDbmsDef.getPartOneKey(),null);
             }
             if(dpwd == null || dpwd.isEmpty()){

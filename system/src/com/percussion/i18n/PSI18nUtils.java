@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,11 +26,12 @@ package com.percussion.i18n;
 
 import com.percussion.util.PSDataTypeConverter;
 import com.percussion.util.PSStringOperation;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -38,8 +39,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.StringTokenizer;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * This class provides several utilty methods for internationalization support.
@@ -412,7 +411,7 @@ public class PSI18nUtils implements IPSI18nUtils {
       if(inputPattern == null || inputPattern.trim().length() < 1)
          return parseStringToDate(inpuDateString, locale);
 
-      return new SimpleDateFormat(inputPattern, locale).parse(inpuDateString);
+      return FastDateFormat.getInstance(inputPattern, locale).parse(inpuDateString);
    }
 
    /**

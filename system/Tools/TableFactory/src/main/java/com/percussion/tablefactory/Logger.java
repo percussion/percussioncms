@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,12 +23,13 @@
  */
 package com.percussion.tablefactory;
 
+import org.apache.commons.lang3.time.FastDateFormat;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -341,6 +342,6 @@ public class Logger implements LogSink, IPSLogger
     * Time stamp format for table factory.
     * i.e.: MM/dd/yy HH:mm:ss -> 09/29/04 18:31:28
     */
-   private static SimpleDateFormat ms_dateFormat =
-      new SimpleDateFormat("MM/dd/yy HH:mm:ss"); //ie: 09/29/04 18:31:28
+   private static FastDateFormat ms_dateFormat =
+      FastDateFormat.getInstance("MM/dd/yy HH:mm:ss"); //ie: 09/29/04 18:31:28
 } 

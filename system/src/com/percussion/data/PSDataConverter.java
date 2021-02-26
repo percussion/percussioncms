@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -30,12 +30,12 @@ import com.percussion.design.objectstore.PSNumericLiteral;
 import com.percussion.design.objectstore.PSTextLiteral;
 import com.percussion.server.PSConsole;
 import com.percussion.util.PSDataTypeConverter;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -94,7 +94,7 @@ public abstract class PSDataConverter
     * @return               the converted object
     */
    public static Object convert(Object data, int dstType,
-                                 java.text.SimpleDateFormat dateFormat)
+                                FastDateFormat dateFormat)
    {
       int srcType = getDataType(data);
 
@@ -358,7 +358,7 @@ public abstract class PSDataConverter
 
                if (date != null)
                {
-                  day = new PSDateLiteral(date, new SimpleDateFormat(
+                  day = new PSDateLiteral(date, FastDateFormat.getInstance(
                      formatBuf.toString()));
 
                   literalSet.add(day);
@@ -451,7 +451,7 @@ public abstract class PSDataConverter
             case DATATYPE_DATE:
                try
                {
-                  literal = new PSDateLiteral((Date)obj, new SimpleDateFormat());
+                  literal = new PSDateLiteral((Date)obj, FastDateFormat.getInstance());
                }
                catch(IllegalArgumentException pe)
                {

@@ -25,7 +25,7 @@ package com.percussion.delivery.metadata.impl;
 
 import com.percussion.delivery.metadata.IPSMetadataProperty.VALUETYPE;
 import com.percussion.delivery.metadata.IPSMetadataQueryService;
-import com.percussion.utils.date.PSConcurrentDateFormat;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -68,7 +68,7 @@ public abstract class PSMetadataQueryServiceHelper
     /**
      * 2011-01-21T09:36:05
      */
-    private static PSConcurrentDateFormat dateFormat = new PSConcurrentDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private static FastDateFormat dateFormat = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss");
 
     public static VALUETYPE getDatatype(String name, PSPropertyDatatypeMappings datatypeMappings)
     {
@@ -101,7 +101,7 @@ public abstract class PSMetadataQueryServiceHelper
              if(s.trim().equals(",") || s.trim().equals(""))
                 continue;
 
-                 results.add(dateFormat.toDate(s));
+                 results.add(dateFormat.format(s));
           }
        }
        else

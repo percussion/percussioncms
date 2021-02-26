@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,15 +23,6 @@
  */
 
 package com.percussion.activity.service.impl;
-
-import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_STATE_ARCHIVE;
-import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_STATE_LIVE;
-import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_STATE_PENDING;
-import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_TAKE_DOWN_TRANSITION;
-import static com.percussion.pagemanagement.service.IPSPageService.PAGE_CONTENT_TYPE;
-import static java.util.Arrays.asList;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.activity.data.PSActivityNode;
 import com.percussion.activity.data.PSContentActivity;
@@ -63,10 +54,18 @@ import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.date.PSDateRange;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentWs;
+import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.text.DateFormat;
+import javax.jcr.Value;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryResult;
+import javax.jcr.query.Row;
+import javax.jcr.query.RowIterator;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -74,17 +73,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.jcr.Value;
-import javax.jcr.query.Query;
-import javax.jcr.query.QueryResult;
-import javax.jcr.query.Row;
-import javax.jcr.query.RowIterator;
-
-import org.apache.commons.lang.time.StopWatch;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
+import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_STATE_ARCHIVE;
+import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_STATE_LIVE;
+import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_STATE_PENDING;
+import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_TAKE_DOWN_TRANSITION;
+import static com.percussion.pagemanagement.service.IPSPageService.PAGE_CONTENT_TYPE;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Utilities for content activity service.
@@ -510,8 +506,8 @@ public class PSActivityService implements IPSActivityService
     public PSDateRange createDateRange(String start, String end, 
             String granularity)
     {
-        DateFormat formatter; 
-        formatter = new SimpleDateFormat("yyyy-MM-dd");
+        FastDateFormat formatter;
+        formatter = FastDateFormat.getInstance("yyyy-MM-dd");
         Date startDate = new Date();
         Date endDate = new Date();
 
