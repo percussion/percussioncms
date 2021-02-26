@@ -350,6 +350,6 @@ public class PSContentExplorerConstants
     * two default actions "Edit" and "View" so that if user cannot edit he may
     * be able to view.
     */
-   public final static Map<String, String[]> ms_NodeDefaultActionMap = new HashMap<String, String[]>();
+   public final static Map<String, String[]> ms_NodeDefaultActionMap = new HashMap<>();
 
 }
