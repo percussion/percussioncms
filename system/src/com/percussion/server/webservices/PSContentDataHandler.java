@@ -411,7 +411,7 @@ public class PSContentDataHandler extends PSSearchHandler
       
       IPSSqlPurgeHelper purgeHelper = PSSqlPurgeHelperLocator.getPurgeHelper();
       Object[] idList = request.getParameterList(IPSHtmlParameters.SYS_CONTENTID);
-      List<PSLocator> locList = new ArrayList<PSLocator>();
+      List<PSLocator> locList = new ArrayList<>();
       if (idList!=null) 
       {
          for (Object idObj : idList) 

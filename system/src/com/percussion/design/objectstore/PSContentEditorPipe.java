@@ -529,7 +529,7 @@ public class PSContentEditorPipe  extends PSPipe
       if (node == null)
          throw new IllegalArgumentException("node may not be null");
       
-      Map<String, String> props = new HashMap<String, String>();
+      Map<String, String> props = new HashMap<>();
       
       PSXmlTreeWalker tree = new PSXmlTreeWalker(node);
       Element propEl = tree.getNextElement(USER_PROPERTY, 
