@@ -603,7 +603,7 @@ public class PSConfigManager
     * values are of type PSConfig. Initialized during the first call to 
     * {@link #getInstance()}, never <code>null</code> after that, may be empty.
     */
-   private Map<String, PSConfig> m_configs = new HashMap<String, PSConfig>();
+   private Map<String, PSConfig> m_configs = new HashMap<>();
    
    /**
     * The singleton instance of this class. Initialized by the first call to

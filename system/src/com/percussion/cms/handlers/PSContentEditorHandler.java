@@ -1508,7 +1508,7 @@ public class PSContentEditorHandler implements IPSRequestHandler,
       
       // create a view with all fields, except the hidden ones.
       List<String> allFields = (List<String>) IteratorUtils.toList(allView.getFields());
-      List<String> visableFields = new ArrayList<String>(allFields);
+      List<String> visableFields = new ArrayList<>(allFields);
       for (String name : hiddenFields)
       {
          visableFields.remove(name);
@@ -2026,5 +2026,5 @@ public class PSContentEditorHandler implements IPSRequestHandler,
     * Listeners are added using
     * {@link #addEditorChangeListener(IPSEditorChangeListener)}.
     */
-   protected List<IPSEditorChangeListener> m_changeListeners = new ArrayList<IPSEditorChangeListener>();
+   protected List<IPSEditorChangeListener> m_changeListeners = new ArrayList<>();
 }
