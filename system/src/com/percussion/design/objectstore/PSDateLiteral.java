@@ -26,12 +26,11 @@ package com.percussion.design.objectstore;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.util.Date;
 
 /**
  * The PSDateLiteral class is used to define a replacement value is a
@@ -81,7 +80,7 @@ public class PSDateLiteral extends PSLiteral
     *
     * @param   format   the date format to use when comparing dates
     */
-   public PSDateLiteral(java.util.Date date, java.text.SimpleDateFormat format)
+   public PSDateLiteral(java.util.Date date, FastDateFormat format)
    {
       super();
       m_date = date;
@@ -102,7 +101,7 @@ public class PSDateLiteral extends PSLiteral
       PSDateLiteral copy = null;
       copy = (PSDateLiteral) super.clone();
       copy.m_date = (Date) m_date.clone();
-      copy.m_format = (SimpleDateFormat) m_format.clone();
+      copy.m_format = (FastDateFormat) m_format.clone();
       return copy;
    }
 
@@ -145,7 +144,7 @@ public class PSDateLiteral extends PSLiteral
     *
     * @return                  the date format
     */
-   public java.text.SimpleDateFormat getDateFormat()
+   public FastDateFormat getDateFormat()
    {
       return m_format;
    }
@@ -155,7 +154,7 @@ public class PSDateLiteral extends PSLiteral
     *
     * @param      format       the date format
     */
-   public void setDateFormat(java.text.SimpleDateFormat format)
+   public void setDateFormat(FastDateFormat format)
    {
       IllegalArgumentException ex = validateDateFormat(format);
       if (ex != null)
@@ -165,7 +164,7 @@ public class PSDateLiteral extends PSLiteral
    }
 
    private static IllegalArgumentException validateDateFormat(
-      SimpleDateFormat format)
+      FastDateFormat format)
    {
       if (format == null) {
          return new IllegalArgumentException ("literal date fmt invalid: null");
@@ -264,7 +263,7 @@ public class PSDateLiteral extends PSLiteral
 
       //create text element
       PSXmlDocumentBuilder.addElement(doc, root, "date", m_format.format(m_date));
-      PSXmlDocumentBuilder.addElement(doc, root, "format", m_format.toPattern());
+      PSXmlDocumentBuilder.addElement(doc, root, "format", m_format.getPattern());
 
       return root;
    }
@@ -312,7 +311,7 @@ public class PSDateLiteral extends PSLiteral
             IPSObjectStoreErrors.XML_ELEMENT_INVALID_CHILD, args);
       }
       try {
-         m_format = new SimpleDateFormat(format);
+         m_format =FastDateFormat.getInstance(format);
       } catch (Throwable t) {
          Object[] args = { ms_NodeType,
             "format", (format + " (Exception: " + t.toString() + ")") };
@@ -376,7 +375,7 @@ public class PSDateLiteral extends PSLiteral
    }
 
    private java.util.Date                  m_date;
-   private java.text.SimpleDateFormat      m_format;
+   private FastDateFormat m_format;
 
    /* package access on this so they may reference each other in fromXml */
    static final String      ms_NodeType = "PSXDateLiteral";
