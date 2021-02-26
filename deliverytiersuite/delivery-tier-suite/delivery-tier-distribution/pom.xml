@@ -997,6 +997,12 @@
                                         <include name="Version.properties" />
                                     </fileset>
                                 </copy>
+                                <mkdir dir="${assembly-directory}/rxconfig/secure" />
+                                <copy todir="${assembly-directory}/rxconfig/secure">
+                                    <fileset dir="{basedir}/../../../../system/utils/src/main/resources/com/percussion/security/encryption">
+                                        <include name=".legacy-key" />
+                                    </fileset>
+                                </copy>
                                 <delete dir="${assembly-directory}/Deployment/Server/webapps/manager" />
                                 <delete dir="${assembly-directory}/Deployment/Server/webapps/host-manager" />
                                 <delete file="${assembly-directory}/Deployment/Server/conf/logging.properties" />
