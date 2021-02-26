@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,7 +26,16 @@ package com.percussion.filetracker;
 
 import com.percussion.tools.PSCopyStream;
 import com.percussion.tools.PSHttpRequest;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -40,18 +49,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.xml.parsers.DocumentBuilder;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * This class wraps the file node in the application and extends
@@ -651,8 +649,8 @@ public class PSFUDFileNode extends PSFUDAbstractNode
    /**
     * Default date format for display.
     */
-    public SimpleDateFormat ms_DateFormat =
-                  new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
+    public FastDateFormat ms_DateFormat =
+           FastDateFormat.getInstance("MM/dd/yyyy hh:mm:ss a");
 
 
    /**

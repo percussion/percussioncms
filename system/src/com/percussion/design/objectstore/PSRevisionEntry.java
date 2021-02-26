@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,6 +26,7 @@ package com.percussion.design.objectstore;
 import com.percussion.util.PSDateFormatISO8601;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -197,7 +198,7 @@ public class PSRevisionEntry extends PSComponent
    public String toString()
    {
       return (getVersion() + ": "
-         + new java.text.SimpleDateFormat().format(m_time)) + ": " + m_agent
+         + FastDateFormat.getInstance().format(m_time)) + ": " + m_agent
          + ": " + m_desc;
    }
 

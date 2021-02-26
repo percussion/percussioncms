@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -36,12 +36,12 @@ import com.percussion.server.PSRemoteConsoleHandler;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.IOException;
 import java.util.Properties;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 
 /**
@@ -322,7 +322,7 @@ public class PSConsoleCommandLogDump extends PSConsoleCommand
       throws PSIllegalArgumentException
    {
       try {
-         return new java.text.SimpleDateFormat("yyyyMMdd HH:mm:ss").parse(dateToParse);
+         return FastDateFormat.getInstance("yyyyMMdd HH:mm:ss").parse(dateToParse);
       } catch (Exception e) {
          Object[] args = { ms_cmdName, tokenName + " '" + dateToParse + "'" };
          throw new PSIllegalArgumentException(
@@ -332,7 +332,7 @@ public class PSConsoleCommandLogDump extends PSConsoleCommand
 
    private static String formatDate(java.util.Date date)
    {
-      return new java.text.SimpleDateFormat("yyyyMMdd HH:mm:ss").format(date);
+      return FastDateFormat.getInstance("yyyyMMdd HH:mm:ss").format(date);
    }
 
    /** the people we email */

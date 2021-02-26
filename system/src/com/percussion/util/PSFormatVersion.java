@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -27,12 +27,12 @@ import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.server.PSConsole;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -170,7 +170,7 @@ public class PSFormatVersion
       Date dt = null;
       try
       {
-         SimpleDateFormat fmt = new SimpleDateFormat( "yyyyMMDD" );
+         FastDateFormat fmt = FastDateFormat.getInstance( "yyyyMMDD" );
 
          dt = fmt.parse( m_buildNumber );
       }

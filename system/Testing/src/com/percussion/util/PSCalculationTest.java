@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,15 +26,14 @@ package com.percussion.util;
 
 import com.percussion.design.objectstore.PSNumericLiteral;
 import com.percussion.design.objectstore.PSTextLiteral;
-
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.apache.commons.lang3.time.FastDateFormat;
+
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * The PSCalculationTest is the unit test for PSCalculation class which
@@ -398,13 +397,14 @@ public class PSCalculationTest extends TestCase
 
       PSDate dateNew = null;
       Calendar dateOld = null;
-      SimpleDateFormat df = new SimpleDateFormat(
+      FastDateFormat df = FastDateFormat.getInstance(
          PSDataTypeConverter.getRecognizedDateFormat(strDate));
       if (df != null)
       {
          // this should not throw a parse exception
          Date day = df.parse(strDate);
-         dateOld = df.getCalendar();
+         dateOld = Calendar.getInstance();
+         dateOld.setTime(day);
          dateNew = PSCalculation.dateAdjust(dateOld, nYear, nMonth, nDay, nHour,
             nMin, nSec);
       }

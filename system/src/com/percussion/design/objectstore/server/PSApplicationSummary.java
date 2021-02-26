@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -33,9 +33,9 @@ import com.percussion.design.objectstore.PSRevisionHistory;
 import com.percussion.security.PSAclHandler;
 import com.percussion.server.PSServer;
 import com.percussion.util.PSCollection;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.text.FieldPosition;
-import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 
@@ -396,7 +396,7 @@ public class PSApplicationSummary
     *
     * @version 1.0 1999/6/24
     *
-    *   @param   lasModified   The application's on-file last modified time
+    *   @param   lastModified   The application's on-file last modified time
     */
    void setFileLastModified(long lastModified)
    {
@@ -412,7 +412,7 @@ public class PSApplicationSummary
     *
     * @version 1.0 1999/6/25
     *
-    *   @param   lasModified   The application's on-file last modified time
+    *   @param   appRoot   The application's on-file last modified time
     */
    void setAppRoot(String appRoot)
    {
@@ -461,12 +461,12 @@ public class PSApplicationSummary
 
    public String toString()
    {
-      StringBuffer buf = new StringBuffer(80);
-      buf.append(m_name + "(" + m_id + ") v" + m_majorVersion + "." + m_minorVersion
-         + " modified ");
+      StringBuilder buf = new StringBuilder(80);
+      buf.append(m_name).append("(").append(m_id).append(") v").append( m_majorVersion).append(".").append(m_minorVersion)
+         .append(" modified ");
 
       // append the modification date to the buffer
-      new SimpleDateFormat().format(new Date(m_fileLastModified), buf, new FieldPosition(0));
+      buf.insert(new FieldPosition(0).getBeginIndex(),FastDateFormat.getInstance().format(new Date(m_fileLastModified)));
 
       return buf.toString();
    }
