@@ -25,17 +25,18 @@
 package com.percussion.ant.install;
 
 import com.percussion.delivery.utils.security.PSSecureProperty;
+import com.percussion.install.InstallUtil;
 import com.percussion.install.PSLogger;
-import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
+import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.apache.tools.ant.BuildException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.Properties;
 
@@ -43,9 +44,8 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
 
 
     protected  String getDBPropertyFile(){
-        String propFile = getRootDir() + File.separator
+        return  getRootDir() + File.separator
                 + "Deployment/Server/conf/perc/perc-datasources.properties";
-        return propFile;
     }
 
     @Override
@@ -65,6 +65,10 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
             String user = props.getProperty("db.username");
             String pwd = props.getProperty("db.password");
             String dpwd = pwd;
+            if (getRootDir() == null || "".equals(getRootDir())) {
+                PSLogger.logError("Root RootDir is missing");
+                return;
+            }
             try {
                 dpwd = PSEncryptor.getInstance("AES",null).decrypt(pwd);
             } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
@@ -79,12 +83,28 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
                 PSLogger.logError("Driver Class Name not defined in properties");
                 return;
             }
-            try {
-                Class.forName(driverClassName).newInstance();
-            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-                PSLogger.logError("Driver Class Not found" + driverClassName);
+
+            String dbType;
+            switch(driverClassName){
+                case "com.mysql.jdbc.Driver":
+                    dbType="mysql";
+                    break;
+                case "com.microsoft.sqlserver.jdbc.SQLServerDriver":
+                    dbType="sqlserver";
+                    break;
+                case "net.sourceforge.jtds.jdbc.Driver":
+                    dbType="jtds:sqlserver";
+                    break;
+                case "oracle.jdbc.driver.OracleDriver":
+                    dbType="oracle:thin";
+                    break;
+                default:
+                    dbType="derby";
             }
-            try (Connection conn = DriverManager.getConnection(jdbcUrl, user, dpwd)) {
+
+            InstallUtil.setRootDir(this.getRootDir());
+            try (Connection conn = InstallUtil.createConnection(dbType,
+                    PSJdbcUtils.getServerFromUrl(jdbcUrl),user,dpwd)) {
                 String strStmt = getSql();
                 PSLogger.logInfo("Executing statement : " + strStmt);
                 try(Statement stmt = conn.createStatement()) {
@@ -96,17 +116,11 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
                 if(!isFailonerror()){
                     if(!isSilenceErrors()){
                         PSLogger.logError(ex.getMessage());
-                        if(getPrintExceptionStackTrace()){
-                            PSLogger.logError(ex);
-                        }
                     }
                     return;
                 }else{
                     if(!isSilenceErrors()) {
                         PSLogger.logError(ex.getMessage());
-                        if(getPrintExceptionStackTrace()){
-                            PSLogger.logError(ex);
-                        }
                     }
                     throw new BuildException(ex);
                 }

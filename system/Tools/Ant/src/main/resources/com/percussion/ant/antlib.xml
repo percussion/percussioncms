@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -46,6 +46,8 @@
     <taskdef name="PSSprintaCondition" classname="com.percussion.ant.install.PSSprintaCondition"/>
     <taskdef name="PSModifyProviders" classname="com.percussion.ant.install.PSModifyProviders"/>
     <taskdef name="PSUpgrade" classname="com.percussion.ant.install.PSUpgrade"/>
+    <taskdef name="PSExecDTSSQLStmt" classname="com.percussion.ant.install.PSExecDTSSqlStmt" />
+    <taskdef name="PSExecStagingDTSSQLStmt" classname="com.percussion.ant.install.PSExecStagingDTSSqlStmt" />
     <taskdef name="PSUpdateDTSConfiguration" classname="com.percussion.ant.install.PSUpdateDTSConfiguration"/>
     <taskdef name="PSUpgradeRemoveTomcatAJP" classname="com.percussion.ant.install.PSUpgradeRemoveTomcatAJP"/>
     <taskdef name="PSUpdateJettyConfigFromJBoss" classname="com.percussion.ant.install.PSUpdateJettyConfigFromJBoss"/>

@@ -88,10 +88,12 @@ public class InstallUtil
    private static final String JETTY_BASE_LIB="jetty/base/lib/";
    private static final String JETTY_BASE_JDBC="jetty/base/lib/jdbc";
    private static final String JETTY_BASE_PERC="jetty/base/lib/perc";
+   private static final String DTS_COMMON_LIB="Deployment/Server/common/lib";
+   private static final String STAGING_DTS_COMMON_LIB="Staging/Deployment/Server/common/lib";
 
    private static ClassLoader expandClasspath(){
 
-      URL[] urlList = new URL[5];
+      URL[] urlList = new URL[7];
 
 
       try {
@@ -100,8 +102,10 @@ public class InstallUtil
          urlList[2] = Paths.get(InstallUtil.m_rootDir + File.separator + JETTY_BASE_LIB).toAbsolutePath().toUri().toURL();
          urlList[3] = Paths.get(InstallUtil.m_rootDir + File.separator + JETTY_BASE_JDBC).toAbsolutePath().toUri().toURL();
          urlList[4] = Paths.get(InstallUtil.m_rootDir + File.separator + JETTY_BASE_PERC).toAbsolutePath().toUri().toURL();
+         urlList[5] = Paths.get(InstallUtil.m_rootDir + File.separator + DTS_COMMON_LIB).toAbsolutePath().toUri().toURL();
+         urlList[6] = Paths.get(InstallUtil.m_rootDir + File.separator + STAGING_DTS_COMMON_LIB).toAbsolutePath().toUri().toURL();
       } catch (MalformedURLException e) {
-         e.printStackTrace();
+         PSLogger.logError(e.getMessage());
       }
 
       return new URLClassLoader(urlList,ClassLoader.getSystemClassLoader());
@@ -131,8 +135,8 @@ public class InstallUtil
          File file = new File(strFile);
          FileInputStream in = new FileInputStream(file);
 
-         String strReadData = new String();
-         String strWriteData = new String();
+         String strReadData = "";
+         String strWriteData = "";
          int iAvail = in.available();
          byte[] bData = new byte[iAvail];
          in.read(bData, 0, iAvail);
@@ -154,11 +158,11 @@ public class InstallUtil
       }
       catch (java.io.FileNotFoundException e)
       {
-         e.printStackTrace();
+         PSLogger.logError(e.getMessage());
       }
       catch (java.io.IOException e)
       {
-         e.printStackTrace();
+         PSLogger.logError(e.getMessage());
       }
    }
 
@@ -903,6 +907,7 @@ public class InstallUtil
       {
          docBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING,true);
          docBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
+
          docBuilder = docBuilderFactory.newDocumentBuilder();
          Document doc = docBuilder.parse(new File(pathToRsDx));
          NodeList driverList = doc.getElementsByTagName("driver-class");
@@ -1297,7 +1302,19 @@ public class InstallUtil
                if (m_jarUrls == null || m_jarUrls.isEmpty())
                {
                   // Likely an upgrade, set default driver
+                  //CMS location
                   File extDriver = new File(m_rootDir + PSJdbcUtils.MYSQL_DRIVER_LOCATION);
+
+                  //DTS Location
+                  if(!extDriver.exists()){
+                     extDriver = new File(m_rootDir + PSJdbcUtils.MYSQL_DTS_DRIVER_LOCATION);
+                   }
+
+                  //Staging DTS location
+                  if(!extDriver.exists()){
+                     extDriver = new File(m_rootDir + PSJdbcUtils.MYSQL_STAGING_DTS_DRIVER_LOCATION);
+                  }
+
                   String extDriverLocation = extDriver.getAbsolutePath();
                   if (!extDriver.exists())
                   {
@@ -1329,7 +1346,7 @@ public class InstallUtil
                      ClassLoader loader = (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {
                         @Override
                         public Object run() {
-                           ClassLoader loader = new URLClassLoader(urlList);
+                     ClassLoader loader = new URLClassLoader(urlList);
                            return loader;
                         }
                      });
@@ -1794,7 +1811,7 @@ public class InstallUtil
 
    /**
      * This one is used if table not exist and we are performing operation on it So that this will bypass the operation.
-     *
+     *  
      */
     public static boolean tableNotExists() {
        return false;
@@ -1823,6 +1840,11 @@ public class InstallUtil
    public static void setRootDir(String rootDir)
    {
       m_rootDir = rootDir;
+      if(m_rootDir.equals(".")){
+         String test = System.getProperty("rxdeploydir");
+         if(test != null)
+            m_rootDir = test;
+      }
    }
    
    /**

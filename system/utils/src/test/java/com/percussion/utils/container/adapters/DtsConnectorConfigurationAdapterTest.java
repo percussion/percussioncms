@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -36,6 +36,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -320,7 +321,7 @@ public class DtsConnectorConfigurationAdapterTest {
         assertTrue((stageHttpConn.get().getProperties().get("xpoweredBy").equalsIgnoreCase("false")));
         assertTrue(stageHttpConn.get().getProperties().get("secure").equalsIgnoreCase("true"));
         assertTrue(stageHttpConn.get().getProperties().get("SSLEnabled").equalsIgnoreCase("true"));
-        assertTrue( stageHttpConn.get().getKeystoreFile().toString().endsWith("Staging/Deployment/Server/conf/.keystore"));
+        assertTrue( stageHttpConn.get().getKeystoreFile().toString().endsWith("Staging"+ File.separator +"Deployment" + File.separator +"Server" + File.separator +"conf" + File.separator + ".keystore"));
         //TODO: Test ciphers
 
         //Try out deleting the AJP connect
