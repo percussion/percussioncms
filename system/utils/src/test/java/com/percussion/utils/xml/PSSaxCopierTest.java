@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,14 +24,8 @@
 package com.percussion.utils.xml;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import junit.framework.TestCase;
+import org.w3c.dom.Document;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -40,11 +34,11 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
-
-import junit.framework.TestCase;
-
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.percussion.util.PSResourceUtils.getResourcePath;
 
@@ -77,7 +71,7 @@ public class PSSaxCopierTest extends TestCase
    {
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
       dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-      dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+      dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
       SAXParserFactory spf = SAXParserFactory.newInstance();
       StringWriter stringWriter = new StringWriter();
 
