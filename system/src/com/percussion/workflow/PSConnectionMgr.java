@@ -26,8 +26,8 @@ package com.percussion.workflow;
 import com.percussion.extension.services.PSDatabasePool;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
@@ -420,6 +420,6 @@ public class PSConnectionMgr
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog(PSConnectionMgr.class);
+   private static final Logger log = LogManager.getLogger(PSConnectionMgr.class);
 
 }
