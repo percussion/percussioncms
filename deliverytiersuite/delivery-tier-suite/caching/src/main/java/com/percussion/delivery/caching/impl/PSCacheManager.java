@@ -32,7 +32,7 @@ import com.percussion.delivery.caching.data.PSCacheProvider;
 import com.percussion.delivery.caching.data.PSCacheRegion;
 import com.percussion.delivery.caching.data.PSInvalidateRequest;
 import com.percussion.delivery.caching.utils.PSJaxbUtils;
-import com.percussion.delivery.utils.security.PSSecureProperty;
+import com.percussion.security.PSSecureProperty;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;

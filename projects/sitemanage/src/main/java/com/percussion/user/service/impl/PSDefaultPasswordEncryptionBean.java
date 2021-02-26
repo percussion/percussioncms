@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,7 +25,7 @@ package com.percussion.user.service.impl;
 
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.security.IPSPasswordFilter;
-import com.percussion.utils.security.ToDoVulnerability;
+import com.percussion.security.ToDoVulnerability;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.Lazy;

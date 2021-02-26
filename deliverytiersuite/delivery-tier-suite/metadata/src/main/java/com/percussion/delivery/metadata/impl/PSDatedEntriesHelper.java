@@ -27,8 +27,8 @@ import com.percussion.delivery.metadata.IPSMetadataEntry;
 import com.percussion.delivery.metadata.IPSMetadataProperty;
 import com.percussion.delivery.metadata.data.PSMetadataDatedEntries;
 import com.percussion.delivery.metadata.data.PSMetadataDatedEvent;
-import com.percussion.utils.date.PSConcurrentDateFormat;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class PSDatedEntriesHelper
     /**
      * Constant for the date formater. 
      */
-    private PSConcurrentDateFormat formatter = new PSConcurrentDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    private FastDateFormat formatter = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
     /**
      * This method is responsible for return the list with entries with their
@@ -101,12 +101,12 @@ public class PSDatedEntriesHelper
                     
                     if (START_DATE_PROPERTY_NAME.equals(prop.getName()) && prop.getDatevalue() != null)
                     {
-                            event.setStart(formatter.toString(prop.getDatevalue()));
+                            event.setStart(formatter.format(prop.getDatevalue()));
                     }
                     
                     if (END_DATE_PROPERTY_NAME.equals(prop.getName()) && prop.getDatevalue() != null)
                     {
-                            event.setEnd(formatter.toString(prop.getDatevalue()));
+                            event.setEnd(formatter.format(prop.getDatevalue()));
                     }
                 }
                 

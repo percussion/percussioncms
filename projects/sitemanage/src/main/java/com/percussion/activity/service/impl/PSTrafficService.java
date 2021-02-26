@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -48,10 +48,9 @@ import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.utils.date.PSDateRange;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -91,7 +90,7 @@ public class PSTrafficService implements IPSTrafficService
     public PSContentTraffic getContentTraffic(PSContentTrafficRequest request) throws PSTrafficServiceException {
         PSContentTraffic results = new PSContentTraffic();
 
-        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        FastDateFormat df = FastDateFormat.getInstance("MM/dd/yyyy");
         
         List<String> dates = new ArrayList<>();
         List<Integer> updateTotals = new ArrayList<>();
@@ -290,8 +289,8 @@ public class PSTrafficService implements IPSTrafficService
     private PSDateRange createPSDateRange(String start, String end, 
             String granularity) throws ParseException
     {
-        DateFormat formatter; 
-        formatter = new SimpleDateFormat("MM/dd/yyyy");
+        FastDateFormat formatter;
+        formatter = FastDateFormat.getInstance("MM/dd/yyyy");
         
         Date startDate = formatter.parse(start);
         Date endDate = formatter.parse(addDay(end, formatter));
@@ -359,7 +358,7 @@ public class PSTrafficService implements IPSTrafficService
      * @return date one day above dt param.
      * @throws ParseException 
      */
-    private String addDay(String dt, DateFormat sdf) throws ParseException
+    private String addDay(String dt, FastDateFormat sdf) throws ParseException
     {
         Calendar c = Calendar.getInstance();
         c.setTime(sdf.parse(dt));

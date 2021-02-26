@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,12 +24,12 @@
  
 package com.percussion.util;
 
+import org.apache.commons.lang3.time.FastDateFormat;
+
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  *   The PSDateFormatISO8601 formats dates in ISO 8601 format.
@@ -49,8 +49,8 @@ public class PSDateFormatISO8601 extends Format
     */
    public PSDateFormatISO8601()
    {
-      m_df = new SimpleDateFormat("yyyyMMdd'T'HHmmssSSS");
-      m_df.setCalendar(new GregorianCalendar());
+      m_df = FastDateFormat.getInstance("yyyyMMdd'T'HHmmssSSS");
+
    }
    
    /**
@@ -140,5 +140,5 @@ public class PSDateFormatISO8601 extends Format
     * A simple date formatter, initialized during construction, never 
     * <code>null</code> after that.
     */
-   private SimpleDateFormat m_df = null;
+   private FastDateFormat m_df = null;
 }

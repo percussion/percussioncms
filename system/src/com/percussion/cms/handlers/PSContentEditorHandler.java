@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -1508,7 +1508,7 @@ public class PSContentEditorHandler implements IPSRequestHandler,
       
       // create a view with all fields, except the hidden ones.
       List<String> allFields = (List<String>) IteratorUtils.toList(allView.getFields());
-      List<String> visableFields = new ArrayList<String>(allFields);
+      List<String> visableFields = new ArrayList<>(allFields);
       for (String name : hiddenFields)
       {
          visableFields.remove(name);
@@ -2026,5 +2026,5 @@ public class PSContentEditorHandler implements IPSRequestHandler,
     * Listeners are added using
     * {@link #addEditorChangeListener(IPSEditorChangeListener)}.
     */
-   protected List<IPSEditorChangeListener> m_changeListeners = new ArrayList<IPSEditorChangeListener>();
+   protected List<IPSEditorChangeListener> m_changeListeners = new ArrayList<>();
 }

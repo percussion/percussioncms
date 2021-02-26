@@ -33,12 +33,13 @@ import com.percussion.delivery.services.PSAbstractRestService;
 import com.percussion.delivery.utils.security.PSHttpClient;
 import com.percussion.security.PSEncryptor;
 import com.percussion.security.SecureStringUtils;
+import com.percussion.security.ToDoVulnerability;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.ToDoVulnerability;
 import com.rometools.rome.io.FeedException;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.commons.validator.routines.InetAddressValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -81,8 +82,6 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -129,7 +128,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
     /**
      * 2011-01-21T09:36:05
      */
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    FastDateFormat dateFormat = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss");
 
     @Autowired
     public PSFeedService(@Qualifier("feedsDao") IPSFeedDao dao, PSHttpClient httpClient )
@@ -498,8 +497,8 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
                     TimeZone tz = TimeZone.getDefault();
                     if(props.has(PROP_CONTENTPOSTDATETZ))
                         tz = TimeZone.getTimeZone(props.getString(PROP_CONTENTPOSTDATETZ));
-                    dateFormat.setTimeZone(tz);
-                    item.setPublishDate(dateFormat.parse(props.getString(PROP_PUBDATE)));
+                    FastDateFormat tzFmt  = FastDateFormat.getInstance(dateFormat.getPattern(),tz);
+                    item.setPublishDate(tzFmt.parse(props.getString(PROP_PUBDATE)));
                 }
                 items.add(item);
             }

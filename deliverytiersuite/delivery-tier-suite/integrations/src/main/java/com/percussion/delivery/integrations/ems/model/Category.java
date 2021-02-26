@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,18 +24,16 @@
 
 package com.percussion.delivery.integrations.ems.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.percussion.delivery.integrations.ems.IPSEMSEventService;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.percussion.delivery.integrations.ems.IPSEMSEventService;
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * <Data>
@@ -93,7 +91,7 @@ public class Category {
 	}
 	public void setCustoffTime(String custoffTime) {
 		try {
-			this.custoffTime = new SimpleDateFormat(IPSEMSEventService.TIME_FORMAT_STRING).parse(custoffTime.replace("T", " " ));
+			this.custoffTime = FastDateFormat.getInstance(IPSEMSEventService.TIME_FORMAT_STRING).parse(custoffTime.replace("T", " " ));
 		} catch (ParseException e) {
 			log.error("Error setting CustoffTime with value " + custoffTime + " and format: " + IPSEMSEventService.TIME_FORMAT_STRING,e);
 		}

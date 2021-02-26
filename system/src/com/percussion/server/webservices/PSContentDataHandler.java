@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -411,7 +411,7 @@ public class PSContentDataHandler extends PSSearchHandler
       
       IPSSqlPurgeHelper purgeHelper = PSSqlPurgeHelperLocator.getPurgeHelper();
       Object[] idList = request.getParameterList(IPSHtmlParameters.SYS_CONTENTID);
-      List<PSLocator> locList = new ArrayList<PSLocator>();
+      List<PSLocator> locList = new ArrayList<>();
       if (idList!=null) 
       {
          for (Object idObj : idList) 

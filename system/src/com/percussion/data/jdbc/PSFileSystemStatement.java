@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -43,6 +43,7 @@ import com.percussion.data.jdbc.sqlparser.Node;
 import com.percussion.data.jdbc.sqlparser.ParseException;
 import com.percussion.data.jdbc.sqlparser.SQLParser;
 import com.percussion.data.jdbc.sqlparser.SimpleNode;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -52,7 +53,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
@@ -909,7 +909,7 @@ public class PSFileSystemStatement implements Statement {
         return m_fileColumns;
      }
 
-     private SimpleDateFormat m_df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SS00");
+     private FastDateFormat m_df = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss:SS00");
 
      private Vector[] m_fileColumns;
      private int[] m_columnConstants;

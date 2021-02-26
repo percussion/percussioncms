@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -27,15 +27,14 @@ import com.percussion.error.PSException;
 import com.percussion.util.PSCollection;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Implements the PSXContentEditorPipe DTD defined in
@@ -529,7 +528,7 @@ public class PSContentEditorPipe  extends PSPipe
       if (node == null)
          throw new IllegalArgumentException("node may not be null");
       
-      Map<String, String> props = new HashMap<String, String>();
+      Map<String, String> props = new HashMap<>();
       
       PSXmlTreeWalker tree = new PSXmlTreeWalker(node);
       Element propEl = tree.getNextElement(USER_PROPERTY, 

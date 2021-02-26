@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,10 +24,6 @@
 
 package com.percussion.deploy.server.dependencies;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import com.percussion.deploy.error.IPSDeploymentErrors;
 import com.percussion.deploy.error.PSDeployException;
 import com.percussion.deploy.objectstore.PSDependency;
@@ -47,6 +43,10 @@ import com.percussion.design.objectstore.PSUISet;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
 import com.percussion.services.error.PSNotFoundException;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Base class for handlers that deploy content editor objects.
@@ -362,7 +362,7 @@ public abstract class PSContentEditorObjectDependencyHandler
       PSDependencyHandler schemaHandler = getDependencyHandler(
          PSSchemaDependencyHandler.DEPENDENCY_TYPE);
 
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
       Iterator tables = getLocatorTables(locator);
       while (tables.hasNext())
       {

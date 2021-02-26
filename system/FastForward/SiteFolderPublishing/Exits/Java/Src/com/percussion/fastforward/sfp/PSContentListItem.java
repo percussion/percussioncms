@@ -1,12 +1,26 @@
-/******************************************************************************
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
- * [ PSContentListItem.java ]
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
- * COPYRIGHT (c) 1999 - 2008 by Percussion Software, Inc., Woburn, MA USA.
- * All rights reserved. This material contains unpublished, copyrighted
- * work including confidential and proprietary information of Percussion.
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
  *
- *****************************************************************************/
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
 package com.percussion.fastforward.sfp;
 
 import com.percussion.data.macro.PSMacroUtils;
@@ -18,7 +32,6 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
@@ -226,7 +239,7 @@ public class PSContentListItem implements Comparable
       Element modifyDateElem = PSXMLDomUtil.getNextElementSibling(deliveryElem,
             IPSDTDPublisherEdition.ELEM_MODIFYDATE);
       String modifyDate = PSXMLDomUtil.getElementData(modifyDateElem);
-      SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+      FastDateFormat dateFormat = FastDateFormat.getInstance(DATE_FORMAT_PATTERN);
       if (modifyDate.trim().length() > 0)
       {
          try

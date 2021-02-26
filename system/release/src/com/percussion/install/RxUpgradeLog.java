@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,14 +23,14 @@
  */
 package com.percussion.install;
 
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.xml.sax.SAXException;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.xml.sax.SAXException;
 
 /**
  * RxUpgrade logger.
@@ -120,7 +120,7 @@ public class RxUpgradeLog
     * Time stamp format.
     * i.e.: MM/dd/yy HH:mm:ss -> 09/29/04 18:31:28
     */
-   private static SimpleDateFormat ms_dateFormat =
-      new SimpleDateFormat("MM/dd/yy HH:mm:ss"); //ie: 09/29/04 18:31:28
+   private static FastDateFormat ms_dateFormat =
+       FastDateFormat.getInstance("MM/dd/yy HH:mm:ss"); //ie: 09/29/04 18:31:28
 
 }

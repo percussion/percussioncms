@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,17 +25,16 @@
 package com.percussion.server;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Singleton class that will manage all server level locking.  Provides the
@@ -52,7 +51,7 @@ public class PSServerLockManager
    private PSServerLockManager()
    {
       m_locks = new HashMap();
-      m_dateFormat = new SimpleDateFormat("yyyyMMdd' 'HH':'mm':'ss");
+      m_dateFormat = FastDateFormat.getInstance("yyyyMMdd' 'HH':'mm':'ss");
    }
    
    /**
@@ -303,7 +302,7 @@ public class PSServerLockManager
     * Date format used to format status messages.  Initialized during 
     * construction, never <code>null</code> or modified after that.
     */
-   private SimpleDateFormat m_dateFormat;
+   private FastDateFormat m_dateFormat;
    
    /**
     * The singleton instance of the lock manager, <code>null</code> until

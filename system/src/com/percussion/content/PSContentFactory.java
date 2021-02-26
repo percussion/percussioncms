@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -31,6 +31,11 @@ import com.percussion.util.PSProperties;
 import com.percussion.util.PSPurgableFileInputStream;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -53,11 +58,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
 /**
  * PSContentFactory provides a convenient set of methods to load
@@ -86,7 +86,7 @@ public abstract class PSContentFactory
    /**
     * Logger to use.
     */
-   private static final Logger ms_log = Logger.getLogger(PSContentFactory.class);
+   private static final Logger log = LogManager.getLogger(PSContentFactory.class);
    
    /**
     * Interactive test. Command line arguments are filenames, which will
@@ -99,12 +99,12 @@ public abstract class PSContentFactory
          for (int i = 0; i < args.length; i++)
          {
             File f = new File(args[i]);
-            System.out.println(f.toString() + ": ");
+            log.info("{} :", f.toString());
             IPSMimeContent cnt = loadFile(f);
-            System.out.println(cnt);
-            System.out.println("------------------------------------------------");
+            log.info(cnt);
+            log.info("------------------------------------------------");
             writeContent(cnt);
-            System.out.println("------------------------------------------------");
+            log.info("------------------------------------------------");
          }
       }
       catch (Throwable t)
@@ -134,7 +134,7 @@ public abstract class PSContentFactory
       String line = r.readLine();
       while (line != null)
       {
-         System.out.println(line);
+         log.info(line);
          line = r.readLine();
       }
    }
@@ -380,14 +380,14 @@ public abstract class PSContentFactory
     */
    public static String[] getSupportedMimeTypes()
    {
-      Set<String> temp = new HashSet<String>();
+      Set<String> temp = new HashSet<>();
       Iterator iter = ms_mimeTypes.keySet().iterator();
       while(iter.hasNext())
       {
          String mt = (String) iter.next();
          temp.add(ms_mimeTypes.getProperty(mt));
       }
-      List<String> mtypes = new ArrayList<String>(temp);
+      List<String> mtypes = new ArrayList<>(temp);
       Collections.sort(mtypes);
       return mtypes.toArray(new String[mtypes.size()]);
    }
@@ -1438,8 +1438,8 @@ public abstract class PSContentFactory
          }
          catch (Exception e)
          {
-            ms_log.info("Was not able to get server directory from locator " +
-                  "(normal for client)", e);
+            log.info("Was not able to get server directory from locator (normal for client) Error {}", e.getMessage());
+            log.debug(e.getMessage(),e);
          }
       }
       if (canBeRead(f))
@@ -1451,8 +1451,7 @@ public abstract class PSContentFactory
             mimesObtainedFromFile = true;
          } catch (IOException e)
          {
-            ms_log.warn("Could not load mime props from " + f + ". " +
-                  "Using hardcoded defaults.", e);
+            log.warn("Could not load mime props from {}, . Using hardcoded defaults. Error: {} " + f, e.getMessage());
          } finally {
             if (fInput!=null) 
                try { fInput.close();} catch (Exception e) {/*ignore*/ }

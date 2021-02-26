@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,26 +24,28 @@
 package com.percussion.utils.jsr170;
 
 import com.percussion.utils.testing.UnitTest;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import javax.jcr.PropertyType;
+import javax.jcr.Value;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.jcr.PropertyType;
-import javax.jcr.Value;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @Category(UnitTest.class)
 public class PSValuesTest
 {
-   static final SimpleDateFormat ms_date = 
-      new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+   static final FastDateFormat ms_date =
+           FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss");
 
    public PSValuesTest() {
 

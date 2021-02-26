@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -350,6 +350,6 @@ public class PSContentExplorerConstants
     * two default actions "Edit" and "View" so that if user cannot edit he may
     * be able to view.
     */
-   public final static Map<String, String[]> ms_NodeDefaultActionMap = new HashMap<String, String[]>();
+   public final static Map<String, String[]> ms_NodeDefaultActionMap = new HashMap<>();
 
 }

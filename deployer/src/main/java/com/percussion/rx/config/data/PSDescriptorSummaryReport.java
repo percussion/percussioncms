@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -31,8 +31,8 @@ import com.percussion.deployer.objectstore.PSUserDependency;
 import com.percussion.utils.collections.PSMultiValueHashMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -69,7 +69,7 @@ public class PSDescriptorSummaryReport
     {
        sb.append(SEPARATOR);
        sb.append("Package Descriptor Summary -- ");
-       SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+       FastDateFormat formatter = FastDateFormat.getInstance("yyyy/MM/dd");
        sb.append(formatter.format(new Date()));
        sb.append(NEWLINE);
        sb.append(SEPARATOR);

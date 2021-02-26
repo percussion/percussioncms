@@ -30,8 +30,8 @@ import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
-import com.percussion.utils.date.PSConcurrentDateFormat;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
@@ -59,7 +59,7 @@ public class PSI18nStartupManager implements IPSNotificationListener {
 
 
     private static final String pattern = "dd_M_yyyy-hh_mm_ss.";
-    private static final PSConcurrentDateFormat dateFormat = new PSConcurrentDateFormat(pattern);
+    private static final FastDateFormat dateFormat = FastDateFormat.getInstance(pattern);
 
 
     public void setNotificationService(

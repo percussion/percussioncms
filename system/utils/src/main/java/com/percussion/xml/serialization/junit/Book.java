@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,13 +23,12 @@
  */
 package com.percussion.xml.serialization.junit;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.time.FastDateFormat;
+
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * A sample Book class used in unit test of the
@@ -57,7 +56,7 @@ public class Book
    public Book(String title, String pubDate) throws ParseException
    {
       this.title = title;
-      DateFormat df = new SimpleDateFormat("MMddyyyy");
+      FastDateFormat df = FastDateFormat.getInstance("MMddyyyy");
       this.pubDate = df.parse(pubDate);
    }
 
