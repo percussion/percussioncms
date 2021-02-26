@@ -86,6 +86,7 @@
     <target name="install">
         <echo>Initializing Log...</echo>
         <mkdir dir="${install.dir}/rxconfig/Installer"/>
+        <mkdir dir="${install.dir}/rxconfig/secure"/>
         <touch file="${install.dir}/rxconfig/Installer/dts-install.log" />
         <record name="${install.dir}/rxconfig/Installer/dts-install.log" loglevel="verbose"/>
         <echo>Property configuration..</echo>
@@ -185,6 +186,13 @@
     </target>
 
     <target name="updateDTSTableSchema">
+        <!-- Make sure secure keys are copied in -->
+        <mkdir dir="${install.dir}/rxconfig/secure" />
+        <copy todir="${install.dir}/rxconfig/secure">
+            <fileset dir="${install.src}/rxconfig/secure">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
         <echo>Dropping Metadata Tables.......</echo>
         <PSExecDTSSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
                           qualifyViewNames="" sql="DROP TABLE IF EXISTS PERC_PAGE_METADATA_PROPERTIES"/>
