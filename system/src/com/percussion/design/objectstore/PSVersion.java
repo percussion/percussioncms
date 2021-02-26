@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,12 +25,12 @@
 package com.percussion.design.objectstore;
 
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.w3c.dom.Element;
 
 /**
  * This class represents a particular version of a feature.
@@ -69,7 +69,7 @@ public class PSVersion
     *
     * @param sourceNode the Xml element node from which to construct this object.
     * @throws PSUnknownNodeTypeException if node is not found or invalid
-    * @see PSFeatureSet#fromXml(Document) for more information.
+    * @see PSFeatureSet#fromXml(Document)  for more information.
     */
    public PSVersion(Element sourceNode) throws PSUnknownNodeTypeException
    {
@@ -146,7 +146,7 @@ public class PSVersion
     */
    private void getFormatter()
    {
-      m_formatter = new SimpleDateFormat(DATE_FORMAT);
+      m_formatter = FastDateFormat.getInstance(DATE_FORMAT);
    }
 
    /**
@@ -162,7 +162,7 @@ public class PSVersion
    /**
     * Formatter to parse date to and from a string
     */
-   private SimpleDateFormat m_formatter = null;
+   private FastDateFormat m_formatter = null;
 
    /**
     * Format string to use with the formatter

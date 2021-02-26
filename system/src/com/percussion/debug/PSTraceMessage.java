@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,13 +26,13 @@ package com.percussion.debug;
 
 import com.percussion.design.objectstore.PSTraceInfo;
 import com.percussion.util.PSLineBreaker;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -79,10 +79,8 @@ public abstract class PSTraceMessage implements IPSTraceMessage
     * stream.  Calls abstract methods getMessageHeader and getMessageBody to
     * construct the output, and these calls are overriden by the specific message
     * object subclass.
-    * @param tracer The trace options set by the application.  May not be
+    * @param traceInfo The trace options set by the application.  May not be
     * <code>null</code>.
-    * @param out The output stream writer to which the formatted message is
-    * sent.   May not be <code>null</code>.
     * @param source the source of the information to be used in generating the trace
     * message.   May not be <code>null</code>.
     * @throws IOException if there is a problem writing to the output stream
@@ -100,7 +98,7 @@ public abstract class PSTraceMessage implements IPSTraceMessage
 
       // add the timestamp
       if (m_formatter == null)
-         m_formatter = new SimpleDateFormat(TS_FORMAT);
+         m_formatter = FastDateFormat.getInstance(TS_FORMAT);
       header.append(new String(m_formatter.format(new Date())));
       header.append(' ');
 
@@ -208,5 +206,5 @@ public abstract class PSTraceMessage implements IPSTraceMessage
    /**
     * Formatter for dates
     */
-   private SimpleDateFormat m_formatter = null;
+   private FastDateFormat m_formatter = null;
 }

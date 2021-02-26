@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -34,14 +34,23 @@ import com.percussion.rest.editions.Edition;
 import com.percussion.rest.folders.Folder;
 import com.percussion.rest.folders.SectionInfo;
 import com.percussion.rest.folders.SectionLinkRef;
-import com.percussion.rest.pages.*;
+import com.percussion.rest.pages.CalendarInfo;
+import com.percussion.rest.pages.CodeInfo;
+import com.percussion.rest.pages.Page;
+import com.percussion.rest.pages.Region;
+import com.percussion.rest.pages.SeoInfo;
+import com.percussion.rest.pages.Widget;
+import com.percussion.rest.pages.WorkflowInfo;
 import com.percussion.rest.roles.Role;
 import com.percussion.rest.users.User;
+import org.apache.commons.lang3.time.FastDateFormat;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * This class provides example representations that can be used for wadl docs.<br>
@@ -104,7 +113,7 @@ public class Examples
 
     static
     {
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        FastDateFormat dateFormat = FastDateFormat.getInstance("dd-MM-yyyy");
         Date date1 = null;
         Date date2 = null;
         try

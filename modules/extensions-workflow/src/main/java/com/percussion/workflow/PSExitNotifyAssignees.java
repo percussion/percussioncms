@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -45,6 +45,7 @@ import com.percussion.search.IPSSearchResultRow;
 import com.percussion.search.PSExecutableSearchFactory;
 import com.percussion.search.PSSearchException;
 import com.percussion.search.PSWSSearchResponse;
+import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSRoleManager;
@@ -71,12 +72,12 @@ import com.percussion.util.PSStringTemplate.PSStringTemplateException;
 import com.percussion.util.PSUrlUtils;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jexl.PSJexlEvaluator;
-import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.workflow.mail.IPSMailMessageContext;
 import com.percussion.workflow.mail.PSMailException;
 import com.percussion.workflow.mail.PSMailMessageContext;
 import com.percussion.workflow.model.PSMessagePackage;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.velocity.Template;
@@ -93,7 +94,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -1008,8 +1008,8 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
 
       String formatStr = PSWorkFlowUtils.properties
               .getProperty(PSWorkFlowUtils.DATE_FORMAT_PROP);
-      SimpleDateFormat dateFormat = StringUtils.isBlank(formatStr) ? new SimpleDateFormat()
-              : new SimpleDateFormat(formatStr);
+      FastDateFormat dateFormat = StringUtils.isBlank(formatStr) ? FastDateFormat.getInstance()
+              : FastDateFormat.getInstance(formatStr);
 
       for (String fieldName : fieldNames) {
          String value = "";

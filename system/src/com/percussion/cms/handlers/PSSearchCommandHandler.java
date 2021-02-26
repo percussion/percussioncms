@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,6 +23,7 @@
  */
 
 package com.percussion.cms.handlers;
+
 import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSCmsObject;
 import com.percussion.conn.PSServerException;
@@ -93,14 +94,17 @@ import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import javax.naming.NamingException;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -109,11 +113,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.naming.NamingException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * This class handles the 'search' command. It will create a new
@@ -1288,7 +1287,7 @@ public class PSSearchCommandHandler extends PSCommandHandler
                   StringBuilder formatBuf = new StringBuilder();
                   Date date = PSDataTypeConverter.parseStringToDate(
                      (String)iter.next(), formatBuf);
-                  ls.add(new PSDateLiteral(date, new SimpleDateFormat(
+                  ls.add(new PSDateLiteral(date, FastDateFormat.getInstance(
                      formatBuf.toString())));
                }
                rightVal = ls;
@@ -1312,15 +1311,15 @@ public class PSSearchCommandHandler extends PSCommandHandler
                   && (!formatBuf.toString().toLowerCase().contains("h")))
                {
                   // time not found, we need to add the time
-                  SimpleDateFormat dateFormat =
-                     new SimpleDateFormat(
+                  FastDateFormat dateFormat =
+                          FastDateFormat.getInstance(
                         formatBuf.append(" hh:mm:ss").toString());
                   date = dateFormat.parse(data + " 00:00:00");
 
                   IPSReplacementValue tmpRightVal =
                      new PSDateLiteral(
                         date,
-                        new SimpleDateFormat(formatBuf.toString()));
+                             FastDateFormat.getInstance(formatBuf.toString()));
 
                   // add the beginning value which is midnight on the specified day
                   conditionals.add(
@@ -1337,7 +1336,7 @@ public class PSSearchCommandHandler extends PSCommandHandler
                   // 1 second short of midnight
                   date = dateFormat.parse(data + " 23:59:59");
                }
-               rightVal = new PSDateLiteral(date, new SimpleDateFormat(
+               rightVal = new PSDateLiteral(date, FastDateFormat.getInstance(
                   formatBuf.toString()));
             }
          }

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,9 +25,8 @@ package com.percussion.cms.objectstore;
 
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.util.PSDataTypeConverter;
+import org.apache.commons.lang3.time.FastDateFormat;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
@@ -41,9 +40,9 @@ public class PSDateValue extends PSFieldValue
     * Constructs a new object with the date as the value. Using the default
     * format ("yyyy-MM-dd") and default <code>Locale</code> "en-us".  This is
     * a convenience method that is equivalent to calling
-    * {@link #PSDateValue(Date,DateFormat) PSDateValue(date,null)}.
+    * {@link #PSDateValue(Date,FastDateFormat) PSDateValue(date,null)}.
     *
-    * @param date {@link #PSDateValue(Date,DateFormat) PSDateValue(date,null)}
+    * @param date {@link #PSDateValue(Date,FastDateFormat) PSDateValue(date,null)}
     */
    public PSDateValue(Date date)
    {
@@ -57,7 +56,7 @@ public class PSDateValue extends PSFieldValue
     * creating a date value for now.
     * @param format if <code>null</code> the default format will be used.
     */
-   public PSDateValue(Date date, DateFormat format)
+   public PSDateValue(Date date, FastDateFormat format)
    {
       setValue(date, format);
    }
@@ -69,13 +68,13 @@ public class PSDateValue extends PSFieldValue
     * creating a date value for now.
     * @param format if <code>null</code> the default format will be used.
     */
-   public void setValue(Date date, DateFormat format)
+   public void setValue(Date date, FastDateFormat format)
    {
       if(date == null)
          date = new Date();
 
       if(format == null)
-         format = new SimpleDateFormat(DEFAULT_FORMAT, DEFAULT_LOCALE);
+         format = FastDateFormat.getInstance(DEFAULT_FORMAT, DEFAULT_LOCALE);
 
       m_date = date;
       m_format = format;
@@ -128,7 +127,7 @@ public class PSDateValue extends PSFieldValue
       copy = (PSDateValue)super.clone();
 
       copy.m_date = (Date)m_date.clone();
-      copy.m_format = (DateFormat)m_format.clone();
+      copy.m_format = (FastDateFormat) m_format.clone();
 
       return copy;
    }
@@ -183,7 +182,7 @@ public class PSDateValue extends PSFieldValue
     * will not be empty or <code>null</code>, defaults to
     * <code>SimpleDateFormat(DEFAULT_FORMAT, DEFAULT_LOCALE)</code>
     */
-   private DateFormat m_format;
+   private FastDateFormat m_format;
 
    /**
     * Default date format that will be used to format the date.

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -28,12 +28,12 @@ import com.percussion.design.objectstore.PSDateLiteral;
 import com.percussion.design.objectstore.PSLiteralSet;
 import com.percussion.design.objectstore.PSNumericLiteral;
 import com.percussion.design.objectstore.PSTextLiteral;
-
-import java.util.ArrayList;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.apache.commons.lang3.time.FastDateFormat;
+
+import java.util.ArrayList;
 
 /**
  * The PSConditionalEvaluatorTest class is for unit test of PSConditionalEvaluator
@@ -78,7 +78,7 @@ public class PSConditionalEvaluatorTest extends TestCase
       testLiteralSet(left, literalSet);
 
       java.util.Date date = new java.util.Date(10);
-      java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat();
+      FastDateFormat dateFormat = FastDateFormat.getInstance();
       PSDateLiteral day = new PSDateLiteral(date, dateFormat);
 
       PSLiteralSet dateLiteralSet = new PSLiteralSet(
@@ -151,7 +151,7 @@ public class PSConditionalEvaluatorTest extends TestCase
       testNormalCases(left, right);
 
       // let left = date, right = date set, numeric set, text set
-      java.text.SimpleDateFormat format = new java.text.SimpleDateFormat();
+      FastDateFormat format = FastDateFormat.getInstance();
       PSDateLiteral day1 = new PSDateLiteral(left, format);
       PSDateLiteral day2 = new PSDateLiteral(right,format);
 
@@ -262,7 +262,7 @@ public class PSConditionalEvaluatorTest extends TestCase
       // let left = String, right = PSDateLiteral,
       java.util.Date oneDay = new java.util.Date(1000);
       String pattern = "yyyy.MM.dd";
-      java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat(pattern);
+      FastDateFormat dateFormat = FastDateFormat.getInstance(pattern);
       PSDateLiteral dateLiteral = new PSDateLiteral(oneDay, dateFormat);
 
       String myString = "1999.08.12 AD at 14:02:44";  // in pattern
@@ -285,7 +285,7 @@ public class PSConditionalEvaluatorTest extends TestCase
    public void testMakeComparable2PSDateLiteral() throws Exception
    {
       String pattern = "yyyy.MM.dd G";
-      java.text.SimpleDateFormat format = new java.text.SimpleDateFormat(pattern);
+      FastDateFormat format = FastDateFormat.getInstance(pattern);
       java.util.Date now = new java.util.Date(1000);
       java.util.Date then= new java.util.Date(2000);
 
@@ -345,7 +345,7 @@ public class PSConditionalEvaluatorTest extends TestCase
       // let left = PSDateLiteral, right = String or PSTextLiteral
       java.util.Date oneDay = new java.util.Date(1000);
       // pattern = "yyyy.MM.dd G 'at' HH:mm:ss";
-      java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat(pattern);
+      FastDateFormat dateFormat = FastDateFormat.getInstance(pattern);
       PSDateLiteral dateLiteral = new PSDateLiteral(oneDay, dateFormat);
 
       String myString = "1999.08.12 AD at 14:02:44";  // in pattern
@@ -391,7 +391,7 @@ public class PSConditionalEvaluatorTest extends TestCase
       testNormalCases(left, now);
 
       // let left = PSNumericLiteral, right = PSDateLiteral
-      java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat();
+      FastDateFormat dateFormat = FastDateFormat.getInstance();
       PSDateLiteral day = new PSDateLiteral(now, dateFormat);
       testTheseCases(left, day);
       testLikeCase(left, day, false, true);
@@ -454,7 +454,7 @@ public class PSConditionalEvaluatorTest extends TestCase
       // let left = PSTextLiteral, right = PSDateLiteral
       java.util.Date oneDay = new java.util.Date(1000);
       String pattern = "yyyy.MM.dd G 'at' HH:mm:ss";
-      java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat(pattern);
+      FastDateFormat dateFormat = FastDateFormat.getInstance(pattern);
       PSDateLiteral dateLiteral = new PSDateLiteral(oneDay, dateFormat);
 
       String myString = "1999.08.12 AD at 14:02:44";  // in pattern

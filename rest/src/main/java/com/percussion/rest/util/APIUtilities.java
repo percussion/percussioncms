@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,7 +24,8 @@
 
 package com.percussion.rest.util;
 
-import java.text.SimpleDateFormat;
+import org.apache.commons.lang3.time.FastDateFormat;
+
 import java.util.Date;
 
 /***
@@ -42,6 +43,6 @@ public class APIUtilities {
      * @return nonadaimages-2017-01-0312-13-10.csv
      */
     public static String getReportFileName(String prefix, String extension){
-    	return new SimpleDateFormat("'" + prefix +"-'yyyy-MM-dd-hh-mm-ss'." + extension + "'").format(new Date());
+    	return FastDateFormat.getInstance("'" + prefix +"-'yyyy-MM-dd-hh-mm-ss'." + extension + "'").format(new Date());
     }
 }

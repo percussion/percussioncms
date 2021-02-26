@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,23 +25,21 @@
 package com.percussion.delivery.metadata.extractor.data;
 
 import com.percussion.delivery.metadata.IPSMetadataProperty;
-
-import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import java.io.Serializable;
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * Represents a metadata property name value pair.
@@ -53,7 +51,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class PSMetadataProperty implements Serializable, IPSMetadataProperty{
     
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    FastDateFormat sdf = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss");
     
     /**
      * Property name. For example: dcterms:creator
@@ -77,7 +75,7 @@ public class PSMetadataProperty implements Serializable, IPSMetadataProperty{
      * Ctor to create a property of the specified valuetype.
      * 
      * @param name the property name, cannot be <code>null</code> or empty.
-     * @param type the {@link #valuetype} for the property. Cannot be
+     * @param valuetype the {@link #valuetype} for the property. Cannot be
      *            <code>null</code>.
      * @param value the value to be stored in the property. May be
      *            <code>null</code> or empty.
