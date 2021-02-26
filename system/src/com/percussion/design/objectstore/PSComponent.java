@@ -104,7 +104,7 @@ public abstract class PSComponent implements IPSComponent, Serializable
       if (null != ms_features)
          throw new IllegalStateException("Can only set feature set once.");
 
-      ms_features = new HashMap<String, Integer>();
+      ms_features = new HashMap<>();
       Iterator<?> features = fs.getFeatureSet();
       while (features.hasNext())
       {
@@ -159,7 +159,7 @@ public abstract class PSComponent implements IPSComponent, Serializable
    protected ArrayList<PSComponent> updateParentList(ArrayList<PSComponent> parentComponents)
    {
       if (parentComponents == null)
-         parentComponents = new ArrayList<PSComponent>();
+         parentComponents = new ArrayList<>();
 
       parentComponents.add(this);
 
@@ -233,7 +233,7 @@ public abstract class PSComponent implements IPSComponent, Serializable
       List<IPSComponentConverter> converters)
    {
       if (converters == null)
-         converters = new ArrayList<IPSComponentConverter>();
+         converters = new ArrayList<>();
 
       ms_converters = converters;
    }
@@ -249,7 +249,7 @@ public abstract class PSComponent implements IPSComponent, Serializable
       List<IPSComponentUpdater> updaters)
    {
       if (updaters == null)
-         updaters = new ArrayList<IPSComponentUpdater>();
+         updaters = new ArrayList<>();
 
       ms_updaters = updaters;
    }
@@ -263,7 +263,7 @@ public abstract class PSComponent implements IPSComponent, Serializable
     */
    public static List<IPSComponentConverter> getComponentConverters()
    {
-      return new ArrayList<IPSComponentConverter>(ms_converters);
+      return new ArrayList<>(ms_converters);
    }
    
    /**
@@ -590,14 +590,14 @@ public abstract class PSComponent implements IPSComponent, Serializable
     * {@link #setComponentConverters(List)}.
     */
    private static List<IPSComponentConverter> ms_converters = 
-      new ArrayList<IPSComponentConverter>();
+      new ArrayList<>();
 
    /**
     * List of updaters, never <code>null</code>, empty unless modified by 
     * {@link #setComponentConverters(List)}.
     */
    private static List<IPSComponentUpdater> ms_updaters = 
-      new ArrayList<IPSComponentUpdater>();
+      new ArrayList<>();
    
 }
 
