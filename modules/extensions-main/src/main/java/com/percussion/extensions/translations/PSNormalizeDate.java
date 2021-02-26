@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -36,7 +36,7 @@ import java.text.ParseException;
 
 /**
  * Parses a date string using a specified format and transforms it to a new
- * string. See {@link java.text.SimpleDateFormat} for the supported format
+ * string. See {@link org.apache.commons.lang3.time.FastDateFormat} for the supported format
  * patterns. The output format is <code>yyyy-MM-dd HH:mm:ss.SSS</code> if a 
  * time component is present, otherwise it is <code>yyyy-MM-dd.</code>.
  *  

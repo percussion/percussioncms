@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,11 +24,11 @@
 
 package com.percussion.HTTPClient;
 
+import org.apache.commons.lang3.time.FastDateFormat;
+
 import java.io.Serializable;
 import java.net.ProtocolException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -81,7 +81,7 @@ public class Cookie implements Serializable
      * @param value   the cookie value
      * @param domain  the host this cookie will be sent to
      * @param path    the path prefix for which this cookie will be sent
-     * @param epxires the Date this cookie expires, null if at end of
+     * @param expires the Date this cookie expires, null if at end of
      *                session
      * @param secure  if true this cookie will only be over secure connections
      * @exception NullPointerException if <var>name</var>, <var>value</var>,
@@ -111,7 +111,7 @@ public class Cookie implements Serializable
     /**
      * Use <code>parse()</code> to create cookies.
      *
-     * @see #parse(java.lang.String, HTTPClient.RoRequest)
+     * @see #parse(String, RoRequest)
      */
     protected Cookie(RoRequest req)
     {
@@ -311,11 +311,9 @@ public class Cookie implements Serializable
 	    if (value.charAt(value.length()-1) == '\"')
 		value = value.substring(0, value.length()-1).trim();
 	    try
-		// This is too strict...
-		// { cookie.expires = Util.parseHttpDate(value); }
 		{
-         DateFormat df = new SimpleDateFormat();
-         cookie.expires = df.parse(value);
+			FastDateFormat df = FastDateFormat.getInstance();
+         	cookie.expires = df.parse(value);
       }
 	    catch (ParseException pe)
 	    {
@@ -325,7 +323,7 @@ public class Cookie implements Serializable
 				    set_cookie + "\nInvalid date found at " +
 				    "position " + beg);
 		*/
-		Log.write(Log.COOKI, "Cooki: Bad Set-Cookie header: " + set_cookie +
+		Log.write(Log.COOKI, "Cookie: Bad Set-Cookie header: " + set_cookie +
 				     "\n       Invalid date `" + value + "'");
 	    }
 	}

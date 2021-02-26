@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,7 +24,7 @@
 package com.percussion.delivery.metadata.data;
 
 import com.percussion.delivery.metadata.IPSMetadataProperty;
-import com.percussion.utils.date.PSConcurrentDateFormat;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +40,7 @@ public class PSMetadataRestEntry
     /**
      * Date format used for string serialized date. 2011-01-21T09:36:05
      */
-    PSConcurrentDateFormat dateFormat = new PSConcurrentDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    FastDateFormat dateFormat =  FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss");
     
     private String pagepath;
 

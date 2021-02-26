@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -49,17 +49,10 @@ import com.percussion.util.PSUrlUtils;
 import com.percussion.utils.exceptions.PSExceptionHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.timing.PSStopwatch;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Serializable;
-import java.io.StringWriter;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -67,10 +60,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.io.StringWriter;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Takes parameters and constructs a content list suitable for the publisher. It
@@ -90,12 +88,12 @@ public class PSContentListServlet extends HttpServlet
    /**
     * Logger for content list servlet
     */
-   private static Log ms_log = LogFactory.getLog(PSContentListServlet.class);
+   private static Logger ms_log = LogManager.getLogger(PSContentListServlet.class);
 
    /**
     * Date format used in content lists
     */
-   private static final SimpleDateFormat ms_datefmt = new SimpleDateFormat(
+   private static final FastDateFormat ms_datefmt =FastDateFormat.getInstance(
          "yyyy-MM-dd HH:mm:ss");
 
    /**

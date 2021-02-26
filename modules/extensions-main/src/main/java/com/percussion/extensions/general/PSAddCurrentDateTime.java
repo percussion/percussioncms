@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -30,8 +30,8 @@ import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
+import org.apache.commons.lang3.time.FastDateFormat;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -122,7 +122,7 @@ public class PSAddCurrentDateTime extends PSDefaultExtension
 
 
 
-      SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+      FastDateFormat formatter = FastDateFormat.getInstance(pattern);
       request.setParameter(htmlParamName, formatter.format(getDateOffset(new Date(),offset, truncate)));
    }
 

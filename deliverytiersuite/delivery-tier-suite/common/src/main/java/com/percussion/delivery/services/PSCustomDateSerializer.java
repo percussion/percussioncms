@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,7 +26,7 @@ package com.percussion.delivery.services;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.percussion.utils.date.PSConcurrentDateFormat;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.io.IOException;
 
@@ -39,7 +39,7 @@ import java.io.IOException;
 public class PSCustomDateSerializer extends JsonSerializer<Object>
 {
 
-   private final PSConcurrentDateFormat formatter = new PSConcurrentDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+   private final FastDateFormat formatter =  FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
    
    /* (non-Javadoc)
     * @see org.codehaus.jackson.map.JsonSerializer#serialize(

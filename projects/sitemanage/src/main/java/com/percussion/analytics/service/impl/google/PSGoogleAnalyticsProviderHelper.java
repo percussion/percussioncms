@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -40,9 +40,9 @@ import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.error.PSAnalyticsProviderException.CAUSETYPE;
 import com.percussion.utils.date.PSDateRange;
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.logging.log4j.LogManager;
-
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -53,9 +53,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -183,7 +181,7 @@ public class PSGoogleAnalyticsProviderHelper
     */
     public  ReportRequest createNewDataQuery(PSDateRange range)
     {
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        FastDateFormat formatter = FastDateFormat.getInstance("yyyy-MM-dd");
         DateRange dateRange = new DateRange();
         dateRange.setStartDate(formatter.format(range.getStart()));
         dateRange.setEndDate(formatter.format(range.getEnd()));
@@ -224,7 +222,7 @@ public class PSGoogleAnalyticsProviderHelper
     public PSDateRange createValidPSDateRange(PSDateRange range) throws PSAnalyticsProviderException
     {
 
-        DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        FastDateFormat formatter = FastDateFormat.getInstance("MM/dd/yyyy");
 
         try
         {
@@ -245,13 +243,13 @@ public class PSGoogleAnalyticsProviderHelper
    /**
     * Date format to use to parse date from a google query. Never <code>null</code>.
     */
-   private final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
+   private final FastDateFormat DATE_FORMAT = FastDateFormat.getInstance("yyyyMMdd");
 
    public static final String  ANALYTICS_LAUNCH_DATE = "11/14/2005";
 
     public static final String APPLICATION_NAME = "Percussion CMS";
 
-    public synchronized DateFormat getDateFormat(){
+    public synchronized FastDateFormat getDateFormat(){
         return DATE_FORMAT;
     }
    /**
