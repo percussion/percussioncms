@@ -152,7 +152,7 @@ public class PSConsoleCommandFlushCache extends PSConsoleCommandCache
                }
 
                // determine keys
-               keys = new HashMap<String,String>();
+               keys = new HashMap<>();
 
                // ask for delimiters since ";;;" is valid and won't return any
                // tokens

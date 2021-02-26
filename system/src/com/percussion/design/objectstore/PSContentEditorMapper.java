@@ -761,7 +761,7 @@ public class PSContentEditorMapper extends PSComponent
    {
       if (sharedDef != null)
       {
-         List<String> sharedFieldIncludes = new ArrayList<String>();
+         List<String> sharedFieldIncludes = new ArrayList<>();
          
          List sharedFieldIncludesUpper = convertToUpper(m_sharedFieldIncludes);
          Iterator groups = sharedDef.getFieldGroups();
@@ -1089,7 +1089,7 @@ public class PSContentEditorMapper extends PSComponent
          throw new IllegalArgumentException("targetUIDef cannot be null.");
       if(targetSet == null)
          throw new IllegalArgumentException("targetSet cannot be null.");
-      ArrayList<String> fieldExcludes = new ArrayList<String>();
+      ArrayList<String> fieldExcludes = new ArrayList<>();
 
       Iterator sourceFields = sourceSet.getAll();
       while(sourceFields.hasNext())
@@ -1346,7 +1346,7 @@ public class PSContentEditorMapper extends PSComponent
    public Iterator validateSharedGroups(PSContentEditorSharedDef sharedDef)
       throws PSSystemValidationException
    {
-      List<Exception> warnings = new ArrayList<Exception>();
+      List<Exception> warnings = new ArrayList<>();
       
       Iterator includes = m_sharedFieldIncludes.iterator();
       PSCollection tmpExcludes = new PSCollection(
@@ -1616,7 +1616,7 @@ public class PSContentEditorMapper extends PSComponent
                   }
                   else
                   {
-                     sharedGroupNames = new HashSet<String>();
+                     sharedGroupNames = new HashSet<>();
                      sharedGroupNames.add(sharedGroupName);
 
                      mapSharedField2SharedGroups.put(sharedFieldName,
@@ -1645,7 +1645,7 @@ public class PSContentEditorMapper extends PSComponent
    {
       PSFieldSet sysFieldSet = systemDef.getFieldSet();
 
-      List<String> notFound = new ArrayList<String>();
+      List<String> notFound = new ArrayList<>();
 
       Iterator excludes = m_systemFieldExcludes.iterator();
       while(excludes.hasNext())
@@ -1688,7 +1688,7 @@ public class PSContentEditorMapper extends PSComponent
       if(list == null)
          throw new IllegalArgumentException("list may not be null.");
 
-      List<String> newList = new ArrayList<String>();
+      List<String> newList = new ArrayList<>();
       for (int i = 0; i < list.size(); i++)
       {
          Object name = list.get(i);
