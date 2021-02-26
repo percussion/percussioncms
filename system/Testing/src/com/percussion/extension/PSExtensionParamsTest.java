@@ -29,10 +29,10 @@ import com.percussion.design.objectstore.PSLiteral;
 import com.percussion.design.objectstore.PSSingleHtmlParameter;
 import com.percussion.design.objectstore.PSTextLiteral;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 /**
  * Test extensions params
@@ -97,7 +97,7 @@ public class PSExtensionParamsTest extends TestCase
 
       PSLiteral b = new PSTextLiteral("abc");
       Date today = new Date();
-      PSLiteral c = new PSDateLiteral(today, new SimpleDateFormat(
+      PSLiteral c = new PSDateLiteral(today, FastDateFormat.getInstance(
             "yyyy/MM/dd HH:mm:ss.SSS"));
 
       Object params[] =
