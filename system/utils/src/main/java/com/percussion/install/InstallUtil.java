@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -35,18 +35,42 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.PrefixFileFilter;
 import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.*;
-import java.net.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.ServerSocket;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -878,7 +902,7 @@ public class InstallUtil
       try
       {
          docBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING,true);
-         docBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+         docBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
          docBuilder = docBuilderFactory.newDocumentBuilder();
          Document doc = docBuilder.parse(new File(pathToRsDx));
          NodeList driverList = doc.getElementsByTagName("driver-class");
@@ -967,7 +991,7 @@ public class InstallUtil
       try
       {
          docBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING,true);
-         docBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+         docBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
          docBuilder = docBuilderFactory.newDocumentBuilder();
          Document doc = docBuilder.parse(new File(pathToServerConf));
          NodeList connectorList = doc.getElementsByTagName("Connector");

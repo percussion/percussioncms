@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -27,30 +27,46 @@ import com.percussion.utils.tools.IPSUtilsConstants;
 import com.percussion.utils.xml.PSEntityResolver;
 import com.percussion.utils.xml.PSProcessServerPageTags;
 import com.percussion.utils.xml.PSSaxParseException;
-
 import org.apache.log4j.Logger;
-import org.w3c.dom.*;
-
+import org.w3c.dom.DOMException;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.w3c.tidy.Tidy;
-
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
-import java.io.*;
-
-import java.net.URL;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
 
 
 /**
@@ -275,7 +291,7 @@ public class PSXmlDocumentBuilder {
             if (db == null) {
                 DocumentBuilderFactory dbf = getDocumentBuilderFactory(validating);
                 dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-                dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+                dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
                 db = dbf.newDocumentBuilder();
                 db.setEntityResolver(PSEntityResolver.getInstance());
                 returnDocumentBuilderFactory(dbf);
