@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -29,6 +29,10 @@ import com.percussion.cms.PSDisplayChoices;
 import com.percussion.cms.objectstore.IPSFieldCataloger;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,11 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * Client side object containing the cataloged content editor fields. 
@@ -201,7 +200,7 @@ public class PSContentEditorFieldCataloger
       if (node != null)
       {
          Map<String, List<PSLightWeightField>> tmpMap = 
-            new HashMap<String, List<PSLightWeightField>>();
+            new HashMap<>();
          populateMaps((Element) node, tmpMap, typeMap);
          Iterator entries = tmpMap.keySet().iterator();
          while (entries.hasNext())
@@ -248,7 +247,7 @@ public class PSContentEditorFieldCataloger
             List<PSLightWeightField> group = groups.get(fieldName);
             if (null == group)
             {
-               group = new ArrayList<PSLightWeightField>();
+               group = new ArrayList<>();
                groups.put(fieldName, group);
             }
             
@@ -291,7 +290,7 @@ public class PSContentEditorFieldCataloger
                   Collection<PSLightWeightField> c = contentTypes.get(ctype);
                   if (null == c)
                   {
-                     c = new ArrayList<PSLightWeightField>();
+                     c = new ArrayList<>();
                      contentTypes.put(ctype, c);
                   }
                   
@@ -423,7 +422,7 @@ public class PSContentEditorFieldCataloger
    public Map<String, Map<String, PSLightWeightField>> getAll()
    {
       Map<String, Map<String, PSLightWeightField>> all = 
-         new HashMap<String, Map<String, PSLightWeightField>>();
+         new HashMap<>();
       all.put(SYSTEM, getSystemMap());
       all.put(SHARED, getSharedMap());
       all.put(LOCAL, getLocalMap());
@@ -674,7 +673,7 @@ public class PSContentEditorFieldCataloger
     * Never <code>null</code>.
     */
    private Map<String, PSLightWeightField> m_systemMap = 
-      new HashMap<String, PSLightWeightField>();
+      new HashMap<>();
 
    /**
     * Shared map for shared content editor fields. The key is the internal name
@@ -685,21 +684,21 @@ public class PSContentEditorFieldCataloger
     * <code>null</code>.
     */
    private Map<String, PSLightWeightField> m_sharedMap = 
-      new HashMap<String, PSLightWeightField>();
+      new HashMap<>();
 
    /**
     * Local map for local fields. See <code>m_sharedMap</code> for details.
     * Never <code>null</code>.
     */
    private Map<String, PSLightWeightField> m_localMap = 
-      new HashMap<String, PSLightWeightField>();
+      new HashMap<>();
 
    /**
     * Maps local content types to one or more light weight fields,
     * never <code>null</code>.
     */
    private Map<String, Collection<PSLightWeightField>> m_localContentTypeMap = 
-      new TreeMap<String, Collection<PSLightWeightField>>();
+      new TreeMap<>();
    
    /**
     * The control flags supplied during construction.
@@ -788,7 +787,7 @@ public class PSContentEditorFieldCataloger
       public Set<String> getFieldsToLoad(Set<String> requestedFields, 
          boolean noChoices)
       {
-         Set<String> fieldsToLoad = new HashSet<String>(requestedFields);
+         Set<String> fieldsToLoad = new HashSet<>(requestedFields);
          if (allFieldsLoaded(noChoices))
             fieldsToLoad.clear();
          else
@@ -811,7 +810,7 @@ public class PSContentEditorFieldCataloger
       /**
        * Set of field names that have been loaded.
        */
-      private Set<String> m_loadedFields = new HashSet<String>();
+      private Set<String> m_loadedFields = new HashSet<>();
       
       private boolean m_allLoadedNoChoices = false;
       private boolean m_allLoadedChoices = false;      

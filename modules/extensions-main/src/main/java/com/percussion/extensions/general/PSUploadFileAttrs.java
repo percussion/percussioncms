@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -30,8 +30,8 @@ import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.util.PSPurgableTempFile;
+import org.apache.commons.lang3.time.FastDateFormat;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -164,7 +164,7 @@ public class PSUploadFileAttrs extends PSDefaultExtension
          if(null == dateParam || dateParam.length() < 1)
             return;
 
-         SimpleDateFormat format = new SimpleDateFormat(dateFormatString);
+         FastDateFormat format = FastDateFormat.getInstance(dateFormatString);
          Date current = new Date();
 
          // write current date to HTML parameters hash table

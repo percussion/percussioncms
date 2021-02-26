@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -28,17 +28,16 @@ import com.percussion.content.IPSMimeContentTypes;
 import com.percussion.design.catalog.IPSCatalogErrors;
 import com.percussion.design.objectstore.PSAclEntry;
 import com.percussion.error.PSIllegalArgumentException;
+import com.percussion.security.IPSDecryptor;
+import com.percussion.security.IPSKey;
+import com.percussion.security.IPSSecretKey;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSEncryptionException;
-import com.percussion.security.PSEncryptor;
-import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.ToDoVulnerability;
-import com.percussion.security.IPSDecryptor;
-import com.percussion.security.IPSKey;
-import com.percussion.security.IPSSecretKey;
 import com.percussion.security.PSEncryptionKeyFactory;
+import com.percussion.security.PSEncryptor;
+import com.percussion.security.ToDoVulnerability;
 import com.percussion.server.IPSRequestHandler;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSResponse;
@@ -47,16 +46,16 @@ import com.percussion.server.PSUserSession;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSBase64Decoder;
 import com.percussion.util.PSCharSets;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 
 /**

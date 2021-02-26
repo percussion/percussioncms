@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -29,16 +29,15 @@ import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSHtmlParamDocument;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Converts the custom search operator from what the applet will send to the
@@ -114,7 +113,7 @@ public class PSConvertCustomSearchOperator extends PSDefaultExtension
     *   <tr>
     *     <td>7</td>
     *     <td>Format to use if the backend column type is DATE.  Supplied values
-    *       must conform to those accepted by {@link SimpleDateFormat}.  
+    *       must conform to those accepted by {@link FastDateFormat}.
     *       </td>
     *     <td>no</td>
     *     <td>yyyy-MM-dd</td>
@@ -446,9 +445,9 @@ public class PSConvertCustomSearchOperator extends PSDefaultExtension
        }
        else if (dataType.equals(DATATYPE_DATE))
        {
-          SimpleDateFormat srcFormat = new SimpleDateFormat(
+          FastDateFormat srcFormat = FastDateFormat.getInstance(
             DEFAULT_DATE_FORMAT);
-          SimpleDateFormat tgtFormat = new SimpleDateFormat(dateFormat);
+          FastDateFormat tgtFormat = FastDateFormat.getInstance(dateFormat);
           
           String strDate = val;
           try

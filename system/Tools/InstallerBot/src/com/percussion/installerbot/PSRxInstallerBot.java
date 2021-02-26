@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,6 +23,9 @@
  */
 package com.percussion.installerbot;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,8 +34,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -41,7 +42,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -149,7 +149,9 @@ public class PSRxInstallerBot
    Properties loadProperties(final String propertiesFileName) throws IOException
    {
       final Properties properties = new Properties();
-      properties.load(new FileInputStream(propertiesFileName));
+      try(FileInputStream fs = new FileInputStream(propertiesFileName)){
+         properties.load(fs);
+      }
       return properties;
    }
 
@@ -167,9 +169,8 @@ public class PSRxInstallerBot
       m_out.println("You can copy and paste text below to create configuration "
             + "property file.\n\n");
 
-      final BufferedReader reader =
-         new BufferedReader(new InputStreamReader(openDefaultConfiguration()));
-      try
+      try(BufferedReader reader =
+                  new BufferedReader(new InputStreamReader(openDefaultConfiguration())))
       {
          String s;
          while ((s = reader.readLine()) != null)
@@ -180,17 +181,6 @@ public class PSRxInstallerBot
       catch (IOException e)
       {
          assert false : e;
-      }
-      finally
-      {
-         try
-         {
-            reader.close();
-         }
-         catch (IOException e)
-         {
-            assert false : e;
-         }
       }
    }
 
@@ -1059,7 +1049,7 @@ public class PSRxInstallerBot
     */
    private String getInstallationSuffix(final Date date)
    {
-      final DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+      final FastDateFormat format = FastDateFormat.getInstance("yyyy-MM-dd HH:mm");
       return " " + format.format(date) + " - " + getDbDriver();
    }
 

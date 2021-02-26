@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -248,7 +248,7 @@ public class PSDateLiteral extends PSLiteral
     *    &lt;!ELEMENT date               (#PCDATA)&gt;
     *
     *    &lt;!--
-    *       the format string (as defined in java.util.SimpleDateFormat)
+    *       the format string (as defined in FastDateFormat)
     *         used to parse text formatted dates for proper comparison
     *    --&gt;
     *    &lt;!ELEMENT format            (#PCDATA)&gt;
@@ -311,7 +311,8 @@ public class PSDateLiteral extends PSLiteral
             IPSObjectStoreErrors.XML_ELEMENT_INVALID_CHILD, args);
       }
       try {
-         m_format =FastDateFormat.getInstance(format);
+
+         m_format = FastDateFormat.getInstance(format);
       } catch (Throwable t) {
          Object[] args = { ms_NodeType,
             "format", (format + " (Exception: " + t.toString() + ")") };

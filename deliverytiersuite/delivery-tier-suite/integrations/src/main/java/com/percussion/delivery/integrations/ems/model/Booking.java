@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,18 +24,16 @@
 
 package com.percussion.delivery.integrations.ems.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.percussion.delivery.integrations.ems.IPSEMSEventService;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.percussion.delivery.integrations.ems.IPSEMSEventService;
+import java.text.ParseException;
+import java.util.Date;
 
 /***
  * <Data>
@@ -101,7 +99,7 @@ public class Booking {
 	public void setBookingDate(String bookingDate) {
 		
 		try {
-			this.bookingDate = new SimpleDateFormat(IPSEMSEventService.DATE_FORMAT_STRING).parse(bookingDate.replace("T", " " ));
+			this.bookingDate = FastDateFormat.getInstance(IPSEMSEventService.DATE_FORMAT_STRING).parse(bookingDate.replace("T", " " ));
 		} catch (ParseException e) {
 			log.error("Error setting BookingDate with value " + bookingDate + " and format: " + IPSEMSEventService.DATE_FORMAT_STRING,e);
 		}
@@ -111,7 +109,7 @@ public class Booking {
 	}
 	public void setStartBookingDate(String startBookingDate) {
 		try {
-			this.startBookingDate = new SimpleDateFormat(IPSEMSEventService.DATE_FORMAT_STRING).parse(startBookingDate.replace("T", " " ));
+			this.startBookingDate = FastDateFormat.getInstance(IPSEMSEventService.DATE_FORMAT_STRING).parse(startBookingDate.replace("T", " " ));
 		} catch (ParseException e) {
 			log.error("Error setting StartBookingDate with value " + startBookingDate + " and format: " + IPSEMSEventService.DATE_FORMAT_STRING,e);
 		}
@@ -128,7 +126,7 @@ public class Booking {
 	public void setTimeEventStart(String timeEventStart) {
 
 		try {
-			this.timeEventStart = new SimpleDateFormat(IPSEMSEventService.TIME_FORMAT_STRING).parse(timeEventStart.replace("T", " " ));
+			this.timeEventStart = FastDateFormat.getInstance(IPSEMSEventService.TIME_FORMAT_STRING).parse(timeEventStart.replace("T", " " ));
 		} catch (ParseException e) {
 			log.error("Error setting TimeEventStart with value " + timeEventStart + " and format: " + IPSEMSEventService.TIME_FORMAT_STRING,e);
 		}
@@ -138,7 +136,7 @@ public class Booking {
 	}
 	public void setTimeEventEnd(String timeEventEnd) {
 		try {
-			this.timeEventEnd = new SimpleDateFormat(IPSEMSEventService.TIME_FORMAT_STRING).parse(timeEventEnd.replace("T", " " ));
+			this.timeEventEnd = FastDateFormat.getInstance(IPSEMSEventService.TIME_FORMAT_STRING).parse(timeEventEnd.replace("T", " " ));
 		} catch (ParseException e) {
 			log.error("Error setting TimeEventEnd with value " + timeEventEnd + " and format: " + IPSEMSEventService.TIME_FORMAT_STRING,e);
 		}
@@ -202,7 +200,7 @@ public class Booking {
 	}
 	public void setOpenTime(String openTime) {
 		try {
-			this.openTime  = new SimpleDateFormat(IPSEMSEventService.TIME_FORMAT_STRING).parse(openTime.replace("T", " " ));
+			this.openTime  =FastDateFormat.getInstance(IPSEMSEventService.TIME_FORMAT_STRING).parse(openTime.replace("T", " " ));
 		} catch (ParseException e) {
 			log.error("Error setting OpenTime with value " + openTime + " and format: " + IPSEMSEventService.TIME_FORMAT_STRING,e);
 		}
@@ -212,7 +210,7 @@ public class Booking {
 	}
 	public void setCloseTime(String closeTime) {
 		try {
-			this.closeTime =  new SimpleDateFormat(IPSEMSEventService.TIME_FORMAT_STRING).parse(closeTime.replace("T", " " ));
+			this.closeTime =  FastDateFormat.getInstance(IPSEMSEventService.TIME_FORMAT_STRING).parse(closeTime.replace("T", " " ));
 		} catch (ParseException e) {
 			log.error("Error setting CloseTime with value " + closeTime + " and format: " + IPSEMSEventService.TIME_FORMAT_STRING,e);
 		}
@@ -253,7 +251,7 @@ public class Booking {
 	public void setTimeBookingStart(String timeBookingStart) {
 		
 		try {
-			this.timeBookingStart = new SimpleDateFormat(IPSEMSEventService.TIME_FORMAT_STRING).parse(timeBookingStart.replace("T", " " ));
+			this.timeBookingStart = FastDateFormat.getInstance(IPSEMSEventService.TIME_FORMAT_STRING).parse(timeBookingStart.replace("T", " " ));
 		} catch (ParseException e) {
 			log.error("Error setting timeBookingStart with value " + timeBookingStart + " and format: " + IPSEMSEventService.TIME_FORMAT_STRING,e);
 		}
@@ -263,7 +261,7 @@ public class Booking {
 	}
 	public void setTimeBookingEnd(String timeBookingEnd) {
 		try {
-			this.timeBookingEnd = new SimpleDateFormat(IPSEMSEventService.TIME_FORMAT_STRING).parse(timeBookingEnd.replace("T", " " ));
+			this.timeBookingEnd = FastDateFormat.getInstance(IPSEMSEventService.TIME_FORMAT_STRING).parse(timeBookingEnd.replace("T", " " ));
 		} catch (ParseException e) {
 			log.error("Error setting timeBookingEnd with value " + timeBookingEnd + " and format: " + IPSEMSEventService.TIME_FORMAT_STRING,e);
 		}
@@ -273,7 +271,7 @@ public class Booking {
 	}
 	public void setGmtStartTime(String gmtStartTime) {
 		try {
-			this.gmtStartTime = new SimpleDateFormat(IPSEMSEventService.TIME_FORMAT_STRING).parse(gmtStartTime.replace("T", " " ));
+			this.gmtStartTime = FastDateFormat.getInstance(IPSEMSEventService.TIME_FORMAT_STRING).parse(gmtStartTime.replace("T", " " ));
 		} catch (ParseException e) {
 			log.error("Error setting gmtStartTime with value " + gmtStartTime + " and format: " + IPSEMSEventService.TIME_FORMAT_STRING,e);
 		}
@@ -283,7 +281,7 @@ public class Booking {
 	}
 	public void setGmtEndTime(String gmtEndTime) {
 		try {
-			this.gmtEndTime = new SimpleDateFormat(IPSEMSEventService.TIME_FORMAT_STRING).parse(gmtEndTime.replace("T", " " ));
+			this.gmtEndTime = FastDateFormat.getInstance(IPSEMSEventService.TIME_FORMAT_STRING).parse(gmtEndTime.replace("T", " " ));
 		} catch (ParseException e) {
 			log.error("Error setting setGmtEndTime with value " + gmtEndTime + " and format: " + IPSEMSEventService.TIME_FORMAT_STRING,e);
 		}
@@ -377,7 +375,7 @@ public class Booking {
 	}
 	public void setDateAdded(String dateAdded) {
 		try {
-			this.dateAdded = new SimpleDateFormat(IPSEMSEventService.DATE_FORMAT_STRING).parse(dateAdded.replace("T", " " ));
+			this.dateAdded = FastDateFormat.getInstance(IPSEMSEventService.DATE_FORMAT_STRING).parse(dateAdded.replace("T", " " ));
 		} catch (ParseException e) {
 			log.error("Error setting setDateAdded with value " + dateAdded + " and format: " + IPSEMSEventService.DATE_FORMAT_STRING,e);
 		}
@@ -393,7 +391,7 @@ public class Booking {
 	}
 	public void setDateChanged(String dateChanged) {
 		try {
-			this.dateChanged =  new SimpleDateFormat(IPSEMSEventService.DATE_FORMAT_STRING).parse(dateChanged.replace("T", " " ));
+			this.dateChanged =  FastDateFormat.getInstance(IPSEMSEventService.DATE_FORMAT_STRING).parse(dateChanged.replace("T", " " ));
 		} catch (ParseException e) {
 			log.error("Error setting setDateChanged with value " + dateChanged + " and format: " + IPSEMSEventService.DATE_FORMAT_STRING,e);
 		}

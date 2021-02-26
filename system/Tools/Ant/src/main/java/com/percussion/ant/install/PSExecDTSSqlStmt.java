@@ -24,11 +24,11 @@
 
 package com.percussion.ant.install;
 
-import com.percussion.delivery.utils.security.PSSecureProperty;
 import com.percussion.install.InstallUtil;
 import com.percussion.install.PSLogger;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
+import com.percussion.security.PSSecureProperty;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
@@ -72,7 +72,7 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
             try {
                 dpwd = PSEncryptor.getInstance("AES",null).decrypt(pwd);
             } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
-                dpwd = PSLegacyEncrypter.getInstance(null).decrypt(pwd,
+                dpwd = PSLegacyEncrypter.getInstance(getRootDir()).decrypt(pwd,
                         PSJdbcDbmsDef.getPartOneKey(),null);
             }
             if(dpwd == null || dpwd.isEmpty()){

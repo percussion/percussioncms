@@ -1,15 +1,30 @@
-/******************************************************************************
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
- * [ PSCalendarMonthModelTest.java ]
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
- * COPYRIGHT (c) 1999 - 2007 by Percussion Software, Inc., Woburn, MA USA.
- * All rights reserved. This material contains unpublished, copyrighted
- * work including confidential and proprietary information of Percussion.
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
  *
- *****************************************************************************/
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percusssion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
 package com.percussion.fastforward.calendar;
 
 import com.percussion.services.assembly.IPSAssemblyResult;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MethodInvocationException;
@@ -23,8 +38,6 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -100,7 +113,7 @@ public class PSCalendarMonthModelTest
    @Test
    public void testAssign() throws Exception
    {
-      DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+      FastDateFormat df = FastDateFormat.getInstance("yyyy-MM-dd");
       assertNotNull(m_info.assign(df.parse("2006-04-05")));
 
       assertNotNull(m_info.assign("yyyy-MM-dd", "2006-04-05"));
@@ -122,7 +135,7 @@ public class PSCalendarMonthModelTest
       assert (m_info.getLastDay() >= 28);
       assert (m_info.getLastDay() <= 31);
 
-      DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+      FastDateFormat df = FastDateFormat.getInstance("yyyy-MM-dd");
 
       m_info.assign(df.parse("2006-04-05"));
       assertEquals(30, m_info.getLastDay());
@@ -152,7 +165,7 @@ public class PSCalendarMonthModelTest
       // without calling assign, should use current date
       assert (m_info.getWeeks() > 0);
 
-      DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+      FastDateFormat df = FastDateFormat.getInstance("yyyy-MM-dd");
 
       m_info.assign(df.parse("2006-04-05"));
       assertEquals(6, m_info.getWeeks());
@@ -176,7 +189,7 @@ public class PSCalendarMonthModelTest
       assert (m_info.getLastDayOfWeek() >= 1);
       assert (m_info.getLastDayOfWeek() <= 7);
 
-      DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+      FastDateFormat df = FastDateFormat.getInstance("yyyy-MM-dd");
 
       m_info.assign(df.parse("2006-04-05"));
       assertEquals(Calendar.SATURDAY, m_info.getFirstDayOfWeek());
@@ -204,7 +217,7 @@ public class PSCalendarMonthModelTest
       assertNotNull(m_info.getEndDate());
 
       Calendar c = Calendar.getInstance();
-      DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+      FastDateFormat df = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
       m_info.assign(df.parse("2006-04-05T09:52:37.013"));
       c.setTime(df.parse("2006-04-01T00:00:00.000"));
@@ -226,7 +239,7 @@ public class PSCalendarMonthModelTest
    @Test
    public void testVelocity() throws Exception
    {
-      DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+      FastDateFormat df = FastDateFormat.getInstance("yyyy-MM-dd");
       m_info.assign(df.parse("2006-04-05"));
       VelocityContext ctx = getVelocityContext();
       doVelocityTest(ctx, "$rx.month.LastDay", "30");
@@ -271,7 +284,7 @@ public class PSCalendarMonthModelTest
    @Test
    public void testEvents() throws Exception
    {
-      DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+      FastDateFormat df = FastDateFormat.getInstance("yyyy-MM-dd");
       Collection eventsForDay;
 
 

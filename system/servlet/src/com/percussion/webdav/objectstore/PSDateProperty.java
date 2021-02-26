@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,8 +23,9 @@
  */
 package com.percussion.webdav.objectstore;
 
+import org.apache.commons.lang3.time.FastDateFormat;
+
 import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -154,34 +155,29 @@ public class PSDateProperty
     /**
     * The date format object for webdav
     */
-   private final static SimpleDateFormat ms_wdDateformat = 
-      new SimpleDateFormat(WEBDAV_DATE_FORMAT);
+   private final static FastDateFormat ms_wdDateformat =
+            FastDateFormat.getInstance(WEBDAV_DATE_FORMAT,TimeZone.getTimeZone("GMT"));
    
    /**
     * The date format object for the search result of Rhythmyx server.
     */
-   private final static SimpleDateFormat ms_rxDatetimeFormat = 
-      new SimpleDateFormat(RX_SEARCH_DATETIME_FORMAT);
+   private final static FastDateFormat ms_rxDatetimeFormat =
+           FastDateFormat.getInstance(RX_SEARCH_DATETIME_FORMAT);
       
    /**
     * The date format object for the search result of Rhythmyx server.
     */
-   private final static SimpleDateFormat ms_rxDateFormat = 
-      new SimpleDateFormat(RX_SEARCH_DATE_FORMAT);
+   private final static FastDateFormat ms_rxDateFormat =
+           FastDateFormat.getInstance(RX_SEARCH_DATE_FORMAT);
       
    /**
     * The date format object for HTTP date. The date formate has to be in 
     * English locale, otherwise it may not recognized by non-English WebDAV
     * client, such as the "Web Folder" in French version of Windows XP.
     */
-   private final static SimpleDateFormat ms_httpDateformat = 
-      new SimpleDateFormat(HTTP_DATE_FORMAT, new Locale("en"));
+   private final static FastDateFormat ms_httpDateformat =
+           FastDateFormat.getInstance(HTTP_DATE_FORMAT, TimeZone.getTimeZone("GMT"), new Locale("en"));
 
-   static
-   {
-      ms_httpDateformat.setTimeZone(TimeZone.getTimeZone("GMT"));
-      ms_wdDateformat.setTimeZone(TimeZone.getTimeZone("GMT"));
-   }
 }
 
 

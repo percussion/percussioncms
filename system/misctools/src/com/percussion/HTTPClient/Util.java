@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,10 +24,10 @@
 
 package com.percussion.HTTPClient;
 
+import org.apache.commons.lang3.time.FastDateFormat;
+
 import java.lang.reflect.Array;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.BitSet;
 import java.util.Date;
 import java.util.Hashtable;
@@ -49,10 +49,10 @@ public class Util
     private static final BitSet Separators = new BitSet(128);
     private static final BitSet TokenChar = new BitSet(128);
     private static final BitSet UnsafeChar = new BitSet(128);
-    private static DateFormat http_format;
-    private static DateFormat parse_1123;
-    private static DateFormat parse_850;
-    private static DateFormat parse_asctime;
+    private static FastDateFormat http_format;
+    private static FastDateFormat parse_1123;
+    private static FastDateFormat parse_850;
+    private static FastDateFormat parse_asctime;
     private static final Object http_format_lock = new Object();
     private static final Object http_parse_lock  = new Object();
 
@@ -903,19 +903,18 @@ public class Util
     private static final void setupParsers()
     {
 	parse_1123 =
-	    new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US);
+			FastDateFormat.getInstance("EEE, dd MMM yyyy HH:mm:ss 'GMT'",
+					new SimpleTimeZone(0, "GMT"),
+					Locale.US);
 	parse_850 =
-	    new SimpleDateFormat("EEEE, dd-MMM-yy HH:mm:ss 'GMT'", Locale.US);
+			FastDateFormat.getInstance("EEEE, dd-MMM-yy HH:mm:ss 'GMT'",
+					new SimpleTimeZone(0, "GMT"),
+					Locale.US);
 	parse_asctime =
-	    new SimpleDateFormat("EEE MMM d HH:mm:ss yyyy", Locale.US);
+			FastDateFormat.getInstance("EEE MMM d HH:mm:ss yyyy",
+					new SimpleTimeZone(0, "GMT"),
+					Locale.US);
 
-	parse_1123.setTimeZone(new SimpleTimeZone(0, "GMT"));
-	parse_850.setTimeZone(new SimpleTimeZone(0, "GMT"));
-	parse_asctime.setTimeZone(new SimpleTimeZone(0, "GMT"));
-
-	parse_1123.setLenient(true);
-	parse_850.setLenient(true);
-	parse_asctime.setLenient(true);
     }
 
     /**
@@ -947,8 +946,9 @@ public class Util
     private static final void setupFormatter()
     {
 	http_format =
-	    new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US);
-	http_format.setTimeZone(new SimpleTimeZone(0, "GMT"));
+	    FastDateFormat.getInstance("EEE, dd MMM yyyy HH:mm:ss 'GMT'",
+				new SimpleTimeZone(0, "GMT"),
+				Locale.US);
     }
 
 

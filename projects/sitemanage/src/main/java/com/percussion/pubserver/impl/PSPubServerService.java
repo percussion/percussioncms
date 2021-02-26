@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -30,6 +30,7 @@ import com.percussion.pubserver.data.PSPublishServerInfo;
 import com.percussion.pubserver.data.PSPublishServerProperty;
 import com.percussion.rx.delivery.impl.PSBaseDeliveryHandler;
 import com.percussion.rx.publisher.IPSRxPublisherService;
+import com.percussion.security.ToDoVulnerability;
 import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentchange.IPSContentChangeService;
@@ -67,7 +68,6 @@ import com.percussion.sitemanage.service.IPSSitePublishStatusService;
 import com.percussion.tools.Base64;
 import com.percussion.utils.PSNamedLockManager;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.ToDoVulnerability;
 import com.percussion.utils.security.deprecated.PSAesCBC;
 import com.percussion.utils.service.IPSUtilityService;
 import com.percussion.webservices.publishing.IPSPublishingWs;

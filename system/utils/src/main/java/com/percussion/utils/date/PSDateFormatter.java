@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -21,29 +21,24 @@
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
- 
-package com.percussion.util;
 
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
+package com.percussion.utils.date;
+
+import org.apache.commons.lang3.time.FastDateFormat;
+
+import java.text.ParseException;
+import java.util.Date;
 import java.util.TimeZone;
 
+public class PSDateFormatter {
 
-/**
- *   The PSDateFormatHttp formats dates in the HTTP specified format.
- * HTTP requires dates in the following format:
- *      Wed, 15 Nov 1995 04:58:08 GMT
- */
-public class PSDateFormatHttp extends SimpleDateFormat
-{
-   /**
-    * Constructs an HTTP compliant date formatter.
-    */
-   public PSDateFormatHttp()
-   {
-      super("EEE, d MMM yyyy HH:mm:ss 'GMT'");
-      setCalendar(new GregorianCalendar());
-      setTimeZone(TimeZone.getTimeZone("GMT"));
-   }
+    public static String formatDateForHttp(Date d){
+       return FastDateFormat.getInstance("EEE, d MMM yyyy HH:mm:ss 'GMT'",
+                TimeZone.getTimeZone("GMT")).format(d);
+    }
+
+    public static Date parseDateFromHttp(String d) throws ParseException {
+            return FastDateFormat.getInstance("EEE, d MMM yyyy HH:mm:ss 'GMT'",
+                    TimeZone.getTimeZone("GMT")).parse(d);
+    }
 }
-

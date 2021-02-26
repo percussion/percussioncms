@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -32,15 +32,14 @@ import com.percussion.server.cache.PSCacheManager;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * This class implements the execution of 'flush cache' console command and
@@ -152,7 +151,7 @@ public class PSConsoleCommandFlushCache extends PSConsoleCommandCache
                }
 
                // determine keys
-               keys = new HashMap<String,String>();
+               keys = new HashMap<>();
 
                // ask for delimiters since ";;;" is valid and won't return any
                // tokens

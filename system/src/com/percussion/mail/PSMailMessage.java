@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,7 +26,7 @@ package com.percussion.mail;
 
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.util.PSCharSets;
-import com.percussion.util.PSDateFormatHttp;
+import com.percussion.utils.date.PSDateFormatter;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -473,7 +473,7 @@ public class PSMailMessage implements IPSMailErrors
    {
       // 1. send the Date header
       writer.write("Date: ");
-      writer.write(m_dateFormat.format(m_creationDate));
+      writer.write(PSDateFormatter.formatDateForHttp(m_creationDate));
       writer.write("\r\n");
 
       // 2. send the From header
@@ -605,7 +605,6 @@ public class PSMailMessage implements IPSMailErrors
     * @version 1.8 1999/07/30
     * 
     * @param   out
-    * @param   in
     * 
     * @throws   java.io.IOException
     * 
@@ -629,7 +628,6 @@ public class PSMailMessage implements IPSMailErrors
    private ArrayList      m_blindCopyTo = new ArrayList();   // names in bcc
    private Date         m_creationDate = new Date();      // the date of the message
    private String         m_subject = null;                  // subject of the message
-   private PSDateFormatHttp m_dateFormat = new PSDateFormatHttp();
    private String         m_charEncoding = PSCharSets.rxJavaEnc();
 
    // the body can be in one of two formats, a string or an input stream
