@@ -94,7 +94,7 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
                     dbType="sqlserver";
                     break;
                 case "net.sourceforge.jtds.jdbc.Driver":
-                    dbType="jtds";
+                    dbType="jtds:sqlserver";
                     break;
                 case "oracle.jdbc.driver.OracleDriver":
                     dbType="oracle:thin";
