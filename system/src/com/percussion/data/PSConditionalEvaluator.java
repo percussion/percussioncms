@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -11,14 +11,14 @@
  *     GNU Affero General Public License for more details.
  *
  *     Mailing Address:
- *
+ *      
  *      Percussion Software, Inc.
  *      PO Box 767
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
  *      https://www.percusssion.com
- *
+ *      
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.data;
@@ -39,6 +39,7 @@ import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.PSRequest;
 import com.percussion.util.PSCollection;
 import com.percussion.utils.tools.PSPatternMatcher;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -1051,7 +1052,7 @@ public class PSConditionalEvaluator
 
    /**
     * Compares a list of values on the left of the operand with a list of values
-    * on the right. To compare single objects uses {@link #makeComparable2Obj()}.
+    * on the right. To compare single objects uses {@link #makeComparable2Obj(Object, Object, int)} ()}.
     *
     * @param leftList list of objects, expected never <code>null</code>, may be
     * <code>empty</code>.
@@ -1450,7 +1451,7 @@ public class PSConditionalEvaluator
       int bestType = PSDataConverter.getBestComparisonType(leftType, rightType);
 
       // this is important to handle conversion from string to date
-      java.text.SimpleDateFormat dateFormat = null;
+      FastDateFormat dateFormat = null;
 
       if (left instanceof PSDateLiteral)
          dateFormat = ((PSDateLiteral)left).getDateFormat();
@@ -1600,9 +1601,9 @@ public class PSConditionalEvaluator
       return false;
    }
 
-   private static java.text.SimpleDateFormat getDateFormat(PSLiteralSet literalSet)
+   private static FastDateFormat getDateFormat(PSLiteralSet literalSet)
    {
-      java.text.SimpleDateFormat dateFormat = null;
+      FastDateFormat dateFormat = null;
 
       if (literalSet == null)
          return dateFormat;
@@ -1625,7 +1626,7 @@ public class PSConditionalEvaluator
     * @exception   PSEvaluationException   if a wrong operator or data type is used
     */
    private static boolean compareWithNumericSet(int opCode, Object left, Object right,
-                                                java.text.SimpleDateFormat dateFormat)
+                                                FastDateFormat dateFormat)
       throws PSEvaluationException
    {
       String leftName = left.getClass().getName();

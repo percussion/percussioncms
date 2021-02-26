@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -28,7 +28,6 @@ import com.percussion.design.objectstore.PSAcl;
 import com.percussion.design.objectstore.PSAclEntry;
 import com.percussion.design.objectstore.PSAttribute;
 import com.percussion.design.objectstore.PSAttributeList;
-import com.percussion.design.objectstore.PSGlobalSubject;
 import com.percussion.design.objectstore.PSLiteralSet;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.design.objectstore.PSSubject;
@@ -46,14 +45,13 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.server.PSUserSession;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * The PSUserContextExtractor class is used to extract data from the
@@ -378,7 +376,7 @@ public class PSUserContextExtractor extends PSDataExtractor
                break;
 
            case TOK_SESSION_CREATE_TIME:
-                SimpleDateFormat sdf = new SimpleDateFormat(SESSION_CREATE_DATE_FORMAT);
+                FastDateFormat sdf = FastDateFormat.getInstance(SESSION_CREATE_DATE_FORMAT);
                 value = sdf.format(sess.getCreateTimeStamp());
                 break;
 
@@ -798,7 +796,7 @@ public class PSUserContextExtractor extends PSDataExtractor
 
 
       //add session create time node
-       SimpleDateFormat sdf = new SimpleDateFormat(SESSION_CREATE_DATE_FORMAT);
+       FastDateFormat sdf = FastDateFormat.getInstance(SESSION_CREATE_DATE_FORMAT);
        PSXmlDocumentBuilder.addElement(doc, root, "SessionCreateTime",
                                  sdf.format(sess.getCreateTimeStamp()));
 

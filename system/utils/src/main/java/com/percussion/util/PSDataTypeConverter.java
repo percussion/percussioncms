@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,14 +25,17 @@ package com.percussion.util;
 
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Base64;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.StringTokenizer;
 import java.util.stream.IntStream;
 
 /**
@@ -182,12 +185,12 @@ public class PSDataTypeConverter
     * case, <code>null</code> is returned.
     * 
     * @param inputFormat One of the formats as specified by the
-    * {@link SimpleDateFormat} class. If <code>null</code> or blank, the
+    * {@link org.apache.commons.lang3.time.FastDateFormat} class. If <code>null</code> or blank, the
     * formats supported by the {@link #parseStringToDate(String)} method are
     * used.
     * 
     * @param outputFormat One of the formats as specified by the
-    * {@link SimpleDateFormat} class. If <code>null</code> or blank,
+    * {@link org.apache.commons.lang3.time.FastDateFormat} class. If <code>null</code> or blank,
     * <code>yyyy-MM-dd HH:mm:ss.SSS</code> is used if a non-zero time component
     * is present, otherwise, <code>yyyy-MM-dd</code> is used.
     * 
@@ -215,7 +218,7 @@ public class PSDataTypeConverter
       }
       else
       {
-         DateFormat dfmt = new SimpleDateFormat(inputFormat);
+         FastDateFormat dfmt = FastDateFormat.getInstance(inputFormat);
          try
          {
             parsedDate = dfmt.parse(value.toString());
@@ -252,7 +255,7 @@ public class PSDataTypeConverter
          else
             outputFormat = "yyyy-MM-dd HH:mm:ss.SSS";
       }
-      DateFormat dfmt = new SimpleDateFormat(outputFormat);
+      FastDateFormat dfmt = FastDateFormat.getInstance(outputFormat);
       return dfmt.format(parsedDate);
    }
    
@@ -283,7 +286,7 @@ public class PSDataTypeConverter
     * Try to parse a given string to a date, using a pre-defined set of formats
     * for a given locale. Tries to parse the string using each one, and returns
     * the Date obtained by the first successful attempt. If all formats fail,
-    * tries to parse the string using {@link SimpleDateFormat} without a pattern
+    * tries to parse the string using {@link FastDateFormat} without a pattern
     * specified.
     * 
     * @param myText a given string to be parsed. May not be <code>null</code>.
@@ -310,11 +313,11 @@ public class PSDataTypeConverter
       String[] datePatternArray = isYearFirstPattern(myText)
          ? ms_datePatternArray1 
          : ms_datePatternArray2;
-      SimpleDateFormat dateFormat = null;
+      FastDateFormat dateFormat = null;
       Date day = null;
       for (String aDatePatternArray : datePatternArray) {
          if (locale == null)
-            dateFormat = new SimpleDateFormat(aDatePatternArray);
+            dateFormat = FastDateFormat.getInstance(aDatePatternArray);
          else
             /*
              * Every locale might not be supported, but we do not have choice here
@@ -323,7 +326,7 @@ public class PSDataTypeConverter
              * formatting will be successful. Result may not be desired one.
              * Tested with most popular locales, works fine.
              */
-            dateFormat = new SimpleDateFormat(aDatePatternArray, locale);
+            dateFormat = FastDateFormat.getInstance(aDatePatternArray, locale);
 
          try {
             day = dateFormat.parse(myText);
@@ -337,12 +340,12 @@ public class PSDataTypeConverter
       if (day == null)
       {
          // make one last try using the default pattern and default locale
-         dateFormat = new SimpleDateFormat();
+         dateFormat = FastDateFormat.getInstance();
          try
          {
             day = dateFormat.parse(myText);
             if (patternUsed != null)
-               patternUsed.append(dateFormat.toPattern());
+               patternUsed.append(dateFormat.getPattern());
          }
          catch (ParseException e)
          {

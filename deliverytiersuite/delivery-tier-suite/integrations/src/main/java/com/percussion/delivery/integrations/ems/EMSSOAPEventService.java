@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,25 +24,12 @@
 
 package com.percussion.delivery.integrations.ems;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import com.percussion.delivery.integrations.ems.model.Booking;
+import com.percussion.delivery.integrations.ems.model.Building;
+import com.percussion.delivery.integrations.ems.model.EventType;
+import com.percussion.delivery.integrations.ems.model.GroupType;
+import com.percussion.delivery.integrations.ems.model.Status;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
@@ -50,16 +37,25 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import com.percussion.delivery.integrations.ems.model.Booking;
-import com.percussion.delivery.integrations.ems.model.Building;
-import com.percussion.delivery.integrations.ems.model.EventType;
-import com.percussion.delivery.integrations.ems.model.GroupType;
-import com.percussion.delivery.integrations.ems.model.Status;
-
 import service.web.api.ems.dea.ArrayOfInt;
 import service.web.api.ems.dea.Service;
 import service.web.api.ems.dea.ServiceSoap;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.StringReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 public class EMSSOAPEventService implements IPSEMSEventService {
 
@@ -185,8 +181,8 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 			groups = new ArrayOfInt();
 			groups.getInt().addAll(query.getGroupTypes());
 		}
-		
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+		FastDateFormat format = FastDateFormat.getInstance("yyyy-MM-dd hh:mm:ss");
 		Date date = null;
 		try {
 			date = format.parse(query.getStartDate());

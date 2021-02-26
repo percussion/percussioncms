@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,18 +23,17 @@
  */
 package com.percussion.server;
 
-import com.percussion.util.PSDateFormatHttp;
+import com.percussion.utils.date.PSDateFormatter;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.w3c.dom.Document;
 
 import java.io.InputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
-import org.w3c.dom.Document;
 
 /**
  * An abstract class used for all HTTP responses as a base. Container for
@@ -243,7 +242,7 @@ public abstract class PSBaseResponse implements Serializable
     */
    public static Date parseDateFromHeader(String date) throws ParseException
    {
-      return new PSDateFormatHttp().parse(date);
+      return PSDateFormatter.parseDateFromHttp(date);
    }
     
    /**
@@ -257,12 +256,12 @@ public abstract class PSBaseResponse implements Serializable
     */
    public static String formatDateForHeader(Date date)
    {
-      return new PSDateFormatHttp().format(date);
+      return PSDateFormatter.formatDateForHttp(date);
    }
 
    /** Date format for cookies */
-   protected static final SimpleDateFormat ms_cookieDateFormat =
-      new SimpleDateFormat("EEE, dd-MMM-yyyy HH:mm:ss zzz");
+   protected static final FastDateFormat ms_cookieDateFormat =
+      FastDateFormat.getInstance("EEE, dd-MMM-yyyy HH:mm:ss zzz");
 
    /** 
     * The response status line, might be <code>null</code>.

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -32,16 +32,14 @@ import com.percussion.fastforward.utils.PSUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSDataTypeConverter;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
 
 /**
  * Java post-exit used to expand recurring events into a format consumable by
@@ -172,10 +170,10 @@ public class PSExpandRecurringEvents extends PSDefaultExtension
       Element root = resultDoc.getDocumentElement();
       if (root == null)
          return resultDoc;
-      DateFormat dayFormat = new SimpleDateFormat("d");
-      DateFormat monthFormat = new SimpleDateFormat("MM");
-      DateFormat yearFormat = new SimpleDateFormat("yyyy");
-      DateFormat fullFormat = new SimpleDateFormat("yyyy-MM-dd");
+      FastDateFormat dayFormat = FastDateFormat.getInstance("d");
+      FastDateFormat monthFormat = FastDateFormat.getInstance("MM");
+      FastDateFormat yearFormat = FastDateFormat.getInstance("yyyy");
+      FastDateFormat fullFormat = FastDateFormat.getInstance("yyyy-MM-dd");
 
       // load the holidays
       PSHolidays holidays = loadHolidays(request);

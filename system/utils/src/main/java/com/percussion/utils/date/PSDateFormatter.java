@@ -24,41 +24,21 @@
 
 package com.percussion.utils.date;
 
-import java.text.DateFormat;
+import org.apache.commons.lang3.time.FastDateFormat;
+
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
-/**
- * Thread safe wrapper for SimpleDateFormat.
- */
-public class PSConcurrentDateFormat {
+public class PSDateFormatter {
 
-    private String defaultFormat;
-
-    public PSConcurrentDateFormat(String format){
-       defaultFormat = format;
+    public static String formatDateForHttp(Date d){
+       return FastDateFormat.getInstance("EEE, d MMM yyyy HH:mm:ss 'GMT'",
+                TimeZone.getTimeZone("GMT")).format(d);
     }
 
-    private final ThreadLocal<DateFormat> df = ThreadLocal.withInitial(() -> new SimpleDateFormat(defaultFormat));
-
-    public Date parse(String date) throws ParseException {
-        return toDate(date);
-    }
-
-    public Date toDate(String dateString) throws ParseException {
-        return df.get().parse(dateString);
-    }
-
-    public String format(Date d){
-        return toString(d);
-    }
-
-    public String toString(Date d) {
-        return df.get().format(d);
-    }
-
-    public String format(Object value) {
-        return df.get().format(value);
+    public static Date parseDateFromHttp(String d) throws ParseException {
+            return FastDateFormat.getInstance("EEE, d MMM yyyy HH:mm:ss 'GMT'",
+                    TimeZone.getTimeZone("GMT")).parse(d);
     }
 }

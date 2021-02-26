@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,11 +26,11 @@ package com.percussion.rx.config.impl;
 import com.percussion.utils.types.PSPair;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -148,7 +148,7 @@ public class PSConfigDeNormalizer
       buff.append(NEWLINE);
       buff.append(NEWLINE);
       buff.append("Generated on ");
-      SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+      FastDateFormat formatter = FastDateFormat.getInstance(DATE_FORMAT);
       buff.append(formatter.format(new Date()));
       buff.append(NEWLINE);
       if (errors != null && !errors.isEmpty())

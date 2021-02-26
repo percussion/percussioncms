@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,42 +24,38 @@
 
 package com.percussion.delivery.integrations.ems;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.rmi.RemoteException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.rpc.ServiceException;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
 import com.percussion.delivery.integrations.ems.model.MCCalendar;
 import com.percussion.delivery.integrations.ems.model.MCCalendarEntry;
 import com.percussion.delivery.integrations.ems.model.MCEventDetail;
 import com.percussion.delivery.integrations.ems.model.MCEventType;
 import com.percussion.delivery.integrations.ems.model.MCGrouping;
 import com.percussion.delivery.integrations.ems.model.MCLocation;
-
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.time.FastDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import service.web.api.ems.dea.MCAPIServiceLocator;
 import service.web.api.ems.dea.MCAPIServiceSoap;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.rpc.ServiceException;
+import java.io.IOException;
+import java.io.StringReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.rmi.RemoteException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarService {
 
@@ -68,7 +64,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 	private String mcPassword;
 	private String mcEndpoint;
 	
-	private static Log log = LogFactory.getLog(EMSMasterCalendarSoapEventService.class);
+	private static Logger log = LogManager.getLogger(EMSMasterCalendarSoapEventService.class);
 	
 	public EMSMasterCalendarSoapEventService(String mcUserName, String mcPassword, String mcEndpoint){
 		this.mcUserName = mcUserName;
@@ -94,10 +90,10 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 		int[] calendars = null;
 		
 		try {
-			DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			FastDateFormat format = FastDateFormat.getInstance("yyyy-MM-dd hh:mm:ss");
 			Date date = null;
 			try {
-				date = format.parse(query.getStartDate());
+				date = (Date) format.parseObject(query.getStartDate());
 			} catch (ParseException e) {
 				log.error(String.format("Error processing start date: {0}",query.getStartDate()), e);
 			}
@@ -105,7 +101,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 			startDate.setTime(date);
 			
 			try {
-				date = format.parse(query.getEndDate());
+				date = (Date)format.parseObject(query.getEndDate());
 			} catch (ParseException e) {
 				log.error(String.format("Error processing end date: {0}",query.getEndDate()), e);
 			}
@@ -272,20 +268,24 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 		int[] calendars = null;
 		
 		try {
-			DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			FastDateFormat format =  FastDateFormat.getInstance("yyyy-MM-dd hh:mm:ss");
 			Date date = null;
 			try {
-				date = format.parse(query.getStartDate());
+				date = (Date)format.parseObject(query.getStartDate());
 			} catch (ParseException e) {
-				log.error(String.format("Error processing start date: {0}",query.getStartDate()), e);
+				log.error("Error processing start date: {} Error: {}",
+						query.getStartDate(),
+						e.getMessage());
 			}
 			Calendar startDate = Calendar.getInstance();
 			startDate.setTime(date);
 			
 			try {
-				date = format.parse(query.getEndDate());
+				date = (Date)format.parseObject(query.getEndDate());
 			} catch (ParseException e) {
-				log.error(String.format("Error processing end date: {0}",query.getEndDate()), e);
+				log.error("Error processing end date: {} Error: {}",
+						query.getEndDate(),
+						e.getMessage());
 			}
 			Calendar endDate = Calendar.getInstance();
 			endDate.setTime(date);
