@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,7 +24,11 @@
 package com.percussion.delivery.utils.spring;
 
 
-import com.percussion.delivery.utils.security.PSSecureProperty;
+import com.percussion.security.PSSecureProperty;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
+import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,11 +36,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.config.PropertiesFactoryBean;
-import org.springframework.core.io.Resource;
 
 /**
  * Extended the Spring PropertiesFactoryBean to add the ability to automatically

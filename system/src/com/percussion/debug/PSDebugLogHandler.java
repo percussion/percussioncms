@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -32,11 +32,11 @@ import com.percussion.log.PSLogServerWarning;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSConsole;
 import com.percussion.util.PSLineBreaker;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
@@ -61,7 +61,7 @@ public class PSDebugLogHandler extends PSLogHandler implements IPSTraceStateList
     * for that application.  If <CODE>null</CODE>, all types of logging will be disabled.
     * @param traceInfo The PSTraceInfo from the application.  Contains all
     * tracing options for that application.  May not be <code>null</code>.
-    * @param appName the name of the app this is logging for.
+    * @param app the name of the app this is logging for.
     * @throws IllegalArgumentException if traceInfo is <code>null</code>.
     * @roseuid 39F4699A007D
     */
@@ -402,13 +402,6 @@ public class PSDebugLogHandler extends PSLogHandler implements IPSTraceStateList
       catch (IOException e){}
    }
 
-   /**
-    * Notifies this object that tracing has been enabled.  In this case need to
-    * change internal flag to enabled
-    *
-    * @param traceInfo the PSTraceInfo object that has been enabled
-    * @roseuid 3A0084F2004E
-    */
    private ResourceBundle getBundle()
    {
       if (m_resourceBundle == null)
@@ -515,7 +508,7 @@ public class PSDebugLogHandler extends PSLogHandler implements IPSTraceStateList
       try
       {
          if (m_format == null)
-            m_format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+            m_format = FastDateFormat.getInstance("yyyy/MM/dd hh:mm:ss");
 
          date = new String(m_format.format(new Date()));
       }
@@ -605,7 +598,7 @@ public class PSDebugLogHandler extends PSLogHandler implements IPSTraceStateList
    /**
     * The date formatter for trace header messages
     */
-   private SimpleDateFormat m_format = null;
+   private FastDateFormat m_format = null;
 
    /**
     * The resource bundle used for logging messages

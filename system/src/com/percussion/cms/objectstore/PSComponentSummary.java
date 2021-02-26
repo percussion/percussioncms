@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -33,13 +33,19 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.relationship.data.PSRelationshipData;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -51,19 +57,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The PSComponentSummary contains some item information that is from a row in
@@ -1026,7 +1023,7 @@ public class PSComponentSummary extends PSDbComponent implements Serializable
 
    // Use an accurate date format for interchange, this format
    // is compatible with the old application
-   static final DateFormat FMT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+   static final FastDateFormat FMT = FastDateFormat.getInstance("yyyy-MM-dd hh:mm:ss.SSS");
 
    /**
     * Format a date for the XML output

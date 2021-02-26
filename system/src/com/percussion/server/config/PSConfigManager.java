@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -34,16 +34,15 @@ import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
  * A singleton class to manage server configuration files.
@@ -603,7 +602,7 @@ public class PSConfigManager
     * values are of type PSConfig. Initialized during the first call to 
     * {@link #getInstance()}, never <code>null</code> after that, may be empty.
     */
-   private Map<String, PSConfig> m_configs = new HashMap<String, PSConfig>();
+   private Map<String, PSConfig> m_configs = new HashMap<>();
    
    /**
     * The singleton instance of this class. Initialized by the first call to

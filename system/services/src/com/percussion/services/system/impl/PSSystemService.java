@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -22,17 +22,6 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.system.impl;
-
-import static com.percussion.services.utils.orm.PSDataCollectionHelper.MAX_IDS;
-import static com.percussion.services.utils.orm.PSDataCollectionHelper.clearIdSet;
-import static com.percussion.services.utils.orm.PSDataCollectionHelper.createIdSet;
-import static com.percussion.services.utils.orm.PSDataCollectionHelper.executeQuery;
-import static com.percussion.webservices.PSWebserviceUtils.getUserCommunityId;
-import static com.percussion.webservices.PSWebserviceUtils.getUserName;
-import static com.percussion.webservices.PSWebserviceUtils.getUserRoles;
-
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.content.IPSMimeContentTypes;
@@ -70,12 +59,23 @@ import com.percussion.util.IOTools;
 import com.percussion.util.PSBaseBean;
 import com.percussion.util.PSCharSetsConstants;
 import com.percussion.util.PSSqlHelper;
-import com.percussion.utils.container.PSContainerUtilsFactory;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSDatasourceManager;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.workflow.mail.IPSMailMessageContext;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -87,7 +87,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -97,17 +96,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import static com.percussion.services.utils.orm.PSDataCollectionHelper.MAX_IDS;
+import static com.percussion.services.utils.orm.PSDataCollectionHelper.clearIdSet;
+import static com.percussion.services.utils.orm.PSDataCollectionHelper.createIdSet;
+import static com.percussion.services.utils.orm.PSDataCollectionHelper.executeQuery;
+import static com.percussion.webservices.PSWebserviceUtils.getUserCommunityId;
+import static com.percussion.webservices.PSWebserviceUtils.getUserName;
+import static com.percussion.webservices.PSWebserviceUtils.getUserRoles;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Implements all services defined with the <code>IPSSystemService</code>
@@ -1222,7 +1219,7 @@ public class PSSystemService
     */
    private String getDateString(Date date)
    {
-      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      FastDateFormat format = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss");
       String dateString = "'" + format.format(date) + "'";
 
       if (isOracle())
@@ -1262,9 +1259,7 @@ public class PSSystemService
    private static Boolean m_isOracle = null;
    
    /**
-    * The datasource manager to use to override the new configuration,
-    * initalized by the first call to
-    * {@link #setDatasourceManager(IPSDatasourceManager)}, never
+    * The datasource manager to use to override the new configuration.
     * <code>null</code> after that.
     */
    private IPSDatasourceManager m_dsMgr;

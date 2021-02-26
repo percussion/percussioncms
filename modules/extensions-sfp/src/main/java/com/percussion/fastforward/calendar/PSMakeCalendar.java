@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,26 +24,22 @@
 package com.percussion.fastforward.calendar;
 
 import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
-import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.server.IPSRequestContext;
-//import org.cms.calendar.exits.Holidays;
-//import com.percussion.consulting.mii.calendar.Holidays;
 import com.percussion.util.PSDataTypeConverter;
-
-//import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * This exit takes the result document and replaces the RelatedContent portion
@@ -118,7 +114,7 @@ public class PSMakeCalendar implements IPSResultDocumentProcessor
       Calendar cal = Calendar.getInstance();
       todayElem.setAttribute("day", Integer.toString(cal
             .get(Calendar.DAY_OF_MONTH)));
-      todayElem.setAttribute("month", new SimpleDateFormat("MMMM").format(cal
+      todayElem.setAttribute("month", FastDateFormat.getInstance("MMMM").format(cal
             .getTime()));
       todayElem.setAttribute("year", Integer.toString(cal.get(Calendar.YEAR)));
       calRoot.appendChild(todayElem);
@@ -127,7 +123,7 @@ public class PSMakeCalendar implements IPSResultDocumentProcessor
       Element monthElem = doc.createElement("Month");
       cal.setTime(date);
 
-      monthElem.setAttribute("name", new SimpleDateFormat("MMMM").format(cal
+      monthElem.setAttribute("name", FastDateFormat.getInstance("MMMM").format(cal
             .getTime()));
       monthElem.setAttribute("year", Integer.toString(cal.get(Calendar.YEAR)));
       monthElem.setAttribute("numOfWeeks", Integer.toString(weeksInMonth));

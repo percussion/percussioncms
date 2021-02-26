@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -28,11 +28,11 @@ import com.percussion.error.PSException;
 import com.percussion.util.PSCollection;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 
@@ -1097,7 +1097,7 @@ public class PSDataSelector extends PSComponent
    private            String            m_nativeStatement   =   "";
    private            PSCollection      m_sortedColumns = null;
 
-   private   SimpleDateFormat   m_DateFormatter   =   new   SimpleDateFormat("hh:mm");
+   private FastDateFormat m_DateFormatter   =   FastDateFormat.getInstance("hh:mm");
 
    private   static   final   String      XML_FLAG_CACHE_TYPE_INTERVAL   =   "interval";
    private   static   final   String      XML_FLAG_CACHE_TYPE_TIME      =   "time";

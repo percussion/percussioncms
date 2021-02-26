@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -49,9 +49,9 @@ import com.percussion.sitemanage.data.PSSitePublishLogDetailsRequest;
 import com.percussion.sitemanage.data.PSSitePublishLogRequest;
 import com.percussion.sitemanage.data.PSSitePublishPurgeRequest;
 import com.percussion.sitemanage.service.IPSSitePublishStatusService;
-import com.percussion.utils.date.PSConcurrentDateFormat;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.string.PSStringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +66,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -87,7 +86,7 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 public class PSSitePublishStatusService implements IPSSitePublishStatusService
 {
 
-    private static Logger log = LogManager.getLogger(PSSitePublishStatusService.class);
+    private static final Logger log = LogManager.getLogger(PSSitePublishStatusService.class);
 
     private IPSRxPublisherServiceInternal rxPubSvc;
 
@@ -132,8 +131,8 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
             List<PSSitePublishJob> jobs = new ArrayList<>();
 
             if (dummyData) {
-                final PSConcurrentDateFormat format = new PSConcurrentDateFormat(dateFormat);
-                final PSConcurrentDateFormat tformat = new PSConcurrentDateFormat(timeFormat);
+                final FastDateFormat format = FastDateFormat.getInstance(dateFormat);
+                final FastDateFormat tformat = FastDateFormat.getInstance(timeFormat);
                 final GregorianCalendar today = new GregorianCalendar();
                 PSSitePublishJob job1 = new PSSitePublishJob() {
                     {
@@ -208,8 +207,8 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
             List<PSSitePublishJob> jobs = new ArrayList<>();
 
             if (dummyData) {
-                final SimpleDateFormat format = new SimpleDateFormat(dateFormat);
-                final SimpleDateFormat tformat = new SimpleDateFormat(timeFormat);
+                final FastDateFormat format = FastDateFormat.getInstance(dateFormat);
+                final FastDateFormat tformat = FastDateFormat.getInstance(timeFormat);
                 final GregorianCalendar today = new GregorianCalendar();
                 PSSitePublishJob job1 = new PSSitePublishJob() {
                     {
@@ -279,8 +278,8 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
 
             List<PSSitePublishJob> jobs = new ArrayList<>();
             if (dummyData) {
-                final SimpleDateFormat format = new SimpleDateFormat(dateFormat);
-                final SimpleDateFormat tformat = new SimpleDateFormat(timeFormat);
+                final FastDateFormat format = FastDateFormat.getInstance(dateFormat);
+                final FastDateFormat tformat = FastDateFormat.getInstance(timeFormat);
                 final GregorianCalendar today = new GregorianCalendar();
                 for (int i = 0; i < request.getMaxcount(); i++) {
 
@@ -598,8 +597,8 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
     }
 
     protected PSSitePublishJob buildJob(long jobId, IPSPublisherJobStatus status) throws PSNotFoundException {
-        SimpleDateFormat dformat = new SimpleDateFormat(dateFormat);
-        SimpleDateFormat tformat = new SimpleDateFormat(timeFormat);
+        FastDateFormat dformat = FastDateFormat.getInstance(dateFormat);
+        FastDateFormat tformat = FastDateFormat.getInstance(timeFormat);
         PSSitePublishJob job = new PSSitePublishJob();
         job.setJobId(jobId);
         job.setCompletedItems(status.countItemsDelivered());
@@ -617,8 +616,8 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
     }
 
     protected PSSitePublishJob buildJob(IPSPubStatus status) throws PSNotFoundException {
-        SimpleDateFormat dformat = new SimpleDateFormat(dateFormat);
-        SimpleDateFormat tformat = new SimpleDateFormat(timeFormat);
+        FastDateFormat dformat = FastDateFormat.getInstance(dateFormat);
+        FastDateFormat tformat = FastDateFormat.getInstance(timeFormat);
         PSSitePublishJob job = new PSSitePublishJob();
         job.setJobId(status.getStatusId());
         job.setCompletedItems(status.getDeliveredCount());

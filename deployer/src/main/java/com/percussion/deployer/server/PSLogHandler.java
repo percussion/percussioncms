@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -50,6 +50,7 @@ import com.percussion.tablefactory.PSJdbcSelectFilter;
 import com.percussion.tablefactory.PSJdbcTableData;
 import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -57,7 +58,6 @@ import java.io.StringReader;
 import java.lang.reflect.Constructor;
 import java.sql.Timestamp;
 import java.sql.Types;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -1013,7 +1013,7 @@ public class PSLogHandler
       cols.add(col);
 
       String sqlDatePattern = "yyyy-mm-dd hh:mm:ss"; // JDBC Date format.
-      SimpleDateFormat dateFormat = new SimpleDateFormat(sqlDatePattern);
+      FastDateFormat dateFormat = FastDateFormat.getInstance(sqlDatePattern);
       col = new PSJdbcColumnData(ALS_SRC_SERVER_BUILD_DATE,
          dateFormat.format(archiveInfo.getServerBuildDate()));
       cols.add(col);

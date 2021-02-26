@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,13 +23,6 @@
  */
 package com.percussion.deploy.server.dependencies;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import com.percussion.deploy.error.PSDeployException;
 import com.percussion.deploy.objectstore.PSDependency;
 import com.percussion.deploy.objectstore.PSDeployComponentUtils;
@@ -40,6 +33,13 @@ import com.percussion.security.PSSecurityToken;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -83,7 +83,7 @@ public class PSContentAssemblerDependencyHandler
          throw new IllegalArgumentException("Dependency may not be null");
       
       String appPattern = "../" + dep.getDependencyId() + "/%";
-      Set<IPSGuid> tmpGuids = new HashSet<IPSGuid>();
+      Set<IPSGuid> tmpGuids = new HashSet<>();
       List<IPSAssemblyTemplate> tmps = m_asHelper
             .findTemplatesByAssemblyURL(appPattern);
       for (IPSAssemblyTemplate t : tmps)
@@ -149,7 +149,7 @@ public class PSContentAssemblerDependencyHandler
       
       Iterator names = appNames.iterator();
       // creates the dependencies from the app names
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       PSDependency dep;
       while (names.hasNext())
       {
@@ -177,7 +177,7 @@ public class PSContentAssemblerDependencyHandler
    {
       if ( tmps == null )
          throw new IllegalArgumentException("templates may not be null");
-      Set<String> appNames = new HashSet<String>();
+      Set<String> appNames = new HashSet<>();
       for (IPSAssemblyTemplate template : tmps)
       {
          String url = template.getAssemblyUrl();
@@ -251,7 +251,7 @@ public class PSContentAssemblerDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {

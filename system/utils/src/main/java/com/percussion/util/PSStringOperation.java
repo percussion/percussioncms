@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,8 +24,9 @@
 
 package com.percussion.util;
 
+import org.apache.commons.lang3.time.FastDateFormat;
+
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -157,7 +158,7 @@ public class PSStringOperation
       if(text == null)
          return null;
 
-      StringBuffer newtext = new StringBuffer();
+      StringBuilder newtext = new StringBuilder();
       int index = -1;
       while((index=text.indexOf(oldChr)) != -1)
       {
@@ -223,7 +224,7 @@ public class PSStringOperation
       if(text == null)
          return null;
 
-      StringBuffer newtext = new StringBuffer();
+      StringBuilder newtext = new StringBuilder();
       for (int i = 0; i < text.length(); i++)
       {
          char ch = text.charAt(i);
@@ -266,7 +267,7 @@ public class PSStringOperation
          throw new IllegalArgumentException(
             "the text which should be splitted may not be null");
 
-      List<String> list = new ArrayList<String>();
+      List<String> list = new ArrayList<>();
 
       /* If passed in 'text' is empty string, add that to list and return. */
       if(text.length() == 0)
@@ -275,7 +276,7 @@ public class PSStringOperation
          return list;
       }
 
-      StringBuffer token = new StringBuffer();
+      StringBuilder token = new StringBuilder();
 
       int index = -1;
       while((index=text.indexOf(separator)) != -1)
@@ -364,7 +365,7 @@ public class PSStringOperation
 
       Iterator<String> iter = values.iterator();
 
-      StringBuffer buffer = new StringBuffer();
+      StringBuilder buffer = new StringBuilder();
 
       while(iter.hasNext())
       {
@@ -494,10 +495,10 @@ public class PSStringOperation
       if (locale == null)
          locale = Locale.getDefault();
 
-      DateFormat formatter = null;
+      FastDateFormat formatter = null;
       if (strFormat == null || strFormat.trim().length() < 1)
       {
-         formatter = DateFormat.getDateTimeInstance(DateFormat.DEFAULT,
+         formatter = FastDateFormat.getDateTimeInstance(DateFormat.DEFAULT,
             DateFormat.DEFAULT, locale);
       }
       else
@@ -509,7 +510,7 @@ public class PSStringOperation
           * formatting will be successful. Result may not be desired one.
           * Tested with most popular locales, works fine.
           */
-         formatter = new SimpleDateFormat(strFormat, locale);
+         formatter = FastDateFormat.getInstance(strFormat, locale);
       }
       return formatter.format(oneDate);
    }
