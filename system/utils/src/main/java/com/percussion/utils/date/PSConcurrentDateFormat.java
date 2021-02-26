@@ -34,34 +34,13 @@ import java.util.Date;
  */
 public class PSConcurrentDateFormat {
 
-    private String defaultFormat="yyyy MM dd";
+    private String defaultFormat;
 
     public PSConcurrentDateFormat(String format){
-
+       defaultFormat = format;
     }
-    private ThreadLocal<DateFormat> df = new ThreadLocal<DateFormat> () {
 
-        @Override
-        public DateFormat get() {
-            return super.get();
-        }
-
-        @Override
-        protected DateFormat initialValue() {
-            return new SimpleDateFormat(defaultFormat);
-        }
-
-        @Override
-        public void remove() {
-            super.remove();
-        }
-
-        @Override
-        public void set(DateFormat value) {
-            super.set(value);
-        }
-
-    };
+    private final ThreadLocal<DateFormat> df = ThreadLocal.withInitial(() -> new SimpleDateFormat(defaultFormat));
 
     public Date parse(String date) throws ParseException {
         return toDate(date);
