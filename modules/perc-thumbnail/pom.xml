@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -27,13 +27,13 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.0.2.1</version>
+        <version>8.0.2.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>perc-thumbnail</artifactId>
-  <version>8.0.2.1</version>
+  <version>8.0.2.3</version>
 
     <properties>
         <version.arquillian>1.1.11.Final</version.arquillian>
@@ -221,7 +221,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.2.1</version>
+            <version>8.0.2.3</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -341,7 +341,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.2.1</version>
+            <version>8.0.2.3</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
