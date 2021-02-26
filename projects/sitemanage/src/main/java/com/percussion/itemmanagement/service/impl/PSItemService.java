@@ -95,6 +95,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,10 +112,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -758,8 +757,8 @@ public class PSItemService implements IPSItemService
     {
     	if(StringUtils.isBlank(inputDate))
     		return "";
-    	DateFormat format1 = new SimpleDateFormat(isForSave?"MM/dd/yyyy hh:mm a":"yyyy-MM-dd HH:mm:ss.S");
-    	DateFormat format2 = new SimpleDateFormat(isForSave?"yyyy-MM-dd HH:mm:ss.S":"MM/dd/yyyy hh:mm a");
+    	FastDateFormat format1 =  FastDateFormat.getInstance(isForSave?"MM/dd/yyyy hh:mm a":"yyyy-MM-dd HH:mm:ss.S");
+        FastDateFormat format2 = FastDateFormat.getInstance(isForSave?"yyyy-MM-dd HH:mm:ss.S":"MM/dd/yyyy hh:mm a");
         Date dbDate = format1.parse(inputDate);
         String date = format2.format(dbDate);
         return date;
@@ -852,8 +851,8 @@ public class PSItemService implements IPSItemService
     	PSNoContent validationResponse = new PSNoContent("Success");
         try
         {   String opName = "dateValidation";
-            SimpleDateFormat formatter =
-                new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+            FastDateFormat formatter =
+                    FastDateFormat.getInstance("MM/dd/yyyy hh:mm a");
             Date currentDate = new Date();
             String currentDateString = formatter.format(currentDate);
             Date currentDateFormat = formatter.parse(currentDateString);

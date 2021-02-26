@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,12 +23,12 @@
  */
 package com.percussion.design.objectstore;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.apache.commons.lang3.time.FastDateFormat;
+
+import java.util.Date;
 
 /**
  * Unit tests for the <code>PSDateLiteralTest</code> class.
@@ -51,7 +51,7 @@ public class PSDateLiteralTest extends TestCase
    public void testClone() throws Exception
    {
       Date now = new Date();
-      SimpleDateFormat format = new SimpleDateFormat();
+      FastDateFormat format = FastDateFormat.getInstance();
       PSDateLiteral foo = new PSDateLiteral( now, format );
       foo.setId( 99 );
       PSDateLiteral bar = (PSDateLiteral) foo.clone();

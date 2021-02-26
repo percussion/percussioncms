@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,16 +24,13 @@
 package com.percussion.utils.date;
 
 import com.percussion.utils.date.PSDateRange.Granularity;
+import junit.framework.TestCase;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.joda.time.DateTime;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import junit.framework.TestCase;
-
-import org.joda.time.DateTime;
 
 /**
  * @author paulhoward
@@ -93,9 +90,9 @@ public class PSDateRangeTest extends TestCase
       }
       catch (IllegalArgumentException e)
       { /* success */ }
-      
-      DateFormat formatter; 
-      formatter = new SimpleDateFormat("MM/dd/yyyy");
+
+      FastDateFormat formatter;
+      formatter = FastDateFormat.getInstance("MM/dd/yyyy");
            
       d1 = createDate(2010, 10, 24);
       String d1Str = formatter.format(d1);
