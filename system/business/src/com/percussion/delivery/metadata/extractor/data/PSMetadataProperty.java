@@ -66,8 +66,6 @@ public class PSMetadataProperty implements Serializable, IPSMetadataProperty
     * Ctor to create a property of the specified valuetype.
     * 
     * @param name the property name, cannot be <code>null</code> or empty.
-    * @param type the {@link #valuetype} for the property. Cannot be
-    *           <code>null</code>.
     * @param value the value to be stored in the property. May be
     *           <code>null</code> or empty.
     */

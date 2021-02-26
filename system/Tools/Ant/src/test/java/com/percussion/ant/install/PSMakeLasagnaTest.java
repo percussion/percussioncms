@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,13 +23,11 @@
  */
 package com.percussion.ant.install;
 
-import com.percussion.tablefactory.PSJdbcDbmsDef;
-import com.percussion.utils.io.PathUtils;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.testing.UnitTest;
-
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
