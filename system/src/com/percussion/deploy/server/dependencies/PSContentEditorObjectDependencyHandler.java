@@ -362,7 +362,7 @@ public abstract class PSContentEditorObjectDependencyHandler
       PSDependencyHandler schemaHandler = getDependencyHandler(
          PSSchemaDependencyHandler.DEPENDENCY_TYPE);
 
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
       Iterator tables = getLocatorTables(locator);
       while (tables.hasNext())
       {

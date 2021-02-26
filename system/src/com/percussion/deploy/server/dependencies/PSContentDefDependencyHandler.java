@@ -113,7 +113,7 @@ public class PSContentDefDependencyHandler
          throw new IllegalArgumentException("dep wrong type");
 
       String csId = dep.getDependencyId();
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
       
       // get all content type children for this content def
       List<PSDependency> contentTypeDeps = 
@@ -248,7 +248,7 @@ public class PSContentDefDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
       
       // get the first dep data for the content object from system tables
       files.add(getDepFileFromDepData(getDepDataFromTable(dep, CONTENT_TABLE,
@@ -318,7 +318,7 @@ public class PSContentDefDependencyHandler
       Map<String, String> cacheData = null;
       if (PSItemSummaryCache.getInstance() != null)
       {
-         cacheData = new HashMap<String, String>();
+         cacheData = new HashMap<>();
          for (int i=0; i<CACHED_COLS.length; i++)
             cacheData.put(CACHED_COLS[i], null);
       }
@@ -609,7 +609,7 @@ public class PSContentDefDependencyHandler
       // since we're not filtering by community at all
       try
       {
-         List<PSDependencyData> tableData = new ArrayList<PSDependencyData>();
+         List<PSDependencyData> tableData = new ArrayList<>();
 
          String csId = dep.getDependencyId();
          PSItemDefManager itemDefMgr = PSItemDefManager.getInstance();
@@ -666,7 +666,7 @@ public class PSContentDefDependencyHandler
       
       // get the source row
       PSDbmsHelper dbmsHelper = PSDbmsHelper.getInstance();
-      List<PSJdbcRowData> tgtRowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> tgtRowList = new ArrayList<>();
       Iterator rows = data.getRows();
       if (rows.hasNext())
       {
@@ -678,7 +678,7 @@ public class PSContentDefDependencyHandler
             // xform the ids for CONTENT_ID, CONTENT_STATE_ID, CONTENTYPE_ID, 
             // COMMUNITY_ID and WORKFLOW_ID
             String wfId = null; // used to optimize state and transition id xform 
-            List<PSJdbcColumnData> tgtColList = new ArrayList<PSJdbcColumnData>();
+            List<PSJdbcColumnData> tgtColList = new ArrayList<>();
             Iterator srcCols = srcRow.getColumns();
             while (srcCols.hasNext())
             {
@@ -760,7 +760,7 @@ public class PSContentDefDependencyHandler
       String newContentId) throws PSDeployException
    {
       // get the source row
-      List<PSJdbcRowData> tgtRowList = new ArrayList<PSJdbcRowData>();
+      List<PSJdbcRowData> tgtRowList = new ArrayList<>();
       Iterator rows = data.getRows();
       
       
@@ -775,7 +775,7 @@ public class PSContentDefDependencyHandler
          
          // walk the columns and build a new row, xform the ids as we go,
          // xform the ids for CONTENT_ID
-         List<PSJdbcColumnData> tgtColList = new ArrayList<PSJdbcColumnData>();
+         List<PSJdbcColumnData> tgtColList = new ArrayList<>();
          Iterator srcCols = srcRow.getColumns();
          while (srcCols.hasNext())
          {
@@ -973,7 +973,7 @@ public class PSContentDefDependencyHandler
     */
    private Iterator getAppCETables(PSContentEditor ce) throws PSDeployException
    {
-      Set<String> names = new HashSet<String>();
+      Set<String> names = new HashSet<>();
       PSContentEditorPipe cePipe = 
          (PSContentEditorPipe)ce.getPipe();
                   
@@ -1031,7 +1031,7 @@ public class PSContentDefDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    /**
     * This is a list of cached column names in the CONTENTSTATUS table. 
