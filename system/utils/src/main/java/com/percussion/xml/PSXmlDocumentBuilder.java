@@ -23,6 +23,7 @@
  */
 package com.percussion.xml;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.utils.tools.IPSUtilsConstants;
 import com.percussion.utils.xml.PSEntityResolver;
 import com.percussion.utils.xml.PSProcessServerPageTags;
@@ -41,7 +42,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.FactoryConfigurationError;
@@ -212,7 +212,8 @@ public class PSXmlDocumentBuilder {
 
         try {
             if (dbf == null) {
-                dbf = DocumentBuilderFactory.newInstance();
+                dbf = PSSecureXMLUtils.enableSecureFeatures(
+                        DocumentBuilderFactory.newInstance(),false);
             }
         } catch (FactoryConfigurationError err) {
             dbf = null;
@@ -220,9 +221,10 @@ public class PSXmlDocumentBuilder {
 
         if (dbf == null) {
             try {
-                dbf = (DocumentBuilderFactory) Class.forName(
+                dbf = PSSecureXMLUtils.enableSecureFeatures(
+                        (DocumentBuilderFactory) Class.forName(
                         "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl")
-                                                    .newInstance();
+                                                    .newInstance(),false);
             } catch (Exception e) {
                 dbf = null;
                 throw new RuntimeException(e.getLocalizedMessage());
@@ -258,7 +260,7 @@ public class PSXmlDocumentBuilder {
     private static Object popFromCache(List cache) {
         Object object = null;
 
-        synchronized (cache) {
+        synchronized (PSXmlDocumentBuilder.class) {
             int size = cache.size();
 
             if (size > 0) {
@@ -290,8 +292,7 @@ public class PSXmlDocumentBuilder {
 
             if (db == null) {
                 DocumentBuilderFactory dbf = getDocumentBuilderFactory(validating);
-                dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-                dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
+
                 db = dbf.newDocumentBuilder();
                 db.setEntityResolver(PSEntityResolver.getInstance());
                 returnDocumentBuilderFactory(dbf);

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,6 +26,7 @@ package com.percussion.hooks.servlet;
 import com.percussion.hooks.IPSServletErrors;
 import com.percussion.hooks.PSConnectionFactory;
 import com.percussion.hooks.PSServletBase;
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.tools.PSHttpRequest;
 import com.percussion.tools.PSInputStreamReader;
 import org.apache.log4j.LogManager;
@@ -43,11 +44,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * The RhythmyxServlet class is the base class of the Rhythmyx servlet
@@ -731,8 +743,9 @@ public class RhythmyxServlet extends PSServletBase
          {
             readHttpHeaders(in, null);
             
-            DocumentBuilderFactory factory =
-               DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory factory = PSSecureXMLUtils.enableSecureFeatures(
+               DocumentBuilderFactory.newInstance(),false);
+
             factory.setNamespaceAware(true);
             factory.setValidating(false);
 

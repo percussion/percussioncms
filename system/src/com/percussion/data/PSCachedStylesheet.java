@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,12 +25,12 @@ package com.percussion.data;
 
 import com.percussion.server.PSServer;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.StringTokenizer;
+import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Templates;
@@ -38,13 +38,11 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
-
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.StringTokenizer;
 
 /**
  * Class used for caching style sheet in the form of <code>Templates</code>
@@ -83,7 +81,8 @@ public class PSCachedStylesheet
       m_ssTemplate = null;
       m_listener = new PSTransformErrorListener();
       
-      m_transformFactory = TransformerFactory.newInstance();
+      m_transformFactory =  TransformerFactory.newInstance();
+
       m_transformFactory.setURIResolver(new PSUriResolver());
 
       if("file".equalsIgnoreCase(m_ssUrl.getProtocol()))

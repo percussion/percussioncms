@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,15 +23,15 @@
  */
 package com.percussion.xml;
 
-import java.io.File;
-import java.util.Iterator;
-import java.util.List;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.xml.sax.SAXException;
+import java.io.File;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Helper class for validating an xml file against a specified Schema
@@ -68,7 +68,8 @@ public class PSXmlValidator
          throw new IllegalArgumentException(
             "SchemaFile cannot be null and must exist.");
       
-      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      DocumentBuilderFactory factory = PSSecureXMLUtils.enableSecureFeatures(
+              DocumentBuilderFactory.newInstance(),false);
       factory.setValidating(true);
       factory.setNamespaceAware(true);
       factory.setAttribute(
