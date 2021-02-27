@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,6 +23,7 @@
  */
 package com.percussion.services.assembly.impl.plugin;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.services.assembly.IPSAssemblyResult;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
@@ -30,17 +31,15 @@ import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSAssemblyWorkItem;
 import com.percussion.utils.jexl.PSJexlEvaluator;
 import com.percussion.utils.tools.PSBaseXmlConfigTest;
-
-import java.io.File;
-import java.io.FileWriter;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+import java.io.FileWriter;
 
 /**
  * Test the db assembly plugin
@@ -63,7 +62,9 @@ public class PSDatabaseAssemblerTest extends PSBaseXmlConfigTest
    @SuppressWarnings("unchecked")
    public void testDBAssembly() throws Exception
    {
-      DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+      DocumentBuilderFactory f = PSSecureXMLUtils.enableSecureFeatures(
+              DocumentBuilderFactory.newInstance(),false);
+
       DocumentBuilder builder = f.newDocumentBuilder();
 
       Document doc = builder.parse(ms_test);

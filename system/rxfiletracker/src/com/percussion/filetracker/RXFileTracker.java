@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,12 +24,12 @@
 
 package com.percussion.filetracker;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import com.percussion.security.xml.PSSecureXMLUtils;
 
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.awt.*;
 
 /**
  * Main Application class with main() method. Main window is constructed and
@@ -88,7 +88,9 @@ public class RXFileTracker
    {
       try
       {
-         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+         DocumentBuilderFactory dbf = PSSecureXMLUtils.enableSecureFeatures(
+                 DocumentBuilderFactory.newInstance(),false);
+
          dbf.setNamespaceAware(true);
          dbf.setValidating(false);
          return dbf.newDocumentBuilder();

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,6 +23,7 @@
  */
 package com.percussion.install;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.datasource.PSDatasourceMgrLocator;
@@ -40,14 +41,12 @@ import com.percussion.utils.jdbc.PSConnectionInfo;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.utils.timing.PSStopwatchStack;
 import com.percussion.xml.PSXmlTreeWalker;
-import junit.framework.TestCase;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -159,7 +158,10 @@ public class PSUpgradePluginConvertCommunityVisibilityTest
          PSUpgradePluginConvertCommunityVisibility v = new PSUpgradePluginConvertCommunityVisibility();
          InputStream stream = new FileInputStream(
                "UnitTestResources/com/percussion/rxupgrade/rxupgrade.xml");
-         DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+
+         DocumentBuilderFactory f = PSSecureXMLUtils.enableSecureFeatures(
+                 DocumentBuilderFactory.newInstance(),false);
+
          DocumentBuilder builder = f.newDocumentBuilder();
          Document doc = builder.parse(stream);
          PSXmlTreeWalker walker = new PSXmlTreeWalker(doc);
