@@ -27,11 +27,7 @@ package com.percussion.ant.install;
 import com.percussion.delivery.utils.security.PSSecureProperty;
 import com.percussion.install.InstallUtil;
 import com.percussion.install.PSLogger;
-import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.utils.jdbc.PSJdbcUtils;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.apache.tools.ant.BuildException;
 
 import java.io.File;
@@ -70,12 +66,7 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
                 PSLogger.logError("Root RootDir is missing");
                 return;
             }
-            try {
-                dpwd = PSEncryptor.getInstance("AES",null).decrypt(pwd);
-            } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
-                dpwd = PSLegacyEncrypter.getInstance().decrypt(pwd,
-                        PSJdbcDbmsDef.getPartOneKey());
-            }
+
             if(dpwd == null || dpwd.isEmpty()){
                 PSLogger.logError("Password Decryption failed");
             }
