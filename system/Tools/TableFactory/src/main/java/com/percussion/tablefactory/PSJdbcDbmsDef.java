@@ -958,7 +958,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
 
    /**
     * The constant for the partone key for the Rx encryption algorithm.  The
-    * constant is encrytped by the {@link #rot13(char)} method.
+    * constant is encrypted by the {@link #rot13(char)} method.
     */
    @Deprecated
    private static final String PART_ONE = PSLegacyEncrypter.PART_ONE();
