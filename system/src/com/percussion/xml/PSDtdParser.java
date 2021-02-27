@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,21 +25,9 @@
 package com.percussion.xml;
 
 //java
+
 import com.percussion.design.catalog.PSCatalogException;
 import com.percussion.server.IPSServerErrors;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.xerces.impl.Constants;
 import org.apache.xerces.impl.dtd.DTDGrammarBucket;
 import org.apache.xerces.impl.dtd.XMLDTDDescription;
@@ -59,6 +47,17 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import javax.xml.parsers.DocumentBuilder;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * This class is used for parsing DTD. It uses Xerces
@@ -163,7 +162,8 @@ public class PSDtdParser
     * Version of {@link #parseXmlForDtd(Document, boolean)} that creates a
     * <code>Document</code> from the supplied file.
     * See that method for documentation on other params and exceptions.
-    * @param The file to read in, may not be <code>null</code>.
+    * @param xmlFile The file to read in, may not be <code>null</code>.
+    * @param generate When true TODO:
     * @throws IllegalArgumentException if xmlFile is <code>null</code> or
     * does not exist
     */
@@ -172,23 +172,12 @@ public class PSDtdParser
    {
       if ((xmlFile == null) || (!xmlFile.exists()))
          throw new IllegalArgumentException("xmlFile may not be null and should exist");
-      FileInputStream fis = null;
-      try
+
+      try(FileInputStream fis = new FileInputStream(xmlFile))
       {
-         fis = new FileInputStream(xmlFile);
          parseXmlForDtd(fis, generate);
       }
-      finally
-      {
-         try
-         {
-            if (fis != null)
-               fis.close();
-         }
-         catch  (Exception e)
-         {
-         }
-      }
+
    }
 
    /**
@@ -272,7 +261,7 @@ public class PSDtdParser
          throw new IllegalArgumentException("xis may not be null");
       DocumentBuilder db = PSXmlDocumentBuilder.getDocumentBuilder(false);
       //make a copy of the input stream
-      StringBuffer buffer = new StringBuffer();
+      StringBuilder buffer = new StringBuilder();
       int read = 0;
       byte[] buf = new byte[1024];
       InputStream is = ins.getByteStream();

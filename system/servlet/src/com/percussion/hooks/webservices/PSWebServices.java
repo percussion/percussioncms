@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -33,6 +33,7 @@ import com.percussion.HTTPClient.ModuleException;
 import com.percussion.HTTPClient.NVPair;
 import com.percussion.HTTPClient.ProtocolNotSuppException;
 import com.percussion.hooks.PSUtils;
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.tools.PSHttpRequest;
 import com.percussion.utils.servlet.PSServletUtils;
 import org.apache.log4j.Logger;
@@ -283,7 +284,9 @@ public class PSWebServices
 
       try
       {
-         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+         DocumentBuilderFactory dbf = PSSecureXMLUtils.enableSecureFeatures(
+                 DocumentBuilderFactory.newInstance(),false);
+
          DocumentBuilder db = dbf.newDocumentBuilder();
          // set up the header
          Document headerDoc = db.newDocument();

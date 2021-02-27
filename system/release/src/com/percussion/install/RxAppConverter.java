@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -28,7 +28,14 @@ import com.percussion.util.PSCharSets;
 import com.percussion.utils.xml.PSEntityResolver;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -37,15 +44,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Properties;
 import java.util.StringTokenizer;
-
-import javax.xml.parsers.DocumentBuilder;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
 
 /**
 *
@@ -169,8 +167,6 @@ public class RxAppConverter
       String strUpdateSecProv, boolean bUpdateNativeStatement)
       throws IOException, SAXException
    {
-      //System.out.println("Updating application file: " + fileName +
-      //   " for backend database information...");
 
       DocumentBuilder db = PSXmlDocumentBuilder.getDocumentBuilder(false);
       Document doc = null;
