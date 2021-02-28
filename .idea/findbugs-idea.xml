@@ -2,6 +2,7 @@
 <project version="4">
   <component name="FindBugs-IDEA">
     <analysisEffort>max</analysisEffort>
+    <minRank>15</minRank>
     <hiddenBugCategory>
       <category name="BAD_PRACTICE" />
       <category name="CORRECTNESS" />

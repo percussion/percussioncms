@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,30 +26,8 @@ package com.percussion.cms;
 import com.percussion.cms.handlers.PSCloneCommandHandler;
 import com.percussion.cms.handlers.PSContentEditorHandler;
 import com.percussion.cms.handlers.PSEditCommandHandler;
-import com.percussion.data.IPSDataExtractor;
-import com.percussion.data.PSConversionException;
-import com.percussion.data.PSDataExtractionException;
-import com.percussion.data.PSDataExtractorFactory;
-import com.percussion.data.PSExecutionData;
-import com.percussion.data.PSMetaDataCache;
-import com.percussion.data.PSViewEvaluator;
-import com.percussion.design.objectstore.IPSBackEndMapping;
-import com.percussion.design.objectstore.PSBackEndColumn;
-import com.percussion.design.objectstore.PSCgiVariable;
-import com.percussion.design.objectstore.PSContentEditor;
-import com.percussion.design.objectstore.PSContentEditorPipe;
-import com.percussion.design.objectstore.PSContentItemStatus;
-import com.percussion.design.objectstore.PSField;
-import com.percussion.design.objectstore.PSHtmlParameter;
-import com.percussion.design.objectstore.PSLiteralSet;
-import com.percussion.design.objectstore.PSRequestor;
-import com.percussion.design.objectstore.PSSingleHtmlParameter;
-import com.percussion.design.objectstore.PSSystemValidationException;
-import com.percussion.design.objectstore.PSTableRef;
-import com.percussion.design.objectstore.PSTableSet;
-import com.percussion.design.objectstore.PSUrlRequest;
-import com.percussion.design.objectstore.PSUserContext;
-import com.percussion.design.objectstore.PSViewSet;
+import com.percussion.data.*;
+import com.percussion.design.objectstore.*;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.i18n.tmxdom.IPSTmxDtdConstants;
@@ -60,22 +38,13 @@ import com.percussion.util.PSMapPair;
 import com.percussion.util.PSStringOperation;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * This is the base class for all document builders. It knows the basic
@@ -106,7 +75,7 @@ import org.w3c.dom.NodeList;
  * its {@link IPSBuildContext#addVisibleField(Element,String) addVisibleField}
  * method.
  */
-abstract public class PSEditorDocumentBuilder
+public abstract class PSEditorDocumentBuilder
 {
    /**
     * A 1 letter string used as a key to obtain the content id extractor.
@@ -301,7 +270,7 @@ abstract public class PSEditorDocumentBuilder
             return;
 
          // sync in case we start parellizing app inits
-         synchronized ( this.getClass())
+         synchronized ( PSEditorDocumentBuilder.class)
          {
             // use double check idiom
             if ( null != ms_paramExtractors )
@@ -360,7 +329,7 @@ abstract public class PSEditorDocumentBuilder
     * @param dispNode A DisplayField element that should not be visible when
     *    the editor is rendered. Must not be <code>null</code>.
     *
-    * @param The name of the control that should render this node. Must not
+    * @param controlName name of the control that should render this node. Must not
     *    be <code>null</code> or empty.
     */
    private void addHiddenField( PSEditorDocumentBuildContext ctx,
@@ -387,7 +356,7 @@ abstract public class PSEditorDocumentBuilder
     * @param dispNode A DisplayField element that should be visible when
     *    the editor is rendered. Must not be <code>null</code>.
     *
-    * @param The name of the control that should render this node. Must not
+    * @param controlName name of the control that should render this node. Must not
     *    be <code>null</code> or empty.
     */
    private void addVisibleField( PSEditorDocumentBuildContext ctx,
@@ -1797,7 +1766,7 @@ abstract public class PSEditorDocumentBuilder
        * the output document following the hidden fields in the order they
        * appear in this list. May be empty (although unlikely in practice),
        * never <code>null</code>.   Modified by calls to {@link
-       * #addVisibleFields}.
+       * #addVisibleField(Element, String)}.
        */
       private List m_visibleFields = new ArrayList(10);
 

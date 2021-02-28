@@ -139,7 +139,7 @@ Vsystem/release/Install/src/com/percussion/installer/action/RxConvertDB2Reposito
 t
 Dsystem/rxfiletracker/src/com/percussion/filetracker/PSFUDConfig.java,4\b\4b5d6f2470948b4ed6f51ffee7f09374ac1f43bc
 c
-3system/src/com/percussion/xmldom/PSXmlDomUtils.java,8\7\87e00e4ea173fcf3a410f1dde9ef125fe3f54930
+3system/src/com/percussion/xmldom/PSXmlDomUtils.java,8/7/87e00e4ea173fcf3a410f1dde9ef125fe3f54930
 b
 2rest/src/main/java/com/percussion/rest/Status.java,e\9\e93a1d74f77b3a1659f915c0cda827b2a9814fd1
 |
@@ -548,3 +548,15 @@ Q
 !modules/perc-xml-security/pom.xml,b/a/badd46d880719af1a407ed1787a0d19cab3fdef6
 ‰
 Ymodules/perc-xml-security/src/main/java/com/percussion/security/xml/PSSecureXMLUtils.java,6/2/62d075c407a353271bdbb3f19d3098c3171244fc
+y
+Isystem/rxfiletracker/src/com/percussion/filetracker/PSFUDApplication.java,3/6/36b1943e88fda7043dc01cb02e581176e18699ba
+v
+Fsystem/rxfiletracker/src/com/percussion/filetracker/RXFileTracker.java,2/8/287819ace9c85109010b9f6d806773f5b8027b5c
+Œ
+\system/Testing/src/com/percussion/install/PSUpgradePluginConvertCommunityVisibilityTest.java,1/c/1c87c2285e5bcf6ae7e1dacf27f1543460a75d6e
+v
+FPCM-PkgMgtUI/src/com/percussion/gwt/pkgmgtui/client/PSPackagesTab.java,3/6/36c4232dc8ef568dd88bcd7ecbee6a0545b19fa4
+L
+modules/shindig-uber/pom.xml,3/6/3600767f3893fe8f2844f61d4799ea742af89e6c
+D
+system/utils/pom.xml,f/5/f525700400aff686261c8a8397674403f606b443

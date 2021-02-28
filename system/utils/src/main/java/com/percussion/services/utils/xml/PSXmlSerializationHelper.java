@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,6 +23,7 @@
  */
 package com.percussion.services.utils.xml;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.utils.guid.IPSGuid;
@@ -516,7 +517,8 @@ public class PSXmlSerializationHelper
                "xmlsource may not be null or empty");
       }
       FindIdAttribute fia = new FindIdAttribute();
-      SAXParserFactory fact = SAXParserFactory.newInstance();
+      SAXParserFactory fact = PSSecureXMLUtils.enableSecurityFeatures(
+              SAXParserFactory.newInstance(),false);
 
       try
       {

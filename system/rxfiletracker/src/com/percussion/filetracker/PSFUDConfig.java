@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,21 +26,15 @@ package com.percussion.filetracker;
 
 import com.percussion.tools.Base64;
 import com.percussion.tools.PrintNode;
+import org.w3c.dom.*;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import javax.xml.parsers.DocumentBuilder;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * This class wraps the configuration document (rxftconfig.xml). Has required
@@ -132,11 +126,9 @@ public class PSFUDConfig
     */
    public String getUserPath()
    {
-      String tmp = m_ElementCurrent.getAttribute(ATTRIB_SERVERALIAS) +
+      return m_ElementCurrent.getAttribute(ATTRIB_SERVERALIAS) +
                File.separator +
                m_ElementCurrent.getAttribute(ATTRIB_USERID);
-
-      return tmp;
    }
 
    /**
@@ -199,7 +191,7 @@ public class PSFUDConfig
       String tmp = m_ElementCurrentURL.getAttribute(ATTRIB_PORT);
       int port = 80;
 
-      try { port = Integer.parseInt(tmp);}catch(NumberFormatException e){}
+      try { port = Integer.parseInt(tmp);}catch(NumberFormatException e){ }
 
       return port;
    }
@@ -517,7 +509,7 @@ public class PSFUDConfig
          elem = (Element)nl.item(0);
 
       Node node = elem.getFirstChild();
-      if(null == node || !(node instanceof Text))
+      if( !(node instanceof Text))
       {
          node = m_ConfigDoc.createTextNode(temp);
          elem.appendChild(node);
@@ -565,7 +557,7 @@ public class PSFUDConfig
     * not use any encoding. This is used in password encryption process and
     * is sufficient.
     */
-   static public byte[] convertStringToByteArray(String str)
+   public static byte[] convertStringToByteArray(String str)
    {
       byte[] byteArray = new byte[str.length()];
       for (int i = 0; i < str.length(); i++)

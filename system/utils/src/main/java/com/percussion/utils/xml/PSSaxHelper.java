@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,6 +23,7 @@
  */
 package com.percussion.utils.xml;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
 import org.apache.commons.lang.StringUtils;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
@@ -57,7 +58,8 @@ public class PSSaxHelper
    /**
     * Parser factory used in the static helper methods here. The
     */
-   static final SAXParserFactory ms_factory = SAXParserFactory.newInstance();
+   static final SAXParserFactory ms_factory = PSSecureXMLUtils.enableSecurityFeatures(
+           SAXParserFactory.newInstance(),false);
 
    /**
     * This method instantiates the passed content handler with the arguments
