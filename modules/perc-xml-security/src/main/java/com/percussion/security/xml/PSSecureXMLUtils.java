@@ -26,10 +26,13 @@ package com.percussion.security.xml;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLInputFactory;
 
 /**
@@ -170,6 +173,75 @@ public class PSSecureXMLUtils {
         xif.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
 
         return xif;
+    }
+
+    public static SAXParserFactory enableSecurityFeatures(SAXParserFactory spf, boolean disableAllDocTypes){
+
+        //Set each feature logging any errors as warnings for unsupported features.
+        try{
+            spf.setFeature(SECURE_PROCESSING_FEATURE,true);
+        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
+            log.warn("enableSecureFeatures exception thrown, XML Feature: {} is not supported by this XML Parser.",
+                    SECURE_PROCESSING_FEATURE);
+        }
+
+        try{
+            spf.setFeature(DISALLOW_DOCTYPES_FEATURE,disableAllDocTypes);
+        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
+            log.warn("enableSecureFeatures exception thrown, XML Feature: {} is not supported by this XML Parser.",
+                    DISALLOW_DOCTYPES_FEATURE);
+        }
+
+        try{
+            spf.setFeature(SAX_GENERAL_EXTERNAL_ENTITIES_FEATURE,false);
+        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
+            log.warn("enableSecureFeatures exception thrown, XML Feature: {} is not supported by this XML Parser.",
+                    SAX_GENERAL_EXTERNAL_ENTITIES_FEATURE);
+        }
+
+        try{
+            spf.setFeature(X1_GENERAL_EXTERNAL_ENTITIES_FEATURE,false);
+        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
+            log.warn("enableSecureFeatures exception thrown, XML Feature: {} is not supported by this XML Parser.",
+                    X1_GENERAL_EXTERNAL_ENTITIES_FEATURE);
+        }
+
+        try{
+            spf.setFeature(X2_GENERAL_EXTERNAL_ENTITIES_FEATURE,false);
+        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
+            log.warn("enableSecureFeatures exception thrown, XML Feature: {} is not supported by this XML Parser.",
+                    X2_GENERAL_EXTERNAL_ENTITIES_FEATURE);
+        }
+
+        try{
+            spf.setFeature(X1_EXTERNAL_PARAMETER_ENTITIES_FEATURE,false);
+        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
+            log.warn("enableSecureFeatures exception thrown, XML Feature: {} is not supported by this XML Parser.",
+                    X1_EXTERNAL_PARAMETER_ENTITIES_FEATURE);
+        }
+
+        try{
+            spf.setFeature(X2_EXTERNAL_PARAMETER_ENTITIES_FEATURE,false);
+        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
+            log.warn("enableSecureFeatures exception thrown, XML Feature: {} is not supported by this XML Parser.",
+                    X2_EXTERNAL_PARAMETER_ENTITIES_FEATURE);
+        }
+
+        try{
+            spf.setFeature(SAX_EXTERNAL_PARAMETER_ENTITIES_FEATURE,false);
+        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
+            log.warn("enableSecureFeatures exception thrown, XML Feature: {} is not supported by this XML Parser.",
+                    SAX_EXTERNAL_PARAMETER_ENTITIES_FEATURE);
+        }
+
+        try{
+            spf.setFeature(LOAD_EXTERNAL_DTD,false);
+        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
+            log.warn("enableSecureFeatures exception thrown, XML Feature: {} is not supported by this XML Parser.",
+                    LOAD_EXTERNAL_DTD);
+        }
+
+        return spf;
     }
 
 }

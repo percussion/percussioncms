@@ -84,7 +84,7 @@ public class RXFileTracker
     * @return DocumentBuilder object for parsing XML documents. Never
     * <code>null</code>.
     */
-   static public DocumentBuilder getDocumentBuilder()
+    public static DocumentBuilder getDocumentBuilder()
    {
       try
       {

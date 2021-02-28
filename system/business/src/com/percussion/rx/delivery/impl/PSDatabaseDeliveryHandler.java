@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,17 +23,11 @@
  */
 package com.percussion.rx.delivery.impl;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.rx.delivery.IPSDeliveryItem;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
-import com.percussion.services.pubserver.IPSDatabasePubServerFilesService;
-import com.percussion.services.pubserver.IPSPubServer;
-import com.percussion.services.pubserver.IPSPubServerDao;
-import com.percussion.services.pubserver.PSDatabasePubServerServiceLocator;
-import com.percussion.services.pubserver.PSPubServerDaoLocator;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.services.pubserver.*;
 import com.percussion.services.pubserver.data.PSDatabasePubServer;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
@@ -42,11 +36,29 @@ import com.percussion.tablefactory.PSJdbcTableFactory;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.xml.PSSaxCopier;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -54,24 +66,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * The database delivery handler delivers content to a database. The database
@@ -659,7 +655,9 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
       StringWriter writer = new StringWriter();
       XMLStreamWriter formatter = ofact.createXMLStreamWriter(writer);
 
-      SAXParserFactory f = SAXParserFactory.newInstance();
+      SAXParserFactory f = PSSecureXMLUtils.enableSecurityFeatures(
+              SAXParserFactory.newInstance(),false);
+
       SAXParser parser = f.newSAXParser();
       DefaultHandler dh =
             new PSDatabaseDeliveryHandler.UnpublishingContentHandler(
@@ -671,7 +669,7 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
       formatter.close();
       String temp = writer.toString();
       temp = StringUtils.replace(temp, PSSaxCopier.RX_FILLER, "");
-      return temp.getBytes("UTF8");
+      return temp.getBytes(StandardCharsets.UTF_8);
    }
 
    @Override
@@ -891,5 +889,5 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
    /**
     * Logger.
     */
-   private static Log ms_log = LogFactory.getLog(PSDatabaseDeliveryHandler.class);
+   private static Logger ms_log = LogManager.getLogger(PSDatabaseDeliveryHandler.class);
 }

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,11 +23,13 @@
  */
 package com.percussion.rx.delivery.impl;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.utils.testing.IntegrationTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -35,15 +37,11 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 
-import com.percussion.utils.testing.IntegrationTest;
-import junit.framework.JUnit4TestAdapter;
-
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test some specific db delivery handler pieces.
@@ -217,7 +215,9 @@ public class PSDatabaseDeliveryHandlerTest
       StringWriter writer = new StringWriter();
       XMLStreamWriter formatter = ofact.createXMLStreamWriter(writer);
 
-      SAXParserFactory f = SAXParserFactory.newInstance();
+      SAXParserFactory f = PSSecureXMLUtils.enableSecurityFeatures(
+              SAXParserFactory.newInstance(),false);
+
       SAXParser parser = f.newSAXParser();
       DefaultHandler dh = new PSDatabaseDeliveryHandler.UnpublishingContentHandler(
             formatter, null);

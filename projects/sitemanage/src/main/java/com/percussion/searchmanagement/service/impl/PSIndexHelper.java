@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,13 +26,12 @@ package com.percussion.searchmanagement.service.impl;
 
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.search.PSSearchIndexEventQueue;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Component;
 /**
  * 
  * @author robertjohansen
@@ -47,15 +46,15 @@ import org.springframework.stereotype.Component;
 @Component("indexHelper")
 public class PSIndexHelper implements Runnable
 {
-    public static Log log = LogFactory.getLog(PSIndexHelper.class);
+    private static final Logger log = LogManager.getLogger(PSIndexHelper.class);
 
     private PSSearchIndexEventQueue queue;
 
     private CopyOnWriteArrayList<PSLocator> ids;
 
-    private final static Object lock = new Object();
+    private static final Object lock = new Object();
 
-    public Thread thread;
+    private Thread thread;
 
     public PSIndexHelper()
     {
@@ -80,7 +79,7 @@ public class PSIndexHelper implements Runnable
     /**
      * Add items to the concurrent data structure so that they can
      * be processed by the background process.
-     * @param Set<PSLocator> locas
+     * @param locas<PSLocator> locas
      */
     public void addItemsForIndex(Set<PSLocator> locas)
     {
@@ -90,13 +89,13 @@ public class PSIndexHelper implements Runnable
         }
         catch (Exception e)
         {
-            log.warn("Could not ad Item ids to be indexed: " + this.getClass().getName());
+            log.warn("Could not ad Item ids to be indexed: {}" , this.getClass().getName());
         }
         finally
         {
             synchronized (lock)
             {
-                lock.notify();
+                lock.notifyAll();
             }
         }
     }
@@ -105,8 +104,7 @@ public class PSIndexHelper implements Runnable
      * The real work of the background process.
      * Adds the locators into the search index queue
      */
-    public synchronized void index()
-    {
+    public void index() throws InterruptedException {
         while (ids.isEmpty())
         {
             try
@@ -118,7 +116,11 @@ public class PSIndexHelper implements Runnable
             }
             catch (InterruptedException e)
             {
-                log.warn(this.getClass().getName() + " Thre InterruptedException " + e.getMessage());
+                log.warn("{} Thread InterruptedException {}",
+                        this.getClass().getName(),
+                        e.getMessage());
+                Thread.currentThread().interrupt();
+                throw new InterruptedException(e.getMessage());
             }
         }
 
@@ -133,14 +135,25 @@ public class PSIndexHelper implements Runnable
         }
         catch (Exception e)
         {
-            log.warn("Trouble adding content to search index queue - " + PSIndexHelper.class.getName(),e);
+            log.warn("Trouble adding content to search index queue - {} Error: {}",
+                    PSIndexHelper.class.getName(),
+                    e.getMessage());
         }
     }
 
     @Override
     public void run()
     {
-        while (true)
-            index();
+        while (true) {
+            try {
+                index();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
+            if(Thread.currentThread().isInterrupted()){
+                break;
+            }
+        }
     }
 }

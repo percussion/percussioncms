@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,16 +24,15 @@
 
 package com.percussion.ant.install;
 
-import com.percussion.install.RxFileManager;
 import com.percussion.install.PSLogger;
+import com.percussion.install.RxFileManager;
+import org.apache.tools.ant.taskdefs.condition.Condition;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
-import org.apache.tools.ant.taskdefs.condition.Condition;
 
 /**
  * PSVersionBuildNumberProdCondition is a condition which will return
@@ -285,7 +284,7 @@ implements Condition
    * @return the minimum major version number which can be upgraded by the build
    * currently being installed.
    */
-   public int getMajorVersionFrom()
+   public synchronized int getMajorVersionFrom()
    {
       return majorVersionFrom;
    }
@@ -297,7 +296,7 @@ implements Condition
    * @param aMajorVersionFrom minimum major version number which can be
    * upgraded by the build currently being installed.
    */
-   public void setMajorVersionFrom(int aMajorVersionFrom)
+   public synchronized void setMajorVersionFrom(int aMajorVersionFrom)
    {
       majorVersionFrom = aMajorVersionFrom;
    }
@@ -307,7 +306,7 @@ implements Condition
    *
    * @return the minor version corresponding to <code>majorVersionFrom</code>.
    */
-   public int getMinorVersionFrom()
+   public synchronized int getMinorVersionFrom()
    {
       return minorVersionFrom;
    }
@@ -318,7 +317,7 @@ implements Condition
    * @param aMinorVersionFrom the minor version corresponding to
    * <code>majorVersionFrom</code>.
    */
-   public void setMinorVersionFrom(int aMinorVersionFrom)
+   public synchronized void setMinorVersionFrom(int aMinorVersionFrom)
    {
       minorVersionFrom = aMinorVersionFrom;
    }
@@ -330,7 +329,7 @@ implements Condition
    * @return the build number corresponding to <code>majorVersionFrom</code> and
    * <code>minorVersionFrom</code>
    */
-   public int getBuildFrom()
+   public synchronized int getBuildFrom()
    {
       return buildFrom;
    }
@@ -342,7 +341,7 @@ implements Condition
    * @param aBuildFrom the build number corresponding to
    * <code>majorVersionFrom</code> and <code>minorVersionFrom</code>
    */
-   public void setBuildFrom(int aBuildFrom){
+   public synchronized void setBuildFrom(int aBuildFrom){
       buildFrom = aBuildFrom;
    }
 
@@ -353,7 +352,7 @@ implements Condition
    * @return the maximum major version number which can be upgraded by the build
    * currently being installed.
    */
-   public int getMajorVersionTo()
+   public synchronized int getMajorVersionTo()
    {
       return majorVersionTo;
    }
@@ -365,7 +364,7 @@ implements Condition
    * @param aMajorVersionTo the maximum major version number which can be
    * upgraded by the build currently being installed.
    */
-   public void setMajorVersionTo(int aMajorVersionTo)
+   public synchronized void setMajorVersionTo(int aMajorVersionTo)
    {
       majorVersionTo = aMajorVersionTo;
    }
@@ -375,7 +374,7 @@ implements Condition
    *
    * @return the minor version corresponding to <code>majorVersionTo</code>.
    */
-   public int getMinorVersionTo()
+   public synchronized int getMinorVersionTo()
    {
       return minorVersionTo;
    }
@@ -386,7 +385,7 @@ implements Condition
    * @param aMinorVersionTo the minor version corresponding to
    * <code>majorVersionTo</code>.
    */
-   public void setMinorVersionTo(int aMinorVersionTo)
+   public synchronized void setMinorVersionTo(int aMinorVersionTo)
    {
       minorVersionTo = aMinorVersionTo;
    }
@@ -394,10 +393,10 @@ implements Condition
    /**
    * Sets the minor version corresponding to <code>majorVersionTo</code>.
    *
-   * @param aMinorVersionTo the minor version corresponding to
+   * @param aMicroVersionTo the minor version corresponding to
    * <code>majorVersionTo</code>.
    */
-   public void setMicroVersionTo(int aMicroVersionTo)
+   public synchronized void setMicroVersionTo(int aMicroVersionTo)
    {
       microVersionTo = aMicroVersionTo;
    }
@@ -407,7 +406,7 @@ implements Condition
     *
     * @return the minor version corresponding to <code>majorVersionTo</code>.
     */
-    public int getMicroVersionTo()
+    public synchronized int getMicroVersionTo()
     {
        return microVersionTo;
     }
@@ -421,7 +420,7 @@ implements Condition
    * @return the build number corresponding to <code>majorVersionTo</code> and
    * <code>minorVersionTo</code>
    */
-   public int getBuildTo()
+   public synchronized int getBuildTo()
    {
       return buildTo;
    }
@@ -433,7 +432,7 @@ implements Condition
    * @param aBuildTo the build number corresponding to
    * <code>majorVersionTo</code> and <code>minorVersionTo</code>
    */
-   public void setBuildTo(int aBuildTo)
+   public synchronized void setBuildTo(int aBuildTo)
    {
       buildTo = aBuildTo;
    }
