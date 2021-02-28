@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -30,12 +30,7 @@ import com.percussion.utils.tools.PSPatternMatcher;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -430,11 +425,13 @@ public class PSPersistentPropertyManager
     *    <code>false</code> otherwise.
     * @throw UnsupportedOperationException.
     */
-   public synchronized boolean setPersistedPropertyMeta(
+   public boolean setPersistedPropertyMeta(
          String category, PSRequest request,
          String propertyName, PSPersistentPropertyMeta meta )
    {
-      throw new UnsupportedOperationException("Method not supported yet.");
+      synchronized(this) {
+         throw new UnsupportedOperationException("Method not supported yet.");
+      }
    }
 
    /**

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,7 +26,10 @@ package com.percussion.log;
 import com.percussion.server.PSServer;
 import com.percussion.util.PSDoubleList;
 import com.percussion.utils.jdbc.PSConnectionHelper;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.xml.sax.SAXException;
 
+import javax.naming.NamingException;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -36,10 +39,6 @@ import java.sql.SQLWarning;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
-
-import javax.naming.NamingException;
-
-import org.xml.sax.SAXException;
 
 /**
  *  The PSLogManager class is used as an interface for accesing the server's
@@ -666,6 +665,7 @@ public class PSLogManager
    /**
     *   Notify the log queue thread that a new message has been queued.
     */
+   @SuppressFBWarnings("NN_NAKED_NOTIFY")
    private static void notifyQueue()
    {
       synchronized (m_queue)
@@ -800,7 +800,7 @@ public class PSLogManager
     *   Our internal queue of PSLogInformation objects that have not yet
     *   been written to the log.
     */
-   static private PSDoubleList   m_queue;
+   private static PSDoubleList   m_queue;
    
    /** The log queue thread. */
    static private PSLogQueueThread m_queueChecker;
