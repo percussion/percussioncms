@@ -986,6 +986,12 @@
                                 <copy todir="${assembly-directory}">
                                     <fileset dir="${basedir}/src/main/rootFiles" />
                                 </copy>
+                                <!-- Perc-Ant -->
+                                <copy todir="${ant-installer}">
+                                    <fileset dir="{basedir}/../../../../system/Tools/Ant/target/">
+                                        <include name="perc-ant*.jar" />
+                                    </fileset>
+                                </copy>
                                 <!-- Version.properties -->
                                 <copy todir="${assembly-directory}">
                                     <fileset dir="{basedir}/../../../../system/target/classes/com/percussion/util/">
