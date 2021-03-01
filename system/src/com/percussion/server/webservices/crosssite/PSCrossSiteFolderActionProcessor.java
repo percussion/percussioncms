@@ -36,7 +36,6 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
-import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
@@ -52,7 +51,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -99,7 +99,7 @@ public abstract class PSCrossSiteFolderActionProcessor
    protected PSCrossSiteFolderActionProcessor(
       PSLocator sourceFolderId, List<PSLocator> children) throws PSCmsException, PSNotFoundException {
       
-      m_logger.debug("Initializing cross site link folder action processor...");
+      log.debug("Initializing cross site link folder action processor...");
       if (sourceFolderId == null)
       {
          throw new IllegalArgumentException("sourceFolderId must not be null");
@@ -110,10 +110,10 @@ public abstract class PSCrossSiteFolderActionProcessor
             "children must not be null or empty");
       }
       // debug log
-      m_logger.debug("Source folderid is: " + sourceFolderId.getId());
-      m_logger.debug("ChildIds are:");
+      log.debug("Source folderid is: {}", sourceFolderId.getId());
+      log.debug("ChildIds are:");
       for (int i = 0; i < children.size(); i++)
-         m_logger.debug(children.get(i).getId());
+         log.debug(children.get(i).getId());
       //
       m_folderProc = PSServerFolderProcessor.getInstance();
       
@@ -129,9 +129,8 @@ public abstract class PSCrossSiteFolderActionProcessor
       {
          if (sites.length > 1)
          {
-            m_logger.warn("folder with folderid = " + theData.getSourceFolderId().getId()
-               + "resolves to multiple sites: " + sites);
-            m_logger.warn("Using the first in the list");
+            log.warn("folder with folderid = {}, resolves to multiple sites: {}", theData.getSourceFolderId().getId(), sites);
+            log.warn("Using the first in the list");
          }
          theData.setSourceSiteId(sites[0]);
       }
@@ -147,8 +146,8 @@ public abstract class PSCrossSiteFolderActionProcessor
     */
    protected void buildDescendents() throws PSCmsException
    {
-      m_logger.debug("Building dependents recursively...");
-      data.setDependentItems(new ArrayList<PSAaFolderDependent>());
+      log.debug("Building dependents recursively...");
+      data.setDependentItems(new ArrayList<>());
       getDescendents(data.getSourceFolderId(), data.getChildren(), data.getDependentItems(), 0);
       data.setProcessorStatus(ProcessorStatusEnum.PROCESSOR_STATUS_INITED);
    }
@@ -156,8 +155,7 @@ public abstract class PSCrossSiteFolderActionProcessor
    private void fillAaRels() throws PSCmsException
    {
       isTrue(data.getProcessorStatus() == ProcessorStatusEnum.PROCESSOR_STATUS_INITED);
-      m_logger.debug("Total number of child items including folders is:"
-         + data.getDependentItems().size());
+      log.debug("Total number of child items including folders is: {}", data.getDependentItems().size());
       Iterator<PSAaFolderDependent> iter = getDependentItems().iterator();
       while (iter.hasNext())
       {
@@ -167,11 +165,11 @@ public abstract class PSCrossSiteFolderActionProcessor
       data.setHasCrossSiteLinks(hasCsLinks());
       if (data.isHasCrossSiteLinks())
       {
-         m_logger.debug("One or more items have cross site links");
+         log.debug("One or more items have cross site links");
       }
       else
       {
-         m_logger.debug("None of the dependent items has cross site links");
+         log.debug("None of the dependent items has cross site links");
       }
       data.setProcessorStatus(ProcessorStatusEnum.PROCESSOR_STATUS_FILL);
    }
@@ -209,8 +207,7 @@ public abstract class PSCrossSiteFolderActionProcessor
     */
    private void fillAaRels(PSAaFolderDependent depItem) throws PSCmsException
    {
-      m_logger.debug("Collecting cross site AA relationships for "
-         + "the dependent item with id:" + depItem.getItem().getId() + "...");
+      log.debug("Collecting cross site AA relationships for the dependent item with id: {}", depItem.getItem().getId());
       PSRelationshipFilter filter = new PSRelationshipFilter();
       filter.setCategory(PSRelationshipFilter.FILTER_CATEGORY_ACTIVE_ASSEMBLY);
       filter.setDependent(depItem.getItem());
@@ -244,8 +241,7 @@ public abstract class PSCrossSiteFolderActionProcessor
     */
    protected Integer[] computeSiteForFolder(PSLocator siteFolderId)
            throws PSCmsException, PSNotFoundException {
-      m_logger.debug("Finding the site id(s) for the folder with id: "
-         + siteFolderId.getId() + "...");
+      log.debug("Finding the site id(s) for the folder with id: {}", siteFolderId.getId());
 
       String[] paths = m_folderProc.getItemPaths(siteFolderId);
 
@@ -266,7 +262,7 @@ public abstract class PSCrossSiteFolderActionProcessor
       {
          throw new IllegalArgumentException("paths must not be null or empty");
       }
-      List<Integer> siteIds = new ArrayList<Integer>();
+      List<Integer> siteIds = new ArrayList<>();
       String[] newPaths = new String[paths.length];
       // Make sure every path ends with "/"
       for (int i = 0; i < paths.length; i++)
@@ -289,8 +285,7 @@ public abstract class PSCrossSiteFolderActionProcessor
                siteIds.add(site.getGUID().getUUID());
          }
       }
-      m_logger.debug("This folder is registered for sites with id(s): "
-         + siteIds);
+      log.debug("This folder is registered for sites with id(s): {}", siteIds);
 
       return siteIds.toArray(new Integer[0]);
    }
@@ -322,7 +317,7 @@ public abstract class PSCrossSiteFolderActionProcessor
                processor.getDependents(PSServerFolderProcessor.FOLDER_RELATE_TYPE, loc, PSRelationshipConfig.FILTER_TYPE_NONE);
             if (rs.isEmpty() || skipFolder(loc, rs, depth))
                continue;
-            List<PSLocator> list = new ArrayList<PSLocator>();
+            List<PSLocator> list = new ArrayList<>();
             Iterator<PSRelationship> it = rs.iterator();
             while (it.hasNext()) {
                PSRelationship r = it.next();
@@ -430,7 +425,7 @@ public abstract class PSCrossSiteFolderActionProcessor
     */
    public void saveLinks() throws PSCmsException
    {
-      m_logger.debug("Saving relationships...");
+      log.debug("Saving relationships...");
       if (data.getProcessorStatus().getOrdinal() < ProcessorStatusEnum.PROCESSOR_STATUS_PROCESSED
          .getOrdinal())
       {
@@ -440,10 +435,9 @@ public abstract class PSCrossSiteFolderActionProcessor
 
       if (!hasCrossSiteLinks())
       {
-         if (m_logger.isDebugEnabled())
+         if (log.isDebugEnabled())
          {
-            m_logger.debug("Does not have any cross site links. "
-               + "Relationships will not be modified.");
+            log.debug("Does not have any cross site links. Relationships will not be modified.");
          }
          return;
       }
@@ -460,15 +454,14 @@ public abstract class PSCrossSiteFolderActionProcessor
          PSAaFolderDependent depItem = (PSAaFolderDependent) itemIter.next();
          if (!depItem.isActionSuccess())
          {
-            if (m_logger.isDebugEnabled())
+            if (log.isDebugEnabled())
             {
-               m_logger
-                  .debug("Skipping saving relationships for the item with id: "
-                     + depItem.getItem().getId() + " as the action failed");
+               log
+                  .debug("Skipping saving relationships for the item with id: {}, as the action failed", depItem.getItem().getId());
             }
             continue;
          }
-         m_logger.debug("   for item with id: " + depItem.getItem().getId());
+         log.debug("   for item with id: {}",  depItem.getItem().getId());
          m_folderProc.save(depItem.getAaRelationships());
       }
       data.setProcessorStatus(ProcessorStatusEnum.PROCESSOR_STATUS_SAVED);
@@ -483,7 +476,7 @@ public abstract class PSCrossSiteFolderActionProcessor
     */
    private void markUnsuccessfulItems() throws PSCmsException
    {
-      m_logger.debug("Marking unsuccessful items ...");
+      log.debug("Marking unsuccessful items ...");
       boolean move = getActionName().equals(
          PSCrossSiteFolderMoveActionProcessor.ACTION_NAME);
       List<PSAaFolderDependent> list = getDependentItems();
@@ -515,7 +508,7 @@ public abstract class PSCrossSiteFolderActionProcessor
     */
    public Document getProcessReport()
    {
-      m_logger.debug("Building process report...");
+      log.debug("Building process report...");
       Document doc = PSXmlDocumentBuilder.createXmlDocument();
       Element root = PSXmlDocumentBuilder.createRoot(doc,
          "sys_crossSiteFolderAnalysis");
@@ -562,8 +555,8 @@ public abstract class PSCrossSiteFolderActionProcessor
       if (m_allSites == null)
       {
          IPSSiteManager sm = PSSiteManagerLocator.getSiteManager();
-         if (m_logger.isDebugEnabled())
-            m_logger.debug("Getting all registered sites from the server...");
+         if (log.isDebugEnabled())
+            log.debug("Getting all registered sites from the server...");
 
          m_allSites = sm.findAllSites();
          for (int i = m_allSites.size() - 1; i >= 0; i--)
@@ -587,12 +580,12 @@ public abstract class PSCrossSiteFolderActionProcessor
                   .length());
             }
          });
-         if (m_logger.isDebugEnabled())
+         if (log.isDebugEnabled())
          {
-            m_logger.debug("Sites sorted by their root folder path length are:");
+            log.debug("Sites sorted by their root folder path length are:");
             for (int i = 0; i < m_allSites.size(); i++)
             {
-               m_logger.debug(m_allSites.get(i).getFolderRoot());
+               log.debug(m_allSites.get(i).getFolderRoot());
             }
          }
       }
@@ -659,7 +652,7 @@ public abstract class PSCrossSiteFolderActionProcessor
    /**
     * Logger instance to log the processing activity, never <code>null</code>.
     */
-   protected Logger m_logger = Logger.getLogger(this.getClass());
+   protected Logger log = LogManager.getLogger(this.getClass());
 
    /**
     * Reference to the server folder processor context, never <code>null</code>.

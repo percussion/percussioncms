@@ -49,8 +49,10 @@ import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.IPSGenericDao.DeleteException;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.utils.guid.IPSGuid;
@@ -279,7 +281,11 @@ public class PSSiteContentDao
         PSTemplateSummary templateSummary = null;
         IPSGuid tempId = null;
 
-        tempId = templateService.findUserTemplateIdByName(site.getTemplateName(), site.getName());
+        try {
+            tempId = templateService.findUserTemplateIdByName(site.getTemplateName(), site.getName());
+        }catch (PSValidationException | IPSDataService.DataServiceLoadException e) {
+            //That means template doesn't exist and needs to be created below.
+        }
 
         if (tempId == null){
             templateSummary = templateService.createTemplate(site.getTemplateName(),

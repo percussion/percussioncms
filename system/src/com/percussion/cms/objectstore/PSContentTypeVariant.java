@@ -96,7 +96,7 @@ public class PSContentTypeVariant extends PSDbComponent
       {
          List<IPSNodeDefinition> defs = 
             mgr.findNodeDefinitionsByTemplate(template.getGUID());
-         m_contentTypes = new ArrayList<Long>();
+         m_contentTypes = new ArrayList<>();
          for(IPSNodeDefinition def : defs)
          {
             m_contentTypes.add(def.getGUID().longValue());
