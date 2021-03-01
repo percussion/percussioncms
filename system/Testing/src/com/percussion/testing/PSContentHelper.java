@@ -78,6 +78,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.SecureRandom;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -353,7 +354,7 @@ public class PSContentHelper implements IPSResultDocumentProcessor
          {
             //add items to folders randomly
             int folderCount = folders.size();
-            Random rgen = new Random();
+            SecureRandom rgen = new SecureRandom();
             Iterator items = dupeIds.iterator();
             while (items.hasNext())
             {
@@ -860,7 +861,7 @@ public class PSContentHelper implements IPSResultDocumentProcessor
    private static int[] randomizeFolderChildren(int parentCount, int childCount)
    {
       int[] results = new int[parentCount];
-      Random rgen = new Random();
+      SecureRandom rgen = new SecureRandom();
       for (int i=0; i < childCount; i++)
       {
          int val = rgen.nextInt(parentCount);

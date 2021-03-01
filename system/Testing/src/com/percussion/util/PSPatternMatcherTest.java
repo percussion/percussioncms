@@ -23,6 +23,7 @@
  */
 package com.percussion.util;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 import junit.framework.Test;
@@ -55,7 +56,7 @@ public class PSPatternMatcherTest extends TestCase
    public void testMatchAnything()
    {
       PSPatternMatcher matchAnything = new PSPatternMatcher('?', '*', "*");
-      Random rand = new Random();
+      SecureRandom rand = new SecureRandom();
       String randStr;
       for (int i = 0; i < 100; i++)
       {
@@ -67,7 +68,7 @@ public class PSPatternMatcherTest extends TestCase
    public void testMatchSubstring()
    {
       PSPatternMatcher matchAnything = new PSPatternMatcher('?', '*', "*fa*");
-      Random rand = new Random();
+      SecureRandom rand = new SecureRandom();
       String randStr;
       for (int i = 0; i < 100; i++)
       {

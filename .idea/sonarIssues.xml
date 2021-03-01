@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="issues">
+    <option name="index">
+      <map>
+        <entry key="/Dummy.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$MAVEN_REPOSITORY$/com/github/spotbugs/spotbugs/3.1.12/spotbugs-3.1.12.jar!/edu/umd/cs/findbugs/bcel/OpcodeStackDetector.class">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../find-sec-bugs/findsecbugs-plugin/src/main/java/com/h3xstream/findsecbugs/xml/XxeDetector.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/deliverytiersuite/delivery-tier-suite/caching/src/main/java/com/percussion/delivery/caching/impl/PSCacheManager.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/deliverytiersuite/delivery-tier-suite/integrations/src/main/java/com/percussion/delivery/integrations/ems/EMSMasterCalendarSoapEventService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/deliverytiersuite/delivery-tier-suite/integrations/src/main/java/com/percussion/delivery/integrations/ems/EMSSOAPEventService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/deliverytiersuite/delivery-tier-suite/secure-membership/src/main/java/com/percussion/secure/services/PSLdapUserDetailsMapper.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/deliverytiersuite/delivery-tier-suite/secure-membership/src/main/java/com/percussion/secure/services/PSMembershipAuthUtils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/extensions-main/src/main/java/com/percussion/extensions/publishing/PSPublishContent.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/perc-distribution-tree/src/main/java/com/percussion/preinstall/Main.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/perc-exceptions-spring/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/perc-xml-security/src/main/java/com/percussion/security/xml/PSSecureXMLUtils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/servletutils/src/test/java/com/percussion/utils/tomcat/PSTomcatConnectorTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/projects/sitemanage/src/main/java/com/percussion/searchmanagement/service/impl/PSIndexHelper.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/projects/sitemanage/src/main/java/com/percussion/utils/service/impl/PSSiteConfigUtils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/projects/sitemanage/src/test/java/com/percussion/share/test/xml/PSXhtmlValidator.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/projects/sitemanage/src/test/java/com/percussion/sitemanage/service/PSSiteSuckerTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/projects/sitemanage/src/test/java/com/percussion/webui/PSPageValidatorTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/data/PSQueryJoinerTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/data/PSResultSetTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/design/objectstore/PSApplicationFileTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/design/objectstore/PSLoggerTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/install/PSUpgradePluginConvertCommunityVisibilityTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/log/PSLogHandlerTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/log/PSLogManagerThreadTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/mail/PSMailMessageTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/rx/delivery/impl/PSDatabaseDeliveryHandlerTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/server/PSPageCacheTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/services/assembly/impl/plugin/PSDatabaseAssemblerTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/services/catalog/data/PSObjectSummaryTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/services/memory/PSCacheAccessTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/services/pubserver/impl/PSPubServerDaoTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/services/sitemgr/PSSiteManagerTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/services/utils/hibernate/PSHibernateInterceptorTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/test/ant/PSMakeFilterFileTask.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/test/http/BenchMarker.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/test/ldap/PSLdapGroupUserGenerator.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/testing/PSContentHelper.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/testing/PSFolderTreeCreator.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/util/PSPatternMatcherTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Testing/src/com/percussion/util/PSSortToolTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Tools/Ant/src/main/java/com/percussion/ant/PSCheckTmxFile.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Tools/Ant/src/main/java/com/percussion/ant/doc/PSGenerateHelptopicMappingsTask.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Tools/Ant/src/main/java/com/percussion/ant/install/PSAction.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Tools/Ant/src/main/java/com/percussion/ant/install/PSMergeXMLAction.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Tools/Ant/src/main/java/com/percussion/ant/install/PSVersionBuildNumberProdCondition.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Tools/Simple/src/main/java/com/percussion/tools/simple/PSPrepForConvert.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Tools/TableFactory/src/main/java/com/percussion/tablefactory/PSJdbcStatementFactory.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Tools/TableFactory/src/main/java/com/percussion/tablefactory/PSJdbcTableFactory.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/agenthandler/src/com/percussion/server/agent/PSUtils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/business/src/com/percussion/rx/delivery/impl/PSDatabaseDeliveryHandler.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/business/src/com/percussion/rx/jsf/PSEditableNodeContainer.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/controls/src/com/percussion/controls/contenteditor/checkboxtree/PSCheckboxTreeModel.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/misctools/src/com/percussion/tools/Utils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/release/Install/src/com/percussion/install/InstallUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/rxfiletracker/src/com/percussion/filetracker/PSFUDConfig.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/rxfiletracker/src/com/percussion/filetracker/RXFileTracker.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/services/src/com/percussion/services/assembly/impl/PSAssemblyService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/services/src/com/percussion/services/assembly/impl/PSNamespaceCleanup.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/services/src/com/percussion/services/schedule/impl/PSRunEdition.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/servlet/src/com/percussion/hooks/servlet/RhythmyxServlet.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/servlet/src/com/percussion/hooks/webservices/PSWebServices.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/servlet/src/com/percussion/util/servlet/PSInternalResponseXML.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/cms/PSEditorDocumentBuilder.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/design/objectstore/server/PSServerXmlObjectStore.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/log/PSLogManager.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/security/PSJndiUtils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/security/PSRoleCataloger.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/server/PSPersistentPropertyManager.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/servlets/PSActionPanelServlet.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/servlets/PSSecurityFilter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/utils/src/main/java/com/percussion/services/utils/xml/PSXmlSerializationHelper.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/utils/src/main/java/com/percussion/utils/xml/PSSaxHelper.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/utils/src/main/java/com/percussion/xml/PSSaxParserFactoryImpl.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/utils/src/main/java/com/percussion/xml/PSXmlDocumentBuilder.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/utils/src/main/java/com/percussion/xml/PSXmlValidator.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/utils/src/test/java/com/percussion/utils/timing/PSStopwatchStackTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/utils/src/test/java/com/percussion/utils/xml/PSSaxCopierTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/webservices/sample/loader/java/src/com/percussion/webservices/sample/loader/PSFileUtils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

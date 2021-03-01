@@ -26,6 +26,7 @@ package com.percussion.mail;
 import com.percussion.util.PSCharSets;
 import org.junit.Test;
 
+import java.security.SecureRandom;
 import java.util.StringTokenizer;
 
 import static org.junit.Assert.assertEquals;
@@ -51,7 +52,7 @@ public class PSMailMessageTest
    {
       // append a really long line and make sure it gets broken properly
       StringBuffer line = new StringBuffer(8400);
-      java.util.Random rand = new java.util.Random();
+      SecureRandom rand = new SecureRandom();
       for (int i = 0; i < 8400; i++)
       {
          line.append( (char)(32 + (rand.nextInt(126-32))));

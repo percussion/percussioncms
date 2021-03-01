@@ -24,6 +24,7 @@
 
 package com.percussion.preinstall;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.utils.io.PathUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.taskdefs.Replace;
@@ -384,7 +385,9 @@ public class Main {
         String oldServerXMLDir = installDir.toAbsolutePath().toString()+"/JBossServerXML_BAK/";
         File oldServerXMLFile=  new File(oldServerXMLDir+"server.xml");
         if(oldServerXMLFile.exists()) {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                    false
+            );
             dbf.setValidating(false);
             DocumentBuilder db = dbf.newDocumentBuilder();
             try (FileInputStream fis = new FileInputStream(oldServerXMLFile)) {

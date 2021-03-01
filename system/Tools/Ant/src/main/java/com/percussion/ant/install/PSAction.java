@@ -109,7 +109,7 @@ public class PSAction extends Task
     *
     * @param file the absolute path to the file.
     *
-    * @return the file url represention of the path, may be <code>null</code>.
+    * @return the file url representation of the path, may be <code>null</code>.
     */
    protected URL getResource(String file)
    {
@@ -117,7 +117,7 @@ public class PSAction extends Task
 
       try
       {
-         fileUrl = (new File(file)).toURL();
+         fileUrl = (new File(file)).toURI().toURL();
       }
       catch (MalformedURLException e)
       {

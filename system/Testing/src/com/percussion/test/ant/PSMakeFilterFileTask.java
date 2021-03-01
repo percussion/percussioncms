@@ -112,8 +112,7 @@ public class PSMakeFilterFileTask extends Task
          {
             throw new BuildException("server.xml doesn't exist: " + serverxml);
          }
-         DocumentBuilderFactory f = PSSecureXMLUtils.enableSecureFeatures(
-                 DocumentBuilderFactory.newInstance(),false);
+         DocumentBuilderFactory f = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(false);
          try
          {
             DocumentBuilder b = f.newDocumentBuilder();

@@ -23,6 +23,7 @@
  */
 package com.percussion.utils.xml;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import junit.framework.TestCase;
 import org.w3c.dom.Document;
@@ -69,10 +70,8 @@ public class PSSaxCopierTest extends TestCase
     */
    public void testCopier() throws Exception
    {
-      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-      dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-      dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
-      SAXParserFactory spf = SAXParserFactory.newInstance();
+      DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(false);
+      SAXParserFactory spf = PSSecureXMLUtils.getSecuredSaxParserFactory(false);
       StringWriter stringWriter = new StringWriter();
 
       DocumentBuilder db = dbf.newDocumentBuilder();

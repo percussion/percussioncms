@@ -23,6 +23,7 @@
  */
 package com.percussion.xml;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.utils.xml.PSEntityResolver;
 
 import org.xml.sax.SAXException;
@@ -45,9 +46,10 @@ import javax.xml.parsers.SAXParserFactory;
 public class PSSaxParserFactoryImpl extends SAXParserFactory {
 
 
-    private static ThreadLocal<SAXParserFactory> factoryThreadLocal = ThreadLocal.withInitial(() -> {
+    private static final ThreadLocal<SAXParserFactory> factoryThreadLocal = ThreadLocal.withInitial(() -> {
         try {
-            SAXParserFactory factory = SAXParserFactory.newInstance("org.apache.xerces.jaxp.SAXParserFactoryImpl", null);
+            SAXParserFactory factory = PSSecureXMLUtils.getSecuredSaxParserFactory(
+                    "org.apache.xerces.jaxp.SAXParserFactoryImpl", null,false);
             factory.setNamespaceAware(true);
             factory.setFeature("http://xml.org/sax/features/namespaces",true);
 

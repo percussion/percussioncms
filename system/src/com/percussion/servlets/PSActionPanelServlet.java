@@ -26,6 +26,7 @@ package com.percussion.servlets;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -97,7 +98,11 @@ public class PSActionPanelServlet extends HttpServlet
       String contentid = request.getParameter("sys_contentid");
       String folderid = request.getParameter("sys_folderid");
       String siteid = request.getParameter("sys_siteid");
-      
+
+      //TODO: Validate numeric values
+
+
+
       TargetType targetType = getDispatchTargetType();
       String url = getTargetUrl(targetType, contentid);
       Integer cid = new Integer(contentid);

@@ -212,8 +212,8 @@ public class PSXmlDocumentBuilder {
 
         try {
             if (dbf == null) {
-                dbf = PSSecureXMLUtils.enableSecureFeatures(
-                        DocumentBuilderFactory.newInstance(),false);
+                dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                        false);
             }
         } catch (FactoryConfigurationError err) {
             dbf = null;
@@ -221,10 +221,9 @@ public class PSXmlDocumentBuilder {
 
         if (dbf == null) {
             try {
-                dbf = PSSecureXMLUtils.enableSecureFeatures(
-                        (DocumentBuilderFactory) Class.forName(
-                        "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl")
-                                                    .newInstance(),false);
+                dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                        "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl",
+                        false);
             } catch (Exception e) {
                 dbf = null;
                 throw new RuntimeException(e.getLocalizedMessage());
