@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -40,7 +40,6 @@ import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSSecurityToken;
-import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.tablefactory.*;
@@ -1000,9 +999,9 @@ public class PSDbmsHelper
       String filterCol, int filterColValue)
       throws PSDeployException
    {
-      if (table == null || table.trim().length() == 0 || !SecureStringUtils.isValidTableOrColumnName(table))
+      if (table == null || table.trim().length() == 0 )
          throw new IllegalArgumentException("table may not be null, empty, or invalid");
-      if (idCol == null || idCol.trim().length() == 0 || !SecureStringUtils.isValidTableOrColumnName(idCol) )
+      if (idCol == null || idCol.trim().length() == 0 )
          throw new IllegalArgumentException("idCol may not be null, empty, or invalid");
 
       Connection conn = null;

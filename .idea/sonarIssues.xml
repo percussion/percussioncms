@@ -58,6 +58,21 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/deploy/server/PSDbmsHelper.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/server/webservices/crosssite/PSCrossSiteFolderMoveActionProcessor.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/server/webservices/crosssite/PSCrossSiteFolderRemoveActionProcessor.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/system/utils/src/main/java/com/percussion/install/InstallUtil.java">
           <value>
             <set />
