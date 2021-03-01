@@ -43,6 +43,8 @@ import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.data.PSCommunity;
 import com.percussion.services.security.data.PSSecurityUtils;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +57,7 @@ import java.util.Set;
 
 import javax.jcr.RepositoryException;
 
-import org.apache.log4j.Logger;
+
 
 /**
  * Updates the content editors workflow info object. Part of Barracuda the
@@ -100,7 +102,7 @@ public class PSContentTypeWorkflowsUpdater implements IPSComponentUpdater
       if (!cmsObject.isWorkflowable())
          return;
       //get the workflow rels from table
-      List<IPSGuid> wfGuids = new ArrayList<IPSGuid>();
+      List<IPSGuid> wfGuids = new ArrayList<>();
       try
       {
          wfGuids = getContentTypeWorkflows(editor);
@@ -129,7 +131,7 @@ public class PSContentTypeWorkflowsUpdater implements IPSComponentUpdater
             return (new Integer(o1.getUUID())).compareTo(o2.getUUID());
          }
       });
-      Set<Integer> wfInts = new HashSet<Integer>();
+      Set<Integer> wfInts = new HashSet<>();
       for (IPSGuid guid : wfGuids)
       {
          wfInts.add(guid.getUUID());
@@ -175,7 +177,7 @@ public class PSContentTypeWorkflowsUpdater implements IPSComponentUpdater
    @SuppressWarnings("unchecked")
    private List<IPSGuid> getWorkflowsFromEditor(PSContentEditor editor)
    {
-      List<IPSGuid> wfGuids = new ArrayList<IPSGuid>();
+      List<IPSGuid> wfGuids = new ArrayList<>();
       PSWorkflowInfo wfInfo = editor.getWorkflowInfo();
       if (wfInfo == null)
       {
@@ -185,7 +187,7 @@ public class PSContentTypeWorkflowsUpdater implements IPSComponentUpdater
       {
          wfGuids = getVisibleCommunityWorkflows(editor);
          List<Integer> wfIds = wfInfo.getWorkflowIds();
-         List<IPSGuid> removals = new ArrayList<IPSGuid>();
+         List<IPSGuid> removals = new ArrayList<>();
          for (IPSGuid guid : wfGuids)
          {
             if(wfIds.contains(new Integer(guid.getUUID())))
@@ -216,7 +218,7 @@ public class PSContentTypeWorkflowsUpdater implements IPSComponentUpdater
     */
    private List<IPSGuid> getVisibleCommunityWorkflows(PSContentEditor editor)
    {
-      List<IPSGuid> wfGuids = new ArrayList<IPSGuid>();
+      List<IPSGuid> wfGuids = new ArrayList<>();
       // Load the ACl from contenttypeid
       long cTypeId = editor.getContentType();
       IPSGuid ctypeGuid = new PSGuid(PSTypeEnum.NODEDEF, cTypeId);
@@ -225,11 +227,11 @@ public class PSContentTypeWorkflowsUpdater implements IPSComponentUpdater
       // Get the list of communities from Security Manager
       IPSBackEndRoleMgr roleMgr = PSRoleMgrLocator.getBackEndRoleManager();
       List<PSCommunity> communities = roleMgr.findCommunitiesByName(null);
-      Map<String, IPSGuid> comms = new HashMap<String, IPSGuid>();
+      Map<String, IPSGuid> comms = new HashMap<>();
       for (PSCommunity comm : communities)
          comms.put(comm.getName(), comm.getGUID());
       // Get the visible communities from PSSecurityUtils class
-      List<String> lst = new ArrayList<String>(comms.keySet());
+      List<String> lst = new ArrayList<>(comms.keySet());
       List<String> filteredComms = PSSecurityUtils.getVisibleCommunities(
             ctypeAcl, lst);
       IPSAclService service = PSAclServiceLocator.getAclService();
@@ -248,7 +250,7 @@ public class PSContentTypeWorkflowsUpdater implements IPSComponentUpdater
    private List<IPSGuid> getContentTypeWorkflows(PSContentEditor editor)
       throws RepositoryException
    {
-      List<IPSGuid> wfGuids = new ArrayList<IPSGuid>();
+      List<IPSGuid> wfGuids = new ArrayList<>();
       IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
       long cTypeId = editor.getContentType();
       IPSGuid ctypeGuid = new PSGuid(PSTypeEnum.NODEDEF, cTypeId);
@@ -280,8 +282,8 @@ public class PSContentTypeWorkflowsUpdater implements IPSComponentUpdater
       else if (!wfInts.contains(new Integer(editor.getWorkflowId())))
       {
          int smallestWfId = wfInts.get(0);
-         Logger logger = Logger.getLogger(this.getClass());
-         logger
+         Logger log = LogManager.getLogger(this.getClass());
+         log
                .warn("Reset the default workflow id to \""
                      + smallestWfId
                      + "\" (name="
