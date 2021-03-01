@@ -62,8 +62,8 @@ public class PSDatabaseAssemblerTest extends PSBaseXmlConfigTest
    @SuppressWarnings("unchecked")
    public void testDBAssembly() throws Exception
    {
-      DocumentBuilderFactory f = PSSecureXMLUtils.enableSecureFeatures(
-              DocumentBuilderFactory.newInstance(),false);
+      DocumentBuilderFactory f = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+             false);
 
       DocumentBuilder builder = f.newDocumentBuilder();
 

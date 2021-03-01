@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Collection;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -111,7 +112,9 @@ public class PSLdapUserDetailsMapper extends LdapUserDetailsMapper
     {
         File accessGroupFile = new File(filePath);
         
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory dbFactory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                false
+        );
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(accessGroupFile);
         

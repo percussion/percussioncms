@@ -804,7 +804,7 @@ public class InstallUtil
       // Derby Check
       String pathToRsDx = dirName + File.separator + "AppServer" + File.separator + "server" + File.separator + "rx"
             + File.separator + "deploy" + File.separator + "rx-ds.xml";
-      DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+      DocumentBuilderFactory docBuilderFactory = PSS DocumentBuilderFactory.newInstance();
       DocumentBuilder docBuilder;
       try
       {

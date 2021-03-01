@@ -24,6 +24,7 @@
 package com.percussion.utils.service.impl;
 
 import com.percussion.rx.publisher.PSRxPublisherServiceLocator;
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
@@ -963,7 +964,9 @@ public class PSSiteConfigUtils
         try {
              File baseSecurityFile = getBaseSecureXmlFile(securityData.getSitename());
 
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                    false
+            );
 
             DocumentBuilder documentBuilder = null;
 

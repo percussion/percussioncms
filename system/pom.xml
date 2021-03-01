@@ -254,6 +254,7 @@
                                 <source>uploader/src</source>
                                 <source>misctools/src</source>
                                 <source>Tools/InlineLinkConverter/src</source>
+                                <source>controls/src</source>
                             </sources>
                         </configuration>
                     </execution>

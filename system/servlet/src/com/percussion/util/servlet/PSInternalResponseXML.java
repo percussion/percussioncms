@@ -152,8 +152,8 @@ class PSInternalResponseXML
     * retrieves the document builder factory instance.
     */
    static {
-      ms_dbf = PSSecureXMLUtils.enableSecureFeatures(
-              DocumentBuilderFactory.newInstance(),false);
+      ms_dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+false);
 
       ms_dbf.setNamespaceAware(true);
       ms_dbf.setValidating(false);

@@ -215,8 +215,8 @@ public class PSDatabaseDeliveryHandlerTest
       StringWriter writer = new StringWriter();
       XMLStreamWriter formatter = ofact.createXMLStreamWriter(writer);
 
-      SAXParserFactory f = PSSecureXMLUtils.enableSecurityFeatures(
-              SAXParserFactory.newInstance(),false);
+      SAXParserFactory f = PSSecureXMLUtils.getSecuredSaxParserFactory(
+              false);
 
       SAXParser parser = f.newSAXParser();
       DefaultHandler dh = new PSDatabaseDeliveryHandler.UnpublishingContentHandler(

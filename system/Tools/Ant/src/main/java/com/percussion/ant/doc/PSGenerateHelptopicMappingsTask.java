@@ -38,6 +38,8 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.w3c.dom.Document;
@@ -155,7 +157,9 @@ public class PSGenerateHelptopicMappingsTask extends Task
          out.println("# Generated: " + new Date());
          out.println("#");
 
-         DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
+         DocumentBuilderFactory fact = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                 false
+         );
          DocumentBuilder builder = fact.newDocumentBuilder();
 
          Map topics = readKeys(builder, keyFile);
@@ -260,8 +264,9 @@ public class PSGenerateHelptopicMappingsTask extends Task
     * @throws SAXException
     * @throws IOException
     */
+   @SuppressFBWarnings("XXE_DOCUMENT")  // False positive - see PSSecureXMLUtils
    private Map readKeyValueData(DocumentBuilder builder, File mapFile,
-         String nodeName, String keyName, String valName) throws SAXException,
+                                String nodeName, String keyName, String valName) throws SAXException,
          IOException
    {
       Document d = builder.parse(mapFile);

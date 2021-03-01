@@ -28,6 +28,7 @@ import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.error.PSRuntimeException;
 import com.percussion.utils.string.PSStringUtils;
 
+import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Random;
 
@@ -268,11 +269,11 @@ public abstract class PSEditableNodeContainer extends PSCategoryNodeBase
       // if cannot get the sequenced number, let's get one from random number
       if (name == null)
       {
-         Random rd = new Random();
+         SecureRandom rd = new SecureRandom();
          while (name == null)
          {
             name = getUniqueName(
-                  baseName, isCopyFrom, new Random(rd.nextInt()), existingNames);
+                  baseName, isCopyFrom, new SecureRandom(), existingNames);
          }
       }
       
@@ -296,7 +297,7 @@ public abstract class PSEditableNodeContainer extends PSCategoryNodeBase
     * @return new name, never <code>null</code> or empty.
     */
    private String getUniqueName(String baseName, boolean isCopyFrom,
-         Random rd, Collection<String> existingNames) throws PSNotFoundException {
+         SecureRandom rd, Collection<String> existingNames) throws PSNotFoundException {
       final int MAX_ATTEMPTS = 200;
       String name = null;
       int nextNum;

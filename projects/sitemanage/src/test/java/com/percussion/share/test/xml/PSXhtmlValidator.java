@@ -26,6 +26,7 @@ package com.percussion.share.test.xml;
 import static java.util.Collections.unmodifiableCollection;
 import static org.apache.commons.lang.Validate.notNull;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.share.test.PSMatchers;
 
 import java.io.IOException;
@@ -93,7 +94,9 @@ public class PSXhtmlValidator {
 
     private void initializeParser() {
         try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory factory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                    false
+            );
             factory.setValidating(true);
             parser = factory.newDocumentBuilder();
             parser.setEntityResolver(new PSXhtmlEntityResolver());

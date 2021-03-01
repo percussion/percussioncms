@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.SecureRandom;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -1520,7 +1521,7 @@ public class PSJdbcStatementFactory
             indexName.trim().length() > PSSqlHelper.getMaxConstraintNameLength(
                   dbmsDef.getDriver()))
       {
-         Random rand = new Random();
+         SecureRandom rand = new SecureRandom();
          buf.append("IX_");
          int len = tableName.trim().length();
          int endIndex = len > 5 ? 4 : len;

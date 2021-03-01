@@ -24,6 +24,7 @@
 package com.percussion.services.assembly.impl;
 
 import com.percussion.data.PSStylesheetCleanupFilter;
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -60,7 +61,7 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
    /**
     * Parser factory
     */
-   static final SAXParserFactory ms_fact = SAXParserFactory.newInstance();
+   static final SAXParserFactory ms_fact = PSSecureXMLUtils.getSecuredSaxParserFactory(false);
 
    /**
     * Copier handler that strips namespaces for all but the topmost element. The

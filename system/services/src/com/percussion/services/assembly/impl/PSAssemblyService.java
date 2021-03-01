@@ -2177,8 +2177,7 @@ public class PSAssemblyService implements IPSAssemblyService
                String doc = result.toResultString();
                Reader r = new StringReader(doc);
 
-               XMLInputFactory fact = PSSecureXMLUtils.enableSecureFeatures(
-                       XMLInputFactory.newInstance(),true);
+               XMLInputFactory fact = PSSecureXMLUtils.getSecuredXMLInputFactory(false);
 
                XMLEventReader reader = fact.createXMLEventReader(r);
                while (reader.hasNext())

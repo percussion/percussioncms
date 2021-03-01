@@ -284,8 +284,8 @@ public class PSWebServices
 
       try
       {
-         DocumentBuilderFactory dbf = PSSecureXMLUtils.enableSecureFeatures(
-                 DocumentBuilderFactory.newInstance(),false);
+         DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                 false);
 
          DocumentBuilder db = dbf.newDocumentBuilder();
          // set up the header

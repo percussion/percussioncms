@@ -28,6 +28,7 @@ import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSUserEntry;
 import com.percussion.security.SecureStringUtils;
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.server.*;
 import com.percussion.services.security.PSJaasUtils;
 import com.percussion.services.security.PSRoleMgrLocator;
@@ -2218,7 +2219,8 @@ public class PSSecurityFilter implements Filter
    private static void defineSystemProperties()
    {
    
-      String parser = SAXParserFactory.newInstance().getClass().getName(); 
+      String parser = PSSecureXMLUtils.getSecuredSaxParserFactory(false)
+              .getClass().getName();
       String transformer = TransformerFactory.newInstance().getClass().getName();
       
       ThreadLocalProperties.setupProperties();
