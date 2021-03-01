@@ -171,8 +171,8 @@ public class PSContentTypeDependencyHandler
                          childDep = wfHandler.getDependency(tok, ids
                                 .next().toString());
                      } catch (PSNotFoundException e) {
-                        m_log.warn(e.getMessage());
-                        m_log.debug(e.getMessage(),e);
+                        log.warn(e.getMessage());
+                        log.debug(e.getMessage(),e);
                      }
                      if (childDep != null)
                         childDeps.add(childDep);
@@ -248,7 +248,7 @@ public class PSContentTypeDependencyHandler
       if (dep == null)
          throw new IllegalArgumentException("dependency may not be null");
 
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
       PSDependencyHandler varHandler = getDependencyHandler(
             PSVariantDefDependencyHandler.DEPENDENCY_TYPE);
       PSDependencyHandler tmpPkgHandler = getDependencyHandler(
@@ -317,7 +317,7 @@ public class PSContentTypeDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
       IPSNodeDefinition node = findNodeDefByDependencyID(dep.getDependencyId());
 
       String appName = PSDependencyUtils
@@ -464,7 +464,7 @@ public class PSContentTypeDependencyHandler
       if (dep == null)
          throw new IllegalArgumentException("dep may not be null");
 
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
 
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
@@ -702,7 +702,7 @@ public class PSContentTypeDependencyHandler
       try
       {
          IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
-         List<IPSNodeDefinition> nodes = new ArrayList<IPSNodeDefinition>();
+         List<IPSNodeDefinition> nodes = new ArrayList<>();
          nodes.add(s);
          mgr.saveNodeDefinitions(nodes);
       }
@@ -773,7 +773,7 @@ public class PSContentTypeDependencyHandler
    private Set<String> catalogTemplates() throws PSDeployException
    {
       IPSAssemblyService aSvc = PSAssemblyServiceLocator.getAssemblyService();
-      Set<String> tmpGuids = new HashSet<String>();
+      Set<String> tmpGuids = new HashSet<>();
       Set<IPSAssemblyTemplate> tmpSet;
       try
       {
@@ -831,7 +831,7 @@ public class PSContentTypeDependencyHandler
          }
          else
          {
-            m_log.warn("Removing Content <==>Template relationship{"
+            log.warn("Removing Content <==>Template relationship{"
                   + desc.getContentTypeId().toString() + ","
                   + desc.getTemplateId().toString()
                   + "}, because one of the mapping element is not deployed.");
@@ -1051,7 +1051,7 @@ public class PSContentTypeDependencyHandler
    {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       Iterator<IPSNodeDefinition> ctIt = getContentTypes().iterator();
       while (ctIt.hasNext())
       {
@@ -1451,7 +1451,7 @@ public class PSContentTypeDependencyHandler
       PSWorkflowInfo wfInfo = ce.getWorkflowInfo();
       if (wfInfo != null)
       {
-         List<Integer> newIds = new ArrayList<Integer>();
+         List<Integer> newIds = new ArrayList<>();
          Iterator ids = wfInfo.getValues();
          while (ids.hasNext())
          {
@@ -1472,14 +1472,14 @@ public class PSContentTypeDependencyHandler
    /**
     * logger 
     */
-   private static final Logger m_log = LogManager.getLogger(PSContentTypeDependencyHandler.class);
+   private static final Logger log = LogManager.getLogger(PSContentTypeDependencyHandler.class);
 
    
    /**
     * List of child types supported by this handler, never <code>null</code>
     * or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    static
    {

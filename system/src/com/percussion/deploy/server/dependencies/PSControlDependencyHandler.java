@@ -422,7 +422,7 @@ public class PSControlDependencyHandler extends PSAppObjectDependencyHandler
    {
       try 
       {
-         List<PSControlMeta> controls = new ArrayList<PSControlMeta>();
+         List<PSControlMeta> controls = new ArrayList<>();
          NodeList nodes = controlDoc.getElementsByTagName(
             PSControlMeta.XML_NODE_NAME);
          for (int i = 0; i < nodes.getLength(); i++) 
