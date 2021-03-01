@@ -591,11 +591,11 @@
                             <istrue value="@{upgrade}"/>
                         </and>
                         <then>
-                            <echo>Dropping Metadata Tables....</echo>
+                            <echo>Dropping Staging Metadata Tables....</echo>
                             <antcall target="updateStagingDTSTableSchema" inheritall="true"/>
                         </then>
                         <else>
-                            <echo>Dropping for Staging metadata database....</echo>
+                            <echo>Dropping for metadata database....</echo>
                             <antcall target="updateDTSTableSchema" inheritall="true"/>
                         </else>
                     </if>
