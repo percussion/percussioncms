@@ -258,7 +258,7 @@ public class InstallUtil
     */
    public static String addSlashes(String str)
    {
-      StringBuffer retval = new StringBuffer();
+      StringBuilder retval = new StringBuilder();
       for (int i = 0; i < str.length(); i++)
       {
          switch (str.charAt(i))

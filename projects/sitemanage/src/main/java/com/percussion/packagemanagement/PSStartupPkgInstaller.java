@@ -309,7 +309,6 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
                     entry.setStatus(PackageFileStatus.FAILED);
                     appendLogEntry("Package: " + pkgName + " failed to install: " + e.getLocalizedMessage(), e, true);
                     completed = false;
-                    break;
                 }
             }
             
