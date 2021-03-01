@@ -216,7 +216,7 @@ public class PSDocumentUtils extends PSJexlUtilBase
    private String getExternalDocument(String url, String user, String password) throws UnknownHostException, MalformedURLException, IOException, HttpException
    {
       HttpClient client = new HttpClient();
-      client.getState().setCookiePolicy(CookiePolicy.COMPATIBILITY);
+      client.getParams().setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
 
       HttpMethod method = new GetMethod(url);
       if (user != null && password != null)
