@@ -375,7 +375,7 @@ public class PSContentStatusContext implements IPSContentStatusContext
    public void commit(Connection conn) throws SQLException
    {
       PreparedStatement stmt = null;
-      Map<String, String> columns = new HashMap<String, String>();
+      Map<String, String> columns = new HashMap<>();
       try
       {
          String updateString = UPDATEWHATSTRING;

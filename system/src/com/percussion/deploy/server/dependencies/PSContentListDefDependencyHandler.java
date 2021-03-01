@@ -207,7 +207,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
       IPSContentList cList = null;
       
       cList = findContentListByDependencyID(dep.getDependencyId());
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
       
       //    Dont forget the stupid idTypes...
       childDeps.addAll(PSIdTypeDependencyHandler.getIdTypeDependencies(tok, 
@@ -267,7 +267,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
             throw new IllegalArgumentException("contentList may not be null");
       
       IPSItemFilter filter = cList.getFilter();
-      Set<PSDependency> childDeps = new HashSet<PSDependency>();
+      Set<PSDependency> childDeps = new HashSet<>();
       PSDependencyHandler handler = null;
       // Add Rule's  Exit deps
       handler = getDependencyHandler(
@@ -321,7 +321,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
          throws PSDeployException
    {
       init();   
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       PSDependency dep;
       IterableMap namedCList = m_publisherHelper.getNamedContentListMap();
 
@@ -353,7 +353,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
          init();
 
       // pack the data into the files
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
       IterableMap namedCList = m_publisherHelper.getNamedContentListMap();
       IPSContentList cList = (IPSContentList) namedCList.get(dep
             .getDisplayName());
@@ -404,7 +404,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
       ((PSContentList) cList).setVersion(ver);
       try
       {
-         List<IPSContentList> lists = new ArrayList<IPSContentList>();
+         List<IPSContentList> lists = new ArrayList<>();
          lists.add(cList);
          m_publisherSvc.saveContentLists(lists);
       }
@@ -660,7 +660,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
             
       // ADD ANY EXPANDER PARAMS THAT ARE ID-TYPED
       Map<String, String> paramMap = cList.getExpanderParams();
-      List<String> mappings = new ArrayList<String>();
+      List<String> mappings = new ArrayList<>();
       // check each param for idtypes
       Iterator<Map.Entry<String, String>> entries =
          paramMap.entrySet().iterator();
@@ -688,7 +688,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
       mappings = null;
       
       paramMap = cList.getGeneratorParams();
-      mappings = new ArrayList<String>();
+      mappings = new ArrayList<>();
       // check each param for idtypes
       entries = paramMap.entrySet().iterator();
       while (entries.hasNext())
@@ -726,7 +726,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
                IPSItemFilterRuleDef ruleDef = iter.next();
                paramMap = ruleDef.getParams();
 
-               mappings = new ArrayList<String>();
+               mappings = new ArrayList<>();
                // check each param for idtypes
                entries = paramMap.entrySet().iterator();
                while (entries.hasNext())
@@ -814,7 +814,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
                   while (entries.hasNext())
                   {
                      // convert to PSParam(s) to leverage existing code
-                     List<String> valList = new ArrayList<String>();
+                     List<String> valList = new ArrayList<>();
                      Map.Entry entry = (Map.Entry)entries.next();
                      List paramList = PSDeployComponentUtils.convertToParams(
                         entry);
@@ -1078,7 +1078,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();  
+   private static List<String> ms_childTypes = new ArrayList<>();
    
    static
    {

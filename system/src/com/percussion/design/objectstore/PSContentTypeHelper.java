@@ -59,7 +59,9 @@ import com.percussion.webservices.PSWebserviceErrors;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.LogFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -75,6 +77,7 @@ import java.util.*;
  */
 public class PSContentTypeHelper
 {
+   private static final Logger log = LogManager.getLogger(PSContentTypeHelper.class);
    /**
     * Private ctor to ensure static use
     */
@@ -179,7 +182,7 @@ public class PSContentTypeHelper
       List<IPSGuid> templateGuids = null;
       if (descSet != null)
       {
-         templateGuids = new ArrayList<IPSGuid>();
+         templateGuids = new ArrayList<>();
          for (PSContentTemplateDesc temp : descSet)
          {
             templateGuids.add(temp.getTemplateId());
@@ -320,7 +323,7 @@ public class PSContentTypeHelper
          }
          
          //Update the workflow associations
-         Set<IPSGuid> wfids = new HashSet<IPSGuid>();
+         Set<IPSGuid> wfids = new HashSet<>();
          PSWorkflowInfo wfInfo = ce.getWorkflowInfo();
          if (wfInfo != null)
          {
@@ -335,7 +338,7 @@ public class PSContentTypeHelper
          mergeWorkflowIds(nodeDef,wfids);
          
          // save the def
-         List<IPSNodeDefinition> nodeDefs = new ArrayList<IPSNodeDefinition>(1);
+         List<IPSNodeDefinition> nodeDefs = new ArrayList<>(1);
          nodeDefs.add(nodeDef);
 
          // Do not save node definitions here.  Saving Application updates/saves contenttypes table already
@@ -386,13 +389,13 @@ public class PSContentTypeHelper
                catch (Exception e)
                {
                   // log it, but throw original problem
-                  LogFactory.getLog(PSContentTypeHelper.class).error(
-                     "Failed delete new ce app after it failed to start", e);
+                  log.error(
+                     "Failed delete new ce app after it failed to start. Error: {}", e.getMessage());
                }
                
                try
                {
-                  List<IPSGuid> typeids = new ArrayList<IPSGuid>();
+                  List<IPSGuid> typeids = new ArrayList<>();
                   typeids.add(nodeDef.getGUID());
                   nodeDefs = mgr.loadNodeDefinitions(typeids);
                   mgr.deleteNodeDefinitions(nodeDefs);
@@ -404,8 +407,8 @@ public class PSContentTypeHelper
                catch(Exception e)
                {
                   // log it, but throw original problem
-                  LogFactory.getLog(PSContentTypeHelper.class).error(
-                     "Failed delete new nodedef after app save failed", e);
+                  log.error(
+                     "Failed delete new nodedef after app save failed. Error: {}", e.getMessage());
                }
             }
          }
@@ -437,7 +440,7 @@ public class PSContentTypeHelper
       Set<PSContentTypeWorkflow> ctWfRels = nodeDef.getCtWfRels();
       if (ctWfRels == null)
       {
-         ctWfRels = new HashSet<PSContentTypeWorkflow>();
+         ctWfRels = new HashSet<>();
       }
       IPSContentMgr cmgr = PSContentMgrLocator.getContentMgr();
       
@@ -528,7 +531,7 @@ public class PSContentTypeHelper
       IPSGuid ctGuid = nodeDef.getGUID();
       IPSContentMgr cmgr = PSContentMgrLocator.getContentMgr();
       Map<IPSGuid, PSContentTypeWorkflow> curRels = 
-         new HashMap<IPSGuid, PSContentTypeWorkflow>();
+         new HashMap<>();
       try
       {
          List<PSContentTypeWorkflow> ctWfs = cmgr
@@ -544,7 +547,7 @@ public class PSContentTypeHelper
       Set<PSContentTypeWorkflow> ctWfRels = nodeDef.getCtWfRels();
       if(ctWfRels == null)
       {
-         ctWfRels = new HashSet<PSContentTypeWorkflow>();
+         ctWfRels = new HashSet<>();
       }
       for (IPSGuid guid : wfGuid)
       {
@@ -587,7 +590,7 @@ public class PSContentTypeHelper
       Set<PSContentTypeWorkflow> ctWfRels = nodeDef.getCtWfRels();
       if(ctWfRels == null)
       {
-         ctWfRels = new HashSet<PSContentTypeWorkflow>();
+         ctWfRels = new HashSet<>();
       }
       // if the current workflow set is empty
       if (ctWfRels.isEmpty())
@@ -596,7 +599,7 @@ public class PSContentTypeHelper
          return;
       }
       // get all existing workflow guids associated with this node
-      Set<IPSGuid> curWfs = new HashSet<IPSGuid>();
+      Set<IPSGuid> curWfs = new HashSet<>();
       for (PSContentTypeWorkflow ctwf : ctWfRels)
          curWfs.add(ctwf.getWorkflowId());
 
@@ -647,7 +650,7 @@ public class PSContentTypeHelper
    public static List<PSContentTypeSummary> loadContentTypeSummaries(
       String name)
    {
-      List<PSContentTypeSummary> sums = new ArrayList<PSContentTypeSummary>();
+      List<PSContentTypeSummary> sums = new ArrayList<>();
       for (IPSNodeDefinition nodeDef : loadNodeDefs(name))
       {
          PSItemDefManager itemDefMgr = PSItemDefManager.getInstance();
@@ -739,7 +742,7 @@ public class PSContentTypeHelper
                nodeDef.setVersion(version);
             
             // delete it
-            List<IPSNodeDefinition> defs = new ArrayList<IPSNodeDefinition>();
+            List<IPSNodeDefinition> defs = new ArrayList<>();
             defs.add(nodeDef);
             mgr.deleteNodeDefinitions(defs);
             
@@ -932,7 +935,7 @@ public class PSContentTypeHelper
       IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
       try
       {
-         List<IPSGuid> ids = new ArrayList<IPSGuid>();
+         List<IPSGuid> ids = new ArrayList<>();
          ids.add(guid);
          return (PSNodeDefinition) mgr.loadNodeDefinitions(ids).get(0);
       }
