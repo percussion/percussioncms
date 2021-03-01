@@ -79,6 +79,16 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-security-utils</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-xml-security</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>cactus</groupId>
             <artifactId>cactus</artifactId>
             <scope>test</scope>

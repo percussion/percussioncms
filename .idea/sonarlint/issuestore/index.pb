@@ -44,8 +44,6 @@ m
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
 7
 pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
-à
-Xmodules/perc-security-utils/src/main/java/com/percussion/security/SecureStringUtils.java,7/3/7353e9e9ca7de2584b72a748746aa1b6bb72c599
 â
 Yprojects/sitemanage/src/main/java/com/percussion/feeds/service/impl/PSFeedsInfoQueue.java,f/b/fb7e35a2527ce8a47a828c306c0d76f5b229da65
 x
@@ -64,8 +62,6 @@ o
 ?rest/src/main/java/com/percussion/rest/acls/TypedPrincipal.java,4/d/4daaeccc054ceecc66977c07cd0d547c9588e9ed
 Ö
 Uprojects/sitemanage/src/main/java/com/percussion/role/service/impl/PSRoleService.java,9/f/9faa2de7ebd5a693a22cd56a8758d98f69fd54a1
-ò
-hprojects/sitemanage/src/main/java/com/percussion/analytics/service/IPSAnalyticsProviderQueryService.java,b/3/b35dde79e21d6aa2139596061500a97095368902
 ó
 gprojects/sitemanage/src/main/java/com/percussion/analytics/service/impl/PSAnalyticsProviderService.java,4/e/4e4b0c2b3e61794e75c108b27aa14ca1d020d9c7
 y
@@ -92,10 +88,6 @@ O
 system/config/server.properties,6/4/644c9084f1efe52592525399776f5974ef151324
 ä
 Zsystem/utils/src/main/java/com/percussion/utils/container/jetty/PSJettyJndiDatasource.java,7/6/767fc709f60daa2915a1a0f1ed692e5cf8b9ef45
-É
-Ssystem/business/src/com/percussion/utils/security/PSContentSecurityPolicyUtils.java,a/1/a19c689c1c5a6744c2584373f46b51a0232d1030
-á
-Wsystem/Testing/src/com/percussion/utils/security/PSContentSecurityPolicyUtilsTests.java,b/9/b9e50aff30f2b5a9cd51abae6bb3970757593431
 Ü
 Vprojects/sitemanage/src/test/java/com/percussion/theme/PSRegionCSSFileServiceTest.java,8\5\85cf015f5596b5fd6bb29a8cbed230ae6bfb7a64
 ±
@@ -214,14 +206,10 @@ Pmodules/perc-service-wrapper/src/main/java/com/percussion/wrapper/MainProxy.jav
 Nmodules/extensions-main/src/main/java/com/percussion/xmldom/PSXdDomToFile.java,2\d\2d2ff158af346d05cedaf5bd9f0c04062ff44703
 ã
 [modules/servletutils/src/main/java/com/percussion/utils/servlet/PSInputValidatorFilter.java,a/a/aa77a14c1238451f869582921ec38f6c20c6c928
-è
-_modules/perc-legacy/src/main/java/com/percussion/utils/security/deprecated/PSCryptographer.java,6\b\6b31988ee4bf7f1d2bc547ba83a4e0cba06855ce
 â
 Ymodules/extensions-main/src/main/java/com/percussion/xmldom/PSStylesheetCacheManager.java,a\a\aa73d4ae4b4680eee814d728248fe5b514994597
 ~
 Nmodules/extensions-main/src/main/java/com/percussion/xmldom/PSXmlDomUtils.java,b\4\b498a6b2c8198a79124be1ac2c305c225b69463a
-ë
-amodules/perc-legacy/src/main/java/com/percussion/utils/security/deprecated/PSLegacyEncrypter.java,b\0\b03188aa80f43be7cb73ea4d13d514225c04d490
 à
 Xmodules/extensions-main/src/main/java/com/percussion/uicontext/PSGetAndSetCxOptions.java,6\e\6e348c5af61b156ea92e6d4346f2c93cc6b05892
 u
@@ -350,8 +338,6 @@ _
 /system/src/com/percussion/server/PSRequest.java,2/7/27e2cf300a7fa67f3a5ce6765527140de314e96c
 a
 1system/src/com/percussion/mail/PSMailMessage.java,2/4/24adcea572f7a1c420051ab3f84268ec52c22afa
-y
-Isystem/utils/src/main/java/com/percussion/utils/date/PSDateFormatter.java,d/9/d9787d910fc053722951ecb21ae3f0d3f3d63a08
 c
 3system/src/com/percussion/util/PSFormatVersion.java,e/f/eff750c5c721a97ab57f81826cfddbaba3ef0f31
 £
@@ -504,8 +490,6 @@ v
 Fsystem/Testing/src/com/percussion/extension/PSExtensionParamsTest.java,5/4/540668becd250b2cf488a6b6bd0bea0ed5ba7baa
 ≥
 Çdeliverytiersuite/delivery-tier-suite/common/src/main/java/com/percussion/delivery/utils/properties/PSPropertyGroupDefinition.java,2/5/2590d43c20974e8964c60c4464353246d6ab2304
-à
-Xmodules/perc-security-utils/src/main/java/com/percussion/security/ToDoVulnerability.java,7/5/75d1706287a7956f9907ca278d997856eafea418
 ©
 ydeliverytiersuite/delivery-tier-suite/common/src/main/java/com/percussion/delivery/utils/security/PSTlsSocketFactory.java,d/2/d27e18aaf568594b1bf3405ef0d3d0f5159eef2e
 £
@@ -518,18 +502,10 @@ d
 4deliverytiersuite/delivery-tier-suite/common/pom.xml,f/f/ff64f37bf4fee2e14cdc95dfb7d9e03a9f105c32
 k
 ;system/src/com/percussion/design/objectstore/PSVersion.java,8/d/8d74aca9d327c6d25dede710667d642adafb208f
-á
-Wmodules/perc-security-utils/src/main/java/com/percussion/security/PSSecureProperty.java,9/a/9a1a65cadd96eb73bb78c708b8b4448a53a52ee1
 N
 modules/extensions-sfp/pom.xml,0/e/0e4d5bb39c6aaa32d3e14b0309ac7a6a6eaf7b63
 H
 system/Tools/Ant/pom.xml,6/1/6114425f20ccd82589e24142edfa9704e5ae00a1
-S
-#modules/perc-security-utils/pom.xml,b/3/b3a3a1742c88771b34f97802b13f48201441ae0d
-ï
-emodules/perc-security-utils/src/main/java/com/percussion/security/PSDecryptPropertiesPostUpgrade.java,a/e/ae3c237088f9e5ada1987344d963db3f5fe7f5bc
-ñ
-fmodules/extensions-sfp/src/test/java/com/percussion/fastforward/calendar/PSCalendarMonthModelTest.java,7/9/79c63fe7251c5b9656bc4b3586b780d35fe542ef
 ã
 [system/business/src/com/percussion/delivery/metadata/extractor/data/PSMetadataProperty.java,f/c/fcad2514281264e6d874442768d8c7b7d174ca72
 Æ
@@ -544,10 +520,6 @@ Pdeployer/src/test/java/com/percussion/rx/config/test/PSConfigNormalizerTest.jav
 Psystem/Tools/Ant/src/test/java/com/percussion/ant/install/PSMakeLasagnaTest.java,6/2/62b02f83cc19caea9316891187e89073e4f51665
 Ä
 Pdeployer/src/test/java/com/percussion/deployer/catalog/PSCatalogResultsTest.java,e/7/e711de935625404427ba427f617cd090e1e37268
-Q
-!modules/perc-xml-security/pom.xml,b/a/badd46d880719af1a407ed1787a0d19cab3fdef6
-â
-Ymodules/perc-xml-security/src/main/java/com/percussion/security/xml/PSSecureXMLUtils.java,6/2/62d075c407a353271bdbb3f19d3098c3171244fc
 y
 Isystem/rxfiletracker/src/com/percussion/filetracker/PSFUDApplication.java,3/6/36b1943e88fda7043dc01cb02e581176e18699ba
 v
