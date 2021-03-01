@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,25 +24,23 @@
 
 package com.percussion.server.webservices.crosssite;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.sort;
-
 import com.percussion.cms.PSCmsException;
-import com.percussion.cms.objectstore.PSUserInfo;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.collections.CollectionUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import static java.util.Arrays.asList;
+import static java.util.Collections.sort;
 
 /**
  * This class handles the modification of the AA relationships of the dependent
@@ -74,9 +72,9 @@ public class PSCrossSiteFolderMoveActionProcessor extends
          throw new IllegalArgumentException("targetFolderId must not be null");
       }
       PSCrossSiteFolderMoveActionData theData = getData();
-      m_logger.debug("Initializing move action processor...");
+      log.debug("Initializing move action processor...");
       theData.setTargetFolderId(targetFolderId);
-      m_logger.debug("Target folderid is:" + targetFolderId.getId());
+      log.debug("Target folderid is:" + targetFolderId.getId());
       Integer[] sites = computeSiteForFolder(theData.getTargetFolderId());
       theData.setTargetSiteIds(asList(sites));
       sort(theData.getTargetSiteIds());
@@ -86,14 +84,14 @@ public class PSCrossSiteFolderMoveActionProcessor extends
       {
          if (sites.length > 1)
          {
-            m_logger.warn("folder with folderid = " + theData.getTargetFolderId().getId()
-               + "resolves to multiple sites: " + sites);
-            m_logger.warn("Using the first in the list");
+            log.warn("folder with folderid = {}" , theData.getTargetFolderId().getId()
+               + "resolves to multiple sites: {}" , sites);
+            log.warn("Using the first in the list");
          }
          theData.setTargetSiteId(sites[0]);
       }
       theData.setActionCategory(evaluateActionCategory());
-      m_logger.debug("The move action category based on the data is: "
+      log.debug("The move action category based on the data is: "
          + theData.getActionCategory().toString());
       buildDescendents();
    }
@@ -123,7 +121,7 @@ public class PSCrossSiteFolderMoveActionProcessor extends
    @Override
    public void modifyLinks(PSAaFolderDependent depItem) throws PSCmsException
    {
-      m_logger.debug("Modifying AA relationships for the dependent item: "
+      log.debug("Modifying AA relationships for the dependent item: "
          + depItem.getItem().getId() + "...");
       Iterator<PSRelationship> iter = depItem.getAaRelationships().iterator();
       /*
@@ -137,7 +135,7 @@ public class PSCrossSiteFolderMoveActionProcessor extends
       while (iter.hasNext())
       {
          PSRelationship rel = iter.next();
-         m_logger.debug("processing relationship: " + rel.toString());
+         log.debug("processing relationship: " + rel.toString());
          switch (data.getActionCategory())
          {
             case ACTION_CATEGORY_REORGANIZE:
