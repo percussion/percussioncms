@@ -1002,11 +1002,8 @@ public class PSDbmsHelper
    {
       if (table == null || table.trim().length() == 0 || !SecureStringUtils.isValidTableOrColumnName(table))
          throw new IllegalArgumentException("table may not be null, empty, or invalid");
-      if (idCol != null || idCol.trim().length() == 0 ||!SecureStringUtils.isValidTableOrColumnName(idCol) )
+      if (idCol == null || idCol.trim().length() == 0 || !SecureStringUtils.isValidTableOrColumnName(idCol) )
          throw new IllegalArgumentException("idCol may not be null, empty, or invalid");
-      if (filterCol != null || filterCol.trim().length() == 0 ||!SecureStringUtils.isValidTableOrColumnName( filterCol))
-         throw new IllegalArgumentException(
-            "filterCol may not be null, empty, or invalid");
 
       Connection conn = null;
 
