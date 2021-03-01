@@ -137,7 +137,7 @@
         <if>
             <and>
                 <istrue value="${install.prod.dts}"/>
-                <istrue value="${istage.dts.upgrade}"/>
+                <istrue value="${stage.dts.upgrade}"/>
             </and>
             <then>
                 <echo>Installing stage dts </echo>
@@ -338,6 +338,7 @@
                                 <entry key="http.port" value="9970"/>
                                 <entry key="https.port" value="9443"/>
                                 <entry key="shutdown.port" value="9971"/>
+                                <entry key="http.redirectPort" value="9443"/>
                             </propertyfile>
                         </then>
                     </if>
