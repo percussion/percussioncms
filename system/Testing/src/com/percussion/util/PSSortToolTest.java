@@ -23,6 +23,7 @@
  */
 package com.percussion.util;
 
+import java.security.SecureRandom;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.Vector;
@@ -216,7 +217,7 @@ public class PSSortToolTest extends TestCase
    public void setUp()
    {
       m_randomLongVector = new Vector(VECTOR_SIZE);
-      Random rand = new Random();
+      SecureRandom rand = new SecureRandom();
       for (int i = 0; i < VECTOR_SIZE; i++)
       {
          m_randomLongVector.addElement(new Long(rand.nextLong()));

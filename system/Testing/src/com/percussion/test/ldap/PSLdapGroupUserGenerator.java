@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -209,7 +210,7 @@ public class PSLdapGroupUserGenerator
       final int MAX_USERS_IN_GROUP = 200;
       final int actualMaxUsersInGroup = 
          MAX_USERS_IN_GROUP < userCount-1 ? MAX_USERS_IN_GROUP : userCount-1;
-      Random r = new Random();
+      SecureRandom r = new SecureRandom();
       for (; groupIdx < idDistribution.length; groupIdx++)
       {
          idDistribution[groupIdx] = r.nextInt(actualMaxUsersInGroup);

@@ -23,6 +23,7 @@
  */
 package com.percussion.data;
 
+import java.security.SecureRandom;
 import java.util.Random;
 import java.util.Vector;
 
@@ -118,7 +119,7 @@ public class PSResultSetTest extends TestCase
       // fill the first column with random longs
       // fill the second column with random strings
       // fill the third column with random doubles
-      Random rand = new Random();
+      SecureRandom rand = new SecureRandom();
       for (int i = 0; i < NUM_ROWS; i++)
       {
          m_columns[0].addElement(new Long(rand.nextLong()));

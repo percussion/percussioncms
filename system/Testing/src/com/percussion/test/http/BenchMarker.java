@@ -26,6 +26,7 @@ package com.percussion.test.http;
 import com.percussion.test.io.*;
 
 import java.net.URL;
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,11 +109,7 @@ public class BenchMarker implements Runnable, LogSink
          return;
       }
 
-      Random rand = null;
-      if (m_seed != 0)
-         rand = new Random(m_seed);
-      else
-         rand = new Random();
+      SecureRandom rand = new SecureRandom();
 
       ms_stats = new HttpRequestStatistics();
       ms_stats.startedTimingAt(System.currentTimeMillis());

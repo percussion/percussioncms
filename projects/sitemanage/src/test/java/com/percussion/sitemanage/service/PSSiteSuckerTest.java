@@ -25,6 +25,7 @@ package com.percussion.sitemanage.service;
 
 import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.server.PSServer;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSite;
@@ -122,7 +123,9 @@ public class PSSiteSuckerTest extends PSServletTestCase
 
             File xsltFile = new File(ENTRIES_TEMPLATE_FILE);
             
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory docFactory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                    false
+            );
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             
             // root elements

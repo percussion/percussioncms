@@ -49,6 +49,7 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -427,8 +428,9 @@ public class PSRoleCataloger extends PSCataloger
     *         may be empty.
     * @throws NamingException for any JNDI lookup error.
     */
-   private NamingEnumeration getAttributes(DirContext context, 
-      PSDirectoryDefinition directory, Map filterValues, String[] returnAttrs) 
+   @SuppressFBWarnings("LDAP_INJECTION") //Mitigated in PSJndiUtils.buildFilter
+   private NamingEnumeration getAttributes(DirContext context,
+                                           PSDirectoryDefinition directory, Map filterValues, String[] returnAttrs)
    throws NamingException
    {
       context = createContext(directory);

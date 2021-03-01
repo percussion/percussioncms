@@ -31,6 +31,7 @@ import com.percussion.extension.IPSWorkflowAction;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -314,7 +315,9 @@ public class PSPublishContent
          IOException,
          ParserConfigurationException
    {
-      DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
+      DocumentBuilderFactory fact = PSSecureXMLUtils.getInstance()
+      .getSecuredDocumentBuilderFactory(false);
+
       DocumentBuilder builder = fact.newDocumentBuilder();
       Document configfile = builder.parse(CONFIG_FILE);
       

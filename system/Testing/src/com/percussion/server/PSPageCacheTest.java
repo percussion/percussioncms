@@ -26,6 +26,8 @@ package com.percussion.server;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import com.percussion.security.xml.PSSecureXMLUtils;
 import junit.framework.TestCase;
 import org.w3c.dom.Document;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
@@ -37,7 +39,9 @@ public class PSPageCacheTest extends TestCase
    {
       PSPageCache cache = new PSPageCache();
 
-      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      DocumentBuilderFactory factory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+              false
+      );
 
       DocumentBuilder builder;
       try

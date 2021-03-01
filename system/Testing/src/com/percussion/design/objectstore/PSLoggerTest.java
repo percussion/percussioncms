@@ -24,6 +24,9 @@
 
 package com.percussion.design.objectstore;
 import junit.framework.TestCase;
+
+import java.security.SecureRandom;
+
 import static com.percussion.testing.PSTestCompare.assertEqualsWithHash;
 
 /**
@@ -62,7 +65,7 @@ public class PSLoggerTest extends TestCase
       final int MULTIPLE_HANDLER = 64;
       
       PSLogger logger = new PSLogger();
-      java.util.Random rand = new java.util.Random();
+      SecureRandom rand = new SecureRandom();
       int options = 0;
 
       for (int i = 0; i < 100; i++)

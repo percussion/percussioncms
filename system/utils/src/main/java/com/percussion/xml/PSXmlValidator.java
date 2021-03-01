@@ -68,8 +68,7 @@ public class PSXmlValidator
          throw new IllegalArgumentException(
             "SchemaFile cannot be null and must exist.");
       
-      DocumentBuilderFactory factory = PSSecureXMLUtils.enableSecureFeatures(
-              DocumentBuilderFactory.newInstance(),false);
+      DocumentBuilderFactory factory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(false);
       factory.setValidating(true);
       factory.setNamespaceAware(true);
       factory.setAttribute(
@@ -91,7 +90,8 @@ public class PSXmlValidator
          DocumentBuilder parser = factory.newDocumentBuilder();
          
          parser.setErrorHandler(errorHandler);
-         
+
+
          parser.parse(XmlFile);
       }
       

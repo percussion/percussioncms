@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -159,7 +160,7 @@ public class PSApplicationFileTest extends TestCase
       tempFile.deleteOnExit();
 
       final byte[] bytes = new byte[8192];
-      Random rand = new Random();
+      SecureRandom rand = new SecureRandom();
       rand.nextBytes(bytes);
       {
          FileOutputStream fOut = new FileOutputStream(tempFile);

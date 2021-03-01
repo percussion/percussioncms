@@ -23,6 +23,7 @@
  */
 package com.percussion.webui;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.share.test.PSMatchers;
 import com.percussion.share.test.PSRestClient;
 import com.percussion.share.test.PSRestTestCase;
@@ -137,7 +138,9 @@ import org.xml.sax.SAXException;
         
         src = fixupDoctype(src);
         
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory factory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                false
+        );
         factory.setValidating(false);
 
         DocumentBuilder parser = factory.newDocumentBuilder();

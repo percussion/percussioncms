@@ -25,6 +25,7 @@
 package com.percussion.tools.simple;
 
 import com.percussion.security.PSEncryptor;
+import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.utils.security.deprecated.PSCryptographer;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.w3c.dom.Document;
@@ -73,7 +74,7 @@ public class PSPrepForConvert
 
      try
       {
-         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+         DocumentBuilderFactory factory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(false);
          factory.setIgnoringElementContentWhitespace(true);
          m_docBuilder =
             factory.newDocumentBuilder();
