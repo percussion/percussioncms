@@ -24,7 +24,6 @@
 package com.percussion.data;
 
 import com.percussion.error.PSException;
-import com.percussion.error.PSRuntimeException;
 
 /**
  * PSConversionException is thrown to indicate that the requested

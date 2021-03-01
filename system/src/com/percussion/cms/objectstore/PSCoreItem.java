@@ -290,9 +290,9 @@ public class PSCoreItem extends PSItemComponent implements IPSItemAccessor
     */
    private void init()
    {
-      m_fieldNameFieldMap = new HashMap<String, PSItemField>();
-      m_childNameChildMap = new HashMap<String, PSItemChild>();
-      m_relatedItemsMap = new HashMap<String, PSItemRelatedItem>();
+      m_fieldNameFieldMap = new HashMap<>();
+      m_childNameChildMap = new HashMap<>();
+      m_relatedItemsMap = new HashMap<>();
    }
 
    // see interface for description

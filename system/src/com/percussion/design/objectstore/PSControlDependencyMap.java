@@ -95,7 +95,7 @@ public class PSControlDependencyMap
          try
          {
             int ctrlId = Integer.parseInt(strCtrlId);
-            List<Integer> depIds = new ArrayList<Integer>();
+            List<Integer> depIds = new ArrayList<>();
             for (int i = 0; i < strDepIds.length; i++)
             {
                String strDepId = strDepIds[i];
@@ -160,7 +160,7 @@ public class PSControlDependencyMap
       }
       
       // resolve macros to fields, handle single dimension
-      List<Integer> depIds = new ArrayList<Integer>();
+      List<Integer> depIds = new ArrayList<>();
       for (PSDependency dependency : dependencies)
       {
          IPSDependentObject dependentObj = dependency.getDependent();
@@ -249,7 +249,7 @@ public class PSControlDependencyMap
                "mapping and control meta must specify the same control name");
       
       // handle single dimension, resolve fields to macros
-      List<PSDependency> results = new ArrayList<PSDependency>();
+      List<PSDependency> results = new ArrayList<>();
       List<PSDependency> metaDeps = meta.getDependencies();
       Collection<PSExtensionCall> controlExt = getExtensionsForControl(control); 
       for (PSDependency dependency : metaDeps)
@@ -340,8 +340,8 @@ public class PSControlDependencyMap
    public Map<String, String> generateUserProperties(
       PSExtensionCallSet inputDataExts)
    {
-      Map<String, String> userProps = new HashMap<String, String>();
-      Set<Integer> extIds = new HashSet<Integer>();
+      Map<String, String> userProps = new HashMap<>();
+      Set<Integer> extIds = new HashSet<>();
       
       for (Map.Entry<Integer, List<Integer>> entry : 
          m_controlDependencies.entrySet())
@@ -350,7 +350,7 @@ public class PSControlDependencyMap
          List<Integer> depIds = entry.getValue();
          if (depIds.isEmpty())
             continue;
-         List<PSExtensionCall> exts = new ArrayList<PSExtensionCall>();
+         List<PSExtensionCall> exts = new ArrayList<>();
          for (int callId : depIds)
          {
             PSExtensionCall call = m_ceInputDataExits.get(callId);
@@ -474,7 +474,7 @@ public class PSControlDependencyMap
    private Collection<PSExtensionCall> getExtensionsForControl(
       PSControlRef control)
    {
-      List<PSExtensionCall> extList = new ArrayList<PSExtensionCall>();
+      List<PSExtensionCall> extList = new ArrayList<>();
       List<Integer> depIds = m_controlDependencies.get(control.getId());
       if (depIds != null)
       {
@@ -504,7 +504,7 @@ public class PSControlDependencyMap
     * id.
     */
    private Map<Integer, List<Integer>> m_controlDependencies = 
-      new HashMap<Integer, List<Integer>>();
+      new HashMap<>();
    
    /**
     * Map of extension component id to exit, never <code>null</code> after 
@@ -512,7 +512,7 @@ public class PSControlDependencyMap
     * parameters that do not specify macros. 
     */
    private Map<Integer, PSExtensionCall> m_ceInputDataExits = 
-      new HashMap<Integer, PSExtensionCall>();
+      new HashMap<>();
    
    /**
     * Map of extension component id to exit, never <code>null</code> after 
@@ -520,7 +520,7 @@ public class PSControlDependencyMap
     * parameters that specify macros.
     */
    private Map<Integer, PSExtensionCall> m_controlDepExits = 
-      new HashMap<Integer, PSExtensionCall>();
+      new HashMap<>();
    
    /**
     * Map of extensions known to be specified by a control as "single
@@ -531,7 +531,7 @@ public class PSControlDependencyMap
     * dependencies.
     */
    private Map<String, PSExtensionCall> m_singleDepExits = 
-      new HashMap<String, PSExtensionCall>();
+      new HashMap<>();
    
    /**
     * Constant for the property name suffix when specifying control 
