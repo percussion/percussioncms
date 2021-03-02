@@ -23,12 +23,67 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/deliverytiersuite/delivery-tier-suite/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/deployer/pom.xml">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/deployer/src/main/java/com/percussion/deployer/server/PSDbmsHelper.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/CMLight-Main-cactus-tests/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/extensions-main/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/extensions-nav/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/extensions-sfp/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/extensions-workflow/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/perc-distribution-tree/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/perc-distribution-tree/src/main/resources/distribution/rxconfig/Installer/InstallPackages.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/perc-xml-security/src/main/java/com/percussion/security/xml/PSSecureXMLUtils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/projects/sitemanage/pom.xml">
           <value>
             <set />
           </value>
@@ -48,7 +103,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/system/Tools/Ant/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/system/Tools/ImageWidgetService/src/com/percussion/widgets/image/web/impl/ImageResizeController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Tools/velocity/config/tools.xml">
           <value>
             <set />
           </value>
@@ -58,7 +123,52 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/system/business/src/com/percussion/share/dao/PSJaxbContext.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/business/src/com/percussion/share/dao/PSSerializerUtils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/services/src/com/percussion/services/assembly/impl/plugin/PSVelocityAssembler.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/services/src/com/percussion/services/schedule/impl/PSTaskAdapter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/services/src/com/percussion/services/utils/jexl/PSServiceJexlEvaluatorBase.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/services/src/com/percussion/services/utils/jexl/PSVelocityUtils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/system/src/com/percussion/deploy/server/PSDbmsHelper.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/extension/PSVelocityListTool.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/i18n/PSTmxResourceBundle.java">
           <value>
             <set />
           </value>
@@ -73,7 +183,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/xml/PSXPathEvaluator.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/utils/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/system/utils/src/main/java/com/percussion/install/InstallUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/utils/src/main/java/com/percussion/xml/PSSaxParserFactoryImpl.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.java">
           <value>
             <set />
           </value>

@@ -198,12 +198,13 @@
        <xstream.version>1.4.15</xstream.version>
        <log4j2.version>2.13.2</log4j2.version>
        <guava.version>24.1.1-jre</guava.version>
-       <xerces.version>2.12.0</xerces.version>
+       <xerces.version>2.12.1</xerces.version>
        <quartz.version>2.3.2</quartz.version>
        <rome.version>1.15.0</rome.version>
        <maven.source.jar.plugin.version>3.2.0</maven.source.jar.plugin.version>
-       <velocity.version>1.7</velocity.version>
-       <velocity.tools.version>1.4</velocity.tools.version>
+       <velocity.version>2.2</velocity.version>
+       <velocity.tools.version>3.0</velocity.tools.version>
+       <saxon.version>6.5.3</saxon.version>
        <eclipse-manifest-location>META-INF</eclipse-manifest-location>
     </properties>
 
@@ -1562,14 +1563,20 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.velocity</groupId>
-                <artifactId>velocity</artifactId>
+                <artifactId>velocity-engine-core</artifactId>
                 <version>${velocity.version}</version>
             </dependency>
             <dependency>
-                <groupId>velocity-tools</groupId>
-                <artifactId>velocity-tools</artifactId>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-scripting</artifactId>
+                <version>${velocity.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.velocity.tools</groupId>
+                <artifactId>velocity-tools-generic</artifactId>
                 <version>${velocity.tools.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>xerces</groupId>
                 <artifactId>xercesImpl</artifactId>
@@ -1646,7 +1653,7 @@
             <dependency>
                 <groupId>saxon</groupId>
                 <artifactId>saxon</artifactId>
-                <version>6.5.3</version>
+                <version>${saxon.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.sourceforge.owlapi</groupId>

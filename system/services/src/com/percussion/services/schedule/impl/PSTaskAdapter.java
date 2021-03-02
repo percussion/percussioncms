@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -33,17 +33,9 @@ import com.percussion.extension.PSExtensionRef;
 import com.percussion.security.PSRoleManager;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.server.PSServer;
-import com.percussion.services.schedule.IPSSchedulingService;
-import com.percussion.services.schedule.IPSTask;
-import com.percussion.services.schedule.IPSTaskResult;
-import com.percussion.services.schedule.PSSchedulingException;
+import com.percussion.services.schedule.*;
 import com.percussion.services.schedule.PSSchedulingException.Error;
-import com.percussion.services.schedule.PSSchedulingServiceLocator;
-import com.percussion.services.schedule.data.PSNotificationTemplate;
-import com.percussion.services.schedule.data.PSNotifyWhen;
-import com.percussion.services.schedule.data.PSScheduledTask;
-import com.percussion.services.schedule.data.PSScheduledTaskLog;
-import com.percussion.services.schedule.data.PSTaskResult;
+import com.percussion.services.schedule.data.*;
 import com.percussion.services.system.IPSSystemService;
 import com.percussion.services.system.PSSystemServiceLocator;
 import com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase;
@@ -53,11 +45,10 @@ import com.percussion.utils.jexl.PSJexlEvaluator;
 import com.percussion.workflow.PSWorkFlowUtils;
 import com.percussion.workflow.mail.PSMailMessageContext;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.quartz.Job;
@@ -65,13 +56,8 @@ import org.quartz.JobExecutionContext;
 import org.quartz.Scheduler;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import java.io.File;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Adapts Rhythmyx scheduler tasks {@link IPSTask} to the Quartz job interface,
@@ -85,7 +71,7 @@ public class PSTaskAdapter implements Job
    /**
     * Logger for this class.
     */
-   private static Log ms_log = LogFactory.getLog(PSTaskAdapter.class);
+   private static final Logger log = LogManager.getLogger(PSTaskAdapter.class);
    
    // see base
    public void execute(JobExecutionContext context)
@@ -179,7 +165,7 @@ public class PSTaskAdapter implements Job
       catch (Exception e)
       {
          e.printStackTrace();
-         ms_log.error("Failed notification for task: " + job.getName(), e);
+         log.error("Failed notification for task: " + job.getName(), e);
       }
    }
 
@@ -516,7 +502,7 @@ public class PSTaskAdapter implements Job
       }
       catch (Exception e)
       {
-         ms_log.error("Failed to evaluate subject: " + subject, e);
+         log.error("Failed to evaluate subject: " + subject, e);
          return "";
       }
    }
@@ -539,7 +525,7 @@ public class PSTaskAdapter implements Job
          catch (Exception e)
          {
             ms_toolsMap = null;
-            ms_log.error("Failed to load Velocity Tools", e);
+            log.error("Failed to load Velocity Tools", e);
          }
       }
       return ms_toolsMap;
@@ -587,7 +573,7 @@ public class PSTaskAdapter implements Job
       catch (Exception e)
       {
          e.printStackTrace();
-         ms_log.error("Failed to format Notification Template id="
+         log.error("Failed to format Notification Template id="
                + nt.getId(), e);
          return null;
       }
@@ -601,8 +587,6 @@ public class PSTaskAdapter implements Job
    private static RuntimeServices getVelocityRS() throws Exception
    {
       RuntimeServices rs = new RuntimeInstance();
-      File logpath = new File(PSServer.getRxDir(), "notificationVelocity.log");
-      rs.addProperty(RuntimeConstants.RUNTIME_LOG, logpath.getAbsolutePath());
       rs.init();
       
       return rs;
@@ -699,7 +683,7 @@ public class PSTaskAdapter implements Job
       }
       catch (Exception e)
       {
-         ms_log.error("Failed to execute job: " + curJob.toString(), e);
+         log.error("Failed to execute job: " + curJob.toString(), e);
          result = getErrorResult(curJob, e, startTime);
          return result;
       }
@@ -796,20 +780,20 @@ public class PSTaskAdapter implements Job
       }
       catch (Exception e)
       {
-         ms_log.error("Failed to identify server name or IP address.", e);
+         log.error("Failed to identify server name or IP address.", e);
       }
       
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
       {
          String hostName = PSServer.getHostName();
          if (isHostMatch && isPortMatch)
          {
-            ms_log.debug("Task of '" + curJob.getName()
+            log.debug("Task of '" + curJob.getName()
                   + "' is registered for the server '" + hostName + "'.");
          }
          else
          {
-            ms_log.debug("Task of '" + curJob.getName()
+            log.debug("Task of '" + curJob.getName()
                   + "' is not registered for the server '" + hostName + "'.");
          }
       }
@@ -880,7 +864,7 @@ public class PSTaskAdapter implements Job
       catch (Exception e)
       {
          e.printStackTrace();
-         ms_log.error("Failed to log task execution", e);
+         log.error("Failed to log task execution", e);
       }
    }
    
