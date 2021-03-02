@@ -259,7 +259,7 @@ public class PSExecutionData
       if (m_Connections == null)
       {
          m_Connections = new ArrayList();
-         m_connectionDetailList = new ArrayList<PSConnectionDetail>();
+         m_connectionDetailList = new ArrayList<>();
       }
 
       try

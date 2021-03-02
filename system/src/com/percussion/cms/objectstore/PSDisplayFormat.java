@@ -467,7 +467,7 @@ public class PSDisplayFormat extends PSVersionableDbComponent implements
    @SuppressWarnings("unchecked")
    public void removeInvalidFolderColums()
    {
-      List<IPSDbComponent> deletes = new ArrayList<IPSDbComponent>();
+      List<IPSDbComponent> deletes = new ArrayList<>();
       
       Iterator columns = getColumns();
       while (columns.hasNext())
@@ -1208,7 +1208,7 @@ public class PSDisplayFormat extends PSVersionableDbComponent implements
       }
       else
       {
-         m_allowedCommunities = new HashMap<IPSGuid, String>();
+         m_allowedCommunities = new HashMap<>();
          for (Map.Entry<IPSGuid, String> comm : allCommunities.entrySet())
          {
             if (doesPropertyHaveValue(PROP_COMMUNITY, 

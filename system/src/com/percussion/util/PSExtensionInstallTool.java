@@ -58,6 +58,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -69,6 +71,7 @@ import org.xml.sax.SAXException;
  */
 public class PSExtensionInstallTool
 {
+   private static final Logger log = LogManager.getLogger(PSExtensionInstallTool.class);
    /**
     * Installs the extensions from the provided resource directory to the
     * supplied server directory.
@@ -80,7 +83,7 @@ public class PSExtensionInstallTool
    {
       if (args.length != 2)
       {
-         System.err.println("Usage: java PSExtensionInstallTool"+
+         log.error("Usage: java PSExtensionInstallTool"+
                               " <server dir> <resource dir>");
          System.exit(1);
       }
@@ -91,7 +94,7 @@ public class PSExtensionInstallTool
 
       if (!extFile.canRead())
       {
-         System.err.println("Unable to read extension file: " + extFile);
+         log.error("Unable to read extension file: {}", extFile);
          System.exit(1);
       }
 
@@ -105,7 +108,8 @@ public class PSExtensionInstallTool
          doc = PSXmlDocumentBuilder.createXmlDocument(fIn, false);
       } catch (Exception e)
       {
-         System.err.println("Exception creating extension doc: " + e.toString());
+         log.error("Exception creating extension doc: ", e.getMessage());
+         log.debug(e.getMessage(),e);
          e.printStackTrace();
          System.exit(1);
       } finally
@@ -125,12 +129,13 @@ public class PSExtensionInstallTool
       } 
       catch (Exception e)
       {
-         System.err.println("Exception installing extensions: "+e.toString());
+         log.error("Exception installing extensions: {} ", e.toString());
+         log.debug(e.getMessage(),e);
          e.printStackTrace();
          System.exit(1);
       }
 
-      System.out.println("Completed successfully.");
+      log.info("Completed successfully.");
       System.exit(0);
    }
 
@@ -424,12 +429,12 @@ public class PSExtensionInstallTool
    {
       if (!m_extMgr.exists(def.getRef()))
       {
-         System.out.println( "Installing extension: " + def.getRef().toString());
+         log.info( "Installing extension: {} ", def.getRef().toString());
          m_extMgr.installExtension(def, resources);
       }
       else
       {
-         System.out.println( "Updating extension: " + def.getRef().toString());
+         log.info( "Updating extension: {} ", def.getRef().toString());
          m_extMgr.updateExtension(def, resources);
       }
    }
@@ -486,7 +491,7 @@ public class PSExtensionInstallTool
          PSNotFoundException, PSNonUniqueException
    {
       // DBG>
-      System.out.println("Converting old exits directory: " + oldExitsDir);
+      log.info("Converting old exits directory: {} ", oldExitsDir);
       // <DBG
       File oldConfig = new File(oldExitsDir, "ExtensionHandlers.xml");
       if (!oldConfig.isFile())
@@ -517,7 +522,7 @@ public class PSExtensionInstallTool
       {
          String className = PSXmlTreeWalker.getElementData(e);
          // DBG>
-         System.out.println("className=" + className);
+         log.info("className : {} ", className);
          // <DBG
          if (className != null
             && className.equals("com.percussion.exit.PSJavaScriptExtensionHandler"))
@@ -530,7 +535,7 @@ public class PSExtensionInstallTool
       if (javaScriptInstalled)
       {
          // DBG>
-         System.out.println("JavaScript is installed");
+         log.info("JavaScript is installed");
          // <DBG
 
          File jscriptDir = new File(oldExitsDir, "JavaScript");
@@ -626,7 +631,7 @@ public class PSExtensionInstallTool
 
       String typeStr = PSXmlTreeWalker.getElementData(typeElement);
       int type = Integer.parseInt(typeStr);
-      final Collection<String> interfaces = new ArrayList<String>();
+      final Collection<String> interfaces = new ArrayList<>();
       if (0 != (type & EXT_TYPE_UDF_PROC))
       {
          interfaces.add("com.percussion.extension.IPSUDFProcessor");
@@ -689,7 +694,7 @@ public class PSExtensionInstallTool
       // build runtime parameters
       tree.setCurrent(scriptDefEl);
       final Collection<PSExtensionParamDef> runtimeParams =
-            new ArrayList<PSExtensionParamDef>();
+            new ArrayList<>();
       for (Element paramDefEl = tree.getNextElement("PSXExtensionParamDef", firstFlag);
          paramDefEl != null;)
       {
@@ -720,7 +725,7 @@ public class PSExtensionInstallTool
       File resourceRoot) throws IOException, PSExtensionException
    {
       final List<PSMimeContentAdapter> resources =
-            new ArrayList<PSMimeContentAdapter>();
+            new ArrayList<>();
       boolean success = false;
       try
       {

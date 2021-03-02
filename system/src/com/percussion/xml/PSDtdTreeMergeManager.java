@@ -23,6 +23,9 @@
  */
 package com.percussion.xml;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +36,7 @@ import java.util.Set;
  */
 public class PSDtdTreeMergeManager
 {
+   private static final Logger log = LogManager.getLogger(PSDtdTreeMergeManager.class);
    /**
     * Constructor needs a master PSDtdTree for all incoming slave trees.
     * Re-create a UTDtdMergeManager if you want to restart the merge without
@@ -133,7 +137,7 @@ public class PSDtdTreeMergeManager
   {
       if (args.length < 1)
       {
-         System.out.println("No args");
+         log.info("No args");
          return;
       }
 
@@ -144,7 +148,7 @@ public class PSDtdTreeMergeManager
       {
       if (args.length < 2)
       {
-               System.out.println("master and slave DTD filenames required");
+               log.info("master and slave DTD filenames required");
                return;
       }
 

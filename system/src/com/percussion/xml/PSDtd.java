@@ -34,6 +34,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.xerces.impl.dtd.DTDGrammar;
 import org.apache.xerces.impl.dtd.XMLContentSpec;
 import org.apache.xerces.impl.dtd.XMLDTDDescription;
@@ -56,6 +58,7 @@ import org.apache.xerces.xni.parser.XMLInputSource;
  */
 public class PSDtd extends DTDGrammar
 {
+   private static final Logger log = LogManager.getLogger(PSDtd.class);
    /**
     * Main method - used for tesing.
     * Usage is :
@@ -71,7 +74,7 @@ public class PSDtd extends DTDGrammar
    {
       if (argv.length != 2)
       {
-         System.out.println("Invalid number of arguments.");
+         log.info("Invalid number of arguments.");
          printUsage();
          System.exit(1);
       }
@@ -79,7 +82,7 @@ public class PSDtd extends DTDGrammar
       String cmd = argv[0];
       if (!((cmd.equalsIgnoreCase("-d")) || (cmd.equalsIgnoreCase("-x"))))
       {
-         System.out.println("Invalid first argument.");
+         log.info("Invalid first argument.");
          printUsage();
          System.exit(1);
       }
@@ -88,7 +91,7 @@ public class PSDtd extends DTDGrammar
       File file = new File(filePath);
       if (!file.isFile())
       {
-         System.out.println("Invalid file path: " + filePath);
+         log.info("Invalid file path: {} ", filePath);
          System.exit(1);
       }
 
@@ -109,7 +112,7 @@ public class PSDtd extends DTDGrammar
       PSDtd psdtd = dtdParser.getDtd();
       if (psdtd == null)
       {
-         System.out.println("DTD Parser returned null");
+         log.info("DTD Parser returned null");
          System.exit(1);
       }
       PSDtd.printDtd(psdtd);
@@ -118,11 +121,12 @@ public class PSDtd extends DTDGrammar
       {
          PSDtdTree tree = new PSDtdTree(psdtd);
          String strDtd = tree.toDTD(false);
-         System.out.println(strDtd);
+         log.info(strDtd);
       }
       catch (Exception e)
       {
-         System.out.println(e.getMessage());
+         log.error("Error : {} ", e.getMessage());
+         log.debug(e.getMessage(),e);
          e.printStackTrace();
       }
    }
@@ -138,14 +142,14 @@ public class PSDtd extends DTDGrammar
       if (psdtd == null)
          throw new IllegalArgumentException("psdtd may not be null");
       String root = psdtd.getName();
-      System.out.println("Root Element : " + root);
+      log.info("Root Element : {} ", root);
       Enumeration e = psdtd.getElementDeclarations();
       while (e.hasMoreElements())
       {
          PSXmlElementDecl elemDecl = (PSXmlElementDecl)e.nextElement();
          String elementName = elemDecl.getName();
-         System.out.println("Content Model for " + elementName +" : ");
-         System.out.println(psdtd.getContentModelAsString(elementName));
+         log.info("Content Model for : {} : ", elementName);
+         log.info(psdtd.getContentModelAsString(elementName));
          String type = null;
          switch (elemDecl.getContentType())
          {
@@ -173,9 +177,9 @@ public class PSDtd extends DTDGrammar
                type = "Unknown Type";
                break;
          }
-         System.out.println();
-         System.out.println("Element : " + elementName);
-         System.out.println("Element Type : " + type);
+         log.info("");
+         log.info("Element : {} ", elementName);
+         log.info("Element Type : {} ", type);
 
          //get the attributes
          Enumeration en = psdtd.getAttributeDeclarations(elementName);
@@ -266,18 +270,17 @@ public class PSDtd extends DTDGrammar
                   break;
             }
 
-            System.out.println("Attribute : " + attrDecl.getName());
-            System.out.println("Attribute Default Type : " + attDefaultType);
-            System.out.println("Attribute Declared Type : " + attDeclaredType);
-            System.out.println("Attribute Default String Value : " +
-               attrDecl.getDefaultStringValue());
-            System.out.println("Attribute Size : " + attrDecl.size());
+            log.info("Attribute : {} ", attrDecl.getName());
+            log.info("Attribute Default Type : {} ", attDefaultType);
+            log.info("Attribute Declared Type : {}", attDeclaredType);
+            log.info("Attribute Default String Value : {} ", attrDecl.getDefaultStringValue());
+            log.info("Attribute Size : {}",  attrDecl.size());
             Enumeration attEl = attrDecl.elements();
             int j = 0;
             while (attEl.hasMoreElements())
             {
                String token = (String)attEl.nextElement();
-               System.out.println("Attribute Token [" + j + "] : " + token);
+               log.info("Attribute Token [{}] : , {}", j, token);
                j ++;
             }
          }
@@ -286,10 +289,10 @@ public class PSDtd extends DTDGrammar
 
    protected static void printUsage()
    {
-      System.out.println("usage: java com.percussion.xml.PSDtd -d|x FILE_PATH");
-      System.out.println("options:");
-      System.out.println("  -d DTD_FILE_PATH");
-      System.out.println("  -x XML_FILE_PATH");
+      log.info("usage: java com.percussion.xml.PSDtd -d|x FILE_PATH");
+      log.info("options:");
+      log.info("  -d DTD_FILE_PATH");
+      log.info("  -x XML_FILE_PATH");
    }
 
    /**
