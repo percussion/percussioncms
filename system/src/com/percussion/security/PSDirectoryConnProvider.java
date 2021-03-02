@@ -192,7 +192,7 @@ public class PSDirectoryConnProvider extends PSJndiProvider
             DirContext context = null; 
             try
             {
-               Hashtable<String, Object> env = new Hashtable<String, Object>();
+               Hashtable<String, Object> env = new Hashtable<>();
                env.put(Context.INITIAL_CONTEXT_FACTORY, getProviderClassName());
                env.put(Context.PROVIDER_URL, PSJndiUtils.getEncodedProviderUrl(
                   getProviderURL()));
@@ -370,7 +370,7 @@ public class PSDirectoryConnProvider extends PSJndiProvider
          searchControls.setSearchScope(scope);
          searchControls.setCountLimit(1);
       
-         Map<String, String> filter = new HashMap<String, String>();
+         Map<String, String> filter = new HashMap<>();
          filter.put(userAttributeName, user);
 
          boolean isRelative = true;

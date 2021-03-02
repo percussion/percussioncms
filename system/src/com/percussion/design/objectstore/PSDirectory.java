@@ -698,7 +698,7 @@ public class PSDirectory extends PSComponent
     * List of names of the group providers instances used by this provider,
     * stored as Strings.  Never <code>null</code>, may be empty.
     */
-   private List<String> m_groupProviderNames = new ArrayList<String>();   
+   private List<String> m_groupProviderNames = new ArrayList<>();
    
    /**
     * A flag that indicates whether or not to output directory service debug 

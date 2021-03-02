@@ -24,6 +24,9 @@
 
 package com.percussion.xml;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,6 +45,7 @@ import java.util.List;
  * @since   1.0
  */
 public class PSDtdElementEntry extends PSDtdNode {
+   private static final Logger log = LogManager.getLogger(PSDtdElementEntry.class);
    /**
     * Construct a Dtd Element Entry to reference an
     *   element declaration
@@ -81,7 +85,7 @@ public class PSDtdElementEntry extends PSDtdNode {
       if (m_element != null)
          m_element.print(tab, "-" + m_occurrenceType + "-");
       else
-         System.out.println(tab + " NULL Element");
+         log.info(tab + " NULL Element");
    }
 
    /**

@@ -88,7 +88,7 @@ public class PSDirectoryDefinition
    @SuppressWarnings(value={"unchecked"})
    public Set<String> getReturnAttributeNames(Set additionalReturns)
    {
-      Set<String> results = new HashSet<String>();
+      Set<String> results = new HashSet<>();
       
       Collection returns = getDirectory().getAttributes();
       

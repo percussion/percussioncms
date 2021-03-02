@@ -117,7 +117,7 @@ public class PSExtensionDef implements IPSExtensionDef, Serializable,
             "At least one interface must be defined");
 
       m_ref = ref;
-      m_resURLs = new ArrayList<URL>();
+      m_resURLs = new ArrayList<>();
       if (resourceURLs != null)
       {
          while (resourceURLs.hasNext())
@@ -143,14 +143,14 @@ public class PSExtensionDef implements IPSExtensionDef, Serializable,
          m_initParams = new Properties();
       }
 
-      m_interfaces = new ArrayList<String>();
+      m_interfaces = new ArrayList<>();
       while (interfaces.hasNext())
       {
          m_interfaces.add((String) interfaces.next());
       }
 
-      m_runtimeParams = new ArrayList<PSExtensionParamDef>();
-      m_runtimeParamsMap = new HashMap<String, PSExtensionParamDef>();
+      m_runtimeParams = new ArrayList<>();
+      m_runtimeParamsMap = new HashMap<>();
       if (runtimeParams != null)
       {
          while (runtimeParams.hasNext())
@@ -171,7 +171,7 @@ public class PSExtensionDef implements IPSExtensionDef, Serializable,
       //set modifes request params flag
       m_isRestoreRequestParamsOnError = isRestoreRequestParamsOnError;
       
-      m_requiredApplications = new ArrayList<String>();
+      m_requiredApplications = new ArrayList<>();
    }
 
    /**
@@ -181,11 +181,11 @@ public class PSExtensionDef implements IPSExtensionDef, Serializable,
    public PSExtensionDef()
    {
       m_initParams = new Properties();
-      m_resURLs = new ArrayList<URL>();
-      m_interfaces = new ArrayList<String>();
-      m_runtimeParams = new ArrayList<PSExtensionParamDef>();
-      m_runtimeParamsMap = new HashMap<String, PSExtensionParamDef>();
-      m_requiredApplications = new ArrayList<String>();
+      m_resURLs = new ArrayList<>();
+      m_interfaces = new ArrayList<>();
+      m_runtimeParams = new ArrayList<>();
+      m_runtimeParamsMap = new HashMap<>();
+      m_requiredApplications = new ArrayList<>();
    }
 
    /**
@@ -308,8 +308,8 @@ public class PSExtensionDef implements IPSExtensionDef, Serializable,
     */
    public void setRuntimeParameters(Iterator<PSExtensionParamDef> params)
    {
-      m_runtimeParams = new ArrayList<PSExtensionParamDef>();
-      m_runtimeParamsMap = new HashMap<String, PSExtensionParamDef>();
+      m_runtimeParams = new ArrayList<>();
+      m_runtimeParamsMap = new HashMap<>();
       if(params == null)
          return;
       while(params.hasNext())
@@ -354,7 +354,7 @@ public class PSExtensionDef implements IPSExtensionDef, Serializable,
       if (resources == null)
          throw new IllegalArgumentException("resources may not be null");
 
-      m_suppliedResources = new ArrayList<URL>();
+      m_suppliedResources = new ArrayList<>();
 
       // walk the list and build the internal collection
       while (resources.hasNext())
@@ -611,5 +611,5 @@ public class PSExtensionDef implements IPSExtensionDef, Serializable,
     * may be empty.
     */
    private Map<String, PSExtensionMethod> m_methods = 
-      new HashMap<String, PSExtensionMethod>();
+      new HashMap<>();
 }

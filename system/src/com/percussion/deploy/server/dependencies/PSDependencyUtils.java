@@ -199,7 +199,7 @@ public class PSDependencyUtils
    // 
    public static Map<String, String> cloneMap(Map<String, String> oldMap)
    {
-      Map<String, String> newMap = new HashMap<String, String>();
+      Map<String, String> newMap = new HashMap<>();
       Set<String> keys = oldMap.keySet();
       Iterator<String> it = keys.iterator();
       while(it.hasNext())
@@ -223,7 +223,7 @@ public class PSDependencyUtils
          Map<String, PSPair<String, String>> oldMap)
    {
       Map<String, PSPair<String, String>> newMap = 
-         new HashMap<String, PSPair<String, String>>();
+         new HashMap<>();
       Set<String> keys = oldMap.keySet();
       Iterator<String> it = keys.iterator();
       while (it.hasNext())
