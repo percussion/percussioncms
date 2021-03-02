@@ -283,7 +283,7 @@ class PSExtensionHandlerConfiguration
             extensionDefs = m_extensionContexts.get(ref.getContext());
             if (extensionDefs == null)
             {
-               extensionDefs = new ConcurrentHashMap<PSExtensionRef,IPSExtensionDef>(8, 0.9f, 1);
+               extensionDefs = new ConcurrentHashMap<>(8, 0.9f, 1);
          m_extensionContexts.put(ref.getContext(), extensionDefs);
       }
          }
@@ -863,7 +863,7 @@ class PSExtensionHandlerConfiguration
     * A map from extension contexts to corresponding maps from extension names 
     * to extension defs. Never <CODE>null</CODE>, may be empty.
     */
-   private volatile Map<String,Map<PSExtensionRef,IPSExtensionDef>> m_extensionContexts = new ConcurrentHashMap<String,Map<PSExtensionRef,IPSExtensionDef>>(8, 0.9f, 1);
+   private volatile Map<String,Map<PSExtensionRef,IPSExtensionDef>> m_extensionContexts = new ConcurrentHashMap<>(8, 0.9f, 1);
 
    /**
     * A set of files and dirs pending removal by the handler. Never

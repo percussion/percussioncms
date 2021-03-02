@@ -312,7 +312,7 @@ public class PSDeployService implements IPSDeployService {
             t = th.generateTemplateFromFile(archive, depFile, t, ctx);
             t = dh.doTransforms(t, ctx, dep);
             PSTemplateDefDependencyHandler.saveTemplate(t, ver,
-                new HashMap<Long, Integer>());
+                new HashMap<>());
         } catch (PSDeployException e) {
             throw new PSDeployServiceException(e);
         }

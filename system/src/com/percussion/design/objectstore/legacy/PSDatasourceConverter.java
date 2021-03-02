@@ -319,7 +319,7 @@ public class PSDatasourceConverter
    private List<IPSComponentConverter> getConverters(PSConfigurationCtx ctx)
    {
       List<IPSComponentConverter> converters = 
-         new ArrayList<IPSComponentConverter>(2);
+         new ArrayList<>(2);
       
       converters.add(new PSBackendTableConverter(ctx, null, false));
       converters.add(new PSTableLocatorConverter(ctx, false));
@@ -378,7 +378,7 @@ public class PSDatasourceConverter
          
          // Check that the configuration is workable
          ms_rootLogger = Logger.getRootLogger();
-         if (ms_rootLogger == null || 
+         if (ms_rootLogger == null ||
             !ms_rootLogger.getAllAppenders().hasMoreElements())
          {
             throw new InternalError("Could not configure log4j logger");

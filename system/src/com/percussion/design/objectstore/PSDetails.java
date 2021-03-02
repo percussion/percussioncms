@@ -66,7 +66,7 @@ public class PSDetails
          throw new PSUnknownNodeTypeException(
                IPSObjectStoreErrors.XML_ELEMENT_WRONG_TYPE, args);
       }
-      m_fieldErrors = new ArrayList<PSFieldError>();
+      m_fieldErrors = new ArrayList<>();
       NodeList fe = sourceNode.getElementsByTagName(PSFieldError.XML_NODE_NAME);
       for (int j = 0; fe != null && j < fe.getLength(); j++)
       {
