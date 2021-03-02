@@ -114,7 +114,10 @@ public class MainDTSPreInstall {
             if(Files.exists(f.toPath()) && !Files.exists(f2.toPath())){
                 isProduction="false";
             }
-            if(isProduction == null || isProduction.isEmpty()){
+            //if isProduction value is not passed in and we are not able to figure out either, then set the value to be true
+            //e.g. in case of upgrade installer is passing value $DTS_SERVER_TYPE$, which doesn't match any of the cases and thus fails
+            if(isProduction == null || isProduction.isEmpty() ||
+                    (!isProduction.equalsIgnoreCase("true") && !isProduction.equalsIgnoreCase("false"))){
                 isProduction="true";//change done for dev environment
             }
 
