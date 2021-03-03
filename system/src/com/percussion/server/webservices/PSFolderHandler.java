@@ -220,7 +220,7 @@ public class PSFolderHandler extends PSWebServicesBaseHandler
            throws PSException, PSValidationException {
       PSLocator folder = new PSLocator(folderId, 1);
 
-      List<String> itemIds = new ArrayList<String>(); 
+      List<String> itemIds = new ArrayList<>();
       getFolderContent(folder, itemIds);
 
       /*

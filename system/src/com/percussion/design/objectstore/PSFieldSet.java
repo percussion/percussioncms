@@ -585,7 +585,7 @@ public class PSFieldSet extends PSComponent
     */
    public Iterator getNames(boolean systemModOnly)
    {
-      List<String> retList = new ArrayList<String>();
+      List<String> retList = new ArrayList<>();
       Iterator i = m_fields.keySet().iterator();
       while (i.hasNext())
       {
@@ -620,7 +620,7 @@ public class PSFieldSet extends PSComponent
     */
    public Iterator getAll(boolean systemModOnly)
    {
-      List<PSComponent> retList = new ArrayList<PSComponent>();
+      List<PSComponent> retList = new ArrayList<>();
       Iterator<PSComponent> i = m_fields.values().iterator();
       while (i.hasNext())
       {
@@ -675,7 +675,7 @@ public class PSFieldSet extends PSComponent
     */
    public PSField[] getAllFields(boolean readOnly)
    {
-      Collection<PSField> fields = getAllFields(new ArrayList<PSField>(), 
+      Collection<PSField> fields = getAllFields(new ArrayList<>(),
             readOnly);
       PSField[] fieldArray = new PSField[fields.size()];
       return fields.toArray(fieldArray);
@@ -1678,7 +1678,7 @@ public class PSFieldSet extends PSComponent
     * An ordered map storing PSField and/or PSFieldSet objects, ordered and keyed
     * by their name. Never <code>null</code>, might be empty.
     */
-   private Map<String, PSComponent> m_fields = new TreeMap<String, PSComponent>();
+   private Map<String, PSComponent> m_fields = new TreeMap<>();
    
    /** The fieldset source type. */
    private int m_sourceType = PSField.TYPE_LOCAL;
