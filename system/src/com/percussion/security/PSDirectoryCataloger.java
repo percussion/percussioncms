@@ -185,7 +185,7 @@ public abstract class PSDirectoryCataloger extends PSCataloger
                "criteria operator must be OPTYPE_EQUALS or OPTYPE_LIKE");
       }
       
-      Map<String, String> filter = new HashMap<String, String>();
+      Map<String, String> filter = new HashMap<>();
       if (variable != null)
          filter.put(variable, value);
          

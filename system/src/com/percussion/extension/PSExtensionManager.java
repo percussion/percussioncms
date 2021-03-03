@@ -37,8 +37,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The extension manager is the sole object through which extensions and
@@ -53,7 +53,7 @@ import org.apache.commons.logging.LogFactory;
 public class PSExtensionManager
    implements IPSExtensionManager
 {
-   private static Log ms_log = LogFactory.getLog(PSExtensionManager.class);
+   private static final Logger log = LogManager.getLogger(PSExtensionManager.class);
    
    /***
     * Key to store listeners that respond to any change in the extensions 
@@ -68,7 +68,7 @@ public class PSExtensionManager
    public PSExtensionManager()
    {
       m_isInited = false;
-      m_listeners = new HashMap<Object,Collection<IPSExtensionListener>>();
+      m_listeners = new HashMap<>();
    }
 
    /*
@@ -101,7 +101,7 @@ public class PSExtensionManager
       if (m_isInited)
          return;
 
-      ms_log.info("Initializing extension manager.");
+      log.info("Initializing extension manager.");
 
       // initialize the handler-handler - it has a "fake" handler itself
       PSExtensionRef hhRef = new PSExtensionRef(
@@ -129,7 +129,7 @@ public class PSExtensionManager
 
       m_isInited = true;
 
-      ms_log.info("Initialization successful.");
+      log.info("Initialization successful.");
    }
 
    /**
@@ -147,7 +147,7 @@ public class PSExtensionManager
       if (!m_isInited)
          return;
 
-      ms_log.info("Shutting down extension manager.");
+      log.info("Shutting down extension manager.");
 
       try
       {
@@ -160,7 +160,7 @@ public class PSExtensionManager
          m_isInited = false;
       }
 
-      ms_log.info("Shutdown successful.");
+      log.info("Shutdown successful.");
    }
 
    /**
@@ -241,7 +241,7 @@ public class PSExtensionManager
       }
 
       Collection<PSExtensionRef> matches = 
-         new LinkedList<PSExtensionRef>(); // store matches in here
+         new LinkedList<>(); // store matches in here
       // for all extension handlers
       for (Iterator i = getExtensionHandlerNames(); i.hasNext(); )
       {
@@ -833,7 +833,7 @@ public class PSExtensionManager
             }
             catch (Throwable t)
             {
-               ms_log.warn("Listener threw exception on remove ", t);
+               log.warn("Listener threw exception on remove ", t);
             }
          }
       }
@@ -848,7 +848,7 @@ public class PSExtensionManager
             }
             catch (Throwable t)
             {
-               ms_log.warn("Listener threw exception on remove ", t);
+               log.warn("Listener threw exception on remove ", t);
             }
          }
       }      
@@ -873,7 +873,7 @@ public class PSExtensionManager
             }
             catch (Throwable t)
             {
-               ms_log.warn("Listener threw exception on update ", t);
+               log.warn("Listener threw exception on update ", t);
             }
          }
       }
@@ -888,7 +888,7 @@ public class PSExtensionManager
             }
             catch (Throwable t)
             {
-               ms_log.warn("Listener threw exception on update ", t);
+               log.warn("Listener threw exception on update ", t);
             }
          }
       }      
@@ -912,7 +912,7 @@ public class PSExtensionManager
             }
             catch (Throwable t)
             {
-               ms_log.warn("Listener threw exception on update ", t);
+               log.warn("Listener threw exception on update ", t);
             }
          }
       }      
@@ -934,7 +934,7 @@ public class PSExtensionManager
       Collection<IPSExtensionListener> listeners = m_listeners.get(key);
       if (listeners == null)
       {
-         listeners = new LinkedList<IPSExtensionListener>();
+         listeners = new LinkedList<>();
          m_listeners.put(key, listeners);
       }
 

@@ -24,6 +24,9 @@
 
 package com.percussion.xml;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +47,8 @@ import java.util.List;
  * @since      1.0
  */
 public class PSDtdNodeList extends PSDtdNode {
+
+   private static final Logger log = LogManager.getLogger(PSDtdNodeList.class);
    /**
     *                        Base constructor, initialize array list
     *                           default - type set to Sequence
@@ -134,7 +139,7 @@ public class PSDtdNodeList extends PSDtdNode {
     */
    public void print(String tab)
    {
-      System.out.println(tab + m_type + " " + m_occurrenceType);
+      log.info(tab + m_type + " " + m_occurrenceType);
 
       for (int i = 0; i < m_nodes.size(); i++)
       {
