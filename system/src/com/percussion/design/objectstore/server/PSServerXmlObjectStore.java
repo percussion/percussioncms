@@ -109,6 +109,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -223,7 +224,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
          if (!m_src.exists())
             return;
 
-         Random rand = new Random();
+         SecureRandom rand = new SecureRandom();
          for (int i = 0; i < 100; i++)
          {
             File bkup = new File(m_src.getParentFile(), m_src.getName()

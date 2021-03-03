@@ -743,8 +743,8 @@ public class RhythmyxServlet extends PSServletBase
          {
             readHttpHeaders(in, null);
             
-            DocumentBuilderFactory factory = PSSecureXMLUtils.enableSecureFeatures(
-               DocumentBuilderFactory.newInstance(),false);
+            DocumentBuilderFactory factory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+               false);
 
             factory.setNamespaceAware(true);
             factory.setValidating(false);

@@ -58,8 +58,8 @@ public class PSSaxHelper
    /**
     * Parser factory used in the static helper methods here. The
     */
-   static final SAXParserFactory ms_factory = PSSecureXMLUtils.enableSecurityFeatures(
-           SAXParserFactory.newInstance(),false);
+   static final SAXParserFactory ms_factory = PSSecureXMLUtils.getSecuredSaxParserFactory(
+           false);
 
    /**
     * This method instantiates the passed content handler with the arguments

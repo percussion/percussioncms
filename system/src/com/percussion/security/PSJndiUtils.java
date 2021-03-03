@@ -172,7 +172,7 @@ public class PSJndiUtils
       if (values.isEmpty())
          throw new IllegalArgumentException("values cannot be empty");
          
-      StringBuffer filter = new StringBuffer("(&");
+      StringBuilder filter = new StringBuilder("(&");
       
       Iterator keys = values.keySet().iterator();
       while (keys.hasNext())
@@ -223,7 +223,7 @@ public class PSJndiUtils
     * <code>null</code> or empty.
     * @param value The condition value, may be <code>null</code> or empty.
     */
-   private static void appendFilterCond(StringBuffer filter, String attrName, 
+   private static void appendFilterCond(StringBuilder filter, String attrName,
       String value)
    {
       if (value == null || value.trim().length() == 0)
@@ -550,7 +550,7 @@ public class PSJndiUtils
          throw new IllegalArgumentException("name may not be null or empty");
 
 
-      StringBuffer newBuf = new StringBuffer(name.length());
+      StringBuilder newBuf = new StringBuilder(name.length());
       for (int i=0; i < name.length(); i++)
       {
          char test = name.charAt(i);

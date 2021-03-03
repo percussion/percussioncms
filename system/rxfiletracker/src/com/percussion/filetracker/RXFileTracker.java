@@ -88,8 +88,8 @@ public class RXFileTracker
    {
       try
       {
-         DocumentBuilderFactory dbf = PSSecureXMLUtils.enableSecureFeatures(
-                 DocumentBuilderFactory.newInstance(),false);
+         DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                 false);
 
          dbf.setNamespaceAware(true);
          dbf.setValidating(false);

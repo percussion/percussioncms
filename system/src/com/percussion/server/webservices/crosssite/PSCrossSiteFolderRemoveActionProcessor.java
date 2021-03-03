@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -77,16 +77,15 @@ public class PSCrossSiteFolderRemoveActionProcessor extends
     * of each case.
     */
    @Override
-   public void modifyLinks(PSAaFolderDependent depItem) throws PSCmsException
-   {
-      m_logger.debug("Modifying AA relationships for the dependent item: "
-         + depItem.getItem().getId() + "...");
+   public void modifyLinks(PSAaFolderDependent depItem) {
+      log.debug("Modifying AA relationships for the dependent item: {}",
+         depItem.getItem().getId());
       Iterator<PSRelationship> iter = depItem.getAaRelationships().iterator();
       PSRemoveActionCategoryEnum actionCategory = evaluateActionCategory(depItem);
       while (iter.hasNext())
       {
          PSRelationship rel = iter.next();
-         m_logger.debug("processing relationship: " + rel.toString());
+         log.debug("processing relationship: {}",  rel.toString());
          switch (actionCategory)
          {
             case ACTION_CATEGORY_ONLY_SITEFOLDER:

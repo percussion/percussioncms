@@ -35,6 +35,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
+import java.nio.file.Paths;
 
 import javax.xml.parsers.DocumentBuilder;
 
@@ -97,6 +98,8 @@ public class PSMergeXMLAction extends PSAction
          {
             String strDestinationPath = strRootDir + File.separator +
             m_strDestinationDoc;
+
+            strDestinationPath = Paths.get(strRootDir,strDestinationPath).normalize().toAbsolutePath().toString();
 
             File destFile = new File(strDestinationPath);
             if(destFile.exists())

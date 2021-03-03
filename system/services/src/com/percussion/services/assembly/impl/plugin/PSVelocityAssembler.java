@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,10 +23,6 @@
  */
 package com.percussion.services.assembly.impl.plugin;
 
-import com.google.javascript.jscomp.CompilationLevel;
-import com.google.javascript.jscomp.CompilerOptions;
-import com.google.javascript.jscomp.WarningLevel;
-import com.googlecode.htmlcompressor.compressor.ClosureJavaScriptCompressor;
 import com.googlecode.htmlcompressor.compressor.HtmlCompressor;
 import com.googlecode.htmlcompressor.compressor.XmlCompressor;
 import com.googlecode.htmlcompressor.compressor.YuiCssCompressor;
@@ -52,8 +48,8 @@ import com.percussion.utils.jexl.PSJexlEvaluator;
 import com.percussion.utils.string.PSStringUtils;
 import com.percussion.utils.timing.PSStopwatchStack;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.runtime.RuntimeConstants;
@@ -62,18 +58,9 @@ import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
 import org.apache.velocity.runtime.resource.util.StringResourceRepository;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
@@ -155,9 +142,15 @@ public class PSVelocityAssembler extends PSAssemblerBase
          .createStaticExpression("$sys.template");
 
    /**
+    * Storage for velocity templates that have been compiled. The key is the
+    * actual source of the entire template.
+    */
+   private static Map<String, Template> ms_compiled_templates = new WeakHashMap<>();
+
+   /**
     * Logger for this class
     */
-   static Log ms_logger = LogFactory.getLog(PSVelocityAssembler.class);
+   static Logger ms_logger = LogManager.getLogger(PSVelocityAssembler.class);
 
    /**
     * Engine for templating
@@ -823,78 +816,122 @@ public class PSVelocityAssembler extends PSAssemblerBase
          return false;
       }
    }
-   
+
    /**
     * Initialize velocity engine
     */
    private void initVelocity()
    {
-      ms_logger.info("Velocity reinitialized");
-      
-      String sys_templates = getSysTemplateMacroPath();
-      String rx_templates = getLocalTemplateMacroPath();
-      m_libraries = getMacroFiles(sys_templates, rx_templates);
-      
-      ms_rs = new RuntimeInstance();
+  ms_logger.info("Velocity reinitialized");
 
-      ms_rs.addProperty(RuntimeConstants.INPUT_ENCODING, "UTF-8");
-      ms_rs.addProperty(RuntimeConstants.ENCODING_DEFAULT, "UTF-8");
-      ms_rs.setProperty("resource.loader","file, string");
-      
-      ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,
-            rx_templates);
-      ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,
-            sys_templates);
-      
-      // Add String resource loader to cache template scripts
-      ms_rs.setProperty("resource.manager.defaultcache.size","250");
-      ms_rs.setProperty("string.resource.loader.description","Velocity StringResource loader");
-      ms_rs.setProperty("string.resource.loader.class",StringResourceLoader.class.getName());
-      ms_rs.setProperty("string.resource.loader.cache","true");
-      ms_rs.setProperty("string.resource.loader.repository.class","org.apache.velocity.runtime.resource.util.StringResourceRepositoryImpl");
-      ms_rs.setProperty("string.resource.loader.repository.name","string");
+   Properties velProps = new Properties();
+   InputStream input = null;
 
-      // Turn off modification check as we use template for resource key will be immutable
-      //ms_rs.setProperty("string.resource.loader.modificationCheckInterval","1");
+        try
+   {
+      input = new FileInputStream(PSServer.getRxConfigDir() + "/velocity.properties");
+      velProps.load(input);
+   }
+        catch (FileNotFoundException e1)
+   {
+      ms_logger.error("Unable to load velocity.properties file with message:);"
+              + e1.getLocalizedMessage());
+   }
+        catch (IOException e)
+   {
+      ms_logger.error("Unable to read properties from velocity.properties file);"
+              + "with message: " + e.getLocalizedMessage());
+   }
 
-      ms_logger.debug("Sys path: " + sys_templates);
-      ms_rs.addProperty(RuntimeConstants.VM_LIBRARY, m_libraries);
-      ms_logger.debug("Velocity libraries: " + m_libraries);
-      ms_rs.addProperty(RuntimeConstants.VM_PERM_ALLOW_INLINE, "true");
-      ms_rs.addProperty(RuntimeConstants.VM_PERM_ALLOW_INLINE_REPLACE_GLOBAL,
-            "true");
-      ms_rs.addProperty(RuntimeConstants.VM_MESSAGES_ON, "true");
-      ms_rs.addProperty(RuntimeConstants.VM_PERM_INLINE_LOCAL, "true");
-      /*
-       * ms_rs.addProperty(RuntimeConstants.UBERSPECT_CLASSNAME,
-       * "com.percussion.services.assembly.impl.plugin" +
-       * ".PSVelocityAssemblerUberspect");
-       */
-      File logpath = new File(PSServer.getRxDir(), "jetty/base/logs/velocity.log");
-      ms_rs.addProperty(RuntimeConstants.RUNTIME_LOG, logpath
-                  .getAbsolutePath());
-      if (m_reload != null && m_reload.equalsIgnoreCase("yes"))
-      {
-         ms_logger.debug("Reload is on");
-         ms_rs.addProperty(RuntimeConstants.VM_LIBRARY_AUTORELOAD, "true");
-         ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_CACHE, "false");
-      }
-      else
-      {
-         ms_logger.debug("Reload is off, caching is on");
-         ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_CACHE, "true");
-      }
-      try
-      {
-         ms_rs.init();
-      }
-      catch (Exception e)
-      {
-         ms_logger.error("Problem initializing Velocity assembler", e);
-         throw new RuntimeException("Problem initializing Velocity assembler",
-               e);
-      }
 
-      }
+
+
+   ms_rs = new RuntimeInstance();
+
+
+   String sys_templates = getSysTemplateMacroPath();
+   String rx_templates = getLocalTemplateMacroPath();
+
+        try{
+   ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,
+           rx_templates);
+}catch(Exception e){
+   ms_logger.error("Error initializing macros from rx_resources/vm folder!", e);
+   ms_rs.clearProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH);
+}
+
+        try{
+   ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,
+           sys_templates);
+}catch(Exception e){
+   ms_logger.error("Error initializing macros from sys_resources/vm folder!",e);
+   ms_rs.clearProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH);
+}
+
+   m_libraries = getMacroFiles(sys_templates, rx_templates);
+
+   /**
+    * The below updates are set in velocity.properties.
+    * They are being set here, too, as backup defaults
+    * in case the file is missing.
+    */
+        ms_rs.setProperty(RuntimeConstants.VM_PERM_INLINE_LOCAL, "true");
+        ms_rs.setProperty(RuntimeConstants.PARSER_HYPHEN_ALLOWED, "true");
+        ms_rs.setProperty(RuntimeConstants.VM_PERM_ALLOW_INLINE_REPLACE_GLOBAL, "true");
+        ms_rs.setProperty(RuntimeConstants.VM_PERM_ALLOW_INLINE, "true");
+        ms_rs.setProperty(RuntimeConstants.INPUT_ENCODING, "UTF-8");
+        ms_rs.setProperty(RuntimeConstants.CHECK_EMPTY_OBJECTS, "false");
+        ms_rs.setProperty(RuntimeConstants.SPACE_GOBBLING, "bc");
+        ms_rs.setProperty(RuntimeConstants.CONVERSION_HANDLER_CLASS, "none");
+        ms_rs.setProperty(RuntimeConstants.CHECK_EMPTY_OBJECTS, "true");
+        //ms_rs.setProperty(RuntimeConstants.VM_PRESERVE_ARGUMENTS_LITERALS, "true");
+
+
+        if (m_reload != null && m_reload.equalsIgnoreCase("yes"))
+   {
+      ms_logger.debug("Reload is on");
+      ms_rs.addProperty(RuntimeConstants.VM_LIBRARY_AUTORELOAD, "true");
+      ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_CACHE, "false");
+   }
+        else
+   {
+      ms_logger.debug("Reload is off, caching is on");
+      ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_CACHE, "true");
+   }
+
+        try{
+   ms_logger.debug("Sys path: " + sys_templates);
+   ms_rs.addProperty(RuntimeConstants.VM_LIBRARY, m_libraries);
+   ms_logger.debug("Velocity libraries: " + m_libraries);
+}catch(Exception e){
+   ms_log.error("Error initializing Velocity macros.", e);
+   ms_rs.clearProperty(RuntimeConstants.VM_LIBRARY);
+
+}
+
+        try
+   {
+      ms_rs.init(velProps);
+
+
+   }
+        catch (Exception e)
+   {
+      ms_logger.error("Problem initializing Velocity assembler, excluding rx_resources and attempting to re-initialize...", e);
+      ms_rs.clearProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH);
+      ms_rs.clearProperty(RuntimeConstants.VM_LIBRARY);
+      ms_rs.addProperty(RuntimeConstants.VM_LIBRARY, "sys_assembly.vm");
+      ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,sys_templates);
+      ms_rs.init(velProps);
+   }
+
+        ms_logger.debug("The current Velocity configuration is: " + ms_rs.getConfiguration().toString());
+
+   // Remove all compiled templates
+   synchronized (ms_compiled_templates)
+   {
+      ms_compiled_templates = new WeakHashMap<String, Template>();
+   }
+}
    
 }

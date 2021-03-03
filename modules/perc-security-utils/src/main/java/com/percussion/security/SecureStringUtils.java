@@ -36,6 +36,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.owasp.encoder.Encode;
+import org.owasp.encoder.Encoder;
+
 public class SecureStringUtils {
 
 
@@ -324,8 +327,7 @@ public class SecureStringUtils {
      * @return The sanitized string
      */
     public static String sanitizeStringForHTML(String str){
-     //TODO: Implement me
-      throw new RuntimeException("Not implemented");
+       return Encode.forHtml(str);
     }
 
 }

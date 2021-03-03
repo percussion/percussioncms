@@ -159,8 +159,8 @@ public class PSUpgradePluginConvertCommunityVisibilityTest
          InputStream stream = new FileInputStream(
                "UnitTestResources/com/percussion/rxupgrade/rxupgrade.xml");
 
-         DocumentBuilderFactory f = PSSecureXMLUtils.enableSecureFeatures(
-                 DocumentBuilderFactory.newInstance(),false);
+         DocumentBuilderFactory f = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                 false);
 
          DocumentBuilder builder = f.newDocumentBuilder();
          Document doc = builder.parse(stream);
