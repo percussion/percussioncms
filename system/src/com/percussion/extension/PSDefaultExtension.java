@@ -65,7 +65,7 @@ public abstract class PSDefaultExtension implements IPSExtension
     */
    protected Map<String, String> getParameters(Object[] params)
    {
-      Map<String, String> parameters = new HashMap<String, String>();
+      Map<String, String> parameters = new HashMap<>();
       
       if (params != null)
       {

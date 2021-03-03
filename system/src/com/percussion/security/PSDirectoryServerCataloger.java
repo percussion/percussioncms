@@ -160,7 +160,7 @@ public class PSDirectoryServerCataloger extends PSDirectoryCataloger
          criteria = new PSConditional[] {null};
       
       // walk criteria, and build list of conditionals, searching every 1000
-      Map<String, List<String>> filter = new HashMap<String, List<String>>();
+      Map<String, List<String>> filter = new HashMap<>();
       for (int i = 0; i < criteria.length; i++)
       {
          Map<String, String> aFilter = createFilter(criteria[i]);
