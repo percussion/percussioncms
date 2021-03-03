@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -13883,7 +13883,7 @@
             <column name="DESCRIPTOR_NAME">perc.SystemObjects</column>
             <column name="DESCRIPTOR_GUID">8227255686531121153</column>
             <column name="PUBLISHER_NAME">Percussion Software, Inc.</column>
-            <column name="PUBLISHER_URL">http://www.percussion.com</column>
+            <column name="PUBLISHER_URL">https://www.percussion.com</column>
             <column name="DESCRIPTION">Essential Design Objects for Percussion CM System initialization.</column>
             <column name="PKG_VERSION">1.0.0</column>
             <column name="SHIPPED_CONFIG_DEF">

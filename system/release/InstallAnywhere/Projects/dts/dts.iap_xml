@@ -5943,7 +5943,7 @@ Press "Done" to quit the installer.]]></string>
 						</object>
 					</property>
 					<property name="supportURL">
-						<string><![CDATA[http://help.percussion.com/]]></string>
+						<string><![CDATA[https://help.percussion.com/]]></string>
 					</property>
 					<property name="vendorName">
 						<string><![CDATA[Percussion Software, Inc.]]></string>
