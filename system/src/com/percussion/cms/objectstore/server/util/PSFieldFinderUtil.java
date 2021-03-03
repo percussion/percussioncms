@@ -58,7 +58,7 @@ public class PSFieldFinderUtil
     */
    private static List<String> getFields(PSDisplayMapper mapper, String propertyName, String propertyValue)
    {
-      List<String> fieldNames = new ArrayList<String>();
+      List<String> fieldNames = new ArrayList<>();
       Iterator mappings = mapper.iterator();
       while (mappings.hasNext())
       {

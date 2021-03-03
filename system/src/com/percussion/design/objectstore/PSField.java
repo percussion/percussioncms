@@ -3043,7 +3043,7 @@ public class PSField extends PSComponent
     * persisted. Used for meta data needed at runtime.
     */
    private transient Map<String, Object> m_userProps = 
-      new HashMap<String, Object>();
+      new HashMap<>();
 
    /** the XML node name */
    public static final String XML_NODE_NAME = "PSXField";
