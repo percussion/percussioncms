@@ -56,7 +56,7 @@ public class PSExtractComponentUrls
       {
          throw new IllegalArgumentException("document may not be null");
       }
-      m_componentUrls = new HashMap<String,String>();
+      m_componentUrls = new HashMap<>();
       NodeList nl = document.getElementsByTagName("component");
       int count = nl.getLength();
       for(int i = 0; i < count; i++)

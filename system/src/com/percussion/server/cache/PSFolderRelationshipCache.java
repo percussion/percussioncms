@@ -53,7 +53,9 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -93,10 +95,10 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
 
       for (PSRelationship psRelationship : (Iterable<PSRelationship>) rset) {
          if (isDelete) {
-            ms_logger.debug("deleting relationship from relationship cache: " + psRelationship.toString());
+            log.debug("deleting relationship from relationship cache: {} ", psRelationship.toString());
             delete(psRelationship);
          } else {
-            ms_logger.debug("updating relationship from relationship cache: " + psRelationship.toString());
+            log.debug("updating relationship from relationship cache: {} ", psRelationship.toString());
             update(psRelationship);
          }
 
@@ -231,8 +233,8 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
          return; // already stopped
 
       m_isStarted = false;
-      m_relationshipMap = new HashMap<Integer, FolderRelationship>();
-      m_aARelationshipMap = new HashMap<Integer,PSRelationshipData>();
+      m_relationshipMap = new HashMap<>();
+      m_aARelationshipMap = new HashMap<>();
       m_graph = new PSRelationshipGraph();
    }
 
@@ -252,8 +254,8 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       PSStopwatch watch = new PSStopwatch();
       watch.start();
 
-      m_relationshipMap = new HashMap<Integer, FolderRelationship>();
-      m_aARelationshipMap = new HashMap<Integer,PSRelationshipData>();
+      m_relationshipMap = new HashMap<>();
+      m_aARelationshipMap = new HashMap<>();
       m_graph = new PSRelationshipGraph();
       m_aa_graph = new PSRelationshipGraph();
 
@@ -261,7 +263,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       ResultSet rs = null;
       Connection conn = null;
       Integer key;
-      ms_logger.debug("Pre loading folder relationships for folder cache");
+      log.debug("Pre loading folder relationships for folder cache");
       try
       {
          StringBuffer buf = new StringBuffer();
@@ -334,14 +336,14 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       }
 
       int folderRelationshipCount = m_relationshipMap.size();
-      ms_logger.info("Loaded "+folderRelationshipCount+" folder relationships into cache");
+      log.info("Loaded {} folder relationships into cache", folderRelationshipCount);
       
       try
       {
          StringBuffer buf = new StringBuffer();
 
          List<PSRelationshipConfig> aAConfigs = PSRelationshipCommandHandler.getConfigurationSet().getConfigListByCategory(PSRelationshipConfig.CATEGORY_ACTIVE_ASSEMBLY);
-         Map<Integer,PSRelationshipConfig> configIdMap = new HashMap<Integer,PSRelationshipConfig>();
+         Map<Integer,PSRelationshipConfig> configIdMap = new HashMap<>();
          buf.append("SELECT r.RID, r.CONFIG_ID, r.OWNER_ID, r.OWNER_REVISION, r.DEPENDENT_ID, r.DEPENDENT_REVISION, r.SLOT_ID, r.SORT_RANK, r.VARIANT_ID,r.FOLDER_ID,r.SITE_ID, r.INLINE_RELATIONSHIP, WIDGET_NAME FROM ");
          buf.append(PSSqlHelper.qualifyTableName(IPSConstants.PSX_RELATIONSHIPS));
          buf.append(" r INNER JOIN ");
@@ -443,13 +445,13 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
          }
       }
       int activeAssemblyRelationshipCount = m_aARelationshipMap.size();
-      ms_logger.info("Loaded "+activeAssemblyRelationshipCount+" ActiveAssembly relationships into cache");
+      log.info("Loaded {} ActiveAssembly relationships into cache", +activeAssemblyRelationshipCount);
       
       m_isStarted = true;
 
       watch.stop();
-      if (ms_logger.isDebugEnabled())
-         ms_logger.debug("start elapse time: " + watch.toString());
+      if (log.isDebugEnabled())
+         log.debug("start elapse time: {}", watch.toString());
    }
 
    /**
@@ -471,7 +473,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       if (locator == null)
          throw new IllegalArgumentException("locator may not be null");
 
-      List<List<PSLocator>> paths = new ArrayList<List<PSLocator>>();
+      List<List<PSLocator>> paths = new ArrayList<>();
       for (List<PSGraphEntry> pathsList : m_graph.getPathsToRoot(locator, relationshipTypeName))
       {
          paths.add(convertToLocator(pathsList));
@@ -520,7 +522,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
          m_rwlock.readLock().unlock();
       }
 
-      List<PSLocator> owners = new ArrayList<PSLocator>();
+      List<PSLocator> owners = new ArrayList<>();
       for (List<PSLocator> locatorList : locators)
          owners.addAll(locatorList);
 
@@ -557,7 +559,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       {
          m_rwlock.readLock().unlock();
       }
-      List<String> result = new ArrayList<String>();
+      List<String> result = new ArrayList<>();
 
       IPSItemEntry item;
       for (List<PSLocator> locs : locators)
@@ -568,9 +570,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
             item = getItem(Integer.valueOf(loc.getId()));
             if (item == null)
             {
-               ms_logger.info("Cannot find item with content id, "
-                     + loc.getId()
-                     + ", but it exist in folder relationship.");
+               log.info("Cannot find item with content id, {} , but it exist in folder relationship.", loc.getId());
                buffer = new StringBuffer(); // a broken path, reset the buffer
                break;
             }
@@ -636,7 +636,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       {
          m_rwlock.readLock().unlock();
       }
-      List<Integer> ids = new ArrayList<Integer>();
+      List<Integer> ids = new ArrayList<>();
       for (PSGraphEntry c : childObjs)
          ids.add(c.getValue().getId());
       
@@ -683,7 +683,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
     */
    private List<PSLocator> convertToLocator(List<PSGraphEntry> entries)
    {
-      List<PSLocator> locators = new ArrayList<PSLocator>(entries.size());
+      List<PSLocator> locators = new ArrayList<>(entries.size());
 
       for (PSGraphEntry entry : entries)
       {
@@ -763,7 +763,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
          {
             addRelationship(rid, parent, child, relationship.getConfig().getId());
    
-            ms_logger.debug("Inserted " + relationship.getConfig().getName() + " with relationship rid: " + rid);
+            log.debug("Inserted {} with relationship rid: {}", relationship.getConfig().getName() , rid);
          }
       } else {
          PSRelationshipData cache = m_aARelationshipMap.get(rid);
@@ -808,7 +808,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
             rel.setWidgetName(relationship.getProperty(PSRelationshipConfig.PDU_WIDGET_NAME));
             addAARelationship(rel);
    
-            ms_logger.debug("insert aa relationship rid: " + rid);
+            log.debug("insert aa relationship rid: {} ", rid);
          }
       }
    }
@@ -824,14 +824,14 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
     */
    private void logError(Integer rid, int parent, int child, String msg)
    {
-      ms_logger.error("A validation error occurred while modifying the folder "
+      log.error("A validation error occurred while modifying the folder "
          + "tree cache. The offending node is being skipped, but an "
          + "administrator should clean up the database manually if the error "
          + "was a circular dependency."
-         + "\r\nThe problem was: " + msg
-         + "\r\nThe parent content id = " + parent
-         + "\r\nThe child content id = " + child
-         + "\r\nThe relationship id = " + rid);
+         + "\r\nThe problem was: {} "
+         + "\r\nThe parent content id = {} "
+         + "\r\nThe child content id = {} "
+         + "\r\nThe relationship id = {} ", msg, parent, child, rid);
    }
 
    /**
@@ -1127,7 +1127,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       if (parent == null)
          throw new IllegalArgumentException("parent may not be null");
 
-      List<PSRelationship> rels = new ArrayList<PSRelationship>();
+      List<PSRelationship> rels = new ArrayList<>();
       m_rwlock.readLock().lock();
       try
       {
@@ -1171,7 +1171,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       if (child == null)
          throw new IllegalArgumentException("child may not be null");
 
-      List<PSRelationship> rels = new ArrayList<PSRelationship>();
+      List<PSRelationship> rels = new ArrayList<>();
 
       m_rwlock.readLock().lock();
       try
@@ -1242,10 +1242,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
                   config = getRelationshipConfigForId(pathRel.m_configId);
                   if (item == null)
                   {
-                     ms_logger.info("Cannot find content id, "
-                                 + childId.toString()
-                                 + ", in item cache, but it is in folder relationship with rid = "
-                                    + child.getrelationshipId().toString());
+                     log.info("Cannot find content id, {} , in item cache, but it is in folder relationship with rid = {}", child.toString(), child.getrelationshipId().toString());
                   }
                   else if (item.getName().equalsIgnoreCase(childPath) && config != null
                                     && config.getName().equalsIgnoreCase(relationshipTypeName))
@@ -1284,7 +1281,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
          throw new IllegalArgumentException("parentGuid must not be null.");
       
       Integer parentID = parentGuid.getUUID();
-      List<IPSGuid> children = new ArrayList<IPSGuid>();
+      List<IPSGuid> children = new ArrayList<>();
       
       m_rwlock.readLock().lock();
       try
@@ -1462,20 +1459,13 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
               new PSLocator(cache.m_childId));
 
         if (isValid)
-           ms_logger.debug("delete relationship rid: " + rid);
+           log.debug("delete relationship rid: {} ", rid);
         else
-           ms_logger
-                 .warn("delete invalid folder relationship (rid,ownerid,dependentid) : ("
-                       + rid
-                       + ","
-                       + cache.m_parentId
-                       + ","
-                       + cache.m_childId
-                       + ")");
+           log.warn("delete invalid folder relationship (rid,ownerid,dependentid) : ({}, {}, {})", rid, cache.m_parentId, cache.m_childId);
      }
      else
      {
-        ms_logger.debug("delete non-existing relationship rid: " + rid);
+        log.debug("delete non-existing relationship rid: {} ", rid);
      }
   }
   
@@ -1490,22 +1480,13 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
               new PSLocator(cache.getDependentId(),cache.getDependentRevision()));
 
         if (isValid)
-           ms_logger.debug("delete relationship rid: " + rid);
+           log.debug("delete relationship rid: {}", rid);
         else
-           ms_logger
-                 .warn("delete invalid Active Assembly relationship (rid,ownerid,dependentid) : ("
-                       + rid
-                       + ","
-                       + cache.getOwnerId()
-                       + ", revision "
-                        + cache.getOwnerRevision()
-                       + ","
-                       + cache.getDependentId()
-                       + ")");
+           log.warn("delete invalid Active Assembly relationship (rid,ownerid,dependentid) : ( {}, {}, revision {}, {})", rid, cache.getOwnerId(), cache.getOwnerRevision(), cache.getDependentId());
      }
      else
      {
-        ms_logger.debug("delete non-existing relationship rid: " + rid);
+        log.debug("delete non-existing relationship rid: {} ", rid);
      }
   }
 
@@ -1517,16 +1498,16 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
    private void cleanupFolders()
    {
       // get valid folders
-      Set<PSLocator> validFolders = new HashSet<PSLocator>();
+      Set<PSLocator> validFolders = new HashSet<>();
       walkSubFolders(new PSLocator(PSFolder.ROOT_ID), validFolders);
 
       // get invalid folders
-      Set<PSLocator> invalidFolders = new HashSet<PSLocator>(m_graph.getAllParents());
+      Set<PSLocator> invalidFolders = new HashSet<>(m_graph.getAllParents());
       invalidFolders.removeAll(validFolders);
 
       // remove all relationships which relate to the invalid folders
       Iterator<PSLocator> folders = invalidFolders.iterator();
-      List<PSGraphEntry> children = new ArrayList<PSGraphEntry>();
+      List<PSGraphEntry> children = new ArrayList<>();
       
       while (folders.hasNext()) {
          for (PSGraphEntry child : m_graph.getChildrenList(folders.next())) {
@@ -1621,7 +1602,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       if (parent == null)
          throw new IllegalArgumentException("parent may not be null");
 
-      List<PSRelationship> rels = new ArrayList<PSRelationship>();
+      List<PSRelationship> rels = new ArrayList<>();
 
       m_rwlock.readLock().lock();
       try
@@ -1636,9 +1617,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
             if (rel == null)
             {
                
-               ms_logger.debug("Cannot find rid=" + rid
-                     + ", parentId=" + parent.getId() + ", rev="+parent.getRevision()+", childId="
-                     + child.getValue());
+               log.debug("Cannot find rid= {} , parentId= {} , rev= {} , childId= {}", rid, parent.getId(), parent.getRevision(), child.getValue());
                continue;
             }
             String relSlot = rel.getProperty("sys_slotid");
@@ -1659,7 +1638,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       if (child == null)
          throw new IllegalArgumentException("child may not be null");
 
-      List<PSRelationship> rels = new ArrayList<PSRelationship>();
+      List<PSRelationship> rels = new ArrayList<>();
 
       m_rwlock.readLock().lock();
       try
@@ -1675,15 +1654,14 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
             if (rel==null)
             {
                
-               ms_logger.debug("Cannot find rel=" + rid
-               + " for child "+child.getId());
+               log.debug("Cannot find rel= {} for child {} ", rid, child.getId());
             }else {
                PSLocator owner = rel.getOwner();
                int revision = owner.getRevision();
                boolean slotMatch = (slot == null || StringUtils.equals(rel.getProperty("sys_slotid"), slot));
                IPSItemEntry item = getItemCache().getItem(rel.getOwner().getId());
                if (item == null) {
-                  ms_logger.warn("Owner " + rel.getOwner().getId() + " of relationship " + rid + " cannot be found : skipping");
+                  log.warn("Owner {} of relationship {} cannot be found : skipping ", rel.getOwner().getId(), rid);
                   continue;
                }
                if (slotMatch && ((publicRev && item.getPublicRevision() == revision)
@@ -1710,8 +1688,8 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
 
       if (entry == null)
       {
-         if (ms_logger.isDebugEnabled())
-            ms_logger.debug("Aa Relationshp cache miss for rid="+rid);
+         if (log.isDebugEnabled())
+            log.debug("Aa Relationshp cache miss for rid= {} ", rid);
          return null;
       }
 
@@ -1719,23 +1697,15 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       IPSItemEntry item = getItem(Integer.valueOf(entry.getOwnerId()));
       if (item == null)
       {
-         ms_logger.warn(
-               "owner id, "
-                     + entry.getOwnerId()
-                     + ", does not exist in item cache, "
-                     + "but it is an owner of a relationship id, "
-                     + rid + ", which has dependent id: " + entry.getDependentId());
+         log.warn(
+               "owner id, {} , does not exist in item cache, but it is an owner of a relationship id, {} , which has dependent id: {} ", entry.getOwnerId(), rid, entry.getDependentId());
          return null;
       }
       IPSItemEntry dependent = getItem(Integer.valueOf(entry.getDependentId()));
       if (dependent == null)
       {
-         ms_logger.warn(
-               "child id, "
-                     + entry.getDependentId()
-                     + ", does not exist in item cache, "
-                     + "but it is a dependent of relationship id, "
-                     + rid);
+         log.warn(
+               "child id, {} , does not exist in item cache, but it is a dependent of relationship id, {} ", entry.getDependentId(), rid);
          return null;
       }
       
@@ -1901,7 +1871,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   static private Logger ms_logger = Logger.getLogger("FolderCache");
+   private static final Logger log = LogManager.getLogger("FolderCache");
 
    /**
     * Indicates whether it is initialized and in caching mode. <code>true</code>
