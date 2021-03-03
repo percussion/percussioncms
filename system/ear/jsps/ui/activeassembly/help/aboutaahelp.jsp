@@ -1,6 +1,6 @@
 <%--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -48,7 +48,7 @@ String copyRightString = "Copyright \u00a9 1999-"
 		</tr>
 		<tr>
 			<td valign="top" height="50%">
-				<a href="http://www.percussion.com">http://www.percussion.com</a><br /><br />
+				<a href="https://www.percussion.com">https://www.percussion.com</a><br /><br />
 				<p><%=versionString%></p>
 				<p><%=copyRightString%></p>
 			</td>
