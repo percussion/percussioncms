@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -42,11 +42,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Test case for the {@link IPSPkgInfoService} class.
@@ -66,7 +62,7 @@ public class PSPkgInfoServiceTest
 
    final String tcPublisherName = "Persussion Software, Inc.";
 
-   final String tcPublisherUrl = "http://www.percussion.com";
+   final String tcPublisherUrl = "https://www.percussion.com";
 
    final String tcDescription = "A Test Package";
 

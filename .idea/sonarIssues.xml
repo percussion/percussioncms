@@ -13,7 +13,32 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/WebUI/war/app/includes/header.jsp">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/WebUI/war/app/includes/minuetCommonTemplates/navigationTemplates.jsp">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/WebUI/war/plugins/PercImportProgressDialog.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/WebUI/war/widgetbuilder/js/models/PercWidgetFieldsModels.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/cui/components/widgel/dist/widgel-base.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/deliverytiersuite/delivery-tier-suite/delivery-tier-distribution/pom.xml">
           <value>
             <set />
           </value>
@@ -38,6 +63,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/deployer/src/test/java/com/percussion/services/pkginfo/PSPkgInfoServiceTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/modules/CMLight-Main-cactus-tests/pom.xml">
           <value>
             <set />
@@ -48,12 +78,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/modules/extensions-main/src/main/java/com/percussion/filter/DefaultPasswordFilter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/modules/extensions-nav/pom.xml">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/modules/extensions-sfp/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/extensions-sfp/src/main/java/com/percussion/fastforward/sfp/IPSDTDPublisherEdition.java">
           <value>
             <set />
           </value>
@@ -69,6 +109,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/modules/perc-distribution-tree/src/main/resources/distribution/rxconfig/Installer/InstallPackages.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/perc-distribution-tree/src/main/resources/distribution/rxconfig/Installer/data/cmsTableData.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/perc-tinymce/src/main/resources/META-INF/resources/sys_resources/tinymce/plugins/percglobalvariables/editor_plugin.js">
           <value>
             <set />
           </value>
@@ -89,6 +139,216 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/projects/sitemanage/src/main/java/com/percussion/packagemanagement/PSStartupPkgInstaller.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.CategoryDropDownControl/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.FileAssetWidget/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.ImageAutoListWidget/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.PageAutoListWidget/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.Test/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.defaultLanguage/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.eventWidget/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.flashWidget/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.gadget.SiteConfig/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.gadget.bulkFileUpload/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.gadget.comments/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.gadget.effectiveness/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.gadget.globalVariables/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.gadget.licenseMonitor/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.gadget.membership/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.gadget.pageByStatus/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.gadget.processMonitor/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.gadget.seoAuditor/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.gadget.siteImprove/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.gadget.traffic/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.gadget.welcome/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.gadget.widgetConfig/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.responsiveTemplates/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.twitterSummaryCards/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widget.Result/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widget.archiveList/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widget.calendar/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widget.categoryList/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widget.fileAutoList/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widget.form/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widget.iframe/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widget.imageSlider/SupportFile-rx_resources/stylesheets/controls/percImageSliderControl.xsl">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widget.imageSlider/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widget.login/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widget.rss/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widget.secureLogin/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widget.socialButtons/sys__UserDependency--rxconfig/Widgets/percSocialButtons.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widget.taglist/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widget.title/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widgets.comments/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widgets.liked/psx_archiveInfo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/Packages/perc.widgets.nav/psx_archiveInfo.xml">
           <value>
             <set />
           </value>
@@ -133,7 +393,57 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/system/cms/content/applications/sys_resources/ApplicationFiles/i18n/SystemResources.tmx">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/ear/jboss-4.0/tomcat/ROOT.war/index.jsp">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/ear/jsps/ui/activeassembly/help/aboutaahelp.jsp">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/ear/jsps/ui/default-error.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/system/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/release/InstallAnywhere/Projects/devtools/devtools.iap_xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/release/InstallAnywhere/Projects/dts/dts.iap_xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/release/InstallAnywhere/Projects/setup/setup.iap_xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/release/license.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/rxfiletracker/src/com/percussion/filetracker/AboutDialog.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/rxfiletracker/src/com/percussion/filetracker/UTBrowserControl.java">
           <value>
             <set />
           </value>

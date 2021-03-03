@@ -7,7 +7,7 @@
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -65,7 +65,7 @@ if(locale==null){
 	int year = cal.get(Calendar.YEAR);
     String aboutMsg = "<div class=\"perc-about\">"
             + "<div class=\"perc-logo\"></div>"
-            + "<p><a class=\"perc-company-link\" target=\"_blank\" href=\"http://www.percussion.com\">http://www.percussion.com</a></p>"
+            + "<p><a class=\"perc-company-link\" target=\"_blank\" href=\"https://www.percussion.com\">https://www.percussion.com</a></p>"
             + "<p>{0}</p>"
             + "<p>Copyright &copy; " + year + " by Percussion Software Inc.</p>"
             + "</div>";
