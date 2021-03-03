@@ -426,7 +426,7 @@ public class PSFormContentParser extends PSContentParser
                      PSRequest.REQ_XML_DOC_FLAG );
                if(xmlDocValue != null && xmlDocValue.trim().length() != 0)
                {
-                  xmlDocFlags = new ArrayList<String>();
+                  xmlDocFlags = new ArrayList<>();
                   StringTokenizer st = new StringTokenizer(xmlDocValue, ";");
                   while(st.hasMoreTokens())
                      xmlDocFlags.add(st.nextToken());
@@ -525,7 +525,7 @@ public class PSFormContentParser extends PSContentParser
        * the first line of real data which should be a blank line.
        * Check specification in RFC-1521
        */
-      ArrayList<String> headers = new ArrayList<String>();
+      ArrayList<String> headers = new ArrayList<>();
       String firstDataLine;
 
       /* TODO: Need to i18n-alize the name and filename
@@ -971,7 +971,6 @@ public class PSFormContentParser extends PSContentParser
          }
       }
       else {
-         //System.out.println( "Adding param: " + name + "=" + value );
          paramContext.addParam(name, value);
       }
 
@@ -1114,7 +1113,7 @@ public class PSFormContentParser extends PSContentParser
             }
             else
             {
-               ArrayList<Object> l = new ArrayList<Object>();
+               ArrayList<Object> l = new ArrayList<>();
                l.add(o);
                l.add(value);
                m_params.put(name, l);

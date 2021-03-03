@@ -206,7 +206,7 @@ public class PSFieldRetriever
     */
    private Map prepareParams(PSLocator itemId, String fieldName, int childRowId)
    {
-      Map<String, Object> params = new HashMap<String, Object>();
+      Map<String, Object> params = new HashMap<>();
       params.put(IPSHtmlParameters.SYS_COMMAND,
          IPSMimeContentTypes.MIME_ENC_BINARY);
       params.put(IPSHtmlParameters.SYS_CONTENTID, 
