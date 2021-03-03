@@ -652,7 +652,7 @@ public class PSFormatVersion
     *   <tr><td>TEST</td><td>T</tr>
     *</table>
     */
-   private static Map<String, String> ms_buildTypeMap = new HashMap<String, String>();
+   private static Map<String, String> ms_buildTypeMap = new HashMap<>();
    static
    {
       ms_buildTypeMap.put("ALPHA", "A");

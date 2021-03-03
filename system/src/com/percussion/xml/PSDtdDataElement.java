@@ -24,6 +24,9 @@
 
 package com.percussion.xml;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -40,6 +43,7 @@ import java.util.List;
  */
 public class PSDtdDataElement extends PSDtdNode
 {
+   private static final Logger log = LogManager.getLogger(PSDtdDataElement.class);
    /**
     * Construct a PSDtdDataElement
     *
@@ -64,7 +68,7 @@ public class PSDtdDataElement extends PSDtdNode
     */
    public void print(String tab)
    {
-      System.out.println(tab + PCDATA_STRING);
+      log.info(tab + PCDATA_STRING);
    }
 
    /**

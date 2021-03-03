@@ -45,6 +45,8 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.xerces.xni.parser.XMLInputSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -57,6 +59,7 @@ import org.w3c.dom.NodeList;
  */
 public class PSDtdGenerator
 {
+   private static final Logger log = LogManager.getLogger(PSDtdGenerator.class);
    public static void main(String[] args)
    {
       try
@@ -93,15 +96,15 @@ public class PSDtdGenerator
 
             if (fields != null)
             {
-               System.out.println("\n\nFields for above DTD: ");
+               log.info("\n\nFields for above DTD: ");
                for (Iterator k = fields.iterator(); k.hasNext(); )
                {
-                  System.out.println(k.next().toString());
+                  log.info(k.next().toString());
                }
             }
             else
             {
-               System.out.println("Could not catalog fields.");
+               log.info("Could not catalog fields.");
             }
          }
       }

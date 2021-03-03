@@ -57,7 +57,8 @@ import com.percussion.services.error.PSRuntimeException;
 import com.percussion.util.PSIteratorUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import java.io.File;
@@ -876,15 +877,13 @@ public class PSDependencyManager
             catch (PSDeployException e)
             {
                // log the specific dependency that failed, to aid debugging
-               ms_log.error("failure while processing: "
-                     + formatDependencyString(dependency));
+               log.error("failure while processing: {}, Error: {}", formatDependencyString(dependency), e.getMessage());
                throw e;
             }
             catch (RuntimeException | PSNotFoundException | PSAssemblyException e)
             {
                // log the specific dependency that failed, to aid debugging
-               ms_log.error("failure while processing: "
-                     + formatDependencyString(dependency));
+               log.error("failure while processing: {}, , Error: {}", formatDependencyString(dependency), e.getMessage());
                throw new PSRuntimeException(e);
             }
          }
@@ -2357,8 +2356,8 @@ public class PSDependencyManager
    private void createTypeMappings()
    {
       // create the maps
-      m_depToGuidTypeMap = new HashMap<String, PSTypeEnum>();
-      m_guidToDepTypeMap = new HashMap<PSTypeEnum, List<String>>();
+      m_depToGuidTypeMap = new HashMap<>();
+      m_guidToDepTypeMap = new HashMap<>();
       
       // add all mappings
       Iterator defs = m_depMap.getDefs();
@@ -2387,7 +2386,7 @@ public class PSDependencyManager
       List<String> typeList = m_guidToDepTypeMap.get(guidType);
       if (typeList == null)
       {
-         typeList = new ArrayList<String>();
+         typeList = new ArrayList<>();
          m_guidToDepTypeMap.put(guidType, typeList);
       }
       typeList.add(depType);
@@ -2452,7 +2451,7 @@ public class PSDependencyManager
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(
+   private static Logger log = LogManager.getLogger(
          "com.percussion.deploy.server.PSDependencyManager");
 
    /**

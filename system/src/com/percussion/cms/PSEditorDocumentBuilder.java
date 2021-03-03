@@ -564,7 +564,7 @@ public abstract class PSEditorDocumentBuilder
 
          NodeList nl =
             root.getElementsByTagName(PSDisplayFieldElementBuilder.CONTROL_NAME);
-         Set<String> controls = new HashSet<String>(nl.getLength());
+         Set<String> controls = new HashSet<>(nl.getLength());
          for (int i = 0; i < nl.getLength(); i++)
          {
             Element elem = (Element)nl.item(i);
@@ -1565,7 +1565,7 @@ public abstract class PSEditorDocumentBuilder
     * and adds it to the hidden or visible lists in this object. May be empty
     * (although unlikely in practice), never <code>null</code>.
     */
-   private List<IPSBuildStep> m_buildSteps = new ArrayList<IPSBuildStep>(10);
+   private List<IPSBuildStep> m_buildSteps = new ArrayList<>(10);
 
    /**
     * This is the 'action' for the main form of the resulting editor. It is

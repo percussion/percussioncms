@@ -24,6 +24,10 @@
 
 package com.percussion.data.jdbc;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -69,6 +73,7 @@ import java.util.ArrayList;
  */
 public class PSDsnReader
 {
+   private static final Logger log = LogManager.getLogger(PSDsnReader.class);
 
    /**
     * Debugging/Testing main method.
@@ -77,15 +82,15 @@ public class PSDsnReader
    {
       if (args.length != 1)
       {
-         System.out.println("Usage: java com.percussion.data.jdbc.PSDsnReader <odbciniFileName>");
+         log.info("Usage: java com.percussion.data.jdbc.PSDsnReader <odbciniFileName>");
       }
       PSDsnReader reader = new PSDsnReader(args[0]);
       String[] dsnArray = reader.getDsnList();
       if (dsnArray == null)
-         System.out.println("NULL");
+         log.info("NULL");
       else
          for (int i = 0; i < dsnArray.length; i++)
-            System.out.println(dsnArray[i]);      
+            log.info(dsnArray[i]);
    }
 
    /**

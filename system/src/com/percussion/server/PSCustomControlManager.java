@@ -188,7 +188,7 @@ public class PSCustomControlManager extends PSBaseControlManager
     */
    public Set<String> getImports()
    {
-      Set<String> imports = new HashSet<String>();
+      Set<String> imports = new HashSet<>();
          
       try
       {
@@ -268,7 +268,7 @@ public class PSCustomControlManager extends PSBaseControlManager
     */
    public List<File> getControlFiles()
    {
-      List<File> files = new ArrayList<File>();
+      List<File> files = new ArrayList<>();
       
       File ctrlsDir = new File(m_rxRoot, CUSTOM_CONTROLS_DIR);
       if (ctrlsDir.exists() && ctrlsDir.isDirectory())
@@ -375,7 +375,7 @@ public class PSCustomControlManager extends PSBaseControlManager
     * The set of relative system file paths which need to be touched after the
     * import file is updated.
     */
-   private static Set<String> ms_touchFiles = new HashSet<String>();
+   private static Set<String> ms_touchFiles = new HashSet<>();
    
    /**
     * The Rhythmyx root directory.  May be <code>null</code> until
