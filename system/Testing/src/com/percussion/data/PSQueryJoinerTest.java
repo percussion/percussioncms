@@ -24,25 +24,23 @@
 
 package com.percussion.data;
 
+import com.percussion.design.objectstore.PSBackEndColumn;
+import com.percussion.design.objectstore.PSBackEndJoin;
+import com.percussion.design.objectstore.PSBackEndTable;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import org.apache.commons.lang3.RandomStringUtils;
+
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.security.SecureRandom;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Random;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import org.apache.commons.lang.RandomStringUtils;
-
-import com.percussion.design.objectstore.PSBackEndColumn;
-import com.percussion.design.objectstore.PSBackEndJoin;
-import com.percussion.design.objectstore.PSBackEndTable;
 
 /**
  * Unit tests for the query joiner class. 
@@ -53,7 +51,7 @@ public class PSQueryJoinerTest extends TestCase
    public PSQueryJoinerTest(String name)
    {
       super(name);
-      ms_rand = new Random();
+      ms_rand = new SecureRandom();
    }
 
    public void testNormalJoin() throws Exception
@@ -669,5 +667,5 @@ public class PSQueryJoinerTest extends TestCase
    }
 
 
-   protected static Random ms_rand;
+   protected static SecureRandom ms_rand;
 }

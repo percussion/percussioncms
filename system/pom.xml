@@ -254,6 +254,7 @@
                                 <source>uploader/src</source>
                                 <source>misctools/src</source>
                                 <source>Tools/InlineLinkConverter/src</source>
+                                <source>controls/src</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -628,53 +629,35 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/org.apache.jackrabbit/jackrabbit-jcr-commons -->
         <dependency>
             <groupId>org.apache.jackrabbit</groupId>
             <artifactId>jackrabbit-jcr-commons</artifactId>
 
         </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/net.sf.jtidy/jtidy -->
         <dependency>
             <groupId>net.sf.jtidy</groupId>
             <artifactId>jtidy</artifactId>
-
         </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/org.apache.velocity/velocity -->
         <dependency>
             <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-
+            <artifactId>velocity-engine-core</artifactId>
         </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/velocity-tools/velocity-tools-view -->
         <dependency>
-            <groupId>velocity-tools</groupId>
-            <artifactId>velocity-tools</artifactId>
-
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-scripting</artifactId>
         </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/javax.jcr/jcr -->
+        <dependency>
+            <groupId>org.apache.velocity.tools</groupId>
+            <artifactId>velocity-tools-generic</artifactId>
+        </dependency>
         <dependency>
             <groupId>javax.jcr</groupId>
             <artifactId>jcr</artifactId>
-
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.codehaus.jettison/jettison -->
         <dependency>
             <groupId>org.codehaus.jettison</groupId>
             <artifactId>jettison</artifactId>
-
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.jcraft/jsch -->
         <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>
@@ -702,17 +685,10 @@
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-impl</artifactId>
         </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/net.sf.saxon/saxon -->
-        <!-- <dependency> package now net.sf.saxon have to be aware of license 
-            changes also. <groupId>net.sf.saxon</groupId> <artifactId>saxon</artifactId> 
-            <version>7.9.1</version> </dependency> -->
-        <!-- https://mvnrepository.com/artifact/com.icl.saxon/saxon -->
-        <!-- https://mvnrepository.com/artifact/saxon/saxon -->
         <dependency>
             <groupId>saxon</groupId>
             <artifactId>saxon</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.github.jsonld-java</groupId>

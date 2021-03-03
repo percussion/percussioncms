@@ -34,6 +34,7 @@ import org.junit.experimental.categories.Category;
 
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -154,7 +155,7 @@ public class PSCacheAccessTest
        */
       public TestClass()
       {
-         Random r = new Random();
+         SecureRandom r = new SecureRandom();
          
          a = r.nextInt();
          b = r.nextInt();
@@ -180,7 +181,7 @@ public class PSCacheAccessTest
        */
       private String makeRandomString(int seed)
       {
-         Random r = new Random(seed);
+         SecureRandom r = new SecureRandom();
          int len = r.nextInt(500) + 100;
          StringBuilder str = new StringBuilder(len);
          for(int x = 0; x < len; x++)

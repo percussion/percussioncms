@@ -24,6 +24,8 @@
 
 package com.percussion.tools;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -92,7 +94,8 @@ public class Utils
    {
       try
       {
-         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+         DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+          false);
          dbf.setNamespaceAware(true);
          dbf.setValidating(false);
          return dbf.newDocumentBuilder();

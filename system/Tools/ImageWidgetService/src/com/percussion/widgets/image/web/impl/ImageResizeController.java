@@ -37,7 +37,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+      import org.springframework.web.bind.annotation.PostMapping;
+      import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -55,10 +56,10 @@ import java.io.InputStream;
         private ImageCacheManager imageCacheManager;
         private ImageResizeManager imageResizeManager;
 
-        @RequestMapping(method = RequestMethod.POST)
-        protected ModelAndView handle(@ModelAttribute("results") ResizeImageBean bean, BindingResult result)
+        @PostMapping()
+        public ModelAndView handle(@ModelAttribute("results") ResizeImageBean bean, BindingResult result)
         {
-          ModelAndView mav = new ModelAndView(getViewName());
+          ModelAndView mav = new ModelAndView("imageWidgetJSONView");
           try
           {
 
@@ -112,7 +113,7 @@ import java.io.InputStream;
       
         public String getViewName()
         {
-        	return this.viewName;
+        	return "imageWidgetJSONView";
         }
       
         public void setViewName(String viewName)

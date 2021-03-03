@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -40,51 +40,22 @@ import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSSecurityToken;
-import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
-import com.percussion.tablefactory.PSJdbcColumnData;
-import com.percussion.tablefactory.PSJdbcDataTypeMap;
-import com.percussion.tablefactory.PSJdbcDbmsDef;
-import com.percussion.tablefactory.PSJdbcRowData;
-import com.percussion.tablefactory.PSJdbcSelectFilter;
-import com.percussion.tablefactory.PSJdbcTableData;
-import com.percussion.tablefactory.PSJdbcTableFactory;
-import com.percussion.tablefactory.PSJdbcTableFactoryException;
-import com.percussion.tablefactory.PSJdbcTableSchema;
-import com.percussion.tablefactory.PSJdbcTableSchemaCollection;
-import com.percussion.tablefactory.PSJdbcUpdateKey;
+import com.percussion.tablefactory.*;
 import com.percussion.util.PSEntrySet;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.utils.container.IPSJndiDatasource;
-import com.percussion.utils.jdbc.IPSConnectionInfo;
-import com.percussion.utils.jdbc.IPSDatasourceResolver;
-import com.percussion.utils.jdbc.PSConnectionDetail;
-import com.percussion.utils.jdbc.PSConnectionHelper;
-import com.percussion.utils.jdbc.PSDatasourceConfig;
+import com.percussion.utils.jdbc.*;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;
 
 import javax.naming.NamingException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Types;
-import java.util.ArrayList;
+import java.sql.*;
 import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Singleton class to provide common database read/write functionality.
@@ -1028,9 +999,9 @@ public class PSDbmsHelper
       String filterCol, int filterColValue)
       throws PSDeployException
    {
-      if (table == null || table.trim().length() == 0 || !SecureStringUtils.isValidTableOrColumnName(table))
+      if (table == null || table.trim().length() == 0 )
          throw new IllegalArgumentException("table may not be null, empty, or invalid");
-      if (idCol == null || idCol.trim().length() == 0 || !SecureStringUtils.isValidTableOrColumnName(idCol) )
+      if (idCol == null || idCol.trim().length() == 0 )
          throw new IllegalArgumentException("idCol may not be null, empty, or invalid");
 
       Connection conn = null;

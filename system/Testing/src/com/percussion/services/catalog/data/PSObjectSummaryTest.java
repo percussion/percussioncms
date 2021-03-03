@@ -31,6 +31,7 @@ import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
@@ -47,7 +48,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class PSObjectSummaryTest
 {
-   private static Random ms_rand = new Random(System.currentTimeMillis()); 
+   private static SecureRandom ms_rand = new SecureRandom();
 
    public PSObjectSummaryTest(){}
    /**

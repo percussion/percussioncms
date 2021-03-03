@@ -33,6 +33,7 @@ import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -119,7 +120,7 @@ public class PSFolderTreeCreator
       paths[1] = destPath;
       List<PSFolder> folders = contentWs.loadFolders(paths);
 
-      Random r = new Random(System.currentTimeMillis());
+      SecureRandom r = new SecureRandom();
 
       int remaining = folderCount;
       while (remaining > 0)

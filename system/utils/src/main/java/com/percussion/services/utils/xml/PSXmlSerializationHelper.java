@@ -517,8 +517,7 @@ public class PSXmlSerializationHelper
                "xmlsource may not be null or empty");
       }
       FindIdAttribute fia = new FindIdAttribute();
-      SAXParserFactory fact = PSSecureXMLUtils.enableSecurityFeatures(
-              SAXParserFactory.newInstance(),false);
+      SAXParserFactory fact = PSSecureXMLUtils.getSecuredSaxParserFactory(false);
 
       try
       {

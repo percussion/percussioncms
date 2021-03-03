@@ -38,6 +38,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Random;
 
@@ -85,7 +86,7 @@ public class PSPubServerDaoTest
    /**
     * 
     */
-   static Random ms_random = new Random(System.currentTimeMillis());
+   static SecureRandom ms_random = new SecureRandom();
 
    IPSSite m_site;
    static PSPubServerDaoTest instance;

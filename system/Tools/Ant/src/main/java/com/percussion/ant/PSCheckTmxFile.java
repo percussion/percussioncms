@@ -32,10 +32,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
-
+import com.percussion.security.xml.PSSecureXMLUtils.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.w3c.dom.Document;
@@ -49,7 +53,10 @@ import org.w3c.dom.NodeList;
  * actually exist. Spit out errors for the ones that don't exist.
  */
 public class PSCheckTmxFile extends Task
-{   
+{
+
+   private static final Logger log = LogManager.getLogger(PSCheckTmxFile.class);
+
    public String getClassdir()
    {
       return m_classdir;
@@ -105,8 +112,10 @@ public class PSCheckTmxFile extends Task
       try
       {
          // Load the tmx file
-         DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
-         DocumentBuilder builder = fact.newDocumentBuilder();
+         DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                 false);
+
+         DocumentBuilder builder = dbf.newDocumentBuilder();
          File tmxfile = new File(m_tmxPath);
          
          handleOutput("tmx file: " + m_tmxPath);
@@ -259,17 +268,10 @@ public class PSCheckTmxFile extends Task
       throws IOException
    {
       Properties props = new Properties();
-      FileInputStream in = null;
       
-      try
+      try(FileInputStream in = new FileInputStream(file) )
       {
-         in = new FileInputStream(file);
          props.load(in);
-      }
-      finally
-      {
-        if(in != null)
-           in.close();
       }
       
       return props;

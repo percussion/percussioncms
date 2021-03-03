@@ -41,6 +41,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
@@ -71,7 +72,7 @@ public class PSHibernateInterceptorTest
    /**
     * Generate some random numbers for the test
     */
-   private static Random ms_rand = new Random(System.currentTimeMillis());
+   private static SecureRandom ms_rand = new SecureRandom();
 
    /**
     * Filter name for mutable filter instance
