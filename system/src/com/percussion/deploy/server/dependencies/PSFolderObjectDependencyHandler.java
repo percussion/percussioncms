@@ -566,7 +566,7 @@ public abstract class PSFolderObjectDependencyHandler
       Iterator result = null;
       if (exists)
       {
-         List<String> paths = new ArrayList<String>();
+         List<String> paths = new ArrayList<>();
          Iterator children = getChildFolderSummaries(processor, loc);
          while (children.hasNext())
          {
@@ -604,7 +604,7 @@ public abstract class PSFolderObjectDependencyHandler
 
       try
       {
-         List<PSComponentSummary> summaries = new ArrayList<PSComponentSummary>();
+         List<PSComponentSummary> summaries = new ArrayList<>();
          PSComponentSummary[] sums = processor.getChildren(FOLDER_TYPE,
             locator);
          for (int i = 0; i < sums.length; i++)
@@ -646,7 +646,7 @@ public abstract class PSFolderObjectDependencyHandler
 
       try
       {
-         List<PSComponentSummary> summaries = new ArrayList<PSComponentSummary>();
+         List<PSComponentSummary> summaries = new ArrayList<>();
          PSComponentSummary[] sums = processor.getChildren(FOLDER_TYPE,
             locator);
          for (int i = 0; i < sums.length; i++)
@@ -1021,7 +1021,7 @@ public abstract class PSFolderObjectDependencyHandler
     */
    private String[] parseFolderPath(String path)
    {
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
 
       StringTokenizer tok = new StringTokenizer(path, PATH_SEP);
       while (tok.hasMoreTokens())

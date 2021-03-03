@@ -114,7 +114,10 @@ public class MainDTSPreInstall {
             if(Files.exists(f.toPath()) && !Files.exists(f2.toPath())){
                 isProduction="false";
             }
-            if(isProduction == null || isProduction.isEmpty()){
+            //if isProduction value is not passed in and we are not able to figure out either, then set the value to be true
+            //e.g. in case of upgrade installer is passing value $DTS_SERVER_TYPE$, which doesn't match any of the cases and thus fails
+            if(isProduction == null || isProduction.isEmpty() ||
+                    (!isProduction.equalsIgnoreCase("true") && !isProduction.equalsIgnoreCase("false"))){
                 isProduction="true";//change done for dev environment
             }
 
@@ -221,7 +224,7 @@ public class MainDTSPreInstall {
 
 
         ProcessBuilder builder = new ProcessBuilder(
-                javabin,"-Dinstall.prod.dts="+isProduction,"-Dfile.encoding=UTF8","-Dsun.jnu.encoding=UTF8","-Dinstall.dir="+dir, "-jar", jar.toAbsolutePath().toString(),"-f",ANT_INSTALL).directory(execPath.toFile());
+                javabin,"-Dinstall.prod.dts="+isProduction,"-Dfile.encoding=UTF8","-Dsun.jnu.encoding=UTF8","-Dinstall.dir="+dir, "-Drxdeploydir="+dir,"-jar", jar.toAbsolutePath().toString(),"-f",ANT_INSTALL).directory(execPath.toFile());
         Process process = builder.inheritIO().start();
         process.waitFor();
         return process.exitValue();

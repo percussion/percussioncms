@@ -24,6 +24,9 @@
 
 package com.percussion.xml;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +46,8 @@ import java.util.List;
  * @since      1.0
  */
 public class PSDtdNode implements Serializable {
+
+   private static final Logger log = LogManager.getLogger(PSDtdNode.class);
 
    /**
     *   Default Constructor.
@@ -170,7 +175,7 @@ public class PSDtdNode implements Serializable {
     */
    public void print(String tab)
    {
-      System.out.print(tab + "Undefined node");
+      log.info(tab + "Undefined node");
    }
 
    /**
