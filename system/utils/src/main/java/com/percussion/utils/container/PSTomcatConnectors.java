@@ -65,8 +65,8 @@ public class PSTomcatConnectors extends PSAbstractXmlConnectors {
             this.laxFile = rxDir.resolve(CM1_LEGACY_LAX_FILE_LINUX);
         }
 
-
-        this.propertiesFile = dtsRoot.resolve("conf/perc/perc-catalina.properties");
+        this.propertiesFile = dtsRoot.resolve("Server/conf/perc/perc-catalina.properties");
+        System.out.println("Perc-Catalina properties file*********" + this.propertiesFile);
     }
 
     public String getOperatingSystem() {
@@ -87,6 +87,7 @@ public class PSTomcatConnectors extends PSAbstractXmlConnectors {
     public void load() {
         Map<String,String> props=null;
         if (Files.exists(propertiesFile)) {
+            System.out.println("Perc-Catalina Exists *********" + this.propertiesFile);
             props = loadProperties(propertiesFile);
         }
         if(getServerFile().toFile().exists()) {
