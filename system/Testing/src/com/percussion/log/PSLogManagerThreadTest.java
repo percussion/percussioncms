@@ -31,6 +31,7 @@ import com.percussion.testing.PSRequestHandlerTestSuite;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.Properties;
 
 import com.percussion.utils.testing.IntegrationTest;
@@ -94,7 +95,7 @@ public class PSLogManagerThreadTest extends PSConfigHelperTestCase
          super(group, name);
          m_waitLimitMs = waitLimitMs;
          m_runForMs = runForMs;
-         m_rand = new java.util.Random(this.activeCount());
+         m_rand = new SecureRandom();
       }
 
       public void run() {
@@ -142,7 +143,7 @@ public class PSLogManagerThreadTest extends PSConfigHelperTestCase
       }
       private long m_waitLimitMs;
       private long m_runForMs;
-      java.util.Random m_rand;
+      SecureRandom m_rand;
    }
 
 

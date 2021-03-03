@@ -148,7 +148,7 @@
                     }
                 }
                 else  {
-                    this._applyDataToPlainProperty(data, vModel, field)
+                    this._applyDataToPlainProperty(data, vModel, field);
                 }
             }
         },
@@ -322,7 +322,7 @@
         }
         // if all else fails...
         return false;
-    }
+    };
 
     // twoWayBind 
     //   - binds two observables to eachother so that changes in either one are reflected to the other
@@ -354,7 +354,7 @@
         
         // sync values
         otherObservable(thisObservable());
-    }
+    };
 
     // oneWayBind 
     //   - binds this observable to another one so that changes in this one are reflected to the other
@@ -374,7 +374,7 @@
          
         // sync values
         otherObservable(thisObservable());
-    }
+    };
 
     // custom Knockout observable extenders
 
@@ -464,12 +464,12 @@
                 var timeRatio = 50 / timeToEnd;
                 var deltaStep = deltaToEndValue * timeRatio;
                 target(currentValue + deltaStep);
-                lastTimeoutID = setTimeout(function () { onAnimate(finalValue, timeToEnd - 50) }, 50);
+                lastTimeoutID = setTimeout(function () { onAnimate(finalValue, timeToEnd - 50); }, 50);
             };
             
             // 20 frames per second
-            lastTimeoutID = setTimeout(function () { onAnimate(newValue, duration) }, 50);
-        }
+            lastTimeoutID = setTimeout(function () { onAnimate(newValue, duration); }, 50);
+        };
         return target;
     };
 
@@ -544,7 +544,7 @@
     ko.subscribable.fn.subscribeAndCall = function (callback) {
         this.subscribe(callback);
         callback(this());
-    }
+    };
     
     return "SUCCESS: widGEL.baseWidget Registered.";
 });

@@ -33,6 +33,7 @@ import com.percussion.delivery.caching.data.PSCacheRegion;
 import com.percussion.delivery.caching.data.PSInvalidateRequest;
 import com.percussion.delivery.caching.utils.PSJaxbUtils;
 import com.percussion.security.PSSecureProperty;
+import com.percussion.security.xml.PSSecureXMLUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
@@ -330,7 +331,7 @@ public class PSCacheManager implements IPSCacheManager
     {
         try
         {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(false);
             DocumentBuilder db = dbf.newDocumentBuilder();
             InputSource is = new InputSource(new StringReader(in));
             return db.parse(is);

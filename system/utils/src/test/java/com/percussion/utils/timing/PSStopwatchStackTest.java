@@ -23,6 +23,7 @@
  */
 package com.percussion.utils.timing;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 import junit.framework.TestCase;
@@ -95,7 +96,7 @@ public class PSStopwatchStackTest extends TestCase
    public void testOverhead() throws Exception
    {
       int count = 0;
-      Random rand = new Random(1);
+      SecureRandom rand = new SecureRandom();
       PSStopwatch sw = new PSStopwatch();
       PSStopwatchStack sws = PSStopwatchStack.getStack();
       String cats[] =

@@ -49,6 +49,7 @@ import org.junit.experimental.categories.Category;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -81,7 +82,7 @@ public class PSSiteManagerTest
    /**
     * 
     */
-   static Random ms_random = new Random(System.currentTimeMillis());
+   static SecureRandom ms_random = new SecureRandom();
 
    @Test
    public void testSiteTemplateAssociation() throws Exception

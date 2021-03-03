@@ -30,6 +30,7 @@ import com.percussion.delivery.integrations.ems.model.MCEventDetail;
 import com.percussion.delivery.integrations.ems.model.MCEventType;
 import com.percussion.delivery.integrations.ems.model.MCGrouping;
 import com.percussion.delivery.integrations.ems.model.MCLocation;
+import com.percussion.security.xml.PSSecureXMLUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.apache.logging.log4j.LogManager;
@@ -151,7 +152,9 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 	private List<MCEventDetail> parseEventDetailXML(String xml) {
 		List<MCEventDetail> ret = new ArrayList<>();
 		
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+				false
+		);
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);
 		DocumentBuilder db = null;

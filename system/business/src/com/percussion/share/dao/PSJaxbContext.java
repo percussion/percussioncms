@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,8 +24,9 @@
 
 package com.percussion.share.dao;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -36,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PSJaxbContext
 {
-   private static final Log log = LogFactory.getLog(PSJaxbContext.class);
+   private static final Logger log = LogManager.getLogger(PSJaxbContext.class);
 
    // singleton pattern: one instance per class.
    private static Map<Class,PSJaxbContext> singletonMap = new ConcurrentHashMap<>();
@@ -64,10 +65,14 @@ public class PSJaxbContext
 
    public static Marshaller createMarshaller(Class<?> aClass) {
       try {
-         return get(aClass).createMarshaller();
+         Marshaller m = get(aClass).createMarshaller();
+         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+         m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+         return m;
       }catch (JAXBException e)
          {
-            log.error("FATAL... Unable to create JAXB Marshaller",e);
+            log.error("FATAL... Unable to create JAXB Marshaller: {}",e.getMessage());
+            log.debug(e.getMessage(),e);
             return null;
          }
    }
@@ -77,7 +82,8 @@ public class PSJaxbContext
          return get(aClass).createUnmarshaller();
       }catch (JAXBException e)
       {
-         log.error("FATAL... Unable to create JAXB Unmarshaller",e);
+         log.error("FATAL... Unable to create JAXB Unmarshaller: {}",e.getMessage());
+         log.debug(e.getMessage(),e);
          return null;
       }
    }
