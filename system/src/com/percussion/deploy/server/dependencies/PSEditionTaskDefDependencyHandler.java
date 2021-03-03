@@ -89,7 +89,7 @@ public class PSEditionTaskDefDependencyHandler
          throw new IllegalArgumentException("dep may not be null");
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
+      List<PSDependency> childDeps = new ArrayList<>();
 
       // get the extension dependency
       List<PSDependency> extDeps = getExtensionDependencies(tok, dep);
@@ -107,8 +107,8 @@ public class PSEditionTaskDefDependencyHandler
     */
    private List<PSDependency> getExtensionDependencies(
          PSSecurityToken tok, PSDependency dep) throws PSDeployException, PSNotFoundException {
-      List<PSDependency> childDeps = new ArrayList<PSDependency>();
-      List<String> exts = new ArrayList<String>();
+      List<PSDependency> childDeps = new ArrayList<>();
+      List<String> exts = new ArrayList<>();
       
       IPSEditionTaskDef task = findEditionTask(dep.getDependencyId());
       if (task != null)
@@ -136,7 +136,7 @@ public class PSEditionTaskDefDependencyHandler
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       
       Set<IPSEditionTaskDef> tasks = findAllEditionTasks();
       for (IPSEditionTaskDef task : tasks)
@@ -283,7 +283,7 @@ public class PSEditionTaskDefDependencyHandler
     */
    private Set<IPSEditionTaskDef> findAllEditionTasks()
    {
-      Set<IPSEditionTaskDef> tasks = new HashSet<IPSEditionTaskDef>();
+      Set<IPSEditionTaskDef> tasks = new HashSet<>();
       
       List<IPSEdition> editions = m_pubSvc.findAllEditions("");
       for (IPSEdition edition : editions)
@@ -378,7 +378,7 @@ public class PSEditionTaskDefDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    /**
     * Get the publisher service.
