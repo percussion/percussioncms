@@ -115,7 +115,7 @@ public class PSFolderPermissionsDataFilter implements IPSResultSetDataFilter
    // see interface
    public List getColumns()
    {
-      List<String> cols = new ArrayList<String>();
+      List<String> cols = new ArrayList<>();
       cols.add(m_folderIdColName);
       
       return cols;
