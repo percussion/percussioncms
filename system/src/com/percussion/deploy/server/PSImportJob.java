@@ -54,7 +54,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 
@@ -63,6 +64,7 @@ import org.w3c.dom.Document;
  */
 public class PSImportJob  extends PSDeployJob
 {
+   private static final Logger log = LogManager.getLogger(PSImportJob.class);
    /**
     * Restores the import descriptor from the supplied document, and validates
     * that the user is authorized to perform this job.  Saves the security token
@@ -90,7 +92,7 @@ public class PSImportJob  extends PSDeployJob
       try 
       {
          m_descriptor = new PSImportDescriptor(descriptor.getDocumentElement());
-         List<PSDeployableElement> pkgList = new ArrayList<PSDeployableElement>();
+         List<PSDeployableElement> pkgList = new ArrayList<>();
          Iterator importPkgs = m_descriptor.getImportPackageList().iterator();
          while (importPkgs.hasNext())
          {
@@ -226,8 +228,7 @@ public class PSImportJob  extends PSDeployJob
          setStatusMessage("error: " + ex.getLocalizedMessage());
          ctx.setCurrentDependency(null);
          setStatus(-1);
-         LogFactory.getLog(getClass()).error("Error installing MSM archive", 
-            ex);
+         log.error("Error installing MSM archive", ex.getMessage());
       }
       finally
       {

@@ -38,6 +38,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -53,6 +55,7 @@ import org.w3c.dom.Element;
  */
 public class PSKey implements IPSCmsComponent, Serializable
 {
+   private static final Logger log  = LogManager.getLogger(PSKey.class);
    /**
     * Creates an assigned key. An assigned key has values for the key parts.
     * The constructed object will not need generate id,
@@ -632,7 +635,9 @@ public class PSKey implements IPSCmsComponent, Serializable
       }
       catch (Exception e)
       { /* not possible */
-         System.out.println("PSKey.clone() caught exception: \n" + e.toString());
+         log.error("Error : {} ", e.getMessage());
+         log.error("PSKey.clone() caught exception: \n {}", e.toString());
+         log.debug(e.getMessage(),e);
       }
 
       return copy;
