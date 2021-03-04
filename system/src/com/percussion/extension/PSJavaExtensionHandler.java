@@ -29,6 +29,8 @@ import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,8 +42,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 
 /**
  * The base class for handling compiled Java extensions.
@@ -82,8 +83,8 @@ public class PSJavaExtensionHandler extends PSExtensionHandler implements IPSNot
          }
          catch (Exception e)
          {
-            ms_log.error("Failed to register jar file, "
-                  + tgtFile.getAbsolutePath(), e);
+            log.error("Failed to register jar file, {} , Error : {} ", tgtFile.getAbsolutePath(), e.getMessage());
+            log.debug(e.getMessage(),e);
          }
       }
    }
@@ -499,10 +500,10 @@ public class PSJavaExtensionHandler extends PSExtensionHandler implements IPSNot
     * Defaults to be an empty list. This list is populated by the packaging
     * tool or MSM.
     */
-   private static Set<URL> ms_extraJars = new HashSet<URL>();
+   private static Set<URL> ms_extraJars = new HashSet<>();
    
    /**
     * Logger for the assembler.
     */
-   public static Log ms_log = LogFactory.getLog("PSJavaExtensionHandler");   
+   public static Logger log = LogManager.getLogger("PSJavaExtensionHandler");
 }

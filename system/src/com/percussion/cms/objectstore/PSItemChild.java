@@ -82,7 +82,7 @@ public class PSItemChild extends PSItemComponent
     */
    private void init()
    {
-      m_entryList = new ArrayList<PSItemChildEntry>();
+      m_entryList = new ArrayList<>();
    }
 
    /**

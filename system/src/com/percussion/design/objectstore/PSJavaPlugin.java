@@ -435,7 +435,7 @@ public class PSJavaPlugin implements IPSJavaPlugin
     * <code>null</code> or empty after initialization.
     */
    private static Map<String, String> ms_familyClassIds = 
-      new HashMap<String, String>();
+      new HashMap<>();
    
    static
    {

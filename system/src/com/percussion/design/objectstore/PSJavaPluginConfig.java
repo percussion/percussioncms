@@ -32,6 +32,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -40,6 +42,7 @@ import org.w3c.dom.NodeList;
  */
 public class PSJavaPluginConfig implements IPSJavaPluginConfig
 {
+   private static final Logger log = LogManager.getLogger(PSJavaPluginConfig.class);
    /**
     * Default ctor. Creates the configuration with just one entry for the
     * default plugin.
@@ -366,8 +369,8 @@ public class PSJavaPluginConfig implements IPSJavaPluginConfig
          String userAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)";
          String bkey = getBrowserKeyFromUserAgent(userAgent);
          String oskey = getOSKeyFromUserAgent(userAgent);
-         System.out.println("Browser: " + bkey);
-         System.out.println("OS: " + oskey);
+         log.info("Browser: {} ", bkey);
+         log.info("OS: {} ", oskey);
       }
       catch(Exception e)
       {

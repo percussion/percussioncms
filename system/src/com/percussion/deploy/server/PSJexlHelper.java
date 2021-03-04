@@ -69,7 +69,7 @@ public class PSJexlHelper extends PSServiceJexlEvaluatorBase
          String exp)
    {
       HashMap<String, List<String>> bindingsMap = 
-         new HashMap<String, List<String>>();
+         new HashMap<>();
       bindingsMap.put(SYS,  parseExpression(SYS_PREFIX, exp));
       bindingsMap.put(USER, parseExpression(USER_PREFIX, exp));
       return bindingsMap;
@@ -87,7 +87,7 @@ public class PSJexlHelper extends PSServiceJexlEvaluatorBase
          throw new IllegalArgumentException(
                "JEXL expression may not be null or empty");
       
-      List<String> extNames = new ArrayList<String>();
+      List<String> extNames = new ArrayList<>();
       // search for pattern such as "$sys.*.*("
       Pattern p = Pattern.compile((prefix==SYS_PREFIX?SYS_PATTERN:USER_PATTERN));
       Matcher m = p.matcher(exp.toLowerCase());
@@ -155,7 +155,7 @@ public class PSJexlHelper extends PSServiceJexlEvaluatorBase
    /**
     * A holder of extension names such as "$sys.codec", "$user.myext" etc
     */
-   private HashSet<String> m_extNameSet   = new HashSet<String>();
+   private HashSet<String> m_extNameSet   = new HashSet<>();
    
    /**
     * Place holder for system Extensions that are used for JEXL context
