@@ -517,7 +517,7 @@ public class PSErrorManagerImpl implements IPSErrorManager {
     * PSLogError subclass as the key and the error URL (URL) as the value.
     */
    static private Hashtable<String, PSMapClassToObject> m_errorURLs =
-         new Hashtable<String, PSMapClassToObject>();
+         new Hashtable<>();
 
    /**
     * This is a hash table using Locale.toString as the key and the
@@ -527,7 +527,7 @@ public class PSErrorManagerImpl implements IPSErrorManager {
     * resource bundle containing our error strings in the specified locale
     */
    static private Hashtable<String, ResourceBundle>   m_errorStrings =
-         new Hashtable<String, ResourceBundle>();
+         new Hashtable<>();
 
    /**
     * The default locale to use when one is not specified.

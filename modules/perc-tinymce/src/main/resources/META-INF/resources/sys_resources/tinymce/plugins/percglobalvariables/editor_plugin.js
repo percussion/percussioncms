@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -147,8 +147,8 @@
 			return {
 				longname : 'Insert global variables',
 				author : 'Percussion Software Inc.',
-				authorurl : 'http://www.percussion.com',
-				infourl : 'http://help.percussion.com/cm1',
+				authorurl : 'https://www.percussion.com',
+				infourl : 'https://help.percussion.com/cm1',
 				version : tinymce.majorVersion + "." + tinymce.minorVersion
 			};
 		},

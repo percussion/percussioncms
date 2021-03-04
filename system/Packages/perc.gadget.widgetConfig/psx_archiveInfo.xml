@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -38,7 +38,7 @@
       <PSXExportDescriptor archiveType="normal">
          <PSXDescriptor id="1960605656696235792" name="perc.gadget.widgetConfig">
             <Description/>
-            <Publisher name="Percussion Software Inc." url="http://www.percussion.com"/>
+            <Publisher name="Percussion Software Inc." url="https://www.percussion.com"/>
             <CmsVersion max="9.0.0" min="3.4.2"/>
             <Version>1.1.2</Version>
             <ImplConfigFile/>

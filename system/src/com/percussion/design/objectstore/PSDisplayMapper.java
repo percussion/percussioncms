@@ -372,7 +372,7 @@ public class PSDisplayMapper extends PSCollectionComponent
       if (matchedMapping == null)
          return null;
       else 
-         return new PSPair<PSDisplayMapping, Integer>(matchedMapping, sequence);
+         return new PSPair<>(matchedMapping, sequence);
    }
 
    /**

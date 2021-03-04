@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,21 +23,10 @@
  */
 package com.percussion.filetracker;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 /**
  * Taken from XSpLit and modified slightly.<p/>
@@ -201,7 +190,7 @@ public class AboutDialog extends JDialog
     */
    JLabel m_labelUrl = null;
 
-   public static final String PERCUSSION_URL = "http://www.percussion.com";
+   public static final String PERCUSSION_URL = "https://www.percussion.com";
 
 
    //Image for to display in the dialog box.

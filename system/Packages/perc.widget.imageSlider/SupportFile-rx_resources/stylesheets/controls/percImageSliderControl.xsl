@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -160,7 +160,7 @@
 								<input alt="Browse Internal Pages" id="perc-image-slider-browse-button" class="perc-select-button perc-page-field-select-button" type="button" for="perc-content-edit-imageLinkField" value="&#xf002;"></input>
 							</td>
 							<td class="perc-input-td perc-slider-image-external-link-td">
-								<input name="imageExternalLinkField" class="datadisplay perc-slider-image-external-link" style="height: 15px;padding-top: 3px;padding-bottom: 5px;" placeholder="http://www.percussion.com"></input>
+								<input name="imageExternalLinkField" class="datadisplay perc-slider-image-external-link" style="height: 15px;padding-top: 3px;padding-bottom: 5px;" placeholder="https://www.percussion.com"></input>
 							</td>
 							<td class="perc-input-td perc-slider-image-link-setting-td">
 								<select id="perc-slider-image-link-setting" class="perc-slider-image-link-setting-select" name="imageLinkSettingField">

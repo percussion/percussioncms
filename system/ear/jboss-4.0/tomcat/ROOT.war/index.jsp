@@ -1,7 +1,7 @@
 <%@page%>
 <%--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -58,7 +58,7 @@ if (method.equals("OPTIONS") || method.equals("PROPFIND"))
 <li><a href="/Rhythmyx/sys_resources/ui/gwt/com.percussion.gwt.pkgmgtui.PkgMgtUI/PkgMgtUI.html" title="Package Manager">Package Manager</a></li>
 <li><a href="/Rhythmyx/test" title="Testing and Debugging tools for implementers">Testing and Debugging tools for implementers</a></li>
 <li><a href="/Rhythmyx/taxonomy/taxonomy.htm" title="Taxonomy Admin">Taxonomy Admin</a></li>
-<li><a href="http://www.percussion.com/" title="Percussion Home Page">Percussion Home Page</a></li>
+<li><a href="https://www.percussion.com/" title="Percussion Home Page">Percussion Home Page</a></li>
 <li><a href="/Rhythmyx/linkback/help" title="Linkback Help">Linkback Help</a></li>
 <li><a href="/Rhythmyx/Administration/DeveloperTools/InstData/Windows/VM/devToolsSetup.exe" title="Developer Tools Installer">Developer Tools</a></li>
 </ul>
