@@ -174,7 +174,7 @@ public class PSKeyConverter
    {
       if (piece2.trim().length() == 0)
          return piece1;
-      List<String> parts = new ArrayList<String>();
+      List<String> parts = new ArrayList<>();
       parts.add(piece1);
       parts.add(piece2);  
       return PSStringOperation.append(parts, delim);      

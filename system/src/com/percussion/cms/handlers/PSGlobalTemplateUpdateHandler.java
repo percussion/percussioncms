@@ -233,7 +233,7 @@ public class PSGlobalTemplateUpdateHandler
     */
    public Iterator getRequestRoots()
    {
-      final List<String> roots = new ArrayList<String>(1);
+      final List<String> roots = new ArrayList<>(1);
       roots.add(getName());
       return roots.iterator();
    }
@@ -507,7 +507,7 @@ public class PSGlobalTemplateUpdateHandler
       String[] keys = handler.getKeyNames();
       int numKeys = keys.length;
 
-      Map<String, String> keyMap = new HashMap<String, String>(numKeys);
+      Map<String, String> keyMap = new HashMap<>(numKeys);
       //Set all keys empty to flush entire assembly cache
       for (int i = 0; i < numKeys; i++)
       {

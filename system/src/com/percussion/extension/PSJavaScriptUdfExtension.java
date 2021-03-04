@@ -314,7 +314,7 @@ public class PSJavaScriptUdfExtension implements IPSUdfProcessor
    private static HashMap<String, Boolean> ms_truthMap;
 
    static {
-      ms_truthMap = new HashMap<String, Boolean>();
+      ms_truthMap = new HashMap<>();
       /* True */                           /* False */
 //      ms_truthMap.put ("TRUE", btrue);      ms_truthMap.put ("FALSE", bfalse);
 //      ms_truthMap.put ("True", btrue);      ms_truthMap.put ("False", bfalse);

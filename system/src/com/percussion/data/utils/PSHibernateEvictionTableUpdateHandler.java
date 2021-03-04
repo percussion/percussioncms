@@ -27,14 +27,15 @@ import com.percussion.data.PSTableChangeEvent;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.utils.exceptions.PSORMException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 
 /**
  * Update handler that deals with evicting objects from hibernate's secondary
@@ -47,11 +48,8 @@ public class PSHibernateEvictionTableUpdateHandler
       extends
          PSTableUpdateHandlerBase
 {
-   /**
-    * Commons logger 
-    */
-   private static Log ms_log = LogFactory
-         .getLog(PSHibernateEvictionTableUpdateHandler.class);
+
+   private static final Logger log = LogManager.getLogger(PSHibernateEvictionTableUpdateHandler.class);
 
    /**
     * The primary keys that correspond to the tables
@@ -105,7 +103,7 @@ public class PSHibernateEvictionTableUpdateHandler
       if (i < 0)
          return null;
 
-      List<String> rval = new ArrayList<String>();
+      List<String> rval = new ArrayList<>();
       if (m_keys[i] != null)
          rval.add(m_keys[i]);
       return rval.iterator();
@@ -127,8 +125,7 @@ public class PSHibernateEvictionTableUpdateHandler
          data = (Serializable) e.getColumns().get(keycol.toUpperCase());
          if (data == null)
          {
-            ms_log.error("No data to evict object of class " + clazz
-                  + " for column " + keycol);
+            log.error("No data to evict object of class {}  for column {}", clazz, keycol);
             return;
          }         
       }
@@ -140,12 +137,12 @@ public class PSHibernateEvictionTableUpdateHandler
       }
       catch (PSORMException e1)
       {
-         ms_log.error("Failed to evict instance of class " + clazz + " id "
-               + data);
+         log.error("Failed to evict instance of class {} id {} ", clazz, data);
       }
       catch(RuntimeException e2)
       {
-         ms_log.error("Error handling eviction", e2);
+         log.error("Error handling eviction ", e2.getMessage());
+         log.debug(e2.getMessage(),e2);
       }
    }
 

@@ -28,6 +28,8 @@ import com.percussion.util.PSDataTypeConverter;
 import com.percussion.util.PSStringOperation;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.DateFormat;
 import java.text.MessageFormat;
@@ -49,6 +51,8 @@ import java.util.StringTokenizer;
  * other packages.
  */
 public class PSI18nUtils implements IPSI18nUtils {
+
+   private static final Logger log = LogManager.getLogger(PSI18nUtils.class);
    /**
     * Utility method that returns the last part of the lookup key.
     * @param key the key from which the last part is to be extracted. An empty
@@ -657,10 +661,10 @@ public class PSI18nUtils implements IPSI18nUtils {
 
       String pattern = "At {2} on {1}, there was {3} on planet {0}.";
       String argList = "7|12:30 PM|07/23/2020|a disturbance in the Force";
-   System.out.println(formatMessage(pattern, argList, "ja-jp"));
+      log.info(formatMessage(pattern, argList, "ja-jp"));
       try
       {
-         System.out.println(formatDate(formatter.format(date), null, "en-us", null, "ja-jp"));
+         log.info(formatDate(formatter.format(date), null, "en-us", null, "ja-jp"));
       }
       catch(Exception e)
       {

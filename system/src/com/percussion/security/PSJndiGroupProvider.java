@@ -267,7 +267,7 @@ public class PSJndiGroupProvider implements IPSGroupProvider
    // see IPSGroupProvider interface
    public Collection<String> getUserGroups(String userName)
    {
-      Collection<String> userGroups = new ArrayList<String>();
+      Collection<String> userGroups = new ArrayList<>();
       
       String fullUserName = getFullUserName(userName);
       if (fullUserName != null)
@@ -341,10 +341,10 @@ public class PSJndiGroupProvider implements IPSGroupProvider
       if (groups == null)
          throw new IllegalArgumentException("groups may not be null");
       
-      List<IPSTypedPrincipal> members = new ArrayList<IPSTypedPrincipal>();
+      List<IPSTypedPrincipal> members = new ArrayList<>();
       
       // make copy to walk so we can do removals
-      List<Principal> groupList = new ArrayList<Principal>(groups);
+      List<Principal> groupList = new ArrayList<>(groups);
       for (Principal group : groupList)
       {
          String groupName = group.getName();
@@ -374,7 +374,7 @@ public class PSJndiGroupProvider implements IPSGroupProvider
     */
    private List<IPSTypedPrincipal> getGroupMembers(String groupName, int level)
    {
-      List<IPSTypedPrincipal> members = new ArrayList<IPSTypedPrincipal>();
+      List<IPSTypedPrincipal> members = new ArrayList<>();
 
       DirContext ctx = null;
       NamingEnumeration results = null;
@@ -409,7 +409,7 @@ public class PSJndiGroupProvider implements IPSGroupProvider
           * attributes and values.
           */
          List<Map<String, List<String>>> resultList = 
-            new ArrayList<Map<String, List<String>>>();
+            new ArrayList<>();
          while (results.hasMore())
          {
             Map<String, List<String>> attrMap = new HashMap();
@@ -444,8 +444,8 @@ public class PSJndiGroupProvider implements IPSGroupProvider
          ctx = null;
          
          // set up lists of members that may need to be recursively searched
-         List<String> staticMemberList = new ArrayList<String>();
-         List<String> dynamicMemberList = new ArrayList<String>();         
+         List<String> staticMemberList = new ArrayList<>();
+         List<String> dynamicMemberList = new ArrayList<>();
 
          for (Map attrMap : resultList)
          {
@@ -589,7 +589,7 @@ public class PSJndiGroupProvider implements IPSGroupProvider
       String filter = parseSearchUrl(searchUrl, baseBuf);
       String base = baseBuf.toString();
 
-      Collection<IPSTypedPrincipal> users = new ArrayList<IPSTypedPrincipal>();
+      Collection<IPSTypedPrincipal> users = new ArrayList<>();
       
       DirContext ctx = null;
       NamingEnumeration results = null;
@@ -648,7 +648,7 @@ public class PSJndiGroupProvider implements IPSGroupProvider
       Map<String, List<String>> attrMap, List<String> staticMemberList, 
       List<String> dynamicMemberList) throws NamingException
    {
-      List<IPSTypedPrincipal> groupMembers = new ArrayList<IPSTypedPrincipal>();
+      List<IPSTypedPrincipal> groupMembers = new ArrayList<>();
       
       List foundOcs = getObjectClasses(attrMap);
       if (foundOcs.isEmpty())
@@ -1065,7 +1065,7 @@ public class PSJndiGroupProvider implements IPSGroupProvider
    private List<String> getObjectClasses(Map<String, List<String>> attrMap)
    {
       // build lowercase list of objectclass names from the directory
-      List<String> foundOcs = new ArrayList<String>();
+      List<String> foundOcs = new ArrayList<>();
       
       List dirObjClasses = attrMap.get(
          PSJndiProvider.OBJECT_CLASS_ATTR.toLowerCase());
@@ -1427,7 +1427,7 @@ public class PSJndiGroupProvider implements IPSGroupProvider
     * <code>null</code>, could be empty.
     */
    private List<GroupLocationInfo> m_groupLocationInfo = 
-      new ArrayList<GroupLocationInfo>();
+      new ArrayList<>();
 
    /**
     * A class to store a pair of related data objects. A small amount of
