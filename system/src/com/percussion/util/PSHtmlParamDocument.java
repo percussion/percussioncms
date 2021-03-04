@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -51,6 +53,7 @@ import org.w3c.dom.Text;
  */
 public class PSHtmlParamDocument
 {
+   private static final Logger log = LogManager.getLogger(PSHtmlParamDocument.class);
    /**
     * Default Constructor.
     */
@@ -309,8 +312,8 @@ public class PSHtmlParamDocument
       htmlDoc.setParam("testName1", "TestValue1");
       htmlDoc.setParam("testName2", "TestValue2");
 
-      System.out.println("Test Case1: single values parameters");
-      System.out.println(htmlDoc.getXmlString());
+      log.info("Test Case1: single values parameters");
+      log.info(htmlDoc.getXmlString());
 
       Map params = new HashMap();
       params.put("testParam1", "testParamValue1");
@@ -321,23 +324,23 @@ public class PSHtmlParamDocument
       values.add("testParamValue33");
       params.put("testParam3", values);
       htmlDoc = new PSHtmlParamDocument(params);
-      System.out.println("Test Case2: Multivalued parameter included");
-      System.out.println(htmlDoc.getXmlString());
+      log.info("Test Case2: Multivalued parameter included");
+      log.info(htmlDoc.getXmlString());
 
       Document doc = PSXmlDocumentBuilder.createXmlDocument();
       htmlDoc.fromXml(htmlDoc.toXml(doc));
       htmlDoc.removeParam("testParam2");
-      System.out.println("Test Case3: Roundtripping the params and remove a param");
-      System.out.println(htmlDoc.getXmlString());
+      log.info("Test Case3: Roundtripping the params and remove a param");
+      log.info(htmlDoc.getXmlString());
 
-      System.out.println("Test Case4: Get a named parameter");
-      System.out.println("testParam3 = " + htmlDoc.getParam("testParam3"));
+      log.info("Test Case4: Get a named parameter");
+      log.info("testParam3 = {}",  htmlDoc.getParam("testParam3"));
 
-      System.out.println("Test Case5: Get a named multi-valued (strings) parameter for SQL IN clause");
-      System.out.println("testParam3 = " + htmlDoc.getParamForInClause("testParam3", true));
+      log.info("Test Case5: Get a named multi-valued (strings) parameter for SQL IN clause");
+      log.info("testParam3 = {} ", htmlDoc.getParamForInClause("testParam3", true));
 
-      System.out.println("Test Case6: Get a named multi-valued (numbers) parameter for SQL IN clause");
-      System.out.println("testParam3 = " + htmlDoc.getParamForInClause("testParam3", false));
+      log.info("Test Case6: Get a named multi-valued (numbers) parameter for SQL IN clause");
+      log.info("testParam3 = {} ", htmlDoc.getParamForInClause("testParam3", false));
    }
 
    /**
