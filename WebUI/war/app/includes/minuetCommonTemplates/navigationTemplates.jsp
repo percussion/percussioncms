@@ -1,6 +1,6 @@
 <%--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -116,7 +116,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <a href="http://help.percussion.com" target="_blank" title="<i18n:message key="perc.ui.common.label@Help" />" role="button" class="btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
+                    <a href="https://help.percussion.com" target="_blank" title="<i18n:message key="perc.ui.common.label@Help" />" role="button" class="btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
                   <span>
                     <i aria-hidden class="fas fa-question-circle fa-fw"></i>
                   </span>
@@ -182,7 +182,7 @@
                 <p><img class="perc-about-logo" src="/cm/images/logos/percussion-logo-white.png" alt="Percussion Logo" title="Percussion"></p>
                 <p><%= ver %></p>
                 <p>Copyright &copy; <%= year %> by Percussion&nbsp;Software&nbsp;Inc.</p>
-                <p><a title="Percussion Software" href="https://www.percussion.com" target="_blank" class="perc-about-link">http://www.percussion.com</a></p>
+                <p><a title="Percussion Software" href="https://www.percussion.com" target="_blank" class="perc-about-link">https://www.percussion.com</a></p>
                 <p><button class="perc-toggle-about perc-close-about btn btn-block perc-confirmation-button perc-confirmation-button-dark"><i18n:message key="perc.ui.common.label@Close" /></button></p>
             </div>
         </div>

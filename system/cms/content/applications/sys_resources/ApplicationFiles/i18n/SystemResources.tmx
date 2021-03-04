@@ -4184,7 +4184,7 @@ You have selected to copy the source Site Subfolder with the following options:
 			<prop type="sectionname" xml:lang="en-us">Unsupported Browser Warning</prop>
 			<note xml:lang="en-us">supported browser link</note>
 			<tuv xml:lang="en-us">
-				<seg>http://help.percussion.com/percussion-cm1/install-setup/installing-cm1/system-requirements#browsers</seg>
+				<seg>https://help.percussion.com/percussion-cm1/install-setup/installing-cm1/system-requirements#browsers</seg>
 			</tuv>
 		</tu>
 			

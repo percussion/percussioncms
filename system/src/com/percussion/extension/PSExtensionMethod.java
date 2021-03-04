@@ -62,7 +62,7 @@ public class PSExtensionMethod implements Serializable
     * of the parameters is important for the way a method is called.
     */
    private List<PSExtensionMethodParam> m_parameters = 
-      new ArrayList<PSExtensionMethodParam>();
+      new ArrayList<>();
    
    /**
     * The method return type, never <code>null</code> or empty after 

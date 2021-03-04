@@ -29,6 +29,8 @@ import com.percussion.log.PSLogError;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.util.PSCollection;
 import com.percussion.util.PSMapClassToObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The PSErrorHandlerTest class tests running the major methods of
@@ -40,13 +42,14 @@ import com.percussion.util.PSMapClassToObject;
  */
 public class PSErrorHandlerTest
 {
+   private static final Logger log = LogManager.getLogger(PSErrorHandlerTest.class);
    public static void main(String[] args)
    {
       if (args.length != 3)
       {
-         System.out.println("usage: java com.percussion.error.PSErrorHandlerTest send-to smtp-host from");
-         System.out.println();
-         System.out.println("  eg: java com.percussion.error.PSErrorHandlerTest myname@percussion.com pan rhythmyx@percussion.com");
+         log.info("usage: java com.percussion.error.PSErrorHandlerTest send-to smtp-host from");
+         log.info("");
+         log.info("  eg: java com.percussion.error.PSErrorHandlerTest myname@percussion.com pan rhythmyx@percussion.com");
          System.exit(1);
       }
 
@@ -137,11 +140,12 @@ public class PSErrorHandlerTest
          errHandler.notifyAdmins((PSLogError)conversionErr);
          errHandler.shutdown();
 
-         System.out.println("Test finished.");
+         log.info("Test finished.");
       }
       catch (PSIllegalArgumentException e1)
       {
-         System.err.println("Caught PSIllegalArgumentException.");
+         log.error("Caught PSIllegalArgumentException.");
+         log.debug(e1.getMessage(), e1);
       }
    }
 }

@@ -13599,7 +13599,7 @@ Press "Done" to quit the installer.]]></string>
 						</object>
 					</property>
 					<property name="productURL">
-						<string><![CDATA[http://www.percussion.com/]]></string>
+						<string><![CDATA[https://www.percussion.com/]]></string>
 					</property>
 					<property name="productDescription">
 						<string><![CDATA[]]></string>
@@ -13621,7 +13621,7 @@ Press "Done" to quit the installer.]]></string>
 						</object>
 					</property>
 					<property name="supportURL">
-						<string><![CDATA[http://help.percussion.com/]]></string>
+						<string><![CDATA[https://help.percussion.com/]]></string>
 					</property>
 					<property name="vendorName">
 						<string><![CDATA[Percussion Software, Inc.]]></string>
@@ -13634,7 +13634,7 @@ Press "Done" to quit the installer.]]></string>
 						</object>
 					</property>
 					<property name="vendorURL">
-						<string><![CDATA[http://www.percussion.com]]></string>
+						<string><![CDATA[https://www.percussion.com]]></string>
 					</property>
 					<property name="email">
 						<string><![CDATA[questions@percussion.com]]></string>
