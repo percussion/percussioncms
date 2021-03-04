@@ -55,7 +55,7 @@ public class PSHookRequestHandler implements IPSRequestHandler
       super();
 
       // build the hash of request handler methods
-      m_requestHandlerMethods = new HashMap<String, Method>();
+      m_requestHandlerMethods = new HashMap<>();
       Class<? extends PSHookRequestHandler> myClass = this.getClass();
       try
       {
@@ -199,7 +199,7 @@ public class PSHookRequestHandler implements IPSRequestHandler
    {
       if (m_stdHookRequestTypes == null)
       {
-         m_stdHookRequestTypes = new ArrayList<String>();
+         m_stdHookRequestTypes = new ArrayList<>();
          m_stdHookRequestTypes.add("GET");
       }
 
