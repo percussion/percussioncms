@@ -96,18 +96,6 @@ public class PSUpdateDTSConfiguration extends PSAction {
     }
     private void updateConfiguration(File prodPath)  {
         File serverXmlFile = new File(prodPath,SERVER_XML);
-        File percCatalinaFile = new File(prodPath,CATALINA_PROPERTIES);
-        Properties properties = new Properties();
-        try {
-            if(percCatalinaFile.exists()) {
-                properties = loadPercCatalinaProperties(percCatalinaFile);
-            }else{
-                percCatalinaFile.createNewFile();
-            }
-        }catch(IOException io){
-            PSLogger.logError("Error loading perc-catalina.properties: " + io.getMessage());
-        }
-
 
         if (serverXmlFile.exists())
         {
@@ -120,14 +108,36 @@ public class PSUpdateDTSConfiguration extends PSAction {
             /* TODO: The way this config is loading is over complicated needs simplified
             doesn't take into account if there are more DTS instances registered
             than just a production or staging dts */
-
+            Properties properties = new Properties();
             List<IPSConnector> connectors = null;
             if(prodPath.getAbsolutePath().toString().contains(STAGING_PATH) || prodPath.getAbsolutePath().toString().contains(STAGING_PATH_WIN)){
-               connectors = config.getConfig().getDtsConfig().getStagingDtsConnectorInfo().getConnectors();
                 System.out.println("Processing Staging DTS configuration..");
+               connectors = config.getConfig().getDtsConfig().getStagingDtsConnectorInfo().getConnectors();
+                File percCatalinaFile = new File(prodPath,CATALINA_PROPERTIES);
+                try {
+                    if(percCatalinaFile.exists()) {
+                        properties = loadPercCatalinaProperties(percCatalinaFile);
+                    }else{
+                        percCatalinaFile.createNewFile();
+                    }
+                }catch(IOException io){
+                    PSLogger.logError("Error loading perc-catalina.properties: " + io.getMessage());
+                }
+
             }else{
-                connectors = config.getConfig().getDtsConfig().getDtsConnectorInfo().getConnectors();
                 System.out.println("Processing Production DTS configuration..");
+                connectors = config.getConfig().getDtsConfig().getDtsConnectorInfo().getConnectors();
+                File percCatalinaFile = new File(prodPath,CATALINA_PROPERTIES);
+                try {
+                    if(percCatalinaFile.exists()) {
+                        properties = loadPercCatalinaProperties(percCatalinaFile);
+                    }else{
+                        percCatalinaFile.createNewFile();
+                    }
+                }catch(IOException io){
+                    PSLogger.logError("Error loading perc-catalina.properties: " + io.getMessage());
+                }
+
             }
 
 
