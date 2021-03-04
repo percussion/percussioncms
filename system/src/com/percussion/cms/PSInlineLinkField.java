@@ -81,6 +81,8 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -97,7 +99,7 @@ import org.xml.sax.SAXException;
 public class PSInlineLinkField
 {
 
-   
+   private static final Logger log = LogManager.getLogger(PSInlineLinkField.class);
    /**
     * Constructs a new instance for the supplied field.
     *
@@ -511,7 +513,7 @@ public class PSInlineLinkField
       if (childRowId == null || childRowId.trim().length() == 0)
          return fieldName;
 
-      List<String> values = new ArrayList<String>();
+      List<String> values = new ArrayList<>();
       values.add(fieldName);
       values.add(childRowId);      
       return PSStringOperation.append(values, INLINE_RELATIONSHIP_ID_DELIMITER); 
@@ -624,7 +626,7 @@ public class PSInlineLinkField
    {
       if (ms_inlineslots == null)
       {
-         ms_inlineslots = new ArrayList<String>();
+         ms_inlineslots = new ArrayList<>();
 
          PSRequest req = PSRequest.getContextForRequest();
          PSInternalRequest ir = PSServer.getInternalRequest(
@@ -1064,7 +1066,7 @@ public class PSInlineLinkField
          IPSTemplateSlot slot = asmSrvc.findSlot(slotGuid);
          if (slot == null)
          {
-            ms_log.warn("Failed to find slot id=" + slotid);
+            log.warn("Failed to find slot id= {} ", slotid);
             return PSRelationshipConfig.TYPE_ACTIVE_ASSEMBLY;
          }
          
@@ -1243,7 +1245,7 @@ public class PSInlineLinkField
     * get the relationship type for a given slot, rather use the method.
     */
    private Map<String, String> m_slotRelationshipTypes = 
-      new HashMap<String, String>();
+      new HashMap<>();
    
    /**
     * The name of the attribute that identifies an element as Rhythmyx inline
@@ -1321,9 +1323,5 @@ public class PSInlineLinkField
     * The string used to identify a slot as type inline slot.
     */
    private static final String INLINE_SLOT_TYPE = "1";
-   
-   /**
-    * Logger for the assembler.
-    */
-   public static Log ms_log = LogFactory.getLog(PSInlineLinkField.class);   
+
 }

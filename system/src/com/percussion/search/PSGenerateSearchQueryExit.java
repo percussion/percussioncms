@@ -66,7 +66,8 @@ import com.percussion.webservices.ui.IPSUiDesignWs;
 import com.percussion.webservices.ui.PSUiWsLocator;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -147,10 +148,9 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
       Document resultDoc) 
          throws PSParameterMismatchException, PSExtensionProcessingException
    {
-      if (ms_logger.isDebugEnabled())
+      if (log.isDebugEnabled())
       {
-         ms_logger.debug("request parameters: "
-               + request.getParameters().toString());
+         log.debug("request parameters: {} ", request.getParameters().toString());
       }
       
       // first see if re-doing search from previous request
@@ -183,8 +183,7 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
       String communityId = (String) request.getSessionPrivateObject(
          IPSHtmlParameters.SYS_COMMUNITY);
 
-      ms_logger.debug("strSlotId = " + strSlotId + ", locale = " + locale
-            + ", communityId = " + communityId);
+      log.debug("strSlotId = {} , locale = {} , communityId = {} ", strSlotId, locale, communityId);
 
       try
       {
@@ -226,7 +225,8 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
       }
       catch (Exception e)
       {
-         ms_logger.error(e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
          
          StringWriter stackWriter = new StringWriter();
          request.printTraceMessage(ms_msgPrefix + "Caught exception: " + 
@@ -261,9 +261,7 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
       Element root, PSSearch search, String locale, String communityId) 
          throws PSUnknownNodeTypeException, PSCmsException
    {
-      ms_logger.debug("search displayFormatId = "
-            + search.getDisplayFormatId() + ", max result size = "
-            + search.getMaximumResultSize());
+      log.debug("search displayFormatId = {} , max result size = {} ", search.getDisplayFormatId(), search.getMaximumResultSize());
 
       Element resultFields = PSXmlDocumentBuilder.addEmptyElement(doc, root, 
          "ResultSettings");      
@@ -300,8 +298,7 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
             isCaseSensitive ? "y" : "n", communityId));
       }
       
-      ms_logger.debug("isDBCaseSensitive = "
-            + PSSearchCommandHandler.isDBCaseSensitive());
+      log.debug("isDBCaseSensitive = {} ", PSSearchCommandHandler.isDBCaseSensitive());
    }
 
    /**
@@ -318,7 +315,7 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
    private void addFTSSettings(Document doc, Element root, PSSearch search, 
       String locale, String communityId)
    {
-      ms_logger.debug("useExternalSearch = " + search.useExternalSearch());
+      log.debug("useExternalSearch = {} ", search.useExternalSearch());
       
       //if not external search, just return
       if (!search.useExternalSearch())
@@ -381,17 +378,17 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
       String communityId) 
       throws PSCmsException, IOException
    {
-      ms_logger.debug("addSearchFields begin");
+      log.debug("addSearchFields begin");
       
       // build set of field names
-      Set<String> fieldNames = new HashSet<String>();
+      Set<String> fieldNames = new HashSet<>();
       Iterator<PSSearchField> fields = search.getFields();
       while (fields.hasNext())
       {
          fieldNames.add(fields.next().getFieldName());
       }
       
-      ms_logger.debug("total field names = " + fieldNames.size());
+      log.debug("total field names = {} ", fieldNames.size());
       
       // load field catalog to get choices and mnemonic key
       PSRequest req = new PSRequest(request.getSecurityToken()); 
@@ -409,7 +406,7 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
       Map keyFieldMap = new HashMap();
       Map fieldFilterMap = null;  // for lazy load if required
       
-      ms_logger.debug("walk each field and add display field for it ...");
+      log.debug("walk each field and add display field for it ...");
 
       // walk each field and add display field for it
       fields = search.getFields();
@@ -489,7 +486,7 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
          searchFields.appendChild(createField(doc, label, control, 
             name, values, dimension, mnemonic, choices, selected, communityId));         
       }
-      ms_logger.debug("build the keyword dependencies data ...");
+      log.debug("build the keyword dependencies data ...");
       
       // now build the keyword dependencies data
       List processedList = new ArrayList(); // to prevent infinite loops
@@ -659,7 +656,7 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
    private void addExtraSettings(Document doc, IPSRequestContext request, 
       Element root, PSSearch search, PSSlotType slotType)
    {
-      ms_logger.debug("addExtraSettings begin");
+      log.debug("addExtraSettings begin");
       
       Element extraSettings = PSXmlDocumentBuilder.addEmptyElement(doc, root, 
          "ExtraSettings");      
@@ -694,7 +691,7 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
             true));         
       }
       
-      ms_logger.debug("addExtraSettings end");
+      log.debug("addExtraSettings end");
    }
 
 
@@ -1069,8 +1066,7 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
     
       if (defSearch != null)
       {
-         ms_logger.debug("Found default search id = " + defSearch.getId()
-               + ", name = " + defSearch.getName());  
+         log.debug("Found default search id = {} , name = {} ", defSearch.getId(), defSearch.getName());
          
          return defSearch;
       }
@@ -1078,11 +1074,10 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
       {
          String errorMsg = "Cannot find a default search form "
             + sArray.size() + " searches for community ID = " + communityId;
-         ms_logger.error(errorMsg);
+         log.error(errorMsg);
          for (PSSearch search : sArray)
          {
-            ms_logger.error("Looked up search id = " + search.getId()
-                  + ", name = " + search.getName());
+            log.error("Looked up search id = {} , name = {} ", search.getId(), search.getName());
          }
          PSErrorException ex = new PSErrorException();
          ex.setErrorMessage(errorMsg);
@@ -1144,7 +1139,7 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("PSGenerateSearchQueryExit");
+   private static Logger log = LogManager.getLogger("PSGenerateSearchQueryExit");
 
    /**
     * The fully qualified name of this extension. Intialized in the 
