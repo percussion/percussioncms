@@ -32,6 +32,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -47,6 +49,7 @@ import org.xml.sax.SAXException;
  */
 public abstract class PSGenericCharacterSet implements PluggableCharacterSet
 {
+   private static final Logger log = LogManager.getLogger(PSGenericCharacterSet.class);
    /**
     * Creates an instance of a <code>PluggableCharacterSet</code> for the 
     * specified character encoding by loading the specified resource file into
@@ -173,7 +176,8 @@ public abstract class PSGenericCharacterSet implements PluggableCharacterSet
    {
       if (null != e)
       {
-         e.printStackTrace(System.err);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
       }
    }
  

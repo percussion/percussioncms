@@ -72,7 +72,7 @@ public class PSItemField extends PSItemComponent
     */
    private void init()
    {
-      m_fieldValues = new ArrayList<IPSFieldValue>();
+      m_fieldValues = new ArrayList<>();
    }
 
    /**
