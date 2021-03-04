@@ -57,10 +57,10 @@ public class SolrConfigLoader
        if (!CONFIG_FILE.exists())
           return new PSSolrConfig();
        
-       InputStream in = null;
-       try
-       {
-           in = new FileInputStream(CONFIG_FILE);
+
+
+
+       try(InputStream in = new FileInputStream(CONFIG_FILE)){
            PSSolrConfig config = PSSerializerUtils.unmarshalWithValidation(in, PSSolrConfig.class);
            return config;
        }
@@ -79,10 +79,7 @@ public class SolrConfigLoader
           log.error("Error getting solrConfig servers from configuration file: " +  msg,e);
           return new PSSolrConfig();
        }
-       finally
-       {
-           IOUtils.closeQuietly(in);
-       }
+
    }
 
    public static String toXml(PSSolrConfig config)
@@ -92,20 +89,15 @@ public class SolrConfigLoader
  
    public static void saveSolrConfig(PSSolrConfig config)
    {
-      FileOutputStream out = null;
-      try
-      {
-         out = new  FileOutputStream(CONFIG_FILE);
+
+      try(FileOutputStream out = new  FileOutputStream(CONFIG_FILE)){
          IOUtils.write(toXml(config), out);
       }
       catch (IOException e)
       {
          log.error("Cannot save solr configuration to :"+CONFIG_FILE,e);
       }
-      finally
-      {
-         IOUtils.closeQuietly(out);
-      }
+
    }
    
 }

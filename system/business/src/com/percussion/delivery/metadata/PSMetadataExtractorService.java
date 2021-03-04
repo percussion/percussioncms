@@ -46,6 +46,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.Collection;
@@ -230,118 +231,103 @@ public class PSMetadataExtractorService implements IPSMetadataExtractorService
          Set<IPSMetadataProperty> propSet = new HashSet<>();
 
 
-         if (documentSource != null)
-         {
-            
-            //  Hack to not use default saxon xslt parser.  This sets a transformer factory that can be used
-            //  just by the thread in Any23 parser and does not affect the rest of the system. See ThreadLocalProperties class
-            
-            //System.setProperty("threadlocal.javax.xml.transform.TransformerFactory", "org.apache.xalan.processor.TransformerFactoryImpl");
-            // DTS Was falling back to JRE internal transformer.  It seems the xalan version was stripping out the namespace declaration
-            // preventing the any23 rdfa stylesheet from processing the meta tags properly.
-            System.setProperty("threadlocal.javax.xml.transform.TransformerFactory", "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
-            
-            runner = new Any23();
-            runner.setMIMETypeDetector(new NaiveMIMETypeDetector());
-            handler = new PSTripleHandler();
+         if (documentSource != null) {
 
-            // Run extraction process. In this point, PSTripleHandler will
-            // collects all
-            // metadata properties found in the page.
+             //  Hack to not use default saxon xslt parser.  This sets a transformer factory that can be used
+             //  just by the thread in Any23 parser and does not affect the rest of the system. See ThreadLocalProperties class
+
+             //System.setProperty("threadlocal.javax.xml.transform.TransformerFactory", "org.apache.xalan.processor.TransformerFactoryImpl");
+             // DTS Was falling back to JRE internal transformer.  It seems the xalan version was stripping out the namespace declaration
+             // preventing the any23 rdfa stylesheet from processing the meta tags properly.
+             System.setProperty("threadlocal.javax.xml.transform.TransformerFactory", "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
+
+             runner = new Any23();
+             runner.setMIMETypeDetector(new NaiveMIMETypeDetector());
+             handler = new PSTripleHandler();
+
+             // Run extraction process. In this point, PSTripleHandler will
+             // collects all
+             // metadata properties found in the page.
              final ExtractionParameters extractionParameters = ExtractionParameters.newDefault();
 
              extractionParameters.setFlag("any23.microdata.strict", false);
              extractionParameters.setFlag("any23.extraction.rdfa.programmatic", false);
 
 
-             ExtractionReport report = runner.extract(extractionParameters,documentSource, handler);
+             ExtractionReport report = runner.extract(extractionParameters, documentSource, handler);
 
 
-            /** Redo Abstract as any23 is corrupting it. */
-            Document doc=null;
-            doc = Jsoup.parse(documentSource.openInputStream(), null,"/");
+             /** Redo Abstract as any23 is corrupting it. */
+             try (InputStream is = documentSource.openInputStream()) {
+                 Document doc = null;
+                 doc = Jsoup.parse(is, null, "/");
 
-            documentSource.close();
+                 Element abstractEle = doc.select("div[property=dcterms:abstract]").first();
+                 String originalAbstract = null;
+                 if (abstractEle != null) {
+                     originalAbstract = abstractEle.html();
+                 }
+                 metadataEntry.setLinktext(handler.getPageLinktext());
+                 metadataEntry.setType(handler.getPageType());
 
-            Element abstractEle = doc.select("div[property=dcterms:abstract]").first();
-            String originalAbstract=null;
-            if(abstractEle != null) {
-                originalAbstract = abstractEle.html();
-            }
-            metadataEntry.setLinktext(handler.getPageLinktext());
-            metadataEntry.setType(handler.getPageType());
-            
-            if (metadataEntry.getType() == null || metadataEntry.getType() == "") {
-               log.warn("The detected type of this item is null or empty.  It is possible that the doctype of the template"
-                     + " does not include the required prefix/dcterms."
-                     + " The item name is: " + pageName + ". Setting default type to 'page.'");
-               metadataEntry.setType("page");
-            }
-            // Properties
-            for (PSMetadataProperty prop : handler.getProperties()) {
-                if (null != originalAbstract && prop.getName().equals("dcterms:abstract")) {
-                    prop.setValue(originalAbstract);
-                }
-                propSet.add(prop);
-            }
-         }
-
-         if (additional != null)
-         {
-            for (Entry<String, Object> property : additional.entrySet())
-            {
-               Object value = property.getValue();
-               if (value!=null)
-               {
-                  if (property.getKey().equals("linktext"))
-                  {
-                     metadataEntry.setLinktext(value.toString());
-                  }
-                  else if (property.getKey().equals("type"))
-                  {
-                     metadataEntry.setType(value.toString());
-                  }
-                  else if (value instanceof Collection)
-                  {
-                     Collection col = (Collection) value;
-                     for (Object item : col)
-                     {
-                        if (item!=null)
-                           propSet.add(new PSMetadataProperty(property.getKey(), item.toString()));
+                 if (metadataEntry.getType() == null || metadataEntry.getType() == "") {
+                     log.warn("The detected type of this item is null or empty.  It is possible that the doctype of the template"
+                             + " does not include the required prefix/dcterms."
+                             + " The item name is: " + pageName + ". Setting default type to 'page.'");
+                     metadataEntry.setType("page");
+                 }
+                 // Properties
+                 for (PSMetadataProperty prop : handler.getProperties()) {
+                     if (null != originalAbstract && prop.getName().equals("dcterms:abstract")) {
+                         prop.setValue(originalAbstract);
                      }
-                  }
-                  else if (property.getValue() instanceof Object[])
-                  {
-                     Object[] col = (Object[])value;
-                     for (Object item : col)
-                     {
-                        if (item!=null)
-                           propSet.add(new PSMetadataProperty(property.getKey(), item.toString()));
+                     propSet.add(prop);
+                 }
+             }
+
+             if (additional != null) {
+                 for (Entry<String, Object> property : additional.entrySet()) {
+                     Object value = property.getValue();
+                     if (value != null) {
+                         if (property.getKey().equals("linktext")) {
+                             metadataEntry.setLinktext(value.toString());
+                         } else if (property.getKey().equals("type")) {
+                             metadataEntry.setType(value.toString());
+                         } else if (value instanceof Collection) {
+                             Collection col = (Collection) value;
+                             for (Object item : col) {
+                                 if (item != null)
+                                     propSet.add(new PSMetadataProperty(property.getKey(), item.toString()));
+                             }
+                         } else if (property.getValue() instanceof Object[]) {
+                             Object[] col = (Object[]) value;
+                             for (Object item : col) {
+                                 if (item != null)
+                                     propSet.add(new PSMetadataProperty(property.getKey(), item.toString()));
+                             }
+                         } else {
+                             propSet.add(new PSMetadataProperty(property.getKey(), value
+                                     .toString()));
+                         }
                      }
-                  }
-                  else
-                  {
-                     propSet.add(new PSMetadataProperty(property.getKey(), value
-                           .toString()));
-                  }
-               }
-            }
+                 }
+             }
+             metadataEntry.setPagepath(pagePath);
+             metadataEntry.setName(pageName);
+
+             // Folder
+             metadataEntry.setFolder(folder);
+
+             // Site
+             metadataEntry.setSite(site);
+
+             metadataEntry.setProperties(propSet);
+
+
+             logMetadataFields(metadataEntry);
+
+             return metadataEntry;
          }
-         metadataEntry.setPagepath(pagePath);
-         metadataEntry.setName(pageName);
-
-         // Folder
-         metadataEntry.setFolder(folder);
-
-         // Site
-         metadataEntry.setSite(site);
-
-         metadataEntry.setProperties(propSet);
-
-      
-         logMetadataFields(metadataEntry);
-
-         return metadataEntry;
       }
       catch (Exception ex)
       {
