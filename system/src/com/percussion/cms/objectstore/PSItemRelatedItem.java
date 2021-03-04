@@ -389,7 +389,7 @@ public class PSItemRelatedItem extends PSItemComponent
 
       if (m_propertyMap != null)
       {
-         copy.m_propertyMap = new HashMap<String, String>();
+         copy.m_propertyMap = new HashMap<>();
          Iterator i = m_propertyMap.keySet().iterator();
          while (i.hasNext())
          {
@@ -401,7 +401,7 @@ public class PSItemRelatedItem extends PSItemComponent
 
       if (m_keyFieldsMap != null)
       {
-         copy.m_keyFieldsMap = new HashMap<String, Node>();
+         copy.m_keyFieldsMap = new HashMap<>();
          Iterator i = m_keyFieldsMap.keySet().iterator();
          while (i.hasNext())
          {
@@ -591,14 +591,14 @@ public class PSItemRelatedItem extends PSItemComponent
     * Storage for the property and values for the related item,
     * contains a list of property values
     */
-   private Map<String, String> m_propertyMap = new HashMap<String, String>();
+   private Map<String, String> m_propertyMap = new HashMap<>();
 
    /**
     * Storage for the list of keyfields for this related item, this is to
     * allow for searching for a related content item, if found insert it,
     * if not insert the item in the relatedItemData variable.
     */
-   private Map<String, Node> m_keyFieldsMap = new HashMap<String, Node>();
+   private Map<String, Node> m_keyFieldsMap = new HashMap<>();
 
    /**
     * Storage for the relationship id

@@ -208,7 +208,7 @@ public class PSItemDefinition extends PSItemDefSummary implements IPSComponent,
     */
    public List<PSDisplayMapper> getChildMappers()
    {
-      List<PSDisplayMapper> childMappers = new ArrayList<PSDisplayMapper>();
+      List<PSDisplayMapper> childMappers = new ArrayList<>();
       
       PSContentEditorMapper mapper = getContentEditorMapper();
       PSUIDefinition def = mapper.getUIDefinition();
@@ -271,7 +271,7 @@ public class PSItemDefinition extends PSItemDefSummary implements IPSComponent,
     */
    private List<PSField> getFields(PSFieldSet fieldSet, PSDisplayMapper mapper)
    {
-      List<PSField> fields = new ArrayList<PSField>();
+      List<PSField> fields = new ArrayList<>();
       Iterator mappings = mapper.iterator();
       while(mappings.hasNext())
       {
@@ -366,7 +366,7 @@ public class PSItemDefinition extends PSItemDefSummary implements IPSComponent,
     */
    public List<String> getSingleDimensionParentTextFieldNames()
    {
-      List<String> fn = new ArrayList<String>();
+      List<String> fn = new ArrayList<>();
       PSContentEditorMapper mapper = getContentEditorMapper();
       Iterator iter = mapper.getUIDefinition().getDisplayMapper().iterator();
       PSFieldSet fieldSet = mapper.getFieldSet();
@@ -537,7 +537,7 @@ public class PSItemDefinition extends PSItemDefSummary implements IPSComponent,
       PSContentEditorSystemDef def = PSServer.getContentEditorSystemDef();
       PSFieldSet fs = def.getFieldSet();
       PSUIDefinition ui = def.getUIDefinition();
-      Collection<PSField> results = new ArrayList<PSField>();
+      Collection<PSField> results = new ArrayList<>();
       Iterator fields = fs.getAll(false);
       while (fields.hasNext())
       {
@@ -648,7 +648,7 @@ public class PSItemDefinition extends PSItemDefSummary implements IPSComponent,
          }
       }
       copy.m_fieldColumnActionMap = 
-         new HashMap<PSField, Integer>(m_fieldColumnActionMap);
+         new HashMap<>(m_fieldColumnActionMap);
       return copy;
    }
    
@@ -827,7 +827,7 @@ public class PSItemDefinition extends PSItemDefSummary implements IPSComponent,
          
       if (m_simpleChildFieldSets == null)
       {
-         m_simpleChildFieldSets = new HashMap<String,PSFieldSet>();
+         m_simpleChildFieldSets = new HashMap<>();
          
          // get the display mapper and field set
          PSContentEditorPipe pipe = 
@@ -1112,7 +1112,7 @@ public class PSItemDefinition extends PSItemDefSummary implements IPSComponent,
    public List<PSFieldSet> getComplexChildren()
    {
       PSContentEditorMapper mapper = getContentEditorMapper();
-      List<PSFieldSet> results = new ArrayList<PSFieldSet>();
+      List<PSFieldSet> results = new ArrayList<>();
       PSUIDefinition def = mapper.getUIDefinition();
       PSDisplayMapper dmapper = def.getDisplayMapper();
       for (Iterator mappingIter = dmapper.iterator(); mappingIter.hasNext();)
@@ -1312,7 +1312,7 @@ public class PSItemDefinition extends PSItemDefSummary implements IPSComponent,
     public List<PSBackEndTable> getTypeTables()
     {
         
-        List<PSField> fields = new ArrayList<PSField>(getMappedParentFields());
+        List<PSField> fields = new ArrayList<>(getMappedParentFields());
         fields.addAll(getUnmappedSystemDbFields());
 
         for (PSFieldSet fs : getComplexChildren())
@@ -1320,7 +1320,7 @@ public class PSItemDefinition extends PSItemDefSummary implements IPSComponent,
             fields.addAll(Arrays.asList(fs.getAllFields()));
         }
 
-        Map<String, PSBackEndTable> tables = new HashMap<String, PSBackEndTable>();
+        Map<String, PSBackEndTable> tables = new HashMap<>();
 
         for (PSField field : fields)
         {
@@ -1340,7 +1340,7 @@ public class PSItemDefinition extends PSItemDefSummary implements IPSComponent,
                 }
             }
         }
-        return new ArrayList<PSBackEndTable>(tables.values());
+        return new ArrayList<>(tables.values());
     }
    
    /**
@@ -1392,7 +1392,7 @@ public class PSItemDefinition extends PSItemDefSummary implements IPSComponent,
     * Never <code>null</code>, may be empty.
     */
    private Map<PSField, Integer> m_fieldColumnActionMap = 
-      new HashMap<PSField, Integer>();
+      new HashMap<>();
 
    private static final String ATTR_HIDDEN = "isHidden";
    private static final String ATTR_APPNAME= "appName";

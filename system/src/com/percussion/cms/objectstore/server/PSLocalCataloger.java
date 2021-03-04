@@ -427,7 +427,7 @@ public class PSLocalCataloger implements IPSCataloger
                   }
                   Set<String> nameSet = m_sharedFields.get(fsName);
                   if (nameSet == null)
-                     nameSet = new HashSet<String>();
+                     nameSet = new HashSet<>();
                   nameSet.add(fieldName);
                   m_sharedFields.put(fsName, nameSet);
                   continue;
@@ -636,7 +636,7 @@ public class PSLocalCataloger implements IPSCataloger
       newChoices.copyFrom(choices);
 
       // build list of translated entries
-      List<PSEntry> newChoiceList = new ArrayList<PSEntry>();
+      List<PSEntry> newChoiceList = new ArrayList<>();
       Iterator oldChoices = choices.getLocal();
       while (oldChoices.hasNext())
       {
@@ -1058,7 +1058,7 @@ public class PSLocalCataloger implements IPSCataloger
     * <code>String</code> objects.
     */
    private Map<String, Set<String>> m_sharedFields = 
-      new HashMap<String, Set<String>>(); 
+      new HashMap<>();
    
    /**
     * Set of names to include specified when the catalog is requested.   May be

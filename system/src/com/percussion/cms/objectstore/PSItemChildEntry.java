@@ -65,7 +65,7 @@ public class PSItemChildEntry extends PSItemComponent
     */
    private void init()
    {
-      m_fieldNameFieldMap = new TreeMap<String, PSItemField>();
+      m_fieldNameFieldMap = new TreeMap<>();
 
    }
 
