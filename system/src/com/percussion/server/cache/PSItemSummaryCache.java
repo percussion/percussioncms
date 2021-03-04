@@ -46,7 +46,8 @@ import com.percussion.util.PSCollection;
 import com.percussion.util.PSStopwatch;
 import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -151,7 +152,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
       m_isStarted = true;
 
       watch.stop();
-      m_logger.debug("start elapse time: " + watch.toString());
+      log.debug("start elapse time: {} ", watch.toString());
    }
 
    /**
@@ -226,7 +227,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
     */
    private class FoundColumns
    {
-      Map<String, Boolean> mi_foundColumns = new HashMap<String, Boolean>();
+      Map<String, Boolean> mi_foundColumns = new HashMap<>();
       
       /**
        * Constructs the object for a list of updated columns.
@@ -537,7 +538,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
    public List<IPSItemEntry> getItems(List<Integer> itemIds)
    {
       notNull(itemIds);      
-      List<IPSItemEntry> itemList = new ArrayList<IPSItemEntry>();
+      List<IPSItemEntry> itemList = new ArrayList<>();
       
       for (Integer itemId : itemIds)
       {
@@ -583,7 +584,8 @@ public class PSItemSummaryCache implements IPSTableChangeListener
       }
       catch (NumberFormatException e)
       {
-         m_logger.error("Failed to convert String to Integer for \"" + s + "\", default to -1", e);
+         log.error("Failed to convert String to Integer for \"{}\", default to -1, Error : {}",s, e.getMessage());
+         log.debug(e.getMessage(),e);
          return -1;
       }
    }
@@ -659,7 +661,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
                }
                
                m_items.put(id, item);
-               m_logger.debug("insert item id: " + contentId);
+               log.debug("insert item id: {} ", contentId);
             }
          }
   
@@ -692,7 +694,8 @@ public class PSItemSummaryCache implements IPSTableChangeListener
       }
       catch (PSInvalidContentTypeException e)
       {
-         m_logger.error("Invalid content type id (" + item.getContentTypeId() + ") for contentId = " + item.getContentId(), e);
+         log.error("Invalid content type id ( {} ) for contentId = {} , Error {} ", item.getContentTypeId(), item.getContentId(), e.getMessage());
+         log.debug(e.getMessage(),e);
       }
       
    }
@@ -745,7 +748,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
             int origCur = item.getCurrentRevision();
             int origPub = item.getPublicRevision();
             
-            Set<Integer> origRevs = new HashSet<Integer>();
+            Set<Integer> origRevs = new HashSet<>();
             if (origTip>0)
                origRevs.add(origTip);
             if (origCur>0)
@@ -773,14 +776,14 @@ public class PSItemSummaryCache implements IPSTableChangeListener
                
                if (origRevs.size()>0)
                {
-                  m_logger.debug("Content status revision change, clean up AA revisions "+origRevs+" for id "+contentId + " name " + itemInfo.mi_title);
+                  log.debug("Content status revision change, clean up AA revisions {} for id {} name {} ", origRevs, contentId, itemInfo.mi_title);
                   PSFolderRelationshipCache relCache = PSFolderRelationshipCache.getInstance();
                   relCache.deleteOwnerRevisions(contentId, origRevs);
                }
             
             }
 
-            m_logger.debug("update item id " + contentId + " with name " + itemInfo.mi_title);
+            log.debug("update item id {} with name {} ", contentId, itemInfo.mi_title);
          }
 
       }
@@ -879,13 +882,13 @@ public class PSItemSummaryCache implements IPSTableChangeListener
          {
             folderEntry = new PSFolderEntry(folder);
             m_items.put(id, folderEntry);
-            m_logger.debug("insert PSFolder for id: " + id);
+            log.debug("insert PSFolder for id: {} ", id);
          }
          else
          {
             folderEntry = (PSFolderEntry) item;
             folderEntry.updateFolder(folder);
-            m_logger.debug("update PSFolder for id: " + id);
+            log.debug("update PSFolder for id: {} ", id);
          }
       }
    }
@@ -999,7 +1002,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
          m_items.remove(Integer.valueOf(contentId));
       }
 
-      m_logger.debug("delete item id: " + contentId);
+      log.debug("delete item id: {} ", contentId);
    }
    
    /**
@@ -1092,7 +1095,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
          }
       }
 
-      m_logger.debug("loaded " + acls.length + " Folder Acls");
+      log.debug("loaded {} Folder Acls", acls.length);
    }
 
    /**
@@ -1125,7 +1128,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
             m_items.put(itemEntry.getContentId(), value);
          }
          
-         m_logger.debug("loaded " + m_items.size() + " items");
+         log.debug("loaded {} items", m_items.size());
       }
       catch (Exception e)
       {
@@ -1278,7 +1281,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
     * <code>PSItemEntry</code> objects. It is initialized by ctor, never
     * <code>null</code> after that, but may be empty.
     */
-   private ConcurrentHashMap<Integer,PSItemEntry> m_items = new ConcurrentHashMap<Integer,PSItemEntry>();
+   private ConcurrentHashMap<Integer,PSItemEntry> m_items = new ConcurrentHashMap<>();
 
 
    /**
@@ -1290,7 +1293,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
    /**
     * The logger object, never <code>null</code>.
     */
-   private Logger m_logger = Logger.getLogger("PSItemSummaryCache");
+   private static final Logger log = LogManager.getLogger("PSItemSummaryCache");
 
    /**
     * The column names in {@link #ms_columns}
@@ -1352,7 +1355,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
     */
    private Object m_cacheMonitor = new Object();  
    
-   private ConcurrentMap<Integer, Integer> locks = new ConcurrentHashMap<Integer, Integer>();
+   private ConcurrentMap<Integer, Integer> locks = new ConcurrentHashMap<>();
    
    private Object getCacheSyncObject(final Integer id) {
       locks.putIfAbsent(id, id);
