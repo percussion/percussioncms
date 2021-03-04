@@ -2352,7 +2352,7 @@ public class PSContentRepository
                         if(type.getM_fieldToType().get(field)!=null && type.getM_fieldToType().get(field).equals(Blob.class))
                             continue;
 
-                        query.append(field + " as "+COLUMN_PREFIX_CGLIB+field+ ",");//FOR ANOTHER LIBRARY NEED TO CHANGE LOGIC
+                        query.append("ab."+field + " as "+COLUMN_PREFIX_CGLIB+field+ ",");//FOR ANOTHER LIBRARY NEED TO CHANGE LOGIC
                     }
 
                     //removing comma from endPSJdbcImportExportHelperTests
