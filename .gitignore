@@ -1,3 +1,9 @@
+.idea/encodings.xml
+.idea/sonarIssues.xml
+.idea/sonarlint.xml
+.idea/sonarlint-state.xml
+.idea/sonarlint/issuestore/index.pb
+
 derby.log
  
 # random output file
