@@ -52,6 +52,8 @@ import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.xerces.impl.dtd.XMLContentSpec;
 import org.apache.xerces.impl.dtd.models.CMNode;
 import org.apache.xerces.xni.parser.XMLInputSource;
@@ -73,6 +75,7 @@ import org.xml.sax.SAXParseException;
 public class PSDtdTree implements Serializable, PSDtdTreeVisitor, Cloneable
 {
 
+    private static final Logger log = LogManager.getLogger(PSDtdTree.class);
    /**
     * The character, represented as a string, that is used to separate path
     * components in a canonicalized path name. For example, /Person/Name/First.
@@ -94,7 +97,7 @@ public class PSDtdTree implements Serializable, PSDtdTreeVisitor, Cloneable
    {
       if (args.length < 1)
       {
-         System.out.println("No args");
+         log.info("No args");
          return;
       }
 
@@ -107,11 +110,11 @@ public class PSDtdTree implements Serializable, PSDtdTreeVisitor, Cloneable
          {
             if (args.length < 3)
             {
-               System.out.println("docType and filename required");
+               log.info("docType and filename required");
                return;
             }
             String docType = args[1];
-            System.out.println("docType : " + docType);
+            log.info("docType : {} ", docType);
             java.io.File file = new java.io.File(args[2]);
             InputStream in =
                new java.io.BufferedInputStream(
@@ -122,7 +125,7 @@ public class PSDtdTree implements Serializable, PSDtdTreeVisitor, Cloneable
          {
             if (args.length < 2)
             {
-               System.out.println("URL required.");
+               log.info("URL required.");
                return;
             }
             URL url = new URL(args[1]);
@@ -130,20 +133,20 @@ public class PSDtdTree implements Serializable, PSDtdTreeVisitor, Cloneable
          }
          else
          {
-            System.out.println("Unknown type: " + type);
+            log.info("Unknown type: {} ", type);
          }
       /////////////// test code //////////////////////////
 // test using: java -Djava.compiler=none com/percussion/xml/PSDtdTree stream Person Person.dtd
-        System.out.println("  BEFORE: "+tree);
+        log.info("  BEFORE: {} ", tree);
         tree.printElements();
         tree = (PSDtdTree)tree.clone();
       ////////////////////////////////////////////////////
             List cat = tree.getCatalog("/", "@");
          for (java.util.Iterator i = cat.iterator(); i.hasNext(); )
          {
-            System.out.println(i.next().toString());
+            log.info(i.next().toString());
          }
-      System.out.println("  AFTER: "+tree);
+      log.info("  AFTER: {} ", tree);
       }
       catch (Throwable t)
       {
@@ -1061,7 +1064,7 @@ public class PSDtdTree implements Serializable, PSDtdTreeVisitor, Cloneable
    public void printElements()
    {
       if (m_elements == null) {
-         System.out.println("Null Tree");
+         log.info("Null Tree");
          return;
       }
 
@@ -1070,7 +1073,7 @@ public class PSDtdTree implements Serializable, PSDtdTreeVisitor, Cloneable
       PSDtdElement e;
       while (i.hasNext()) {
          e = (PSDtdElement) i.next();
-         System.out.println(e.getName());
+         log.info(e.getName());
       }
    }
 

@@ -213,7 +213,7 @@ public class PSFieldDefinition
       }
       if(fd.getCtrlDependencies() != null)
       {
-         List<PSDependency> depsCopy = new ArrayList<PSDependency>(); 
+         List<PSDependency> depsCopy = new ArrayList<>();
          for(PSDependency dep:fd.getCtrlDependencies())
          {
             PSDependency depCopy = (PSDependency)dep.clone();

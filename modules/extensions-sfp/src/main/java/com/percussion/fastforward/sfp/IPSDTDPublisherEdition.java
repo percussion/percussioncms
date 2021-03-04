@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -94,7 +94,7 @@ package com.percussion.fastforward.sfp;
  * islastpage="false" &gt;<br>
  * &lt;contentitem contentid="1" variantid="101"&gt;<br>
  * &lt;title&gt;testtitle &lt;/title&gt;<br>
- * &lt;contenturl&gt;http://www.percussion.com/rhythmyx/index.htm
+ * &lt;contenturl&gt;https://www.percussion.com/rhythmyx/index.htm
  * &lt;/contenturl&gt;<br>
  * &lt;delivery&gt;<br>
  * &lt;location&gt;test/test.htm &lt;/location&gt;<br>

@@ -24,6 +24,9 @@
 
 package com.percussion.xml;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,7 @@ import java.util.List;
  * contains attribute and content model information.
  */
 public class PSDtdElement implements Serializable {
+    private static final Logger log = LogManager.getLogger(PSDtdElement.class);
    /**
     * Construct a Dtd Element which corresponds to a Element decl in the Dtd
     *
@@ -205,14 +209,14 @@ public class PSDtdElement implements Serializable {
     */
    public void print(String tab, String occurrenceString)
    {
-      System.out.println(tab + m_name + " element " + occurrenceString);
+      log.info(tab + m_name + " element " + occurrenceString);
       if (isAny())
       {
-         System.out.println(tab + "ANY ");
+         log.info(tab + "ANY ");
       }
       else if (isEmpty())
       {
-         System.out.println(tab + "EMPTY");
+         log.info(tab + "EMPTY");
       }
       else
       {

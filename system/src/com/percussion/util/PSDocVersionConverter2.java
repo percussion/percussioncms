@@ -54,6 +54,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -66,6 +68,7 @@ import org.xml.sax.SAXException;
  */
 public class PSDocVersionConverter2
 {
+   private static final Logger log = LogManager.getLogger(PSDocVersionConverter2.class);
    /**
     * The main method for command-line testing.
     */
@@ -515,7 +518,7 @@ public class PSDocVersionConverter2
          {
             if (m_extMgr != null)
             {
-               System.out.println( "Installing JS UDF " + def.getRef().toString());
+               log.info("Installing JS UDF {}", def.getRef().toString());
                m_extMgr.installExtension(def, PSIteratorUtils.emptyIterator());
             }
             m_extNames.put(strKey, def.getRef());

@@ -329,7 +329,7 @@ public abstract class PSDataConverter
       }
 
       PSLiteralSet literalSet = new PSLiteralSet(PSLiteral.class);
-      List<String>  valueSet = new ArrayList<String>();
+      List<String>  valueSet = new ArrayList<>();
 
       if (getDataType(data) == DATATYPE_TEXT)
       {

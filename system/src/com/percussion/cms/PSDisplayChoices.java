@@ -61,7 +61,7 @@ public class PSDisplayChoices implements Cloneable
    {
       if (choices != null)
       {
-         m_choices = new ArrayList<PSEntry>();
+         m_choices = new ArrayList<>();
          while (choices.hasNext())
          {
             PSEntry entry = choices.next();
@@ -104,7 +104,7 @@ public class PSDisplayChoices implements Cloneable
       // load choices
       if (choicesLoaded)
       {
-         m_choices = new ArrayList<PSEntry>();
+         m_choices = new ArrayList<>();
          Element entryEl = tree.getNextElement(DISPLAYENTRY_NAME,
             PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN);
          while (entryEl != null)
@@ -247,7 +247,7 @@ public class PSDisplayChoices implements Cloneable
          List<PSEntry> choices = null;
          if (m_choices != null)
          {
-            choices = new ArrayList<PSEntry>();
+            choices = new ArrayList<>();
             Iterator<PSEntry> entries = m_choices.iterator();
             while (entries.hasNext())
             {

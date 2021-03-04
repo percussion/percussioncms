@@ -111,7 +111,7 @@ public class PSDisplayError
       {
          m_genericMessage = PSXmlTreeWalker.getElementData(gms.item(0));
       }
-      m_details = new ArrayList<PSDetails>();
+      m_details = new ArrayList<>();
       NodeList nl = sourceNode.getElementsByTagName(PSDetails.XML_NODE_NAME);
       for (int i = 0; nl != null && i < nl.getLength(); i++)
       {
