@@ -27,7 +27,7 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.0.2.8</version>
+        <version>8.0.2.9</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
