@@ -38,8 +38,8 @@ import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is a factory class designed to get the {@link IPSLuceneTextConverter}
@@ -109,7 +109,7 @@ public class PSLuceneTextConverterFactory
                      + " with mimetype " + mtype
                      + " for text conversion is not an instance of "
                      + "IPSLuceneTextConverter";
-               ms_log.error(msg);
+               log.error(msg);
             }
          }
          catch (PSNotFoundException e)
@@ -119,7 +119,7 @@ public class PSLuceneTextConverterFactory
                   + " with mimetype "
                   + mtype
                   + " for text conversion";
-            ms_log.error(msg,e);
+            log.error(msg,e);
          }
          catch (PSExtensionException e)
          {
@@ -128,7 +128,7 @@ public class PSLuceneTextConverterFactory
                   + " with mimetype "
                   + mtype
                   + " for text conversion";
-            ms_log.error(msg,e);
+            log.error(msg,e);
          }
       }
       addSystemConverters();
@@ -197,7 +197,7 @@ public class PSLuceneTextConverterFactory
     * It is a map of lowercase mimetype and the corresponding text converter.
     */
    private Map<String, IPSLuceneTextConverter> m_converters = 
-      new HashMap<String, IPSLuceneTextConverter>();
+      new HashMap<>();
 
    /**
     * The one and only instance of this class. Initialized by {@link 
@@ -210,11 +210,11 @@ public class PSLuceneTextConverterFactory
     * created and added during the creation of this class.
     */
    private Map<String,IPSLuceneTextConverter> m_systemConverters = 
-      new HashMap<String, IPSLuceneTextConverter>();
+      new HashMap<>();
    
    /**
     * Reference to log for this class
     */
-   private final static Log ms_log = LogFactory
-         .getLog(PSLuceneTextConverterFactory.class);
+   private final static Logger log = LogManager
+         .getLogger(PSLuceneTextConverterFactory.class);
 }
