@@ -304,6 +304,7 @@ public class PSGlobalTemplateUpdateHandler
       IPSRequestContext request = new PSRequestContext(req);
       
       Logger logger = Logger.getLogger("com.percussion.globaltemplates");
+      org.apache.logging.log4j.Logger logger1 = LogManager.getLogger("com.percussion.globaltemplates");
 
 
       Appender wa = logger.getAppender(
@@ -343,7 +344,7 @@ public class PSGlobalTemplateUpdateHandler
       String[] files = getSourceHtmlFiles();
       try
       {
-         PSRxGlobals rxGlobals = new PSRxGlobals(logger);
+         PSRxGlobals rxGlobals = new PSRxGlobals(logger1);
          for (int i = 0; i < files.length; i++)
          {
             String srcHtmlFile = files[i];
@@ -354,7 +355,7 @@ public class PSGlobalTemplateUpdateHandler
                new PSGlobalTemplate(m_rxRootDir, 
                   m_globalTemplateAppName,
                   srcHtmlFile,
-                  logger);
+                  logger1);
             rxGlobals.addGlobalTemplate(gt);
          }
          rxGlobals.save();

@@ -39,7 +39,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -95,7 +97,7 @@ public class PSNavXMLUtils
       {
          String pName = it.next().toString();
          String pValue = params.get(pName).toString();
-         ms_log.debug("setting attribute " + pName + " value " + pValue);
+         log.debug("setting attribute {} value {}",pName, pValue);
          elem.setAttribute(pName, pValue);
       }
    }
@@ -168,7 +170,7 @@ public class PSNavXMLUtils
             .getNextElement(PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN);
       if (rootNavon == null)
       {
-         ms_log.debug("the navigation tree is empty");
+         log.debug("the navigation tree is empty");
          return;
       }
       rootNavon.setAttribute(PSNavon.XML_ATTR_REL_LEVEL, String.valueOf(stack
@@ -177,13 +179,13 @@ public class PSNavXMLUtils
       {
          rootNavon.setAttribute(PSNavon.XML_ATTR_TYPE,
                PSNavonType.TYPENAME_SELF);
-         ms_log.debug("Root node is type " + PSNavonType.TYPENAME_SELF);
+         log.debug("Root node is type {}", PSNavonType.TYPENAME_SELF);
       }
       else
       {
          rootNavon.setAttribute(PSNavon.XML_ATTR_TYPE,
                PSNavonType.TYPENAME_ROOT);
-         ms_log.debug("Root node is type " + PSNavonType.TYPENAME_ROOT);
+         log.debug("Root node is type {}", PSNavonType.TYPENAME_ROOT);
       }
       buildLandingPage(req, rootNavon, landingPageParams);
       fixInfoLink(req, rootNavon, landingPageParams);
@@ -245,10 +247,9 @@ public class PSNavXMLUtils
 
       while (childElem != null)
       {
-         ms_log.debug("setting child element "
-               + childElem.getAttribute(PSNavon.XML_ATTR_NAME));
+         log.debug("setting child element {}", childElem.getAttribute(PSNavon.XML_ATTR_NAME));
          childElem.setAttribute(PSNavon.XML_ATTR_REL_LEVEL, rLevelStr);
-         ms_log.debug("setting relative level " + rLevelStr);
+         log.debug("setting relative level {}", rLevelStr);
          if (compareFlag)
          {
             String contentId = childElem
@@ -256,18 +257,18 @@ public class PSNavXMLUtils
             if (contentId.equals(selChildId))
             {
                childElem.setAttribute(PSNavon.XML_ATTR_TYPE, selChildType);
-               ms_log.debug("setting relation " + selChildType);
+               log.debug("setting relation {}", selChildType);
             }
             else
             {
                childElem.setAttribute(PSNavon.XML_ATTR_TYPE, childType);
-               ms_log.debug("setting relation " + childType);
+               log.debug("setting relation {}", childType);
             }
          }
          else
          {
             childElem.setAttribute(PSNavon.XML_ATTR_TYPE, childType);
-            ms_log.debug("setting relation " + childType);
+            log.debug("setting relation {}", childType);
          }
          //
 
@@ -299,7 +300,7 @@ public class PSNavXMLUtils
             PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN);
       if (lpElement != null)
       {
-         ms_log.debug("setting landing page attributes");
+         log.debug("setting landing page attributes");
          setAttributes(lpElement, landingPageParams);
 
          String variantIdStr = lpElement
@@ -308,7 +309,7 @@ public class PSNavXMLUtils
          PSContentTypeVariant variant = 
             PSNavConfig.getInstance(req).getAllVariants()
                .getContentVariantById(variantid);
-         ms_log.debug("found variant " + variant.getName());
+         log.debug("found variant {}", variant.getName());
          Map linkParams = new HashMap();
          String contentId = lpElement
                .getAttribute(IPSHtmlParameters.SYS_CONTENTID);
@@ -325,8 +326,7 @@ public class PSNavXMLUtils
          }
    
          linkParams.put(IPSHtmlParameters.SYS_VARIANTID, variantIdStr);
-         ms_log.debug("landing page contentid " + contentId + " revision "
-               + revision);
+         log.debug("landing page contentid {} revision {}",contentId, revision);
 
          linkParams.putAll(landingPageParams);
 
@@ -343,10 +343,11 @@ public class PSNavXMLUtils
          }
          catch (MalformedURLException e)
          {
-            ms_log.error("Cannot build Landing Page URL", e);
+            log.error("Cannot build Landing Page URL {}", e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new PSNavException(e);
          }
-         ms_log.debug("Build URL " + intURL.toString());
+         log.debug("Build URL {}", intURL.toString());
          replaceNodeText(lpElement, intURL.toString());
 
       }
@@ -365,7 +366,7 @@ public class PSNavXMLUtils
    private static void fixInfoLink(IPSRequestContext req, Element navonElem,
          Map landingPageParams) throws PSNavException
    {
-      ms_log.debug("fixing Info Link");
+      log.debug("fixing Info Link");
       PSXmlTreeWalker infoWalker = new PSXmlTreeWalker(navonElem);
       Element infoElem = infoWalker.getNextElement(
             PSNavon.XML_ELEMENT_INFOLINK,
@@ -375,26 +376,27 @@ public class PSNavXMLUtils
          try
          {
             String oldUrl = infoWalker.getElementData();
-            ms_log.debug("Old Url was:" + oldUrl);
+            log.debug("Old Url was: {}", oldUrl);
             PSMutableUrl nUrl = new PSMutableUrl(oldUrl);
             //log.debug("Base URL is:" + nUrl.getBase());
             //nUrl.dropParam("?sys_siteid"); // can't fix this now
             //PSNavUtil.logMap(nUrl.getParamMap(), "URL Params", log);
             nUrl.setParamList(landingPageParams);
             String replaceUrl = nUrl.toString();
-            ms_log.debug("New Url is:" + replaceUrl);
+            log.debug("New Url is: {}", replaceUrl);
             replaceNodeText(infoElem, replaceUrl);
          }
          catch (Exception e)
          {
-            ms_log.error("unexpected exception", e);
+            log.error("unexpected exception {}", e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new PSNavException(e);
          }
 
       }
       else
       {
-         ms_log.debug("Info Link not found");
+         log.debug("Info Link not found");
       }
 
    }
@@ -410,7 +412,7 @@ public class PSNavXMLUtils
    private static void fixImageLinks(IPSRequestContext req, Element navonElem,
          Map landingPageParams) throws PSNavException
    {
-      ms_log.debug("fixing Images Link");
+      log.debug("fixing Images Link");
       PSXmlTreeWalker imageListWalker = new PSXmlTreeWalker(navonElem);
       Element imageListElem = imageListWalker.getNextElement(
             PSNavon.XML_ELEMENT_IMAGELIST,
@@ -433,12 +435,13 @@ public class PSNavXMLUtils
                //PSNavUtil.logMap(nUrl.getParamMap(), "URL Params", log);
                nUrl.setParamList(landingPageParams);
                String replaceUrl = nUrl.toString();
-               ms_log.debug("New Url is:" + replaceUrl);
+               log.debug("New Url is: {}", replaceUrl);
                replaceNodeText(imageElement, replaceUrl);
             }
             catch (PSRequestParsingException e)
             {
-               ms_log.error("unexpected exception", e);
+               log.error("unexpected exception {}", e.getMessage());
+               log.debug(e.getMessage(),e);
                throw new PSNavException(e);
             }
             imageElement = imageWalker.getNextElement(
@@ -448,7 +451,7 @@ public class PSNavXMLUtils
       }
       else
       {
-         ms_log.debug("Image List not found");
+         log.debug("Image List not found");
       }
    }
 
@@ -488,7 +491,7 @@ public class PSNavXMLUtils
       PSNavConfig config = PSNavConfig.getInstance(req);
       String themeParam = config.getNavThemeParamName();
       String parentTheme = req.getParameter(themeParam);
-      ms_log.debug(" overrideTheme - parent theme is " + parentTheme);
+      log.debug(" overrideTheme - parent theme is {}", parentTheme);
       if (parentTheme == null || parentTheme.trim().length() == 0)
       {
          parentTheme = getThemeFromQuery(req);
@@ -496,7 +499,7 @@ public class PSNavXMLUtils
       }
       if (parentTheme != null && parentTheme.trim().length() > 0)
       {
-         ms_log.debug("Overriding Nav Theme " + parentTheme);
+         log.debug("Overriding Nav Theme {}", parentTheme);
          Element rootElem = doc.getDocumentElement();
          rootElem.setAttribute(PSNavTree.XML_ATTR_THEME, parentTheme);
       }
@@ -515,7 +518,7 @@ public class PSNavXMLUtils
    private static String getThemeFromQuery(IPSRequestContext req)
          throws PSNavException
    {
-      ms_log.debug("Getting theme from query");
+      log.debug("Getting theme from query");
       try
       {
          IPSInternalRequest irq = req.getInternalRequest(NAV_THEME_QUERY,
@@ -527,18 +530,20 @@ public class PSNavXMLUtils
          Document result = irq.getResultDoc();
          PSXmlTreeWalker walk = new PSXmlTreeWalker(result.getDocumentElement());
          String themedata = walk.getElementData("./nav_theme", false);
-         ms_log.debug("Theme data is " + themedata);
+         log.debug("Theme data is {}", themedata);
          return themedata;
 
       }
       catch (PSNavException pxne)
       {
-         ms_log.error(pxne);
+         log.error(pxne.getMessage());
+         log.debug(pxne.getMessage(),pxne);
          throw (PSNavException) pxne.fillInStackTrace();
       }
       catch (Exception ex)
       {
-         ms_log.error(ex);
+         log.error(ex.getMessage());
+         log.debug(ex.getMessage(),ex);
          throw new PSNavException(ex);
       }
    }
@@ -570,13 +575,13 @@ public class PSNavXMLUtils
          landingPageParams.put(IPSHtmlParameters.SYS_COMMAND, cmd);
          if (cmd.equalsIgnoreCase("editrc"))
          {
-            ms_log.debug("adding relateditemid");
+            log.debug("adding relateditemid");
             landingPageParams.put("relateditemid", req
                   .getParameter(IPSHtmlParameters.SYS_CONTENTID));
          }
       }
 
-      PSNavUtil.logMap(landingPageParams, "Landing Page Map", ms_log);
+      PSNavUtil.logMap(landingPageParams, "Landing Page Map", log);
       return landingPageParams;
    }
 
@@ -620,5 +625,5 @@ public class PSNavXMLUtils
    /**
     * Logger for these classes.
     */
-   private static Logger ms_log = Logger.getLogger(PSNavXMLUtils.class);
+   private static Logger log = LogManager.getLogger(PSNavXMLUtils.class);
 }
