@@ -172,33 +172,26 @@ public abstract class PSFileDependencyHandler extends PSDependencyHandler
       File parentDir = tgtFile.getParentFile();
       if (parentDir != null)
          parentDir.mkdirs();
-      
-      // install the file
-      InputStream in = null;
-      FileOutputStream out = null;
+
       try 
       {
-         out = new FileOutputStream(tgtFile);
-         in = archive.getFileData(depFile);
-         IOTools.copyStream(in, out);
-         addTransactionLogEntry(dep, ctx, tgtFile.getPath(), 
-            PSTransactionSummary.TYPE_FILE, transAction);
+         try(FileOutputStream out = new FileOutputStream(tgtFile)) {
+            try (InputStream in = archive.getFileData(depFile)) {
+               IOTools.copyStream(in, out);
+               addTransactionLogEntry(dep, ctx, tgtFile.getPath(),
+                       PSTransactionSummary.TYPE_FILE, transAction);
 
-         // notify whoever interested after a the file is successful installed
-         PSNotificationHelper.notifyFile(tgtFile);         
+               // notify whoever interested after a the file is successful installed
+               PSNotificationHelper.notifyFile(tgtFile);
+            }
+         }
       }
       catch (IOException e) 
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
             e.getLocalizedMessage());
       }
-      finally 
-      {
-         if (in != null)
-            try{in.close();} catch (IOException e){}
-         if (out != null)
-            try{out.close();} catch (IOException e){}
-      }
+
    }
    
    // see base class

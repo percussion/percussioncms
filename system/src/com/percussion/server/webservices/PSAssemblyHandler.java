@@ -32,6 +32,7 @@ import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -102,30 +103,17 @@ class PSAssemblyHandler extends PSWebServicesBaseHandler
             "no assembly found");
       }
 
-      ByteArrayOutputStream out = null;
-      out = processMergeResultRequest(request, assemblyURL);
+      try(ByteArrayOutputStream out = processMergeResultRequest(request, assemblyURL)) {
 
-      if (out == null)
-      {
+         // build a result with the base64 encoded data
+         String encodedData = PSBase64Encoder.encode(out.toString());
+         Element root = parent.getDocumentElement();
+         PSXmlDocumentBuilder.addElement(parent, root, EL_DATA, encodedData);
+      } catch (IOException e) {
          throw new PSException(
-            IPSWebServicesErrors.WEB_SERVICE_INTERNAL_REQUEST_FAILED,
-            "create variant");
+                 IPSWebServicesErrors.WEB_SERVICE_INTERNAL_REQUEST_FAILED,
+                 "create variant");
       }
-
-      // build a result with the base64 encoded data
-      String encodedData = PSBase64Encoder.encode(out.toString());
-
-      try
-      {
-         if (out != null)
-            out.close();
-      }
-      catch (Exception ex)
-      {
-         // ignore
-      }
-      Element root = parent.getDocumentElement();
-      PSXmlDocumentBuilder.addElement(parent, root, EL_DATA, encodedData);
    }
 
    /**

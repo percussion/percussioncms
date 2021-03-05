@@ -96,10 +96,14 @@ public class PSResponse extends PSBaseResponse
       // and the content
       byte[] ba         = (new String(   "<HTML>" + statusMessage +
                                        "</HTML>")).getBytes();
-      resetContentStream(new ByteArrayInputStream(ba));
-      m_contentLength   = ba.length;
-      setEntityHeader(EHDR_CONT_LENGTH,   String.valueOf(m_contentLength));
-      setEntityHeader(EHDR_CONT_TYPE,      IPSMimeContentTypes.MIME_TYPE_TEXT_HTML);
+      try(ByteArrayInputStream bs = new ByteArrayInputStream(ba)) {
+         resetContentStream(bs);
+         m_contentLength = ba.length;
+         setEntityHeader(EHDR_CONT_LENGTH, String.valueOf(m_contentLength));
+         setEntityHeader(EHDR_CONT_TYPE, IPSMimeContentTypes.MIME_TYPE_TEXT_HTML);
+      } catch (IOException e) {
+         PSConsole.printMsg("Server", e);
+      }
    }
 
    /**

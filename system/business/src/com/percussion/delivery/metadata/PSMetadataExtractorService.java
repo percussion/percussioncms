@@ -322,12 +322,10 @@ public class PSMetadataExtractorService implements IPSMetadataExtractorService
              metadataEntry.setSite(site);
 
              metadataEntry.setProperties(propSet);
-
-
              logMetadataFields(metadataEntry);
 
-             return metadataEntry;
          }
+          return metadataEntry;
       }
       catch (Exception ex)
       {

@@ -253,25 +253,10 @@ public class PSDatasourceConverter
     */
    private Document loadXmlFile(File file) throws IOException, SAXException
    {
-      InputStream in = null;
-      try
-      {
-         in = new FileInputStream(file);
+       try(InputStream in = new FileInputStream(file)){
          return PSXmlDocumentBuilder.createXmlDocument(in, false);
       }
-      finally
-      {
-         if (in != null)
-         {
-            try
-            {
-               in.close();
-            }
-            catch (IOException e)
-            {
-            }
-         }
-      }
+
    }
    
    /**
@@ -285,25 +270,8 @@ public class PSDatasourceConverter
     */
    private void saveXmlFile(File file, Document doc) throws IOException
    {
-      OutputStream out = null;
-      
-      try
-      {
-         out = new FileOutputStream(file);
+       try(OutputStream out = new FileOutputStream(file)){
          PSXmlDocumentBuilder.write(doc, out);
-      }
-      finally
-      {
-         if (out != null)
-         {
-            try
-            {
-               out.close();
-            }
-            catch (IOException e)
-            {
-            }
-         }
       }
    }
 

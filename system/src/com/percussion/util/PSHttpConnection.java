@@ -176,7 +176,7 @@ public class PSHttpConnection
     *
     * @param url The destination it is going to send to. May not <code>null</code>.
     *
-    * @param XmlString string (UTF-8) represntation of the XML document to post
+    * @param XmlDocString string (UTF-8) represntation of the XML document to post
     * to the URL specified. Must not be <code>null</code> or empty.
     *
     * @return the string result of the post call, may be empty, or an error page
@@ -258,21 +258,21 @@ public class PSHttpConnection
    {
       byte[] bytes = boundary.getBytes();
 
-      java.io.ByteArrayInputStream in
-              = new java.io.ByteArrayInputStream(bytes);
-      java.io.ByteArrayOutputStream out
-              = new java.io.ByteArrayOutputStream();
+      try(java.io.ByteArrayInputStream in
+              = new java.io.ByteArrayInputStream(bytes)){
+        try( java.io.ByteArrayOutputStream out
+                 = new java.io.ByteArrayOutputStream()) {
 
-      try
-      {
-         PSBase64Encoder.encode(in, out);
+           PSBase64Encoder.encode(in, out);
+
+           return new String(out.toByteArray());
+        }
       }
       catch (java.io.IOException e)
       {
          throw new RuntimeException(e.toString());
       }
 
-      return new String(out.toByteArray());
    }
 
 
@@ -323,7 +323,7 @@ public class PSHttpConnection
     * @param data The to be send data, assume not <code>null</code>, but may
     *    be empty.
     *
-    * @param contentType The Content-Type of the <code>data</code>. It may be
+    * @param sendContentType The Content-Type of the <code>data</code>. It may be
     * <code>null</code> if there is no data.
     */
    private static String postData(URL url, String data, String sendContentType)
@@ -332,8 +332,6 @@ public class PSHttpConnection
       HttpURLConnection connection = null;
       String msg = "";
 
-      InputStream in = null;
-      OutputStream out = null;
       try
       {
          // open the connection
@@ -362,72 +360,61 @@ public class PSHttpConnection
             connection.setRequestProperty("Content-Type", sendContentType);
 
          // Write POST data to connection output stream
-         out = connection.getOutputStream();
-         out.write(data.getBytes(PSCharSets.rxJavaEnc()));
+         try(OutputStream out = connection.getOutputStream()) {
+            out.write(data.getBytes(PSCharSets.rxJavaEnc()));
 
-         int respCode = connection.getResponseCode();
+            int respCode = connection.getResponseCode();
 
-         String sContentLength = connection.getHeaderField("Content-Length");
-         int contentLength = (sContentLength != null) ?
-            Integer.parseInt(sContentLength) : -1;
-         try
-         {
-            in = connection.getInputStream();
+            String sContentLength = connection.getHeaderField("Content-Length");
+            int contentLength = (sContentLength != null) ?
+                    Integer.parseInt(sContentLength) : -1;
+            long readData;
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+
+               try (InputStream in = connection.getInputStream()) {
+                  readData = IOTools.copyStream(in, os);
+               } catch (IOException e) {
+                  try (InputStream in = connection.getErrorStream()) {
+                     readData = IOTools.copyStream(in, os);
+                  }
+               }
+
+
+               // Make sure received all the data if specified "Content-Length"
+               if ((contentLength > 0) && (long) contentLength != readData) {
+                  String[] args = {"" + readData, "" + contentLength};
+                  throw new PSException(IPSUtilErrors.RECEIVE_DATA_ERROR, args);
+               }
+
+               byte[] byteData = os.toByteArray();
+               // Get the character-set for the received data
+               String rcvContentType = connection.getHeaderField("Content-Type");
+               String charset = PSCharSets.rxJavaEnc();
+               if (rcvContentType != null) {
+                  Map params = new HashMap();
+                  PSBaseHttpUtils.parseContentType(rcvContentType, params);
+                  charset = (String) params.get("charset");
+                  if (charset == null)
+                     charset = PSCharSets.rxJavaEnc();
+                  else
+                     charset = PSCharSets.getJavaName(charset);
+               }
+
+               // Convert byte[] to string
+               msg = new String(byteData, charset);
+
+               // if error, print to console,
+               // then throw exception with error code and message
+               if (respCode >= 400) {
+                  String[] args = {Integer.toString(respCode), msg};
+                  throw new PSException(IPSUtilErrors.POST_DATA_ERROR, args);
+               }
+            }
+            return msg;
          }
-         catch(IOException e)
-         {
-            in = connection.getErrorStream();
-         }
-
-         ByteArrayOutputStream os = new ByteArrayOutputStream();
-         long readData = IOTools.copyStream(in, os);
-         byte[] byteData = os.toByteArray();
-
-         // Make sure received all the data if specified "Content-Length"
-         if ( (contentLength >0) && (long) contentLength != readData)
-         {
-            String [] args = {""+readData, ""+contentLength};
-            throw new PSException(IPSUtilErrors.RECEIVE_DATA_ERROR, args);
-         }
-
-         // Get the character-set for the received data
-         String rcvContentType = connection.getHeaderField("Content-Type");
-         String charset = PSCharSets.rxJavaEnc();
-         if (rcvContentType != null)
-         {
-            Map params = new HashMap();
-            PSBaseHttpUtils.parseContentType(rcvContentType, params);
-            charset = (String) params.get("charset");
-            if (charset == null)
-               charset = PSCharSets.rxJavaEnc();
-            else
-               charset = PSCharSets.getJavaName(charset);
-         }
-
-         // Convert byte[] to string
-         msg = new String(byteData, charset);
-
-         // if error, print to console,
-         // then throw exception with error code and message
-         if (respCode >= 400)
-         {
-            String [] args = {Integer.toString(respCode), msg};
-            throw new PSException(IPSUtilErrors.POST_DATA_ERROR, args);
-         }
+      } catch (IOException |NumberFormatException | PSException e) {
+         throw new PSException(IPSUtilErrors.POST_DATA_ERROR, e.getMessage());
       }
-      finally
-      {
-         // don't call connection.disconnect() as this will not allow keep-alive
-         // instead close the streams to release resources, but allow the
-         // peristent connection to remain open.
-         if (in != null)
-            try { in.close(); } catch (IOException e) {}
-         if (out != null)
-            try { out.close(); } catch (IOException e) {}
-
-      }
-
-      return msg;
    }
    
    /**
@@ -435,10 +422,10 @@ public class PSHttpConnection
     * for a given Content-Type. The connections that are opened by this method
     * will be closed.
     *
-    * @param data The to be send data, assume not <code>null</code>, but may
+    * @param url The to be send data, assume not <code>null</code>, but may
     *    be empty.
     *
-    * @param contentType The Content-Type of the <code>data</code>. It may be
+    * @param sendContentType The Content-Type of the <code>data</code>. It may be
     * <code>null</code> if there is no data.
     */
    private static String getData(URL url, String sendContentType)

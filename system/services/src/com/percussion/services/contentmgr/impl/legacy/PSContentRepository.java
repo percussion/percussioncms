@@ -108,6 +108,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -1249,9 +1250,10 @@ public class PSContentRepository
                 if (iclass.getConfiguration() != null)
                 {
                     String config = iclass.getConfiguration();
-                    InputStream s = new ByteArrayInputStream(config
-                            .getBytes("UTF8"));
-                    hibConfig.addInputStream(s);
+                    try(InputStream s = new ByteArrayInputStream(config
+                            .getBytes(StandardCharsets.UTF_8))) {
+                        hibConfig.addInputStream(s);
+                    }
                 }
             }
         }

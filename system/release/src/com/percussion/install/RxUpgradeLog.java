@@ -105,8 +105,9 @@ public class RxUpgradeLog
          return m_ps;
 
       String logFile = RxUpgrade.getLogFileDir() + "rxupgrade.log";
-
-      m_ps = new PrintStream(new FileOutputStream(logFile, true));
+      try(FileOutputStream fo = new FileOutputStream(logFile, true)) {
+         m_ps = new PrintStream(fo);
+      }
 
       return m_ps;
    }

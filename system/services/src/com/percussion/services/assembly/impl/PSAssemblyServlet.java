@@ -144,9 +144,7 @@ public class PSAssemblyServlet extends HttpServlet
          }
       }
       PSStopwatch watch = new PSStopwatch();
-      OutputStream os = null;
-      InputStream is = null;
-      
+
       try
       {
          IPSAssemblyService assembly = PSAssemblyServiceLocator
@@ -227,10 +225,12 @@ public class PSAssemblyServlet extends HttpServlet
                response.setContentLength((int) result.getResultLength());
             }
             response.setStatus(success ? 200 : 500);
-            os = response.getOutputStream();
-            is = result.getResultStream();
-            IOUtils.copy(is, os);
-            os.flush();
+            try(OutputStream os = response.getOutputStream()) {
+               try (InputStream is = result.getResultStream()) {
+                  IOUtils.copy(is, os);
+                  os.flush();
+               }
+            }
          }
       }
       catch (Throwable e)
@@ -252,8 +252,6 @@ public class PSAssemblyServlet extends HttpServlet
                + request.getParameter(IPSHtmlParameters.SYS_CONTENTID)
                + " template " + (template != null ? template : variantid)
                + " took " + watch.toString());
-         IOUtils.closeQuietly(os);
-         IOUtils.closeQuietly(is);
       }
 
    }
@@ -361,9 +359,10 @@ public class PSAssemblyServlet extends HttpServlet
       response.setContentType(result.getMimeType());
       response.setContentLength(outbytes.length);
       response.setStatus(200);
-      OutputStream os = response.getOutputStream();
-      os.write(outbytes);
-      os.flush();
+      try(OutputStream os = response.getOutputStream()) {
+         os.write(outbytes);
+         os.flush();
+      }
    }
 
    /**

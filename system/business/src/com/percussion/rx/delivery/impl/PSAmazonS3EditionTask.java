@@ -271,15 +271,9 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
          if (file.isFile() && !isIgnorableFile(file))
          {
             String key = generateKey(file);
-            InputStream is = null;
-            try
-            {
-               is = new FileInputStream(file);
+            try(InputStream is = new FileInputStream(file)){
                localFilesMap.put(key,
                      new PSPair<>(DigestUtils.md5Hex(IOUtils.toByteArray(is)), file));
-            }
-            finally{
-               org.apache.commons.io.IOUtils.closeQuietly(is);
             }
          }
          else if (file.isDirectory())
