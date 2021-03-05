@@ -944,24 +944,19 @@ public abstract class PSDependencyHandler
       if (doc == null)
          throw new IllegalArgumentException("doc may not be null");
 
-      FileOutputStream out = null;
       try
       {
          PSPurgableTempFile xmlFile = new PSPurgableTempFile("dpl_", ".xml",
             null);
-         out = new FileOutputStream(xmlFile);
-         PSXmlDocumentBuilder.write(doc, out);
-         return xmlFile;
+         try(FileOutputStream out = new FileOutputStream(xmlFile)) {
+            PSXmlDocumentBuilder.write(doc, out);
+            return xmlFile;
+         }
       }
       catch (IOException e)
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
-      }
-      finally
-      {
-         if (out != null)
-            try {out.close();} catch (IOException ex){}
       }
 
    }
@@ -985,31 +980,27 @@ public abstract class PSDependencyHandler
       if (org.apache.commons.lang.StringUtils.isBlank(str))
          throw new IllegalArgumentException("doc may not be empty or null");
 
-      FileOutputStream out = null;
       try
       {
          PSPurgableTempFile xmlFile = new PSPurgableTempFile("dpl_", ".xml",
             null);
-         out = new FileOutputStream(xmlFile);
-         
-         // add xml header if necessary
-         String tmpStr = str;
-         if (!tmpStr.toUpperCase().startsWith(XML_HDR_STR.toUpperCase()))
-            tmpStr = XML_HDR_STR + tmpStr;
-           
-         out.write(tmpStr.getBytes(IPSUtilsConstants.RX_JAVA_ENC));
-         return xmlFile;
+         try(FileOutputStream out = new FileOutputStream(xmlFile)) {
+
+            // add xml header if necessary
+            String tmpStr = str;
+            if (!tmpStr.toUpperCase().startsWith(XML_HDR_STR.toUpperCase()))
+               tmpStr = XML_HDR_STR + tmpStr;
+
+            out.write(tmpStr.getBytes(IPSUtilsConstants.RX_JAVA_ENC));
+            return xmlFile;
+         }
       }
       catch (IOException e)
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
       }
-      finally
-      {
-         if (out != null)
-            try {out.close();} catch (IOException ex){}
-      }
+
    }
 
    /**

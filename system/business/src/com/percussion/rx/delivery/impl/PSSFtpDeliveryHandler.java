@@ -173,7 +173,6 @@ public class PSSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
 
                // Second, try with the site key, if any
                else if (!StringUtils.isBlank(info.privateKey)) {
-                   //String filePath = PSServer.SSH_PRIVATE_KEYS_DIR;
                    String keyFilePath = getSshKeysDir() + info.privateKey;
 
                    return sshLogin(ssh, keyFilePath, false, site, info, jobId, failAll, timeout, retries);
@@ -644,7 +643,6 @@ public class PSSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
        // Second, try with the site key, if any
        else if(!StringUtils.isBlank(info.privateKey))
        {
-          //String filePath = PSServer.SSH_PRIVATE_KEYS_DIR;
           keyFilePath = getSshKeysDir() + info.privateKey;
           sftp.loginKeyExchange(info.ipAddress, info.port, info.userName,
                    keyFilePath, m_timeout, 2);

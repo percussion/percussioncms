@@ -66,26 +66,21 @@ public class PSFixOrphanedData extends PSFixDBBase implements IPSFix
 
       RxUpgrade upgrader = new RxUpgrade();
 
-      try
-      {
+      try {
          Class clazz = getClass();
-         InputStream is = clazz
-               .getResourceAsStream("rxOrphanedDataCleanupPlugins.xml");
+         try (InputStream is = clazz
+                 .getResourceAsStream("rxOrphanedDataCleanupPlugins.xml")) {
 
-         if (is == null)
-         {
-            logWarn(null,
-                  "Skipping orphaned data cleanup as plugin file is missing");
-         }
-         else if (!preview)
-         {
-            Document doc = PSXmlDocumentBuilder.createXmlDocument(is, false);
+            if (is == null) {
+               logWarn(null,
+                       "Skipping orphaned data cleanup as plugin file is missing");
+            } else if (!preview) {
+               Document doc = PSXmlDocumentBuilder.createXmlDocument(is, false);
 
-            upgrader.process(PSServer.getRxDir().getAbsolutePath(), doc);
-         }
-         else
-         {
-            logPreview(null, "Skipping orphaned data cleanup in preview mode");
+               upgrader.process(PSServer.getRxDir().getAbsolutePath(), doc);
+            } else {
+               logPreview(null, "Skipping orphaned data cleanup in preview mode");
+            }
          }
       }
       catch (Exception ex)

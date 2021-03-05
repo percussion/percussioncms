@@ -34,10 +34,13 @@ import com.percussion.data.PSTableChangeEvent;
 import com.percussion.data.PSUpdateHandler;
 import com.percussion.design.objectstore.PSBackEndTable;
 import com.percussion.design.objectstore.PSDataSet;
+import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSServerCacheSettings;
 import com.percussion.design.objectstore.PSSystemValidationException;
+import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.extension.PSExtensionException;
 import com.percussion.server.IPSRequestHandler;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSInternalRequest;
@@ -49,6 +52,7 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCollection;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,6 +65,7 @@ import java.util.TreeMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * Handles the caching of Content Assembler pages.  Will only cache pages with
@@ -98,21 +103,18 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
       super(KEY_SIZE, cacheSettings);
 
       // load resource file
-      InputStream stream = PSKeyRules.class.getResourceAsStream(
-         KEY_RULES_FILENAME);
-      if (null == stream)
-         throw new RuntimeException("Cannot locate resource: " +
-            KEY_RULES_FILENAME);
-      try
-      {
-         Document doc = PSXmlDocumentBuilder.createXmlDocument( stream, false);
-         Element root = doc.getDocumentElement();
-         m_keyRules = new PSKeyRules(root);
-      }
-      catch (Exception e)
-      {
+      try(InputStream stream = PSKeyRules.class.getResourceAsStream(
+         KEY_RULES_FILENAME)) {
+         if (null == stream)
+            throw new RuntimeException("Cannot locate resource: " +
+                    KEY_RULES_FILENAME);
+            Document doc = PSXmlDocumentBuilder.createXmlDocument(stream, false);
+            Element root = doc.getDocumentElement();
+            m_keyRules = new PSKeyRules(root);
+
+      } catch (IOException | SAXException | PSUnknownNodeTypeException | PSNotFoundException | PSExtensionException e) {
          throw new RuntimeException("Error loading key rules resource file: "
-            + e.getLocalizedMessage());
+                 + e.getLocalizedMessage());
       }
    }
 

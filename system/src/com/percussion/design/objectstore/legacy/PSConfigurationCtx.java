@@ -80,28 +80,12 @@ public class PSConfigurationCtx
       
       m_locator = fileLocator;
       m_secretKey = secretKey;
-      
-      FileInputStream in = null;
+
       Document serverConfigDoc;
-      try
-      {
-         in = new FileInputStream(m_locator.getServerConfigFile());
+      try(FileInputStream in = new FileInputStream(m_locator.getServerConfigFile())){
          serverConfigDoc = PSXmlDocumentBuilder.createXmlDocument(in, false);
       }
-      finally
-      {
-         if (in != null)
-         {
-            try
-            {
-               in.close();
-            }
-            catch (IOException e)
-            {
-            }
-         }
-      }
-      
+
       m_serverConfig = new PSLegacyServerConfig(serverConfigDoc);
       m_springConfig = new PSSpringConfiguration(
          m_locator.getSpringConfigFile());
@@ -157,25 +141,11 @@ public class PSConfigurationCtx
     */
    public void saveConfigs() throws IOException, SAXException
    {
-      FileOutputStream out = null;
-      try
-      {
-         out = new FileOutputStream(m_locator.getServerConfigFile());
+
+    try(FileOutputStream out = new FileOutputStream(m_locator.getServerConfigFile())){
          PSXmlDocumentBuilder.write(m_serverConfig.toXml(), out);
       }
-      finally
-      {
-         if (out != null)
-         {
-            try
-            {
-               out.close();
-            }
-            catch (IOException e)
-            {
-            }
-         }
-      }      
+
       m_springConfig.save();
        DefaultConfigurationContextImpl configurationContext = PSContainerUtilsFactory.getConfigurationContextInstance();
        configurationContext.getConfig().setDatasources(m_datasources);

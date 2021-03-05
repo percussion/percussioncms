@@ -133,19 +133,15 @@ public class PSWebdavServlet extends PSServletBase
       String filename = getServletConfig().getInitParameter(CONFIG_FILE_PATH);
       File configDir = new File(PSServletUtils.getUserConfigDir(), CONFIG_BASE);
       File configFile = new File(configDir, filename);
-      
-      InputStream in = null;
-      try
-      {
-         in = new FileInputStream(configFile);
-      }
-      catch (FileNotFoundException e)
+
+      try(InputStream  in = new FileInputStream(configFile)) {
+         return in;
+      }catch (IOException e)
       {
          throw new PSWebdavException(IPSWebdavErrors.FILE_DOES_NOT_EXIST,
             filename);
       }
-      
-      return in;
+
    }
 
    /**
@@ -163,35 +159,30 @@ public class PSWebdavServlet extends PSServletBase
    {
       if (m_config == null)
       {
-         InputStream in = null;
-         try
-         {
+
+         try {
             // load the config file.
-            in = getWebdavConfigDef();
+            try (InputStream in = getWebdavConfigDef()) {
 
-            PSWebdavConfigDef configDef = new PSWebdavConfigDef(in);
-            m_config = new PSWebdavConfig(configDef);
-            m_config.setRxServletURI(getRhythmyxServletURI());
-            m_config.setRxUriPrefix(getRxUriPrefixParameter());
+               PSWebdavConfigDef configDef = new PSWebdavConfigDef(in);
+               m_config = new PSWebdavConfig(configDef);
+               m_config.setRxServletURI(getRhythmyxServletURI());
+               m_config.setRxUriPrefix(getRxUriPrefixParameter());
 
-            // register the configure object. synchronize the "put" operation
-            synchronized (ms_webdavConfigMap)
-            {
-               String servletName = getServletConfig().getServletName();
-               if (ms_webdavConfigMap.get(servletName) == null)
-               {
-                  String rootPath = m_config.getRootPath();
-                  if (!isNestedPath(rootPath))
-                  {
-                     ms_webdavConfigMap.put(servletName, m_config);
-                     ms_logger.debug("Added servletName: " + servletName);
-                  }
-                  else
-                  {
-                     ms_logger.error("WebDAV configuration Error: \""
-                           + rootPath + "\" is a nested root.");
-                     throw new ServletException("Nested Rhythmyx RootPath "
-                           + rootPath);
+               // register the configure object. synchronize the "put" operation
+               synchronized (ms_webdavConfigMap) {
+                  String servletName = getServletConfig().getServletName();
+                  if (ms_webdavConfigMap.get(servletName) == null) {
+                     String rootPath = m_config.getRootPath();
+                     if (!isNestedPath(rootPath)) {
+                        ms_webdavConfigMap.put(servletName, m_config);
+                        ms_logger.debug("Added servletName: " + servletName);
+                     } else {
+                        ms_logger.error("WebDAV configuration Error: \""
+                                + rootPath + "\" is a nested root.");
+                        throw new ServletException("Nested Rhythmyx RootPath "
+                                + rootPath);
+                     }
                   }
                }
             }
@@ -200,16 +191,6 @@ public class PSWebdavServlet extends PSServletBase
          {
             e.printStackTrace();
             throw new ServletException(e);
-         }
-         finally
-         {
-            try
-            {
-               in.close();
-            }
-            catch (Exception e)
-            {
-            }
          }
       }
 

@@ -129,37 +129,25 @@ public class PSXdDomToFile extends PSDefaultExtension
          return;
       }
 
-      FileOutputStream tfstream = null;
-      try
-      {
-         String resultText = PSXmlDomUtils.copyTextFromDocument(contxt,sourceDoc,
-            sourceNodeName);
+      try {
+         String resultText = PSXmlDomUtils.copyTextFromDocument(contxt, sourceDoc,
+                 sourceNodeName);
 
-         PSPurgableTempFile tempfile = new PSPurgableTempFile("xml","xml",null);
-         tfstream = new FileOutputStream((File)tempfile);
-         if(encoding.trim().length() == 0)
-         {
-            //no encoding specified, use platform default
-            tfstream.write(resultText.getBytes());
-         }
-         else
-         {
-            tfstream.write(resultText.getBytes(encoding));
-         }
+         PSPurgableTempFile tempfile = new PSPurgableTempFile("xml", "xml", null);
+         try (FileOutputStream tfstream = new FileOutputStream((File) tempfile)) {
+            if (encoding.trim().length() == 0) {
+               //no encoding specified, use platform default
+               tfstream.write(resultText.getBytes());
+            } else {
+               tfstream.write(resultText.getBytes(encoding));
+            }
 
-         request.setParameter(destName, tempfile);
+            request.setParameter(destName, tempfile);
+         }
       }
       catch(Exception e)
       {
          contxt.handleException(e);
-      }
-      finally
-      {
-         if (tfstream != null)
-         {
-            try { tfstream.close(); }
-            catch (Exception eio) {}  // ignore any error
-         }
       }
    }
 
