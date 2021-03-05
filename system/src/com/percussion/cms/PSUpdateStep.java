@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -32,7 +32,7 @@ import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.PSRequest;
 import com.percussion.util.IPSHtmlParameters;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Modify step that updates the a content item.
@@ -90,7 +90,7 @@ public class PSUpdateStep extends PSModifyStep
             "cannot execute unless a handler has been set");
 
       PSRequest request = data.getRequest();
-      HashMap tmpParams = null;
+      Map<String, Object> tmpParams = null;
       PSExecutionData intExecData = null;
 
       try
@@ -110,12 +110,12 @@ public class PSUpdateStep extends PSModifyStep
             || request.isOnlyMultiValueParam(IPSHtmlParameters.REQ_XML_DOC_FLAG))
          {
             tmpParams = request.getParameters();
-            request.setParameters((HashMap)request.getTruncatedParameters());
+            request.setParameters(request.getTruncatedParameters());
          }
          else if (m_controlParam != null)
          {
             tmpParams = request.getParameters();
-            request.setParameters((HashMap)request.getBalancedParameters(
+            request.setParameters(request.getBalancedParameters(
                m_controlParam));
          }
 

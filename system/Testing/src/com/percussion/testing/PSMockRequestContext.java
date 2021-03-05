@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,21 +26,12 @@ package com.percussion.testing;
 import com.percussion.data.PSDataExtractionException;
 import com.percussion.design.objectstore.PSSubject;
 import com.percussion.error.PSRuntimeException;
-import com.percussion.security.PSRoleManager;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
-
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
 import org.w3c.dom.Document;
+
+import java.util.*;
 
 /**
  * This is a mock object to allow the running of a subset of code that requires
@@ -149,7 +140,7 @@ public class PSMockRequestContext implements IPSRequestContext
       return null;
    }
 
-   public HashMap getParameters()
+   public Map<String,Object> getParameters()
    {
       return null;
    }
@@ -187,7 +178,7 @@ public class PSMockRequestContext implements IPSRequestContext
    {            
    }
 
-   public void setParameters(HashMap params)
+   public void setParameters(Map<String,Object> params)
    {  
    }
 

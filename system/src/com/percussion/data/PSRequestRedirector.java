@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,11 +24,7 @@
 
 package com.percussion.data;
 
-import com.percussion.design.objectstore.PSApplication;
-import com.percussion.design.objectstore.PSDataSet;
-import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.design.objectstore.PSRequestLink;
-import com.percussion.design.objectstore.PSRequestor;
+import com.percussion.design.objectstore.*;
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.error.PSResponseSendError;
 import com.percussion.server.IPSCgiVariables;
@@ -38,6 +34,7 @@ import com.percussion.server.PSServer;
 import com.percussion.util.PSURLEncoder;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -141,7 +138,7 @@ public class PSRequestRedirector implements IPSResultGenerator
       request.setCgiVariable(IPSCgiVariables.CGI_HTTP_PRAGMA, "no-cache");
 
       // and we need to set/remove the request type param based on target
-      java.util.HashMap params = request.getParameters();
+      Map<String,Object> params = request.getParameters();
       if (m_requestTypeParam != null)
       {
          if (m_requestTypeValue == null)
@@ -153,8 +150,8 @@ public class PSRequestRedirector implements IPSResultGenerator
          {
             if (params == null)   // check for null (bug id TGIS-4BSTPH)
             {
-               params = new java.util.HashMap();
-               request.setParameters(params);
+               params = new HashMap<String,Object>();
+               request.setParameters((HashMap<String, Object>) params);
             }
             params.put(m_requestTypeParam, m_requestTypeValue);
          }

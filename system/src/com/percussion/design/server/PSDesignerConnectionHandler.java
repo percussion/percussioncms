@@ -28,21 +28,8 @@ import com.percussion.content.IPSMimeContentTypes;
 import com.percussion.design.catalog.IPSCatalogErrors;
 import com.percussion.design.objectstore.PSAclEntry;
 import com.percussion.error.PSIllegalArgumentException;
-import com.percussion.security.IPSDecryptor;
-import com.percussion.security.IPSKey;
-import com.percussion.security.IPSSecretKey;
-import com.percussion.security.PSAuthenticationFailedException;
-import com.percussion.security.PSAuthenticationRequiredException;
-import com.percussion.security.PSAuthorizationException;
-import com.percussion.security.PSEncryptionException;
-import com.percussion.security.PSEncryptionKeyFactory;
-import com.percussion.security.PSEncryptor;
-import com.percussion.security.ToDoVulnerability;
-import com.percussion.server.IPSRequestHandler;
-import com.percussion.server.PSRequest;
-import com.percussion.server.PSResponse;
-import com.percussion.server.PSServer;
-import com.percussion.server.PSUserSession;
+import com.percussion.security.*;
+import com.percussion.server.*;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSBase64Decoder;
 import com.percussion.util.PSCharSets;
@@ -56,6 +43,7 @@ import org.w3c.dom.Element;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Map;
 
 
 /**
@@ -175,7 +163,7 @@ public class PSDesignerConnectionHandler implements IPSRequestHandler
       else
          loginPw = PSBase64Decoder.decode(loginPw);
 
-      java.util.HashMap params = request.getParameters();
+      Map<String, Object> params = request.getParameters();
       if (params == null) {
          params = new java.util.HashMap();
          request.setParameters(params);

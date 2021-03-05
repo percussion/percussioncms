@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -65,8 +65,8 @@ public class PSTomcatConnectors extends PSAbstractXmlConnectors {
             this.laxFile = rxDir.resolve(CM1_LEGACY_LAX_FILE_LINUX);
         }
 
-
-        this.propertiesFile = dtsRoot.resolve("conf/perc/perc-catalina.properties");
+        this.propertiesFile = dtsRoot.resolve("Server/conf/perc/perc-catalina.properties");
+        System.out.println("Perc-Catalina properties file*********" + this.propertiesFile);
     }
 
     public String getOperatingSystem() {
@@ -87,6 +87,7 @@ public class PSTomcatConnectors extends PSAbstractXmlConnectors {
     public void load() {
         Map<String,String> props=null;
         if (Files.exists(propertiesFile)) {
+            System.out.println("Perc-Catalina Exists *********" + this.propertiesFile);
             props = loadProperties(propertiesFile);
         }
         if(getServerFile().toFile().exists()) {

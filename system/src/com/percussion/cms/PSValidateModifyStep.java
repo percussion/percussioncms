@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,13 +24,7 @@
 
 package com.percussion.cms;
 
-import com.percussion.data.IPSDataExtractor;
-import com.percussion.data.IPSInternalRequestHandler;
-import com.percussion.data.IPSInternalResultHandler;
-import com.percussion.data.PSDataExtractionException;
-import com.percussion.data.PSDataExtractorFactory;
-import com.percussion.data.PSExecutionData;
-import com.percussion.data.PSInternalRequestCallException;
+import com.percussion.data.*;
 import com.percussion.design.objectstore.IPSReplacementValue;
 import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.security.PSAuthenticationFailedException;
@@ -56,7 +50,7 @@ public class PSValidateModifyStep extends PSModifyStep
     * construction by a call to {@link
     * #setHandler(IPSInternalRequestHandler) setHandler}.
     *
-    * @param requestMame The request name that is used to retrieve the resource
+    * @param requestName The request name that is used to retrieve the resource
     * handler.  Must refer to a resource handler that implements the
     * IPSInternalResultHandler interface.  May not be <code>null</code>.
     *
@@ -128,7 +122,7 @@ public class PSValidateModifyStep extends PSModifyStep
             "cannot execute unless a handler has been set");
 
       PSRequest request = data.getRequest();
-      HashMap tmpParams = null;
+      Map<String, Object> tmpParams = null;
       PSExecutionData intExecData = null;
       ResultSet resultSet = null;
 
@@ -139,7 +133,7 @@ public class PSValidateModifyStep extends PSModifyStep
           * the saved params back on the request once we're done.
           */
          tmpParams = request.getParameters();
-         request.setParameters((HashMap)request.getTruncatedParameters());
+         request.setParameters(request.getTruncatedParameters());
 
          // set the DBActionType - it may not match what's in the request
          // get the param map

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -31,12 +31,7 @@ import com.percussion.cms.objectstore.PSCmsObject;
 import com.percussion.cms.objectstore.PSObjectPermissions;
 import com.percussion.cms.objectstore.server.PSFolderSecurityManager;
 import com.percussion.error.PSException;
-import com.percussion.extension.IPSExtension;
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.extension.IPSExtensionErrors;
-import com.percussion.extension.IPSRequestPreProcessor;
-import com.percussion.extension.PSExtensionException;
-import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.extension.*;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSRequestContext;
@@ -51,10 +46,7 @@ import org.apache.commons.lang.StringUtils;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class PSExitAuthenticateUser implements IPSRequestPreProcessor
@@ -137,10 +129,10 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
                m_fullExtensionName,
                new IllegalArgumentException("The request must not be null"));
          }
-         HashMap htmlParams = request.getParameters();
+         Map<String,Object> htmlParams = request.getParameters();
          if (null == htmlParams)
          {
-            htmlParams = new HashMap();
+            htmlParams = new HashMap<>();
             request.setParameters(htmlParams);
          }
 
@@ -239,7 +231,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
                try
                {
                   requiredAccessLevel =
-                     new Integer(params[4].toString()).intValue();
+                          new Integer(params[4].toString());
                }
                catch (Exception e)
                {
@@ -286,7 +278,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
                }
             }
          }
-         catch (PSInvalidNumberOfParametersException ne)
+         catch (PSInvalidNumberOfParametersException | PSInvalidParameterTypeException ne)
          {
             String language = ne.getLanguageString();
             if (language == null)
@@ -295,16 +287,6 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
                language,
                m_fullExtensionName,
                ne);
-         }
-         catch (PSInvalidParameterTypeException te)
-         {
-            String language = te.getLanguageString();
-            if (language == null)
-               language = PSI18nUtils.DEFAULT_LANG;
-            throw new PSExtensionProcessingException(
-               language,
-               m_fullExtensionName,
-               te);
          }
 
          /*
@@ -381,7 +363,6 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
             request,
             "Authenticate User : exit preProcessRequest ");
       }
-      return;
    }
 
    /**
@@ -421,13 +402,11 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
       String lang,
       Connection connection,
       AuthParams localParams)
-      throws
-         SQLException,
-         PSAuthorizationException,
-         PSEntryNotFoundException,
-         PSRoleException,
-         Exception
-   {
+           throws
+           SQLException,
+           PSAuthorizationException,
+           PSEntryNotFoundException,
+           PSRoleException, PSCmsException {
       PSWorkFlowUtils.printWorkflowMessage(
          localParams.m_request,
          "  Entering authenticateUser");
@@ -714,7 +693,6 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
       PSWorkFlowUtils.printWorkflowMessage(
          localParams.m_request,
          "  Exiting authenticateUser");
-      return;
    }
 
    /**
@@ -762,7 +740,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
          cms.loadWorkflowAppContext(localParams.m_workflowAppID);
 
       // build list of roles that can access the doc in the initial state
-      List stateRoleList = new ArrayList();
+      List stateRoleList = new ArrayList<>();
       PSStateRolesContext src = null;
 
       src =
