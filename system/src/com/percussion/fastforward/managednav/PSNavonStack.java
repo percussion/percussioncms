@@ -33,7 +33,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 /**
@@ -96,19 +97,19 @@ public class PSNavonStack
       }
       while (navon != null)
       {
-         m_log.debug("walking up chain " + navon.getName());
+         log.debug("walking up chain {}", navon.getName());
          PSComponentSummary next = PSNavFolderUtils.findParentSummary(req,
                navon.getCurrentLocator());
 
          if (next == null)
          { // unexpected Navon with no parent.
-            m_log.debug("found navon with no parent");
+            log.debug("found navon with no parent");
             break;
          }
          this.push(req, next);
          if (next.getContentTypeId() == config.getNavTreeType())
          { // we found a NavTree content item
-            m_log.debug("NavTree found");
+            log.debug("NavTree found");
             break;
          }
          else
@@ -138,7 +139,7 @@ public class PSNavonStack
    public void push(IPSRequestContext req, PSComponentSummary navon)
          throws PSNavException
    {
-      m_log.debug("pushing Navon " + navon.getName() + " on to Stack ");
+      log.debug("pushing Navon {} on to Stack ", navon.getName());
       if (m_navStack.isEmpty())
       {
          m_relLevel = 0;
@@ -171,29 +172,29 @@ public class PSNavonStack
             req.setParameter(IPSHtmlParameters.SYS_FOLDERID, oldFolderId);
       }
       
-      if (m_log.isDebugEnabled() && false)
+      if (log.isDebugEnabled() && false)
       {
          String navDoc = PSXmlDocumentBuilder.toString(doc);
-         m_log.debug("Navon document is " + navDoc);
+         log.debug("Navon document is {}", navDoc);
       }
       PSNavConfig config = PSNavConfig.getInstance(req);
       String navImageSelect = PSNavUtil.getFieldValueFromXML(doc, config
             .getPropertyString(PSNavConfig.NAVON_SELECTOR_FIELD));
-      m_log.debug("navImageSelect is " + navImageSelect);
+      log.debug("navImageSelect is {}", navImageSelect);
       if (m_imageSelector == null && navImageSelect != null
             && navImageSelect.trim().length() > 0)
       {
-         m_log.debug("setting image selector " + navImageSelect);
+         log.debug("setting image selector {}", navImageSelect);
          m_imageSelector = navImageSelect.trim();
       }
 
       String varSelect = PSNavUtil.getFieldValueFromXML(doc, config
             .getPropertyString(PSNavConfig.NAVON_VARIABLE_FIELD));
-      m_log.debug("navVarSelect is " + varSelect);
+      log.debug("navVarSelect is {}", varSelect);
       if (m_varSelector == null && varSelect != null
             && varSelect.trim().length() > 0)
       {
-         m_log.debug("setting variable selector " + varSelect);
+         log.debug("setting variable selector {}", varSelect);
          this.m_varSelector = varSelect;
       }
    }
@@ -236,7 +237,7 @@ public class PSNavonStack
     */
    public String getImageSelector()
    {
-      m_log.debug("getting image selector " + m_imageSelector);
+      log.debug("getting image selector {}", m_imageSelector);
       return m_imageSelector;
    }
 
@@ -257,7 +258,7 @@ public class PSNavonStack
     */
    public String getVarSelector()
    {
-      m_log.debug("getting variable selector " + m_varSelector);
+      log.debug("getting variable selector ", m_varSelector);
       return m_varSelector;
    }
 
@@ -300,5 +301,5 @@ public class PSNavonStack
    /**
     * Logger for this class.
     */
-   private Logger m_log = Logger.getLogger(this.getClass());
+   private static final Logger log = LogManager.getLogger(PSNavonStack.class);
 }
