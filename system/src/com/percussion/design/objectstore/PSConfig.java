@@ -414,21 +414,13 @@ public class PSConfig extends PSComponent
    {
       String data = null;
       Element node = null;
-      ByteArrayInputStream is = null;
-
-      try
-      {
-         is = new ByteArrayInputStream(source.getBytes());
+      try(ByteArrayInputStream is = new ByteArrayInputStream(source.getBytes())){
          Properties props = new Properties();
          props.load(is);
          
          return props;
       }
-      finally
-      {
-         if (is != null)
-            is.close();
-      }
+
    }
    
    /**

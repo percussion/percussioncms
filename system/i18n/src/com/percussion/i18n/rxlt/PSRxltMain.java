@@ -91,10 +91,9 @@ public class PSRxltMain
    public static boolean process(boolean ui, String rxroot)
    {
       PSCommandLineProcessor processor = null;
-      BufferedReader conReader = new BufferedReader(
-         new InputStreamReader(System.in));
-      try
-      {
+      try(BufferedReader conReader = new BufferedReader(
+         new InputStreamReader(System.in))){
+
          File file = new File(rxroot);
          
          if (ui)

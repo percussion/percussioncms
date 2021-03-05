@@ -151,10 +151,8 @@ public class PSDatabaseFunctionManager
             File funcFile = new File(filePath);
             if (lastModifiedTime < funcFile.lastModified())
             {
-               FileInputStream fis = null;
-               try
-               {
-                  fis = new FileInputStream(funcFile);
+
+                try(FileInputStream fis = new FileInputStream(funcFile)){
                   long time = Calendar.getInstance().getTime().getTime();
 
                   Document doc =
@@ -164,19 +162,6 @@ public class PSDatabaseFunctionManager
                   if (updateLastModifiedTime)
                      funcFile.setLastModified(time);
                   lastModifiedTime = time;
-               }
-               finally
-               {
-                  if (fis != null)
-                  {
-                     try
-                     {
-                        fis.close();
-                     }
-                     catch (Exception ex)
-                     {
-                     }
-                  }
                }
             }
             else

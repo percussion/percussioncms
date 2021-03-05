@@ -38,6 +38,7 @@ import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.tablefactory.PSJdbcTableSchemaCollection;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
+import java.io.InputStream;
 import java.io.StringReader;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -89,21 +90,21 @@ public class PSCmsTablesSectionHandler extends PSIdleDotter
          return;
 
       //This block is executed only once (like a static one).
-      try
-      {
-         ms_XslDoc = PSXmlDocumentBuilder.createXmlDocument(getClass()
-            .getResourceAsStream(CMSTABLEDATA_TRANSFORM_XSL), false);
-         NodeList nl = ms_XslDoc.getElementsByTagName("psx:table");
-         Element elem = null;
-         String table = null;
-         for(int i=0; nl!=null && i<nl.getLength(); i++)
-         {
-            elem = (Element)nl.item(i);
-            table = elem.getAttribute(PSRxltConfigUtils.ATTR_NAME);
-            if(table.trim().length() > 0)
-               ms_Tables.add(table);
+
+         try(InputStream is = getClass()
+                 .getResourceAsStream(CMSTABLEDATA_TRANSFORM_XSL) ){
+            ms_XslDoc = PSXmlDocumentBuilder.createXmlDocument(is, false);
+            NodeList nl = ms_XslDoc.getElementsByTagName("psx:table");
+            Element elem = null;
+            String table = null;
+            for(int i=0; nl!=null && i<nl.getLength(); i++)
+            {
+               elem = (Element)nl.item(i);
+               table = elem.getAttribute(PSRxltConfigUtils.ATTR_NAME);
+               if(table.trim().length() > 0)
+                  ms_Tables.add(table);
+            }
          }
-      }
       //catch any exception and wrap into PSSectionProcessingException
       catch(Exception e)
       {

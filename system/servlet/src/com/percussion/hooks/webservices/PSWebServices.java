@@ -63,6 +63,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -319,19 +320,19 @@ public class PSWebServices
          // set up the body
          Body body = new Body();
          Vector bodyEntries = new Vector();
-
-         Document bodyDoc = db.parse(resp.getInputStream());
-         if (bodyDoc == null)
-         {
-            throw new SOAPException(
-               Constants.FAULT_CODE_CLIENT,
-               "Rythmyx Server Error - null returned");
+         try(InputStream is = resp.getInputStream() ) {
+            Document bodyDoc = db.parse(is);
+            if (bodyDoc == null) {
+               throw new SOAPException(
+                       Constants.FAULT_CODE_CLIENT,
+                       "Rythmyx Server Error - null returned");
+            }
+            Element el = bodyDoc.getDocumentElement();
+            el.setAttribute("xmlns", m_nameSpaceURI);
+            bodyEntries.addElement(el);
+            body.setBodyEntries(bodyEntries);
+            env.setBody(body);
          }
-         Element el = bodyDoc.getDocumentElement();
-         el.setAttribute("xmlns", m_nameSpaceURI);
-         bodyEntries.addElement(el);
-         body.setBodyEntries(bodyEntries);
-         env.setBody(body);
       }
       catch (ParserConfigurationException pce)
       {

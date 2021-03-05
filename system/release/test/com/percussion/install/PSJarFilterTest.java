@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -96,11 +97,12 @@ public class PSJarFilterTest extends TestCase
       throws IOException
    {
       final ZipEntry entry = file.getEntry(entryName);
-      final Reader is = new InputStreamReader(file.getInputStream(entry), "UTF8");
-      final char[] chars = new char[1000];
-      final int count = is.read(chars);
-      assert(count < chars.length && count > 0);
-      return new String(chars, 0, count);
+      try(final Reader is = new InputStreamReader(file.getInputStream(entry), StandardCharsets.UTF_8)) {
+         final char[] chars = new char[1000];
+         final int count = is.read(chars);
+         assert (count < chars.length && count > 0);
+         return new String(chars, 0, count);
+      }
    }
 
    /**

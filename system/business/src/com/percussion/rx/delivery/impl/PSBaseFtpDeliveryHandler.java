@@ -537,62 +537,41 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
          String location)
    {
       boolean isDebugEnabled = ms_log.isDebugEnabled();
-
-      
       RetryItem retryItem =new RetryItem(item);
       IPSDeliveryResult result = null;
-      InputStream inputStream = null;
-
-      try
-      {
-         // if FTP should fail we want to retry
-
+      // if FTP should fail we want to retry
+       try{
          for (int ftpPutRetriesLeft = 5; ftpPutRetriesLeft > 0; ftpPutRetriesLeft--)
          {
-            try
-            {
-               inputStream = retryItem.getContentStream();
-            }
-            catch (Exception e)
-            {
-               return getItemResult(Outcome.FAILED, item, jobId,
-                     e.getLocalizedMessage());
-            }
-            
-            if (isDebugEnabled)
-            {
-               ms_log.debug("About to ftp publish content item"
-                     + " to remoteFilepath: " + location);
-            }
+                 try(InputStream inputStream = retryItem.getContentStream()) {
+                     if (isDebugEnabled) {
+                         ms_log.debug("About to ftp publish content item"
+                                 + " to remoteFilepath: " + location);
+                     }
 
-            result = deliverItem(item, inputStream, jobId, location);
-            if (result.getOutcome() != IPSDeliveryResult.Outcome.FAILED)
-            {
-               // success - there is no need to retry
-               break;
-            }
-            else if (ftpPutRetriesLeft > 1 && retryItem.getRetryPossible())
-            {
-               prepareForRetry(jobId, isDebugEnabled, ftpPutRetriesLeft);
-            }
-            else
-            {
-               logError(retryItem, location, result.getFailureMessage());
-               
-               if(!retryItem.getRetryPossible())
-               {
-                  break;
-               }
-            }
-         }
-      }
-      finally
-      {
-         retryItem.release();
-      }
+                     result = deliverItem(item, inputStream, jobId, location);
+                     if (result.getOutcome() != IPSDeliveryResult.Outcome.FAILED) {
+                         // success - there is no need to retry
+                         break;
+                     } else if (ftpPutRetriesLeft > 1 && retryItem.getRetryPossible()) {
+                         prepareForRetry(jobId, isDebugEnabled, ftpPutRetriesLeft);
+                     } else {
+                         logError(retryItem, location, result.getFailureMessage());
+                         if (!retryItem.getRetryPossible()) {
+                             break;
+                         }
+                     }
+                 }
+             }
+            }catch (Exception e) {
+                  return getItemResult(Outcome.FAILED, item, jobId,
+                          e.getLocalizedMessage());
+         }finally {
+             retryItem.release();
+          }
 
-      return result;
-   }
+          return result;
+       }
 
    /**
     * Puts out error information if we have either exceeded the number of

@@ -37,6 +37,7 @@ import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
 import org.apache.commons.io.IOUtils;
+import org.omg.CORBA_2_3.portable.InputStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -73,8 +74,9 @@ public class PSCommandLineProcessor
    public PSCommandLineProcessor(String rxroot, boolean standalone)
       throws SAXException, IOException
    {
-      Document cfgDoc = PSXmlDocumentBuilder.createXmlDocument(getClass()
-            .getResourceAsStream(CONFIG_FILE), false);
+      try(InputStream is = (InputStream) getClass()
+              .getResourceAsStream(CONFIG_FILE)){
+      Document cfgDoc = PSXmlDocumentBuilder.createXmlDocument(is , false);
       if(rxroot != null)
       {
          cfgDoc.getDocumentElement().setAttribute(
@@ -89,6 +91,7 @@ public class PSCommandLineProcessor
       }
       
       init(cfgDoc);
+      }
    }
 
    private void setupInputStream()
@@ -97,8 +100,8 @@ public class PSCommandLineProcessor
       {
          try
          {
-            ms_consoleLineReader =
-               new BufferedReader(new InputStreamReader(System.in));
+            ms_consoleInputStreamReader = new InputStreamReader(System.in);
+            ms_consoleLineReader = new BufferedReader(ms_consoleInputStreamReader);
          }
          catch(Exception e) //This should never happen
          {
@@ -140,6 +143,8 @@ public class PSCommandLineProcessor
       logMessage("End of the session");
       if (ms_consoleLineReader != null)
          IOUtils.closeQuietly(ms_consoleLineReader);
+      if(ms_consoleInputStreamReader != null)
+         IOUtils.closeQuietly(ms_consoleInputStreamReader);
       ms_logger.logShutdown();
    }
    /**
@@ -591,6 +596,8 @@ public class PSCommandLineProcessor
     * The console line reader initialized when this class is loaded.
     */
    static BufferedReader ms_consoleLineReader = null;
+
+   static InputStreamReader ms_consoleInputStreamReader = null;
 
    /**
     * Root directory for Rhythmyx, initialized in {@link #init()} method, never

@@ -388,12 +388,10 @@ public class PSFUDFileNode extends PSFUDAbstractNode
          if (null != parent)
             parent.mkdirs();
 
-         FileOutputStream fos = new FileOutputStream(m_LocalFile);
+         try(FileOutputStream fos = new FileOutputStream(m_LocalFile)) {
 
-         PSCopyStream.copyStream(content, fos);
-
-         fos.flush();
-         fos.close();
+            PSCopyStream.copyStream(content, fos);
+         }
       }
 
       updateTimestamp(); //make sure you do this.
@@ -449,88 +447,95 @@ public class PSFUDFileNode extends PSFUDAbstractNode
                     "filename=\"" + getFileName() + "\"");
             ps.println("Content-Type: " + getMimeType());
             ps.println(); //blank line
+            try (ByteArrayInputStream bais = new ByteArrayInputStream(bos.toByteArray())) {
+               try (SequenceInputStream sis = new SequenceInputStream(bais, fis)) {
+                  try (ByteArrayOutputStream bos2 = new ByteArrayOutputStream()) {
+                     PSCopyStream.copyStream(sis, bos2);
+                     ps = new PrintStream(bos2);
 
-            SequenceInputStream sis = new SequenceInputStream(
-                    new ByteArrayInputStream(bos.toByteArray()), fis);
-            try (ByteArrayOutputStream bos2 = new ByteArrayOutputStream()) {
-               PSCopyStream.copyStream(sis, bos2);
-               ps = new PrintStream(bos2);
+                     ps.println(); //blank line
+                     ps.println(UPLOAD_BOUNDARY);
+                     ps.println("Content-Disposition: form-data; name=\"DBActionType\"");
+                     ps.println(); //blank line
+                     ps.println("UPDATE");
 
-               ps.println(); //blank line
-               ps.println(UPLOAD_BOUNDARY);
-               ps.println("Content-Disposition: form-data; name=\"DBActionType\"");
-               ps.println(); //blank line
-               ps.println("UPDATE");
-
-               ps.println(UPLOAD_BOUNDARY + "--"); //end
-               PSHttpRequest postRequest = new PSHttpRequest(postURL.toString(),
-                       "POST", new ByteArrayInputStream(bos2.toByteArray()));
-               postRequest.addRequestHeader("Content-Type",
-                       "multipart/form-data; boundary=" + UPLOAD_BOUNDARYX);
-               postRequest.addRequestHeader("HOST", sHost);
-               postRequest.addRequestHeader("REFERER", postURL.toString());
-               if (MainFrame.getConfig().getIsAuthenticationRequired()) {
-                  postRequest.addRequestHeader("Authorization", "Basic " +
-                          MainFrame.getConfig().getEncryptedUseridPassword());
-               }
-               postRequest.addRequestHeader("USER_AGENT",
-                       PSFUDApplication.HTTP_USERAGENT);
-               postRequest.addRequestHeader("Content-Length",
-                       Integer.toString(bos2.size()));
-               postRequest.sendRequest();
+                     ps.println(UPLOAD_BOUNDARY + "--"); //end
+                     try (ByteArrayInputStream bais2 = new ByteArrayInputStream(bos2.toByteArray())) {
+                        PSHttpRequest postRequest = new PSHttpRequest(postURL.toString(),
+                                "POST", bais2);
+                        postRequest.addRequestHeader("Content-Type",
+                                "multipart/form-data; boundary=" + UPLOAD_BOUNDARYX);
+                        postRequest.addRequestHeader("HOST", sHost);
+                        postRequest.addRequestHeader("REFERER", postURL.toString());
+                        if (MainFrame.getConfig().getIsAuthenticationRequired()) {
+                           postRequest.addRequestHeader("Authorization", "Basic " +
+                                   MainFrame.getConfig().getEncryptedUseridPassword());
+                        }
+                        postRequest.addRequestHeader("USER_AGENT",
+                                PSFUDApplication.HTTP_USERAGENT);
+                        postRequest.addRequestHeader("Content-Length",
+                                Integer.toString(bos2.size()));
+                        postRequest.sendRequest();
 
 
-               int nStatus = postRequest.getResponseCode();
-               if (nStatus == PSFUDConfig.HTTP_STATUS_BASIC_AUTHENTICATION_FAILED) {
-                  String sError = MessageFormat.format(MainFrame.getRes().getString(
-                          "errorHTTPAuthentication"), new String[]{Integer.
-                          toString(nStatus), postURL.toString()});
+                        int nStatus = postRequest.getResponseCode();
+                        if (nStatus == PSFUDConfig.HTTP_STATUS_BASIC_AUTHENTICATION_FAILED) {
+                           String sError = MessageFormat.format(MainFrame.getRes().getString(
+                                   "errorHTTPAuthentication"), new String[]{Integer.
+                                   toString(nStatus), postURL.toString()});
 
-                  throw new PSFUDAuthenticationFailureException(sError);
-               }
+                           throw new PSFUDAuthenticationFailureException(sError);
+                        }
 
-               if (PSFUDConfig.HTTP_STATUS_OK != nStatus) {
-                  String sError = MessageFormat.format(MainFrame.getRes().getString(
-                          "errorHTTP"), new String[]{Integer.
-                          toString(nStatus), postURL.toString()});
 
-                  throw new PSFUDServerException(sError);
-               }
+                        if (PSFUDConfig.HTTP_STATUS_OK != nStatus) {
+                           String sError = MessageFormat.format(MainFrame.getRes().getString(
+                                   "errorHTTP"), new String[]{Integer.
+                                   toString(nStatus), postURL.toString()});
 
-               InputStream content = postRequest.getResponseContent();
-               if (null != content) {
-                  try {
-                     DocumentBuilder db = RXFileTracker.getDocumentBuilder();
-                     Document doc = null;
-                     Element elem = null;
-                     Node node = null;
-                     NodeList nl = null;
+                           throw new PSFUDServerException(sError);
+                        }
 
-                     doc = db.parse(new InputSource(content));
-                     if (doc != null)
-                        nl = doc.getElementsByTagName(PSFUDApplication.ELEM_SIZE);
-                     if (null != nl && nl.getLength() > 0) {
-                        elem = (Element) nl.item(0);
-                        node = elem.getFirstChild();
-                        if (node instanceof Text)
-                           m_Element.setAttribute(PSFUDApplication.ATTRIB_SIZE,
-                                   ((Text) node).getData());
+                        try (InputStream content = postRequest.getResponseContent()) {
+                           if (null != content) {
+                              try {
+                                 DocumentBuilder db = RXFileTracker.getDocumentBuilder();
+                                 Document doc = null;
+                                 Element elem = null;
+                                 Node node = null;
+                                 NodeList nl = null;
+
+                                 doc = db.parse(new InputSource(content));
+                                 if (doc != null)
+                                    nl = doc.getElementsByTagName(PSFUDApplication.ELEM_SIZE);
+                                 if (null != nl && nl.getLength() > 0) {
+                                    elem = (Element) nl.item(0);
+                                    node = elem.getFirstChild();
+                                    if (node instanceof Text)
+                                       m_Element.setAttribute(PSFUDApplication.ATTRIB_SIZE,
+                                               ((Text) node).getData());
+                                 }
+                                 if (doc != null)
+                                    nl = doc.getElementsByTagName(PSFUDApplication.ELEM_MODIFIED);
+                                 if (null != nl && nl.getLength() > 0) {
+                                    elem = (Element) nl.item(0);
+                                    node = elem.getFirstChild();
+                                    if (node instanceof Text)
+                                       m_Element.setAttribute(PSFUDApplication.ATTRIB_MODIFIED,
+                                               ((Text) node).getData());
+                                 }
+                                 this.updateTimestamp();
+                              }
+
+                              // status  document (as InputStream) received from the server is
+                              // not parseable
+                              catch (SAXException e) {
+                                 throw new PSFUDServerException(e.getMessage());
+                              }
+
+                           }
+                        }
                      }
-                     if (doc != null)
-                        nl = doc.getElementsByTagName(PSFUDApplication.ELEM_MODIFIED);
-                     if (null != nl && nl.getLength() > 0) {
-                        elem = (Element) nl.item(0);
-                        node = elem.getFirstChild();
-                        if (node instanceof Text)
-                           m_Element.setAttribute(PSFUDApplication.ATTRIB_MODIFIED,
-                                   ((Text) node).getData());
-                     }
-                     this.updateTimestamp();
-                  }
-                  // status  document (as InputStream) received from the server is
-                  // not parseable
-                  catch (SAXException e) {
-                     throw new PSFUDServerException(e.getMessage());
                   }
                }
             }

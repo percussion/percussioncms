@@ -97,7 +97,6 @@ public abstract class RxVersionBuildNumberRule extends RxIARule
       
       if (ms_versionProps == null)
       {
-         InputStream ins = null;
          String strInstallDir = null;
          try
          {
@@ -116,9 +115,10 @@ public abstract class RxVersionBuildNumberRule extends RxIARule
             if (propFile.exists() && propFile.isFile())
             {
                // load the version.properties file
-               ins = new FileInputStream(propFile);
-               ms_versionProps = new Properties();
-               ms_versionProps.load(ins);
+              try(FileInputStream ins = new FileInputStream(propFile)) {
+                 ms_versionProps = new Properties();
+                 ms_versionProps.load(ins);
+              }
             }
          }
          catch(Exception e)
@@ -126,19 +126,6 @@ public abstract class RxVersionBuildNumberRule extends RxIARule
             RxLogger.logInfo("ERROR : " + e.getMessage());
             RxLogger.logInfo(e);
             return false;
-         }
-         finally
-         {
-            if (ins != null)
-            {
-               try
-               {
-                  ins.close();
-               }
-               catch(IOException e)
-               {
-               }
-            }
          }
       }
       

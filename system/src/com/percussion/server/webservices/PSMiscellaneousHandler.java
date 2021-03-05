@@ -33,6 +33,7 @@ import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -181,8 +182,7 @@ class PSMiscellaneousHandler extends PSWebServicesBaseHandler
     * 
     * @throws PSException
     */
-   void callDirectAction(PSRequest request, Document parent) throws PSException
-   {
+   void callDirectAction(PSRequest request, Document parent) throws PSException, IOException {
       String path = null;
 
       // load all the html parameters from the top level
@@ -210,14 +210,14 @@ class PSMiscellaneousHandler extends PSWebServicesBaseHandler
                   // get each param element
                   Element param =
                      PSXMLDomUtil.getFirstElementChild(params);
-                  
+
                   Map parameters = new HashMap();
-                  while (param != null && 
+                  while (param != null &&
                      PSXMLDomUtil.getUnqualifiedNodeName(param).equals(EL_PARAM))
                   {
                      String name = param.getAttribute("name");
                      String value = PSXMLDomUtil.getElementData(param);
-                     
+
                      List values = (List) parameters.get(name);
                      if (values == null)
                      {
@@ -228,7 +228,7 @@ class PSMiscellaneousHandler extends PSWebServicesBaseHandler
 
                      param = PSXMLDomUtil.getNextElementSibling(param);
                   }
-                  
+
                   Iterator walker = parameters.keySet().iterator();
                   while (walker.hasNext())
                   {
@@ -256,10 +256,10 @@ class PSMiscellaneousHandler extends PSWebServicesBaseHandler
       String data = null;
       if (path != null && !path.endsWith(".xml"))
       {
-         ByteArrayOutputStream out = null;
-         out = processMergeResultRequest(request, path);
-         if (out != null)
-            data = out.toString();
+         try(ByteArrayOutputStream out = processMergeResultRequest(request, path)) {
+            if (out != null)
+               data = out.toString();
+         }
       }
       else
       {

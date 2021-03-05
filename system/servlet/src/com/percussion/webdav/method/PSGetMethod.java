@@ -115,7 +115,6 @@ public class PSGetMethod
    private void processSysCommand(String sysCommand)
       throws PSWebdavException, IOException
    {
-      InputStream configInput = null; 
       try
       {
          if(sysCommand != null && 
@@ -123,14 +122,16 @@ public class PSGetMethod
          {
             PSWebdavConfigValidator validator = new PSWebdavConfigValidator(
                   getRequest(), getResponse(), getRemoteRequester());
-            configInput = getServlet().getWebdavConfigDef();
-            validator.validate(configInput, getServlet()
-                  .getRegisteredRxRootPaths());
+            try(InputStream configInput = getServlet().getWebdavConfigDef()) {
+               validator.validate(configInput, getServlet()
+                       .getRegisteredRxRootPaths());
+            }
          }
          else if (sysCommand != null && sysCommand.equalsIgnoreCase(GET_CONFIG))
          {
-            configInput = getServlet().getWebdavConfigDef();
-            outputWebdavConfigDef(configInput);
+            try(InputStream configInput = getServlet().getWebdavConfigDef()) {
+               outputWebdavConfigDef(configInput);
+            }
          }
          else // unknown command
          {
@@ -149,11 +150,7 @@ public class PSGetMethod
          getResponse().getWriter().print(e.getLocalizedMessage());
          getResponse().setStatus(PSWebdavStatus.SC_OK);
       }  
-      finally 
-      {
-         if (configInput != null)
-            configInput.close();
-      }          
+
    }
    
    /**

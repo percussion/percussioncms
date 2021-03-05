@@ -56,9 +56,10 @@ public class PSTmxMergeConfig
    public PSTmxMergeConfig()
       throws IOException, SAXException
    {
-      InputStream is =
-         getClass().getResourceAsStream(DEFAULT_MERGE_CONFIG_FILE_NAME);
-      setConfigDoc(PSXmlDocumentBuilder.createXmlDocument(is, false));
+      try(InputStream is =
+         getClass().getResourceAsStream(DEFAULT_MERGE_CONFIG_FILE_NAME)) {
+         setConfigDoc(PSXmlDocumentBuilder.createXmlDocument(is, false));
+      }
    }
 
    /**

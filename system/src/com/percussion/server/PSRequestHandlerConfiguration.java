@@ -328,7 +328,6 @@ public class PSRequestHandlerConfiguration
    private Document getConfig() throws PSServerException
    {
       Document doc = null;
-      FileInputStream fIn = null;
 
       IPSRhythmyxInfo rxInfo = PSRhythmyxInfoLocator.getRhythmyxInfo();
       String rxRootDir = (String) rxInfo
@@ -341,25 +340,15 @@ public class PSRequestHandlerConfiguration
                CONFIG_FILE_NAME);
          if (cfg.exists())
          {
-            fIn = new FileInputStream(cfg);
-            doc = PSXmlDocumentBuilder.createXmlDocument(fIn, false);
+            try(FileInputStream fIn = new FileInputStream(cfg)) {
+               doc = PSXmlDocumentBuilder.createXmlDocument(fIn, false);
+            }
          }
       }
       catch (Exception e)
       {
          throw new PSServerException(
             IPSServerErrors.REQUEST_HANDLER_CONFIG_ERROR, e.toString());
-      }
-      finally
-      {
-         if (fIn != null)
-         {
-            try
-            {
-               fIn.close();
-            }
-            catch (Exception e) { /* ignore */ }
-         }
       }
 
       return doc;
