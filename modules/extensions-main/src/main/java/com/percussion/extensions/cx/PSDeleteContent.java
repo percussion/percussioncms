@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -46,19 +46,14 @@ import com.percussion.services.relationship.IPSRelationshipService;
 import com.percussion.services.relationship.PSRelationshipServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.util.*;
 
 /**
  * This extension builds a content item list for deletion by the Rhythmyx
@@ -112,7 +107,7 @@ public class PSDeleteContent implements IPSRequestPreProcessor
          appRoot = appRoot.substring(loc+1);   //keep only the application name
 
 
-      HashMap htmlParams = request.getParameters();
+      Map<String,Object> htmlParams = request.getParameters();
       Document doc = null;
       Element root = null;
       Element skipped = null;
@@ -190,7 +185,7 @@ public class PSDeleteContent implements IPSRequestPreProcessor
                   // Check for the modify handler, if it does not exist, throw
                   // an exception, if it exists, first perform delete 
                   // relationships and then notify the handler
-                  HashMap reqParams = request.getParameters();
+                  Map<String,Object> reqParams = request.getParameters();
                   String val = request.getParameter("sys_changeEventOnly");
                   Map tmpParams = new HashMap();
                   tmpParams.put(IPSHtmlParameters.SYS_COMMAND, "modify");
@@ -234,7 +229,6 @@ public class PSDeleteContent implements IPSRequestPreProcessor
       {
          if(doc != null)
          {
-            FileWriter fw = null;
             try
             {
                root.setAttribute("time", new Date().toString());
@@ -242,20 +236,21 @@ public class PSDeleteContent implements IPSRequestPreProcessor
                String rxRootDir = (String) rxInfo
                      .getProperty(IPSRhythmyxInfo.Key.ROOT_DIRECTORY);
 
-               fw = new FileWriter(rxRootDir + File.separator + appRoot
-                     + "/lastpurge.xml");
-
-               fw.write(PSXmlDocumentBuilder.toString(doc));
-               fw.flush();
-               fw.close();
+               try(FileWriter fw = new FileWriter(rxRootDir + File.separator + appRoot
+                       + "/lastpurge.xml")) {
+                  fw.write(PSXmlDocumentBuilder.toString(doc));
+                  fw.flush();
+               }
             }
-            catch(Throwable t)
+            catch(Exception t)
             {
                PSConsole.printMsg("Exit:" + ms_fullExtensionName, t);
             }
             root.removeChild(skipped); //remove the skipped element for safety!
             request.setInputDocument(doc);
-            htmlParams.put("DBActionType", "DELETE");
+            if(htmlParams!=null) {
+               htmlParams.put("DBActionType", "DELETE");
+            }
          }
       }
    }
@@ -403,7 +398,7 @@ public class PSDeleteContent implements IPSRequestPreProcessor
    /**
     * The fully qualified name of this extension.
     */
-   static private String ms_fullExtensionName = "";
+   private String ms_fullExtensionName = "";
 
    /**
     * Name of the purge URL that must be present in the content editor app. This

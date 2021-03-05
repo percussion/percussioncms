@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,41 +23,17 @@
  */
 package com.percussion.webservices.content.impl;
 
-import static com.percussion.webservices.PSWebserviceUtils.getRequest;
-
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
-import com.percussion.cms.objectstore.PSAaRelationship;
-import com.percussion.cms.objectstore.PSComponentSummaries;
-import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSCoreItem;
-import com.percussion.cms.objectstore.PSDisplayFormat;
-import com.percussion.cms.objectstore.PSFolder;
-import com.percussion.cms.objectstore.PSInvalidChildTypeException;
-import com.percussion.cms.objectstore.PSInvalidContentTypeException;
-import com.percussion.cms.objectstore.PSItemChild;
-import com.percussion.cms.objectstore.PSItemChildEntry;
-import com.percussion.cms.objectstore.PSItemDefinition;
-import com.percussion.cms.objectstore.PSKey;
-import com.percussion.cms.objectstore.PSObjectAclEntry;
-import com.percussion.cms.objectstore.PSObjectPermissions;
-import com.percussion.cms.objectstore.PSRelationshipFilter;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
+import com.percussion.cms.objectstore.*;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.cms.objectstore.server.PSServerItem;
 import com.percussion.data.IPSInternalResultHandler;
 import com.percussion.data.PSExecutionData;
 import com.percussion.data.PSInternalRequestCallException;
-import com.percussion.design.objectstore.PSContentTypeHelper;
-import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSRelationship;
-import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.design.objectstore.*;
 import com.percussion.error.PSException;
 import com.percussion.i18n.PSLocale;
 import com.percussion.search.IPSSearchResultRow;
@@ -65,34 +41,15 @@ import com.percussion.search.PSWSSearchResponse;
 import com.percussion.search.objectstore.PSWSSearchRequest;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSUserEntry;
-import com.percussion.server.IPSRequestContext;
-import com.percussion.server.IPSServerErrors;
-import com.percussion.server.PSRequest;
-import com.percussion.server.PSRequestContext;
-import com.percussion.server.PSServer;
-import com.percussion.server.PSUserSession;
-import com.percussion.server.webservices.PSContentDataHandler;
-import com.percussion.server.webservices.PSFolderHandler;
-import com.percussion.server.webservices.PSSearchHandler;
-import com.percussion.server.webservices.PSServerFolderProcessor;
-import com.percussion.server.webservices.PSWebServicesRequestHandler;
-import com.percussion.services.assembly.IPSAssemblyService;
-import com.percussion.services.assembly.IPSAssemblyTemplate;
-import com.percussion.services.assembly.IPSTemplateSlot;
-import com.percussion.services.assembly.PSAssemblyException;
-import com.percussion.services.assembly.PSAssemblyServiceLocator;
+import com.percussion.server.*;
+import com.percussion.server.webservices.*;
+import com.percussion.services.assembly.*;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.IPSContentService;
 import com.percussion.services.content.PSContentServiceLocator;
-import com.percussion.services.content.data.PSAutoTranslation;
-import com.percussion.services.content.data.PSContentTypeSummary;
 import com.percussion.services.content.data.PSFolderProperty;
-import com.percussion.services.content.data.PSItemStatus;
-import com.percussion.services.content.data.PSItemSummary;
-import com.percussion.services.content.data.PSKeyword;
-import com.percussion.services.content.data.PSRevisions;
-import com.percussion.services.content.data.PSSearchSummary;
+import com.percussion.services.content.data.*;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.IPSItemFilter;
@@ -130,15 +87,7 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.exceptions.PSORMException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.thread.PSThreadUtils;
-import com.percussion.webservices.IPSWebserviceErrors;
-import com.percussion.webservices.PSErrorException;
-import com.percussion.webservices.PSErrorResultsException;
-import com.percussion.webservices.PSErrorsException;
-import com.percussion.webservices.PSInvalidStateException;
-import com.percussion.webservices.PSUnknownChildException;
-import com.percussion.webservices.PSUnknownContentTypeException;
-import com.percussion.webservices.PSWebserviceErrors;
-import com.percussion.webservices.PSWebserviceUtils;
+import com.percussion.webservices.*;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
@@ -147,27 +96,19 @@ import com.percussion.webservices.system.PSSystemWsLocator;
 import com.percussion.webservices.ui.IPSUiDesignWs;
 import com.percussion.webservices.ui.PSUiWsLocator;
 import com.percussion.workflow.PSWorkFlowUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+
+import static com.percussion.webservices.PSWebserviceUtils.getRequest;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * The public content webservice implementations.
@@ -1693,8 +1634,8 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       PSRequest req = getRequest();
 
       // get request and reset parameter left overs from previous calls
-      HashMap oldParams = req.getParameters();
-      req.setParameters(new HashMap());
+      Map<String, Object> oldParams = req.getParameters();
+      req.setParameters(new HashMap<String,Object>());
 
       try
       {

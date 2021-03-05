@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -31,14 +31,13 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSConsole;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import java.util.Map;
 
 /**
  * This extension builds a content item list for deletion by the Rhythmyx
@@ -95,7 +94,7 @@ public class PSMakeDeleteRowsXmlDoc implements IPSRequestPreProcessor
             " that has the key values"));
       }
 
-      HashMap htmlParams = request.getParameters();
+      Map<String,Object> htmlParams = request.getParameters();
       if (htmlParams == null)
          return;
 

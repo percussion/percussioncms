@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -36,15 +36,7 @@ import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSUserEntry;
 import com.percussion.util.IPSHtmlParameters;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * The PSRequestContext class contains all the context information of a given
@@ -207,7 +199,7 @@ public class PSRequestContext implements IPSRequestContext
     * @see com.percussion.server.IPSRequestContext#getParameters()
     * @deprecated
     */
-   public HashMap getParameters()
+   public Map<String,Object> getParameters()
    {
       return m_requestToProxy.getParameters();
    }
@@ -276,10 +268,9 @@ public class PSRequestContext implements IPSRequestContext
    }
 
    /**
-    * @see com.percussion.server.IPSRequestContext#setParameters(java.util.HashMap)
     * @deprecated
     */
-   public void setParameters(HashMap params)
+   public void setParameters(Map<String,Object> params)
    {
       m_requestToProxy.setParameters(params);
    }

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -31,12 +31,9 @@ import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
+import com.percussion.security.PSEncryptProperties;
 import com.percussion.security.PSEncryptor;
-import com.percussion.server.IPSInternalRequest;
-import com.percussion.server.IPSRequestContext;
-import com.percussion.server.IPSServerErrors;
-import com.percussion.server.PSConsole;
-import com.percussion.server.PSServer;
+import com.percussion.server.*;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
@@ -55,24 +52,13 @@ import com.percussion.utils.exceptions.PSORMException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSConnectionHelper;
-import com.percussion.security.PSEncryptProperties;
 import com.percussion.utils.string.PSStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
+import org.w3c.dom.*;
 
 import javax.naming.NamingException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -80,18 +66,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * This class is a place holder for several global constants or variables that
@@ -930,7 +905,7 @@ public class PSWorkFlowUtils
     *          entirely of whitespace.
     *          May not be more than 255 characters.
     */
-   public static String getTransitionCommentFromHTMLParams(HashMap htmlParams)
+   public static String getTransitionCommentFromHTMLParams(Map<String,Object> htmlParams)
    {
       String paramName = getTransitionCommentParamName();
       
@@ -969,7 +944,7 @@ public class PSWorkFlowUtils
     * be <code>null</code>.
     */
    public static void setTransitionCommentInHTMLParams(String comment, 
-      HashMap params)
+      Map<String, Object> params)
    {
       if (comment != null && comment.length() > 255)
          throw new IllegalArgumentException(

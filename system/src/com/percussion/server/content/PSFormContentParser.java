@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -32,36 +32,16 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestParsingException;
 import com.percussion.server.PSServer;
 import com.percussion.util.*;
-
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
-
 import org.w3c.dom.Document;
+
+import java.io.*;
+import java.util.*;
 
 /**
  * The PSFormContentParser class is used by the PSRequestParser to handle
  * content of types application/x-www-form-urlencoded and multipart/form-data
  * which are sent with POST requests or as part of the URL for GET requests.
  *
- * @see        com.percussion.server.PSRequestParser
  *
  * @author     Tas Giakouminakis
  * @version    1.0
@@ -156,7 +136,7 @@ public class PSFormContentParser extends PSContentParser
     * @throws PSRequestParsingException if an error occurs parsing the
     * parameters.
     */
-   public static void parseParameterString( HashMap<String, Object> params, String paramString)
+   public static void parseParameterString( Map<String, Object> params, String paramString)
       throws PSRequestParsingException
    {
       if (params == null)
@@ -170,18 +150,14 @@ public class PSFormContentParser extends PSContentParser
          paramString = createUrlDecodedString(
             paramString.getBytes(PSCharSetsConstants.rxJavaEnc()), 
             PSCharSetsConstants.rxJavaEnc());
-      }
-      catch (UnsupportedEncodingException e)
-      {
-         // This should never happen as we are supplying the proper
-         //character encoding. 
-         e.printStackTrace();
       } catch (IOException e)
       {
-         // This should never happen as we are supplying the non-null
-         //String. There is no real IO.
+         // This should never happen as we are supplying the proper
+         //character encoding.
          e.printStackTrace();
-      }
+      }// This should never happen as we are supplying the non-null
+//String. There is no real IO.
+
 
       String curTok;
       String curValue = "";
@@ -247,7 +223,7 @@ public class PSFormContentParser extends PSContentParser
    {
       if ( null == query )
          return null;
-      StringBuffer buf = new StringBuffer( query );
+      StringBuilder buf = new StringBuilder( query );
       boolean done = false;
       int len = AMPERSAND_ENTITY.length();
       int nextPos = 0;  // position in search string of next entity
@@ -292,11 +268,8 @@ public class PSFormContentParser extends PSContentParser
    private boolean isMultipartContentType(String contentType)
    {
       /* multi-part content contains additional info */
-      if (contentType.toLowerCase().startsWith(
-            IPSMimeContentTypes.MIME_TYPE_MULTIPART_FORM.toLowerCase()))
-         return true;
-
-      return false;
+      return contentType.toLowerCase().startsWith(
+              IPSMimeContentTypes.MIME_TYPE_MULTIPART_FORM.toLowerCase());
    }
 
    /**
@@ -420,7 +393,7 @@ public class PSFormContentParser extends PSContentParser
              * list does not match the number of documents all the remaining
              * docs will get the server default.
              */
-            if(xmlDocFlags == null || xmlDocFlags.size() == 0)
+            if(xmlDocFlags == null || xmlDocFlags.isEmpty())
             {
                String xmlDocValue = request.getParameter(
                      PSRequest.REQ_XML_DOC_FLAG );
@@ -451,7 +424,7 @@ public class PSFormContentParser extends PSContentParser
     * it uses the server default value for 'useNonValidating' for not to
     * validate the xml document if it finds the document in the next data block.
     *
-    * @todo Cleanup: replace findBoundary w/ PSBaseHttpUtils.parseContentType
+    * TODO: Cleanup: replace findBoundary w/ PSBaseHttpUtils.parseContentType
     *
     * @param   reader   The input stream for the request to be built.
     * Assumed not <code>null</code>.
@@ -541,7 +514,7 @@ public class PSFormContentParser extends PSContentParser
          headers.add(line);
       }
 
-      if (headers.size() == 0)    // no header is wrong
+      if (headers.isEmpty())    // no header is wrong
          contentDispError("Without any header");
 
       firstDataLine = line;       // save this line in case we need it
@@ -551,13 +524,11 @@ public class PSFormContentParser extends PSContentParser
       // Ignore non-content entries
       if(!line.trim().toLowerCase().startsWith("content-disposition"))
       {
-          Iterator<String> it = headers.iterator();
-          while(it.hasNext())
-          {
-             String header = it.next().trim();
-             if(header.equals(boundary) || header.equals(endBoundary))
-                return !endBoundary.equals(header);  
-          }
+         for (String s : headers) {
+            String header = s.trim();
+            if (header.equals(boundary) || header.equals(endBoundary))
+               return !endBoundary.equals(header);
+         }
           contentDispError(line);
       }
       
@@ -588,7 +559,7 @@ public class PSFormContentParser extends PSContentParser
          }
          curTok = tok.nextToken();   /* skip the ; delimiter */
          curTok = tok.nextToken().trim();
-         if (isAttach == false){
+         if (!isAttach){
             if ("name=".equalsIgnoreCase(curTok)) {
                curTok = tok.nextToken();
                if ("\"".equals(curTok)) {
@@ -841,7 +812,7 @@ public class PSFormContentParser extends PSContentParser
          if ((filename != null) || isXml)
             value = sourceValue;
          else   // this is a bytearray otherwise
-            value = ((StringWriter)out).toString();
+            value = out.toString();
          out.flush();
          out.close();
       }
@@ -856,6 +827,7 @@ public class PSFormContentParser extends PSContentParser
             File f = new PSPurgableTempFile(
                "psx", ".bin", null, filename, contentType, encType);
             sourceValue = f;
+
 
             out = new BufferedOutputStream(
                new FileOutputStream(f));
@@ -980,7 +952,7 @@ public class PSFormContentParser extends PSContentParser
    private static String urlDecode(String str)
       throws PSRequestParsingException
    {
-      StringBuffer newStr = new StringBuffer(str.length());
+      StringBuilder newStr = new StringBuilder(str.length());
       int iSrc = 0;
       int iDst = 0;
       char ch;
@@ -990,7 +962,7 @@ public class PSFormContentParser extends PSContentParser
        */
       newStr.setLength(str.length());
 
-      for (; iSrc < str.length();) {
+      while (iSrc < str.length()) {
          if ( (ch = str.charAt(iSrc++)) == URLENCODING_SPACE_TOKEN)
             ch = URLENCODING_SPACE_REAL;
          else if (ch == URLENCODING_HEX_TOKEN) {
@@ -1080,7 +1052,7 @@ public class PSFormContentParser extends PSContentParser
        * @param params the request parameter map, may not be <code>null</code>,
        * can be empty.
        */
-      PSParamContext(HashMap<String, Object> params)
+      PSParamContext(Map<String, Object> params)
       {
          if (params == null)
             throw new IllegalArgumentException(
@@ -1127,7 +1099,7 @@ public class PSFormContentParser extends PSContentParser
        * and never <code>null</code> after that. Gets filled in <code>
        * addParam(String, Object)</code> method.
        */
-      HashMap<String, Object>  m_params = null;
+      Map<String, Object>  m_params = null;
    }
 
    /**

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -30,16 +30,11 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSConsole;
+import org.w3c.dom.*;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Iterator;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
+import java.util.Map;
 
 /**
  * This pre-exit adds all HTML parameters in the request to the specified URLs.
@@ -77,8 +72,8 @@ public class PSAddAllParamsToUrl
    {
       try
       {
-         HashMap htmlParams = request.getParameters();
-         if(htmlParams == null || htmlParams.size() < 1)
+         Map<String,Object> htmlParams = request.getParameters();
+         if(htmlParams == null || htmlParams.isEmpty())
             return resultDoc;
 
          for(int i=0; params != null && i<params.length; i++)
@@ -100,25 +95,24 @@ public class PSAddAllParamsToUrl
                continue;
 
             Text text = (Text)node;   
-            String url = text.getData();
-            Iterator iterator = htmlParams.keySet().iterator();
-            String key = null;
-            String value = null;
+            StringBuilder url = new StringBuilder(text.getData());
+            Iterator<String> iterator = htmlParams.keySet().iterator();
+            String key;
             while(iterator.hasNext())
             {
-               key = iterator.next().toString();
+               key = iterator.next();
                //skip if the parameter happens to be 'pssessionid'
                if(key.equals(HTMLPARAM_PSSESSIONID))
                   continue;
                   
                if(url.indexOf("?") == -1)
-                  url = url + "?";
+                  url.append("?");
                else
-                  url = url + "&";
+                  url.append("&");
 
-               url = url + key + "=" + htmlParams.get(key).toString();
+               url.append(key).append("=").append(htmlParams.get(key).toString());
             }
-            text.setData(url);
+            text.setData(url.toString());
          }
       }
       catch(Exception e)
@@ -148,11 +142,11 @@ public class PSAddAllParamsToUrl
    /**
     * The fully qualified name of this extension.
     */
-   static private String ms_fullExtensionName = "";
+   private String ms_fullExtensionName = "";
 
    /**
     * Name of the html parameter for session id
     */
-   static private String HTMLPARAM_PSSESSIONID = "pssessionid";
+   private static final String HTMLPARAM_PSSESSIONID = "pssessionid";
 }
 

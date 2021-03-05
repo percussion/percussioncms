@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -28,12 +28,7 @@ import com.percussion.server.IPSCgiVariables;
 import com.percussion.server.PSRequest;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Used to generate trace messages for Html paramenters and Cgi varibles.
@@ -56,7 +51,6 @@ public class PSTraceHtmlCgi extends PSTraceMessage
     * being handled.
     * @throws java.lang.IllegalArgumentException if the trace flag passed is not
     * handled by this class.
-    * @roseuid 39F4650F0271
     */
    public PSTraceHtmlCgi(int traceFlag)
    {
@@ -89,19 +83,18 @@ public class PSTraceHtmlCgi extends PSTraceMessage
     * @param source a PSRequest object containing the information required for the
     * trace message
     * @return the message body
-    * @roseuid 39FEE2F20251
     */
    protected String getMessageBody(Object source)
    {
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       PSRequest request = (PSRequest)source;
 
       // Add HTML params if requested
       if (m_typeFlag != PSTraceMessageFactory.POST_EXIT_CGI_FLAG)
       {
 
-         HashMap params = request.getParameters();
+         Map<String, Object> params = request.getParameters();
 
          buf.append("HTML Parameters:");
          buf.append(NEW_LINE);
@@ -112,7 +105,7 @@ public class PSTraceHtmlCgi extends PSTraceMessage
       // Add CGI vars
       buf.append("CGI Variables:");
       buf.append(NEW_LINE);
-      Map cgiVars = new HashMap();
+      Map<String, Object> cgiVars = new HashMap();
       Enumeration headers = request.getServletRequest().getHeaderNames();
       while (headers.hasMoreElements())
       {
@@ -131,7 +124,7 @@ public class PSTraceHtmlCgi extends PSTraceMessage
     * @param buf the StringBuffer to append to
     * @param map the HashMap containing String keys and String values
     */
-   private void logMap(StringBuffer buf, Map map)
+   private void logMap(StringBuilder buf, Map<String,Object> map)
    {
       Iterator entries = map.entrySet().iterator();
       String key = null;
