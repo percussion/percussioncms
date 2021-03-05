@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,53 +24,15 @@
 
 package com.percussion.cms.handlers;
 
-import com.percussion.cms.IPSCmsErrors;
-import com.percussion.cms.IPSConstants;
-import com.percussion.cms.PSApplicationBuilder;
-import com.percussion.cms.PSChoiceBuilder;
-import com.percussion.cms.PSInlineLinkField;
+import com.percussion.cms.*;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSCloneFactory;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
-import com.percussion.data.IPSInternalRequestHandler;
-import com.percussion.data.IPSInternalResultHandler;
-import com.percussion.data.PSContentItemStatusExtractor;
-import com.percussion.data.PSDataExtractionException;
-import com.percussion.data.PSDataHandler;
-import com.percussion.data.PSExecutionData;
-import com.percussion.data.PSInternalRequestCallException;
-import com.percussion.data.PSMetaDataCache;
-import com.percussion.data.PSMimeContentResult;
-import com.percussion.data.PSXmlFieldExtractor;
-import com.percussion.design.objectstore.IPSBackEndMapping;
-import com.percussion.design.objectstore.PSApplication;
-import com.percussion.design.objectstore.PSBackEndColumn;
-import com.percussion.design.objectstore.PSBackEndTable;
-import com.percussion.design.objectstore.PSContentEditor;
-import com.percussion.design.objectstore.PSContentEditorPipe;
-import com.percussion.design.objectstore.PSContentEditorSystemDef;
-import com.percussion.design.objectstore.PSContentItemStatus;
-import com.percussion.design.objectstore.PSDataMapper;
-import com.percussion.design.objectstore.PSDataMapping;
-import com.percussion.design.objectstore.PSDisplayMapper;
-import com.percussion.design.objectstore.PSDisplayMapping;
-import com.percussion.design.objectstore.PSField;
-import com.percussion.design.objectstore.PSFieldSet;
-import com.percussion.design.objectstore.PSHtmlParameter;
-import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.design.objectstore.PSSystemValidationException;
-import com.percussion.design.objectstore.PSTableLocator;
-import com.percussion.design.objectstore.PSTableRef;
-import com.percussion.design.objectstore.PSTableSet;
-import com.percussion.design.objectstore.PSWorkflowInfo;
+import com.percussion.data.*;
+import com.percussion.design.objectstore.*;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
-import com.percussion.server.IPSServerErrors;
-import com.percussion.server.PSInternalRequest;
-import com.percussion.server.PSRequest;
-import com.percussion.server.PSServer;
-import com.percussion.server.PSUserSession;
+import com.percussion.server.*;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCollection;
 import com.percussion.util.PSPurgableTempFile;
@@ -78,22 +40,12 @@ import com.percussion.util.PSUniqueObjectGenerator;
 import com.percussion.xml.PSDtdBuilder;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
+import java.util.*;
 
 /**
  * This class handles the task of creating a full copy of a particular content
@@ -301,8 +253,10 @@ class PSCopyHandler implements IPSCopyHandler
 
       // save request data we will modify
       PSRequest request = data.getRequest();
-      HashMap originalParams = request.getParameters();
-      HashMap newParams = new HashMap();
+      Map<String,Object> originalParams = request.getParameters();
+      Map<String,Object> newParams =
+              new HashMap<String, Object>();
+
       newParams.putAll(originalParams);
       request.setParameters(newParams);
       Document originalDoc = request.getInputDocument();

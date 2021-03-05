@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -32,8 +32,8 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.util.PSURLEncoder;
 
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * The PSPagedRequestLinkGenerator 
@@ -126,9 +126,9 @@ public class PSPagedRequestLinkGenerator
    {
       PSRequest request = data.getRequest();
       
-      HashMap params = request.getParameters();
+      Map<String, Object> params = request.getParameters();
 
-      StringBuffer buf = new StringBuffer(128);
+      StringBuilder buf = new StringBuilder(128);
       char nextParamMarker = '?';
 
       String reqExtension;

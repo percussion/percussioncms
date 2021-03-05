@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -32,16 +32,7 @@ import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.data.PSDataExtractionException;
 import com.percussion.data.PSExecutionData;
 import com.percussion.data.PSInternalRequestCallException;
-import com.percussion.design.objectstore.IPSObjectStoreErrors;
-import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.design.objectstore.PSObjectException;
-import com.percussion.design.objectstore.PSProcessCheck;
-import com.percussion.design.objectstore.PSRelationship;
-import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.design.objectstore.PSRelationshipSet;
-import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.design.objectstore.PSSystemValidationException;
+import com.percussion.design.objectstore.*;
 import com.percussion.error.PSException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.relationship.IPSExecutionContext;
@@ -51,11 +42,7 @@ import com.percussion.relationship.PSExecutionContext;
 import com.percussion.relationship.effect.PSEffectTestRunner;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
-import com.percussion.server.IPSRequestContext;
-import com.percussion.server.PSRequest;
-import com.percussion.server.PSRequestContext;
-import com.percussion.server.PSRequestValidationException;
-import com.percussion.server.PSServer;
+import com.percussion.server.*;
 import com.percussion.server.config.PSServerConfigException;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.guidmgr.IPSGuidManager;
@@ -69,23 +56,15 @@ import com.percussion.util.PSCms;
 import com.percussion.util.PSRelationshipUtils;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * Creates clones based on conditions specified in a clone handler
@@ -233,7 +212,7 @@ public class PSConditionalCloneHandler extends PSCloneHandler
           * the relationships. The request parameters will be restored with
           * this once the relationships are processed.
           */
-         HashMap paramsBackup = request.getParameters();
+         Map<String, Object> paramsBackup = request.getParameters();
 
          try
          {

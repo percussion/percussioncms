@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -41,6 +41,7 @@ import com.percussion.workflow.PSWorkflowRoleInfo;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,7 +93,8 @@ public class PSNotifyEffect extends PSEffect
        * Build up a list with all parameters, with the parameter name as
        * key and the parameter value as <code>String</code>.
        */
-      Map parameters = new HashMap();
+      Map<String,Object> parameters = Collections.synchronizedMap(
+              new HashMap<String,Object>());
 
       // get all effect parameters and add them to our parameters map
       for (int i=0; i<REQUIRED_PARAMS.length; i++)

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,32 +23,9 @@
  */
 package com.percussion.cms.objectstore.server;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-
-import com.percussion.cms.IPSCmsErrors;
-import com.percussion.cms.IPSConstants;
-import com.percussion.cms.PSApplicationBuilder;
-import com.percussion.cms.PSCmsException;
-import com.percussion.cms.PSRelationshipChangeEvent;
+import com.percussion.cms.*;
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
-import com.percussion.cms.objectstore.PSCmsObject;
-import com.percussion.cms.objectstore.PSComponentSummaries;
-import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSFolder;
-import com.percussion.cms.objectstore.PSObjectPermissions;
-import com.percussion.cms.objectstore.PSRelationshipFilter;
+import com.percussion.cms.objectstore.*;
 import com.percussion.data.PSDataExtractionException;
 import com.percussion.data.PSExecutionData;
 import com.percussion.data.PSInternalRequestCallException;
@@ -59,16 +36,8 @@ import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.error.PSException;
 import com.percussion.relationship.IPSExecutionContext;
 import com.percussion.security.PSThreadRequestUtils;
-import com.percussion.server.IPSRequestContext;
-import com.percussion.server.PSExecutionDataLight;
-import com.percussion.server.PSRequest;
-import com.percussion.server.PSRequestContext;
-import com.percussion.server.PSServer;
-import com.percussion.server.cache.IPSCacheHandler;
-import com.percussion.server.cache.PSAssemblerCacheHandler;
-import com.percussion.server.cache.PSCacheManager;
-import com.percussion.server.cache.PSFolderRelationshipCache;
-import com.percussion.server.cache.PSItemSummaryCache;
+import com.percussion.server.*;
+import com.percussion.server.cache.*;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.assembly.impl.nav.PSRelationshipSortOrderComparator;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -81,6 +50,11 @@ import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.services.relationship.IPSRelationshipService;
 import com.percussion.services.relationship.PSRelationshipServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.*;
 
 /**
  * This class encapsulates all backend operations to create, modify, delete and
@@ -147,7 +121,7 @@ public class PSRelationshipDbProcessor
    
    /**
     * Catalogs all relationships based on the filter object supplied.
-    * This is the same as the {@link #getRelationship(PSRelationshipFilter)}
+    * This is the same as the {@link #getRelationshipList(PSRelationshipFilter)}
     * except it returns relationships in a {@link List}.
     *
     * @param filter relationship filer, must not be <code>null</code>.
@@ -245,43 +219,45 @@ public class PSRelationshipDbProcessor
          {
             if (result==null)
             {
-               ms_logger.error("AA cache returned non null, service returned null for filter "+filter);
+               log.error("AA cache returned non null, service returned null for filter "+filter);
             }
             
-            if (result.size()!=testResult.size())
+            if (result !=null && result.size()!=testResult.size())
             {
-               ms_logger.error("AA cache returned "+testResult.size()+" service returned "+result.size()+" items");
-               ms_logger.error("Filter = "+filter);
+               log.error("AA cache returned "+testResult.size()+" service returned "+result.size()+" items");
+               log.error("Filter = "+filter);
                for (int i=0; i< result.size(); i++)
                {
-                  ms_logger.error("item "+i+" : " + result.get(i));
+                  log.error("item "+i+" : " + result.get(i));
                }
                for (int i=0; i< result.size(); i++)
                {
-                  ms_logger.error("AA item "+i+" : " + testResult.get(i));
+                  log.error("AA item "+i+" : " + testResult.get(i));
                }
                
                
             } else {
                PSRelationshipSortOrderComparator comparator = new PSRelationshipSortOrderComparator();
-               Collections.sort(result,comparator);
-               Collections.sort(testResult,comparator);
+               if(result !=null) {
+                  result.sort(comparator);
+               }
+
+               testResult.sort(comparator);
                if (!testResult.equals(result))
                {
                   
-                  ms_logger.error("Test results do not match "+filter, new Throwable());
-                  ms_logger.error("Cache Result ="+testResult);
-                  ms_logger.error("Server Result ="+result);
-                  
-                  for (int i = 0 ; i< result.size(); i++)
-                  {
-                     if (!result.get(i).equals(testResult.get(i)))
-                     {
-                        ms_logger.error("non matching item pos "+i);
-                        if (result.get(i).getProperties()!= testResult.get(i).getProperties())
-                        {
-                           ms_logger.error("server props="+result.get(i).getProperties());
-                           ms_logger.error("cache props="+result.get(i).getProperties());
+                  log.error("Test results do not match "+filter, new Throwable());
+                  log.error("Cache Result ="+testResult);
+                  log.error("Server Result ="+result);
+
+                  if(result != null) {
+                     for (int i = 0; i < result.size(); i++) {
+                        if (!result.get(i).equals(testResult.get(i))) {
+                           log.error("non matching item pos " + i);
+                           if (result.get(i).getProperties() != testResult.get(i).getProperties()) {
+                              log.error("server props=" + result.get(i).getProperties());
+                              log.error("cache props=" + result.get(i).getProperties());
+                           }
                         }
                      }
                   }
@@ -289,7 +265,7 @@ public class PSRelationshipDbProcessor
             }
          }
          
-         if (! result.isEmpty())
+         if (result != null && ! result.isEmpty())
          {
             // if the community id is -1, then there is no need to filter,
             // either it was not found or it is set to all communities
@@ -373,7 +349,7 @@ public class PSRelationshipDbProcessor
 
 private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCache relCache, PSRelationshipFilter filter, QueryRelationshipCriteria params) throws PSCmsException
 {
-   List<PSRelationship> rels = new ArrayList<PSRelationship>();
+   List<PSRelationship> rels = new ArrayList<>();
    List<PSRelationship> result = null;
 
    int relId = filter.getRelationshipId();
@@ -407,7 +383,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
          publicRev = tip = current = true;
       
       for (Integer depId : params.m_dependentIds)
-         rels.addAll(relCache.getAAParents(publicRev,tip,current,slot,new  PSLocator(depId.intValue())));
+         rels.addAll(relCache.getAAParents(publicRev,tip,current,slot,new  PSLocator(depId)));
       
       if (params.m_dependentContentTypeIds == null
             && params.m_dependentObjectType == -1)
@@ -419,23 +395,19 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
    boolean filterNames = filterRelNames!=null && !filterRelNames.isEmpty();
    if (result!=null && (crossSite || filterNames))
    {
-      Iterator<PSRelationship> relIt = rels.iterator();
-      while (relIt.hasNext())
-      {
-         PSRelationship rel = relIt.next();
-         if ((crossSite && (rel.getLegacySiteId() == null && rel.getLegacyFolderId() == null)) 
-               || (filterNames && !filterRelNames.contains(rel.getConfig().getName())))
-            relIt.remove();
-      }
-   } else if (result == null) // need to filter the relationships
+      rels.removeIf(rel -> (crossSite && (rel.getLegacySiteId() == null && rel.getLegacyFolderId() == null))
+              || (filterNames && !filterRelNames.contains(rel.getConfig().getName())));
+
+   } else if (result == null && rels != null) // need to filter the relationships
    {
       // apply the criteria to filter the relationships
-      result = new ArrayList<PSRelationship>(rels.size());
-      int ownerId, dependentId;
+      result = new ArrayList<>(rels.size());
+      int ownerId;
+      int dependentId;
       IPSItemEntry dependent; 
       for (PSRelationship rel : rels)
       {
-         if (filterRelNames!=null && filterRelNames.size()>0 && !filterRelNames.contains(rel.getConfig().getName()))
+         if (filterRelNames!=null && !filterRelNames.isEmpty() && !filterRelNames.contains(rel.getConfig().getName()))
             continue;
             
          ownerId = rel.getOwner().getId();
@@ -455,13 +427,13 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
          // testing dependent(s)
          if (params.m_dependentIds != null)
          {
-            if (!params.m_dependentIds.contains(new Integer(dependentId)))
+            if (!params.m_dependentIds.contains(dependentId))
                continue;
          }
          
          if (params.m_dependentContentTypeIds != null
-               && (!params.m_dependentContentTypeIds.contains( 
-                     new Long(dependent.getContentTypeId()))))
+               && (!params.m_dependentContentTypeIds.contains(
+                 (long) dependent.getContentTypeId())))
             continue;
          
          if (params.m_dependentObjectType != -1
@@ -493,7 +465,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
       if (folderCache == null)
       {
          // get component summary for all dependent items  
-         Collection<PSLocator> locators = new ArrayList<PSLocator>(rels.size());
+         Collection<PSLocator> locators = new ArrayList<>(rels.size());
          for (PSRelationship rel : rels)
             locators.add(rel.getDependent());
 
@@ -536,9 +508,9 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
     * @return the integer value of the parameter. It may be <code>-1</code>
     *   if not found or invalid integer value.
     */
-   private static int getParameterInt(String paramName, Map<String, String>params)
+   private static int getParameterInt(String paramName, Map<String, Object>params)
    {
-      String n = params.get(paramName);
+      String n = (String)params.get(paramName);
       if (n != null && n.trim().length() > 0)
       {
          try
@@ -562,7 +534,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
     * @return the created filter, never <code>null</code>.
     */
    public static PSRelationshipFilter getFilterFromParameters(
-         Map<String, String> params)
+         Map<String, Object> params)
    {
       if (params == null)
          throw new IllegalArgumentException("params must not be null.");
@@ -575,7 +547,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
       if (rid != -1)
          filter.setRelationshipId(rid);
 
-      String name = params.get(IPSHtmlParameters.SYS_RELATIONSHIPTYPE);
+      String name = (String)params.get(IPSHtmlParameters.SYS_RELATIONSHIPTYPE);
       if (name != null && name.trim().length() > 0)
          filter.setName(name);
 
@@ -594,13 +566,13 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
       if (slotId != -1)
          filter.setProperty(IPSHtmlParameters.SYS_SLOTID, slotId + "");
       
-      String pname = params.get("sys_propname");
-      String pvalue = params.get("sys_propvalue");
+      String pname = (String) params.get("sys_propname");
+      String pvalue = (String) params.get("sys_propvalue");
       if (pname != null && pvalue != null)
          filter.setProperty(pname, pvalue);
       
       // handle owner join
-      String ownerJoin  = params.get(SYS_JOINSELECTOR);
+      String ownerJoin  = (String)params.get(SYS_JOINSELECTOR);
       if (ownerJoin != null && ownerJoin.equals(OWNER_JOINED))
       {
          int ctId = getParameterInt(IPSHtmlParameters.SYS_CONTENTTYPEID, params);
@@ -737,7 +709,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
     * </ol>
     * 
     * @param doNotApplyFilters integer value expected to consist of none, one,
-    * or more {@link PSRelationshipConfig#FILTER_TYPE_XXX} flags.
+    * or more {@link PSRelationshipConfig} FILTER_TYPE flags.
     * @return <code>true</code> if community filtering is required based on
     * the above algorithm, <code>false</code> otheriwse.
     */
@@ -753,11 +725,10 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
          (doNotApplyFilters & PSRelationshipConfig.FILTER_TYPE_FOLDER_COMMUNITY) 
             == PSRelationshipConfig.FILTER_TYPE_FOLDER_COMMUNITY;
       
-      boolean notByCommunity = (notByCom && notByItemCom && notByFolderCom) 
+      return  (notByCom && notByItemCom && notByFolderCom)
          || (notByItemCom && notByFolderCom) 
          || notByCom;
-      
-      return notByCommunity;
+
    }
 
    /**
@@ -803,7 +774,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
          PSFolderRelationshipCache relCache,
          QueryRelationshipCriteria params, PSRelationshipFilter filter) throws PSCmsException
    {
-      List<PSRelationship> rels = new ArrayList<PSRelationship>();
+      List<PSRelationship> rels = new ArrayList<>();
       List<PSRelationship> result = null;
 
       // owner must be folder content type if specified
@@ -835,17 +806,17 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
       else if (params.m_dependentIds != null)
       {
          for (Integer depId : params.m_dependentIds)
-            rels.addAll(relCache.getParents(new PSLocator(depId.intValue())));
+            rels.addAll(relCache.getParents(new PSLocator(depId)));
          
          if (params.m_dependentContentTypeIds == null
                && params.m_dependentObjectType == -1)
             result = rels;
       }
 
-      if (result == null) // need to filter the relationships
+      if (result == null && rels!= null) // need to filter the relationships
       {
          // apply the criteria to filter the relationships
-         result = new ArrayList<PSRelationship>(rels.size());
+         result = new ArrayList<>(rels.size());
          int ownerId, dependentId;
          IPSItemEntry dependent; 
          for (PSRelationship rel : rels)
@@ -868,13 +839,13 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
             // testing dependent(s)
             if (params.m_dependentIds != null)
             {
-               if (!params.m_dependentIds.contains(new Integer(dependentId)))
+               if (!params.m_dependentIds.contains(dependentId))
                   continue;
             }
             
             if (params.m_dependentContentTypeIds != null
-                  && (!params.m_dependentContentTypeIds.contains( 
-                        new Long(dependent.getContentTypeId()))))
+                  && (!params.m_dependentContentTypeIds.contains(
+                    (long) dependent.getContentTypeId())))
                continue;
             
             if (params.m_dependentObjectType != -1
@@ -953,7 +924,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
 
       if (filter.getDependent() != null)
       {
-         List<Integer> ids = new ArrayList<Integer>();
+         List<Integer> ids = new ArrayList<>();
          for (PSLocator loc : filter.getDependents())
             ids.add(loc.getId());
          criteria.m_dependentIds = ids;
@@ -1015,7 +986,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
          // revision.
          if (!filter.getLimitToOwnerRevision())
          {
-            ms_logger.debug("Limit to Owner Revison not set for relationship with owner ", new Throwable());
+            log.debug("Limit to Owner Revison not set for relationship with owner ", new Throwable());
             return null;
          }
 
@@ -1023,7 +994,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
          IPSItemEntry item = assemblyCache.getItemCache().getItem(owner.getId());
          if (item==null)
          {
-            ms_logger.debug("Cannot find owner from cache"+owner.getId());
+            log.debug("Cannot find owner from cache {}", owner.getId());
             return null;
          }
          // We check for folder as we do not want to query db for looking for active
@@ -1049,7 +1020,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
 
       if (filter.getDependent() != null)
       {
-         List<Integer> ids = new ArrayList<Integer>();
+         List<Integer> ids = new ArrayList<>();
          for (PSLocator loc : filter.getDependents())
             ids.add(loc.getId());
          criteria.m_dependentIds = ids;
@@ -1057,10 +1028,10 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
          boolean publicRev = filter.getLimitToPublicOwnerRevision();
          boolean tip = filter.getLimitToTipOwnerRevision() || filter.getLimitToEditOrCurrentOwnerRevision();
          boolean current = filter.getLimitToEditOrCurrentOwnerRevision();
-         // cache does not store all revisions of owner;
+         // cache does not store all revisions of owner
          if (! (publicRev || tip || current) )
          {
-            ms_logger.debug("Using dependent and not specifying owner limit will not use Aa Cache :" +filter);
+            log.debug("Using dependent and not specifying owner limit will not use Aa Cache : {}", filter);
             return null;
          }
            
@@ -1108,7 +1079,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
     * difference between an item related to a folder and a folder related to
     * another folder. This is because we are just filtering folders for now. We
     * do this by checking the objectType within the relationship.
-    * @param relationships the relationship set to be filtered, assumed not
+    * @param rels the relationship set to be filtered, assumed not
     * </code>null</code>, may be an empty set
     * @param communityId the id of the community to filter on
     * 
@@ -1122,7 +1093,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
    private List<PSRelationship> filterByCommunity(
          Collection<PSRelationship> rels, int communityId, int filterFlags)
    {
-      List<PSRelationship> filteredSet = new ArrayList<PSRelationship>(
+      List<PSRelationship> filteredSet = new ArrayList<>(
             rels.size());
       for (PSRelationship rel : rels)
       {
@@ -1154,7 +1125,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
     * The user must alteast have "Read Access" on owner and dependent objects
     * if a relationship is to be included in the returned set.
     *
-    * @param relationships the relationship set to be filtered, assumed not
+    * @param rels the relationship set to be filtered, assumed not
     * </code>null</code>, may be an empty set
     *
     * @return the modified relationship set containing only the valid
@@ -1166,7 +1137,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
    private List<PSRelationship> filterByFolderPermissions(
          List<PSRelationship> rels) throws PSCmsException
    {
-      List<PSRelationship> filteredSet = new ArrayList<PSRelationship>(
+      List<PSRelationship> filteredSet = new ArrayList<>(
             rels.size());
       for (PSRelationship rel : rels)
       {
@@ -1293,7 +1264,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
    {
       if (relationships == null)
          throw new IllegalArgumentException("relationships cannot be null");
-      if (relationships.size()>0)
+      if (!relationships.isEmpty())
          processModifyPlan(createModifyPlan(relationships));
    }
 
@@ -1377,20 +1348,17 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
          throw new IllegalArgumentException("relationships cannot be null");
 
       processModify(PSApplicationBuilder.REQUEST_TYPE_VALUE_DELETE, relationships);
-      if (relationships.size() > 0 && ms_logger.isDebugEnabled())
+      if (!relationships.isEmpty() && log.isDebugEnabled())
       {
-         StringBuffer buf = new StringBuffer();
-         Iterator<PSRelationship> relIter = relationships.iterator();
-         while (relIter.hasNext())
-         {
-            PSRelationship r = relIter.next();
+         StringBuilder buf = new StringBuilder();
+         for (PSRelationship r : (Iterable<PSRelationship>) relationships) {
             if (buf.length() > 0)
                buf.append("\n");
             buf.append(r.toString());
          }
          Exception e = new Exception(
                "The following trace is for tracking what code performed the deletions, no exception actually occurred.");
-         ms_logger.debug("The following " + relationships.size() 
+         log.debug("The following " + relationships.size()
                + " relationship(s) have been deleted: \n" 
                + buf.toString(), e);
       }
@@ -1463,7 +1431,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
       }
       else // hit the repository 
       {
-         List<PSLocator> locators = new ArrayList<PSLocator>();
+         List<PSLocator> locators = new ArrayList<>();
          locators.add(rel.getOwner());
          locators.add(rel.getDependent());
          PSServerFolderProcessor folderProcessor = PSServerFolderProcessor.getInstance();
@@ -1500,25 +1468,22 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
             PSRelationshipSet result = new PSRelationshipSet();
             IPSRelationshipService svc = PSRelationshipServiceLocator
                .getRelationshipService();
-            Iterator<?> it = relationships.iterator();
-            while (it.hasNext())
-            {
+            for (PSRelationship relationship : (Iterable<PSRelationship>) relationships) {
                int execContext = -1;
-               PSRelationship rel = (PSRelationship) it.next();
+               PSRelationship rel = relationship;
                checkFolderPermission(rel, PSObjectPermissions.ACCESS_WRITE, true);
-               switch (action)
-               {
-                  case INSERT :
-                     execContext = IPSExecutionContext.RS_PRE_CONSTRUCTION;                     
+               switch (action) {
+                  case INSERT:
+                     execContext = IPSExecutionContext.RS_PRE_CONSTRUCTION;
                      validateOwnerAndDependentExist(rel);
                      break;
-                     
-                  case DELETE :
+
+                  case DELETE:
                      execContext = IPSExecutionContext.RS_PRE_DESTRUCTION;
                      resetRevision(rel);
                      break;
-                     
-                  case UPDATE :
+
+                  case UPDATE:
                      execContext = IPSExecutionContext.RS_PRE_UPDATE;
                }
 
@@ -1528,14 +1493,13 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
                data.setOriginatingRelationship(rel);
                PSRelationshipSet rels = new PSRelationshipSet();
                rels.add(rel);
-               
-               effectProc = new PSRelationshipEffectProcessor(rels, data, 
-                  execContext);
+
+               effectProc = new PSRelationshipEffectProcessor(rels, data,
+                       execContext);
                effectProc.process();
-               
-               switch (action)
-               {
-                  case INSERT :
+
+               switch (action) {
+                  case INSERT:
                   case UPDATE:
                      svc.saveRelationship(rel);
                      result.add(rel);
@@ -1608,45 +1572,39 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
    {
       PSRelationshipSet inserts = new PSRelationshipSet();
       PSRelationshipSet updates = new PSRelationshipSet();
-      Map<String, PSRelationshipSet> plan = new HashMap<String, PSRelationshipSet>(2);
+      Map<String, PSRelationshipSet> plan = new HashMap<>(2);
 
       plan.put(PSApplicationBuilder.REQUEST_TYPE_VALUE_INSERT, inserts);
       plan.put(PSApplicationBuilder.REQUEST_TYPE_VALUE_UPDATE, updates);
       
       Collection<Integer> relsExisting = getExisiting(relationships);
 
-      Iterator<?> it = relationships.iterator();
-      while (it.hasNext())
-      {
-         PSRelationship relationship = (PSRelationship) it.next();
+      for (PSRelationship psRelationship : (Iterable<PSRelationship>) relationships) {
+         PSRelationship relationship = psRelationship;
          resetRevision(relationship);
 
-         if (!relsExisting.contains(new Integer(relationship.getId())))
-         {
+         if (!relsExisting.contains(relationship.getId())) {
             PSRelationshipProcessor relationshipProcessor = PSRelationshipProcessor.getInstance();
             //If there is a relationship Already Existing then just use that, don't recreate.
             PSRelationship existingRel = relationshipProcessor.checkIfRelationshipAlreadyExists(relationship);
-            if(existingRel != null) {
+            if (existingRel != null) {
                relationship.setId(existingRel.getId());
                relationship.setPersisted(true);
-            }else if (relationship.getId() == -1){
-                  int rid = PSRelationshipCommandHandler.getNextId();
-                  relationship.setId(rid);
-             }
+            } else if (relationship.getId() == -1) {
+               int rid = PSRelationshipCommandHandler.getNextId();
+               relationship.setId(rid);
+            }
             if (!relationship.isPersisted()) {
                relationship.setPersisted(false);
                inserts.add(relationship);
             }
 
-         }
-         else
-         {
-            if (!relationship.isPersisted())
-            {
+         } else {
+            if (!relationship.isPersisted()) {
                relationship.setPersisted(true);
-               if (ms_logger.isDebugEnabled())
-                  ms_logger.debug("Oops! persisted-flag=FLASE for an existing"
-                        + "relationship id: " + relationship.getId());
+               if (log.isDebugEnabled())
+                  log.debug("Oops! persisted-flag=FLASE for an existing"
+                          + "relationship id: " + relationship.getId());
             }
             updates.add(relationship);
          }
@@ -1670,13 +1628,11 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
     */
    private Collection<Integer> getExisiting(PSRelationshipSet relationships)
    {
-      Set<Integer> relIds = new HashSet<Integer>(relationships.size());
-      Iterator<?> iter = relationships.iterator();
-      while (iter.hasNext())
-      {
-         PSRelationship element = (PSRelationship) iter.next();
+      Set<Integer> relIds = new HashSet<>(relationships.size());
+      for (PSRelationship relationship : (Iterable<PSRelationship>) relationships) {
+         PSRelationship element = (PSRelationship) relationship;
          if (element.getId() > 0)
-            relIds.add(new Integer(element.getId()));
+            relIds.add(element.getId());
       }
       
       IPSRelationshipService svc = PSRelationshipServiceLocator
@@ -1789,7 +1745,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
    {
       List<PSRelationship> rels = getRelationshipsFromDependent(object,
             relationshipTypeName);
-      List<PSLocator> owners = new ArrayList<PSLocator>();
+      List<PSLocator> owners = new ArrayList<>();
        
       for (PSRelationship rel : rels)
       {
@@ -1846,10 +1802,10 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
       path = path.substring(start.length() - 1);
       StringTokenizer tokenizer = new StringTokenizer(path, separator);
       // note the "paths" does not include the root name
-      List<String> paths = new ArrayList<String>();
+      List<String> paths = new ArrayList<>();
       while (tokenizer.hasMoreTokens())
          paths.add(tokenizer.nextToken());
-      if (paths.size() < 1)
+      if (paths.isEmpty() || paths.size() < 2)
       {
          throw new IllegalArgumentException(
                "path must have at least two token separated by '" + separator
@@ -2019,7 +1975,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
       String[] paths = new String[rels.size()];
       for (int i=0; i < paths.length; i++)
       {
-         List<PSLocator> parents = new ArrayList<PSLocator>();
+         List<PSLocator> parents = new ArrayList<>();
          PSLocator parent = rels.get(i).getOwner();
          getAncestorLocatorsFromRepository(parent, parents,
                PSRelationshipConfig.TYPE_FOLDER_CONTENT);
@@ -2095,7 +2051,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
     * One of the <code>FILTER_xxx</code> flags. Used to indicate that items 
     * should be filtered by their community. 
     */
-   private static final int FILTER_ITEM = 0x1<<0;
+   private static final int FILTER_ITEM = 0x1;
 
    /**
     * One of the <code>FILTER_xxx</code> flags. Used to indicate that folders 
@@ -2115,7 +2071,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
    /**
     * The logger for this class.
     */
-   Logger ms_logger = Logger.getLogger(PSRelationshipDbProcessor.class);
+   Logger log = LogManager.getLogger(PSRelationshipDbProcessor.class);
 
    public static PSRelationshipDbProcessor getInstance()
    {

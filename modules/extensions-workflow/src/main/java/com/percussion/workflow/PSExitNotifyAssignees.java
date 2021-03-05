@@ -25,26 +25,11 @@ package com.percussion.workflow;
 
 import com.percussion.cms.IPSConstants;
 import com.percussion.data.PSConversionException;
-import com.percussion.design.objectstore.PSAttribute;
-import com.percussion.design.objectstore.PSContentEditorSystemDef;
-import com.percussion.design.objectstore.PSField;
-import com.percussion.design.objectstore.PSFieldSet;
-import com.percussion.design.objectstore.PSSubject;
+import com.percussion.design.objectstore.*;
 import com.percussion.error.PSException;
-import com.percussion.extension.IPSExtension;
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.extension.IPSExtensionErrors;
-import com.percussion.extension.IPSResultDocumentProcessor;
-import com.percussion.extension.IPSWorkFlowContext;
-import com.percussion.extension.PSExtensionException;
-import com.percussion.extension.PSExtensionProcessingException;
-import com.percussion.extension.PSParameterMismatchException;
+import com.percussion.extension.*;
 import com.percussion.i18n.PSI18nUtils;
-import com.percussion.search.IPSExecutableSearch;
-import com.percussion.search.IPSSearchResultRow;
-import com.percussion.search.PSExecutableSearchFactory;
-import com.percussion.search.PSSearchException;
-import com.percussion.search.PSWSSearchResponse;
+import com.percussion.search.*;
 import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
@@ -94,14 +79,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This exit sends mail notifications to the assigned roles for the new state
@@ -159,7 +137,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
 
       int nParamCount = 0;
       String userName = null;
-      HashMap<Object,Object> htmlParams = null;
+      Map<String,Object> htmlParams = null;
       PSWorkFlowContext wfContext = null;
       PSTransitionsContext tc = null;
       PSConnectionMgr connectionMgr = null;

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,22 +25,14 @@ package com.percussion.ce;
 
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
 import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.extension.IPSResultDocumentProcessor;
-import com.percussion.extension.PSExtensionException;
-import com.percussion.extension.PSExtensionProcessingException;
-import com.percussion.extension.PSParameterMismatchException;
+import com.percussion.extension.*;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
+import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
 import java.io.File;
@@ -49,6 +41,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * This class modifies the result document to append all child and paraent
@@ -82,7 +75,7 @@ public class PSDependencyTree implements IPSResultDocumentProcessor
          throws PSParameterMismatchException,
                PSExtensionProcessingException
    {
-      HashMap htmlParams = request.getParameters();
+      Map<String,Object> htmlParams = request.getParameters();
       ArrayList itemsRendered = new ArrayList();
       PSXmlTreeWalker walker = new PSXmlTreeWalker(resDoc);
       try
