@@ -33,7 +33,8 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -59,16 +60,16 @@ public class PSNavTree
       m_rootParams = PSNavUtil.buildStandardParams(req);
       m_theme = ms_config.getPropertyString(PSNavConfig.NAVTREE_THEME_DEFAULT);
 
-      m_log.debug("Creating NavTree");
-      PSNavUtil.logMap(m_rootParams, "HTML Parameters", m_log);
+      log.debug("Creating NavTree");
+      PSNavUtil.logMap(m_rootParams, "HTML Parameters", log);
 
       PSLocator selfLoc = new PSLocator(req
             .getParameter(IPSHtmlParameters.SYS_CONTENTID));
       PSComponentSummary self = PSNavUtil.getItemSummary(req, selfLoc);
-      m_log.debug("Self node is " + self.getName());
+      log.debug("Self node is {}", self.getName());
       if (self.getContentTypeId() == ms_config.getNavTreeType())
       { // this is the root
-         m_log.debug("starting at root");
+         log.debug("starting at root");
          m_root = new PSNavon(req, self);
          m_root.setType(PSNavonType.TYPE_SELF);
          m_root.setRelativeLevel(0);
@@ -76,18 +77,18 @@ public class PSNavTree
       }
       else if (self.getContentTypeId() == ms_config.getNavonType())
       { // this is a navon somewhere in the middle of the tree
-         m_log.debug("starting in the middle");
+         log.debug("starting in the middle");
          PSNavon selfNavon = new PSNavon(req, self);
          selfNavon.setType(PSNavonType.TYPE_SELF);
          selfNavon.setRelativeLevel(0);
          PSNavon top = selfNavon;
          while (top != null)
          {
-            m_log.debug("walking up chain");
+            log.debug("walking up chain");
             PSNavon next = top.findParent(req);
             if (next == null)
             { // unexpected Navon with no parent.
-               m_log.debug("found navon with no parent");
+               log.debug("found navon with no parent");
                this.m_root = top;
                break;
             }
@@ -197,7 +198,7 @@ public class PSNavTree
    /**
     * Writes the log.
     */
-   private Logger m_log = Logger.getLogger(this.getClass().getName());
+   private Logger log = LogManager.getLogger(this.getClass().getName());
 
    /**
     * Theme for the tree. The theme is used for selecting stylesheets in the

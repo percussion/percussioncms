@@ -34,7 +34,8 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -78,13 +79,13 @@ public class PSNavTreeXMLUtils
    public static void setNavVariable(IPSRequestContext req, Document resultDoc,
          Document navonDoc) throws PSNavException
    {
-      ms_log.debug("Setting Nav Variables");
+      log.debug("Setting Nav Variables");
       PSNavConfig config = PSNavConfig.getInstance(req);
       String varName = navonDoc.getDocumentElement().getAttribute(
             PSNavTree.XML_ATTR_VARIABLE);
       if (varName == null || varName.trim().length() == 0)
       { // nothing to do here
-         ms_log.debug("No variable name specified");
+         log.debug("No variable name specified");
          return;
       }
       PSXmlTreeWalker walker = new PSXmlTreeWalker(resultDoc
@@ -93,7 +94,7 @@ public class PSNavTreeXMLUtils
             PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN);
       if (assemblerInfo == null)
       { // no sys_AssemblerInfo element, can't go forward
-         ms_log.warn("No Assembler Info Element, cannot add Assembler Properties");
+         log.warn("No Assembler Info Element, cannot add Assembler Properties");
          return;
       }
       Element assemblerProps = walker.getNextElement(
@@ -102,7 +103,7 @@ public class PSNavTreeXMLUtils
 
       if (assemblerProps == null)
       {
-         ms_log.warn("No Assembler Properties node");
+         log.warn("No Assembler Properties node");
          return;
       }
       copyAssemblerProperty(assemblerProps, varName, config);
@@ -124,7 +125,7 @@ public class PSNavTreeXMLUtils
       Element originalProp = getPropertyByName(assemblerProps, srcName);
       if (originalProp == null)
       {
-         ms_log.warn("property not found " + srcName);
+         log.warn("property not found {}", srcName);
          return;
       }
       String newPropName = config
@@ -140,7 +141,7 @@ public class PSNavTreeXMLUtils
       {
          PSXmlTreeWalker owalk = new PSXmlTreeWalker(originalProp);
          String originalValue = owalk.getElementData("Value/@current");
-         ms_log.debug("original data is " + originalValue);
+         log.debug("original data is {}", originalValue);
          PSXmlTreeWalker nwalk = new PSXmlTreeWalker(newProp);
          Element sValue = nwalk.getNextElement(XML_ELEM_VALUE,
                PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN);
@@ -211,10 +212,10 @@ public class PSNavTreeXMLUtils
       linkElem.setAttribute(XML_ATTR_VARIANT_ID, String.valueOf(link
             .getVariantId()));
 
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
       {
          String linkStr = PSXmlDocumentBuilder.toString(linkElem);
-         ms_log.debug("Link is " + linkStr);
+         log.debug("Link is {}", linkStr);
       }
       relatedContent.appendChild(linkElem);
    }
@@ -243,7 +244,7 @@ public class PSNavTreeXMLUtils
          throw new IllegalArgumentException(
                "resultDoc must not be null and must have a root eleemnt");
       }
-      ms_log.debug("adding assembler properties");
+      log.debug("adding assembler properties");
       PSNavConfig config = PSNavConfig.getInstance(req);
       Document aDoc = null;
 
@@ -282,7 +283,8 @@ public class PSNavTreeXMLUtils
       }
       catch (Exception ex)
       {
-         ms_log.error("unexpected exception in " + PSNavTreeXMLUtils.class, ex);
+         log.error("unexpected exception in {}, Error : {}", PSNavTreeXMLUtils.class, ex.getMessage());
+         log.debug(ex.getMessage(),ex);
          throw new PSNavException(ex);
       }
 
@@ -292,7 +294,7 @@ public class PSNavTreeXMLUtils
          String[] msgParms =
          {site, context};
          String errMsg = MessageFormat.format(MSG_NO_PROPERTIES, msgParms);
-         ms_log.warn(errMsg);
+         log.warn(errMsg);
          return;
       }
 
@@ -309,7 +311,7 @@ public class PSNavTreeXMLUtils
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(PSNavTreeXMLUtils.class);
+   private static Logger log = LogManager.getLogger(PSNavTreeXMLUtils.class);
 
    /**
     * Name of the Thythmyx resource to query the assembler properties.
