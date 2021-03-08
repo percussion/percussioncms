@@ -37,7 +37,7 @@ import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
 import org.apache.commons.io.IOUtils;
-import org.omg.CORBA_2_3.portable.InputStream;
+import java.io.InputStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
