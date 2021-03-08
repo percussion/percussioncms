@@ -190,7 +190,7 @@ public class PSObjectCatalogHandler
       /* parse the objectType string */
       boolean findUsers = false;
       boolean findGroups = false;
-      List<String> typeList = new ArrayList<String>();
+      List<String> typeList = new ArrayList<>();
       while (tree.getNextElement("objectType", true, false) != null)
       {
          String type = tree.getElementData((Element)tree.getCurrent());

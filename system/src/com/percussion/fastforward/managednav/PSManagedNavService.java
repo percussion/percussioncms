@@ -57,8 +57,9 @@ import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -552,7 +553,7 @@ public class PSManagedNavService implements IPSManagedNavService
    public Map<String, String> getNavonProperties(IPSGuid navId, List<String> propertyNames)
    {
       notNull(navId);
-      Map<String, String> propertyMap = new HashMap<String, String>();
+      Map<String, String> propertyMap = new HashMap<>();
       List<Node> navNodes = 
          contentDsWs.findNodesByIds(Collections.singletonList(navId), true);
       if (navNodes.isEmpty())
@@ -585,7 +586,7 @@ public class PSManagedNavService implements IPSManagedNavService
       notNull(nodeId);
       notNull(title);
       notEmpty(title);
-      Map<String,String> map = new HashMap<String, String>();
+      Map<String,String> map = new HashMap<>();
       map.put("displaytitle", title);
       setNavonProperties(nodeId,map);
    }
@@ -629,7 +630,7 @@ public class PSManagedNavService implements IPSManagedNavService
    {
       notNull(nodeId);
       
-      List<IPSGuid> results = new ArrayList<IPSGuid>();
+      List<IPSGuid> results = new ArrayList<>();
       PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
       
       try
@@ -678,7 +679,7 @@ public class PSManagedNavService implements IPSManagedNavService
        if (cIds.isEmpty())
           return cIds;
        
-       List<IPSGuid> results = new ArrayList<IPSGuid> (cIds);
+       List<IPSGuid> results = new ArrayList<> (cIds);
        for (IPSGuid cid : cIds)
        {
           cid = contentDsWs.getItemGuid(cid);
@@ -693,7 +694,7 @@ public class PSManagedNavService implements IPSManagedNavService
       if (log.isDebugEnabled())
           log.debug("[findAncestorNavonIds] nodeId = " + nodeId.toString());
       
-      List<IPSGuid> ancestorIds = new ArrayList<IPSGuid>();
+      List<IPSGuid> ancestorIds = new ArrayList<>();
       PSLocator dependent = new PSLocator(((PSLegacyGuid) nodeId).getContentId());
       findAncestorNavonIds(dependent, ancestorIds);
 
@@ -836,7 +837,7 @@ public class PSManagedNavService implements IPSManagedNavService
       rfilter.setOwnerId(((PSLegacyGuid)parentNavonId).getContentId());
       rfilter.setDependentId(((PSLegacyGuid)navonId).getContentId());
       List<PSAaRelationship> rels = contentWs.loadContentRelations(rfilter, false);
-      List<IPSGuid> relGuids = new ArrayList<IPSGuid>();
+      List<IPSGuid> relGuids = new ArrayList<>();
       for(PSAaRelationship rel : rels)
       {
          relGuids.add(rel.getGuid());
@@ -879,7 +880,7 @@ public class PSManagedNavService implements IPSManagedNavService
       if (links == null)
          return;
       
-      List<IPSGuid> ids = new ArrayList<IPSGuid>();
+      List<IPSGuid> ids = new ArrayList<>();
       for (PSAaRelationship link : links)
       {
          ids.add(link.getGuid());
@@ -1217,7 +1218,7 @@ public class PSManagedNavService implements IPSManagedNavService
    /**
     * Logger for this service.
     */
-   private static Log log = LogFactory.getLog(PSManagedNavService.class);
+   private static Logger log = LogManager.getLogger(PSManagedNavService.class);
    
    /**
     * The dummy template ID, used for create AA relationship between navigation nodes

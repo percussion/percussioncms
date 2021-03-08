@@ -42,7 +42,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -69,7 +69,7 @@ public class PSRxGlobals extends PSLoggable
     * <em>rx_GlobalTemplates.xsl</em> (post 5.5 of Rhythmyx) file from the
     * known location {@link #RX_GLOBALS_PATH}as an XML document.
     * 
-    * @param logger {@link org.apache.log4j.Logger logger}to log the
+    * @param logger {@link org.apache.logging.log4j.Logger logger}to log the
     *           information, warnings or errors. May be <code>null</code> in
     *           which case a logger with default named category will be created.
     * @throws IOException if the file cannot be read for any reason.
