@@ -28,6 +28,8 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.io.Serializable;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -37,6 +39,8 @@ import org.w3c.dom.Element;
  */
 public class PSLocator extends PSKey implements Serializable
 {
+
+   private static final Logger log = LogManager.getLogger(PSLocator.class);
    /**
     * Creates an empty locator object. This is used for creating a new
     * component that has not been saved to the database.
@@ -211,8 +215,9 @@ public class PSLocator extends PSKey implements Serializable
          copy = new PSLocator(this.toXml(doc));
       }
       catch (Exception e)
-      { /* not possible */ 
-         System.out.println("PSLocator.clone() caught exception: \n" + e.toString());
+      { /* not possible */
+         log.error("PSLocator.clone() caught exception: \n",e.getMessage());
+         log.debug(e.getMessage(),e);
       }
 
       return copy;

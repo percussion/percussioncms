@@ -23,7 +23,9 @@
  */
 package com.percussion.fastforward.managednav;
 
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author DavidBenua
@@ -127,7 +129,7 @@ public class PSNavonType
    public static PSNavonType getDescendentType(PSNavonType parentType, int level)
    {
       int newType = TYPE_ROOT;
-      ms_log.debug("Setting descendent type - parent is " + parentType.toString());
+      log.debug("Setting descendent type - parent is {}", parentType.toString());
       switch (parentType.getType())
       {
 
@@ -149,7 +151,7 @@ public class PSNavonType
 
       }
       PSNavonType result = new PSNavonType(newType);
-      ms_log.debug("new child type is " + result.toString());
+      log.debug("new child type is {}", result.toString());
 
       return result;
    }
@@ -165,7 +167,7 @@ public class PSNavonType
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(PSNavonType.class);
+   private static final Logger log = LogManager.getLogger(PSNavonType.class);
 
    /**
     * Navon type string to indicate the root of the navigation tree.

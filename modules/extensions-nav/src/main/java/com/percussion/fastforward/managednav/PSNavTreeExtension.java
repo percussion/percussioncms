@@ -33,7 +33,8 @@ import com.percussion.util.IPSHtmlParameters;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 /**
@@ -68,14 +69,13 @@ public class PSNavTreeExtension extends PSDefaultExtension
          IPSRequestContext req, Document resultDoc)
          throws PSParameterMismatchException, PSExtensionProcessingException
    {
-      m_log.debug("start of NavTreeExtension");
+      log.debug("start of NavTreeExtension");
 
-      PSNavUtil.logMap(req.getTruncatedParameters(), "Request Parameters", m_log);
+      PSNavUtil.logMap(req.getTruncatedParameters(), "Request Parameters", log);
       try
       {
          PSNavConfig config = PSNavConfig.getInstance(req);
-         m_log.debug("Nav Theme is "
-               + req.getParameter(config.getNavThemeParamName()));
+         log.debug("Nav Theme is {}", req.getParameter(config.getNavThemeParamName()));
 
          String contentid = req.getParameter(IPSHtmlParameters.SYS_CONTENTID);
          String revision = req.getParameter(IPSHtmlParameters.SYS_REVISION);
@@ -88,7 +88,7 @@ public class PSNavTreeExtension extends PSDefaultExtension
 
          if (contentid.equals(stack.getId(0)))
          { //current id is same as top of stack
-            m_log.debug("Request for root node");
+            log.debug("Request for root node");
             PSNavTree tree = config.retrieveNavTree(req);
             if (tree == null) 
             {
@@ -101,10 +101,9 @@ public class PSNavTreeExtension extends PSDefaultExtension
          else
          {
             //should only happen on preview of NavonTree Variant l
-            m_log.debug("getting tree document for preview");
+            log.debug("getting tree document for preview");
             PSLocator stackLoc = stack.peek(0).getCurrentLocator();
-            m_log.debug("top of stack locator "
-                  + stackLoc.getPart(PSLocator.KEY_ID));
+            log.debug("top of stack locator {}", stackLoc.getPart(PSLocator.KEY_ID));
             Document doc = PSNavTreeLinkExtension.getTreeVariantXMLClean(req,
                   stackLoc);
             return doc;
@@ -114,9 +113,10 @@ public class PSNavTreeExtension extends PSDefaultExtension
       catch (PSNavException e)
       {
          req.printTraceMessage(e.getMessage());
-         m_log.error("PSNavException found:" + e.getMessage());
-         m_log.error(getClass().getName(), e);
-         System.out.println(e.getMessage());
+         log.error("PSNavException found: {}", e.getMessage());
+         log.error(getClass().getName(), e);
+         log.debug(e.getMessage(),e);
+         log.error(e.getMessage());
          e.printStackTrace();
 
          throw new PSExtensionProcessingException(0, e.getMessage());
@@ -124,8 +124,9 @@ public class PSNavTreeExtension extends PSDefaultExtension
       }
       catch (Exception ex)
       {
-         m_log.error("unexcepted exception");
-         m_log.error(getClass().getName(), ex);
+         log.error("unexcepted exception");
+         log.error(getClass().getName(), ex);
+         log.debug(ex.getMessage(),ex);
          ex.printStackTrace();
          throw new PSExtensionProcessingException(getClass().getName(), ex);
       }
@@ -135,5 +136,5 @@ public class PSNavTreeExtension extends PSDefaultExtension
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   Logger m_log = Logger.getLogger(getClass());
+   Logger log = LogManager.getLogger(getClass());
 }

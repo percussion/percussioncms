@@ -37,7 +37,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -109,7 +109,7 @@ public class PSGlobalTemplate extends PSLoggable
     *           Rhythmyx root. Must not be <code>null</code> or empty.
     * @param srcHtmlFile name of the marked up HTML source file for the global
     *           template. Must not be <code>null</code> or empty.
-    * @param logger {@link org.apache.log4j.Logger logger} to log the
+    * @param logger {@link org.apache.logging.log4j.Logger logger} to log the
     *           inoformation, warnings or errors. May be <code>null</code> in
     *           which case a logger with default named category will be ceated.
     * @throws IOException in case of any error accessing and reading the source
