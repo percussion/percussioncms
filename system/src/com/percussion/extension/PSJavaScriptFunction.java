@@ -35,6 +35,8 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.Function;
@@ -54,6 +56,7 @@ import org.mozilla.javascript.Context;
  */
 class PSJavaScriptFunction implements ErrorReporter
 {
+   private static final Logger log = LogManager.getLogger(PSJavaScriptFunction.class);
    /**
     * Create an executable function for JavaScript extension.
     *
@@ -319,8 +322,8 @@ class PSJavaScriptFunction implements ErrorReporter
       String message, String sourceName, int line,
       String lineSource, int lineOffset)
    {
-      System.out.println("Error in " + sourceName + ": " + message);
-      System.out.println("  source line (" + lineOffset + "): " + lineSource);
+      log.error("Error in {} : {}", sourceName, message);
+      log.error("  source line (" + lineOffset + "): " + lineSource);
    }
 
    public EvaluatorException runtimeError(
@@ -337,8 +340,8 @@ class PSJavaScriptFunction implements ErrorReporter
       String message, String sourceName, int line,
       String lineSource, int lineOffset)
    {
-      System.out.println("Warning in " + sourceName + ": " + message);
-      System.out.println("  source line (" + lineOffset + "): " + lineSource);
+      log.warn("Warning in {} : {} ", sourceName, message);
+      log.warn("  source line ( {} ): {} ",lineOffset, lineSource);
    }
 
 

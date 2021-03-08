@@ -25,6 +25,8 @@ package com.percussion.util;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -36,6 +38,7 @@ import org.w3c.dom.Text;
  */
 public class PSItemErrorDoc
 {
+   private static final Logger log = LogManager.getLogger(PSItemErrorDoc.class);
    /**
     * Adds a new error entry to the provided document. If the root element
     * is already there it will be used, if not a new root element will be
@@ -190,7 +193,7 @@ public class PSItemErrorDoc
       Object[] args2 = { "2" };
       PSItemErrorDoc.addError(doc, submitNames, displayNames, pattern2, args2);
       
-      System.out.println("...error document:\n" + PSXmlDocumentBuilder.toString(doc));
+      log.info("...error document:\n {} ", PSXmlDocumentBuilder.toString(doc));
    }
    
    /** 

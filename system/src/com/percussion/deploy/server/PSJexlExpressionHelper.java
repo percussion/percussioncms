@@ -57,7 +57,7 @@ public class PSJexlExpressionHelper
       /**
        * map of occurence(Integer) with its value String
        */
-      private Map<Integer, String> m_values = new HashMap<Integer, String>();
+      private Map<Integer, String> m_values = new HashMap<>();
 
       /**
        * Based on the occurence number, get its value
@@ -104,7 +104,7 @@ public class PSJexlExpressionHelper
        * a map to hold the old id value references in an expression
        * @see PSJexlOccurence
        */
-      private Map<String, PSJexlOccurence> m_occur = new HashMap<String, PSJexlOccurence>();
+      private Map<String, PSJexlOccurence> m_occur = new HashMap<>();
 
       /**
        * with the given id, get all the occurences of that id in an jexl
@@ -257,5 +257,5 @@ public class PSJexlExpressionHelper
    /**
     * a parameter map based on the binding index.
     */
-   private Map<Integer, PSJexlBindingParamOccurence> m_paramMap = new HashMap<Integer, PSJexlBindingParamOccurence>();
+   private Map<Integer, PSJexlBindingParamOccurence> m_paramMap = new HashMap<>();
 }

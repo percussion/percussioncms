@@ -93,8 +93,8 @@ import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -127,7 +127,7 @@ public class PSItemDefManager
    /**
     * Logger to use, never <code>null</code>.
     */
-   private static Log ms_log = LogFactory.getLog(PSItemDefManager.class);
+   private static final Logger log = LogManager.getLogger(PSItemDefManager.class);
    
    /**
     * This class implements the singleton pattern. The single instance of this
@@ -174,7 +174,7 @@ public class PSItemDefManager
       if (ctypeIds == null || ctypeIds.length == 0)
          ctypeIds = getContentTypeIds(COMMUNITY_ANY);
 
-      Collection<PSField> fieldDefs = new ArrayList<PSField>();
+      Collection<PSField> fieldDefs = new ArrayList<>();
       for (int i = 0; i < ctypeIds.length; i++)
       {
          long ctypeId = ctypeIds[i];
@@ -419,7 +419,7 @@ public class PSItemDefManager
    {
       if(sharedGroupName == null || sharedGroupName.length() == 0)
          throw new IllegalArgumentException("sharedGroupName cannot be null or empty.");
-      Collection<String> results = new ArrayList<String>();
+      Collection<String> results = new ArrayList<>();
       long[] cts = getAllContentTypeIds(COMMUNITY_ANY);
       for(long ct : cts)
       {
@@ -631,7 +631,7 @@ public class PSItemDefManager
       if (null == securityToken)
          throw new IllegalArgumentException("Missing security token");
 
-      Collection<PSItemDefSummary> summaries = new ArrayList<PSItemDefSummary>();
+      Collection<PSItemDefSummary> summaries = new ArrayList<>();
       long[] ids = getContentTypeIds(securityToken);
       for (int i = 0; i < ids.length; i++)
       {
@@ -655,7 +655,7 @@ public class PSItemDefManager
     */
    public Collection<PSItemDefSummary> getSummaries(int communityId)
    {
-      Collection<PSItemDefSummary> summaries = new ArrayList<PSItemDefSummary>();
+      Collection<PSItemDefSummary> summaries = new ArrayList<>();
       long[] ids = getContentTypeIds(communityId);
       for (int i = 0; i < ids.length; i++)
       {
@@ -828,7 +828,7 @@ public class PSItemDefManager
        * have to do it old school - Adam Gent.
        */
       long contentTypeId = -1;
-      Map<String, Object> params = new HashMap<String, Object>(1);
+      Map<String, Object> params = new HashMap<>(1);
       params.put(IPSHtmlParameters.SYS_CONTENTID, itemId.getId() + "");
       Element result = load("lookupContentTypeId.xml", params);
       if (result != null)
@@ -914,7 +914,8 @@ public class PSItemDefManager
        try {
            nodeDef = cml.loadNodeDefinitions(Collections.singletonList(new PSGuid(PSTypeEnum.NODEDEF, typeId))).stream().findFirst().orElse(null);
        } catch (RepositoryException e) {
-           ms_log.error("Unable to locate content type with id " + typeId,e);
+           log.error("Unable to locate content type with id {}, Error : {} ", typeId,e.getMessage());
+           log.debug(e.getMessage(), e);
            throw new PSInvalidContentTypeException(Long.toString(typeId));
        }
 
@@ -928,30 +929,26 @@ public class PSItemDefManager
 
          namenows = StringUtils.deleteWhitespace(typeName);
       }else{
-         ms_log.error("Unable to locate content type with id " + typeId);
+         log.error("Unable to locate content type with id {}" + typeId);
          throw new PSInvalidContentTypeException(Long.toString(typeId));
       }
       if (namenows.length() != typeName.length())
       {
-         ms_log.error("Invalid content type name " + typeName
-               + " contains whitespace");
+         log.error("Invalid content type name {} contains whitespace", typeName);
       }
       
       String editorUrl = typeDef.getQueryRequest();
       if (!appName.equals(PSContentType.getAppName(editorUrl)))
       {
-         ms_log.warn("The content editor application name \"" + appName 
-            + "\" does not match the request root specified in the editor url" 
-            + " registration \"" + editorUrl + "\" for content type name: " 
-            + typeName);
+         log.warn("The content editor application name \"{} \" does not match the request root specified in the editor url"
+            + " registration \"{}\" for content type name: {}", appName, editorUrl, typeName);
       }
       
       if (!PSContentType.createRequestUrl(typeName).equalsIgnoreCase(
          editorUrl))
       {
-         ms_log.warn("The content editor application \"" + appName 
-            + "\" does not follow proper naming conventions based on the " 
-            + "content type name: " + typeName);
+         log.warn("The content editor application \" {} \" does not follow proper naming conventions based on the "
+            + "content type name: {}", appName, typeName);
       }
       
       m_currentRegisteredId = typeId;
@@ -964,7 +961,7 @@ public class PSItemDefManager
       PSCmsObject cmsObject = PSServer.getCmsObjectRequired(typeDef
             .getObjectType());
 
-      List<Object> defs = new ArrayList<Object>();
+      List<Object> defs = new ArrayList<>();
 
       PSItemDefinition def = new PSItemDefinition(appName, typeDef, editorDef);
       defs.add(def);
@@ -994,7 +991,7 @@ public class PSItemDefManager
       if (cmsObject == null)
          throw new IllegalArgumentException("cmsObject cannot be null");
 
-      List<Object> defs = new ArrayList<Object>();
+      List<Object> defs = new ArrayList<>();
       defs.add(def);
       defs.add(def);
       defs.add(def.getContentEditor());
@@ -1102,7 +1099,7 @@ public class PSItemDefManager
       if (request == null)
          throw new IllegalArgumentException("request cannot be null");
 
-      Map<String, String> params = new HashMap<String, String>();
+      Map<String, String> params = new HashMap<>();
       params.put(IPSHtmlParameters.SYS_VARIANTID, Integer.toString(variantId));
 
       IPSInternalRequest ir = request.getInternalRequest(
@@ -1321,7 +1318,7 @@ public class PSItemDefManager
     */
    private long[] getVisibleContentTypes(int communityId, boolean isUIVisible)
    {
-      Collection<Long> visibleIds = new ArrayList<Long>();
+      Collection<Long> visibleIds = new ArrayList<>();
       
       for ( Entry<Long,List<Object>> entry : m_itemDefMap.entrySet())
       {
@@ -1383,7 +1380,7 @@ public class PSItemDefManager
    public Map<String, List<String>> getFieldsWithControlProp(String propertyName, String propertyValue)
          throws PSInvalidContentTypeException
    {
-      Map<String, List<String>> retMap = new HashMap<String, List<String>>();
+      Map<String, List<String>> retMap = new HashMap<>();
       for (long typeId : getAllContentTypeIds(COMMUNITY_ANY))
       {
          String typeName = getItemDefSummary(typeId).getName();
@@ -1496,7 +1493,7 @@ public class PSItemDefManager
          }
       }
 
-      m_deferredNotifications = new ArrayList<PSItemDefinition>();
+      m_deferredNotifications = new ArrayList<>();
       m_deferringNotifications = false;
    }
 
@@ -1547,7 +1544,7 @@ public class PSItemDefManager
          int ctypeId) throws PSInvalidContentTypeException
    {
       PSItemDefinition ceDef =  getItemDef(ctypeId, COMMUNITY_ANY);
-      Map<String, String> ctypeIcon = new HashMap<String, String>();
+      Map<String, String> ctypeIcon = new HashMap<>();
       PSContentEditor ce = ceDef.getContentEditor();
       ctypeIcon.put(ce.getIconSource(), ce.getIconValue());
       return ctypeIcon;
@@ -1573,16 +1570,15 @@ public class PSItemDefManager
    {
       if (itemLoc == null)
          throw new IllegalArgumentException("itemLoc must not be null");
-      Map<PSLocator, String> iconMap = new HashMap<PSLocator, String>();
-      Map<Long, PSItemDefinition> typeDefs = new HashMap<Long, PSItemDefinition>();
-      Map<PSLocator, String> fileItems = new HashMap<PSLocator, String>();
+      Map<PSLocator, String> iconMap = new HashMap<>();
+      Map<Long, PSItemDefinition> typeDefs = new HashMap<>();
+      Map<PSLocator, String> fileItems = new HashMap<>();
       for (PSLocator locator : itemLoc)
       {
          Long ctypeid = getItemContentType(locator);
          if(ctypeid == -1)
          {
-            ms_log.warn("Failed to get the content type for locator "
-                  + locator.toString() + ". Setting the icon path to null");
+            log.warn("Failed to get the content type for locator {} . Setting the icon path to null", locator.toString());
             iconMap.put(locator, null);
             continue;
          }
@@ -1596,10 +1592,8 @@ public class PSItemDefManager
             }
             catch (PSInvalidContentTypeException e)
             {
-               ms_log.warn("Failed to get the item def for contenttype id "
-                     + ctypeid + ". Setting the icon path to null for locator "
-                     + locator.toString());
-               ms_log.debug(e);
+               log.warn("Failed to get the item def for contenttype id {} . Setting the icon path to null for locator {}", ctypeid, locator.toString());
+               log.debug(e.getMessage(), e);
                iconMap.put(locator, null);
                continue;
             }
@@ -1644,7 +1638,7 @@ public class PSItemDefManager
    {
       IPSContentMgr cmgr = PSContentMgrLocator.getContentMgr();
       IPSGuidManager guidMgr = PSGuidManagerLocator.getGuidMgr();
-      Map<PSLocator, String> icPaths = new HashMap<PSLocator, String>();
+      Map<PSLocator, String> icPaths = new HashMap<>();
       Properties rxProps = getRxFileIconProperties();
       Properties sysProps = getSysFileIconProperties();
       
@@ -1664,8 +1658,7 @@ public class PSItemDefManager
             if (node == null)
             {
                icPaths.put(loc, null);
-               ms_log.warn("Failed to load item for locator " + loc.toString()
-                     + " Setting the icon path to null.");
+               log.warn("Failed to load item for locator {} Setting the icon path to null.", loc.toString());
                continue;
             }
             PSContentNode n = (PSContentNode) node;
@@ -1718,8 +1711,8 @@ public class PSItemDefManager
          {
             // If we can't load the item better to set the icon path to null
             // rather than throwing an exception here.
-            ms_log.warn("Failed to load item for locator " + loc.toString()
-                  + " Setting the icon path to null.", e);
+            log.warn("Failed to load item for locator {}  Setting the icon path to null. Error : {}",loc.toString(), e);
+            log.debug(e.getMessage(),e);
             icPaths.put(loc, null);
          }
       }
@@ -1790,13 +1783,15 @@ public class PSItemDefManager
          }
          catch (FileNotFoundException e)
          {
-            ms_log.warn("Error getting the rx resources file icon details.", e);
+            log.warn("Error getting the rx resources file icon details.", e);
+            log.debug(e.getMessage(),e);
          }
          catch (IOException e)
          {
-            ms_log.warn("Error getting the rx resources file icon details.", e);
+            log.warn("Error getting the rx resources file icon details.", e);
+             log.debug(e.getMessage(),e);
          }
-         ms_rxFileIconProperties = new HashMap<Long, Properties>();
+         ms_rxFileIconProperties = new HashMap<>();
          ms_rxFileIconProperties.put(new Long(file.lastModified()), rxProps);
       }
       return rxProps;
@@ -1823,11 +1818,13 @@ public class PSItemDefManager
          }
          catch (FileNotFoundException e)
          {
-            ms_log.warn("Error getting the sys resources file icon details.", e);
+            log.warn("Error getting the sys resources file icon details.", e);
+             log.debug(e.getMessage(),e);
          }
          catch (IOException e)
          {
-            ms_log.warn("Error getting the sys resources file icon details.", e);
+            log.warn("Error getting the sys resources file icon details.", e);
+             log.debug(e.getMessage(),e);
          }
       }
       return ms_sysFileIconProperties;
@@ -1885,7 +1882,7 @@ public class PSItemDefManager
     * is used rather than synchronizing all of the methods that access it.
     * Constructed in class init, then never <code>null</code>.
     */
-   private Map<Long, List<Object>> m_itemDefMap = new ConcurrentHashMap<Long, List<Object>>();
+   private Map<Long, List<Object>> m_itemDefMap = new ConcurrentHashMap<>();
 
    /**
     * Used to store a list of {@link IPSItemDefChangeListener} objects. The list
@@ -1893,7 +1890,7 @@ public class PSItemDefManager
     * may be empty thereafter. The list is modified in the methods
     * {@link #addListener} and {@link #removeListener}.
     */
-   private Collection<IPSItemDefChangeListener> m_itemDefListeners = new ArrayList<IPSItemDefChangeListener>();
+   private Collection<IPSItemDefChangeListener> m_itemDefListeners = new ArrayList<>();
 
    /**
     * Used to store the current type id being registered to avoid returning
@@ -1923,5 +1920,5 @@ public class PSItemDefManager
     * notifications. Reset in {@link #commitUpdateNotifications()}. Contains
     * items of class {@link PSItemDefinition}.
     */
-   private Collection<PSItemDefinition> m_deferredNotifications = new ArrayList<PSItemDefinition>();
+   private Collection<PSItemDefinition> m_deferredNotifications = new ArrayList<>();
 }
