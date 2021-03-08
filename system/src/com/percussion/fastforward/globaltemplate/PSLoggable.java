@@ -23,7 +23,8 @@
  */
 package com.percussion.fastforward.globaltemplate;
 
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.Logger;
 
 /**
  * Base class for the classes that need basic {@link Logger logging} 
