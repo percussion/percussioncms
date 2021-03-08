@@ -32,7 +32,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -123,7 +124,7 @@ public class PSNavon
    {
       try
       {
-         m_log.debug("Creating Navon for " + summary.getName());
+         log.debug("Creating Navon for {}", summary.getName());
          this.m_loc = summary.getCurrentLocator();
          
          //If the authtype is not preview then correct the revision to last
@@ -137,8 +138,7 @@ public class PSNavon
             m_loc.setRevision(Integer.parseInt(rev));
          }
             
-         m_log.debug("Content id " + String.valueOf(m_loc.getId()) + " revision "
-               + String.valueOf(m_loc.getRevision()));
+         log.debug("Content id {} revision {}", String.valueOf(m_loc.getId()), String.valueOf(m_loc.getRevision()));
          this.LoadViaSQL(m_loc.getId(),req);
 
          //         Document ddoc = PSNavUtil.getNavonDocument(req, summary);
@@ -158,7 +158,7 @@ public class PSNavon
          //         this.variableSelector = PSNavUtil.getFieldValueFromXML(ddoc,
          //            config.getPropertyString(PSNavConfig.NAVON_VARIABLE_FIELD));
 
-         m_log.debug("building info link...");
+         log.debug("building info link...");
          this.m_infoLink = new PSNavLink();
          //Assume it is Navon
          PSContentTypeVariant variant = ms_config.getInfoVariant();
@@ -168,7 +168,7 @@ public class PSNavon
 
          this.m_infoLink.createLinkToDocument(req, summary, variant);
 
-         m_log.debug("building landing page...");
+         log.debug("building landing page...");
          try
          {
             this.m_landingPage = buildLinkFromSlot(this.m_loc, ms_config
@@ -177,14 +177,15 @@ public class PSNavon
          }
          catch (PSNavException e1)
          {
-            m_log.error("Unable to build landing page", e1);
+            log.error("Unable to build landing page {}", e1.getMessage());
+            log.debug(e1.getMessage(),e1);
             this.m_landingPage = null;
          }
 
-         m_log.debug("building image list...");
+         log.debug("building image list...");
          this.buildImageList(req);
 
-         m_log.debug("constructor finished");
+         log.debug("constructor finished");
       }
       catch (PSNavException ne)
       {
@@ -277,7 +278,7 @@ public class PSNavon
 
       try
       {
-         m_log.debug("Building Link from Slot " + slotName);
+         log.debug("Building Link from Slot {}", slotName);
 
          PSAaRelationshipList slotContents = PSNavUtil.getSlotContents(req,
                parentDoc, slotName);
@@ -285,7 +286,7 @@ public class PSNavon
          if (!slotIter.hasNext())
          {
             String errMsg = "Slot " + slotName + " is empty";
-            m_log.debug(errMsg);
+            log.debug(errMsg);
             return null;
          }
          PSAaRelationship firstRelation = (PSAaRelationship) slotIter.next();
@@ -324,7 +325,7 @@ public class PSNavon
          //maybe an error, but maybe not.
          String errMsg = "Unexpected tree root. Navon without parents "
                + String.valueOf(this.m_loc.getId());
-         m_log.debug(errMsg);
+         log.debug(errMsg);
          return null;
       }
       PSNavon parentNavon = new PSNavon(req, parentSummary);
@@ -398,7 +399,7 @@ public class PSNavon
          //danger danger the tree is invalid
          String errMsg = "Invalid tree structure. Item with duplicate parents "
                + String.valueOf(this.m_loc.getId());
-         m_log.error(errMsg);
+         log.error(errMsg);
          throw new PSNavException(errMsg);
       }
       return parentSummary;
@@ -528,7 +529,7 @@ public class PSNavon
       Integer myID = new Integer(this.m_loc.getId());
       if (nodeSet.contains(myID))
       {
-         m_log.error("Invalid Tree Structure. Duplicate id in tree " + myID);
+         log.error("Invalid Tree Structure. Duplicate id in tree {}", myID);
          return;
       }
       else
@@ -543,23 +544,23 @@ public class PSNavon
 
       try
       {
-         m_log.debug("finding children for " + this.m_name);
+         log.debug("finding children for {}", this.m_name);
 
          PSSlotType menuSlot = ms_config.getMenuSlot();
 
          if (menuSlot == null)
          {
-            m_log.error("Menu Slot not found ");
+            log.error("Menu Slot not found ");
             throw new PSNavException(MSG_MENU_SLOT_NOT_FOUND);
          }
-         m_log.debug("found slot");
+         log.debug("found slot");
          //        PSComponentSummaries slotItems =
          //           aaProxy.getSlotItems(this.loc, menuSlot,
          // PSNavUtil.getAuthType(req));
 
          PSAaRelationshipList slotItems = PSNavUtil.getSlotContents(req,
                this.m_loc, menuSlot);
-         m_log.debug("found slot contents");
+         log.debug("found slot contents");
          Iterator childIterator = slotItems.iterator();
          while (childIterator.hasNext())
          {
@@ -568,25 +569,24 @@ public class PSNavon
             PSNavComponentSummary childSummary =
             // PSNavUtil.getItemSummary(req, childLoc);
             new PSNavComponentSummary(childLoc);
-            m_log.debug("found child named " + childSummary.getName());
+            log.debug("found child named {}", childSummary.getName());
             int childId = childSummary.getCurrentLocator().getId();
             if (descendentId != -1 && childId == descendentId)
             { // this is our direct descendent.
-               m_log.debug("this child is a direct descendent");
+               log.debug("this child is a direct descendent");
                childNavon = m_directDescendent;
                childNavon.setAbsoluteLevel(this.m_absLevel + 1);
             }
             else
             {
-               m_log.debug("adding new child");
+               log.debug("adding new child");
                childNavon = new PSNavon(req, childSummary);
                childNavon.setParentInfo(req, this);
             }
             childNavon.setAbsoluteLevel(this.m_absLevel + 1);
             m_children.add(childNavon); //append to the list
-            m_log
-                  .debug("recurse to next level "
-                        + String.valueOf(this.m_absLevel));
+            log
+                  .debug("recurse to next level {} ", String.valueOf(this.m_absLevel));
             childNavon.findChildren(req, nodeSet); //recurse
          }
       }
@@ -734,22 +734,22 @@ public class PSNavon
          if (valid)
          {
             this.m_label = rs.getString(1);
-            m_log.debug("Label is " + this.m_label);
+            log.debug("Label is {} ", this.m_label);
 
             this.m_name = rs.getString(2);
-            m_log.debug("Name is " + this.m_name);
+            log.debug("Name is {}", this.m_name);
 
             this.m_imageSelector = rs.getString(3);
-            m_log.debug("Image Selector is " + this.m_imageSelector);
+            log.debug("Image Selector is {}", this.m_imageSelector);
 
             this.m_variableSelector = rs.getString(4);
-            m_log.debug("Variable Selector is " + this.m_variableSelector);
+            log.debug("Variable Selector is {}", this.m_variableSelector);
          }
          else
          {
             String errMsg = "Unable to read Navon from table id = "
                   + String.valueOf(id);
-            m_log.error(errMsg);
+            log.error(errMsg);
             throw new PSNavException(errMsg);
          }
       }
@@ -759,7 +759,8 @@ public class PSNavon
       }
       catch (Exception ex)
       {
-         m_log.error("SQL Error", ex);
+         log.error("SQL Error {}", ex.getMessage());
+         log.debug(ex.getMessage(),ex);
          throw new PSNavException(ex);
       }
       finally
@@ -873,7 +874,7 @@ public class PSNavon
    /**
     * Writes the log.
     */
-   private Logger m_log = Logger.getLogger(this.getClass());
+   private static final Logger log = LogManager.getLogger(PSNavon.class);
 
    /**
     * SQL Statement for loading the Navon data in preview mode.

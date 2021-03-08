@@ -40,7 +40,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -165,7 +166,7 @@ public class PSNavLink
             .getContentTypeId(), variantId);
       if (variant == null)
       {
-         m_log.error(MSG_UNABLE_TO_FIND_LINK);
+         log.error(MSG_UNABLE_TO_FIND_LINK);
          throw new PSNavException(MSG_UNABLE_TO_FIND_LINK);
       }
       createLinkToDocument(req, summary, variant);
@@ -255,7 +256,7 @@ public class PSNavLink
       }
       catch (MalformedURLException e)
       {
-         m_log.error("Malformed URL " + e.getMessage());
+         log.error("Malformed URL {} ", e.getMessage());
          throw new PSNavException(e);
       }
 
@@ -278,7 +279,7 @@ public class PSNavLink
             .getContentTypeId(), variantId);
       if (variant == null)
       {
-         m_log.error(MSG_UNABLE_TO_FIND_LINK);
+         log.error(MSG_UNABLE_TO_FIND_LINK);
          throw new PSNavException(MSG_UNABLE_TO_FIND_LINK);
       }
       createLinkFromSnippet(req, summary, variant,null);
@@ -329,7 +330,7 @@ public class PSNavLink
       if (folderid != null && folderid.trim().length() > 0)
          m_folderId = Integer.parseInt(folderid);
 
-      m_log.debug("creating link to snippet " + variant.getName());
+      log.debug("creating link to snippet {}", variant.getName());
 
       try
       {
@@ -337,9 +338,9 @@ public class PSNavLink
          Map params = buildLinkParams(summary, variant, req);
          if(extraParams != null && extraParams.size()>0)
             params.putAll(extraParams);
-         if (m_log.isDebugEnabled())
+         if (log.isDebugEnabled())
          {
-            PSNavUtil.logMap(params, "internal link params", m_log);
+            PSNavUtil.logMap(params, "internal link params", log);
          }
 
          IPSInternalRequest ir = req.getInternalRequest(variant
@@ -350,11 +351,11 @@ public class PSNavLink
          }
          byte[] snippetData = ir.getMergedResult();
 
-         m_log.debug("snippet data - " + String.valueOf(snippetData));
+         log.debug("snippet data - {} ", String.valueOf(snippetData));
 
          Document doc = PSXmlDocumentBuilder.createXmlDocument(
                new ByteArrayInputStream(snippetData), false);
-         m_log.debug("loaded document");
+         log.debug("loaded document");
          NodeList links = doc.getElementsByTagName("a");
          if (links.getLength() > 0)
          {
@@ -363,10 +364,9 @@ public class PSNavLink
             //URI = PSXmlTreeWalker.getElementData(firstElem);
             if (m_uri == null)
             {
-               m_log.warn("snippet without @href attribute found  \n"
-                     + PSXmlDocumentBuilder.toString(doc));
+               log.warn("snippet without @href attribute found  \n {} ", PSXmlDocumentBuilder.toString(doc));
             }
-            m_log.debug("Link URI is " + m_uri);
+            log.debug("Link URI is {} ", m_uri);
          }
 
       }
@@ -396,7 +396,7 @@ public class PSNavLink
          PSAaRelationship relation, PSContentTypeVariant useVariant,
          boolean followLink) throws PSNavException
    {
-      m_log.debug("building link from relationship");
+      log.debug("building link from relationship");
 
       PSLocator childLoc = relation.getDependent();
       Map extraParams = new HashMap();
@@ -405,12 +405,12 @@ public class PSNavLink
       {
          extraParams.put(IPSHtmlParameters.SYS_FOLDERID, folderid.trim());
       }
-      m_log.debug("loading child summary");
+      log.debug("loading child summary");
       PSNavComponentSummary childSummary = new PSNavComponentSummary(childLoc);
       //PSNavUtil.getItemSummary(req, childLoc);
       if (childSummary == null)
       {
-         m_log.error("Dependent item not found");
+         log.error("Dependent item not found");
          throw new PSNavException("Dependent item not found");
       }
 
@@ -425,12 +425,12 @@ public class PSNavLink
       }
       if (followLink)
       {
-         m_log.debug("following link");
+         log.debug("following link");
          createLinkFromSnippet(req, childSummary, ourVariant,extraParams);
       }
       else
       {
-         m_log.debug("creating link to document");
+         log.debug("creating link to document");
          createLinkToDocument(req, childSummary, ourVariant,extraParams);
       }
 
@@ -559,7 +559,7 @@ public class PSNavLink
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private Logger m_log = Logger.getLogger(getClass());
+   private Logger log = LogManager.getLogger(getClass());
 
    /**
     * Error message for missing link

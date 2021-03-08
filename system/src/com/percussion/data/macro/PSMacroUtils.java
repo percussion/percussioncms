@@ -228,12 +228,12 @@ public class PSMacroUtils
          throw new IllegalArgumentException(
                "contentIds cannot be null or empty");
 
-      Map<Integer, Integer> result = new HashMap<Integer, Integer>();
+      Map<Integer, Integer> result = new HashMap<>();
       
       if (contentIds.size() < PSSqlHelper.MAX_IN_CLAUSE_4_ORACLE)
          return getLastPublicRevisionsPerGroup(contentIds);
       
-      List<Integer> group = new ArrayList<Integer>();
+      List<Integer> group = new ArrayList<>();
       Iterator<Integer> ids = contentIds.iterator();
       int counter = 0;
       while (ids.hasNext())
@@ -275,7 +275,7 @@ public class PSMacroUtils
    private static Map<Integer, Integer> getLastPublicRevisionsPerGroup(
          List<Integer> contentIds)
    {
-      Map<Integer, Integer> result = new HashMap<Integer, Integer>();
+      Map<Integer, Integer> result = new HashMap<>();
 
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
       List<PSComponentSummary> sums = cms.loadComponentSummaries(contentIds);
@@ -344,7 +344,7 @@ public class PSMacroUtils
       if (contentid.length() == 0)
          throw new IllegalArgumentException("contentid cannot be empty");
 
-      Map<String, String> params = new HashMap<String, String>();
+      Map<String, String> params = new HashMap<>();
       params.put(IPSHtmlParameters.SYS_CONTENTID, contentid);
 
       PSInternalRequest ir = PSServer.getInternalRequest(DETAILS_RESOURCE,
