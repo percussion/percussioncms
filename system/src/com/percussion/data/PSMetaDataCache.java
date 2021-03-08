@@ -308,5 +308,5 @@ public class PSMetaDataCache
     * PSDatabaseMetaData objects.
     */
    private static Map<String, PSDatabaseMetaData> ms_cache = 
-      new HashMap<String, PSDatabaseMetaData>();
+      new HashMap<>();
 }

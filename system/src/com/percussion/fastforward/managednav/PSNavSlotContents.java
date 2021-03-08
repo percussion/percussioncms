@@ -41,7 +41,8 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSSQLStatement;
 import com.percussion.util.PSSqlHelper;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -85,15 +86,14 @@ public class PSNavSlotContents
    {
       m_config = PSNavConfig.getInstance(req);
       m_authType = authType;
-      m_log.debug("building content valid flag string for authtype:"
-         + m_authType);
+      log.debug("building content valid flag string for authtype: {}", m_authType);
       m_authTypeValidFlags = getContentValidFlagsForAuthtype(m_authType, false);
       m_authTypeValidFlagsNonPublic = getContentValidFlagsForAuthtype(
             m_authType, true);
       addStandardSlots();
-      m_log.debug("loading relationships");
+      log.debug("loading relationships");
       loadMaps(req);
-      m_log.debug("relationships loaded");
+      log.debug("relationships loaded");
    }
 
    /**
@@ -111,15 +111,14 @@ public class PSNavSlotContents
       Map<Integer, PSAaRelationshipList> slotMap = m_itemMap.get(item);
       if (slotMap == null)
       { //no relationships for this parent
-         m_log.debug("no relationships for this parent "
-               + parent.getPart(PSLocator.KEY_ID));
+         log.debug("no relationships for this parent {}", parent.getPart(PSLocator.KEY_ID));
          return new PSAaRelationshipList();
       }
       Integer slot = new Integer(slotId);
       PSAaRelationshipList relList = slotMap.get(slot);
       if (relList == null)
       { //no relationships for this slot
-         m_log.debug("No relationships for this slot " + slot);
+         log.debug("No relationships for this slot {}", slot);
          return new PSAaRelationshipList();
       }
       return relList;
@@ -148,7 +147,7 @@ public class PSNavSlotContents
     */
    public void addSlot(PSSlotType slot)
    {
-      m_log.debug("adding slot " + slot.getSlotName());
+      log.debug("adding slot {}", slot.getSlotName());
       Integer slotId = new Integer(slot.getSlotId());
       m_slotMap.put(slotId, slot);
 
@@ -177,7 +176,7 @@ public class PSNavSlotContents
          first = false;
       }
       sb.append(")");
-      m_log.debug("Slot IN list " + sb.toString());
+      log.debug("Slot IN list {}", sb.toString());
       return sb.toString();
    }
 
@@ -217,7 +216,7 @@ public class PSNavSlotContents
       }
       catch (PSCmsException e)
       {
-         m_log.error("Invalid Relationship Config");
+         log.error("Invalid Relationship Config");
          throw new PSNavException(e);
       }
       List<Integer[]> resultSet = getResultSet();
@@ -236,7 +235,7 @@ public class PSNavSlotContents
       {
          Integer[] currentRow = (Integer[]) it1.next();
          Integer currentContentId = currentRow[SQL_CONTENTID];
-         m_log.debug(" Content id " + currentContentId);
+         log.debug(" Content id {}", currentContentId);
          //FB: RC_REF_COMPARISON NC 1-17-16
          if (lastContentId == null || !lastContentId.equals(currentContentId))
          {
@@ -245,7 +244,7 @@ public class PSNavSlotContents
             lastSlotId = null;
          }
          Integer currentSlotId = currentRow[SQL_SLOTID];
-         m_log.debug(" Slot Id " + currentSlotId);
+         log.debug(" Slot Id {}", currentSlotId);
          //B: RC_REF_COMPARISON NC 1-17-16 
          if (lastSlotId == null || !lastSlotId.equals(currentSlotId))
          {
@@ -258,24 +257,24 @@ public class PSNavSlotContents
             }
          }
          Integer sysId = currentRow[SQL_SYSID];
-         m_log.debug(" System id " + sysId);
+         log.debug(" System id {}", sysId);
          Integer revision = currentRow[SQL_REVISIONID];
-         m_log.debug(" Revision " + revision);
+         log.debug(" Revision {}", revision);
          Integer dependentId = currentRow[SQL_ITEMCONTENTID];
-         m_log.debug(" Dependent Id " + dependentId);
+         log.debug(" Dependent Id {}", dependentId);
          PSLocator owner = new PSLocator(currentContentId.intValue(), revision
                .intValue());
          PSLocator dependent = new PSLocator(dependentId.intValue());
          PSRelationship relation = new PSRelationship(sysId.intValue(), owner,
                dependent, relConfig);
          Integer vart = currentRow[SQL_VARIANTID];
-         m_log.debug("adding variant id " + vart);
+         log.debug("adding variant id {}", vart);
          PSContentTypeVariant variant = allVariants.getContentVariantById(vart
                .intValue());
          if (variant == null)
          {
             String msg = "Unknown variant " + vart;
-            m_log.error(msg);
+            log.error(msg);
             throw new PSNavException(msg);
          }
          PSAaRelationship aaRel = new PSAaRelationship(relation, slot,
@@ -304,10 +303,10 @@ public class PSNavSlotContents
             List<Integer[]> resultSet) throws NumberFormatException,
             PSNavException
    {
-      List<Integer[]> newList = new ArrayList<Integer[]>();
+      List<Integer[]> newList = new ArrayList<>();
       Iterator it1 = resultSet.iterator();
       List<Integer> qeIds = getQuickEditNavons();
-      List<Integer> processedIds = new ArrayList<Integer>();
+      List<Integer> processedIds = new ArrayList<>();
       while (it1.hasNext())
       {
          Integer[] currentRow = (Integer[]) it1.next();
@@ -347,7 +346,7 @@ public class PSNavSlotContents
       Map<Integer, PSAaRelationshipList> currentItem = m_itemMap.get(contentId);
       if (currentItem == null)
       {
-         currentItem = new HashMap<Integer, PSAaRelationshipList>();
+         currentItem = new HashMap<>();
          m_itemMap.put(contentId, currentItem);
       }
       return currentItem;
@@ -387,7 +386,7 @@ public class PSNavSlotContents
    private List<Integer[]> getResultSet() throws PSNavException
    {
       Connection conn = PSNavSQLUtils.connect();
-      List<Integer[]> results = new ArrayList<Integer[]>();
+      List<Integer[]> results = new ArrayList<>();
       Statement stmt = null;
       ResultSet rs = null;
 
@@ -401,11 +400,11 @@ public class PSNavSlotContents
          String SqlStatement = MessageFormat.format(pattern,
                   (Object[]) sqlParams);
 
-         m_log.debug("SQL Statement: " + SqlStatement);
+         log.debug("SQL Statement: {}", SqlStatement);
 
          stmt = PSSQLStatement.getStatement(conn);
          rs = stmt.executeQuery(SqlStatement);
-         m_log.debug("loading rows...");
+         log.debug("loading rows...");
          boolean valid = rs.next();
          while (valid)
          {
@@ -419,11 +418,12 @@ public class PSNavSlotContents
             valid = rs.next();
             //log.debug("next row");
          }
-         m_log.debug("finished loading rows");
+         log.debug("finished loading rows");
       }
       catch (SQLException e)
       {
-         m_log.error("SQL Error", e);
+         log.error("SQL Error {}", e.getMessage());
+         log.debug(e.getMessage(),e);
          throw new PSNavException(e);
       }
       finally
@@ -444,7 +444,7 @@ public class PSNavSlotContents
    private List<Integer> getQuickEditNavons() throws PSNavException
    {
       Connection conn = PSNavSQLUtils.connect();
-      List<Integer> results = new ArrayList<Integer>();
+      List<Integer> results = new ArrayList<>();
       Statement stmt = null;
       ResultSet rs = null;
       try
@@ -470,7 +470,8 @@ public class PSNavSlotContents
       }
       catch (SQLException e)
       {
-         m_log.error("SQL Error", e);
+         log.error("SQL Error {}", e.getMessage());
+         log.debug(e.getMessage(),e);
          throw new PSNavException(e);
       }
       finally
@@ -492,7 +493,7 @@ public class PSNavSlotContents
    private List<Integer[]> getRelatedContentData(int contentID, int revision)
          throws PSNavException
    {
-      List<Integer[]> results = new ArrayList<Integer[]>();
+      List<Integer[]> results = new ArrayList<>();
       Connection conn = PSNavSQLUtils.connect();
       String[] sqlParams = new String[2];
       PreparedStatement stmt = null;
@@ -509,7 +510,7 @@ public class PSNavSlotContents
          stmt.setInt(1, contentID);
          stmt.setInt(2, revision);
          rs = stmt.executeQuery();
-         m_log.debug("loading rows...");
+         log.debug("loading rows...");
          boolean valid = rs.next();
          while (valid)
          {
@@ -523,12 +524,12 @@ public class PSNavSlotContents
             valid = rs.next();
             //log.debug("next row");
          }
-         m_log.debug("finished loading rows");
+         log.debug("finished loading rows");
          
       }
       catch (SQLException e)
       {
-         m_log.error("SQL Error", e);
+         log.error("SQL Error {}", e.getMessage());
          throw new PSNavException(e);
       }
       finally
@@ -557,10 +558,9 @@ public class PSNavSlotContents
       String validFlags = m_config.getPropertyString(validFlagsPropName);
       if (validFlags != null && validFlags.length() > 0)
       {
-         if (m_log.isDebugEnabled()) 
+         if (log.isDebugEnabled())
          {
-            m_log.debug("Content valid flag string for authtype " + authType
-                  + " is specified as:" + validFlags);
+            log.debug("Content valid flag string for authtype {} is specified as: {}", authType, validFlags);
          }
          String temp = validFlags;
          String[] flags = temp.split(",");
@@ -583,7 +583,7 @@ public class PSNavSlotContents
             validFlags = validFlags.substring(0, validFlags.length() - 1);
          if (validFlags.length() < 1)
          {
-            m_log.warn("Content valid flags specified appears "
+            log.warn("Content valid flags specified appears "
                + "to be invalid. Using the default");
             validFlags = DEFAULT_CONTENT_VALID_FLAGS;
          }
@@ -592,20 +592,18 @@ public class PSNavSlotContents
       }
       else
       {
-         if (m_log.isDebugEnabled())
+         if (log.isDebugEnabled())
          {
-            m_log.debug("Content valid flag string for authtype " + authType
-                     + " is not specified and is using the default");
+            log.debug("Content valid flag string for authtype {} is not specified and is using the default", authType);
          }
          if(nonPublic)
             validFlags = DEFAULT_CONTENT_VALID_FLAGS_NONPUBLIC;
          else
             validFlags = DEFAULT_CONTENT_VALID_FLAGS;
       }
-      if (m_log.isDebugEnabled())
+      if (log.isDebugEnabled())
       {
-         m_log.debug("Content valid flag string for authtype " + authType
-                  + " is resolved to " + validFlags);
+         log.debug("Content valid flag string for authtype {} is resolved to ", authType, validFlags);
       }
       return validFlags;
    }
@@ -670,7 +668,7 @@ public class PSNavSlotContents
    /**
     * Logger for this class.
     */
-   private Logger m_log = Logger.getLogger(getClass());
+   private static final Logger log = LogManager.getLogger(PSNavSlotContents.class);
 
    /**
     * Authtype for this instance. Defaults to 0.
@@ -681,12 +679,12 @@ public class PSNavSlotContents
     * Map of all Navon and NavTree items by content id.
     */
    private Map<Integer, Map<Integer, PSAaRelationshipList>> m_itemMap = 
-      new HashMap<Integer, Map<Integer, PSAaRelationshipList>>();
+      new HashMap<>();
 
    /**
     * Map of all navon slots by slotid.
     */
-   private Map<Integer, PSSlotType> m_slotMap = new HashMap<Integer, PSSlotType>();
+   private Map<Integer, PSSlotType> m_slotMap = new HashMap<>();
    
    /**
     * Authtype valid string for the authtype of this object. Initialized in the
