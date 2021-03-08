@@ -28,13 +28,13 @@ import com.percussion.cms.objectstore.PSContentTypeVariantSet;
 import com.percussion.cms.objectstore.PSSlotType;
 import com.percussion.cms.objectstore.PSSlotTypeContentTypeVariant;
 import com.percussion.cms.objectstore.PSSlotTypeContentTypeVariantSet;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
 
 /**
  * Navigation slot definition. Nav Slots are inserted in page variants in the
@@ -60,7 +60,7 @@ public class PSNavSlot
       PSContentTypeVariantSet navonVariants = config.getNavonVariants();
       if (navonVariants == null)
       {
-         m_log.debug("no navon variants defined");
+         log.debug("no navon variants defined");
          return;
       }
 
@@ -68,7 +68,7 @@ public class PSNavSlot
             .getSlotVariants();
       if (childVars == null)
       {
-         m_log.debug("no child variants");
+         log.debug("no child variants");
          return;
       }
       Iterator children = childVars.iterator();
@@ -133,6 +133,6 @@ public class PSNavSlot
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private Logger m_log = Logger.getLogger(getClass());
+   private Logger log = LogManager.getLogger(getClass());
 
 }

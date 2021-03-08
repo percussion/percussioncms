@@ -48,7 +48,8 @@ import com.percussion.util.PSCharSetsConstants;
 import com.percussion.util.PSStopwatch;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import java.io.ByteArrayInputStream;
@@ -84,7 +85,7 @@ import java.util.StringTokenizer;
 public class PSNavConfig
 {
 
-    private Logger ms_log = Logger.getLogger(PSNavConfig.class);
+    private static final Logger log = LogManager.getLogger(PSNavConfig.class);
 
     /**
      * Gets the NavTree cache key from the supplied request context. The cache
@@ -358,14 +359,13 @@ public class PSNavConfig
             catch (Exception e)
             {
                 String msg = "Failed to convert byte[] to Document.";
-                ms_log.error(msg, e);
+                log.error(msg, e);
                 throw new RuntimeException(msg, e);
             }
             w.stop();
-            if (ms_log.isDebugEnabled())
+            if (log.isDebugEnabled())
             {
-                ms_log.debug("Retrieve TreeXML elapse time: " + w.toString()
-                        + " for key=" + getNavTreeKeyXML(intParams));
+                log.debug("Retrieve TreeXML elapse time: {} for key= {} ",w.toString(), getNavTreeKeyXML(intParams));
             }
             return doc;
         }
@@ -419,7 +419,7 @@ public class PSNavConfig
         catch (Exception e)
         {
             String msg = "Failed to convert navTreeXML(Document) to byte[].";
-            ms_log.error(msg, e);
+            log.error(msg, e);
             throw new RuntimeException(e);
         }
     }
@@ -955,7 +955,7 @@ public class PSNavConfig
     /**
      * write the log.
      */
-    private Logger m_log = Logger.getLogger(this.getClass());
+    private Logger m_log = LogManager.getLogger(this.getClass());
 
     /**
      * internal copy of Navigation properties. Loaded once and referenced in many

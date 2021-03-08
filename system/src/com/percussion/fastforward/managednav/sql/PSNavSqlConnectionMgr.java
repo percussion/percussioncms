@@ -28,7 +28,8 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.extension.services.PSDatabasePool;
 import com.percussion.fastforward.managednav.PSNavException;
 import com.percussion.util.PSPreparedStatement;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -79,7 +80,7 @@ public class PSNavSqlConnectionMgr
       }
       catch (Exception e)
       {
-         ms_.error("SQL Error", e);
+         log.error("SQL Error {}", e.getMessage());
          throw new PSNavException(e);
       }
    }
@@ -97,7 +98,8 @@ public class PSNavSqlConnectionMgr
       }
       catch (Exception e)
       {
-         ms_.error("SQL Error", e);
+         log.error("SQL Error {}", e.getMessage());
+         log.debug(e.getMessage(),e);
          throw new PSNavException(e);
       }
    }
@@ -137,7 +139,8 @@ public class PSNavSqlConnectionMgr
       }
       catch (Exception e)
       {
-         ms_.error("SQL ERROR", e);
+         log.error("SQL ERROR {}", e.getMessage());
+         log.debug(e.getMessage(),e);
          throw new PSNavException(e);
       }
       finally
@@ -150,7 +153,8 @@ public class PSNavSqlConnectionMgr
             }
             catch (SQLException e1)
             {
-               ms_.error("Closing result", e1);
+               log.error("Closing result {}", e1.getMessage());
+               log.debug(e1.getMessage(),e1);
             }
             try
             {
@@ -158,7 +162,8 @@ public class PSNavSqlConnectionMgr
             }
             catch (SQLException e2)
             {
-               ms_.error("Closing statement", e2);
+               log.error("Closing statement {}", e2.getMessage());
+               log.debug(e2.getMessage(),e2);
             }
          }
       }
@@ -169,7 +174,7 @@ public class PSNavSqlConnectionMgr
    /**
     * Writes the log.
     */
-   private static Logger ms_ = Logger.getLogger(PSNavSqlConnectionMgr.class);
+   private static Logger log = LogManager.getLogger(PSNavSqlConnectionMgr.class);
 
    /**
     * User name for database.

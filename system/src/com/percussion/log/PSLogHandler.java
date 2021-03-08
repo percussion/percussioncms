@@ -347,7 +347,7 @@ public class PSLogHandler
       try
       {
          setInRequest(true);
-         Map<String, String> info = new HashMap<String, String>();
+         Map<String, String> info = new HashMap<>();
          
          /* basic user info has sessionId, host, user, url */
          
@@ -428,7 +428,7 @@ public class PSLogHandler
       try
       {
          setInRequest(true);
-         Map<String, String> info = new HashMap<String, String>();
+         Map<String, String> info = new HashMap<>();
          PSRequestStatistics stats = request.getStatistics();
          
          /*
@@ -639,5 +639,5 @@ public class PSLogHandler
     * Should only be accessed through the {@link #isInRequest()}and
     * {@link #setInRequest(boolean)} methods.
     */
-   private ThreadLocal<Object> m_inLogRequest = new ThreadLocal<Object>();
+   private ThreadLocal<Object> m_inLogRequest = new ThreadLocal<>();
 }

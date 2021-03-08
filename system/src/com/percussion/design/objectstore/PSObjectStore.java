@@ -1284,7 +1284,7 @@ public class PSObjectStore
          return (new Vector()).elements();
       }
       /* walk through the results */
-      Vector<Properties> retList = new Vector<Properties>();
+      Vector<Properties> retList = new Vector<>();
       Properties         curProps;
       String            curKey, curVal;
       PSXmlTreeWalker   tree = new PSXmlTreeWalker(respDoc);
@@ -2436,7 +2436,7 @@ public class PSObjectStore
                "design-objectstore-app-list-files", removeFileDoc);
          
          // walk doc and get files
-         List<String> files = new ArrayList<String>();
+         List<String> files = new ArrayList<>();
          PSXmlTreeWalker tree = new PSXmlTreeWalker(respDoc);
          Element fileEl = tree.getNextElement(PSApplicationFile.ms_nodeType, 
             tree.GET_NEXT_ALLOW_CHILDREN);
@@ -2520,7 +2520,7 @@ public class PSObjectStore
             "design-objectstore-app-list-files", getFileDoc);
 
       // walk doc and get files
-      Collection<PSApplicationFile> files = new ArrayList<PSApplicationFile>();
+      Collection<PSApplicationFile> files = new ArrayList<>();
       PSXmlTreeWalker tree = new PSXmlTreeWalker(respDoc);
       Element fileEl = tree.getNextElement(PSApplicationFile.ms_nodeType, 
             tree.GET_NEXT_ALLOW_CHILDREN);
@@ -3328,7 +3328,7 @@ public class PSObjectStore
                   PSJBossJndiDatasource.DATASOURCE_NODE_NAME,
                PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN);
             
-            List<IPSJndiDatasource> dsList = new ArrayList<IPSJndiDatasource>();
+            List<IPSJndiDatasource> dsList = new ArrayList<>();
             while (dsEl != null)
             {
                dsList.add(new PSJBossJndiDatasource(dsEl));
@@ -3706,7 +3706,7 @@ public class PSObjectStore
          try
          {
             List<PSCatalogerConfig> configs = 
-               new ArrayList<PSCatalogerConfig>();
+               new ArrayList<>();
             Element configEl;            
             Element subEl = tree.getNextElement("subjectConfigs", 
                tree.GET_NEXT_ALLOW_CHILDREN);
