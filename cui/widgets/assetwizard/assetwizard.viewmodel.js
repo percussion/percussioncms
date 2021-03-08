@@ -43,7 +43,7 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
 		self.initialAssetTypesLoad = true;
 		self.initialAssetFoldersLoad = true;
 		self.emptyRecentAssetTypes = ko.computed(function(){
-            return self.selectedAssetTypeFilter() == "Recent" && self.assetTypes().length == 0;
+            return self.selectedAssetTypeFilter() === "Recent" && self.assetTypes().length === 0;
         },self);
 		
 		//Asset folder control observables
@@ -51,14 +51,14 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
 		self.assetFolders = ko.observableArray();
 		self.selectedAssetFolderFilter = ko.observable("");
 		self.recentFoldersSelected = ko.computed(function(){
-			return self.selectedAssetFolderFilter() == "Recent";
+			return self.selectedAssetFolderFilter() === "Recent";
 		}, this);
 		self.allFoldersSelected = ko.computed(function(){
-			return self.selectedAssetFolderFilter() == "All"
+			return self.selectedAssetFolderFilter() === "All";
 		}, this);
         self.dynatreeExists = ko.observable(false);
 		self.emptyRecentAssetFolders = ko.computed(function(){
-            return self.selectedAssetFolderFilter() == "Recent" && self.assetFolders().length == 0;
+            return self.selectedAssetFolderFilter() === "Recent" && self.assetFolders().length === 0;
         },self);
 	
 		//Initial setup of the asset window
@@ -82,7 +82,7 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
         });
 		
 		self.init = function(content){
-		}
+		};
 		
 		self.constants = {
             "SECONDARY_BUTTON_NAME": "Back",
@@ -97,26 +97,26 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
         function validFields() {
             self.invalidAssetTypeSelected(!self.assetType());
             self.invalidAssetFolderSelected(!self.assetFolder());
-			self.assetRootSelected(self.assetFolder() == "/Assets");
+			self.assetRootSelected(self.assetFolder() === "/Assets");
             return !self.invalidAssetFolderSelected() && !self.invalidAssetTypeSelected() && !self.assetRootSelected();
         }
         
         self.selectedAssetTypeFilter.subscribe(function() {
 			self.assetFolder("");
-            if(self.selectedAssetTypeFilter() == "Recent"){
+            if(self.selectedAssetTypeFilter() === "Recent"){
                 getRecentAssetTypes();
             }
-            else if(self.selectedAssetTypeFilter() == "All"){
+            else if(self.selectedAssetTypeFilter() === "All"){
                 getAllAssetTypes();      
             }
         });
         
 		self.selectedAssetFolderFilter.subscribe(function() {
 			self.assetType("");
-			if (self.selectedAssetFolderFilter() == "Recent") {
+			if (self.selectedAssetFolderFilter() === "Recent") {
 				getRecentFolders();
 			}
-			else if (self.selectedAssetFolderFilter() == "All") {
+			else if (self.selectedAssetFolderFilter() === "All") {
                 self.initDynatree();      
 			}
         }); 
@@ -137,7 +137,7 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
 			self.initialAssetTypesLoad = true;
 			self.initialAssetFoldersLoad = true;
 			self.assetRootSelected(false);
-        }
+        };
         
         self.openAddAsset = function() {
 			self.initialAssetTypesLoad = true;
@@ -149,14 +149,14 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
             self.invalidAssetFolderSelected(false);
 			self.assetRootSelected(false);
 			self.isAssetWizardVisible(true);
-        }
+        };
         
         self.goBack = function() {
             if(self.isAssetWizardVisible()) {
                 self.cleanWindow();
                 PubSub.publish("Add Content", self);
             }
-        }
+        };
         
 		//createAsset method
         self.createAsset = function() {
@@ -164,14 +164,14 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
                 if(validFields()) {
 					self.isLoading(true);
                     self.options.cm1Adaptor.createAsset(self.assetFolder(),self.assetType()).fail(function(message){
-                        if(message == self.constants.NOT_AUTHORIZED_ERROR_MSG){
+                        if(message === self.constants.NOT_AUTHORIZED_ERROR_MSG){
                             message = self.constants.NOT_AUTHORIZED_ERROR_MSG_RESPONSE + self.assetFolder();
                         }
                         PubSub.publish("OpenErrorDialog", message);
-                    }).always(function(){self.isLoading(false)});
+                    }).always(function(){self.isLoading(false);});
                 }
             }
-        }
+        };
 		
 		function getRecentFolders(){
             self.isLoading(true);
@@ -180,7 +180,7 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
                 ko.utils.arrayForEach(folders, function(folder) {
                     self.assetFolders.push(folder);
                 });
-                if(folders.length == 0){
+                if(folders.length === 0){
                     self.emptyContentMessage(self.constants.MY_RECENT_EMPTY_MSG);
 					if(self.initialAssetFoldersLoad) {
 						self.initialAssetFoldersLoad = false;
@@ -202,7 +202,7 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
                 ko.utils.arrayForEach(types, function(type) {
                     self.assetTypes.push(type);
                 });
-                if(types.length == 0){
+                if(types.length === 0){
                     self.emptyContentMessage(self.constants.MY_RECENT_EMPTY_MSG);
 					if(self.initialAssetTypesLoad) {
 						self.initialAssetTypesLoad = false;
@@ -224,7 +224,7 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
                 ko.utils.arrayForEach(types, function(type) {
                     self.assetTypes.push(type);
                 });
-				if(types.length == 0){
+				if(types.length === 0){
                     self.emptyContentMessage(self.constants.MY_RECENT_EMPTY_MSG);
                 }
             }).fail(function(message){
@@ -268,7 +268,7 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
                     }
                 });
             }
-        }
+        };
 		
 		
 		 ko.bindingHandlers.slideVisible = {
@@ -281,5 +281,5 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
                 ko.unwrap(value) ? $(element).slideDown() : $(element).slideUp();
             }
         };
-    }
+    };
 });

@@ -280,7 +280,7 @@ public abstract class PSJobRunner extends Thread
    {
       if ( !PSRequestInfo.isInited() )
       {
-         Map<String,Object> initMap = new HashMap<String,Object>();
+         Map<String,Object> initMap = new HashMap<>();
          PSRequestInfo.initRequestInfo(initMap);
       }
       PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_PSREQUEST, m_request);

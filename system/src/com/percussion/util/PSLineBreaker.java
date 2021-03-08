@@ -24,6 +24,9 @@
 
 package com.percussion.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 
 
@@ -35,6 +38,8 @@ import java.util.ArrayList;
  */
 public class PSLineBreaker
 {
+
+   private static final Logger log = LogManager.getLogger(PSLineBreaker.class);
 
    /**
     * Instantiates a <code>PSLineBreaker</code>, then recombines the lines
@@ -277,79 +282,79 @@ public class PSLineBreaker
       //test this class
       String test0 = "The quick\n brown fox jumped over the lazy dog";
       test0 = PSLineBreaker.wrapString(test0, 13, 12, "\n");
-      System.out.println(test0);
+      log.info(test0);
 
       String test1 = "The quick-brown fox jumped over the lazy dog";
       test1 = PSLineBreaker.wrapString(test1, 13, 12, "\n");
-      System.out.println(test1);
+      log.info(test1);
 
       String test2 = "The quick -brown fox jumped over the lazy dog";
       test2 = PSLineBreaker.wrapString(test2, 13, 12, "\n");
-      System.out.println(test2);
+      log.info(test2);
 
       String test3 = "The\n quick\n\n\n -brown fox jumped over the lazy dog";
       PSLineBreaker breaker = new PSLineBreaker(test3, 15, 5, "\n");
       while (breaker.hasNext())
-         System.out.println("\"" + breaker.next() + "\"");
-      System.out.println(" ");
+         log.info("\"" + breaker.next() + "\"");
+     log.info(" ");
 
       String test4 = "The quick\n-brown fox jumped over the lazy dog";
       test4 = PSLineBreaker.wrapString(test4, 13, 12, "\n");
-      System.out.println(test4);
+      log.info(test4);
 
       String test5 = "The quick\n -brown fox jumped over the lazy dog";
       test5 = PSLineBreaker.wrapString(test5, 13, 12, "\n");
-      System.out.println(test5);
+      log.info(test5);
 
       String test = "The quick brown fox jumped over the lazy dog";
       breaker = new PSLineBreaker(test, 15, 5, "\n");
-      System.out.println("Breaking \"" + test + "\" with width: " + 15 + " threshold: " + 5);
-      System.out.println("longest line: " + breaker.maxLength());
+      log.info("Breaking \"{}\" with width: {} threshold: {}",test,15,5);
+      log.info("longest line: {}", breaker.maxLength());
       while (breaker.hasNext())
-         System.out.println("\"" + breaker.next() + "\"");
-      System.out.println(" ");
+         log.info("\"{}\"", breaker.next());
+      log.info(" ");
 
       test = "Peter piper picked a peck of pickeld peppers";
       breaker = new PSLineBreaker(test, 15, 5, "\n");
-      System.out.println("Breaking \"" + test + "\" with width: " + 15 + " threshold: " + 5);
-      System.out.println("longest line: " + breaker.maxLength());
+      log.info("Breaking \"{}\" with width: {} threshold: {}", test, 15, 5);
+      log.info("longest line: {}", breaker.maxLength());
       while (breaker.hasNext())
-         System.out.println("\"" + breaker.next() + "\"");
-      System.out.println(" ");
+         log.info("\"{}\"", breaker.next());
+      log.info(" ");
 
 
       test = "The quick ";
       breaker = new PSLineBreaker(test, 15, 5, "\n");
-      System.out.println("Breaking \"" + test + "\" with width: " + 15 + " threshold: " + 5);
-      System.out.println("longest line: " + breaker.maxLength());
+      log.info("Breaking \"{}\" with width: {} threshold: {}",test, 15, 5);
+      log.info("longest line: {}", breaker.maxLength());
       while (breaker.hasNext())
-         System.out.println("\"" + breaker.next() + "\"");
-      System.out.println(" ");
+         log.info("\"{}\"", breaker.next());
+      log.info(" ");
 
       test = "Thequickbrownfoxjumpedoverthelazydog";
       breaker = new PSLineBreaker(test, 15, 5, "\n");
-      System.out.println("Breaking \"" + test + "\" with width: " + 15 + " threshold: " + 5);
-      System.out.println("longest line: " + breaker.maxLength());
+      log.info("Breaking \"{}\" with width: {} threshold: {}",test, 15, 5);
+      log.info("longest line: {}", breaker.maxLength());
       while (breaker.hasNext())
-         System.out.println("\"" + breaker.next() + "\"");
-      System.out.println(" ");
+         log.info("\"{}\"", breaker.next());
+      log.info(" ");
 
       test = "Thequickbrownfo";
       breaker = new PSLineBreaker(test, 15, 5, "\n");
-      System.out.println("Breaking \"" + test + "\" with width: " + 15 + " threshold: " + 5);
-      System.out.println("longest line: " + breaker.maxLength());
+      log.info("Breaking \"{}\" with width: {} threshold: {}",test, 15, 5);
+      log.info("longest line: {}", breaker.maxLength());
       while (breaker.hasNext())
-         System.out.println("\"" + breaker.next() + "\"");
-      System.out.println(" ");
+         log.info("\"{}\"", breaker.next());
+      log.info(" ");
 
       //note: this is a negative case that is suppose to cause IllegarArgumentsException
       test = "The quick brown fox jumped over the lazy dog";
       breaker = new PSLineBreaker(test, 15, 20, "\n");
-      System.out.println("Breaking \"" + test + "\" with width: " + 15 + " threshold: " + 20);
-      System.out.println("longest line: " + breaker.maxLength());
+      log.info("Breaking \"{}\" with width: {} threshold: {}",test, 15, 20);
+      log.info("longest line: {}", breaker.maxLength());
       while (breaker.hasNext())
-         System.out.println("\"" + breaker.next() + "\"");
-      System.out.println(" ");
+         log.info("\"{}\"", breaker.next());
+      log.info(" ");
    }
 }
 

@@ -71,11 +71,11 @@
 	var _dblclickItem;
 	$.each( menuItems, function() {
 		var name = this.name;
-		if (name == 'edit' || name == 'configure' || this.tooltip == 'Configure region')
+		if (name === 'edit' || name === 'configure' || this.tooltip === 'Configure region')
 		{
         
 			_dblclickItem = this;
-			return;
+
 		}
 	} );
 
@@ -90,7 +90,7 @@
             setOtherDecorator : setOtherDecorator,
             removeDecorations : removeDecorations,
             addClicks: addClicks
-        }
+        };
 
         function setOtherDecorator(decorator) {
             otherDecorator = decorator;
@@ -113,8 +113,8 @@
 
         function visible( isVisible )
         {
-            if( typeof isVisible == 'boolean') {
-                if( isVisible != _visible ) {
+            if( typeof isVisible === 'boolean') {
+                if( isVisible !== _visible ) {
                     _visible = isVisible;
                 }
             }
@@ -214,7 +214,7 @@
                 $.each( menuItems, function()
                 {
                     //Custom menuItem for widgetType. undefined this.widgetType means all widgets.
-                    if(typeof(this.widgetType) == "undefined" || this.widgetType == elem.attr("widgetdefid"))
+                    if(typeof(this.widgetType) === "undefined" || this.widgetType === elem.attr("widgetdefid"))
                         addMenuItem( elem, menu, this );
                 });
             }
@@ -234,10 +234,10 @@
              var iconSrc = $.isFunction(item.img)?item.img(elem):item.img;
 
              // if the icon is null then do not add the menu to the item
-             if(iconSrc == null)
+             if(iconSrc === null)
                 return;
              
-             var isInactive = iconSrc.indexOf("Inactive", iconSrc.length - "Inactive".length) !== -1     
+             var isInactive = iconSrc.indexOf("Inactive", iconSrc.length - "Inactive".length) !== -1;     
 
              var tooltip = $.isFunction(item.tooltip)?item.tooltip(elem):item.tooltip;
              var normalImg = iconSrc + ".png"; 
