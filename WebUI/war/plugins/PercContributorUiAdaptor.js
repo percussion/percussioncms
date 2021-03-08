@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -41,11 +41,11 @@
         function previewItem(path, id){
             var deferred = $.Deferred();
             var pathType = getPathType(path);
-            if (!path || !id || pathType == "unknown") {
+            if (!path || !id || pathType === "unknown") {
                 deferred.reject(I18N.message("perc.ui.contributor.ui.adaptor@Path Preview"));
             }
             else {
-                if (pathType == "site") {
+                if (pathType === "site") {
                     $.perc_finder().launchPagePreviewByPath(path, id);
                 }
                 else {
@@ -57,14 +57,14 @@
         function copyItem(path, id){
             var deferred = $.Deferred();
             var pathType = getPathType(path);
-            if (!path || !id || pathType == "unknown") {
+            if (!path || !id || pathType === "unknown") {
                 deferred.reject(I18N.message("perc.ui.contributor.ui.adaptor@Path and ID Copy"));
             }
             else {
-                if (pathType == "site") {
+                if (pathType === "site") {
                     $.PercPageService.copyPage(id, function(status, result){
-                        if (status == $.PercServiceUtils.STATUS_SUCCESS) {
-                            if (result.data == "" || typeof result.data != 'string') {
+                        if (status === $.PercServiceUtils.STATUS_SUCCESS) {
+                            if (result.data === "" || typeof result.data != 'string') {
                                 deferred.reject(I18N.message("perc.ui.contributor.ui.adaptor@Failed Copy"));
                             }
                             else {
@@ -86,11 +86,11 @@
         function deleteItem(path, id, name){
             var deferred = $.Deferred();
             var pathType = getPathType(path);
-            if (!path || !id || pathType == "unknown") {
+            if (!path || !id || pathType === "unknown") {
                 deferred.reject(I18N.message("perc.ui.contributor.ui.adaptor@Path and ID delete"));
             }
             else {
-                if (pathType == "site") {
+                if (pathType === "site") {
                     api.isLandingPage(path).done(function(result){
                         if(result){
                             var retObj = {
@@ -141,11 +141,11 @@
         function forceDeleteItem(path, id, name){
             var deferred = $.Deferred();
             var pathType = getPathType(path);
-            if (!path || !id || pathType == "unknown") {
+            if (!path || !id || pathType === "unknown") {
                 deferred.reject(I18N.message("perc.ui.contributor.ui.adaptor@Path and ID delete"));
             }
             else {
-                if (pathType == "site") {
+                if (pathType === "site") {
                     $.PercPageService.forceDeletePage(id, function(){
                         deferred.resolve(I18N.message("perc.ui.contributor.ui.adaptor@Deleted Selected Item"));
                     }, function(data){
@@ -168,7 +168,7 @@
         function bookMarkItem(path, id){
             var deferred = $.Deferred();
             $.PercPageService.addToMyPages(id,function(status, result){
-                if (status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if (status === $.PercServiceUtils.STATUS_SUCCESS) {
                     deferred.resolve(result);
                 }
                 else {
@@ -211,14 +211,14 @@
         function getSites(){
             var deferred = $.Deferred();
             $.PercSiteService.getSites(function(status, data){
-                if (status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if (status === $.PercServiceUtils.STATUS_SUCCESS) {
                     var sites = [];
                     $.each(data.SiteSummary, function(){
                         sites.push({
                             "name": this.name,
                             "id": this.siteId
                         });
-                    })
+                    });
                     deferred.resolve(sites);
                 }
                 else {
@@ -234,7 +234,7 @@
         function getBlogsForSite(siteName){
             var deferred = $.Deferred();
             $.PercBlogService.getBlogsForSite(siteName, function(status, result){
-                if (status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if (status === $.PercServiceUtils.STATUS_SUCCESS) {
                     var blogs = [];
                     $.each(result.SiteBlogProperties, function(){
                         var temp = this.path, folderPath = temp.substring(0, temp.lastIndexOf("/"));
@@ -244,7 +244,7 @@
                             "templateId": this.blogPostTemplateId
                         };
                         blogs.push(blog);
-                    })
+                    });
                     deferred.resolve(blogs);
                 }
                 else {
@@ -274,17 +274,17 @@
             });
             folderPath = getNormalizedPath(folderPath);
             var tempPath = "/" + folderPath;
-            var fullPath = tempPath.substring(tempPath.length - 1) == "/" ? tempPath + name : tempPath + "/" + name;
+            var fullPath = tempPath.substring(tempPath.length - 1) === "/" ? tempPath + name : tempPath + "/" + name;
             
             //Check whether user has access to create page
             
             $.PercFolderHelper().getAccessLevelByPath(folderPath, true, function(status, result){
-                if (status == $.PercFolderHelper().PERMISSION_ERROR || result == $.PercFolderHelper().PERMISSION_READ) {
+                if (status === $.PercFolderHelper().PERMISSION_ERROR || result === $.PercFolderHelper().PERMISSION_READ) {
                     deferred.reject("NotAuthorized");
                 }
                 else {
                     $.PercUserService.getAccessLevel("percPage", -1, function(status, result){
-                        if (status == $.PercServiceUtils.STATUS_ERROR || result == $.PercUserService.ACCESS_READ || result == $.PercUserService.ACCESS_NONE) {
+                        if (status === $.PercServiceUtils.STATUS_ERROR || result === $.PercUserService.ACCESS_READ || result === $.PercUserService.ACCESS_NONE) {
                             deferred.reject("NotAuthorized");
                         }
                         else {
@@ -304,7 +304,7 @@
         function getTemplates(siteName){
             var deferred = $.Deferred();
             $.PercSiteService.getTemplates(siteName, function(status, result){
-                if (status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if (status === $.PercServiceUtils.STATUS_SUCCESS) {
                     var templates = [];
                     $.each(result.TemplateSummary, function(){
                         var template = {
@@ -313,7 +313,7 @@
                             "thumbPath": this.imageThumbPath
                         };
                         templates.push(template);
-                    })
+                    });
                     deferred.resolve(templates);
                 }
                 else {
@@ -337,7 +337,7 @@
                             "thumbPath": this.imageThumbPath
                         };
                         templates.push(template);
-                    })
+                    });
                 }
                 deferred.resolve(templates);
             }).fail(function(message){
@@ -359,7 +359,7 @@
                             "path": this.path
                         };
                         sitefolders.push(sitefolder);
-                    })
+                    });
                 }
                 deferred.resolve(sitefolders);
             }).fail(function(message){
@@ -380,7 +380,7 @@
                             "path": this.path
                         };
                         sitefolders.push(sitefolder);
-                    })
+                    });
                 }
                 deferred.resolve(sitefolders);
             }).fail(function(message){
@@ -391,7 +391,7 @@
         function getAssetTypes(filterDisabledWidgets){
             var deferred = $.Deferred();
             $.PercAssetService.getAssetTypes(filterDisabledWidgets, function(status, result){
-                if (status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if (status === $.PercServiceUtils.STATUS_SUCCESS) {
                     var widgetTypes = [];
                     $.each(result, function(){
                         var widgetType = {
@@ -402,7 +402,7 @@
                             "icon": this.icon
                         };
                         widgetTypes.push(widgetType);
-                    })
+                    });
                     deferred.resolve(widgetTypes);
                 }
                 else {
@@ -422,7 +422,7 @@
                         "icon": this.icon
                     };
                     widgetTypes.push(widgetType);
-                })
+                });
                 deferred.resolve(widgetTypes);
             }).fail(function(message){
                 deferred.reject(message);
@@ -432,17 +432,17 @@
         function createAsset(folderPath, widgetId){
             var deferred = $.Deferred();
             $.PercFolderHelper().getAccessLevelByPath(folderPath, true, function(status, result){
-                if (status == $.PercFolderHelper().PERMISSION_ERROR || result == $.PercFolderHelper().PERMISSION_READ) {
+                if (status === $.PercFolderHelper().PERMISSION_ERROR || result === $.PercFolderHelper().PERMISSION_READ) {
                     deferred.reject("NotAuthorized");
                 }
                 else {
                     $.PercUserService.getAccessLevel("percAsset", -1, function(status, result){
-                        if (status == $.PercServiceUtils.STATUS_ERROR || result == $.PercUserService.ACCESS_READ || result == $.PercUserService.ACCESS_NONE) {
+                        if (status === $.PercServiceUtils.STATUS_ERROR || result === $.PercUserService.ACCESS_READ || result === $.PercUserService.ACCESS_NONE) {
                             deferred.reject("NotAuthorized");
                         }
                         else {
                             $.PercRecentListService.setRecent("asset-type", widgetId);
-                            var recFolderPath = folderPath.substring(folderPath.length - 1) == "/" ? folderPath.substring(0, folderPath.length - 1) : folderPath;
+                            var recFolderPath = folderPath.substring(folderPath.length - 1) === "/" ? folderPath.substring(0, folderPath.length - 1) : folderPath;
                             $.PercRecentListService.setRecent("asset-folder", recFolderPath);
                             $.PercNavigationManager.goToLocation($.PercNavigationManager.VIEW_EDIT_ASSET, $.PercNavigationManager.getSiteName(), 'edit', null, null, $.PercNavigationManager.getPath(), $.PercNavigationManager.PATH_TYPE_ASSET, {
                                 "widgetId": widgetId,
@@ -457,7 +457,7 @@
         function getMyContent(){
             var deferred = $.Deferred();
             $.PercPageService.getMyContent(function(status, result){
-                if (status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if (status === $.PercServiceUtils.STATUS_SUCCESS) {
                     deferred.resolve(result);
                 }
                 else {
@@ -482,7 +482,7 @@
         function getStates(workflow){
             var deferred = $.Deferred();
             $.PercReusableSearchService.getStates(workflow, function(status, result){
-                if (status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if (status === $.PercServiceUtils.STATUS_SUCCESS) {
                     var states = [];
                     $.each(result, function(){
                         var state = {
@@ -490,7 +490,7 @@
                             "id": this.displayValue
                         };
                         states.push(state);
-                    })
+                    });
                     deferred.resolve(states);
                 }
                 else {
@@ -502,7 +502,7 @@
         function getWorkflows(){
             var deferred = $.Deferred();
             $.PercReusableSearchService.getWorkflows(function(status, result){
-                if (status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if (status === $.PercServiceUtils.STATUS_SUCCESS) {
                     var workflows = [];
                     $.each(result, function(){
                         var workflow = {
@@ -510,7 +510,7 @@
                             "id": this.displayValue
                         };
                         workflows.push(workflow);
-                    })
+                    });
                     deferred.resolve(workflows);
                 }
                 else {
@@ -523,7 +523,7 @@
             path = getNormalizedPath(path);
             var deferred = $.Deferred(), url = $.perc_paths.PATH_FOLDER + path;
             $.PercServiceUtils.makeJsonRequest(url, $.PercServiceUtils.GET, false, function(status, result){
-                if (status == $.PercServiceUtils.STATUS_ERROR) {
+                if (status === $.PercServiceUtils.STATUS_ERROR) {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(request);
                     deferred.reject(defaultMsg);
                 }
@@ -537,12 +537,12 @@
             path = getNormalizedPath(path);
             var deferred = $.Deferred();
             $.PercPathService.getPathItemForPath(path, function(status, result){
-                if (status == $.PercServiceUtils.STATUS_ERROR) {
+                if (status === $.PercServiceUtils.STATUS_ERROR) {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(request);
                     deferred.reject(defaultMsg);
                 }
                 else {
-                    deferred.resolve(result.PathItem.category == "LANDING_PAGE");
+                    deferred.resolve(result.PathItem.category === "LANDING_PAGE");
                 }
             }, null);
             return deferred.promise();
@@ -575,6 +575,6 @@
             isLandingPage:isLandingPage
         };
         return api;
-    }
+    };
     
 })(jQuery);
