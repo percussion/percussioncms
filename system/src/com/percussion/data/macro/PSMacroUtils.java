@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,37 +25,21 @@ package com.percussion.data.macro;
 
 import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.data.IPSDataErrors;
-import com.percussion.data.PSBackEndColumnExtractor;
-import com.percussion.data.PSContentItemStatusExtractor;
-import com.percussion.data.PSDataExtractionException;
-import com.percussion.data.PSExecutionData;
-import com.percussion.data.PSInternalRequestCallException;
+import com.percussion.data.*;
 import com.percussion.design.objectstore.PSBackEndColumn;
 import com.percussion.design.objectstore.PSBackEndTable;
 import com.percussion.design.objectstore.PSContentItemStatus;
 import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.server.IPSRequestContext;
-import com.percussion.server.IPSServerErrors;
-import com.percussion.server.PSInternalRequest;
-import com.percussion.server.PSRequest;
-import com.percussion.server.PSRequestContext;
-import com.percussion.server.PSRequestParsingException;
-import com.percussion.server.PSServer;
+import com.percussion.server.*;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSParseUrlQueryString;
 import com.percussion.util.PSSqlHelper;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.util.*;
 
 /**
  * A container for common used macro utility functions.
@@ -101,8 +85,8 @@ public class PSMacroUtils
    /**
     * Correct the revision inside the linkurl and return it:
     * <ul>
-    * <li>If {@link IPSHtmlParameters.SYS_CONTENTID}or {@link 
-    * IPSHtmlParameters.SYS_REVISION} missing in linkUrl an unchanged url will
+    * <li>If {@link IPSHtmlParameters#SYS_CONTENTID}or {@link
+    * IPSHtmlParameters#SYS_REVISION} missing in linkUrl an unchanged url will
     * be returned</li>
     * <li>If the content valid flag for the item's current state is one of the
     * supplied characters, the revision in supplied url will be replaced with
@@ -228,12 +212,12 @@ public class PSMacroUtils
          throw new IllegalArgumentException(
                "contentIds cannot be null or empty");
 
-      Map<Integer, Integer> result = new HashMap<Integer, Integer>();
+      Map<Integer, Integer> result = new HashMap<>();
       
       if (contentIds.size() < PSSqlHelper.MAX_IN_CLAUSE_4_ORACLE)
          return getLastPublicRevisionsPerGroup(contentIds);
       
-      List<Integer> group = new ArrayList<Integer>();
+      List<Integer> group = new ArrayList<>();
       Iterator<Integer> ids = contentIds.iterator();
       int counter = 0;
       while (ids.hasNext())
@@ -275,7 +259,7 @@ public class PSMacroUtils
    private static Map<Integer, Integer> getLastPublicRevisionsPerGroup(
          List<Integer> contentIds)
    {
-      Map<Integer, Integer> result = new HashMap<Integer, Integer>();
+      Map<Integer, Integer> result = new HashMap<>();
 
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
       List<PSComponentSummary> sums = cms.loadComponentSummaries(contentIds);
@@ -291,8 +275,8 @@ public class PSMacroUtils
 
    
    /**
-    * Convenience method that calls {@link isItemPublic(IPSRequestContext, 
-    * String) isItemPublic(new PSRequestContext(request), contentid)}. 
+    * Convenience method that calls {@link #isItemPublic(PSRequest, String)},
+    * {@link #isItemPublic(PSRequest, String)} isItemPublic(new PSRequestContext(request), contentid)}.
     */
    public static boolean isItemPublic(PSRequest request, 
       String contentid) throws PSInternalRequestCallException, 
@@ -344,7 +328,7 @@ public class PSMacroUtils
       if (contentid.length() == 0)
          throw new IllegalArgumentException("contentid cannot be empty");
 
-      Map<String, String> params = new HashMap<String, String>();
+      Map<String, String> params = new HashMap<>();
       params.put(IPSHtmlParameters.SYS_CONTENTID, contentid);
 
       PSInternalRequest ir = PSServer.getInternalRequest(DETAILS_RESOURCE,
@@ -533,8 +517,8 @@ public class PSMacroUtils
    {
       PSRequest request = data.getRequest();
       
-      HashMap oldParams = request.getParameters();
-      HashMap newParams = new HashMap<String, String>();
+      Map<String, Object> oldParams = request.getParameters();
+      HashMap<String, Object> newParams = new HashMap<>();
       newParams.put(IPSHtmlParameters.SYS_CONTENTID, contentid);
       request.setParameters(newParams);
       try

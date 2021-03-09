@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -32,8 +32,8 @@ import com.percussion.server.IPSRequestContext;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
@@ -97,7 +97,7 @@ IPSRequestPreProcessor {
       * This exit will be called every time the resource is invoked
       * perform a quick check to see if there's anything to do
       */
-      HashMap htmlParams = request.getParameters();
+      Map<String,Object> htmlParams = request.getParameters();
       if(htmlParams == null) {
          // no, this request has no HTML parameters at all
          request.printTraceMessage("No HTML parameters found");

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,25 +24,17 @@
 
 package com.percussion.extensions.components;
 
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.extension.IPSResultDocumentProcessor;
-import com.percussion.extension.PSExtensionException;
-import com.percussion.extension.PSExtensionProcessingException;
-import com.percussion.extension.PSParameterMismatchException;
+import com.percussion.extension.*;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSConsole;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.*;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
+import java.util.Map;
 
 /**
  * This exit builds a cascaded menu item list XML document by making multiple
@@ -99,7 +91,7 @@ public class PSMenuTree implements IPSResultDocumentProcessor
       if(rxAppResource.startsWith("/"))
          rxAppResource = rxAppResource.substring(1);
 
-      HashMap htmlParams = request.getParameters();
+      Map<String,Object> htmlParams = request.getParameters();
       ArrayList itemsRendered = new ArrayList();
       Element elem = resDoc.getDocumentElement();
       String temp = elem.getAttribute("id").trim();
@@ -238,5 +230,5 @@ public class PSMenuTree implements IPSResultDocumentProcessor
    /**
     * The fully qualified name of this extension.
     */
-   static private String ms_fullExtensionName = "";
+   private String ms_fullExtensionName = "";
 }

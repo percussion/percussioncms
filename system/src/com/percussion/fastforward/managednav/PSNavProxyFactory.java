@@ -23,13 +23,13 @@
  */
 package com.percussion.fastforward.managednav;
 
-import org.apache.log4j.Logger;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSComponentProcessor;
 import com.percussion.cms.objectstore.PSActiveAssemblyProcessorProxy;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.server.IPSRequestContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * PSNavProxyFactory is a factory for relationship proxy objects. Rather than
@@ -75,7 +75,7 @@ public class PSNavProxyFactory
       }
       catch (PSCmsException ex)
       {
-         ms_log.error(this.getClass().getName(), ex);
+         log.error(this.getClass().getName(), ex);
          throw new PSNavException(this.getClass().getName(), ex);
       }
 
@@ -131,7 +131,7 @@ public class PSNavProxyFactory
    /**
     * Writes messages from this class to the log file.
     */
-   private static Logger ms_log = Logger.getLogger(PSNavProxyFactory.class);
+   private static Logger log = LogManager.getLogger(PSNavProxyFactory.class);
 
    /**
     * The Active Assembly Processor proxy.

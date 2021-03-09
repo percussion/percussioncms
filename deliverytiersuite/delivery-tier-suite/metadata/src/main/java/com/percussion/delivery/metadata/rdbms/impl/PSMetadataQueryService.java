@@ -50,12 +50,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -95,7 +90,11 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
     public PSMetadataQueryService(PSPropertyDatatypeMappings datatypeMappings, Integer queryLimit)
     {
         this.datatypeMappings = datatypeMappings;
-        this.queryLimit = queryLimit;
+
+        if(queryLimit>0)
+            this.queryLimit = queryLimit;
+        else
+            this.queryLimit =500;
     }
 
     /*
@@ -430,11 +429,11 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             }
             else if (value instanceof Date)
             {
-                q.setTimestamp(key, (Date) value);
+                q.setParameter(key, value);
             }
             else if (value instanceof String)
             {
-               q.setString(key, value.toString());
+               q.setParameter(key, value.toString());
             }
         }
         
@@ -516,7 +515,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             return jdbcConnectionUrl;
         }
 
-        Connection connection = null;
+        Connection connection;
         try(Session session = getSession())
         {
             connection = ((SessionImpl) session).connection();

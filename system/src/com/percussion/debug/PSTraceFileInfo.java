@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -27,17 +27,15 @@ package com.percussion.debug;
 import com.percussion.server.PSRequest;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.w3c.dom.Document;
 
 /**
  * Used to generate trace messages for the File Information trace messages type (0x0004) if a post includes one or more files.  Includes the name, mime type and length for each, and if each is treated as XML or a single value.
@@ -79,7 +77,7 @@ public class PSTraceFileInfo extends PSTraceMessage
       StringBuffer buf = new StringBuffer();
       PSRequest request = (PSRequest)source;
 
-      HashMap params = request.getParameters();
+      Map<String,Object> params = request.getParameters();
 
       if (params != null)
       {
