@@ -29,12 +29,15 @@ import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcRowData;
 import com.percussion.tablefactory.PSJdbcTableData;
 import com.percussion.tablefactory.PSJdbcTableFactory;
+import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -48,6 +51,7 @@ import javax.swing.JOptionPane;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -95,15 +99,11 @@ public class PSUpgradePluginCheckDuplicateKeysInTables implements IPSUpgradePlug
       
       log("PSUpgradePluginCheckDuplicateKeysInTables.processTable()...");
       log("\tTable: " + getTableName() + "  column: "+getTableName());
-      FileInputStream in = null;
-      Connection conn = null;
 
-      try
-      {
-         in = new FileInputStream(
+      try( FileInputStream in = new FileInputStream(
                new File(
                   RxUpgrade.getRxRoot() + File.separator
-                  + IPSUpgradeModule.REPOSITORY_PROPFILEPATH));
+                  + IPSUpgradeModule.REPOSITORY_PROPFILEPATH))){
 
          Properties props = new Properties();
          props.load(in);
@@ -115,59 +115,35 @@ public class PSUpgradePluginCheckDuplicateKeysInTables implements IPSUpgradePlug
                props.getProperty("DB_BACKEND"),
                props.getProperty("DB_DRIVER_NAME"),
                null);
-         conn = RxLogTables.createConnection(props);
-         PSJdbcTableSchema cvSchema = null;
-         cvSchema =
-            PSJdbcTableFactory.catalogTable(
-               conn, dbmsDef, dataTypeMap, getTableName(), true);
+         try(Connection conn = RxLogTables.createConnection(props)){
+            PSJdbcTableSchema cvSchema = null;
+            cvSchema =
+               PSJdbcTableFactory.catalogTable(
+                  conn, dbmsDef, dataTypeMap, getTableName(), true);
 
-         if (cvSchema == null)
-         {
-            log(
-               "null value for tableSchema " + getTableName() + " table");
-            log("Table clean-up aborted");
+            if (cvSchema == null)
+            {
+               log(
+                  "null value for tableSchema " + getTableName() + " table");
+               log("Table clean-up aborted");
 
-            return;
+               return;
+            }
+
+            // Verify that required columns exist
+            if ( cvSchema.getColumn(getTableColumn()) == null )
+            {
+               log("Required column{" + getTableColumn() +
+                   "} does not exist, nothing to check");
+               return;
+            }
+
+            // Check for any primary key violations
+            checkForDups(conn, dbmsDef, cvSchema);
+
          }
-
-         // Verify that required columns exist
-         if ( cvSchema.getColumn(getTableColumn()) == null )
-         {
-            log("Required column{" + getTableColumn() + 
-                "} does not exist, nothing to check");
-            return;
-         }
-
-         // Check for any primary key violations
-         checkForDups(conn, dbmsDef, cvSchema);
-         
-      }
-      catch (Exception e)
-      {
+      } catch (IOException | PSJdbcTableFactoryException | SAXException | SQLException e) {
          e.printStackTrace(m_config.getLogStream());
-      }
-      finally
-      {
-         try
-         {
-            if (in != null)
-            {
-               in.close();
-               in = null;
-            }
-         }
-         catch (Throwable t) {}
-
-         if (conn != null)
-         {
-            try
-            {
-               conn.close();
-            }
-            catch (SQLException e) {}
-
-            conn = null;
-         }
       }
       return;
    }

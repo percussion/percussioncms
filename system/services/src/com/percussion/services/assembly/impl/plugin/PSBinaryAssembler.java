@@ -98,9 +98,9 @@ public class PSBinaryAssembler extends PSAssemblerBase
             PSRequest req = (PSRequest) PSRequestInfo
                     .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
             req.setParameter("allowBinary","true");
-            InputStream s = ((Property) data).getStream();
-            item.setResultStream(s);
-            IOUtils.closeQuietly(s);
+            try(InputStream s = ((Property) data).getStream()) {
+               item.setResultStream(s);
+            }
          }
          else if (data instanceof Value)
          {

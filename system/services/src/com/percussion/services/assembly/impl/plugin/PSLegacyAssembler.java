@@ -40,6 +40,7 @@ import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -131,27 +132,22 @@ public class PSLegacyAssembler extends PSAssemblerBase
       }
       if (!ireq.isBinary(req))
       {
-         ByteArrayOutputStream stream = null;
-         try
-         {
-            stream = ireq.getMergedResult();
+         try(ByteArrayOutputStream stream = ireq.getMergedResult()){
             String mimeType = ireq.computeMimeType();
             if (StringUtils.isNotBlank(mimeType))
                item.setMimeType(mimeType);
             else
                item.setMimeType("text/html");
+
             item.setResultData(stream.toByteArray());
             item.setStatus(Status.SUCCESS);
             return (IPSAssemblyResult) item;
          }
-         catch (PSInternalRequestCallException e)
+         catch (PSInternalRequestCallException | IOException e)
          {
             return getFailureResult(item, e.getLocalizedMessage());
          }
-         finally
-         {
-            IOUtils.closeQuietly(stream);   
-         }
+
       }
       else
       {

@@ -90,11 +90,9 @@ public class PSPropertyCondition extends PSAction implements Condition
       }
 
       boolean isEqual = false;
-      InputStream in = null;
+
       String propValue = null;
-      try
-      {
-         in = new FileInputStream(propFile);
+      try(FileInputStream in = new FileInputStream(propFile)){
          Properties verProp = new Properties();
          verProp.load(in);
          propValue = verProp.getProperty(propertyName);
@@ -126,20 +124,6 @@ public class PSPropertyCondition extends PSAction implements Condition
       {
          PSLogger.logInfo("Exception : " + ex.getLocalizedMessage());
          PSLogger.logInfo(ex);
-      }
-      finally
-      {
-         if (in != null)
-         {
-            try
-            {
-               in.close();
-            }
-            catch (Exception e)
-            {
-               // no-op
-            }
-         }
       }
       return isEqual;
    }

@@ -516,8 +516,9 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     {
        if(actionOptions.getDeliveryInfo() == null)
        {
-          log.error("Error getting info from delivery config file");
-          throw new PSDeliveryClientException("Error getting info from delivery config file");
+           String error = "Error getting info from delivery config file";
+          log.error(error);
+          throw new PSDeliveryClientException(error);
        }
 
         ProtocolSocketFactory socketFactory = null;
@@ -747,7 +748,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         } else {
            try
          {
-            postMethod.setRequestEntity(new StringRequestEntity(this.requestMessageBody.toString(),"application/json","UTF-8"));
+            postMethod.setRequestEntity(new StringRequestEntity(this.requestMessageBody.toString(),"application/json",ENCODING_UTF8));
          }
          catch (UnsupportedEncodingException e)
          {
@@ -828,9 +829,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
                 isBlank(httpMethod.getRequestHeader(HttpHeaders.CONTENT_TYPE).getValue()))
             httpMethod.setRequestHeader(HttpHeaders.CONTENT_TYPE, this.requestMessageBodyContentType);
 
-        if (proxyConfig != null)
-        {
-           if (proxyConfig.getHost() != null && proxyConfig.getPort() != null)
+           if (proxyConfig != null && proxyConfig.getHost() != null && proxyConfig.getPort() != null)
            {
               HostConfiguration config = this.getHostConfiguration();
               config.setProxy(proxyConfig.getHost(),
@@ -847,7 +846,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
                  this.getState().setProxyCredentials(authScope, credentials);              
               }
            }
-        }
+
 
         httpMethod.setRequestHeader(PERC_VERSION_HEADER, PSServer.getVersion());
         httpMethod.setRequestHeader(TOMCAT_USER, this.userName);
@@ -855,11 +854,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         httpMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
                 new DefaultHttpMethodRetryHandler(retryCount, true));
 
-        try
-        {
-            int statusCode = this.executeMethod(httpMethod);
-
-            InputStream responseDataStream = httpMethod.getResponseBodyAsStream();
+       try(InputStream responseDataStream = httpMethod.getResponseBodyAsStream()){
+           int statusCode = this.executeMethod(httpMethod);
 
             String responseData = responseDataStream==null ? "" : IOUtils.toString(responseDataStream);
             if (!successfullHttpStatusCodes.contains(statusCode))

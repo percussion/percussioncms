@@ -72,250 +72,240 @@ import static javax.ws.rs.client.ClientBuilder.newClient;
  */
 public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
 {
-   private static final String CREDS_WRONG_MSG = "Either bucket doesn't exist or the credentials to access the bucket are wrong.";
-   private String targetRegion = Regions.DEFAULT_REGION.getName();
-   private static Boolean isEC2Instance = null;
-   
-   public String getTargetRegion()
-   {
-      return targetRegion;
-   }
+    private static final String CREDS_WRONG_MSG = "Either bucket doesn't exist or the credentials to access the bucket are wrong.";
+    private String targetRegion = Regions.DEFAULT_REGION.getName();
+    private static Boolean isEC2Instance = null;
 
-   public void setTargetRegion(String targetRegion)
-   {
-      this.targetRegion = targetRegion;
-   }
+    public String getTargetRegion()
+    {
+        return targetRegion;
+    }
 
-   /**
-    * Logger.
-    */
-   @SuppressWarnings("hiding")
-   static Log ms_log = LogFactory.getLog(PSAmazonS3DeliveryHandler.class);
+    public void setTargetRegion(String targetRegion)
+    {
+        this.targetRegion = targetRegion;
+    }
 
-   private ConcurrentHashMap<Long,TransferManager> jobTransferManagers;
+    /**
+     * Logger.
+     */
+    @SuppressWarnings("hiding")
+    static Log ms_log = LogFactory.getLog(PSAmazonS3DeliveryHandler.class);
 
-   @Override
-   public void init(long jobid, IPSSite site, IPSPubServer pubServer) throws PSDeliveryException{
+    private ConcurrentHashMap<Long,TransferManager> jobTransferManagers;
+
+    @Override
+    public void init(long jobid, IPSSite site, IPSPubServer pubServer) throws PSDeliveryException{
         //Call the base class
-         super.init(jobid, site, pubServer);
-         if (jobTransferManagers == null) {
+        super.init(jobid, site, pubServer);
+        if (jobTransferManagers == null) {
             jobTransferManagers = new ConcurrentHashMap();
-         }
-         if(!jobTransferManagers.containsKey(jobid)) { // if key does not exist
+        }
+        if(!jobTransferManagers.containsKey(jobid)) { // if key does not exist
             AmazonS3 s3Client = getAmazonS3Client(pubServer);
-            
+
             TransferManager tm = TransferManagerBuilder.standard().withS3Client(s3Client).build();
             jobTransferManagers.put(jobid, tm);
-         }
-   }
+        }
+    }
 
-   private Region getConfiguredAWSRegion()
-   {
-      return Region.getRegion(Regions.fromName(targetRegion));
-   }
+    private Region getConfiguredAWSRegion()
+    {
+        return Region.getRegion(Regions.fromName(targetRegion));
+    }
 
-   @Override
-   protected void releaseForDelivery(long jobId){
-      super.releaseForDelivery(jobId);
-      TransferManager t = jobTransferManagers.get(jobId);
-      if(t != null) {
-         t.shutdownNow(true);
-         jobTransferManagers.remove(jobId);
-      }
-   }
+    @Override
+    protected void releaseForDelivery(long jobId){
+        super.releaseForDelivery(jobId);
+        TransferManager t = jobTransferManagers.get(jobId);
+        if(t != null) {
+            t.shutdownNow(true);
+            jobTransferManagers.remove(jobId);
+        }
+    }
 
-   /**
-    * Remove the single item specified by location. This method can be
-    * overridden in a subclass.
-    *
-    * @param jobId
-    * @param item
-    * @param location the location, never <code>null</code> or empty.
-    * @return the result of the removal operation
-    */
-   @Override
-   protected IPSDeliveryResult doRemoval(Item item, long jobId, String location)
-   {
-      JobData job = m_jobData.get(jobId);
-      IPSPubServer pubServer = job.m_pubServer;
-      PSDeliveryException de = null;
-      TransferManager tm = null;
-      String destPath = location.substring(1);
-      String bucketName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, "");
-      try
-      {
-         AmazonS3 s3Client = getAmazonS3Client(pubServer);
-         s3Client.deleteObject(bucketName, destPath);
-      }
-      catch(PSDeliveryException e){
-         de = e;
-      }
-      catch(Exception e){
-         de = new PSDeliveryException(
-               IPSDeliveryErrors.COULD_NOT_DELETE_FROM_AMAZON, e, location, bucketName, (StringUtils.isBlank(e
-                     .getLocalizedMessage()) ? e.getClass().getName() : e
-                     .getLocalizedMessage()));
+    /**
+     * Remove the single item specified by location. This method can be
+     * overridden in a subclass.
+     *
+     * @param jobId
+     * @param item
+     * @param location the location, never <code>null</code> or empty.
+     * @return the result of the removal operation
+     */
+    @Override
+    protected IPSDeliveryResult doRemoval(Item item, long jobId, String location)
+    {
+        JobData job = m_jobData.get(jobId);
+        IPSPubServer pubServer = job.m_pubServer;
+        PSDeliveryException de = null;
+        String destPath = location.substring(1);
+        String bucketName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, "");
+        try
+        {
+            AmazonS3 s3Client = getAmazonS3Client(pubServer);
+            s3Client.deleteObject(bucketName, destPath);
+        }
+        catch(PSDeliveryException e){
+            de = e;
+        }
+        catch(Exception e){
+            de = new PSDeliveryException(
+                    IPSDeliveryErrors.COULD_NOT_DELETE_FROM_AMAZON, e, location, bucketName, (StringUtils.isBlank(e
+                    .getLocalizedMessage()) ? e.getClass().getName() : e
+                    .getLocalizedMessage()));
 
-      }
-      finally
-      {
-         if(tm != null)
-            tm.shutdownNow();
-      }
-      if (de!=null)
-      {
-         return getItemResult(Outcome.FAILED, item, jobId, de
-               .getLocalizedMessage());
-      }
-      return getItemResult(Outcome.DELIVERED, item, jobId, null);
-   }
+        }
+        if (de!=null)
+        {
+            return getItemResult(Outcome.FAILED, item, jobId, de
+                    .getLocalizedMessage());
+        }
+        return getItemResult(Outcome.DELIVERED, item, jobId, null);
+    }
 
-   @Override
-   protected IPSDeliveryResult doDelivery(Item item, long jobId,
-         String location)
-         throws PSDeliveryException
-   {
-      if (StringUtils.isBlank(location))
-      {
-         throw new IllegalArgumentException(
-               "location may not be null or empty");
-      }
-      JobData job = m_jobData.get(jobId);
-      IPSPubServer pubServer = job.m_pubServer;
-      PSDeliveryException de = null;
-      InputStream is = null;
-      String key = location.substring(1);
-      String bucketName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, "");
-      try
-      {
-         AmazonS3 s3Client = getAmazonS3Client(pubServer);
-         TransferManager tm =null;
-         if(jobTransferManagers.containsKey(jobId)){  // check for the jobId
-            tm = jobTransferManagers.get(jobId);
-         }else{ // if does not exist
-            tm = TransferManagerBuilder.standard().withS3Client(s3Client).build();
-            jobTransferManagers.put(jobId, tm);
-         }
-         if (item.getFile() != null){
-            String md5CheckSum="";
-            is = new FileInputStream(item.getFile());
-            md5CheckSum = calculateMD5Checksum(is);
-            //reading server.properties to check if MD5 check needs to be done or not, default is false
-            if (PSServer.getServerProps().getProperty("optimizePublishWithMD5Check", "false").equalsIgnoreCase("true"))
-            {
-               boolean MD5ValueChanged=true;
-               ms_log.debug("local md5CheckSum value ->" + md5CheckSum);
-                  try {
-                     GetObjectMetadataRequest mreq = new GetObjectMetadataRequest(bucketName, key);
-                     ObjectMetadata retrieved_metadata = s3Client.getObjectMetadata(mreq);
-                     if (retrieved_metadata != null) {
-                        String s3MD5CheckSum = retrieved_metadata.getUserMetaDataOf("Perc-Content-MD5");
-                        ms_log.debug("S3 md5  property -> " + s3MD5CheckSum);
-                        if (md5CheckSum != null && md5CheckSum.equalsIgnoreCase(s3MD5CheckSum)) {
-                           MD5ValueChanged = false;
-                        }
-                     }
-                  }catch(Exception e){
-                     ms_log.error("this bucket does not exist on amazon s3 server "+e);
-                  }
-               if (MD5ValueChanged) {
-                  copyToAmazonDirect(tm, bucketName, key, item.getFile(), item.getMimeType(), item.getLength(), md5CheckSum);
-               }
-            }else{
-               copyToAmazonDirect(tm, bucketName, key, item.getFile(), item.getMimeType(), item.getLength() , md5CheckSum);
+    @Override
+    protected IPSDeliveryResult doDelivery(Item item, long jobId,
+                                           String location)
+            throws PSDeliveryException
+    {
+        if (StringUtils.isBlank(location))
+        {
+            throw new IllegalArgumentException(
+                    "location may not be null or empty");
+        }
+        JobData job = m_jobData.get(jobId);
+        IPSPubServer pubServer = job.m_pubServer;
+        PSDeliveryException de = null;
+        String key = location.substring(1);
+        String bucketName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, "");
+        try
+        {
+            AmazonS3 s3Client = getAmazonS3Client(pubServer);
+            TransferManager tm =null;
+            if(jobTransferManagers.containsKey(jobId)){  // check for the jobId
+                tm = jobTransferManagers.get(jobId);
+            }else{ // if does not exist
+                tm = TransferManagerBuilder.standard().withS3Client(s3Client).build();
+                jobTransferManagers.put(jobId, tm);
             }
-         }else{
-            is = item.getResultStream();
-            copyToAmazon(tm, bucketName, key, is, item.getMimeType(), item.getLength());
-         }
+            if (item.getFile() != null) {
+                String md5CheckSum = "";
+                try (InputStream is = new FileInputStream(item.getFile())) {
+                    md5CheckSum = calculateMD5Checksum(is);
+                    //reading server.properties to check if MD5 check needs to be done or not, default is false
+                    if (PSServer.getServerProps().getProperty("optimizePublishWithMD5Check", "false").equalsIgnoreCase("true")) {
+                        boolean MD5ValueChanged = true;
+                        ms_log.debug("local md5CheckSum value ->" + md5CheckSum);
+                        try {
+                            GetObjectMetadataRequest mreq = new GetObjectMetadataRequest(bucketName, key);
+                            ObjectMetadata retrieved_metadata = s3Client.getObjectMetadata(mreq);
+                            if (retrieved_metadata != null) {
+                                String s3MD5CheckSum = retrieved_metadata.getUserMetaDataOf("Perc-Content-MD5");
+                                ms_log.debug("S3 md5  property -> " + s3MD5CheckSum);
+                                if (md5CheckSum != null && md5CheckSum.equalsIgnoreCase(s3MD5CheckSum)) {
+                                    MD5ValueChanged = false;
+                                }
+                            }
 
-      }
-      catch(PSDeliveryException e){
-         de = e;
-      }
-      catch(Exception e){
-         de = new PSDeliveryException(
-               IPSDeliveryErrors.COULD_NOT_COPY_TO_AMAMZON, e, location, bucketName, (StringUtils.isBlank(e
-                     .getLocalizedMessage()) ? e.getClass().getName() : e
-                     .getLocalizedMessage()));
+                        } catch (Exception e) {
+                            ms_log.error("this bucket does not exist on amazon s3 server " + e);
+                        }
+                        if (MD5ValueChanged) {
+                            copyToAmazonDirect(tm, bucketName, key, item.getFile(), item.getMimeType(), item.getLength(), md5CheckSum);
+                        }
+                    } else {
+                        copyToAmazonDirect(tm, bucketName, key, item.getFile(), item.getMimeType(), item.getLength(), md5CheckSum);
+                    }
+                }
+            }else{
+                try(InputStream is = item.getResultStream()) {
+                    copyToAmazon(tm, bucketName, key, is, item.getMimeType(), item.getLength());
+                }
+            }
 
-      }
-      finally
-      {
-         IOUtils.closeQuietly(is);
-         item.release();
-      }
 
-      if (de != null)
-      {
-         return getItemResult(Outcome.FAILED, item, jobId, de
-               .getLocalizedMessage());
-      }
+        }
+        catch(PSDeliveryException e){
+            de = e;
+        }
+        catch(Exception e){
+            de = new PSDeliveryException(
+                    IPSDeliveryErrors.COULD_NOT_COPY_TO_AMAMZON, e, location, bucketName, (StringUtils.isBlank(e
+                    .getLocalizedMessage()) ? e.getClass().getName() : e
+                    .getLocalizedMessage()));
 
-      try
-      {
-         return new PSDeliveryResult(Outcome.DELIVERED, null, item.getId(),
-               jobId, item.getReferenceId(), location.getBytes("UTF8"));
-      }
-      catch (UnsupportedEncodingException e)
-      {
-         ms_log.error("Problem delivering item", e);
-         return new PSDeliveryResult(Outcome.FAILED, e.getLocalizedMessage(),
-               item.getId(), jobId, item.getReferenceId(), null);
-      }
-   }
-   /**
-    * calculate the md5 checksum of provided InputStream
-    *
-    * @param originalInputStream the result data stream, should not be null. The input stream should
-    * be closed by the caller.
-    *
-    * @return return the md5 value
-    */
+        }
 
-   public String calculateMD5Checksum(InputStream originalInputStream)
-   {
-      String result="";
-      try {
-         byte[] byteArray = IOUtils.toByteArray(originalInputStream);
-         originalInputStream = new ByteArrayInputStream(byteArray); //preserving the original InputStream
-         result = Base64.encodeAsString(DigestUtils.md5(byteArray));
-      }catch(Exception e){
-         ms_log.error("Exception occurred while calculateMD5Checksum -- > "+e);
-      }
-      return result;
-   }
+        if (de != null)
+        {
+            return getItemResult(Outcome.FAILED, item, jobId, de
+                    .getLocalizedMessage());
+        }
 
-   private void copyToAmazon(TransferManager tm, String bucketName, String key, InputStream is, String mimeType, long contentLength) throws AmazonServiceException, AmazonClientException, InterruptedException
-   {
-   try{
-         ObjectMetadata metadata = new ObjectMetadata();
-         metadata.setContentType(mimeType);
-         metadata.setContentLength(contentLength);
-         metadata.setCacheControl("max-age=20");
-         Upload myUpload = tm.upload(new PutObjectRequest(bucketName, key, is, metadata));
-         myUpload.waitForCompletion();
-      }
-      finally
-      {
-         IOUtils.closeQuietly(is);
-      }
+        try
+        {
+            return new PSDeliveryResult(Outcome.DELIVERED, null, item.getId(),
+                    jobId, item.getReferenceId(), location.getBytes("UTF8"));
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            ms_log.error("Problem delivering item", e);
+            return new PSDeliveryResult(Outcome.FAILED, e.getLocalizedMessage(),
+                    item.getId(), jobId, item.getReferenceId(), null);
+        }
+    }
+    /**
+     * calculate the md5 checksum of provided InputStream
+     *
+     * @param originalInputStream the result data stream, should not be null. The input stream should
+     * be closed by the caller.
+     *
+     * @return return the md5 value
+     */
 
-   }
+    public String calculateMD5Checksum(InputStream originalInputStream)
+    {
+        String result="";
+        try {
+            byte[] byteArray = IOUtils.toByteArray(originalInputStream);
+            result = Base64.encodeAsString(DigestUtils.md5(byteArray));
+        }catch(Exception e){
+            ms_log.error("Exception occurred while calculateMD5Checksum -- > "+e);
+        }
+        return result;
+    }
 
-   private void copyToAmazonDirect(TransferManager tm, String bucketName, String key, File file, String mimeType, long contentLength,String md5CheckSum) throws IOException, InterruptedException {
-      InputStream fileInputStream = null;
+    private void copyToAmazon(TransferManager tm, String bucketName, String key, InputStream is, String mimeType, long contentLength) throws AmazonServiceException, AmazonClientException, InterruptedException
+    {
+        try{
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(mimeType);
+            metadata.setContentLength(contentLength);
+            metadata.setCacheControl("max-age=20");
+            Upload myUpload = tm.upload(new PutObjectRequest(bucketName, key, is, metadata));
+            myUpload.waitForCompletion();
+        }
+        finally
+        {
+            IOUtils.closeQuietly(is);
+        }
 
-         ObjectMetadata metadata = new ObjectMetadata();
-         fileInputStream = new FileInputStream(file);
-         metadata.setContentType(mimeType);
-         metadata.setContentLength(contentLength);
-         metadata.setCacheControl("max-age=20");
-         metadata.addUserMetadata("Perc-Content-MD5",md5CheckSum);
-         Upload myUpload = tm.upload(new PutObjectRequest(bucketName, key, fileInputStream, metadata));
-         myUpload.waitForCompletion();
+    }
 
-   }
+    private void copyToAmazonDirect(TransferManager tm, String bucketName, String key, File file, String mimeType, long contentLength,String md5CheckSum) throws IOException, InterruptedException {
+
+        ObjectMetadata metadata = new ObjectMetadata();
+        try(InputStream fileInputStream = new FileInputStream(file)){
+            metadata.setContentType(mimeType);
+            metadata.setContentLength(contentLength);
+            metadata.setCacheControl("max-age=20");
+            metadata.addUserMetadata("Perc-Content-MD5", md5CheckSum);
+            Upload myUpload = tm.upload(new PutObjectRequest(bucketName, key, fileInputStream, metadata));
+            myUpload.waitForCompletion();
+        }
+
+    }
 
     public static boolean isEC2Instance(){
         if(isEC2Instance != null){
@@ -344,29 +334,29 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         return isEC2Instance.booleanValue();
     }
 
-   private AmazonS3 getAmazonS3Client(IPSPubServer pubServer) throws PSDeliveryException{
-       AmazonS3 s3 = null;
+    private AmazonS3 getAmazonS3Client(IPSPubServer pubServer) throws PSDeliveryException{
+        AmazonS3 s3 = null;
 
-       if(isEC2Instance()){
-           ms_log.debug("EC2 Instance Running");
-           s3 = AmazonS3ClientBuilder.standard()
-                   .withCredentials(new InstanceProfileCredentialsProvider(false))
-                   .withRegion(Regions.getCurrentRegion().getName())
-                   .build();
-       }else {
-           ms_log.debug("Using Access/Security Key");
-           PSAesCBC aes = new PSAesCBC();
-           String accessKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, "");
-           String secretKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, "");
-           String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
+        if(isEC2Instance()){
+            ms_log.debug("EC2 Instance Running");
+            s3 = AmazonS3ClientBuilder.standard()
+                    .withCredentials(new InstanceProfileCredentialsProvider(false))
+                    .withRegion(Regions.getCurrentRegion().getName())
+                    .build();
+        }else {
+            ms_log.debug("Using Access/Security Key");
+            PSAesCBC aes = new PSAesCBC();
+            String accessKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, "");
+            String secretKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, "");
+            String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
 
-           try {
-               accessKey = aes.decrypt(accessKey, IPSPubServerDao.encryptionKey);
-               secretKey = aes.decrypt(secretKey, IPSPubServerDao.encryptionKey);
-           } catch (Exception e) {
-               ms_log.error(e);
-               throw new PSDeliveryException(IPSDeliveryErrors.COULD_NOT_DECRYPT_CREDENTIALS, e, getExceptionMessage(e));
-           }
+            try {
+                accessKey = aes.decrypt(accessKey, IPSPubServerDao.encryptionKey);
+                secretKey = aes.decrypt(secretKey, IPSPubServerDao.encryptionKey);
+            } catch (Exception e) {
+                ms_log.error(e);
+                throw new PSDeliveryException(IPSDeliveryErrors.COULD_NOT_DECRYPT_CREDENTIALS, e, getExceptionMessage(e));
+            }
             if(selectedRegionName == null || selectedRegionName.trim().equals("")){
 
                 //Default to EC2 regions
@@ -383,85 +373,85 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
                 }
             }
 
-           BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
-          s3 =  AmazonS3ClientBuilder.standard().withRegion(selectedRegionName).withCredentials(new AWSStaticCredentialsProvider(awsCreds)).build();
-       }
-      return s3;
+            BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
+            s3 =  AmazonS3ClientBuilder.standard().withRegion(selectedRegionName).withCredentials(new AWSStaticCredentialsProvider(awsCreds)).build();
+        }
+        return s3;
 
-   }
+    }
 
-   private String getExceptionMessage(Exception e){
-      return (StringUtils.isBlank(e
-            .getLocalizedMessage()) ? e.getClass().getName() : e
-            .getLocalizedMessage());
-   }
+    private String getExceptionMessage(Exception e){
+        return (StringUtils.isBlank(e
+                .getLocalizedMessage()) ? e.getClass().getName() : e
+                .getLocalizedMessage());
+    }
 
-   /*
-    * (non-Javadoc)
-    * @see com.percussion.rx.delivery.impl.PSBaseDeliveryHandler#checkConnection(com.percussion.services.pubserver.IPSPubServer, com.percussion.services.sitemgr.IPSSite)
-    */
-   public boolean checkConnection(IPSPubServer pubServer, IPSSite site)
-   {
-      boolean result = true;
-      String bucketName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, "");
-      try
-      {
-         AmazonS3 s3Client = getAmazonS3Client(pubServer);
-         s3Client.getS3AccountOwner();
-         result = s3Client.doesBucketExist(bucketName);
-      }
-      catch (Exception e)
-      {
-         ms_log.error(CREDS_WRONG_MSG, e);
-         result = false;
-      }
-      return result;
-   }
+    /*
+     * (non-Javadoc)
+     * @see com.percussion.rx.delivery.impl.PSBaseDeliveryHandler#checkConnection(com.percussion.services.pubserver.IPSPubServer, com.percussion.services.sitemgr.IPSSite)
+     */
+    public boolean checkConnection(IPSPubServer pubServer, IPSSite site)
+    {
+        boolean result = true;
+        String bucketName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, "");
+        try
+        {
+            AmazonS3 s3Client = getAmazonS3Client(pubServer);
+            s3Client.getS3AccountOwner();
+            result = s3Client.doesBucketExist(bucketName);
+        }
+        catch (Exception e)
+        {
+            ms_log.error(CREDS_WRONG_MSG, e);
+            result = false;
+        }
+        return result;
+    }
 
-   public PSPair<Boolean, String> publishTestImage(IPSPubServer pubServer, IPSSite site, String token)
-   {
-      if(!checkConnection(pubServer, site)){
-         return new PSPair<>(Boolean.FALSE, CREDS_WRONG_MSG);
-      }
-      PSPair<Boolean,String> result = new PSPair<>(Boolean.TRUE, "Successfully published, accessed and deleted image to amazon s3");
-      InputStream in = null;
-      String key = "Assets/uploads/" + generateTestImageKey(token);
-      String bucketName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, "");
-      //Create Image Asset
-      TransferManager tm =null;
-      try {
-          in = new FileInputStream(PSServer.getRxDir().getAbsolutePath() + PERC_TEST_IMG_DIR + PERC_TEST_IMG);
-         AmazonS3 s3Client = getAmazonS3Client(pubServer);
-         tm = TransferManagerBuilder.standard().withS3Client(s3Client).build();
-         copyToAmazon(tm,bucketName,key,in,"image/jpeg",in.available());
-          s3Client = getAmazonS3Client(pubServer);
-          s3Client.getObject(bucketName, key);
-          s3Client.deleteObject(bucketName, key);
-      }
-      catch (Exception e)
-      {
-         ms_log.error("Error copying image to amazon s3 bucket.", e);
-         result = new PSPair<>(Boolean.FALSE, e.getLocalizedMessage());
-      }
-      finally
-      {
-         IOUtils.closeQuietly(in);
-         if(tm != null)
-            tm.shutdownNow();
-      }
-      return result;
-   }
+    public PSPair<Boolean, String> publishTestImage(IPSPubServer pubServer, IPSSite site, String token)
+    {
+        if(!checkConnection(pubServer, site)){
+            return new PSPair<>(Boolean.FALSE, CREDS_WRONG_MSG);
+        }
+        PSPair<Boolean,String> result = new PSPair<>(Boolean.TRUE, "Successfully published, accessed and deleted image to amazon s3");
 
-   public static String generateTestImageKey(String token)
-   {
-      String imgName = FilenameUtils.getBaseName(PSAmazonS3DeliveryHandler.PERC_TEST_IMG) + "-" + token
-            + "." + FilenameUtils.getExtension(PSAmazonS3DeliveryHandler.PERC_TEST_IMG);
-      return imgName;
-   }
+        String key = "Assets/uploads/" + generateTestImageKey(token);
+        String bucketName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, "");
+        //Create Image Asset
+        TransferManager tm =null;
 
-   public static final String PERC_TEST_IMG = "percussion_test_image_donotuse.jpg";
+        try( InputStream in = new FileInputStream(PSServer.getRxDir().getAbsolutePath() + PERC_TEST_IMG_DIR + PERC_TEST_IMG)) {
+            AmazonS3 s3Client = getAmazonS3Client(pubServer);
+            tm = TransferManagerBuilder.standard().withS3Client(s3Client).build();
+            copyToAmazon(tm, bucketName, key, in, "image/jpeg", in.available());
+            s3Client = getAmazonS3Client(pubServer);
+            s3Client.getObject(bucketName, key);
+            s3Client.deleteObject(bucketName, key);
 
-   public static final String PERC_TEST_IMG_DIR = "/sys_resources/images/";
+        }
+        catch (Exception e)
+        {
+            ms_log.error("Error copying image to amazon s3 bucket.", e);
+            result = new PSPair<>(Boolean.FALSE, e.getLocalizedMessage());
+        }
+        finally
+        {
+            if(tm != null)
+                tm.shutdownNow();
+        }
+        return result;
+    }
+
+    public static String generateTestImageKey(String token)
+    {
+        String imgName = FilenameUtils.getBaseName(PSAmazonS3DeliveryHandler.PERC_TEST_IMG) + "-" + token
+                + "." + FilenameUtils.getExtension(PSAmazonS3DeliveryHandler.PERC_TEST_IMG);
+        return imgName;
+    }
+
+    public static final String PERC_TEST_IMG = "percussion_test_image_donotuse.jpg";
+
+    public static final String PERC_TEST_IMG_DIR = "/sys_resources/images/";
 
 
 }

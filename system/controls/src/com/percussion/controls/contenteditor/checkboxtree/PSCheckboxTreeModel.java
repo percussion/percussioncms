@@ -76,33 +76,26 @@ public class PSCheckboxTreeModel extends DefaultTreeModel implements TreeModel
             "docUrlStr cannot be null or empty");
 
       Document doc = null;
-      InputStream is = null;
+
 
       try
       {
          URL docUrl = new URL(baseURL, docUrlStr);
          docUrl = appendPsSessionId(docUrl);
-         //System.out.println("docUrl: " + docUrl.toString());
-         
+
          URLConnection conn = docUrl.openConnection();
-         is = conn.getInputStream();
-         
-         DocumentBuilder builder = 
-            DocumentBuilderFactory.newInstance().newDocumentBuilder();
-         doc = builder.parse(is);
-         PSCheckboxTreeRootNode rootNode = (PSCheckboxTreeRootNode) getRoot();
-         rootNode.loadDocument(doc);
+         try(InputStream is = conn.getInputStream()) {
+
+            DocumentBuilder builder =
+                    DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            doc = builder.parse(is);
+            PSCheckboxTreeRootNode rootNode = (PSCheckboxTreeRootNode) getRoot();
+            rootNode.loadDocument(doc);
+         }
       }
       catch (Exception e)
       {
          throw new RuntimeException(e);
-      }
-      finally
-      {
-         if (is != null)
-         {
-            try { is.close(); } catch (IOException e) { /* ignore */ }
-         }
       }
    }
 
@@ -219,30 +212,21 @@ public class PSCheckboxTreeModel extends DefaultTreeModel implements TreeModel
     */
    private String getResponse(URL url)
    {
-      InputStream is = null;
+
 
       try
       {
          URLConnection conn = url.openConnection();
-         is = conn.getInputStream();
-         byte[] buffer = new byte[1000];
-         int byteRead = is.read(buffer);
-         String response = new String(buffer, 0, byteRead);
-         
-         //System.out.println("response: " + response);
-         
-         return response;
+         try(InputStream is = conn.getInputStream()) {
+            byte[] buffer = new byte[1000];
+            int byteRead = is.read(buffer);
+            String response = new String(buffer, 0, byteRead);
+            return response;
+         }
       }
       catch (Exception e)
       {
          throw new RuntimeException(e);
-      }
-      finally
-      {
-         if (is != null)
-         {
-            try { is.close(); } catch (IOException e) { /* ignore */ }
-         }
       }
    }
    

@@ -38,8 +38,10 @@ public class PSMakefileReader
    public PSMakefileReader(File makefile)
       throws IOException
    {
-      m_rdr = new BufferedReader(new InputStreamReader(
-         new FileInputStream(makefile)));
+      try(InputStreamReader is = new InputStreamReader(
+              new FileInputStream(makefile))) {
+         m_rdr = new BufferedReader(is);
+      }
    }
 
    /**

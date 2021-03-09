@@ -290,25 +290,23 @@ public class PSXdTransformDomToText extends PSDefaultExtension implements
          nt.setURIResolver(new PSUriResolver());
 
          DOMSource src = new DOMSource((Node) xmlDoc);
-         StringWriter outString = new StringWriter();
-         StreamResult res = new StreamResult((Writer) outString);
+         try(StringWriter outString = new StringWriter()) {
+            StreamResult res = new StreamResult((Writer) outString);
 
-         nt.transform(src, res);
+            nt.transform(src, res);
 
-         cx.printTraceMessage("XSL processing complete");
+            cx.printTraceMessage("XSL processing complete");
 
-         if (cx.isLogging() &&
-            (errorListener.numErrors() + errorListener.numFatalErrors() > 0))
-         {
-            cx.printTraceMessage("Errors occurred during XSL processing \n"
-               + errorWriter.toString());
+            if (cx.isLogging() &&
+                    (errorListener.numErrors() + errorListener.numFatalErrors() > 0)) {
+               cx.printTraceMessage("Errors occurred during XSL processing \n"
+                       + errorWriter.toString());
+            } else {
+               cx.printTraceMessage("XSL processor messages \n"
+                       + errorWriter.toString());
+            }
+            return outString.toString();
          }
-         else
-         {
-            cx.printTraceMessage("XSL processor messages \n"
-               + errorWriter.toString());
-         }
-         return outString.toString();
       }
       catch (TransformerConfigurationException e)
       {
