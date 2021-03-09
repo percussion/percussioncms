@@ -38,6 +38,8 @@ import java.util.Hashtable;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -46,6 +48,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public abstract class PSOptimizer
 {
+   private static final Logger log = LogManager.getLogger(PSOptimizer.class);
    /**
     * Get a database meta data object, which may retrieve a cached entry or
     * create a new meta data object.
@@ -315,39 +318,39 @@ public abstract class PSOptimizer
       PSBackEndTable table, PSIndexStatistics[] stats)
    {
       if ((stats != null) && (stats.length > 0)) {
-         System.out.println("Index Statistics for " + table.getTable());
+         log.info("Index Statistics for {}", table.getTable());
          for (int indNo = 0; indNo < stats.length; indNo++) {
-            System.out.println(stats[indNo].getIndexName());
-            System.out.print("  Type: ");
+            log.info(stats[indNo].getIndexName());
+            log.info("  Type: ");
             if (stats[indNo].getIndexType() ==
                DatabaseMetaData.tableIndexStatistic)
-               System.out.println("table statistics");
+               log.info("table statistics");
             else if (stats[indNo].getIndexType() ==
                DatabaseMetaData.tableIndexClustered)
-               System.out.println("clustered index");
+               log.info("clustered index");
             else if (stats[indNo].getIndexType() ==
                DatabaseMetaData.tableIndexHashed)
-               System.out.println("hashed index");
+               log.info("hashed index");
             else
-               System.out.println("other");
-            System.out.println("  Unique: " + (stats[indNo].isUnique() ? "yes" : "no"));
-            System.out.println("  Rows: " + stats[indNo].getCardinality());
+               log.info("other");
+            log.info("  Unique: " + (stats[indNo].isUnique() ? "yes" : "no"));
+            log.info("  Rows: " + stats[indNo].getCardinality());
             String[] indCols = stats[indNo].getSortedColumns();
             if (indCols != null) {
-               System.out.print("  indCols: ");
+               log.info("  indCols: ");
                for (int j = 0; j < indCols.length; j++) {
                   if (j != 0)
-                     System.out.print(", ");
-                  System.out.print(indCols[j]);
+                     log.info(", ");
+                  log.info(indCols[j]);
                }
-               System.out.println();
+               log.info("");
             }
-            System.out.println();
+            log.info("");
          }
       }
       else {
-         System.out.println("NO Index Statistics for " + table.getTable());
-         System.out.println();
+         log.info("NO Index Statistics for {}", table.getTable());
+         log.info("");
       }
    }
 }
