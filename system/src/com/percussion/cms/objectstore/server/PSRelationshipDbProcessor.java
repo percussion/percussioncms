@@ -255,7 +255,7 @@ public class PSRelationshipDbProcessor
                         if (!result.get(i).equals(testResult.get(i))) {
                            log.error("non matching item pos " + i);
                            if (result.get(i).getProperties() != testResult.get(i).getProperties()) {
-                              log.error("server props=" + result.get(i).getProperties());
+                              log.error("server props= {} ", result.get(i).getProperties());
                               log.error("cache props=" + result.get(i).getProperties());
                            }
                         }
@@ -1358,9 +1358,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
          }
          Exception e = new Exception(
                "The following trace is for tracking what code performed the deletions, no exception actually occurred.");
-         log.debug("The following " + relationships.size()
-               + " relationship(s) have been deleted: \n" 
-               + buf.toString(), e);
+         log.debug("The following {}  relationship(s) have been deleted: {} \n",relationships.size(), buf.toString(), e);
       }
    }
 
@@ -1603,8 +1601,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
             if (!relationship.isPersisted()) {
                relationship.setPersisted(true);
                if (log.isDebugEnabled())
-                  log.debug("Oops! persisted-flag=FLASE for an existing"
-                          + "relationship id: " + relationship.getId());
+                  log.debug("Oops! persisted-flag=FLASE for an existing relationship id: {} ", relationship.getId());
             }
             updates.add(relationship);
          }
