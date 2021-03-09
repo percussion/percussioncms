@@ -30,6 +30,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -42,6 +44,7 @@ import org.xml.sax.SAXException;
  */
 public class PSProcessManager
 {
+   private static final Logger log = LogManager.getLogger(PSProcessManager.class);
    /**
     * Loads the process defintions from the specified Xml file input stream.
     * This Xml file must conform to the "sys_processes.dtd".
@@ -167,7 +170,7 @@ public class PSProcessManager
       {
          throw new IllegalArgumentException("message cannot be null or empty");
       }
-      System.out.println(message);
+      log.info(message);
    }
 
    /**

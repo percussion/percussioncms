@@ -33,6 +33,8 @@ import java.io.Writer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A wrapper around the Java <code>Process</code> class that adds output 
@@ -43,6 +45,8 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSProcessAction implements Runnable
 {
+   private static final Logger log = LogManager.getLogger(PSProcessAction.class);
+
    public static void main(String[] args)
       throws Exception
    {
@@ -83,12 +87,12 @@ public class PSProcessAction implements Runnable
             frag = buf.toString();
             buf.delete(0, buf.length());
          }
-         System.out.print(frag);
+         log.info(frag);
          local.append(frag);
          Thread.sleep(1000);
          if (local.toString().toLowerCase().indexOf("press") > 0)
             done = true;
-         System.out.print("X");
+         log.info("X");
       }
    }
 

@@ -23,6 +23,9 @@
  */
 package com.percussion.util;
 import com.percussion.server.PSRequestParsingException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +36,7 @@ import java.util.StringTokenizer;
  */
 public class PSParseUrlQueryString
 {
+   private static final Logger log = LogManager.getLogger(PSParseUrlQueryString.class);
    /**
     * Add the request parameters defined in the specified parameter string
     * to the specified hash map.
@@ -263,6 +267,6 @@ public class PSParseUrlQueryString
          // TODO Auto-generated catch block
          e.printStackTrace();
       }
-      System.out.print(params);
+      log.info(params);
    }
 }
