@@ -311,7 +311,7 @@ public class PSProperties implements IPSComponent
     * <code>setProperty(String, String), but never
     * <code>null</code>
     */
-   private Map<String, Object> m_props = new HashMap<String, Object>();
+   private Map<String, Object> m_props = new HashMap<>();
 
    /**
     * The constant to indicate root node name.
