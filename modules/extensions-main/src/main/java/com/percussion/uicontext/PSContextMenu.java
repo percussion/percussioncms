@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,29 +24,20 @@
 
 package com.percussion.uicontext;
 
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.extension.IPSResultDocumentProcessor;
-import com.percussion.extension.PSExtensionException;
-import com.percussion.extension.PSExtensionProcessingException;
-import com.percussion.extension.PSParameterMismatchException;
+import com.percussion.extension.*;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSConsole;
 import com.percussion.server.PSServerBrand;
 import com.percussion.util.IPSBrandCodeConstants;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.*;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import java.util.Map;
 
 /**
  * This exit expands the context menu action list in the result XML document by
@@ -113,7 +104,7 @@ public class PSContextMenu implements IPSResultDocumentProcessor
       if(rxAppResource.startsWith("/"))
          rxAppResource = rxAppResource.substring(1);
 
-      HashMap htmlParams = request.getParameters();
+      Map<String,Object> htmlParams = request.getParameters();
       ArrayList itemsRendered = new ArrayList();
 
       NodeList nl = resDoc.getDocumentElement().getElementsByTagName(ELEM_ACTION);
@@ -189,7 +180,7 @@ public class PSContextMenu implements IPSResultDocumentProcessor
    {
       if ((actionNodeList == null) || (actionNodeList.getLength() < 1))
          return;
-      if (removeMenuItemsList.size() < 1)
+      if (removeMenuItemsList.isEmpty())
          return;
 
       Element actionElem = null;
@@ -244,7 +235,7 @@ public class PSContextMenu implements IPSResultDocumentProcessor
       try
       {
          // query the child actions of the supplied action element
-         HashMap params = new HashMap();
+         HashMap<String,Object> params = new HashMap<>();
          params.put(ATTR_ACTIONID, actionid);
          params.put(ATTR_MODEID, modeid);
          params.put(ATTR_UICONTEXTID, uicontextid);
@@ -259,7 +250,8 @@ public class PSContextMenu implements IPSResultDocumentProcessor
          }
          finally
          {
-            iReq.cleanUp();
+            if(iReq!= null)
+               iReq.cleanUp();
          }
          elemRes = (Element)parent.getOwnerDocument().importNode(
                doc.getDocumentElement(), true);
@@ -350,7 +342,7 @@ public class PSContextMenu implements IPSResultDocumentProcessor
       for(int i=0; i<nl.getLength(); i++)
       {
          elem = (Element)nl.item(i);
-         if(!elem.getAttribute("actionid").equals(""))
+         if(!elem.getAttribute(ATTR_ACTIONID).equals(""))
          {
             res = true;
             break;
@@ -366,85 +358,85 @@ public class PSContextMenu implements IPSResultDocumentProcessor
     * @return <code>true</code> for more than one language enabled,
     * <code>false</code> otherwise.
     */
-   private boolean addTranslateAction(IPSRequestContext request)
-   {
+   private boolean addTranslateAction(IPSRequestContext request) {
       Document doc = null;
       IPSInternalRequest iReq = null;
       NodeList nl = null;
-      try{
-            iReq = request.getInternalRequest(LOCALE_REQUEST);
-            iReq.makeRequest();
-            doc = iReq.getResultDoc();
-      }
-      catch(Exception e){
+      try {
+         iReq = request.getInternalRequest(LOCALE_REQUEST);
+         iReq.makeRequest();
+         doc = iReq.getResultDoc();
+      } catch (Exception e) {
          PSConsole.printMsg("Exit:" + ms_fullExtensionName, e);
+      } finally {
+         if (iReq != null)
+            iReq.cleanUp();
       }
-      finally
-      {
-         iReq.cleanUp();
+      if (doc != null){
+         nl = doc.getElementsByTagName(ELEM_LANG);
       }
-      nl = doc.getElementsByTagName(ELEM_LANG);
+      
       return nl!=null && nl.getLength()>1;
    }
    /**
     * The fully qualified name of this extension.
     */
-   static private String ms_fullExtensionName = "";
+   private String ms_fullExtensionName = "";
 
    /**
     * The internal request resource name to get the child menu tree given the
     * parent information
     */
-   static private final String REQUEST_NAME = "actionlistchildren";
+   private static final String REQUEST_NAME = "actionlistchildren";
 
    /**
     * Name of the Action List element
     */
-   static private final String ELEM_ACTION_LIST = "ActionList";
+   private static final String ELEM_ACTION_LIST = "ActionList";
 
    /**
     * Name of the Action element
     */
-   static private final String ELEM_ACTION = "Action";
+   private static final String ELEM_ACTION = "Action";
 
    /**
     * Name of the attribute/html parameter for actionid
     */
-   static private final String ATTR_ACTIONID = "actionid";
+   private static final String ATTR_ACTIONID = "actionid";
 
    /**
     * Name of the attribute/html parameter for name
     */
-   static private final String ATTR_NAME = "name";
+   private static final String ATTR_NAME = "name";
 
    /**
     * Name of the translate action
     */
-   static private final String ACTION_TRANSLATE = "Translate";
+   private static final String ACTION_TRANSLATE = "Translate";
 
    /**
     * Name of the "Active Assembly for Documents" action
     */
-   static private final String ACTION_DOC_ASSEMBLER = "Item_Assembly";
+   private static final String ACTION_DOC_ASSEMBLER = "Item_Assembly";
 
    /**
     * Name of the attribute/html parameter for modeid
     */
-   static private final String ATTR_MODEID = "modeid";
+   private static final String ATTR_MODEID = "modeid";
 
    /**
     * Name of the attribute/html parameter for uicontextid
     */
-   static private final String ATTR_UICONTEXTID = "uicontextid";
+   private static final String ATTR_UICONTEXTID = "uicontextid";
 
    /**
     * the internal request to get the locales
     */
-   static private final String LOCALE_REQUEST = "sys_i18nSupport/locale";
+   private static final String LOCALE_REQUEST = "sys_i18nSupport/locale";
 
    /**
     * Name of the language element
     */
-   static private final String ELEM_LANG = "lang";
+   private static final String ELEM_LANG = "lang";
 
 }

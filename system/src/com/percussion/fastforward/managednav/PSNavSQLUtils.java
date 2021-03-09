@@ -25,7 +25,8 @@ package com.percussion.fastforward.managednav;
 
 import com.percussion.extension.services.PSDatabasePool;
 import com.percussion.util.PSSqlHelper;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -64,7 +65,8 @@ public class PSNavSQLUtils
       }
       catch (Exception e)
       {
-         ms_log.error("SQL Error", e);
+         log.error("SQL Error {}", e.getMessage());
+         log.debug(e.getMessage(),e);
          throw new PSNavException(e);
       }
       return conn;
@@ -84,7 +86,8 @@ public class PSNavSQLUtils
       }
       catch (Exception e)
       {
-         ms_log.error("SQL Error", e);
+         log.error("SQL Error {}", e.getMessage());
+         log.debug(e.getMessage(),e);
          throw new PSNavException(e);
       }
    }
@@ -109,7 +112,8 @@ public class PSNavSQLUtils
          }
          catch (SQLException e)
          {
-            ms_log.error("Closing result set", e);
+            log.error("Closing result set {}", e.getMessage());
+            log.debug(e.getMessage(),e);
          }
       }
       if (stmt != null)
@@ -120,7 +124,8 @@ public class PSNavSQLUtils
          }
          catch (SQLException e2)
          {
-            ms_log.error("Closing SQL statement ", e2);
+            log.error("Closing SQL statement {}", e2.getMessage());
+            log.debug(e2.getMessage(),e2);
          }
       }
       if (conn != null)
@@ -155,6 +160,6 @@ public class PSNavSQLUtils
    /**
     * Writes the log.
     */
-   private static Logger ms_log = Logger.getLogger(PSNavSQLUtils.class);
+   private static Logger log = LogManager.getLogger(PSNavSQLUtils.class);
 
 }

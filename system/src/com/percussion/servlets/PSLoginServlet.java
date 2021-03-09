@@ -38,8 +38,6 @@ import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.tools.IPSUtilsConstants;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.security.auth.login.LoginException;
 import javax.servlet.ServletException;
@@ -52,6 +50,8 @@ import java.net.URISyntaxException;
 import com.percussion.auditlog.PSActionOutcome;
 import com.percussion.auditlog.PSAuditLogService;
 import com.percussion.auditlog.PSAuthenticationEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -509,7 +509,7 @@ public class PSLoginServlet extends HttpServlet
    /**
     * logger
     */
-   private static Log ms_log = LogFactory.getLog(PSLoginServlet.class);
+   private static final Logger ms_log = LogManager.getLogger(PSLoginServlet.class);
 
    /**
     * The Content-Type header value to set when returning included pages,
@@ -522,5 +522,5 @@ public class PSLoginServlet extends HttpServlet
    /**
     * Static logger
     */
-   private Log m_log = LogFactory.getLog(PSLoginServlet.class);
+   private Logger m_log = LogManager.getLogger(PSLoginServlet.class);
 }

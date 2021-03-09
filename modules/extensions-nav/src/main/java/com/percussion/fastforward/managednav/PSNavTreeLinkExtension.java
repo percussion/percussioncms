@@ -37,7 +37,8 @@ import com.percussion.util.IPSHtmlParameters;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 /**
@@ -82,7 +83,7 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
          IPSRequestContext req, Document resultDoc)
          throws PSParameterMismatchException, PSExtensionProcessingException
    {
-      ms_log.debug("start of NavTreeLinkExtension");
+      log.debug("start of NavTreeLinkExtension");
       try
       {
          Document rDoc = getTreeVariantXMLClean(req, null);
@@ -92,9 +93,9 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
       catch (PSNavException e)
       {
          req.printTraceMessage(e.getMessage());
-         ms_log.error("PSNavException found:" + e.getMessage());
-         ms_log.error(this.getClass().getName(), e);
-         System.out.println(e.getMessage());
+         log.error("PSNavException found: {}", e.getMessage());
+         log.error(this.getClass().getName(), e);
+         log.error(e.getMessage());
          e.printStackTrace();
 
          throw new PSExtensionProcessingException(0, e.getMessage());
@@ -102,8 +103,9 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
       }
       catch (Exception ex)
       {
-         ms_log.error("unexcepted exception");
-         ms_log.error(this.getClass().getName(), ex);
+         log.error("unexcepted exception");
+         log.error(this.getClass().getName(), ex);
+         log.debug(ex.getMessage(),ex);
          ex.printStackTrace();
          throw new PSExtensionProcessingException(this.getClass().getName(), ex);
       }
@@ -123,18 +125,18 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
    public static Document getTreeVariantXMLClean(IPSRequestContext req,
          PSLocator loc) throws PSNavException
    {
-      ms_log.debug("loading Clean XML");
+      log.debug("loading Clean XML");
       Map landingPageParams = PSNavXMLUtils.getLandingPageMap(req);
 
       if (loc == null)
       {
-         ms_log.debug("getting root from current request");
+         log.debug("getting root from current request");
          loc = new PSLocator(req.getParameter(IPSHtmlParameters.SYS_CONTENTID),
                req.getParameter(IPSHtmlParameters.SYS_REVISION));
       }
       PSNavonStack stack = new PSNavonStack(req, loc);
       
-      ms_log.debug("Request for XML from cache");
+      log.debug("Request for XML from cache");
     
       Document resDoc = getTreeVariantXMLRoot(req, stack.peek()
             .getCurrentLocator());
@@ -159,10 +161,10 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
    public static Document getTreeVariantXMLRaw(IPSRequestContext req,
          PSLocator loc) throws PSNavException
    {
-      ms_log.debug("loading Raw XML");
+      log.debug("loading Raw XML");
       if (loc == null)
       {
-         ms_log.debug("getting root from current request");
+         log.debug("getting root from current request");
          loc = new PSLocator(req.getParameter(IPSHtmlParameters.SYS_CONTENTID),
                req.getParameter(IPSHtmlParameters.SYS_REVISION));
       }
@@ -187,17 +189,17 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
    {
       PSNavConfig config = PSNavConfig.getInstance(req);
 
-      ms_log.debug("Loading Root XML");
+      log.debug("Loading Root XML");
 
       PSContentTypeVariant treeVar = config.getTreeVariant();
       if (treeVar == null)
       {
          String errMsg = "Tree Variant not found, check configuration";
-         ms_log.error(errMsg);
+         log.error(errMsg);
          throw new PSNavException(errMsg);
       }
       String treeURL = treeVar.getAssemblyUrl();
-      ms_log.debug("Tree Assembler URL is " + treeURL);
+      log.debug("Tree Assembler URL is {}", treeURL);
 
       Map intParams = new HashMap();
 
@@ -210,23 +212,23 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
 
       if (loc != null)
       {
-         ms_log.debug("Overriding Content Id and Revision");
+         log.debug("Overriding Content Id and Revision");
          intParams.put(IPSHtmlParameters.SYS_CONTENTID, loc
                .getPart(PSLocator.KEY_ID));
-         ms_log.debug("Content Id " + loc.getPart(PSLocator.KEY_ID));
+         log.debug("Content Id {}", loc.getPart(PSLocator.KEY_ID));
          intParams.put(IPSHtmlParameters.SYS_REVISION, loc
                .getPart(PSLocator.KEY_REVISION));
-         ms_log.debug("Revision " + loc.getPart(PSLocator.KEY_REVISION));
+         log.debug("Revision {}", loc.getPart(PSLocator.KEY_REVISION));
       }
       else
       {
-         ms_log.debug("Using default content id and revision");
+         log.debug("Using default content id and revision");
          PSNavUtil.copyParam(req, intParams, IPSHtmlParameters.SYS_CONTENTID);
          PSNavUtil.copyParam(req, intParams, IPSHtmlParameters.SYS_REVISION);
       }
 
       String variantId = String.valueOf(treeVar.getVariantId());
-      ms_log.debug("Tree Variant is " + variantId);
+      log.debug("Tree Variant is {}", variantId);
       intParams.put(IPSHtmlParameters.SYS_VARIANTID, variantId);
 
       // retrieves the cached XML document object from the NavConfig. This is
@@ -234,8 +236,8 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
       // assembly cache with a big "maxPageSize", so we don't have to cache
       // the huge tree along with other huge binary data.
             
-      ms_log.debug("calling NavTree variant - with new cache (on3)");
-      PSNavUtil.logMap(intParams, "Tree Variant Parameters", ms_log);
+      log.debug("calling NavTree variant - with new cache (on3)");
+      PSNavUtil.logMap(intParams, "Tree Variant Parameters", log);
 
       Document resDoc = config.retrieveNavTreeXML(intParams);
       
@@ -246,12 +248,12 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
          if (intReq == null)
          {
             String errMsg = "Cannot locate assembler for tree. Check configuration";
-            ms_log.error(errMsg);
+            log.error(errMsg);
             throw new PSNavException(errMsg);
           }
           try
           {
-            ms_log.debug("loading variant document");
+            log.debug("loading variant document");
             resDoc = intReq.getResultDoc();
           }
           catch (PSInternalRequestCallException e)
@@ -260,19 +262,20 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
           }
           catch (Exception ex)
           {
-            ms_log.error(PSNavTreeXMLUtils.class.getName(), ex);
+            log.error(PSNavTreeXMLUtils.class.getName(), ex);
+            log.debug(ex.getMessage(),ex);
             throw new PSNavException(PSNavTreeLinkExtension.class, ex);
           }
 
-          ms_log.debug("Storing XML document in cache");
+          log.debug("Storing XML document in cache");
           config.storeNavTreeXML(resDoc, intParams);
       }
       else 
       {
-          ms_log.debug("Got XML document from cache");
+          log.debug("Got XML document from cache");
       }
-      //ms_log.debug("XML="+PSXMLDomUtil.toString(resDoc.getDocumentElement()));
-      ms_log.debug("Variant id = " + req.getParameter(IPSHtmlParameters.SYS_VARIANTID));
+      //log.debug("XML="+PSXMLDomUtil.toString(resDoc.getDocumentElement()));
+      log.debug("Variant id = {}", req.getParameter(IPSHtmlParameters.SYS_VARIANTID));
       PSNavXMLUtils.overrideTheme(req, resDoc);
       return resDoc;
    }
@@ -280,6 +283,6 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(PSNavTreeLinkExtension.class);
+   private static Logger log = LogManager.getLogger(PSNavTreeLinkExtension.class);
 
 }

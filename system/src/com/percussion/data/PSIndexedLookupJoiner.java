@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -31,7 +31,7 @@ import com.percussion.server.PSApplicationHandler;
 import com.percussion.server.PSRequest;
 
 import java.sql.ResultSet;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The PSIndexedLookupJoiner class is used internally by the E2 server to
@@ -111,8 +111,6 @@ public class PSIndexedLookupJoiner extends PSQueryJoiner
     *                   as well as a collection of result sets generated
     *                   by queries.
     *
-    * @exception   SQLException
-    *                     if a SQL error occurs
     */
    public void execute(PSExecutionData data)
          throws java.sql.SQLException,
@@ -197,7 +195,7 @@ public class PSIndexedLookupJoiner extends PSQueryJoiner
       int rowsProcessed = 0;
 
       PSRequest request = execData.getRequest();
-      HashMap params = request.getParameters();
+      Map<String,Object> params = request.getParameters();
       String paramName = "$$E2IndexedJoiner_" + m_leftColumn;
       Object keyData;
       while (rowData.readLeftRow()) {

@@ -48,7 +48,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 
@@ -107,7 +109,7 @@ public class PSLuceneAnalyzerFactory
                String msg = "Registered locale "
                      + language
                      + " is not currently supported by the CMS";
-               ms_log.error(msg);
+               log.error(msg);
             }
             IPSExtension ext = manager.prepareExtension(extensionCall
                   .getExtensionRef(), null);
@@ -127,7 +129,7 @@ public class PSLuceneAnalyzerFactory
                      + language
                      + " for lucene text analysis is not an instance of " +
                            "IPSLuceneAnalyzer";
-               ms_log.error(msg);
+               log.error(msg);
             }
          }
          catch (PSNotFoundException | PSExtensionException e)
@@ -137,7 +139,7 @@ public class PSLuceneAnalyzerFactory
                   + " with locale "
                   + language
                   + " for lucene text analysis";
-            ms_log.error(msg,e);
+            log.error(msg,e);
          } catch (PSExtensionProcessingException e)
          {
             String msg = "Failed to get the Analyzer object for registered " +
@@ -146,11 +148,11 @@ public class PSLuceneAnalyzerFactory
                   + " with locale "
                   + language
                   + " for lucene text analysis";
-            ms_log.error(msg,e);
+            log.error(msg,e);
          }
          catch (PSLocaleException e)
          {
-            ms_log
+            log
             .error(
                   "Failed to get the instance of locale manager skipping " +
                   "analyzer check for system locales.",
@@ -178,13 +180,13 @@ public class PSLuceneAnalyzerFactory
                      + ls
                      + "\". WhiteSpaceAnalyzer will be used for indexing and " +
                            "searching content.";
-               ms_log.info(msg);
+               log.info(msg);
             }
          }
       }
       catch (PSLocaleException e)
       {
-         ms_log
+         log
                .info(
                      "Failed to get the instance of locale manager skipping " +
                      "analyzer check for system locales.",
@@ -235,7 +237,7 @@ public class PSLuceneAnalyzerFactory
       try {
          al = defaultAnalyzers.getAnalyzer(languageString);
       } catch (PSExtensionProcessingException e) {
-         ms_log.warn("Unable to detect Analyzer for Locale: " +  languageString + ", defaulting to Whitespace Analyzer.");
+         log.warn("Unable to detect Analyzer for Locale: {} , defaulting to Whitespace Analyzer.", languageString);
       }
 
       if(al == null)
@@ -267,7 +269,7 @@ public class PSLuceneAnalyzerFactory
     * It is a map of language string and the corresponding Analyzer. Filled in
     * constructor.
     */
-   private Map<String, Analyzer> m_analyzers = new HashMap<String, Analyzer>();
+   private Map<String, Analyzer> m_analyzers = new HashMap<>();
 
 
    /**
@@ -279,5 +281,5 @@ public class PSLuceneAnalyzerFactory
    /**
     * Static instance of logger for this class.
     */
-   private static Logger ms_log = Logger.getLogger(PSLuceneAnalyzerFactory.class);
+   private static Logger log = LogManager.getLogger(PSLuceneAnalyzerFactory.class);
 }

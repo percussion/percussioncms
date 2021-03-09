@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,32 +25,20 @@ package com.percussion.server.agent;
 
 import com.percussion.conn.PSServerException;
 import com.percussion.data.PSXslStyleSheetMerger;
-import com.percussion.server.IPSLoadableRequestHandler;
-import com.percussion.server.PSConsole;
-import com.percussion.server.PSRequest;
-import com.percussion.server.PSResponse;
-import com.percussion.server.PSServer;
+import com.percussion.server.*;
 import com.percussion.tools.Base64;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
-import javax.xml.parsers.DocumentBuilder;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import java.util.*;
 
 /**
  * Class to handle the agent HTTP requests from the clients. Standard
@@ -229,7 +217,7 @@ public class PSAgentRequestHandler implements IPSLoadableRequestHandler
             return;
          }
 
-         HashMap map = request.getParameters();
+         Map<String, Object> map = request.getParameters();
 
          /* This is not exactly right error since the map is NULL. However it
           * is not unreasonable to say editionid is not specified when the map

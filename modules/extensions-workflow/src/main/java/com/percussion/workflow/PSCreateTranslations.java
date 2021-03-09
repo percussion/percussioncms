@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -29,19 +29,10 @@ import com.percussion.cms.handlers.PSRelationshipCommandHandler;
 import com.percussion.cms.objectstore.IPSRelationshipProcessor;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
-import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.design.objectstore.PSRelationship;
-import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.design.objectstore.*;
 import com.percussion.error.PSException;
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.extension.IPSWorkFlowContext;
-import com.percussion.extension.IPSWorkflowAction;
-import com.percussion.extension.PSExtensionException;
-import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.extension.*;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.IPSServerErrors;
@@ -50,25 +41,13 @@ import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCms;
+import org.w3c.dom.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-import java.util.StringTokenizer;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
+import java.util.*;
 
 /**
  * This workflow action translates the current item to ALL untranslated 
@@ -261,7 +240,7 @@ public class PSCreateTranslations implements IPSWorkflowAction
       paramMap.put(IPSHtmlParameters.SYS_CONTENTID, "" + locator.getId());
       paramMap.put(IPSHtmlParameters.SYS_REVISION, "" + locator.getRevision());
 
-      HashMap originalMap = request.getParameters();
+      Map<String,Object> originalMap = request.getParameters();
       IPSInternalRequest ir = null;
       try
       {
