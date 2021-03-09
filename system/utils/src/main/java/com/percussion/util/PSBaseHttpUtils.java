@@ -63,66 +63,40 @@ public class PSBaseHttpUtils
     static String readStatusLine(PushbackInputStream in)
             throws IOException
     {
-        java.io.ByteArrayOutputStream bout = new java.io.ByteArrayOutputStream(100);
+        try(java.io.ByteArrayOutputStream bout = new java.io.ByteArrayOutputStream(100)) {
 
-        // DBG>
-        // StringBuffer DBG_bytes = new StringBuffer();
-        // <DBG
-
-        // first read the raw bytes up to the line terminator
-        // (\r and \n are the same in all ASCII-compatible character sets)
-        int c;
-        for (c = in.read(); c != -1; c = in.read())
-        {
-            // DBG>
-            // DBG_bytes.append(Integer.toHexString(c));
-            // DBG_bytes.append(" ");
-            // DBG>
-            if (c == '\n') {
-                break;
-            }
-            else if (c == '\r') {
-                // if this is '\r', does '\n' follow (which should be skipped)
-                c = in.read();
-                if (c != '\n')
-                {
-                    in.unread(c);
+            // first read the raw bytes up to the line terminator
+            // (\r and \n are the same in all ASCII-compatible character sets)
+            int c;
+            for (c = in.read(); c != -1; c = in.read()) {
+                if (c == '\n') {
+                    break;
+                } else if (c == '\r') {
+                    // if this is '\r', does '\n' follow (which should be skipped)
+                    c = in.read();
+                    if (c != '\n') {
+                        in.unread(c);
+                    }
+                    break;
+                } else {
+                    bout.write(c);
                 }
-                break;
             }
-            else {
-                bout.write(c);
+
+            // now try to guess the encoding of these bytes (Latin or UTF8) ?
+            byte[] bytes = bout.toByteArray();
+            String ret;
+            final int enc = PSCharSets.guessEncoding(bytes);
+            if ((PSCharSets.CS_UTF8 & enc) != 0) {
+                ret = new String(bytes, StandardCharsets.UTF_8);
+            } else if ((PSCharSets.CS_ISO8859_1 & enc) != 0) {
+                ret = new String(bytes, "ISO8859_1");
+            } else {
+                ret = new String(bytes, StandardCharsets.UTF_8);
             }
-        }
 
-        // now try to guess the encoding of these bytes (Latin or UTF8) ?
-        byte[] bytes = bout.toByteArray();
-        String ret;
-        final int enc = PSCharSets.guessEncoding(bytes);
-        if ((PSCharSets.CS_UTF8 & enc) != 0)
-        {
-            // System.out.println("Interpreted as UTF-8");
-            ret = new String(bytes, StandardCharsets.UTF_8);
+            return ret;
         }
-        else if ((PSCharSets.CS_ISO8859_1 & enc) != 0)
-        {
-            // System.out.println("Interpreted as ISO-8859-1");
-            ret = new String(bytes, "ISO8859_1");
-        }
-        else
-        {
-            // TODO: the browser sent invalid bytes!
-            // maybe we should warn about this...
-            // System.out.println("Interpreted as UTF-8");
-            ret = new String(bytes, StandardCharsets.UTF_8);
-        }
-
-        // DBG>
-        // System.out.println("bytes=" + DBG_bytes.toString());
-        // System.out.println("chars=" + ret.toString());
-        // <DBG
-
-        return ret;
     }
 
     /**

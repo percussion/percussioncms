@@ -30,6 +30,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.*;
 
 /**
@@ -288,30 +290,22 @@ public class PSJdbcTableSchemaCollection extends PSCollection
          System.exit(1);
       }
 
-      java.io.FileInputStream in = null;
-      java.io.FileOutputStream out = null;
       try
       {
          PSJdbcDataTypeMap map = new PSJdbcDataTypeMap("MSSQL", "inetdae7",
             null);
-         in = new java.io.FileInputStream(args[0]);
+         try(FileInputStream in = new java.io.FileInputStream(args[0])){
          Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
          PSJdbcTableSchemaCollection coll = new PSJdbcTableSchemaCollection(
-            doc, map);
-         out = new java.io.FileOutputStream(args[0] + ".tst");
-         PSXmlDocumentBuilder.write(coll.toXml(doc), out);
+                 doc, map);
+         try(FileOutputStream out = new java.io.FileOutputStream(args[0] + ".tst")) {
+            PSXmlDocumentBuilder.write(coll.toXml(doc), out);
+         }
+      }
       }
       catch (Throwable t)
       {
          t.printStackTrace(System.out);
-      }
-      finally
-      {
-         if (in != null)
-            try{in.close();} catch(Exception e){}
-
-         if (out != null)
-            try{out.close();} catch(Exception e){}
       }
    }
 
