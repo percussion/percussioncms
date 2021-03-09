@@ -336,8 +336,9 @@ public class RhythmyxServlet extends PSServletBase
                   } catch (Throwable e) {
                      // Workaround for case where only a Writer is available
                      respWriterOut = resp.getWriter();
-                     InputStreamReader inreader = new InputStreamReader(in);
-                     passThroughData(inreader, respWriterOut);
+                     try(InputStreamReader inreader = new InputStreamReader(in)) {
+                        passThroughData(inreader, respWriterOut);
+                     }
                   }
                   m_logger.debug("Sent response size=" +
                           String.valueOf(resp.getBufferSize()));
@@ -567,18 +568,17 @@ public class RhythmyxServlet extends PSServletBase
       // now, if a post, see if we have a body
       if (isPost)
       {
-         try
-         {
-         InputStream in = req.getInputStream();
-         passThroughData(in, out);
+         try(InputStream in = req.getInputStream()){
+             passThroughData(in, out);
          }
          catch(IllegalStateException e)
          {
             // If the servlet is already being read via a Reader, it is illegal to
             // open an input stream. Instead the reader must be used
          Reader reader = req.getReader();
-         OutputStreamWriter writer = new OutputStreamWriter(out);
-         passThroughData(reader, writer);
+         try(OutputStreamWriter writer = new OutputStreamWriter(out)) {
+            passThroughData(reader, writer);
+         }
          }
       }
    }

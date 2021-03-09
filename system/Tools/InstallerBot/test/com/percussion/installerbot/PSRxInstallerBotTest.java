@@ -295,16 +295,13 @@ public class PSRxInstallerBotTest extends MockObjectTestCase
          void parseValues(Properties properties, StringBuffer message) {}
          
       };
-      final InputStream in = bot.openDefaultConfiguration();
-      try {
+      try(final InputStream in = bot.openDefaultConfiguration()){
+
          final Properties properties = new Properties();
          properties.load(in);
          assertNull(bot.parseConfiguration(properties), bot.parseConfiguration(properties));
       }
-      finally
-      {
-         in.close();
-      }
+
    }
 
    /**

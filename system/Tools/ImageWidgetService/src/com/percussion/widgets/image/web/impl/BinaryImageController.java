@@ -83,11 +83,12 @@ package com.percussion.widgets.image.web.impl;
           log.debug("image size is " + sz);
           response.setContentLength(sz);
           response.setStatus(200);
-          ServletOutputStream ostream = response.getOutputStream();
-          ostream.write(data.getBinary());
-          ostream.flush();
-          response.flushBuffer();
-         return null;
+          try(ServletOutputStream ostream = response.getOutputStream()) {
+              ostream.write(data.getBinary());
+              ostream.flush();
+              response.flushBuffer();
+              return null;
+          }
           }
        String emsg = "Image is empty";
        log.info(emsg);

@@ -26,8 +26,6 @@ package com.percussion.rxverify.modules;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Properties;
 
 /**
