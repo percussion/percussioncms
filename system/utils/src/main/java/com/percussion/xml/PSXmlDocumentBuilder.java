@@ -623,45 +623,30 @@ public class PSXmlDocumentBuilder {
             encoding = "UTF8";
         }
 
-        ByteArrayInputStream is = null;
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        try(ByteArrayOutputStream os = new ByteArrayOutputStream()) {
 
-        try {
+
             String preProcessed = source;
 
             if (serverPageTags != null) {
                 preProcessed = serverPageTags.preProcess(preProcessed);
             }
 
-            is = new ByteArrayInputStream(preProcessed.getBytes(encoding));
-            tidy.parseDOM(is, os);
+            try (InputStream is = new ByteArrayInputStream(preProcessed.getBytes(encoding))) {
+                tidy.parseDOM(is, os);
 
-            if (tidy.getParseErrors() > 0) {
-                throw new RuntimeException(tidyErrors.toString());
-            }
-
-            /**
-             * Return the tidied source with the XML header and the default
-             * entitied added.
-             */
-            return os.toString("UTF8") +
-            "<?xml version='1.0' encoding=\"UTF-8\"?>" + NEWLINE +
-            "<!DOCTYPE html [" + getDefaultEntities(serverRoot) + "]>" +
-            NEWLINE + NEWLINE;
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (Exception e) { /* ignore */
+                if (tidy.getParseErrors() > 0) {
+                    throw new RuntimeException(tidyErrors.toString());
                 }
-            }
 
-            if (os != null) {
-                try {
-                    os.flush();
-                    os.close();
-                } catch (Exception e) { /* ignore */
-                }
+                /**
+                 * Return the tidied source with the XML header and the default
+                 * entitied added.
+                 */
+                return os.toString("UTF8") +
+                        "<?xml version='1.0' encoding=\"UTF-8\"?>" + NEWLINE +
+                        "<!DOCTYPE html [" + getDefaultEntities(serverRoot) + "]>" +
+                        NEWLINE + NEWLINE;
             }
         }
     }
@@ -1062,9 +1047,10 @@ public class PSXmlDocumentBuilder {
             throw new IllegalArgumentException("out may not be null");
         }
 
-        Writer w = new OutputStreamWriter(out, IPSUtilsConstants.RX_JAVA_ENC);
-        PSXmlTreeWalker walker = new PSXmlTreeWalker(doc);
-        walker.write(w, true, false, false, IPSUtilsConstants.RX_STANDARD_ENC);
+        try(Writer w = new OutputStreamWriter(out, IPSUtilsConstants.RX_JAVA_ENC)) {
+            PSXmlTreeWalker walker = new PSXmlTreeWalker(doc);
+            walker.write(w, true, false, false, IPSUtilsConstants.RX_STANDARD_ENC);
+        }
     }
 
     /**
@@ -1131,20 +1117,21 @@ public class PSXmlDocumentBuilder {
                 "dtdPath can not be null or empty");
         }
 
-        Writer w = new OutputStreamWriter(out, IPSUtilsConstants.RX_JAVA_ENC);
-        PSXmlTreeWalker walker = new PSXmlTreeWalker(doc);
+        try(Writer w = new OutputStreamWriter(out, IPSUtilsConstants.RX_JAVA_ENC)) {
+            PSXmlTreeWalker walker = new PSXmlTreeWalker(doc);
 
-        if (doc.getDocumentElement() != null) {
-            writeXmlHeader(doc, w, IPSUtilsConstants.RX_STANDARD_ENC);
+            if (doc.getDocumentElement() != null) {
+                writeXmlHeader(doc, w, IPSUtilsConstants.RX_STANDARD_ENC);
 
-            if (doc.getDoctype() == null) {
-                w.write(("<!DOCTYPE " + doc.getDocumentElement().getTagName() +
-                    " SYSTEM \"" + dtdPath + "\">" +
-                    System.getProperty("line.separator")));
+                if (doc.getDoctype() == null) {
+                    w.write(("<!DOCTYPE " + doc.getDocumentElement().getTagName() +
+                            " SYSTEM \"" + dtdPath + "\">" +
+                            System.getProperty("line.separator")));
+                }
             }
-        }
 
-        walker.write(w, true, true, true, IPSUtilsConstants.RX_STANDARD_ENC);
+            walker.write(w, true, true, true, IPSUtilsConstants.RX_STANDARD_ENC);
+        }
     }
 
     /**
@@ -1221,7 +1208,9 @@ public class PSXmlDocumentBuilder {
      */
     public static void write(Element node, OutputStream out)
         throws java.io.IOException {
-        write(node, new OutputStreamWriter(out));
+        try(OutputStreamWriter os = new OutputStreamWriter(out)) {
+            write(node, os);
+        }
     }
 
     /**
@@ -1698,18 +1687,17 @@ public class PSXmlDocumentBuilder {
             }
         }
 
-        try {
-            InputSource in = new InputSource(new FileInputStream(inputFile));
+        try (FileInputStream fs = new FileInputStream(inputFile)){
+            InputSource in = new InputSource(fs);
             Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
             int flags = FLAG_NO_INDENT;
-
             // int flags = 0;
             String str = PSXmlDocumentBuilder.toString(doc, flags);
             System.out.println(str);
 
-            FileWriter fos = new FileWriter(outputFile);
-            fos.write(str);
-            fos.close();
+            try(FileWriter fos = new FileWriter(outputFile)) {
+                fos.write(str);
+            }
         } catch (Throwable t) {
             System.out.println(t.getMessage());
             t.printStackTrace();

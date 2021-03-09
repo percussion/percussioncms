@@ -719,11 +719,11 @@ public class PSWebServices
          try
          {
             Properties props = new Properties();
-            FileInputStream in = new FileInputStream(new File(
+            try(FileInputStream in = new FileInputStream(new File(
                PSServletUtils.getServletDirectory(),
-               "WEB-INF/classes/log4j.properties"));
-            try
-            {
+               "WEB-INF/classes/log4j.properties"))){
+
+
                props.load(in);
             }
             catch (Exception e)

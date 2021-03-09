@@ -420,26 +420,19 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
             throw new IllegalStateException("File contains too much data: " +
                   len + " bytes");
          }
-         ByteArrayOutputStream bos = new ByteArrayOutputStream((int) len);
-         InputStream io = null;
-         try
-         {
-            io = new FileInputStream(m_resultFile);
-            IOUtils.copy(io, bos);
-            m_resultData = bos.toByteArray();
-            m_resultFile.delete();
-            m_resultFile = null;
-            return m_resultData;
+         try(ByteArrayOutputStream bos = new ByteArrayOutputStream((int) len)){
+            try(InputStream io = new FileInputStream(m_resultFile)) {
+               IOUtils.copy(io, bos);
+               m_resultData = bos.toByteArray();
+               m_resultFile.delete();
+               m_resultFile = null;
+               return m_resultData;
+            }
          }
          catch (IOException e)
          {
             ms_log.error("Couldn't open temp file: " + m_resultFile, e);
             throw new RuntimeException(e);
-         }
-         finally
-         {
-            IOUtils.closeQuietly(io);
-            IOUtils.closeQuietly(bos);
          }
       }
       else
@@ -843,25 +836,21 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
       clearResults();
       if (resultData != null && resultData.length > THRESHOLD)
       {
-         OutputStream os = null;
-         InputStream is = null;
-         try
-         {
+         try {
             m_resultFile = new PSPurgableTempFile("result", ".tmp", m_tempDir);
-            os = new FileOutputStream(m_resultFile);
-            is = new ByteArrayInputStream(resultData); 
-            IOUtils.copy(is, os);
-            return;
+            try (FileOutputStream os = new FileOutputStream(m_resultFile)) {
+               try (ByteArrayInputStream is = new ByteArrayInputStream(resultData)) {
+                  IOUtils.copy(is, os);
+                  return;
+               }
+            }
          }
+
          catch (IOException e)
          {
             ms_log.error("Couldn't create temp file", e);
          }   
-         finally
-         {
-            IOUtils.closeQuietly(os);
-            IOUtils.closeQuietly(is);
-         }
+
       }
       m_resultData = resultData;
    }
@@ -889,16 +878,10 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
       else
       {
          m_resultFile = new PSPurgableTempFile("result", ".tmp", null);
-         OutputStream os = null;
-         try
-         {
-            os = new FileOutputStream(m_resultFile);
+         try(OutputStream os = new FileOutputStream(m_resultFile)){
             IOUtils.copy(is, os);
          }
-         finally
-         {
-            IOUtils.closeQuietly(os);
-         }
+
       }
    }
    

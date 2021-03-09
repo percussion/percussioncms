@@ -39,17 +39,12 @@ import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
 
 import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.ImageWriteParam;
@@ -57,7 +52,6 @@ import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOInvalidTreeException;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
-import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
@@ -71,11 +65,7 @@ import org.apache.commons.lang.Validate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.XMLSerializer;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 public class ImageResizeManagerImpl implements ImageResizeManager
 {
@@ -157,41 +147,38 @@ public class ImageResizeManagerImpl implements ImageResizeManager
 
    private ImageData postProcessImage(ImageData result, BufferedImage outImage)
    {
-      try
-      {
-         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+      try(ByteArrayOutputStream outStream = new ByteArrayOutputStream()) {
          ImageWriter iw = getImageWriter(result.getExt());
          ImageWriteParam iwp = iw.getDefaultWriteParam();
          IIOMetadata metadata = null;
 
-         if (result.getMimeType().equals("image/jpg"))
-         {
+         if (result.getMimeType().equals("image/jpg")) {
             log.debug("compressing a JPEG");
-            
+
             iwp.setCompressionMode(2);
             iwp.setCompressionQuality(this.compression);
          }
          if ((result.getMimeType().equals("image/gif"))
-               && (outImage.getColorModel().hasAlpha()))
-         {
+                 && (outImage.getColorModel().hasAlpha())) {
             log.debug("setting GIF transparency flag");
             metadata = getTransparentMetadata(outImage, iw, iwp);
             log.debug("transparent metadata is " + metadata);
          }
 
-         MemoryCacheImageOutputStream mcios = new MemoryCacheImageOutputStream(
-               outStream);
-         iw.setOutput(mcios);
+         try (MemoryCacheImageOutputStream mcios = new MemoryCacheImageOutputStream(
+                 outStream)) {
+            iw.setOutput(mcios);
 
-         iw.write(null, new IIOImage(outImage, new ArrayList(), metadata), iwp);
-         mcios.flush();
-         outStream.flush();
-         result.setWidth(outImage.getWidth());
-         result.setHeight(outImage.getHeight());
-         result.setSize(outStream.size());
-         log.debug("output size is " + result.getSize());
-         result.setBinary(outStream.toByteArray());
-         return result;
+            iw.write(null, new IIOImage(outImage, new ArrayList(), metadata), iwp);
+            mcios.flush();
+            outStream.flush();
+            result.setWidth(outImage.getWidth());
+            result.setHeight(outImage.getHeight());
+            result.setSize(outStream.size());
+            log.debug("output size is " + result.getSize());
+            result.setBinary(outStream.toByteArray());
+            return result;
+         }
       }
       catch (Exception e)
       {
@@ -596,7 +583,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager
          
          StringWriter out = new StringWriter();
          StreamResult output = new StreamResult(out);
-                
+
          idTransform.transform(input, output);
          log.debug(out.toString());
       }

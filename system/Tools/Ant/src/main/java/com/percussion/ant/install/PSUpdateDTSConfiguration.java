@@ -34,7 +34,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
@@ -74,23 +73,13 @@ public class PSUpdateDTSConfiguration extends PSAction {
     }
 
     private Properties loadPercCatalinaProperties(File percCatalinaFile) throws IOException {
-        InputStream inputStream = null;
         Properties prop = new Properties();
-        try {
-
-            inputStream = new FileInputStream(percCatalinaFile);
-
+        try (FileInputStream inputStream = new FileInputStream(percCatalinaFile)) {
             if (inputStream != null) {
                 prop.load(inputStream);
             } else {
                 throw new FileNotFoundException("property file '" + CATALINA_PROPERTIES + "' not found in the classpath");
             }
-
-
-        } catch (Exception e) {
-            System.out.println("Exception: " + e);
-        } finally {
-            inputStream.close();
         }
         return prop;
     }

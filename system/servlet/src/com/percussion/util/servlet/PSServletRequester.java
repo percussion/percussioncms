@@ -27,6 +27,7 @@ package com.percussion.util.servlet;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -202,8 +203,10 @@ public class PSServletRequester implements IPSRemoteRequesterEx
          PSInternalResponse irsp = new PSInternalResponse(m_response);
          sendRequest(resource, irq, irsp);
          try(ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-            PSHttpUtils.copyStream(irsp.getInputStream(), bos);
-            return bos.toByteArray();
+            try(InputStream is = irsp.getInputStream()) {
+               PSHttpUtils.copyStream(is, bos);
+               return bos.toByteArray();
+            }
          }
       }
       catch (Exception e)

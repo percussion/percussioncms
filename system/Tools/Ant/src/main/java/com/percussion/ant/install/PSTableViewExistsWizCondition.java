@@ -96,8 +96,7 @@ public class PSTableViewExistsWizCondition extends PSAction implements Condition
     */
    private boolean checkExists()
    {
-      FileInputStream in = null;
-      Connection conn = null;
+
       boolean exists = false;
 
       try
@@ -119,42 +118,43 @@ public class PSTableViewExistsWizCondition extends PSAction implements Condition
          if (!(propFile.exists() && propFile.isFile()))
             return false;
 
-         in = new FileInputStream(propFile);
-         Properties props = new Properties();
-         props.load(in);
-         props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
-         PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
-         PSJdbcDataTypeMap dataTypeMap = new PSJdbcDataTypeMap(
-               props.getProperty("DB_BACKEND"),
-               props.getProperty("DB_DRIVER_NAME"), null);
+         try(FileInputStream in = new FileInputStream(propFile)) {
+            Properties props = new Properties();
+            props.load(in);
+            props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
+            PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
+            PSJdbcDataTypeMap dataTypeMap = new PSJdbcDataTypeMap(
+                    props.getProperty("DB_BACKEND"),
+                    props.getProperty("DB_DRIVER_NAME"), null);
 
-         String pw = props.getProperty("PWD");
-         try{
-            pw = PSEncryptor.getInstance("AES",
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(pw);
-         }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-            pw =     PSLegacyEncrypter.getInstance(
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).decrypt(pw,
-                    PSJdbcDbmsDef.getPartOneKey(),null);
-         }
-         conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
-                 props.getProperty("DB_SERVER"),
-                 props.getProperty("DB_NAME"),
-                 props.getProperty("UID"),
-                 pw);
-         
-         PSJdbcTableSchema objectSchema = PSJdbcTableFactory.catalogTable(
-               conn, dbmsDef, dataTypeMap, objectName, false);
+            String pw = props.getProperty("PWD");
+            try {
+               pw = PSEncryptor.getInstance("AES",
+                       PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(pw);
+            } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
+               pw = PSLegacyEncrypter.getInstance(
+                       PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+               ).decrypt(pw,
+                       PSJdbcDbmsDef.getPartOneKey(), null);
+            }
+            try(Connection conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
+                    props.getProperty("DB_SERVER"),
+                    props.getProperty("DB_NAME"),
+                    props.getProperty("UID"),
+                    pw)) {
 
-         exists = (objectSchema != null);
-         if (exists)
-         {
-            // check if the object type matches
-            if (isView && !objectSchema.isView())
-               exists = false;
-            else if (!isView && objectSchema.isView())
-               exists = false;
+               PSJdbcTableSchema objectSchema = PSJdbcTableFactory.catalogTable(
+                       conn, dbmsDef, dataTypeMap, objectName, false);
+
+               exists = (objectSchema != null);
+               if (exists) {
+                  // check if the object type matches
+                  if (isView && !objectSchema.isView())
+                     exists = false;
+                  else if (!isView && objectSchema.isView())
+                     exists = false;
+               }
+            }
          }
       }
       catch (Exception ex)
@@ -162,27 +162,7 @@ public class PSTableViewExistsWizCondition extends PSAction implements Condition
          PSLogger.logInfo("ERROR : " + ex.getMessage());
          PSLogger.logInfo(ex);
       }
-      finally
-      {
-         try
-         {
-            if (in != null)
-               in.close();
-         }
-         catch(Exception e)
-         {
-         }
-         if (conn != null)
-         {
-            try
-            {
-               conn.close();
-            }
-            catch (SQLException e)
-            {
-            }
-         }
-      }
+
       return exists;
    }
 

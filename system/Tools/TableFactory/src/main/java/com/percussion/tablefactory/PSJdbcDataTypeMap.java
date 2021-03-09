@@ -276,15 +276,16 @@ public class PSJdbcDataTypeMap
          throw new IllegalArgumentException(
             "either dbAlias or driver must not be null or empty");
 
-      InputStream stream = PSJdbcDataTypeMap.class.getResourceAsStream(
-         DEFAULT_MAP_FILE_NAME);
-      // fix Rx-02-01-0003 by checking for null result
-      if (null == stream)
-         throw new IOException("Could not load default mapping XML document");
+      try(InputStream stream = PSJdbcDataTypeMap.class.getResourceAsStream(
+         DEFAULT_MAP_FILE_NAME)) {
+         // fix Rx-02-01-0003 by checking for null result
+         if (null == stream)
+            throw new IOException("Could not load default mapping XML document");
 
-      m_driver = driver;
-      Document doc = PSXmlDocumentBuilder.createXmlDocument( stream, false);
-      initData(doc, dbAlias, driver, os);
+         m_driver = driver;
+         Document doc = PSXmlDocumentBuilder.createXmlDocument(stream, false);
+         initData(doc, dbAlias, driver, os);
+      }
    }
 
    /**

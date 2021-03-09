@@ -64,14 +64,13 @@ package com.percussion.widgets.image.webservice;
           {
           cropBox = new Rectangle(request.getX(), request.getY(), request.getDeltaX(), request.getDeltaY());
           }
-          try
-          {
+
           ImageData iData = this.cacheManager.getImage(request.getImageKey());
           Validate.notNull(iData, "Image to be resized was not found");
-          InputStream is = new ByteArrayInputStream(iData.getBinary());
-          ImageData rData = this.resizeManager.generateImage(is, cropBox, size, rotate);
-          String key = this.cacheManager.addImage(rData);
-  			return new CachedImageMetaData(rData, key);
+          try(InputStream is = new ByteArrayInputStream(iData.getBinary())){
+              ImageData rData = this.resizeManager.generateImage(is, cropBox, size, rotate);
+              String key = this.cacheManager.addImage(rData);
+                return new CachedImageMetaData(rData, key);
           }
           catch (Exception ex) {
              log.error("Unexpected Exception " + ex, ex);
