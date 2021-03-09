@@ -121,7 +121,7 @@ public class PSPropertySet extends PSCollectionComponent
       
       // sort the properties by name to ensure XML has predictable order
       int numProps = size();
-      List<PSProperty> properties = new ArrayList<PSProperty>(numProps);      
+      List<PSProperty> properties = new ArrayList<>(numProps);
       for (int i=0; i<numProps; i++)
       {
          PSProperty property = (PSProperty) get(i);

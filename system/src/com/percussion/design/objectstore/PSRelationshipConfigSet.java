@@ -176,7 +176,7 @@ public class PSRelationshipConfigSet extends PSCollectionComponent
          throw new IllegalArgumentException(
                "type must be either PSRelationshipConfig.RS_TYPE_SYSTEM or PSRelationshipConfig.RS_TYPE_USER.");
       
-      List<PSRelationshipConfig> list = new ArrayList<PSRelationshipConfig>();
+      List<PSRelationshipConfig> list = new ArrayList<>();
       Iterator configs = iterator();
       while (configs.hasNext())
       {
@@ -225,7 +225,7 @@ public class PSRelationshipConfigSet extends PSCollectionComponent
       if (category == null || category.trim().length() == 0)
         throw new IllegalArgumentException("category cannot be null or empty");
 
-      List<PSRelationshipConfig> list = new ArrayList<PSRelationshipConfig>();
+      List<PSRelationshipConfig> list = new ArrayList<>();
       Iterator configs = iterator();
       String value = null;
       while (configs.hasNext())

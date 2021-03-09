@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.w3c.dom.Document;
@@ -567,7 +566,7 @@ public class PSRelationshipConfig extends PSComponent
     */
    public Iterator getSysPropertiesFiltered()
    {
-      final List<PSProperty> props = new ArrayList<PSProperty>();
+      final List<PSProperty> props = new ArrayList<>();
       Iterator it = m_sysProps.iterator();
       while(it.hasNext())
       {
@@ -687,7 +686,7 @@ public class PSRelationshipConfig extends PSComponent
     * Custom property names, never <code>null</code>, but may be empty.
     * @see #getCustomPropertyNames() for more info.
     */
-   private HashSet<String> m_customPropertyNames = new HashSet<String>();
+   private HashSet<String> m_customPropertyNames = new HashSet<>();
    
    /**
     * Reset the user property mapper {@link #m_userPropMap}. This should be
@@ -1814,7 +1813,7 @@ public class PSRelationshipConfig extends PSComponent
     * convenience. Initialized in a static initializer and holds all
     * ACTIVATION_ENDPOINT_XXXX values defined in this class.
     */
-   private static List<String> ms_activationEndPointList = new ArrayList<String>();
+   private static List<String> ms_activationEndPointList = new ArrayList<>();
 
    /**
     * Initialize the list of all possible activation end points for an effect.
@@ -1910,7 +1909,7 @@ public class PSRelationshipConfig extends PSComponent
     * This is used to cache the info in {@link #m_userProps}, never 
     * <code>null</code>, but may be empty.
     */
-   private HashMap<String, String> m_userPropMap= new HashMap<String, String>();
+   private HashMap<String, String> m_userPropMap= new HashMap<>();
    
 
    /**
@@ -1940,7 +1939,7 @@ public class PSRelationshipConfig extends PSComponent
     * overwritten by specific relationship configurations.
     */
    private static final List<PSProperty> ms_systemDefaults =
-         new ArrayList<PSProperty>();
+         new ArrayList<>();
    static
    {
       ms_systemDefaults.add(new PSProperty(RS_ALLOWCLONING,
@@ -1978,7 +1977,7 @@ public class PSRelationshipConfig extends PSComponent
     * overwritten by specific relationship configurations.
     */
    private static final List<PSProperty> ms_userDefaults =
-         new ArrayList<PSProperty>();
+         new ArrayList<>();
    static
    {
       ms_userDefaults.add(new PSProperty(RS_INLINERELATIONSHIP,
