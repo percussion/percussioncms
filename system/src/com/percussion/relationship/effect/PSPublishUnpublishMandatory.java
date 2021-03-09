@@ -569,7 +569,7 @@ public abstract class PSPublishUnpublishMandatory extends PSEffect
    {
       try
       {
-         Map<String, String> params = new HashMap<String, String>();
+         Map<String, String> params = new HashMap<>();
          params.put(IPSHtmlParameters.SYS_COMMAND,
             PSWorkflowCommandHandler.COMMAND_NAME);
          params.put(IPSConstants.DEFAULT_ACTION_TRIGGER_NAME, transition);
@@ -632,7 +632,7 @@ public abstract class PSPublishUnpublishMandatory extends PSEffect
    {
       String resource = SYS_PSXRELATIONSHIPSUPPORT + "/" + GET_TRANSITIONS;
 
-      Map<String, String> params = new HashMap<String, String>();
+      Map<String, String> params = new HashMap<>();
       params.put(IPSHtmlParameters.SYS_WORKFLOWID, workflowId);
       params.put(IPSConstants.DEFAULT_NEWSTATEID_NAME, stateId);
       IPSInternalRequest ir =
