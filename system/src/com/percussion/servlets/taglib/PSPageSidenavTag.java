@@ -52,7 +52,7 @@ public class PSPageSidenavTag extends PSPageBaseTag
       JspWriter out = m_context.getOut();
       try
       {
-         Map<String,String> extra = new HashMap<String,String>();
+         Map<String,String> extra = new HashMap<>();
          extra.put("sys_pagename",m_page);
          out.print(getUrlContent(m_component, extra));
       }
