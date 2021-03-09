@@ -207,7 +207,7 @@ public class PSRelationshipConfigSet extends PSCollectionComponent
     */
    public List<PSRelationshipConfig> getConfigList()
    {
-      List<PSRelationshipConfig> list = new ArrayList<PSRelationshipConfig>();
+      List<PSRelationshipConfig> list = new ArrayList<>();
       Iterator configs = iterator();
       while (configs.hasNext())
          list.add((PSRelationshipConfig)configs.next());
