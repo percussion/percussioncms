@@ -679,35 +679,19 @@ public class RxFileManager
    public static Properties loadProperties(String propFilePath)
       throws IOException
    {
-      if ((propFilePath == null) || (propFilePath.trim().length() < 1))
-         throw new IllegalArgumentException(
-            "propFilePath may not be null or empty");
+          if ((propFilePath == null) || (propFilePath.trim().length() < 1))
+             throw new IllegalArgumentException(
+                "propFilePath may not be null or empty");
 
-      Properties props = new Properties();
-      FileInputStream fis = null;
-      try
-      {
+          Properties props = new Properties();
+
          File propFile = new File(propFilePath.trim());
          if (propFile.exists() && propFile.isFile())
          {
-            fis = new FileInputStream(propFile);
-            props.load(fis);
-         }
-      }
-      finally
-      {
-         if (fis != null)
-         {
-            try
-            {
-               fis.close();
+            try( FileInputStream fis = new FileInputStream(propFile)){
+                props.load(fis);
             }
-            catch (Exception e)
-            {
-               // no -op
-            }
-         }
-      }
+        }
       return props;
    }
 
@@ -735,9 +719,6 @@ public class RxFileManager
          throw new IllegalArgumentException(
             "propFilePath may not be null or empty");
 
-      FileOutputStream fos = null;
-      try
-      {
          File propFile = new File(propFilePath);
          if (!propFile.exists())
          {
@@ -745,23 +726,9 @@ public class RxFileManager
             propFile.createNewFile();
          }
 
-         fos = new FileOutputStream(propFile);
-         props.store(fos, null);
-      }
-      finally
-      {
-         if (fos != null)
-         {
-            try
-            {
-               fos.close();
-            }
-            catch (Exception e)
-            {
-               // no -op
-            }
-         }
-      }
+        try(FileOutputStream fos = new FileOutputStream(propFile)){
+             props.store(fos, null);
+          }
    }
    
    /**

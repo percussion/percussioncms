@@ -211,174 +211,143 @@ public class RhythmyxServlet extends PSServletBase
       String rhythmyxRoles = getRhythmyxRoles(req);
       
       Socket sock = null;
-      OutputStream out = null;
-      OutputStream respOut = null;
       Writer respWriterOut = null;
-      PSInputStreamReader in = null;
-      try
-      {
+      try {
          sock = getSocket();
 
-         out = sock.getOutputStream();
-         in = new PSInputStreamReader(sock.getInputStream());
+         try (OutputStream out = sock.getOutputStream()) {
+            try (PSInputStreamReader in = new PSInputStreamReader(sock.getInputStream())) {
 
-         /**
-          * Add support for all the headers, cookies, post data, etc.
-          *
-          * StatusLine, such as
-          * GET /Rhythmyx/myApplication/request.xml?ukey=1&udata=1 HTTP/1.0
-          * where
-          * request method = GET
-          * path info      = /Rhythmyx/myApplication/request.xml
-          * query string   = ukey=1&udata=1
-          * protocol       = HTTP/1.0
-          */
-         String method = req.getMethod();
-         String protocol = req.getProtocol();
-         String pathInfo = null;
-         String queryString = null;
-         if (req.getAttribute(INCLUDED_REQUEST_URI) == null)
-         {
-            pathInfo = req.getRequestURI();
-            queryString = req.getQueryString();
-         }
-         else
-         {
-            pathInfo = (String) req.getAttribute(INCLUDED_REQUEST_URI);
-            queryString = (String) req.getAttribute(INCLUDED_QUERY_STRING);
-         }
-
-         int pos = pathInfo.indexOf(m_root);
-         if (pos > 0)
-            pathInfo = pathInfo.substring(pos);
-
-         String statusLine = getStatusline(method, pathInfo, queryString,
-               protocol);
-
-         String rxSession = getRhythmyxSession(req);
-         List headers = getHttpHeaders(req, rxSession);
-
-         // get the Rhythmyx roles and add all SSO headers if requested
-         if (m_connFactory.isSingleSignOn())
-         {
-            String user = req.getRemoteUser();
-            m_logger.debug("Remote user is " + user );
-
-            if (user != null && rhythmyxRoles != null)
-            {
-               String header = m_connFactory.getAuthenticatedUserHeaderName();
-               header += HEADER_TOKEN + user;
-               headers.add(header);
-
-               header = m_connFactory.getUserRolesHeaderName();
-               header += HEADER_TOKEN + rhythmyxRoles;
-               headers.add(header);
-               m_logger.debug("Role list is " + rhythmyxRoles);
-            }
-         }
-
-         // if the path indicates SOAP service then forward request there
-         if (pathInfo.equals("/Rhythmyx/sys_webServicesHandler"))
-         {
-            m_logger.debug("Sending request to SOAP dispatcher");
-         // Workaround for IBM single sign on. The cookies from the request must
-         // be stored for the later SOAP call
-
-         //PSWsHelperBase.setAuthCookies(req);
-
-            ServletContext remContext =
-               getServletContext().getContext(m_soapContext);
-            RequestDispatcher reqDispatcher =
-               remContext.getNamedDispatcher(m_soapService);
-
-            String user = req.getRemoteUser();
-
-            if (user != null && rhythmyxRoles != null)
-            {
-               req.setAttribute("com.percussion.forwardAuthTypeName", CGI_AUTH_TYPE);
-               req.setAttribute("com.percussion.forwardAuthType", req.getAuthType());
-
-               req.setAttribute("com.percussion.forwardUserName",
-                  m_connFactory.getAuthenticatedUserHeaderName());
-               req.setAttribute("com.percussion.forwardUser", user);
-
-               req.setAttribute("com.percussion.forwardRoleListName",
-                  m_connFactory.getUserRolesHeaderName());
-               req.setAttribute("com.percussion.forwardRoleList", rhythmyxRoles);
-            }
-            reqDispatcher.forward(req, resp);
-         }
-         else
-         {
-            boolean isPost = method.trim().equalsIgnoreCase("POST");
-
-            m_logger.debug("Sending request");
-            sendRequestToServer(req, statusLine, headers, out, isPost);
-
-            try
-            {
-                respOut = resp.getOutputStream();
-            }
-            catch (Throwable e)
-            {
-               // Workaround for case where only a Writer is available
-               respWriterOut = resp.getWriter();
-            }
-
-            m_logger.debug("got output stream");
-
-            /**
-             * Get the response line to determine the status code to use.
-             * The status code is the second word in the line.
-             */
-            resp.setStatus(getHttpStatusCode(in));
-
-            // get the headers and set them appropriately
-            String rxSessionCookie = readHttpHeaders(in, resp);
-            if (m_connFactory.isSingleSignOn())
-            {
                /**
-                * The Rhythmyx session cookie is managed by the servlet if single
-                * sign on is enabled. This makes sure that the Rhythmyx session
-                * times out together with the application server session.
+                * Add support for all the headers, cookies, post data, etc.
+                *
+                * StatusLine, such as
+                * GET /Rhythmyx/myApplication/request.xml?ukey=1&udata=1 HTTP/1.0
+                * where
+                * request method = GET
+                * path info      = /Rhythmyx/myApplication/request.xml
+                * query string   = ukey=1&udata=1
+                * protocol       = HTTP/1.0
                 */
-               HttpSession session = req.getSession();
-               if (rxSessionCookie != null)
-               {
-                  session.setAttribute(RX_SESSION_ATTRIB, rxSessionCookie);
-
-                  // workaround for BEA -mgb
-                  req.setAttribute(RX_SESSION_ATTRIB, rxSessionCookie);
-                  req.setAttribute(RX_ROLE_LIST, rhythmyxRoles);
-
-                  m_logger.debug("Found session cookie "  + rxSessionCookie );
+               String method = req.getMethod();
+               String protocol = req.getProtocol();
+               String pathInfo = null;
+               String queryString = null;
+               if (req.getAttribute(INCLUDED_REQUEST_URI) == null) {
+                  pathInfo = req.getRequestURI();
+                  queryString = req.getQueryString();
+               } else {
+                  pathInfo = (String) req.getAttribute(INCLUDED_REQUEST_URI);
+                  queryString = (String) req.getAttribute(INCLUDED_QUERY_STRING);
                }
-               else
-                  rxSessionCookie =
-                     (String) session.getAttribute(RX_SESSION_ATTRIB);
+
+               int pos = pathInfo.indexOf(m_root);
+               if (pos > 0)
+                  pathInfo = pathInfo.substring(pos);
+
+               String statusLine = getStatusline(method, pathInfo, queryString,
+                       protocol);
+
+               String rxSession = getRhythmyxSession(req);
+               List headers = getHttpHeaders(req, rxSession);
+
+               // get the Rhythmyx roles and add all SSO headers if requested
+               if (m_connFactory.isSingleSignOn()) {
+                  String user = req.getRemoteUser();
+                  m_logger.debug("Remote user is " + user);
+
+                  if (user != null && rhythmyxRoles != null) {
+                     String header = m_connFactory.getAuthenticatedUserHeaderName();
+                     header += HEADER_TOKEN + user;
+                     headers.add(header);
+
+                     header = m_connFactory.getUserRolesHeaderName();
+                     header += HEADER_TOKEN + rhythmyxRoles;
+                     headers.add(header);
+                     m_logger.debug("Role list is " + rhythmyxRoles);
+                  }
+               }
+
+               // if the path indicates SOAP service then forward request there
+               if (pathInfo.equals("/Rhythmyx/sys_webServicesHandler")) {
+                  m_logger.debug("Sending request to SOAP dispatcher");
+                  // Workaround for IBM single sign on. The cookies from the request must
+                  // be stored for the later SOAP call
+
+                  //PSWsHelperBase.setAuthCookies(req);
+
+                  ServletContext remContext =
+                          getServletContext().getContext(m_soapContext);
+                  RequestDispatcher reqDispatcher =
+                          remContext.getNamedDispatcher(m_soapService);
+
+                  String user = req.getRemoteUser();
+
+                  if (user != null && rhythmyxRoles != null) {
+                     req.setAttribute("com.percussion.forwardAuthTypeName", CGI_AUTH_TYPE);
+                     req.setAttribute("com.percussion.forwardAuthType", req.getAuthType());
+
+                     req.setAttribute("com.percussion.forwardUserName",
+                             m_connFactory.getAuthenticatedUserHeaderName());
+                     req.setAttribute("com.percussion.forwardUser", user);
+
+                     req.setAttribute("com.percussion.forwardRoleListName",
+                             m_connFactory.getUserRolesHeaderName());
+                     req.setAttribute("com.percussion.forwardRoleList", rhythmyxRoles);
+                  }
+                  reqDispatcher.forward(req, resp);
+               } else {
+                  boolean isPost = method.trim().equalsIgnoreCase("POST");
+
+                  m_logger.debug("Sending request");
+                  sendRequestToServer(req, statusLine, headers, out, isPost);
+
+                  /**
+                   * Get the response line to determine the status code to use.
+                   * The status code is the second word in the line.
+                   */
+                  resp.setStatus(getHttpStatusCode(in));
+
+                  // get the headers and set them appropriately
+                  String rxSessionCookie = readHttpHeaders(in, resp);
+                  if (m_connFactory.isSingleSignOn()) {
+                     /**
+                      * The Rhythmyx session cookie is managed by the servlet if single
+                      * sign on is enabled. This makes sure that the Rhythmyx session
+                      * times out together with the application server session.
+                      */
+                     HttpSession session = req.getSession();
+                     if (rxSessionCookie != null) {
+                        session.setAttribute(RX_SESSION_ATTRIB, rxSessionCookie);
+
+                        // workaround for BEA -mgb
+                        req.setAttribute(RX_SESSION_ATTRIB, rxSessionCookie);
+                        req.setAttribute(RX_ROLE_LIST, rhythmyxRoles);
+
+                        m_logger.debug("Found session cookie " + rxSessionCookie);
+                     } else
+                        rxSessionCookie =
+                                (String) session.getAttribute(RX_SESSION_ATTRIB);
+                  }
+                  // and pass through all the remaining data in the body
+                  try(OutputStream respOut = resp.getOutputStream()){
+                     m_logger.debug("got output stream");
+                     passThroughData(in, respOut);
+                  } catch (Throwable e) {
+                     // Workaround for case where only a Writer is available
+                     respWriterOut = resp.getWriter();
+                     try(InputStreamReader inreader = new InputStreamReader(in)) {
+                        passThroughData(inreader, respWriterOut);
+                     }
+                  }
+                  m_logger.debug("Sent response size=" +
+                          String.valueOf(resp.getBufferSize()));
+               }
             }
-            // and pass through all the remaining data in the body
-            if (respOut != null)
-            {
-               passThroughData(in, respOut);
-            }
-            else
-            {
-               InputStreamReader inreader = new InputStreamReader(in);
-               passThroughData(inreader, respWriterOut);
-            }
-            m_logger.debug("Sent response size=" +
-               String.valueOf(resp.getBufferSize()));
          }
       }
       finally
       {
-         if (out != null)
-            try { out.close(); } catch (IOException e) { /*do nothing*/ }
-         if (in != null)
-            try { in.close(); } catch (IOException e) { /*do nothing*/ }
-         if (respOut != null)
-            try { respOut.close(); } catch (IOException e) { /*do nothing*/ }
          if (resp != null)
             try { resp.flushBuffer(); } catch (IOException e) { /*do nothing*/ }
          if (sock != null)
@@ -599,18 +568,17 @@ public class RhythmyxServlet extends PSServletBase
       // now, if a post, see if we have a body
       if (isPost)
       {
-         try
-         {
-         InputStream in = req.getInputStream();
-         passThroughData(in, out);
+         try(InputStream in = req.getInputStream()){
+             passThroughData(in, out);
          }
          catch(IllegalStateException e)
          {
             // If the servlet is already being read via a Reader, it is illegal to
             // open an input stream. Instead the reader must be used
          Reader reader = req.getReader();
-         OutputStreamWriter writer = new OutputStreamWriter(out);
-         passThroughData(reader, writer);
+         try(OutputStreamWriter writer = new OutputStreamWriter(out)) {
+            passThroughData(reader, writer);
+         }
          }
       }
    }

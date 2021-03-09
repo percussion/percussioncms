@@ -162,10 +162,7 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
 
    private ImageData generateImage(PSPurgableTempFile imageFile, String mimeType) throws Exception
    {
-      FileInputStream fin = null;
-      try
-      {
-         fin = new FileInputStream(imageFile);
+      try(FileInputStream fin = new FileInputStream(imageFile)){
          ImageData iData = this.resizeManager.generateImage(fin);
          iData.setFilename(imageFile.getSourceFileName());
          iData.setMimeType(mimeType);
@@ -173,60 +170,46 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
          ImageData localImageData1 = iData;
          return localImageData1;
       }
-      finally
-      {
-         if (fin != null)
-         {
-            fin.close();
-         }
-      }
    }
 
    private ImageData generateThumbnail(PSPurgableTempFile imageFile) throws Exception
    {
       ImageData iData = null;
-      FileInputStream fin = null;
       int width;
-      try
-      {
-         Properties serverProps = PSServer.getServerProps();
-         String thumbWidthStr = serverProps.getProperty("imageThumbnailWidth", "50");
-         int thumbWidth = Integer.parseInt(thumbWidthStr);
-         fin = new FileInputStream(imageFile);
+
+      Properties serverProps = PSServer.getServerProps();
+      String thumbWidthStr = serverProps.getProperty("imageThumbnailWidth", "50");
+      int thumbWidth = Integer.parseInt(thumbWidthStr);
+      try(      FileInputStream fin = new FileInputStream(imageFile)){
          final byte[] imageByteArray = IOUtils.toByteArray(fin);
          BufferedImage image = ImageReader.read(imageByteArray);
-         fin.close();
          if (image != null)
          {
             width = image.getWidth();
             int height = image.getHeight();
             Rectangle rec = new Rectangle(0, 0, width, height);
             Dimension dim = new Dimension(thumbWidth, Math.round(height / width * thumbWidth));
-            fin = new FileInputStream(imageFile);
-            iData = this.resizeManager.generateImage(fin, rec, dim);
+            try(FileInputStream fin2 = new FileInputStream(imageFile)) {
+               iData = this.resizeManager.generateImage(fin2, rec, dim);
+            }
          }
 
          return iData;
-      }
-      finally
-      {
-         if (fin != null)
-         {
-            fin.close();
-         }
       }
    }
 
    protected PSPurgableTempFile writeFile(ImageData iData) throws Exception
    {
-      ByteArrayInputStream bis = new ByteArrayInputStream(iData.getBinary());
+      try(ByteArrayInputStream bis = new ByteArrayInputStream(iData.getBinary())) {
 
-      PSPurgableTempFile f = new PSPurgableTempFile("img", iData.getExt(), null, iData.getFilename(),
-            iData.getMimeType(), null);
+         PSPurgableTempFile f = new PSPurgableTempFile("img", iData.getExt(), null, iData.getFilename(),
+                 iData.getMimeType(), null);
 
-      FileOutputStream fos = new FileOutputStream(f);
-      PSCopyStream.copyStream(bis, fos);
-      return f;
+         try(FileOutputStream fos = new FileOutputStream(f)) {
+            PSCopyStream.copyStream(bis, fos);
+            return f;
+         }
+      }
    }
 
    protected void setCacheManager(ImageCacheManager cacheManager)

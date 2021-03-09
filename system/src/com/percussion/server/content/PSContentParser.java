@@ -29,6 +29,7 @@ import com.percussion.server.PSRequestParsingException;
 import com.percussion.util.PSInputStreamReader;
 import com.percussion.util.PSPurgableTempFile;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 
@@ -169,9 +170,7 @@ public abstract class PSContentParser {
    {
       byte[] buf = new byte[2048];
       PSPurgableTempFile f = new PSPurgableTempFile(prefix, suffix, dir);
-      java.io.FileOutputStream fout = null;
-      try {
-         fout = new java.io.FileOutputStream(f);
+      try(FileOutputStream fout = new java.io.FileOutputStream(f)){
          int read = 0;
          while (read < length) {
             int curRead;
@@ -189,13 +188,7 @@ public abstract class PSContentParser {
          }
 
          fout.flush();
-      } finally {
-         if (fout != null) {
-            try { fout.close(); }
-            catch (Exception e) { /* shouldn't happen, ignore it */ }
-         }
       }
-
       return f;
    }
 }

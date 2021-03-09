@@ -27,6 +27,7 @@ package com.percussion.util.servlet;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -201,9 +202,12 @@ public class PSServletRequester implements IPSRemoteRequesterEx
       {
          PSInternalResponse irsp = new PSInternalResponse(m_response);
          sendRequest(resource, irq, irsp);
-         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-         PSHttpUtils.copyStream(irsp.getInputStream(), bos);
-         return bos.toByteArray();
+         try(ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            try(InputStream is = irsp.getInputStream()) {
+               PSHttpUtils.copyStream(is, bos);
+               return bos.toByteArray();
+            }
+         }
       }
       catch (Exception e)
       {
@@ -267,22 +271,23 @@ public class PSServletRequester implements IPSRemoteRequesterEx
       {
          for(int i = 0; i < files.length; i++)
          {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bos.write(files[i].getData());
-            // Determine the content type
-            String contentType = files[i].getContentType() == null ?
-               CT.guessContentType(files[i].getFileName()) :
-               files[i].getContentType();
-            // Create the body part
-            PSHttpBodyPart part =
-               new PSHttpBodyPart(
-                  files[i].getFieldName(),
-                  files[i].getFileName(),
-                  contentType,
-                  PSCharSets.rxJavaEnc(),
-                  bos);
-            // add the body part
-            irq.addBodyPart(part);
+            try(ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+               bos.write(files[i].getData());
+               // Determine the content type
+               String contentType = files[i].getContentType() == null ?
+                       CT.guessContentType(files[i].getFileName()) :
+                       files[i].getContentType();
+               // Create the body part
+               PSHttpBodyPart part =
+                       new PSHttpBodyPart(
+                               files[i].getFieldName(),
+                               files[i].getFileName(),
+                               contentType,
+                               PSCharSets.rxJavaEnc(),
+                               bos);
+               // add the body part
+               irq.addBodyPart(part);
+            }
          }
       }
       irq.prepareBody(); // prepare body and set header accordingly
@@ -400,12 +405,13 @@ public class PSServletRequester implements IPSRemoteRequesterEx
          try
          {
             byte[] bytes = errorMsg.getBytes();
-            ByteArrayInputStream input = new ByteArrayInputStream(bytes);
-            Document doc = PSXmlDocumentBuilder.createXmlDocument(input, false);
-            Element root = doc.getDocumentElement();
-            Element errorElem = PSXMLDomUtil.getFirstElementChild(root,
-                     "DisplayError");
-            errorMsg = PSXmlDocumentBuilder.toString(errorElem);
+            try(ByteArrayInputStream input = new ByteArrayInputStream(bytes)) {
+               Document doc = PSXmlDocumentBuilder.createXmlDocument(input, false);
+               Element root = doc.getDocumentElement();
+               Element errorElem = PSXMLDomUtil.getFirstElementChild(root,
+                       "DisplayError");
+               errorMsg = PSXmlDocumentBuilder.toString(errorElem);
+            }
          }
          catch (Exception e)
          {

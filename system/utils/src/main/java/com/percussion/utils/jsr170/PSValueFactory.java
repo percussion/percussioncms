@@ -26,6 +26,7 @@ package com.percussion.utils.jsr170;
 import com.percussion.utils.io.PSReaderInputStream;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Clob;
@@ -90,26 +91,23 @@ public class PSValueFactory implements ValueFactory
       }
       else if (data instanceof Blob)
       {
-         try
-         {
-            return new PSInputStreamValue(((Blob) data).getBinaryStream());
+         try(InputStream io = ((Blob) data).getBinaryStream()) {
+
+            return new PSInputStreamValue(io);
          }
-         catch (SQLException e)
+         catch (SQLException | IOException e)
          {
             throw new ValueFormatException("Couldn't extract data", e);
          }
       }
       else if (data instanceof Clob)
       {
-         try
-         {
-            return new PSInputStreamValue(
-                  new PSReaderInputStream(((Clob) data).getCharacterStream()));
-         }
-         catch (SQLException e)
-         {
-            throw new ValueFormatException("Couldn't extract data", e);
-         }
+            try (InputStream io = new PSReaderInputStream(((Clob) data).getCharacterStream())) {
+               return new PSInputStreamValue(io);
+            } catch (SQLException | IOException e) {
+               throw new ValueFormatException("Couldn't extract data", e);
+            }
+
       }      
       else if (data instanceof Date)
       {
@@ -123,30 +121,32 @@ public class PSValueFactory implements ValueFactory
       }
       else if (data instanceof byte[])
       {
-         InputStream stream = new ByteArrayInputStream((byte[]) data);
-         return ms_fact.createValue(stream);
+         try(InputStream stream = new ByteArrayInputStream((byte[]) data)) {
+            return ms_fact.createValue(stream);
+         } catch (IOException e) {
+            throw new ValueFormatException("Couldn't extract data", e);
+         }
       }
       else if (data instanceof Clob)
       {
-         try
-         {
-            InputStream stream = 
-               new PSReaderInputStream(((Clob) data).getCharacterStream());
+
+         try(InputStream stream =
+            new PSReaderInputStream(((Clob) data).getCharacterStream())) {
             return ms_fact.createValue(stream);
          }
-         catch (SQLException e)
+
+         catch (SQLException | IOException e)
          {
             throw new ValueFormatException("Problem creating stream value", e);
          }
       }
       else if (data instanceof Blob)
       {
-         try
-         {
-            InputStream stream = ((Blob) data).getBinaryStream();
+
+         try( InputStream stream = ((Blob) data).getBinaryStream()){
             return ms_fact.createValue(stream);
          }
-         catch (SQLException e)
+         catch (SQLException | IOException e)
          {
             throw new ValueFormatException("Problem creating stream value", e);
          }

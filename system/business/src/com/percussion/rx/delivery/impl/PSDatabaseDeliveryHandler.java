@@ -55,6 +55,7 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.StringWriter;
@@ -649,27 +650,29 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
          @SuppressWarnings("unused") String path)
          throws Exception
    {
-      InputStream is = new FileInputStream(result.getResultFile());
-      InputSource src = new InputSource(is);
-      XMLOutputFactory ofact = XMLOutputFactory.newInstance();
-      StringWriter writer = new StringWriter();
-      XMLStreamWriter formatter = ofact.createXMLStreamWriter(writer);
+      try(InputStream is = new FileInputStream(result.getResultFile())) {
+         InputSource src = new InputSource(is);
+         XMLOutputFactory ofact = XMLOutputFactory.newInstance();
+         try(StringWriter writer = new StringWriter()) {
+            XMLStreamWriter formatter = ofact.createXMLStreamWriter(writer);
 
-      SAXParserFactory f = PSSecureXMLUtils.getSecuredSaxParserFactory(false);
+            SAXParserFactory f = PSSecureXMLUtils.getSecuredSaxParserFactory(false);
 
-      SAXParser parser = f.newSAXParser();
+            SAXParser parser = f.newSAXParser();
 
-      DefaultHandler dh =
-            new PSDatabaseDeliveryHandler.UnpublishingContentHandler(
-                  formatter, null);
-      formatter.writeStartDocument();
-      formatter.writeCharacters("\n");
-      parser.parse(src, dh);
-      formatter.writeEndDocument();
-      formatter.close();
-      String temp = writer.toString();
-      temp = StringUtils.replace(temp, PSSaxCopier.RX_FILLER, "");
-      return temp.getBytes(StandardCharsets.UTF_8);
+            DefaultHandler dh =
+                    new PSDatabaseDeliveryHandler.UnpublishingContentHandler(
+                            formatter, null);
+            formatter.writeStartDocument();
+            formatter.writeCharacters("\n");
+            parser.parse(src, dh);
+            formatter.writeEndDocument();
+            formatter.close();
+            String temp = writer.toString();
+            temp = StringUtils.replace(temp, PSSaxCopier.RX_FILLER, "");
+            return temp.getBytes(StandardCharsets.UTF_8);
+         }
+      }
    }
 
    @Override
@@ -699,78 +702,86 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
     */
    protected IPSDeliveryResult perform(Item item, long jobId)
    {
-      if (item == null)
-      {
-         throw new IllegalArgumentException("item may not be null");
-      }
-      InputStream is = null;
-      try
-      {         
-         if (item.getFile() != null)
-            is = new FileInputStream(item.getFile());
-         else
-            is = item.getResultStream();
-         Document doc = PSXmlDocumentBuilder.createXmlDocument(
-               new InputSource(is), false);
-
-         DbmsInfo dbmsInfo = new DbmsInfo(doc);
-         setDbmsInfoFromPubServer(dbmsInfo, item, jobId);
-         DbmsConnection dbmsConn = Connections.getConnection(jobId, dbmsInfo);
-
-         boolean logDebug = ms_log.isDebugEnabled();
-         
-         if (logDebug)
+         if (item == null)
          {
-            ms_log.debug("Published Item id=" + item.getId().toString()
-                  + ", filePath = " + item.getFile().getAbsolutePath());
+            throw new IllegalArgumentException("item may not be null");
          }
-         
 
-         boolean transactionSupport = true;
-         final StringBuilder error_builder = new StringBuilder();
-         final StringBuilder message_builder = new StringBuilder();
+         if (item.getFile() != null) {
+            try(InputStream is = new FileInputStream(item.getFile())){
+               return performAction(item, jobId, is);
+            } catch(Exception e) {
+               return getItemResult(Outcome.FAILED, item, jobId, "Database item publishing failed. The error was:" + e.toString());
+            }finally {
+               item.release();
+            }
+         } else {
+            try(InputStream is = item.getResultStream()) {
+               return performAction(item, jobId, is);
+            } catch(Exception e){
+               return getItemResult(Outcome.FAILED, item, jobId, "Database item publishing failed. The error was:" + e.toString());
+            }finally{
+               item.release();
+            }
+         }
+   }
 
+   private IPSDeliveryResult performAction(Item item, long jobId,InputStream is) throws Exception {
+      Document doc = PSXmlDocumentBuilder.createXmlDocument(
+              new InputSource(is), false);
+
+      DbmsInfo dbmsInfo = new DbmsInfo(doc);
+
+      setDbmsInfoFromPubServer(dbmsInfo, item, jobId);
+      DbmsConnection dbmsConn = Connections.getConnection(jobId, dbmsInfo);
+
+      boolean logDebug = ms_log.isDebugEnabled();
+
+      if (logDebug)
+      {
+         ms_log.debug("Published Item id=" + item.getId().toString()
+                 + ", filePath = " + item.getFile().getAbsolutePath());
+      }
+
+
+      boolean transactionSupport = true;
+      final StringBuilder error_builder = new StringBuilder();
+      final StringBuilder message_builder = new StringBuilder();
+      try( PrintStream ps =  new PrintStream(System.out)
+      {
+         @Override
+         public void println(String msg)
+         {
+            if (StringUtils.isBlank(msg))
+               return;
+
+            if (msg.indexOf("Error") >= 0)
+               error_builder.append(msg);
+            else
+               message_builder.append(msg);
+            char c = msg.charAt(msg.length()-1);
+            if (c != '\r' && c != '\n')
+               message_builder.append('\n');
+         }
+      }){
          PSJdbcTableFactory.processTables(dbmsConn.m_conn, dbmsConn.m_dbmsDef,
-               dbmsConn.m_tableMetaMap, null, doc,
-               new PrintStream(System.out)
-               {
-                  @Override
-                  public void println(String msg)
-                  {
-                     if (StringUtils.isBlank(msg))
-                        return;
+                 dbmsConn.m_tableMetaMap, null, doc,ps
+                 , logDebug, transactionSupport);
 
-                     if (msg.indexOf("Error") >= 0)
-                        error_builder.append(msg);
-                     else
-                        message_builder.append(msg);
-                     char c = msg.charAt(msg.length()-1);
-                     if (c != '\r' && c != '\n')
-                        message_builder.append('\n');
-                  }
-               }, logDebug, transactionSupport);
-         
          if (error_builder.length() > 0)
          {
             return getItemResult(Outcome.FAILED, item, jobId,
-                  error_builder.toString());
+                    error_builder.toString());
          }
          else
          {
             return getItemResult(Outcome.DELIVERED, item, jobId,
-                  message_builder.toString());
+                    message_builder.toString());
          }
       }
-      catch (Exception e)
-      {
-         return getItemResult(Outcome.FAILED, item, jobId, "Database item publishing failed. The error was:" + e.toString());
-      }
-      finally
-      {
-         IOUtils.closeQuietly(is);
-         
-         item.release();
-      }
+
+
+
    }
 
    /**

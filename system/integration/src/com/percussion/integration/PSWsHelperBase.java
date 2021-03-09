@@ -440,16 +440,18 @@ public abstract class PSWsHelperBase
       // if we found one, use that, otherwise use the default one in the jar
       if (file.exists())
       {
-         FileInputStream fis = new FileInputStream(file);
-         m_props.load(fis);
+         try(FileInputStream fis = new FileInputStream(file)) {
+            m_props.load(fis);
+         }
       }
       else
       {
-         InputStream inProps = getClass().getResourceAsStream(WSHELPER_PROPS);
-         if (inProps == null)
-            throw new FileNotFoundException(WSHELPER_PROPS);
-   
-         m_props.load(inProps);
+         try(InputStream inProps = getClass().getResourceAsStream(WSHELPER_PROPS)) {
+            if (inProps == null)
+               throw new FileNotFoundException(WSHELPER_PROPS);
+
+            m_props.load(inProps);
+         }
       }
    
       // set the target endpoint or override the properties of the supplied one

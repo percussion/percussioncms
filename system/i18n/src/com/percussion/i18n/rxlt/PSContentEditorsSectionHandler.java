@@ -41,6 +41,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -67,11 +68,12 @@ public class PSContentEditorsSectionHandler extends PSIdleDotter
    public PSContentEditorsSectionHandler()
       throws PSSectionProcessingException
    {
-      try
-      {
-         ms_XslDoc = PSXmlDocumentBuilder.createXmlDocument(getClass()
-            .getResourceAsStream(CONTENTEDITORS_TRANSFORM_XSL), false);
+
+      try(InputStream is = getClass()
+              .getResourceAsStream(CONTENTEDITORS_TRANSFORM_XSL)) {
+         ms_XslDoc = PSXmlDocumentBuilder.createXmlDocument(is, false);
       }
+
       catch(Exception e) //IOException, SAXException
       {
          throw new PSSectionProcessingException(e.getMessage());

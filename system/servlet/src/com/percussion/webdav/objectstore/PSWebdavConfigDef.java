@@ -108,9 +108,7 @@ public class PSWebdavConfigDef extends PSWebdavComponent
          throw new PSWebdavException(IPSWebdavErrors.FILE_DOES_NOT_EXIST,
                xmlfile.getAbsolutePath());
 
-      try
-      {
-         FileInputStream in = new FileInputStream(xmlfile);
+      try( FileInputStream in = new FileInputStream(xmlfile)){
          Document doc = PSXmlDocumentBuilder.createXmlDocument(new InputSource(
                in), false);
          fromXml(doc.getDocumentElement());

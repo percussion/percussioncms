@@ -325,25 +325,11 @@ public abstract class PSWebdavMethod
          }
          else
          {
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            try
-            {
+           try(ByteArrayOutputStream os = new ByteArrayOutputStream()){
+
                PSCopyStream.copyStream(m_request.getInputStream(), os);
+              m_contentInByte = os.toByteArray();
             }
-            finally
-            {
-               try
-               {
-                  os.flush();
-                  os.close();
-               }
-               catch (IOException e)
-               {
-                  // ignore, at least we tried
-               }
-            }
-      
-            m_contentInByte = os.toByteArray();
          }
       }
       
@@ -374,13 +360,16 @@ public abstract class PSWebdavMethod
          {
             try
             {
-               InputStream in = null;
+
                if (m_contentInByte == null)
-                  in = m_request.getInputStream();
+                  try(InputStream in = m_request.getInputStream()){
+                     m_requestDoc = PSXmlDocumentBuilder.createXmlDocument(in, false);
+                  }
                else
-                  in = new ByteArrayInputStream(m_contentInByte);
-               
-               m_requestDoc = PSXmlDocumentBuilder.createXmlDocument(in, false);
+                  try(InputStream in = new ByteArrayInputStream(m_contentInByte)){
+                     m_requestDoc = PSXmlDocumentBuilder.createXmlDocument(in, false);
+                  }
+
             }
             catch (Throwable e)
             {
@@ -710,9 +699,10 @@ public abstract class PSWebdavMethod
       response.setContentLength(content.length);
       setResponseStatus(status, false);
 
-      ServletOutputStream out = response.getOutputStream();
-      out.write(content);
-      out.flush();
+      try(ServletOutputStream out = response.getOutputStream()) {
+         out.write(content);
+         out.flush();
+      }
    }
 
 

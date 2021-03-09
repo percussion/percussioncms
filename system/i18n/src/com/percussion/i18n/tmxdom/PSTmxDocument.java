@@ -32,9 +32,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -64,7 +66,7 @@ import org.xml.sax.SAXException;
  *
  **/
 public class PSTmxDocument extends PSTmxNode
-   implements IPSTmxDocument
+        implements IPSTmxDocument
 {
    /**
     * Default constructor. Creates an empty TMX document. Initializes default
@@ -72,7 +74,7 @@ public class PSTmxDocument extends PSTmxNode
     * @throws PSTmxDomException creation fails for any reason.
     */
    public PSTmxDocument()
-      throws PSTmxDomException
+           throws PSTmxDomException
    {
       try
       {
@@ -84,13 +86,13 @@ public class PSTmxDocument extends PSTmxNode
          throw new PSTmxDomException(e.getMessage());
       }
    }
-   
+
    /**
     * Convenience ctor that calls {@link #PSTmxDocument(Document, boolean)
     * this(DOMDoc, true)}
     */
    public PSTmxDocument(Document DOMDoc)
-      throws PSTmxDomException
+           throws PSTmxDomException
    {
       this(DOMDoc, true);
    }
@@ -99,17 +101,17 @@ public class PSTmxDocument extends PSTmxNode
     * Constructor that takes the input TMX file as XML DOM document.
     * Creates an TMX document object from the supplied XML document. Initializes
     * default  merge configuration object and XSL document for sorting.
-    * 
+    *
     * @param DOMDoc the input XML DOM document, must not be <code>null</code>.
     * @param createDefault If <code>true</code>, a variant is also
-    * added for the default language to each translation unit if it does not 
+    * added for the default language to each translation unit if it does not
     * already exist.  If <code>false</code>, no defaults are added.
-    * 
+    *
     * @throws PSTmxDomException if initialization fails for any reason
     * @throws IllegalArgumentException if argument is <code>null</code>.
     */
    public PSTmxDocument(Document DOMDoc, boolean createDefaults)
-      throws PSTmxDomException
+           throws PSTmxDomException
    {
       if(DOMDoc == null)
          throw new IllegalArgumentException("DOMDoc must nt be null");
@@ -140,16 +142,16 @@ public class PSTmxDocument extends PSTmxNode
     * Helper method to initialize the TMX document object. Sets default merge
     * configuratoin. Constructs required parts of the TMX document, viz. header
     * and body. Also initializes the sorting XSL document.
-    * 
+    *
     * @param createDefault If <code>true</code>, a variant is also
-    * added for the default language to each translation unit if it does not 
+    * added for the default language to each translation unit if it does not
     * already exist.  If <code>false</code>, no defaults are added.
-    * 
+    *
     * @throws IOException
     * @throws SAXException
     */
    private void init(boolean createDefault)
-      throws IOException, SAXException
+           throws IOException, SAXException
    {
       m_PSTmxDocument = this;
       m_MergeConfig = new PSTmxMergeConfig();
@@ -173,7 +175,7 @@ public class PSTmxDocument extends PSTmxNode
     * @throws PSTmxDomException
     */
    public String toString()
-      throws PSTmxDomException
+           throws PSTmxDomException
    {
       Document tempDoc = m_DOMDocument;
       //Apply sort style sheet before converting to a string
@@ -247,7 +249,7 @@ public class PSTmxDocument extends PSTmxNode
       if(srcDoc==null)
       {
          throw new IllegalArgumentException(
-            "srcDoc for merging headers must not be null");
+                 "srcDoc for merging headers must not be null");
       }
       Object[] langs = srcDoc.getSupportedLanguages();
       for(int i=0; langs!=null && i<langs.length;i++)
@@ -266,14 +268,14 @@ public class PSTmxDocument extends PSTmxNode
       if(srcDoc==null)
       {
          throw new IllegalArgumentException(
-            "srcDoc for merging body must not be null");
+                 "srcDoc for merging body must not be null");
       }
-      Iterator iter = srcDoc.getTranslationUnits();
+      Iterator<Map.Entry> iter = srcDoc.getTranslationUnits();
       Map.Entry entry = null;
       IPSTmxTranslationUnit srcTu = null;
       while(iter.hasNext())
       {
-         entry = (Map.Entry)iter.next();
+         entry = iter.next();
          srcTu = (IPSTmxTranslationUnit)entry.getValue();
          m_Body.merge(srcTu);
       }
@@ -291,7 +293,7 @@ public class PSTmxDocument extends PSTmxNode
       m_Header.addLanguage(language);
       if(!language.equalsIgnoreCase(PSI18nUtils.DEFAULT_LANG))
       {
-         Iterator iter = m_Body.getTraslationUnits();
+         Iterator< Map.Entry> iter = m_Body.getTraslationUnits();
          Map.Entry entry = null;
          IPSTmxTranslationUnit srcTu = null;
          while(iter.hasNext())
@@ -320,12 +322,12 @@ public class PSTmxDocument extends PSTmxNode
     * @throws IllegalArgumentExcpetion supplied node is <code>null</code>.
     */
    public void merge(IPSTmxNode node)
-      throws PSTmxDomException
+           throws PSTmxDomException
    {
       if(node == null)
       {
          throw new IllegalArgumentException(
-            "Node to be merged must not be null");
+                 "Node to be merged must not be null");
       }
       else if(node instanceof IPSTmxDocument)
       {
@@ -341,7 +343,7 @@ public class PSTmxDocument extends PSTmxNode
       }
       else
       {
-            String[] args = {"IPSTmxDocument", "IPSTmxTranslationUnit"};
+         String[] args = {"IPSTmxDocument", "IPSTmxTranslationUnit"};
          throw new PSTmxDomException("onlyNodeAllowedForMergeAre", args);
       }
    }
@@ -349,33 +351,33 @@ public class PSTmxDocument extends PSTmxNode
    /*
     * Implementation of the method defined in the interface IPSTmxDocument.
     */
-   public IPSTmxDocument extract(String languageString) throws SAXException, 
-      TransformerException
+   public IPSTmxDocument extract(String languageString) throws SAXException,
+           TransformerException
    {
       if (languageString == null || languageString.trim().length() == 0)
          throw new IllegalArgumentException(
-            "languageString may not be null or empty");
-      
+                 "languageString may not be null or empty");
+
       Document tempDoc = null;
-      
+
       //Apply extract stylesheet
       if(ms_xslExtractDoc == null)
       {
          //this should never happen, throw runtime exception
          throw new RuntimeException("extract stylesheet not loaded");
       }
-      
+
       Map params = new HashMap();
       params.put("extractlang", languageString);
       tempDoc = transformXML(m_DOMDocument, ms_xslExtractDoc, params);
       return new PSTmxDocument(tempDoc, false);
    }
-   
+
    /*
     * Implementation of the method defined in the interface IPSTmxDocument.
     */
    public IPSTmxTranslationUnit createTranslationUnit(String key,
-      String description)
+                                                      String description)
    {
       if(key == null)
          throw new IllegalArgumentException("Key must not be null to create tu");
@@ -385,10 +387,10 @@ public class PSTmxDocument extends PSTmxNode
       tu.setAttribute(IPSTmxDtdConstants.ATTR_TUID, key);
       Element note = m_DOMDocument.createElement(IPSTmxDtdConstants.ELEM_NOTE);
       note.setAttribute(IPSTmxDtdConstants.ATTR_XML_LANG,
-         PSI18nUtils.DEFAULT_LANG);
+              PSI18nUtils.DEFAULT_LANG);
       Text noteVal = m_DOMDocument.createTextNode(description);
       PSXmlDocumentBuilder.copyTree(note.getOwnerDocument(),
-         note, noteVal, false);
+              note, noteVal, false);
       PSXmlDocumentBuilder.copyTree(tu.getOwnerDocument(), tu, note, false);
       return new PSTmxTranslationUnit(this, tu);
    }
@@ -397,7 +399,7 @@ public class PSTmxDocument extends PSTmxNode
     * Implementation of the method defined in the interface IPSTmxDocument.
     */
    public IPSTmxTranslationUnitVariant createTranslationUnitVariant(
-      String language, String value)
+           String language, String value)
    {
       if(language == null)
          throw new IllegalArgumentException("Language must be null to create tuv");
@@ -433,12 +435,12 @@ public class PSTmxDocument extends PSTmxNode
       if(language == null || language.length() < 1)
       {
          throw new IllegalArgumentException(
-            "language must not be null or empty to create Note");
+                 "language must not be null or empty to create Note");
       }
       if(value == null || value.length() < 1)
       {
          throw new IllegalArgumentException(
-            "value must not be null or empty to create Note");
+                 "value must not be null or empty to create Note");
       }
       Element note = m_DOMDocument.createElement(IPSTmxDtdConstants.ELEM_NOTE);
       note.setAttribute(IPSTmxDtdConstants.ATTR_XML_LANG, language);
@@ -455,12 +457,12 @@ public class PSTmxDocument extends PSTmxNode
       if(type == null || type.length() < 1)
       {
          throw new IllegalArgumentException(
-            "type must not be null or empty to create Property");
+                 "type must not be null or empty to create Property");
       }
       if(value == null || value.length() < 1)
       {
          throw new IllegalArgumentException(
-            "value must not be null or empty to create Property");
+                 "value must not be null or empty to create Property");
       }
       if(language == null)
          language = "";
@@ -477,7 +479,7 @@ public class PSTmxDocument extends PSTmxNode
     * Implementation of the method defined in the interface IPSTmxDocument.
     */
    public void save(File file)
-      throws IOException, UnsupportedEncodingException, FileNotFoundException
+           throws IOException, UnsupportedEncodingException, FileNotFoundException
    {
       save(file, true);
    }
@@ -486,36 +488,37 @@ public class PSTmxDocument extends PSTmxNode
     * Implementation of the method defined in the interface IPSTmxDocument.
     */
    public void save(File file, boolean createBackup)
-      throws IOException, UnsupportedEncodingException, FileNotFoundException
+           throws IOException, UnsupportedEncodingException, FileNotFoundException
    {
       //Create Backup File
       if(createBackup && file.exists())
       {
-         FileInputStream fis = new FileInputStream(file);
-         FileOutputStream fos = new FileOutputStream(
-            file.getAbsolutePath() + ".bak" );
-         PSCopyStream.copyStream(fis, fos);
-         fos.flush();
-         fos.close();
+         try(FileInputStream fis = new FileInputStream(file)) {
+            try (FileOutputStream fos = new FileOutputStream(
+                    file.getAbsolutePath() + ".bak")) {
+               PSCopyStream.copyStream(fis, fos);
+               fos.flush();
+            }
+         }
       }
       //Save the file with UTF-8 encoding
-      OutputStreamWriter writer = new OutputStreamWriter(
-         new FileOutputStream(file), "UTF8");
-      writer.write(toString());
-      writer.flush();
-      writer.close();
+      try(OutputStreamWriter writer = new OutputStreamWriter(
+              new FileOutputStream(file), StandardCharsets.UTF_8)) {
+         writer.write(toString());
+         writer.flush();
+      }
    }
 
    /**
-    * Convenience method that calls {@link #transformXML(Document, Document, 
+    * Convenience method that calls {@link #transformXML(Document, Document,
     * Map) transformXML(srcDoc, xslDoc, null)}
     */
    public static Document transformXML(Document srcDoc, Document xslDoc)
-      throws SAXException, TransformerException
+           throws SAXException, TransformerException
    {
       return transformXML(srcDoc, xslDoc, null);
    }
-   
+
    /**
     * Show how to transform a DOM tree into another DOM tree.
     * This uses the javax.xml.parsers to parse an XML file into a
@@ -533,16 +536,16 @@ public class PSTmxDocument extends PSTmxNode
     * element).  If a matching parameter declaration is not found in the
     * stylesheet, the supplied parameter is silently ignored.  May be <code>
     * null</code> if no parameters are to be supplied.
-    * 
+    *
     * @return the transformed XML DOM Document. Never <code>null</code>.
-    * 
+    *
     * @throws SAXException
     * @throws TransformerException
     * @throws IllegalArgumentException
     */
-   public static Document transformXML(Document srcDoc, Document xslDoc, 
-      Map params)
-         throws SAXException, TransformerException
+   public static Document transformXML(Document srcDoc, Document xslDoc,
+                                       Map params)
+           throws SAXException, TransformerException
    {
       if(srcDoc==null)
       {
@@ -556,7 +559,7 @@ public class PSTmxDocument extends PSTmxNode
       if(!tfactory.getFeature(DOMSource.FEATURE))
       {
          throw new org.xml.sax.SAXNotSupportedException(
-                "DOM node processing not supported!");
+                 "DOM node processing not supported!");
       }
 
       Templates templates;
@@ -566,16 +569,16 @@ public class PSTmxDocument extends PSTmxNode
       Transformer transformer = templates.newTransformer();
       if (params != null)
       {
-         Iterator iter = params.entrySet().iterator();
+         Iterator< Map.Entry> iter = params.entrySet().iterator();
          while (iter.hasNext())
          {
             Map.Entry param = (Map.Entry)iter.next();
             transformer.setParameter(param.getKey().toString(),
-               param.getValue().toString());
+                    param.getValue().toString());
          }
       }
       transformer.transform(
-         new DOMSource(srcDoc), new DOMResult(outNode));
+              new DOMSource(srcDoc), new DOMResult(outNode));
 
       return outNode;
    }
@@ -622,12 +625,12 @@ public class PSTmxDocument extends PSTmxNode
     * created if there was an error loading it during the static intializer.
     */
    protected static Document ms_xslExtractDoc = null;
-   
+
    /**
     * Root element name for the TMX document.
     */
    public static final String TMXNODENAME =
-                              IPSTmxNode.NODENAMEMAP[IPSTmxNode.TMXROOT];
+           IPSTmxNode.NODENAMEMAP[IPSTmxNode.TMXROOT];
 
    /**
     * Name of the stylesheet used to sort the TMX document. This is shipped as
@@ -637,8 +640,8 @@ public class PSTmxDocument extends PSTmxNode
    public static final String SORTING_XSL = "sortresourcebundle.xsl";
 
    /**
-    * Name of the stylesheet used to extract a language from the TMX document. 
-    * This is shipped as resource in the package. 
+    * Name of the stylesheet used to extract a language from the TMX document.
+    * This is shipped as resource in the package.
     */
    public static final String EXTRACT_XSL = "extractresourcebundle.xsl";
 
@@ -646,53 +649,54 @@ public class PSTmxDocument extends PSTmxNode
     * main method for testing purpose.
     * @param    args
     */
-   public static void main(String[] args){
-      try
-      {
-         Document doc = PSXmlDocumentBuilder.createXmlDocument(
-            new InputStreamReader(
-            new FileInputStream(
-               "rxconfig/i18n/ResourceBundle.tmx"), "UTF8"), false);
+   public static void main(String[] args) {
+
+      try (InputStreamReader ir = new InputStreamReader(
+              new FileInputStream(
+                      "rxconfig/i18n/ResourceBundle.tmx"), StandardCharsets.UTF_8)) {
+         Document doc = PSXmlDocumentBuilder.createXmlDocument(ir, false);
          PSTmxDocument tmxdoc = new PSTmxDocument(doc);
          tmxdoc.addLanguage("en-us");
 
-         Document doc2 = PSXmlDocumentBuilder.createXmlDocument(
-            new InputStreamReader(
-            new FileInputStream(
-               "c:/test.tmx"), "UTF8"), false);
-         PSTmxDocument tmxdoc2 = new PSTmxDocument(doc2);
+         try (InputStreamReader ir2 = new InputStreamReader(
+                 new FileInputStream("c:/test.tmx"), StandardCharsets.UTF_8)) {
 
-         IPSTmxTranslationUnit tu = null;
-         tu = tmxdoc2.createTranslationUnit(
-            "psx.test.key@Content Title2", "<Note to translator>");
+            Document doc2 = PSXmlDocumentBuilder.createXmlDocument(ir2, false);
+            PSTmxDocument tmxdoc2 = new PSTmxDocument(doc2);
 
-         tu.merge(tmxdoc2.createSegment("Test"));
+            IPSTmxTranslationUnit tu = null;
+            tu = tmxdoc2.createTranslationUnit(
+                    "psx.test.key@Content Title2", "<Note to translator>");
 
-         PSXmlDocumentBuilder.write(tmxdoc.getDOMDocument(),
-            new OutputStreamWriter(
-            new FileOutputStream(
-               "rxconfig/i18n/ResourceBundle.tmx"), "UTF8"));
-      }
-      catch(Exception e)
-      {
+            tu.merge(tmxdoc2.createSegment("Test"));
+
+            try (OutputStreamWriter or = new OutputStreamWriter(
+                    new FileOutputStream(
+                            "rxconfig/i18n/ResourceBundle.tmx"), StandardCharsets.UTF_8)) {
+               PSXmlDocumentBuilder.write(tmxdoc.getDOMDocument(), or);
+            }
+         }
+      } catch ( IOException | SAXException e) {
          e.printStackTrace();
+
       }
    }
 
-   static
+      static
    {
       try
       {
-         ms_xslMergeDoc = PSXmlDocumentBuilder.createXmlDocument(
-            PSTmxDocument.class.getResourceAsStream(SORTING_XSL), false);
-            
-         ms_xslExtractDoc = PSXmlDocumentBuilder.createXmlDocument(
-            PSTmxDocument.class.getResourceAsStream(EXTRACT_XSL), false);
+         try(InputStream is = PSTmxDocument.class.getResourceAsStream(SORTING_XSL)) {
+            ms_xslMergeDoc = PSXmlDocumentBuilder.createXmlDocument(is , false);
+            try(InputStream is2 = PSTmxDocument.class.getResourceAsStream(EXTRACT_XSL)) {
+               ms_xslExtractDoc = PSXmlDocumentBuilder.createXmlDocument(is2, false);
+            }
+         }
       }
       catch(Exception e)
       {
          //ignore errors. Will be handled at runtime.
       }
-      
+
    }
 }

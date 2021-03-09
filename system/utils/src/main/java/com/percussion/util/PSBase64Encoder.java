@@ -166,14 +166,14 @@ public class PSBase64Encoder
          throw new IllegalArgumentException("output stream may not be null");
 
       // read stream into byte[]
-      ByteArrayOutputStream bout = new ByteArrayOutputStream(4096);
-      PSCopyStream.copyStream(in, bout);
-
-      byte[] encoded = encode(bout.toByteArray());
-      ByteArrayInputStream bin = new ByteArrayInputStream(encoded);
-      PSCopyStream.copyStream(bin, out);
-
-      return encoded.length;
+      try(ByteArrayOutputStream bout = new ByteArrayOutputStream(4096)) {
+         PSCopyStream.copyStream(in, bout);
+         byte[] encoded = encode(bout.toByteArray());
+         try (ByteArrayInputStream bin = new ByteArrayInputStream(encoded)) {
+            PSCopyStream.copyStream(bin, out);
+            return encoded.length;
+         }
+      }
    }
 
    /**

@@ -216,10 +216,10 @@ public class PSDeliveryInfoLoader
      */
     private DeliveryServerConfig getDeliveryServerConfig(File configFile)
     {
-        InputStream in = null;
-        try
-        {
-            in = new FileInputStream(configFile);
+
+
+
+        try(InputStream in = new FileInputStream(configFile)){
             DeliveryServerConfig config = PSSerializerUtils.unmarshalWithValidation(in, DeliveryServerConfig.class);
             return config;
         }
@@ -237,10 +237,6 @@ public class PSDeliveryInfoLoader
            }
            log.error("Error getting delivery servers from configuration file: " +  msg,e);
            return new DeliveryServerConfig();
-        }
-        finally
-        {
-            IOUtils.closeQuietly(in);
         }
     }
 
