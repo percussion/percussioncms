@@ -174,7 +174,7 @@ public abstract class PSQueryCommandHandler extends PSCommandHandler implements
 
       Iterator stylesheets = ce.getStylesheetSet().getStylesheets(cmdName);
       List<PSConditionalUrlEvaluator> ssEvaluators = 
-         new ArrayList<PSConditionalUrlEvaluator>(4);
+         new ArrayList<>(4);
 
       while ( stylesheets.hasNext())
       {

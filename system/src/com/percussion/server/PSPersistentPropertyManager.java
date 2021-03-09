@@ -29,6 +29,8 @@ import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.utils.tools.PSPatternMatcher;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,6 +49,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class PSPersistentPropertyManager
 {
+   private static final Logger log = LogManager.getLogger(PSPersistentPropertyManager.class);
 
    /**
     *  Default constructor; private to disallow instantiation.
@@ -142,7 +145,8 @@ public class PSPersistentPropertyManager
       }
       catch(IllegalArgumentException argEx)
       {
-         argEx.printStackTrace(System.out);
+         log.error("Error : {}",argEx.getMessage());
+         log.debug(argEx.getMessage(),argEx);
       }
 
      return c;
@@ -513,7 +517,8 @@ public class PSPersistentPropertyManager
       }
       catch(IllegalArgumentException argEx)
       {
-         argEx.printStackTrace(System.out);
+         log.error("Error : {}",argEx.getMessage());
+         log.debug(argEx.getMessage(),argEx);
       }
 
       return c;
@@ -724,7 +729,7 @@ public class PSPersistentPropertyManager
     * mapped to meta property objects
     * Pictorially --- (Usernname,(categories,(metaPropertyName,metaObjs)))
     */
-   private final Map<String, ConcurrentHashMap> m_mergedMetaCache = new ConcurrentHashMap<String, ConcurrentHashMap>();
+   private final Map<String, ConcurrentHashMap> m_mergedMetaCache = new ConcurrentHashMap<>();
 
    /**
     * Cache for <code>PSPersitentProperty</code> objects.

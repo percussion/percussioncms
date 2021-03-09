@@ -58,6 +58,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import org.apache.log4j.PropertyConfigurator;
+import org.apache.logging.log4j.LogManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -222,6 +223,7 @@ import org.xml.sax.SAXException;
  */
 public class PSProcessDaemon extends Thread
 {
+   private static org.apache.logging.log4j.Logger log = LogManager.getLogger(PSProcessDaemon.class);
    /**
     * One of the commands supported by this daemon. See class description for
     * details. 
@@ -303,8 +305,8 @@ public class PSProcessDaemon extends Thread
          File f = new File(location.getAbsolutePath());
          if (!f.exists())
          {
-            System.out.println("Configuration file missing. Cannot continue.");
-            System.out.println("Looked for file at: " + f.getAbsolutePath());
+            log.info("Configuration file missing. Cannot continue.");
+            log.info("Looked for file at: " + f.getAbsolutePath());
             return;
          }
          FileInputStream is = new FileInputStream(f);
@@ -315,12 +317,12 @@ public class PSProcessDaemon extends Thread
          PropertyConfigurator.configure(props);
          ms_logger = Logger.getLogger(PSProcessDaemon.class);
          Level lvl = ms_logger.getEffectiveLevel();
-         System.out.println("Logging for system set to " + lvl.toString() + ".");
+         log.info("Logging for system set to {} .", lvl.toString());
          
          //tell user where to change it
          String msg = "Loaded properties from: " + location.getAbsolutePath();
          if (lvl.equals(Level.OFF))
-            System.out.println(msg);
+            log.info(msg);
          else
             ms_logger.info(msg);
          
@@ -336,8 +338,7 @@ public class PSProcessDaemon extends Thread
          boolean b = ms_logger.isEnabledFor(Priority.INFO);
          if (!b )
          {
-            System.out.println("Rhythmyx Process Daemon is listening on port "
-               + props.getProperty("port") + " ...");
+            log.info("Rhythmyx Process Daemon is listening on port {} ...",props.getProperty("port"));
          }
          
          //wait for it to finish
@@ -361,7 +362,7 @@ public class PSProcessDaemon extends Thread
          {
             if (null != t)
                t.printStackTrace();
-            System.out.println(TERM_MSG);
+            log.info(TERM_MSG);
          }
       }
    }

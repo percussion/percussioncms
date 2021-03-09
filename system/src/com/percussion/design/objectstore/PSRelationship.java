@@ -46,7 +46,9 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -161,7 +163,7 @@ public class PSRelationship extends PSComponent
       {
          Set<Map.Entry<String, String>> entries = m_config.getUserProperties()
                .entrySet();
-         m_userProperties = new ArrayList<PSRelationshipPropertyData>(entries
+         m_userProperties = new ArrayList<>(entries
                .size());
          for (Map.Entry<String, String> entry : entries)
          {
@@ -332,7 +334,7 @@ public class PSRelationship extends PSComponent
       relationship.m_dependentCommunityId = m_dependentCommunityId;
       relationship.m_dependentObjectType = m_dependentObjectType;
       relationship.m_owner = (PSLocator) m_owner.clone();
-      relationship.m_userProperties = new ArrayList<PSRelationshipPropertyData>(
+      relationship.m_userProperties = new ArrayList<>(
             m_userProperties);
 
       return relationship;
@@ -654,7 +656,7 @@ public class PSRelationship extends PSComponent
       }
       else
       {
-         Map<String, String> props = new HashMap<String, String>();
+         Map<String, String> props = new HashMap<>();
          props.putAll(getConfig().getSystemProperties());
          props.putAll(getUserProperties());
          return props;
@@ -672,7 +674,7 @@ public class PSRelationship extends PSComponent
     */
    public Map<String, String> getAllProperties()
    {
-      Map<String, String> props = new HashMap<String, String>();
+      Map<String, String> props = new HashMap<>();
       props.putAll(getConfig().getSystemProperties());
       if (!m_userProperties.isEmpty())
       {
@@ -737,7 +739,7 @@ public class PSRelationship extends PSComponent
     */
    public Map<String, String> getUserProperties()
    {
-      Map<String, String> userProps = new HashMap<String, String>();
+      Map<String, String> userProps = new HashMap<>();
       String value;
       for (PSRelationshipPropertyData prop : m_userProperties)
       {
@@ -1029,8 +1031,7 @@ public class PSRelationship extends PSComponent
                }
                else
                {
-                  ms_logger.warn("Unknown property name: '" + currProp.getName()
-                        + "' in fromXml()");
+                  log.warn("Unknown property name: ' {} ' in fromXml()", currProp.getName());
                }
                
                node = PSXMLDomUtil.getNextElementSibling(node);
@@ -1166,7 +1167,7 @@ public class PSRelationship extends PSComponent
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger(PSRelationship.class);
+   private static Logger log = LogManager.getLogger(PSRelationship.class);
 
    /*
     * The following strings define all elements/attributes used to parse/create

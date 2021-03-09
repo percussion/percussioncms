@@ -251,7 +251,7 @@ public class PSParameters implements IPSComponent
     * filled as it reads from xml. May be modified through calls to <code>
     * fromXml(Element)</code>, but never <code>null</code>
     */
-   private Map<String, String> m_params = new HashMap<String, String>();
+   private Map<String, String> m_params = new HashMap<>();
 
    /**
     * The constant to indicate root node name.
