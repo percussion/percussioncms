@@ -91,7 +91,7 @@ public abstract class PSPageBaseTag implements Tag
    public String getUrlContent(String componentname, Map<String, String> extra)
          throws PSInternalRequestCallException
    {
-      Map<String, String> requestparams = new HashMap<String, String>();
+      Map<String, String> requestparams = new HashMap<>();
       ServletRequest srvreq = m_context.getRequest();
       for (String name : (Set<String>) srvreq.getParameterMap().keySet())
       {
