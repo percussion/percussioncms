@@ -258,36 +258,37 @@ public class PSDocumentUtils extends PSJexlUtilBase
    {@IPSJexlParam(name = "resultData", description = "the original result data, assumed not null")})
    public String extractBody(IPSAssemblyResult rval) throws IOException
    {
+
       PSStopwatchStack sws = PSStopwatchStack.getStack();
-      sws.start(getClass().getCanonicalName() + "#extractBody");
-      try
-      {
-         if (rval == null)
-         {
+      try {
+         sws.start(getClass().getCanonicalName() + "#extractBody");
+
+         if (rval == null) {
             throw new IllegalArgumentException("rval may not be null");
          }
-         StringWriter w = new StringWriter();
-         InputStream stream = new ByteArrayInputStream(rval.getResultData());
-         PSHtmlBodyInputStream bodyInputStream = new PSHtmlBodyInputStream(
-               stream);
-         Charset cset = PSStringUtils
-               .getCharsetFromMimeType(rval.getMimeType());
-         String input = new String(rval.getResultData(), cset.name());
-         if (!input.toLowerCase().contains("<body"))
-            return input;
-         else
-         {
-            Reader r = new InputStreamReader(bodyInputStream, cset);
-            char buf[] = new char[65536];
-            while (true)
-            {
-               int count = r.read(buf);
-               if (count <= 0)
-                  break;
-               w.write(buf, 0, count);
+         try (StringWriter w = new StringWriter()) {
+            try (InputStream stream = new ByteArrayInputStream(rval.getResultData())) {
+               try (PSHtmlBodyInputStream bodyInputStream = new PSHtmlBodyInputStream(
+                       stream)) {
+                  Charset cset = PSStringUtils
+                          .getCharsetFromMimeType(rval.getMimeType());
+                  String input = new String(rval.getResultData(), cset.name());
+                  if (!input.toLowerCase().contains("<body"))
+                     return input;
+                  else {
+                     try (Reader r = new InputStreamReader(bodyInputStream, cset)) {
+                        char buf[] = new char[65536];
+                        while (true) {
+                           int count = r.read(buf);
+                           if (count <= 0)
+                              break;
+                           w.write(buf, 0, count);
+                        }
+                        return w.toString();
+                     }
+                  }
+               }
             }
-            w.close();
-            return w.toString();
          }
       }
       finally

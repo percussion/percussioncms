@@ -334,19 +334,20 @@ public class PSAgentRequestHandler implements IPSLoadableRequestHandler
          )
       {
          URL styleSheetURL = null;
-         try
-         {
+         try {
             //No caching of the style sheet. Can be a future task.
             styleSheetURL = new URL("file:" + handlerResponse.getStyleSheet());
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            new PSXslStyleSheetMerger().merge(
-               request,
-               handlerResponse.getDocument(),
-               out,
-               styleSheetURL,
-               null);
-            request.getResponse().setContent(new ByteArrayInputStream(
-               out.toByteArray()), out.size(), "text/html");
+            try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+               new PSXslStyleSheetMerger().merge(
+                       request,
+                       handlerResponse.getDocument(),
+                       out,
+                       styleSheetURL,
+                       null);
+               try(InputStream io = new ByteArrayInputStream(out.toByteArray())) {
+                  request.getResponse().setContent(io, out.size(), "text/html");
+               }
+            }
          }
          /* Can throw MalformedURLException, PSUnsupportedConversionException
           * or PSConversionException

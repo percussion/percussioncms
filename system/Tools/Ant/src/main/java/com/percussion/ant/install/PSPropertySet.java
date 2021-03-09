@@ -76,11 +76,10 @@ public class PSPropertySet extends PSAction
                   m_strPropertyValue);
 
             //save the properties
-            FileOutputStream out =
-               new FileOutputStream(m_strPropertyFile);
-
-            props.store(out, null);
-            out.close();
+            try(FileOutputStream out =
+               new FileOutputStream(m_strPropertyFile)) {
+               props.store(out, null);
+            }
          }
       }
       catch(FileNotFoundException e)

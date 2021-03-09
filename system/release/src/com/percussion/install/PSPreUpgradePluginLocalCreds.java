@@ -146,31 +146,24 @@ public class PSPreUpgradePluginLocalCreds implements IPSUpgradePlugin
     throws Exception
    {
       boolean localCreds = false;
-      FileInputStream in = null;
       Document doc = null;
       PSXmlTreeWalker tree = null;
-      
-      try
-      {
-         in = new FileInputStream(appFile);
-         doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
-         tree = new PSXmlTreeWalker(doc);
-         tree.getNext();
-         
-         int walkerFlags =
-            PSXmlTreeWalker.GET_NEXT_RESET_CURRENT
-               | PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS;
-         
-         if (tree.getNextElement(PSBackEndCredential.ms_NodeType, walkerFlags)
-               != null)
-            localCreds = true;
-      }
-      finally
-      {
-         if (in != null)
-            in.close();
-      }
-      
+
+         try(FileInputStream in = new FileInputStream(appFile)) {
+            doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
+            tree = new PSXmlTreeWalker(doc);
+            tree.getNext();
+
+            int walkerFlags =
+                    PSXmlTreeWalker.GET_NEXT_RESET_CURRENT
+                            | PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS;
+
+            if (tree.getNextElement(PSBackEndCredential.ms_NodeType, walkerFlags)
+                    != null)
+               localCreds = true;
+         }
+
+
       return localCreds;
    }
 

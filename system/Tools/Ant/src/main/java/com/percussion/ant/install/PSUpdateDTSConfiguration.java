@@ -29,7 +29,11 @@ import com.percussion.utils.container.DefaultConfigurationContextImpl;
 import com.percussion.utils.container.IPSConnector;
 import com.percussion.utils.container.adapters.DtsConnectorConfigurationAdapter;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
@@ -69,23 +73,13 @@ public class PSUpdateDTSConfiguration extends PSAction {
     }
 
     private Properties loadPercCatalinaProperties(File percCatalinaFile) throws IOException {
-        InputStream inputStream = null;
         Properties prop = new Properties();
-        try {
-
-            inputStream = new FileInputStream(percCatalinaFile);
-
+        try (FileInputStream inputStream = new FileInputStream(percCatalinaFile)) {
             if (inputStream != null) {
                 prop.load(inputStream);
             } else {
                 throw new FileNotFoundException("property file '" + CATALINA_PROPERTIES + "' not found in the classpath");
             }
-
-
-        } catch (Exception e) {
-            System.out.println("Exception: " + e);
-        } finally {
-            inputStream.close();
         }
         return prop;
     }

@@ -72,7 +72,6 @@
         <available file="${install.dir}/Staging/Deployment/Server/conf/server.xml" type="file"/>
     </condition>
 
-
     <!-- Text files to fix up line endings -->
     <patternset id="text.files">
         <include name="**/*.txt"/>
@@ -86,7 +85,6 @@
     <target name="install">
         <echo>Initializing Log...</echo>
         <mkdir dir="${install.dir}/rxconfig/Installer"/>
-        <mkdir dir="${install.dir}/rxconfig/secure"/>
         <touch file="${install.dir}/rxconfig/Installer/dts-install.log" />
         <record name="${install.dir}/rxconfig/Installer/dts-install.log" loglevel="verbose"/>
         <echo>Property configuration..</echo>
@@ -128,7 +126,7 @@
         </if>
 
         <if>
-             <isfalse value="${install.prod.dts}"/>
+            <isfalse value="${install.prod.dts}"/>
             <then>
                 <echo>Installing stage dts </echo>
                 <install-dts type="Staging" upgrade="${stage.dts.upgrade}"/>
@@ -254,6 +252,7 @@
                 </fileset>
             </copy>
 
+
             <if>
                 <and>
                     <available file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml"/>
@@ -377,7 +376,7 @@
                     <mkdir dir="${install.dir}${staging.dir}/Deployment/Server/work" />
                     <mkdir dir="${install.dir}${staging.dir}/Deployment/Server/temp" />
 
-                    <echo>Installing new DTS files...</echo>
+                    <echo>Installing new DTS files 1...</echo>
                     <copy todir="${install.dir}${staging.dir}/" failonerror="true" verbose="true" overwrite="true" force="true">
                         <fileset dir="${install.src}">
                             <include name="Deployment/**" />
@@ -402,8 +401,8 @@
                     </copy>
 
                     <!-- Restore customer configuration files -->
-                    <echo>Installing new DTS files...</echo>
-                    <copy todir="${install.dir}${staging.dir}/Deployment/Server/conf/perc" verbose="true" failonerror="false">
+                    <echo>Installing new DTS files.2..</echo>
+                    <copy todir="${install.dir}${staging.dir}/Deployment/Server/conf/perc" overwrite="true" verbose="true" failonerror="false">
                         <fileset dir="${new.backup.dir}${staging.dir}/Server/conf/perc">
                             <include name="*.properties"/>
                             <include name="*.xml"/>
@@ -592,11 +591,11 @@
                             <istrue value="@{upgrade}"/>
                         </and>
                         <then>
-                            <echo>Dropping Staging Metadata Tables....</echo>
+                            <echo>Dropping Metadata Tables....</echo>
                             <antcall target="updateStagingDTSTableSchema" inheritall="true"/>
                         </then>
                         <else>
-                            <echo>Dropping for metadata database....</echo>
+                            <echo>Dropping for Staging metadata database....</echo>
                             <antcall target="updateDTSTableSchema" inheritall="true"/>
                         </else>
                     </if>

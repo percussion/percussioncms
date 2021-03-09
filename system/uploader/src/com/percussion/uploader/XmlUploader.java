@@ -64,6 +64,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -548,40 +549,39 @@ public class XmlUploader
          int status = resp.getStatusCode();
          if (status == Utils.HTTP_STATUS_OK)
          {
-            Document response = PSXmlDocumentBuilder.createXmlDocument(
-               resp.getInputStream(), false);
+            try(InputStream is = resp.getInputStream()) {
+               Document response = PSXmlDocumentBuilder.createXmlDocument(
+                       is, false);
 
-            // check the flag so we don't do the work unless we need to
-            if (m_debug)
-            {
-               StringWriter sw = new StringWriter();
-               PSXmlDocumentBuilder.write(response, sw);
-               ms_logger.logMessage(sw.toString());
-               ms_logger.logMessage("\n");
-            }
-
-            int firstFlags = PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN |
-               PSXmlTreeWalker.GET_NEXT_RESET_CURRENT;
-            int nextFlags = PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS |
-               PSXmlTreeWalker.GET_NEXT_RESET_CURRENT;
-
-            PSXmlTreeWalker walker = new PSXmlTreeWalker(response);
-            Element elCommunity = walker.getNextElement(
-               Utils.EL_COMMUNITY, firstFlags);
-
-
-            while (elCommunity != null)
-            {
-               String communityName = walker.getElementData(elCommunity);
-               String commId = elCommunity.getAttribute(Utils.ATTR_COMMID);
-               if ((m_communityId.equalsIgnoreCase(communityName)) ||
-                  (m_communityId.equalsIgnoreCase(commId)))
-               {
-                  communityId = Integer.parseInt(commId);
-                  return communityId;
+               // check the flag so we don't do the work unless we need to
+               if (m_debug) {
+                  StringWriter sw = new StringWriter();
+                  PSXmlDocumentBuilder.write(response, sw);
+                  ms_logger.logMessage(sw.toString());
+                  ms_logger.logMessage("\n");
                }
-               elCommunity = walker.getNextElement(Utils.EL_COMMUNITY,
-                  nextFlags);
+
+               int firstFlags = PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN |
+                       PSXmlTreeWalker.GET_NEXT_RESET_CURRENT;
+               int nextFlags = PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS |
+                       PSXmlTreeWalker.GET_NEXT_RESET_CURRENT;
+
+               PSXmlTreeWalker walker = new PSXmlTreeWalker(response);
+               Element elCommunity = walker.getNextElement(
+                       Utils.EL_COMMUNITY, firstFlags);
+
+
+               while (elCommunity != null) {
+                  String communityName = walker.getElementData(elCommunity);
+                  String commId = elCommunity.getAttribute(Utils.ATTR_COMMID);
+                  if ((m_communityId.equalsIgnoreCase(communityName)) ||
+                          (m_communityId.equalsIgnoreCase(commId))) {
+                     communityId = Integer.parseInt(commId);
+                     return communityId;
+                  }
+                  elCommunity = walker.getNextElement(Utils.EL_COMMUNITY,
+                          nextFlags);
+               }
             }
          }
          else
@@ -691,39 +691,37 @@ public class XmlUploader
             Exception exc = null;
             int rowsInserted = 0;   // used in finally block
 
-            try
-            {
-               BufferedInputStream bis = new BufferedInputStream(
-                  sources[i].getContent());
+            try(BufferedInputStream bis = new BufferedInputStream(
+                  sources[i].getContent())){
                int bufLen = (int)sources[i].getContentLength();
                byte[] buf = new byte[bufLen];
                bis.read(buf, 0, bufLen);
                HTTPResponse resp = conn.Post(urlText, buf);
                int status = resp.getStatusCode();
-               if (status == Utils.HTTP_STATUS_OK)
-               {
+               if (status == Utils.HTTP_STATUS_OK) {
                   isResponseOk = true;
-                  Document response = PSXmlDocumentBuilder.createXmlDocument(
-                     resp.getInputStream(), false);
+                  try (InputStream is = resp.getInputStream()) {
+                     Document response = PSXmlDocumentBuilder.createXmlDocument(
+                             is, false);
 
-                  // check the flag so we don't do the work unless we need to
-                  if (m_debug)
-                  {
-                     StringWriter sw = new StringWriter();
-                     PSXmlDocumentBuilder.write(response, sw);
-                     ms_logger.logMessage(sw.toString());
-                     ms_logger.logDebugMessage("\n");
+                     // check the flag so we don't do the work unless we need to
+                     if (m_debug) {
+                        StringWriter sw = new StringWriter();
+                        PSXmlDocumentBuilder.write(response, sw);
+                        ms_logger.logMessage(sw.toString());
+                        ms_logger.logDebugMessage("\n");
+                     }
+
+                     PSXmlTreeWalker walker = new PSXmlTreeWalker(response);
+                     rowsInserted = Integer.parseInt(
+                             walker.getElementData("RowsInserted"));
+                     stats.rowsInserted += rowsInserted;
+                     stats.rowsSkipped += Integer.parseInt(
+                             walker.getElementData("RowsSkipped"));
+                     stats.rowsFailed += Integer.parseInt(
+                             walker.getElementData("RowsFailed"));
+                     ms_logger.logMessage("Deleting file.");
                   }
-
-                  PSXmlTreeWalker walker = new PSXmlTreeWalker( response );
-                  rowsInserted = Integer.parseInt(
-                     walker.getElementData( "RowsInserted" ));
-                  stats.rowsInserted += rowsInserted;
-                  stats.rowsSkipped += Integer.parseInt(
-                     walker.getElementData( "RowsSkipped" ));
-                  stats.rowsFailed += Integer.parseInt(
-                     walker.getElementData( "RowsFailed" ));
-                  ms_logger.logMessage( "Deleting file." );
                }
                else
                {
@@ -731,101 +729,67 @@ public class XmlUploader
                   errResponse = resp.getInputStream();
                }
             }
-            catch (ModuleException e)
+            catch (ModuleException | IOException | SAXException e)
             {
                exc = e;
-            }
-            catch ( FileNotFoundException e )
-            {
-               /* This should only happen if a file gets deleted after we
-                  cataloged it. */
-               exc = e;
-            }
-            catch ( IOException e )
-            {
-               // Failed while writing the request or reading the response
-               exc = e;
-            }
-            catch ( SAXException e )
-            {
-               // failed while parsing the statistics document
-               exc = e;
-            }
-            catch ( NumberFormatException e )
-            {
-               // the text in the <RowsInserted> element was not a number
-               exc = e;
-            }
-            finally
-            {
-               try
-               {
-                  sources[i].close( !m_debug && rowsInserted > 0 );
-               }
-               catch ( Throwable t )
-               {
-                  ms_logger.logMessage( "An error occurred while trying to close the stream: " +
-                     t.getLocalizedMessage());
-               }
             }
 
-            String userMsg = null;
-            String pattern = null;
-            if ( isResponseOk && exc != null )
-            {
-               userMsg = "The request was successful, but an error occurred" +
-                  " while trying to process the response. Can't verify that" +
-                  " a row was inserted successfully. File not deleted.\r\n";
-               pattern = DEFAULT_WARNING;
-               stats.warnings++;
-            }
-            else if ( null != errResponse )
-            {
-               try
-               {
-                  stats.errors++;
-                  // read stream into String
-                  byte [] buf = new byte[1024]; // arbitrary size
-                  int bytesRead = 1; // to get into loop
-                  ByteArrayOutputStream byteStr = new ByteArrayOutputStream();
-                  while ( bytesRead > 0 )
-                  {
-                     bytesRead = errResponse.read( buf );
-                     if ( bytesRead > 0 )
-                        byteStr.write( buf, 0, bytesRead );
+            finally {
+               try {
+                  sources[i].close(!m_debug && rowsInserted > 0);
+               } catch (Throwable t) {
+                  ms_logger.logMessage("An error occurred while trying to close the stream: " +
+                          t.getLocalizedMessage());
+               }
+
+
+               String userMsg = null;
+               String pattern = null;
+               if (isResponseOk && exc != null) {
+                  userMsg = "The request was successful, but an error occurred" +
+                          " while trying to process the response. Can't verify that" +
+                          " a row was inserted successfully. File not deleted.\r\n";
+                  pattern = DEFAULT_WARNING;
+                  stats.warnings++;
+               } else if (null != errResponse) {
+                  try {
+                     stats.errors++;
+                     // read stream into String
+                     byte[] buf = new byte[1024]; // arbitrary size
+                     int bytesRead = 1; // to get into loop
+                     try(ByteArrayOutputStream byteStr = new ByteArrayOutputStream()){
+                        while (bytesRead > 0) {
+                           bytesRead = errResponse.read(buf);
+                           if (bytesRead > 0)
+                              byteStr.write(buf, 0, bytesRead);
+                        }
+                        userMsg = byteStr.toString(DEFAULT_RX_ENCODING);
+                     }
+                  } catch (UnsupportedEncodingException e) {
+                     // this should never happen since we picked a well know encoding
+                     userMsg = "Couldn't convert response from server, unknown encoding: " +
+                             DEFAULT_RX_ENCODING;
+                  } catch (IOException e) {
+                     userMsg = "Failed to read response document from Rhythmyx server.\r\n" +
+                             e.getLocalizedMessage();
                   }
-                  userMsg = byteStr.toString( DEFAULT_RX_ENCODING );
+                  IOUtils.closeQuietly(errResponse);
+                  pattern = DEFAULT_ERROR;
+               } else if (null != exc) {
+                  stats.errors++;
+                  pattern = DEFAULT_ERROR;
+                  userMsg = "";
+               } else {
+                  pattern = DEFAULT_SUCCESS;
+                  userMsg = "";
                }
-               catch ( UnsupportedEncodingException e )
-               {
-                  // this should never happen since we picked a well know encoding
-                  userMsg = "Couldn't convert response from server, unknown encoding: " +
-                     DEFAULT_RX_ENCODING;
-               }
-               catch ( IOException e )
-               {
-                  userMsg = "Failed to read response document from Rhythmyx server.\r\n" +
-                     e.getLocalizedMessage();
-               }
-               pattern = DEFAULT_ERROR;
-            }
-            else if ( null != exc )
-            {
-               stats.errors++;
-               pattern = DEFAULT_ERROR;
-               userMsg = "";
-            }
-            else
-            {
-               pattern = DEFAULT_SUCCESS;
-               userMsg = "";
-            }
 
-            ms_logger.logMessage( pattern,
-               new Object [] { sources[i].getDisplayName() });
-            String excText = null != exc ? exc.getLocalizedMessage() : "";
-            if ( excText.length() > 0 || userMsg.length() > 0 )
-               ms_logger.logMessage( userMsg + excText );
+               ms_logger.logMessage(pattern,
+                       new Object[]{sources[i].getDisplayName()});
+               String excText = null != exc ? exc.getLocalizedMessage() : "";
+               if (excText.length() > 0 || userMsg.length() > 0)
+                  ms_logger.logMessage(userMsg + excText);
+            }
       }
       return stats;
    }
@@ -945,11 +909,13 @@ public class XmlUploader
    class FileContent implements IContentSource
    {
       public FileContent( String filename )
-         throws FileNotFoundException
+              throws IOException
       {
          m_file = new File( filename );
-         m_content = new BufferedInputStream( new FileInputStream( m_file ));
-         m_filename = m_file.getAbsolutePath();
+         try(FileInputStream fi = new FileInputStream( m_file ) ) {
+            m_content = new BufferedInputStream(fi);
+            m_filename = m_file.getAbsolutePath();
+         }
       }
 
       /**
@@ -1059,10 +1025,11 @@ public class XmlUploader
          int responseCode = req.getResponseCode();
          if ( Utils.HTTP_STATUS_OK != responseCode )
             throw new IOException( "Request failed. Returned code " + responseCode );
-         ByteArrayOutputStream buf = new ByteArrayOutputStream();
-         IOTools.copyStream( req.getResponseContent(), buf );
-         try(ByteArrayInputStream m_content = new ByteArrayInputStream( buf.toByteArray())) {
-            m_displayName = url.toString();
+         try(ByteArrayOutputStream buf = new ByteArrayOutputStream()) {
+            IOTools.copyStream(req.getResponseContent(), buf);
+            try (ByteArrayInputStream m_content = new ByteArrayInputStream(buf.toByteArray())) {
+               m_displayName = url.toString();
+            }
          }
       }
 

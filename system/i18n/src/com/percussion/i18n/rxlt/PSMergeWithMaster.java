@@ -32,7 +32,9 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -69,8 +71,10 @@ public class PSMergeWithMaster extends PSIdleDotter
    {
       try
       {
-         m_DocConifigMergeWithMaster = PSXmlDocumentBuilder.createXmlDocument(
-         getClass().getResourceAsStream(MERGE_CONFIG_FILE), false);
+         try(InputStream ir = getClass().getResourceAsStream(MERGE_CONFIG_FILE) ) {
+            m_DocConifigMergeWithMaster = PSXmlDocumentBuilder.createXmlDocument(ir
+                    , false);
+         }
       }
       catch (Exception e) //potentially IOException, SAXException
       {
@@ -111,11 +115,12 @@ public class PSMergeWithMaster extends PSIdleDotter
          if (file.exists())
          {
             try (FileInputStream fis = new FileInputStream(file)) {
-
-               Document srcDoc = PSXmlDocumentBuilder.createXmlDocument(
-                       new InputStreamReader(fis, "UTF8"), false);
-               IPSTmxDocument srcTmxdoc = new PSTmxDocument(srcDoc, false);
-               destTmxdoc.merge(srcTmxdoc);
+               try(InputStreamReader ir = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
+                  Document srcDoc = PSXmlDocumentBuilder.createXmlDocument(ir
+                          , false);
+                  IPSTmxDocument srcTmxdoc = new PSTmxDocument(srcDoc, false);
+                  destTmxdoc.merge(srcTmxdoc);
+               }
             }
          }
          //make sure to set the language tool name and version in the header

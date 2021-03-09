@@ -78,9 +78,9 @@ public class Utils
       if(null == entry)
          return props;
 
-      InputStream is = jfile.getInputStream(entry);
-      props.load(is);
-      is.close();
+      try(InputStream is = jfile.getInputStream(entry)) {
+         props.load(is);
+      }
 
       return props;
    }

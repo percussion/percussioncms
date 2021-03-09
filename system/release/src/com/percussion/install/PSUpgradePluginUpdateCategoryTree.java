@@ -73,35 +73,24 @@ public class PSUpgradePluginUpdateCategoryTree implements IPSUpgradePlugin
       {
          throw new IllegalArgumentException("target must exist");
       }
-      
-      FileInputStream in = null;
-      FileOutputStream out = null;
-      FileOutputStream bout = null;
-                  
-      try
-      {
+
          logger.println("Reading category document");
          // Update the delivery servers file
-         in = new FileInputStream(target);
-         Document doc = PSXmlDocumentBuilder.createXmlDocument(
-               in, false);
-         closeStream(in);
-         //Back up the file
-         bout = new FileOutputStream(backup);
-         PSXmlDocumentBuilder.write(doc, bout);
-         //Update the document
-         doc = updateDocument(doc);
-         logger.println("Category document has been updated, ids are now same as labels.");
-         out = new FileOutputStream(target);
-         PSXmlDocumentBuilder.write(doc, out);
-         logger.println("Category document has been written back to disk.");
-      }
-      finally
-      {
-         closeStream(in);
-         closeStream(out);
-         closeStream(bout);
-      }
+         try(FileInputStream in = new FileInputStream(target)){
+            Document doc = PSXmlDocumentBuilder.createXmlDocument(
+                  in, false);
+            //Back up the file
+            try (FileOutputStream bout = new FileOutputStream(backup)) {
+               PSXmlDocumentBuilder.write(doc, bout);
+               //Update the document
+               doc = updateDocument(doc);
+               logger.println("Category document has been updated, ids are now same as labels.");
+               try(FileOutputStream out = new FileOutputStream(target)) {
+                  PSXmlDocumentBuilder.write(doc, out);
+                  logger.println("Category document has been written back to disk.");
+               }
+            }
+         }
       return new PSPluginResponse(PSPluginResponse.SUCCESS, "Successfully upgraded category ids with labels.");
    }
 

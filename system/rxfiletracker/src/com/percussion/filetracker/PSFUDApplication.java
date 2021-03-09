@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -163,7 +164,6 @@ public class PSFUDApplication
          PSFUDServerException
    {
       URL urlQuery = null;
-        InputStream content = null;
       int nPort = MainFrame.getConfig().getPort();
 
       String sHost = MainFrame.getConfig().getHost();
@@ -223,13 +223,13 @@ public class PSFUDApplication
 
             throw new PSFUDServerException(sError);
          }
-         content = httpRequest.getResponseContent();
-
-         DocumentBuilder db = RXFileTracker.getDocumentBuilder();
-         Document doc = null;
-         doc = db.parse(new InputSource(content));
-         content.close();
-         return doc;
+         try(InputStream content = httpRequest.getResponseContent()) {
+            DocumentBuilder db = RXFileTracker.getDocumentBuilder();
+            Document doc = null;
+            doc = db.parse(new InputSource(content));
+            content.close();
+            return doc;
+         }
       }
       catch(IOException e)
       {
@@ -325,11 +325,11 @@ public class PSFUDApplication
       if(null != file.getParentFile())
          file.getParentFile().mkdirs();
 
-      FileOutputStream ostream = new FileOutputStream(file);
-      OutputStreamWriter fw = new OutputStreamWriter(ostream, "UTF8");
-      PrintNode.printNode(m_snapshotDoc, " ", fw);
-      fw.flush();
-      fw.close();
+      try(FileOutputStream ostream = new FileOutputStream(file)) {
+         try(OutputStreamWriter fw = new OutputStreamWriter(ostream, StandardCharsets.UTF_8)) {
+            PrintNode.printNode(m_snapshotDoc, " ", fw);
+         }
+      }
    }
 
    /**

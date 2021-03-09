@@ -34,6 +34,7 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -114,11 +115,13 @@ public class PSExtensionResourcesSectionHandler extends PSIdleDotter
                file = (File)listFiles.get(i);
                PSCommandLineProcessor.logMessage("processingFile",
                   file.getCanonicalPath());
-               doc = PSXmlDocumentBuilder.createXmlDocument(
-                  new InputStreamReader(
-                     new FileInputStream(file), "UTF8"), false);
-               tmxDocTemp = new PSTmxDocument(doc);
-               tmxDoc.merge(tmxDocTemp);
+               try(InputStreamReader ir = new InputStreamReader(
+                       new FileInputStream(file), StandardCharsets.UTF_8) ) {
+                  doc = PSXmlDocumentBuilder.createXmlDocument(ir
+                          , false);
+                  tmxDocTemp = new PSTmxDocument(doc);
+                  tmxDoc.merge(tmxDocTemp);
+               }
             }
             catch(Exception e)
             {

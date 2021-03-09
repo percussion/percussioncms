@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 
 import javax.jcr.PropertyType;
@@ -89,10 +90,8 @@ public class PSInputStreamValue extends PSBaseValue<InputStream>
       {
          if (m_streamUsed) 
             throw new IllegalStateException("May not read from stream twice");
-         Reader r = null;
-         try
-         {
-            r = new InputStreamReader(m_value, "UTF8");
+
+         try( Reader  r = new InputStreamReader(m_value, StandardCharsets.UTF_8)){
             StringBuffer b = new StringBuffer();
             char buf[] = new char[1024];
             int len;
@@ -106,10 +105,6 @@ public class PSInputStreamValue extends PSBaseValue<InputStream>
          catch (IOException e)
          {
             throw new IllegalStateException("Problem reading from stream",e);
-         }
-         finally
-         {
-            IOUtils.closeQuietly(r);
          }
       }
       return m_strValue;

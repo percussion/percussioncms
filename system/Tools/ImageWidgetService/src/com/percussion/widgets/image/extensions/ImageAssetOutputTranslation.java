@@ -50,7 +50,6 @@ package com.percussion.widgets.image.extensions;
       import java.util.List;
       import javax.jcr.Node;
       import javax.jcr.PathNotFoundException;
-      import javax.jcr.Property;
       import javax.jcr.RepositoryException;
       import javax.jcr.ValueFormatException;
       import org.apache.commons.lang.StringUtils;
@@ -155,21 +154,23 @@ package com.percussion.widgets.image.extensions;
         		return null;
           }
         	iData.setSize(size.intValue());
-        	InputStream is = node.getProperty(base).getStream();
-        	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        	PSCopyStream.copyStream(is, baos);
-        	iData.setBinary(baos.toByteArray());
-        	iData.setExt(node.getProperty(base + "_ext").getString());
-        	iData.setFilename(node.getProperty(base + "_filename").getString());
-       		iData.setMimeType(node.getProperty(base + "_type").getString());
-       		Long height = Long.valueOf(node.getProperty(base + "_height").getLong());
-       		iData.setHeight(height.intValue());
-       		Long width = Long.valueOf(node.getProperty(base + "_width").getLong());
-       		iData.setWidth(width.intValue());
-      
-       		String imageKey = this.cacheManager.addImage(iData);
-      
-       		return imageKey;
+        	try(InputStream is = node.getProperty(base).getStream()) {
+                try(ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                    PSCopyStream.copyStream(is, baos);
+                    iData.setBinary(baos.toByteArray());
+                    iData.setExt(node.getProperty(base + "_ext").getString());
+                    iData.setFilename(node.getProperty(base + "_filename").getString());
+                    iData.setMimeType(node.getProperty(base + "_type").getString());
+                    Long height = Long.valueOf(node.getProperty(base + "_height").getLong());
+                    iData.setHeight(height.intValue());
+                    Long width = Long.valueOf(node.getProperty(base + "_width").getLong());
+                    iData.setWidth(width.intValue());
+
+                    String imageKey = this.cacheManager.addImage(iData);
+
+                    return imageKey;
+                }
+            }
         }
       
         protected void setGmgr(IPSGuidManager gmgr)

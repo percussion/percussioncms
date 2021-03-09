@@ -26,6 +26,7 @@ package com.percussion.hooks;
 import com.percussion.hooks.servlet.RhythmyxServlet;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -100,11 +101,16 @@ public class PSServletBase extends HttpServlet
             
             Properties logConfig = new Properties();
             String logLocation = config.getInitParameter("RxLogLocation");
-            if (logLocation == null || logLocation.trim().length() == 0)
-               logConfig.load( RhythmyxServlet.class.getResourceAsStream(
-                  "log4j.properties"));
-            else
-               logConfig.load(new FileInputStream(logLocation));
+            if (logLocation == null || logLocation.trim().length() == 0) {
+               try (InputStream is = RhythmyxServlet.class.getResourceAsStream(
+                       "log4j.properties")) {
+                  logConfig.load(is);
+               }
+            }else {
+               try(FileInputStream fs = new FileInputStream(logLocation)) {
+                  logConfig.load(fs);
+               }
+            }
                
             PropertyConfigurator.configure(logConfig);
          }
