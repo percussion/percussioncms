@@ -24,19 +24,10 @@
 package com.percussion.server;
 
 import com.percussion.data.IPSDataErrors;
-import com.percussion.design.objectstore.PSAttributeList;
-import com.percussion.design.objectstore.PSGlobalSubject;
-import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSRelationship;
-import com.percussion.design.objectstore.PSRelationshipSet;
-import com.percussion.design.objectstore.PSSubject;
+import com.percussion.design.objectstore.*;
 import com.percussion.error.PSErrorHandler;
 import com.percussion.log.PSLogHandler;
-import com.percussion.security.PSRoleEntry;
-import com.percussion.security.PSSecurityCatalogException;
-import com.percussion.security.PSSecurityProvider;
-import com.percussion.security.PSSecurityToken;
-import com.percussion.security.PSUserEntry;
+import com.percussion.security.*;
 import com.percussion.server.content.PSContentParser;
 import com.percussion.server.content.PSFormContentParser;
 import com.percussion.server.content.PSXmlContentParser;
@@ -45,18 +36,13 @@ import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.PSServletRequestWrapper;
 import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.servlets.PSSecurityFilter;
-import com.percussion.util.IPSHtmlParameters;
-import com.percussion.util.PSBaseHttpUtils;
-import com.percussion.util.PSInputStreamReader;
-import com.percussion.util.PSIteratorUtils;
-import com.percussion.util.PSPurgableTempFile;
-import com.percussion.util.PSStopwatch;
+import com.percussion.util.*;
 import com.percussion.utils.date.PSDateFormatter;
-import com.percussion.utils.request.PSRequestInfo;
+import com.percussion.utils.request.PSRequestInfoBase;
 import com.percussion.utils.string.PSStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.w3c.dom.Document;
@@ -64,22 +50,11 @@ import org.w3c.dom.Document;
 import javax.security.auth.Subject;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletRequestWrapper;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -90,7 +65,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings(value={"unchecked"})
 public class PSRequest 
 {
-   static Log ms_log = LogFactory.getLog(PSRequest.class);
+   static Logger log = LogManager.getLogger(PSRequest.class);
 
 
    /**
@@ -115,8 +90,8 @@ public class PSRequest
       {
          MockHttpServletRequest mock = new MockHttpServletRequest();
 
-         Subject s = (Subject) PSRequestInfo
-               .getRequestInfo(PSRequestInfo.SUBJECT);
+         Subject s = (Subject) PSRequestInfoBase
+                 .getRequestInfo(PSRequestInfoBase.SUBJECT);
          req = new PSServletRequestWrapper(mock, s);
       }
       if (resp == null)
@@ -135,18 +110,15 @@ public class PSRequest
       m_servletResponse = resp;
       
       m_reqHookURL   = null;
-      m_params       = new HashMap<String, Object>();
+      m_params       = new HashMap<>();
       
       // Process request parameters
-      Iterator iter = req.getParameterMap().entrySet().iterator();
-      while (iter.hasNext())
-      {
-         Map.Entry ent = (Map.Entry) iter.next();
+      for (Map.Entry<String, String[]> stringEntry : req.getParameterMap().entrySet()) {
+         Map.Entry ent = stringEntry;
          String paramName = (String) ent.getKey();
-         String arr[] = (String[]) ent.getValue();
-         for(int i = 0; i < arr.length; i++)
-         {
-            appendParameter(paramName, arr[i]);
+         String[] arr = (String[]) ent.getValue();
+         for (String s : arr) {
+            appendParameter(paramName, s);
          }
       }
       
@@ -223,19 +195,17 @@ public class PSRequest
     */
    public PSRequest cloneRequest()
    {
-      HashMap<String, Object> htmlParams = m_params == null ? null : (HashMap<String, Object>) m_params.clone();
+      HashMap<String, Object> htmlParams = m_params == null ? null : (HashMap<String, Object>) new HashMap<String,Object>(m_params).clone();
 
       /* Some htmlParam entries can be ArrayList instead of string, these must
          be cloned individually for safety */
       if (htmlParams != null)
       {
-         Iterator i = htmlParams.entrySet().iterator();
-         while (i.hasNext())
-         {
-            Map.Entry ent = (Map.Entry) i.next();
+         for (Map.Entry<String, Object> stringObjectEntry : htmlParams.entrySet()) {
+            Map.Entry ent = (Map.Entry) stringObjectEntry;
             Object value = ent.getValue();
             if (value instanceof ArrayList)
-               ent.setValue(((ArrayList)value).clone());
+               ent.setValue(((ArrayList) value).clone());
          }
       }
 
@@ -282,12 +252,12 @@ public class PSRequest
       
       if (m_clones != null)
       {
-         req.m_clones = new HashMap<Serializable, Serializable>();
+         req.m_clones = new HashMap<>();
          req.m_clones.putAll(m_clones);
       }
       if (m_relationships != null)
       {
-         req.m_relationships = new ArrayList<Serializable>();
+         req.m_relationships = new ArrayList<>();
          req.m_relationships.addAll((m_relationships));
       }
 
@@ -320,7 +290,7 @@ public class PSRequest
       if (m_clones == null)
          m_clones = new HashMap<Serializable, Serializable>();
 
-      m_clones.put(new Integer(originalId), clone);
+      m_clones.put(originalId, clone);
    }
 
    /**
@@ -336,7 +306,7 @@ public class PSRequest
       if (m_clones == null)
          return null;
 
-      return (PSLocator) m_clones.get(new Integer(originalId));
+      return (PSLocator) m_clones.get(originalId);
    }
    
    /**
@@ -384,7 +354,7 @@ public class PSRequest
          throw new IllegalArgumentException("relationships cannot be null");
 
       if (m_relationships == null)
-         m_relationships = new ArrayList<Serializable>();
+         m_relationships = new ArrayList<>();
 
       m_relationships.addAll(relationships);
    }
@@ -624,14 +594,6 @@ public class PSRequest
             int temp = reqFileURL.indexOf('/', serverRoot.length() - 1);
             if ((temp != -1) && (m_reqExt == null)){
                pagePos = reqFileURL.length();  // right after the reqFileURL string
-               /*
-               int rootLen = serverRoot.length();
-               if ((pagePos == rootLen) || (pagePos == rootLen + 1)){
-                  // The case could be reqFileURL="/rhythmyx" or "/rhythmyx/"
-                  // Need to find default app name as appRoot. To make model simple,
-                  // we ignore it here and deal with it in PSServer.getRequestHandler
-                  // by calling setRequestFileURL method with the right argument.
-               } */
             }
             else
                pagePos = serverRoot.length();   /* obviously no app root */
@@ -747,6 +709,10 @@ public class PSRequest
          case PAGE_TYPE_TEXT:
             reqExtension = ".txt";
             break;
+
+         default:
+            reqExtension = ".xml";
+            break;
       }
 
       return reqExtension;
@@ -817,7 +783,7 @@ public class PSRequest
          // if we actually have some elements in the list
          // get the first one and return that as a string
          // otherwise just return the default value
-         if (((List<?>)o).size() > 0)
+         if (!((List<?>)o).isEmpty())
             o = ((List<?>)o).get(0);
          else
             return defValue;
@@ -930,7 +896,7 @@ public class PSRequest
                List<Object> balanceList;
                if(listSize > 0 )
                {
-                  balanceList = new ArrayList<Object>(valList);
+                  balanceList = new ArrayList<>(valList);
                   balanceList.addAll( createList(
                      valList.get(listSize-1), size-valList.size() ) );
                }
@@ -970,7 +936,7 @@ public class PSRequest
       if (o instanceof List)  // false if it is null
       {
          List<?> sourceList = (List<?>)o;
-         if (sourceList.size() > 0)
+         if (!sourceList.isEmpty())
             o = sourceList.get(0);
          else
             o = null;
@@ -1010,7 +976,7 @@ public class PSRequest
     *
     * @return the request parameters, never <code>null</code>, may be empty.
     */
-   public HashMap getParameters()
+   public Map<String,Object> getParameters()
    {
       return m_params;
    }
@@ -1042,7 +1008,7 @@ public class PSRequest
          return new Object[]{ value };
        }
        else
-          return null;
+          return new Object[]{};
     }
 
    /**
@@ -1100,7 +1066,7 @@ public class PSRequest
             throw new IllegalStateException(
                "The value of parameter to append is not of correct type.");
 
-         List<Object> values = new ArrayList<Object>();
+         List<Object> values = new ArrayList<>();
          values.add(paramValue);
          values.add(value);
          m_params.put(name, values);
@@ -1119,12 +1085,9 @@ public class PSRequest
     */
    public boolean hasMultiValuesForAnyParameter()
    {
-      Iterator<Object> iter = m_params.values().iterator();
 
-      while(iter.hasNext())
-      {
-         Object value = iter.next();
-         if(value instanceof List && !((List<?>)value).isEmpty())
+      for (Object value : m_params.values()) {
+         if (value instanceof List && !((List<?>) value).isEmpty())
             return true;
       }
       return false;
@@ -1148,7 +1111,7 @@ public class PSRequest
       Object o = m_params.get(name);
       if (o instanceof List)
       {
-         for (String key : (Set<String>) m_params.keySet())
+         for (String key : m_params.keySet())
          {
             if (key.equals(name))
                continue;
@@ -1220,7 +1183,7 @@ public class PSRequest
          throw new IllegalArgumentException("Must supply a file resource.");
 
       if (m_tempFileResources == null)
-         m_tempFileResources = new HashMap<String, Object>();
+         m_tempFileResources = new HashMap<>();
 
       m_tempFileResources.put(key, f);
    }
@@ -1288,12 +1251,12 @@ public class PSRequest
     * object), but no entries should have List objects for their values. Never
     * <code>null</code>, may be empty.
     */
-   public Map<Object, Object> getTruncatedParameters()
+   public Map<String, Object> getTruncatedParameters()
    {
-      Map<Object, Object> result = null;
+      Map<String, Object> result = null;
 
       if (m_params.isEmpty())
-         result = new HashMap<Object, Object>();
+         result = new HashMap<>();
       else
          result = getBalancedParameters( 1 );
 
@@ -1323,15 +1286,14 @@ public class PSRequest
     *
     * @deprecated Use {@link #getBalancedParameters(String origParam) } instead.
     */
-   public Map<Object, Object> getTruncatedParameters(String origParam)
+   public Map<String, Object> getTruncatedParameters(String origParam)
    {
       if(origParam == null || origParam.trim().length() == 0)
          throw new IllegalArgumentException(
          "origParam may not be null or empty");
 
-      Map<Object, Object> result =  getBalancedParameters( origParam );
+      return  getBalancedParameters( origParam );
 
-      return result;
    }
 
 
@@ -1366,7 +1328,7 @@ public class PSRequest
       if (params == null)
          throw new IllegalArgumentException("params can not be null");
          
-      m_params = new HashMap<String, Object>();
+      m_params = Collections.synchronizedMap(new HashMap<>());
       while (params.hasNext())
       {
          Map.Entry<String,Object> entry = (Map.Entry<String, Object>) params.next();
@@ -1392,7 +1354,7 @@ public class PSRequest
     *
     * @throws IllegalArgumentException if params is <code>null</code>
     */
-   public void setParameters(HashMap<String, Object> params)
+   public void setParameters(Map<String, Object> params)
    {
       if (params == null)
          throw new IllegalArgumentException("params can not be null");
@@ -1478,7 +1440,7 @@ public class PSRequest
     * @throws IllegalStateException if the controlParam does not exist in the
     * request parameters map.
     */
-   public Map<Object, Object> getBalancedParameters(String controlParam)
+   public Map<String, Object> getBalancedParameters(String controlParam)
    {
       if(controlParam == null || controlParam.trim().length() == 0)
          throw new IllegalArgumentException(
@@ -1509,7 +1471,7 @@ public class PSRequest
     * @return The request parameters map containing balanced values, may not be
     * <code>null</code>, may be empty.
     */
-   public Map<Object, Object> getBalancedParameters()
+   public Map<String, Object> getBalancedParameters()
    {
       int maxListSize = getMaxListValuesSize();
 
@@ -1527,15 +1489,10 @@ public class PSRequest
    {
       int max = 1;
 
-      Iterator<Object> iter = m_params.values().iterator();
-
-      while(iter.hasNext())
-      {
-         Object value = iter.next();
-         if(value instanceof List)
-         {
-            List<?> listValue = (List<?>)value;
-            if(max < listValue.size())
+      for (Object value : m_params.values()) {
+         if (value instanceof List) {
+            List<?> listValue = (List<?>) value;
+            if (max < listValue.size())
                max = listValue.size();
          }
       }
@@ -1568,18 +1525,17 @@ public class PSRequest
     * @return The request parameters map containing balanced values, may not be
     * <code>null</code>, may be empty.
     */
-   private Map<Object, Object> getBalancedParameters(int size)
+   private Map<String, Object> getBalancedParameters(int size)
    {
-      Map<Object, Object> result = new HashMap<Object, Object>(m_params.size());
+      Map<String, Object> result = Collections.synchronizedMap(
+              new HashMap<>(m_params.size()));
 
-      Iterator<?> entries = m_params.entrySet().iterator();
-      while (entries.hasNext())
-      {
-         Map.Entry<Object,Object> entry = (Map.Entry<Object, Object>)entries.next();
-         Object key = entry.getKey();
+      for (Map.Entry<String, Object> stringObjectEntry : m_params.entrySet()) {
+         Map.Entry<String, Object> entry = stringObjectEntry;
+         String key = entry.getKey();
          Object value = entry.getValue();
 
-         result.put(key, getBalancedValue(value, size) );
+         result.put(key, getBalancedValue(value, size));
       }
 
       return result;
@@ -1600,15 +1556,12 @@ public class PSRequest
    public String getCookie(
       String name, String defValue)
    {
-      Cookie cookies[] = m_servletRequest.getCookies();
+      Cookie[] cookies = m_servletRequest.getCookies();
       
       if (cookies != null)
       {
-         for (int i = 0; i < cookies.length; i++)
-         {
-            Cookie c = cookies[i];
-            if (c.getName().equals(name))
-            {
+         for (Cookie c : cookies) {
+            if (c.getName().equals(name)) {
                return c.getValue();
             }
          }
@@ -1832,7 +1785,9 @@ public class PSRequest
    public void saveParams()
    {
       if (m_params!=null && isSavedParams()==false)
-         m_savedParams = (HashMap<String, Object>) m_params.clone();
+         m_savedParams = (HashMap<String, Object>) Collections.synchronizedMap(
+                 (Map<String,Object>)
+                 new HashMap<String, Object>(m_params).clone());
    }
 
    /**
@@ -2116,7 +2071,7 @@ public class PSRequest
                  servletReq.getScheme());
 
          publicHostName = PSServer.getProperty("publicCmsHostname",PSServer.getHostName());
-         port  = Integer.valueOf(proxyPort);
+         port  = Integer.parseInt(proxyPort);
          scheme = proxyScheme;
          host = publicHostName;
 
@@ -2280,7 +2235,7 @@ public class PSRequest
       
       if (m_contentItemStatusCache == null)
       {
-         m_contentItemStatusCache = new HashMap<String, Document>();
+         m_contentItemStatusCache = new HashMap<>();
       }
       
       m_contentItemStatusCache.put(contentid, doc);
@@ -2305,7 +2260,7 @@ public class PSRequest
       if (m_contentItemStatusCache==null)
          return null;
       
-      return  (Document)m_contentItemStatusCache.get(contentid);
+      return  m_contentItemStatusCache.get(contentid);
    }
    
    /**
@@ -2350,7 +2305,7 @@ public class PSRequest
       sess.addAuthenticatedUserEntry(entry);
       PSSecurityFilter.updateHttpSession(req.getServletRequest(), sess);
 
-      ms_log.debug("Creating interal user session for host :"+host);
+      log.debug("Creating interal user session for host : {}",host);
       
       ms_internalUserSessionIdMap.put(host, sess.getId());
       return sess;
@@ -2369,7 +2324,7 @@ public class PSRequest
       IPSRoleMgr roleMgr = PSRoleMgrLocator.getRoleManager();
       try
       {
-         List<PSRoleEntry> roleList = new ArrayList<PSRoleEntry>();
+         List<PSRoleEntry> roleList = new ArrayList<>();
          Set<String> roles = roleMgr.getUserRoles(
             PSTypedPrincipal.createSubject(
                PSSecurityProvider.INTERNAL_USER_NAME));
@@ -2382,15 +2337,14 @@ public class PSRequest
       }
       catch (PSSecurityCatalogException e)
       {
-         ms_log.error("Failed to load roles for internal server user", e);
+         log.error("Failed to load roles for internal server user", e);
       }
       
-      PSUserEntry entry = new PSUserEntry(
+      return new PSUserEntry(
          PSSecurityProvider.INTERNAL_USER_NAME, 0, null, roleEntries, null, 
          PSUserEntry.createSignature(PSSecurityProvider.INTERNAL_USER_NAME, 
             ""));
-      
-      return entry;
+
    }
    
    /**
@@ -2409,10 +2363,9 @@ public class PSRequest
       PSUserEntry user = users[0];
       
       PSAttributeList attributes = new PSAttributeList(user.getAttributes());
-      PSSubject subject = new PSGlobalSubject(user.getName(), 
+      return  new PSGlobalSubject(user.getName(),
          PSSubject.SUBJECT_TYPE_USER, attributes);
-      
-      return subject;
+
    }
 
    /**
@@ -2569,7 +2522,7 @@ public class PSRequest
     * as a String.
     * This is never <code>null</code>, but may be empty.
     */
-   private static Map<String,String> ms_internalUserSessionIdMap = new ConcurrentHashMap<String,String>(8, 0.9f, 1);
+   private static Map<String,String> ms_internalUserSessionIdMap = new ConcurrentHashMap<>(8, 0.9f, 1);
 
 
 
@@ -2596,7 +2549,7 @@ public class PSRequest
     */
    private List<Object> createList(Object value, int size)
    {
-      List<Object> newEntry = new ArrayList<Object>(size);
+      List<Object> newEntry = new ArrayList<>(size);
       for (int i = 0; i < size; i++)
          newEntry.add(value);
 
@@ -2624,7 +2577,8 @@ public class PSRequest
       String mediaType = null;
       String charSet = null;
 
-      HashMap<String, Object> contentParams = new HashMap<String, Object>();
+      Map<String, Object> contentParams = Collections.synchronizedMap(
+              new HashMap<String,Object>());
       mediaType = PSBaseHttpUtils.parseContentType(contentType,
          contentParams);
       charSet = (String)contentParams.get("charset");
@@ -2643,7 +2597,7 @@ public class PSRequest
 
       /* verify this is a content type we understand */
       PSContentParser parser =
-               (PSContentParser)ms_ContentParsers.get(mediaType);
+               ms_ContentParsers.get(mediaType);
       if (parser == null) {
          Object[] args = { contentType };
          throw new PSRequestParsingException(
@@ -2781,7 +2735,7 @@ public class PSRequest
     * Initialized in constructor and never <code>null</code> after that. May be
     * empty.
     */
-   protected HashMap<String, Object>                m_params;
+   protected Map<String, Object>                m_params;
 
     /**
     * The map of parameter names and values that were saved prior to the
@@ -2791,7 +2745,7 @@ public class PSRequest
     * Is <code>null</code> by default, initilized with cloned m_params when
     * the {@link #saveParams()} method is called.
     */
-   private HashMap<String, Object>                m_savedParams;
+   private Map<String, Object>                m_savedParams;
 
    /**
     * The character set for the current request, may be <code>null</code>,
@@ -2949,13 +2903,13 @@ public class PSRequest
    
    static 
    {
-      ms_ContentParsers = new HashMap<String, PSContentParser>();
+      ms_ContentParsers = Collections.synchronizedMap(new HashMap<>());
 
       /* with JDK 1.2, we can ask the content package what classes it
        * contains. For now, we'll just hard-code them.
        */
-      addParser((PSContentParser)new PSXmlContentParser());
-      addParser((PSContentParser)new PSFormContentParser());
+      addParser(new PSXmlContentParser());
+      addParser(new PSFormContentParser());
    }
    
    /**
@@ -2967,8 +2921,8 @@ public class PSRequest
     */
    private static void addParser(PSContentParser parser) {
       String[] types = parser.getSupportedContentTypes();
-      for (int i = 0; i < types.length; i++) {
-         ms_ContentParsers.put(types[i], parser);
+      for (String type : types) {
+         ms_ContentParsers.put(type, parser);
       }
    }
 }

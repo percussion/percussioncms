@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,20 +25,9 @@ package com.percussion.webservices;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
-import com.percussion.cms.objectstore.PSAaRelationship;
-import com.percussion.cms.objectstore.PSCmsObject;
-import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSRelationshipFilter;
-import com.percussion.cms.objectstore.PSSlotType;
+import com.percussion.cms.objectstore.*;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
-import com.percussion.design.objectstore.PSConfigurationFactory;
-import com.percussion.design.objectstore.PSContentEditorSharedDef;
-import com.percussion.design.objectstore.PSContentEditorSystemDef;
-import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSRelationship;
-import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.design.objectstore.PSRelationshipConfigSet;
-import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.design.objectstore.*;
 import com.percussion.error.PSException;
 import com.percussion.rx.design.PSDesignModelUtils;
 import com.percussion.security.PSSecurityProvider;
@@ -50,18 +39,13 @@ import com.percussion.server.PSServer;
 import com.percussion.server.cache.PSFolderRelationshipCache;
 import com.percussion.server.config.PSConfigManager;
 import com.percussion.server.webservices.PSWebServicesRequestHandler;
-import com.percussion.services.assembly.IPSAssemblyService;
-import com.percussion.services.assembly.IPSAssemblyTemplate;
-import com.percussion.services.assembly.IPSTemplateSlot;
-import com.percussion.services.assembly.PSAssemblyException;
-import com.percussion.services.assembly.PSAssemblyServiceLocator;
+import com.percussion.services.assembly.*;
 import com.percussion.services.assembly.data.PSTemplateSlot;
 import com.percussion.services.catalog.IPSCatalogItem;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
 import com.percussion.services.content.data.PSAutoTranslation;
-import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSDesignGuid;
@@ -113,14 +97,7 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang.Validate.notEmpty;
 
@@ -1762,14 +1739,14 @@ public class PSWebserviceUtils
 
       PSRequest req = getRequest();
 
-      HashMap oldParams = req.getParameters();
-      req.setParameters(new HashMap());
+      Map<String, Object> oldParams = req.getParameters();
+      req.setParameters( Collections.synchronizedMap(new HashMap<String,Object>()));
 
       String addhocList = null;
       // concatenate a list of user names with ';' delimiter
       if (addhocUsers != null && (!addhocUsers.isEmpty()))
       {
-         StringBuffer users = new StringBuffer();
+         StringBuilder users = new StringBuilder();
          for (int i = 0; i < addhocUsers.size(); i++)
          {
             if (i > 0)

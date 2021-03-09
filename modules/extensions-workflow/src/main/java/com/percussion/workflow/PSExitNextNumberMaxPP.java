@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,13 +23,7 @@
  */
 package com.percussion.workflow;
 
-import com.percussion.extension.IPSExtension;
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.extension.IPSExtensionErrors;
-import com.percussion.extension.IPSRequestPreProcessor;
-import com.percussion.extension.PSExtensionException;
-import com.percussion.extension.PSExtensionProcessingException;
-import com.percussion.extension.PSParameterMismatchException;
+import com.percussion.extension.*;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSPreparedStatement;
@@ -41,6 +35,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * This extension returns the value of a counter obtained using
@@ -82,14 +77,14 @@ public class PSExitNextNumberMaxPP implements IPSRequestPreProcessor
             args);
       }
 
-      HashMap htmlParams = request.getParameters();
+      Map<String,Object> htmlParams = request.getParameters();
 
       if(null == params)
          return; //no parameters - exit with peace!
 
       if(null == htmlParams)
       {
-         htmlParams = new HashMap();
+         htmlParams = new HashMap<>();
          request.setParameters(htmlParams);
       }
 

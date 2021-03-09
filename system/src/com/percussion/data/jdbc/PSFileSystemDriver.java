@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -28,7 +28,7 @@ import com.percussion.data.vfs.IPSVirtualDirectory;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSUserSession;
-import com.percussion.utils.request.PSRequestInfo;
+import com.percussion.utils.request.PSRequestInfoBase;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -86,8 +86,8 @@ public class PSFileSystemDriver extends PSJdbcDriver
       {
          throw new SQLException(e.toString());
       }
-      PSRequest currentReq = (PSRequest) PSRequestInfo
-            .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
+      PSRequest currentReq = (PSRequest) PSRequestInfoBase
+            .getRequestInfo(PSRequestInfoBase.KEY_PSREQUEST);
       return new PSFileSystemConnection(
          info.getProperty("catalog"),
          url,
@@ -113,37 +113,6 @@ public class PSFileSystemDriver extends PSJdbcDriver
    {
       return url.toLowerCase().startsWith("jdbc:psfilesystem");
    }
-
-   /**
-    * Utility method to extract the path from a URL that this driver
-    * accepts.
-    *
-    * @param   url the URL
-    * @return The full file path, or <CODE>null</CODE> if the URL is
-    * not supported/malformed, or the empty string if the path
-    * component of the URL is empty.
-    */
-   /*
-   protected static File getFileFromURL(String url)
-   {
-      url = url.trim();
-      int firstColon = url.indexOf(':');
-      if (-1 == firstColon
-         || !url.substring(0, firstColon).equalsIgnoreCase("jdbc"))
-         return null;
-
-      // don't worry about length > firstColon + 1, because indexOf will
-      // simply return -1, in which case we will return null
-      int secondColon = url.indexOf(':', firstColon + 1);
-      if (-1 == secondColon || !url.substring(
-         firstColon + 1, secondColon).equalsIgnoreCase("psfilesystem"))
-         return null;
-
-      File f = new File(url.substring(secondColon + 1));
-      System.out.println("URL = " + url + ", file = " + f.getAbsolutePath());
-      return f;
-   }
-   */
 
    /**
     * This is not currently supported and always returns an empty array.
@@ -177,13 +146,11 @@ public class PSFileSystemDriver extends PSJdbcDriver
     *
     * @author   chadloder
     *
-    * @version 1.5 1999/07/13
-    *
     *
     * @param   vdir
     *
     */
-   public static final void addVirtualDirectory(IPSVirtualDirectory vdir)
+   public static void addVirtualDirectory(IPSVirtualDirectory vdir)
    {
       printMsg("Adding virtual directory: "
          + vdir.getVirtualDirectory() + " -> " + vdir.getPhysicalPath(new File(".")).toString());
@@ -202,10 +169,10 @@ public class PSFileSystemDriver extends PSJdbcDriver
     * @return The removed directory, or <code>null</code> if no matching 
     * directory was located for removal.
     */
-   public static final IPSVirtualDirectory removeVirtualDirectory(String vdir)
+   public static IPSVirtualDirectory removeVirtualDirectory(String vdir)
    {
       printMsg("Removing virtual directory: " + vdir);
-      return (IPSVirtualDirectory) m_vdirs.remove(vdir);
+      return m_vdirs.remove(vdir);
    }
 
    /**
@@ -214,14 +181,14 @@ public class PSFileSystemDriver extends PSJdbcDriver
     *
     * @author   chadloder
     *
-    * @version 1.5 1999/07/13
+    * @since 1.5 1999/07/13
     *
     *
-    * @param   oldName
+    * @param   oldVdir
     * @param   newVdir
     *
     */
-   public static final void renameVirtualDirectory(
+   public static void renameVirtualDirectory(
       String oldVdir,
       IPSVirtualDirectory newVdir
       )
@@ -242,7 +209,7 @@ public class PSFileSystemDriver extends PSJdbcDriver
     *
     * @author   chadloder
     *
-    * @version 1.5 1999/07/13
+    * @since 1.5 1999/07/13
     *
     * @param   catalog
     *
@@ -252,7 +219,7 @@ public class PSFileSystemDriver extends PSJdbcDriver
     *
     * @return   File
     */
-   static final File getPhysicalPath(String catalog,
+   static File getPhysicalPath(String catalog,
                                      PSUserSession session,
                                      int requiredAccess)
       throws PSAuthorizationException
@@ -260,7 +227,7 @@ public class PSFileSystemDriver extends PSJdbcDriver
       if (catalog == null)
          throw new IllegalArgumentException("vfs convert path error" + catalog);
 
-      IPSVirtualDirectory vdir = null;
+      IPSVirtualDirectory vdir;
 
       // get the highest root of the catalog, and use this to get the
       // virtual directory entry
@@ -275,7 +242,7 @@ public class PSFileSystemDriver extends PSJdbcDriver
 
       String rootName = catalogFile.getName();
 
-      vdir = (IPSVirtualDirectory)m_vdirs.get(rootName);
+      vdir = m_vdirs.get(rootName);
 
       if (vdir == null)
       {
@@ -320,14 +287,10 @@ public class PSFileSystemDriver extends PSJdbcDriver
       com.percussion.server.PSConsole.printMsg("FileSysDriver", msg);
    }
 
-   private static void printMsg(Throwable t)
-   {
-      com.percussion.server.PSConsole.printMsg("FileSysDriver", t);
-   }
 
    /** the map from catalog names to virtual directory entries */
-   private static Map m_vdirs
-      = Collections.synchronizedMap(new HashMap());
+   private static final Map<String,IPSVirtualDirectory> m_vdirs
+      = Collections.synchronizedMap(new HashMap<>());
 
    private static final int               ms_majorVersion = 1;
    private static final int               ms_minorVersion = 0;

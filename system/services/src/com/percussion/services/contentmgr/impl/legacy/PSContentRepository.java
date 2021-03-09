@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -83,14 +83,12 @@ import org.apache.commons.collections.MultiMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.metadata.CollectionMetadata;
-import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
@@ -327,7 +325,7 @@ public class PSContentRepository
                 .getContentEditorSystemDef();
         PSFieldSet fieldset = systemDef.getFieldSet();
         Map<String, String> columnToProp = new HashMap<>();
-        Field csfields[] = PSComponentSummary.class.getDeclaredFields();
+        Field[] csfields = PSComponentSummary.class.getDeclaredFields();
         for (Field field : csfields)
         {
             Column ann = field.getAnnotation(Column.class);
@@ -343,10 +341,10 @@ public class PSContentRepository
         for (PSField field : fieldset.getAllFields())
         {
             String fieldName = field.getSubmitName();
-            String columnNames[] = field.getLocator().getColumnsForSelect();
+            String[] columnNames = field.getLocator().getColumnsForSelect();
             if (columnNames == null || columnNames.length == 0)
                 continue;
-            String parts[] = columnNames[0].split("\\x2E");
+            String[] parts = columnNames[0].split("\\x2E");
             if (parts.length < 2)
             {
                 ms_log.warn("Field has incomplete column info: " + fieldName);
@@ -2248,7 +2246,7 @@ public class PSContentRepository
         }
         finally
         {
-            if (collectionIds.size() > 0)
+            if (!collectionIds.isEmpty())
             {
                 // Cleanup any ids allocated in the temp table
                 for (Long idset : collectionIds)
@@ -2315,7 +2313,7 @@ public class PSContentRepository
         Session s = sessionFactory.getCurrentSession();
         PSRequest req = (PSRequest) PSRequestInfo
                 .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
-        Boolean allowBinaryNew=false ;
+        boolean allowBinaryNew=false ;
         if(req.getParameter("allowBinary")=="true"){
             allowBinaryNew=true;
             req.setParameter("allowBinary","false");
@@ -2354,7 +2352,7 @@ public class PSContentRepository
                         if(type.getM_fieldToType().get(field)!=null && type.getM_fieldToType().get(field).equals(Blob.class))
                             continue;
 
-                        query.append(field + " as "+COLUMN_PREFIX_CGLIB+field+ ",");//FOR ANOTHER LIBRARY NEED TO CHANGE LOGIC
+                        query.append("ab."+field + " as "+COLUMN_PREFIX_CGLIB+field+ ",");//FOR ANOTHER LIBRARY NEED TO CHANGE LOGIC
                     }
 
                     //removing comma from endPSJdbcImportExportHelperTests

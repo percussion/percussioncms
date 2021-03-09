@@ -29,7 +29,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -96,7 +97,7 @@ public class PSNavUtil
       }
       try
       {
-         ms_log.debug("loaded component summary");
+         log.debug("loaded component summary");
          IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
          PSComponentSummary summary = cms.loadComponentSummary(locator.getId());
          if (summary == null)
@@ -282,7 +283,7 @@ public class PSNavUtil
       if (itemField.isMultiValue())
       {
          String msg = "Field" + fieldName + " is multi-value";
-         ms_log.error(msg);
+         log.error(msg);
          throw new PSNavException(msg);
       }
       IPSFieldValue fieldValue = itemField.getValue();
@@ -337,8 +338,7 @@ public class PSNavUtil
 
          }
       }
-      ms_log.debug("Search for Variant " + variantName + " in ContentType "
-            + String.valueOf(contentTypeId) + " failed!");
+      log.debug("Search for Variant {} in ContentType {} failed!", variantName, String.valueOf(contentTypeId));
       return null;
    }
 
@@ -375,8 +375,7 @@ public class PSNavUtil
 
          }
       }
-      ms_log.warn("Search for Variant ID " + String.valueOf(variantId)
-            + " in ContentType " + String.valueOf(contentTypeId) + " failed!");
+      log.warn("Search for Variant ID {} in ContentType {} failed!", String.valueOf(variantId), String.valueOf(contentTypeId));
       return null;
    }
 
@@ -428,13 +427,13 @@ public class PSNavUtil
       
       try
       {
-         ms_log.debug("Getting slot " + slotName);
+         log.debug("Getting slot {} ", slotName);
          PSNavConfig config = PSNavConfig.getInstance(req);
 
          PSSlotTypeSet allSlots = config.getAllSlots();
 
          PSSlotType ourSlot = allSlots.getSlotTypeByName(slotName);
-         ms_log.debug("Got slot");
+         log.debug("Got slot");
          return ourSlot;
       }
       catch (Exception e)
@@ -460,14 +459,14 @@ public class PSNavUtil
       }
       try
       {
-         ms_log.debug("loading proxy");
+         log.debug("loading proxy");
          
          PSNavProxyFactory pf = PSNavProxyFactory.getInstance(req);
          IPSComponentProcessor compProxy = pf.getCompProxy();
          Element[] slotElems = compProxy.load(PSSlotTypeSet
                .getComponentType(PSSlotTypeSet.class), new PSKey[0]);
          PSSlotTypeSet allSlots = new PSSlotTypeSet(slotElems);
-         ms_log.debug("loaded slots");
+         log.debug("loaded slots");
          return allSlots;
       }
       catch (Exception e)
@@ -536,12 +535,12 @@ public class PSNavUtil
 
       if (paramValue != null)
       {
-         ms_log.debug("adding param " + paramName + " - " + paramValue);
+         log.debug("adding param {} - {}",paramName, paramValue);
          target.put(paramName, req.getParameter(paramName));
       }
       else
       {
-         ms_log.debug("param " + paramName + " is null");
+         log.debug("param {} is null", paramName);
       }
    }
 
@@ -566,7 +565,7 @@ public class PSNavUtil
       String sysCommand = req.getParameter(IPSHtmlParameters.SYS_COMMAND);
       if (sysCommand != null && sysCommand.equalsIgnoreCase("editrc"))
       {
-         ms_log.debug("sysCommand is " + sysCommand);
+         log.debug("sysCommand is {}", sysCommand);
          target.put(IPSHtmlParameters.SYS_COMMAND, sysCommand);
          target.put("relateditemid", req
                .getParameter(IPSHtmlParameters.SYS_CONTENTID));
@@ -660,29 +659,29 @@ public class PSNavUtil
       {
          throw new IllegalArgumentException("loc must not be null");
       }
-      ms_log.debug("loading variant XML result doc");
+      log.debug("loading variant XML result doc");
       try
       {
          Map pmap = buildStandardParams(req);
          String varInStr = String.valueOf(variant.getVariantId());
          pmap.put(IPSHtmlParameters.SYS_VARIANTID, varInStr);
-         ms_log.debug("variant id " + varInStr);
+         log.debug("variant id {}", varInStr);
          pmap.put(IPSHtmlParameters.SYS_CONTENTID, loc
                .getPart(PSLocator.KEY_ID));
-         ms_log.debug("content id " + loc.getPart(PSLocator.KEY_ID));
+         log.debug("content id {}", loc.getPart(PSLocator.KEY_ID));
          pmap.put(IPSHtmlParameters.SYS_REVISION, loc
                .getPart(PSLocator.KEY_REVISION));
-         ms_log.debug("revision " + loc.getPart(PSLocator.KEY_REVISION));
+         log.debug("revision {}", loc.getPart(PSLocator.KEY_REVISION));
 
          IPSInternalRequest ir = req.getInternalRequest(variant
                .getAssemblyUrl(), pmap, false);
          if (ir == null)
          {
-            ms_log.error("Variant Assembler not found " + variant.getName());
-            ms_log.error("Assembly URL " + variant.getAssemblyUrl());
+            log.error("Variant Assembler not found {}", variant.getName());
+            log.error("Assembly URL {}", variant.getAssemblyUrl());
             throw new PSNavException("Variant not found");
          }
-         ms_log.debug("loading xml document");
+         log.debug("loading xml document");
          return ir.getResultDoc();
 
       }
@@ -720,17 +719,17 @@ public class PSNavUtil
       {
          throw new IllegalArgumentException("fieldName must not be null or empty");
       }
-      ms_log.debug("get field " + fieldName);
+      log.debug("get field {}", fieldName);
       PSXmlTreeWalker walk = new PSXmlTreeWalker(doc.getDocumentElement());
       Element resElem = walk.getNextElement(fieldName,
             PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN);
       if (resElem == null)
       {
-         ms_log.warn("Field " + fieldName + " not found ");
+         log.warn("Field {} not found ",fieldName);
          return null;
       }
       String result = PSXmlTreeWalker.getElementData(resElem);
-      ms_log.debug("got field value " + result);
+      log.debug("got field value {}", result);
 
       return result;
    }
@@ -762,7 +761,7 @@ public class PSNavUtil
       if (mySlot == null)
       {
          String errMsg = "Slot Not found " + slotName;
-         ms_log.error(errMsg);
+         log.error(errMsg);
          throw new PSNavException(errMsg);
       }
 
@@ -792,12 +791,12 @@ public class PSNavUtil
       {
          throw new IllegalArgumentException("slot must not be null");
       }
-//      ms_log.debug("Loading Slot");
+      log.debug("Loading Slot");
       PSNavConfig config = PSNavConfig.getInstance(req);
       PSNavSlotContents contents = config.getSlotContentsCache(req);
       PSAaRelationshipList rel = contents.getSlotContents(parentLoc, slot
             .getSlotId());
-//      ms_log.debug("slot loaded");
+      log.debug("slot loaded");
       return rel;
 
    }
@@ -844,7 +843,7 @@ public class PSNavUtil
       {
          throw new PSNavException(PSNavUtil.class.getName(), e);
       }
-      ms_log.debug("Slot contents found");
+      log.debug("Slot contents found");
       return slotContents;
 
    }
@@ -868,7 +867,7 @@ public class PSNavUtil
          }
          catch (NumberFormatException nfe)
          {
-            ms_log.warn("Authtype is not an integer: " + authString);
+            log.warn("Authtype is not an integer: {}", authString);
             authInt = 0;
          }
       }
@@ -957,7 +956,7 @@ public class PSNavUtil
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   static Logger ms_log = Logger.getLogger(PSNavUtil.class);
+   static Logger log = LogManager.getLogger(PSNavUtil.class);
    
    /**
     * Constant for preview authtype

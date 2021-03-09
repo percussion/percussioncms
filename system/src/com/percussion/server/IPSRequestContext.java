@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -27,12 +27,7 @@ import com.percussion.data.PSDataExtractionException;
 import com.percussion.design.objectstore.PSSubject;
 import com.percussion.security.PSSecurityToken;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The IPSRequestContext interface contains all the context of a given request.
@@ -246,7 +241,7 @@ public interface IPSRequestContext
     * @deprecated Use {@link #getParametersIterator() } for walking through the
     * parameters.
     */
-   public HashMap getParameters();
+   public Map<String,Object> getParameters();
 
    /**
     * Get values of a parameter that was passed in with the request.
@@ -361,7 +356,7 @@ public interface IPSRequestContext
     * @deprecated Use {@link #setParameter } and {@link #removeParameter} for
     * modifying the parameters.
     */
-   public void setParameters(HashMap params);
+   void setParameters(Map<String, Object> params);
 
    /**
     * Replaces the value of an existing entry or creates a new entry in the

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,14 +26,7 @@ package com.percussion.workflow;
 
 import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSException;
-import com.percussion.extension.IPSExtension;
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.extension.IPSExtensionErrors;
-import com.percussion.extension.IPSRequestPreProcessor;
-import com.percussion.extension.IPSWorkFlowContext;
-import com.percussion.extension.IPSWorkflowAction;
-import com.percussion.extension.PSExtensionException;
-import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.extension.*;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -45,13 +38,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Performs the requested workflow transition (such as approval, check-in or
@@ -350,7 +337,7 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
          request, "\nPerform Transition: enter preProcessRequest");
 
       PSConnectionMgr connectionMgr = null;
-      HashMap htmlParams = null;
+      Map<String, Object> htmlParams = null;
       int nParamCount = 0;
       Params localParams = new Params();
       String sRoleNameList = "";
@@ -1951,7 +1938,7 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
                  workingVarCal.before(maximumAgingCal)))
             {
                maximumAgingCal = (Calendar)workingVarCal.clone();
-               nextAgingTransition = candidateTC.getTransitionID();;
+               nextAgingTransition = candidateTC.getTransitionID();
             }
          }
          while(candidateTC.moveNext()); //End loop over all candidatetransitions
@@ -1996,7 +1983,7 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
     *          <li>checkout - revision requested for check out</li>
     *          </ul>
     */
-   private static int getRevisionFromHTMLParams(HashMap htmlParams)
+   private static int getRevisionFromHTMLParams(Map<String,Object> htmlParams)
    {
       int revision = IPSConstants.NO_CORRESPONDING_REVISION_VALUE;
       String sRevision = (String)
@@ -2026,7 +2013,7 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
     *           <li>for transitions - 0 - do nothing </li>
     *           <li>for checkin - revision checked in</li></ul>
     */
-   private static void setRevisionFromHTMLParams(HashMap htmlParams,
+   private static void setRevisionFromHTMLParams(Map<String,Object> htmlParams,
                                                  int revision)
    {
       if (0 == revision )

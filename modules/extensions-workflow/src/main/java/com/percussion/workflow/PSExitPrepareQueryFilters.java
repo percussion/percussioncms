@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,19 +24,14 @@
 
 package com.percussion.workflow;
 
-import com.percussion.extension.IPSExtension;
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.extension.IPSExtensionErrors;
-import com.percussion.extension.IPSRequestPreProcessor;
-import com.percussion.extension.PSExtensionException;
-import com.percussion.extension.PSExtensionProcessingException;
-import com.percussion.extension.PSParameterMismatchException;
+import com.percussion.extension.*;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSRequestContext;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 public class PSExitPrepareQueryFilters implements IPSRequestPreProcessor
@@ -88,10 +83,10 @@ public class PSExitPrepareQueryFilters implements IPSRequestPreProcessor
        PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG);
       if (lang == null)
          lang =   PSI18nUtils.DEFAULT_LANG;
-      HashMap htmlParams = request.getParameters();
+      Map<String,Object> htmlParams = request.getParameters();
       if(null == htmlParams) //we must have htmlParms map
       {
-         htmlParams = new HashMap();
+         htmlParams = new HashMap<String,Object>();
          request.setParameters(htmlParams);
       }
 

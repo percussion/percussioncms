@@ -33,7 +33,7 @@ import com.percussion.util.PSPurgableTempFile;
 import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.util.Date;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class calculates the size of an uploaded file and appends an html
@@ -128,23 +128,18 @@ public class PSUploadFileAttrs extends PSDefaultExtension
       }
 
       // retrieve file contents from HTML parameters hash table
-      HashMap HTMLParams = request.getParameters();
-      if (HTMLParams == null || HTMLParams.isEmpty())
+      Map<String,Object> htmlParams = request.getParameters();
+      if (htmlParams == null || htmlParams.isEmpty())
       {
          throw new PSExtensionProcessingException( 0,
                                       "Empty or null HTML Parameters table." );
       }
 
-      if (HTMLParams == null || HTMLParams.isEmpty())
-      {
-         throw new PSExtensionProcessingException( 0,
-                                      "Empty or null HTML Parameters table." );
-      }
-      if(!HTMLParams.containsKey(fileNameParam))
+      if(!htmlParams.containsKey(fileNameParam))
          return;
 
       PSPurgableTempFile tmpFile =
-                           (PSPurgableTempFile)HTMLParams.get( fileNameParam );
+                           (PSPurgableTempFile)htmlParams.get( fileNameParam );
 
       if(tmpFile != null)
       {
@@ -159,7 +154,7 @@ public class PSUploadFileAttrs extends PSDefaultExtension
                ") exceeds limit of " + fileSizeMax.toString() + " bytes.");
          }
          // write file size to HTML parameters hash table
-         HTMLParams.put( fileSizeParam, fileSize.toString() );
+         htmlParams.put( fileSizeParam, fileSize.toString() );
 
          if(null == dateParam || dateParam.length() < 1)
             return;
@@ -168,7 +163,7 @@ public class PSUploadFileAttrs extends PSDefaultExtension
          Date current = new Date();
 
          // write current date to HTML parameters hash table
-         HTMLParams.put(dateParam, format.format(current));
+         htmlParams.put(dateParam, format.format(current));
       }
    }
 }
