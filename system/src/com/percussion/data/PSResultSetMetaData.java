@@ -52,7 +52,7 @@ public class PSResultSetMetaData implements java.sql.ResultSetMetaData {
    {
       super();
       m_columnCount = 0;
-      m_columns = new ArrayList<PSResultSetColumnMetaData>();
+      m_columns = new ArrayList<>();
    }
 
    /**

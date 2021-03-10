@@ -47,8 +47,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 
@@ -107,7 +107,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
          String msg = "Skipping deletion of indexes for content type id({0})."
                + " No folder exists.";
          Object[] args = { key.getPart() };
-         ms_log.debug(MessageFormat.format(msg, args));
+         log.debug(MessageFormat.format(msg, args));
          return;
       }
       if (!ctypeDir.isDirectory())
@@ -118,7 +118,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
                + " As the index directory path(\"{1}\") for the supplied content "
                + " type id is not a Directory.";
          Object[] args = { key.getPart(), ctypeDirPath };
-         ms_log.debug(MessageFormat.format(msg, args));
+         log.debug(MessageFormat.format(msg, args));
          return;
       }
       try
@@ -130,11 +130,11 @@ public class PSSearchAdminImpl extends PSSearchAdmin
          {
             String msg = "Falied to delete the index directory for content "
                   + "type id ({0}).";
-            ms_log.error(MessageFormat.format(msg, key.getPart()));
+            log.error(MessageFormat.format(msg, key.getPart()));
          }
          String msg = "Successfully deleted the index directory for content "
                + "type id ({0}).";
-         ms_log.debug(MessageFormat.format(msg, key.getPart()));
+         log.debug(MessageFormat.format(msg, key.getPart()));
       }
       catch (Exception e)
       {
@@ -200,7 +200,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
    {
       validateKeyArray(contentTypes);
       Map<Long, IndexWriter> iws = PSSearchIndexerImpl.getLuceneIndexWriters();
-      List<PSKey> successList = new ArrayList<PSKey>();
+      List<PSKey> successList = new ArrayList<>();
       for (PSKey key : contentTypes)
       {
          Long ctypeId = new Long(key.getPartAsInt());
@@ -215,7 +215,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
                successList.add(key);
                String msg1 = "Successfully optimized indexes for content " +
                      "type id ({0}).";
-               ms_log.debug(MessageFormat.format(msg1, key.getPart()));
+               log.debug(MessageFormat.format(msg1, key.getPart()));
             }
             catch (CorruptIndexException e)
             {
@@ -237,11 +237,10 @@ public class PSSearchAdminImpl extends PSSearchAdmin
       
       if (contentTypes.length > 1)
       {
-         ms_log.info("Rebuilding Indexes for " + contentTypes.length
-               + " Content Types.");
+         log.info("Rebuilding Indexes for {} Content Types.", contentTypes.length);
       }
       
-      List<PSKey> successList = new ArrayList<PSKey>();
+      List<PSKey> successList = new ArrayList<>();
       for (PSKey key : contentTypes)
       {
          doDelete(key);
@@ -250,7 +249,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
          successList.add(key);
          String msg = "Successfully queued items of content type id ({0}) " +
                "for reindexing.";
-         ms_log.debug(MessageFormat.format(msg, key.getPart()));
+         log.debug(MessageFormat.format(msg, key.getPart()));
       }
       return successList.toArray(new PSKey[successList.size()]);
    }
@@ -308,7 +307,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
    @Override
    public void verify(Set<Long> knownContentTypes) throws PSSearchException
    {
-      Set<Long> currentIndexes = new HashSet<Long>();
+      Set<Long> currentIndexes = new HashSet<>();
       File rootDir = new File(PSSearchEngineImpl.getLuceneIndexRootPath());
       if (rootDir.exists())
       {
@@ -330,10 +329,10 @@ public class PSSearchAdminImpl extends PSSearchAdmin
                currentIndexes.add(id);
          }
       }
-      Set<Long> currentIndexesCopy = new HashSet<Long>();
+      Set<Long> currentIndexesCopy = new HashSet<>();
       currentIndexesCopy.addAll(currentIndexes);
 
-      Set<Long> knownContentTypesCopy = new HashSet<Long>();
+      Set<Long> knownContentTypesCopy = new HashSet<>();
       knownContentTypesCopy.addAll(knownContentTypes);
 
       // Remove knownContentTypes from currentIndexesCopy
@@ -348,7 +347,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
                + "folder {1} without a known content type.";
          Object[] args = { id.toString(),
                PSSearchEngineImpl.getLuceneIndexRootPath() };
-         ms_log.info(MessageFormat.format(msg, args));
+         log.info(MessageFormat.format(msg, args));
       }
       // Create directories
       for (Long id : knownContentTypesCopy)
@@ -359,7 +358,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
          if (success)
          {
             String msg = "Created an index directory for content type id ({0}, submitting the type for indexing...)";
-            ms_log.info(MessageFormat.format(msg, id.toString()));
+            log.info(MessageFormat.format(msg, id.toString()));
 
             PSKey[] keys = new PSKey[1];
             keys[0] = PSContentType.createKey(id.intValue());
@@ -369,7 +368,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
          {
             String msg = "Failed to create an index directory for content "
                   + "type id ({0})";
-            ms_log.info(MessageFormat.format(msg, id.toString()));
+            log.info(MessageFormat.format(msg, id.toString()));
          }
       }
 
@@ -411,8 +410,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
    /**
     * Reference to log for this class
     */
-   private final static Log ms_log = 
-      LogFactory.getLog(PSSearchAdminImpl.class);
+   private final static Logger log = LogManager.getLogger(PSSearchAdminImpl.class);
 
 
    
