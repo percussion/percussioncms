@@ -31,9 +31,8 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -46,7 +45,7 @@ import org.xml.sax.SAXException;
  */
 public class PSRemoteAppletRequester implements IPSRemoteRequester
 {
-   static Logger log = Logger.getLogger(PSRemoteAppletRequester.class);
+   private static final Logger log = LogManager.getLogger(PSRemoteAppletRequester.class);
    
    
    private PSHttpConnection m_conn = null;
@@ -126,8 +125,8 @@ public class PSRemoteAppletRequester implements IPSRemoteRequester
       }
       URL url = new URL(m_url, "../" + resource);
       
-      log.debug("posting to url "+ url.toString());
-      log.debug("Params = "+paramsMap);
+      log.debug("posting to url {} ", url.toString());
+      log.debug("Params = {} ", paramsMap);
    
       try
       {
@@ -139,7 +138,8 @@ public class PSRemoteAppletRequester implements IPSRemoteRequester
       {
          
          // throw new PSCmsException(IPSCmsErrors.ERROR_SEND_DATA, e.toString());
-            log.error("RemoteAppletRequester error ",e);
+            log.error("RemoteAppletRequester error {}",e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new IOException(e.toString());
          
       }
@@ -168,7 +168,8 @@ public class PSRemoteAppletRequester implements IPSRemoteRequester
       }
       catch (PSException e)
       {
-         log.error("RemoteAppletRequester error ",e);
+         log.error("RemoteAppletRequester error {} ",e.getMessage());
+         log.debug(e.getMessage(),e);
          //throw new PSCmsException(IPSCmsErrors.ERROR_SEND_DATA, e.toString());
          throw new IOException(e.toString());
       }

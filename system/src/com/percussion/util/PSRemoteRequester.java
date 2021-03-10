@@ -54,6 +54,8 @@ import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -73,6 +75,7 @@ import org.xml.sax.SAXException;
  */
 public class PSRemoteRequester implements IPSRemoteRequesterEx
 {
+   private static final Logger log = LogManager.getLogger(PSRemoteRequester.class);
    /**
     * Default constructor, needed by derived class.
     */
@@ -1086,7 +1089,7 @@ public class PSRemoteRequester implements IPSRemoteRequesterEx
          if (null != doc)
             PSXmlDocumentBuilder.write(doc, System.out);
          else
-            System.out.println("No result doc");
+            log.info("No result doc");
          doc = rr.getDocument("foobar/foobar_load.xml", null);
          params.put("DBActionType", "DELETE");
          doc = rr.sendUpdate("foobar/foobar_delete.xml", params);
@@ -1095,12 +1098,16 @@ public class PSRemoteRequester implements IPSRemoteRequesterEx
       }
       catch (IOException ioe)
       {
-         System.out.println(ioe.getLocalizedMessage());
+         log.error("Error : {}", ioe.getMessage());
+         log.error("Error : {}", ioe.getLocalizedMessage());
+         log.debug(ioe.getMessage(),ioe);
          ioe.printStackTrace();
       }
       catch (SAXException se)
       {
-         System.out.println(se.getLocalizedMessage());
+         log.error("Error : {}", se.getMessage());
+         log.error("Error : {}", se.getLocalizedMessage());
+         log.debug(se.getMessage(),se);
          se.printStackTrace();
       }
       System.exit(1);

@@ -70,7 +70,7 @@ public class PSRequestHandlerDef
       m_className = className;
       m_configFile = configFile;
 
-      m_requestRoots = new HashMap<String,ArrayList<String>>();
+      m_requestRoots = new HashMap<>();
       while (requestRoots.hasNext())
       {
          String requestRoot = (String)requestRoots.next();
@@ -138,7 +138,7 @@ public class PSRequestHandlerDef
       if (!m_requestRoots.containsKey(requestRoot))
          throw new IllegalArgumentException("requestRoot not found");
 
-      ArrayList<String> methodList = new ArrayList<String>();
+      ArrayList<String> methodList = new ArrayList<>();
       while (methods.hasNext())
       {
          methodList.add(methods.next());
