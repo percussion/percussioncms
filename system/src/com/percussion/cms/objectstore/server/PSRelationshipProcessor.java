@@ -40,6 +40,8 @@ import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +51,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 
 /**
  * This class encapsulates all relationship functionality provided on the
@@ -57,7 +58,7 @@ import org.apache.log4j.Logger;
  */
 public class PSRelationshipProcessor implements IPSRelationshipProcessor
 {
-   private static Logger ms_logger = Logger.getLogger(PSRelationshipProcessor.class);
+   private static final Logger log = LogManager.getLogger(PSRelationshipProcessor.class);
    /**
     * Create the backend processor for the supplied request.
     *
@@ -794,11 +795,10 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
       for (Object relObj : relationships)
       {
           PSRelationship element = (PSRelationship) relObj;
-          ms_logger
-                  .debug("Modifying relationships setting old Owner:" + element.getOwner() + " : to " + targetParent);
+          log.debug("Modifying relationships setting old Owner: {} : to {} ", element.getOwner(), targetParent);
          element.setOwner(targetParent);
       }
-      ms_logger.debug("Attempting to save relationship changes");
+      log.debug("Attempting to save relationship changes");
       save(relationships);
    }
 

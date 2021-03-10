@@ -383,7 +383,7 @@ public class PSRelationshipFilter
       }
       else
       {
-         List<PSLocator> dep = new ArrayList<PSLocator>();
+         List<PSLocator> dep = new ArrayList<>();
          dep.add(locator);
          setDependents(dep);
       }
@@ -423,7 +423,7 @@ public class PSRelationshipFilter
       }
       else
       {
-         List<Integer> dep = new ArrayList<Integer>();
+         List<Integer> dep = new ArrayList<>();
          dep.add(dependentId);
          setDependentIds(dep);
       }
@@ -443,7 +443,7 @@ public class PSRelationshipFilter
       }
       else
       {
-         List<PSLocator> locs = new ArrayList<PSLocator>();
+         List<PSLocator> locs = new ArrayList<>();
          for (Integer id : dependentIds)
             locs.add(new PSLocator(id, -1));
          
@@ -587,7 +587,7 @@ public class PSRelationshipFilter
       }
       else
       {
-         List<Long> ids = new ArrayList<Long>();
+         List<Long> ids = new ArrayList<>();
          ids.add(id);
          setDependentContentTypeIds(ids);
       }
@@ -1066,7 +1066,7 @@ public class PSRelationshipFilter
    private void resetDependents()
    {
       if (m_dependents == null)
-         m_dependents = new ArrayList<PSLocator>();
+         m_dependents = new ArrayList<>();
       else
          m_dependents.clear();
    }
@@ -1078,7 +1078,7 @@ public class PSRelationshipFilter
    private void resetDependentContentTypeIds()
    {
       if (m_dependentContentTypeIds == null)
-         m_dependentContentTypeIds = new ArrayList<Long>();
+         m_dependentContentTypeIds = new ArrayList<>();
       else
          m_dependentContentTypeIds.clear();
    }
@@ -1271,7 +1271,7 @@ public class PSRelationshipFilter
     * A list of relationship names to be filtered by. It may be empty, but
     * never <code>null</code>. Filter by names is off by default.
     */
-   private Set<String> m_names = new HashSet<String>();
+   private Set<String> m_names = new HashSet<>();
       
    /**
     * The relationship type filter, turned off by default. Use
@@ -1289,7 +1289,7 @@ public class PSRelationshipFilter
     * The relationship properties filter, turned off by default. Use
     * {@link #setProperty(String, String)} to set a filter.
     */
-   private Map<String, String> m_properties = new HashMap<String, String>();
+   private Map<String, String> m_properties = new HashMap<>();
 
    /**
     * The relationship owner filter, turned off by default. Use
