@@ -28,7 +28,7 @@
     <parent>
         <artifactId>delivery-tier-suite</artifactId>
         <groupId>com.percussion.deliverytier</groupId>
-        <version>8.0.2.9</version>
+        <version>8.0.2.10</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>perc-delivery-common</artifactId>
