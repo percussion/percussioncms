@@ -38,11 +38,7 @@ import com.percussion.deploy.server.PSDependencyMap;
 import com.percussion.deploy.server.PSImportCtx;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.error.PSNotFoundException;
-import com.percussion.tablefactory.IPSJdbcTableChangeListener;
-import com.percussion.tablefactory.PSJdbcDataTypeMap;
-import com.percussion.tablefactory.PSJdbcTableChangeEvent;
-import com.percussion.tablefactory.PSJdbcTableFactoryException;
-import com.percussion.tablefactory.PSJdbcTableSchema;
+import com.percussion.tablefactory.*;
 import com.percussion.util.PSIteratorUtils;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -56,7 +52,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.w3c.dom.Document;
 
 /**
@@ -355,7 +351,7 @@ public class PSSchemaDependencyHandler extends PSDataObjectDependencyHandler
                      }
                      catch (SQLException e1)
                      {
-                        ms_log.warn("Could not get the schema or origin, " +
+                        log.warn("Could not get the schema or origin, " +
                             "cannot flush cache.");
                      }
                      dbmd.flushTableMetaData(e.getTable(), schema);
@@ -369,7 +365,7 @@ public class PSSchemaDependencyHandler extends PSDataObjectDependencyHandler
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(
+   private static final org.apache.logging.log4j.Logger log = LogManager.getLogger(
          "com.percussion.deploy.server.dependencies.PSSchemaDependencyHandler");
    
    /**

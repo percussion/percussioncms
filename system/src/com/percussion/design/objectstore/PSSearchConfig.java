@@ -825,14 +825,14 @@ public class PSSearchConfig extends PSComponent
     * empty.
     */
    Map <String, PSExtensionCall> m_analyzers = 
-      new HashMap<String, PSExtensionCall>();
+      new HashMap<>();
 
    /**
     * Search results processing extension set. Never <code>null</code> may be
     * empty.
     */
    Map <String, PSExtensionCall> m_textConverters = 
-      new HashMap<String, PSExtensionCall>();
+      new HashMap<>();
 
    /*
     * Values for the element/attribute names used in the configuration file
