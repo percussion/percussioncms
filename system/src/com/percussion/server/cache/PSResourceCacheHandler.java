@@ -585,14 +585,14 @@ public class PSResourceCacheHandler extends PSCacheHandler
     * type is evicted from the hibernate cache
     */
    private static Map<PSTypeEnum, String> ms_tableTypeMap = 
-      new HashMap<PSTypeEnum, String>();
+      new HashMap<>();
    
    
    static
    {
       ms_tableTypeMap.put(PSTypeEnum.ACL, "PSX_ACLS");
       
-      Collection<String> communityViewTableNames = new ArrayList<String>();
+      Collection<String> communityViewTableNames = new ArrayList<>();
       
       communityViewTableNames.add("PSX_ACLS");
       communityViewTableNames.add("PSX_ACLENTRIES");
@@ -600,7 +600,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
       communityViewTableNames.add("RXCOMMUNITY");
       ms_viewMap.put("PSX_COMMUNITY_PERMISSION_VIEW", communityViewTableNames);
       
-      Collection<String> tableNames = new ArrayList<String>();
+      Collection<String> tableNames = new ArrayList<>();
       tableNames.add("PSX_DISPLAYFORMATPROPERTIES");
       tableNames.addAll(communityViewTableNames);
       ms_viewMap.put("PSX_DISPLAYFORMATPROPERTY_VIEW", tableNames);
@@ -771,7 +771,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
                   List<PSDataSetKey> dataSets = m_tableMap.get(tableName);
                   if (dataSets == null)
                   {
-                     dataSets = new ArrayList<PSDataSetKey>();
+                     dataSets = new ArrayList<>();
                      m_tableMap.put(tableName, dataSets);
                   }
 
@@ -805,7 +805,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
                      List<PSDataSetKey> parents = m_parentMap.get(childName);
                      if (parents == null)
                      {
-                        parents = new ArrayList<PSDataSetKey>();
+                        parents = new ArrayList<>();
                         m_parentMap.put(childName, parents);
                      }
                      parents.add(dsKey);
@@ -828,7 +828,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
        */
       private Collection<String> expandViews(String tableName)
       {
-         Collection<String> result = new ArrayList<String>();
+         Collection<String> result = new ArrayList<>();
          Collection<String> viewTables = ms_viewMap.get(
             tableName.toUpperCase());
          if (viewTables == null || viewTables.isEmpty())
@@ -889,10 +889,10 @@ public class PSResourceCacheHandler extends PSCacheHandler
        */
       public Iterator getDatasetKeys(String tableName)
       {
-         List<PSDataSetKey> result = new ArrayList<PSDataSetKey>();
+         List<PSDataSetKey> result = new ArrayList<>();
 
          // get list of dataset names to flush for given table update.
-         List<PSDataSetKey> dsList = new ArrayList<PSDataSetKey>();
+         List<PSDataSetKey> dsList = new ArrayList<>();
 
          /*
             Check map of table to dataset names.  For each dataset, add to list.
@@ -907,7 +907,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
          }
 
          // need separate list to avoid concurrent modifications
-         List<PSDataSetKey> processed = new ArrayList<PSDataSetKey>();
+         List<PSDataSetKey> processed = new ArrayList<>();
          Iterator keys = dsList.iterator();
          while (keys.hasNext())
          {
@@ -974,7 +974,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
                "dsName may not be null or empty");
 
          // return copy of list to avoid concurrent modification exceptions
-         List<IPSDataExtractor> extractors = new ArrayList<IPSDataExtractor>();
+         List<IPSDataExtractor> extractors = new ArrayList<>();
          PSDataSetKey dsKey = new PSDataSetKey(appName, dsName);
          synchronized(m_resourceMonitor)
          {
@@ -1000,7 +1000,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
       private List<PSDataSetKey> getParents(PSDataSetKey dsKey, 
          List<PSDataSetKey> processed)
       {
-         List<PSDataSetKey> result = new ArrayList<PSDataSetKey>();
+         List<PSDataSetKey> result = new ArrayList<>();
          if (!processed.contains(dsKey)) // avoid infinite loops
          {
             processed.add(dsKey);
@@ -1075,7 +1075,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
       private void initExtractors(PSResourceCacheSettings settings,
          PSDataSetKey dsKey)
       {
-         List<IPSDataExtractor> extractors = new ArrayList<IPSDataExtractor>();
+         List<IPSDataExtractor> extractors = new ArrayList<>();
          Iterator extraKeys = settings.getAdditionalKeys();
          while (extraKeys.hasNext())
          {
@@ -1127,7 +1127,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
        * <code>removeResource()</code>.
        */
       private Map<PSDataSetKey, PSResourceCacheSettings> m_settingsMap = 
-         new Hashtable<PSDataSetKey, PSResourceCacheSettings>();
+         new Hashtable<>();
 
       /**
        * Map of table names to list of dataset keys, never <code>null</code>,
@@ -1139,7 +1139,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
        * concurrent modification exceptions.
        */
       private Map<String, List<PSDataSetKey>> m_tableMap = 
-         new HashMap<String, List<PSDataSetKey>>();
+         new HashMap<>();
 
       /**
        * Map of dataset to resource (page) names.  Key is the
@@ -1149,7 +1149,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
        * <code>removeResource()</code>.
        */
       private Map<PSDataSetKey, String> m_resourceMap = 
-         new Hashtable<PSDataSetKey, String>();
+         new Hashtable<>();
 
       /**
        * Map of child resource (page) names to list of parent datasets, where
@@ -1161,7 +1161,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
        * to be thread safe and avoid concurrent modification exceptions.
        */
       private Map<String, List<PSDataSetKey>> m_parentMap = 
-         new HashMap<String, List<PSDataSetKey>>();
+         new HashMap<>();
 
       /**
        * Map of additional key extractor for each cached resource.  Key is a
@@ -1173,6 +1173,6 @@ public class PSResourceCacheHandler extends PSCacheHandler
        * concurrent modification exceptions.
        */
       private Map<PSDataSetKey, List<IPSDataExtractor>> m_keyExtractors = 
-         new HashMap<PSDataSetKey, List<IPSDataExtractor>>();
+         new HashMap<>();
    }
 }
