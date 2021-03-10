@@ -23,8 +23,6 @@
  */
 package com.percussion.cms.objectstore;
 
-import com.percussion.cms.PSCmsException;
-
 import java.util.Iterator;
 
 

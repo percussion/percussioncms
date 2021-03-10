@@ -55,8 +55,8 @@ import java.util.TreeSet;
 import javax.security.auth.Subject;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The PSRoleManager class keeps track of roles, their contained subjects
@@ -247,7 +247,7 @@ public class PSRoleManager
       {
          if (!StringUtils.isBlank(subjectName))
          {
-            Set<String> userroles  = new HashSet<String>();
+            Set<String> userroles  = new HashSet<>();
             if (subjectType == 0 || subjectType == PSSubject.SUBJECT_TYPE_USER)
             {
                userroles.addAll(roleMgr.getUserRoles(
@@ -283,7 +283,8 @@ public class PSRoleManager
       }
       catch (PSSecurityCatalogException e)
       {
-         ms_log.error(e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
       }
       
       return resultSet;
@@ -317,7 +318,7 @@ public class PSRoleManager
       int subjectType, String roleName, String attributeNameFilter,
       boolean includeEmptySubjects, String communityId, int backendType)
    {
-      List<PSSubject> results = new ArrayList<PSSubject>();
+      List<PSSubject> results = new ArrayList<>();
 
       try
       {
@@ -326,19 +327,19 @@ public class PSRoleManager
          IPSRoleMgr roleMgr = PSRoleMgrLocator.getRoleManager();
 
          // create merged subject and group maps
-         Map<String, PSSubject> subjectMap = new HashMap<String, PSSubject>();
-         Map<String, PSSubject> groupMap = new HashMap<String, PSSubject>();
+         Map<String, PSSubject> subjectMap = new HashMap<>();
+         Map<String, PSSubject> groupMap = new HashMap<>();
          
          // create lists to hold cataloged subjects and groups
-         List<Subject> subjects = new ArrayList<Subject>();
-         List<Principal> groups = new ArrayList<Principal>();
+         List<Subject> subjects = new ArrayList<>();
+         List<Principal> groups = new ArrayList<>();
          
          // get role subjects if specified
          if (!StringUtils.isBlank(roleName))
          {
             // create lists to hold user and group names to catalog
-            List<String> userNames = new ArrayList<String>();
-            Set<String> groupNames = new HashSet<String>();
+            List<String> userNames = new ArrayList<>();
+            Set<String> groupNames = new HashSet<>();
             
             // get list of subjects from backend role/subject attrs if specified            
             if (backendType == BACKEND_SUBJECT_ROLE_ATTRIBUTES)
@@ -406,7 +407,7 @@ public class PSRoleManager
             // no role specified just find all matching users and/or groups
             if (subjectType == 0 || subjectType == PSSubject.SUBJECT_TYPE_USER)
             {
-               List<String> filterList = new ArrayList<String>(1);
+               List<String> filterList = new ArrayList<>(1);
                if (!StringUtils.isBlank(subjectNameFilter))
                   filterList.add(subjectNameFilter);
                subjects.addAll(roleMgr.findUsers(filterList));
@@ -460,7 +461,8 @@ public class PSRoleManager
       }
       catch (PSSecurityCatalogException e)
       {
-         ms_log.error(e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
       }
 
 
@@ -491,7 +493,7 @@ public class PSRoleManager
          attributeNameFilter);
       patternMatch.setCaseSensitive(false);
       
-      List<PSSubject> results = new ArrayList<PSSubject>();
+      List<PSSubject> results = new ArrayList<>();
       for (PSSubject subject : subjects)
       {
          // pattern match on all attributes
@@ -532,12 +534,12 @@ public class PSRoleManager
    private List<PSSubject> filterSubjectsByCommunity(List<PSSubject> subjects, 
       String communityId, boolean expandGroups)
    {
-      List<PSSubject> results = new ArrayList<PSSubject>();
+      List<PSSubject> results = new ArrayList<>();
       
       Map<String, PSSubject> subMap = 
-         new HashMap<String, PSSubject>(subjects.size());
+         new HashMap<>(subjects.size());
       
-      Set<IPSTypedPrincipal> principals = new HashSet<IPSTypedPrincipal>();
+      Set<IPSTypedPrincipal> principals = new HashSet<>();
       for (PSSubject subject : subjects)
       {
          subMap.put(subject.getName() + ":" + subject.getType(), subject);
@@ -576,7 +578,7 @@ public class PSRoleManager
       Collection<IPSTypedPrincipal> principals, String communityId, 
       boolean expandGroups)
    {
-      Set<IPSTypedPrincipal> results = new HashSet<IPSTypedPrincipal>();
+      Set<IPSTypedPrincipal> results = new HashSet<>();
       
       int commId;
       try
@@ -595,7 +597,7 @@ public class PSRoleManager
       {
          // get community members
          Set<IPSTypedPrincipal> communityMembers = 
-            new HashSet<IPSTypedPrincipal>();
+            new HashSet<>();
          IPSRoleMgr roleMgr = PSRoleMgrLocator.getRoleManager();
          for (String role : roles)
          {
@@ -614,7 +616,8 @@ public class PSRoleManager
       }
       catch (PSSecurityCatalogException e)
       {
-         ms_log.error("Failed to filter by community", e);
+         log.error("Failed to filter by community : {}", e.getMessage());
+         log.debug(e.getMessage(),e);
       }
       
       return results;
@@ -638,10 +641,10 @@ public class PSRoleManager
     */
    public Set<PSSubject> expandGroups(Set<PSSubject> subjects)
    {
-      Set<PSSubject> expanded = new HashSet<PSSubject>();
+      Set<PSSubject> expanded = new HashSet<>();
       
-      Map<String, PSSubject> groupMap = new HashMap<String, PSSubject>();
-      Set<IPSTypedPrincipal> principals = new HashSet<IPSTypedPrincipal>();
+      Map<String, PSSubject> groupMap = new HashMap<>();
+      Set<IPSTypedPrincipal> principals = new HashSet<>();
       // add any users to the result list, build set of groups to expand
       for (PSSubject subject : subjects)
       {
@@ -689,9 +692,9 @@ public class PSRoleManager
       Collection <IPSTypedPrincipal> principals)
    {
       Set<IPSTypedPrincipal> expandedMembers = 
-         new HashSet<IPSTypedPrincipal>();
+         new HashSet<>();
       Set <IPSTypedPrincipal> groups = 
-         new HashSet<IPSTypedPrincipal>();
+         new HashSet<>();
       filterPrincipalsByType(principals, expandedMembers, groups);
       
       expandedMembers.addAll(PSRoleMgrLocator.getRoleManager().getGroupMembers(
@@ -727,7 +730,7 @@ public class PSRoleManager
          patternMatch.setCaseSensitive(false);
       }
       
-      List<String> results = new ArrayList<String>();
+      List<String> results = new ArrayList<>();
       for (IPSTypedPrincipal principal : roleMembers)
       {
          String name = principal.getName();
@@ -850,7 +853,7 @@ public class PSRoleManager
 
       Set<IPSPrincipalAttribute> attrs = 
          PSRoleMgrLocator.getBackEndRoleManager().getRoleAttributes(roleName);
-      List<PSAttribute> attrList = new ArrayList<PSAttribute>(attrs.size());
+      List<PSAttribute> attrList = new ArrayList<>(attrs.size());
 
       for (IPSPrincipalAttribute attribute : attrs)
       {
@@ -1054,7 +1057,7 @@ public class PSRoleManager
     */
    private List<String> getGroupRoles(PSSubject subject) 
    {
-      List<String> results = new ArrayList<String>();
+      List<String> results = new ArrayList<>();
 
       try
       {
@@ -1068,7 +1071,8 @@ public class PSRoleManager
       }
       catch (PSSecurityCatalogException e)
       {
-         ms_log.error(e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
       }
       
       return results;
@@ -1144,7 +1148,7 @@ public class PSRoleManager
          throw new IllegalArgumentException(
             "roleName may not be null or empty");
       
-      Set<String> emailAddrs = new HashSet<String>();
+      Set<String> emailAddrs = new HashSet<>();
       
       try
       {
@@ -1158,7 +1162,7 @@ public class PSRoleManager
          }
          
          Set<IPSTypedPrincipal> principalsWithoutEmail = 
-            new HashSet<IPSTypedPrincipal>();
+            new HashSet<>();
          emailAddrs.addAll(getSubjectEmailAddresses(roleMembers, 
             emailAttributeName, principalsWithoutEmail));
          
@@ -1173,7 +1177,8 @@ public class PSRoleManager
       }
       catch (PSSecurityCatalogException e)
       {
-         ms_log.error("Failed to get role email addresses", e);
+         log.error("Failed to get role email addresses {}", e.getMessage());
+         log.debug(e.getMessage(),e);
       }
       
       return emailAddrs;
@@ -1199,16 +1204,16 @@ public class PSRoleManager
       String emailAttributeName, 
       Set<IPSTypedPrincipal> principalsWithoutEmail)
    {
-      Collection<String> addrs = new ArrayList<String>();
+      Collection<String> addrs = new ArrayList<>();
 
       if (principals.isEmpty())
          return addrs; 
       
       // sort by type
       Map<String, IPSTypedPrincipal> usernames = 
-         new HashMap<String, IPSTypedPrincipal>();
+         new HashMap<>();
       Map<String, IPSTypedPrincipal> groupnames = 
-         new HashMap<String, IPSTypedPrincipal>();
+         new HashMap<>();
       
       for (IPSTypedPrincipal principal : principals)
       {
@@ -1229,12 +1234,12 @@ public class PSRoleManager
          Set<PrincipalAttributes> types = null;
          if (StringUtils.isBlank(emailAttributeName))
          {
-            types = new HashSet<PrincipalAttributes>();
+            types = new HashSet<>();
             types.add(PrincipalAttributes.EMAIL_ADDRESS);
          }
          
          for (Subject subject : roleMgr.findUsers(
-            new ArrayList<String>(usernames.keySet()), null, null, types))
+            new ArrayList<>(usernames.keySet()), null, null, types))
          {
             String email = processSubjectEmail(emailAttributeName, usernames, 
                subject);
@@ -1269,7 +1274,8 @@ public class PSRoleManager
       }
       catch (PSSecurityCatalogException e)
       {
-         ms_log.error("Failed to lookup email addresses", e);
+         log.error("Failed to lookup email addresses : {}", e.getMessage());
+         log.debug(e.getMessage(),e);
       }
       
       return addrs;
@@ -1332,23 +1338,23 @@ public class PSRoleManager
    public Set getSubjectEmailAddresses(String subjectName, 
       String emailAttributeName, String community)
    {
-      Set<String> addrs = new HashSet<String>();
+      Set<String> addrs = new HashSet<>();
       try
       {
          IPSRoleMgr roleMgr = PSRoleMgrLocator.getRoleManager();
          Set<PrincipalAttributes> types = null;
          if (StringUtils.isBlank(emailAttributeName))
          {
-            types = new HashSet<PrincipalAttributes>();
+            types = new HashSet<>();
             types.add(PrincipalAttributes.EMAIL_ADDRESS);
          }
          
          // first try as a user name
-         List<String> names = new ArrayList<String>(1);
+         List<String> names = new ArrayList<>(1);
          names.add(subjectName);
          List<Subject> subjects = roleMgr.findUsers(names, null, null, types);
          
-         Set<IPSTypedPrincipal> principals = new HashSet<IPSTypedPrincipal>();
+         Set<IPSTypedPrincipal> principals = new HashSet<>();
          if (!subjects.isEmpty())
             principals.add(PSJaasUtils.subjectToPrincipal(subjects.get(0)));
          else
@@ -1372,7 +1378,8 @@ public class PSRoleManager
       }
       catch (PSSecurityCatalogException e)
       {
-         ms_log.error("Failed to lookup subject email addresses", e);
+         log.error("Failed to lookup subject email addresses : {}", e.getMessage());
+         log.debug(e.getMessage(),e);
       }
       
       return addrs;
@@ -1426,7 +1433,7 @@ public class PSRoleManager
    /**
     * The logger to use, never <code>null</code>.
     */
-   private static Log ms_log = LogFactory.getLog(PSRoleManager.class);
+   private static Logger log = LogManager.getLogger(PSRoleManager.class);
    
    /**
     * The default value for including empty subjects (those with no attributes)

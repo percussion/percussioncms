@@ -29,6 +29,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 
 import java.util.Iterator;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -40,6 +42,7 @@ import org.w3c.dom.Element;
  */
 public class PSRoleConfiguration implements IPSDocument
 {
+   private static final Logger log = LogManager.getLogger(PSRoleConfiguration.class);
    /**
     * Empty ctor (for fromXml(), fromDb())
     */
@@ -495,7 +498,8 @@ public class PSRoleConfiguration implements IPSDocument
 //         PSXmlDocumentBuilder.write(rcfg.toDbXml(), w);
       } catch (Throwable t)
       {
-         System.out.println(t.toString());
+         log.error("Error : {}", t.getMessage());
+         log.debug(t.getMessage(), t);
          t.printStackTrace();
       } finally
       {
