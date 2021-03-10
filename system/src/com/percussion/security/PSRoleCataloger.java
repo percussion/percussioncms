@@ -51,8 +51,8 @@ import javax.naming.directory.SearchResult;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A role cataloger using a directory server as source.
@@ -64,7 +64,7 @@ public class PSRoleCataloger extends PSCataloger
    /**
     * Logger to use, never <code>null</code>.
     */
-   static private Logger ms_log = LogManager.getLogger(PSRoleCataloger.class);
+   static private Logger log = LogManager.getLogger(PSRoleCataloger.class);
 
    /**
     * Convenience constructor that calls
