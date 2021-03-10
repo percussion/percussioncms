@@ -33,7 +33,6 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.IPSRemoteRequester;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
-import java.awt.color.CMMException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +73,7 @@ public class PSRemoteCataloger implements IPSCataloger
    public Element getCEFieldXml(int controlFlags, Set<String> fields)
       throws PSCmsException
    {
-      final Map<String, Object> params = new HashMap<String, Object>();
+      final Map<String, Object> params = new HashMap<>();
       if ((controlFlags & FLAG_INCLUDE_HIDDEN) > 0)
          params.put(IPSHtmlParameters.SYS_INCLUDEHIDDENFIELDS, "");
       if ((controlFlags & FLAG_INCLUDE_RESULTONLY) > 0)

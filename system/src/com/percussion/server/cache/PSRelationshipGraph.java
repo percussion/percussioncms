@@ -73,7 +73,7 @@ class PSRelationshipGraph
       PSGraphEntry childObj = new PSGraphEntry(child, relationshipId, sortRank);
       if (children == null)
       {
-         children = new ArrayList<PSGraphEntry>();
+         children = new ArrayList<>();
          children.add(childObj);
          m_parentMapToChildren.put(parent, children);
       }
@@ -88,7 +88,7 @@ class PSRelationshipGraph
       PSGraphEntry parentObj = new PSGraphEntry(parent, relationshipId, sortRank);
       if (parents == null)
       {
-         parents = new ArrayList<PSGraphEntry>();
+         parents = new ArrayList<>();
          parents.add(parentObj);
          m_childMapToParent.put(child, parents);
       }
@@ -158,7 +158,7 @@ class PSRelationshipGraph
       if (child == null)
          throw new IllegalArgumentException("child may not be null");
 
-      List<List<PSGraphEntry>> ret = new ArrayList<List<PSGraphEntry>>();
+      List<List<PSGraphEntry>> ret = new ArrayList<>();
       // For folder need to check revisionless
       PSLocator childLoc = child.getRevision() == -1 ? child : new PSLocator(child.getId());
 
@@ -169,7 +169,7 @@ class PSRelationshipGraph
             if (!rel.getConfig().getName().equalsIgnoreCase(relationshipTypeName)) {
                continue;
             }
-            List<PSGraphEntry> path = new ArrayList<PSGraphEntry>();
+            List<PSGraphEntry> path = new ArrayList<>();
             getFolderPath(path, parent, relationshipTypeName);
             // reverse the path
             Collections.reverse(path);
@@ -194,7 +194,7 @@ class PSRelationshipGraph
       if (parent == null)
          throw new IllegalArgumentException("parent may not be null");
       ArrayList<PSGraphEntry> children = m_parentMapToChildren.get(parent);
-      return children==null ? new CopyOnWriteArrayList<PSGraphEntry>() : new CopyOnWriteArrayList(children);
+      return children==null ? new CopyOnWriteArrayList<>() : new CopyOnWriteArrayList(children);
    }
 
    /**
@@ -212,7 +212,7 @@ class PSRelationshipGraph
       ArrayList<PSGraphEntry> parentList = m_childMapToParent.get(child);
       if (parentList == null)
       {
-         parentList = new ArrayList<PSGraphEntry>();
+         parentList = new ArrayList<>();
       }
 
       return parentList;
@@ -329,7 +329,7 @@ class PSRelationshipGraph
     * <p>
     * It may be empty, but never <code>null</code>.
     */
-   private  Map<PSLocator,ArrayList<PSGraphEntry>> m_childMapToParent = new ConcurrentHashMap<PSLocator,ArrayList<PSGraphEntry>>();
+   private  Map<PSLocator,ArrayList<PSGraphEntry>> m_childMapToParent = new ConcurrentHashMap<>();
 
    /**
     * It maps the parent object to its children. The map keys are parents in
@@ -340,6 +340,6 @@ class PSRelationshipGraph
     * It may be empty, but never
     * <code>null</code>.
     */
-   private Map<PSLocator,ArrayList<PSGraphEntry>> m_parentMapToChildren = new ConcurrentHashMap<PSLocator,ArrayList<PSGraphEntry>>();
+   private Map<PSLocator,ArrayList<PSGraphEntry>> m_parentMapToChildren = new ConcurrentHashMap<>();
 
 }

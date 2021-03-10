@@ -65,7 +65,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings(value={"unchecked"})
 public class PSRequest 
 {
-   static Logger log = LogManager.getLogger(PSRequest.class);
+   private static final Logger log = LogManager.getLogger(PSRequest.class);
 
 
    /**
@@ -246,7 +246,7 @@ public class PSRequest
       
       if(m_privateObjects!=null)
       {
-         req.m_privateObjects = new HashMap<Object, Object>();
+         req.m_privateObjects = new HashMap<>();
          req.m_privateObjects.putAll(m_privateObjects);
       }
       
@@ -288,7 +288,7 @@ public class PSRequest
          throw new IllegalArgumentException("originalId cannot be < 0");
 
       if (m_clones == null)
-         m_clones = new HashMap<Serializable, Serializable>();
+         m_clones = new HashMap<>();
 
       m_clones.put(originalId, clone);
    }
@@ -1840,7 +1840,7 @@ public class PSRequest
 
       // we do a lazy init of this as we may never need it
       if (m_privateObjects == null)
-         m_privateObjects = new HashMap<Object, Object>();
+         m_privateObjects = new HashMap<>();
 
       return m_privateObjects.get(key);
    }
@@ -1869,7 +1869,7 @@ public class PSRequest
 
       // we do a lazy init of this as we may never need it
       if (m_privateObjects == null)
-         m_privateObjects = new HashMap<Object, Object>();
+         m_privateObjects = new HashMap<>();
 
       m_privateObjects.put(key, o);
    }
