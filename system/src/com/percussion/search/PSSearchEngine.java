@@ -1230,7 +1230,7 @@ public abstract class PSSearchEngine
     * empty. We store these so that we can clean up properly.
     * <p>Note, access to this object must be synchronized.
     */
-   private final Set<PSSearchQuery> m_searchQueryObjs = new HashSet<PSSearchQuery>();
+   private final Set<PSSearchQuery> m_searchQueryObjs = new HashSet<>();
    
    /**
     * Stores PSSearchIndexer objects between the time they are allocated with 
@@ -1240,7 +1240,7 @@ public abstract class PSSearchEngine
     * <p>Note, access to this object must be synchronized.
     */
    private Set<PSSearchIndexer> m_searchIndexerObjs = 
-      new HashSet<PSSearchIndexer>(); 
+      new HashSet<>();
    
    /**
     * Used to track whether anyone has locked the admin. Contains the string

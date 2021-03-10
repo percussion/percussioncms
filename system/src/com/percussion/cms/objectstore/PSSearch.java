@@ -2178,7 +2178,7 @@ public class PSSearch extends PSVersionableDbComponent
          m_allowedCommunities = allCommunities;
          break;
       default:
-         m_allowedCommunities = new HashMap<IPSGuid, String>();
+         m_allowedCommunities = new HashMap<>();
          for (Map.Entry<IPSGuid, String> comm : allCommunities.entrySet())
          {
             if (doesPropertyHaveValue(PROP_COMMUNITY, 
@@ -2744,7 +2744,7 @@ public class PSSearch extends PSVersionableDbComponent
     * properties are passed thru to the search engine.  Never <code>null</code>,
     * emtpy, or modified after construction.
     */
-   static private List<String> ms_internalSearchProps = new ArrayList<String>();
+   static private List<String> ms_internalSearchProps = new ArrayList<>();
    static
    {
       ms_internalSearchProps.add(PSSearch.PROP_COMMUNITY);

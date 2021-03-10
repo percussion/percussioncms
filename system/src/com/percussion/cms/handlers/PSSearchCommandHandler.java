@@ -434,7 +434,7 @@ public class PSSearchCommandHandler extends PSCommandHandler
    private PSDataSet createSearchDataSet(PSRequest request) 
       throws PSUnknownNodeTypeException
    {
-      Collection<String> dynMapper = new HashSet<String>();
+      Collection<String> dynMapper = new HashSet<>();
       dynMapper.addAll(ms_staticSearchResults);
       
       boolean hasSearchRequest = false;
@@ -626,7 +626,7 @@ public class PSSearchCommandHandler extends PSCommandHandler
 
          // create the "where" clauses
          List<PSBackEndTable> stateSearchTables = 
-            new ArrayList<PSBackEndTable>();
+            new ArrayList<>();
          PSCollection conditionals = createConditionals(searchRequest,
                                                         ceFieldSet,
                                                         tables,
@@ -1657,7 +1657,7 @@ public class PSSearchCommandHandler extends PSCommandHandler
    
    static
    {
-      ms_staticSearchResults = new ArrayList<String>();
+      ms_staticSearchResults = new ArrayList<>();
       ms_staticSearchResults.add("sys_contentid");
       ms_staticSearchResults.add("sys_contenttypeid");
       ms_staticSearchResults.add("sys_title");
