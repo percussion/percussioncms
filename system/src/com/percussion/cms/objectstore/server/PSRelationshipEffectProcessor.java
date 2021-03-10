@@ -56,6 +56,8 @@ import com.percussion.server.PSServer;
 import com.percussion.services.relationship.IPSRelationshipService;
 import com.percussion.services.relationship.PSRelationshipServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -66,7 +68,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 
 /**
  * Core relationship effect processing is performed by this class. This class
@@ -239,9 +240,9 @@ public class PSRelationshipEffectProcessor
       if (configs.isEmpty())
          return Collections.EMPTY_LIST.iterator();
       
-      Set<PSRelationship> relationships = new HashSet<PSRelationship>();
+      Set<PSRelationship> relationships = new HashSet<>();
 
-      Collection<String> allConfigNames = new HashSet<String>();
+      Collection<String> allConfigNames = new HashSet<>();
       for (PSRelationshipConfig config : configs)
          allConfigNames.add(config.getName());
       
@@ -321,7 +322,7 @@ public class PSRelationshipEffectProcessor
    private Collection<PSRelationshipConfig> getReleventRelationships()
    {
       int exeCtx = m_executionContext.getContextType();
-      HashSet<PSRelationshipConfig> retConfigs = new HashSet<PSRelationshipConfig>();
+      HashSet<PSRelationshipConfig> retConfigs = new HashSet<>();
       Iterator configs = PSRelationshipCommandHandler
             .getConfigurationSet().iterator();
       PSRelationshipConfig config;
@@ -354,7 +355,7 @@ public class PSRelationshipEffectProcessor
    private Collection<String> getConfigsWhichIgnoreOwnerRevision( 
       Collection<PSRelationshipConfig> configs)
    {
-      Collection<String> results = new ArrayList<String>();
+      Collection<String> results = new ArrayList<>();
       
       for (PSRelationshipConfig config : configs)
       {
@@ -511,10 +512,9 @@ public class PSRelationshipEffectProcessor
          PSRelationship sourceRel = null;
          if (m_executionContext.isPreUpdate())
          {
-              ms_logger.debug("pre_update setting source relationship to pre modified");
+              log.debug("pre_update setting source relationship to pre modified");
               sourceRel = getSourceRel(currentRel);
-              ms_logger.debug("source owner is " + sourceRel.getOwner().getId() + " dest owner is "
-                      + currentRel.getOwner().getId());
+              log.debug("source owner is {} dest owner is {} ", sourceRel.getOwner().getId(), currentRel.getOwner().getId());
          }
          m_execData.setSourceRelationship(sourceRel);
 
@@ -636,10 +636,9 @@ public class PSRelationshipEffectProcessor
             m_execData.setCurrentRelationship(relationship);
             PSRelationship sourceRel = null;
             if (m_executionContext.isPreUpdate()) {
-                ms_logger.debug("pre_update setting source relationship to pre modified");
+                log.debug("pre_update setting source relationship to pre modified");
                 sourceRel = getSourceRel(relationship);
-                ms_logger.debug("source owner is " + sourceRel.getOwner().getId() + " dest owner is "
-                        + relationship.getOwner().getId());
+                log.debug("source owner is {} dest owner is {} ", sourceRel.getOwner().getId(), relationship.getOwner().getId());
             }
              m_execData.setSourceRelationship(sourceRel);
 
@@ -772,7 +771,9 @@ public class PSRelationshipEffectProcessor
             }
             catch (PSException e)
             {
-                ms_logger.error("Cannot get relationship with id=" + currentRel.getId());
+                log.error("Cannot get relationship with id= {} ", currentRel.getId());
+                log.error("Error : {} ",e.getMessage());
+                log.debug(e.getMessage(),e);
             }
             m_execData.setSourceRelationship(sourceRel);
         }
@@ -821,6 +822,6 @@ public class PSRelationshipEffectProcessor
    /**
     * The logger for this class.
     */
-   Logger ms_logger = Logger.getLogger(PSRelationshipEffectProcessor.class);
+   private static final Logger log = LogManager.getLogger(PSRelationshipEffectProcessor.class);
 
 }
