@@ -150,7 +150,7 @@ public class PSRequestRedirector implements IPSResultGenerator
          {
             if (params == null)   // check for null (bug id TGIS-4BSTPH)
             {
-               params = new HashMap<String,Object>();
+               params = new HashMap<>();
                request.setParameters((HashMap<String, Object>) params);
             }
             params.put(m_requestTypeParam, m_requestTypeValue);
