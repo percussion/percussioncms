@@ -1,0 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Package Types and their Dependencies  </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Installation	Types  , Package Types  ">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="How_Multi-Server_Manager_Installation_Works.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="15408.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Package Types and their Dependencies </h2>
+<p class="bodytext">During installation, you select which parts of Rhythmyx, or <em class="emphasis"><a title="Package" href="18764.htm#o18771">Package</a> Types,</em> on your source server you want to install on your target server.  </p>
+<p class="bodytext">A <em class="emphasis">Package</em> consists of the specific elements that you &quot;package&quot; for installation.  For example, a Package for a Content Type would have the <a title="Package Type" href="18764.htm#o18776">Package Type</a> of <em class="emphasis">Content Type</em> and would include the elements: the specific content type and the specific content editor application. </p>
+<p class="bodytext"><em class="emphasis"><a title="Dependencies" href="18764.htm#o18772">Dependencies</a></em> refers to the elements that make up a Package.  Dependencies can be elements (such as exits and applications) that other elements require to function properly. For example, a Content Type Package has as its required dependencies the content type registration, the content editor application, and may optionally include the applications and exits that the content editor application uses. </p>
+<p class="bodytext"><em class="emphasis"><a title="Ancestors" href="18764.htm#o18775">Ancestors</a></em> are elements, such as files or exits, that are not part of a Package but are affected by its dependencies. For example, if a content type is associated with a community, the community is an ancestor of that Content Type's Package because it is not part of the Package but is affected by changes to its elements.</p>
+<p class="bodytext">The Rhythmyx <a title="Multi-Server Manager" href="18764.htm#o18765">Multi-Server Manager</a> includes the required dependencies of a Package Type in a Package. You indicate which optional dependencies and ancestors to include. For more about dependencies and ancestors, see <a id="h11062" class="jumptemplate" title="Include Element Dependencies or Ancestors" href="Include_Element_Dependencies_or_Ancestors.htm" target="_self">Include Element Dependencies or Ancestors</a>. </p>
+<p class="bodytext">The order in which a Package lists Package Types is important, because dependencies of elements must be installed before the elements that use them. See <a id="h11063" class="jumptemplate" title="Add Elements to the Archive" href="Add_Elements_to_the_Archive.htm" target="_self">Add Elements to the Archive</a> for the recommended order of Package Types in a Package.</p>
+<p class="bodytext">The following table lists all of the Package Types and their dependencies.  </p>
+<table width="570" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="144"><p class="tableheading">Package Type </p>
+</th>
+<th style = "border:1px solid #010101;" width="264"><p class="tableheading">Rhythmyx Elements automatically included in the Package (Dependencies)</p>
+</th>
+<th style = "border:1px solid #010101;" width="162"><p class="tableheading">Notes</p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext"> Action Menu</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the Action Menu definition;</li><li class="tablelistbullet">any Action Menus that include the specified Action Menu as a child.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Community Definition</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the Community registration but not any of the CMS elements associated with the Community.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext"> </p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Component</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the component definition; </li><li class="tablelistbullet">the component's slot definitions.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Content</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">In the Add Elements to the <a title="Archive" href="18764.htm#o18769">Archive</a> dialog, you choose the Types of Content Items to include. When you choose dependencies, you check which Content Items of these Types to include.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">Review the Content Package Type's  <a id="h11063_2" class="jumptemplate" title="Add Elements to the Archive" href="Add_Elements_to_the_Archive.htm" target="_self">limitations</a>  before installing it. </p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Content Assembler<br>(legacy package type)</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the content assembler application;</li><li class="tablelistbullet">variant registrations of the variants that reference the content assembler application.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Content List</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the content list definition.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Content Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the content type definition.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Content View</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the content view definition.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Context</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the Context definition</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Custom</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><p class="tablebodytext">Any of the following:</p>
+<ul class="tablelistbullet"><li class="tablelistbullet">applications;</li><li class="tablelistbullet">extensions;</li><li class="tablelistbullet">shared groups;</li><li class="tablelistbullet">system definitions;</li><li class="tablelistbullet">system definition overrides;</li><li class="tablelistbullet">table schemas;</li><li class="tablelistbullet">table data;</li><li class="tablelistbullet">user dependencies – files from the Rhythmyx root that the Multi-Server Manager does not list as dependencies.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">For experienced users only. If the user requires more control than the Multi-Server Manager offers for one of the Package types or a dependency is not included in the dependency map, a user may create a custom Package and select any of the custom Rhythmyx elements.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Display Format</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the Display Format definition.</li><li class="tablelistbullet">the ACL definition.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Entire Community</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the Community definition; </li><li class="tablelistbullet">all of the Roles associated with the Community.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Filter</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the assembly item filter definition</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Folder</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><p class="tablebodytext">In the Add Elements to the Archive dialog, you choose the Sites and/or Folders main node. When you choose dependencies, you check which folders within the main node to include.  For the Folders that you check, the Multi-Server Manager includes:</p>
+<ul class="tablelistbullet"><li class="tablelistbullet">the Folder definition;</li><li class="tablelistbullet">the Display Format definition for the Folder;</li><li class="tablelistbullet">all Translation Relationships in the Folder;</li><li class="tablelistbullet">optionally, the Content Items in the Folder.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Folder Tree</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the main Folder; </li><li class="tablelistbullet">all of the selected Folder's sub-folders; </li><li class="tablelistbullet">all Folder and sub-folder Display Format definitions;</li><li class="tablelistbullet">all Translation Relationships in the Folders and sub-folders.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Keyword</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the Keyword definition</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Locale</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the Locale definition;</li><li class="tablelistbullet">the GlobalErrorMessages.js file for the Locale;</li><li class="tablelistbullet">the images for the Locale;</li><li class="tablelistbullet">the template.css file for the Locale.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Relationship Definition</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the Relationship definition.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Search</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the Search definition</li><li class="tablelistbullet">the definition of the ACL for the search</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Site</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the Site definition. </li><li class="tablelistbullet">ACL definition for the Site.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Slot</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the Slot definition.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Template</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the Template definition</li><li class="tablelistbullet">ACL definition for the Template</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Workflow</p>
+</td>
+<td style = "border:1px solid #010101;" width="264"><ul class="tablelistbullet"><li class="tablelistbullet">the Workflow definition; </li><li class="tablelistbullet">all dependencies of the Workflow definition.</li></ul></td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">If you are deploying a new Workflow, you must separately package all of the Content Types that you have associated with the Workflow, or the associations will be lost on the target server.</p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext">You cannot create a Location Scheme Package. To include a Location Scheme in an archive, create a package for an associated Site and include the Location Scheme as a <a id="h11062_2" class="jumptemplate" title="Include Element Dependencies or Ancestors" href="Include_Element_Dependencies_or_Ancestors.htm" target="_self">shared dependency</a>. </p>
+<p class="bodytext">You can also include Roles as <a id="h11062_3" class="jumptemplate" title="Include Element Dependencies or Ancestors" href="Include_Element_Dependencies_or_Ancestors.htm" target="_self">shared dependencies</a> of other components.  If the Role already exists on the target server, the Multi-Server Manager does not install it.  If the Role does not exist on the target server, the Multi-Server Manager installs it, but does not include the users (Members) associated with the Role, since users on the target server most likely differ from those on the source server.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="About_Rhythmyx_Multi-ServerManager_and_Archive_Installation.htm" target="_self">About Rhythmyx Multi-Server Manager and Archive Installation</a></p><p class="relateditem"><a href="How_Multi-Server_Manager_Installation_Works.htm" target="_self">How Multi-Server Manager Installation Works</a></p><p class="relateditem"><a href="15408.htm" target="_self">Content Items to Deploy with Multi-Server Manager</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
+

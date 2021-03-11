@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Site Editor </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Site Editor, Sites	Site Editor">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="17807.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="18860.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc177604.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Site Editor</h2>
+<p class="bodytext">Use the Site editor to create and maintain Sites.  </p>
+<p class="bodytext">To access the Site editor:</p>
+<ul class="listbullet"><li class="listbullet">in the Navigation pane, select the Sites node and in the Menu bar, choose <em class="emphasis">Action</em> &gt; <em class="emphasis">Create Site</em>;</li><li class="listbullet">in the Navigation pane, expand the Sites node, select the Site you want to edit, and in the Menu bar, choose <em class="emphasis">Action</em> &gt; <em class="emphasis">Edit Site</em>;</li><li class="listbullet">in the Navigation pane, expand the Sites node and double-click on the Site you want to edit;</li><li class="listbullet">in the Sites List, double-click on the Site you want to edit.<p class="widegraphic"><img src="hlp_siteeditor.gif" alt="Mako_Site Editor" height="471" width="616" vspace="2" hspace="2" align="bottom" border="0" /></p>
+</li></ul><p class="subheading">Field Descriptions</p>
+<p class="fielddescription"><strong class="fieldname">Name</strong> Name of the Site.  Site names must be begin with a letter, and can contain any alphanumeric characters, underscores, hyphens, or dots (periods).  Defaults to <em class="emphasis">Site_0</em>.</p>
+<p class="fielddescription"><strong class="fieldname">Description</strong>  Optional free-form text description of the Site.</p>
+<p class="fielddescription"><strong class="fieldname">Rhythmyx Path</strong>  The source Folder under the //Sites node in Content Explorer within which the Sites Folders and content reside. The Site path must begin with the <code class="monospace">//Sites</code> node, but need not end as an immediate child of that node (in other words, both <code class="monospace">//Sites/EnterpriseInvestments</code> and <code class="monospace">//Sites/Investments/EnterpriseInvestments</code> are valid Site root paths).  The path specified must exist in the Navigation Pane of Site Explorer.  If the specified path does not exist, you cannot save the Site.  Use the Browse button <img src="mako_browsebutton.gif" alt="Mako_Browse Button (Browser applications)" height="35" width="39" vspace="2" hspace="2" align="bottom" border="0" /> to access the Browse Site Root Path page, which you can use to browse the <code class="monospace">//Sites</code> node to find the root location you want to want to use.</p>
+<p class="fielddescription"><strong class="fieldname">Global Template</strong>  The Global Template used by default to format pages in the Site.  Options include all Global Templates defined in the system.  The Global Template may be overridden for a specific Folder, or for a specific Page Template.</p>
+<p class="fielddescription"><strong class="fieldname">Published URL</strong>  The URL used to navigate to the Site when it is published.</p>
+<p class="fielddescription"><strong class="fieldname">Published Path</strong>  (Optional) The root or base file path to which to publish the Site content.</p>
+<p class="fielddescription"><em class="emphasis">Site Details</em></p>
+<p class="fielddescription"><strong class="fieldname">FTP Server IP Address</strong>  (Optional; used when specifying an FTP or SFTP delivery type.)  The IP address used to establish a connection to an FTP or SFTP server.</p>
+<p class="fielddescription"><strong class="fieldname">FTP Port</strong>  (Optional; used when specifying an FTP or SFTP delivery type.)  The port used to connect to the FTP or SFTP server.  </p>
+<p class="fielddescription"><strong class="fieldname">User Name</strong>  (Optional; used when specifying an FTP or SFTP delivery type.)  The user name to use when authenticating to the FTP or SFTP server.</p>
+<p class="fielddescription"><strong class="fieldname">Password</strong>  (Optional; used when specifying an FTP or SFTP delivery type.)  The password to use when authenticating to the FTP or SFTP server.</p>
+<p class="fielddescription"><strong class="fieldname">Unpublish Flags</strong>  Character (case-insensitive) used to flag a Workflow State for Content to be unpublished; multiple characters can be entered separated by commas.  The Publishable Keyword must include a Keyword Choice with a Value matching each character specified.  For more details see &quot;Configuring Unpublish Flags&quot; in the <em class="emphasis">Rhythmyx Technical Reference Manual</em>.  Workflow States must be assigned one or more of these Publishable options to unpublish.  Defaults to <em class="emphasis">u</em>, which is the Keyword Choice Value of the Archive Keyword Choice.</p>
+<p class="fielddescription"><strong class="fieldname">Nav Theme</strong>  Theme indicator for stylesheet coding in Managed Navigation.  Used in legacy XSL-based Managed Navigation implementations for Rhythmyx Version 5.7 and earlier.</p>
+<p class="fielddescription"><strong class="fieldname">Allowed Namespaces</strong>  Comma-separated list of XML namespaces to preserve when cleaning up namespaces in rich-text fields when assembling content for the Site.  Entries in this list should have a corresponding entry in the file &lt;Rhythmyxroot&gt; /rxconfig/server/stylesheetCleanupFilter.xml.  If a namespace specified for the Site does not have a corresponding entry in the that file, it will be filtered out.</p>
+<p class="fielddescription"><em class="emphasis">Context Variables </em></p>
+<p class="fielddescription"><strong class="fieldname">Name</strong>  Name of the Property.</p>
+<p class="fielddescription"><strong class="fieldname">Context</strong> Read-only.  Output Context with which the associated value will be used.</p>
+<p class="fielddescription"><strong class="fieldname">Value</strong>  Value of the Context Variable for the specified Context.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="17807.htm" target="_self">Maintaining Sites</a></p><p class="relateditem"><a href="18860.htm" target="_self">Add Context Variable Page</a></p><p class="relateditem"><a href="17809.htm" target="_self">Defining a New Site</a></p><p class="relateditem"><a href="17810.htm" target="_self">Copying a Site</a></p><p class="relateditem"><a href="17811.htm" target="_self">Editing a Site</a></p><p class="relateditem"><a href="17813.htm" target="_self">Deleting a Site</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

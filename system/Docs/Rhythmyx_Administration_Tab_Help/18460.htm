@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Creating a Scheduled Task Notification </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Notifications	Creating">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="18459.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="18461.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1776122.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Creating a Scheduled Task Notification</h3>
+<p class="bodytext">To create a scheduled task notification:</p>
+<ol class="listnumber"><li class="listnumber">On the Rhythmyx Administration tab, click the <span class="links">Task Notifications</span> link.<p class="listcontinue">The View and Edit pane displays the Task Notifications List.</p>
+</li><li class="listnumber">In the Menu bar, choose <em class="emphasis">Create</em> &gt; <em class="emphasis">Task Notification</em>.<p class="listcontinue">The View and Edit pane displays a blank Task Notification editor.</p>
+</li><li class="listnumber">The <strong class="specialbold">Name</strong> defaults to <em class="emphasis">Notification_0</em>.  Optionally, change the <strong class="specialbold">Name</strong>.</li><li class="listnumber">The <strong class="specialbold">Subject</strong> defaults to <em class="emphasis">'Set a new subject'</em>.  Enter the code to generate the subject line for the notification e-mail message.</li><li class="listnumber">Enter the code to generate the text of the message in the <strong class="specialbold">Template</strong> field.  <p class="listcontinue">This value of the <strong class="specialbold">Subject</strong> and <strong class="specialbold">Template</strong> fields is a Velocity template, which means it can include HTML markup and binding variables.  Use the format <em class="emphasis">$variable_name</em> to include a binding variable in the template.  For all scheduled task extensions, the binding variable <em class="emphasis">$execution_datetime</em> is available.  A scheduled task extension may return additional binding variables.  For example, the sys_runEdition Scheduled Task returns the following binding variables:</p>
+<ul class="listbullet2"><li class="listbullet2">$edition_name</li><li class="listbullet2">$site_name</li><li class="listbullet2">$failure_count</li><li class="listbullet2">$edition_log_url</li><li class="listbullet2">$success_count</li></ul><p class="listcontinue">Two example scheduled task notifications, <em class="emphasis">Run_Edition_Template</em> and <em class="emphasis">Task_Template</em> are included when you install Rhythmyx.  Use these as models to design the code for your own notifications.</p>
+</li><li class="listnumber">Click the [<strong class="buttons">Save</strong>] button to save the notification.</li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="19545.htm" target="_self">Task Notifications</a></p><p class="relateditem"><a href="18459.htm" target="_self">Task Notification Editor</a></p><p class="relateditem"><a href="18461.htm" target="_self">Modifying a Timed Event</a></p><p class="relateditem"><a href="18462.htm" target="_self">Deleting a Scheduled Task Notification</a></p><p class="relateditem"><a href="19049.htm" target="_self">Default Task Notification Variables</a></p><p class="relateditem"><a href="19436.htm" target="_self">Example Task Notifications</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
