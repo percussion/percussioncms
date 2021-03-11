@@ -1,0 +1,62 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<html lang="en">
+    <head>
+        <title> Insert/Edit Link Dialog </title>
+        <link rel="stylesheet" type="text/css" href="../../../css/dialog.css" />
+    </head>
+<body>
+	<div class="rxbodyfield">
+<h2 id="Insert_Edit_Link_Dialog_and_Field_Definitions" class="showhide_heading">Insert/Edit Link Dialog and  Field Definitions</h2>
+If you want to insert an inline link, select text or an  image in the rich text editor and click <img src="cuiinsertlinkbutton.gif" />.<br />If you want to edit an inline link, click anywhere on  the link and click <img src="cuiinsertlinkbutton.gif" /><br /><br />If the text or image does not already contain a  link on it, the dialog fields are empty to enable you to create a link. If the  text or image already contains a link on it, the dialog fields are filled with  data defining the link, and you can edit them.<br /><img src="cuiinsertlinkdialog.gif" /><br />
+<h3 id="Fields" class="showhide_heading">Fields</h3>
+<strong>Link URL</strong> - Holds the URL  of the page or anchor that the link accesses. You can do one of the  following:<br /> 
+<ul>
+<li>Enter an external URL.</li>
+<li>Do not enter anything in the field and choose an anchor in the  <strong>Anchors</strong> drop list. When you choose an anchor, the dialog adds the  anchor's address <em>#anchorname</em> to this field. </li>
+<li>Browse for an existing page in CM1. Use the following procedure:</li><br />
+<ol><li>Click <img src="cuibrowsebutton.gif" />.</li><br />
+The Select Page dialog opens: <br /><img src="cuiselectpage.gif" /><br />
+The box on the bottom of the page shows all of the sites in your system.  In the example, the only site is <I>MemberSite</I>.<br />
+<li>Double click on the site that you want to browse.</li><br />
+Now the site name appears in the <strong>Location</strong> drop list, and the contents of the first level of the site appear in the bottom box. <br />
+<li>If you double-click a folder or section folder in the box, it appears in the <strong>Location</strong> drop list and its contents appear in the bottom box..</li><br />
+<img src="cuiselectpagelocation.gif" /></li><br />
+<li>Once you have navigated to the folder holding the page that you want to use, click the page in the box. </li><br /> 
+The name appears in the <strong>Selected Page</strong> field.
+<li>Click [<strong>Save</strong>] to close the Select Page dialog and insert the URL of the page that you selected into the <strong>Link URL</strong> field in the Insert/Edit Link dialog..</li></ol>
+</ul>
+<strong>Anchors</strong> -  Drop list including all anchors on the current page and an empty option. Choose one of  the anchors if you want the link to access that point on the page. When you  choose an anchor, the dialog overwrites any previously entered value in <strong>Link  URL</strong> with the anchor's address <em>#anchorname</em>.<br />
+<strong>Target</strong> - Window  or frame in which page accessed by the link opens. Options are:<br /> 
+<ul>
+<li>(default) Open in this window / frame </li>
+<li>Open in new window (_blank) </li>
+<li>Open in parent window / frame (_parent) </li>
+<li>Open in top frame (replaces all frames (_top) </li>
+</ul>
+<strong>Title</strong> -  Tooltip text. When you hover your cursor over the link, text entered into  <strong>Title</strong> appears as a tooltip. Default is the title of the page accessed by  the link.</div>
+ <p class="toc-link"><a href="Inlinelinks.html">Back</a></p>
+ </body>
+</html>
