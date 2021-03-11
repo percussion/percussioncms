@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Archiving an Entire Rhythmyx System </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Archives	For Entire Rhythmyx System  , Installation	Entire Rhythmyx System">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Package_Log_Transaction_Log_Tab.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Rhythmyx_Multi-Server_Manager_Best_Practices.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Archiving an Entire Rhythmyx System</h2>
+<p class="bodytext">The following procedure breaks down the steps required for installing everything on a test server to a production server. Follow this procedure to initially install Rhythmyx from a test server to a production server. </p>
+<ol class="listnumber"><li class="listnumber">Alert Rhythmyx developers and administrators not to make changes on the source server, including the Rhythmyx Workbench, Server Administrator and browser interface during the time that you plan to create your archive.</li><li class="listnumber">Use the Identify <a title="ID Types" href="18764.htm#o18784">ID Types</a> dialog to identify all ID Types on the source server.</li><li class="listnumber">Use the Define <a title="Transforms" href="18764.htm#o18787">Transforms</a> dialog to define transforms (mappings) between the source and target servers.</li><li class="listnumber">To simplify the process, create separate archives for each <a title="Package Type" href="18764.htm#o18776">Package Type</a> in the following list:<ol class="listalpha2"><li class="listalpha2">Custom elements, if they exist.</li><li class="listalpha2">Table schemas or data.  For tables that are managed by content editors, package the table schemas.  For tables that hold manually entered data, package the table data. In the <a id="h6107" class="jumptemplate" title="Add Elements to the Archive" href="Add_Elements_to_the_Archive.htm" target="_self">Add Elements to the Archive dialog</a>, table schemas and data are listed under Custom Elements. NOTE: You may also package the table schemas as dependencies of Content Types and Content Assemblers.</li><li class="listalpha2">All Workflows and custom Workflow actions that appear as dependencies.  The <a title="Multi-Server Manager" href="18764.htm#o18765">Multi-Server Manager</a> cannot detect if properties files in your Rhythmyx directory are dependencies of Workflow actions.  Include any properties files that are dependencies as User <a title="Dependencies" href="18764.htm#o18772">Dependencies</a>.</li><li class="listalpha2">All Content Types, all of their local dependencies, and optionally, all of their shared dependencies including table schemas.</li><li class="listalpha2">All Slots and only their Template Definition dependencies.</li><li class="listalpha2">All Content Assemblers, all of their local dependencies except Content Types, Slots, and Table Schemas, and optionally, all of their shared dependencies.</li><li class="listalpha2">Site or Content List elements. </li><li class="listalpha2">Components that have been modified or are new than the target server, all of their local dependencies, and optionally, all of their shared dependencies.  If you are installing more than 20 components, install them using multiple archives.</li><li class="listalpha2">All communities.  When you include each community in the <a id="h6107_2" class="jumptemplate" title="Add Elements to the Archive" href="Add_Elements_to_the_Archive.htm" target="_self">Add Elements to the Archive dialog</a>, choose Community Definition.  Do not package the Entire Community. Do not package any dependencies of the community.</li><li class="listalpha2">Content Views</li><li class="listalpha2">Action Menus</li><li class="listalpha2">Relationship Definitions</li><li class="listalpha2">Display Formats</li><li class="listalpha2">Locales</li><li class="listalpha2">Folders</li><li class="listalpha2">Item Filters</li><li class="listalpha2">Folder Trees</li><li class="listalpha2">Searches</li><li class="listalpha2">Templates and Variants</li><li class="listalpha2">Keywords (as stand alone Packages)</li><li class="listalpha2">Contexts (as stand alone Packages)</li><li class="listalpha2">Any content that is required to be installed on the target server.  If you are installing to a production server, content should be limited to a few items, if any, and may include items necessary for building site navigation. Only include related content if necessary. </li></ol></li><li class="listnumber">Prepare the target server for archive installation.<ol class="listalpha2"><li class="listalpha2">Configure source server security components on the target server.  These components include security providers, roles, role subjects, and the server ACL.</li><li class="listalpha2">Map target and server datasources if your applications reference non-Rhythmyx repository datasources.</li><li class="listalpha2">Add any source server custom JAR files to the CLASSPATH of the target server.</li><li class="listalpha2">Add any source server custom Request Handlers to the target server.</li><li class="listalpha2">Add any source repository custom database objects other than table schemas to the target repository. 	NOTE: This step may require custom table schemas to be present on the target server.  In this case, complete this step after installing the table schema archive.</li><li class="listalpha2">If you are installing to a production server, alert content contributors that the production server will be unavailable during the time you have scheduled for archive installation and post-installation testing.</li><li class="listalpha2">Alert Rhythmyx developers and administrators not to make changes on the target server, including the Rhythmyx Workbench, Server Administrator and browser interface during the time that you plan to create your archive. (If the target server is a staging or production server, development work should only involve elements that the Multi-Server Manager does not handle.) </li></ol></li><li class="listnumber">Install the archive.<ol class="listalpha2"><li class="listalpha2">Start the Multi-Server Manager.</li><li class="listalpha2">Register the target server.</li><li class="listalpha2">Install the archives in the order you created them in Step 2 and install any views (step iii, below).<ol class="listalpha3"><li class="listalpha3">Custom Elements</li><li class="listalpha3">Table Schema and Table Data</li><li class="listalpha3">Any views used by the element types that follow. You cannot install views with the Multi-Server Manager, but must use a SQL script.</li><li class="listalpha3">Workflows </li><li class="listalpha3">Content Types</li><li class="listalpha3">Slots</li><li class="listalpha3">Content Assemblers</li><li class="listalpha3">Sites or Content Lists</li><li class="listalpha3">Components</li><li class="listalpha3">Communities</li><li class="listalpha3">Content Views</li><li class="listalpha3">Action Menus</li><li class="listalpha3">Relationship Definitions</li><li class="listalpha3">Locales</li><li class="listalpha3">Folders</li><li class="listalpha3">Content</li><li class="listalpha3">Keywords (as stand alone Packages)</li><li class="listalpha3">Contexts (as stand alone Packages)</li></ol></li></ol></li><li class="listnumber">Flush the server cache or restart the target server.</li><li class="listnumber">Modify transition notifications for custom cc lists to notify the correct target server users.  </li><li class="listnumber">Set up or modify Publisher information to reflect the target server's Publisher.</li><li class="listnumber">Perform QA testing on the target server.</li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Installing_an_Archive.htm" target="_self">Installing an Archive</a></p><p class="relateditem"><a href="PreparingaTargetServerforInstallation.htm" target="_self">Preparing a Target Server for Installation</a></p><p class="relateditem"><a href="12737.htm" target="_self">Publishing Lock During Installation</a></p><p class="relateditem"><a href="Using_the_Install_Archive_Wizard.htm" target="_self">Using the Install Archive Wizard</a></p><p class="relateditem"><a href="Reviewing_Archives5.htm" target="_self">Reviewing Archives</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
+

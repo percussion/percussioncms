@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Simple Example: Creating an Archive </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Installation Example	Creating the Archive">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Simple_Example_Setting_Up_the_Source_and_Target_Servers.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Simple_Example_Installing_the_Archive.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Simple Example: Creating an Archive</h2>
+<p class="bodytext">To create the archive for installing the new Brief Content Editor and S - CalloutAlt Template to the target test server:</p>
+<ol class="listnumber"><li class="listnumber">Notify users not to work on the source (development) server while you are creating the archive</li><li class="listnumber">Choose <em class="emphasis">Action &gt; Create <a title="Archive" href="18764.htm#o18769">Archive</a></em>.<p class="listcontinue">The <a title="Multi-Server Manager" href="18764.htm#o18765">Multi-Server Manager</a> opens the <a title="Create Archive/Descriptor Wizard" href="18764.htm#o18789">Create Archive/Descriptor Wizard</a>.</p>
+<p class="widegraphic"><img src="emarchivewizard1-56.gif" alt="EMArchiveWizard1-56" height="196" width="538" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">Click [<strong class="buttons">Next</strong>].<p class="listcontinue">The Multi-Server Manager displays the Choose a Server and/or <a title="Descriptor" href="18764.htm#o18780">Descriptor</a> dialog of the Wizard.</p>
+<p class="widegraphic"><img src="chooseserver56.gif" alt="ChooseServer56" height="285" width="436" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">In the <strong class="specialbold">Server</strong> drop list, choose the source (development) server. Do not check the <strong class="specialbold">Use Existing Descriptor</strong> check box; you will create a new descriptor.  Click [<strong class="buttons">Next</strong>].<p class="listcontinue">The Multi-Server Manager displays the Choose Create Mode dialog of the Wizard.</p>
+<p class="widegraphic"><img src="emarchivewizard3-56.gif" alt="EMArchiveWizard3-56" height="252" width="518" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="listcontinue">If you choose <em class="emphasis">Typical</em> mode, the Wizard only displays unspecified source server <a title="ID Types" href="18764.htm#o18784">ID Types</a> for you to identify.  If you choose <em class="emphasis">Custom</em>, the Wizard displays all source server ID Types for you to modify and review.  In this example, you want to specify ID Types for new elements but not modify or review existing ID Type settings. Choose <em class="emphasis">Typical </em>and click [<strong class="buttons">Next</strong>].</p>
+<p class="listcontinue">The Multi-Server Manager displays the Add Elements to the Archive dialog of the Wizard.</p>
+<p class="widegraphic"><img src="msmaddelements66.gif" alt="Add Elements to the Archive dialog" height="414" width="616" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">The elements that you want to install on the target server are the modified Brief Content Type and the new S - CalloutAlt Template for the Brief content type.  Move these elements from Available Elements to Elements to <a title="Package" href="18764.htm#o18771">Package</a>. <p class="listcontinue">Expand the Content Type folder in the <strong class="specialbold">Available Elements</strong> tree, choose <em class="emphasis">Brief</em>, and click [<strong class="buttons">Add</strong>].   <em class="emphasis">Brief(Content Type)</em> appears in the <strong class="specialbold">Elements to package</strong> list. Expand the Template folder in the <strong class="specialbold">Available Elements</strong> tree, choose <em class="emphasis">rffSnCalloutAlt</em>, and click [<strong class="buttons">Add</strong>].  <em class="emphasis">rffSnCalloutAlt</em> appears in the <strong class="specialbold">Elements to package</strong> list.</p>
+<p class="listcontinue">Click [<strong class="buttons">Next</strong>].</p>
+<p class="listcontinue">The Multi-Server Manager displays the Choose the <a title="Dependencies" href="18764.htm#o18772">Dependencies</a> or <a title="Ancestors" href="18764.htm#o18775">Ancestors</a> dialog of the Wizard.</p>
+<p class="widegraphic"><img src="msmdepend66.gif" alt="Choose the dependencies or ancestors dialog" height="649" width="624" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">The Brief Content Editor has a new field; therefore, the RXS_CT_BRIEF table schema has changed (it has a new column). You must include the RXS_CT_BRIEF table schema as a dependency to install on the target server because the Content Type <a title="Package Type" href="18764.htm#o18776">Package Type</a> does not automatically include table schemas.  Select <em class="emphasis">rffBrief(Content Type)</em> under <strong class="specialbold">Packages</strong> and expand the tree until you can see the contents of the Shared node. Check the RXS_CT_BRIEF(Table Schema) check box to include the RXS_CT_BRIEF table schema as a dependency of the Brief Content Type.<p class="listcontinue">You may enter a <strong class="specialbold">Description</strong> for each package. It will appear in <a id="h6088" class="jumptemplate" title="Packages View" href="Packages_View.htm" target="_self">Packages View</a> after you install the package on the target server.</p>
+<p class="listcontinue">Click [<strong class="buttons">Next</strong>].</p>
+<p class="listcontinue">The Multi-Server Manager displays the Create Archive or Descriptor dialog of the Wizard.</p>
+<p class="widegraphic"><img src="emexbriefarchive-56.gif" alt="EM EX Install" height="315" width="386" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">In this example, you will create both an archive and a descriptor. <p class="listcontinue">In <strong class="specialbold">Description</strong>, enter the description of the descriptor that you want to appear in <a id="h6086" class="jumptemplate" title="Descriptors View" href="Descriptors_View.htm" target="_self">Descriptors View</a>. Check <strong class="specialbold">Create Archive </strong>and enter a name for the archive. Check <strong class="specialbold">Save Descriptor</strong> and enter a name for the descriptor. </p>
+<p class="listcontinue">Click [<strong class="buttons">Finish</strong>].</p>
+<p class="listcontinue">The Multi-Server Manager saves the descriptor on the source server and saves the archive on the Multi-Server Manager client.  In this example, the Multi-Server Manager client is located in the source server. </p>
+<p class="listcontinue">The Wizard displays the Archive Status dialog while it saves the archive.</p>
+<p class="widegraphic"><img src="eminstallstatus60.gif" alt="Archive Status dialog" height="150" width="316" vspace="2" hspace="2" align="bottom" border="0"> </p>
+<p class="listcontinue">When the Multi-Server Manager has completed installing the archive, click [<strong class="buttons">Close</strong>].</p>
+</li><li class="listnumber">Return to the Multi-Server Manager window and expand the <a title="Source Server" href="18764.htm#o18766">Source Server</a> Node. Click the Descriptors node to view the descriptor that you created listed in the <a title="Descriptors View" href="18764.htm#o18809">Descriptors View</a>.  Descriptors View displays the <strong class="specialbold">Descriptor Name</strong> and <strong class="specialbold">Description</strong> that you entered in the Create Archive or Descriptor dialog and today's date.<p class="widegraphic"><img src="msmdescriptorsview60.gif" alt="Descriptors View" height="263" width="624" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Simple_Example_Adding_a_New_Field_to_the_Article_Content_Editor.htm" target="_self">Simple Example: Adding a New Field to a Content Editor</a></p><p class="relateditem"><a href="Simple_Example_Setting_Up_the_Source_and_Target_Servers.htm" target="_self">Simple Example: Setting Up the Source and Target Servers</a></p><p class="relateditem"><a href="Simple_Example_Installing_the_Archive.htm" target="_self">Simple Example: Installing the Archive</a></p><p class="relateditem"><a href="Simple_Example_Reviewing_the_Installation.htm" target="_self">Simple Example: Reviewing the Installation</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
+

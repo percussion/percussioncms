@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Modifying a Context </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Contexts, JEXL">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="17880.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="17882.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1776027.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Modifying a Context</h2>
+<p class="bodytext">To modify a Context:</p>
+<ol class="listnumber"><li class="listnumber">In the Navigation pane, expand the Contexts node and double-click on the Context you want to modify.<p class="listcontinue">The View and Edit pane displays the Context.</p>
+</li><li class="listnumber">You can modify the <strong class="specialbold">Name</strong> or <strong class="specialbold">Description</strong> of the Context, choose a different <strong class="specialbold">Default Scheme</strong>, and <a id="h17894" class="jumptemplate" title="Creating a Location Scheme" href="17880.htm" target="_self">add</a>, <a id="h17911" class="jumptemplate" title="Modifying a Location Scheme" href="17882.htm" target="_self">modify</a>, or <a id="h17899" class="jumptemplate" title="Removing a Location Scheme from a Context" href="17883.htm" target="_self">remove</a> Location Schemes.</li><li class="listnumber">To add a new Location Scheme:<ol class="listalpha2"><li class="listalpha2">In the Menu bar, choose <em class="emphasis">Action</em> &gt; <em class="emphasis">Add Location Scheme</em>.</li><li class="listalpha2">The View and Edit pane displays the Scheme editor.</li><li class="listalpha2">Enter a <strong class="specialbold">Name</strong> for the Location Scheme.  Location Scheme names must be begin with a letter, and can contain any alphanumeric characters, underscores, hyphens, or dots (periods).  Optionally, enter a free-form <strong class="specialbold">Description</strong>.</li><li class="listalpha2">Select the <strong class="specialbold">Content Type</strong> and <strong class="specialbold">Template</strong> to which the Location Scheme will be applied.</li><li class="listalpha2">Enter the JEXL <strong class="specialbold">Expression</strong> to generate the location.   For details about the syntax of a JEXL expression, see the <a class="jumptemplate" title="" href="http://forum.percussion.com/showthread.php?t=57" target="_self">Apache JEXL Syntax documentation</a>. (Note:  requires registration on the Rhythmyx forums.)  Rhythmyx also includes an extensive array of <a id="h17906" class="jumptemplate" title="JEXL Variables and Functions" href="17905.htm" target="_self">JEXL variables and functions</a>.</li><li class="listalpha2">Click the [<strong class="buttons">OK</strong>] button to save the Location Scheme. <p class="listcontinue2">The View and Edit pane displays the Context editor.</p>
+</li><li class="listalpha2">Repeat steps a through f to add more Location Schemes.</li></ol></li><li class="listnumber">To modify a Location Scheme<ol class="listalpha2"><li class="listalpha2">Double-click on the Location Scheme you want to modify.</li><li class="listalpha2">Change the <strong class="specialbold">Name</strong> or <strong class="specialbold">Description</strong> of the Location Scheme, choose a different <strong class="specialbold">Content Type</strong> or <strong class="specialbold">Template</strong>, or modify the JEXL Expression.  For details about the syntax of a JEXL expression, see the <a class="jumptemplate" title="" href="http://forum.percussion.com/showthread.php?t=57" target="_self">Apache JEXL Syntax documentation</a>. (Note:  requires registration on the Rhythmyx forums.)  Rhythmyx also includes an extensive array of <a id="h17906_2" class="jumptemplate" title="JEXL Variables and Functions" href="17905.htm" target="_self">JEXL variables and functions</a>.<p class="listcontinue2">If you modify the JEXL expression, you may want to test it to ensure that it works correctly and returns the desired results.  To test the expression, click the <span class="links">Show Test Panel </span>link to display the test panel.  Choose the <strong class="specialbold">Site </strong>you want to use to test the expression.  Enter the <strong class="specialbold">Item Path</strong> to the Content Item you want to use to text the expression.  Click the <img src="mako_browsebutton.gif" alt="Mako_Browse Button (Browser applications)" height="35" width="39" vspace="2" hspace="2" align="bottom" border="0" />button to access the <a id="h18963" class="jumptemplate" title="Browse Site Root Path" href="18856.htm" target="_self">Browse Site Root Path</a> dialog to browse to the Content Item.  Enter any <strong class="specialbold">Extra Parameters</strong> required by the expression; parameters should be expressed as name=value pairs, pairs separated by an ampersand character (&quot;&amp;&quot;); for example:  <code class="monospace">sys_contentid=301&amp;sys_revision=1&amp;sys_slotid=501</code>.  When you have defined this data, click the [<strong class="buttons">Evaluate JEXL Expression</strong>] button.  The <strong class="specialbold">Result</strong> is returned (either the path generated by the expression or the error returned by it), with an indication of the <strong class="specialbold">Status</strong> (<em class="emphasis">Success</em> or <em class="emphasis">Failure</em>).  </p>
+</li><li class="listalpha2">Click the [<strong class="buttons">OK</strong>] button to save the Location Scheme. <p class="listcontinue2">The View and Edit pane displays the Context editor.</p>
+</li><li class="listalpha2">Repeat steps a through c to add more Location Schemes.</li></ol></li><li class="listnumber">To remove a Location Scheme, select the Location Scheme you want to remove (you can remove multiple Location Schemes), and in the Menu bar, choose <em class="emphasis">Action</em> &gt; <em class="emphasis">Remove Location Scheme</em>.</li><li class="listnumber">Click the [<strong class="buttons">OK</strong>] button to save your changes.</li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="17876.htm" target="_self">Maintaining Contexts and Link Generation Schemes</a></p><p class="relateditem"><a href="17885.htm" target="_self">Context Editor</a></p><p class="relateditem"><a href="17886.htm" target="_self">Scheme Editor</a></p><p class="relateditem"><a href="17879.htm" target="_self">Creating a Context</a></p><p class="relateditem"><a href="17880.htm" target="_self">Creating a Location Scheme</a></p><p class="relateditem"><a href="17882.htm" target="_self">Modifying a Location Scheme</a></p><p class="relateditem"><a href="17883.htm" target="_self">Removing a Location Scheme from a Context</a></p><p class="relateditem"><a href="17884.htm" target="_self">Deleting a Context</a></p><p class="relateditem"><a href="17905.htm" target="_self">JEXL Variables and Functions</a></p><p class="relateditem"><a href="17887.htm" target="_self">Legacy Scheme Editor</a></p><p class="relateditem"><a href="17888.htm" target="_self">Maintaining a Legacy Location Scheme</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
