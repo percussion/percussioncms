@@ -3534,6 +3534,11 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
             }
          }
       }
+      catch (PSAuthenticationFailedException af){
+         ms_log.warn("Authentication Failed.  Invalid User Name and/or Password.");
+         ms_log.debug("AuthenticationFailed.. Invalid User Name and/or Password.",af);
+         return;
+      }
       catch (Exception e)
       {
     	  String msg="An unexpected error occurred while processing the Request.";
