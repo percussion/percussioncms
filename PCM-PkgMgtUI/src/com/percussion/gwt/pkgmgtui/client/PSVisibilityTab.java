@@ -226,6 +226,7 @@ public class PSVisibilityTab
    private HLayout createButtonsPanel()
    {
       m_showByBtn.setSelected(true);
+      m_showByBtn.setAutoFit(true);
       m_showByBtn.setWidth(150);
       m_showByBtn.addMouseUpHandler(new MouseUpHandler()
       {
@@ -240,6 +241,7 @@ public class PSVisibilityTab
          }
       });
       m_editAssociationsBtn.setWidth(150);
+      m_editAssociationsBtn.setAutoFit(true);
       m_editAssociationsBtn.addMouseUpHandler(new MouseUpHandler()
       {
          public void onMouseUp(MouseUpEvent event)

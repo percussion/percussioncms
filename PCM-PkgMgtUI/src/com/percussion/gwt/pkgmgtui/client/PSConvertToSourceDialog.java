@@ -69,7 +69,7 @@ public class PSConvertToSourceDialog extends Dialog
       hlLabel.addMember(m_messageGrid);
       hlLabel.setPadding(10);
       addItem(hlLabel);
-      setToolbarButtons(createButtonsPanel());
+      addItem(createButtonsPanel());
 
    }
 
