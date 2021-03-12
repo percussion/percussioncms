@@ -55,14 +55,13 @@
       * @param callback the callback function to be called when the request completes.
       */               
      function create(sectionObj, callback){
-        var self = this;
         var url = sectionObj.CreateSiteSection?$.perc_paths.SECTION_CREATE:$.perc_paths.SECTION_CREATE_EXTERNAL_LINK;
         $.PercServiceUtils.makeJsonRequest(
            url,
            $.PercServiceUtils.TYPE_POST,
            false,
            function(status, result){
-              if(status == $.PercServiceUtils.STATUS_SUCCESS)
+              if(status === $.PercServiceUtils.STATUS_SUCCESS)
               {
                   callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
               }
@@ -90,7 +89,7 @@
            $.PercServiceUtils.TYPE_POST,
            false,
            function(status, result){
-              if(status == $.PercServiceUtils.STATUS_SUCCESS)
+              if(status === $.PercServiceUtils.STATUS_SUCCESS)
               {
                   callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
               }
@@ -119,7 +118,7 @@
            $.PercServiceUtils.TYPE_GET,
            false,
            function(status, result){
-              if(status == $.PercServiceUtils.STATUS_SUCCESS)
+              if(status === $.PercServiceUtils.STATUS_SUCCESS)
               {
                   callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
               }
@@ -145,7 +144,7 @@
            $.PercServiceUtils.TYPE_POST,
            false,
            function(status, result){
-              if(status == $.PercServiceUtils.STATUS_SUCCESS)
+              if(status === $.PercServiceUtils.STATUS_SUCCESS)
               {
                   callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
               }
@@ -170,7 +169,7 @@
             $.PercServiceUtils.TYPE_POST,
             false,
             function(status, result){
-               if(status == $.PercServiceUtils.STATUS_SUCCESS)
+               if(status === $.PercServiceUtils.STATUS_SUCCESS)
                {
                    callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                }
@@ -225,7 +224,7 @@
            $.PercServiceUtils.TYPE_GET,
            false,
            function(status, result){
-              if(status == $.PercServiceUtils.STATUS_SUCCESS)
+              if(status === $.PercServiceUtils.STATUS_SUCCESS)
               {                  
                   callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
               }
@@ -236,8 +235,8 @@
                   var defaultErrorCode  =
                       $.PercServiceUtils.extractGlobalErrorCode(result.request);
 
-                  if(defaultErrorCode === $.perc_errors.NAVIGATION_SERVICE_FOLDER_ID_NOT_FOUND_FOR_PATH
-                  || defaultErrorCode === $.perc_errors.NAVIGATION_SERVICE_CANNOT_FIND_NAVTREE_FOR_SITE){
+                  if(defaultErrorCode === $.perc_errors.NAVIGATION_SERVICE_FOLDER_ID_NOT_FOUND_FOR_PATH || 
+                      defaultErrorCode === $.perc_errors.NAVIGATION_SERVICE_CANNOT_FIND_NAVTREE_FOR_SITE){
                       // this is a bad site record.
                       console.warn("Bad site record for site was deleted");
                   }else {
@@ -272,7 +271,7 @@
            $.PercServiceUtils.TYPE_POST,
            false,
            function(status, result){
-              if(status == $.PercServiceUtils.STATUS_SUCCESS)
+              if(status === $.PercServiceUtils.STATUS_SUCCESS)
               {
                   cache.getChildren[section.SiteSection.id] = result.data;
                   callback($.PercServiceUtils.STATUS_SUCCESS, section, result.data);
@@ -305,7 +304,7 @@
             false,
             function(status, result)
                 {
-                    if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                    if (status === $.PercServiceUtils.STATUS_SUCCESS)
                     {
                         callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                     }
@@ -336,7 +335,7 @@
             function(status, result)
                 {
                     $.unblockUI();
-                    if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                    if (status === $.PercServiceUtils.STATUS_SUCCESS)
                     {
                         callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                     }
@@ -376,7 +375,7 @@
            $.PercServiceUtils.TYPE_POST,
            false,
            function(status, result){
-              if(status == $.PercServiceUtils.STATUS_SUCCESS)
+              if(status === $.PercServiceUtils.STATUS_SUCCESS)
               {
                   callback($.PercServiceUtils.STATUS_SUCCESS, moveSiteSectionObj, result.data);
               }
@@ -411,7 +410,7 @@
            $.PercServiceUtils.TYPE_POST,
            false,
            function(status, result){
-              if(status == $.PercServiceUtils.STATUS_SUCCESS)
+              if(status === $.PercServiceUtils.STATUS_SUCCESS)
               {
                   callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
               }
@@ -438,7 +437,7 @@
            $.PercServiceUtils.TYPE_DELETE,
            false,
            function(status, result){
-              if(status == $.PercServiceUtils.STATUS_SUCCESS)
+              if(status === $.PercServiceUtils.STATUS_SUCCESS)
               {
                   callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
               }
@@ -467,7 +466,7 @@
            $.PercServiceUtils.TYPE_GET,
            false,
            function(status, result){
-              if(status == $.PercServiceUtils.STATUS_SUCCESS)
+              if(status === $.PercServiceUtils.STATUS_SUCCESS)
               {
                   callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
               }
