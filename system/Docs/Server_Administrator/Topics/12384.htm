@@ -1,0 +1,62 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Maintaining Caching Settings </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Optimizing_Performance.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Changing_Page_Cache_Settings_from_the_Server_Console.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Maintaining Caching Settings</h3>
+<p class="bodytext">The Rhythmyx server includes a cache that stores the following</p>
+<ul class="listbullet"><li class="listbullet">assembled pages</li><li class="listbullet">query result pages</li><li class="listbullet">Folder contents and navigation.</li></ul><p class="bodytext">The cache improves the performance of your CMS by preserving data for quick recall later.  </p>
+<p class="bodytext">Use the Caching subtab of the Settings tab to maintain caching settings.  </p>
+<p class="widegraphic"><img src="sa_settingstabcachingsubtab_60.gif" alt="Caching Tab" height="502" width="558" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">The Enable Page Cache checkbox controls caching of assembled pages and of query results pages.  The default value of this box is checked.  If you want to disable page caching, uncheck this box.</p>
+<p class="bodytext">If you enable page caching, you can define the caching parameters:</p>
+<ul class="listbullet"><li class="listbullet">The <strong class="specialbold">Maximum Amount of Memory (MB)</strong> field defines the maximum amount of memory the server can use for page caching.  The default value of this field is 100 MB.  If you want to allow unlimited space for caching, check the <strong class="specialbold">Unlimited </strong>checkbox for this field.</li><li class="listbullet">The <strong class="specialbold">Maximum Amount of Disk Space (MB)</strong> field defines the maximum amount of disk space that the server can use for caching.  The default is 1042 MB.  To allow the server to use an unlimited amount of disk space for caching, check the <strong class="specialbold">Unlimited</strong> checkbox.</li><li class="listbullet">The <strong class="specialbold">Maximum Page Size (KB)</strong> field defines the maximum size of a page that may be cached.  he default is 100 kilobytes.  To allow the server to cache pages of any size, check the <strong class="specialbold">Unlimited</strong> checkbox.</li><li class="listbullet">The <strong class="specialbold">Aging Time (min)</strong> field defines the maximum amount of time that an item may remain in the cache before the server flushes it.  To allow items to remain in the cache an unlimited amount of time, check the <strong class="specialbold">Unlimited</strong> checkbox. The default is unlimited.</li></ul><p class="bodytext">The Enable Folder Cache checkbox controls caching of Folder contents and navigation.  The default value of this box is checked.  If you want to disable Folder caching, uncheck the box.  (Note that if Folder caching is enabled, you must attach the sys_FlushCache post-exit to Content List resources to ensure that the cache is flushed during Publishing.  Also, you should use the rxs_SiteFolderContentListBulkBuilder exit when implementing Site Folder Publishing rather than using the rxs_SiteFolderContentListBuilder exit.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Optimizing_Performance.htm" target="_self">Optimizing performance</a></p><p class="relateditem"><a href="Changing_Page_Cache_Settings_from_the_Server_Console.htm" target="_self">Changing Page Cache Settings from the Server Console</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

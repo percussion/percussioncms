@@ -1,0 +1,62 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Configuring Maximum Search Results Returned </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Search Configuration	Maximum results">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="17919.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Interfacing_by_remote_console.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Configuring Maximum Search Results Returned</h3>
+<p class="bodytext">Some very general search queries can return large numbers of search results (on the order of thousands of Content Items).  Such large numbers can cause Content Explorer to fail.  To avoid this problem, configure the maximum search results for your system</p>
+<p class="bodytext">The maximum search results is controlled by the maxSearchResults attribute of the PSXSearchConfig node of the server configuration XML file (&lt;rhythmyxroot&gt;/rxconfig/server/config.xml).  The default value for this parameter is <em class="emphasis">-1</em>, which returns all results.  If you change this value to a positive integer, you restrict the maximum search results to that value.  For example, if you change the value of the maxSearchResults parameter to <em class="emphasis">200</em>, Rhythmyx will return no more than 200 Content Items as the results for a search.  If a user configures a maximum result higher than the value of the max SearchResults attribute, Rhythmyx ignores the user-defined value and uses the value defined on the server.  Using the previous example, if a user attempted to configure a Maximum Result of 300, Rhythmyx would ignore that value and return only the 200 result defined in the server.</p>
+<p class="bodytext">If you configure a value for the maxSearchResults parameter, Rhythmyx notes the allowable range for any interface in which the user can configure maximum search results.  Using the example above, the search dialog in Content Explorer would resemble the following screenshot:</p>
+<p class="widegraphic"><img src="cx_searchdialogwithsearchresultsrange.gif" alt="CX_SearchDialogwithSearchResultsRange" height="247" width="391" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">Note the text &quot;Allowable range is 1-200&quot; next to the <strong class="specialbold">Max rows returned</strong> field.</p>
+<p class="bodytext">The same text is also added to the Search Query tab of the View and Search Editor in the Workbench:</p>
+<p class="widegraphic"><img src="wb_searchquerytabwithallowablerange.gif" alt="WB_SearchQueryTabWithAllowableRange" height="450" width="481" vspace="2" hspace="2" align="bottom" border="0"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="17889.htm" target="_self">Search Configuration</a></p><p class="relateditem"><a href="17803.htm" target="_self">How to Override the Default Text Analyzer</a></p><p class="relateditem"><a href="17801.htm" target="_self">How to Override the Default Text Extractor</a></p><p class="relateditem"><a href="17919.htm" target="_self">Disabling Full-text Search</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

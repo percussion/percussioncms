@@ -1,0 +1,62 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Implementing Single Sign-on </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Single Sign-on	defined">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Web_Server.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Single_Sign-on_and_the_Rhythmyx_Workbench_and_Server_Administrator.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h5 class="heading5">Implementing Single Sign-on</h5>
+<p class="bodytext">Single Sign-on is a log-in option available when interfacing to Rhythmyx through a J2EE-compliant container.  Single Sign-on allows users to access the Rhythmyx server by logging in to their Web application server.  If Single Sign-on is not enabled, users must log in to the Web application server and then log in to Rhythmyx again.  The following graphic shows the logical configuration of a system to support Single Sign-on:</p>
+<p class="widegraphic"><img src="wsspsetupgood.gif" alt="Supported Configuration for Single Sign-on" height="138" width="563" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">When using Single Sign-on, users access Rhythmyx browser applications by directing their browser to the Web application server.  The Rhythmyx servlet on the Web application server directs Rhythmyx requests, with user credentials, to the Rhythmyx server.  Independent configurations, such as the configuration in the graphic below, are not supported:</p>
+<p class="widegraphic"><img src="wsspsetupbad.gif" alt="Unsupported Single Sign-on Configuration" height="119" width="341" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">When using Single Sign-on and deriving role names from the J2EE server, the role names on the J2EE server must match the names of the Roles in Rhythmyx, including matching case.  Thus, you need to account for the names of your roles on your J2EE server when assigning the names to Roles in Rhythmyx.  For example, Rhythmyx ships with the default Roles &quot;Admin&quot; and &quot;Editor&quot;.  If you have roles with the names &quot;Admin&quot; and &quot;Editor&quot; (matching the case in Rhythmyx) on your J2EE server, the members of these Roles on the J2EE server will also have privileges in Rhythmyx.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">In This Section</p><p class="relateditem"><a href="Single_Sign-on_and_the_Rhythmyx_Workbench_and_Server_Administrator.htm" target="_self">Single Sign-on and the Rhythmyx Workbench and Server Administrator</a></p><p class="relateditem"><a href="Setting_up_a_Web_Server_Security_Provider_for_Single_Sign-on.htm" target="_self">Setting up a Web Server Security Provider for Single Sign-on</a></p></td>
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Web_Server.htm" target="_self">Web Server</a></p><p class="relateditem"><a href="Web_Server_Security_Provider_Details_Dialog.htm" target="_self">Web Server Security Provider Details Dialog</a></p><p class="relateditem"><a href="Adding_a_Web_Server_Security_Provider.htm" target="_self">Adding a Web Server Security Provider</a></p><p class="relateditem"><a href="Modifying_a_Web_Server_Security_Provider.htm" target="_self">Modifying a Web Server Security Provider</a></p><p class="relateditem"><a href="Deleting_a_Web_Server_Security_Provider.htm" target="_self">Deleting a Web Server Security Provider</a></p><p class="relateditem"><a href="Interfacing_to_Rhythmyx_Through_Web_Servers.htm" target="_self">Interfacing to Rhythmyx Through Web Servers</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

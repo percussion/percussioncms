@@ -1,0 +1,162 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> General Server Console Commands </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Log	Dumping, Rhythmyx Server	Stopping	by Server Console Command, Server Console Commands	General, Statistics	Displaying, User Sessions	Displaying, User Threads	Displaying, Version	Displaying">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Server_Console_Commands_by_Function.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Server_Console_Commands_for_Applications.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h5 class="heading5">General Server Console Commands</h5>
+<table width="758" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="192"><p class="tableheading">To . . . </p>
+</th>
+<th style = "border:1px solid #010101;" width="212"><p class="tableheading">Enter the command . . . </p>
+</th>
+<th style = "border:1px solid #010101;" width="352"><p class="tableheading">Notes and Examples</p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Empty the log queue</p>
+</td>
+<td style = "border:1px solid #010101;" width="212"><p class="tablebodytext"><code class="monospace"><code class="monospace">log flush</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="352"><p class="tablebodytext">Forces the server to write all pending log messages in the log queue to the log database immediately.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Display server log on the console.</p>
+</td>
+<td style = "border:1px solid #010101;" width="212"><p class="tablebodytext"><code class="monospace"><code class="monospace">log dump</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="352"><p class="tablebodytext">This command may dump a very large amount of data onto the console.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Display the server version</p>
+</td>
+<td style = "border:1px solid #010101;" width="212"><p class="tablebodytext"><code class="monospace"><code class="monospace">show version</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="352"><p class="tablebodytext">Displays version and build of Rhythmyx.</p>
+<p class="tablebodytext">Example:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">show version</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;command&gt;show version &lt;/command&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultCode&gt;0&lt;/resultCode&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultText&gt;Release 4.5  Build 20020829 (1311)&lt;/resultText&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;/PSXConsoleCommandResults&gt;</code></code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Display statistics for server handling of all requests</p>
+</td>
+<td style = "border:1px solid #010101;" width="212"><p class="tablebodytext"><code class="monospace"><code class="monospace">show status server</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="352"><p class="tablebodytext">Displays how long the server has been running, the number of events processed, failed, and pending,  the number of hits and misses to the cache, and average, minimum and maximum processing time for events.</p>
+<p class="tablebodytext">Example:<br><code class="monospace">show status server</code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;command&gt;show status server&lt;/command&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultCode&gt;0&lt;/resultCode&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultText&gt;&lt;/resultText&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;PSXStatistics/&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;ElapsedTime&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;days&gt;0&lt;/days&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;hours&gt;1&lt;/hours&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;minutes&gt;15&lt;/minutes&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;seconds&gt;4&lt;/seconds&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;milliseconds&gt;26&lt;/milliseconds&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;/ElapsedTime&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;Counters&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">	.</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">	.</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">	.</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;/PSXConsoleCommandResults&gt;</code></code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Display statistics for server handling of requests by Workbench and Server Administrator</p>
+</td>
+<td style = "border:1px solid #010101;" width="212"><p class="tablebodytext"><code class="monospace"><code class="monospace">show status objectstore</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="352"><p class="tablebodytext">Displays how long the server has been running, the number of Workbench and Server Administrator events processed, failed, and pending, the number of hits and misses by such events to the cache, and average, minimum and maximum processing time for these events.</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">Example:</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">show status objectstore</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;command&gt;show status objectstore&lt;/command&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultCode&gt;0&lt;/resultCode&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultText&gt;&lt;/resultText&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;PSXStatistics/&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;ElapsedTime&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;days&gt;0&lt;/days&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;hours&gt;1&lt;/hours&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;minutes&gt;19&lt;/minutes&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;seconds&gt;49&lt;/seconds&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;milliseconds&gt;116&lt;/milliseconds&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;/ElapsedTime&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;Counters&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">	.	</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">	.	</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">	.</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Stop the server</p>
+</td>
+<td style = "border:1px solid #010101;" width="212"><p class="tablebodytext"><code class="monospace"><code class="monospace">stop server</code></code> </p>
+</td>
+<td style = "border:1px solid #010101;" width="352"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+
+</table>
+<p class="tablebodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Server_Console_Commands_by_Function.htm" target="_self">Server Console Commands by Function</a></p><p class="relateditem"><a href="Server_Console_Commands_for_Applications.htm" target="_self">Server Console Commands for Applications</a></p><p class="relateditem"><a href="Server_Console_Commands_for_Displaying_Resources.htm" target="_self">Server Console Commands for Displaying Resources</a></p><p class="relateditem"><a href="Server_Console_Commands_for_Flushing_the_Server_and_MetaData_Caches.htm" target="_self">Server Console Commands for Flushing the Server and MetaData Caches</a></p><p class="relateditem"><a href="17922.htm" target="_self">Server Console Commands for Search</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

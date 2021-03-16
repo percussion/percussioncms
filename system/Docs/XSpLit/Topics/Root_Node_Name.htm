@@ -1,0 +1,63 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Root Node Name </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Field Names	Root Node">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Hierarchical_Field_Names.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Field_Name_Prefix.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h4 class="heading4">Root Node Name</h4>
+<p class="bodytext">Since XML field name syntax requires all fields in a document to share a common root node name, XSpLit automatically creates a root node name for all fields in an HTML page. It gets the root node name from the name of the associated DTD for the fields. This is the name of the HTML file that was split.</p>
+<p class="bodytext">For example, an HTML page named <strong class="specialbold">person.htm </strong>includes the following code:</p>
+<p class="bodytext"><code class="monospace">&lt;span id=&quot;psx-name/first&quot;&gt;&lt;/span&gt; &lt;span id=&quot;psx-name/last&quot;&gt;&lt;/span&gt;</code></p>
+<p class="bodytext"><code class="monospace">&lt;span id=&quot;psx-title&quot;&gt;&lt;/span&gt;</code></p>
+<p class="bodytext">XSpLit gives the field <strong class="specialbold">psx-name/first </strong>the full name <strong class="specialbold">person/name/first</strong>, and <strong class="specialbold">psx-title </strong>becomes <strong class="specialbold">person/title</strong>. The associated DTD takes the name <strong class="specialbold">person.dtd.</strong> XSpLit does not modify the original HTML file.</p>
+<p class="bodytext">See <a id="h4706" class="" title="About XML Fields and DTDs" href="About_XML_Fields_and_DTDs.htm" target="_self">XML fields and DTDs</a> for more information.</p>
+<p class="bodytext"><strong class="specialbold">Note:</strong> XSpLit does not change field names in the HTML page that already use the correct root node name.</p>
+<p class="bodytext">&nbsp; </p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Field_Names_and_Prefixes.htm" target="_self">Field Names and Prefixes</a></p><p class="relateditem"><a href="About_XML_Fields_and_DTDs.htm" target="_self">About XML Fields and DTDs</a></p><p class="relateditem"><a href="Field_Names.htm" target="_self">Field Names</a></p><p class="relateditem"><a href="Hierarchical_Field_Names.htm" target="_self">Hierarchical Field Names</a></p><p class="relateditem"><a href="Field_Name_Prefix.htm" target="_self">Field Name Prefix</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

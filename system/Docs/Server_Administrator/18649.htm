@@ -1,0 +1,73 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> ACL Entry Details/Edit ACL Entry Details dialog </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="18518.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Creating_a_Server_ACL.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h5 class="heading5">ACL Entry Details/Edit ACL Entry Details dialog</h5>
+<p class="bodytext">Add or edit an ACL entry using the ACL Entry Details or Edit ACL Entry Details dialog. </p>
+<p class="bodytext">To access the ACL Entry Details dialog, click the Security tab of the Rhythmyx Server Administrator, then click the Server ACL tab. On the Server ACL tab, click the [<strong class="buttons">New</strong>] button.</p>
+<p class="bodytext">To access the Edit ACL Entry Details dialog,  click the Security tab of the Rhythmyx Server Administrator, then click the Server ACL tab. On the Server ACL tab, select the ACL entry you want to edit and click the [<strong class="buttons">Edit</strong>] button.</p>
+<p class="widegraphic"><img src="aclentrydetails65.gif" alt="ACL Entry Details dialog" height="332" width="270" vspace="2" hspace="2" align="bottom" border="0"> </p>
+<p class="bodytext"><strong class="specialbold">Field Descriptions</strong></p>
+<p class="bodytext"><strong class="specialbold">Name</strong> - Name of the entry.  You can enter a name or choose <em class="emphasis">Default</em> or <em class="emphasis">Anonymous</em> in the drop list:</p>
+<p class="listcontinue"><em class="emphasis">Default</em> - Permissions that apply to the default entry apply to authenticated users not listed in the ACL.</p>
+<p class="listcontinue"><em class="emphasis">Anonymous</em> - Applies to all non-authenticated users, which are users who haven't supplied their name or credentials. Also applies to users who are authenticated if the <em class="emphasis">Default</em> entry isn't defined in the ACL.</p>
+<p class="bodytext"><strong class="specialbold">Type</strong> - Type of ACL entry.  Choose from the following options:</p>
+<p class="listcontinue"><em class="emphasis">User - </em>Indicates that entry applies to the user listed in Name.</p>
+<p class="listcontinue"><em class="emphasis">Group - </em>Indicates that entry applies to all users in the group listed in Name. </p>
+<p class="listcontinue"><em class="emphasis">Role - </em>Indicates that entry applies to all users belonging to the Role listed in Name.</p>
+<p class="bodytext"><strong class="specialbold">Access</strong></p>
+<p class="bodytext"><strong class="specialbold">Allow design access</strong> - Enables the user, group or Role in <strong class="specialbold">Name</strong> to log in to the Rhythmyx Workbench and modify any design object including Rhythmyx applications. The ACL for each object or application is specified in the Workbench. </p>
+<p class="bodytext"><strong class="specialbold">Allow admin access</strong> - This privilege is only given to super-users, such as administrators.  It enables them to change the server configuration in the Server Administrator, and to perform other tasks, such as creating a folder under the //Sites or //Folders levels.</p>
+<p class="bodytext"><strong class="specialbold">Allow data Access</strong> - Not currently used.</p>
+<p class="bodytext"><strong class="specialbold">Can create applications</strong> - Enables the user, group, or Role to create XML applications. The user, group, or Role must first have design access before this access has an effect.</p>
+<p class="bodytext"><strong class="specialbold">Can delete applications</strong> - Enables the user, group, or role to delete XML applications. The user, group or Role must first have design access before this access has an effect.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Maintaining_ACLs_at_the_Server_Level.htm" target="_self">Maintaining ACLs at the Server Level</a></p><p class="relateditem"><a href="18518.htm" target="_self">Server ACL Tab</a></p><p class="relateditem"><a href="Creating_a_Server_ACL.htm" target="_self">Creating a Server ACL</a></p><p class="relateditem"><a href="Editing_a_Server_ACL.htm" target="_self">Editing a Server ACL</a></p><p class="relateditem"><a href="Deleting_a_Server_ACL.htm" target="_self">Deleting a Server ACL</a></p><p class="relateditem"><a href="Resolving_Conflicting_Access_Settings.htm" target="_self">Resolving Conflicting Access Settings</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

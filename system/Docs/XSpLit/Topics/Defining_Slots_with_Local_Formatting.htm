@@ -1,0 +1,151 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Defining Slots with Local Formatting </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Slots	Marking Up ">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Slot_Formatting.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Specifying_a_Template_for_a_Slot.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Defining Slots with Local Formatting</h3>
+<p class="bodytext">In addition to calling the content of the Slot, you generally want to add formatting to the slot. &nbsp;In most cases, the formatting for the Slot is local to the assembler, but you can also use a remote template.</p>
+<p class="bodytext">Defining a Slot with local formatting requires up to three parts:</p>
+<ul class="listbullet"><li class="listbullet">The Slot as a whole. &nbsp;This portion of the formatting defines the border and background of the Slot, as well as any heading for it. &nbsp;This formatting does not repeat within the Slot.</li><li class="listbullet">The Snippet wrapper. &nbsp;This portion of the formatting defines the immediate formatting around each content item in the slot, such as spacing between each content item. &nbsp;This formatting repeats with each content item in the Slot.</li><li class="listbullet">The local content.</li></ul><p class="bodytext">The Slot and snippet wrapper formatting are not necessary. &nbsp;A Slot need only consist of the local content. &nbsp;However, to add formatting to the Slot, you need to at least define the Slot formatting. &nbsp;If the local content consists of more than one content item, you will generally want a snippet wrapper for each item.</p>
+<p class="bodytext">To mark up a Slot:</p>
+<ul class="listbullet"><li class="listbullet">Use the comments <code class="monospace">&lt;!-- start slot --&gt;</code> and <code class="monospace">&lt;!-- end slot --&gt;</code> to indicate the beginning and ending of the Slot. &nbsp;The format of the comments must be specific:<p class="codeexample">&lt;start&gt;&lt;whitespace&gt;&lt;slot&gt;&lt;whitespace&gt;</p>
+<p class="codeexample">&lt;end&gt;&lt;whitespace&gt;&lt;slot&gt;&lt;whitespace&gt;</p>
+<p class="listcontinue">Additional whitespace around this pattern is acceptable, as are further comments after the specified formatting. </p>
+</li><li class="listbullet">Use the comments <code class="monospace">&lt;!-- start snippet wrapper --&gt;</code> and <code class="monospace">&lt;!-- end snippet wrapper --&gt;</code> to indicate the beginning and end of the snippet wrapper. &nbsp;The format of the comments must be specific:<p class="codeexample">&lt;start&gt;&lt;whitespace&gt;&lt;snippet&gt;&lt;whitespace&gt;&lt;wrapper&gt;&lt;whitespace&gt;</p>
+<p class="codeexample">&lt;end&gt;&lt;whitespace&gt;&lt;snippet&gt;&lt;whitespace&gt;&lt;wrapper&gt;&lt;whitespace&gt;</p>
+<p class="listcontinue">Additional whitespace around this pattern is acceptable, as are further comments after the specified formatting.</p>
+</li><li class="listbullet">Use the code specified in <a id="h805" class="jumptemplate" title="Labelling Dynamic Content in HTML" href="Labelling_Dynamic_Content_in_HTML.htm" target="_self">Labelling Local Content</a> to define the local content.</li></ul><p class="bodytext">For example:</p>
+<p class="codeexample">&lt;!-- start slot --&gt;</p>
+<p class="codeexample">&lt;table width=&quot;100%&quot; border=&quot;1&quot; bordercolor=&quot;black&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;</p>
+<p class="codeexample">  &lt;tr&gt;</p>
+<p class="codeexample">    &lt;td class=&quot;nav_head&quot;&gt;</p>
+<p class="codeexample">      &lt;div align=&quot;center&quot;&gt;Related Features&lt;/div&gt;</p>
+<p class="codeexample">    &lt;/td&gt;</p>
+<p class="codeexample">  &lt;/tr&gt;</p>
+<p class="codeexample">  &lt;tr&gt;</p>
+<p class="codeexample">    &lt;td class=&quot;nav_middle&quot;&gt;</p>
+<p class="codeexample">      &lt;table width=&quot;100%&quot; border=&quot;0&quot; bordercolor=&quot;black&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;</p>
+<p class="codeexample">      &lt;!-- start snippet wrapper --&gt;</p>
+<p class="codeexample">      &lt;tr&gt;</p>
+<p class="codeexample">        &lt;td&gt;&amp;nbsp;&lt;/td&gt;</p>
+<p class="codeexample">        &lt;td&gt;</p>
+<p class="codeexample">          &lt;!-- this is the local content call --&gt;</p>
+<p class="codeexample">          &lt;span slotname=&quot;Related Feature&quot;&gt;</p>
+<p class="codeexample">            Snippet example</p>
+<p class="codeexample">          &lt;/span&gt;</p>
+<p class="codeexample">        &lt;/td&gt;</p>
+<p class="codeexample">        &lt;td&gt;&amp;nbsp;&lt;/td&gt;</p>
+<p class="codeexample">      &lt;/tr&gt;</p>
+<p class="codeexample">      &lt;!-- end snippet wrapper --&gt;</p>
+<p class="codeexample">     &lt;/table&gt;</p>
+<p class="codeexample">    &lt;/td&gt;</p>
+<p class="codeexample">  &lt;/tr&gt;</p>
+<p class="codeexample">&lt;/table&gt;</p>
+<p class="codeexample">&lt;br id=&quot;xsplit&quot;/&gt;</p>
+<p class="codeexample">&lt;!-- end slot --&gt;</p>
+<p class="bodytext">When split, this code would produce the following XSL:</p>
+<p class="codeexample">&lt;!--</p>
+<p class="codeexample">Code snippet inside the HTML body which calls the slot templates.</p>
+<p class="codeexample">There might be multiple slots, so the variable name needs to be unique. It will be enumerated starting at 1.</p>
+<p class="codeexample">--&gt;</p>
+<p class="codeexample">. . .</p>
+<p class="codeexample">&lt;!-- start slot --&gt;</p>
+<p class="codeexample">&lt;xsl:variable name=&quot;rxslot-2&quot;&gt;</p>
+<p class="codeexample">  &lt;rxslot template=&quot;Related Feature&quot;&gt;</p>
+<p class="codeexample">    &lt;xsl:copy-of select=&quot;$related/linkurl[@slotname=&amp;apos;Related Feature&amp;apos;]&quot;/&gt;</p>
+<p class="codeexample">  &lt;/rxslot&gt;</p>
+<p class="codeexample">&lt;/xsl:variable&gt;</p>
+<p class="codeexample">&lt;xsl:apply-templates select=&quot;$rxslot-2&quot; mode=&quot;rxslot&quot;/&gt;</p>
+<p class="codeexample">&lt;!-- end slot --&gt;</p>
+<p class="codeexample">. . .</p>
+<p class="codeexample">&lt;!--</p>
+<p class="codeexample">Slot template created from XSpLit. </p>
+<p class="codeexample">--&gt;</p>
+<p class="codeexample">&lt;xsl:template match=&quot;rxslot[@template=&amp;apos;Related Feature&amp;apos;]&quot; mode=&quot;rxslot&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&lt;xsl:if test=&quot;linkurl&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;table width=&quot;100%&quot; border=&quot;1&quot; bordercolor=&quot;black&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td class=&quot;nav_head&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div align=&quot;center&quot;&gt;Related Features&lt;/div&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/td&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td class=&quot;nav_middle&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;table width=&quot;100%&quot; border=&quot;0&quot; bordercolor=&quot;black&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- &nbsp;&nbsp;start snippet wrapper &nbsp;&nbsp;--&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;xsl:apply-templates select=&quot;linkurl&quot; mode=&quot;rxcas-2&quot;/&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- &nbsp;&nbsp;end snippet wrapper &nbsp;&nbsp;--&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/td&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;br id=&quot;xsplit&quot;/&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&lt;/xsl:if&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&lt;/xsl:template&gt;</p>
+<p class="codeexample">&lt;!--</p>
+<p class="codeexample">Snippet wrapper template created from XSpLit.</p>
+<p class="codeexample">--&gt;</p>
+<p class="codeexample">&lt;xsl:template match=&quot;linkurl&quot; mode=&quot;rxcas-2&quot;&gt;</p>
+<p class="codeexample">  &lt;tr&gt;</p>
+<p class="codeexample">    &lt;td&gt;&amp;nbsp;&lt;/td&gt;</p>
+<p class="codeexample">    &lt;td&gt;</p>
+<p class="codeexample">      &lt;xsl:copy-of select=&quot;document(Value/@current)/*/body/*&quot;&gt;</p>
+<p class="codeexample">    &lt;/td&gt;</p>
+<p class="codeexample">    &lt;td&gt;&amp;nbsp;&lt;/td&gt;</p>
+<p class="codeexample">  &lt;/tr&gt;</p>
+<p class="codeexample">&lt;/xsl:template&gt;</p>
+<p class="bodytext">Note two items in this code that are required for a Slot template.  First, the value of <code class="monospace">mode </code>in the Slot template call itself must be <em class="emphasis">rxslot</em>., demonstrated in the first line of the template: </p>
+<p class="codeexample">&lt;xsl:template match=&quot;rxslot[@template=&amp;apos;Related Feature&amp;apos;]&quot; mode=&quot;rxslot&quot;&gt;</p>
+<p class="bodytext">Second, the value of <code class="monospace">mode </code>for the Snippet wrapper and the local content must be the same.  In this case, the snippet wrapper includes this line:</p>
+<p class="codeexample">&lt;xsl:apply-templates select=&quot;linkurl&quot; mode=&quot;rxcas-2&quot;/&gt;</p>
+<p class="bodytext">Note that the value of <code class="monospace">mode</code>, <em class="emphasis">rxcas-2</em>, equals the value of mode for the local content call in this line:</p>
+<p class="codeexample">&lt;xsl:template match=&quot;linkurl&quot; mode=&quot;rxcas-2&quot;&gt;</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Slot_Formatting.htm" target="_self">Slot Formatting</a></p><p class="relateditem"><a href="Specifying_a_Template_for_a_Slot.htm" target="_self">Specifying a Template for a Slot</a></p><p class="relateditem"><a href="8696.htm" target="_self">Best Practices for Writing Manual Templates</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+
