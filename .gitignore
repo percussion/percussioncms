@@ -1,5 +1,6 @@
 derby.log
- 
+.idea/sonarIssues.xml
+
 # random output file
 **/test-output.jar
 
