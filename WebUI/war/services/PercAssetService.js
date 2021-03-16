@@ -55,20 +55,13 @@
     function getAssetEditorForAssetId(assetId, callback) {
         $.ajax({
              url: $.perc_paths.ASSET_EDITOR_URL_FOR_ASSET_ID + "/" + assetId,
-             success: function(data, textstatus){
-              var result = {
-                 data: data,
-                 textstatus: textstatus
-              };
+             success: function(data) {
+
               callback($.PercServiceUtils.STATUS_SUCCESS, data);
             }, 
               error: function(request, textstatus, error){
-               var result = {
-                  request: request,
-                  textstatus: textstatus,
-                  error: error
-               };
-               var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
+
+               var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(request);
                callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
               
             }
@@ -85,20 +78,13 @@
     function getAssetViewForAssetId(assetId, callback) {
         $.ajax({
              url: $.perc_paths.ASSET_VIEW_URL_FOR_ASSET_ID + "/" + assetId,
-             success: function(data, textstatus){
-              var result = {
-                 data: data,
-                 textstatus: textstatus
-              };
+             success: function(data){
+
               callback($.PercServiceUtils.STATUS_SUCCESS, data);
             }, 
               error: function(request, textstatus, error){
-               var result = {
-                  request: request,
-                  textstatus: textstatus,
-                  error: error
-               };
-               var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
+
+               var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(request);
                callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
               
             }
@@ -126,14 +112,13 @@
         getAssetEditors(currentFolderPath, "", callback);
     }
     function getAssetEditors(currentFolderPath, widgetId, callback){
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.ASSET_EDITOR_LIBRARY + currentFolderPath + "?filterDisabledWidgets=yes&widgetId=" + widgetId,
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -163,14 +148,13 @@
      */
     function getAssetEditor(widgetId, assetFolderPath, callback)
     {
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.ASSET_EDITOR + "/" + widgetId + "?parentFolderPath=" + assetFolderPath,
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -220,7 +204,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -296,7 +280,7 @@
      */
     function set_asset_relationship( assetid, widgetData, pageid, assetOrder, isResource, folderPath, k, err ) {
          var resType = isResource?"shared":"local";
-         var relationshipId = (typeof(widgetData.relationshipId)!= "undefinded") ? widgetData.relationshipId : -1;
+         var relationshipId = (typeof(widgetData.relationshipId)!== "undefined") ? widgetData.relationshipId : -1;
          var awr = {
             "AssetWidgetRelationship":{
                 "ownerId":pageid,
@@ -335,22 +319,22 @@
         var url = $.perc_paths.ASSET_FROM_LOCALCONTENT + '/' + name + path;
         var awr = {
            'AssetWidgetRelationship' : {
-               'ownerId' : pageid
-               , 'widgetId' : widgetData.widgetid
-               , 'widgetName' : widgetData.widgetdefid
-               , 'widgetInstanceName' : widgetData.widgetName
-               , 'assetId' : assetid
-               , 'assetOrder' : '0'
-               , 'resourceType' : 'local'
+               'ownerId' : pageid,
+               'widgetId' : widgetData.widgetid,
+               'widgetName' : widgetData.widgetdefid,
+               'widgetInstanceName' : widgetData.widgetName,
+               'assetId' : assetid,
+               'assetOrder' : '0',
+               'resourceType' : 'local'
             }
         };
         
         $.PercServiceUtils.makeRequest(
-            url
-            , $.PercServiceUtils.TYPE_POST
-            , false
-            , function( status, result ) {
-                if ( status == $.PercServiceUtils.STATUS_SUCCESS )
+            url,
+            $.PercServiceUtils.TYPE_POST,
+            false,
+            function( status, result ) {
+                if ( status === $.PercServiceUtils.STATUS_SUCCESS )
                 {
                     callback( $.PercServiceUtils.STATUS_SUCCESS, result.data );
                 }
@@ -359,15 +343,15 @@
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage( result.request );
                     callback( $.PercServiceUtils.STATUS_ERROR, defaultMsg );
                 }
-            }
-            , awr
-            , "application/json"
-            , "text"
+            },
+            awr,
+            "application/json",
+            "text"
         );
     }
 
     function update_asset_relationship( assetid, relationshipId, widgetData, pageid, k, err) {
-        var replacedRelationshipId = (typeof(widgetData.relationshipId)!= "undefinded") ? widgetData.relationshipId : -1;
+        var replacedRelationshipId = (typeof(widgetData.relationshipId)!== "undefined") ? widgetData.relationshipId : -1;
         var awr = {
             "AssetWidgetRelationship":{
                 "ownerId":pageid,
@@ -384,13 +368,13 @@
          $.PercServiceUtils.makeJsonRequest($.perc_paths.ASSET_WIDGET_REL_UPDATE + "/", 
                 $.PercServiceUtils.TYPE_POST, true, function(status, results) 
          {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS) 
+            if (status === $.PercServiceUtils.STATUS_SUCCESS) 
             {
                 // the call returns the id of the relationship that was updated, or -1 if it does not find it
                 var relId = results.data;
-                if(relId == '-1' && err!=null)
+                if(relId === '-1' && err!=null)
                 {
-                    var msg = I18N.message("perc.ui.asset.service@Removed Asset")
+                    var msg = I18N.message("perc.ui.asset.service@Removed Asset");
                     err(false, msg);
                 }
                 else 
@@ -438,20 +422,20 @@
     function clear_orphan_assets(ownerId, widgetIds, widgetDefinitionIds, assetIds, callback ) {
 	callback = callback || function(){};
 	
-	var assets = []
+	var assets = [];
 	for (var i = 0; i < assetIds.length; i++)
 	{
-	    var asset =""
+	    var asset = "";
 	    asset = "{\"assetId\":" + "\"" + assetIds[i] + "\"," +
 			"\"assetOrder\":" + "0" + "," +
 			"\"ownerId\":" + "\"" + ownerId + "\"," +
 			"\"widgetId\":" + widgetIds[i] + "," +
-			"\"widgetName\":" + "\"" + widgetDefinitionIds[i] + "\"}"
-	    assets.push(asset)
+			"\"widgetName\":" + "\"" + widgetDefinitionIds[i] + "\"}";
+	    assets.push(asset);
 	}
 	
-	var json = "{\"OrphanAssetsSummary\":{\"assetWidgetRelationship\":["+ assets +"]}}"
-	var awr = $.parseJSON(json)
+	var json = "{\"OrphanAssetsSummary\":{\"assetWidgetRelationship\":["+ assets +"]}}";
+	var awr = $.parseJSON(json);
 	
 	$.ajax({
              url: $.perc_paths.ASSET_ORPHAN_WIDGET_REL_DEL + "/",
@@ -476,7 +460,7 @@
 	   var getUrl = $.perc_paths.ASSET_UPDATE + "/" + pageId + "/" + assetId;
        
        var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false,[results.request,results.textstatus,results.error]);
             }
@@ -484,7 +468,7 @@
             {
                 callback(true,results.data);
             }
-        }        
+        };
         $.PercServiceUtils.makeRequest(getUrl, $.PercServiceUtils.TYPE_POST, true, serviceCallback);
 
     }
@@ -519,7 +503,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS);
                 }
@@ -545,7 +529,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, $.perc_utils.convertCXFArray(result.data.UnusedAssetSummary));
                 }
@@ -564,8 +548,8 @@
      */
     function getAssetTypes(filterDisabledWidgets, callback){
         var url = $.perc_paths.ASSET_TYPES;
-        if(filterDisabledWidgets && filterDisabledWidgets=="yes"){
-            url += url.indexOf("?")==-1?"?filterDisabledWidgets=yes":"&filterDisabledWidgets=yes"
+        if(filterDisabledWidgets && filterDisabledWidgets === "yes"){
+            url += url.indexOf("?") === -1?"?filterDisabledWidgets=yes":"&filterDisabledWidgets=yes";
         }
         $.PercServiceUtils.makeJsonRequest(
             url,
@@ -573,7 +557,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, $.perc_utils.convertCXFArray(result.data.WidgetContentType));
                 }
