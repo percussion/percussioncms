@@ -1,0 +1,62 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Creating New Folders </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Folder_Properties_Dialog.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="20182.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Creating New Folders</h3>
+<p class="bodytext">If you have Admin permissions to a folder, you can create sub-folders. (Only your System Administrator has Write access to the main Folders and Sites nodes and can create new folders under these nodes.) When you create a folder, you are automatically assigned Admin permission for the folder, and other Security settings are inherited from its parent folder. </p>
+<p class="bodytext">To create a new folder:</p>
+<ol class="listnumber"><li class="listnumber">In the Menu Bar, choose <em class="emphasis">Content &gt; [folder name] &gt; New Folder.</em> <p class="listcontinue">OR</p>
+<p class="listcontinue">Right-click a Folder in the Navigation Tree pane and choose <em class="emphasis">New Folder</em> in the drop menu. </p>
+<p class="listcontinue">Rhythmyx opens the Folder Properties dialog.</p>
+</li><li class="listnumber">On the General tab:<ol class="listalpha2"><li class="listalpha2">In <strong class="specialbold">Folder Name</strong>, enter the name of the new folder.</li><li class="listalpha2">In <strong class="specialbold">Folder Community</strong>, choose the Community that has access to the folder.  To give all Communities access to the folder, choose <strong class="specialbold">All</strong>.</li><li class="listalpha2">Optionally, in <strong class="specialbold">Description</strong>, enter a description of the folder.</li><li class="listalpha2">In <strong class="specialbold">Locale</strong>, choose a Locale from the drop list.</li><li class="listalpha2">In <strong class="specialbold">Default Display Format</strong>, choose the default <a id="h6858" class="jumptemplate" title="Display Formats" href="Display_Formats.htm" target="_self">Display Format</a> in the drop list. </li><li class="listalpha2">If you want to use a Global Template other than the default Template for the Site when assembling Content Items in the Folder, choose it in the <strong class="specialbold">Global Template</strong> drop list.  Leave <em class="emphasis">Use Default</em> as the value if you want to use the Site Global Template for the Folder.</li><li class="listalpha2">If you want to flag the Folder for special Publishing processing, check the <strong class="specialbold">Publish Only in Special Edition</strong> checkbox.  For more details about special Edition processing, see &quot;Setting Up Mixed-mode Publishing&quot; in <em class="emphasis">Configuring FastForward for Web Content Management</em>.</li></ol></li><li class="listnumber">To change the folder's security settings:<ol class="listalpha2"><li class="listalpha2"> Click the Security tab.</li><li class="listalpha2">Optionally, choose entries in the <strong class="specialbold">Names </strong>list and modify the Permissions checked for the entries.</li><li class="listalpha2">Optionally, choose [<strong class="buttons">Add</strong>] to access the <a id="h7843" class="jumptemplate" title="Adding Folder ACL List Entries" href="Adding_Folder_ACL_List_Entries.htm" target="_self">Folder ACL List Entry Editor</a> and add additional entries in the <strong class="specialbold">Names </strong>list.</li><li class="listalpha2">Optionally, select entries in the <strong class="specialbold">Names </strong>list and choose [<strong class="buttons">Remove</strong>] to remove their access to the folder.</li></ol></li><li class="listnumber">To add a property:<ol class="listalpha2"><li class="listalpha2">Click the Properties tab.</li><li class="listalpha2">Enter the <strong class="specialbold">Name </strong>and <strong class="specialbold">Value </strong>for the Property.  If you want the name of the Folder on the Site to be different from the name of the Folder in Rhythmyx, click in the <strong class="specialbold">Name </strong>cell and in the drop list choose <em class="emphasis">sys_pubFileName</em>. In <strong class="specialbold">Value,</strong> enter the name that you want the Folder to have on the Site. NOTE:  Do not add properties unless directed by your system administrator.</li></ol></li><li class="listnumber">Click [<strong class="buttons">OK</strong>].<p class="listcontinue">Rhythmyx closes the dialog and displays the new folder under the selected folder in the Navigation Tree.</p>
+<p class="listcontinue">If you open the new folder, you will see that a Navon content item with the same name as the folder is automatically created in it.  Navon's are used to create page navigation and only users in Admin Roles can modify them.</p>
+</li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Working_with_Folders.htm" target="_self">Working with Folders</a></p><p class="relateditem"><a href="Folder_Properties_Dialog.htm" target="_self">Folder Properties Dialog</a></p><p class="relateditem"><a href="20182.htm" target="_self">Modifying Navigation in Folders</a></p><p class="relateditem"><a href="18674.htm" target="_self">Creating a Test Site</a></p><p class="relateditem"><a href="Adding_Folder_ACL_List_Entries.htm" target="_self">Adding Folder ACL List Entries</a></p><p class="relateditem"><a href="Editing_and_Viewing_Folders.htm" target="_self">Editing and Viewing Folders</a></p><p class="relateditem"><a href="Adding_Content_To_Folders.htm" target="_self">Adding Content To Folders</a></p><p class="relateditem"><a href="Arranging_Content_in_a_Folder.htm" target="_self">Arranging Content in a Folder</a></p><p class="relateditem"><a href="Removing_Content_from_a_Folder.htm" target="_self">Removing Content from a Folder</a></p><p class="relateditem"><a href="Acting_on_Content_in_a_Folder.htm" target="_self">Acting on Content in a Folder</a></p><p class="relateditem"><a href="Deleting_a_Folder.htm" target="_self">Deleting a Folder</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

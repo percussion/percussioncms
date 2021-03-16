@@ -1,0 +1,78 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Advanced Example </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Repeated Fields	Input Element Example">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Basic_Input_and_Text_Area_Rule.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Nested_Input_and_Text_Area_Rule.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h6 class="heading6">Advanced Example</h6>
+<p class="bodytext">In this example, we have the fields <code class="monospace">psx-product/name</code> and <code class="monospace">psx-product/number</code> in the following code:</p>
+<p class="codeexample">&lt;form method=&quot;POST&quot;&gt;<br>  &lt;font size=&quot;2&quot;&gt;Choose a product:&lt;br&gt;&lt;/font&gt;<br>  &lt;table&gt;<br>    &lt;tr&gt;<br>      &lt;td&gt;&lt;input type=&quot;radio&quot; name=&quot;R1&quot; size=&quot;20&quot; value=&quot;none&quot; checked&gt;none&lt;td&gt;<br>    &lt;/tr&gt;<br>    &lt;tr&gt;<br>      &lt;td&gt;<br>        &lt;input type=&quot;radio&quot; name=&quot;R1&quot; value=&quot;psx-product/number&quot;/&gt;<br>        &lt;span&gt;psx-product/name&lt;/span&gt;   (&lt;span&gt;psx-product/number&lt;/span&gt;)<br>      &lt;/td&gt;<br>    &lt;/tr&gt;<br>  &lt;/table&gt;<br>&lt;/form&gt;</p>
+<p class="bodytext">The Input element repeats once per <code class="monospace">product</code>, the first shared node. The value of the <code class="monospace">value</code> attribute will be the value of the <code class="monospace">products/product/number</code> field. Since the Input field is enclosed in a table cell, all surrounding text and tags (including the two repeating fields <code class="monospace">product/name</code> and <code class="monospace">product/number</code>) are repeated as each Input element is repeated.</p>
+<p class="bodytext">Since the text block includes both static text and dynamic fields, each dynamic field must also be enclosed by their own SPAN tags. See the <a id="h713" class="jumptemplate" title="Exposed Syntax" href="Exposed_Syntax.htm" target="_self">Exposed syntax</a> rules for dynamic fields.</p>
+<p class="bodytext">At design time, the output would look like this:</p>
+<p class="widegraphic">&nbsp;<img src="13-d.gif" alt="" height="69" width="231" vspace="0" hspace="0" align="bottom" border="0"></p>
+<p class="bodytext">At run time, the output would look like this:</p>
+<table width="436" cellpadding="2" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr align="left" valign="top">
+<td width="240"><p class="bodytext">Content: XML</p>
+</td>
+<td width="196"><p class="bodytext">Output:HTML</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="240"><p class="bodytext"><code class="monospace">&lt;products&gt;<br>  &lt;product&gt;<br>    &lt;name&gt;Widget&lt;/name&gt;<br>    &lt;number&gt;1234&lt;/number&gt;<br>  &lt;/product&gt;<br>  &lt;product&gt;<br>    &lt;name&gt;Gadget&lt;/name&gt;<br>    &lt;number&gt;1111&lt;/number&gt;<br>  &lt;/product&gt;<br>  &lt;product&gt;<br>    &lt;name&gt;Gizmo&lt;/name&gt;<br>    &lt;number&gt;2222&lt;/number&gt;<br>  &lt;/product&gt;<br>&lt;/products&gt;</code></p>
+</td>
+<td width="196"><p class="bodytext"><img src="z13-1.gif" alt="" height="100" width="127" vspace="2" hspace="2" align="bottom" border="0"></p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Input_and_TextArea_Elements.htm" target="_self">Input and TextArea Elements</a></p><p class="relateditem"><a href="Basic_Input_and_Text_Area_Rule.htm" target="_self">Basic Input and Text Area Rule</a></p><p class="relateditem"><a href="Nested_Input_and_Text_Area_Rule.htm" target="_self">Nested Input and Text Area Rule</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

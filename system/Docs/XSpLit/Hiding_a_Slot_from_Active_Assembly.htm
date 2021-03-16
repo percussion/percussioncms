@@ -1,0 +1,63 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Hiding a Slot from Active Assembly </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Disabling Active Assembly, psxeditslot, Slots	Disabling Active Assembly">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Adding_Parameters_to_a_Slot_Definition.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Hiding a Slot from Active Assembly</h2>
+<p class="bodytext">Rhythmyx automatically generates the content for some Slots, such as banners, navigation bars, and automated indices. &nbsp;Because the user does not define the content for these Slots, they are not eligible for Active Assembly. To disable Active Assembly for the Slot, add the <code class="monospace">psxeditslot=&quot;no&quot;</code> attribute to the Slot definition. &nbsp;The <code class="monospace">psxeditslot</code> attribute can also take the value <code class="monospace">&quot;yes&quot;</code>, which enables active assembly in the Slot, but this is unnecessary. &nbsp;Instead, omit the attribute, which enables Active Assembly by default. &nbsp;</p>
+<p class="bodytext">For example:</p>
+<p class="codeexample">&lt;span id=&quot;psx-hotarticles&quot; slotname=&quot;Hot Articles&quot; psxeditslot=&quot;no&quot;&gt;Hot Articles here &lt;/span&gt;</p>
+<p class="bodytext">This markup produces the following XSL:</p>
+<p class="codeexample">&lt;xsl:variable name=&quot;rxslot-6&quot;&gt;</p>
+<p class="codeexample">	&lt;rxslot template=&quot;Hot Articles&quot; psxeditslot =&quot;no&quot;&gt;</p>
+<p class="codeexample">		&lt;xsl:copy-of select=&quot;$related/linkurl[@slotname=&amp;apos;Hot Articles&amp;apos;]&quot;/&gt;&lt;/rxslot&gt;</p>
+<p class="codeexample">&lt;/xsl:variable&gt;</p>
+<p class="codeexample">&lt;xsl:apply-templates select=&quot;$rxslot-6&quot; mode=&quot;rxslot&quot;/&gt;</p>
+<p class="bodytext">This Slot would not be eligible for Active Assembly.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Splitting_Slots.htm" target="_self">Splitting Slots</a></p><p class="relateditem"><a href="Setting_the_Related_Content_Variable.htm" target="_self">Setting the Related Content Variable</a></p><p class="relateditem"><a href="Related_Content_Definition.htm" target="_self">Related Content Definition</a></p><p class="relateditem"><a href="Slot_Formatting.htm" target="_self">Slot Formatting</a></p><p class="relateditem"><a href="Adding_Parameters_to_a_Slot_Definition.htm" target="_self">Adding Parameters to a Slot Definition</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,120 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Maintaining Driver Definitions </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="14145.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="14155.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Maintaining Driver Definitions</h3>
+<p class="bodytext">Driver configurations are required to allow data sources to connect to the RDBMS.  Rhythmyx ships with a pre-defined set of driver definitions:</p>
+<table width="591" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="96"><p class="tableheading">Driver</p>
+</th>
+<th style = "border:1px solid #010101;" width="192"><p class="tableheading">Class</p>
+</th>
+<th style = "border:1px solid #010101;" width="192"><p class="tableheading">Container Type Mapping</p>
+</th>
+<th style = "border:1px solid #010101;" width="111"><p class="tableheading">Database Dialect</p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="96"><p class="tablebodytext">jtds:sqlserver</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">net.sourceforge.jtds.jdbc.driver</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">MS SQLSERVER 200</p>
+</td>
+<td style = "border:1px solid #010101;" width="111"><p class="tablebodytext">SQL Server</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="96"><p class="tablebodytext">Oracle:thin</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">oracle.jdbc.OracleDriver</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Oracle8</p>
+</td>
+<td style = "border:1px solid #010101;" width="111"><p class="tablebodytext">Oracle</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="96"><p class="tablebodytext">DB2</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">com.ibm.db2.jdbc.app.DB2Driver</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">DB2</p>
+</td>
+<td style = "border:1px solid #010101;" width="111"><p class="tablebodytext">DB2</p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext">Ordinarily, you should not need to modify these definitions.  You might need to modify a configuration if you are upgrading your RDBMS.  </p>
+<p class="widegraphic"><img src="sa_datasourcesdriverstab.gif" alt="Datasource Drivers Tab" height="437" width="584" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">Use the <a id="h14157" class="jumptemplate" title="Driver Configuration Dialog" href="14155.htm" target="_self">Driver Configuration dialog</a> to define new definitions and edit existing definitions.</p>
+<p class="bodytext">You can <a id="h14158" class="jumptemplate" title="Adding a Database Driver Definition" href="14152.htm" target="_self">add new Driver definitions</a> or <a id="h14159" class="jumptemplate" title="Editing a Database Driver Definition" href="14153.htm" target="_self">edit existing definitions</a>.</p>
+<p class="bodytext">To delete a driver definition, select the definition you want to delete and click the [<strong class="buttons">Delete</strong>] button.  Be sure you are not using the driver definition before deleting it.  Rhythmyx cannot validate that a specific definition is in use in your system.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">In This Section</p><p class="relateditem"><a href="14155.htm" target="_self">Driver Configuration Dialog</a></p><p class="relateditem"><a href="14152.htm" target="_self">Adding a Database Driver Definition</a></p><p class="relateditem"><a href="14153.htm" target="_self">Editing a Database Driver Definition</a></p></td>
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="14145.htm" target="_self">Maintaining Datasources</a></p><p class="relateditem"><a href="14147.htm" target="_self">Maintaining JNDI Datasource Configurations</a></p><p class="relateditem"><a href="14148.htm" target="_self">Maintaining Connection Configurations</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

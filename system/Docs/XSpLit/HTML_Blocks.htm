@@ -1,0 +1,79 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> HTML Blocks </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="HTML	Blocks, no-escaping">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Using_Exposed_and_Hidden_Syntax_Together.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Dynamic_HTML.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h4 class="heading4">HTML Blocks</h4>
+<p class="bodytext">Common practice is to compose HTML pages of different blocks of islands of reusable text. For example, a header or copyright information might be the same across and entire site, and would be stored as blocks of HTML code called by each page. This HTML code will contain special characters or entities, such as &quot;&amp;amp&quot; for an ampersand or &quot;&amp;lt&quot; for a less-than sign. By default, the XSL processor does not resolve these entities. When processing HTML blocks, however, it should resolve them.</p>
+<p class="bodytext">To tell the XSL processor to resolve HTML blocks correctly, XSpLit uses the special attribute <code class="monospace"><br>no-escaping=&quot;yes&quot;</code>. </p>
+<p class="bodytext">XSpLit produces XSL with a default template that disables output escaping when the <code class="monospace">no-escaping</code> attribute is set to <code class="monospace">&quot;yes&quot;</code>. Disabling output escaping enables the XSLT to resolve the special characters and entities used in HTML code.</p>
+<p class="codeexample">&nbsp;&lt;xsl:template match=&quot;*&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&lt;xsl:choose&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;xsl:when test=&quot;text()&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;xsl:choose&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong class="specialbold">&lt;xsl:when test=&quot;@no-escaping&quot;&gt;</strong></p>
+<p class="codeexample"><strong class="specialbold">&lt;xsl:value-of select=&quot;.&quot; disable-output-escaping=&quot;yes&quot;/&gt;</strong></p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/xsl:when&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;xsl:otherwise&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;xsl:value-of select=&quot;.&quot;/&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/xsl:otherwise&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/xsl:choose&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/xsl:when&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;xsl:otherwise&gt;&amp;nbsp;&lt;/xsl:otherwise&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&lt;/xsl:choose&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&lt;xsl:if test=&quot;not(position()=last())&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;br/&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&lt;/xsl:if&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&lt;/xsl:template&gt;</p>
+<p class="bodytext">To add the <code class="monospace">no-escaping</code> attribute:</p>
+<ol class="listnumber"><li class="listnumber">Open the application in the Workbench and view the XML resource properties.</li><li class="listnumber">Open the mapper.</li><li class="listnumber">In the XML column, add an additional entry for the attribute (fieldname/@no-escaping). &nbsp;</li><li class="listnumber">In the Back-end column map the field to a Literal set to <code class="monospace">yes</code>.<p class="widegraphic"><img src="noescapeattrib.gif" alt="" height="78" width="501" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li></ol><p class="bodytext">&nbsp;</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Exposed_and_Hidden_Syntax.htm" target="_self">Exposed and Hidden Syntax</a></p><p class="relateditem"><a href="Exposed_Syntax.htm" target="_self">Exposed Syntax</a></p><p class="relateditem"><a href="Hidden_Syntax.htm" target="_self">Hidden Syntax</a></p><p class="relateditem"><a href="Using_Exposed_and_Hidden_Syntax_Together.htm" target="_self">Using Exposed and Hidden Syntax Together</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+
