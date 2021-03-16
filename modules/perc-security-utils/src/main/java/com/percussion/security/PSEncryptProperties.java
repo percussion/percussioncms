@@ -23,17 +23,12 @@
  */
 package com.percussion.security;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.commons.io.IOUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Collection;
 import java.util.Properties;
 
@@ -87,7 +82,7 @@ public class PSEncryptProperties {
             return;
         }
         if (!propsFile.exists() || !propsFile.isFile()) {
-            log.error("The properties file " + propsFile.getAbsolutePath() + " does not exist.");
+            log.error("The properties file {}  does not exist." , propsFile.getAbsolutePath());
             return;
         }
 
