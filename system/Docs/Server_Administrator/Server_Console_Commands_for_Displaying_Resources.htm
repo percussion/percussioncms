@@ -1,0 +1,130 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Server Console Commands for Displaying Resources </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Database Pools	Displaying, Handlers	Displaying, Request Dispatchers	Displaying, Request Queue	Displaying, Server Console Commands	for Displaying Resources">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Server_Console_Commands_for_Applications.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Server_Console_Commands_for_Flushing_the_Server_and_MetaData_Caches.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h5 class="heading5">Server Console Commands for Displaying Resources</h5>
+<table width="742" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="138"><p class="tableheading">To . . . </p>
+</th>
+<th style = "border:1px solid #010101;" width="252"><p class="tableheading">Enter the command . . . </p>
+</th>
+<th style = "border:1px solid #010101;" width="352"><p class="tableheading">Notes</p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Display information on various system resources</p>
+</td>
+<td style = "border:1px solid #010101;" width="252"><p class="tablebodytext"><code class="monospace">dump resources</code></p>
+</td>
+<td style = "border:1px solid #010101;" width="352"><p class="tablebodytext">Displays database pool, user thread, request queue, user session, request dispatcher, and cache statistic information.</p>
+<p class="tablebodytext">Example:</p>
+<p class="tablebodytext"><code class="monospace">dump resources</code></p>
+<p class="tablebodytext"><code class="monospace">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">   &lt;command&gt;dump resources &lt;/command&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">     &lt;ReaperThread isAlive=&quot;yes&quot;/&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">     &lt;DefaultCredentials&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">         &lt;Credential server=&quot;INETDAE7/JENNIFER&quot;&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">            &lt;User name=&quot;sa&quot; password=&quot;****&quot;/&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">         &lt;/Credential&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">     &lt;/DefaultCredentials&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">     &lt;InstalledDrivers&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">	.	</code></p>
+<p class="tablebodytext"><code class="monospace">	.	</code></p>
+<p class="tablebodytext"><code class="monospace">	.</code></p>
+<p class="tablebodytext"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Display summaries of datasource information </p>
+</td>
+<td style = "border:1px solid #010101;" width="252"><p class="tablebodytext"><code class="monospace">dump datasources</code></p>
+</td>
+<td style = "border:1px solid #010101;" width="352"><p class="tablebodytext">Example:</p>
+<p class="tablebodytext"><code class="monospace">dump datasource</code></p>
+<p class="tablebodytext"><code class="monospace">&lt;datasources&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">  &lt;datasource name=&quot;rxdefault&quot; isCmsRepository=&quot;yes&quot;&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">    &lt;jndiDatasourceName&gt;jdbc/rxdefault</code></p>
+<p class="tablebodytext"><code class="monospace">     &lt;/jndiDatasourceName&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">    &lt;jdbcUrl&gt;jdbc:jtds:sqlserver://bender</code></p>
+<p class="tablebodytext"><code class="monospace">     &lt;/jdbcUrl&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">    &lt;database&gt;rxRhino&lt;/database&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">    &lt;schema&gt;dbo&lt;/schema&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">  &lt;/datasource&gt;  </code></p>
+<p class="tablebodytext"><code class="monospace">&lt;/datasources&gt;</code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Display information about all handlers</p>
+</td>
+<td style = "border:1px solid #010101;" width="252"><p class="tablebodytext"><code class="monospace">dump handlers</code></p>
+</td>
+<td style = "border:1px solid #010101;" width="352"><p class="tablebodytext">Example:</p>
+<p class="tablebodytext"><code class="monospace">dump handlers</code></p>
+<p class="tablebodytext"><code class="monospace">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">   &lt;command&gt;dump handlers &lt;/command&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">   &lt;RequestHandlers size=&quot;266&quot;&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">      &lt;Handlers&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">         &lt;Handler name=&quot;data-xrd_cassyndarticles&quot; class=&quot;com.percussion.server.PSApplicationHandler&quot;&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">            &lt;SupportedTypes&gt;[POST, GET]&lt;/SupportedTypes&gt;</code></p>
+<p class="tablebodytext"><code class="monospace">	.</code></p>
+<p class="tablebodytext"><code class="monospace">	.</code></p>
+<p class="tablebodytext"><code class="monospace">	.</code></p>
+<p class="tablebodytext"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></p>
+</td>
+</tr>
+
+</table>
+<p class="tablebodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Server_Console_Commands_by_Function.htm" target="_self">Server Console Commands by Function</a></p><p class="relateditem"><a href="General_Server_Console_Commands.htm" target="_self">General Server Console Commands</a></p><p class="relateditem"><a href="Server_Console_Commands_for_Applications.htm" target="_self">Server Console Commands for Applications</a></p><p class="relateditem"><a href="Server_Console_Commands_for_Flushing_the_Server_and_MetaData_Caches.htm" target="_self">Server Console Commands for Flushing the Server and MetaData Caches</a></p><p class="relateditem"><a href="17922.htm" target="_self">Server Console Commands for Search</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

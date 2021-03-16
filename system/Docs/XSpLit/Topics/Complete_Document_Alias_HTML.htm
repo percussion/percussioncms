@@ -1,0 +1,124 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Complete Document Alias HTML </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Alias	Example HTML">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Using_Document_Aliases.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Splitting_Slots.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h4 class="heading4">Complete Document Alias HTML</h4>
+<p class="bodytext">The following is the complete HTML code to create the example of working with multiple content contexts:</p>
+<p class="codeexample">&lt;table border=&quot;1&quot; width=&quot;60%&quot;&gt;</p>
+<p class="codeexample">  &lt;tr bgcolor=&quot;lightgrey&quot;&gt;</p>
+<p class="codeexample">    &lt;th&gt;Product&lt;/th&gt;</p>
+<p class="codeexample">    &lt;th&gt;Select Your Favorite Features&lt;/th&gt;</p>
+<p class="codeexample">    &lt;th&gt;Comment&lt;/th&gt;</p>
+<p class="codeexample">  &lt;/tr&gt;</p>
+<p class="codeexample">  &lt;tr&gt;</p>
+<p class="codeexample">    &lt;!-- Main context is widget's --&gt;</p>
+<p class="codeexample">    &lt;td&gt;psx-product/name&lt;/td&gt;</p>
+<p class="codeexample">    &lt;td&gt;</p>
+<p class="codeexample">      &lt;form method=&quot;POST&quot;&gt;</p>
+<p class="codeexample">        &lt;table&gt;</p>
+<p class="codeexample">          &lt;tr&gt;</p>
+<p class="codeexample">            &lt;td&gt;</p>
+<p class="codeexample">              &lt;input type=&quot;checkbox&quot; id=&quot;1&quot; name=&quot;widget&quot;&gt;psx-product/feature</p>
+<p class="codeexample">            &lt;/td&gt;</p>
+<p class="codeexample">          &lt;/tr&gt;</p>
+<p class="codeexample">        &lt;/table&gt;</p>
+<p class="codeexample">      &lt;/form&gt;</p>
+<p class="codeexample">    &lt;/td&gt;</p>
+<p class="codeexample">    &lt;td&gt;</p>
+<p class="codeexample">      &lt;form method=&quot;POST&quot;&gt;</p>
+<p class="codeexample">        &lt;textarea rows=&quot;2&quot; name=&quot;S1&quot; cols=&quot;20&quot;&gt;psx-product/comment&lt;/textarea&gt;</p>
+<p class="codeexample">      &lt;/form&gt;</p>
+<p class="codeexample">    &lt;/td&gt;</p>
+<p class="codeexample">  &lt;/tr&gt;</p>
+<p class="codeexample">  &lt;tr&gt;</p>
+<p class="codeexample">    &lt;!-- psx-docalias=&quot;gadgets&quot; psx-docref=&quot;gadgets.xml&quot; --&gt;</p>
+<p class="codeexample">    &lt;td&gt;psx-/gadgets/product/name&lt;/td&gt;</p>
+<p class="codeexample">    &lt;td&gt;</p>
+<p class="codeexample">      &lt;form method=&quot;POST&quot; id=form1 name=form1&gt;</p>
+<p class="codeexample">        &lt;table&gt;</p>
+<p class="codeexample">          &lt;tr&gt;</p>
+<p class="codeexample">            &lt;td&gt;</p>
+<p class="codeexample">              &lt;input type=&quot;checkbox&quot; id=&quot;2&quot; name=&quot;gadget&quot;&gt;psx-/gadgets/product/feature</p>
+<p class="codeexample">            &lt;/td&gt;</p>
+<p class="codeexample">          &lt;/tr&gt;</p>
+<p class="codeexample">        &lt;/table&gt;</p>
+<p class="codeexample">      &lt;/form&gt;</p>
+<p class="codeexample">    &lt;/td&gt;</p>
+<p class="codeexample">    &lt;td&gt;</p>
+<p class="codeexample">      &lt;form method=&quot;POST&quot; id=form2 name=form2&gt;</p>
+<p class="codeexample">        &lt;textarea rows=&quot;2&quot; name=&quot;S1&quot; cols=&quot;20&quot;&gt;psx-/gadgets/product/comment&lt;/textarea&gt;</p>
+<p class="codeexample">      &lt;/form&gt;</p>
+<p class="codeexample">    &lt;/td&gt;</p>
+<p class="codeexample">  &lt;/tr&gt;</p>
+<p class="codeexample">  &lt;tr&gt;</p>
+<p class="codeexample">  &lt;!-- psx-docalias=&quot;gizmos&quot; psx-docref=&quot;gizmo/gizmos.xml&quot; --&gt;</p>
+<p class="codeexample">    &lt;td&gt;psx-/gizmos/product/name&lt;/td&gt;</p>
+<p class="codeexample">    &lt;td&gt;</p>
+<p class="codeexample">      &lt;form method=&quot;POST&quot; id=form3 name=form3&gt;</p>
+<p class="codeexample">        &lt;table&gt;</p>
+<p class="codeexample">          &lt;tr&gt;</p>
+<p class="codeexample">            &lt;td&gt;</p>
+<p class="codeexample">              &lt;input type=&quot;checkbox&quot; id=&quot;2&quot; name=&quot;gizmo&quot;&gt;psx-/gizmos/product/feature</p>
+<p class="codeexample">            &lt;/td&gt;</p>
+<p class="codeexample">          &lt;/tr&gt;</p>
+<p class="codeexample">        &lt;/table&gt;</p>
+<p class="codeexample">      &lt;/form&gt;</p>
+<p class="codeexample">    &lt;/td&gt;</p>
+<p class="codeexample">    &lt;td&gt;</p>
+<p class="codeexample">      &lt;form method=&quot;POST&quot; id=form4 name=form4&gt;</p>
+<p class="codeexample">        &lt;textarea rows=&quot;2&quot; name=&quot;S1&quot; cols=&quot;20&quot;&gt;psx-/gizmos/product/comment&lt;/textarea&gt;</p>
+<p class="codeexample">      &lt;/form&gt;</p>
+<p class="codeexample">    &lt;/td&gt;</p>
+<p class="codeexample">  &lt;/tr&gt;</p>
+<p class="codeexample">&lt;/table&gt;</p>
+<p class="bodytext">&nbsp;</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Working_with_Multiple_Contexts.htm" target="_self">Working with Multiple Contexts</a></p><p class="relateditem"><a href="Defining_a_Document_Alias.htm" target="_self">Defining a Document Alias</a></p><p class="relateditem"><a href="Using_Document_Aliases.htm" target="_self">Using Document Aliases</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

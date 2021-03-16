@@ -1,0 +1,70 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Configuring the Java Plugin Version for Content Explorer </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Configuring Version, Java Plugin	Configuring Version, Rhythmyx Server	Windows Environment	Configuring Version, Security	Security Providers	Configuring Version, Security	Security Providers	DBMS Table	Configuring Version, Server Administrator	Configuring Version">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Server_Console_Commands_in_Alphabetical_Order.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Adding_a_Java_Plugin_Configuration.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Configuring the Java Plugin Version for Content Explorer</h2>
+<p class="bodytext">Content Explorer requires a Java plugin, which must be downloaded to the client when the user browser initiates the Content Explorer applet.  The user must be able to connect to a location to download a Java plugin when starting Content Explorer for the first time.  </p>
+<p class="bodytext">The Java plugin does not work consistently across operating systems and web browsers.  Different versions of the plugin exhibit different behavior on various combinations.  To help you address this problem, you can specify the version of the Java plugin you want your users to use for specific combinations of operating system and browser.</p>
+<p class="bodytext">You can define the type of Versioning to use when specifying the plugin.  Options are:</p>
+<ul class="listbullet"><li class="listbullet">Static Versioning</li></ul><p class="list2">Choose this option if you want to force all user to use exactly the plugin version you specify.  If a user has a higher version of the plugin, it will be downgraded to the specified version.</p>
+<ul class="listbullet"><li class="listbullet">Dynamic</li></ul><p class="list2">Choose this option if you want to allow your users to use higher versions of the plugin than the one you specify.  </p>
+<p class="bodytext">Use the Content Explorer Tab of the Rhythmyx Server Administrator to specify the Java Plugin versions.</p>
+<p class="widegraphic"><img src="sa_extensionscetab_60.gif" alt="SvrAdm_ContentExplorerTab" height="489" width="561" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="subheading">Columns</p>
+<p class="bodytext"><strong class="specialbold"><strong class="specialbold">Client OS</strong></strong>  Defines the Rhythmyx client operating system for the Java plugin configuration.  Options are the following:</p>
+<ul class="listbullet"><li class="listbullet">Any (use this Java plugin with any operating system)</li><li class="listbullet">Windows NT</li><li class="listbullet">Windows 2000</li><li class="listbullet">Windows XP</li><li class="listbullet">Mac OS X</li></ul><p class="bodytext"><strong class="specialbold"><strong class="specialbold">Browser  </strong></strong>Defines the browser for the Java plugin configuration.  Options are the following:</p>
+<ul class="listbullet"><li class="listbullet">Any (use this Java plugin with any browser)I</li><li class="listbullet">Internet Explorer 5.0 (IE 5.0)</li><li class="listbullet">Internet Explorer 5.5 (IE 5.5)</li><li class="listbullet">Internet Explorer 6.0 (IE 6.0)</li><li class="listbullet">Netscape 4.79 (NS 4.79)</li><li class="listbullet">Netscape 7.0 (NS 7.0)</li><li class="listbullet">Firefox 1.0</li><li class="listbullet">Safari</li></ul><p class="bodytext"><strong class="specialbold"><strong class="specialbold">Plug-in Version</strong></strong>  The Java plugin Version for the specification.  When you double-click in this field, Rhythmyx displays a drop list showing the known and currently supported versions of the plugin.  You can also manually enter a version for the plugin.</p>
+<p class="bodytext"><strong class="specialbold"><strong class="specialbold">Versioning</strong></strong>  Drop list specifying the type of plugin Versioning used for the Java plugin configuration.  Details about these options are described above.</p>
+<p class="bodytext"><strong class="specialbold"><strong class="specialbold">Plugin Location</strong></strong>  The location of the plugin cab file.  When you double-click in this field, Rhythmyx displays a drop list showing the currently known and supported locations for downloading the plugin.  You can also manually specify a Rhythmyx location, such as<code class="monospace"> ../rx_resources/Plugin/j2re-1_4_1_03-windows-i586.exe.</code>  Be sure the plugin version at this location matches the <strong class="specialbold">Plug-in Version</strong> you specify.  The user must be able to access this location to download and install the Java plugin.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">In This Section</p><p class="relateditem"><a href="Adding_a_Java_Plugin_Configuration.htm" target="_self">Adding a Java Plugin Configuration</a></p><p class="relateditem"><a href="Editing_and_Deleting_Plugin_Configurations.htm" target="_self">Editing and Deleting Plugin Configurations</a></p></td>
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Rhythmyx_Server_Administrator.htm" target="_self">Rhythmyx Server Administrator</a></p><p class="relateditem"><a href="How_to_Access_the_Server_Administrator.htm" target="_self">How to Access the Server Administrator</a></p><p class="relateditem"><a href="Managing_Applications_and_Servers.htm" target="_self">Managing Applications and Servers</a></p><p class="relateditem"><a href="Optimizing_Performance.htm" target="_self">Optimizing performance</a></p><p class="relateditem"><a href="14145.htm" target="_self">Maintaining Datasources</a></p><p class="relateditem"><a href="Setting_logging.htm" target="_self">Setting Logging</a></p><p class="relateditem"><a href="12631.htm" target="_self">Using Directory Services</a></p><p class="relateditem"><a href="About_Security.htm" target="_self">About Security</a></p><p class="relateditem"><a href="17889.htm" target="_self">Search Configuration</a></p><p class="relateditem"><a href="Interfacing_by_remote_console.htm" target="_self">Interfacing by remote console</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

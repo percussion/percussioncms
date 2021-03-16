@@ -1,0 +1,66 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Operating Rhythmyx Server in a UNIX Environment </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Daemon	Rhythmyx, Rhythmyx Server	UNIX Environment	Running">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Changing_Rhythmyx_Server_Settings_in_Windows_NT.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Starting_Rhythmyx_Server_in_a_Unix_Environment.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Operating Rhythmyx Server in a UNIX Environment</h2>
+<p class="bodytext">Operating Rhythmyx in a Unix environment requires as user to install and Rhythmyx. You must create a unique run user for each instance of the Rhythmyx server that you operate.</p>
+<p class="bodytext">When you install Rhythmyx , the installer creates the file rx_user.id. This file has three entries:</p>
+<p class="codeexample">SYSTEM_USER_ID=</p>
+<p class="codeexample">RHYTHMYX_USER_ID=admin1</p>
+<p class="codeexample">RHYTHMYX_USER_PWD=demo</p>
+<p class="bodytext">The value of SYSTEM_USER_ID is set during installation. Do not change this value.</p>
+<p class="bodytext">The values of RHYTHMYX_USER_ID and RHYTHMYX_USER_PWD define the user that can shut down the Rhythmyx server. Rhythmyx uses this user as part of the shut-down process. If you change the password of the admin1 user, you will need to modify the value of the RHYTHMYX_USER_PWD to match the new password. If you delete the admin1 user, you must enter a valid Rhythmyx username and password. Note that this is a user within the Rhythmyx system, not the Rhythmyx user for Unix, and this user must be in a Role that has Administrative access to the server ACL.</p>
+<p class="bodytext">Other than these modifications, do not modify this file. In particular, to not change the permissions on the file.</p>
+<p class="bodytext">The post-installation process determines whether Rhythmyx runs as a daemon or as a console. If you choose to install Rhythmyx as a daemon, the <code class="monospace">InstallDaemon.sh</code> application creates <code class="monospace">S15RhythmyxD</code> and <code class="monospace">K15RhythmyxD</code> files in the<code class="monospace"> /etc/rc2.d</code> directory. The daemon thus starts automatically when you start your system. The daemon is controlled by a script located in <code class="monospace">/etc/rc2.d</code>.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">In This Section</p><p class="relateditem"><a href="Starting_Rhythmyx_Server_in_a_Unix_Environment.htm" target="_self">Starting Rhythmyx Server as a Daemon in a UNIX Environment</a></p><p class="relateditem"><a href="Starting_the_Rhythmyx_Server_as_a_Console_in_a_Unix_Environment.htm" target="_self">Starting the Rhythmyx Server as a Console in a Unix Environment</a></p><p class="relateditem"><a href="Stopping_Rhythmyx_Server_in_a_Unix_Environment_When_Running_as_a.htm" target="_self">Stopping Rhythmyx Server in a Unix Environment When Running as a Console</a></p><p class="relateditem"><a href="Uninstalling_the_Rhythmyx_Daemon_Control_Scripts.htm" target="_self">Uninstalling the Rhythmyx Daemon Control Scripts</a></p></td>
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Operating_Rhythmyx_Servers.htm" target="_self">Operating Rhythmyx Servers</a></p><p class="relateditem"><a href="Operating_Rhythmyx_Server_in_a_Windows_Environment.htm" target="_self">Operating Rhythmyx Server in a Windows Environment</a></p><p class="relateditem"><a href="Stopping_Rhythmyx_Server_in_a_UNIX_Environment.htm" target="_self">Stopping Rhythmyx Server as a Daemon in a UNIX Environment</a></p><p class="relateditem"><a href="Enabling_and_Disabling_the_Pause_Option.htm" target="_self">Enabling and Disabling the Pause Option</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+
