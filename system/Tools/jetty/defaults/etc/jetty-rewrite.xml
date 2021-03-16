@@ -80,7 +80,24 @@
                     </New>
                 </Arg>
             </Call>
-
+            <!-- Redirect Docs -->
+            <Call name="addRule">
+                <Arg>
+                    <New class="org.eclipse.jetty.rewrite.handler.RewriteRegexRule">
+                        <Set name="regex">^/Rhythmyx/Docs/Rhythmyx/(.*)$</Set>
+                        <Set name="replacement">/Docs/$1</Set>
+                    </New>
+                </Arg>
+            </Call>
+            <!-- DCE Header -->
+            <Call name="addRule">
+                <Arg>
+                    <New class="org.eclipse.jetty.rewrite.handler.RewriteRegexRule">
+                        <Set name="regex">^/Rhythmyx/dce_header.jsp</Set>
+                        <Set name="replacement">/dce_header.jsp</Set>
+                    </New>
+                </Arg>
+            </Call>
 
         </New>
     </Set>
