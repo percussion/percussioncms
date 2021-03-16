@@ -243,6 +243,26 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/modules/perc-distribution-tree/src/main/resources/distribution/rxconfig/Installer/data/cmsTableDef.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/perc-security-utils/src/main/java/com/percussion/security/PSEncryptProperties.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/perc-security-utils/src/main/java/com/percussion/security/PSPasswordHandler.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/modules/perc-security-utils/src/test/java/com/percussion/security/PSPasswordHandlerTests.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/pom.xml">
           <value>
             <set />
@@ -298,6 +318,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/conn/PSDesignerConnection.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/system/src/com/percussion/data/PSIndexedLookupJoiner.java">
           <value>
             <set />
@@ -333,6 +358,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/design/objectstore/PSRoleSynchronizer.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/system/src/com/percussion/design/server/PSDesignerConnectionHandler.java">
           <value>
             <set />
@@ -354,6 +384,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/system/src/com/percussion/server/content/PSFormContentParser.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/system/src/com/percussion/util/PSObjectStoreUtil.java">
           <value>
             <set />
           </value>
