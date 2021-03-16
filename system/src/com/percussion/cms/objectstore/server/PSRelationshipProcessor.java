@@ -303,7 +303,9 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
             if(rel1.getConfig().equals(rel.getConfig())){
                if(rel1.getDependent().getRevision() == rel.getDependent().getRevision()){
                   if(rel1.getOwner().getRevision() == rel.getOwner().getRevision()){
-                     return rel1;
+                     if(rel1.getUserProperty(PSRelationshipConfig.PDU_SLOTID).getValue() == rel.getUserProperty(PSRelationshipConfig.PDU_SLOTID).getValue()){
+                        return rel1;
+                     }
                   }
                }
             }
