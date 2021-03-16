@@ -82,7 +82,6 @@
       * @param callback the callback function to be called when the request completes.
       */               
      function convertFolder(sectionObj, callback){
-        var self = this;
         var url = $.perc_paths.SECTION_SECTION_FROM_FOLDER;
         $.PercServiceUtils.makeJsonRequest(
            url,
@@ -112,7 +111,6 @@
       * object incase of success. @see IPSSiteSectionService#createSectionLink for more details. 
       */               
      function createSectionLink(targetSectionId, parentSectionId, callback){
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
            $.perc_paths.SECTION_CREATE_SECTION_LINK + "/" + targetSectionId + "/" + parentSectionId,
            $.PercServiceUtils.TYPE_GET,
@@ -138,7 +136,6 @@
       * @param callback the callback function to be called when the request completes.
       */               
      function edit(sectionObj, callback){
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
            $.perc_paths.SECTION_UPDATE,
            $.PercServiceUtils.TYPE_POST,
@@ -161,9 +158,7 @@
      /**
       * Update the section link
       */
-     function updateSectionLink(updateSecObject, callback)
-     {
-         var self = this;
+     function updateSectionLink(updateSecObject, callback) {
          $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.SECTION_LINK_UPDATE,
             $.PercServiceUtils.TYPE_POST,
@@ -189,7 +184,6 @@
       */
      function updateExternalLink(sectionId, extLinkObj, callback)
      {
-         var self = this;
          $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.SECTION_EXTERNAL_LINK_UPDATE + "/" + sectionId,
             $.PercServiceUtils.TYPE_POST,
@@ -217,8 +211,7 @@
       * section object will be the sole argument passsed to the callback.      
       */                                       
      function getRootSection(site, callback){
-       var self = this;
-       
+
        $.PercServiceUtils.makeJsonRequest(
            $.perc_paths.SECTION_GET_ROOT + "/" + site,
            $.PercServiceUtils.TYPE_GET,
@@ -259,7 +252,6 @@
       * instead of using cached data.            
       */  
      function getChildren(section, callback, force){
-        var self = this;
         if(!force && typeof(cache.getChildren[section.SiteSection.id]) != 'undefined')
        {
           callback($.PercServiceUtils.STATUS_SUCCESS, section, cache.getChildren[section.SiteSection.id]);
@@ -294,9 +286,7 @@
       * @param callback {function} The Callback to fire when ready. Follows same callback conventions as
       *        the other callbacks in this API.
       */
-     function getSection(sectionid, callback) 
-     {
-        var self = this;
+     function getSection(sectionid, callback) {
         sectionid = sectionid.split("_")[0];
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.SECTION_LOAD + "/" + sectionid,
@@ -324,9 +314,7 @@
       * @param callback {function} The Callback to fire when ready. Follows same callback conventions as
       * the other callbacks in this API.
       */
-     function getTree(siteid, callback) 
-     {
-        var self = this;
+     function getTree(siteid, callback) {
         $.PercBlockUI();
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.SECTION_GET_TREE + "/" + siteid,
@@ -369,7 +357,6 @@
       * the other callbacks in this API.
       */                       
      function move(moveSiteSectionObj, callback){
-        var self = this;
        $.PercServiceUtils.makeJsonRequest(
            $.perc_paths.SECTION_MOVE,
            $.PercServiceUtils.TYPE_POST,
@@ -404,7 +391,6 @@
            sectionId: sectionid
         }};
         
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
            $.perc_paths.SECTION_REPLACE_LANDING_PAGE,
            $.PercServiceUtils.TYPE_POST,
@@ -431,7 +417,6 @@
       * the other callbacks in this API.      
       */                 
      function deleteSection(sectionid, callback){
-        var self = this;
        $.PercServiceUtils.makeJsonRequest(
            $.perc_paths.SECTION_DELETE + "/" + sectionid,
            $.PercServiceUtils.TYPE_DELETE,
@@ -460,7 +445,6 @@
       * object in case of success. @see IPSSiteSectionService#deleteSectionLink for more details. 
       */               
      function deleteSectionLink(targetSectionId, parentSectionId, callback){
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
            $.perc_paths.SECTION_DELETE_SECTION_LINK + "/" + targetSectionId + "/" + parentSectionId,
            $.PercServiceUtils.TYPE_GET,
@@ -488,13 +472,12 @@
       * 
       */
      function convertSectionToFolder(sectionId, callback){
-        var self = this;
         $.PercServiceUtils.makeRequest(
            $.perc_paths.SECTION_CONVERT_TO_FOLDER + sectionId,
            $.PercServiceUtils.TYPE_DELETE,
            false,
            function(status, result){
-              if(status != $.PercServiceUtils.STATUS_SUCCESS){
+              if(status !== $.PercServiceUtils.STATUS_SUCCESS){
                   var defaultMsg = 
                      $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                   callback(false, defaultMsg);
