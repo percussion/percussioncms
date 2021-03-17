@@ -85,7 +85,7 @@
    <properties>
        <build.profile.id>dev</build.profile.id>
        <versionString>INTERNAL</versionString>
-        <jenkins.buildNumber>2020</jenkins.buildNumber>
+        <jenkins.buildNumber>2021</jenkins.buildNumber>
        <maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
        <buildNumber>${maven.build.timestamp}</buildNumber>
        <jacoco.it.execution.data.file>${project.build.directory}/coverage-reports/jacoco-it.exec</jacoco.it.execution.data.file>
