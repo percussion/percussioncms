@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,14 +24,7 @@
 
 package com.percussion.utils.container;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Properties;
-
+import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.security.PSEncryptionException;
 import com.percussion.utils.security.PSEncryptor;
 import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
@@ -39,9 +32,11 @@ import com.percussion.utils.tools.SortedProperties;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
-
-import com.percussion.utils.jdbc.PSJdbcUtils;
 import org.apache.log4j.Logger;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.util.Properties;
 
 public class PSStaticContainerUtils
 {
@@ -128,6 +123,7 @@ public class PSStaticContainerUtils
    {
       File tempFile = File.createTempFile(FilenameUtils.removeExtension(propertyFile.getAbsolutePath().toString()),
             ".tmp");
+      tempFile.deleteOnExit();
       return tempFile;
    }
   
