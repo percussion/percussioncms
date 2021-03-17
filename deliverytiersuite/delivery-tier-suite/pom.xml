@@ -193,7 +193,7 @@
 
 
     <repositories>
-        <repository>
+<!--        <repository>
             <id>github</id>
             <releases>  <enabled>true</enabled>  </releases>
             <snapshots> <enabled>true</enabled>
@@ -202,6 +202,7 @@
             <name>GitHub Percussion Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/percussion/percussioncms</url>
         </repository>
+        -->
         <repository>
             <id>perc-release-repo</id>
             <url>https://mvn.percussion.com/repositories/releases/</url>
@@ -402,9 +403,6 @@
                         <goal>verify</goal>
                     </goals>
                     <configuration>
-                        <!-- Sets the VM argument line used when integration tests are run. -->
-                        <argLine>${failsafeArgLine}</argLine>
-
                         <!--
                             Skips integration tests if the value of skip.integration.tests property
                             is true
@@ -715,7 +713,7 @@
 </build>
 
     <pluginRepositories>
-        <pluginRepository>
+       <!-- <pluginRepository>
             <id>github</id>
             <releases>  <enabled>true</enabled>  </releases>
             <snapshots> <enabled>true</enabled>
@@ -724,6 +722,7 @@
             <name>GitHub Percussion Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/percussion/percussioncms</url>
         </pluginRepository>
+        -->
         <pluginRepository>
             <id>perc-releases-repo</id>
             <name>Perc Plugin Repository</name>
@@ -793,4 +792,14 @@
             </plugin>
         </plugins>
     </reporting>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
 </project>
