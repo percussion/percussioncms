@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE map
+PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 1.0//EN"
+"../../../DTD/map_2_0.dtd">
+<map version="1.0">
+    <mapID target="O5882" url="XSpLit_Overview.htm" />
+    <mapID target="O3419" url="How_XSpLit_Works.htm" />
+    <mapID target="O3438" url="Well-formed_Documents.htm" />
+    <mapID target="O3431" url="Using_XSpLit.htm" />
+    <mapID target="O3441" url="XSpLit_Menu_Commands.htm" />
+    <mapID target="O3434" url="XSpLit_Tabs.htm" />
+    <mapID target="O3458" url="Using_the_XSpLit_Interface.htm" />
+    <mapID target="O3410" url="Editing_Text.htm" />
+    <mapID target="O3414" url="Find_Text.htm" />
+    <mapID target="O3412" url="Find_and_Replace.htm" />
+    <mapID target="O3416" url="Goto.htm" />
+    <mapID target="O3421" url="Status_Bar.htm" />
+    <mapID target="O3460" url="Formatting_Dynamic_Content.htm" />
+    <mapID target="O2535" url="What_is_SPAN.htm" />
+    <mapID target="O5888" url="Formatting_Snippet_Variants.htm" />
+    <mapID target="O1896" url="Labelling_Dynamic_Content_in_HTML.htm" />
+    <mapID target="O3461" url="Field_Names_and_Prefixes.htm" />
+    <mapID target="O1264" url="About_XML_Fields_and_DTDs.htm" />
+    <mapID target="O1792" url="Field_Names.htm" />
+    <mapID target="O1829" url="Hierarchical_Field_Names.htm" />
+    <mapID target="O2212" url="Root_Node_Name.htm" />
+    <mapID target="O1791" url="Field_Name_Prefix.htm" />
+    <mapID target="O1409" url="Changing_the_Dynamic_Data_Prefix.htm" />
+    <mapID target="O1783" url="Exposed_and_Hidden_Syntax.htm" />
+    <mapID target="O1784" url="Exposed_Syntax.htm" />
+    <mapID target="O1785" url="Exposed_Syntax-Fields_as_Content.htm" />
+    <mapID target="O1786" url="Exposed_Syntax-Fields_as_Tag_Attributes.htm" />
+    <mapID target="O1826" url="Hidden_Syntax.htm" />
+    <mapID target="O4370" url="Hidden_Syntax_Fields_as_Tag_Content.htm" />
+    <mapID target="O4372" url="Hidden_Syntax_Fields_as_Tag_Attributes.htm" />
+    <mapID target="O2304" url="Special_Shortcut_Syntax.htm" />
+    <mapID target="O2293" url="Shortcut_Using_the_Image_Tag.htm" />
+    <mapID target="O4373" url="Shortcut_Using_the_Anchor_Tag.htm" />
+    <mapID target="O4375" url="Shortcut_Using_the_Form_Tag.htm" />
+    <mapID target="O2503" url="Using_Exposed_and_Hidden_Syntax_Together.htm" />
+    <mapID target="O1842" url="HTML_Blocks.htm" />
+    <mapID target="O1646" url="Dynamic_HTML.htm" />
+    <mapID target="O1814" url="Formatting_repeated_fields.htm" />
+    <mapID target="O1260" url="About_the_Root_Node.htm" />
+    <mapID target="O3462" url="Repeating_Table_Rows.htm" />
+    <mapID target="O1392" url="Basic_Table_Rule.htm" />
+    <mapID target="O4364" url="Repeating_in_Individual_Table_Cells.htm" />
+    <mapID target="O2184" url="Repeating_Single_Nodes.htm" />
+    <mapID target="O2182" url="Repeating_Multiple_Nodes.htm" />
+    <mapID target="O3464" url="Repeating_in_Different_Table_Cells.htm" />
+    <mapID target="O2537" url="When_Cell_Contents_Do_Not_Share_Nodes.htm" />
+    <mapID target="O2538" url="When_Cell_Contents_Share_Nodes.htm" />
+    <mapID target="O1980" url="Nested_Table_Rule.htm" />
+    <mapID target="O1979" url="Nested_Table_Example.htm" />
+    <mapID target="O1981" url="Nested_Tables_for_Formatting.htm" />
+    <mapID target="O1788" url="Extended_Table_Nesting_Rule.htm" />
+    <mapID target="O2181" url="Repeating_Lists.htm" />
+    <mapID target="O1391" url="Basic_List_Rule.htm" />
+    <mapID target="O1978" url="Nested_List_Rule.htm" />
+    <mapID target="O1787" url="Extended_List_Nesting_Rule.htm" />
+    <mapID target="O2180" url="Repeated_Form_Elements.htm" />
+    <mapID target="O4376" url="Select_Lists.htm" />
+    <mapID target="O1389" url="Basic_Forms_Select_List_Rule.htm" />
+    <mapID target="O1976" url="Nested_Forms_Select_List_Rule.htm" />
+    <mapID target="O4377" url="Input_and_TextArea_Elements.htm" />
+    <mapID target="O1390" url="Basic_Input_and_Text_Area_Rule.htm" />
+    <mapID target="O1307" url="Advanced_Example.htm" />
+    <mapID target="O1977" url="Nested_Input_and_Text_Area_Rule.htm" />
+    <mapID target="O1900" url="Limiting_Element_Repetition.htm" />
+    <mapID target="O2014" url="Pre-selected_and_Pre-checked_Form_Fields.htm" />
+    <mapID target="O2551" url="Working_with_Multiple_Contexts.htm" />
+    <mapID target="O1549" url="Defining_a_Document_Alias.htm" />
+    <mapID target="O2501" url="Using_Document_Aliases.htm" />
+    <mapID target="O1431" url="Complete_Document_Alias_HTML.htm" />
+    <mapID target="O2317" url="Splitting_Slots.htm" />
+    <mapID target="O2276" url="Setting_the_Related_Content_Variable.htm" />
+    <mapID target="O2169" url="Related_Content_Definition.htm" />
+    <mapID target="O2299" url="Slot_Formatting.htm" />
+    <mapID target="O1569" url="Defining_Slots_with_Local_Formatting.htm" />
+    <mapID target="O2307" url="Specifying_a_Template_for_a_Slot.htm" />
+    <mapID target="O8696" url="8696.htm" />
+    <mapID target="O1298" url="Adding_Parameters_to_a_Slot_Definition.htm" />
+    <mapID target="O3481" url="Hiding_a_Slot_from_Active_Assembly.htm" />
+</map>
+

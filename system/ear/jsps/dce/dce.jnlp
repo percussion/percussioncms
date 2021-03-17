@@ -1,0 +1,39 @@
+TS: @jnlp-timestamp@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="6.0+" xmlns:jfx="http://javafx.com" codebase="$$codebase" href="$$name" version="@jnlp-version@">
+    <information>
+        <title>Percussion DCE : $$hostname</title>
+        <vendor>Percussion Software</vendor>
+        <homepage href="http://www.percussion.com"></homepage>
+      <icon href="/Rhythmyx/sys_resources/images/dce_icon.jpg"/>
+      <icon kind="splash" href="/Rhythmyx/sys_resources/images/dce_splash.jpg"/>
+      <shortcut online="true">
+        <desktop/>
+        <menu submenu="Percussion DCE"/>
+      </shortcut>
+    </information>
+  	<security>
+    	<all-permissions/>
+  	</security>
+    <update check="always" policy="always" />
+    <resources>
+        <!-- Application Resources -->
+        <j2se version="1.8+" href=
+           "http://java.sun.com/products/autodl/j2se" />
+		  <!-- will look for file DesktopContentExplorer__V{version}.jar --> 
+          <jar href="DesktopContentExplorer.jar" download="eager" main="true" version="@jnlp-version@" />
+          <jar href="rxCheckboxTree.jar" download="eager" main="false" version="@jnlp-version@" />
+          <property name="jnlp.versionEnabled"
+                value="true"/>
+ 
+    </resources>
+    
+    <application-desc
+         name="Percussion Context Explorer - $$hostname"
+         main-class="com.percussion.cx.PSContentExplorerApplication"
+         width="300"
+         height="300">
+        <argument>--codebase=$$codebase</argument>
+     </application-desc>
+
+</jnlp>

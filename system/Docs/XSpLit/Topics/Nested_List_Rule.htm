@@ -1,0 +1,80 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Nested List Rule </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Repeated Fields	Table Nesting for Lists">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Basic_List_Rule.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Extended_List_Nesting_Rule.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h5 class="heading5">Nested List Rule</h5>
+<p class="bodytext"><a id="h4745" class="" title="About the Root Node" href="About_the_Root_Node.htm" target="_self">About the Root Node</a></p>
+<p class="bodytext">The outermost list repeats for the first shared node (going left to right), the second list inward repeats for the second shared node, and so on. This behavior continues until all nested lists or shared nodes are exhausted.</p>
+<p class="bodytext">So if you had the fields <code class="monospace">psx-product/name</code> and <code class="monospace">psx-product/feature</code> in the following code:</p>
+<p class="codeexample">&lt;ul&gt;<br>  &lt;li&gt;psx-product/name<br>    &lt;ul type=&quot;circle&quot;&gt;<br>      &lt;li&gt;psx-product/feature&lt;/li&gt;<br>    &lt;/ul&gt;<br>  &lt;/li&gt;<br>&lt;/ul&gt;</p>
+<p class="bodytext">XSpLit processes the outer list first. The list repeats according to the basic rule, once per <code class="monospace">product</code>.</p>
+<p class="bodytext">XSpLit then processes the inner list. It will repeat once per <code class="monospace">feature</code>.</p>
+<p class="bodytext">At design time, the output would look like this:</p>
+<p class="widegraphic"><img src="9-d.gif" alt="" height="49" width="260" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">At run time, the output would look like this:</p>
+<table width="441" cellpadding="2" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr align="left" valign="top">
+<td width="283"><p class="bodytext">Content: XML</p>
+</td>
+<td width="158"><p class="bodytext">Output: HTML</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="283"><p class="bodytext"><code class="monospace">&lt;products&gt;<br>  &lt;product&gt;<br>    &lt;name&gt;Widget&lt;/name&gt;<br>    &lt;feature&gt;It's cheap!&lt;/feature&gt;<br>&lt;feature&gt;It's easy!&lt;/feature&gt;<br>    &lt;feature&gt;It's fun!&lt;/feature&gt;<br>  &lt;/product&gt;<br>  &lt;product&gt;<br>    &lt;name&gt;Gadget&lt;/name&gt;<br>    &lt;feature&gt;Durable!&lt;/feature&gt;<br>  &lt;/product&gt;<br>  &lt;product&gt;<br>    &lt;name&gt;Gizmo&lt;/name&gt;<br>    &lt;feature&gt;Low maintenance!&lt;/feature&gt;<br>    &lt;feature&gt;Trouble free!&lt;/feature&gt;<br>  &lt;/product&gt;<br>&lt;/products&gt;</code></p>
+</td>
+<td width="158"><p class="bodytext"><img src="z9-1.gif" alt="" height="193" width="175" vspace="2" hspace="2" align="bottom" border="0"></p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext">&nbsp; </p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Repeating_Lists.htm" target="_self">Repeating Lists</a></p><p class="relateditem"><a href="Basic_List_Rule.htm" target="_self">Basic List Rule</a></p><p class="relateditem"><a href="Extended_List_Nesting_Rule.htm" target="_self">Extended List Nesting Rule</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

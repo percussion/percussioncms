@@ -1,0 +1,77 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Related Content Definition </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Related Content	Defining for XSpLit, Slots	Defining related content for XSpLit, Span	Defining Related Content">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Setting_the_Related_Content_Variable.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Slot_Formatting.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Related Content Definition</h2>
+<p class="bodytext">You should generally use the <code class="monospace">&lt;div&gt;</code> tag to define related content. &nbsp;If the Slot contains no HTML or XML mark up, or if it is in a table (where the <code class="monospace">&lt;div&gt;</code> tag is not allowed) you can use the <code class="monospace">&lt;span&gt;</code> tag. &nbsp;</p>
+<p class="bodytext">A related content definition uses the the <code class="monospace">slotname</code> attribute to define the name of the Slot.</p>
+<p class="codeexample">&lt;span slotname=&quot;Related Features&quot;&gt;Slot example&lt;/span&gt;</p>
+<p class="bodytext">When split, this code would produce the following XSL:</p>
+<p class="codeexample">&lt;xsl:variable name=&quot;rxslot-1&quot;&gt;</p>
+<p class="codeexample">  &lt;rxslot template=&quot;RelatedFeatures&quot;&gt;</p>
+<p class="codeexample">    &lt;xsl:copy-of select=&quot;$related/linkurl[@slotname='Related Features']/&gt;</p>
+<p class="codeexample">  &lt;/rxslot&gt;</p>
+<p class="codeexample">&lt;/xsl:variable&gt;</p>
+<p class="codeexample">&lt;xsl:apply-templates select=&quot;$rxslot-1&quot; mode=&quot;rxslot&quot;/&gt;</p>
+<p class="bodytext">Rhythmyx generates a unique nodeset variable name for each slot it encounters. &nbsp;The nodeset variable name takes the format <em class="emphasis">rxslot-n</em>, where <em class="emphasis">n</em> indicates the numeric order of the slot in the template, in this example, <code class="monospace">rxslot-1</code>. &nbsp;The following code shows an example:</p>
+<p class="codeexample">&lt;rxslot template=&quot;RelatedFeatures&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&lt;linkurl slotname=&quot;Related Features&quot; slotid=&quot;42&quot; variantid=&quot;23&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Value current=&quot;http:. . . . . . . . .1.html&quot;/&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&lt;/linkurl&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&lt;linkurl slotname=&quot;Related Features&quot; slotid=&quot;42&quot; variantid=&quot;12&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Value current=&quot;http:. . . . . . . . .2.html&quot;/&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&lt;/linkurl&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&lt;linkurl slotname=&quot;Related Features&quot; slotid=&quot;42&quot; variantid=&quot;23&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Value current=&quot;http:. . . . . . . . .3.html&quot;/&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&lt;/linkurl&gt;</p>
+<p class="codeexample">&lt;/rxslot&gt;</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Splitting_Slots.htm" target="_self">Splitting Slots</a></p><p class="relateditem"><a href="Setting_the_Related_Content_Variable.htm" target="_self">Setting the Related Content Variable</a></p><p class="relateditem"><a href="Slot_Formatting.htm" target="_self">Slot Formatting</a></p><p class="relateditem"><a href="Adding_Parameters_to_a_Slot_Definition.htm" target="_self">Adding Parameters to a Slot Definition</a></p><p class="relateditem"><a href="Hiding_a_Slot_from_Active_Assembly.htm" target="_self">Hiding a Slot from Active Assembly</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+
