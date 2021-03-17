@@ -1,0 +1,60 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> JNDI Group Provider Details Dialog </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Security	Security Providers	JNDI	Group Providers Dialog">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="9960.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="14233.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h6 class="heading6">JNDI Group Provider Details Dialog</h6>
+<p class="bodytext">Use the JNDI Group Provider Details dialog to create and maintain JNDI Group Provider records.</p>
+<p class="widegraphic"> <img src="sa_jndigroupproviderdetailsb_57.gif" alt="JNDI Group Providers Dialog" height="428" width="376" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext"><strong class="specialbold">JNDI Group Provider Details Dialog Field Descriptions:</strong></p>
+<ul class="listbullet"><li class="listbullet">Provider Name &nbsp;- Name of this group provider. &nbsp;Editable only when creating a new group provider. &nbsp;When editing an existing group provider, this field is unavailable.</li><li class="listbullet">Group Properties table:  the Group Properties table is populated with standard values. If you do not use standard objectClasses or attributes, you can change the entries. For example, removing unused objectClasses (such as removing the groupOfUrls if you do not use dynamic groups) may improve performance slightly.<ul class="listbullet2"><li class="listbullet2">Group Properties: objectClass -&nbsp;Enter the name of a Java object class. Completing this field is required to enter a Member attribute or Type.&nbsp;Rhythmyx treats all LDAP entries with this object class as a group. &nbsp;</li><li class="listbullet2">Group Properties: Member Attributes -&nbsp;The name of the attribute used to determine the group members for entries with the specified object class. </li><li class="listbullet2">Group Properties: Type -&nbsp;The value in this field defines how Rhythmyx will treat the value of the Member Attribute. &nbsp;Options are:<ul class="listbullet4"><li class="listbullet4">Static - Rhythmyx treats the value of the attribute as if it specifies the name of another entry, either a person that is a member or another group. &nbsp;This is the default option.</li><li class="listbullet4">Dynamic - Rhythmyx treats the value of the attribute as if it specifies an LDAP filter URL.&nbsp;This filter specifies the Directory entries that should be considered members of the group.</li></ul></li></ul></li><li class="listbullet">Directory Entries to search for groups -&nbsp;Each entry in this list specifies a node in the Directory that Rhythmyx searches for possible group entries. Each entry should be the fully qualified distinguished name (DN) from the Directory root. &nbsp;Rhythmyx uses these entries to catalog groups for any directory connection security provider that lists this group provider in its definition. &nbsp;<p class="listcontinue">To add a directory entry to search for groups:</p>
+<ol class="listalpha2"><li class="listalpha2">Click the Insert New Entry button &nbsp;<img src="newbtn.gif" alt="" height="20" width="19" vspace="2" hspace="2" align="bottom" border="0"> to the right of the &quot;Directory Entries to Search For...&quot; row.<p class="listcontinue2">Rhythmyx makes a new row available in the Directory entries to search for groups field.</p>
+</li><li class="listalpha2">Enter the fully-qualified distinguished name (DN) of the directory entry.  (NOTE:  If you use a distinguished name that includes the &quot;?&quot; wildcard character, you must escape the character by replacing it with %3f; for example, OU=tech? should be entered as OU=tech%3f.)</li></ol></li></ul><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="9957.htm" target="_self">Directory Configuration Dialogs</a></p><p class="relateditem"><a href="9958.htm" target="_self">Directories Tab</a></p><p class="relateditem"><a href="14228.htm" target="_self">Directory Editor</a></p><p class="relateditem"><a href="9960.htm" target="_self">Provider URL Selector</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

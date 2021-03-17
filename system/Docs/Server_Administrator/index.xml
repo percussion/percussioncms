@@ -1,0 +1,390 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE index
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Index Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/index_1_0.dtd">
+
+<index version="1.0">
+
+
+    <indexitem text="ACL">
+        <indexitem text="ACL  ">
+            <indexitem target="O1285">Adding</indexitem>
+            <indexitem target="O18611">Default</indexitem>
+            <indexitem target="O1601">Deleting</indexitem>
+            <indexitem target="O1692">Editing</indexitem>
+            <indexitem target="O1601">Managing</indexitem>
+            <indexitem target="O18609">Overview</indexitem>
+            <indexitem text="Properties">
+                <indexitem target="O18613">Required by Rhythmyx Functions</indexitem>
+            </indexitem>
+            <indexitem text="Server">
+                <indexitem target="O18644">Creating</indexitem>
+                <indexitem target="O1604">Deleting</indexitem>
+                <indexitem target="O18647">Editing</indexitem>
+            </indexitem>
+        </indexitem>
+        <indexitem target="O18521">Conflicts</indexitem>
+        <indexitem target="O18644">Creating Server ACL</indexitem>
+        <indexitem target="O1604">Deleting Server ACL</indexitem>
+        <indexitem target="O18647">Editing Server ACL</indexitem>
+        <indexitem target="O18518">Field Descriptions</indexitem>
+        <indexitem text="Members">
+            <indexitem target="O1295">Adding Existing to a Role</indexitem>
+            <indexitem target="O18612">Adding New to a Role</indexitem>
+            <indexitem target="O18611">Default</indexitem>
+            <indexitem target="O1596">Deleting from Role</indexitem>
+            <indexitem target="O1686">Editing Properties</indexitem>
+            <indexitem target="O1955">Modifying in Role</indexitem>
+            <indexitem target="O1984">New Member Dialog</indexitem>
+            <indexitem text="Properties">
+                <indexitem target="O18613">Required by Rhythmyx Functions</indexitem>
+                <indexitem target="O1253">Roles and Members</indexitem>
+            </indexitem>
+        </indexitem>
+        <indexitem target="O1915">Overview</indexitem>
+        <indexitem target="O1256">Security Providers</indexitem>
+    </indexitem>
+    <indexitem text="Active Directory">
+        <indexitem target="O18586">Adding Users and Groups to Roles</indexitem>
+        <indexitem target="O18584">Creating the Authentication</indexitem>
+        <indexitem target="O18592">Creating the Directory</indexitem>
+        <indexitem target="O18595">Creating the Security Provider</indexitem>
+        <indexitem target="O10044">LDAP Configuration Examples</indexitem>
+    </indexitem>
+    <indexitem text="Application">
+        <indexitem target="O1578">Authentication Failed</indexitem>
+        <indexitem target="O4140">Displaying server applications</indexitem>
+        <indexitem target="O2324">Starting Applications in Server Administrator</indexitem>
+        <indexitem target="O4140">Starting Server Applications</indexitem>
+        <indexitem target="O2328">Starting Server as</indexitem>
+        <indexitem target="O2324">Stopping Applications in Server Administrator</indexitem>
+        <indexitem target="O4140">Stopping Server Applications</indexitem>
+        <indexitem target="O4140">Tracing Server Applications</indexitem>
+    </indexitem>
+    <indexitem text="Authentication">
+        <indexitem target="O1256">Security Providers</indexitem>
+    </indexitem>
+    <indexitem target="O1578">Authentication Failure</indexitem>
+    <indexitem text="Authentications">
+        <indexitem target="O9953">Adding</indexitem>
+        <indexitem target="O9950">Authentication Dialogs</indexitem>
+        <indexitem target="O9952">Authentication Editor</indexitem>
+        <indexitem target="O9951">Authentications Tab</indexitem>
+        <indexitem target="O9955">Deleting</indexitem>
+        <indexitem target="O9954">Editing</indexitem>
+    </indexitem>
+    <indexitem text="Cache">
+        <indexitem target="O18654">Flushing</indexitem>
+        <indexitem target="O2954">Setting through Server Console</indexitem>
+    </indexitem>
+    <indexitem target="O1406">Changing in Windows</indexitem>
+    <indexitem text="Communities">
+        <indexitem target="O1429">Security</indexitem>
+    </indexitem>
+    <indexitem text="Configuring Version">
+        <indexitem target="O18656">Configuring the Java Plugin Version for Content Explorer</indexitem>
+    </indexitem>
+    <indexitem text="Daemon">
+        <indexitem target="O1997">Rhythmyx</indexitem>
+        <indexitem target="O2329">Starting</indexitem>
+        <indexitem target="O2345">Stopping</indexitem>
+    </indexitem>
+    <indexitem text="Database Pools">
+        <indexitem target="O18653">Displaying</indexitem>
+    </indexitem>
+    <indexitem text="DBMS Table">
+        <indexitem target="O14197">Security Properties Dialog</indexitem>
+    </indexitem>
+    <indexitem text="Debugging">
+        <indexitem target="O1775">Initialization Error</indexitem>
+    </indexitem>
+    <indexitem target="O1406">Default Settings</indexitem>
+    <indexitem text="Directory Configurations">
+        <indexitem target="O14233">Adding</indexitem>
+        <indexitem target="O9963">Deleting</indexitem>
+        <indexitem target="O9958">Directories Tab</indexitem>
+        <indexitem target="O9957">Directory Configuration Dialogs</indexitem>
+        <indexitem target="O14228">Directory Editor</indexitem>
+        <indexitem target="O14234">Editing a Directory Configuration</indexitem>
+        <indexitem target="O14231">Maintaining Directory Configurations</indexitem>
+        <indexitem target="O9960">Provider URL Selector</indexitem>
+    </indexitem>
+    <indexitem text="Directory Services">
+        <indexitem text="Authentications">
+            <indexitem target="O9950">Authentication Dialogs</indexitem>
+            <indexitem target="O9952">Authentication Editor</indexitem>
+            <indexitem target="O9951">Authentications Tab</indexitem>
+            <indexitem target="O9955">Deleting</indexitem>
+            <indexitem target="O9954">Editing</indexitem>
+        </indexitem>
+        <indexitem target="O9978">Directory Services Technical Reference (subentry)</indexitem>
+        <indexitem target="O12636">Example 1: Using LDAP to Authenticate Users</indexitem>
+        <indexitem target="O18588">Example 2: Using LDAP as a Role Provider</indexitem>
+        <indexitem target="O10044">Example:  Using LDAP as a Security Provider</indexitem>
+        <indexitem text="Examples">
+            <indexitem target="O10044">LDAP Configuration Examples</indexitem>
+            <indexitem target="O18588">Using LDAP as a Role Provider</indexitem>
+        </indexitem>
+        <indexitem target="O14177">Implementing LDAP Directory Services</indexitem>
+    </indexitem>
+    <indexitem text="Directory Sets">
+        <indexitem target="O9968">Adding a Directory Set</indexitem>
+        <indexitem target="O9970">Deleting a Directory Set</indexitem>
+        <indexitem target="O9965">Directory Set Dialogs</indexitem>
+        <indexitem target="O9967">Directory Set Editor</indexitem>
+        <indexitem target="O9966">Directory Sets Tab</indexitem>
+        <indexitem target="O9969">Editing a Directory Set</indexitem>
+    </indexitem>
+    <indexitem text="DOS">
+        <indexitem target="O2341">Stopping Rhythmyx Server</indexitem>
+    </indexitem>
+    <indexitem text="Flushing">
+        <indexitem target="O18654">Cache</indexitem>
+        <indexitem text="Log">
+            <indexitem target="O1873">Interfacing by remote console</indexitem>
+            <indexitem target="O17923">Server Console Commands in Alphabetical Order</indexitem>
+        </indexitem>
+        <indexitem target="O18654">Metadata Cache</indexitem>
+    </indexitem>
+    <indexitem text="Handlers">
+        <indexitem target="O18653">Displaying</indexitem>
+    </indexitem>
+    <indexitem target="O1775">Initialization Error</indexitem>
+    <indexitem target="O4091">J2EE Server</indexitem>
+    <indexitem text="Java Plugin">
+        <indexitem target="O18658">Adding Configuration</indexitem>
+        <indexitem target="O18656">Configuring Version</indexitem>
+        <indexitem target="O8118">Editing Configuration</indexitem>
+    </indexitem>
+    <indexitem text="LDAP">
+        <indexitem target="O10044">Configuration Examples</indexitem>
+        <indexitem target="O18600">Creating the Directory Connection Security Provider</indexitem>
+        <indexitem target="O10075">Defining Role Attributes</indexitem>
+        <indexitem target="O14177">Implementing LDAP</indexitem>
+        <indexitem target="O18588">LDAP as a Role Provider</indexitem>
+        <indexitem target="O14223">Role Providers, Maintaining</indexitem>
+    </indexitem>
+    <indexitem text="Log">
+        <indexitem target="O18652">Dumping</indexitem>
+        <indexitem text="Flushing">
+            <indexitem target="O1873">Interfacing by remote console</indexitem>
+            <indexitem target="O17923">Server Console Commands in Alphabetical Order</indexitem>
+        </indexitem>
+        <indexitem target="O14197">Security Properties Dialog</indexitem>
+    </indexitem>
+    <indexitem target="O1766">noPauseOnExit</indexitem>
+    <indexitem text="Pause Option">
+        <indexitem target="O1766">Enabling and Disabling</indexitem>
+    </indexitem>
+    <indexitem text="Performance  ">
+        <indexitem target="O18615">Setting Parameters</indexitem>
+        <indexitem target="O2521">Viewing Application Performance</indexitem>
+        <indexitem target="O2521">Viewing for Applications in Server Administrator</indexitem>
+        <indexitem target="O18617">Viewing in Server Administrator</indexitem>
+    </indexitem>
+    <indexitem text="Request Dispatchers">
+        <indexitem target="O18653">Displaying</indexitem>
+    </indexitem>
+    <indexitem text="Request Queue">
+        <indexitem target="O18653">Displaying</indexitem>
+    </indexitem>
+    <indexitem text="Rhythmyx Server">
+        <indexitem target="O2206">Overview</indexitem>
+        <indexitem target="O14197">Security Properties Dialog</indexitem>
+        <indexitem text="Service">
+            <indexitem target="O2327">Windows NT</indexitem>
+        </indexitem>
+        <indexitem text="Settings">
+            <indexitem target="O1406">Changing in Windows</indexitem>
+            <indexitem target="O1408">Changing in Windows NT</indexitem>
+            <indexitem target="O1406">Default</indexitem>
+        </indexitem>
+        <indexitem target="O2281">Stand-alone</indexitem>
+        <indexitem text="Stopping">
+            <indexitem target="O18652">by Server Console Command</indexitem>
+            <indexitem target="O2343">from Services dialog</indexitem>
+            <indexitem target="O2341">In DOS</indexitem>
+            <indexitem target="O2344">in Windows NT</indexitem>
+            <indexitem target="O4140">Server Applications</indexitem>
+            <indexitem target="O2324">Server Applications through Server Administrator</indexitem>
+        </indexitem>
+        <indexitem text="UNIX Environment">
+            <indexitem target="O1997">Running</indexitem>
+            <indexitem target="O2329">Starting</indexitem>
+            <indexitem target="O6481">Starting Server as Console</indexitem>
+            <indexitem target="O2345">Stopping</indexitem>
+            <indexitem target="O6482">Stopping Server as Console</indexitem>
+        </indexitem>
+        <indexitem text="User Security">
+            <indexitem target="O1580">Windows NT</indexitem>
+        </indexitem>
+        <indexitem text="Windows Environment">
+            <indexitem target="O1406">Changing Settings</indexitem>
+            <indexitem target="O1408">Changing Settings in Windows NT</indexitem>
+            <indexitem target="O18656">Configuring Version</indexitem>
+            <indexitem target="O1580">Defining User Rights in Windows NT</indexitem>
+            <indexitem target="O1998">Running</indexitem>
+            <indexitem target="O14197">Security Properties Dialog</indexitem>
+            <indexitem target="O2327">Starting as Service in Windows NT</indexitem>
+            <indexitem target="O2344">Stopping Rhythmyx Server in Windows NT</indexitem>
+        </indexitem>
+    </indexitem>
+    <indexitem text="Role Providers">
+        <indexitem target="O14226">Adding a Role Provider</indexitem>
+        <indexitem target="O9977">Deleting a Role Provider</indexitem>
+        <indexitem target="O9976">Editing a Role Provider</indexitem>
+        <indexitem target="O14223">Maintaining Role Providers</indexitem>
+        <indexitem target="O9972">Role Provider Dialogs</indexitem>
+        <indexitem target="O14224">Role Provider Editor</indexitem>
+        <indexitem target="O9973">Role Providers Tab</indexitem>
+    </indexitem>
+    <indexitem text="Roles">
+        <indexitem target="O1273">Add/Edit Role Dialog</indexitem>
+        <indexitem target="O18644">Creating a Server ACL</indexitem>
+        <indexitem target="O18644">Creating Server ACL</indexitem>
+        <indexitem target="O1604">Deleting a Server ACL</indexitem>
+        <indexitem target="O1604">Deleting Server ACL</indexitem>
+        <indexitem target="O18647">Editing a Server ACL</indexitem>
+        <indexitem target="O18647">Editing Server ACL</indexitem>
+    </indexitem>
+    <indexitem target="O17889">Search Configuration</indexitem>
+    <indexitem text="Search Configuration">
+        <indexitem target="O17919">Full-text search, disabling</indexitem>
+        <indexitem target="O12405">Maximum results</indexitem>
+        <indexitem target="O17803">Text Analyzer, overriding</indexitem>
+        <indexitem target="O17801">Text Extractor, overriding</indexitem>
+    </indexitem>
+    <indexitem text="Security">
+        <indexitem target="O1273">Add/Edit Role Dialog</indexitem>
+        <indexitem target="O1429">and Communities</indexitem>
+        <indexitem target="O18644">Creating Server ACL</indexitem>
+        <indexitem target="O1604">Deleting Server ACL</indexitem>
+        <indexitem target="O18647">Editing Server ACL</indexitem>
+        <indexitem text="Security Providers">
+            <indexitem text="Adding">
+                <indexitem target="O14198">Adding a DBMS Table Security Provider</indexitem>
+                <indexitem target="O14238">Adding a JNDI Security Provider</indexitem>
+                <indexitem target="O6485">Adding a Web Server Security Provider</indexitem>
+            </indexitem>
+            <indexitem target="O1256">and Authentication</indexitem>
+            <indexitem target="O18656">Configuring Version</indexitem>
+            <indexitem text="DBMS Table">
+                <indexitem target="O18656">Configuring Version</indexitem>
+                <indexitem target="O14197">Security Properties Dialog</indexitem>
+            </indexitem>
+            <indexitem text="Deleting">
+                <indexitem target="O18628">Deleting a DBMS Table Security Provider</indexitem>
+                <indexitem target="O1593">Deleting a JNDI Security Provider</indexitem>
+                <indexitem target="O6487">Deleting a Web Server Security Provider</indexitem>
+            </indexitem>
+            <indexitem text="JNDI">
+                <indexitem target="O18606">Adding Group Provider</indexitem>
+                <indexitem target="O14238">Adding Security Provider</indexitem>
+                <indexitem target="O18608">Deleting Group Provider</indexitem>
+                <indexitem target="O1593">Deleting Security Provider</indexitem>
+                <indexitem target="O18607">Editing Group Provider</indexitem>
+                <indexitem target="O14239">Editing Security Provider</indexitem>
+                <indexitem target="O1887">Group Providers Dialog</indexitem>
+            </indexitem>
+            <indexitem text="Modifying">
+                <indexitem target="O14239">Editing a JNDI Security Provider</indexitem>
+                <indexitem target="O14199">Modifying a DBMS Table Security Provider</indexitem>
+                <indexitem target="O6486">Modifying a Web Server Security Provider</indexitem>
+            </indexitem>
+            <indexitem target="O1393">Types</indexitem>
+            <indexitem target="O2531">Web Server</indexitem>
+            <indexitem target="O6484">Web Server Security Provider Details Dialog</indexitem>
+        </indexitem>
+    </indexitem>
+    <indexitem target="O14197">Security Properties Dialog</indexitem>
+    <indexitem text="Server Administrator">
+        <indexitem target="O2954">Changing Page Cache Settings</indexitem>
+        <indexitem target="O18656">Configuring Version</indexitem>
+        <indexitem target="O17878">defined</indexitem>
+        <indexitem target="O1873">from Remote Console</indexitem>
+        <indexitem target="O18616">Functions</indexitem>
+        <indexitem target="O18629">Log Settings</indexitem>
+        <indexitem target="O14566">Opening</indexitem>
+        <indexitem target="O17878">Overview</indexitem>
+        <indexitem target="O18615">Setting Performance Parameters</indexitem>
+        <indexitem target="O2324">Starting Applications</indexitem>
+        <indexitem target="O2324">Stopping Applications</indexitem>
+        <indexitem target="O18617">Viewing Server/Application Performance</indexitem>
+    </indexitem>
+    <indexitem text="Server Console Commands">
+        <indexitem text="Alphabetical Order">
+            <indexitem target="O17923">Server Console Commands in Alphabetical Order</indexitem>
+        </indexitem>
+        <indexitem text="for Displaying Resources">
+            <indexitem target="O18653">Server Console Commands for Displaying Resources</indexitem>
+        </indexitem>
+        <indexitem text="for Flushing Caches">
+            <indexitem target="O18654">Server Console Commands for Flushing the Server and MetaData Caches</indexitem>
+        </indexitem>
+        <indexitem text="General">
+            <indexitem target="O18652">General Server Console Commands</indexitem>
+        </indexitem>
+    </indexitem>
+    <indexitem text="Services Dialog">
+        <indexitem target="O2343">Stopping Rhythmyx Server</indexitem>
+        <indexitem target="O2344">Stopping Rhythmyx Server in Windows NT</indexitem>
+    </indexitem>
+    <indexitem text="Single Sign-on">
+        <indexitem target="O6493">and Server Administrator</indexitem>
+        <indexitem target="O6493">and Workbench</indexitem>
+        <indexitem target="O6488">defined</indexitem>
+        <indexitem target="O6495">Web Server Security Provider</indexitem>
+    </indexitem>
+    <indexitem text="Starting">
+        <indexitem target="O2324">Server Applications through Server Administrator</indexitem>
+    </indexitem>
+    <indexitem text="Statistics">
+        <indexitem target="O18652">Displaying</indexitem>
+    </indexitem>
+    <indexitem target="O18613">sys_defaultCommunity</indexitem>
+    <indexitem target="O18613">sys_defaulthomepageurl</indexitem>
+    <indexitem target="O18613">sys_email</indexitem>
+    <indexitem text="Tracing">
+        <indexitem target="O4140">Server Applications</indexitem>
+    </indexitem>
+    <indexitem text="User Sessions">
+        <indexitem target="O18652">Displaying</indexitem>
+    </indexitem>
+    <indexitem text="User Threads">
+        <indexitem target="O18652">Displaying</indexitem>
+    </indexitem>
+    <indexitem text="Version">
+        <indexitem target="O18652">Displaying</indexitem>
+    </indexitem>
+    <indexitem text="Web Server">
+        <indexitem text="Connecting to Rhythmyx">
+            <indexitem target="O4091">J2EE</indexitem>
+        </indexitem>
+        <indexitem target="O2531">Security Provider</indexitem>
+    </indexitem>
+</index>
+

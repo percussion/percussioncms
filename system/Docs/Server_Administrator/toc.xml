@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE toc
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+<toc version="1.0">
+
+
+<tocitem text="Rhythmyx Server" target="O2206" >
+    <tocitem text="Setting Up Rhythmyx as a stand-alone Server" target="O2281" />
+</tocitem>
+<tocitem text="Operating Rhythmyx Servers" target="O1245" >
+    <tocitem text="Operating Rhythmyx Server in a Windows Environment" target="O1998" >
+        <tocitem text="Starting Rhythmyx Server as a Windows Service in Windows NT" target="O2327" />
+        <tocitem text="Starting Rhythmyx Server as a Service in Windows 2000" target="O20428" />
+        <tocitem text="Starting Rhythmyx Server as an Application" target="O2328" >
+            <tocitem text="Defining the User to Act as Part of the Operating System" target="O1578" />
+            <tocitem text="Defining the User to Act as Part of the Operating System in Windows 2000" target="O20429" />
+            <tocitem text="Defining the User to Act as Part of the Operating System in Windows NT" target="O1580" />
+        </tocitem>
+        <tocitem text="Errors During Server Initialization" target="O1775" />
+        <tocitem text="Stopping Rhythmyx Server from a DOS Window" target="O2341" />
+        <tocitem text="Stopping Rhythmyx Server from the Services Dialog" target="O2343" />
+        <tocitem text="Stopping Rhythmyx Server from a Services Dialog in Windows 2000" target="O20430" />
+        <tocitem text="Stopping Rhythmyx Server from the Services Dialog in Windows NT" target="O2344" />
+        <tocitem text="Changing Rhythmyx Server Settings in a Windows Environment" target="O1406" />
+        <tocitem text="Changing Rhythmyx Server Settings in Windows 2000" target="O20431" />
+        <tocitem text="Changing Rhythmyx Server Settings in Windows NT" target="O1408" />
+    </tocitem>
+    <tocitem text="Operating Rhythmyx Server in a UNIX Environment" target="O1997" >
+        <tocitem text="Starting Rhythmyx Server as a Daemon in a UNIX Environment" target="O2329" />
+        <tocitem text="Starting the Rhythmyx Server as a Console in a Unix Environment" target="O6481" />
+        <tocitem text="Stopping Rhythmyx Server in a Unix Environment When Running as a Console" target="O6482" />
+        <tocitem text="Uninstalling the Rhythmyx Daemon Control Scripts" target="O6483" />
+    </tocitem>
+    <tocitem text="Stopping Rhythmyx Server as a Daemon in a UNIX Environment" target="O2345" />
+    <tocitem text="Enabling and Disabling the Pause Option" target="O1766" />
+</tocitem>
+<tocitem text="Rhythmyx Server Administrator" target="O17878" >
+    <tocitem text="How to Access the Server Administrator" target="O14566" />
+    <tocitem text="Managing Applications and Servers" target="O18616" >
+        <tocitem text="Starting and Stopping Applications" target="O2324" />
+        <tocitem text="Monitoring Statistics" target="O18617" />
+        <tocitem text="Viewing Application Performance" target="O2521" />
+    </tocitem>
+    <tocitem text="Optimizing performance" target="O18615" >
+        <tocitem text="Maintaining Caching Settings" target="O12384" />
+        <tocitem text="Changing Page Cache Settings from the Server Console" target="O2954" />
+    </tocitem>
+    <tocitem text="Maintaining Datasources" target="O14145" >
+        <tocitem text="Maintaining Driver Definitions" target="O20412" >
+            <tocitem text="Driver Configuration Dialog" target="O14155" />
+            <tocitem text="Editing a Database Driver Definition" target="O14153" />
+            <tocitem text="Adding a Database Driver Definition" target="O14152" />
+        </tocitem>
+        <tocitem text="Maintaining JNDI Datasource Configurations" target="O14147" >
+            <tocitem text="JNDI Datasource Configuration Dialog" target="O14161" />
+            <tocitem text="Adding a JNDI Datasource Configuration" target="O14162" />
+            <tocitem text="Editing a JNDI Datasource Configuration" target="O14163" />
+        </tocitem>
+        <tocitem text="Maintaining Connection Configurations" target="O14148" >
+            <tocitem text="Adding a Connection Configuration" target="O20419" />
+            <tocitem text="Editing a Connection Configuration" target="O20420" />
+        </tocitem>
+        <tocitem text="Datasource Connection Configuration Dialog" target="O20415" />
+    </tocitem>
+    <tocitem text="Setting Logging" target="O18629" >
+        <tocitem text="Logging Tab, View Sub-tab" target="O18631" />
+        <tocitem text="Logging Tab, Settings Sub-tab" target="O18633" />
+        <tocitem text="Dynamically Retrieving Server Log Data" target="O18638" />
+        <tocitem text="Configuring XML Application Logs" target="O18639" />
+    </tocitem>
+    <tocitem text="Using Directory Services" target="O12631" >
+        <tocitem text="LDAP Directory Services Framework" target="O9978" />
+        <tocitem text="Implementing LDAP Directory Services" target="O14177" >
+            <tocitem text="Maintaining Authentications" target="O9949" >
+                <tocitem text="Authentication Dialogs" target="O9950" >
+                    <tocitem text="Authentications Tab" target="O9951" />
+                    <tocitem text="Authentication Editor" target="O9952" />
+                </tocitem>
+                <tocitem text="Adding an Authentication" target="O9953" />
+                <tocitem text="Editing an Authentication" target="O9954" />
+                <tocitem text="Deleting an Authentication" target="O9955" />
+            </tocitem>
+            <tocitem text="Maintaining Directory Configurations" target="O14231" >
+                <tocitem text="Directory Configuration Dialogs" target="O9957" >
+                    <tocitem text="Directories Tab" target="O9958" />
+                    <tocitem text="Directory Editor" target="O14228" />
+                    <tocitem text="Provider URL Selector" target="O9960" />
+                    <tocitem text="JNDI Group Provider Details Dialog" target="O1887" />
+                </tocitem>
+                <tocitem text="Adding a Directory Configuration" target="O14233" />
+                <tocitem text="Editing a Directory Configuration" target="O14234" />
+                <tocitem text="Deleting a Directory Configuration" target="O9963" />
+                <tocitem text="Troubleshooting a Directory Services Configuration" target="O12668" />
+                <tocitem text="Adding a Group Provider" target="O18606" />
+                <tocitem text="Editing a Group Provider" target="O18607" />
+                <tocitem text="Deleting a Group Provider" target="O18608" />
+            </tocitem>
+            <tocitem text="Maintaining Directory Sets" target="O9964" >
+                <tocitem text="Directory Set Dialogs" target="O9965" >
+                    <tocitem text="Directory Sets Tab" target="O9966" />
+                    <tocitem text="Directory Set Editor" target="O9967" />
+                </tocitem>
+                <tocitem text="Adding a Directory Set" target="O9968" />
+                <tocitem text="Editing a Directory Set" target="O9969" />
+                <tocitem text="Deleting a Directory Set" target="O9970" />
+            </tocitem>
+            <tocitem text="Maintaining Role Providers" target="O14223" >
+                <tocitem text="Role Provider Dialogs" target="O9972" >
+                    <tocitem text="Role Providers Tab" target="O9973" />
+                    <tocitem text="Role Provider Editor" target="O14224" />
+                </tocitem>
+                <tocitem text="Adding a Role Provider" target="O14226" />
+                <tocitem text="Editing a Role Provider" target="O9976" />
+                <tocitem text="Deleting a Role Provider" target="O9977" />
+            </tocitem>
+            <tocitem text="Maintaining Catalogers" target="O14182" >
+                <tocitem text="Cataloger Configuration Dialog" target="O14189" />
+                <tocitem text="Registering a Cataloger" target="O14190" />
+                <tocitem text="Editing a Cataloger Registration" target="O14191" />
+            </tocitem>
+        </tocitem>
+        <tocitem text="Example:  Using LDAP as a Security Provider" target="O10044" >
+            <tocitem text="Example 1: Using LDAP to Authenticate Users" target="O12636" >
+                <tocitem text="Creating the Authentication" target="O18584" />
+                <tocitem text="Creating the Directory" target="O18592" />
+                <tocitem text="Creating the Security Provider" target="O18595" />
+                <tocitem text="Adding a Group Provider" target="O18599" />
+                <tocitem text="Adding Users and Groups to Roles" target="O18586" />
+            </tocitem>
+            <tocitem text="Example 2: Using LDAP as a Role Provider" target="O18588" >
+                <tocitem text="Defining Role Attributes in LDAP" target="O10075" />
+                <tocitem text="Creating the Directory Server Connection" target="O18590" />
+                <tocitem text="Creating the Directory Connection Security Provider" target="O18600" />
+                <tocitem text="Creating the Role Provider" target="O18602" />
+            </tocitem>
+        </tocitem>
+    </tocitem>
+    <tocitem text="About Security" target="O20417" >
+        <tocitem text="Blank and Multiple Security" target="O1393" />
+        <tocitem text="Security Providers and Authentication" target="O1256" >
+            <tocitem text="Security Providers Tab" target="O18620" />
+            <tocitem text="Defining a Directory Connection Security Provider" target="O12634" >
+                <tocitem text="JNDI Security Provider Details Dialog" target="O14236" />
+                <tocitem text="Adding a JNDI Security Provider" target="O14238" />
+                <tocitem text="Editing a JNDI Security Provider" target="O14239" />
+                <tocitem text="Deleting a JNDI Security Provider" target="O1593" />
+            </tocitem>
+            <tocitem text="Web Server" target="O2531" >
+                <tocitem text="Implementing Single Sign-on" target="O6488" >
+                    <tocitem text="Single Sign-on and the Rhythmyx Workbench and Server Administrator" target="O6493" />
+                    <tocitem text="Setting up a Web Server Security Provider for Single Sign-on" target="O6495" />
+                </tocitem>
+                <tocitem text="Web Server Security Provider Details Dialog" target="O6484" />
+                <tocitem text="Adding a Web Server Security Provider" target="O6485" />
+                <tocitem text="Modifying a Web Server Security Provider" target="O6486" />
+                <tocitem text="Deleting a Web Server Security Provider" target="O6487" />
+                <tocitem text="Interfacing to Rhythmyx Through Web Servers" target="O4090" >
+                    <tocitem text="Interfacing to Rhythmyx as a Servlet on J2EE Servers" target="O4091" />
+                </tocitem>
+            </tocitem>
+            <tocitem text="DBMS Table Security Provider" target="O14196" >
+                <tocitem text="DBMS Table Security Property Details Dialog" target="O14197" >
+                    <tocitem text="DBMS Table Security Property Details Provider Properties Tab" target="O14203" />
+                    <tocitem text="DBMS Table Security Property Details Backend Connection Tab" target="O14204" />
+                    <tocitem text="DBMS Table Security Property Details Authentication Tab" target="O14205" />
+                    <tocitem text="DBMS Table Security Property Details Attributes Tab" target="O14206" />
+                </tocitem>
+                <tocitem text="Adding a DBMS Table Security Provider" target="O14198" />
+                <tocitem text="Modifying a DBMS Table Security Provider" target="O14199" />
+                <tocitem text="Deleting a DBMS Table Security Provider" target="O18628" />
+            </tocitem>
+        </tocitem>
+        <tocitem text="Maintaining Access Control Lists" target="O1915" >
+            <tocitem text="Roles" target="O18609" >
+                <tocitem text="Default Roles and Members" target="O18611" />
+                <tocitem text="Add/Edit Role Dialog" target="O1273" />
+                <tocitem text="Modify Member List for &quot;Role&quot; Dialog" target="O1955" />
+                <tocitem text="New Member Dialog" target="O1984" />
+                <tocitem text="Role and Member Properties" target="O1253" />
+                <tocitem text="Role and Member Properties Required by Rhythmyx Functions" target="O18613" />
+                <tocitem text="Adding a New Role" target="O1285" />
+                <tocitem text="Editing a Role" target="O1692" />
+                <tocitem text="Deleting a Role" target="O1601" />
+                <tocitem text="Adding Existing Members to a Role" target="O1295" />
+                <tocitem text="Adding New Members to a Role" target="O18612" />
+                <tocitem text="Editing a Member's Properties" target="O1686" />
+                <tocitem text="Deleting a Member from a Role" target="O1596" />
+            </tocitem>
+            <tocitem text="Maintaining ACLs at the Server Level" target="O3696" >
+                <tocitem text="Server ACL Tab" target="O18518" />
+                <tocitem text="ACL Entry Details/Edit ACL Entry Details dialog" target="O18649" />
+                <tocitem text="Creating a Server ACL" target="O18644" />
+                <tocitem text="Editing a Server ACL" target="O18647" />
+                <tocitem text="Deleting a Server ACL" target="O1604" />
+                <tocitem text="Resolving Conflicting Access Settings" target="O18521" />
+            </tocitem>
+        </tocitem>
+        <tocitem text="Communities and Security" target="O1429" />
+    </tocitem>
+    <tocitem text="Search Configuration" target="O17889" >
+        <tocitem text="How to Override the Default Text Analyzer" target="O17803" />
+        <tocitem text="How to Override the Default Text Extractor" target="O17801" />
+        <tocitem text="Disabling Full-text Search" target="O17919" />
+        <tocitem text="Configuring Maximum Search Results Returned" target="O12405" />
+    </tocitem>
+    <tocitem text="Interfacing by remote console" target="O1873" >
+    </tocitem>
+    <tocitem text="Configuring the Java Plugin Version for Content Explorer" target="O18656" >
+        <tocitem text="Adding a Java Plugin Configuration" target="O18658" />
+        <tocitem text="Editing and Deleting Plugin Configurations" target="O8118" />
+    </tocitem>
+</tocitem>
+<tocitem text="Copyrights and Trademarks" target="O3624" />
+</toc>

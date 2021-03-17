@@ -1,0 +1,68 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Implementing LDAP Directory Services </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Directory Services, LDAP	Implementing LDAP">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="9978.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="9949.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Implementing LDAP Directory Services</h3>
+<p class="bodytext">Implementing LDAP directory services involves two major tasks:</p>
+<ol class="listnumber"><li class="listnumber">Defining an LDAP directory services configuration<p class="listcontinue">An LDAP directory services configuration defines the data used to connect to the directory server, authenticate the user, and optionally provide additional user information.  Use the Directory Services tab of the Rhythmyx Server Administrator to set up and maintain all the data for the directory services configuration.</p>
+<p class="listcontinue">An LDAP directory services configuration consists of the following kinds of data:</p>
+<ul class="listbullet2"><li class="listbullet2"><a id="h14178" class="jumptemplate" title="Maintaining Authentications" href="9949.htm" target="_self">Authentication</a><p class="listcontinue2">Authentication data defines the data used to log in to the directory server.</p>
+</li><li class="listbullet2"><a id="h14179" class="jumptemplate" title="Maintaining Directory Configurations" href="14231.htm" target="_self">Directory Configuration</a> <p class="listcontinue2">A Directory Configuration defines the data required to connect to a specific LDAP directory.</p>
+</li><li class="listbullet2"><a id="h14180" class="jumptemplate" title="Maintaining Directory Sets" href="9964.htm" target="_self">Directory Sets</a><p class="listcontinue2">A Directory Set defines a group of Directory Configurations that can be accessed together, and the data required to connect to them.  A Directory Set may consist of a single Directory Configuration, of multiple Directory Configurations for directories on the same directory server, or of multiple Directory Configurations for directories on different directory servers.</p>
+<p class="listnote">You must define a Directory Set before you can define a Directory Connection Security Provider or a Role Provider.</p>
+</li><li class="listbullet2"><a id="h14181" class="jumptemplate" title="Maintaining Role Providers" href="14223.htm" target="_self">Role Providers</a> (optional)<p class="listcontinue2">A Role Provider defines the data that determines how Rhythmyx will use directory server information to determine the user's Roles once they have been authenticated.</p>
+</li><li class="listbullet2"><a id="h14183" class="jumptemplate" title="Maintaining Catalogers" href="14182.htm" target="_self">Catalogers</a> (optional)<p class="listcontinue2">A cataloger provides the ability to retrieve data from a security provider backend.  Two types of catalogers are available:  subject catalogers retrieve data on individual users; role catalogers determine membership in a Role.</p>
+</li></ul><p class="listcontinue">You may find it useful to download and install an LDAP browser to facilitate your directory services configuration.  The browser allows you to look up and confirm attribute, connection, and directory information.  An LDAP browser makes it easier to complete the directory services configuration, but the browser is not required to complete the configuration successfully.</p>
+</li><li class="listnumber">Defining the Directory Connection Security Provider (JNDI, in this case) <p class="listcontinue">A Directory Connection Security Provider allows Rhythmyx to query the directory server to authenticate users and retrieve Role and other user information. Configure Rhythmyx to use JNDI as the Directory Connection Security Provider once you have completed the LDAP directory service configuration.</p>
+</li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">In This Section</p><p class="relateditem"><a href="9949.htm" target="_self">Maintaining Authentications</a></p><p class="relateditem"><a href="14231.htm" target="_self">Maintaining Directory Configurations</a></p><p class="relateditem"><a href="9964.htm" target="_self">Maintaining Directory Sets</a></p><p class="relateditem"><a href="14223.htm" target="_self">Maintaining Role Providers</a></p><p class="relateditem"><a href="14182.htm" target="_self">Maintaining Catalogers</a></p></td>
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="12631.htm" target="_self">Using Directory Services</a></p><p class="relateditem"><a href="9978.htm" target="_self">LDAP Directory Services Framework</a></p><p class="relateditem"><a href="10044.htm" target="_self">Example:  Using LDAP as a Security Provider</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,59 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Using XSpLit </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Using">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Well-formed_Documents.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="XSpLit_Menu_Commands.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Using XSpLit</h2>
+<p class="bodytext">Before working with XSpLit, <a id="h805" class="jumptemplate" title="Labelling Dynamic Content in HTML" href="Labelling_Dynamic_Content_in_HTML.htm" target="_self">identify dynamic content in the HTML page with prefixed field names</a>. After specifying the field names, run XSpLit to create XML, XSL, DTD, and HTML documents.</p>
+<p class="bodytext">The following procedure describes the basic steps to transform documents with XSpLit.</p>
+<ol class="listnumber"><li class="listnumber">Create HTML pages and <a id="h805_2" class="jumptemplate" title="Labelling Dynamic Content in HTML" href="Labelling_Dynamic_Content_in_HTML.htm" target="_self">label the static content</a> to define dynamic content. You can create the HTML using your preferred HTML authoring tool, or create it directly in the XSpLit Source HTML tab.</li><li class="listnumber">Open the HTML file (if you did not create it directly in XSpLit). Some ways to open the file include selecting <em class="emphasis">File &gt; Open</em>, clicking the open button <img src="fileopen.gif" alt="" height="30" width="52" vspace="2" hspace="2" align="bottom" border="0">, or dragging and dropping the file from Windows Explorer to the XSpLit Source HTML Tab.</li><li class="listnumber">(Optional) Select <em class="emphasis">Tools &gt; Options</em> and specify the <strong class="specialbold">Identifying tag for HTML markup</strong>. For more information, see &quot;<a id="h586" class="jumptemplate" title="Changing the Dynamic Data Prefix" href="Changing_the_Dynamic_Data_Prefix.htm" target="_self">Changing the Dynamic Data Prefix</a>&quot;.<p class="listcontinue"><img src="optionsdialog.gif" alt="" height="287" width="348" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">Enter the <em class="emphasis">Base location for relative URLS</em>. &nbsp;This field defines the location of stylesheets on your development server so XSpLit find them when testing context-sensitive output.</li><li class="listnumber">Select <em class="emphasis">Tools &gt; Split</em> or click <img src="toolssplit.gif" alt="" height="16" width="16" vspace="2" hspace="2" align="bottom" border="0">to generate DTD, XSL and Sample XML files.</li><li class="listnumber">The Content: XML tab is selected automatically after splitting. Add data to the sample XML file.</li><li class="listnumber">Select <em class="emphasis">Tools &gt; Merge</em> or click <img src="toolsmerge.gif" alt="" height="16" width="16" vspace="2" hspace="2" align="bottom" border="0">to combine XML and XSL into an HTML document.</li><li class="listnumber">Select <em class="emphasis">Tools &gt; Launch Browser</em> or click <img src="toolsbrowser.gif" alt="" height="16" width="16" vspace="2" hspace="2" align="bottom" border="0">to view the output file with your browser.</li><li class="listnumber">XSpLit displays any errors or processing messages in the output pane at the bottom of the dialog. &nbsp;You can maximize the output window by clicking the <img src="maximize.gif" alt="" height="16" width="17" vspace="2" hspace="2" align="bottom" border="0">button. &nbsp;To minimize the output pane, click the <img src="minimize.gif" alt="" height="16" width="15" vspace="2" hspace="2" align="bottom" border="0">button. &nbsp;To clear the output pane, click the <img src="clearbtn.gif" alt="" height="28" width="52" vspace="2" hspace="2" align="bottom" border="0">button.<p class="listcontinue"><img src="output.gif" alt="" height="300" width="400" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">Save your work. You can either:<ul class="listbullet2"><li class="listbullet2">Choose <em class="emphasis">File &gt; Save As</em> to save the document in the current tab format.</li><li class="listbullet2">Choose <em class="emphasis">File &gt; Save All As</em> to open the dialog box with multiple file options. Specify the directory for your saved files, and check the documents you want to save.</li></ul></li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="How_XSpLit_Works.htm" target="_self">How XSpLit Works</a></p><p class="relateditem"><a href="Well-formed_Documents.htm" target="_self">Well-formed Documents</a></p><p class="relateditem"><a href="XSpLit_Menu_Commands.htm" target="_self">XSpLit Menu Commands</a></p><p class="relateditem"><a href="XSpLit_Tabs.htm" target="_self">XSpLit Tabs</a></p><p class="relateditem"><a href="Using_the_XSpLit_Interface.htm" target="_self">Using the XSpLit Interface</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

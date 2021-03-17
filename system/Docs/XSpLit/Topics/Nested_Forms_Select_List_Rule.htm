@@ -1,0 +1,79 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Nested Forms Select List Rule </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Repeated Fields	Nesting Select Lists">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Basic_Forms_Select_List_Rule.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Input_and_TextArea_Elements.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h6 class="heading6">Nested Forms Select List Rule</h6>
+<p class="bodytext"><a id="h4745" class="" title="About the Root Node" href="About_the_Root_Node.htm" target="_self">About the Root Node</a></p>
+<p class="bodytext">HTML does not support nesting Tables and Lists in the form Option tag. You can nest Select lists or an entire Form within a Table cell or List item. See <a id="h4749" class="" title="Extended Table Nesting Rule" href="Extended_Table_Nesting_Rule.htm" target="_self">Extended Table Nesting Rule</a> or <a id="h4752" class="" title="Extended List Nesting Rule" href="Extended_List_Nesting_Rule.htm" target="_self">Extended List Nesting Rule</a> for more information on how a repeating Select list affects repeat behavior when nested inside other repeating items.</p>
+<p class="bodytext">Suppose you had the field <code class="monospace">psx-product/feature</code> within the following HTML code:</p>
+<p class="codeexample">&lt;table border=&quot;1&quot; width=&quot;40%&quot;&gt;<br>  &lt;tr bgcolor=&quot;lightgrey&quot; &gt;<br>    &lt;th align=&quot;left&quot;&gt;Product&lt;/th&gt;<br>    &lt;th align=&quot;left&quot;&gt;Features&lt;/th&gt;<br>  &lt;/tr&gt;<br>  &lt;tr&gt;<br>    &lt;td&gt;psx-product/name&lt;/td&gt;<br>    &lt;td&gt;<br>      &lt;form method=&quot;POST&quot;&gt;<br>      &lt;p&gt;<br>        &lt;select name=&quot;choices&quot; size=&quot;1&quot;&gt;<br>          &lt;option selected value=&quot;none&quot;&gt;Select a feature&lt;/option&gt;<br>          &lt;option  value=&quot;psx-product/feature&quot;&gt;psx-product/feature&lt;/option&gt;<br>        &lt;/select&gt;<br>        &lt;input type=&quot;submit&quot; value=&quot;Go&quot; name=&quot;Go&quot;&gt;<br>      &lt;/p&gt;<br>    &lt;/td&gt;<br>  &lt;/tr&gt;<br>&lt;/table&gt;</p>
+<p class="bodytext">XSpLit processes the outermost repeating element, the table row, first. The row repeats once per <code class="monospace">product</code>. The second column contains the nested Select list, which XSpLit processes next. .The outer table row repeat exhausted the <code class="monospace">product</code> node, so an Option element repeats once for each <code class="monospace">feature</code>.</p>
+<p class="bodytext">At design time, the output looks like this:</p>
+<p class="bodytext"><img src="11-d.gif" alt="" height="103" width="330" vspace="0" hspace="0" align="bottom" border="0"></p>
+<p class="bodytext">At run time, the output looks like this:</p>
+<table width="523" cellpadding="2" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr align="left" valign="top">
+<td width="261"><p class="bodytext">Content: XML</p>
+</td>
+<td width="262"><p class="bodytext">Output: HTML</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="261"><p class="bodytext"><code class="monospace">&lt;products&gt;<br>  &lt;product&gt;<br>    &lt;name&gt;Widget&lt;/name&gt;<br>    &lt;feature&gt;It's cheap!&lt;/feature&gt;<br>    &lt;feature&gt;It's easy!&lt;/feature&gt;<br>    &lt;feature&gt;It's fun!&lt;/feature&gt;<br>  &lt;/product&gt;<br>  &lt;product&gt;<br>    &lt;name&gt;Gadget&lt;/name&gt;<br>    &lt;feature&gt;Durable!&lt;/feature&gt;<br>  &lt;/product&gt;<br>  &lt;product&gt;<br>    &lt;name&gt;Gizmo&lt;/name&gt;<br>    &lt;feature&gt;Low maintenance!&lt;/feature&gt;<br>    &lt;feature&gt;Trouble free!&lt;/feature&gt;<br>  &lt;/product&gt;<br>&lt;/products&gt;</code></p>
+</td>
+<td width="262"><p class="bodytext"><img src="z11-1.gif" alt="" height="221" width="254" vspace="2" hspace="2" align="bottom" border="0"></p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext">&nbsp; </p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Select_Lists.htm" target="_self">Select Lists</a></p><p class="relateditem"><a href="Basic_Forms_Select_List_Rule.htm" target="_self">Basic Forms Select List Rule</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+
