@@ -209,8 +209,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       // get the credentials
       Element root = doc.getDocumentElement();
       String uid = root.getAttribute("userId");
-      String pwd = root.getAttribute("password");
-     // String pwd = decryptPwd(uid, root.getAttribute("password"));
+      String pwd = decryptPwd(uid, root.getAttribute("password"));
       String lock = root.getAttribute("overrideLock");
       boolean overrideLock = "yes".equalsIgnoreCase(lock);
 
