@@ -1017,10 +1017,9 @@ public class PSDesignerConnection
                // guess there wasn't a reason
                reason = statusCode;
             }
-
             throw new PSServerException(
-               IPSConnectionErrors.RESPONSE_PARSE_EXCEPTION_NOLINEINFO,
-               reason);
+                    IPSConnectionErrors.UNKNOWN_SERVER_EXCEPTION,
+                    reason);
          }
          else {
             Object[] args =
