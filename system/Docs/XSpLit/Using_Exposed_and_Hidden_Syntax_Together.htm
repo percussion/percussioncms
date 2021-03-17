@@ -1,0 +1,72 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Using Exposed and Hidden Syntax Together </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Syntax	Exposed and Hidden Together">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Shortcut_Using_the_Form_Tag.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="HTML_Blocks.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h4 class="heading4">Using Exposed and Hidden Syntax Together</h4>
+<p class="bodytext">You can use both Exposed and Hidden syntax in the same document. For example:</p>
+<p class="bodytext">&nbsp;<strong class="specialbold">Design time HTML:</strong></p>
+<p class="codeexample">&lt;a href=&quot;person.htm&quot; id=&quot;psx-person/link&quot;&gt;&lt;font size=&quot;6&quot; psx-size=&quot;psx-person/size&quot;&gt;ID:&lt;span&gt;psx-person/empid&lt;/span&gt;&lt;/font&gt;&lt;/a&gt;</p>
+<p class="bodytext">&nbsp;<strong class="specialbold">XSpLit-generated XML:</strong></p>
+<p class="codeexample">&lt;person&gt;</p>
+<p class="codeexample">&lt;link&gt;person.htm&lt;/link&gt;</p>
+<p class="codeexample">&lt;size&gt;6&lt;/size&gt;</p>
+<p class="codeexample">&lt;empid&gt;&lt;/empid&gt;</p>
+<p class="codeexample">&lt;/person&gt;</p>
+<p class="bodytext">&nbsp;<strong class="specialbold">Input XML Data:</strong></p>
+<p class="codeexample">person/link = &quot;person.htm?empid=345&quot;</p>
+<p class="codeexample">person/empid = &quot;345&quot;</p>
+<p class="codeexample">person/size = &quot;12&quot;</p>
+<p class="bodytext">&nbsp;<strong class="specialbold">Output HTML at run time:</strong></p>
+<p class="codeexample">&lt;a href=&quot;person.htm?empid=345&quot;&gt;&lt;font size=&quot;12&quot;&gt;ID: &lt;span&gt;345&lt;/span&gt;&lt;/font&gt;&lt;/a&gt;</p>
+<p class="bodytext"></p>
+<p class="bodytext">&nbsp; </p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Exposed_and_Hidden_Syntax.htm" target="_self">Exposed and Hidden Syntax</a></p><p class="relateditem"><a href="Exposed_Syntax.htm" target="_self">Exposed Syntax</a></p><p class="relateditem"><a href="Hidden_Syntax.htm" target="_self">Hidden Syntax</a></p><p class="relateditem"><a href="HTML_Blocks.htm" target="_self">HTML Blocks</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

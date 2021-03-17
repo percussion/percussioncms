@@ -1,0 +1,64 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Customizing a Search When Using the Database Search Engine </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Searches	Customizing, Searches	Searches, Database, Customizing">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="8926.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="8947.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h5 class="heading5">Customizing a Search When Using the Database Search Engine</h5>
+<p class="bodytext">The Search dialog includes a default set of fields when you first call the search.  If you want to search on different fields, you must customize the search dialog.  To customize the search dialog:</p>
+<ol class="listnumber"><li class="listnumber">Start a search by double-clicking the New Search node, choosing <em class="emphasis">Content</em> &gt; <em class="emphasis">Search</em> from the menu bar, or right-clicking in the Navigation Tree pane and choosing <em class="emphasis">Content </em>&gt; <em class="emphasis">Search</em> from the pop-up menu.</li><li class="listnumber">At the bottom of the search dialog, click the [<strong class="buttons">Customize</strong>] button.<p class="listcontinue">Rhythmyx displays the Field Selection Editor.</p>
+<p class="widegraphic"><img src="cxfieldselection.gif" alt="Field Selector" height="669" width="544" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">In the Category drop list, choose the category of Content Editor fields that you want to search on:<ul class="listbullet2"><li class="listbullet2">System – system Content Editor fields</li><li class="listbullet2">Shared  – shared Content Editor fields</li><li class="listbullet2">&lt;Content Type&gt; – local Content Editor fields for the Content Type</li><li class="listbullet2">All – all Content Editor fields</li></ul></li><li class="listnumber">After you choose a category the Available Fields table displays all fields available as a selection criteria in the category.</li><li class="listnumber">To see only fields within the selected Category that match a certain string, enter a string in Field Filter. The string matches with the Display Label column and is case-sensitive. To apply the filter to the Available Fields, click <img src="cxapplyfilter.gif" alt="CXApplyFilter" height="26" width="28" vspace="2" hspace="2" align="bottom" border="0">. </li><li class="listnumber">To include a search field, click the row for the field in the Available Fields table and click <img src="cxinclude.gif" alt="Include" height="22" width="79" vspace="2" hspace="2" align="bottom" border="0">.. Include any number of fields.<p class="listcontinue">The Selected Fields table displays the fields that you include. It also displays the fields that are included by default.</p>
+<p class="listcontinue">Note that some fields cascade.  In other words, the values available in one field depend on the value you specify in another field.  Cascading fields may be optional or required.  If a cascading field is required, Rhythmyx includes it automatically.  If the field is optional, Rhythmyx displays a message notifying you about the dependency and offering to include the dependency.</p>
+</li><li class="listnumber">To remove a search field after selecting it, choose <img src="cxremove.gif" alt="Remove" height="21" width="24" vspace="2" hspace="2" align="bottom" border="0">. You can remove any filed except Title (sys_title).</li><li class="listnumber">To change the order in which the Content Search dialog displays the custom search fields, click on a field and click <img src="cxcustomsortup.gif" alt="CXCustomsortup.gif" height="26" width="26" vspace="2" hspace="2" align="bottom" border="0"> to move the field up, or click  <img src="cxcustomsortdown.gif" alt="cxcustomsortdown.gif" height="26" width="26" vspace="2" hspace="2" align="bottom" border="0"> to move the field down.</li><li class="listnumber">Click [<strong class="buttons">OK</strong>].<p class="listcontinue">The dialog closes and Rhythmyx displays the selected fields in the Search Criteria section of the Content Search box.</p>
+<p class="listcontinue">Each time you create and run a new search, Rhythmyx saves the search query in the Search Results node. If you do not run additional searches, the search query in Search Results is saved for the current session only; you may rerun it during the current session by clicking Search Results.  </p>
+<p class="listcontinue">You can <a id="h8962" class="jumptemplate" title="Saving a Search Query" href="8948.htm" target="_self">save your search query</a> to make it available in future sessions and to other users.</p>
+</li></ol><p class="note"><em class="emphasis">When entering criteria for a Search, the values available in the Content Type field depend on the Community selected.  If no Community is specified, all Content Types are available.  However, if you specify a Community, only Content Types associated with that Community are available.</em></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="8925.htm" target="_self">Searching for Content Using the Database Search Engine</a></p><p class="relateditem"><a href="8926.htm" target="_self">Performing a Basic Search Using the Database Search Engine</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

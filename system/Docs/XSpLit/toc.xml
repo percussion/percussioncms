@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE toc
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+<toc version="1.0">
+
+
+<tocitem text="XSpLit Overview" target="O5882" />
+<tocitem text="How XSpLit Works" target="O3419" >
+    <tocitem text="Well-formed Documents" target="O3438" />
+    <tocitem text="Using XSpLit" target="O3431" />
+    <tocitem text="XSpLit Menu Commands" target="O3441" />
+    <tocitem text="XSpLit Tabs" target="O3434" />
+    <tocitem text="Using the XSpLit Interface" target="O3458" >
+        <tocitem text="Editing Text" target="O3410" />
+        <tocitem text="Find Text" target="O3414" />
+        <tocitem text="Find and Replace" target="O3412" />
+        <tocitem text="Goto" target="O3416" />
+        <tocitem text="Status Bar" target="O3421" />
+    </tocitem>
+</tocitem>
+<tocitem text="Formatting Dynamic Content" target="O3460" >
+    <tocitem text="What is SPAN?" target="O2535" />
+    <tocitem text="Formatting Snippet Variants" target="O5888" />
+    <tocitem text="Labelling Dynamic Content in HTML" target="O1896" >
+        <tocitem text="Field Names and Prefixes" target="O3461" >
+            <tocitem text="About XML Fields and DTDs" target="O1264" />
+            <tocitem text="Field Names" target="O1792" />
+            <tocitem text="Hierarchical Field Names" target="O1829" />
+            <tocitem text="Root Node Name" target="O2212" />
+            <tocitem text="Field Name Prefix" target="O1791" >
+                <tocitem text="Changing the Dynamic Data Prefix" target="O1409" />
+            </tocitem>
+        </tocitem>
+        <tocitem text="Exposed and Hidden Syntax" target="O1783" >
+            <tocitem text="Exposed Syntax" target="O1784" >
+                <tocitem text="Exposed Syntax-Fields as Tag Content" target="O1785" />
+                <tocitem text="Exposed Syntax-Fields as Tag Attributes" target="O1786" />
+            </tocitem>
+            <tocitem text="Hidden Syntax" target="O1826" >
+                <tocitem text="Hidden Syntax: Fields as Tag Content" target="O4370" />
+                <tocitem text="Hidden Syntax Fields as Tag Attributes" target="O4372" />
+                <tocitem text="Special Shortcut Syntax" target="O2304" >
+                    <tocitem text="Shortcut Using the Image Tag" target="O2293" />
+                    <tocitem text="Shortcut Using the Anchor Tag" target="O4373" />
+                    <tocitem text="Shortcut Using the Form Tag" target="O4375" />
+                </tocitem>
+            </tocitem>
+            <tocitem text="Using Exposed and Hidden Syntax Together" target="O2503" />
+            <tocitem text="HTML Blocks" target="O1842" />
+        </tocitem>
+        <tocitem text="Dynamic HTML" target="O1646" />
+        <tocitem text="Formatting Repeated Fields" target="O1814" >
+            <tocitem text="About the Root Node" target="O1260" />
+            <tocitem text="Repeating Table Rows" target="O3462" >
+                <tocitem text="Basic Table Rule" target="O1392" >
+                    <tocitem text="Repeating in Individual Table Cells" target="O4364" >
+                        <tocitem text="Repeating Single Nodes" target="O2184" />
+                        <tocitem text="Repeating Multiple Nodes" target="O2182" />
+                    </tocitem>
+                    <tocitem text="Repeating in Different Table Cells" target="O3464" >
+                        <tocitem text="When Cell Contents Do Not Share Nodes" target="O2537" />
+                        <tocitem text="When Cell Contents Share Nodes" target="O2538" />
+                    </tocitem>
+                </tocitem>
+                <tocitem text="Nested Table Rule" target="O1980" >
+                    <tocitem text="Nested Table Example" target="O1979" />
+                    <tocitem text="Nested Tables for Formatting" target="O1981" />
+                    <tocitem text="Extended Table Nesting Rule" target="O1788" />
+                </tocitem>
+            </tocitem>
+            <tocitem text="Repeating Lists" target="O2181" >
+                <tocitem text="Basic List Rule" target="O1391" />
+                <tocitem text="Nested List Rule" target="O1978" />
+                <tocitem text="Extended List Nesting Rule" target="O1787" />
+            </tocitem>
+            <tocitem text="Repeated Form Elements" target="O2180" >
+                <tocitem text="Select Lists" target="O4376" >
+                    <tocitem text="Basic Forms Select List Rule" target="O1389" />
+                    <tocitem text="Nested Forms Select List Rule" target="O1976" />
+                </tocitem>
+                <tocitem text="Input and TextArea Elements" target="O4377" >
+                    <tocitem text="Basic Input and Text Area Rule" target="O1390" />
+                    <tocitem text="Advanced Example" target="O1307" />
+                    <tocitem text="Nested Input and Text Area Rule" target="O1977" />
+                </tocitem>
+            </tocitem>
+            <tocitem text="Limiting Element Repetition" target="O1900" />
+        </tocitem>
+        <tocitem text="Pre-selected and Pre-checked Form Fields" target="O2014" />
+        <tocitem text="Working with Multiple Contexts" target="O2551" >
+            <tocitem text="Defining a Document Alias" target="O1549" />
+            <tocitem text="Using Document Aliases" target="O2501" />
+            <tocitem text="Complete Document Alias HTML" target="O1431" />
+        </tocitem>
+    </tocitem>
+</tocitem>
+<tocitem text="Splitting Slots" target="O2317" >
+    <tocitem text="Setting the Related Content Variable" target="O2276" />
+    <tocitem text="Related Content Definition" target="O2169" />
+    <tocitem text="Slot Formatting" target="O2299" >
+        <tocitem text="Defining Slots with Local Formatting" target="O1569" />
+        <tocitem text="Specifying a Template for a Slot" target="O2307" />
+        <tocitem text="Best Practices for Writing Manual Templates" target="O8696" />
+    </tocitem>
+    <tocitem text="Adding Parameters to a Slot Definition" target="O1298" />
+    <tocitem text="Hiding a Slot from Active Assembly" target="O3481" />
+</tocitem>
+</toc>
