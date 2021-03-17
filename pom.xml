@@ -1017,6 +1017,7 @@
         </plugins>
     </reporting>
     <repositories>
+        <!--
         <repository>
             <id>github</id>
             <releases>  <enabled>true</enabled>  </releases>
@@ -1026,6 +1027,7 @@
             <name>GitHub Percussion Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/percussion/percussioncms</url>
         </repository>
+        -->
         <repository>
             <id>perc-release-repo</id>
             <url>https://mvn.percussion.com/repositories/releases/</url>
@@ -1074,7 +1076,7 @@
 
 
     <pluginRepositories>
-        <pluginRepository>
+        <!-- <pluginRepository>
             <id>github</id>
             <releases>  <enabled>true</enabled>  </releases>
             <snapshots> <enabled>true</enabled>
@@ -1083,6 +1085,7 @@
             <name>GitHub Percussion Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/percussion/percussioncms</url>
         </pluginRepository>
+        -->
         <pluginRepository>
             <id>perc-releases-repo</id>
             <name>Perc releases Repository</name>
@@ -2845,7 +2848,7 @@
     </dependencyManagement>
 
     <distributionManagement>
-        <repository>
+   <!--     <repository>
             <id>github</id>
             <name>GitHub Percussion Apache Maven Release Packages</name>
             <url>https://maven.pkg.github.com/percussion/percussioncms</url>
@@ -2855,5 +2858,14 @@
             <name>GitHub Percussion Apache Maven Snapshot Packages </name>
             <url>https://maven.pkg.github.com/percussion/percussioncms/</url>
         </snapshotRepository>
+        -->
+            <snapshotRepository>
+                <id>percussion.s3.repo</id>
+                <url>s3://percussion-maven-repo/repositories/snapshots</url>
+            </snapshotRepository>
+            <repository>
+                <id>percussion.s3.repo</id>
+                <url>s3://percussion-maven-repo/repositories/releases/</url>
+            </repository>
     </distributionManagement>
 </project>
