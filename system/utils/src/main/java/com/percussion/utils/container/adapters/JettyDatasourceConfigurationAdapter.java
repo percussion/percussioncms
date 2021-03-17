@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -25,12 +25,7 @@
 package com.percussion.utils.container.adapters;
 
 import com.percussion.util.PSProperties;
-import com.percussion.utils.container.DefaultConfigurationContextImpl;
-import com.percussion.utils.container.IPSConfigurationAdapter;
-import com.percussion.utils.container.IPSJdbcJettyDbmsDefConstants;
-import com.percussion.utils.container.IPSJndiDatasource;
-import com.percussion.utils.container.PSJndiDatasourceImpl;
-import com.percussion.utils.container.PSStaticContainerUtils;
+import com.percussion.utils.container.*;
 import com.percussion.utils.container.config.ContainerConfig;
 import com.percussion.utils.container.config.model.impl.BaseContainerUtils;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
@@ -51,26 +46,12 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -517,7 +498,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
             try (OutputStream out = new FileOutputStream(file)) {
                 PSXmlDocumentBuilder.write(doc, out);
             } catch (IOException e) {
-                ms_log.error("Cound not save jetty datasource configuration jetty-ds.xml", e);
+                ms_log.error("Could not save jetty datasource configuration jetty-ds.xml", e);
                 throw e;
             }
 
