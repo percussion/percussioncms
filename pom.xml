@@ -85,7 +85,7 @@
    <properties>
        <build.profile.id>dev</build.profile.id>
        <versionString>INTERNAL</versionString>
-        <jenkins.buildNumber>2020</jenkins.buildNumber>
+        <jenkins.buildNumber>2021</jenkins.buildNumber>
        <maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
        <buildNumber>${maven.build.timestamp}</buildNumber>
        <jacoco.it.execution.data.file>${project.build.directory}/coverage-reports/jacoco-it.exec</jacoco.it.execution.data.file>
@@ -950,7 +950,7 @@
         </plugins>
     </reporting>
     <repositories>
-        <repository>
+      <!--  <repository>
             <id>github</id>
             <releases>  <enabled>true</enabled>  </releases>
             <snapshots> <enabled>true</enabled>
@@ -959,6 +959,7 @@
             <name>GitHub Percussion Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/percussion/percussioncms</url>
         </repository>
+        -->
         <repository>
             <id>perc-release-repo</id>
             <url>https://mvn.percussion.com/repositories/releases/</url>
@@ -1078,25 +1079,18 @@
                 <artifactId>netty-all</artifactId>
                 <version>${nettyall.version}</version>
             </dependency>
-
-            <!-- https://mvnrepository.com/artifact/org.mortbay.jasper/apache-jsp -->
             <dependency>
                 <groupId>org.mortbay.jasper</groupId>
                 <artifactId>apache-jsp</artifactId>
                 <version>8.5.9.1</version>
                 <scope>provided</scope>
             </dependency>
-
-                        <!-- https://mvnrepository.com/artifact/org.mortbay.jasper/apache-el -->
             <dependency>
                 <groupId>org.mortbay.jasper</groupId>
                 <artifactId>apache-el</artifactId>
                 <version>8.5.9.1</version>
                       <scope>provided</scope>
             </dependency>
-                        
-
-            <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
@@ -2883,7 +2877,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
+<!--
     <distributionManagement>
         <repository>
             <id>github</id>
@@ -2895,5 +2889,16 @@
             <name>GitHub Percussion Apache Maven Snapshot Packages </name>
             <url>https://maven.pkg.github.com/percussion/percussioncms/</url>
         </snapshotRepository>
+    </distributionManagement>
+    -->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>percussion.s3.repo</id>
+            <url>s3://percussion-maven-repo/repositories/releases/</url>
+        </repository>
     </distributionManagement>
 </project>
