@@ -169,6 +169,7 @@
        <oracle.version>12.1.0.1</oracle.version>
        <jtds.version>1.3.1</jtds.version>
        <install.jre.version>8.222.10.1</install.jre.version>
+       <axiscore.version>1.4.2</axiscore.version>
        <axis.version>1.4.1</axis.version>
        <httpcomponents.version>4.5.8</httpcomponents.version>
        <tika.version>1.24.1</tika.version>
@@ -2137,10 +2138,10 @@
 
 
             <!-- https://mvnrepository.com/artifact/org.apache.axis/axis -->
-            <dependency><!-- current is 1.4.1 -->
+            <dependency><!-- current is 1.4.2 -->
                 <groupId>axis</groupId>
                 <artifactId>axis</artifactId>
-                <version>${axis.version}</version>
+                <version>${axiscore.version}</version>
             </dependency>
             <dependency><!-- current is 1.4.1 -->
                 <groupId>axis</groupId>
@@ -2843,7 +2844,7 @@
             <dependency>
                 <groupId>axis</groupId>
                 <artifactId>axis-jaxrp</artifactId>
-                <version>1.4.1</version>
+                <version>${axis.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>

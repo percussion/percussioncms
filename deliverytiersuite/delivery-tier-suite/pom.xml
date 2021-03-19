@@ -105,6 +105,7 @@
         <oracle.version>12.1.0.1</oracle.version>
         <jrds.version>1.3.1</jrds.version>
         <install.jre.version>8.222.10.1</install.jre.version>
+        <axiscore.version>1.4.2</axiscore.version>
         <axis.version>1.4.1</axis.version>
         <httpcomponents.version>4.5.8</httpcomponents.version>
         <log4j2.version>2.13.2</log4j2.version>
