@@ -170,7 +170,7 @@
 	<dependency>
 	    <groupId>axis</groupId>
 	    <artifactId>axis</artifactId>
-	    <version>1.4</version>
+        <version>${axiscore.version}</version>
         <exclusions>
             <exclusion>
                 <groupId>commons-logging</groupId>
