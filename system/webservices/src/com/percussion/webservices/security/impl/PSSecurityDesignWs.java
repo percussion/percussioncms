@@ -514,25 +514,24 @@ public class PSSecurityDesignWs extends PSSecurityBaseWs implements
    private Map<PSCommunity, List<PSObjectSummary>> filterByCommunityVisibility(
          Map<IPSGuid,IPSCatalogSummary> catSummaries, Map<IPSGuid,PSCommunity> communities)
    {
-      IPSAclService service = PSAclServiceLocator.getAclService();
 
+      IPSAclService service = PSAclServiceLocator.getAclService();
       Map<IPSGuid,IPSAcl> objectAcls = new HashMap<IPSGuid,IPSAcl>();
       for (IPSGuid g : catSummaries.keySet()) {
          IPSAcl acl = service.loadAclForObject(g);
-
          objectAcls.put(g ,acl);
       }
 
       Map<PSCommunity, List<PSObjectSummary>> filteredSummaries =
          new HashMap<PSCommunity, List<PSObjectSummary>>();
-      Map<String, PSCommunity> communitiesByName = 
-         new HashMap<String, PSCommunity>();
-      for (IPSGuid g : communities.keySet())
-      {
-         filteredSummaries.put(communities.get(g), new ArrayList<PSObjectSummary>());
-      }
 
-      //TODO: This code didn't seem to do anything at all so I removed it.
+      Map<IPSGuid,PSObjectSummary> objSummaries = PSWebserviceUtils
+              .toObjectSummaries(catSummaries, objectAcls);
+
+      List<PSObjectSummary> objSum = new ArrayList(objSummaries.values());
+      for (Map.Entry<IPSGuid,PSCommunity> comm : communities.entrySet()) {
+         filteredSummaries.put(comm.getValue(), objSum);
+      }
 
       return filteredSummaries;
    }
