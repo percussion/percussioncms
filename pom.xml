@@ -195,7 +195,7 @@
        <jfx.version>11.0.2</jfx.version>
        <twelvemonkeys.version>3.6</twelvemonkeys.version>
        <commons.beanutils.version>1.9.4</commons.beanutils.version>
-       <xstream.version>1.4.15</xstream.version>
+       <xstream.version>1.4.16</xstream.version>
        <log4j2.version>2.13.2</log4j2.version>
        <guava.version>24.1.1-jre</guava.version>
        <xerces.version>2.12.1</xerces.version>
