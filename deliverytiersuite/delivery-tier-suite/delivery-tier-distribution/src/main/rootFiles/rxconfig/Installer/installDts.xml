@@ -193,18 +193,19 @@
         </copy>
         <echo>Dropping Metadata Tables.......</echo>
         <PSExecDTSSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
-                          qualifyViewNames="" sql="DROP TABLE IF EXISTS PERC_PAGE_METADATA_PROPERTIES"/>
+                          qualifyViewNames=""
+                          sql="if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'PERC_PAGE_METADATA_PROPERTIES');drop table PERC_PAGE_METADATA_PROPERTIES;"/>
         <PSExecDTSSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
-                          qualifyViewNames="" sql="DROP TABLE IF EXISTS PERC_PAGE_METADATA"/>
+                          qualifyViewNames="" sql="if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'PERC_PAGE_METADATA');drop table PERC_PAGE_METADATA;"/>
     </target>
 
 
     <target name="updateStagingDTSTableSchema">
         <echo>Dropping Staging Metadata Tables.......</echo>
         <PSExecStagingDTSSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
-                                 qualifyViewNames="" sql="DROP TABLE IF EXISTS PERC_PAGE_METADATA_PROPERTIES"/>
+                                 qualifyViewNames="" sql="if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'PERC_PAGE_METADATA_PROPERTIES');drop table PERC_PAGE_METADATA_PROPERTIES;"/>
         <PSExecStagingDTSSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
-                                 qualifyViewNames="" sql="DROP TABLE IF EXISTS PERC_PAGE_METADATA"/>
+                                 qualifyViewNames="" sql="if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'PERC_PAGE_METADATA');drop table PERC_PAGE_METADATA;"/>
 
     </target>
     <macrodef name="install-dts">
