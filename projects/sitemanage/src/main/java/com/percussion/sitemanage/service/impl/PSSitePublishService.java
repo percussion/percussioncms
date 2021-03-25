@@ -601,7 +601,7 @@ public class PSSitePublishService implements IPSSitePublishService
         if ((sum.isPage() || sum.isResource()))
         {
             PSPublishingAction tdActionPublishProps = new PSPublishingAction(
-                    PSPublishingAction.PUBLISHING_ACTION_PUBLISH, true);
+                    PSPublishingAction.PUBLISHING_ACTION_PUBLISH, false);
 
             if (itemWorkflowService.isTriggerAvailable(id, IPSItemWorkflowService.TRANSITION_TRIGGER_PUBLISH))
             {
@@ -610,7 +610,16 @@ public class PSSitePublishService implements IPSSitePublishService
 
             pubActions.add(tdActionPublishProps);
 
-            pubActions.add(new PSPublishingAction(PSPublishingAction.PUBLISHING_ACTION_SCHEDULE, true));
+            //Changed enable scheduled action to be false by default.
+            PSPublishingAction tdActionScheduleProps = new PSPublishingAction(PSPublishingAction.PUBLISHING_ACTION_SCHEDULE, false);
+            //Place this condition to enable scheduled action to be true if there are Publish rights for the user.
+            //Otherwise for eg. the contributor user who is not supposed to have publish rights will have the scheduled publish enabled for them.
+            if (itemWorkflowService.isTriggerAvailable(id, IPSItemWorkflowService.TRANSITION_TRIGGER_PUBLISH))
+            {
+                tdActionScheduleProps.setEnabled(true);
+            }
+
+            pubActions.add(tdActionScheduleProps);
 
             PSPublishingAction tdActionProps = new PSPublishingAction(PSPublishingAction.PUBLISHING_ACTION_TAKEDOWN,
                     false);
