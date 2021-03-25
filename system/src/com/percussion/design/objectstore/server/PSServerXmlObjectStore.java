@@ -808,7 +808,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       checkCanReadApplication(appName, tok, true);
 
       // shouldn't be able to save files to apps that aren't locked
-      if (!isApplicationLocked(lockId, appName))
+      if (!isApplicationLocked(lockId, appName + "-" + appFile.getName()))
       {
          throw new PSNotLockedException(IPSObjectStoreErrors.LOCK_NOT_HELD,
                appName);
@@ -816,7 +816,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
       else
       {
          // extend the lock to be sure we keep it
-         getApplicationLock(lockId, appName, 30);
+         getApplicationLock(lockId,  appName + "-" + appFile.getName(), 30);
       }
 
       // we assume the request root is the application directory
