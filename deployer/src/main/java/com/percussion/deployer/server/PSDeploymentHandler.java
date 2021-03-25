@@ -3547,7 +3547,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     		  }catch(Exception ex){}
     	  }
     	  
-    	  ms_log.warn(msg, e);
+    	  ms_log.warn(msg);
           
     	  try{
 	    	  // its possible that session has timed out, so
@@ -3570,7 +3570,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
 	                	  if(clientSessId!= null)
 	                		  msg = msg + " For Session Id: " + clientSessId;
 	                	  
-	                	  ms_log.warn(msg,exSession);
+	                	  ms_log.warn(msg);
 	                  }
 	               }
 	            }
