@@ -35,12 +35,8 @@ import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
 import java.util.Date;
 import java.util.Properties;
 
@@ -93,7 +89,7 @@ public class PSI18nStartupManager implements IPSNotificationListener {
                 success = PSTmxResourceBundle.getInstance().loadResources();
                 if (success && !needToRun)
                     return;
-            } catch (IOException | SAXException e) {
+            } catch (IOException | SAXException | ParserConfigurationException e) {
                 m_log.error("Invalid tmx file detected. will backup and regenerate "+masterFile.getAbsolutePath() +" error :"+e.toString());
                 backup = true;
                 success = false;

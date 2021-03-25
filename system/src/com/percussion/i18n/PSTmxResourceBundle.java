@@ -33,16 +33,21 @@ import com.percussion.services.general.IPSRhythmyxInfo;
 import com.percussion.services.general.PSRhythmyxInfoLocator;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.log4j.Logger;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Singleton class to load the TMX resources and expose methods for serverwide
@@ -59,6 +64,7 @@ import java.util.*;
   * to a size to slowdown loading resources signinfcantly, we may have to
   * consider reading resources in a separate thread.
   */
+@SuppressFBWarnings("PATH_TRAVERSAL_IN")
 public class PSTmxResourceBundle
    implements IPSTmxDtdConstants
 {
@@ -77,7 +83,7 @@ public class PSTmxResourceBundle
       {
          loadResources();
       }
-      catch(Throwable t)
+      catch(Exception t)
       {
          Logger l = Logger.getLogger("TmxResourceBundle");
          l.error("Unexpected error loading resources " 
@@ -123,16 +129,12 @@ public class PSTmxResourceBundle
          ms_MissingResources.store(fos,
             "Created by " + SUBSYSTEM);
       }
-      catch(Throwable t)
+      catch(Exception t)
       {
          Logger l = Logger.getLogger("TmxResourceBundle");
          l.error("Unexpected error during termination " 
-            + t.getLocalizedMessage());
-         //if debug is on dump the stack to server console
-         if(ms_Debug)
-         {
-            t.printStackTrace();
-         }
+            + t.getMessage());
+        l.debug(t.getMessage(),t);
       }
    }
 
@@ -367,7 +369,7 @@ public class PSTmxResourceBundle
     /**
      * Name of the module to print on server console for displaying messages.
      */
-    static private final String SUBSYSTEM = "I18n";
+    private static final String SUBSYSTEM = "I18n";
 
     /**
      * Properties object to cache the missing resources. Never <code>null</code>.
@@ -388,16 +390,17 @@ public class PSTmxResourceBundle
     private String m_rxRootDir;
 
 
-    private void processResourceFiles(Path p) throws IOException, SAXException {
+    private void processResourceFiles(Path p) throws IOException, SAXException, ParserConfigurationException {
         if(Files.exists(p)){
-            Iterator<Path> files
-                    = p.iterator();
-            while(files.hasNext()){
-                Path f = files.next();
-                if(f.toAbsolutePath().endsWith(".tmx")){
-                    addResourcesToCache(getTmxResourceDoc(f));
+            try(Stream<Path> stream =Files.list(p)){
+                Iterator<Path> files = stream.iterator();
+                    while (files.hasNext()) {
+                        Path f = files.next();
+                        if (f.toAbsolutePath().toString().endsWith(".tmx")) {
+                            addResourcesToCache(getTmxResourceDoc(f));
+                        }
+                    }
                 }
-            }
         }
     }
     /**
@@ -406,8 +409,7 @@ public class PSTmxResourceBundle
      * @throws SAXException
      */
    public synchronized boolean loadResources()
-      throws IOException, SAXException
-    {
+           throws IOException, SAXException, ParserConfigurationException {
       flushCache();
 
       PSConsole.printMsg(SUBSYSTEM, "Loading I18n Resources to Cache...");
@@ -434,13 +436,16 @@ public class PSTmxResourceBundle
       return true;
     }
 
-    private Document getTmxResourceDoc(Path f) throws IOException, SAXException {
+    private Document getTmxResourceDoc(Path f) throws IOException, SAXException, ParserConfigurationException {
 
         try(FileInputStream fis = new FileInputStream(f.toFile())) {
             //must use UTF-8 encoding to read the file
-            return PSXmlDocumentBuilder.createXmlDocument(
-                    new InputStreamReader(fis,
-                            StandardCharsets.UTF_8), false);
+             DocumentBuilderFactory factory = PSXmlDocumentBuilder.getDocumentBuilderFactory(false);
+             factory.setIgnoringComments(true);
+             factory.setIgnoringElementContentWhitespace(true);
+              factory.setValidating(false);
+              DocumentBuilder db = factory.newDocumentBuilder();
+              return db.parse(fis);
         }
     }
 
@@ -451,21 +456,28 @@ public class PSTmxResourceBundle
             PSConsole.printMsg(
                     SUBSYSTEM, "Invalid TMX Document. Header element missing");
         }
-        Element header = (Element)nl.item(0);
-        nl = header.getElementsByTagName(ELEM_PROP);
+
+        Element header=null;
+        if(nl.item(0) instanceof  Element)
+            header = (Element)nl.item(0);
+
+        if(header!=null)
+            nl = header.getElementsByTagName(ELEM_PROP);
+
         if(nl == null || nl.getLength() < 1)
         {
             PSConsole.printMsg(SUBSYSTEM,
                     "Invalid TMX Document. No supported language is specified in the header");
         }
-        Element elem = null;
+
+        Node elem = null;
         String value = null;
         Node node = null;
         int nlLength = nl.getLength();
         for(int i=0; i<nlLength; i++)
         {
-            elem = (Element)nl.item(i);
-            if(!elem.getAttribute(ATTR_TYPE).equals(ATTR_VAL_SUPPORTEDLANGUAGE))
+            elem = nl.item(i);
+            if(elem instanceof Element && !elem.getAttributes().getNamedItem(ATTR_TYPE).getNodeValue().equals(ATTR_VAL_SUPPORTEDLANGUAGE))
                 continue;
             node = elem.getFirstChild();
             value = "";
@@ -496,12 +508,17 @@ public class PSTmxResourceBundle
         nlLength = nl.getLength();
         for(int i=0; nl!=null && i<nlLength; i++) {
             elem = (Element) nl.item(i);
-            key = elem.getAttribute(ATTR_TUID);
+            key = ((Element)elem).getAttribute(ATTR_TUID);
             if (key == null || key.length() < 1)
                 continue;
-            nlTuv = elem.getElementsByTagName(ELEM_TUV);
+            if(elem instanceof Element){
+
+            nlTuv = ((Element)elem).getElementsByTagName(ELEM_TUV);
             for (int j = 0; nlTuv != null && j < nlTuv.getLength(); j++) {
-                elemTuv = (Element) nlTuv.item(j);
+                if(nlTuv.item(j) instanceof Element) {
+                    elemTuv = (Element) nlTuv.item(j);
+                }
+
                 lang = elemTuv.getAttribute(ATTR_XML_LANG);
                 map = (HashMap) ms_ResourceBundles.get(lang);
                 if (map == null) {
@@ -538,6 +555,7 @@ public class PSTmxResourceBundle
                 map.put(key, entry);
             }
         }
+        }
     }
     /**
      * Method to empty the resource cache.
@@ -549,7 +567,7 @@ public class PSTmxResourceBundle
 
       PSConsole.printMsg(SUBSYSTEM, "Flushing I18n Resource Cache...");
       ms_ResourceBundles.clear();
-      System.gc();
+
       PSConsole.printMsg(SUBSYSTEM, "Done Flushing.");
    }
 
@@ -616,8 +634,7 @@ public class PSTmxResourceBundle
     * @throws SAXException if there is a problem reloading the resources.
     */
    public void saveMasterResourceBundle(IPSTmxDocument doc, boolean reload)
-      throws IOException, SAXException
-   {
+           throws IOException, SAXException, ParserConfigurationException {
       if (doc == null)
          throw new IllegalArgumentException("doc may not be null");
 
@@ -639,50 +656,4 @@ public class PSTmxResourceBundle
     */
    private static Object m_masterResourceMonitor = new Object();
 
-   /**
-    *  Main method for testing purpose.
-    * @param args
-    */
-   static public void main(String[] args)
-   {
-      try
-      {
-/*
-         Document doc = PSXmlDocumentBuilder.createXmlDocument(
-            new FileReader(ms_ResourceFile), false);
-         NodeList nl = doc.getElementsByTagName("tu");
-         Element elem = (Element) nl.item(0);
-         Element body = (Element) elem.getParentNode();
-         for(int i=1; i<5000; i++)
-         {
-            elem = (Element)body.appendChild(elem.cloneNode(true));
-            elem.setAttribute("tuid", Integer.toString(i));
-         }
-         PSXmlDocumentBuilder.write(doc, new FileWriter(ms_ResourceFile));
-*/
-         PSTmxResourceBundle bundle = PSTmxResourceBundle.getInstance();
-
-         long x = new Date().getTime();
-         for(int i=0; i<5000; i++)
-         {
-            bundle.getString(Integer.toString(i), "fr-ca");
-         }
-         System.out.println(new Date().getTime() - x);
-
-         x = new Date().getTime();
-         bundle.loadResources();
-         System.out.println(new Date().getTime() - x);
-
-         x = new Date().getTime();
-         for(int i=0; i<5000; i++)
-         {
-            bundle.getString(Integer.toString(i), "fr-ca");
-         }
-         System.out.println(new Date().getTime() - x);
-      }
-      catch(Exception e)
-      {
-         e.printStackTrace();
-      }
-   }
 }
