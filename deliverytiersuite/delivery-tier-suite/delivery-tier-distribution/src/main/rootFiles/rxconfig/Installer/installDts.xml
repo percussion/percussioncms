@@ -192,19 +192,20 @@
             </fileset>
         </copy>
         <echo>Dropping Metadata Tables.......</echo>
-        <PSExecDTSSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
-                          qualifyViewNames="" sql="DROP TABLE IF EXISTS PERC_PAGE_METADATA_PROPERTIES"/>
-        <PSExecDTSSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
-                          qualifyViewNames="" sql="DROP TABLE IF EXISTS PERC_PAGE_METADATA"/>
+        <PSExecDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                          qualifyViewNames=""
+                          sql="drop table PERC_PAGE_METADATA_PROPERTIES"/>
+        <PSExecDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                          qualifyViewNames="" sql="drop table PERC_PAGE_METADATA"/>
     </target>
 
 
     <target name="updateStagingDTSTableSchema">
         <echo>Dropping Staging Metadata Tables.......</echo>
-        <PSExecStagingDTSSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
-                                 qualifyViewNames="" sql="DROP TABLE IF EXISTS PERC_PAGE_METADATA_PROPERTIES"/>
-        <PSExecStagingDTSSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
-                                 qualifyViewNames="" sql="DROP TABLE IF EXISTS PERC_PAGE_METADATA"/>
+        <PSExecStagingDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                                 qualifyViewNames="" sql="drop table PERC_PAGE_METADATA_PROPERTIES"/>
+        <PSExecStagingDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                                 qualifyViewNames="" sql="drop table PERC_PAGE_METADATA"/>
 
     </target>
     <macrodef name="install-dts">
