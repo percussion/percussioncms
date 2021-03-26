@@ -64,7 +64,7 @@ import java.util.stream.Stream;
   * to a size to slowdown loading resources signinfcantly, we may have to
   * consider reading resources in a separate thread.
   */
-@SuppressFBWarnings("PATH_TRAVERSAL_IN")
+@SuppressFBWarnings({"PATH_TRAVERSAL_IN", "PATH_TRAVERSAL_IN"})
 public class PSTmxResourceBundle
    implements IPSTmxDtdConstants
 {
