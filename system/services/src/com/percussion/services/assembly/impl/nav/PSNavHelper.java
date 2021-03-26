@@ -879,6 +879,10 @@ public class PSNavHelper
             filter1.setCommunityFiltering(false);
             relSet = m_relProc.getRelationships(filter1);
 
+            //The PSRelationshipSet relset above was returning two rows one for the folder associated with page and the other for folder associated to recycler.
+            //Thus failing returning null and breaking the navon on the page.
+            //Removed the recycled association from the PSRelationshipSet for the folder thus giving correct parent folder and single result.
+            //This preserves the folder in recycle bin avoiding the need to delete the duplicate relation in PSX_OBJECTRELATIONSHIP table.
             for(int i = 0; i<relSet.size();i++){
                 PSRelationship r = (PSRelationship) relSet.get(i);
                 if(r.getConfig().getName()!=null && r.getConfig().getName().equalsIgnoreCase(PSRelationshipConfig.TYPE_RECYCLED_CONTENT)){
