@@ -878,6 +878,14 @@ public class PSNavHelper
             filter1.setName(PSRelationshipFilter.FILTER_NAME_FOLDER_CONTENT);
             filter1.setCommunityFiltering(false);
             relSet = m_relProc.getRelationships(filter1);
+
+            for(int i = 0; i<relSet.size();i++){
+                PSRelationship r = (PSRelationship) relSet.get(i);
+                if(r.getConfig().getName()!=null && r.getConfig().getName().equalsIgnoreCase(PSRelationshipConfig.TYPE_RECYCLED_CONTENT)){
+                    relSet.remove(i);
+                }
+            }
+
             if (relSet.isEmpty() || relSet.size() > 1)
             {
                ms_log.debug("Invalid folder structure."
