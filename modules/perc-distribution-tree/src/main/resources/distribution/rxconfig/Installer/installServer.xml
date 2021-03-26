@@ -1,6 +1,6 @@
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -28,13 +28,16 @@
     <property name="configdir" location="${install.dir}/rxconfig"/>
     <property name="install.I18n" location="${configdir}/I18n"/>
     <property name="install.rxlt" location="${install.dir}/rxlt"/>
-
+    <property name="install.src" location="../.."/>
     <property name="sfp.exits.source" location="${install.dir}/SiteFolderPublishing/Exits"/>
     <property name="nav.exits.source" location="${install.dir}/ManagedNav/Exits"/>
     <property name="default_template.exits.source" location="${install.dir}/DefaultTemplate/Exits"/>
 
 
     <path id="ant.deps">
+        <fileset dir="${install.src}/jetty/base/lib/jdbc"  erroronmissingdir="false">
+            <include name="**/*.jar" />
+        </fileset>
         <!--
         <fileset dir="C:\DevEnv\dev\system\Tools\Ant\target">
             <include name="perc-ant-8.0.0-SNAPSHOT.jar" />
