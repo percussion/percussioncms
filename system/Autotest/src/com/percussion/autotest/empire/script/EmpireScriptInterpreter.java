@@ -2866,7 +2866,7 @@ public class EmpireScriptInterpreter implements Runnable, LogSink,
       {
          log(t);
       }
-      System.gc();
+
    }
 
 
