@@ -345,6 +345,7 @@
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.oracle</groupId>

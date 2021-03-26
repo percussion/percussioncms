@@ -2327,17 +2327,19 @@
                 <groupId>org.apache.derby</groupId>
                 <artifactId>derbyclient</artifactId>
                 <version>${derby.version}</version>
+                <scope>provided</scope>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.derby/derbyclient -->
-            <dependency>
+             <dependency>
                 <groupId>org.apache.derby</groupId>
                 <artifactId>derbynet</artifactId>
                 <version>${derby.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.derby</groupId>
                 <artifactId>derby</artifactId>
                 <version>${derby.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <dependency>
