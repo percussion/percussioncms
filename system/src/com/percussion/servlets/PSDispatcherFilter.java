@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,16 +24,11 @@
 
 package com.percussion.servlets;
 
-import com.percussion.server.IPSRequestHandler;
-import com.percussion.server.PSRequest;
-
-import com.percussion.server.PSServer;
-import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -90,7 +85,7 @@ public class PSDispatcherFilter implements Filter {
     /**
      * Logger to use, never <code>null</code>.
      */
-    static Log ms_log = LogFactory.getLog(PSDispatcherFilter.class);
+    static Logger log = LogManager.getLogger(PSDispatcherFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -158,14 +153,14 @@ public class PSDispatcherFilter implements Filter {
 
                         if (m.find()) {
                             site = m.group(1);
-                            ms_log.debug(" found site referer = " + site);
+                            log.debug("Found site referer = {}" , site);
 
                         }
 
 
                     }
                 } catch (URISyntaxException e) {
-                    ms_log.debug("Invalid referrer url");
+                    log.debug("Invalid referrer url");
                 }
                 if (site != null)
                     path = "/Sites/" + site + path;
