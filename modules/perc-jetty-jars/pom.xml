@@ -1,6 +1,6 @@
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -101,6 +101,7 @@
       <dependency>
           <groupId>org.apache.derby</groupId>
           <artifactId>derbyclient</artifactId>
+          <scope>provided</scope>
       </dependency>
       <dependency>
           <groupId>junit</groupId>
@@ -110,22 +111,27 @@
       <dependency>
           <groupId>org.apache.derby</groupId>
           <artifactId>derbynet</artifactId>
+          <scope>provided</scope>
       </dependency>
       <dependency>
           <groupId>net.sourceforge.jtds</groupId>
           <artifactId>jtds</artifactId>
+          <scope>provided</scope>
       </dependency>
       <dependency>
           <groupId>com.microsoft.sqlserver</groupId>
           <artifactId>mssql-jdbc</artifactId>
+          <scope>provided</scope>
       </dependency>
       <dependency>
           <groupId>com.oracle</groupId>
           <artifactId>ojdbc6</artifactId>
+          <scope>provided</scope>
       </dependency>
       <dependency>
           <groupId>org.apache.derby</groupId>
           <artifactId>derby</artifactId>
+          <scope>provided</scope>
       </dependency>
       <dependency>
           <groupId>com.zaxxer</groupId>

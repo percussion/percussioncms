@@ -1,6 +1,6 @@
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -35,6 +35,9 @@
     <property name="rxrepository.properties" location="${install.dir}/rxconfig/Installer/rxrepository.properties"/>
 
     <path id="ant.deps">
+        <fileset dir="${install.src}/jetty/base/lib/jdbc"  erroronmissingdir="false">
+            <include name="**/*.jar" />
+        </fileset>
         <fileset dir="${customer.jdbc.drivers}"  erroronmissingdir="false">
             <include name="**/*.jar" />
         </fileset>
