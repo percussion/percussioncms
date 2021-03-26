@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,7 +23,6 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<!--suppress ALL -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:cxf="http://cxf.apache.org/core"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -76,7 +75,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>classpath:sitemanage-beans.properties</value>
+                <value>classpath:sitemanage.properties</value>
                 <value>file:${jetty.base}/etc/installation.properties</value>
             </list>
         </property>
@@ -89,16 +88,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
     <bean id="springWebApplicationContextSetter"
           class="com.percussion.share.spring.PSSpringWebApplicationContextSetter"/>
 
-
-    <!-- JAX-RS -->
-    <!--
-     <cxf:bus>
-        <cxf:properties>
-        https://issues.apache.org/jira/browse/CXF-6568
-            <entry key="default.wae.mapper.least.specific" value="true" />
-        </cxf:properties>
-    </cxf:bus>
--->
     <bean id="apiListingResource" class="io.swagger.jaxrs.listing.ApiListingResource"/>
     <bean id="swaggerSerializers" class="io.swagger.jaxrs.listing.SwaggerSerializers" scope="singleton"/>
 
@@ -1039,23 +1028,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <ref bean="jacksonContextResolver"/>
         </jaxrs:providers>
         <jaxrs:features>
-            <!--  <bean class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
-                 <property name="title" value="Test"/>
-                 <property name="version" value="1.0"/>
-                 <property name="description" value="Test 1.0"/>
-                 <property name="contact" value="help@percussion.com"/>
-
-                  <property name="resourcePackage" value="org.app.rest.api.service"/>
-                <property name="scanAllResources" value="true"/>
-                <property name="activateOnlyIfJaxrsSupported" value="true"/>
-
-                <property name="customizer">
-                    <bean class="org.apache.cxf.jaxrs.swagger.Swagger2Customizer">
-                        <property name="dynamicBasePath" value="true"/>
-                        <property name="replaceTags" value="true"/>
-                    </bean>
-                </property>
-            </bean>-->
         </jaxrs:features>
     </jaxrs:server>
 
@@ -1078,23 +1050,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <ref bean="jacksonContextResolver"/>
         </jaxrs:providers>
         <jaxrs:features>
-            <!-- <bean class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
-                 <property name="title" value="Test"/>
-                 <property name="version" value="1.0"/>
-                 <property name="description" value="Test 1.0"/>
-                 <property name="contact" value="help@percussion.com"/>
-
-                   <property name="resourcePackage" value="org.app.rest.api.service"/>
-                <property name="scanAllResources" value="true"/>
-                <property name="activateOnlyIfJaxrsSupported" value="true"/>
-
-                <property name="customizer">
-                    <bean class="org.apache.cxf.jaxrs.swagger.Swagger2Customizer">
-                        <property name="dynamicBasePath" value="true"/>
-                        <property name="replaceTags" value="true"/>
-                    </bean>
-                </property>
-            </bean>-->
         </jaxrs:features>
     </jaxrs:server>
 
@@ -1113,22 +1068,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <ref bean="jacksonContextResolver"/>
         </jaxrs:providers>
         <jaxrs:features>
-            <!-- <bean class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
-                 <property name="title" value="Test"/>
-                 <property name="version" value="1.0"/>
-                 <property name="description" value="Test 1.0"/>
-                 <property name="contact" value="help@percussion.com"/>
-
-                   <property name="resourcePackage" value="org.app.rest.api.service"/>
-                <property name="scanAllResources" value="true"/>
-                <property name="activateOnlyIfJaxrsSupported" value="true"/>
-                <property name="customizer">
-                    <bean class="org.apache.cxf.jaxrs.swagger.Swagger2Customizer">
-                        <property name="dynamicBasePath" value="true"/>
-                        <property name="replaceTags" value="true"/>
-                    </bean>
-                </property>
-            </bean>-->
         </jaxrs:features>
     </jaxrs:server>
 
@@ -1148,23 +1087,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <ref bean="jacksonContextResolver"/>
         </jaxrs:providers>
         <jaxrs:features>
-            <!-- <bean class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
-                 <property name="title" value="Test"/>
-                 <property name="version" value="1.0"/>
-                 <property name="description" value="Test 1.0"/>
-                 <property name="contact" value="help@percussion.com"/>
-
-                   <property name="resourcePackage" value="org.app.rest.api.service"/>
-                <property name="scanAllResources" value="true"/>
-                <property name="activateOnlyIfJaxrsSupported" value="true"/>
-
-                <property name="customizer">
-                    <bean class="org.apache.cxf.jaxrs.swagger.Swagger2Customizer">
-                        <property name="dynamicBasePath" value="true"/>
-                        <property name="replaceTags" value="true"/>
-                    </bean>
-                </property>
-            </bean>-->
         </jaxrs:features>
     </jaxrs:server>
 
@@ -1184,23 +1106,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <ref bean="jacksonContextResolver"/>
         </jaxrs:providers>
         <jaxrs:features>
-            <!--  <bean class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
-                  <property name="title" value="Test"/>
-                  <property name="version" value="1.0"/>
-                  <property name="description" value="Test 1.0"/>
-                  <property name="contact" value="help@percussion.com"/>
-
-                    <property name="resourcePackage" value="org.app.rest.api.service"/>
-                <property name="scanAllResources" value="true"/>
-                <property name="activateOnlyIfJaxrsSupported" value="true"/>
-
-                <property name="customizer">
-                    <bean class="org.apache.cxf.jaxrs.swagger.Swagger2Customizer">
-                        <property name="dynamicBasePath" value="true"/>
-                        <property name="replaceTags" value="true"/>
-                    </bean>
-                </property>
-            </bean>-->
         </jaxrs:features>
     </jaxrs:server>
 
@@ -1219,23 +1124,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <ref bean="jacksonContextResolver"/>
         </jaxrs:providers>
         <jaxrs:features>
-            <!--  <bean class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
-                 <property name="title" value="Test"/>
-                 <property name="version" value="1.0"/>
-                 <property name="description" value="Test 1.0"/>
-                 <property name="contact" value="help@percussion.com"/>
-
-                  <property name="resourcePackage" value="org.app.rest.api.service"/>
-                <property name="scanAllResources" value="true"/>
-                <property name="activateOnlyIfJaxrsSupported" value="true"/>
-
-                <property name="customizer">
-                    <bean class="org.apache.cxf.jaxrs.swagger.Swagger2Customizer">
-                        <property name="dynamicBasePath" value="true"/>
-                        <property name="replaceTags" value="true"/>
-                    </bean>
-                </property>
-            </bean>-->
         </jaxrs:features>
     </jaxrs:server>
 
@@ -1617,166 +1505,13 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <ref bean="importLogDao"/>
         </property>
     </bean>
-
-    <!--
-      <bean id="siteImporter" class="com.percussion.sitemanage.importer.PSSiteImporter" autowire="constructor">
-          <property name="systemProperties">
-               <ref bean="systemProperties" />
-          </property>
-      </bean>
-    -->
-
-    <!--
-      <bean id="siteImportSummaryService" class="com.percussion.siteimportsummary.service.impl.PSSiteImportSummaryService" autowire="constructor"/>
-    -->
-    <!--
-      <bean id="themeHelper" class="com.percussion.sitemanage.importer.helpers.impl.PSThemeHelper" autowire="constructor">
-         <property name="themesRootDirectory" value="${rxdeploydir}/web_resources/themes" />
-      </bean>
-    -->
-    <!--
-
-      <bean id="themeTemplateHelper" class="com.percussion.sitemanage.importer.helpers.impl.PSThemeTemplateHelper" autowire="constructor">
-         <property name="themesRootDirectory" value="${rxdeploydir}/web_resources/themes" />
-      </bean>
-      -->
-    <!--
-      <bean id="importLogDao"
-           class="com.percussion.sitemanage.importer.dao.impl.PSImportLogDao" >
-           <property name="sessionFactory">
-               <ref bean="sys_sessionFactory" />
-           </property>
-           <property name="guidManager">
-               <ref bean="sys_guidmanager" />
-           </property>
-       </bean>
--->
-    <!--
-      <bean id="importThemeHelper" class="com.percussion.sitemanage.importer.helpers.impl.PSImportThemeHelper" autowire="constructor" />
-        -->
-    <!--
-      <bean id="siteCreationHelper" class="com.percussion.sitemanage.importer.helpers.impl.PSSiteCreationHelper" autowire="constructor"/>
-    -->
-    <!--
-      <bean id="templateExtractorHelper" class="com.percussion.sitemanage.importer.helpers.impl.PSTemplateExtractorHelper" autowire="constructor"/>
-   -->
-    <!--
-      <bean id="pageMetadataExtractorHelper" class="com.percussion.sitemanage.importer.helpers.impl.PSPageMetadataExtractorHelper" autowire="constructor"/>
-    -->
-    <!--
-      <bean id="pageExtractorHelper" class="com.percussion.sitemanage.importer.helpers.impl.PSPageExtractorHelper" autowire="constructor"/>
-    -->
-
     <bean id="pageExtractorHelperForImport"
           class="com.percussion.sitemanage.importer.helpers.impl.PSPageExtractorHelper" autowire="constructor">
         <property name="pageImport" value="true"/>
         <property name="extractMetaData" value="true"/>
     </bean>
 
-    <!--
-      <bean id="templateCreationHelper" class="com.percussion.sitemanage.importer.helpers.impl.PSTemplateCreationHelper" autowire="constructor"/>
-      <bean id="linkExtractionHelper" class="com.percussion.sitemanage.importer.helpers.impl.PSLinkExtractionHelper" autowire="constructor"/>
-      <bean id="importPageCreationHelper" class="com.percussion.sitemanage.importer.helpers.impl.PSImportPageCreationHelper" autowire="constructor"/>
-      <bean id="thumbnailGenerationHelper" class="com.percussion.sitemanage.importer.helpers.impl.PSThumbnailGenerationHelper" autowire="constructor"/>
-  -->
-    <!-- Role management -->
-    <!--
-      <bean id="roleService" class="com.percussion.role.service.impl.PSRoleService" autowire="constructor"/>
-    -->
-    <!-- Page management -->
-    <!--
-      <bean id="templateRestService" class="com.percussion.pagemanagement.service.impl.PSTemplateRestService" autowire="constructor"/>
-    -->
-    <!--
-      <bean id="widgetService" class="com.percussion.pagemanagement.service.impl.PSWidgetService" autowire="constructor">
-               <property name="baseTemplate" value="perc.widget"/>
-      </bean>
-    -->
-    <!--
-      <bean id="widgetRestService" class="com.percussion.pagemanagement.service.impl.PSWidgetRestService" autowire="constructor"/>
-    -->
-
-    <!--
-      <bean id="widgetDao" class="com.percussion.pagemanagement.dao.impl.PSWidgetDao" autowire="constructor">
-          <property name="repositoryDirectory" value="${rxdeploydir}/rxconfig/Widgets" />
-      </bean>
-    -->
-    <!--
-       <bean id="resourceDefinitionGroupDao" class="com.percussion.pagemanagement.dao.impl.PSResourceDefinitionGroupDao" autowire="constructor">
-          <property name="repositoryDirectory" value="${rxdeploydir}/rxconfig/Resources" />
-      </bean>
-    -->
-    <!--
-      <bean id="resourceDefinitionService" class="com.percussion.pagemanagement.service.impl.PSResourceDefinitionService" autowire="constructor" />
-    -->
-    <!--
-      <bean id="renderLinkService" class="com.percussion.pagemanagement.service.impl.PSRenderLinkService" autowire="constructor"  />
-    -->
-    <!--
-    <bean id="templateDao" class="com.percussion.pagemanagement.dao.impl." autowire="constructor"/>
-    -->
-    <!--
-    <bean id="themeService" class="com.percussion.theme.service.impl.PSThemeService" autowire="no" init-method="init">
-          <property name="themesRootDirectory" value="${rxdeploydir}/web_resources/themes" />
-          <property name="themesTempRootDirectory" value="${rxdeploydir}/sys_resources/temp/themes" />
-          <property name="defaultThemeRootDirectory" value="${rxdeploydir}/rx_resources/default_theme" />
-        <property name="themesRootRelativeUrl" value="/web_resources/themes" />-->
-    <!-- <property name="themesTempRootRelativeUrl" value="/sys_resources/temp/themes" />
-          <property name="templateService">
-                <ref bean="sys_templateService"/>
-          </property>
-   -->
-    <!-- <property name="customStylesFolderPath" value="${rxdeploydir}/rx_resources/css" />
-      </bean>
--->
-    <!--
-      <bean id="themeRestService" class="com.percussion.theme.service.impl.PSThemeRestService" autowire="constructor" />
-     -->
-    <!--
-      <bean id="sys_templateService" class="com.percussion.pagemanagement.service.impl.PSTemplateService" autowire="constructor">
-          <property name="validatingDeleteTemplate" value="true" />
-      </bean>
-   -->
-    <!--
-      <bean id="pageDao" class="com.percussion.pagemanagement.dao.impl.PSPageDao" autowire="constructor" />
-    -->
-    <!--
-  <bean id="pageService" class="com.percussion.pagemanagement.service.impl.PSPageService" autowire="constructor" />-->
-    <!-- <bean id="pageRestService" class="com.percussion.pagemanagement.service.impl.PSPageRestService" autowire="constructor" />
-     -->
-    <!--
-    <bean id="PSPageTemplateService" class="com.percussion.pagemanagement.service.impl.PSPageTemplateService" autowire="constructor" />
-    -->
-    <!--
-    <bean id="categoryConfigurationDao" class="com.percussion.pagemanagement.dao.impl.PSCategoryConfigurationDao" autowire="constructor" >
-        <property name="repositoryDirectory" value="${rxdeploydir}/rxconfig/Categories" />
-      </bean>
-    -->
-    <!--
-    <bean id="pageCategoryService" class="com.percussion.pagemanagement.service.impl.PSPageCategoryService" autowire="constructor" />
-    -->
-    <!--
-    <bean id="pageDaoHelper" class="com.percussion.pagemanagement.dao.impl.PSPageDaoHelper" autowire="constructor" >
-        <property name="sessionFactory">
-            <ref bean="sys_sessionFactory" />
-        </property>
-    </bean>
-    -->
-
-    <!--
-    <bean id="pageCatalogService" class="com.percussion.pagemanagement.service.impl.PSPageCatalogService" autowire="constructor" >
-        <property name="systemProps">
-            <ref bean="systemProperties" />
-        </property>
-    </bean>
-    -->
-
-    <!--
-    <bean id="managedLinkService" class="com.percussion.linkmanagement.service.impl.PSManagedLinkService" autowire="constructor" />
-    -->
-
     <!-- Design management -->
-
     <bean id="webResourcesService"
           class="com.percussion.designmanagement.service.impl.PSFileSystemService"
           autowire="constructor">
@@ -1789,79 +1524,8 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
         <!-- Limits the file size (in MegaBytes) uploaded under web_resources -->
         <property name="maxFileSize" value="100"/>
     </bean>
-
-    <!--
-   <bean id="webResourcesRestService" class="com.percussion.designmanagement.service.impl.PSWebResourcesRestService">
-      <constructor-arg>
-        <ref bean="webResourcesService" />
-      </constructor-arg>
-      <constructor-arg>
-        <ref bean="userService" />
-      </constructor-arg>
-   </bean>
-     -->
-
-    <!--  Assembly  -->
-    <!-- <bean id="pageAssemblyContextFactory"
-           class="com.percussion.pagemanagement.assembler.PSPageAssemblyContextFactory" autowire="constructor">
-      -->   <!-- Comment out the property below for non-concurrent region assembly. -->
-    <!-- <property name="widgetRegionsAssembler" ref="regionsAssembler" />  -->
-    <!--
-    <property name="overridedRegionsAssembler" ref="regionsAssembler" />
-    -->
-    <!--
-    </bean>
-    -->
-
-    <!--
-    <bean id="renderService" class="com.percussion.pagemanagement.service.impl.PSRenderService" autowire="constructor" />
-  -->
-    <!--
-    <bean id="renderAssemblyBridge" class="com.percussion.pagemanagement.assembler.impl.PSRenderAssemblyBridge" autowire="constructor">
-        <property name="dispatchTemplate" value="perc.base.plain"/>
-    </bean>
-      -->
-    <!-- <bean id="assemblyItemHelper" class="com.percussion.pagemanagement.assembler.impl.PSAssemblyItemBridge" autowire="constructor">
-    </bean> -->
-
-    <!-- <bean id="resourceAssemblyResultExpander" class="com.percussion.pagemanagement.assembler.impl.PSResourceAssemblyResultExpander"
-          autowire="constructor" /> -->
-
-    <!-- <bean id="legacyLinkGenerator" class="com.percussion.pagemanagement.assembler.impl.PSLegacyLinkGenerator"
-          autowire="constructor" /> -->
-
-    <!-- <bean id="resourceInstanceHelper" class="com.percussion.pagemanagement.assembler.impl.PSResourceInstanceHelper"
-          autowire="constructor" /> -->
-
-    <!-- <bean id="itemIdResolver" class="com.percussion.pagemanagement.assembler.impl.PSItemIdResolver" autowire="constructor" /> -->
-
-    <!-- <bean id="renderLinkContextFactory" class="com.percussion.pagemanagement.assembler.impl.PSRenderLinkContextFactory" /> -->
-
     <bean id="widgetItemIdGenerator" class="com.percussion.pagemanagement.dao.impl.PSWidgetItemIdGenerator"/>
 
-
-    <!-- Path management -->
-    <!--
-      <bean id="sitePathItemService" class="com.percussion.pathmanagement.service.impl.PSSitePathItemService" autowire="constructor">
-        <constructor-arg type="com.percussion.ui.service.IPSListViewHelper">
-         <ref bean="cm1ListViewHelper" />
-        </constructor-arg>
-        <property name="rootName" value="Sites" />
-    </bean>
-
-    <bean id="assetPathItemService" class="com.percussion.pathmanagement.service.impl.PSAssetPathItemService" autowire="constructor">
-        <constructor-arg type="com.percussion.ui.service.IPSListViewHelper">
-         <ref bean="cm1ListViewHelper" />
-        </constructor-arg>
-        <property name="rootName" value="Assets" />
-    </bean>
-    <bean id="searchPathItemService" class="com.percussion.pathmanagement.service.impl.PSSearchPathItemService" autowire="constructor">
-        <constructor-arg type="com.percussion.ui.service.IPSListViewHelper">
-         <ref bean="cm1ListViewHelper" />
-        </constructor-arg>
-        <property name="rootName" value="Search" />
-    </bean>
-      -->
     <bean id="designPathItemService" class="com.percussion.pathmanagement.service.impl.PSDesignPathItemService"
           autowire="constructor">
         <property name="registry">
@@ -1924,7 +1588,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
     </bean>
     <bean id="pathService" class="com.percussion.pathmanagement.service.impl.PSPathService" lazy-init="true">
         <property name="registry">
-
             <map>
                 <entry key="/Sites/" value-ref="sitePathItemService" />
                 <entry key="/Assets/" value-ref="assetPathItemService" />
@@ -1953,23 +1616,9 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
         </constructor-arg>
     </bean>
     <!-- Dashboard Management -->
-    <!--
-      <bean id="dashboardService"      class="com.percussion.dashboardmanagement.service.impl.PSDashboardService" autowire="constructor"/>
-    -->
-    <!-- <bean id="dashboardDataService"      class="com.percussion.dashboardmanagement.service.impl.PSDashboardDataService" autowire="constructor"/> -->
-    <!-- <bean id="dashboardDao"      class="com.percussion.dashboardmanagement.dao.impl.PSDashboardDao" autowire="constructor"/> -->
 
-    <!-- <bean id="userProfileService" class="com.percussion.dashboardmanagement.service.impl.PSUserProfileService" autowire="constructor"/> -->
-
-    <!-- <bean id="gadgetService"      class="com.percussion.dashboardmanagement.service.impl.PSGadgetService" autowire="constructor"/> -->
-    <!-- <bean id="gadgetRestService"      class="com.percussion.dashboardmanagement.service.impl.PSGadgetRestService" autowire="constructor"/>
-     -->
-    <!-- <bean id="gadgetUserService"  class="com.percussion.dashboardmanagement.service.impl.PSGadgetUserService" autowire="constructor"/> -->
-    <!--   <bean id="gadgetUserRestService"  class="com.percussion.dashboardmanagement.service.impl.PSGadgetUserRestService" autowire="constructor"/>
-       -->
     <!-- Asset Management -->
-    <!--<bean id="assetService" class="com.percussion.assetmanagement.service.impl.PSAssetService" autowire="constructor"/>-->
-    <bean id="assetUploadFolderPathMap" class="com.percussion.assetmanagement.service.impl.PSAssetUploadFolderPathMap"
+     <bean id="assetUploadFolderPathMap" class="com.percussion.assetmanagement.service.impl.PSAssetUploadFolderPathMap"
           autowire="constructor">
         <property name="typeToFolderPathMap">
             <map>
@@ -1984,20 +1633,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
         </property>
     </bean>
     <bean id="extensionService" class="com.percussion.extensions.PSExtensionService"/>
-    <!--
-    <bean id="assetRestService" class="com.percussion.assetmanagement.service.impl.PSAssetRestService" autowire="constructor"/>
-    -->
-    <!--<bean id="assetDao" class="com.percussion.assetmanagement.dao.impl.PSAssetDao" autowire="constructor"/>-->
-    <!--<bean id="widgetAssetRelationshipService" class="com.percussion.assetmanagement.service.impl.PSWidgetAssetRelationshipService" autowire="constructor" />
-    -->
-    <!--<bean id="workflowHelper" class="com.percussion.itemmanagement.service.impl.PSWorkflowHelper" autowire="constructor"/>-->
 
-    <!-- Item Management -->
-    <!--<bean id="workflowRestService" class="com.percussion.itemmanagement.service.impl.PSItemWorkflowService" autowire="constructor"/>
-
-  -->
-    <!-- <bean id="itemRestService" class="com.percussion.itemmanagement.service.impl.PSItemService" autowire="constructor"/>
-  -->
     <bean id="bulkApprovalJob" class="com.percussion.itemmanagement.PSBulkApprovalJob" autowire="constructor"
           scope="prototype">
         <property name="itemWorkflowService">
@@ -2016,34 +1652,12 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <ref bean="userService"/>
         </property>
     </bean>
-
-    <!-- Metadata Service -->
-    <!-- <bean id="metadataService" class="com.percussion.metadata.service.impl.PSMetadataService" autowire="constructor"/> -->
-    <!--<bean id="metadataDao" class="com.percussion.metadata.dao.impl.PSMetadataDao" autowire="constructor"/>-->
-    <!--<bean id="metadataRestService" class="com.percussion.metadata.service.impl.PSMetadataRestService" autowire="constructor"/>
-    -->
-    <!--  Activity Services -->
-    <!-- <bean id="contentActivityService" class="com.percussion.activity.service.impl.PSContentActivityService" autowire="constructor"/>
-  -->
-
-    <!-- <bean id="activityService" class="com.percussion.activity.service.impl.PSActivityService" autowire="constructor"/> -->
-
-    <!-- Analytics Services -->
-    <!-- <bean id="analyticsProviderService" class="com.percussion.analytics.service.impl.PSAnalyticsProviderService" autowire="constructor"/> -->
-    <!--  <bean id="analyticsProviderRestService" class="com.percussion.analytics.service.impl.PSAnalyticsProviderRestService">
-      <constructor-arg>
-          <ref bean="analyticsProviderService" />
-      </constructor-arg>
-   </bean>
-    -->
     <bean id="analyticsProviderQueryHandler"
           class="com.percussion.analytics.service.impl.google.PSGoogleAnalyticsProviderQueryHandler">
         <constructor-arg>
             <ref bean="analyticsProviderService"/>
         </constructor-arg>
     </bean>
-    <!-- <bean id="analyticsProviderQueryService" class="com.percussion.analytics.service.impl.PSAnalyticsProviderQueryService" autowire="constructor"/> -->
-
     <!-- Effectiveness Data Services -->
     <bean id="effectivenessService" class="com.percussion.activity.service.impl.PSEffectivenessService">
         <constructor-arg>
@@ -2073,10 +1687,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
         </constructor-arg>
     </bean>
 
-    <!-- <bean id="cm1ListViewHelper" class="com.percussion.ui.service.impl.PSCm1ListViewHelper" autowire="constructor"/> -->
-
-    <!-- <bean id="pageListViewProcessor" class="com.percussion.pagemanagement.extension.PSPageListViewProcessor" autowire="constructor"/> -->
-
     <bean id="cm1SearchListViewHelper" class="com.percussion.ui.service.impl.PSCm1ListViewHelper"
           autowire="constructor">
         <property name="postProcessors">
@@ -2092,20 +1702,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
         </constructor-arg>
     </bean>
 
-    <!-- Ui Service -->
-    <!-- <bean id="uiService" class="com.percussion.ui.service.impl.PSUiService" autowire="constructor"/> -->
-    <!--
-   <bean id="uiRestService" class="com.percussion.ui.service.impl.PSUiRestService">
-       <constructor-arg>
-           <ref bean="uiService" />
-       </constructor-arg>
-   </bean>
- -->
-    <!--  Uncomment to use sample effectiveness data from the specified file.  If uncommented, then the effectivenessService bean must be commented out.
-    <bean id="effectivenessDataHandler" class="com.percussion.activity.service.impl.PSEffectivenessDataHandler">
-       <property name="file" value="${rxdeploydir}/AppServer/server/rx/deploy/cm.war/gadgets/Effectiveness.xml" />
-    </bean>
-    -->
     <!-- Traffic Services -->
     <bean id="trafficService" class="com.percussion.activity.service.impl.PSTrafficService">
         <constructor-arg>
@@ -2130,44 +1726,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <ref bean="pageService"/>
         </constructor-arg>
     </bean>
-    <!--  Uncomment to use sample effectiveness data from the specified file.  If uncommented, then the Traffic Services bean must be commented out.
-    <bean id="trafficDataHandler" class="com.percussion.activity.service.impl.PSTrafficDataHandler">
-       <property name="file" value="${rxdeploydir}/AppServer/server/rx/deploy/cm.war/gadgets/Traffic.xml" />
-    </bean>
- -->
-
-
-    <!-- <bean id="deliveryInfoDao" class="com.percussion.delivery.dao.impl.PSDeliveryInfoDao" autowire="constructor"/>-->
-    <!-- <bean id="deliveryRestService" class="com.percussion.delivery.service.impl.PSDeliveryRestService" autowire="constructor"/> -->
-
-
-    <!-- Form Data Service -->
-    <!--
-   <bean id="formDataService" class="com.percussion.assetmanagement.forms.service.impl.PSFormDataService" autowire="constructor"/>
-    -->
-    <!-- Comment Service -->
-    <!--
-   <bean id="commentsService" class="com.percussion.comments.service.impl.PSCommentsService" autowire="constructor"/>
-   -->
-    <!--  EMS API Service -->
-    <!-- <bean id="emsAPIService" class="com.percussion.integrations.ems.rest.PSEmsRestService" autowire="constructor"/> -->
-
-    <!-- Cookie Consent Service -->
-    <!-- <bean id="cookieConsentService" class="com.percussion.cookieconsent.service.impl.PSCookieConsentService" autowire="constructor"/> -->
-
-    <!-- Membership Service -->
-    <!--
-   <bean id="membershipService" class="com.percussion.membership.service.impl.PSMembershipService" autowire="constructor"/>
-    -->
-    <!-- PSSiteimprove metadata Service -->
-    <!--
-   <bean id="siteImproveService" class="com.percussion.integrations.siteimprove.rest.PSSiteimprove" autowire="constructor">
-        <constructor-arg type="com.percussion.metadata.service.IPSMetadataService">
-            <ref bean="metadataService" />
-        </constructor-arg>
-   </bean>
-    -->
-
     <bean id="feedsInfoQueue" class="com.percussion.feeds.service.impl.PSFeedsInfoQueue" autowire="constructor">
         <constructor-arg type="com.percussion.metadata.service.IPSMetadataService">
             <ref bean="metadataService"/>
@@ -2202,13 +1760,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <ref bean="cm1SearchListViewHelper"/>
         </constructor-arg>
     </bean>
-    <!--
-   <bean id="searchRestService" class="com.percussion.searchmanagement.service.impl.PSSearchRestService" autowire="constructor"/>
-    -->
-    <!-- <bean id="pageIndexService" class="com.percussion.searchmanagement.service.impl.PSPageIndexService" autowire="constructor"/> -->
-    <!-- <bean id="assetChangeListener" class="com.percussion.searchmanagement.service.impl.PSAssetChangeListener" autowire="constructor"/> -->
-    <!-- <bean id="sharedRelationshipDeleteListener" class="com.percussion.searchmanagement.service.impl.PSSharedRelationshipDeleteListener" autowire="constructor"/> -->
-    <bean id="thumbnailGeneratorService" class="com.percussion.share.service.impl.PSThumbnailGeneratorService"
+      <bean id="thumbnailGeneratorService" class="com.percussion.share.service.impl.PSThumbnailGeneratorService"
           autowire="constructor"/>
     <bean id="widgetAssetRelationshipDao"
           class="com.percussion.assetmanagement.service.impl.PSWidgetAssetRelationshipDao">
@@ -2245,17 +1797,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
     <bean id="richTextMigrationConverter" class="com.percussion.contentmigration.converter.PSRichTextMigrationConverter"
           autowire="constructor"/>
 
-    <!--  Content Migration Rest Service  -->
-    <!--
-    <bean id="contentMigrationRestService" class="com.percussion.contentmigration.service.impl.PSContentMigrationRestService" autowire="constructor" />
--->
-    <!--  BEGIN IPSAsyncJob service -->
-
-    <!-- Prototype beans for each job type -->
-    <!--
-   <bean id="asyncJobTest" class="com.percussion.share.async.impl.test.PSTestAsyncJob" scope="prototype"/>
-  -->
-    <!-- will lookup the above 'asyncJob' beans by *TYPE* -->
     <bean id="asyncJobFactory"
           class="org.springframework.beans.factory.config.ServiceLocatorFactoryBean">
         <property name="serviceLocatorInterface" value="com.percussion.share.async.IPSAsyncJobFactory"/>
@@ -2298,12 +1839,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <ref bean="pageService"/>
         </constructor-arg>
     </bean>
-
-    <!--
-    <bean id="monitorService" 
-        class="com.percussion.monitor.service.PSMonitorService" autowire="constructor">
-    </bean>
-    -->
     <bean id="importProcessMonitor" class="com.percussion.monitor.process.PSImportProcessMonitor"/>
     <bean id="thumbnailProcessMonitor" class="com.percussion.monitor.process.PSThumbnailProcessMonitor"/>
     <bean id="searchIndexProcessMonitor" class="com.percussion.monitor.process.PSSearchIndexProcessMonitor"/>
@@ -2311,16 +1846,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
     <bean id="workflowAssignmentProcessMonitor"
           class="com.percussion.monitor.process.PSWorkflowAssignmentProcessMonitor"/>
     <bean id="siteCopyProcessMonitor" class="com.percussion.monitor.process.PSSiteCopyProcessMonitor"/>
-    <!--  <bean id="publishStagingService" class="com.percussion.sitemanage.service.impl.PSPublishStagingService" autowire="constructor">
-        <property name="systemProps">
-            <ref bean="systemProperties" />
-        </property>
-    </bean>
-
-    -->
-    <!--
-    <bean id="livePublishChangeHandler" class="com.percussion.itemmanagement.PSLivePublishChangeHandler" autowire="constructor"/>
-    -->
     <bean id="touchFilesStartupProcess" class="com.percussion.share.extension.PSTouchFiles">
         <property name="startupProcessManager" ref="sys_startupProcessManager"/>
         <property name="rootDir" value="web_resources"/>
@@ -2343,92 +1868,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
     <bean id="rxFixStartupProcess" class="com.percussion.share.extension.PSRxFixStartupProcess">
         <property name="startupProcessManager" ref="sys_startupProcessManager"/>
     </bean>
-
-    <!--
-    <bean id="simpleStartupProcessor" class="com.percussion.share.extension.PSSimpleStartupProcessor">
-        <property name="startupProcessManager" ref="sys_startupProcessManager"/>
-        <property name="metadataService" ref="metadataService"/>
-    </bean>
-    -->
-
-    <!--
-   <bean id="pageOptimizerService" class="com.percussion.pageoptimizer.impl.PSPageOptimizerService" autowire="constructor">
-   </bean>
- -->
-    <!--
-   <bean id="cloudService" class="com.percussion.cloudservice.impl.PSCloudService" autowire="constructor">
-   </bean>
-  -->
-    <!--
-   <bean id="searchIndexFieldValueModifier" class="com.percussion.searchmanagement.service.impl.PSSearchIndexFieldValueModifier" autowire="constructor" />
-      -->
-    <!--
-   <bean id="integrityCheckerDao" class="com.percussion.integritymanagement.service.impl.PSIntegrityCheckerDao" autowire="constructor"/>
-   <bean id="integrityCheckerService" class="com.percussion.integritymanagement.service.impl.PSIntegrityCheckerService" autowire="constructor"/>
-   <bean id="pSIntegrityCheckerRestService" class="com.percussion.integritymanagement.service.rest.impl.PSIntegrityCheckerRestService" autowire="constructor"/>
--->
-    <!--
-   <bean id="pSRedirectService" class="com.percussion.redirect.service.impl.PSRedirectService" autowire="constructor"/>
-  -->
-    <!--
-   <bean id="pSRedirectRestService" class="com.percussion.redirect.service.rest.impl.PSRedirectRestService" autowire="constructor"/>
-  -->
-    <!--
-    <bean id="apiFolderAdaptor" class="com.percussion.apibridge.FolderAdaptor" autowire="constructor">
-        <constructor-arg type="com.percussion.pathmanagement.service.IPSPathService">
-           <ref bean="pathService" />
-         </constructor-arg>
-         <constructor-arg>
-          <ref bean="folderHelper" />
-         </constructor-arg>
-   </bean>
-
-   <bean id="apiPageAdaptor" class="com.percussion.apibridge.PageAdaptor" autowire="constructor">
-        <constructor-arg type="com.percussion.pathmanagement.service.IPSPathService">
-           <ref bean="pathService" />
-         </constructor-arg>
-          <constructor-arg>
-          <ref bean="folderHelper" />
-         </constructor-arg>
-   </bean>
-
-   <bean id="apiAssetAdaptor" class="com.percussion.apibridge.AssetAdaptor" autowire="constructor">
-    <constructor-arg type="com.percussion.pathmanagement.service.IPSPathService">
-        <ref bean="pathService" />
-    </constructor-arg>
-   </bean>
-
-   <bean id="apiUserAdaptor" class="com.percussion.apibridge.UserAdaptor" autowire="constructor">
-   </bean>
-
-   <bean id="apiRoleAdaptor" class="com.percussion.apibridge.RoleAdaptor" autowire="constructor">
-   </bean>
-      -->
-    <!--
-   <bean id="apiAdaptorInjector" class="com.percussion.apibridge.SpringAdaptorInjectorBean" autowire="constructor">
-        <property name="folderAdaptor" ref="apiFolderAdaptor"/>
-        <property name="pageAdaptor" ref="apiPageAdaptor"/>
-        <property name="assetAdaptor" ref="apiAssetAdaptor"/>
-        <property name="userAdaptor" ref="apiUserAdaptor"/>
-        <property name="roleAdaptor" ref="apiRoleAdaptor"/>
-   </bean>
--->
-    <!--
-    <bean id="recentService" class="com.percussion.recent.service.impl.PSRecentService" autowire="constructor"/>
-     -->
-    <!--
-   <bean id="recentServiceBase" class="com.percussion.recent.service.impl.PSRecentServiceBase" autowire="constructor"/>
-    -->
-    <!--
-   <bean id="recentDao" class="com.percussion.recent.dao.impl.PSRecentDao" autowire="constructor"/>
- -->
-    <!--
-   <bean id="recentRestService" class="com.percussion.recent.service.rest.impl.PSRecentRestService" autowire="constructor">
-         <constructor-arg type="com.percussion.pathmanagement.service.IPSPathService">
-           <ref bean="pathService" />
-         </constructor-arg>
-   </bean>
-   -->
 
 
 </beans>
