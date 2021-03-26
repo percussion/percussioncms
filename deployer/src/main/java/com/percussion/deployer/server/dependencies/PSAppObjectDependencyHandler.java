@@ -593,19 +593,24 @@ public abstract class PSAppObjectDependencyHandler
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             "Cannot get appname from path: " + dep.getDependencyId());
       }
+      try{
       
-      PSXmlObjectStoreLockerId lockId = null;
-      try 
-      {
-         // create lock, stealing lock if required
-         lockId = new PSXmlObjectStoreLockerId(ctx.getUserId(), true, true, 
-            tok.getUserSessionId());
-         os.getApplicationLock(lockId, appName, 30);
-         
-         boolean exists = (getAppFile(tok, dep.getDependencyId()) != null);
-         
-         os.saveApplicationFile(appName, origFile, 
-            archive.getFileData(depFile), true, lockId, tok);
+         PSXmlObjectStoreLockerId lockId = null;
+         boolean exists = false;
+         try {
+            // create lock, stealing lock if required
+            lockId = new PSXmlObjectStoreLockerId(ctx.getUserId(), true, true,
+                    tok.getUserSessionId());
+            os.getApplicationLock(lockId, appName + "-" + origFile.getName(), 30);
+
+            exists = (getAppFile(tok, dep.getDependencyId()) != null);
+
+            os.saveApplicationFile(appName, origFile,
+                    archive.getFileData(depFile), true, lockId, tok);
+         }finally {
+            os.releaseApplicationLock(lockId,appName + "-" + origFile.getName());
+         }
+
          
          PSDependency parentDep = dep.getParentDependency();
          if (parentDep != null && 
@@ -627,21 +632,7 @@ public abstract class PSAppObjectDependencyHandler
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
             e.getLocalizedMessage());
       }
-      finally 
-      {
-         if (lockId != null)
-         {
-            try
-            {
-               os.releaseApplicationLock(lockId, appName);
-            }
-            catch(PSServerException e)
-            {
-               // not fatal
-            }
-         }
-         
-      }
+
    }
    
    /**
