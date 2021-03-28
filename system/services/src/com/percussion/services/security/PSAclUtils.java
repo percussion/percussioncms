@@ -95,11 +95,7 @@ public class PSAclUtils
             {
                target.addEntry(source.getFirstOwner(), newEntry);
             }
-            catch (SecurityException e)
-            {
-               // Should not happen
-            }
-            catch (NotOwnerException e)
+            catch (SecurityException | NotOwnerException e)
             {
                // Should not happen
             }
@@ -221,7 +217,7 @@ public class PSAclUtils
    
    /**
     * Determine if the specified type may have an associated acl with an entry
-    * with {@link IPSAccessLevel.PERMISSION#RUNTIME_VISIBLE}. 
+    * with
     * 
     * @param type The type to check, may not be <code>null</code>.
     * 
@@ -243,7 +239,7 @@ public class PSAclUtils
    
    /**
     * Set of types that support acls with an entry with 
-    * {@link IPSAccessLevel.PERMISSION#RUNTIME_VISIBLE}, never 
+    *  never
     * <code>null</code>, or modified.
     */
    private static Set<PSTypeEnum> ms_runtimeTypes = new HashSet<>();

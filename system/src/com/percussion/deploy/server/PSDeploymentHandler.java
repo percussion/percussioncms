@@ -71,9 +71,9 @@ import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.util.IOTools;
 import com.percussion.util.IPSBrandCodeConstants;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.deprecated.PSCryptographer;
+import com.percussion.legacy.security.deprecated.PSCryptographer;
 import com.percussion.util.PSFormatVersion;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 

@@ -37,8 +37,8 @@ import com.percussion.util.IOTools;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.deprecated.PSCryptographer;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSCryptographer;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 

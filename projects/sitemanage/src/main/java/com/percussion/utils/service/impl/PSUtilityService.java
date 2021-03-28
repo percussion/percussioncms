@@ -29,7 +29,7 @@ import com.percussion.security.PSEncryptor;
 import com.percussion.security.ToDoVulnerability;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.service.IPSUtilityService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;

@@ -32,7 +32,7 @@ import com.percussion.util.PSProperties;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.tools.ant.BuildException;
 import org.w3c.dom.Document;

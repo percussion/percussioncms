@@ -49,7 +49,7 @@ import com.percussion.util.PSCharSets;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

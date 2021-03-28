@@ -35,7 +35,7 @@ import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSDatasourceResolver;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.spring.PSSpringConfiguration;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.xml.PSXmlDocumentBuilder;

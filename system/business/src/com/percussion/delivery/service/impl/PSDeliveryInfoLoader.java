@@ -33,7 +33,7 @@ import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 
 import java.io.BufferedWriter;
 import java.io.File;

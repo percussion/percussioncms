@@ -65,7 +65,7 @@ public class PSConnectivityCheck
       catch (PSDeliveryException e)
       {
          if(e.getErrorCode() == IPSDeliveryErrors.UNEXPECTED_ERROR)
-            throw new IllegalStateException("Error initializing delivery handler. Please check Delivery-servers.xml", e);
+            throw new IllegalStateException("Error initializing delivery handler.", e);
          throw new IllegalStateException("Cannot connect to target FTP Server: " + edition, e);
       }
       finally

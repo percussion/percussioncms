@@ -28,7 +28,7 @@ import com.percussion.utils.container.jboss.PSJBossJndiDatasource;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.xml.PSInvalidXmlException;
 
 import java.util.Properties;

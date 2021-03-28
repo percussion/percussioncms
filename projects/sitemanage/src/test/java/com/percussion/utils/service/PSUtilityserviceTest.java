@@ -27,7 +27,7 @@ package com.percussion.utils.service;
 import static org.junit.Assert.assertEquals;
 
 import com.percussion.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.service.impl.PSUtilityService;
 
 import org.junit.After;

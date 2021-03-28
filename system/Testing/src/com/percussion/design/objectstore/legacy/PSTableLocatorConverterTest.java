@@ -31,7 +31,7 @@ import com.percussion.utils.container.IPSJndiDatasource;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSDatasourceConfig;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.junit.Ignore;
 import org.junit.Test;

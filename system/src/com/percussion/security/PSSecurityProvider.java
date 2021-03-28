@@ -35,8 +35,8 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSUserSession;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.deprecated.PSCryptographer;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSCryptographer;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.security.PSRemoteUserCallback;
 
 import java.io.IOException;

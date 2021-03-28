@@ -22,7 +22,7 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package com.percussion.utils.security.deprecated;
+package com.percussion.legacy.security.deprecated;
 
 import com.percussion.security.IPSDecryptor;
 import com.percussion.security.PSEncryptionException;

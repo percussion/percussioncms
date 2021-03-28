@@ -33,7 +33,7 @@ import com.percussion.security.PSEncryptor;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.util.PSCollection;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
 

@@ -38,7 +38,6 @@ import javax.xml.parsers.DocumentBuilder;
 import com.percussion.install.RxAppConverter;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

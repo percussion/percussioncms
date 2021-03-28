@@ -29,7 +29,6 @@ import static org.junit.Assert.assertTrue;
 import com.percussion.delivery.service.impl.DeliveryServer.Password;
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
