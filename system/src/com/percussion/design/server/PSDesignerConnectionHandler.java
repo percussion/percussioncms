@@ -35,7 +35,7 @@ import com.percussion.util.PSBase64Decoder;
 import com.percussion.util.PSCharSets;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;

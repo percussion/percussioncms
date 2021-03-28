@@ -31,7 +31,7 @@ import com.percussion.delivery.forms.impl.PSBaseFormServiceTest;
 import com.percussion.delivery.forms.impl.PSFormRestServiceBaseTest;
 import com.percussion.delivery.forms.impl.PSMockEmailHelper;
 import com.percussion.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import org.apache.commons.lang.StringUtils;
 import org.glassfish.jersey.internal.PropertiesDelegate;
 import org.glassfish.jersey.server.ContainerRequest;

@@ -48,7 +48,7 @@ import com.percussion.server.PSServer;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.sitemgr.IPSSite;
-import com.percussion.utils.security.deprecated.PSAesCBC;
+import com.percussion.legacy.security.deprecated.PSAesCBC;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;

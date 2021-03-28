@@ -33,7 +33,6 @@ import com.percussion.utils.jdbc.IPSDatasourceConfig;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 
 import java.io.File;
 import java.io.PrintWriter;

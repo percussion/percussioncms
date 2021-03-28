@@ -128,7 +128,7 @@ import com.percussion.utils.container.PSContainerUtilsFactory;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.types.PSPair;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.serialization.PSObjectSerializer;

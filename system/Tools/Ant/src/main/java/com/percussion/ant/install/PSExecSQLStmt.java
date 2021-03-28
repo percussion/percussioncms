@@ -31,7 +31,7 @@ import com.percussion.security.PSEncryptor;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.PSJdbcUtils;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import org.apache.tools.ant.BuildException;
 
 import java.io.File;

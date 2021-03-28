@@ -35,7 +35,7 @@ import java.util.Properties;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.tools.SortedProperties;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
