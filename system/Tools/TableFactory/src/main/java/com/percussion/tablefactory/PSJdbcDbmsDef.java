@@ -30,7 +30,7 @@ import com.percussion.utils.container.*;
 import com.percussion.utils.container.jboss.PSJbossProperties;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.*;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;

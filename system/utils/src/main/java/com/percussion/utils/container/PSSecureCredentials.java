@@ -24,7 +24,7 @@
 
 package com.percussion.utils.container;
 
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.xml.IPSXmlErrors;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.utils.xml.PSXmlUtils;

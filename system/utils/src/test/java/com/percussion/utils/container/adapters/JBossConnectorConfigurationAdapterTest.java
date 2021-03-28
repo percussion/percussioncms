@@ -26,10 +26,9 @@ package com.percussion.utils.container.adapters;
 
 import com.percussion.utils.container.DefaultConfigurationContextImpl;
 import com.percussion.utils.container.IPSJndiDatasource;
-import com.percussion.utils.container.PSContainerUtilsFactory;
 import com.percussion.utils.container.PSJettyConnectorsTest;
 import com.percussion.utils.container.config.model.impl.BaseContainerUtils;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

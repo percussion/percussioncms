@@ -21,7 +21,7 @@
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
-package com.percussion.utils.security.deprecated;
+package com.percussion.legacy.security.deprecated;
 
 import com.percussion.security.PSEncryptor;
 import org.junit.After;
@@ -29,7 +29,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
 
 import java.math.BigInteger;
@@ -135,9 +134,9 @@ public class PSLegacyEncrypterTest
       String enc = PSLegacyEncrypter.getInstance(rxdeploydir + PSEncryptor.SECURE_DIR).encrypt(pwd, key);
       Assert.assertNotEquals(pwd, enc);
       System.out.println(enc);
-      Assert.assertEquals(pwd, PSLegacyEncrypter.getInstance(
+      assertEquals(pwd, PSLegacyEncrypter.getInstance(
               rxdeploydir + PSEncryptor.SECURE_DIR).decrypt(enc, key,null));
-      Assert.assertEquals(enc, PSLegacyEncrypter.getInstance(
+      assertEquals(enc, PSLegacyEncrypter.getInstance(
               rxdeploydir + PSEncryptor.SECURE_DIR).encrypt(pwd, key));
    }
    
@@ -154,7 +153,7 @@ public class PSLegacyEncrypterTest
    private void testToByteArray(BigInteger bigInt)
    {
       byte[] convertedBytes = PSLegacyEncrypter.getInstance(rxdeploydir + PSEncryptor.SECURE_DIR).toByteArray(bigInt);
-      Assert.assertEquals(0, (convertedBytes.length % PSLegacyEncrypter.BYTE_ARRAY_MULTIPLE));
+      assertEquals(0, (convertedBytes.length % PSLegacyEncrypter.BYTE_ARRAY_MULTIPLE));
       BigInteger convertedInt = new BigInteger(convertedBytes);
       Assert.assertEquals(convertedInt, bigInt);
    }

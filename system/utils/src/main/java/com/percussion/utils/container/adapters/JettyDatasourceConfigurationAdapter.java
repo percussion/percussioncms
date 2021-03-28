@@ -39,7 +39,7 @@ import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSDatasourceResolver;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;

@@ -205,7 +205,7 @@ public class PSFormatVersion
 
      try
      {
-        Class.forName("com.percussion.utils.security.deprecated.PSDESKey");
+        Class.forName("com.percussion.legacy.security.deprecated.PSDESKey");
      }
      catch (ClassNotFoundException e)
      {

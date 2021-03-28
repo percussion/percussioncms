@@ -27,7 +27,7 @@ package com.percussion.design.objectstore.legacy;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSJdbcDriverConfig;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.utils.security.deprecated.PSCryptographer;
+import com.percussion.legacy.security.deprecated.PSCryptographer;
 import com.percussion.utils.container.IPSJndiDatasource;
 import com.percussion.utils.container.PSContainerUtilsFactory;
 import com.percussion.utils.container.PSJndiDatasourceImpl;

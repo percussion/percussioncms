@@ -30,7 +30,7 @@ import com.percussion.security.PSEncryptor;
 import com.percussion.utils.container.IPSJndiDatasource;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSDatasourceConfig;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.util.ArrayList;

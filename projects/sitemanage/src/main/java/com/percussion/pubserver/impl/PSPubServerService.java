@@ -68,7 +68,7 @@ import com.percussion.sitemanage.service.IPSSitePublishStatusService;
 import com.percussion.tools.Base64;
 import com.percussion.utils.PSNamedLockManager;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.deprecated.PSAesCBC;
+import com.percussion.legacy.security.deprecated.PSAesCBC;
 import com.percussion.utils.service.IPSUtilityService;
 import com.percussion.webservices.publishing.IPSPublishingWs;
 import org.apache.commons.lang.ArrayUtils;

@@ -22,14 +22,11 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package com.percussion.utils.security.deprecated;
+package com.percussion.legacy.security.deprecated;
 
-
-import com.percussion.utils.security.deprecated.PSAesCBC;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

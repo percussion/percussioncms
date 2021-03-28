@@ -33,12 +33,11 @@ import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Properties;
 
 import org.apache.tools.ant.taskdefs.condition.Condition;

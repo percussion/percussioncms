@@ -31,7 +31,7 @@ import com.percussion.utils.container.adapters.JettyDatasourceConfigurationAdapt
 import com.percussion.utils.container.adapters.JettyInstallationPropertiesConfigurationAdapter;
 import com.percussion.utils.container.config.model.impl.BaseContainerUtils;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
