@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -28,7 +28,6 @@ import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
-import com.percussion.delivery.service.impl.PSDeliveryInfoService;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
 import com.percussion.utils.security.PSEncryptor;
@@ -43,13 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The feed info queue is a persistent queue that sends feed descriptors to the feed service in
@@ -177,7 +170,7 @@ public class PSFeedsInfoQueue implements InitializingBean
 
 
                     //Increased time - TODO: Re-architect this service
-                    Thread.sleep(30000);
+                    Thread.sleep(300000);
                 }
 
             } catch (InterruptedException ignore){
