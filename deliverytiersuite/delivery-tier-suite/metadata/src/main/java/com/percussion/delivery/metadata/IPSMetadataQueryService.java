@@ -30,13 +30,13 @@ import java.util.List;
 
 /**
  * @author erikserating
- * 
+ *
  */
 public interface IPSMetadataQueryService
 {
     /**
      * Executes a query against the metadata query service.
-     * 
+     *
      * @param query the metadata query, cannot be <code>null</code>.
      * @return PSPair which contains list of result objects, those are sorted
      *         according to the orderby in the query and number of results also
@@ -52,8 +52,8 @@ public interface IPSMetadataQueryService
      * enum is to handle the return type from the hibernate if NONE it returns
      * List<Object> If PROPERTY it returns List<[Object[])> If METADATA it
      * returns List<Object>
-     * 
-     * 
+     *
+     *
      */
     public enum SORTTYPE
     {
@@ -67,14 +67,16 @@ public interface IPSMetadataQueryService
 
     public static final String PROP_STRINGVALUE_COLUMN_NAME = "stringvalue";
 
+    public static final String PROP_VALUEHASH_COLUMN_NAME="valueHash";
+
     public static final String PROP_TEXTVALUE_COLUMN_NAME = "textvalue";
 
     public static final String SORT_ORDER_ASCEND = "asc";
 
     public static final String SORT_ORDER_DESCEND = "desc";
-    
+
     public Integer getQueryLimit();
-    
+
     public void setQueryLimit(Integer limit);
 
 }
