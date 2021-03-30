@@ -28,9 +28,11 @@ import com.percussion.delivery.metadata.IPSMetadataQueryService;
 import com.percussion.delivery.metadata.data.PSMetadataQuery;
 import com.percussion.delivery.metadata.data.impl.PSCriteriaElement;
 import com.percussion.delivery.metadata.error.PSMalformedMetadataQueryException;
+import com.percussion.delivery.metadata.extractor.data.PSMetadataProperty;
 import com.percussion.delivery.metadata.impl.PSMetadataQueryServiceHelper;
 import com.percussion.delivery.metadata.impl.PSPropertyDatatypeMappings;
 import com.percussion.delivery.metadata.impl.utils.PSPair;
+import com.percussion.delivery.metadata.utils.PSHashCalculator;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -73,6 +75,7 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 public class PSMetadataQueryService implements IPSMetadataQueryService
 {
     private SessionFactory sessionFactory;
+    private PSHashCalculator hashCalculator = new PSHashCalculator();
 
     @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
@@ -203,9 +206,9 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
     private PSPair<Query, SORTTYPE> buildHibernateQuery(Session sess, PSMetadataQuery rawQuery, boolean isCount)
            throws PSMalformedMetadataQueryException, HibernateException, ParseException
     {
-        List<PSCriteriaElement> entryCrit = new ArrayList<PSCriteriaElement>();
-        List<PSCriteriaElement> propsCrit = new ArrayList<PSCriteriaElement>();
-        Map<String, String> sortColumns = new HashMap<String, String>();
+        List<PSCriteriaElement> entryCrit = new ArrayList<>();
+        List<PSCriteriaElement> propsCrit = new ArrayList<>();
+        Map<String, String> sortColumns = new HashMap<>();
 
         String orderBy = rawQuery.getOrderBy();
         orderBy= StringEscapeUtils.escapeSql(orderBy);
@@ -271,7 +274,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
                 if (sortColumnName.equals(PROP_STRINGVALUE_COLUMN_NAME))
                 {
                     queryBuf.append(", lower(prop.");
-                    queryBuf.append(sortColumnName);
+                    queryBuf.append(PROP_STRINGVALUE_COLUMN_NAME);
                     queryBuf.append(") as sort1 ");
                 }
                 else
@@ -353,21 +356,34 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             {
                useClause = inClauseTemplate;
             }
-            
-            queryBuf.append(MessageFormat.format(useClause, i++, valueColumn, ce.getOperation(), valueParam, 
-                    nameParam));
-          
-            // Escape special characters that go into LIKE so that they don't
-            // reach final DB query.
-            if (ce.getOperationType().equals(PSCriteriaElement.OPERATION_TYPE.LIKE) && value instanceof String)
-            {
+
+            if((valueColumn.equals(PROP_STRINGVALUE_COLUMN_NAME) ||
+                    valueColumn.equals(PROP_TEXTVALUE_COLUMN_NAME))
+            && !ce.getOperation().equals(PSCriteriaElement.OPERATION_TYPE.LIKE.name())){
+                queryBuf.append(MessageFormat.format(useClause, i++, PROP_VALUEHASH_COLUMN_NAME, ce.getOperation(), valueParam,
+                        nameParam));
+            }else {
+                queryBuf.append(MessageFormat.format(useClause, i++, valueColumn, ce.getOperation(), valueParam,
+                        nameParam));
+            }
+
+            if(
+                    ce.getOperationType() == PSCriteriaElement.OPERATION_TYPE.LIKE
+                            && (value instanceof String)
+            ){
                 // Append HQL especial modifier to the end of LIKE
                 queryBuf.append(" " + HQL_ESCAPE + " '" + ESCAPE_CHAR + "'");
                 value = escapeSpecialCharacters((String) value);
             }
 
             paramValues.put(nameParam, ce.getName());
-            paramValues.put(valueParam, value);
+            if((valueColumn.equals(PROP_STRINGVALUE_COLUMN_NAME) ||
+                    valueColumn.equals(PROP_TEXTVALUE_COLUMN_NAME)) &&
+                    !ce.getOperationType().equals(PSCriteriaElement.OPERATION_TYPE.LIKE)){
+                paramValues.put(valueParam, hashCalculator.calculateHash(value.toString()));
+            }else {
+                paramValues.put(valueParam, value);
+            }
             paramOps.put(valueParam, ce.getOperationType());
         }
         //If the method is getting called only for the entry count, in that case order by doesn't need to be included
@@ -406,7 +422,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         }
 
         log.debug(queryBuf.toString());
-        
+
         Query q = sess.createQuery(queryBuf.toString());
         int useLimit=queryLimit;
         //All caller to set a query limit, but they can't allow higher than the server limit. 
