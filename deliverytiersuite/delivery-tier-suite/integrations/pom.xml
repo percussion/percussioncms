@@ -50,7 +50,7 @@
 		<dependency>
 		    <groupId>axis</groupId>
 		    <artifactId>axis</artifactId>
-		    <version>${axis.version}</version>
+		    <version>${axiscore.version}</version>
 		</dependency>
         <!-- https://mvnrepository.com/artifact/javax.xml/jaxrpc-api -->
         <dependency>
@@ -265,7 +265,7 @@
         <dependency>
             <groupId>axis</groupId>
             <artifactId>axis-jaxrpc</artifactId>
-            <version>1.4.1</version>
+            <version>${axis.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
