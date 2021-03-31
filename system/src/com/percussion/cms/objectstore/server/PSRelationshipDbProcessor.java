@@ -1802,7 +1802,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
       List<String> paths = new ArrayList<>();
       while (tokenizer.hasMoreTokens())
          paths.add(tokenizer.nextToken());
-      if (paths.isEmpty() || paths.size() < 2)
+      if (paths.isEmpty() || paths.size() < 1)
       {
          throw new IllegalArgumentException(
                "path must have at least two token separated by '" + separator

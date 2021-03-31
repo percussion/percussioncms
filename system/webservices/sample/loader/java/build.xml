@@ -48,7 +48,7 @@
 
    <!-- Define the loader classpath -->
    <path id="class.path">
-      <pathelement location="${lib.dir}/axis-1.4.1.jar" />
+      <pathelement location="${lib.dir}/axis-1.4.2.jar" />
       <pathelement location="${lib.dir}/axis-jaxrpc-1.4.1.jar" />
       <pathelement location="${lib.dir}/axis-saaj-1.4.1.jar"/>
       <pathelement location="${lib.dir}/wsdl4j-1.6.2.jar"/>
