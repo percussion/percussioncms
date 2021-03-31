@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+"http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+   <bean id="PSOPublishEditionService" class="com.percussion.pso.workflow.PublishEditionService" >      
+      <property name="workflows" >
+          <map> <!-- map of workflows keyed by workflow id -->
+             <entry key="5">
+                 <map>  <!--  map of transitions keyed by transition id -->
+                    <entry key="301">
+                        <map> <!-- map of communities keyed by community id  -->
+                            <entry key="1001">
+                               <value>314</value> <!-- values are edition ids -->
+                            </entry>
+                            <entry key="1002">
+                               <value>315</value>
+                            </entry>
+                        </map>
+                    </entry>
+                 </map>
+             </entry>
+             <entry key="6">
+					<!-- PSOTools workflow -->
+					<map>
+						<entry key="15">
+							<map>
+								<entry key="1008">
+									<!-- PSOTools2 Community -->
+									<value>324</value>
+									<!-- PSOTools2 Staging edition -->
+								</entry>
+							</map>
+						</entry>
+						<entry key="16"> <!-- republish transition -->
+							<map>
+								<entry key="1008">
+									<!-- PSOTools2 Community -->
+									<value>324</value>
+									<!-- PSOTools2 Staging edition -->
+								</entry>
+							</map>
+						</entry>
+					</map>
+				</entry>
+         </map>   
+      </property>
+   </bean>
+</beans>
