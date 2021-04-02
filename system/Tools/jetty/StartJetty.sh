@@ -1,4 +1,28 @@
 #!/bin/bash -bm
+#
+#     Percussion CMS
+#     Copyright (C) 1999-2021 Percussion Software, Inc.
+#
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU Affero General Public License for more details.
+#
+#     Mailing Address:
+#
+#      Percussion Software, Inc.
+#      PO Box 767
+#      Burlington, MA 01803, USA
+#      +01-781-438-9900
+#      support@percussion.com
+#      https://www.percusssion.com
+#
+#     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+#
+
 scriptname="$(basename "$0")"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -70,7 +94,7 @@ fi
 ## If the service is started we restrict the command line options that will pass 
 ## through to the jetty start.jar
 
-RUN_CMD="${JAVA_HOME}/bin/java -XX:+DisableAttachMechanism -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dfile.encoding=UTF8 -Dsun.jnu.encoding=UTF8 -jar ${JETTY_HOME}/start.jar -Djetty_perc_defaults=${JETTY_DEFAULTS} -Drxdeploydir=${rxDir} -DTIKA_CONFIG=${rxDir}/rxconfig/tika-config.xml -Djetty.base=${JETTY_BASE} --include-jetty-dir=${JETTY_DEFAULTS} $@"
+RUN_CMD="${JAVA_HOME}/bin/java -XX:+DisableAttachMechanism -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -jar ${JETTY_HOME}/start.jar -Djetty_perc_defaults=${JETTY_DEFAULTS} -Drxdeploydir=${rxDir} -DTIKA_CONFIG=${rxDir}/rxconfig/tika-config.xml -Djetty.base=${JETTY_BASE} --include-jetty-dir=${JETTY_DEFAULTS} $@"
 echo RUN_CMD=$RUN_CMD
 
 if [ ${PID} -gt 0 ]; then
