@@ -35,42 +35,18 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.PrefixFileFilter;
 import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
+import org.w3c.dom.*;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.ServerSocket;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.io.*;
+import java.net.*;
 import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -1340,18 +1316,20 @@ public class InstallUtil
                   {
                      int size = m_jarUrls.size();
                      URL urlList[] = new URL[size];
-                     for (int i = 0; i < size; i++)
+                     for (int i = 0; i < size; i++) {
+                        InstallUtil.logInfo("Loading " + m_jarUrls.get(i));
                         urlList[i] = m_jarUrls.get(i);
+                     }
 
                      ClassLoader loader = (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {
                         @Override
                         public Object run() {
-                     ClassLoader loader = new URLClassLoader(urlList);
-                           return loader;
+                           return new URLClassLoader(urlList);
                         }
                      });
 
                      driverClass = Class.forName(className, true, loader);
+                     InstallUtil.logInfo("Loaded " + className);
                      if (driverClass != null)
                      {
                         Object objDriver = driverClass.newInstance();
@@ -1388,7 +1366,7 @@ public class InstallUtil
          }
          if ((!(driver.equalsIgnoreCase(PSJdbcUtils.MYSQL))) || (m_extDriver == null))
          {
-            Class.forName(className);
+               Class.forName(className);
          }
       }
       catch (ClassNotFoundException cls)
