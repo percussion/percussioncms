@@ -123,6 +123,9 @@
         <fileset dir="${install.src}/jetty/base/lib/jdbc">
             <include name="**/*.jar" />
         </fileset>
+        <fileset dir="${install.dir}/jetty/base/lib/jdbc">
+            <include name="**/*.jar" />
+        </fileset>
         <fileset dir="${customer.jdbc.drivers}"  erroronmissingdir="false">
             <include name="**/*.jar" />
         </fileset>
@@ -133,6 +136,13 @@
             <include name="**/*.jar" />
         </fileset>
     </path>
+
+    <mkdir dir="${install.dir}/jetty/base/lib/jdbc" />
+    <copy todir="${install.dir}" overwrite="true" force="true">
+        <fileset dir="${install.src}/jetty/base/lib/jdbc">
+            <include name="**/*.jar"/>
+        </fileset>
+    </copy>
 
     <classloader classpathref="ant.deps" parentfirst="false" name="ant.loader.ant.deps"/>
 
@@ -239,7 +249,8 @@
 
     <target name="setupDB">
         <echo>Setting up Database</echo>
-        <ant antfile="installRepository.xml" inheritRefs="true"/>
+        <ant antfile="installRepository.xml" inheritRefs="true" inheritall="true" target="installRepository">
+        </ant>
     </target>
 
     <target name="configure_jetty">
