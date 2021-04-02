@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -50,14 +50,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This filter is used for publish and unpublish items.
@@ -174,7 +167,7 @@ public class PSPublicAssetItemFilterRule extends PSAbstractWorkflowExtension imp
         		if (historyItem.getStateName().equals(LIVE_STATE))
         		{	
         			oldRevision = historyItem.getRevision();
-        			log.info("Publishing previous Item Revision: "+oldRevision+" Name:"+wfItem.itemSummary.getName());
+        			log.debug("Publishing previous Item Revision: "+oldRevision+" Name:"+wfItem.itemSummary.getName());
         			break;
         		}
         	}
@@ -192,7 +185,6 @@ public class PSPublicAssetItemFilterRule extends PSAbstractWorkflowExtension imp
             /*
              * This is the same logic as the public item filter.
              */
-            if (log.isDebugEnabled())
                 log.debug("Keeping page or shared asset: " + wfItem);
 
 
@@ -207,8 +199,7 @@ public class PSPublicAssetItemFilterRule extends PSAbstractWorkflowExtension imp
             /*
              * The item should be removed
              */
-            if (log.isDebugEnabled())
-                log.debug("Removing item: " + wfItem);
+            log.debug("Removing item: " + wfItem);
             rvalue = null;
         }
         return rvalue;
