@@ -54,7 +54,7 @@ public class PSEncryptor extends PSAbstractEncryptor {
 
     private String secureDir;
     private static final Logger log = LogManager.getLogger(PSEncryptor.class);
-    public static final String SECURE_DIR = "/rxconfig/secure/";
+    public static final String SECURE_DIR = File.separator + "rxconfig"+File.separator+ "secure" +File.separator;
     private static final String SECURE_KEY_FILE = ".key";
     public static final String ROTATE_FLAG_FILE = "rotate";
     private IPSKey secretKey;
@@ -187,8 +187,8 @@ public class PSEncryptor extends PSAbstractEncryptor {
 
         //Make sure it has a trailing /
         keystoreLocation = keystoreLocation.trim();
-        if(!keystoreLocation.endsWith("/") && !keystoreLocation.endsWith("\\"))
-            keystoreLocation.concat("/");
+        if(!keystoreLocation.endsWith(File.separator))
+            keystoreLocation.concat(File.separator);
 
         this.secureDir = keystoreLocation;
     }

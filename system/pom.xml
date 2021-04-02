@@ -1054,7 +1054,7 @@
         <dependency>
             <groupId>axis</groupId>
             <artifactId>axis</artifactId>
-            <version>${axis.version}</version>
+            <version>${axiscore.version}</version>
 
         </dependency>
 
