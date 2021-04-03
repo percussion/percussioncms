@@ -137,6 +137,7 @@ public class PSStaticContainerUtils
    {
       File tempFile = File.createTempFile(FilenameUtils.removeExtension(propertyFile.getAbsolutePath().toString()),
             ".tmp");
+      tempFile.deleteOnExit();
       return tempFile;
    }
   

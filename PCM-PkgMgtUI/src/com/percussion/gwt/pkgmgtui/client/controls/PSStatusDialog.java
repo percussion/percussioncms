@@ -85,7 +85,7 @@ public class PSStatusDialog extends Dialog
       hlLabel.addMember(m_label);
       hlBtn.addMember(okBtn);
       addItem(hlLabel);
-      setToolbarButtons(hlBtn);
+      addItem(hlBtn);
    }
 
    @Override

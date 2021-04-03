@@ -67,6 +67,8 @@ public interface IPSMetadataQueryService
 
     public static final String PROP_STRINGVALUE_COLUMN_NAME = "stringvalue";
 
+    public static final String PROP_VALUEHASH_COLUMN_NAME="valueHash";
+
     public static final String PROP_TEXTVALUE_COLUMN_NAME = "textvalue";
 
     public static final String SORT_ORDER_ASCEND = "asc";
