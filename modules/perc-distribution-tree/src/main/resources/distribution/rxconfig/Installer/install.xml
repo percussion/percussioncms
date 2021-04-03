@@ -67,7 +67,12 @@
         <os family="windows" />
     </condition>
     <condition property="isLinux">
-        <os family="unix" />
+        <and>
+            <not>
+                <os family="mac"/>
+            </not>
+            <os family="unix" />
+        </and>
     </condition>
 
     <condition property="installSameSrcDest" value="true" else="false">

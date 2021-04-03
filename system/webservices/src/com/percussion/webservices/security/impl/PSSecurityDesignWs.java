@@ -526,16 +526,16 @@ public class PSSecurityDesignWs extends PSSecurityBaseWs implements
 
       Map<PSCommunity, List<PSObjectSummary>> filteredSummaries =
          new HashMap<PSCommunity, List<PSObjectSummary>>();
-      Map<String, PSCommunity> communitiesByName = 
-         new HashMap<String, PSCommunity>();
-      for (IPSGuid g : communities.keySet())
-      {
-         filteredSummaries.put(communities.get(g), new ArrayList<PSObjectSummary>());
+      Map<IPSGuid,PSObjectSummary> objSummaries = PSWebserviceUtils
+              .toObjectSummaries(catSummaries, objectAcls);
+
+      List<PSObjectSummary> objSum = new ArrayList(objSummaries.values());
+      for (Map.Entry<IPSGuid,PSCommunity> comm : communities.entrySet()) {
+         filteredSummaries.put(comm.getValue(), objSum);
       }
 
-      //TODO: This code didn't seem to do anything at all so I removed it.
-
       return filteredSummaries;
+
    }
 
    /**

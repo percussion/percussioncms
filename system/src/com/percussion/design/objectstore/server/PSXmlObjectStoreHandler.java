@@ -3082,14 +3082,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
          }
       }
 
-      boolean releaseLock = false;
-      {
-         String releaseLockIfExists = root.getAttribute("releaseLock");
-         if (releaseLockIfExists != null && releaseLockIfExists.equals("yes"))
-         {
-            releaseLock = true;
-         }
-      }
+
 
       // build an appFile from the request document, so we can get the
       // desired file name and the content
@@ -3136,15 +3129,14 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
                   is, overWrite, req.getSecurityToken(), appFile.isFolder());
          } else {
          IPSLockerId lockId = getEffectiveLockerId(req, uniqueId);
-         os.getApplicationLock(lockId, appName, 30);
+            os.getApplicationLock(lockId, appName + "-" +appFile.getFileName().getName(), 30);
          InputStream is = null;
          if(!appFile.isFolder())
             is = appFile.getContent().getContent();
          exists = os.saveApplicationFile(appName, appFile.getFileName(),
             is, overWrite, lockId, req.getSecurityToken(), appFile.isFolder());
 
-         if (releaseLock)
-            os.releaseApplicationLock(lockId, appName);
+            os.releaseApplicationLock(lockId, appName + "-" +appFile.getFileName().getName());
       }
       }
       catch (Exception e)

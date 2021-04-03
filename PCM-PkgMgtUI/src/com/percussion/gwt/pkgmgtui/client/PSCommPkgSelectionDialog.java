@@ -92,8 +92,8 @@ public class PSCommPkgSelectionDialog extends Dialog
             onOk();
          }
       });
-      
-      setToolbarButtons(btnLayout);
+
+      addItem(btnLayout);
 
    }
 
