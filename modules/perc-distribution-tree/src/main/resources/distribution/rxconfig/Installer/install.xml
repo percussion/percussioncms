@@ -124,11 +124,19 @@
         <available file="${install.dir}/jetty" type="dir"  property="jetty.present"/>
     </condition> -->
 
-    <path id="ant.deps">
+
+    <mkdir dir="${install.dir}/jetty/base/lib/jdbc" />
+    <copy todir="${install.dir}" overwrite="true" force="true">
         <fileset dir="${install.src}/jetty/base/lib/jdbc">
+            <include name="**/*.jar"/>
+        </fileset>
+    </copy>
+
+    <path id="ant.deps" cache="true">
+        <fileset dir="${install.dir}/jetty/base/lib/jdbc">
             <include name="**/*.jar" />
         </fileset>
-        <fileset dir="${install.dir}/jetty/base/lib/jdbc">
+        <fileset dir="${install.src}/jetty/base/lib/jdbc">
             <include name="**/*.jar" />
         </fileset>
         <fileset dir="${customer.jdbc.drivers}"  erroronmissingdir="false">
@@ -142,18 +150,11 @@
         </fileset>
     </path>
 
-    <mkdir dir="${install.dir}/jetty/base/lib/jdbc" />
-    <copy todir="${install.dir}" overwrite="true" force="true">
-        <fileset dir="${install.src}/jetty/base/lib/jdbc">
-            <include name="**/*.jar"/>
-        </fileset>
-    </copy>
+    <classloader classpathref="ant.deps" parentfirst="true" name="ant.loader.ant.deps"/>
 
-    <classloader classpathref="ant.deps" parentfirst="false" name="ant.loader.ant.deps"/>
+    <taskdef resource="com/percussion/ant/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps" />
 
-    <taskdef resource="com/percussion/ant/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
-
-    <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
+    <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps" />
 
     <echo>Checking jetty directory exists...</echo>
 
