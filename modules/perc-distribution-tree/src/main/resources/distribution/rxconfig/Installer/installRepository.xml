@@ -34,28 +34,6 @@
     <property name="rxrepository.properties.new" location="${install.configdir.src}/rxrepository.properties"/>
     <property name="rxrepository.properties" location="${install.dir}/rxconfig/Installer/rxrepository.properties"/>
 
-    <path id="ant.deps">
-        <fileset dir="${install.src}/jetty/base/lib/jdbc"  erroronmissingdir="false">
-            <include name="**/*.jar" />
-        </fileset>
-        <fileset dir="${customer.jdbc.drivers}"  erroronmissingdir="false">
-            <include name="**/*.jar" />
-        </fileset>
-        <fileset dir="${install.src}/jetty/defaults/lib/perc" erroronmissingdir="false">
-            <include name="**/*.jar" />
-        </fileset>
-        <fileset dir="${install.src}/jetty/defaults/lib/perc-logging" erroronmissingdir="false">
-            <include name="**/*.jar" />
-        </fileset>
-    </path>
-
-
-    <classloader classpathref="ant.deps" parentfirst="false" name="ant.loader.ant.deps"/>
-
-    <taskdef resource="com/percussion/ant/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
-
-    <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
-
     <target name="installRepository" depends="init,repository_properties">
 
 

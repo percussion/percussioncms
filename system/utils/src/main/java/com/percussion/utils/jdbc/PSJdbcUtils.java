@@ -186,7 +186,9 @@ public class PSJdbcUtils
    public static final String MYSQL_DTS_DRIVER_LOCATION="/Deployment/Server/common/lib/mysql-connector.jar";
    public static final String MYSQL_STAGING_DTS_DRIVER_LOCATION="/Staging/Deployment/Server/common/lib/mysql-connector.jar";
 
-
+   public static final String DEFAULT_JDBC_DRIVER_LOCATION = "/jetty/base/lib/jdbc";
+   public static final String DEFAULT_DTS_DRIVER_LOCATION="/Deployment/Server/common/lib";
+   public static final String DEFAULT_STAGING_DTS_DRIVER_LOCATION="/Staging/Deployment/Server/common/lib";
    /**
     * Additional connection url parameters required to use unicode (UTF-8) with mysql. 
     */

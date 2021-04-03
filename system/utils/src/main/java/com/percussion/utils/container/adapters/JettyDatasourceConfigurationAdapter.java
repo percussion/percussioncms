@@ -509,7 +509,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
             } catch (IOException | SAXException e) {
                 ms_log.error("Could not parse or update jetty datasource configuration, so recreating {} Error: {}", file.getAbsolutePath(), e.getMessage());
                 ms_log.debug(e.getMessage(),e);
-                //Incase File is corrupted, create a new file.
+                //In case File is corrupted, create a new file.
                 doc = createNewDatasourceXml();
                 updated = updateJettyDatasourceXml(datasources, doc);
             }

@@ -43,6 +43,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.net.*;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -52,6 +54,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 /**
  * The InstallUtil class contains some utility methods for the installer.
@@ -102,15 +105,14 @@ public class InstallUtil
       if ((strFind == null) || (strReplace == null) || (strFind.length() == 0))
          return;
 
-      try
+      if (strFind.equals(strReplace))
+         return;
+
+      System.out.println("find: + " + strFind + " replace: " + strReplace);
+      File file = new File(strFile);
+
+      try(FileInputStream in = new FileInputStream(file))
       {
-         if (strFind.equals(strReplace))
-            return;
-
-         System.out.println("find: + " + strFind + " replace: " + strReplace);
-         File file = new File(strFile);
-         FileInputStream in = new FileInputStream(file);
-
          String strReadData = "";
          String strWriteData = "";
          int iAvail = in.available();
@@ -118,7 +120,7 @@ public class InstallUtil
          in.read(bData, 0, iAvail);
          strReadData = new String(bData);
 
-         StringBuffer buffer = new StringBuffer(strReadData);
+         StringBuilder buffer = new StringBuilder(strReadData);
          int replace = buffer.toString().indexOf(strFind);
          while (replace != -1)
          {
@@ -127,16 +129,11 @@ public class InstallUtil
          }
 
          strWriteData = buffer.toString();
-         in.close();
-         FileWriter writer = new FileWriter(strFile);
-         writer.write(strWriteData, 0, strWriteData.length());
-         writer.close();
-      }
-      catch (java.io.FileNotFoundException e)
-      {
-         PSLogger.logError(e.getMessage());
-      }
-      catch (java.io.IOException e)
+
+         try(FileWriter writer = new FileWriter(strFile)) {
+            writer.write(strWriteData, 0, strWriteData.length());
+         }
+      } catch (IOException e)
       {
          PSLogger.logError(e.getMessage());
       }
@@ -389,11 +386,10 @@ public class InstallUtil
     */
    public static void executeStatement(Connection conn, String statement) throws SQLException
    {
-      Statement st = null;
 
-      st = conn.createStatement();
-      st.execute(statement);
-      st.close();
+      try(Statement st = conn.createStatement()) {
+         st.execute(statement);
+      }
    }
 
    /**
@@ -647,7 +643,7 @@ public class InstallUtil
     * @throws IOException if an error occurs during copy.
     * @throws FileNotFoundException if either of the files cannot be found.
     */
-   public static void copyFiles(File in, File out) throws IOException, FileNotFoundException
+   public static void copyFiles(File in, File out) throws IOException
    {
       if (in == null)
          throw new IllegalArgumentException("in may not be null or empty");
@@ -655,12 +651,11 @@ public class InstallUtil
       if (out == null)
          throw new IllegalArgumentException("out may not be null or empty");
 
-      FileChannel sourceChannel = new FileInputStream(in).getChannel();
-      FileChannel destinationChannel = new FileOutputStream(out).getChannel();
-      sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
-
-      sourceChannel.close();
-      destinationChannel.close();
+      try(FileChannel sourceChannel = new FileInputStream(in).getChannel()) {
+         try(FileChannel destinationChannel = new FileOutputStream(out).getChannel()) {
+            sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
+         }
+      }
    }
 
    /**
@@ -857,7 +852,6 @@ public class InstallUtil
        } catch (SQLException e) {
            if ("XJ015".equals(e.getSQLState())) {
                PSLogger.logInfo( "Derby shutdown succeeded. SQLState=" + e.getSQLState() );
-               return;
            }
        } finally {
            if (cn != null) {
@@ -923,39 +917,17 @@ public class InstallUtil
    public static boolean portAvailable(int port)
    {
 
-      ServerSocket ss = null;
-      DatagramSocket ds = null;
-      try
-      {
-         ss = new ServerSocket(port);
+      try (ServerSocket ss = new ServerSocket(port)){
          ss.setReuseAddress(true);
-         ds = new DatagramSocket(port);
-         ds.setReuseAddress(true);
+        try(DatagramSocket ds = new DatagramSocket(port)) {
+           ds.setReuseAddress(true);
+        }
          return true;
       }
       catch (IOException e)
       {
-      }
-      finally
-      {
-         if (ds != null)
-         {
-            ds.close();
-         }
 
-         if (ss != null)
-         {
-            try
-            {
-               ss.close();
-            }
-            catch (IOException e)
-            {
-               /* should not be thrown */
-            }
-         }
       }
-
       return false;
    }
 
@@ -1269,51 +1241,40 @@ public class InstallUtil
 
       if (className == null)
          throw new SQLException("Driver " + driver + " is not supported by the current installer.");
-      try
-      {
-         if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL))
-         {
-            if (m_extDriver == null)
-            {
-               if (m_jarUrls == null || m_jarUrls.isEmpty())
-               {
+
+      try {
+         if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL)) {
+            if (m_extDriver == null) {
+               if (m_jarUrls == null || m_jarUrls.isEmpty()) {
                   // Likely an upgrade, set default driver
                   //CMS location
                   File extDriver = new File(m_rootDir + PSJdbcUtils.MYSQL_DRIVER_LOCATION);
 
                   //DTS Location
-                  if(!extDriver.exists()){
+                  if (!extDriver.exists()) {
                      extDriver = new File(m_rootDir + PSJdbcUtils.MYSQL_DTS_DRIVER_LOCATION);
-                   }
+                  }
 
                   //Staging DTS location
-                  if(!extDriver.exists()){
+                  if (!extDriver.exists()) {
                      extDriver = new File(m_rootDir + PSJdbcUtils.MYSQL_STAGING_DTS_DRIVER_LOCATION);
                   }
 
                   String extDriverLocation = extDriver.getAbsolutePath();
-                  if (!extDriver.exists())
-                  {
+                  if (!extDriver.exists()) {
                      logError("Cannot find MySQL driver at " + extDriverLocation);
-                  }
-                  else
-                  {
-                     try
-                     {
+                  } else {
+                     try {
                         PSDriverHelper.getDriver(className, extDriverLocation);
                         addJarFileUrl(extDriverLocation);
-                     }
-                     catch (ClassNotFoundException e)
-                     {
+                     } catch (ClassNotFoundException e) {
                         logError("Cannot find MySQL driver at " + extDriverLocation);
                      }
                   }
                }
 
-               if (m_jarUrls != null)
-               {
-                  try
-                  {
+               if (m_jarUrls != null) {
+                  try {
                      int size = m_jarUrls.size();
                      URL urlList[] = new URL[size];
                      for (int i = 0; i < size; i++) {
@@ -1330,43 +1291,77 @@ public class InstallUtil
 
                      driverClass = Class.forName(className, true, loader);
                      InstallUtil.logInfo("Loaded " + className);
-                     if (driverClass != null)
-                     {
+                     if (driverClass != null) {
                         Object objDriver = driverClass.newInstance();
-                        if (objDriver != null)
-                        {
+                        if (objDriver != null) {
                            if (objDriver instanceof Driver)
                               m_extDriver = (Driver) objDriver;
                         }
                      }
-                  }
-                  catch (InstantiationException ie)
-                  {
+                  } catch (InstantiationException ie) {
                      logError("InstantiationException : " + ie.getMessage());
                      driverClass = null;
-                  }
-                  catch (IllegalAccessException iae)
-                  {
+                  } catch (IllegalAccessException iae) {
                      logError("IllegalAccessException : " + iae.getMessage());
                      driverClass = null;
-                  }
-                  catch (NoSuchFieldError err)
-                  {
+                  } catch (NoSuchFieldError err) {
                      logError("NoSuchFieldError : " + err.getMessage());
                      driverClass = null;
-                  }
-                  catch (Exception e)
-                  {
+                  } catch (Exception e) {
                      logError("Exception : " + e.getMessage());
                      driverClass = null;
                   }
                }
 
             }
-         }
-         if ((!(driver.equalsIgnoreCase(PSJdbcUtils.MYSQL))) || (m_extDriver == null))
-         {
-               Class.forName(className);
+         } else {
+
+            Path dir = Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_JDBC_DRIVER_LOCATION);
+            if (Files.exists(dir)) {
+
+            }else if (Files.exists(Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_DTS_DRIVER_LOCATION))){
+               dir = Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_DTS_DRIVER_LOCATION);
+            }else if(Files.exists(Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_STAGING_DTS_DRIVER_LOCATION))){
+               dir = Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_STAGING_DTS_DRIVER_LOCATION);
+            }
+
+            try {
+               List<File> files = Files.list(dir).map(Path::toFile)
+                       .collect(Collectors.toList());
+
+               for (File f : files) {
+                  m_jarUrls.add(f.toURI().toURL());
+               }
+               URL[] urlList = (URL[])m_jarUrls.toArray();
+
+               ClassLoader loader = (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {
+                  @Override
+                  public Object run() {
+                     return new URLClassLoader(urlList);
+                  }
+               });
+
+               driverClass = Class.forName(className, true, loader);
+               InstallUtil.logInfo("Loaded " + className);
+               if (driverClass != null) {
+                  Object objDriver = driverClass.newInstance();
+                  if (objDriver != null) {
+                     if (objDriver instanceof Driver)
+                        m_extDriver = (Driver) objDriver;
+                  }
+               }
+            } catch (InstantiationException ie) {
+               logError("InstantiationException : " + ie.getMessage());
+               driverClass = null;
+            } catch (IllegalAccessException iae) {
+               logError("IllegalAccessException : " + iae.getMessage());
+               driverClass = null;
+            } catch (NoSuchFieldError err) {
+               logError("NoSuchFieldError : " + err.getMessage());
+               driverClass = null;
+            }catch (IOException e) {
+               logError(e.getMessage());
+            }
          }
       }
       catch (ClassNotFoundException cls)
@@ -1457,16 +1452,7 @@ public class InstallUtil
            }
       }
 
-      if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL))
-      {
-         conn = createLoadedConnection(driver, server, db, uid, pw);
-      }
-      else
-      {
-         conn = createStandardConnection(driver, server, db, uid, pw);
-      }
-
-      return conn;
+         return createLoadedConnection(driver, server, db, uid, pw);
    }
 
    /**
