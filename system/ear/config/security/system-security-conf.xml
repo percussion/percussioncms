@@ -60,6 +60,7 @@
    <path authType="anonymous">/services/maintenance/manager/status/*</path>
    <path authType="anonymous">/unsupportedWarning.jsp</path>
    <path authType="anonymous">/dce/*</path>
+   <path authType="anonymous">/Docs/*</path>
    <!-- webservices -->
    <path authType="anonymous">/servlet/AxisServlet</path>
    <path authType="anonymous">/servlet/AdminServlet</path>

@@ -458,8 +458,18 @@ public class PSApplicationDependencyHandler
 
             PSDependencyFile appFile = (PSDependencyFile)appFiles.next();
             File origFile = normalizePathSep(appFile.getOriginalFile());
-            os.saveApplicationFile(appName, origFile,
-               archive.getFileData(appFile), true, lockId, tok);
+            PSXmlObjectStoreLockerId filelockId = null;
+            try {
+               // create lock, stealing lock if required
+               filelockId = new PSXmlObjectStoreLockerId(ctx.getUserId(), true, true,
+                       tok.getUserSessionId());
+               os.getApplicationLock(filelockId, appName + "-" + origFile.getName(), 30);
+               os.saveApplicationFile(appName, origFile,
+                       archive.getFileData(appFile), true, filelockId, tok);
+            }finally {
+               if(filelockId != null)
+                  os.releaseApplicationLock(filelockId,appName + "-" + origFile.getName());
+            }
 
             // check to see if overwriting
             if (exists && curFileList.contains(origFile))

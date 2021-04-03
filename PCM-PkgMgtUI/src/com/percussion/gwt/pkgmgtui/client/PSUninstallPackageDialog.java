@@ -77,7 +77,7 @@ public class PSUninstallPackageDialog extends
       hlLabel.addMember(m_messageGrid);
       hlLabel.setPadding(10);
       addItem(hlLabel);
-      setToolbarButtons(createButtonsPanel());
+      addItem(createButtonsPanel());
 
    }
 
@@ -123,6 +123,7 @@ public class PSUninstallPackageDialog extends
             thisWindow.hide();
          }
       });
+      m_cancelBtn.setAutoFit(true);
       btnStack.addMember(m_oKBtn);
       m_oKBtn.addMouseUpHandler(new MouseUpHandler()
       {
@@ -132,6 +133,7 @@ public class PSUninstallPackageDialog extends
          }
 
       });
+      m_oKBtn.setAutoFit(true);
       btnStack.addMember(m_finishBtn);
       m_finishBtn.addMouseUpHandler(new MouseUpHandler()
       {
@@ -140,6 +142,7 @@ public class PSUninstallPackageDialog extends
             onFinish();
          }
       });
+      m_finishBtn.setAutoFit(true);
       m_finishBtn.hide();
       btnStack.setMembersMargin(PSConstants.getMembersMargin());
       btnStack.setAlign(Alignment.RIGHT);

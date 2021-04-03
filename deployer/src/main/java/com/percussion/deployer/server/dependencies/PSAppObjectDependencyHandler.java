@@ -40,13 +40,16 @@ import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.design.objectstore.PSApplication;
 import com.percussion.design.objectstore.PSExtensionCall;
 import com.percussion.design.objectstore.PSExtensionParamValue;
+import com.percussion.design.objectstore.PSLockedException;
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.design.objectstore.PSNotLockedException;
 import com.percussion.design.objectstore.PSTextLiteral;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.PSUrlRequest;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.design.objectstore.server.PSXmlObjectStoreLockerId;
 import com.percussion.extension.PSExtensionRef;
+import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSCustomControlManager;
 import com.percussion.tablefactory.PSJdbcTableSchema;
@@ -588,20 +591,33 @@ public abstract class PSAppObjectDependencyHandler
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             "Cannot get appname from path: " + dep.getDependencyId());
       }
-      
-      PSXmlObjectStoreLockerId lockId = null;
-      try 
-      {
-         // create lock, stealing lock if required
-         lockId = new PSXmlObjectStoreLockerId(ctx.getUserId(), true, true, 
-            tok.getUserSessionId());
-         os.getApplicationLock(lockId, appName, 30);
-         
-         boolean exists = (getAppFile(tok, dep.getDependencyId()) != null);
-         
-         os.saveApplicationFile(appName, origFile, 
-            archive.getFileData(depFile), true, lockId, tok);
-         
+
+         PSXmlObjectStoreLockerId lockId = null;
+         boolean exists = false;
+         try {
+            // create lock, stealing lock if required
+            lockId = new PSXmlObjectStoreLockerId(ctx.getUserId(), true, true,
+                    tok.getUserSessionId());
+            os.getApplicationLock(lockId, appName + "-" + origFile.getName(), 30);
+
+            exists = (getAppFile(tok, dep.getDependencyId()) != null);
+
+            os.saveApplicationFile(appName, origFile,
+                    archive.getFileData(depFile), true, lockId, tok);
+         } catch (PSLockedException | PSNotFoundException | PSAuthorizationException | PSServerException | PSNotLockedException e) {
+
+            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                    "Cannot save application from path: " + dep.getDependencyId() + "Error: " + e.getMessage());
+         } finally {
+            try {
+               os.releaseApplicationLock(lockId,appName + "-" + origFile.getName());
+            } catch (PSServerException e) {
+               throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                       "Cannot release Application lock  " + dep.getDependencyId() + "Error: " + e.getMessage());
+            }
+         }
+
+
          PSDependency parentDep = dep.getParentDependency();
          if (parentDep != null && 
                parentDep.getObjectType().equals(PSControlDependencyHandler.
@@ -616,27 +632,7 @@ public abstract class PSAppObjectDependencyHandler
             transAction = PSTransactionSummary.ACTION_MODIFIED;
          addTransactionLogEntry(dep, ctx, origFile.getPath(), 
             PSTransactionSummary.TYPE_FILE, transAction);
-      }
-      catch (Exception e) 
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
-            e.getLocalizedMessage());
-      }
-      finally 
-      {
-         if (lockId != null)
-         {
-            try
-            {
-               os.releaseApplicationLock(lockId, appName);
-            }
-            catch(PSServerException e)
-            {
-               // not fatal
-            }
-         }
-         
-      }
+
    }
    
    /**

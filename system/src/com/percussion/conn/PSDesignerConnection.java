@@ -1019,7 +1019,7 @@ public class PSDesignerConnection
             }
 
             throw new PSServerException(
-               IPSConnectionErrors.RESPONSE_PARSE_EXCEPTION_NOLINEINFO,
+               IPSConnectionErrors.UNKNOWN_SERVER_EXCEPTION,
                reason);
          }
          else {

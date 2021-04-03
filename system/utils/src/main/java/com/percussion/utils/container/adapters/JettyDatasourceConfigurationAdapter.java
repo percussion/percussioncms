@@ -306,54 +306,56 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
         File tempFile = PSStaticContainerUtils.getTempFile(propertyFile.toFile());
         boolean success = false;
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+        try(FileWriter fw = new FileWriter(tempFile)){
+            try (BufferedWriter writer = new BufferedWriter(fw)) {
 
-            for (IPSJndiDatasource datasource : datasources) {
-                int index = datasource.getId();
+                for (IPSJndiDatasource datasource : datasources) {
+                    int index = datasource.getId();
 
-                String prefix = IPSJdbcJettyDbmsDefConstants.JETTY_DS_PREFIX + "." + index + ".";
+                    String prefix = IPSJdbcJettyDbmsDefConstants.JETTY_DS_PREFIX + "." + index + ".";
 
-                long idleMs = datasource.getIdleTimeout();
-                if(idleMs < 1000) {
-                    idleMs = idleMs * 60 * 1000l;
+                    long idleMs = datasource.getIdleTimeout();
+                    if (idleMs < 1000) {
+                        idleMs = idleMs * 60 * 1000l;
+                    }
+                    props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_IDLE_MS, Long.toString(idleMs));
+
+                    props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_CONNECTIONS_MAX, Integer.toString(datasource.getMaxConnections()));
+                    props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_CONNECTIONS_MIN, Integer.toString(datasource.getMinConnections()));
+
+                    props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_DRIVER_CLASS_SUFFIX, datasource.getDriverClassName());
+                    props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_DRIVER_NAME_SUFFIX, datasource.getDriverName());
+
+                    props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_SERVER_SUFFIX, datasource.getServer());
+                    try {
+                        props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_SUFFIX,
+                                PSEncryptor.getInstance("AES",
+                                        PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                                                PSEncryptor.SECURE_DIR
+                                        )).encrypt(datasource.getPassword()));
+                        props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_ENCRYPTED_SUFFIX, "Y");
+                    } catch (PSEncryptionException e) {
+                        props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_SUFFIX,
+                                datasource.getPassword());
+                        props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_ENCRYPTED_SUFFIX, "N");
+                    }
+
+
+                    props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_UID_SUFFIX, datasource.getUserId());
+                    if (StringUtils.isNotEmpty(datasource.getConnectionTestQuery()))
+                        props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_CONNECTIONTEST_SUFFIX, datasource.getConnectionTestQuery());
+
+                    if (datasource.getName() != null)
+                        props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_NAME_SUFFIX, datasource.getName());
                 }
-                props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_IDLE_MS, Long.toString(idleMs));
+                // save properties to project root folder
+                this.storeProperties(props, writer, propertyFile.toFile().getName());
 
-                props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_CONNECTIONS_MAX, Integer.toString(datasource.getMaxConnections()));
-                props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_CONNECTIONS_MIN, Integer.toString(datasource.getMinConnections()));
-
-                props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_DRIVER_CLASS_SUFFIX, datasource.getDriverClassName());
-                props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_DRIVER_NAME_SUFFIX, datasource.getDriverName());
-
-                props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_SERVER_SUFFIX, datasource.getServer());
-                try {
-                    props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_SUFFIX,
-                            PSEncryptor.getInstance("AES",
-                                    PathUtils.getRxPath().toAbsolutePath().toString().concat(
-                                            PSEncryptor.SECURE_DIR
-                                    )).encrypt(datasource.getPassword()));
-                    props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_ENCRYPTED_SUFFIX, "Y");
-                } catch (PSEncryptionException e) {
-                    props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_SUFFIX,
-                            datasource.getPassword());
-                    props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_ENCRYPTED_SUFFIX, "N");
-                }
-
-
-                props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_UID_SUFFIX, datasource.getUserId());
-                if (StringUtils.isNotEmpty(datasource.getConnectionTestQuery()))
-                    props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_CONNECTIONTEST_SUFFIX, datasource.getConnectionTestQuery());
-
-                if (datasource.getName() != null)
-                    props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_NAME_SUFFIX, datasource.getName());
+                success = true;
             }
-            // save properties to project root folder
-            this.storeProperties(props, writer, propertyFile.toFile().getName());
-
-            success = true;
-        } catch (IOException e) {
-            ms_log.error("error saving properties file propertyFile {}",
-                    PSExceptionUtils.getMessageForLog(e));
+            } catch (IOException e) {
+                ms_log.error("error saving properties file propertyFile {}",
+                        PSExceptionUtils.getMessageForLog(e));
             ms_log.debug(e);
         }
 

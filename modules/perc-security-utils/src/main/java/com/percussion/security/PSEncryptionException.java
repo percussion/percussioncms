@@ -24,7 +24,6 @@
 
 package com.percussion.security;
 
-import java.security.GeneralSecurityException;
 
 public class PSEncryptionException extends Exception{
     public PSEncryptionException(String s, Throwable e) {

@@ -3527,6 +3527,11 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
             }
          }
       }
+      catch (PSAuthenticationFailedException af){
+         ms_log.warn("Authentication Failed.  Invalid User Name and/or Password.");
+         ms_log.debug("AuthenticationFailed.. Invalid User Name and/or Password.",af);
+         return;
+      }
       catch (Exception e)
       {
     	  String msg="An unexpected error occurred while processing the Request.";
@@ -3536,7 +3541,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     		  }catch(Exception ex){}
     	  }
     	  
-    	  ms_log.warn(msg, e);
+    	  ms_log.warn(msg);
           
     	  try{
 	    	  // its possible that session has timed out, so
@@ -3559,7 +3564,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
 	                	  if(clientSessId!= null)
 	                		  msg = msg + " For Session Id: " + clientSessId;
 	                	  
-	                	  ms_log.warn(msg,exSession);
+	                	  ms_log.warn(msg);
 	                  }
 	               }
 	            }

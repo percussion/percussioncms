@@ -1,0 +1,63 @@
+TS: @jnlp-timestamp@
+        <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<jnlp spec="6.0+" xmlns:jfx="http://javafx.com" codebase="$$codebase" href="$$name" version="@jnlp-version@">
+    <information>
+        <title>Percussion DCE : $$hostname</title>
+        <vendor>Percussion Software</vendor>
+        <homepage href="http://www.percussion.com"></homepage>
+        <icon href="/Rhythmyx/sys_resources/images/dce_icon.jpg"/>
+        <icon kind="splash" href="/Rhythmyx/sys_resources/images/dce_splash.jpg"/>
+        <shortcut online="true">
+            <desktop/>
+            <menu submenu="Percussion DCE"/>
+        </shortcut>
+    </information>
+    <security>
+        <all-permissions/>
+    </security>
+    <update check="always" policy="always" />
+    <resources>
+        <!-- Application Resources -->
+        <j2se version="1.8+" href=
+                "http://java.sun.com/products/autodl/j2se" />
+        <!-- will look for file DesktopContentExplorer__V{version}.jar -->
+        <jar href="DesktopContentExplorer.jar" download="eager" main="true" version="@jnlp-version@" />
+        <jar href="rxCheckboxTree.jar" download="eager" main="false" version="@jnlp-version@" />
+        <property name="jnlp.versionEnabled"
+                  value="true"/>
+
+    </resources>
+
+    <application-desc
+            name="Percussion Context Explorer - $$hostname"
+            main-class="com.percussion.cx.PSContentExplorerApplication"
+            width="300"
+            height="300">
+        <argument>--codebase=$$codebase</argument>
+    </application-desc>
+
+</jnlp>
