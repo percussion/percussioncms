@@ -25,6 +25,8 @@ package com.percussion.delivery.metadata.impl;
 
 import com.percussion.delivery.metadata.IPSMetadataQueryService;
 import com.percussion.delivery.metadata.IPSMetadataProperty.VALUETYPE;
+import com.percussion.delivery.metadata.data.impl.PSCriteriaElement;
+import com.percussion.delivery.metadata.utils.PSHashCalculator;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -81,11 +83,12 @@ public abstract class PSMetadataQueryServiceHelper
     }
 
     @SuppressWarnings("unchecked")
-    public static List parseToList(String key, String val,  PSPropertyDatatypeMappings datatypeMappings) throws ParseException
+    public static List parseToList(String key, String val, PSPropertyDatatypeMappings datatypeMappings, PSHashCalculator hashCalc) throws ParseException
     {
        VALUETYPE type = datatypeMappings.getDatatype(key);
        List results = new ArrayList();
-    
+
+
        if(type == VALUETYPE.NUMBER)
        {
           for(String s : val.split(","))
@@ -103,12 +106,20 @@ public abstract class PSMetadataQueryServiceHelper
           }
        }
        else
-       {
+       { //For text / string use value hash if it is a property
+           boolean calcHash = true;
+           if(!key.contains("propValue") && datatypeMappings.getDatatypeMappings().getProperty(key,"").equals("")){
+               calcHash = false;
+           }
           for(String s : val.split("'"))
           {
              if(s.trim().equals(",") || s.trim().equals(""))
                 continue;
-             results.add(s);
+
+             if(calcHash)
+                results.add(hashCalc.calculateHash(s));
+             else
+                 results.add(s);
           }
        }
        return results;  
@@ -118,14 +129,15 @@ public abstract class PSMetadataQueryServiceHelper
     /**
      * For the provided propertyName it returns the column names that belongs to in the database, default return
      * column name is stringvalue
-     * @param propertyName
+     * @param ce
+     * @param datatypeMappings
      * @return
      */
-    public static String getValueColumnName(String propertyName, PSPropertyDatatypeMappings datatypeMappings)
+    public static String getValueColumnName(PSCriteriaElement ce, PSPropertyDatatypeMappings datatypeMappings)
     {
         String valueColumn = "";
-        VALUETYPE dt = getDatatype(propertyName, datatypeMappings);
-        
+        VALUETYPE dt = getDatatype(ce.getName(), datatypeMappings);
+
         switch(dt)
         {
             case DATE:
@@ -135,10 +147,45 @@ public abstract class PSMetadataQueryServiceHelper
                 valueColumn = IPSMetadataQueryService.PROP_NUMBERVALUE_COLUMN_NAME;
                 break;
             case TEXT:
-                valueColumn = IPSMetadataQueryService.PROP_TEXTVALUE_COLUMN_NAME;
+                if(ce.getOperationType() == PSCriteriaElement.OPERATION_TYPE.LIKE)
+                    valueColumn = IPSMetadataQueryService.PROP_TEXTVALUE_COLUMN_NAME;
+                else
+                    valueColumn = IPSMetadataQueryService.PROP_VALUEHASH_COLUMN_NAME;
                 break;
              default :
-                 valueColumn = IPSMetadataQueryService.PROP_STRINGVALUE_COLUMN_NAME;
+                 if(ce.getOperationType() == PSCriteriaElement.OPERATION_TYPE.LIKE)
+                     valueColumn = IPSMetadataQueryService.PROP_STRINGVALUE_COLUMN_NAME;
+                 else
+                     valueColumn = IPSMetadataQueryService.PROP_VALUEHASH_COLUMN_NAME;
+        }
+        return valueColumn;
+    }
+
+    /**
+     * For the provided propertyName it returns the column names that belongs to in the database, default return
+     * column name is stringvalue
+     * @param name
+     * @param datatypeMappings
+     * @return
+     */
+    public static String getValueColumnName(String name, PSPropertyDatatypeMappings datatypeMappings)
+    {
+        String valueColumn = "";
+        VALUETYPE dt = getDatatype(name, datatypeMappings);
+
+        switch(dt)
+        {
+            case DATE:
+                valueColumn = IPSMetadataQueryService.PROP_DATEVALUE_COLUMN_NAME;
+                break;
+            case NUMBER:
+                valueColumn = IPSMetadataQueryService.PROP_NUMBERVALUE_COLUMN_NAME;
+                break;
+            case TEXT:
+                    valueColumn = IPSMetadataQueryService.PROP_TEXTVALUE_COLUMN_NAME;
+                    break;
+            default :
+                    valueColumn = IPSMetadataQueryService.PROP_STRINGVALUE_COLUMN_NAME;
         }
         return valueColumn;
     }
