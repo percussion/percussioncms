@@ -37,8 +37,6 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -87,13 +85,13 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
     /**
      * Logger for this class.
      */
-    private static final Logger log = LogManager.getLogger(PSMetadataQueryService.class);
+    public static Log log = LogFactory.getLog(PSMetadataQueryService.class);
 
     /**
      * Property datatype mappings, loaded by Spring.
      */
     protected PSPropertyDatatypeMappings datatypeMappings;
-    private volatile Integer queryLimit=500;
+    private Integer queryLimit=500;
 
     /**
      * ctor
@@ -104,10 +102,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
     public PSMetadataQueryService(PSPropertyDatatypeMappings datatypeMappings, Integer queryLimit)
     {
         this.datatypeMappings = datatypeMappings;
-        if(queryLimit>0)
-            this.queryLimit = queryLimit;
-        else
-            this.queryLimit =500;
+        this.queryLimit = queryLimit;
     }
 
     /*
@@ -120,19 +115,19 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
     // I think this is leaking transactions
     //   @Transactional(propagation = Propagation.REQUIRES_NEW,isolation = Isolation.READ_COMMITTED)
     public PSPair<List<IPSMetadataEntry>, Integer> executeQuery(PSMetadataQuery query)
-
+            throws Exception
     {
         log.debug("Executing query for metadata entries");
         Transaction tx = null;
 
-        PSPair<List<IPSMetadataEntry>, Integer>  searchResults = new PSPair<>();
-        PSPair<Query, SORTTYPE>  queryInfo;
+        PSPair<List<IPSMetadataEntry>, Integer>  searchResults = new PSPair<List<IPSMetadataEntry>, Integer>();
+        PSPair<Query, SORTTYPE>  queryInfo = new PSPair<Query, SORTTYPE>();
 
         try(Session session = getSession())
         {
             tx = session.beginTransaction();
 
-            List<IPSMetadataEntry> results = new ArrayList<>();
+            List<IPSMetadataEntry> results = new ArrayList<IPSMetadataEntry>();
             Integer totalResults = null;
 
             if(!isPagingSupported(query))
@@ -145,15 +140,15 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
                 //total count already so no need to get the count again
                 if(query.getStartIndex() == 0 || query.getReturnTotalEntries())
                 {
-
+                    //Query countQuery = buildHibernateQuery(session, query,true);
                     queryInfo = buildHibernateQuery(session, query,true);
 
                     Long count = (Long) queryInfo.getFirst().list().get(0);
-                    totalResults = count.intValue();
+                    totalResults = new Integer(count.intValue());
                 }
 
                 // call the method for second time to get list of objects based on the query
-                queryInfo = new PSPair<>();
+                queryInfo = new PSPair<Query, SORTTYPE>();
                 queryInfo = buildHibernateQuery(session, query,false);
                 if(queryInfo.getSecond().equals(SORTTYPE.PROPERTY))
                 {
@@ -172,9 +167,9 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
                 searchResults.setSecond(totalResults);
             }
             tx.commit();
-        } catch (ParseException | PSMalformedMetadataQueryException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+        }
+        catch(Exception e){
+            log.error(e.getMessage(),e);
             if(tx != null && tx.isActive()){
                 tx.rollback();
             }
@@ -228,7 +223,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         // Process criteria
         if (rawQuery.getCriteria() != null)
         {
-            PSCriteriaElement el;
+            PSCriteriaElement el = null;
             for (String s : rawQuery.getCriteria()) {
                 if(!s.isEmpty()){
                     el = new PSCriteriaElement(s);
@@ -276,10 +271,10 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             queryBuf.append("select distinct me");
             if(isSortingOnProperty)
             {
-                if (PROP_STRINGVALUE_COLUMN_NAME.equals(sortColumnName))
+                if (sortColumnName.equals(PROP_STRINGVALUE_COLUMN_NAME))
                 {
                     queryBuf.append(", lower(prop.");
-                    queryBuf.append(sortColumnName);
+                    queryBuf.append(PROP_STRINGVALUE_COLUMN_NAME);
                     queryBuf.append(") as sort1 ");
                 }
                 else
@@ -297,22 +292,22 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         }
 
         for (int i = 0; i < propsCrit.size(); i++)
-            queryBuf.append(" join me.properties as p").append(i);
+            queryBuf.append(" join me.properties as p" + i);
 
         if (!entryCrit.isEmpty() || ! propsCrit.isEmpty())
             queryBuf.append(" where");
 
         if((isSortingOnProperty))
         {
-            queryBuf.append(" prop.id.name = ").append('\'')
+            queryBuf.append(" prop.id.name = ").append("'")
                     .append(PSMetadataQueryServiceHelper.getSortPropertyName(orderBy))
-                    .append('\'');
+                    .append("'");
         }
         String clauseTemplate = " me.{0} {1} :{2}";
         String inClauseTemplate = " me.{0} {1} (:{2})";
         int paramIndex = 0;
-        Map<String, Object> paramValues = new HashMap<>();
-        Map<String, PSCriteriaElement.OPERATION_TYPE> paramOps = new HashMap<>();
+        Map<String, Object> paramValues = new HashMap<String, Object>();
+        Map<String, PSCriteriaElement.OPERATION_TYPE> paramOps = new HashMap<String, PSCriteriaElement.OPERATION_TYPE>();
         boolean needConjunction = false;
         if(isSortingOnProperty)
         {
@@ -348,9 +343,9 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             String nameParam = "propName" + paramIndex;
             String valueParam = "propValue" + paramIndex++;
             Object value = ce.getValue();
-            String valueColumn = PSMetadataQueryServiceHelper.getValueColumnName(ce.getName(), datatypeMappings);
+            String valueColumn = PSMetadataQueryServiceHelper.getValueColumnName(ce, datatypeMappings);
 
-            if(PROP_DATEVALUE_COLUMN_NAME.equals(valueColumn))
+            if(valueColumn.equals(PROP_DATEVALUE_COLUMN_NAME))
             {
                 Calendar date = DatatypeConverter.parseDate(value.toString().replace(' ', 'T'));
                 value = new Date(date.getTimeInMillis());
@@ -383,17 +378,16 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
 
             paramValues.put(nameParam, ce.getName());
             if((valueColumn.equals(PROP_STRINGVALUE_COLUMN_NAME) ||
-                    valueColumn.equals(PROP_TEXTVALUE_COLUMN_NAME)) &&
-                    !ce.getOperationType().equals(PSCriteriaElement.OPERATION_TYPE.LIKE)){
+                    valueColumn.equals(PROP_TEXTVALUE_COLUMN_NAME)||
+                    valueColumn.equals(PROP_VALUEHASH_COLUMN_NAME)) &&
+                    !ce.getOperationType().equals(PSCriteriaElement.OPERATION_TYPE.LIKE) &&
+                    !ce.getOperationType().equals(PSCriteriaElement.OPERATION_TYPE.IN)){
                 paramValues.put(valueParam, hashCalculator.calculateHash(value.toString()));
             }else {
                 paramValues.put(valueParam, value);
             }
             paramOps.put(valueParam, ce.getOperationType());
         }
-
-
-
         //If the method is getting called only for the entry count, in that case order by doesn't need to be included
         if(isSortingOnProperty || isSortingOnMatadata)
         {
@@ -405,7 +399,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
                 if(!sortColumns.isEmpty())
                 {
                     String orderByFirstOrder = "asc";
-                    if (orderBy.contains(",") )
+                    if (orderBy.indexOf(",") != -1)
                     {
                         orderByFirstOrder = orderBy.substring(0, orderBy.indexOf(","));
                     }
@@ -413,28 +407,29 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
 
                     for (Map.Entry<String,String> entry : sortColumns.entrySet())
                     {
-                        queryBuf.append(", ").append( "me.").append( entry.getKey()).append(" ").append(entry.getValue());
+                        // queryBuf.append(", " + "lower(me." + entry.getKey() + ") " + entry.getValue());
+                        queryBuf.append(", " + "me." + entry.getKey() + " " + entry.getValue());
                     }
                 }
             }
             else
             {
                 //Make it case insensitive
-                queryBuf.append(" order by ").append( "me.").append(
-                        PSMetadataQueryServiceHelper.getSortPropertyName(orderBy) ).append( " ");
+                // queryBuf.append(" order by " + "lower(me." + PSMetadataQueryServiceHelper.getSortPropertyName(orderBy) + ") ");
+                queryBuf.append(" order by " + "me." + PSMetadataQueryServiceHelper.getSortPropertyName(orderBy) + " ");
             }
 
             if(sortColumns.isEmpty())
                 queryBuf.append(PSMetadataQueryServiceHelper.getSortingOrder(orderBy));
         }
 
-        log.debug("{}",queryBuf);
+        log.debug(queryBuf.toString());
 
         Query q = sess.createQuery(queryBuf.toString());
-        int useLimit=getQueryLimit();
+        int useLimit=queryLimit;
         //All caller to set a query limit, but they can't allow higher than the server limit.
-        if(rawQuery.getTotalMaxResults() > 0 && rawQuery.getTotalMaxResults() < getQueryLimit()){
-            log.debug("Setting max query limit to client provided value : {}" , rawQuery.getTotalMaxResults());
+        if(rawQuery.getTotalMaxResults() > 0 && rawQuery.getTotalMaxResults() < queryLimit){
+            log.debug("Setting max query limit to client provided value :" + rawQuery.getTotalMaxResults());
             useLimit=rawQuery.getTotalMaxResults();
         }
 
@@ -456,15 +451,15 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             if(opType == PSCriteriaElement.OPERATION_TYPE.IN)
             {
                 q.setParameterList(key,
-                        PSMetadataQueryServiceHelper.parseToList(key, value.toString(), datatypeMappings));
+                        PSMetadataQueryServiceHelper.parseToList(key, value.toString(), datatypeMappings, hashCalculator));
             }
             else if (value instanceof Date)
             {
-                q.setParameter(key, value);
+                q.setTimestamp(key, (Date) value);
             }
             else if (value instanceof String)
             {
-                q.setParameter(key, value.toString());
+                q.setString(key, value.toString());
             }
         }
 
@@ -505,7 +500,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
 
     private List<String> getCharactersToEscape()
     {
-        List<String> specialChars = new ArrayList<>();
+        List<String> specialChars = new ArrayList<String>();
 
         // Escape the char that is used to escape too, in case it appears in the
         // string. MUST be escaped first.
@@ -516,15 +511,17 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         specialChars.add("%");
 
         String jdbcProvider = getJdbcProvider();
-        if (StringUtils.isNotBlank(jdbcProvider) && jdbcProvider.contains(JDBC_SQLSERVER_DRIVER))
+        if (StringUtils.isNotBlank(jdbcProvider))
         {
+            if (jdbcProvider.contains(JDBC_SQLSERVER_DRIVER))
+            {
                 // Characters that are relevant to regex need to be escaped, to
                 // work properly with replaceAll.
                 specialChars.add("\\[");
                 specialChars.add("\\]");
                 specialChars.add("\\^");
                 specialChars.add("'");
-
+            }
             // Derby, ORACLE and MySQL only support escaping "%" and "_"
             // characters.
         }
@@ -547,7 +544,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             return jdbcConnectionUrl;
         }
 
-        Connection connection;
+        Connection connection = null;
         try(Session session = getSession())
         {
             connection = ((SessionImpl) session).connection();
@@ -555,8 +552,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         }
         catch (SQLException | RuntimeException e)
         {
-            log.error("There was an error getting jdbc driver name. ERROR: {}", e.getMessage());
-            log.debug( e.getMessage(),e);
+            log.error("There was an error getting jdbc driver name", e);
         }
 
         return jdbcConnectionUrl;
@@ -571,7 +567,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
      */
     private Map<String, String> getAdditionalSortCriteria(String orderBy)
     {
-        Map<String, String> hMapColumns = new HashMap<>();
+        Map<String, String> hMapColumns = new HashMap<String, String>();
         if (orderBy.contains(","))
         {
             String orderByColumns = orderBy.substring(orderBy.indexOf(",")+1);
@@ -595,7 +591,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
      */
     private PSPair<Query, SORTTYPE> getBuildQueryInfo(Query query, SORTTYPE type)
     {
-        PSPair<Query, SORTTYPE>  queryInfo = new PSPair<>();
+        PSPair<Query, SORTTYPE>  queryInfo = new PSPair<Query, SORTTYPE>();
         queryInfo.setFirst(query);
         queryInfo.setSecond(type);
         return queryInfo;
@@ -649,12 +645,12 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
     private static String jdbcConnectionUrl = null;
 
     @Override
-    public synchronized Integer getQueryLimit() {
+    public Integer getQueryLimit() {
         return this.queryLimit;
     }
 
     @Override
-    public synchronized void setQueryLimit(Integer limit) {
+    public void setQueryLimit(Integer limit) {
         this.queryLimit = limit;
     }
 

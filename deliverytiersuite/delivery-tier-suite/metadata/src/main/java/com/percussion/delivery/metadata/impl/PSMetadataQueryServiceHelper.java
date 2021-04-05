@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,13 +23,15 @@
  */
 package com.percussion.delivery.metadata.impl;
 
-import com.percussion.delivery.metadata.IPSMetadataProperty.VALUETYPE;
 import com.percussion.delivery.metadata.IPSMetadataQueryService;
-import org.apache.commons.lang3.time.FastDateFormat;
+import com.percussion.delivery.metadata.IPSMetadataProperty.VALUETYPE;
+import com.percussion.delivery.metadata.data.impl.PSCriteriaElement;
+import com.percussion.delivery.metadata.utils.PSHashCalculator;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,25 +52,23 @@ public abstract class PSMetadataQueryServiceHelper
      * A set of property keys that are not stored as properties but are instead
      * columns in the metadata entry table.
      */
-    private static final Set<String> INTERNAL_PROPERTY_KEYS = new HashSet<>();
+    public static final Set<String> ENTRY_PROPERTY_KEYS = new HashSet<String>();
     static
     {
-        INTERNAL_PROPERTY_KEYS.add("folder");
-        INTERNAL_PROPERTY_KEYS.add("name");
-        INTERNAL_PROPERTY_KEYS.add("type");
-        INTERNAL_PROPERTY_KEYS.add("linktext");
-        INTERNAL_PROPERTY_KEYS.add("linktext_lower");
-        INTERNAL_PROPERTY_KEYS.add("pagepath");
-        INTERNAL_PROPERTY_KEYS.add("site");
+        ENTRY_PROPERTY_KEYS.add("folder");
+        ENTRY_PROPERTY_KEYS.add("name");
+        ENTRY_PROPERTY_KEYS.add("type");
+        ENTRY_PROPERTY_KEYS.add("linktext");
+        ENTRY_PROPERTY_KEYS.add("linktext_lower");
+        ENTRY_PROPERTY_KEYS.add("pagepath");
+        ENTRY_PROPERTY_KEYS.add("site");
     }
-
-    public static final Set<String> ENTRY_PROPERTY_KEYS = Collections.unmodifiableSet(INTERNAL_PROPERTY_KEYS);
-
-
+    
+    
     /**
      * 2011-01-21T09:36:05
      */
-    private static FastDateFormat dateFormat = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss");
+    public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     public static VALUETYPE getDatatype(String name, PSPropertyDatatypeMappings datatypeMappings)
     {
@@ -82,11 +82,13 @@ public abstract class PSMetadataQueryServiceHelper
           return datatypeMappings.getDatatype(nameWithOutNamespace);
     }
 
-    public static List parseToList(String key, String val,  PSPropertyDatatypeMappings datatypeMappings) throws ParseException
+    @SuppressWarnings("unchecked")
+    public static List parseToList(String key, String val, PSPropertyDatatypeMappings datatypeMappings, PSHashCalculator hashCalc) throws ParseException
     {
        VALUETYPE type = datatypeMappings.getDatatype(key);
        List results = new ArrayList();
-    
+
+
        if(type == VALUETYPE.NUMBER)
        {
           for(String s : val.split(","))
@@ -100,17 +102,24 @@ public abstract class PSMetadataQueryServiceHelper
           {
              if(s.trim().equals(",") || s.trim().equals(""))
                 continue;
-
-                 results.add(dateFormat.format(s));
+             results.add(dateFormat.parse(s));
           }
        }
        else
-       {
+       { //For text / string use value hash if it is a property
+           boolean calcHash = true;
+           if(!key.contains("propValue") && datatypeMappings.getDatatypeMappings().getProperty(key,"").equals("")){
+               calcHash = false;
+           }
           for(String s : val.split("'"))
           {
              if(s.trim().equals(",") || s.trim().equals(""))
                 continue;
-             results.add(s);
+
+             if(calcHash)
+                results.add(hashCalc.calculateHash(s));
+             else
+                 results.add(s);
           }
        }
        return results;  
@@ -120,14 +129,15 @@ public abstract class PSMetadataQueryServiceHelper
     /**
      * For the provided propertyName it returns the column names that belongs to in the database, default return
      * column name is stringvalue
-     * @param propertyName
+     * @param ce
+     * @param datatypeMappings
      * @return
      */
-    public static String getValueColumnName(String propertyName, PSPropertyDatatypeMappings datatypeMappings)
+    public static String getValueColumnName(PSCriteriaElement ce, PSPropertyDatatypeMappings datatypeMappings)
     {
         String valueColumn = "";
-        VALUETYPE dt = getDatatype(propertyName, datatypeMappings);
-        
+        VALUETYPE dt = getDatatype(ce.getName(), datatypeMappings);
+
         switch(dt)
         {
             case DATE:
@@ -137,10 +147,45 @@ public abstract class PSMetadataQueryServiceHelper
                 valueColumn = IPSMetadataQueryService.PROP_NUMBERVALUE_COLUMN_NAME;
                 break;
             case TEXT:
-                valueColumn = IPSMetadataQueryService.PROP_TEXTVALUE_COLUMN_NAME;
+                if(ce.getOperationType() == PSCriteriaElement.OPERATION_TYPE.LIKE)
+                    valueColumn = IPSMetadataQueryService.PROP_TEXTVALUE_COLUMN_NAME;
+                else
+                    valueColumn = IPSMetadataQueryService.PROP_VALUEHASH_COLUMN_NAME;
                 break;
              default :
-                 valueColumn = IPSMetadataQueryService.PROP_STRINGVALUE_COLUMN_NAME;
+                 if(ce.getOperationType() == PSCriteriaElement.OPERATION_TYPE.LIKE)
+                     valueColumn = IPSMetadataQueryService.PROP_STRINGVALUE_COLUMN_NAME;
+                 else
+                     valueColumn = IPSMetadataQueryService.PROP_VALUEHASH_COLUMN_NAME;
+        }
+        return valueColumn;
+    }
+
+    /**
+     * For the provided propertyName it returns the column names that belongs to in the database, default return
+     * column name is stringvalue
+     * @param name
+     * @param datatypeMappings
+     * @return
+     */
+    public static String getValueColumnName(String name, PSPropertyDatatypeMappings datatypeMappings)
+    {
+        String valueColumn = "";
+        VALUETYPE dt = getDatatype(name, datatypeMappings);
+
+        switch(dt)
+        {
+            case DATE:
+                valueColumn = IPSMetadataQueryService.PROP_DATEVALUE_COLUMN_NAME;
+                break;
+            case NUMBER:
+                valueColumn = IPSMetadataQueryService.PROP_NUMBERVALUE_COLUMN_NAME;
+                break;
+            case TEXT:
+                    valueColumn = IPSMetadataQueryService.PROP_TEXTVALUE_COLUMN_NAME;
+                    break;
+            default :
+                    valueColumn = IPSMetadataQueryService.PROP_STRINGVALUE_COLUMN_NAME;
         }
         return valueColumn;
     }
