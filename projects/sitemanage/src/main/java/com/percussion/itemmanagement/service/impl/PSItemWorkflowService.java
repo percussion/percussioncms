@@ -1107,6 +1107,24 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         }
         return result;
     }
-    
+
+    @Override
+    public boolean isQuickEditTriggerAvailableForPendingOrLivePage(String id, String trigger, String currentState) {
+
+        boolean isQuickEditTriggerAvailableForPendingOrLivePage = false;
+        rejectIfBlank("isTriggerAvailable", "id", id);
+        rejectIfBlank("isTriggerAvailable", "trigger", trigger);
+        PSState state = workflowHelper.getState(id);
+        if(state.getName().equalsIgnoreCase(currentState)){
+            List<String> transitionTriggerList = getTransitions(id).getTransitionTriggers();
+            for(String transitionTrigger : transitionTriggerList){
+                if(transitionTrigger.equalsIgnoreCase(trigger)){
+                    isQuickEditTriggerAvailableForPendingOrLivePage = true;
+                }
+            }
+        }
+
+        return isQuickEditTriggerAvailableForPendingOrLivePage;
+    }
     
 }
