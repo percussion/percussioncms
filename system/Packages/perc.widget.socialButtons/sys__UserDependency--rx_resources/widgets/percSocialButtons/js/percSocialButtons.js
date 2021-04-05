@@ -33,7 +33,7 @@
       //listens for dropdown changes and in addition to disabling unrelated inputs, will also uncheck enable option for disabled rows
       $("#perc-social-button-type").change(function(){
 
-        if( $(this).val() == 'page') {
+        if( $(this).val() === 'page') {
           $(".perc-social-page-link").attr('disabled', false);
           $(".perc-base-url").css('color', '#333333');
           $(".perc-social-page-link").css('color', '#333333');
@@ -85,8 +85,6 @@
             renderReadOnly : renderReadOnly
            };
 
-           var self = this;
-
            /**
             * Respsonsible for rendering a read-only view of the control.
             */
@@ -101,7 +99,7 @@
            {
 
                 // We need to hide the youtube option and link fields on initial load
-                if( $('#perc-social-button-type option:selected').val() == 'share'  ) {
+                if( $('#perc-social-button-type option:selected').val() === 'share'  ) {
                   $(".perc-youtube-row *").attr('disabled', true);
                   $(".perc-youtube-row .perc-social-button-ui").addClass('perc-social-button-ui-disabled');
                   $(".perc-youtube-row").find('td,input').css('color', '#7f7f7f');
@@ -120,56 +118,50 @@
                     data = JSON.parse(dataStr);
                 }
 
-                 if(data!==null){
-                    i = 0;
+                 if(data!==null) {
+                     var i = 0;
 
-                    //checks the dropdown value on initial load and triggers a change event if necessary
-                    if( data.buttonType == 'page' ){
-                      $('#perc-social-button-type').val('page');
-                      $('#perc-social-button-type').trigger('change');
-                    }
-                    else {
-                      // hides youtube row to start
-                      $(".perc-youtube-row *").attr('disabled', true);
-                      $(".perc-youtube-row .perc-social-button-ui").addClass('perc-social-button-ui-disabled');
-                      $(".perc-youtube-row").find('td,input').css('color', '#7f7f7f');
-                      $(".perc-social-page-link").attr('disabled', true);
-                      $(".perc-base-url").css('color', '#7f7f7f');
-                      $(".perc-social-page-link").css('color', '#7f7f7f');
-                    }
+                     //checks the dropdown value on initial load and triggers a change event if necessary
+                     if (data.buttonType === 'page') {
+                         $('#perc-social-button-type').val('page');
+                         $('#perc-social-button-type').trigger('change');
+                     } else {
+                         // hides youtube row to start
+                         $(".perc-youtube-row *").attr('disabled', true);
+                         $(".perc-youtube-row .perc-social-button-ui").addClass('perc-social-button-ui-disabled');
+                         $(".perc-youtube-row").find('td,input').css('color', '#7f7f7f');
+                         $(".perc-social-page-link").attr('disabled', true);
+                         $(".perc-base-url").css('color', '#7f7f7f');
+                         $(".perc-social-page-link").css('color', '#7f7f7f');
+                     }
 
-                    //restores previously saved options
-                    $(data.config).each(function(){
-                      $('.perc-' + data.config[i].platform +'-row').find('.perc-social-platform').val(data.config[i].platform);
+                     //restores previously saved options
+                     $(data.config).each(function () {
+                         $('.perc-' + data.config[i].platform + '-row').find('.perc-social-platform').val(data.config[i].platform);
 
-                      if( data.config[i].enableButton === true) {
-                        $('.perc-' + data.config[i].platform +'-row').find('.perc-social-platform-enabled').prop('checked', true);
-                      }
-                      else {
-                        $('.perc-' + data.config[i].platform +'-row').find('.perc-social-platform-enabled').prop('checked', false);
-                      }
-                      if( data.config[i].enableDataPush === true ) {
-                        $('.perc-' + data.config[i].platform +'-row').find('.perc-social-data-push-enabled').prop('checked', true);
-                      }
-                      else {
-                        $('.perc-' + data.config[i].platform +'-row').find('.perc-social-data-push-enabled').prop('checked', false);
-                      }
-                      $('.perc-' + data.config[i].platform +'-row').find('.perc-social-page-link').val(data.config[i].socialLink);
-                      $('.perc-' + data.config[i].platform +'-row').attr('data-order', data.config[i].buttonOrder);
+                         if (data.config[i].enableButton === true) {
+                             $('.perc-' + data.config[i].platform + '-row').find('.perc-social-platform-enabled').prop('checked', true);
+                         } else {
+                             $('.perc-' + data.config[i].platform + '-row').find('.perc-social-platform-enabled').prop('checked', false);
+                         }
+                         if (data.config[i].enableDataPush === true) {
+                             $('.perc-' + data.config[i].platform + '-row').find('.perc-social-data-push-enabled').prop('checked', true);
+                         } else {
+                             $('.perc-' + data.config[i].platform + '-row').find('.perc-social-data-push-enabled').prop('checked', false);
+                         }
+                         $('.perc-' + data.config[i].platform + '-row').find('.perc-social-page-link').val(data.config[i].socialLink);
+                         $('.perc-' + data.config[i].platform + '-row').attr('data-order', data.config[i].buttonOrder);
 
-                      i++;
+                         i++;
 
-                    });
+                     });
 
-                    // this will sort the rows into the correct order
-                    $(".perc-social-button-row").sort(sort_elements) // sort elements
-                      .insertAfter('.perc-social-header'); // append again to the list
-                        // sort function callback
-                        function sort_elements(a, b){
-                            return ($(b).data('order')) < ($(a).data('order')) ? 1 : -1;
-                        }
+                     // this will sort the rows into the correct order
+                     $(".perc-social-button-row").sort(function () {
+                         return ($(b).data('order')) < ($(a).data('order')) ? 1 : -1;
+                     }).insertAfter('.perc-social-header'); // append again to the list
 
-				 	        }
+                 }
 
                _attachEvents();
 
@@ -181,11 +173,9 @@
          */
         function _attachEvents()
         {
-            var $table = $('#perc-social-buttons-setup-editor');
-
             // Enables enter keyboard selection for the checkboxes
             $('input:checkbox').keypress(function(e){
-              if((e.keyCode ? e.keyCode : e.which) == 13){
+              if((e.keyCode ? e.keyCode : e.which) === 13){
                 $(this).trigger('click');
               }
             });
@@ -206,7 +196,7 @@
             function moveRowUp( thisObj ) {
               if( (thisObj.parents('.perc-social-button-row').prev().hasClass('perc-social-header')) === false ) {
                 thisObj.parents('.perc-social-button-row').insertBefore(thisObj.parents('.perc-social-button-row').prev());
-                if( thisObj.parents('.perc-social-button-row').next().css('display') == 'none' ){
+                if( thisObj.parents('.perc-social-button-row').next().css('display') === 'none' ){
                   moveRowUp(thisObj);
                 }
               }
@@ -214,7 +204,7 @@
             function moveRowDown(thisObj) {
               if( (thisObj.parents('.perc-social-button-row').is(':last-child')) === false ) {
                 thisObj.parents('.perc-social-button-row').insertAfter(thisObj.parents('.perc-social-button-row').next());
-                if( thisObj.parents('.perc-social-button-row').prev().css('display') == 'none' ){
+                if( thisObj.parents('.perc-social-button-row').prev().css('display') === 'none' ){
                   moveRowDown(thisObj);
                 }
               }
@@ -231,23 +221,17 @@
          * @returns true if everything is valid, false if not
          */
         function validateForm(){
+            var urlregex = new RegExp("^(http:\/\/|https:\/\/){1}((www\.)?([0-9A-Za-z]+\.)|(plus\.google\.){1})");
+
             $.each(config, function(key, value){
 
               // Checks to ensure that a valid URL has been entered
-              var urlregex = new RegExp("^(http:\/\/|https:\/\/){1}((www\.){1}([0-9A-Za-z]+\.)|(plus\.google\.){1})");
-              urlValid = urlregex.test(value.socialLink);
+              var urlValid = urlregex.test(value.socialLink);
 
-              if( data.buttonType == 'page' && value.enableButton === true && urlValid === false  ) {
-                invalid = true;
+              if( data.buttonType === 'page' && value.enableButton === true && urlValid === false  ) {
                 return false;
               }
-              else {
-                invalid = false;
-              }
             });
-            if (invalid == true) {
-              return false;
-            }
             return true;
         }
 
@@ -262,23 +246,22 @@
             //retrieves all selected options
             $(".perc-social-button-row").each(function(index) {
 
-                  var alt = new Object();
+                  var alt = {};
 
-                  alt["platform"] =  $(this).find(".perc-social-platform").val();
+                  alt.platform = $(this).find(".perc-social-platform").val();
+                  alt.enableButton = false;
+                  alt.enableDataPush = false;
+
                   if( $(this).find(".perc-social-platform-enabled").is(':checked') ) {
-                    alt["enableButton"] =  true;
+                    alt.enableButton =  true;
                   }
-                  else {
-                    alt["enableButton"] =  false;
-                  }
+
                   if( $(this).find(".perc-social-data-push-enabled").is(':checked') ){
-                    alt["enableDataPush"] =  true;
+                    alt.enableDataPush =  true;
                   }
-                  else {
-                    alt["enableDataPush"] =  false;
-                  }
-                  alt["socialLink"] =  $(this).find(".perc-social-page-link").val();
-                  alt["buttonOrder"] = index;
+
+                  alt.socialLink =  $(this).find(".perc-social-page-link").val();
+                  alt.buttonOrder = index;
 
                   config.push(alt);
 
@@ -294,20 +277,19 @@
         {
 
             //Get the Widget data and convert it to a JSON string that can be saved.
-            data = new Object();
+            var data = {};
             //retrieves dropdown value for buttons type
             data.buttonType = $('#perc-social-button-type option:selected').val();
             //runs function that retrieves individual options
             data.config=getData();
+
             //Validate the Widget.
-            validationStatus = validateForm();
-            if( validationStatus === false ) {
+            if( validateForm() === false ) {
               $('.perc-social-button-error').show();
               return false;
             }
-            else {
-              $('.perc-social-button-error').hide();
-            }
+            $('.perc-social-button-error').hide();
+
 
             //populates hidden input with JSON object
             var fieldName = $(".perc-social-buttons").attr("id");
@@ -317,5 +299,5 @@
         }
 
         return socialButtonsSetupApi;
-      }
+      };
 })(jQuery);
