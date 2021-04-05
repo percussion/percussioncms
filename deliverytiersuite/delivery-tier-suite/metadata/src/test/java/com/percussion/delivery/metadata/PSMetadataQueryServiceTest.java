@@ -753,7 +753,6 @@ public class PSMetadataQueryServiceTest extends TestCase
     }
 
     @Test
-    @Ignore("CLOB comparison doesn't work on Derby. Comparing CLOB fields seems not very useful.")
     public void testCriteria_Single_Property_Abstract() throws Exception
     {
         runPropertyTest("dcterms:abstract = 'a summary of the page'", ENTRY_COUNT * 3, "dcterms:abstract",
@@ -768,7 +767,6 @@ public class PSMetadataQueryServiceTest extends TestCase
     }
 
     @Test
-    @Ignore("CLOB comparison doesn't work on Derby. Comparing CLOB fields seems not very useful.")
     public void testCriteria_Single_Property_String_NotEqualsOperator() throws Exception
     {
         runPropertyTest("dcterms:abstract != 'a summary of the page'", ENTRY_COUNT, "dcterms:abstract",

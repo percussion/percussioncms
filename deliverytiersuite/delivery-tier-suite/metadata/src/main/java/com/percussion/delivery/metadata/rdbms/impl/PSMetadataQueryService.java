@@ -343,7 +343,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             String nameParam = "propName" + paramIndex;
             String valueParam = "propValue" + paramIndex++;
             Object value = ce.getValue();
-            String valueColumn = PSMetadataQueryServiceHelper.getValueColumnName(ce.getName(), datatypeMappings);
+            String valueColumn = PSMetadataQueryServiceHelper.getValueColumnName(ce, datatypeMappings);
 
             if(valueColumn.equals(PROP_DATEVALUE_COLUMN_NAME))
             {
@@ -378,8 +378,10 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
 
             paramValues.put(nameParam, ce.getName());
             if((valueColumn.equals(PROP_STRINGVALUE_COLUMN_NAME) ||
-                    valueColumn.equals(PROP_TEXTVALUE_COLUMN_NAME)) &&
-                    !ce.getOperationType().equals(PSCriteriaElement.OPERATION_TYPE.LIKE)){
+                    valueColumn.equals(PROP_TEXTVALUE_COLUMN_NAME)||
+                    valueColumn.equals(PROP_VALUEHASH_COLUMN_NAME)) &&
+                    !ce.getOperationType().equals(PSCriteriaElement.OPERATION_TYPE.LIKE) &&
+                    !ce.getOperationType().equals(PSCriteriaElement.OPERATION_TYPE.IN)){
                 paramValues.put(valueParam, hashCalculator.calculateHash(value.toString()));
             }else {
                 paramValues.put(valueParam, value);
@@ -446,10 +448,10 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         {
             Object value = paramValues.get(key);
             PSCriteriaElement.OPERATION_TYPE opType = paramOps.get(key);
-            if(opType != null && opType == PSCriteriaElement.OPERATION_TYPE.IN)
+            if(opType == PSCriteriaElement.OPERATION_TYPE.IN)
             {
                 q.setParameterList(key,
-                        PSMetadataQueryServiceHelper.parseToList(key, value.toString(), datatypeMappings));
+                        PSMetadataQueryServiceHelper.parseToList(key, value.toString(), datatypeMappings, hashCalculator));
             }
             else if (value instanceof Date)
             {
@@ -469,7 +471,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
     {
         List<String> specialChars = getCharactersToEscape();
 
-        String escapedString = new String(value);
+        String escapedString = value;
 
         // If the value starts or ends with a wildcard, leave those unescaped.
         boolean startsWithWildcard = escapedString.startsWith("%");

@@ -39,7 +39,7 @@ import com.percussion.delivery.metadata.IPSMetadataProperty.VALUETYPE;
  */
 public class PSPropertyDatatypeMappings
 {
-    private Properties datatypeMappings;
+    protected Properties datatypeMappings;
 
     public PSPropertyDatatypeMappings()
     {
