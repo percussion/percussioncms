@@ -623,7 +623,7 @@ public class PSSitePublishService implements IPSSitePublishService
                 tdActionScheduleProps.setEnabled(true);
             }
 
-            if(itemWorkflowService.isQuickEditTriggerAvailableForPendingOrLivePage(id, IPSItemWorkflowService.TRANSITION_TRIGGER_EDIT, "Pending") || itemWorkflowService.isQuickEditTriggerAvailableForPendingOrLivePage(id, IPSItemWorkflowService.TRANSITION_TRIGGER_EDIT, "Live")){
+            if(itemWorkflowService.isQuickEditTriggerAvailableForPendingOrLivePage(id, IPSItemWorkflowService.TRANSITION_TRIGGER_EDIT, IPSItemWorkflowService.CURRENT_STATE_PENDING) || itemWorkflowService.isQuickEditTriggerAvailableForPendingOrLivePage(id, IPSItemWorkflowService.TRANSITION_TRIGGER_EDIT, IPSItemWorkflowService.CURRENT_STATE_LIVE)){
                 tdActionScheduleProps.setEnabled(true);
             }
 
