@@ -40,5 +40,12 @@
             <AppenderRef ref="Console" />
             <AppenderRef ref="MyFile"/>
         </Root>
+
+        <Logger name="org.hibernate.SQL" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="org.hibernate.type" level="trace" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
     </Loggers>
 </Configuration>
