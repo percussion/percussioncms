@@ -141,12 +141,6 @@
    <import resource="perc-datasources.xml" />
    <import resource="perc-metadata-services.xml" />
 
-   <bean id="metadataLiquibase"
-         class="liquibase.integration.spring.SpringLiquibase">
-      <property name="dataSource" ref="percDataSource" />
-      <property name="changeLog" value="classpath:liquibase-diff-latest.xml" />
-   </bean>
-
    <!-- <context:component-scan base-package="com.percussion.delivery.metadata.impl" /> -->
 
    <!-- Hibernate SessionFactory -->
@@ -215,5 +209,11 @@
    <bean id="metadataRestService" class="com.percussion.delivery.metadata.impl.PSMetadataRestService"
       autowire="constructor">
    </bean>
+
+  <bean id="tenantAuthorizationFilter" class="com.percussion.delivery.multitenant.PSTenantSecurityFilter">
+   	<constructor-arg index="0"><null/></constructor-arg>
+   	<constructor-arg index="1"><null/></constructor-arg>
+   </bean>
+
 
 </beans>
