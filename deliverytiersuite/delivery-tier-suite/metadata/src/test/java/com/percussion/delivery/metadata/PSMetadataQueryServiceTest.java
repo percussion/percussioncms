@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,6 +23,9 @@
  */
 package com.percussion.delivery.metadata;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javafaker.Faker;
 import com.percussion.delivery.metadata.IPSMetadataProperty.VALUETYPE;
 import com.percussion.delivery.metadata.data.PSMetadataBlogResult;
 import com.percussion.delivery.metadata.data.PSMetadataQuery;
@@ -35,24 +38,13 @@ import com.percussion.delivery.metadata.rdbms.impl.PSDbMetadataEntry;
 import com.percussion.delivery.metadata.rdbms.impl.PSDbMetadataProperty;
 import junit.framework.TestCase;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author erikserating
@@ -1395,34 +1387,49 @@ public class PSMetadataQueryServiceTest extends TestCase
         }
     }
 
+    private  int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+
     private void addTestEntries()
     {
         Collection<IPSMetadataEntry> ents = new ArrayList<IPSMetadataEntry>();
         PSDbMetadataEntry e = null;
         for (int i = 0; i < ENTRY_COUNT; i++)
         {
-            e = createEntry("/folderA/blogs/", "blogs linktext", getTime(2010, 11, 15), "blog", entryIdx++);
+            e = createEntry("/folderA/blogs/", "blogs linktext", getTime(getRandomNumber(2010,2021), getRandomNumber(1,12), getRandomNumber(1,28)), "blog", entryIdx++);
             ents.add(e);
         }
 
         for (int i = 0; i < ENTRY_COUNT; i++)
         {
-            e = createEntry("/folderA/events/", "events linktext", getTime(2010, 12, 15, 16, 17, 18), "event",
+            e = createEntry("/folderA/events/", "events linktext", getTime(getRandomNumber(2010,2021), getRandomNumber(1,12), getRandomNumber(1,28)), "event",
                     entryIdx++);
             ents.add(e);
         }
 
         for (int i = 0; i < ENTRY_COUNT; i++)
         {
-            e = createEntry("/folderA/foobars/", "foobars linktext", getTime(2011, 1, 15), "template2", "foobar",
+            e = createEntry("/folderA/foobars/", "foobars linktext", getTime(getRandomNumber(2010,2021), getRandomNumber(1,12), getRandomNumber(1,28)), "template2", "foobar",
                     entryIdx++);
             ents.add(e);
         }
 
         for (int i = 0; i < ENTRY_COUNT; i++)
         {
-            e = createEntry("customSite", "/folderA/pages/", "pages linktext", getTime(2011, 2, 15), "other abstract",
+            e = createEntry("customSite", "/folderA/pages/", "pages linktext", getTime(getRandomNumber(2010,2021), getRandomNumber(1,12), getRandomNumber(1,28)), "other abstract",
                     "otherTemplate", "page", entryIdx++);
+            ents.add(e);
+        }
+
+        Faker faker = new Faker();
+        
+        for (int i = 0; i < ENTRY_COUNT; i++)
+        {
+            e = createEntry("portal", "/noticias/destacadas/noticias-destacadas-2021/", 
+                    faker.chuckNorris().fact(),
+                    getTime(getRandomNumber(2010,2021), getRandomNumber(1,12), getRandomNumber(1,28)), faker.hitchhikersGuideToTheGalaxy().quote(),
+                    "Noticias-Noticia-Single", "page", entryIdx++);
             ents.add(e);
         }
 
@@ -1497,6 +1504,185 @@ public class PSMetadataQueryServiceTest extends TestCase
         }
         return metadataEntry;
     }
+
+
+    /**
+     * Customer query that failed to sort
+     * {"criteria":["type = 'page'","dcterms:created >= '2020-06-01T00:00:00'","site = 'portal'","folder LIKE '/noticias/destacadas/noticias-destacadas-2021/%'","dcterms:source = 'Noticias-Noticia-Single'"],"maxResults":3,"totalMaxResults":500,"isEditMode":"false","orderBy":"dcterms:created desc, linktext_lower asc","returnTotalEntries":true,"startIndex":0}
+     */
+    @Test
+    public void testSortByCreatedDateDesc() {
+        PSMetadataQuery query = new PSMetadataQuery();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            query = mapper.readValue(
+                    "{\"criteria\":[\"type = 'page'\",\"site = 'portal'\",\"folder LIKE '/noticias/destacadas/noticias-destacadas-2021/%'\",\"dcterms:source = 'Noticias-Noticia-Single'\"],\"maxResults\":5,\"totalMaxResults\":500,\"isEditMode\":\"false\",\"orderBy\":\"dcterms:created desc, linktext_lower asc\",\"returnTotalEntries\":true,\"startIndex\":0}",
+                    PSMetadataQuery.class);
+
+            PSPair<List<IPSMetadataEntry>, Integer> searchResults = service.executeQuery(query);
+            List<IPSMetadataEntry> results = searchResults.getFirst();
+
+            assertNotNull("entries not null", results);
+
+            Date latest=null;
+            String latestLinkText = null;
+            //Test descending query
+            for(IPSMetadataEntry e : results){
+                Map<String,IPSMetadataProperty> props = toPropsMap(e.getProperties());
+
+                Date curDate = props.get("dcterms:created").getDatevalue();
+
+                if(latest == null) {
+                    latest = curDate;
+                    System.out.println("Starting date is " + latest.toString());
+                }else{
+                    assertTrue(latest.after(curDate));
+                    System.out.println(latest.toString() + " is more recent than " + curDate.toString());
+                    latest = curDate;
+                }
+
+                String linktext = e.getLinktext().toLowerCase();
+
+                if(latestLinkText == null){
+                    latestLinkText = linktext;
+                    System.out.println("Starting link text is:" + latestLinkText);
+                }else{
+                    System.out.println(latestLinkText + " is greater than " + linktext);
+                    assertTrue(latestLinkText.compareTo(linktext) >= 0);
+                }
+
+            }
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testSortByCreatedDateAsc() {
+        PSMetadataQuery query = new PSMetadataQuery();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            query = mapper.readValue(
+                    "{\"criteria\":[\"type = 'page'\",\"site = 'portal'\",\"folder LIKE '/noticias/destacadas/noticias-destacadas-2021/%'\",\"dcterms:source = 'Noticias-Noticia-Single'\"],\"maxResults\":5,\"totalMaxResults\":500,\"isEditMode\":\"false\",\"orderBy\":\"dcterms:created asc, linktext_lower desc\",\"returnTotalEntries\":true,\"startIndex\":0}",
+                    PSMetadataQuery.class);
+
+            PSPair<List<IPSMetadataEntry>, Integer> searchResults = service.executeQuery(query);
+            List<IPSMetadataEntry> results = searchResults.getFirst();
+
+            assertNotNull("entries not null", results);
+
+            Date latest=null;
+            //Test ascending query
+            for(IPSMetadataEntry e : results){
+                Map<String,IPSMetadataProperty> props = toPropsMap(e.getProperties());
+
+                Date curDate = props.get("dcterms:created").getDatevalue();
+
+                if(latest == null) {
+                    latest = curDate;
+                }else{
+                    assertTrue(latest.before(curDate));
+                    System.out.println(latest.toString() + " is older than " + curDate.toString());
+                    latest = curDate;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+
+
+    }
+
+    /**
+     * Customer query that failed to sort
+     * {"criteria":["type = 'page'","dcterms:created >= '2020-06-01T00:00:00'","site = 'portal'","folder LIKE '/noticias/destacadas/noticias-destacadas-2021/%'","dcterms:source = 'Noticias-Noticia-Single'"],"maxResults":3,"totalMaxResults":500,"isEditMode":"false","orderBy":"dcterms:created desc, linktext_lower asc","returnTotalEntries":true,"startIndex":0}
+     */
+    @Test
+    public void testSortByLinkTextASC() {
+        PSMetadataQuery query = new PSMetadataQuery();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            query = mapper.readValue(
+                    "{\"criteria\":[\"type = 'page'\",\"site = 'portal'\",\"folder LIKE '/noticias/destacadas/noticias-destacadas-2021/%'\",\"dcterms:source = 'Noticias-Noticia-Single'\"],\"maxResults\":5,\"totalMaxResults\":500,\"isEditMode\":\"false\",\"orderBy\":\"linktext_lower asc\",\"returnTotalEntries\":true,\"startIndex\":0}",
+                    PSMetadataQuery.class);
+
+            PSPair<List<IPSMetadataEntry>, Integer> searchResults = service.executeQuery(query);
+            List<IPSMetadataEntry> results = searchResults.getFirst();
+
+            assertNotNull("entries not null", results);
+
+            String latestLinkText = null;
+            //Test descending query
+            for(IPSMetadataEntry e : results){
+                Map<String,IPSMetadataProperty> props = toPropsMap(e.getProperties());
+
+                String linktext = e.getLinktext().toLowerCase();
+
+                if(latestLinkText == null){
+                    latestLinkText = linktext;
+                    System.out.println("Starting link text is:" + latestLinkText);
+                }else{
+                    System.out.println(latestLinkText + " is greater than " + linktext);
+                    assertTrue(latestLinkText.compareTo(linktext) <= 0);
+                    latestLinkText = linktext;
+                }
+
+            }
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testSortByLinkTextDesc() {
+        PSMetadataQuery query = new PSMetadataQuery();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            query = mapper.readValue(
+                    "{\"criteria\":[\"type = 'page'\",\"site = 'portal'\",\"folder LIKE '/noticias/destacadas/noticias-destacadas-2021/%'\",\"dcterms:source = 'Noticias-Noticia-Single'\"],\"maxResults\":5,\"totalMaxResults\":500,\"isEditMode\":\"false\",\"orderBy\":\"linktext_lower desc\",\"returnTotalEntries\":true,\"startIndex\":0}",
+                    PSMetadataQuery.class);
+
+            PSPair<List<IPSMetadataEntry>, Integer> searchResults = service.executeQuery(query);
+            List<IPSMetadataEntry> results = searchResults.getFirst();
+
+            assertNotNull("entries not null", results);
+
+            String latestLinkText = null;
+            //Test descending query
+            for(IPSMetadataEntry e : results){
+                Map<String,IPSMetadataProperty> props = toPropsMap(e.getProperties());
+
+                String linktext = e.getLinktext().toLowerCase();
+
+                if(latestLinkText == null){
+                    latestLinkText = linktext;
+                    System.out.println("Starting link text is:" + latestLinkText);
+                }else{
+                    System.out.println(latestLinkText + " is less than " + linktext);
+                    assertTrue(latestLinkText.compareTo(linktext) >= 0);
+                    latestLinkText = linktext;
+                }
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+
 }
 
 interface PropertyValueChecker<T>
