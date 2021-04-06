@@ -303,7 +303,12 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
             if(rel1.getConfig().equals(rel.getConfig())){
                if(rel1.getDependent().getRevision() == rel.getDependent().getRevision()){
                   if(rel1.getOwner().getRevision() == rel.getOwner().getRevision()){
-                     if(rel1.getUserProperty(PSRelationshipConfig.PDU_SLOTID).getValue() == rel.getUserProperty(PSRelationshipConfig.PDU_SLOTID).getValue()){
+                     //Checking this slot id to resolve the page summary issue if same image is uploaded in page summary and image widget for the same page (CMS-7800).
+                     if(rel.getUserProperty(PSRelationshipConfig.PDU_SLOTID) != null && rel1.getUserProperty(PSRelationshipConfig.PDU_SLOTID) != null){
+                        if(rel1.getUserProperty(PSRelationshipConfig.PDU_SLOTID).getValue().equalsIgnoreCase(rel.getUserProperty(PSRelationshipConfig.PDU_SLOTID).getValue())){
+                           return rel1;
+                        }
+                     }else{
                         return rel1;
                      }
                   }
