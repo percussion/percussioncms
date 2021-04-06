@@ -29,6 +29,7 @@ import com.percussion.install.PSLogger;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
@@ -36,6 +37,8 @@ import org.apache.tools.ant.BuildException;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.Properties;
@@ -95,102 +98,112 @@ public class PSExecSQLStmt extends PSAction
 {
    // see base class
    @Override
-   public void execute()
-   {
-      String driver=null;
+   public void execute() {
+      String driver = null;
+      String propFile = getRootDir() + File.separator
+              + "rxconfig/Installer/rxrepository.properties";
 
-      try {
-         String propFile = getRootDir() + File.separator
-                 + "rxconfig/Installer/rxrepository.properties";
+      File f = new File(propFile);
+      if (!(f.exists() && f.isFile()))
+         return;
 
-         File f = new File(propFile);
-         if (!(f.exists() && f.isFile()))
-            return;
-
-         try (FileInputStream in =new FileInputStream(f)){
-            Properties props = new Properties();
-            props.load(in);
-            props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
-            PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
-            if (getRootDir() != null && !"".equals(getRootDir())) {
-               InstallUtil.setRootDir(getRootDir());
-            }
-            String pw = props.getProperty("PWD");
-            try {
-               pw = PSEncryptor.getInstance( "AES", null).decrypt(pw);
-            } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
-               pw = PSLegacyEncrypter.getInstance(null).decrypt(pw,
-                       PSJdbcDbmsDef.getPartOneKey(),null);
-            }
-            try( Connection conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
-                    props.getProperty("DB_SERVER"),
-                    props.getProperty("DB_NAME"),
-                    props.getProperty("UID"),
-                    pw
-            )) {
-
-               String strStmt = sql;
-               String dbStrStmt = "";
-               driver = dbmsDef.getDriver();
-
-               PSLogger.logInfo("PSExecSQLStmt got DB driver: " + driver);
-
-               if (driver.equalsIgnoreCase(PSJdbcUtils.DB2))
-                  dbStrStmt = sqlUDB;
-               else if (driver.equalsIgnoreCase(PSJdbcUtils.DERBY_DRIVER))
-                  dbStrStmt = sqlDerby;
-               else if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL_DRIVER))
-                  dbStrStmt = sqlMysql;
-               else if (driver.equalsIgnoreCase(PSJdbcUtils.JTDS_DRIVER) ||
-                       driver.equalsIgnoreCase(PSJdbcUtils.SPRINTA))
-                  dbStrStmt = sqlSqlServer;
-               else if (driver.startsWith(PSJdbcUtils.ORACLE_PRIMARY))
-                  dbStrStmt = sqlOracle;
-
-               if (dbStrStmt.trim().length() > 0)
-                  strStmt = dbStrStmt;
-
-               if (strStmt.trim().length() < 1)
-                  return;
-
-               // replace the table names with fully qualified names
-               strStmt = qualifyTableNames(strStmt, dbmsDef);
-
-               // replace the view names with fully qualified names
-               strStmt = qualifyViewNames(strStmt, dbmsDef);
-
-               PSLogger.logInfo("Executing statement : " + strStmt);
-               try(Statement stmt = conn.createStatement()) {
-                  stmt.execute(strStmt);
-                  PSLogger.logInfo("Successfully executed statement.");
-               }
-            }
+      try (FileInputStream in = new FileInputStream(f)) {
+         Properties props = new Properties();
+         props.load(in);
+         props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
+         PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
+         if (getRootDir() != null && !"".equals(getRootDir())) {
+            InstallUtil.setRootDir(getRootDir());
          }
-      }
-      catch (Exception ex)
-      {
-         if(!isFailonerror()){
-            if(!isSilenceErrors()){
-               PSLogger.logError(ex.getMessage());
-               if(getPrintExceptionStackTrace()){
-                  PSLogger.logError(ex);
-               }
-            }
-            return;
-         }else{
-            if(!isSilenceErrors()) {
-               PSLogger.logError(ex.getMessage());
-               if(getPrintExceptionStackTrace()){
-                  PSLogger.logError(ex);
-               }
+         String pw = props.getProperty("PWD");
+         try {
+            pw = PSEncryptor.getInstance("AES", null).decrypt(pw);
+         } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
+            pw = PSLegacyEncrypter.getInstance(null).decrypt(pw,
+                    PSJdbcDbmsDef.getPartOneKey(), null);
+         }
+
+         try (Connection conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
+                 props.getProperty("DB_SERVER"),
+                 props.getProperty("DB_NAME"),
+                 props.getProperty("UID"),
+                 pw
+         )) {
+
+            String strStmt = sql;
+            String dbStrStmt = "";
+            driver = dbmsDef.getDriver();
+
+            PSLogger.logInfo("PSExecSQLStmt got DB driver: " + driver);
+
+            if (driver.equalsIgnoreCase(PSJdbcUtils.DB2))
+               dbStrStmt = sqlUDB;
+            else if (driver.equalsIgnoreCase(PSJdbcUtils.DERBY_DRIVER))
+               dbStrStmt = sqlDerby;
+            else if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL_DRIVER))
+               dbStrStmt = sqlMysql;
+            else if (driver.equalsIgnoreCase(PSJdbcUtils.JTDS_DRIVER) ||
+                    driver.equalsIgnoreCase(PSJdbcUtils.SPRINTA))
+               dbStrStmt = sqlSqlServer;
+            else if (driver.startsWith(PSJdbcUtils.ORACLE_PRIMARY))
+               dbStrStmt = sqlOracle;
+
+            if (dbStrStmt.trim().length() > 0)
+               strStmt = dbStrStmt;
+
+            if (strStmt.trim().length() < 1)
+               return;
+
+            // replace the table names with fully qualified names
+            strStmt = qualifyTableNames(strStmt, dbmsDef);
+
+            // replace the view names with fully qualified names
+            strStmt = qualifyViewNames(strStmt, dbmsDef);
+
+            PSLogger.logInfo("Executing statement : " + strStmt);
+            PSLogger.logInfo("*******Connection Closed." + conn.isClosed());
+            try (Statement stmt = conn.createStatement()) {
+               stmt.execute(strStmt);
+               PSLogger.logInfo("Successfully executed statement.");
+            } catch (Exception e) {
+               PSLogger.logInfo("Error Occured in Stmt Execute." + e.getMessage());
+               PSLogger.logError(e);
             }
 
-            throw new BuildException(ex);
+         } catch (Exception ex) {
+            if (!isFailonerror()) {
+               if (!isSilenceErrors()) {
+                  PSLogger.logError(ex.getMessage());
+                  if (getPrintExceptionStackTrace()) {
+                     PSLogger.logError(ex);
+                  }
+               }
+               return;
+            } else {
+               if (!isSilenceErrors()) {
+                  PSLogger.logError(ex.getMessage());
+                  if (getPrintExceptionStackTrace()) {
+                     PSLogger.logError(ex);
+                  }
+               }
+
+               throw new BuildException(ex);
+            }
+         } finally {
+            if (driver.equalsIgnoreCase(PSJdbcUtils.DERBY_DRIVER))
+               InstallUtil.shutDownDerby();
          }
+
+      } catch (FileNotFoundException e) {
+         e.printStackTrace();
+      } catch (IOException e) {
+         e.printStackTrace();
+      } catch (PSJdbcTableFactoryException e) {
+         e.printStackTrace();
       }
    }
 
-   /*******************************************************************
+      /*******************************************************************
     * Private functions.
     *******************************************************************/
 

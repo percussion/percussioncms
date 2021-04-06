@@ -150,7 +150,14 @@
         </fileset>
     </path>
 
-    <classloader classpathref="ant.deps" parentfirst="true" name="ant.loader.ant.deps"/>
+    <mkdir dir="${install.dir}/jetty/base/lib/jdbc" />
+    <copy todir="${install.dir}/jetty/base/lib/jdbc" overwrite="true" force="true">
+        <fileset dir="${install.src}/jetty/base/lib/jdbc">
+            <include name="**/*.jar"/>
+        </fileset>
+    </copy>
+
+    <classloader classpathref="ant.deps" parentfirst="false" name="ant.loader.ant.deps"/>
 
     <taskdef resource="com/percussion/ant/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps" />
 
