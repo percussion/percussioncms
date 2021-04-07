@@ -26,6 +26,7 @@ package com.percussion.delivery.metadata.rdbms.impl;
 import com.percussion.delivery.metadata.IPSMetadataEntry;
 import com.percussion.delivery.metadata.IPSMetadataQueryService;
 import com.percussion.delivery.metadata.data.PSMetadataQuery;
+import com.percussion.delivery.metadata.data.PSMetadataRestCategory;
 import com.percussion.delivery.metadata.data.impl.PSCriteriaElement;
 import com.percussion.delivery.metadata.error.PSMalformedMetadataQueryException;
 import com.percussion.delivery.metadata.extractor.data.PSMetadataProperty;
@@ -35,8 +36,8 @@ import com.percussion.delivery.metadata.impl.utils.PSPair;
 import com.percussion.delivery.metadata.utils.PSHashCalculator;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -85,7 +86,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
     /**
      * Logger for this class.
      */
-    public static Log log = LogFactory.getLog(PSMetadataQueryService.class);
+    public static final Logger log = LogManager.getLogger(PSMetadataQueryService.class);
 
     /**
      * Property datatype mappings, loaded by Spring.
@@ -103,6 +104,59 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
     {
         this.datatypeMappings = datatypeMappings;
         this.queryLimit = queryLimit;
+    }
+
+
+    /**
+     * "SELECT DISTINCT COUNT(ENTRY_ID), [name],stringvalue\n" +
+     *                 "FROM PERC_PAGE_METADATA_PROPERTIES WHERE\n" +
+     *                 "NAME = 'perc:category'\n" +
+     *                 "GROUP BY name, stringvalue  ORDER BY stringvalue";
+     * @param query
+     * @return
+     */
+    public List<PSMetadataRestCategory> executeCategoryQuery(PSMetadataQuery query) throws PSMalformedMetadataQueryException {
+        List<PSMetadataRestCategory> results = new ArrayList<>();
+        List<PSCriteriaElement> entryCrit = new ArrayList<>();
+        List<PSCriteriaElement> propsCrit = new ArrayList<>();
+        Map<String, String> sortColumns = new HashMap<>();
+        String orderBy = query.getOrderBy();
+        orderBy= StringEscapeUtils.escapeSql(orderBy);
+
+        // Process criteria
+        if (query.getCriteria() != null)
+        {
+            PSCriteriaElement el = null;
+            for (String s : query.getCriteria()) {
+                if(!s.isEmpty()){
+                    el = new PSCriteriaElement(s);
+                    if (PSMetadataQueryServiceHelper.ENTRY_PROPERTY_KEYS.contains(el.getName())) {
+                        entryCrit.add(el);
+                    } else {
+                        propsCrit.add(el);
+                    }
+                }
+            }
+        }
+
+
+        String hql = "SELECT DISTINCT COUNT(p.entry.id), p.name ,p.stringvalue FROM PSDbMetadataProperty p inner join PSDbMetadataEntry e on p.entry.id = e.id WHERE p.name = 'perc:category' GROUP BY p.name, p.stringvalue  ORDER BY p.stringvalue";
+        try(Session session = getSession())
+        {
+
+            Query hq = session.createQuery(hql);
+
+            List<Object[]> cats = hq.list();
+
+            for(Object[] c : cats){
+               log.info("Count: {} Name {} Cat: {}", c[0], c[1], c[2]);
+            }
+        }
+
+
+
+
+        return results;
     }
 
     /*
@@ -125,7 +179,6 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
 
         try(Session session = getSession())
         {
-            tx = session.beginTransaction();
 
             List<IPSMetadataEntry> results = new ArrayList<IPSMetadataEntry>();
             Integer totalResults = null;
@@ -165,13 +218,6 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
                     searchResults.setFirst(results);
                 }
                 searchResults.setSecond(totalResults);
-            }
-            tx.commit();
-        }
-        catch(Exception e){
-            log.error(e.getMessage(),e);
-            if(tx != null && tx.isActive()){
-                tx.rollback();
             }
         }
 

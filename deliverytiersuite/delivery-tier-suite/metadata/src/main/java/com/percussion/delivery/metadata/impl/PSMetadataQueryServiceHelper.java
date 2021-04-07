@@ -82,7 +82,6 @@ public abstract class PSMetadataQueryServiceHelper
           return datatypeMappings.getDatatype(nameWithOutNamespace);
     }
 
-    @SuppressWarnings("unchecked")
     public static List parseToList(String key, String val, PSPropertyDatatypeMappings datatypeMappings, PSHashCalculator hashCalc) throws ParseException
     {
        VALUETYPE type = datatypeMappings.getDatatype(key);
