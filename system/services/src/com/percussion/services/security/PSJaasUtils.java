@@ -70,6 +70,8 @@ public class PSJaasUtils
     * Name of the JAAS group that contains the list of role names.
     */
    public static final String ROLE_GROUP_NAME = "Roles";
+
+   public static final String ROLE_DEFAULT = "Default";
    
    /**
     * Predicate for filtering an iterater to return only group entries.
@@ -886,6 +888,13 @@ public class PSJaasUtils
          {
             // query for all roles
             roles = roleMgr.getUserRoles(user);
+
+            //CMS-5033 : Clearing the roles set if the user has only one role and that Role is "Default" to prevent user without any valid Role to log in into the system.
+            //This is done as user with no valid role was able to log in into the system as the only available role was default role and that gave access to the system.
+            if(roles.size() == 1 && roles.contains(PSJaasUtils.ROLE_DEFAULT)){
+               roles.clear();
+            }
+
             for (IPSTypedPrincipal group : groups)
             {
                roles.addAll(roleMgr.getUserRoles(group));
