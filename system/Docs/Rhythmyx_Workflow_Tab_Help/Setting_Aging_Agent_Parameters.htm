@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Setting Aging Agent Parameters </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Aging	Setting Agent Parameters">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Aging_Prerequisites.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Creating_an_Aging_Transition.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1775945.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h4 class="heading4">Setting Aging Agent Parameters</h4>
+<p class="bodytext">The Java class com.percussion.server.agent.PSAging is the Rhythmyx Aging agent and executes the Aging function. &nbsp;The registration entry of this agent in the agentmanager.xml (<code class="monospace">Rhythmyxroot/rxconfig/Server/requestHandlers /agentmanager.xml</code>) defines how often Rhythmyx will poll for Aging Transitions. &nbsp;</p>
+<p class="bodytext">The default entry for this agent is:</p>
+<p class="codeexample">&lt;agent name=&quot;aging&quot; servicetype=&quot;scheduled&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&lt;class&gt;com.percussion.server.agent.PSAging&lt;/class&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&lt;schedule delay=&quot;600&quot; interval=&quot;600&quot;/&gt;</p>
+<p class="codeexample">&lt;/agent&gt;</p>
+<p class="bodytext">The <code class="monospace">&lt;delay&gt;</code> attribute of the schedule element defines the initial delay, the number of seconds after the server starts that must pass before the Aging agent executes the first Aging task. &nbsp;This delay is required to allow all Rhythmyx applications to start. &nbsp;The <code class="monospace">&lt;interval&gt;</code> attribute of the schedule element defines the amount of time, in seconds between each execution of the Aging task. &nbsp;The default values specify that the Aging agent makes its first Aging ten minutes after the server starts, and will repeat the poll every ten minutes. &nbsp;</p>
+<p class="bodytext">To change the frequency of polling for Aging Transitions, change the value of the <code class="monospace">interval</code> attribute and save the <code class="monospace">agentmanager.xml</code>. &nbsp;To change the amount of time available for your server to complete initialization before polling begins, change the value of the <code class="monospace">delay</code> attribute.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="About_Aging.htm" target="_self">About Aging</a></p><p class="relateditem"><a href="Aging_Prerequisites.htm" target="_self">Aging Prerequisites</a></p><p class="relateditem"><a href="Creating_an_Aging_Transition.htm" target="_self">Creating an Aging Transition</a></p><p class="relateditem"><a href="Aging_Scenarios.htm" target="_self">Aging Transition Scenarios</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

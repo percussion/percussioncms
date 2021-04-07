@@ -1,0 +1,60 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> What is SPAN? </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Marking Up Inline Content, Span	explained">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Formatting_Dynamic_Content.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Formatting_Snippet_Variants.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">What is SPAN?</h2>
+<p class="bodytext">The word <code class="monospace">span</code> can appear in two ways in HTML:</p>
+<p class="bodytext">A <code class="monospace">td</code> element can have <code class="monospace">colspan and rowspan</code> attributes. &nbsp;These attributes determine how many adjacent sells in a table use the particular attributes and style settings of the <code class="monospace">td </code>element. This use of <code class="monospace">span</code> is not of particular interest when using XSpLit.</p>
+<p class="bodytext">XML also uses <code class="monospace">span</code> as a markup tag, used to give structure and context to inline content. This use of <code class="monospace">span</code> is important when using XSpLit. Use <code class="monospace">span</code> to enclose a specific text block and apply any type of attribute on the text block , without adding formatting. The <code class="monospace">span</code> element has no meaning on its own; use it with CLASS or ID attributes. You can nest <code class="monospace">span</code> in all other tags, and nest all other tags within <code class="monospace">span</code>. In many cases, <code class="monospace">span</code> is recommended and in other cases, it is required.</p>
+<p class="bodytext">CAUTION: &nbsp;When formatting HTML 4.0, it is common to use <code class="monospace">span</code> to apply cascading style sheet (CSS) formatting to elements enclosed in the <code class="monospace">span</code> tag. &nbsp;This practice usually works well because browsers do not hold HTML to strict standards of well-formedness. &nbsp;Well-formed HTML, however, will not allow this practice. &nbsp;XSpLit uses HTML Tidy to ensure that HTML is well formed. &nbsp;HTML Tidy collapses <code class="monospace">span</code> elements to one line if they contain an ID attribute. &nbsp;<code class="monospace">Span</code> elements that contain other elements are deleted. &nbsp;The result is that any CSS formatting you meant to apply to your output HTML with the <code class="monospace">span</code> element will be lost. &nbsp;As an alternative, consider using the <code class="monospace">div</code> tag or assigning the class attribute to other enclosing elements.</p>
+<p class="bodytext">&nbsp; </p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Formatting_Dynamic_Content.htm" target="_self">Formatting Dynamic Content</a></p><p class="relateditem"><a href="Formatting_Snippet_Variants.htm" target="_self">Formatting Snippet Variants</a></p><p class="relateditem"><a href="Labelling_Dynamic_Content_in_HTML.htm" target="_self">Labelling Dynamic Content in HTML</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,31 @@
+<html lang="en">
+    <head>
+        <title> Inline Link Buttons</title>
+        <link rel="stylesheet" type="text/css" href="../../../css/dialog.css" />
+    </head>
+<body>
+<h2 id="Inline_Links_" class="showhide_heading">Inline Link Buttons <img src="cuiInlineLinkButtons.gif" /></h2>
+<p>In the rich text editor, you can place an inline link  on text or an image that you have selected. When a site visitor clicks the text  or image that contains the link, the external URL or internal page that the link  accesses opens. The rich text editor also gives you the ability to insert a link  that jumps to a specific point in a page (for example, a title or a definition).  To do this, insert an anchor at the point in the page that you want the link to access, and then insert the link that accesses the anchor over text or an image. In the following graphic, the contributor has inserted an anchor before the words  <U>Find a Provider</U>, and then has placed a link on the text  <em>search for a provider</em>. Now the link <I>search for a provider</I> will take the site visitor to the words <U>Find a Provider</U>, where the anchor appears. You can also insert a link over an image.  On the page below, the contributor has placed a link over the telephone graphic.  Now, if the user clicks the graphic, the <I>Contact Us</I> page opens.<br /><p><img src="cuiInlineLinkExample.gif" /><br /><br /></p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td class="wikicell"><strong>Button</strong></td>
+<td class="wikicell"><strong>Function</strong></td>
+</tr>
+<tr>
+<td class="wikicell"><img src="cuiInsertLinkButton.gif" /></td>
+<td class="wikicell"><a class="wiki" href="EditLinkDialog.html" title="Insert-Edit Link Dialog">Opens a dialog that enables  you to configure and insert an inline link or edit an existing inline link</a>.  The link can access an external URL, an internal page, or a page anchor.</td>
+</tr>
+<tr>
+<td class="wikicell"><img src="cuiRemoveLinkButton.gif"f" /></td>
+<td class="wikicell">Removes an inline link. To remove the link, position your  cursor within the link text or select the linked image, and then click this  button.</td>
+</tr>
+<tr>
+<td class="wikicell"><img src="cuiaddanchorbutton.gif" /></td>
+<td class="wikicell"><a class="wiki" href="Anchor.html" title="Insert-Edit Anchor Dialog">Opens a dialog that lets  you insert or edit an anchor within the text.</a></td>
+</tr>
+</tbody>
+</table>
+<p class="toc-link"><a href="../index.html">Back</a></p>
+ </body>
+</html>

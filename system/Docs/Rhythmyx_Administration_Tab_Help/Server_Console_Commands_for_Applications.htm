@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Server Console Commands for Applications </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Applications	Restart, Applications	Show Active, Applications	Show All, Applications	Start, Applications	Status, Applications	Stop, Applications	Tracing, Stop	Error Resolution">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="General_Server_Console_Commands.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Server_Console_Commands_for_Displaying_Resources.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc177616.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h5 class="heading5">Server Console Commands for Applications</h5>
+<table width="600" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="110"><p class="tableheading">To . . . </p>
+</th>
+<th style = "border:1px solid #010101;" width="233"><p class="tableheading">Enter the command . . . </p>
+</th>
+<th style = "border:1px solid #010101;" width="257"><p class="tableheading">Notes</p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Display a list of active server applications</p>
+</td>
+<td style = "border:1px solid #010101;" width="233"><p class="tablebodytext"><code class="monospace"><code class="monospace">show applications active</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="257"><p class="tablebodytext">Example:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">show applications active</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;command&gt;show applications&lt;/command&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultCode&gt;0&lt;/resultCode&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultText&gt;&lt;/resultText&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;Applications&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;Application id=&quot;18&quot; active=&quot;yes&quot; enabled=&quot;yes&quot;&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">         &lt;name&gt;casArticle&lt;/name&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;/Application&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;Application id=&quot;531&quot; active=&quot;yes&quot; enabled=&quot;yes&quot;&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">         &lt;name&gt;casArticleWord&lt;/name&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">	.</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">	.</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">	.</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Display a list of all server applications </p>
+</td>
+<td style = "border:1px solid #010101;" width="233"><p class="tablebodytext"><code class="monospace"><code class="monospace">show applications</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="257"><p class="tablebodytext"><code class="monospace"><code class="monospace">Examples:</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">show applications</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;command&gt;show applications&lt;/command&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultCode&gt;0&lt;/resultCode&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultText&gt;&lt;/resultText&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;Applications&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;Application id=&quot;18&quot; active=&quot;yes&quot; enabled=&quot;yes&quot;&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">         &lt;name&gt;casArticle&lt;/name&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;/Application&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;Application id=&quot;531&quot; active=&quot;yes&quot; enabled=&quot;yes&quot;&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">         &lt;name&gt;casArticleWord&lt;/name&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">	.</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">	.</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">	.</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Display statistics for server handling of requests to a specific application.</p>
+</td>
+<td style = "border:1px solid #010101;" width="233"><p class="tablebodytext"><code class="monospace"><code class="monospace">show status application applicationname</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="257"><p class="tablebodytext">Displays how long the application has been running, the number of application events processed, failed, and pending,  the number of hits and misses by application events to the cache, and average, minimum and maximum processing time for application events.</p>
+<p class="tablebodytext">Example:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">show status application sys_cmpCommunities</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;command&gt;show status application sys_cmpCommunities&lt;/command&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultCode&gt;0&lt;/resultCode&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultText&gt;&lt;/resultText&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;PSXApplicationStatus&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;name&gt;sys_cmpCommunities&lt;/name&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;PSXStatistics/&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;ElapsedTime&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">         &lt;days&gt;0&lt;/days&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">         &lt;hours&gt;0&lt;/hours&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">         &lt;minutes&gt;50&lt;/minutes&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">	.</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">	.</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">	.</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Start a server application</p>
+</td>
+<td style = "border:1px solid #010101;" width="233"><p class="tablebodytext"><code class="monospace"><code class="monospace">start application applicationname</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="257"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Stop and restart a server application</p>
+</td>
+<td style = "border:1px solid #010101;" width="233"><p class="tablebodytext"><code class="monospace"><code class="monospace">restart application applicationname</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="257"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Stop a server application</p>
+</td>
+<td style = "border:1px solid #010101;" width="233"><p class="tablebodytext"><code class="monospace"><code class="monospace">stop application applicationname</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="257"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Turn on default tracing to interactively debug an application running on Rhythmyx.</p>
+</td>
+<td style = "border:1px solid #010101;" width="233"><p class="tablebodytext"><code class="monospace"><code class="monospace">trace default applicationname</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="257"><p class="tablebodytext">When tracing occurs, Rhythmyx returns the output of <code class="monospace">&lt;Rhythmyx root&gt;/&lt;application name&gt;/~,application name&gt;.tra</code>ce to the console. [link to Tracing Results]</p>
+<p class="tablebodytext">Example: </p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">trace default sys_caContentSearch</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;command&gt;trace default sys_caContentSearch&lt;/command&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultCode&gt;0&lt;/resultCode&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultText&gt;&lt;/resultText&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;/PSXConsoleCommandResults&gt;</code></code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Turn on specific tracing options to interactively debug an application running on Rhythmyx.</p>
+</td>
+<td style = "border:1px solid #010101;" width="233"><p class="tablebodytext"><code class="monospace"><code class="monospace">trace flag1 [flag2] [flag3] [flag4] applicationname</code></code></p>
+<p class="tablebodytext">Tracer Types and Flags [link]</p>
+</td>
+<td style = "border:1px solid #010101;" width="257"><p class="tablebodytext">Enter up to four trace flags in hexadecimal format.</p>
+<p class="tablebodytext">Example:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">trace 0x1 0x100 0x200 0x1000 sys_caContentSearch</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">When tracing occurs, Rhythmyx returns output of &lt;Rhythmyx root&gt;/&lt;application name&gt;/~,application name&gt;.trace to the console.</code></code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">View tracing options</p>
+</td>
+<td style = "border:1px solid #010101;" width="233"><p class="tablebodytext">trace help</p>
+</td>
+<td style = "border:1px solid #010101;" width="257"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+
+</table>
+<p class="tablebodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Server_Console_Commands_by_Function.htm" target="_self">Server Console Commands by Function</a></p><p class="relateditem"><a href="General_Server_Console_Commands.htm" target="_self">General Server Console Commands</a></p><p class="relateditem"><a href="Server_Console_Commands_for_Displaying_Resources.htm" target="_self">Server Console Commands for Displaying Resources</a></p><p class="relateditem"><a href="Server_Console_Commands_for_Flushing_the_Server_and_MetaData_Caches.htm" target="_self">Server Console Commands for Flushing the Server and MetaData Caches</a></p><p class="relateditem"><a href="17922.htm" target="_self">Server Console Commands for Search</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

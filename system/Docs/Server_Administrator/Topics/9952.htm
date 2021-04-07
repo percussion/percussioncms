@@ -1,0 +1,68 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Authentication Editor </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Authentications	Authentication Editor, Directory Services	Authentications	Authentication Editor">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="9951.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="9953.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h6 class="heading6">Authentication Editor</h6>
+<p class="bodytext">Use the Authentication Editor to enter or modify Authentication data. </p>
+<p class="bodytext">To open an existing Authentication:</p>
+<ul class="listbullet"><li class="listbullet">double-click on the name of the desired Authentication on the Authentications tab or</li><li class="listbullet">select the desired Authentication on the Authentications tab and click the [<strong class="buttons">Edit</strong>] button </li></ul><p class="bodytext">To create a new Authentication:</p>
+<ul class="listbullet"><li class="listbullet">Click the [<strong class="buttons">Add</strong>] button on the Authentications tab</li></ul><p class="bodytext">The Authentication Editor appears.</p>
+<p class="widegraphic"><img src="sa_authenticationeditor_57.gif" alt="DirServicesAuthenticationsEditor" height="315" width="478" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext"><strong class="specialbold">Authentication Editor Field Descriptions:</strong></p>
+<p class="fielddescription"><strong class="fieldname">Name</strong> A description of the Authentication being registered. </p>
+<p class="fielddescription"><strong class="fieldname">Schema</strong> The authentication mechanism being used.  Rhythmyx supports three mechanisms. Choose the one appropriate for your configuration.</p>
+<ul class="listbullet2"><li class="listbullet2">None - This mechanism consists of a single message from the client to the server. This mechanism does not provide a security layer. This is similar to an anonymous bind.</li><li class="listbullet2">Simple - The most commonly used Authentication mechanism.  This method uses a simple clear-text user password.  Clear-text passwords are simple and interoperate with almost all existing operating system authentication databases.  The mechanism consists of a single message from Rhythmyx to the directory server. Rhythmyx sends a null character, followed by the user name, followed by a null character, followed by the clear-text password.  Upon receipt of the message, the directory server verifies the user name and password against the service's database and verifies the credentials, permitting the user to log in.</li><li class="listbullet2">CRAM-MD5 - A challenge and response authentication mechanism for LDAP v3 servers. (It was superseded by Digest-MD5.) Some existing LDAP v3 servers still support CRAM-MD5.  When using CRAM-MD5, the LDAP server sends some data to Rhythmyx. Rhythmyx responds by encrypting the data with its password using the MD5 algorithm. The LDAP server then uses Rhythmyx's stored password to determine whether it used the right password.  If this password is correct, the user is permitted to login.</li></ul><p class="fielddescription"><strong class="fieldname">User Name</strong> The user name being used to establish a connection (log in) to the directory server.  Specify the fully-qualified distinguished name of the user.  This user must have rights to catalog (list) all requested attribute values.</p>
+<p class="fielddescription"><strong class="fieldname">Password</strong> The password for the user name used to connect to the Directory Server.</p>
+<p class="fielddescription"><strong class="fieldname">Append Base DN</strong> (Note:  This checkbox is available for backwards-compatibility with earlier versions of Rhythmyx; it should not be used in new implementations.)  In some instances, the user name used for connecting to the directory server is required by the directory server to be fully qualified.  When you check this box, the Base DN for the Directory (defined in the Provider URL Selector Dialog) is appended to the User Name value. (The Base DN denotes the directory location where searches on the directory server should be initiated.) Connections to Active Directory require this box to be selected.</p>
+<p class="fielddescription"><strong class="fieldname">User Attribute</strong> (Note:  This field is available for backwards-compatibility; it should not be modified in new implementations.)  The attribute associated with the User Name as viewed in the directory server.  CN (common name) is the most commonly used attribute for user names.</p>
+<p class="fielddescription"><strong class="fieldname">Password Filter</strong> If the password is being processed by a custom encryption algorithm, the exit being used to do the encryption must be supplied here.  Rhythmyx ships with one encryption filter (default encryption filter).  Passwords must be decrypted by the directory server upon receipt.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="9950.htm" target="_self">Authentication Dialogs</a></p><p class="relateditem"><a href="9951.htm" target="_self">Authentications Tab</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

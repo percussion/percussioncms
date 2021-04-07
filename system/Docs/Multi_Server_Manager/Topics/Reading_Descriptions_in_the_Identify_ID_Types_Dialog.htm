@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Reading Descriptions in the Identify ID Types Dialog </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Identifying ID Types	Descriptions in Identify ID Types Dialog">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Identify_ID_Types_Dialog.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Specifying_ID_Types.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Reading Descriptions in the Identify ID Types Dialog</h3>
+<p class="bodytext">The <a id="h6161" class="jumptemplate" title="Identify ID Types Dialog" href="Identify_ID_Types_Dialog.htm" target="_self">Identify ID Types dialog</a> provides a <strong class="specialbold">Description</strong> box that describes the context of an ID <strong class="specialbold">Value</strong> (identifier) selected in the <strong class="specialbold">Identify <a title="ID Types" href="18764.htm#o18784">ID Types</a></strong> table. The information in the box describes where the value appears to help you determine its ID Type. The following table shows some descriptions that you may see and explains how to interpret them.</p>
+<table width="576" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="96"><p class="tableheading">Element in tree</p>
+</th>
+<th style = "border:1px solid #010101;" width="247"><p class="tableheading">Description in dialog</p>
+</th>
+<th style = "border:1px solid #010101;" width="233"><p class="tableheading">Interpretation</p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="96"><p class="tablebodytext">URL Parameters node embedded in an Action Menu Definition folder</p>
+</td>
+<td style = "border:1px solid #010101;" width="247"><p class="tablebodytext">the param &quot;sys_siteid&quot;</p>
+</td>
+<td style = "border:1px solid #010101;" width="233"><p class="tablebodytext">The parameter name (sys_siteid) indicates that it is a Site Definition.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="96"><p class="tablebodytext">Slot Finder Params embedded in a Slot Definition folder</p>
+</td>
+<td style = "border:1px solid #010101;" width="247"><p class="tablebodytext">the param &quot;max_results&quot;</p>
+</td>
+<td style = "border:1px solid #010101;" width="233"><p class="tablebodytext">You must identify the ID Type of the param &quot;max_results&quot;.  &quot;max results&quot; indicates that you are specifying a number of items, not an ID, so the type is Not an id.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="96"><p class="tablebodytext">Post Exits node  in the XML resource folder within an application folder</p>
+</td>
+<td style = "border:1px solid #010101;" width="247"><p class="tablebodytext">the param #0 with name &quot;filenameContext&quot; and value &quot;301&quot; in the extension call #0 &quot;Java/global/percussion/fastforward/sfp/rxs_SiteFolderContentListBulkBuilder&quot;</p>
+</td>
+<td style = "border:1px solid #010101;" width="233"><p class="tablebodytext">You must identify the ID type of filenameContext. The rest of the description tells you the URL of the extension in which the parameter named filenameContext is located.</p>
+<p class="tablebodytext">The name filenameContext indicates that the parameter represents a Context ID.  You can specify the ID Type as a Context Definition.</p>
+<p class="tablebodytext">If you want to confirm your selection, in the Workbench, open the application in XML Server view, find the XML resource, and open the exits until you find the one named in the description, rxs_SiteFolderContentListBuilder. In the Exit Properties dialog, click the filename to view the parameters; then click the filenameContext parameter.  The text in the Exit Properties description box confirms that filenameContext represents a Context ID.</p>
+</td>
+</tr>
+
+</table>
+<p class="tablebodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Identify_ID_Types_Dialog.htm" target="_self">Identify ID Types Dialog</a></p><p class="relateditem"><a href="Specifying_ID_Types.htm" target="_self">Specifying ID Types</a></p><p class="relateditem"><a href="Using_the_Identify_ID_Types_Dialog.htm" target="_self">Using the Identify ID Types Dialog</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
+

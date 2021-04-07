@@ -1,0 +1,90 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Labelling Dynamic Content in HTML </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Formatting Local Fields, Keywords, Local Fields	PSX, PSX Prefix	for Local Content">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Formatting_Snippet_Variants.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Field_Names_and_Prefixes.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Labelling Dynamic Content in HTML</h2>
+<p class="bodytext">The basic technique for labeling local fields is to add the <code class="monospace">psx-</code> prefix to the name of the field:  <code class="monospace">psx-fieldname</code>.  The simplest way to add the field HTML markup is to place the prefixed field by itself in an HTML element, such as <code class="monospace">&lt;td&gt;</code>:</p>
+<p class="codeexample">&lt;td&gt;psx-fieldname&lt;/td&gt;</p>
+<p class="bodytext">Another approach is to make the field an attribute of a tag, such as <code class="monospace">&lt;span&gt;</code> or <code class="monospace">&lt;div&gt;</code> tag, and define sample content:</p>
+<p class="codeexample">&lt;td&gt;</p>
+<p class="codeexample">	&lt;span id=&quot;psx-fieldname&quot;&gt;Sample Content&lt;/span&gt;</p>
+<p class="codeexample">&lt;/td&gt;</p>
+<p class="bodytext">The sample content appears only when you are designing the page in your HTML editor.  Rhythmyx replaces the sample content with the backend data at runtime.</p>
+<p class="bodytext">These two HTML fragments are functionally equivalent.</p>
+<p class="bodytext">In Site Explorer, a field with this markup would not be editable.  To make the field editable in Site Explorer, add the psxedit attribute to the <code class="monospace">&lt;span&gt;</code> or <code class="monospace">&lt;div&gt;</code> tag for the field:</p>
+<p class="codeexample">&lt;td&gt;</p>
+<p class="codeexample">	&lt;span psxedit=&quot;editorfieldname&quot;&gt;assemblyfieldname &lt;/span&gt;</p>
+<p class="codeexample">&lt;/td&gt;</p>
+<p class="bodytext">The psxedit attribute should not contain forward slashes (&quot;/&quot;).  If the attribute does contain forward slashes, XSpLit only uses the content following the last slash.  When using the <code class="monospace">psxedit</code> attribute, do not use other customized attributes in the <code class="monospace">&lt;span&gt;</code> tag.  During the Assembly process, these tags are stripped out, and you will loose the attribute and any associated data.</p>
+<p class="bodytext">When defining sample content, use the <code class="monospace">id</code> attribute to define the fieldname for the assembler:</p>
+<p class="codeexample">&lt;td&gt;</p>
+<p class="codeexample">	&lt;span psxedit=&quot;cefieldname&quot; id=&quot;casfieldname&quot;&gt;Sample Field&lt;/span&gt;</p>
+<p class="codeexample">&lt;/td&gt;</p>
+<p class="bodytext">Regardless of the syntax you use, XSpLit produces the same XSL.  The previous two HTML fragments would both result in the following XSL output:</p>
+<p class="codeexample">&lt;td&gt;</p>
+<p class="codeexample">	&lt;span psxedit=&quot;cefieldname&quot;&gt;</p>
+<p class="codeexample">		&lt;xsl:apply-templates select=&quot;casfieldname&quot;/&gt;</p>
+<p class="codeexample">	&lt;/span&gt;</p>
+<p class="codeexample">&lt;/td&gt;</p>
+<p class="bodytext">To make attributes consistent, you can use the <code class="monospace">psxshow</code> attribute instead of the <code class="monospace">id</code> attribute in the <code class="monospace">&lt;span&gt;</code> tag:</p>
+<p class="codeexample">&lt;td&gt;</p>
+<p class="codeexample">	&lt;span psxedit=&quot;cefieldname&quot; psxshow=&quot;casfieldname&quot;&gt;Sample Field&lt;/span&gt;</p>
+<p class="codeexample">&lt;/td&gt;</p>
+<p class="bodytext">The <code class="monospace">psxshow</code> attribute functions as an alias for the <code class="monospace">id</code> attribute.  You cannot use both the <code class="monospace">psxshow</code> and the <code class="monospace">id</code> attribute in the same tag.  XSpLit will generate an error.</p>
+<p class="bodytext">Note that an empty <code class="monospace">&lt;span&gt;</code> tag without an id attribute is illegal.  HTMLTidy will remove these tags.  Always use sample content when using the <code class="monospace">psxshow</code> attribute.  For example:</p>
+<p class="codeexample">&lt;span psxedit=&quot;editorfieldname&quot; psxshow=&quot;assemblerfieldname&quot;/&gt;</p>
+<p class="bodytext">is invalid.  HTMLTidy would remove it.  On the other hand:</p>
+<p class="codeexample"> &lt;span psxedit=&quot;editorfieldname&quot; psxshow=&quot;assemblerfieldname&quot;&gt;sample value&lt;/span&gt;</p>
+<p class="bodytext">is valid.  HTMLTidy would not remove it and XSpLit would split it normally.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">In This Section</p><p class="relateditem"><a href="Field_Names_and_Prefixes.htm" target="_self">Field Names and Prefixes</a></p><p class="relateditem"><a href="Exposed_and_Hidden_Syntax.htm" target="_self">Exposed and Hidden Syntax</a></p><p class="relateditem"><a href="Dynamic_HTML.htm" target="_self">Dynamic HTML</a></p><p class="relateditem"><a href="Formatting_repeated_fields.htm" target="_self">Formatting Repeated Fields</a></p><p class="relateditem"><a href="Pre-selected_and_Pre-checked_Form_Fields.htm" target="_self">Pre-selected and Pre-checked Form Fields</a></p><p class="relateditem"><a href="Working_with_Multiple_Contexts.htm" target="_self">Working with Multiple Contexts</a></p></td>
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Formatting_Dynamic_Content.htm" target="_self">Formatting Dynamic Content</a></p><p class="relateditem"><a href="What_is_SPAN.htm" target="_self">What is SPAN?</a></p><p class="relateditem"><a href="Formatting_Snippet_Variants.htm" target="_self">Formatting Snippet Variants</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

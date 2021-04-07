@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> How Multi-Server Manager Installation Works </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Multi-Server Manager	Limitations, Multi-Server Manager	Prerequisites">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="About_Rhythmyx_Multi-ServerManager_and_Archive_Installation.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Package_Types.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">How Multi-Server Manager Installation Works</h2>
+<p class="bodytext">When you create an archive, the <a title="Multi-Server Manager" href="18764.htm#o18765">Multi-Server Manager</a> copies it to the client (Multi-Server Manager machine), so you can create an archive on a server and install it at a later time on a different server, as long as the target server has the same version and build as the archive.</p>
+<p class="bodytext">To install Rhythmyx elements with the Multi-Server Manager, you do not have to run the source and target servers at the same time.  You can specify what to install on the source server, save the data in a file on the Multi-Server Manager, and install it on the target server at a later time.</p>
+<p class="bodytext">Prior to using the Multi-Server Manager:</p>
+<ul class="listbullet"><li class="listbullet">Install and configure Rhythmyx on your source and target servers. </li><li class="listbullet">Make sure that the builds and versions of Rhythmyx on both servers are the same. The Multi-Server Manager will not perform an installation otherwise. </li></ul><p class="bodytext">Limitations</p>
+<ul class="listbullet"><li class="listbullet">The Multi-Server Manager cannot install some elements of a source server, including:<ul class="listbullet2"><li class="listbullet2">Loadable handlers. The Multi-Server Manager warns you and does not allow installation if any loadable handlers that exist on the source server are missing on the target server.</li><li class="listbullet2">Exit classes in the server classpath that are installed at the system level. The Multi-Server Manager warns you and does not allow installation if any exit classes that exist on the source server are missing on the target server.</li><li class="listbullet2">Roles and Role members. The Multi-Server Manager only installs source server Roles that do not already exist on the target server. It does not install Members of Roles.</li><li class="listbullet2">Security providers for user or group entries in ACL lists for applications, and the users contained within the security providers. The security providers should exist on the target server with the same name, and should be able to authenticate the same users or groups as it can on the source server. The Multi-Server Manager does not check for security providers on the target server.</li><li class="listbullet2">Extension configuration files that are not stored in the resources directory of the extension. NOTE: You may create a User Dependency package that includes one of these files.</li><li class="listbullet2">Backend credentials. </li><li class="listbullet2">System applications.</li></ul></li><li class="listbullet">Because of the Multi-Server Manager's installation limitations, it is not intended to be used for backing up Rhythmyx; however, you can back up any installable elements using the Multi-Server Manager. To fully back up Rhythmyx, use <a id="h9071" class="jumptemplate" title="The Development Environment" href="The_Development_Environment.htm" target="_self">standard backup techniques</a>.</li><li class="listbullet">Because of the Multi-Server Manager's installation limitations, it is not intended to be used for Rhythmyx source control.</li><li class="listbullet">Tables are the only database objects that the Multi-Server Manager installs.  The Multi-Server Manager discovers views, but lists them as (non-installable) server dependencies and labels them as Table Schemas.</li><li class="listbullet">Rhythmyx does not lock your server while you are creating or installing an archive.  To avoid errors, users should not access your server while you are running the <a title="Create Archive/Descriptor Wizard" href="18764.htm#o18789">Create Archive/Descriptor Wizard</a> or the <a title="Archive" href="18764.htm#o18769">Archive</a> Installation Wizard. </li><li class="listbullet">Installation using the Rhythmyx Multi-Server Manager is not equivalent to Publishing with Rhythmyx.  Do not attempt to use the Rhythmyx Multi-Server Manager to publish public content to a Web site or other destination. </li><li class="listbullet">You cannot roll back after installation.  Once you install an archive on your sever, you cannot uninstall it.</li><li class="listbullet">The Multi-Server Manager does not recognize or duplicate specific blocks of IDs that you give to elements on a source server. When the Multi-Server Manager adds new Rhythmyx elements to a target server (without mappings to target elements), it assigns them new IDs sequentially.  </li><li class="listbullet">If your installation modifies a target server workflow to have fewer states, target server content items in the states that you remove are orphaned. See <a id="h6318" class="jumptemplate" title="Troubleshooting" href="Troubleshooting.htm" target="_self">Troubleshooting</a> for a procedure for moving the orphaned content into an existing state.</li></ul><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="About_Rhythmyx_Multi-ServerManager_and_Archive_Installation.htm" target="_self">About Rhythmyx Multi-Server Manager and Archive Installation</a></p><p class="relateditem"><a href="Package_Types.htm" target="_self">Package Types and their Dependencies</a></p><p class="relateditem"><a href="15408.htm" target="_self">Content Items to Deploy with Multi-Server Manager</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
+

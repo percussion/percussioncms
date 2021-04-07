@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Implementing Quick Edit </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Deleting_a_Notification_from_a_Transition.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Workflow_Actions.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc177593.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="indexpage.htm" target="TOC"><img src="123.gif" alt="Book Index" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Implementing Quick Edit</h2>
+<p class="bodytext">Rhythmyx does not allow users to check out Content Items in a Public State.  Therefore, a user must Transition an item from the Public State to an editable State, then check it out, in order to edit the item.  This process can be cumbersome if the user only needs to correct a minor misspelling.</p>
+<p class="bodytext">To make the process easier for the user, For any Content Item in a Public State, Rhythmyx includes the menu option <em class="emphasis">Edit</em> &gt; <em class="emphasis">Quick Edit</em>.  This menu option provides a single action that Transitions the Content Item from Public and checks it out to the user.  It requires some special implementation in each Workflow, however.</p>
+<p class="bodytext">To implement Quick Edit in a Workflow:</p>
+<ol class="listnumber"><li class="listnumber">The Workflow must include a Quick Edit State.  <p class="listcontinue">To make a State a Quick Edit State, set the Publishable parameter to <em class="emphasis">i</em> (Ignore).  Any State with this value in the Publishable parameter is a Quick Edit State.  A Workflow can include any number of Quick Edit States. </p>
+<p class="widegraphic"><img src="wf_quickeditstate.gif" alt="Quick Edit State" height="124" width="306" vspace="2" hspace="2" align="bottom" border="0" /></p>
+</li><li class="listnumber">Define a Quick Edit Transition from the Public State to the Quick Edit State.<p class="listcontinue">To make a Transition a Quick Edit Transition, the value in the <strong class="specialbold">Trigger</strong> field must be <em class="emphasis">Quick Edit</em>.  The server requires this value to activate the Quick Edit processing.</p>
+<p class="widegraphic"><img src="wf_quickedittransition.gif" alt="Quick Edit Transition" height="312" width="677" vspace="2" hspace="2" align="bottom" border="0" /></p>
+<p class="listcontinue">Note that each Public State can have only one Quick Edit Transition because the value of the <strong class="specialbold">Trigger</strong> field for each Transition in the State must be unique.  If multiple Transitions share the same Trigger, Rhythmyx cannot determine which to execute.  </p>
+<p class="listcontinue">A Workflow can include multiple Public States, however, and each State may have its own Quick Edit Transition, because Transitions in different States can have the same Trigger.</p>
+</li><li class="listnumber">Define a Transition from the Quick Edit State back to the Public State.  This Transition should have the sys_TouchParentItems in the <strong class="specialbold">Workflow Actions</strong> field of the Edit Transition Page to ensure that all related content items are updated with the changes made during Quick Edit.</li></ol><p class="bodytext">The following graphic shows a portion of a State diagram of a Workflow in which Quick Edit has been implemented.  Note the Quick Edit State, the Quick Edit Transition to the State, and the Publish Transition back to Public.</p>
+<p class="widegraphic"><img src="wf_workflowwithquickedit.gif" alt="Workflow Diagram showing Quick Edit" height="274" width="202" vspace="2" hspace="2" align="bottom" border="0" /></p>
+<p class="bodytext">If a Content Item is in a Quick Edit State:</p>
+<ul class="listbullet"><li class="listbullet">Previewing should display the most recent Version of the Content Item.</li><li class="listbullet">The Content List application should direct the Rhythmyx Publisher to publish the Content Item's last public revision. If a Content Item is linked to a Related Content Item that is currently in a Quick Edit State, the Content List should direct the Rhythmyx Publisher to publish the link to the last public revision of the Related Content Item. See &quot;Mapping a Content List Resource&quot; in the CMS Online Help for more information.</li></ul><p class="bodytext">See the reference topic &quot;$contextDependentRevision&quot; in the Rhythmyx Workbench online help for a description of the macro that determines the revision of the Content Item to return.</p>
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

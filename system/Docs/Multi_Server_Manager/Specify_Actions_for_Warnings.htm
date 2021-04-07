@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Specify Actions for Warnings </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="18737.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Summary.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Specify Actions for Warnings</h3>
+<p class="bodytext">Before the Wizard opens the Specify Actions for Warnings dialog, it validates dependencies by checking for the presence of required and optional dependencies in the Packages and on the target server. The Wizard displays a progress bar for validation.</p>
+<p class="widegraphic"><img src="empackagevalstatus56.gif" alt="EMPackageValStatus" height="151" width="316" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">When validation is complete, the dialog closes, and the Specify Actions for Warnings dialog opens.  For each finding, it displays a warning message if the finding is not fatal and an error message if the finding is fatal. If a package validation does not result in a warning or error, it is not listed under <strong class="specialbold">Packages.</strong></p>
+<p class="widegraphic"><img src="emwarning56.gif" alt="Linked GIF" height="465" width="787" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">The Specify Actions for Warnings dialog includes a <strong class="specialbold">Show </strong>drop list that lets you choose the types of warnings and errors that you want to display.</p>
+<p class="widegraphic"><img src="showfilter.gif" alt="MSMShowFilter" height="99" width="166" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">The Show options are:</p>
+<ul class="listbullet"><li class="listbullet">All Results - shows all warnings and errors;</li><li class="listbullet">&quot;Does not exist&quot; only - shows only warnings and errors that indicate missing dependencies;</li><li class="listbullet">&quot;Already exists&quot; only - shows only warnings that indicate that a dependency will be overwritten;</li><li class="listbullet">Errors only - shows errors, but not warnings.</li></ul><p class="bodytext">The <strong class="specialbold">Packages </strong>list only displays packages that have warnings or errors included in the <strong class="specialbold">Show </strong>option. If changing the <strong class="specialbold">Show </strong>option results in no Packages with errors or warnings, the dialog displays <em class="emphasis">There are no messages to display.</em> </p>
+<p class="bodytext">Select each package to see the warnings or errors for it in the Define Actions table. The table displays the following:</p>
+<p class="bodytext"><strong class="specialbold">Dependency</strong> - Dependency name;</p>
+<p class="bodytext"><strong class="specialbold">Type</strong> - Dependency Type;</p>
+<p class="bodytext"><strong class="specialbold">Included</strong> - Whether or not the dependency is included in the <a title="Package" href="18764.htm#o18771">Package</a>;</p>
+<p class="bodytext"><strong class="specialbold">Message</strong> - Error or warning message;</p>
+<p class="bodytext"><strong class="specialbold">Warning/Error</strong> - Whether the result is a warning or an error;</p>
+<p class="bodytext"><strong class="specialbold">Action</strong> - Whether or not to install the Dependency (<strong class="specialbold">Included</strong> reflects this choice).</p>
+<p class="bodytext">If validation results in any errors, you cannot install the Package. If validation results in warnings but not errors, you can choose whether or not to install the Package.  If validation results in warnings or errors and includes optional dependencies, you can choose whether or not to install each optional dependency. </p>
+<p class="bodytext">To complete the Specify an Action for Warning dialog:</p>
+<ol class="listnumber"><li class="listnumber">Choose a <strong class="specialbold">Show </strong>option.</li><li class="listnumber">Under <strong class="specialbold">Packages</strong>, select a Package.</li><li class="listnumber">If the <strong class="specialbold">Skip this Package</strong> check box is enabled (because the Package has validation warnings but does not have validation errors, or because the ID mappings for the package are incomplete) check <strong class="specialbold">Skip this Package</strong> if you do not want to install the Package.  If you want to install it, leave <strong class="specialbold">Skip this Package</strong> unchecked.</li><li class="listnumber">If any optional dependencies have an <strong class="specialbold">Install</strong> check box in the <strong class="specialbold">Action</strong> column (because the package has validation errors or warnings) check <strong class="specialbold">Install</strong> to install the dependency.  Uncheck <strong class="specialbold">Install</strong> to skip installation of the dependency. </li><li class="listnumber">Complete steps 2 through 4 for all Packages.</li><li class="listnumber">Click [<strong class="buttons">Back</strong>] to attempt to rectify the cause of warnings, errors, or validation results.</li><li class="listnumber">Choose another <strong class="specialbold">Show </strong>option, or click [<strong class="buttons">Next&gt;&gt;</strong>] to continue to the <a id="h6223" class="jumptemplate" title="Summary" href="Summary.htm" target="_self">Summary dialog</a>.<p class="listcontinue">If you have chosen to install packages or dependencies with warnings, the Wizard prompts you to confirm continuing.</p>
+<p class="widegraphic"><img src="emvalidwarning56.gif" alt="EMValidWarning56" height="151" width="454" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">Click [<strong class="buttons">Yes</strong>] to continue to the <a id="h6223_2" class="jumptemplate" title="Summary" href="Summary.htm" target="_self">Summary dialog</a>. Click [<strong class="buttons">No</strong>] to continuing editing in the Specify Actions for Warnings dialog.</li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Using_the_Install_Archive_Wizard.htm" target="_self">Using the Install Archive Wizard</a></p><p class="relateditem"><a href="Select_an_Archive_and_Server_Dialog.htm" target="_self">Select an Archive and Server Dialog</a></p><p class="relateditem"><a href="Choose_Installation_Mode_Dialog.htm" target="_self">Choose Installation Mode Dialog</a></p><p class="relateditem"><a href="Add_Packages_to_Install.htm" target="_self">Add Packages to Install</a></p><p class="relateditem"><a href="Transforms65.htm" target="_self">Transforms</a></p><p class="relateditem"><a href="Summary.htm" target="_self">Summary</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
+

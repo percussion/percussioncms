@@ -1,0 +1,121 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Boolean Operators </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="17913.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="17915.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h7 class="heading7">Boolean Operators</h7>
+<p class="bodytext">Rhythmyx's full-text search supports the following Boolean operators: AND, &quot;+&quot;, OR, NOT and &quot;-&quot;</p>
+<p class="bodytext">Boolean operators must be ALL CAPS.</p>
+<p class="bodytext"></p>
+<table width="776" cellpadding="2" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr align="left" valign="top">
+<td width="259"><p class="tableheading">Operator</p>
+</td>
+<td width="259"><p class="tableheading">Definition</p>
+</td>
+<td width="259"><p class="tableheading">Example</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="259"><p class="tablebodytext">OR</p>
+</td>
+<td width="259"><p class="tablebodytext">If there is no Boolean operator between two terms, the OR operator is used. The OR operator links two terms and finds a matching document if either of the terms exist in a document. The symbol || can be used in place of the word OR.</p>
+</td>
+<td width="259"><p class="bodytext">To search for documents that contain either &quot;jakarta apache&quot; or just &quot;jakarta&quot; in <strong class="specialbold">Search for</strong>, enter:</p>
+<p class="bodytext"><code class="monospace">&quot;jakarta apache&quot; jakarta</code></p>
+<p class="bodytext">or</p>
+<p class="bodytext"><code class="monospace">&quot;jakarta apache&quot; OR jakarta</code></p>
+<p class="bodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="259"><p class="bodytext">AND</p>
+</td>
+<td width="259"><p class="bodytext">The AND operator matches documents where both terms exist anywhere in the text of a single document. The symbol &amp;&amp; can be used in place of the word AND.</p>
+</td>
+<td width="259"><p class="bodytext">To search for documents that contain &quot;jakarta apache&quot; and &quot;Apache Lucene&quot; in <strong class="specialbold">Search for</strong>, enter: </p>
+<p class="bodytext"><code class="monospace">&quot;jakarta apache&quot; AND &quot;Apache Lucene&quot;</code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="259"><p class="bodytext">+</p>
+</td>
+<td width="259"><p class="bodytext">The &quot;+&quot; or required operator requires that the term after the &quot;+&quot; symbol exist somewhere in a field of a single document.</p>
+</td>
+<td width="259"><p class="bodytext">To search for documents that must contain &quot;jakarta&quot; and may contain &quot;apache&quot; in <strong class="specialbold">Search for</strong>, enter:</p>
+<p class="bodytext"><code class="monospace">+jakarta apache</code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="259"><p class="bodytext">NOT</p>
+</td>
+<td width="259"><p class="bodytext">The NOT operator excludes documents that contain the term after NOT. The symbol ! can be used in place of the word NOT.</p>
+</td>
+<td width="259"><p class="bodytext">To search for documents that contain &quot;jakarta apache&quot; but not &quot;Apache Lucene&quot; in <strong class="specialbold">Search for</strong>, enter: </p>
+<p class="bodytext"><code class="monospace">&quot;jakarta apache&quot; NOT &quot;Apache Lucene&quot;</code></p>
+<p class="bodytext">The NOT operator cannot be used with just one term. The following search will return no results:</p>
+<p class="bodytext"><code class="monospace">NOT &quot;jakarta apache&quot;</code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="259"><p class="bodytext">-</p>
+</td>
+<td width="259"><p class="bodytext">The &quot;-&quot; or prohibit operator excludes documents that contain the term after the &quot;-&quot; symbol.</p>
+<p class="bodytext"> </p>
+</td>
+<td width="259"><p class="bodytext">To search for documents that contain &quot;jakarta apache&quot; but not &quot;Apache Lucene&quot; in <strong class="specialbold">Search for</strong> enter:</p>
+<p class="bodytext"><code class="monospace">&quot;jakarta apache&quot; -&quot;Apache Lucene&quot;</code></p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="17902.htm" target="_self">Full-Text Search Query Syntax</a></p><p class="relateditem"><a href="17904.htm" target="_self">Terms</a></p><p class="relateditem"><a href="17907.htm" target="_self">Fields</a></p><p class="relateditem"><a href="17908.htm" target="_self">Wildcard Searches</a></p><p class="relateditem"><a href="17909.htm" target="_self">Fuzzy Searches</a></p><p class="relateditem"><a href="17910.htm" target="_self">Proximity Searches</a></p><p class="relateditem"><a href="17912.htm" target="_self">Range Queries</a></p><p class="relateditem"><a href="17913.htm" target="_self">Boosting a Term</a></p><p class="relateditem"><a href="17915.htm" target="_self">Grouping</a></p><p class="relateditem"><a href="17917.htm" target="_self">Field Grouping</a></p><p class="relateditem"><a href="17918.htm" target="_self">Escaping Special Characters</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+
