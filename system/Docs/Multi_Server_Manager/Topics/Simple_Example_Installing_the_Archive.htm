@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Simple Example: Installing the Archive </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Installation Example	Installing the Archive">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Simple_Example_Creating_an_Archive.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Simple_Example_Reviewing_the_Installation.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Simple Example: Installing the Archive</h2>
+<p class="bodytext">To install the contents of the archive that you created on the target server:</p>
+<ol class="listnumber"><li class="listnumber">Notify users not to work on the target (test) server while you are installing the archive.</li><li class="listnumber">Back up your Rhythmyx tree on your target (test) server in case an installation error incorrectly modifies the contents of the Rhythmyx tree, and you want to re-install the original.</li><li class="listnumber">If you are not connected to the target server, <a id="h6085" class="jumptemplate" title="Connect to Server" href="Connect_to_Server.htm" target="_self">connect to it</a>. In this example, you will install the archive by accessing it from <a title="Descriptors View" href="18764.htm#o18809">Descriptors View</a> on the source server, so you must also connect to the source server; however, in general it is not necessary to connect to the source server to install an archive created on it.</li><li class="listnumber">In the <strong class="specialbold"><a title="Server Groups Tree" href="18764.htm#o18777">Server Groups Tree</a></strong>, expand the source (development) server and select the <a title="Descriptor" href="18764.htm#o18780">Descriptor</a> Node so that <strong class="specialbold">Descriptors View</strong> displays in the <strong class="specialbold"><a title="Details Pane" href="18764.htm#o18779">Details Pane</a></strong>. Right-click the descriptor and select <em class="emphasis">Install</em> in the drop menu.<p class="widegraphic"><img src="msminstall60.gif" alt="Install from Descriptors View" height="263" width="625" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="listcontinue">The <a title="Multi-Server Manager" href="18764.htm#o18765">Multi-Server Manager</a> displays a dialog reminding you to back up your target server.  Click [<strong class="buttons">Yes</strong>] to continue. </p>
+<p class="listcontinue">The Multi-Server Manager opens the <a title="Install Archive Wizard" href="18764.htm#o18813">Install Archive Wizard</a>.</p>
+<p class="widegraphic"><img src="installarchivewizard56.gif" alt="Install Archive Wizard56" height="166" width="434" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">Click [<strong class="buttons">Next</strong>].<p class="listcontinue">The Multi-Server Manager displays the Select an <a title="Archive" href="18764.htm#o18769">Archive</a> and Server dialog.</p>
+<p class="widegraphic"><img src="emexselectarchive-60.gif" alt="Select Archive and Server dialog" height="339" width="376" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="listcontinue">By default, <strong class="specialbold">Archive</strong> displays the archive created with the descriptor and <strong class="specialbold">Server Archive Name</strong> displays the name of the archive on client.  <strong class="specialbold">Server Archive Name</strong> is the name the archive will have on the target server. Leave these default values.</p>
+<p class="listcontinue"><strong class="specialbold"><a title="Target Server" href="18764.htm#o18767">Target Server</a></strong> displays all registered servers.  Choose the target server.  Click [<strong class="buttons">Next</strong>].</p>
+<p class="listcontinue">The Multi-Server Manager displays the Choose Installation Mode dialog.</p>
+<p class="widegraphic">  <img src="emarchiveinstallmode56.gif" alt="ChooseInstallationMode56" height="252" width="429" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">In this example, you do not have to review mappings and you have already mapped your new Brief Template.  Choose <em class="emphasis">Typical</em> to use your existing mappings and click [<strong class="buttons">Next</strong>].<p class="listcontinue">The Multi-Server Manager displays the Select Packages to Install dialog.</p>
+<p class="widegraphic"><img src="msmselectpackage-66.gif" alt="Select packages dialog" height="446" width="538" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">Click [<strong class="buttons">Add All &gt;</strong>] to move both packages to <strong class="specialbold">Packages to Install</strong>. Click [<strong class="buttons">Next</strong>]. <p class="listcontinue">The Multi-Server Manager displays a dialog showing the progress of package validation. When package validation is complete, the dialog closes and the Multi-Server Manager displays the Specify Actions for Warnings dialog.</p>
+<p class="widegraphic"><img src="emexdependencyval-60.gif" alt="Specify Actions for Warnings dialog" height="299" width="526" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="listcontinue">The Brief (Content Type) package validations both result in warnings that the RXS_CT_BRIEF table schema already exists.  You want to overwrite the existing table, so leave <em class="emphasis">Install</em> checked. </p>
+</li><li class="listnumber">Click [<strong class="buttons">Next</strong>].<p class="listcontinue">The Multi-Server Manager displays a dialog telling you that you are installing packages with warnings. Click [<strong class="buttons">Yes</strong>] to continue.</p>
+<p class="listcontinue">The Multi-Server Manager displays the Summary dialog of the Wizard.</p>
+<p class="widegraphic"><img src="msmsummary66.gif" alt="Installation Summary dialog" height="340" width="610" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">Click [<strong class="buttons">Finish</strong>].<p class="listcontinue">The Multi-Server Manager displays a dialog prompting you to confirm installation.  Click [<strong class="buttons">Yes</strong>] to install. </p>
+<p class="listcontinue">The Multi-Server Manager displays the Install Status dialog. When installation is complete, it enables the [<strong class="buttons">Show Log</strong>] button.</p>
+<p class="widegraphic"><img src="exeminstallstatus-56.gif" alt="EM EX Install Status" height="151" width="316" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Simple_Example_Adding_a_New_Field_to_the_Article_Content_Editor.htm" target="_self">Simple Example: Adding a New Field to a Content Editor</a></p><p class="relateditem"><a href="Simple_Example_Setting_Up_the_Source_and_Target_Servers.htm" target="_self">Simple Example: Setting Up the Source and Target Servers</a></p><p class="relateditem"><a href="Simple_Example_Creating_an_Archive.htm" target="_self">Simple Example: Creating an Archive</a></p><p class="relateditem"><a href="Simple_Example_Reviewing_the_Installation.htm" target="_self">Simple Example: Reviewing the Installation</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
+

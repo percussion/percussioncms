@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Database Publishing Variables </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Variables	Database Publishing">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="15433.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="15532.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1776036.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Database Publishing Variables</h3>
+<p class="bodytext">The following variables have been defined specifically for use in Database Publishing.  For additional details, see the <a class="javadocinnewwindow" title="" href="../JavaDocs/index.html" target="_blank">Rhythmyx JavaDoc</a>.</p>
+<p class="bodytext">Note:  Be careful not to confuse these variables with the Database function, $rx.db.  If you specify these variables with the prefix $rx.db, the system will return an error.</p>
+<p class="bodytext">Database Publishing Variables are used only in Templates.</p>
+<table width="631" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="199"><p class="tableheading">Variable</p>
+</td>
+<td style = "border:1px solid #010101;" width="105"><p class="tableheading">Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="327"><p class="tableheading">Description</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="199"><p class="tablebodytext">$db.action</p>
+</td>
+<td style = "border:1px solid #010101;" width="105"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="327"><p class="tablebodytext">The action to perform.  Always a single alphabetic character:</p>
+<table width="313" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="48"><p class="tableheading">Value</p>
+</td>
+<td style = "border:1px solid #010101;" width="265"><p class="tableheading">Action</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="48"><p class="tablebodytext">r</p>
+</td>
+<td style = "border:1px solid #010101;" width="265"><p class="tablebodytext">Inserts the row.  If the row already exists, it is deleted first.  </p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="48"><p class="tablebodytext">n</p>
+</td>
+<td style = "border:1px solid #010101;" width="265"><p class="tablebodytext">Inserts the row if it does not already exist.  </p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="48"><p class="tablebodytext">u</p>
+</td>
+<td style = "border:1px solid #010101;" width="265"><p class="tablebodytext">Updates the row if it exists.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="48"><p class="tablebodytext">d</p>
+</td>
+<td style = "border:1px solid #010101;" width="265"><p class="tablebodytext">Deletes the row if it exists.</p>
+</td>
+</tr>
+
+</table>
+<p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="199"><p class="tablebodytext">$db.origin</p>
+</td>
+<td style = "border:1px solid #010101;" width="105"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="327"><p class="tablebodytext">The schema or origin of the target database.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="199"><p class="tablebodytext">$db.resource</p>
+</td>
+<td style = "border:1px solid #010101;" width="105"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="327"><p class="tablebodytext">The JNDI resource on the target server that contains the database.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="199"><p class="tablebodytext">$db.drivertype</p>
+</td>
+<td style = "border:1px solid #010101;" width="105"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="327"><p class="tablebodytext">The type of the driver.  The driver type is the portion of the JDBC URL after <em class="emphasis">jdbc:</em> and before the database specification.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="199"><p class="tablebodytext">$db.parent</p>
+</td>
+<td style = "border:1px solid #010101;" width="105"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="327"><p class="tablebodytext">The name of the parent table. </p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="199"><p class="tablebodytext">$db.child [<em class="emphasis">n</em>]</p>
+</td>
+<td style = "border:1px solid #010101;" width="105"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="327"><p class="tablebodytext">The name of the child table.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="199"><p class="tablebodytext">$row.<em class="emphasis">columnname</em></p>
+</td>
+<td style = "border:1px solid #010101;" width="105"><p class="tablebodytext">String or Number</p>
+</td>
+<td style = "border:1px solid #010101;" width="327"><p class="tablebodytext">The name of a specific column in a row of the parent database.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="199"><p class="tablebodytext">$child[<em class="emphasis">n</em>].<em class="emphasis">columnname</em>[<em class="emphasis">i</em>]</p>
+</td>
+<td style = "border:1px solid #010101;" width="105"><p class="tablebodytext">String or Number</p>
+</td>
+<td style = "border:1px solid #010101;" width="327"><p class="tablebodytext">Each child row maps to an index on the child.  Each indexed row has a series of column names.  This variable specifies the name of the specific column in the specified index row of the child.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="199"><p class="tablebodytext">$row.$encoding.<em class="emphasis">columnname</em></p>
+</td>
+<td style = "border:1px solid #010101;" width="105"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="327"><p class="tablebodytext">The encoding of the specified column.  Options are empty or <em class="emphasis">base64</em>.  </p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="199"><p class="tablebodytext">$child[n].$encoding.columnname</p>
+</td>
+<td style = "border:1px solid #010101;" width="105"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="327"><p class="tablebodytext">The encoding of the specified child column.  Options are empty or <em class="emphasis">base64</em>.</p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="17905.htm" target="_self">JEXL Variables and Functions</a></p><p class="relateditem"><a href="13181.htm" target="_self">System Variables</a></p><p class="relateditem"><a href="16842.htm" target="_self">System Functions</a></p><p class="relateditem"><a href="15532.htm" target="_self">Velocity Tool Extensions</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

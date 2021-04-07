@@ -1,0 +1,66 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Adding Parameters to a Slot Definition </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Slots	Adding Parameters to Slot Template">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="8696.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Hiding_a_Slot_from_Active_Assembly.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Adding Parameters to a Slot Definition</h2>
+<p class="bodytext">When using a remote template, you can add parameters to the template call as attributes, starting with parameter 1, then parameter 2, and so forth, as in the following example:</p>
+<p class="codeexample">&lt;span slotname=&quot;Navlink&quot; template=&quot;NavlinkSlot&quot; param1=&quot;'row-select', 'odd'&quot;&gt;Navlink Slot Odd columns&lt;/span&gt;</p>
+<p class="bodytext">This code would produce the following XSL:</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;xsl:variable name=&quot;rxslot-1&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;rxslot template=&quot;NavlinkSlot&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;xsl:copy-of select=&quot;$related/linkurl[@slotname=&amp;apos;Navlink&amp;apos;]&quot;/&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/rxslot&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/xsl:variable&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;xsl:apply-templates select=&quot;$rxslot-1/*&quot; mode=&quot;rxslot&quot;&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;xsl:with-param name=&quot;row-select&quot; select=&quot;&amp;apos;odd&amp;apos;&quot;/&gt;</p>
+<p class="codeexample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/xsl:apply-templates&gt;</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Splitting_Slots.htm" target="_self">Splitting Slots</a></p><p class="relateditem"><a href="Setting_the_Related_Content_Variable.htm" target="_self">Setting the Related Content Variable</a></p><p class="relateditem"><a href="Related_Content_Definition.htm" target="_self">Related Content Definition</a></p><p class="relateditem"><a href="Slot_Formatting.htm" target="_self">Slot Formatting</a></p><p class="relateditem"><a href="Hiding_a_Slot_from_Active_Assembly.htm" target="_self">Hiding a Slot from Active Assembly</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

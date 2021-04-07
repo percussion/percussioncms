@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Rhythmyx Multi-Server Manager Best Practices </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Multi-Server Manager	Best Practices">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Archiving_an_Entire_Rhythmyx_System.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="The_Development_Environment.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h1 class="heading1">Rhythmyx Multi-Server Manager Best Practices</h1>
+<ol class="listnumber"><li class="listnumber">Always back up your target Rhythmyx repository and file tree before installing with the Rhythmyx <a title="Multi-Server Manager" href="18764.htm#o18765">Multi-Server Manager</a>.  Use standard RDBMS and file tree back up procedures in conjunction with source control.  Rhythmyx Multi-Server Manager installation is not a replacement for backup or source control.</li><li class="listnumber">Before attempting to install an archive, verify that all required security providers, and database credentials are present and properly configured on the target server.  Installation does not proceed if any of these elements are missing and may result in errors if they are not properly configured.</li><li class="listnumber">Remove source test data that you do not need to install (for example, content and workflow transition notification cc lists) before creating archives.  Removing excess data helps prevent packaging of unnecessary elements and lengthy processing. </li><li class="listnumber">Acquire some Rhythmyx development experience and understand each Rhythmyx element and its relationship to its dependencies. </li><li class="listnumber"><a id="h6314" class="jumptemplate" title="Simple Example: Adding a New Field to a Content Editor" href="Simple_Example_Adding_a_New_Field_to_the_Article_Content_Editor.htm" target="_self">Create some test archives</a> and install them on test or development servers. </li><li class="listnumber">If you develop the Rhythmyx applications that the Multi-Server Manager moves from a target to source server either create the archives or thoroughly document names and functions of the applications and their dependencies, so that administrators can easily create archives.</li><li class="listnumber">Use naming conventions for descriptors and archives so that Rhythmyx developers or administrators who did not create them may easily reuse them.</li><li class="listnumber">Order the Packages in an archive so that dependencies install before the elements that require them.  For example, if a Content Type uses a certain workflow, install the workflow first.  The Multi-Server Manager attempts to order packages in this manner, but review the order in the <a title="Create Archive/Descriptor Wizard" href="18764.htm#o18789">Create Archive/Descriptor Wizard</a> and make any necessary changes.</li><li class="listnumber">You can reduce processing time by including shared dependencies once per archive; however, if you choose to do this confirm that you have packaged the most current version of the shared dependency at least once. </li><li class="listnumber">The Multi-Server Manager does not lock the server against updates during installation. Alert content contributors and Rhythmyx administrators not to update the repository and perform registry changes while you are installing, and if possible, schedule installation at a time when these activities are minimal.</li><li class="listnumber">Modify staging and production servers with the Multi-Server Manager. Only modify elements manually if the Multi-Server Manager does not install the elements requiring modification.  See the limitations described in <a id="h6315" class="jumptemplate" title="How Multi-Server Manager Installation Works" href="How_Multi-Server_Manager_Installation_Works.htm" target="_self">How Multi-Server Manager Installation Works</a> for elements that the Multi-Server Manager does not install.</li><li class="listnumber">Use the <a title="ID Types" href="18764.htm#o18784">ID Types</a> dialog against the entire source server to save time during archive creation.  The Create <a title="Archive" href="18764.htm#o18769">Archive</a>/<a title="Descriptor" href="18764.htm#o18780">Descriptor</a> Wizard locates Rhythmyx elements added to the source server after identifying types or not identified initially and prompts you for ID Type identification if necessary.</li><li class="listnumber">Use the Define <a title="Transforms" href="18764.htm#o18787">Transforms</a> dialog to create source/target mappings to save time during archive installation.  The <a title="Install Archive Wizard" href="18764.htm#o18813">Install Archive Wizard</a> locates Rhythmyx elements added to the source server after defining transforms and prompts you to create mappings if necessary.</li></ol>
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
+

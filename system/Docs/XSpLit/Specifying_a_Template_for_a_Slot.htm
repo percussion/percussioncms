@@ -1,0 +1,72 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Specifying a Template for a Slot </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Slots	Template Formatting">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Defining_Slots_with_Local_Formatting.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="8696.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Specifying a Template for a Slot</h3>
+<p class="bodytext">In some cases, you may want to specify a template for a slot rather than defining it locally. &nbsp;In that case, add the template attribute to the slot definition:</p>
+<p class="codeexample">&lt;span slotname=&quot;slotname&quot; template=&quot;templatename&quot;</p>
+<p class="bodytext">For example:</p>
+<p class="codeexample">&lt;div slotname=&quot;Related Features&quot; template=&quot;RelatedFeatureSlot&quot;&gt;</p>
+<p class="codeexample">  &lt;table width=&quot;100%&quot; border=&quot;1&quot;&gt;</p>
+<p class="codeexample">    &lt;tr&gt;</p>
+<p class="codeexample">      &lt;td&gt;Related Feature Slot&lt;/td&gt;</p>
+<p class="codeexample">    &lt;/tr&gt;</p>
+<p class="codeexample">  &lt;/table&gt;</p>
+<p class="codeexample">&lt;/div&gt;</p>
+<p class="bodytext">When split, this code would produce the following XSL:</p>
+<p class="codeexample">&lt;xsl:variable name=&quot;rxslot-1&quot;&gt;</p>
+<p class="codeexample">  &lt;rxslot template=&quot;Related-Feature Slot&quot;&gt;</p>
+<p class="codeexample">    &lt;xsl:copy-of select=&quot;$related/linkurl[@slotname=&amp;apos;Related Feature&amp;apos;]&quot;/&gt;</p>
+<p class="codeexample">  &lt;/rxslot&gt;</p>
+<p class="codeexample">&lt;/xsl:variable&gt;</p>
+<p class="codeexample">&lt;xsl:apply-templates select=&quot;$rxslot-1&quot; mode=&quot;rxslot&quot;/&gt;</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Slot_Formatting.htm" target="_self">Slot Formatting</a></p><p class="relateditem"><a href="Defining_Slots_with_Local_Formatting.htm" target="_self">Defining Slots with Local Formatting</a></p><p class="relateditem"><a href="8696.htm" target="_self">Best Practices for Writing Manual Templates</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,57 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Using Directory Services </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="">
+<link rel="stylesheet" type="text/css" href="36.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="18639.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="9978.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Using Directory Services</h2>
+<p class="bodytext">To use a directory services provider, configure a connection between Rhythmyx and the directory server. You can connect Rhythmyx to more than one directory server, if necessary. You can configure Rhythmyx to use a directory server alone or you can specify that that these services be used in conjunction with a Rhythmyx backend database that can also supply user login information. </p>
+<p class="bodytext">Use the Rhythmyx Server Administrator to configure connections to directory servers.</p>
+<p class="widegraphic"><img src="dirservicessetsdiagram.gif" alt="DirServicesSetsDiagram" height="231" width="624" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">Directory server connections can be used to provide user login authentication and other user details for use in Rhythmyx, such as Roles.  LDAP directory servers (except for the Active Directory implementation) provide the option of defining custom attribute identifiers, which provides additional flexibility for defining attributes you can use in Rhythmyx.  This feature is particularly useful for associating Roles with your users.  You can maintain Roles as part of the user attributes in LDAP, rather than in Rhythmyx.  Using this approach simplifies user maintenance in Rhythmyx. </p>
+<p class="bodytext">By specifying user data in your directory server configuration, you can also use the directory server as a provider for other Rhythmyx processing, particularly Java extensions.  For example, you can use directory services to supply user phone numbers and email addresses. Directory services are reusable, allow for searches at only one directory level or in all sub-trees, and allow users to log in using any available user attribute value.  </p>
+<p class="widegraphic"><img src="dirservicesattributefromldaptoce.gif" alt="DirServicesAttributeFromLDAPtoCE" height="266" width="624" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">You can also aggregate multiple Directories into a common Directory Set and use this set to provide user information, which allows the use of data across Directories without redundancy. The goal of this functionality is to provide maximum reuse of Directory data while allowing access to a diverse range of directory services and configurations.</p>
+<p class="bodytext">For more information on using directory servers, refer to documentation for the particular server application or third-party texts on the subject. Available resources include:</p>
+<ul class="listbullet"><li class="listbullet"><em class="emphasis">LDAP Directories Explained: An Introduction and Analysis</em><br>by Brian Arkills ISBN: 020178792X </li><li class="listbullet"><em class="emphasis">The ABCs of LDAP: How to Install, Run, and Administer LDAP Services</em> by Reinhard Voglmaier ISBN: 0849313465 </li><li class="listbullet"><em class="emphasis">LDAP in the Solaris Operating Environment: Deploying Secure Directory Services</em> by Michael Haines (Author), Tom Bialaski (Author) ISBN: 0131456938 </li><li class="listbullet"><em class="emphasis">Active Directory</em>, Second Edition by Alistair G. Lowe-Norris, Robbie Allen ISBN: 0596004664 </li></ul><p class="bodytext"><em class="emphasis">LDAP Directory Service - Details</em> http://www.hawaii.edu/ldap/details.html</p>
+
+</body>
+</html>
+
+

@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> How XSpLit Works </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="DTD	Format in XSpLit, Overview, XHTML	Format in XSpLit, XML	Format in XSpLit, XSL	Format in XSpLit">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="XSpLit_Overview.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Well-formed_Documents.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h1 class="heading1">How XSpLit Works</h1>
+<p class="bodytext">XSpLit transforms an HTML file into files with these formats:</p>
+<p class="bodytext"><strong class="specialbold">XHTML </strong>- A <object classid="java:com.sun.java.help.impl.JHSecondaryViewer"><param name="content" value="Well-formed_Documents.htm"><param name="viewerActivator" value="javax.help.LinkLabel"><param name="viewerStyle" value="javax.help.Popup"><param name="viewerSize" value="200,200"><param name="text" value="well-formed XML document"></object> that conforms to the HTML DTDs.</p>
+<p class="bodytext"><strong class="specialbold">XSL</strong> - A style sheet that represents the formatting of the HTML document.</p>
+<p class="bodytext"><strong class="specialbold">XML </strong>- A document containing data labeled within the HTML file.</p>
+<p class="bodytext"><strong class="specialbold">DTD </strong>- The Document Type Definition based on the names used when labeling.</p>
+<p class="bodytext">The following figure shows how XSpLit works. You begin with an HTML file and split the file into the formats described above. You then have options to edit the HTML file and rerun the splitter, and/or edit and merge XSL and/or XML files. After merging, you can view the resulting HTML file. Note that you can repeatedly edit and merge XSL and XML files.</p>
+<p class="bodytext"><img src="xsplit3.gif" alt="" height="164" width="468" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">HTML Tidy runs automatically on HTML pages to produce a well-formed HTML document. In other words, it revises the HTML to ensure that it conforms to the requirements of a well-formed document. HTML Tidy runs only if the first line of the source files does not contain the <code class="monospace">&lt;?xml</code> tag. If the document does have this tag in the first line (meaning the document was created in XML or a markup language derived from XML, including XHTML), the code assumes that the document is already well-formed.</p>
+<p class="bodytext">NOTE:  Tidy configurations are stored in &lt;rxroot&gt;\rxconfig\XSpLit\tidy.properties.  You can modify these properties to change your tidy configurations.  Note that in earlier version of Rhythmyx, the default value of the indent property was &quot;yes&quot;.  With this value, the code snippet <code class="monospace">&lt;title&gt;Test Variants&lt;/title&gt;</code> would be output as </p>
+<p class="codeexample">&lt;title&gt;</p>
+<p class="codeexample">		Test Variants</p>
+<p class="codeexample">&lt;/title&gt;</p>
+<p class="bodytext">In this version, the value of the property has been changed to &quot;no&quot;, which will output the original formatting.</p>
+<p class="bodytext"></p>
+<p class="bodytext">&nbsp; </p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">In This Section</p><p class="relateditem"><a href="Well-formed_Documents.htm" target="_self">Well-formed Documents</a></p><p class="relateditem"><a href="Using_XSpLit.htm" target="_self">Using XSpLit</a></p><p class="relateditem"><a href="XSpLit_Menu_Commands.htm" target="_self">XSpLit Menu Commands</a></p><p class="relateditem"><a href="XSpLit_Tabs.htm" target="_self">XSpLit Tabs</a></p><p class="relateditem"><a href="Using_the_XSpLit_Interface.htm" target="_self">Using the XSpLit Interface</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

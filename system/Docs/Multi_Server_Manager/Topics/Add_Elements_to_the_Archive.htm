@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Add Elements to the Archive </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Create Archive/Descriptor Wizard	Add Elements to the Archive Dialog">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Choose_Create_Mode.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Identify_ID_Types.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Add Elements to the Archive</h2>
+<p class="bodytext">The Add Elements to the <a title="Archive" href="18764.htm#o18769">Archive</a> dialog lets you select the Rhythmyx elements to include in your descriptor.  If you specified an existing descriptor in the <a id="h6105" class="jumptemplate" title="Choose a Server and/or Descriptor" href="Choose_a_Server_and_or_Descriptor.htm" target="_self">Choose a Server and/or Descriptor dialog</a>, the Add Elements to the Archive dialog lists its content in the <strong class="specialbold">Elements to <a title="Package" href="18764.htm#o18771">Package</a></strong> list and lets you edit the list. If you did not specify a descriptor in the Choose a Server and/or <a title="Descriptor" href="18764.htm#o18780">Descriptor</a> dialog, the Add Elements to the Archive dialog helps you create a descriptor. </p>
+<p class="note">If you specified an existing descriptor that has elements that are no longer present on the server, the Wizard does not list the elements in the <strong class="specialbold">Elements to Package</strong> list and displays a notification. It also notifies you if dependencies of the elements that you are installing are no longer present on the server.</p>
+<p class="widegraphic"><img src="emaddelements60.gif" alt="Add Elements to the Archive" height="346" width="481" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">The <strong class="specialbold">Available Elements</strong> tree lists all <em class="emphasis">Rhythmyx Elements</em> and <em class="emphasis">Custom Elements</em> on the server, including pre-Rhythmyx 6.0 legacy elements for upgrade users. When expanded, <em class="emphasis">Rhythmyx Elements</em> displays all the Package Types present on the server. When you expand each <a title="Package Type" href="18764.htm#o18776">Package Type</a>, it displays the names of all of the Rhythmyx elements of that Type (for example, if the Content Types on your system were Article, Image, and Web Page, it would display <em class="emphasis">Article</em>, <em class="emphasis">Image</em> and <em class="emphasis">Web Page</em> under the Package Type Content Type). You can include any of these Rhythmyx elements in your descriptor. See <a id="h11065" class="jumptemplate" title="Package Types and their Dependencies" href="Package_Types.htm" target="_self">Package Types</a> for a description of the required elements included with each of these .</p>
+<p class="bodytext">When expanded, <em class="emphasis">Custom Elements</em> displays <em class="emphasis">Applications</em>, <em class="emphasis">Extensions</em>, <em class="emphasis">Shared Groups</em>, <em class="emphasis">System Definitions</em>, <em class="emphasis">System Definition Overrides</em>, <em class="emphasis">Table Schemas</em>, <em class="emphasis">Table Data</em>, and <em class="emphasis">User <a title="Dependencies" href="18764.htm#o18772">Dependencies</a></em>. When you expand any of these element nodes except <em class="emphasis">User Dependencies</em>, the tree displays all names of existing installable elements of these types on the server. You can package these elements individually from the <em class="emphasis">Custom Elements</em> list. </p>
+<p class="bodytext">The <em class="emphasis">User Dependencies</em> node allows you to create a package for including installable elements that are not listed in the <strong class="specialbold">Available Elements</strong> tree.  Use it to include any files on the server. When you expand the <em class="emphasis">User Dependencies</em> node, it displays another node that you can click to add a User Dependencies element in the <strong class="specialbold">Elements to Package</strong> list. You cannot add the specific user dependencies in this dialog, use the <a id="h11062" class="jumptemplate" title="Include Element Dependencies or Ancestors" href="Include_Element_Dependencies_or_Ancestors.htm" target="_self">Include Element Dependencies or Ancestors dialog</a> to add them.</p>
+<p class="bodytext">You may select elements in the <strong class="specialbold">Available Elements</strong> tree individually or multi-select them.</p>
+<p class="widegraphic"><img src="emuserdepend60.gif" alt="User Dependency Element" height="345" width="479" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="note">Only add Custom Elements if you are an experienced user.</p>
+<p class="bodytext"></p>
+<p class="bodytext">The order in which you list elements (Packages) under <strong class="specialbold">Elements to Package</strong> is the order in which the <a title="Multi-Server Manager" href="18764.htm#o18765">Multi-Server Manager</a> will install them on the target server.  If an element and one of its dependencies are in separate Packages, always install the dependency's Package before the Package of the element that requires it.   For example, if a Content Type is associated with a Workflow, install the Workflow Package before the Content Type Package, so that when you install the Content Type, it can locate the Workflow. </p>
+<p class="bodytext">In the typical deployment scenario, Packages should be organized according to the following list.  (Note that this list does not cover all deployment scenarios.  Each implementation may have some unique characteristics that call for a different order than the one recommended below.  <strong class="specialbold">We strongly recommend that you test any combination of packages in a test environment before deploying it to your production environment.</strong>)</p>
+<ol class="listnumber"><li class="listnumber">Workflows</li><li class="listnumber">Community Definitions <p class="listcontinue">Technically, Communities could be deployed at any point in the order because they are only referenced by name in the ACLs of other objects.  Deploying Communities early makes testing of later package installations more effective.  Remember that Role Membership must be updated manually on the target server if Roles are added or if Membership is different in the source and target environments.  </p>
+</li><li class="listnumber">Slots</li><li class="listnumber">Templates, Content Types <p class="listcontinue">These implementation elements should deployed in one Archive, and in the order specified (all Templates followed by all Content Types.)  Include any Keywords used by Content Types as dependencies.  Also see the <a class="jumptemplate" title="" href="http://forum.percussion.com/showthread.php?t=563" target="_self">posting</a> on adding and removing Content Type fields.  </p>
+</li><li class="listnumber">Content Assemblers (if any)</li><li class="listnumber">Slots (again)<p class="listcontinue">Slots must be deployed twice due to the circular references between Slots and Templates. The first deployment adds the Slots to the server; the second deployment updates the Template references within the Slots.</p>
+</li><li class="listnumber">Contexts, Item Filters, Content Lists (include Location Schemes)</li><li class="listnumber">Sites (include Editions and Publishers)</li><li class="listnumber">Display Formats</li><li class="listnumber">Content Views &amp; Searches </li><li class="listnumber">Action Menus</li><li class="listnumber">Relationship Definitions</li><li class="listnumber">Locales</li><li class="listnumber">Keywords <p class="listcontinue">One or more archives containing Keywords not used in Content Types.  </p>
+</li><li class="listnumber">Components</li><li class="listnumber">Folder Trees <p class="listcontinue">Automatically includes all folders, but does not include navigation content.</p>
+</li><li class="listnumber">Folders <p class="listcontinue">Deploy to include navigation content where applicable.</p>
+</li></ol><p class="note">When you package an Entire Community, the Multi-Server Manager does not order the packages in the recommended order.</p>
+<p class="bodytext">To complete the Add Elements to the Archive dialog:</p>
+<ol class="listnumber"><li class="listnumber">Expand the <em class="emphasis">Rhythmyx Elements</em> tree and <em class="emphasis">Custom Elements</em> tree.</li><li class="listnumber">For each element that you want to include in your Package, click the element name and click [<strong class="buttons">Add&gt;</strong>].<p class="listcontinue">If the element is listed under <em class="emphasis">Communities</em>, the Wizard prompts you to choose <em class="emphasis">Community Definition</em> or <em class="emphasis">Entire Community</em>. If you select multiple Communities, your choice applies to all Communities selected. See the table entries for Community Definition and Entire Community in <a id="h11065_2" class="jumptemplate" title="Package Types and their Dependencies" href="Package_Types.htm" target="_self">Package Types</a> for descriptions of these choices.</p>
+<p class="listcontinue">The Wizard moves the element name to the<strong class="specialbold"> Elements to Package</strong> list.</p>
+</li><li class="listnumber">If you want to add one or more user-defined dependencies, click <em class="emphasis">User Dependency</em> in the <em class="emphasis">Custom Elements</em> tree. It expands to display a <em class="emphasis">User Dependency</em> sub-node. Click the sub-node and click [<strong class="buttons">Add</strong>]. User Dependency appears in the <strong class="specialbold">Elements to Package</strong> list. You can add the user defined dependencies in the <a id="h11062_2" class="jumptemplate" title="Include Element Dependencies or Ancestors" href="Include_Element_Dependencies_or_Ancestors.htm" target="_self">Include Element Dependencies or Ancestors dialog</a>.</li><li class="listnumber">If you want to change the order in which you will install an element, select it in the <strong class="specialbold">Elements to Package</strong> list and click [<strong class="buttons">Up</strong>] or [<strong class="buttons">Down</strong>].</li><li class="listnumber">If you want to remove an element from the <strong class="specialbold">Elements to Package</strong> list, click it, and select [<strong class="buttons">&lt;Remove</strong>].</li><li class="listnumber">Click [<strong class="buttons">Next&gt;&gt;</strong>] to proceed.  <p class="listcontinue">If you selected <em class="emphasis">Custom</em> in the <a id="h6089" class="jumptemplate" title="Choose Create Mode" href="Choose_Create_Mode.htm" target="_self">Choose Create Mode dialog</a> or some of your literal identifier types are unspecified, the <a id="h6106" class="jumptemplate" title="Identify ID Types Dialog" href="Identify_ID_Types_Dialog.htm" target="_self">Identify ID Types dialog</a> is next; otherwise, the <a id="h11062_3" class="jumptemplate" title="Include Element Dependencies or Ancestors" href="Include_Element_Dependencies_or_Ancestors.htm" target="_self">Include Element Dependencies or Ancestors dialog</a> is next.</p>
+</li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Creating_and_Editing_Archives_and_Descriptors.htm" target="_self">Creating and Editing Archives and Generating Descriptors</a></p><p class="relateditem"><a href="Choose_a_Server_and_or_Descriptor.htm" target="_self">Choose a Server and/or Descriptor</a></p><p class="relateditem"><a href="Choose_Create_Mode.htm" target="_self">Choose Create Mode</a></p><p class="relateditem"><a href="Identify_ID_Types.htm" target="_self">Identify ID Types</a></p><p class="relateditem"><a href="Include_Element_Dependencies_or_Ancestors.htm" target="_self">Include Element Dependencies or Ancestors</a></p><p class="relateditem"><a href="Create_Archive_or_Descriptor.htm" target="_self">Create Archive or Descriptor</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
+

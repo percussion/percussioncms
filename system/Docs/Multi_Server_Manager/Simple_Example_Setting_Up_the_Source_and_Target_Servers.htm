@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Simple Example: Setting Up the Source and Target Servers </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Installation Example	Registering Servers">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Simple_Example_Adding_a_New_Field_to_the_Article_Content_Editor.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Simple_Example_Creating_an_Archive.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Simple Example: Setting Up the Source and Target Servers</h2>
+<p class="bodytext">You install this new version of the Brief Content Type on the test (target) server using the following steps:</p>
+<ol class="listnumber"><li class="listnumber">Start the Rhythmyx source (development) server and the <a title="Multi-Server Manager" href="18764.htm#o18765">Multi-Server Manager</a>.  Start the Multi-Server Manager using the <code class="monospace">&lt;Rhythmyx Root&gt;/RhythmyxMultiServerManager.exe</code> file. <p class="listcontinue">In this example, the source (development) server is already registered but the target (test) server is not.</p>
+<p class="widegraphic"><img src="emexopen60.gif" alt="Source Server in Server Tree" height="213" width="546" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">To register the target (test) server, select <em class="emphasis">Action &gt; Register Server</em>. <p class="listcontinue">The Multi-Server Manager displays the Edit/New Rhythmyx Server Registration dialog.</p>
+<p class="widegraphic"><img src="emexregtarget60.gif" alt="Registration of target host" height="317" width="408" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">In the Edit/New Rhythmyx Server Registration dialog, enter the target (test) server name and port in <strong class="specialbold">Rhythmyx Server</strong> and <strong class="specialbold">Server Port</strong>, and enter the login in name and password in <strong class="specialbold">User Name</strong> and <strong class="specialbold">Password</strong>.  Leave <strong class="specialbold">Use SSL</strong> unchecked since you are not using a secure connection. Check <strong class="specialbold">Save Credentials</strong> so that you do not have to reenter them each time you connect to the server. Click [<strong class="buttons">OK</strong>].<p class="listcontinue">The Multi-Server Manager displays the <strong class="specialbold">Enter Repository Alias</strong> dialog.</p>
+<p class="widegraphic"><img src="emrepositoryalias-60.gif" alt="Enter Repository Alias Dialog" height="245" width="420" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">Leave the default repository <strong class="specialbold">Alias Name</strong> or enter a new one and click [<strong class="buttons">OK</strong>].<p class="widegraphic"><img src="emextargetadded60.gif" alt="Server Group Tree after target server is added" height="222" width="546" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">In this example, the implementer has previously identified <a title="ID Types" href="18764.htm#o18784">ID Types</a> on the source (development) server. (To identify ID Types select the <a title="Target Server" href="18764.htm#o18767">Target Server</a> node and choose <em class="emphasis">Edit &gt; Identify ID Types</em>. This action opens the <a id="h6161" class="jumptemplate" title="Identify ID Types Dialog" href="Identify_ID_Types_Dialog.htm" target="_self">Identify ID Types dialog</a>.) When you enter the <a title="Create Archive/Descriptor Wizard" href="18764.htm#o18789">Create Archive/Descriptor Wizard</a>, you can identify new ID Types (such as the new Template <em class="emphasis">S - CalloutAlt</em>) that have been added to the source (development) server since the implementer identified them.</li><li class="listnumber">In this example, datasource mappings and Rhythmyx element mappings between the source and target server have not been previously added. To map datasources and Rhythmyx elements on the source and target servers, select the source server and choose <em class="emphasis">Edit &gt; Define <a title="Transforms" href="18764.htm#o18787">Transforms</a></em>.<p class="listcontinue">The Multi-Server Manager displays the Define Transforms dialog.</p>
+<p class="widegraphic"><img src="msmnewtransform66.gif" alt="Defining Transforms" height="513" width="582" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">Select the target (test) server in the <strong class="specialbold">Target Server</strong> drop list. None of the applications on your source server have a non-default datasource specified (none of your applications access tables in repositories other than your Rhythmyx repository). In most cases, your Rhythmyx applications will not have non-default datasources specified. Click the Element Maps tab.<p class="listcontinue">In the Element Maps tab, select each <strong class="specialbold">Element Type</strong> to display all elements of that type under <strong class="specialbold">Source</strong> and click [<strong class="buttons">Guess</strong>]. The Multi-Server Manager looks for matches on the target server and displays them under <strong class="specialbold">Target</strong>. If it does not find a match, it checks the <strong class="specialbold">Add to server</strong> check box to indicate that the Multi-Server Manager should copy the source element to the target server. </p>
+<p class="listcontinue">In the example graphic above, the <strong class="specialbold">Add to server</strong> check box for the <em class="emphasis">rffSnCalloutAlt </em>Template is checked because no match for the element exists on the target server. The other Templates have matches because they exist on both the source and target servers.</p>
+<p class="listcontinue">Click [<strong class="buttons">Update</strong>] to save the mappings and [<strong class="buttons">Close</strong>] to close the <strong class="specialbold">Define Transforms</strong> dialog.</p>
+</li></ol><p class="bodytext"> You have now set up the source and target servers and are ready to create an archive.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Simple_Example_Adding_a_New_Field_to_the_Article_Content_Editor.htm" target="_self">Simple Example: Adding a New Field to a Content Editor</a></p><p class="relateditem"><a href="Simple_Example_Creating_an_Archive.htm" target="_self">Simple Example: Creating an Archive</a></p><p class="relateditem"><a href="Simple_Example_Installing_the_Archive.htm" target="_self">Simple Example: Installing the Archive</a></p><p class="relateditem"><a href="Simple_Example_Reviewing_the_Installation.htm" target="_self">Simple Example: Reviewing the Installation</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
+
