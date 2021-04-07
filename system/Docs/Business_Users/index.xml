@@ -1,0 +1,297 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE index
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Index Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/index_1_0.dtd">
+
+<index version="1.0">
+
+
+    <indexitem target="O14928">Action Panels</indexitem>
+    <indexitem text="Active Assembly">
+        <indexitem target="O16487">Accessing</indexitem>
+        <indexitem target="O19278">Document Assembly</indexitem>
+        <indexitem target="O16584">Interface</indexitem>
+    </indexitem>
+    <indexitem target="O17873">Advanced Search</indexitem>
+    <indexitem text="Advanced Search">
+        <indexitem target="O18004">Customizing</indexitem>
+    </indexitem>
+    <indexitem text="Audit Trail">
+        <indexitem target="O7716">Audit Trail</indexitem>
+        <indexitem target="O3299">Viewing the Audit Trail of a Content Item</indexitem>
+    </indexitem>
+    <indexitem text="Basic Search">
+        <indexitem target="O8926">Database Search Engine</indexitem>
+        <indexitem target="O12347">Full-Text Search Engine</indexitem>
+    </indexitem>
+    <indexitem text="Boolean Mode">
+        <indexitem target="O17874">In Rhythmyx Full-Text Search Engine</indexitem>
+    </indexitem>
+    <indexitem target="O3280">Calendar Controls</indexitem>
+    <indexitem text="Communities">
+        <indexitem target="O15250">Communities</indexitem>
+        <indexitem target="O15252">Community</indexitem>
+    </indexitem>
+    <indexitem text="Comparing Items">
+        <indexitem target="O15253">Comparing Revisions</indexitem>
+        <indexitem target="O15262">Comparison Page</indexitem>
+    </indexitem>
+    <indexitem target="O15262">Comparison Page</indexitem>
+    <indexitem text="Concept Search">
+        <indexitem target="O17874">in Full Text Search Engine</indexitem>
+    </indexitem>
+    <indexitem text="Content Browser">
+        <indexitem target="O17822">Advanced full-text search</indexitem>
+        <indexitem target="O19394">Browsing for an item</indexitem>
+        <indexitem target="O19394">Browsing for Content</indexitem>
+        <indexitem target="O17823">Database search</indexitem>
+        <indexitem target="O18982">Folders Tab</indexitem>
+        <indexitem target="O16997">Search Tab</indexitem>
+        <indexitem target="O17821">Simple full-text search</indexitem>
+        <indexitem target="O18981">Sites Tab</indexitem>
+        <indexitem target="O17818">Template Selection window</indexitem>
+        <indexitem target="O18981">The Content Browser, Sites Tab</indexitem>
+        <indexitem target="O17823">Using a Database Search</indexitem>
+        <indexitem target="O17822">Using an Advanced Full-text Search</indexitem>
+        <indexitem target="O17816">Using the Content Browser</indexitem>
+    </indexitem>
+    <indexitem text="Content Editors">
+        <indexitem target="O19508">Entering New Content</indexitem>
+        <indexitem text="Inline Links">
+            <indexitem text="Adding Existing Content Items">
+                <indexitem target="O19394">Browsing for Content</indexitem>
+                <indexitem target="O18981">The Content Browser, Sites Tab</indexitem>
+            </indexitem>
+            <indexitem target="O17826">Creating Inline Links</indexitem>
+            <indexitem target="O6833">In Word</indexitem>
+            <indexitem target="O17829">Inserting Inline Images into a Content Editor</indexitem>
+        </indexitem>
+        <indexitem target="O6473">Managing Active Assembly</indexitem>
+    </indexitem>
+    <indexitem text="Content Explorer">
+        <indexitem target="O3280">Calendar Controls</indexitem>
+        <indexitem target="O15230">Communities</indexitem>
+        <indexitem target="O18685">Copy and Paste</indexitem>
+        <indexitem target="O6414">Creating Content without using Folders</indexitem>
+        <indexitem target="O6410">Display Formats</indexitem>
+        <indexitem target="O6402">Finding Content</indexitem>
+        <indexitem text="Folders">
+            <indexitem target="O6400">Acting on Content</indexitem>
+            <indexitem target="O6397">Adding Existing Content</indexitem>
+            <indexitem target="O6398">Arranging</indexitem>
+            <indexitem target="O6415">Creating Content</indexitem>
+            <indexitem target="O17538">Defined</indexitem>
+            <indexitem target="O6401">Deleting</indexitem>
+            <indexitem target="O7837">Folder ACL List</indexitem>
+            <indexitem target="O6399">Removing Content</indexitem>
+        </indexitem>
+        <indexitem target="O15260">Introduction</indexitem>
+        <indexitem target="O15368">Locales</indexitem>
+        <indexitem target="O18685">Pasting Options</indexitem>
+        <indexitem target="O6392">Refreshing</indexitem>
+        <indexitem target="O6390">Roles</indexitem>
+        <indexitem text="Searching for Content">
+            <indexitem target="O6409">Deleting Search Queries</indexitem>
+        </indexitem>
+        <indexitem target="O6403">Views</indexitem>
+    </indexitem>
+    <indexitem target="O7722">Content Item</indexitem>
+    <indexitem target="O15260">Content Management System</indexitem>
+    <indexitem target="O7723">Content Type</indexitem>
+    <indexitem text="Copies">
+        <indexitem target="O16561">Creating</indexitem>
+        <indexitem target="O6437">Defined</indexitem>
+        <indexitem target="O6844">Reviewing</indexitem>
+    </indexitem>
+    <indexitem target="O9159">Copy URL to Clipboard</indexitem>
+    <indexitem text="Copy URL to Clipboard">
+        <indexitem target="O16545">Action Menu Option</indexitem>
+        <indexitem target="O14928">Linking to a Content Item through a URL</indexitem>
+        <indexitem target="O9159">Sending a URL</indexitem>
+    </indexitem>
+    <indexitem text="Creating Content Items">
+        <indexitem target="O6415">in a Content Explorer Folder</indexitem>
+        <indexitem target="O6414">in Content Explorer without using Folders</indexitem>
+    </indexitem>
+    <indexitem target="O18004">Customizing Search</indexitem>
+    <indexitem target="O8926">Database Search Engine</indexitem>
+    <indexitem text="Dependencies">
+        <indexitem target="O6436">Constraints</indexitem>
+        <indexitem target="O19276">Viewing</indexitem>
+        <indexitem target="O6430">Workflow</indexitem>
+    </indexitem>
+    <indexitem target="O6410">Display Formats</indexitem>
+    <indexitem text="Document Assembly">
+        <indexitem target="O6865">Acting on Content in a Slot</indexitem>
+        <indexitem target="O19279">Adding Related Content</indexitem>
+        <indexitem target="O15228">Adding Related Content by Copying and Pasting</indexitem>
+        <indexitem target="O15239">Adding Related Content by Dragging and Dropping</indexitem>
+        <indexitem target="O6469">Arranging Content in a Slot</indexitem>
+        <indexitem target="O6863">Creating Related Content in a Slot</indexitem>
+        <indexitem target="O6383">Using Active Assembly</indexitem>
+    </indexitem>
+    <indexitem target="O6383">Document Creation</indexitem>
+    <indexitem target="O17805">Expand Query with Synonyms</indexitem>
+    <indexitem text="Folders">
+        <indexitem target="O6400">Acting on Content</indexitem>
+        <indexitem target="O6397">Adding Existing Content</indexitem>
+        <indexitem target="O6398">Arranging</indexitem>
+        <indexitem target="O6415">Creating Content</indexitem>
+        <indexitem target="O17538">Defined</indexitem>
+        <indexitem target="O6401">Deleting</indexitem>
+        <indexitem target="O7837">Folder ACL List</indexitem>
+        <indexitem target="O6399">Removing Content</indexitem>
+    </indexitem>
+    <indexitem target="O17874">Full-text Search Engine</indexitem>
+    <indexitem text="Full-text Search Engine">
+        <indexitem target="O17805">Expand Query with Synonyms</indexitem>
+        <indexitem target="O17873">Full-text search, advanced mode</indexitem>
+        <indexitem target="O12347">Full-text search, simple mode</indexitem>
+    </indexitem>
+    <indexitem text="Global Environments">
+        <indexitem target="O14562">Choosing a Login Language</indexitem>
+        <indexitem target="O6477">Date Formats</indexitem>
+        <indexitem target="O6385">Introduction</indexitem>
+        <indexitem target="O6476">Searching</indexitem>
+        <indexitem target="O8887">Translation Copies</indexitem>
+    </indexitem>
+    <indexitem target="O19276">Impact Analysis Window</indexitem>
+    <indexitem target="O17824">Inline Links</indexitem>
+    <indexitem text="Inline Links">
+        <indexitem target="O17831">Creating an Inline Link on an Inline Image</indexitem>
+        <indexitem target="O6833">Creating Inline LInks and Inline Images in Word</indexitem>
+        <indexitem target="O17826">Creating Inline Links in a Content Editor</indexitem>
+        <indexitem target="O17830">Inserting an Inline Template into a Content Editor</indexitem>
+        <indexitem target="O15375">Inserting External Links in a Content Editor</indexitem>
+        <indexitem target="O17829">Inserting Inline Images into a Content Editor</indexitem>
+        <indexitem target="O17824">Types of Inline Links</indexitem>
+    </indexitem>
+    <indexitem target="O16534">Keyboard Shortcuts</indexitem>
+    <indexitem target="O6803">Language</indexitem>
+    <indexitem text="Locales">
+        <indexitem target="O15368">Changing</indexitem>
+        <indexitem target="O6803">Definition</indexitem>
+    </indexitem>
+    <indexitem text="Page Assembly">
+        <indexitem target="O16487">Accessing a Page Assembly Window</indexitem>
+    </indexitem>
+    <indexitem target="O6432">Previewing Items</indexitem>
+    <indexitem target="O7732">Properties</indexitem>
+    <indexitem target="O3226">Purging Content</indexitem>
+    <indexitem text="Related Content">
+        <indexitem target="O19394">Browsing for Content</indexitem>
+        <indexitem target="O15261">Related Content</indexitem>
+    </indexitem>
+    <indexitem target="O7713">Relationships</indexitem>
+    <indexitem text="Relationships">
+        <indexitem target="O6436">Constraints</indexitem>
+        <indexitem target="O19276">Viewing</indexitem>
+        <indexitem target="O6430">Workflow</indexitem>
+    </indexitem>
+    <indexitem target="O7736">Revisions</indexitem>
+    <indexitem text="Revisions">
+        <indexitem target="O15253">Comparing Revisions</indexitem>
+        <indexitem target="O6437">Defined</indexitem>
+        <indexitem target="O6440">Promoting</indexitem>
+        <indexitem target="O7737">Viewing</indexitem>
+    </indexitem>
+    <indexitem target="O15260">Rhythmyx</indexitem>
+    <indexitem text="Roles">
+        <indexitem target="O7738">Definition</indexitem>
+        <indexitem target="O6390">Viewing</indexitem>
+    </indexitem>
+    <indexitem target="O8947">Saved Searches</indexitem>
+    <indexitem text="Saved Searches">
+        <indexitem target="O6409">Deleting a Saved</indexitem>
+        <indexitem target="O8951">Editing a Saved Search Query</indexitem>
+        <indexitem target="O8950">Running a Saved Search Query</indexitem>
+        <indexitem target="O8947">Saved Search Queries</indexitem>
+        <indexitem target="O8948">Saving a Search Query</indexitem>
+        <indexitem text="Customizing">
+            <indexitem target="O15811">Customizing a Search When Using the Database Search Engine</indexitem>
+            <indexitem target="O18004">Customizing Advanced Searches When Using the Full-text Search Engine</indexitem>
+        </indexitem>
+        <indexitem target="O6409">Deleting a Saved</indexitem>
+        <indexitem target="O8951">Editing a Saved Search Query</indexitem>
+        <indexitem target="O17873">Full-text search, advanced mode</indexitem>
+        <indexitem target="O12347">Full-text search, simple mode</indexitem>
+        <indexitem target="O8950">Running a Saved Search Query</indexitem>
+        <indexitem target="O8947">Saved</indexitem>
+        <indexitem target="O8948">Saving a Search Query</indexitem>
+        <indexitem target="O15811">Searches, Database, Customizing</indexitem>
+    </indexitem>
+    <indexitem target="O8926">Searches, Database</indexitem>
+    <indexitem target="O6387">Sessions</indexitem>
+    <indexitem target="O7741">Site</indexitem>
+    <indexitem text="Slot">
+        <indexitem text="Adding Existing Content Items">
+            <indexitem target="O19394">Browsing for Content</indexitem>
+            <indexitem target="O18981">The Content Browser, Sites Tab</indexitem>
+        </indexitem>
+        <indexitem target="O18981">Adding New Content Items</indexitem>
+        <indexitem target="O15261">Related Content</indexitem>
+        <indexitem target="O7751">Slot</indexitem>
+        <indexitem target="O18981">The Content Browser, Sites Tab</indexitem>
+        <indexitem target="O17823">Using a Database Search</indexitem>
+    </indexitem>
+    <indexitem text="Snippet">
+        <indexitem target="O15261">Related Content</indexitem>
+        <indexitem target="O18981">The Content Browser, Sites Tab</indexitem>
+    </indexitem>
+    <indexitem text="State">
+        <indexitem target="O7733">Public</indexitem>
+    </indexitem>
+    <indexitem target="O14564">Template</indexitem>
+    <indexitem target="O6387">User Sessions</indexitem>
+    <indexitem text="Versions">
+        <indexitem target="O6442">Creating</indexitem>
+        <indexitem target="O6437">Defined</indexitem>
+        <indexitem target="O6444">Promoting</indexitem>
+        <indexitem target="O6443">Viewing</indexitem>
+    </indexitem>
+    <indexitem target="O3675">Viewing Item Properties</indexitem>
+    <indexitem text="Word">
+        <indexitem target="O6833">Inline Links</indexitem>
+        <indexitem target="O6384">Setup in Rhythmyx</indexitem>
+    </indexitem>
+    <indexitem text="Workflow">
+        <indexitem target="O3048">Ad Hoc Assignment</indexitem>
+        <indexitem text="Audit Trail">
+            <indexitem target="O7716">Audit Trail</indexitem>
+            <indexitem target="O3299">Viewing the Audit Trail of a Content Item</indexitem>
+        </indexitem>
+        <indexitem target="O6425">Defined</indexitem>
+        <indexitem target="O6430">Dependencies</indexitem>
+        <indexitem target="O6835">Publishing</indexitem>
+        <indexitem text="Transitioning Items">
+            <indexitem target="O16556">Performing a Transition on a Content Item</indexitem>
+            <indexitem target="O7745">Transition</indexitem>
+        </indexitem>
+        <indexitem target="O6425">Workflow</indexitem>
+    </indexitem>
+</index>
+

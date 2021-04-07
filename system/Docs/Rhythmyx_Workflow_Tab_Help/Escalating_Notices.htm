@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Escalating Notices </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Aging	Types	Escalating Notices">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Automatic_Transition.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Notifications.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1775949.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h5 class="heading5">Escalating Notices</h5>
+<p class="bodytext">Scenario: &nbsp;A Workflow must specify that when a content item enters the approve State, Editors have three days to act on it. Each day they are sent a reminder that they must act on it or it will Transition automatically. &nbsp;&nbsp;If no one has acted on it in three days, the content item automatically moves to the QA State.</p>
+<p class="bodytext">To implement escalating Notices, the implementer creates four Transitions:</p>
+<ul class="listbullet"><li class="listbullet">The first Transition is the normal Transition to the Approve State. &nbsp;The Notification assigned to this Transition informs the editors that they have three days to approve or reject the content item, or it will automatically be approved.</li><li class="listbullet">The second Transition is an Aging Transition with the following data:<ul class="listbullet2"><li class="listbullet2">The To State is <em class="emphasis">Approval</em> (which is the same as the From State; the Transition returns the content item to the same State).</li><li class="listbullet2">The Aging Type is <em class="emphasis">Absolute</em>.</li><li class="listbullet2">The Aging Interval is <em class="emphasis">1440</em> (the number of minutes in a day, 60 minutes per hour times 24 hours in a day).</li><li class="listbullet2">The Notification assigned to the Transition informs the editors that they have two days to approve or reject the content item or it will automatically be approved.</li></ul></li><li class="listbullet">The third Transition is an Aging Transition with the following data:<ul class="listbullet2"><li class="listbullet2">The To State is <em class="emphasis">Approval</em> (which is the same as the From State; the Transition returns the content item to the same State).</li><li class="listbullet2">The Aging Type is <em class="emphasis">Absolute</em>.</li><li class="listbullet2">The Aging Interval is <em class="emphasis">2880</em> (the number of minutes in a day, 60 minutes per hour times 24 hours in a day, times 2 for two days after the initial Transition).</li><li class="listbullet2">&nbsp;The Notification assigned to the Transition informs the editors that they have one day to approve or reject the content item or it will automatically be approved.</li></ul></li><li class="listbullet">The fourth Transition is an Aging Transition with the following data:<ul class="listbullet2"><li class="listbullet2">The To State is <em class="emphasis">QA</em> (which is the next State after Approval; the Transition advances the content item in the Workflow automatically).</li><li class="listbullet2">The Aging Type is <em class="emphasis">Absolute</em>.</li><li class="listbullet2">The Aging Interval is <em class="emphasis">4320</em> (the number of minutes in a day, 60 minutes per hour times 24 hours in a day, times 3 for three days after the initial Transition).</li></ul></li></ul><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Aging_Scenarios.htm" target="_self">Aging Transition Scenarios</a></p><p class="relateditem"><a href="Repeating_Notices.htm" target="_self">Repeating Notices</a></p><p class="relateditem"><a href="Automatic_Transition.htm" target="_self">Automatic Transition</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

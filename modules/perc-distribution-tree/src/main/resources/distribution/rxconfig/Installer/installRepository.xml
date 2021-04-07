@@ -44,9 +44,180 @@
 
         <mkdir dir="${install.dir}/logs"/>
 
-        <ant antfile="installDropTables.xml" target="installDropTables" inheritAll="true" inheritRefs="true" />
-        <ant antfile="installDropIndexes.xml" target="installDropIndexes" inheritAll="true" inheritRefs="true" />
-        <ant antfile="installDropViews.xml" target="installDropViews" inheritAll="true" inheritRefs="true" />
+        <echo>Dropping selected tables...</echo>
+        <PSExecSQLStmt rootDir="${install.dir}"
+                       printExceptionStackTrace="true"
+                       qualifyViewNames="PSX_QJOB_LISTENERS"
+                       sql="DROP TABLE PSX_QJOB_LISTENERS IF EXISTS"
+                       sqlDerby="DROP TABLE PSX_QJOB_LISTENERS"
+                       failonerror="false"
+                       silenceerrors="true"
+        />
+
+        <echo>Dropping selected indexes...</echo>
+        <!-- Cleanup to make sure new FK can be created -->
+        <PSExecSQLStmt rootDir="${install.dir}"
+                       printExceptionStackTrace="true"
+                       qualifyViewNames="PSX_CONTENTCHANGEEVENT,CONTENTSTATUS"
+                       sql="DELETE FROM PSX_CONTENTCHANGEEVENT where CONTENTID not in (SELECT CONTENTID from CONTENTSTATUS)"
+                       failonerror="false"
+                       silenceerrors="true"
+        />
+
+        <PSExecSQLStmt rootDir="${install.dir}"
+                       printExceptionStackTrace="true"
+                       qualifyViewNames="PSX_CONTENTCHANGEEVENT,RXSITES"
+                       sql="DELETE FROM PSX_CONTENTCHANGEEVENT where SITEID  not in (SELECT SITEID  from RXSITES)"
+                       failonerror="false"
+                       silenceerrors="true"
+        />
+
+        <echo>dropping views..</echo>
+        <PSExecSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                       qualifyViewNames="" sql="DROP VIEW RXSITEITEMS"
+                       failonerror="false"
+                       silenceerrors="true"/>
+
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyViewNames="RXSITEITEMS"
+                sql="DROP VIEW RXSITEITEMS"
+                failonerror="false"
+                silenceerrors="true"
+        />
+
+        <echo>renaming PSX_PUBLICATION_SITE_ITEM</echo>
+        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM"
+                        qualifyViewNames="" sql="RENAME TABLE PSX_PUBLICATION_SITE_ITEM TO PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
+                        sqlSqlServer="EXEC sp_rename 'PSX_PUBLICATION_SITE_ITEM', 'PSX_PUBLICATION_SITE_ITEM_BAK_PATCH';"
+                        failonerror="false"
+                        silenceerrors="true"/>
+
+        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
+                        qualifyViewNames="" sqlDerby="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT FK_SITE_ITEMS_REF_1"
+                        failonerror="false"
+                        silenceerrors="true"
+        />
+
+        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
+                        qualifyViewNames="" sqlDerby="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT FK_SITE_ITEMS_REF"
+                        failonerror="false"
+                        silenceerrors="true"
+        />
+
+
+        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames="PSX_PUBLICATION_SITE_ITEM_BAK_PATCH"
+                        qualifyViewNames="" sqlDerby="ALTER TABLE PSX_PUBLICATION_SITE_ITEM_BAK_PATCH DROP CONSTRAINT PK_PSX_PUBLICATION_SITE_ITEM"
+                        failonerror="false"
+                        silenceerrors="true"
+        />
+
+        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames=""
+                        qualifyViewNames="" sqlDerby="DROP INDEX IX_SITE_ITEMS"
+                        failonerror="false"
+                        silenceerrors="true"
+        />
+
+        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames=""
+                        qualifyViewNames="" sqlDerby="DROP INDEX IX_REF_SERV_CONTXT"
+                        failonerror="false"
+                        silenceerrors="true"
+        />
+
+        <PSExecSQLStmt  printExceptionStackTrace="true" qualifyTableNames=""
+                        qualifyViewNames="" sqlDerby="DROP INDEX IX_WORKING_CONTXT"
+                        failonerror="false"
+                        silenceerrors="true"
+        />
+
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyViewNames="CONTENTVARIANTS"
+                sql="DROP VIEW CONTENTVARIANTS"
+                failonerror="false"
+                silenceerrors="true"
+        />
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyTableNames="PSX_TEMPLATE,CONTENTTYPES,PSX_CONTENTTYPE_TEMPLATE"
+                qualifyViewNames="CONTENTVARIANTS"
+                sql="CREATE VIEW CONTENTVARIANTS AS SELECT T.TEMPLATE_ID VARIANTID, C.CONTENTTYPEID, T.LABEL VARIANTDESCRIPTION, T.STYLESHEETNAME, '../assembler/render' ASSEMBLYURL, T.OUTPUTFORMAT, T.AATYPE, T.DESCRIPTION, T.PUBLISHWHEN, T.LOCATIONPREFIX, T.LOCATIONSUFFIX FROM PSX_TEMPLATE T, CONTENTTYPES C, PSX_CONTENTTYPE_TEMPLATE CT WHERE T.TEMPLATE_ID = CT.TEMPLATE_ID AND C.CONTENTTYPEID = CT.CONTENTTYPEID"
+                failonerror="false"
+                silenceerrors="true"
+        />
+
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyViewNames="RXSITECOMMUNITY"
+                sql="DROP VIEW RXSITECOMMUNITY"
+                failonerror="false"
+                silenceerrors="true"
+        />
+
+
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyViewNames="RXCONTENTTYPECOMMUNITY"
+                sql="DROP VIEW RXCONTENTTYPECOMMUNITY"
+                failonerror="false"
+                silenceerrors="true"
+        />
+
+
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyViewNames="RXVARIANTCOMMUNITY"
+                sql="DROP VIEW RXVARIANTCOMMUNITY"
+                failonerror="false"
+                silenceerrors="true"
+        />
+
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyViewNames="RXWORKFLOWCOMMUNITY"
+                sql="DROP VIEW RXWORKFLOWCOMMUNITY"
+                failonerror="false"
+                silenceerrors="true"
+        />
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyViewNames="PSX_DISPLAYFORMATPROPERTY_VIEW"
+                sql="DROP VIEW PSX_DISPLAYFORMATPROPERTY_VIEW"
+                failonerror="false"
+                silenceerrors="true"
+        />
+
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyViewNames="PSX_SEARCHPROPERTIES_VIEW"
+                sql="DROP VIEW PSX_SEARCHPROPERTIES_VIEW"
+                failonerror="false"
+                silenceerrors="true"
+        />
+
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyViewNames="PSX_MENUVISIBILITY_VIEW"
+                sql="DROP VIEW PSX_MENUVISIBILITY_VIEW"
+                failonerror="false"
+                silenceerrors="true"
+        />
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyViewNames="PSX_COMMUNITY_PERMISSION_VIEW"
+                sql="DROP VIEW PSX_COMMUNITY_PERMISSION_VIEW"
+                failonerror="false"
+                silenceerrors="true"
+        />
+
+
+        <PSExecSQLStmt
+                printExceptionStackTrace="true"
+                qualifyViewNames="RXPUBDOCS"
+                sql="DROP VIEW RXPUBDOCS"
+                failonerror="false"
+                silenceerrors="true"
+        />
 
 <!-- update table schema -->
         <echo> updating table schemas</echo>
@@ -60,15 +231,6 @@
                        tableData="${tableDataSources}"
                        tableDef="${tableDefSources}" failonerror="true" silenceerrors="false" />
 
-       <!--  There are problems with this.  Content Types conflict with CM1 content types.
-        <echo>Updating FastForward schema...</echo>
-
-        <PSTableAction rootDir="${install.dir}"
-                       repositoryLocation="${rxrepository.properties}"
-                       tableFactoryLogFile="${install.dir}/logs/tableFactory.log"
-                       tableData="${data.dir}/RxffTableData.xml"
-                       tableDef="${data.dir}/RxffTableDef.xml" failonerror="true" silenceerrors="false"/>
-       -->
         <echo>Repository installation complete...</echo>
 
         <echo>creating views</echo>
@@ -241,35 +403,7 @@
                 </propertyfile>
             </then>
         </if>
-        <!--<touch file="${rxrepository.properties}"/>
-        <loadproperties>
-            <file file="${rxrepository.properties}"/>
-        </loadproperties>
 
-        &lt;!&ndash; set defaults &ndash;&gt;
-        <property name="UID" value="CMDB"/>
-        <property name="PWD" value="demo"/>
-        <property name="DB_SERVER" value="CMDB;create=true"/>
-        <property name="DB_SCHEMA" value="CMDB"/>
-        <property name="DB_BACKEND" value="DERBY"/>
-        <property name="DSCONFIG_NAME" value="PercussionData"/>
-        <property name="DB_DRIVER_NAME" value="derby"/>
-        <property name="DB_DRIVER_CLASS_NAME" value="org.apache.derby.jdbc.EmbeddedDriver"/>
-        <property name="DB_NAME" value=""/>
-
-        <propertyfile file="${rxrepository.properties}"
-                      comment="Repository Properties">
-            <entry key="UID" value="${UID}"/>
-            <entry key="PWD" value="${PWD}"/>
-            <entry key="DB_SERVER" value="${DB_SERVER}"/>
-            <entry key="DB_SCHEMA" value="${DB_SCHEMA}"/>
-            <entry key="DB_BACKEND" value="${DB_BACKEND}"/>
-            <entry key="DSCONFIG_NAME" value="${DSCONFIG_NAME}"/>
-            <entry key="DB_DRIVER_NAME" value="${DB_DRIVER_NAME}"/>
-            <entry key="DB_DRIVER_CLASS_NAME" value="${DB_DRIVER_CLASS_NAME}"/>
-            <entry key="DB_NAME" value="${DB_NAME}"/>
-        </propertyfile>
--->
         <PSMakeLasagna root="${install.dir}"/>
     </target>
 

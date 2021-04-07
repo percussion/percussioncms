@@ -119,14 +119,8 @@
     <echo>upgrade=${do.upgrade}</echo>
     <echo>install=${do.install}</echo>
 
-    <!-- Delete json files here Start-->
-    <!--<condition property="jetty.present" else="false">
-        <available file="${install.dir}/jetty" type="dir"  property="jetty.present"/>
-    </condition> -->
-
-
     <mkdir dir="${install.dir}/jetty/base/lib/jdbc" />
-    <copy todir="${install.dir}" overwrite="true" force="true">
+    <copy todir="${install.dir}/jetty/base/lib/jdbc" overwrite="true" force="true">
         <fileset dir="${install.src}/jetty/base/lib/jdbc">
             <include name="**/*.jar"/>
         </fileset>
@@ -150,7 +144,7 @@
         </fileset>
     </path>
 
-    <classloader classpathref="ant.deps" parentfirst="true" name="ant.loader.ant.deps"/>
+    <classloader classpathref="ant.deps" parentfirst="false" name="ant.loader.ant.deps"/>
 
     <taskdef resource="com/percussion/ant/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps" />
 
@@ -170,9 +164,6 @@
             <delete file="${install.dir}/upgrade/processedlinks/Pages.json" failonerror="false"/>
         </else>
     </if>
-
-
-
 
     <!-- Delete json files here end-->
 
@@ -205,14 +196,6 @@
         <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/user">
         </fileset>
     </copy>
-
-
-    <!--
-    <classloader classpathref="ant.deps"/>
-    <taskdef resource="com/percussion/ant/antlib.xml"/>
-
-    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
--->
 
     <target name="setup-logging">
         <mkdir dir="${install.dir}/rxconfig/Installer"/>

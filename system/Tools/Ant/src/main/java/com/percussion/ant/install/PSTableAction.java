@@ -94,7 +94,6 @@ public class PSTableAction extends PSAction
       repositoryErrorMsg += newLine;
       repositoryErrorMsg += newLine;
       PrintStream ps = System.out;
-      Connection conn = null;
 
       try
       {
@@ -132,11 +131,7 @@ public class PSTableAction extends PSAction
             ).decrypt(pw,
                     PSJdbcDbmsDef.getPartOneKey(),null);
          }
-         conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
-                 props.getProperty("DB_SERVER"),
-                 props.getProperty("DB_NAME"),
-                 props.getProperty("UID"),
-                 pw);
+
 
 
          //get table def files
@@ -157,80 +152,77 @@ public class PSTableAction extends PSAction
                      dataTypeMap));
 
          }
+         try(Connection conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
+                 props.getProperty("DB_SERVER"),
+                 props.getProperty("DB_NAME"),
+                 props.getProperty("UID"),
+                 pw)) {
+            //get table data files
+            String[] tableData = getTableData();
+            for (int i = 0; i < tableData.length; i++) {
+               String filePath = tableData[i];
+               File f = new File(filePath);
 
-         //get table data files
-         String[] tableData = getTableData();
-         for (int i = 0; i < tableData.length; i++)
-         {
-            String filePath = tableData[i];
-            File f = new File(filePath);
+               //set system property so that table factory can find external
+               //resources if any.
+               String fName = f.getName();
+               //get table factory file name with no extension
+               //ie: {cmstableData.external.root}
+               //FB: RV_RETURN_VALUE_IGNORED NC 1-17-16
+               fName = fName.substring(0, fName.length() - 4);
+               System.setProperty("{" + fName + ".external.root}", f.getParent());
 
-            //set system property so that table factory can find external
-            //resources if any.
-            String fName = f.getName();
-            //get table factory file name with no extension
-            //ie: {cmstableData.external.root}
-            //FB: RV_RETURN_VALUE_IGNORED NC 1-17-16
-            fName = fName.substring(0, fName.length()-4);
-            System.setProperty("{" + fName + ".external.root}", f.getParent());
+               Document doc = PSXmlDocumentBuilder.createXmlDocument(
+                       new FileInputStream(f),
+                       false);
 
-            Document doc = PSXmlDocumentBuilder.createXmlDocument(
-                  new FileInputStream(f),
-                  false);
-
-            if (dataColl==null)
-               dataColl = new PSJdbcTableDataCollection(doc);
-            else
-               dataColl.addAll(new PSJdbcTableDataCollection(doc));
-         }
-
-         Iterator it = schemaColl.iterator();
-
-
-         int index = 0;
-
-         while (it.hasNext())
-         {
-            schema = (PSJdbcTableSchema)it.next();
-            String tblName = schema.getName();
-            data = dataColl.getTableData(tblName);
-            // getTableData may return null if this table has no data associated
-            // with it in cmdTableData.xml file. For such cases, construct
-            // an empty table data object
-            if (data == null)
-               data = new PSJdbcTableData(tblName, null);
-            schema.setTableData(data);
-
-            try
-            {
-               PSLogger.logInfo("Table : " + tblName);
-               PSJdbcTableFactory.processTable(conn, dbmsDef, schema,
-                     ps, true);
-            }
-            catch (Exception ex)
-            {
-               if ((tblName.equalsIgnoreCase("RXSYSCOMPONENTPROPERTY")) ||
-                     (tblName.equalsIgnoreCase("RXLOCATIONSCHEMEPARAMS")) ||
-                     (tblName.equalsIgnoreCase("RXEXTERNAL")))
-               {
-                  // RXSYSCOMPONENTPROPERTY and RXLOCATIONSCHEMEPARAMS have
-                  // schema changes where non-nullable
-                  // columns have been added. Tablefactory will throw exception
-                  // in such cases. Need to ignore the exception for these
-                  // two tables. This code should be removed once the
-                  // tablefactory has been modified to handle such cases.
-                  // RXEXTERNAL will throw exception on Oracle since this table's
-                  // ITEMURL column has been changed from LONG to VARCHAR2 (2100)
-               }
+               if (dataColl == null)
+                  dataColl = new PSJdbcTableDataCollection(doc);
                else
-               {
-                  throw new BuildException(ex.toString());
-               }
+                  dataColl.addAll(new PSJdbcTableDataCollection(doc));
             }
-            index++;
-         }
 
-         PSLogger.logInfo("Table installation complete...");
+            Iterator it = schemaColl.iterator();
+
+
+            int index = 0;
+
+            while (it.hasNext()) {
+               schema = (PSJdbcTableSchema) it.next();
+               String tblName = schema.getName();
+               data = dataColl.getTableData(tblName);
+               // getTableData may return null if this table has no data associated
+               // with it in cmdTableData.xml file. For such cases, construct
+               // an empty table data object
+               if (data == null)
+                  data = new PSJdbcTableData(tblName, null);
+               schema.setTableData(data);
+
+               try {
+                  PSLogger.logInfo("Table : " + tblName);
+                  PSJdbcTableFactory.processTable(conn, dbmsDef, schema,
+                          ps, true);
+               } catch (Exception ex) {
+                  if ((tblName.equalsIgnoreCase("RXSYSCOMPONENTPROPERTY")) ||
+                          (tblName.equalsIgnoreCase("RXLOCATIONSCHEMEPARAMS")) ||
+                          (tblName.equalsIgnoreCase("RXEXTERNAL"))) {
+                     // RXSYSCOMPONENTPROPERTY and RXLOCATIONSCHEMEPARAMS have
+                     // schema changes where non-nullable
+                     // columns have been added. Tablefactory will throw exception
+                     // in such cases. Need to ignore the exception for these
+                     // two tables. This code should be removed once the
+                     // tablefactory has been modified to handle such cases.
+                     // RXEXTERNAL will throw exception on Oracle since this table's
+                     // ITEMURL column has been changed from LONG to VARCHAR2 (2100)
+                  } else {
+                     throw new BuildException(ex.toString());
+                  }
+               }
+               index++;
+            }
+
+            PSLogger.logInfo("Table installation complete...");
+         }
       }
       catch(Exception e)
       {
@@ -240,20 +232,6 @@ public class PSTableAction extends PSAction
          isRepositoryError = true;
          repositoryErrorMsg += e.getMessage();
          throw new BuildException(e.getMessage());
-      }
-      finally
-      {
-         if (conn != null)
-         {
-            try
-            {
-               conn.close();
-            }
-            catch (SQLException e)
-            {
-            }
-            conn = null;
-         }
       }
    }
 

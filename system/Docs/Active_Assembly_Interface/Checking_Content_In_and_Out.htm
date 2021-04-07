@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Checking Content In and Out </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="What I want to do . . . 	Check in an item, What I want to do . . . 	Check out an item to me, Workflow	Check In, Workflow	Check Out">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Workflow.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Errors_When_Checking_in_a_Content_Item.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc2040049.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h4 class="heading4">Checking Content In and Out</h4>
+<p class="bodytext">Rhythmyx includes a check-in and check-out feature that allows multiple users to access a Content Item but prevents more than one user at a time from actively editing an item. &nbsp;When you check out a Content Item, you make it available to you to edit, and make it unavailable to all other users. When you have finished working with the Content Item and have updated your changes to the database, check the item back in to make it available to other users. &nbsp;</p>
+<p class="bodytext">Check-in and check-out are special types of Transitions that do not move a Content Item from one State to another, but change their accessibility by setting a lock flag that indicates whether a user has checked the item out, and which user has checked the item out. Users cannot check-in or check-out items that are in a public State. Check-in and check-out are available from the Workflow dialog that you access from the <em class="emphasis">Tools &gt; Worklow</em> option in the Menu Bar or the <em class="emphasis">Workflow</em> option in Context menus.&nbsp;</p>
+<p class="note"><em class="emphasis">Note: Rhythmyx automatically checks an item in after it is Transitioned.</em></p>
+<p class="bodytext">While a Content Item is checked out:</p>
+<ul class="listbullet"><li class="listbullet">no other user can check out that Content Item; </li><li class="listbullet">only the user who has that Content Item checked out can edit it;</li><li class="listbullet">no other user can perform a workflow action on the Content Item, except the Administrator, who can perform a forced check in.</li></ul><p class="bodytext">While a Content Item is checked in:</p>
+<ul class="listbullet"><li class="listbullet">any user who has access to the Content Item can check it out;</li><li class="listbullet">any user who has access can perform a workflow transition on the Content Item.</li></ul><p class="bodytext">The checkout status of the main item and Snippets in Active Assembly is indicated by the overlay on their icons:</p>
+<table width="638" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="90"><p class="tableheading">Overlay</p>
+</td>
+<td style = "border:1px solid #010101;" width="548"><p class="tableheading">Meaning</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="90"><p class="bodytext"><img src="iconcheckedoutbymeaa.gif" alt="Icon for Checked out by me" height="12" width="10" vspace="2" hspace="2" align="bottom" border="0"></p>
+</td>
+<td style = "border:1px solid #010101;" width="548"><p class="bodytext">The content item (main item or Snippet in a Slot) is checked out by you;</p>
+<p class="bodytext">OR</p>
+<p class="bodytext">the parent item of the Slot or Field bearing the overlay is checked out by you.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="90"><p class="bodytext"><img src="iconaaunavailable.gif" alt="IconAAUnavailable" height="10" width="10" vspace="2" hspace="2" align="bottom" border="0"></p>
+</td>
+<td style = "border:1px solid #010101;" width="548"><p class="bodytext">The content item (main item or Snippet in a Slot) is checked out by someone else;</p>
+<p class="bodytext">OR</p>
+<p class="bodytext">the parent item of the Slot or Field bearing the overlay is checked out by someone else.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="90"><p class="bodytext">none</p>
+</td>
+<td style = "border:1px solid #010101;" width="548"><p class="bodytext">The content item (main item or Snippet in a Slot) is not checked out;</p>
+<p class="bodytext">OR</p>
+<p class="bodytext">the parent item of the Slot or Field that does not have an overlay is not checked out.</p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Workflow.htm" target="_self">Workflow</a></p><p class="relateditem"><a href="Errors_When_Checking_in_a_Content_Item.htm" target="_self">Errors When Checking a Content Item In</a></p><p class="relateditem"><a href="16564.htm" target="_self">Performing Workflow Transitions</a></p><p class="relateditem"><a href="Dependency_Constraints_on_Transitions.htm" target="_self">Dependency Constraints on Transitions</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

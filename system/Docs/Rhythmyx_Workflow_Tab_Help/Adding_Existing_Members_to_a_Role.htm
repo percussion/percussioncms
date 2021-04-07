@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Adding Existing Members to a Role </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Members	Adding Existing to a Role">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Deleting_a_Role.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Adding_New_Members_to_a_Role.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1775921.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h5 class="heading5">Adding Existing Members to a Role</h5>
+<p class="bodytext">You can add members that already exist in a security provider to a Role. &nbsp;The Server Administrator includes a cataloging function that retrieves a list of users associated with a specified security provider. &nbsp;</p>
+<p class="bodytext">To add Existing Members to a Role:</p>
+<ol class="listnumber"><li class="listnumber">In the Rhythmyx Server Administrator, click the Security tab along the top, then the Roles tab along the bottom.</li><li class="listnumber">Select the Role to which you want to add Members.</li><li class="listnumber">Click [<strong class="buttons">Add Member(s)</strong>].<p class="listcontinue">Rhythmyx displays the Modify Member List for &lt;Role&gt; dialog.</p>
+</li><li class="listnumber">Select the security <strong class="specialbold">Provider</strong> from which you want to select Members.</li><li class="listnumber">Choose the Type of Member you want to add. &nbsp;Options are <em class="emphasis">Users</em> (add individual Members), <em class="emphasis">Groups</em> (add groups of Members managed within the security provider) or <em class="emphasis">Both</em> (add both individual Members and groups of Members). &nbsp;NOTE: &nbsp;Not all security providers support Groups. &nbsp;If the security provider you select does not support Groups, these options are not editable.</li><li class="listnumber">Enter an optional Filter. &nbsp;Use SQL syntax to define the values. &nbsp;Two wildcard characters are available: &nbsp;% matches 0 or more characters, while &quot;_&quot; matches any single character. &nbsp;(For example, to catalog the name admin1, you would enter <em class="emphasis">admin1</em>.  This entry would return only admin1.  If you wanted to catalog all names that begin admin, you would enter <em class="emphasis">admin%</em>.  This entry would return <em class="emphasis">admin1</em>, <em class="emphasis">admin2</em>, etc.  If you wanted to return all names that begin with &quot;ad&quot;, you would enter <em class="emphasis">ad%</em>.  This entry would return Adams, Adkins, admin1, admin2, etc.   Similarly, if you entered <em class="emphasis">ols_n</em>, Rhythmyx would return Olsen, Olson, and Olsun.<p class="listcontinue">Separate multiple search values with semicolons. &nbsp;You can also use the Catalog Filter Editor dialog to enter a filter:</p>
+<ol class="listalpha2"><li class="listalpha2">Click the <img src="dotdotdot.gif" alt="dotdotdot" height="22" width="22" vspace="2" hspace="2" align="bottom" border="0" /> button.<p class="listcontinue2">Rhythmyx displays the Catalog Filter Editor dialog.</p>
+</li><li class="listalpha2">Enter values. &nbsp;Each value should be entered on a separate line.</li><li class="listalpha2">Click [<strong class="buttons">OK</strong>] on the Catalog Filter Editor dialog.</li></ol></li><li class="listnumber">Click the [<strong class="buttons">Catalog</strong>] button.</li><li class="listnumber">Rhythmyx displays a list of Members that matches the parameters you defined. &nbsp;You can define a filter for this list in the Display Filter field. &nbsp;The same options are available for this field as for the catalog filter. &nbsp;Click the <img src="dspfltrbtn.gif" alt="" height="26" width="28" vspace="0" hspace="0" align="bottom" border="0" />&nbsp;button to activate the display filter.</li><li class="listnumber">Select the Members you want to add and click the [<strong class="buttons">Add&gt;&gt;</strong>] button.</li><li class="listnumber">Click [<strong class="buttons">OK</strong>] to save your edits.</li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Roles.htm" target="_self">Roles</a></p><p class="relateditem"><a href="Add_Edit_Role_Dialog.htm" target="_self">Add/Edit Role Dialog</a></p><p class="relateditem"><a href="Modify_Member_List_for__Role__Dialog.htm" target="_self">Modify Member List for &quot;Role&quot; Dialog</a></p><p class="relateditem"><a href="New_Member_Dialog.htm" target="_self">New Member Dialog</a></p><p class="relateditem"><a href="Role_and_Member_Properties.htm" target="_self">Role and Member Properties</a></p><p class="relateditem"><a href="Role_and_Member_Properties_Required_by_Rhythmyx_Functions.htm" target="_self">Role and Member Properties Required by Rhythmyx Functions</a></p><p class="relateditem"><a href="Adding_a_New_Role.htm" target="_self">Adding a New Role</a></p><p class="relateditem"><a href="Editing_a_Role.htm" target="_self">Editing a Role</a></p><p class="relateditem"><a href="Deleting_a_Role.htm" target="_self">Deleting a Role</a></p><p class="relateditem"><a href="Adding_New_Members_to_a_Role.htm" target="_self">Adding New Members to a Role</a></p><p class="relateditem"><a href="Editing_a_Member_s_Properties.htm" target="_self">Editing a Member's Properties</a></p><p class="relateditem"><a href="Deleting_a_Member_from_a_Role.htm" target="_self">Deleting a Member from a Role</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

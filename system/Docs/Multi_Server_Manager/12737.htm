@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Publishing Lock During Installation </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="PreparingaTargetServerforInstallation.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Using_the_Install_Archive_Wizard.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Publishing Lock During Installation</h2>
+<p class="bodytext">Rhythmyx does not let you perform a publishing run and install an archive at the same time:</p>
+<ul class="listbullet"><li class="listbullet">When Rhythmyx begins installing an archive, it locks the server so that you cannot begin a publishing run until archive installation is complete.  If Rhythmyx cannot lock the server, it suspends archive installation and performs the publishing run, then lets you resume archive installation from the point where you left off in the Wizard. </li><li class="listbullet">When Rhythmyx begins a publishing run, it locks the server so that you cannot begin installing an archive until the publishing run is complete. If Rhythmyx runs multiple publishing runs, it waits until the final one is complete to remove the lock from the server.</li></ul><p class="bodytext">Use the following console commands to view and manage locks:</p>
+<ul class="listbullet"><li class="listbullet">dump resources - The results include a &lt;ServerLocks&gt; element which displays active locks as follows:<p class="codeexample">&lt;ServerLocks&gt;</p>
+<p class="codeexample">      &lt;Lock id=&quot;0&quot; locker=&quot;EnterpriseMgr:admin1&quot; created=&quot;20030210 08:46:20&quot;&gt;</p>
+<p class="codeexample">         &lt;Resources&gt;</p>
+<p class="codeexample">            &lt;Resource&gt;Publisher&lt;/Resource&gt;</p>
+<p class="codeexample">         &lt;/Resources&gt;</p>
+<p class="codeexample">      &lt;/Lock&gt;</p>
+<p class="codeexample">   &lt;/ServerLocks&gt;</p>
+<p class="listcontinue">When there is no locked resource, the element is empty. Note that a single lock may be holding more than one resource, but currently the Publisher is the only server resource that may be locked.</p>
+</li><li class="listbullet">clear server lock &lt;lockid&gt; - Releases a lock.  &lt;lockid&gt; is the Lock id listed in the dump resources command, above. Only use this command if a process terminates abnormally and does not release a lock.</li></ul><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Installing_an_Archive.htm" target="_self">Installing an Archive</a></p><p class="relateditem"><a href="PreparingaTargetServerforInstallation.htm" target="_self">Preparing a Target Server for Installation</a></p><p class="relateditem"><a href="Using_the_Install_Archive_Wizard.htm" target="_self">Using the Install Archive Wizard</a></p><p class="relateditem"><a href="Reviewing_Archives5.htm" target="_self">Reviewing Archives</a></p><p class="relateditem"><a href="Archiving_an_Entire_Rhythmyx_System.htm" target="_self">Archiving an Entire Rhythmyx System</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
+

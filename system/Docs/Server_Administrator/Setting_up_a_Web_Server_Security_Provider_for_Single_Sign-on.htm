@@ -1,0 +1,86 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Setting up a Web Server Security Provider for Single Sign-on </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Single Sign-on	Web Server Security Provider">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Single_Sign-on_and_the_Rhythmyx_Workbench_and_Server_Administrator.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Web_Server_Security_Provider_Details_Dialog.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h6 class="heading6">Setting up a Web Server Security Provider for Single Sign-on</h6>
+<p class="bodytext">Before creating a Web server security provider for Single Sign-on, set up the Rhythmyx servlet on the Web application.  The servlet definition must include the following parameters:</p>
+<table width="738" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="369"><p class="tableheading">Parameter</p>
+</th>
+<th style = "border:1px solid #010101;" width="369"><p class="tableheading">Description</p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="369"><p class="tablebodytext">EnableSSO</p>
+</td>
+<td style = "border:1px solid #010101;" width="369"><p class="tablebodytext">Flag indicating whether to use Single Sign-On when communicating with the Rhythmyx server.  The default value, <code class="monospace">false</code>, does not allow Single Sign-On.  Change the value to <code class="monospace">true</code> to allow Single Sign-on.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="369"><p class="tablebodytext">authUserHeaderName</p>
+</td>
+<td style = "border:1px solid #010101;" width="369"><p class="tablebodytext">The value of this parameter is the name of the HTTP header variable that the servlet will add to the request when it forwards the request to the Rhythmyx server.  The value of the header is set to the name of the authenticated user obtained from the Web application server.  </p>
+<p class="tablebodytext">The value of the <code class="monospace">authUserHeaderName</code> parameter must match the value in the <strong class="specialbold">Authenticated user header name</strong> field in the Web Server Security Provider Details dialog for the Web server security provider.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="369"><p class="tablebodytext">userRolesHeaderName</p>
+</td>
+<td style = "border:1px solid #010101;" width="369"><p class="tablebodytext">The value of this parameter is the name of the HTTP header variable that the servlet will add to the request when it forwards the request to the Rhythmyx server.  The value of the header is set to a comma-separated list of Role of which the user specified in the <code class="monospace">authUserHeaderName</code> parameter is a member.  </p>
+<p class="tablebodytext">The value of the <code class="monospace">userRolesHeaderName</code> parameter must match the value in the <strong class="specialbold">User role list header name</strong> field in the Web Server Security Provider Details dialog for the Web server security provider.</p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext">To set up a Web server security provider to support Single Sign-on:</p>
+<ul class="listbullet"><li class="listbullet">enter the value of the authUserHeaderName parameter in the Authenticated user header name field in the Web Server Security Provider Details dialog for the Web server security provider.</li><li class="listbullet">enter the value of the userRolesHeaderName parameter in the User role list header name field in the Web Server Security Provider Details dialog for the Web server security provider.</li></ul><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Implementing_Single_Sign-on.htm" target="_self">Implementing Single Sign-on</a></p><p class="relateditem"><a href="Single_Sign-on_and_the_Rhythmyx_Workbench_and_Server_Administrator.htm" target="_self">Single Sign-on and the Rhythmyx Workbench and Server Administrator</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Creating a Scheduled Task </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Scheduling a Rhythmyx Task	Creating, Tasks, Automated	Creating">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="18453.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="18457.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1776116.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Creating a Scheduled Task</h3>
+<p class="bodytext">To create a scheduled task:</p>
+<ol class="listnumber"><li class="listnumber">In the Rhythmyx Administration tab, click on the <span class="links">Scheduled Tasks</span> link.<p class="listcontinue">The View and Edit pane displays the Scheduled Tasks List.</p>
+</li><li class="listnumber">In the Menu bar, choose <em class="emphasis">Create</em> &gt; <em class="emphasis">Scheduled Task</em>.<p class="listcontinue">The View and Edit pane displays a blank scheduled task editor.</p>
+</li><li class="listnumber">The <strong class="specialbold">Name</strong> defaults to <em class="emphasis">TimedEvent_0</em>.  Optionally, enter a new <strong class="specialbold">Name</strong>.</li><li class="listnumber">Choose the <strong class="specialbold">Extension </strong>you want to use for the scheduled task.  Options include all scheduled task extensions registered in the system.  The following scheduled task extensions are installed with Rhythmyx:<ul class="listbullet2"><li class="listbullet2">sys_purgePublishingLog<p class="listcontinue2">Purges publishing logs created more than the specified number of days in the past.</p>
+</li><li class="listbullet2">sys_purgeScheduledTaskLog<p class="listcontinue2">Purges Scheduled Task logs created more than the specified number of days in the past.  </p>
+</li><li class="listbullet2">sys_runCommand<p class="listcontinue2">Runs the specified command.  </p>
+</li><li class="listbullet2">sys_runEdition<p class="listcontinue2">Runs the specified Edition.</p>
+</li></ul></li><li class="listnumber">If the Task you chose has parameters, the editor displays fields for the parameters.  Specify values for any parameters of the task.  </li><li class="listnumber">Enter the <strong class="specialbold">Cron specification</strong>. Rhythmyx uses the Quartz Enterprise Job Scheduler (<a class="jumptemplate" title="" href="http://www.opensymphony.com/quartz/" target="_self">http://www.opensymphony.com/quartz/</a>).  For details about writing a cron expression for Quartz, see <a class="jumptemplate" title="" href="http://www.opensymphony.com/quartz/wikidocs/CronTriggers%20Tutorial.html" target="_self">http://www.opensymphony.com/quartz/wikidocs/CronTriggers%20Tutorial.html</a>.</li><li class="listnumber">All tasks run locally unless configured to run on a different server.  If you want to run the task on a different server, such as a publishing hub, enter the name or IP address of that server in the <strong class="specialbold">Server</strong> field.  (Note;  the port defaults to 9992.  If the server uses a different port, specify both the server and port as follows:  server:port; for example, <em class="emphasis">Rhythmyx:9992</em>.)</li><li class="listnumber">In the <strong class="specialbold">Notify when</strong> drop list, specify the circumstances under which a notification e-mail should be sent to the specified recipients.  Options include <em class="emphasis">Always</em>, <em class="emphasis">On Failure</em>, and <em class="emphasis">Never</em>.</li><li class="listnumber">If you choose <em class="emphasis">Always</em> or <em class="emphasis">On Failure</em> in the <strong class="specialbold">Notify When</strong> drop list:<ol class="listalpha2"><li class="listalpha2">You must specify a <strong class="specialbold">Notify Role</strong>.  Choose the Role you want to notify from the drop list.  Options include all Roles defined in the system.  </li><li class="listalpha2">You can also specify additional <strong class="specialbold">Email Addresses</strong> to receive notifications.  Use commas to separate e-mail addresses.</li><li class="listalpha2">You must also specify the <strong class="specialbold">Notification Template </strong> to use to generate notification e-mail messages.  Options include all task notifications defined in the system.</li></ol></li><li class="listnumber">Click the [<strong class="buttons">Save</strong>] button to save the scheduled task.</li></ol><p class="bodytext">You can test your scheduled task by running it manually.  To run a scheduled task manually, in the Menu bar, choose <em class="emphasis">Action</em> &gt; <em class="emphasis">Run Now</em>.  (Note:  If you configured the task to run on a different server, you must run the task from that server.  Running a task from a server other than the server for which it is configured results in an error.  Start a browser and connect to the remote server, log in to Content Explorer, go to the Admin tab, and run the task)</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="19544.htm" target="_self">Scheduled Tasks</a></p><p class="relateditem"><a href="18453.htm" target="_self">Scheduled Task Editor</a></p><p class="relateditem"><a href="18457.htm" target="_self">Modifying a Scheduled Task</a></p><p class="relateditem"><a href="18458.htm" target="_self">Copying a Scheduled Task</a></p><p class="relateditem"><a href="18455.htm" target="_self">Timed Event Logs</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

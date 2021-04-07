@@ -1,0 +1,65 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Provider URL Selector </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Directory Configurations	Provider URL Selector">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="14228.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="JNDI_Group_Providers_Dialog.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h6 class="heading6">Provider URL Selector</h6>
+<p class="bodytext">When defining a new Directory configuration, you must specify a Provider URL. This URL is a combination of the directory server host name, listening port, and a base DN for the directory server. The Provider URL Selector dialog helps you build the URL with a minimum of information.</p>
+<p class="widegraphic"><img src="sa_providerurlselector_57.gif" alt="DirServicesProviderURLSelector" height="486" width="428" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="subheading">Provider URL Selector Field Descriptions:</p>
+<p class="fielddescription"><strong class="fieldname">Host</strong> - The resolvable name (or IP address) of the directory server to which Rhythmyx needs to connect.</p>
+<p class="fielddescription"><strong class="fieldname">Port</strong> - The LDAP listening port of the named Host. The default port number for LDAP is 389.</p>
+<p class="fielddescription"><strong class="fieldname">Authentication</strong> - The Authentication used to connect to the named Host.  If an Authentication to this Host has not yet been created, select &quot;New Authentication...&quot; from the drop list to define an Authentication for the Host.</p>
+<p class="fielddescription"><strong class="fieldname">Base DN </strong>- The place to begin searches in the directory server.  If the Host, Port, and Authentication information is correct, clicking the [<strong class="buttons">Fetch</strong>] button returns a list of available Base DNs.</p>
+<p class="fielddescription"><strong class="fieldname">Fetch Base DNs</strong> - Clicking the [<strong class="buttons">Fetch</strong>] button returns a list of available Base DNs from the named Host, assuming the Host, Port, and Authentication specified in the Provider URL Selector dialog are correct.</p>
+<p class="fielddescription">Fetching Base DNs from an Active Directory server does not yield the proper DN for Users.  Instead, on an Active Directory server, it is common to select the non-Configuration or Schema DN and prepend CN=Users.</p>
+<p class="fielddescription"><strong class="fieldname">Catalog Base DN</strong> - Clicking the [<strong class="buttons">Catalog</strong>] button catalogs the objects in the base DN tree.  Selecting an object below the Base DN narrows the list of objects searched by adding the selected objects to the Base DN.  A Base DN listed without any values below it usually indicates an error in the defined Authentication or Provider information.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="9957.htm" target="_self">Directory Configuration Dialogs</a></p><p class="relateditem"><a href="9958.htm" target="_self">Directories Tab</a></p><p class="relateditem"><a href="14228.htm" target="_self">Directory Editor</a></p><p class="relateditem"><a href="JNDI_Group_Providers_Dialog.htm" target="_self">JNDI Group Provider Details Dialog</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+
