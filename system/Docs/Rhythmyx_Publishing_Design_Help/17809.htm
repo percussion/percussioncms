@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Defining a New Site </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Sites	Creating">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="18860.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="17810.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc177604.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Defining a New Site</h2>
+<p class="bodytext">To define a new Site:</p>
+<ol class="listnumber"><li class="listnumber">In the Navigation pane, select the Sites node, and from the Menu bar, choose <em class="emphasis">Action</em> &gt; <em class="emphasis">Create Site</em>.<p class="listcontinue">Rhythmyx displays the <a id="h17858" class="jumptemplate" title="Site Editor" href="17808.htm" target="_self">Site editor</a> in the View and Edit pane.</p>
+</li><li class="listnumber">Enter a <strong class="specialbold">Name</strong> for the Site.  The name must begin with a letter, and can contain any alphanumeric characters, underscores, hyphens, or dots (periods).  Optionally, enter a free-form text <strong class="specialbold">Description</strong> of the Site.</li><li class="listnumber">Enter the <strong class="specialbold">Rhythmyx Path</strong>.  <ol class="listalpha2"><li class="listalpha2">Click the Browse button <img src="mako_browsebutton.gif" alt="Mako_Browse Button (Browser applications)" height="35" width="39" vspace="2" hspace="2" align="bottom" border="0" /> next to the Source Folder Root Path <p class="listcontinue2">Rhythmyx displays the Site Folder Browser.</p>
+</li><li class="listalpha2">Browse to the Folder you want to use and the root Folder for the Site.  Note that the Site Root Folder must be a child of the <code class="monospace">//Sites</code> node, but need not be an immediate child of that node.  In other words,  both <code class="monospace">//Sites/EnterpriseInvestments</code> and <code class="monospace">//Sites/Investments/EnterpriseInvestments </code>are valid Site root paths).</li><li class="listalpha2">In the menu bar, click <em class="emphasis">Done</em>.<p class="listcontinue2">Note that you can also enter the Site Root Folder Path manually.  The specified path must begin with //Sites, and must exist under that node in the Navigation pane of Content Explorer.  If the path does not exist, you cannot save the Site.</p>
+</li></ol></li><li class="listnumber">Select the <strong class="specialbold">Global Template</strong> to use when formatting Page Templates for the Site.  Options include all Global Templates defined in the system.</li><li class="listnumber">Enter the <strong class="specialbold">Published URL.</strong>  This value is the URL used to access the published Site.</li><li class="listnumber">Optionally, enter the <strong class="specialbold">Published Path</strong>.<p class="listcontinue">If you are defining a Site to publish to a database, enter the connection information (need to get the correct connection information for each RDBMS.</p>
+</li><li class="listnumber">To enter special Site details, click the <span class="links">Show Site Details</span> link.<p class="listcontinue">The Site editor displays the Site details fields.  </p>
+<ol class="listalpha2"><li class="listalpha2">If you are defining a Site to use an FTP or SFTP Delivery Type, enter the <strong class="specialbold">FTP Server IP Address</strong>, <strong class="specialbold">FTP Port</strong>, <strong class="specialbold">User Name</strong>, and <strong class="specialbold">Password</strong>.</li><li class="listalpha2">To define a new unpublish flag, enter the character (case-insensitive) in the <strong class="specialbold">Unpublish Flags</strong> field.   Multiple characters can be added, separated by commas.   (Note:  for each character you enter in this field, you should also define a Keyword Choice to the Publishable Keyword whose value matches the character you added to the field.  For details see &quot;Configuring Unpublish Flags&quot; in the <em class="emphasis">Rhythmyx Technical Reference Manual</em>. You should also define a Workflow State to use each character.)</li><li class="listalpha2">The <strong class="specialbold">Nav Theme</strong> field is used in systems that use Managed Navigation as implemented in Rhythmyx Version 5.5 through 5.7.  Specify the Nav Theme you want to use for the Site in this field.</li><li class="listalpha2">If there are XML namespaces you do not want removed when Content Items are uploaded, enter them as a comma-delimited list in the <strong class="specialbold">Allowed Namespaces</strong> field.  Note that entries in this field should have a corresponding namespace definition in the file &lt;Rhythmyxroot&gt;/rxconfig/server/stylesheetCleanupFilter.xml.   If a namespace specified for the Site does not have a corresponding entry in the that file, it will be filtered out</li></ol></li><li class="listnumber">To add a Context Variable:<ol class="listalpha2"><li class="listalpha2">In the Menu bar, choose <em class="emphasis">Action</em> &gt; <em class="emphasis">Add Context Variable</em>.<p class="listcontinue2">Rhythmyx displays the <a id="h18862" class="jumptemplate" title="Add Context Variable Page" href="18860.htm" target="_self">Add Context Variable</a> page.</p>
+</li><li class="listalpha2">Enter a <strong class="specialbold">Context Variable Name</strong>.</li><li class="listalpha2">Enter a <strong class="specialbold">Context Variable Value</strong>.</li><li class="listalpha2">Choose the <strong class="specialbold">Context</strong> in which to use the Context Variable.  </li><li class="listalpha2">To copy an existing Context Variable, click the copy button .</li></ol></li><li class="listnumber">To add a new Context Variable:<ol class="listalpha2"><li class="listalpha2">In the Menu bar, choose <em class="emphasis">Action</em> &gt; <em class="emphasis">Add Context Variable</em>.<p class="listcontinue2">Content Explorer displays the New Context Variable editor.</p>
+</li><li class="listalpha2">Enter the <em class="emphasis">Context Variable Name</em>.</li><li class="listalpha2">Enter the <em class="emphasis">Context Variable Value</em>.</li><li class="listalpha2">Choose the Context to which the Value will apply.</li><li class="listalpha2">Top copy an existing Context Variable, click the copy button <img src="copyvariablebutton.gif" alt="Copy Variable Button" height="30" width="33" vspace="2" hspace="2" align="bottom" border="0" /> in the row of the Context Variable you want to copy.  Rhythmyx copies the data for the Context Variable into the appropriate fields.  Change the Context Variable Value and Context as needed.  Note that the same Context Variable Name may be used several times with different values for different combinations of Site and Context, so you may want to to copy the instance that most closely matches the values you need.</li><li class="listalpha2">In the Menu bar, click <strong class="specialbold">Done</strong>.<p class="listcontinue2">Content Explorer returns to the Site editor.</p>
+</li></ol></li><li class="listnumber">To save the Site, in the Menu bar, Click <em class="emphasis">Save</em>.</li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="17807.htm" target="_self">Maintaining Sites</a></p><p class="relateditem"><a href="17808.htm" target="_self">Site Editor</a></p><p class="relateditem"><a href="18860.htm" target="_self">Add Context Variable Page</a></p><p class="relateditem"><a href="17810.htm" target="_self">Copying a Site</a></p><p class="relateditem"><a href="17811.htm" target="_self">Editing a Site</a></p><p class="relateditem"><a href="17813.htm" target="_self">Deleting a Site</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

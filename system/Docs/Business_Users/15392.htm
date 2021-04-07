@@ -1,0 +1,63 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Moving Active Assembly Items Across Sites </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="17122.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="17112.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h1 class="heading1">Moving Active Assembly Items Across Sites</h1>
+<p class="bodytext">In an Active Assembly relationship, the dependent item's Site and Folder may be properties in the Relationship. If the Site and Folder are properties of the Relationship, a user cannot use the normal <em class="emphasis">Move</em> action to move the dependent item in the Relationship from its original Site to another Site because its Active Assembly link will be broken. Likewise, a user cannot use the normal <em class="emphasis">Remove</em> action to remove the dependent item from its original Site.</p>
+<p class="bodytext">Rhythmyx provides special <em class="emphasis">Force Move</em> and <em class="emphasis">Force Remove</em> actions, which reset the Site and Folder properties and the link addresses. By default, these actions are only assigned to administrators in administrator Communities.</p>
+<p class="bodytext">Rhythmyx displays an Error Message if a user attempts to move a dependent to another Site or to remove a dependent whose Site and Folder are properties in an Active Assembly relationship:</p>
+<p class="widegraphic"><img src="errorforcemove.gif" alt="Move Error" height="266" width="623" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">If the Site is a property of the Relationship, but the Folder is not, the behavior is similar. However, if the dependent item appears in more than one Folder on the Site, a user can perform a common Move or Remove action on the item until the dependent item only appears once on the Site. At that point, a Move or Remove action triggers the dialog shown above and an administrator must use a Force Move or Force Remove action to move/remove the item and reset the links.</p>
+<p class="bodytext">A user can move a dependent whose Site (and Folder) are properties of an Active Assembly Relationship from a Site Folder to a non-Site Folder.  The original Site remains a property of the Relationship and the Folder is updated. For details of how Site and Folder properties of Relationships change when a dependent item is moved between different types of Folders, see the document <em class="emphasis">Implementing the Relationship Engine</em>.  </p>
+<p class="note">By default, the FastForward sample Active Assembly Relationships do not include Site and Folder properties. <a id="h15399" class="jumptemplate" title="How Relationships Acquire Site or Folder Properties" href="17112.htm" target="_self">Site and Folder properties are included in Active Assembly Relationships when they are displayed in the search results.</a></p>
+<p class="bodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">In This Section</p><p class="relateditem"><a href="17112.htm" target="_self">How Relationships Acquire Site or Folder Properties</a></p><p class="relateditem"><a href="15397.htm" target="_self">How to Move Dependent Items and Reset Active Assembly Links</a></p><p class="relateditem"><a href="15398.htm" target="_self">How to Remove Dependent Items and Reset Active Assembly Links</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

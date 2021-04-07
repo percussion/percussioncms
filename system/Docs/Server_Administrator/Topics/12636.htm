@@ -1,0 +1,63 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Example 1: Using LDAP to Authenticate Users </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Directory Services">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="10044.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="18584.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h4 class="heading4">Example 1: Using LDAP to Authenticate Users</h4>
+<p class="bodytext">In this example, we allow users maintained in the corporate Active Directory server to access our Rhythmyx server.  There are three users: Nancy Needlenose, Bobby Bluefin, and Tiara Tuna.  Nancy and Tiara are both members of the Content Contributors group only, while Bobby is a member of the TeamCaptains group.  </p>
+<p class="bodytext">We do not want all members of the TeamCaptains group to have access to Rhythmyx, only Bobby.  Bobby is associated with the Rhythmyx Role Admin, while the Content Contributors are members of the Author Functional Role. All are members of the Default Community Role.</p>
+<p class="bodytext">We have an Active Directory server named ADServer that stores all of our user names and attributes. The Directory Service is listening on port 389.  The user Bobby Bluefin is used to bind to the Active Directory Service.  This user need only have the appropriate rights to catalog the directory.  Bobby's user attribute is CN (CN=Bobby Bluefin) and his password is DeepSea.</p>
+<p class="bodytext">We have downloaded and installed an LDAP browser to facilitate configurations.  The browser allows for quick and easy confirmation of attribute, connection, and credential information.  Though this is not required, it is a handy tool to have available.</p>
+<p class="widegraphic"><img src="dirservicesactivedirldapbrowser.gif" alt="DirServicesActiveDirLdapBrowser" height="362" width="622" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">In This Section</p><p class="relateditem"><a href="18584.htm" target="_self">Creating the Authentication</a></p><p class="relateditem"><a href="18592.htm" target="_self">Creating the Directory</a></p><p class="relateditem"><a href="18595.htm" target="_self">Creating the Security Provider</a></p><p class="relateditem"><a href="18599.htm" target="_self">Adding a Group Provider</a></p><p class="relateditem"><a href="18586.htm" target="_self">Adding Users and Groups to Roles</a></p></td>
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="10044.htm" target="_self">Example:  Using LDAP as a Security Provider</a></p><p class="relateditem"><a href="18588.htm" target="_self">Example 2: Using LDAP as a Role Provider</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

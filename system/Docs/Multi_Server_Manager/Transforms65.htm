@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Transforms </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Add_Packages_to_Install.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="18737.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Transforms</h3>
+<p class="bodytext">If you have not mapped all of your elements or you selected <em class="emphasis">Custom</em> installation mode, you must complete the <a title="Transforms" href="18764.htm#o18787">Transforms</a> dialog.  The dialog that appears functions similarly to the <a id="h6092" class="jumptemplate" title="Define Transforms for &lt;Server:Port&gt;" href="Define_Transforms_for_Server_Port.htm" target="_self">Define Transforms dialog that you access from the Multi-Server Manager Window</a>, but it displays a <strong class="specialbold">Packages</strong> section listing each <a title="Package" href="18764.htm#o18771">Package</a> and does not have buttons for adding, editing, and deleting mappings. </p>
+<ul class="listbullet"><li class="listbullet">If you selected <em class="emphasis">Typical </em>installation mode, this dialog initially displays only Packages that are missing datasource or element mappings, so that you can add them.  Packages that are missing mappings have a red exclamation point<img src="redex.gif" alt="RedEx Point" height="15" width="14" vspace="2" hspace="2" align="bottom" border="0"> beside them. As you create the mappings, the exclamation points disappear, but the Packages remain in the list.  </li><li class="listbullet">If you selected <em class="emphasis">Custom </em>installation mode, this dialog displays both Packages that are missing datasource or element mappings and Packages that have required datasource or element mappings so that you can both add and change them.  Packages that are missing mappings have red exclamation points<img src="redex.gif" alt="RedEx Point" height="15" width="14" vspace="2" hspace="2" align="bottom" border="0"> beside them until you create the mappings.</li></ul><p class="note">NOTE: If the objects in a package are not missing datasource or element mappings, the Datasource Maps tab or Elements Maps tab does not appear for the package.  If none of the packages have elements or datasources to map, even if you choose <em class="emphasis">Custom</em> installation mode, the dialog does not appear.</p>
+<p class="bodytext">For more about mapping (transforms) see <a id="h6160" class="jumptemplate" title="Mapping Source and Target Datasources" href="Mapping_Source_and_Target_DBMS_Credential_Names.htm" target="_self">Mapping Source and Target Datasources</a> and <a id="h6093" class="jumptemplate" title="Mapping Source and Target Rhythmyx Elements" href="Mapping_Source_and_Target_Rhythmyx_Elements.htm" target="_self">Mapping Source and Target Rhythmyx Elements</a>.</p>
+<p class="widegraphic"><img src="emdatasource65.gif" alt="Install Archive Wizard (Transforms)" height="452" width="539" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">To complete the Datasource Maps tab of the Transforms dialog:</p>
+<ol class="listnumber"><li class="listnumber">Click a Package under <strong class="specialbold">Packages</strong>.<p class="listcontinue">The <a title="Multi-Server Manager" href="18764.htm#o18765">Multi-Server Manager</a> lists all existing datasource mappings for the Package in the <strong class="specialbold">Map source to target</strong> table. </p>
+</li><li class="listnumber">Each non-repository datasource used by an application in the package is listed in the <strong class="specialbold">Source</strong> column, and the user may specify a <strong class="specialbold">Target</strong> datasource or check <strong class="specialbold">Skip this package</strong> (if available).</li><li class="listnumber">Check the <strong class="specialbold">Skip this Package</strong> check box to skip installation of this Package.  This option is only available if the ID mappings on a package are incomplete.  You may use this option if you do not know how to map the source and target datasources; if you do not check it, the Wizard requires you to map all of the datasources.  If the ID <a title="Mappings" href="18764.htm#o18799">Mappings</a> on the package are complete, you cannot skip it.  When you complete the ID mappings for a package, this option is disabled.</li><li class="listnumber">Click [<strong class="buttons">Advanced</strong>] to go to the <a id="h12223" class="jumptemplate" title="Advanced Transforms" href="18737.htm" target="_self">Advanced Transforms dialog</a>.  In this dialog, remove mappings that the archive does not use and add the datasources to mappings that the archive uses.</li><li class="listnumber">Click the Element Maps tab to create or edit element mappings.<p class="widegraphic"><img src="emtransforms60.gif" alt="Transforms dialog" height="489" width="577" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li></ol><p class="bodytext">To complete the Element Maps tab of the Transforms dialog by having the Multi-Server Manager create mappings for you: </p>
+<ol class="listnumber"><li class="listnumber">Click [<strong class="buttons"><a title="Guess All" href="18764.htm#o18802">Guess All</a></strong>].<p class="listcontinue">The Multi-Server Manager creates mappings for all elements within all element types. You only have to click [<strong class="buttons">Guess All</strong>] once.</p>
+<p class="listcontinue">The Multi-Server Manager searches for matches for unmapped source elements on the target server by searching on name.  If it finds multiple matches by name, it searches for a matching ID.  If it finds a matching ID, then it selects the element with the matching name and matching ID.  If it does not find a matching ID, it selects the first element with a matching name that it found.  The Multi-Server Manager lists the matching target element in the <strong class="specialbold">Target</strong> field. If it does not find a target element match, it checks the <strong class="specialbold">Add to server</strong> check box. </p>
+</li></ol><p class="bodytext">To complete the Element Maps tab of the Transforms dialog by manually creating mappings and/or having the Multi-Server Manager create mappings for all elements within Element Types: </p>
+<ol class="listnumber"><li class="listnumber">Click a Package under <strong class="specialbold">Packages</strong>.</li><li class="listnumber">Click an <strong class="specialbold">Element Type</strong>.<p class="listcontinue">The Multi-Server Manager displays elements of that type in the <strong class="specialbold">Source</strong> column.  For elements that you have already mapped, it displays the complete mapping in the table.   For elements that you have not yet mapped, it displays the <strong class="specialbold">Add to server </strong>check box as unchecked and the <strong class="specialbold">Target</strong> fields as empty. </p>
+</li><li class="listnumber">Click [<strong class="buttons">Guess</strong>] for the Multi-Server Manager to search for matches for unmapped source elements on the target server by searching on name.  If it finds multiple matches by name, it searches for a matching ID.  If it finds a matching ID, then it selects the element with the matching name and matching ID.  If it does not find a matching ID, it selects the first element with a matching name that it found.  The Multi-Server Manager lists the matching target element in the <strong class="specialbold">Target</strong> field. If it does not find a target element match, it checks the <strong class="specialbold">Add to server</strong> check box. </li><li class="listnumber">To manually map source and target elements:<ul class="listbullet2"><li class="listbullet2">Click the <strong class="specialbold">Target</strong> field to access a drop list. If an appropriate target element exists in the <strong class="specialbold">Target </strong>drop list for the source element, select the target element in the drop list.<p class="listcontinue2">NOTE: You are mapping the identifiers (ID numbers), not the names. The names are included for reference.</p>
+<p class="listcontinue2">OR</p>
+</li><li class="listbullet2">Check the <strong class="specialbold">Add to server</strong> check box to add the source element to the target (and automatically map the source identifier to the target identifier).</li></ul></li><li class="listnumber">If you are using <em class="emphasis">Typical</em> installation mode, select all the entries under <strong class="specialbold">Packages</strong>, and check all of them for unmapped elements.  </li><li class="listnumber">If you cannot determine how to map an element, you may check the <strong class="specialbold">Skip this Package</strong> check box to not install the package; if you do not check it, the Wizard requires you to map the elements.</li><li class="listnumber">Click [<strong class="buttons">Advanced</strong>] to go to the <a id="h12223_2" class="jumptemplate" title="Advanced Transforms" href="18737.htm" target="_self">Advanced Transforms dialog</a>.  In this dialog, remove elements from mappings that the archive does not use and add them to mappings that the archive uses.</li><li class="listnumber">Click [<strong class="buttons">Next</strong>] to proceed to the <a id="h6222" class="jumptemplate" title="Specify Actions for Warnings" href="Specify_Actions_for_Warnings.htm" target="_self">Specify Action for Warnings (Dependency Validation) dialog</a>.</li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">In This Section</p><p class="relateditem"><a href="18737.htm" target="_self">Advanced Transforms</a></p></td>
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Using_the_Install_Archive_Wizard.htm" target="_self">Using the Install Archive Wizard</a></p><p class="relateditem"><a href="Select_an_Archive_and_Server_Dialog.htm" target="_self">Select an Archive and Server Dialog</a></p><p class="relateditem"><a href="Choose_Installation_Mode_Dialog.htm" target="_self">Choose Installation Mode Dialog</a></p><p class="relateditem"><a href="Add_Packages_to_Install.htm" target="_self">Add Packages to Install</a></p><p class="relateditem"><a href="Specify_Actions_for_Warnings.htm" target="_self">Specify Actions for Warnings</a></p><p class="relateditem"><a href="Summary.htm" target="_self">Summary</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
+

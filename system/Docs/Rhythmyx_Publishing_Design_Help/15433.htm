@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> $rx.string </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="System">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="17423.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="15458.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1776038.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h4 class="heading4">$rx.string</h4>
+<p class="bodytext">The methods of this function allow you to allow you to manipulate string values. </p>
+<ul class="listbullet"><li class="listbullet">$rx.string.stringTo Map</li><li class="listbullet">$rx.string.equalNumbers</li><li class="listbullet">$rx.string.extractNumber</li></ul><p class="subheading">$rx.string.stringTo Map</p>
+<p class="bodytext"><strong class="specialbold">	Returns</strong>  Map&lt;String, String&gt;</p>
+<p class="bodytext">	<strong class="specialbold">Used in</strong>  Templates</p>
+<p class="list2">Converts a URL-style parameter string to a Java map.  Used to pass parameters to Slot Content Finders.  </p>
+<table width="565" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tableheading">Name</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tableheading">Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tableheading">Description</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">paramstring</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tablebodytext">Parameter string to convert.  If null, an empty map is returned.</p>
+</td>
+</tr>
+
+</table>
+<p class="subheading">$rx.string.equalNumbers</p>
+<p class="bodytext"><strong class="specialbold">	Returns</strong>  boolean</p>
+<p class="bodytext">		<strong class="specialbold">Used in</strong>  Templates and Location Schemes</p>
+<p class="list2">Compares two parameters, each a number or a string with a numeric value (which will be converted to a number; if a parameter value cannot be converted to a number or if a parameter is of an unknown type, it is converted to 0).  If the two numbers are equal, returns true.</p>
+<table width="565" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tableheading">Name</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tableheading">Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tableheading">Description</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">a</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">Object</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tablebodytext">The first object to compare</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">b</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">Object</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tablebodytext">The second object to compare.</p>
+</td>
+</tr>
+
+</table>
+<p class="subheading">$rx.string.extractNumber</p>
+<p class="bodytext"><strong class="specialbold">	Returns</strong>  long</p>
+<p class="bodytext">	<strong class="specialbold">Used in</strong>  Templates and Location Schemes</p>
+<p class="list2">Extracts the numerical value of the parameter.  If the object is of the type java.lang.Number, returns the Long value of that number.  If the object is of the type java.lang.String, the string is converted to a number; the default value in this case is 0.  If the data type of the object is unknown, returns 0.</p>
+<table width="565" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tableheading">Name</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tableheading">Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tableheading">Description</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">a</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">Object</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tablebodytext">The object from which to extract the number.</p>
+</td>
+</tr>
+
+</table>
+<p class="subheading">$rx.string.stripSpace</p>
+<p class="bodytext"><strong class="specialbold">	Returns</strong>  string</p>
+<p class="bodytext">	<strong class="specialbold">Used in</strong>  Templates and Location Schemes</p>
+<p class="list2">Removes leading and trailing whitespace, and replace any embedded sequence of whitespace characters with a single space each.</p>
+<table width="565" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tableheading">Name</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tableheading">Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tableheading">Description</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">src</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tablebodytext">The source string to process for extraneous whitespace.  May be empty but never null.</p>
+</td>
+</tr>
+
+</table>
+<p class="list2"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="16842.htm" target="_self">System Functions</a></p><p class="relateditem"><a href="15434.htm" target="_self">$rx.asmhelper</a></p><p class="relateditem"><a href="15435.htm" target="_self">$rx.codec</a></p><p class="relateditem"><a href="16840.htm" target="_self">$rx.cond</a></p><p class="relateditem"><a href="15436.htm" target="_self">$rx.db</a></p><p class="relateditem"><a href="15437.htm" target="_self">$rx.doc</a></p><p class="relateditem"><a href="15438.htm" target="_self">$rx.ext</a></p><p class="relateditem"><a href="15439.htm" target="_self">$rx.guid</a></p><p class="relateditem"><a href="15454.htm" target="_self">$rx.i18n</a></p><p class="relateditem"><a href="15459.htm" target="_self">$rx.keyword</a></p><p class="relateditem"><a href="15440.htm" target="_self">$rx.link</a></p><p class="relateditem"><a href="15441.htm" target="_self">$rx.location</a></p><p class="relateditem"><a href="15452.htm" target="_self">$rx.nav</a></p><p class="relateditem"><a href="17423.htm" target="_self">$rx.session</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

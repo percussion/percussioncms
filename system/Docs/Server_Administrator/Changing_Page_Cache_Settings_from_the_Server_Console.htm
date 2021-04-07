@@ -1,0 +1,107 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Changing Page Cache Settings from the Server Console </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Cache	Setting through Server Console, Server Administrator	Changing Page Cache Settings">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="12384.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="14145.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Changing Page Cache Settings from the Server Console</h3>
+<p class="bodytext">Rhythmyx provides several cache console commands for managing the page cache from the server console or through the Server Administrator using a remote console command.</p>
+<table width="742" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="225"><p class="tableheading">Command</p>
+</th>
+<th style = "border:1px solid #010101;" width="518"><p class="tableheading">Description                                           </p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="225"><p class="tablebodytext">flush cache &lt;[keys]&gt;</p>
+</td>
+<td style = "border:1px solid #010101;" width="518"><p class="tablebodytext">Flushes the cache based on the provided keys.  [keys] is a semi-colon delimited list of keys that you must provide in the correct order.  [type] is the page item type, and may be either assembler or resource. You must enter a [type] if you enter [keys]. </p>
+<p class="tablebodytext">The keys that you may use to flush a set of assembler items are:</p>
+<ul class="listbullet2"><li class="listbullet2">Application name (case sensitivity is determined by server setting)</li><li class="listbullet2">ContentId</li><li class="listbullet2">RevisionId</li><li class="listbullet2">VariantId<p class="tablebodytext">You may omit keys, but you must provide a placeholder semi-colon for any that are skipped.  If you specify RevisionId, you must also specify ContentId.  </p>
+<p class="tablebodytext">For example, to flush all pages based on ContentId=135 and RevisionId=1:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">flush cache assembler ;135;1;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">The keys that you must use to flush a resource item are:</code></code></p>
+</li><li class="listbullet2"><code class="monospace"><code class="monospace">Application name</code></code></li><li class="listbullet2"><code class="monospace"><code class="monospace">Dataset name</code></code><p class="tablebodytext"><code class="monospace"><code class="monospace">You may omit either or both keys, </code></code>but you must provide a placeholder semi-colon for any that are skipped<code class="monospace">.</code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">For example, to flush the page based on application name= sys_Compare and Dataset=dataset145:</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">flush cache resource sys_compare;dataset145</code></code></p>
+<p class="tablebodytext">To flush the entire cache, omit the [type] and [keys]:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">flush cache</code></code></p>
+</li></ul></td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="225"><p class="tablebodytext">start cache</p>
+</td>
+<td style = "border:1px solid #010101;" width="518"><p class="tablebodytext">Enables the cache if it is not already enabled.  Does not affect the enabled setting in the server configuration. Enables both assembler and resource caching.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="225"><p class="tablebodytext">stop cache</p>
+</td>
+<td style = "border:1px solid #010101;" width="518"><p class="tablebodytext">Flushes all cache items and stops the cache if it is running. Displays the cache statistics.  Does not affect the enabled setting in the server configuration. Flushes both assembler and resource page items in the cache.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="225"><p class="tablebodytext">restart cache</p>
+</td>
+<td style = "border:1px solid #010101;" width="518"><p class="tablebodytext">Stops and restarts the cache.  (Clears the statistics and flushes the cache.)  Displays the cache statistics. Stops and restarts assembler and resource caching.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="225"><p class="tablebodytext">dump cache</p>
+</td>
+<td style = "border:1px solid #010101;" width="518"><p class="tablebodytext">Displays the following cache statistics to the console:</p>
+<ul class="listbullet2"><li class="listbullet2">Hit rate (# of hits / total # of requests)</li><li class="listbullet2">Total hits - Total misses</li><li class="listbullet2">Total number of items in the cache</li><li class="listbullet2">Total memory used</li><li class="listbullet2">Total disk space used</li><li class="listbullet2">Average size of an item</li><li class="listbullet2">Disk hit rate (# of hits retrieved from disk/ total # of hits). This information is also displayed by the <code class="monospace">dump resources</code> command.<p class="tablebodytext">Displays combined statistics for assembler and resource caching.</p>
+<p class="tablebodytext"></p>
+</li></ul></td>
+</tr>
+
+</table>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Optimizing_Performance.htm" target="_self">Optimizing performance</a></p><p class="relateditem"><a href="12384.htm" target="_self">Maintaining Caching Settings</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

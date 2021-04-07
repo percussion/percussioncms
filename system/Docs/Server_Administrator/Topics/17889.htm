@@ -1,0 +1,64 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Search Configuration </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Search Configuration">
+<link rel="stylesheet" type="text/css" href="36.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Communities_and_Security.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="17803.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Search Configuration</h2>
+<p class="bodytext">The Search tab of the Rhythmyx Server Administrator includes:</p>
+<ul class="listbullet"><li class="listbullet">The Full-text search sub-tab allows you to enable and disable the full-text search, change the default index directory and override the default indexing interfaces. <p class="widegraphic"><img src="sa_searchtablucene.gif" alt="Search Tab" height="442" width="544" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li></ul><p class="bodytext">The full-text search engine is located in the Rhythmyx server, and by default, is enabled for all users.  If you want your system to use the database search, disable the full-text search in this screen. </p>
+<p class="bodytext"><strong class="specialbold">Full Text Search Sub Tab Field Descriptions</strong></p>
+<p class="bodytext"><strong class="specialbold">Enabled </strong>- Checkbox indicating whether the full-text search engine is enabled.  The default is enabled.  For details see <a id="h14401" class="jumptemplate" title="Disabling Full-text Search" href="17919.htm" target="_self">Disabling Full-text Search</a>.</p>
+<p class="bodytext"><strong class="specialbold">Index dir</strong> - The location where the full-text search engine creates and reads indexes of search terms for the full-text search. The default location is &lt;Rhythmyx root&gt;/sys_search/lucene. Content items are indexed to the search index  when they are created or when you initiate indexing manually through a console command.</p>
+<p class="bodytext"><strong class="specialbold">Expand query with synonyms</strong> - When checked, the search engine searches on words with similar meanings to the words you enter as well as matching the characters entered. Unchecked by default.</p>
+<p class="bodytext"><strong class="specialbold">Analyzers </strong>- Extensions which analyze text extracted from content items and convert the text into words and phrases that are put in a search index. Text analysis might, for example, extract words and phrases, discard punctuation, and remove common words before inserting terms into an index. An analyzer works with text associated with one or more Locales. </p>
+<p class="bodytext">This table does not display the out-of-the-box analyzers that the search engine uses.  It is included so that you can <a id="h18023" class="jumptemplate" title="How to Override the Default Text Analyzer" href="17803.htm" target="_self">override the out-of-the-box analyzers</a> or one or more Locales with your own analyzers. You can also add Locales and associate custom analyzers with them.</p>
+<p class="listcontinue"><strong class="specialbold">Item Locale</strong> - Content items with this Locale use the analyzer specified in this row.</p>
+<p class="listcontinue"><strong class="specialbold">Analyzer</strong> - Name of the analyzer that overrides the out-of-the-box analyzer for the specified Locale.</p>
+<p class="bodytext"><strong class="specialbold">Text Extractors</strong> - Since the Rhythmyx search engine only indexes text strings, if content is not stored as plain text, it must be extracted from its non-text format before the search engine indexes it.  A text extractor extracts text associated with a mime type. </p>
+<p class="bodytext">This table does not display the out-of-the-box text extractors that the search engine uses. It is included so that you can <a id="h18024" class="jumptemplate" title="How to Override the Default Text Extractor" href="17801.htm" target="_self">override the out-of-the-box text extractors</a> for one or more mime types with your own text extractors. You can also add mime types and associate custom text extractors with them.</p>
+<p class="listcontinue"><strong class="specialbold">Mime Type</strong> - Content items with this mime type use the text extractor specified in this row.</p>
+<p class="listcontinue"><strong class="specialbold">Extractor</strong> - Name of the text extractor that overrides the out-of-the-box text extractor for the specified mime type.</p>
+<p class="note">The engine for the full-text search exists within the Rhythmyx Server and cannot be moved to another location.</p>
+
+</body>
+</html>
+
+

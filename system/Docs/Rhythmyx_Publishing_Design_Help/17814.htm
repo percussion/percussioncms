@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Maintaining Editions </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Editions">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="17813.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="17815.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="indexpage.htm" target="TOC"><img src="123.gif" alt="Book Index" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h1 class="heading1">Maintaining Editions</h1>
+<p class="bodytext"> An Edition specifies a set of Content Lists and the sequence in which to publish them. &nbsp;The sequence is important for two reasons:</p>
+<ul class="listbullet"><li class="listbullet">First, because a page is composed from multiple items, and these items themselves may be groupings of other items, more elemental items should be published first, followed by higher level items, and finally by pages. &nbsp;In other words, images should be published before articles because articles will typically include images. &nbsp;Articles should be published before indices because index items typically include article items. &nbsp;</li><li class="listbullet">Second, different Content Lists typically have different publishing rules, which specify the response to errors generated in earlier Content Lists, such as omitting an item if a child item is not published, publishing the item without the child item, or publishing the item with an error message.<p class="listnote">Note:  If you are using legacy publishing (publishing as implemented before Rhythmyx Version 6.0), the sequence of Content Lists is important if you unpublish and publish to the same URL.  In Version 5.7 and earlier, it was possible for one Content List to both unpublish and publish, but, if the order was not controlled correctly, new content could be published and then immediately unpublished.  To avoid this problem, most implementations included separate Content Lists to unpublish from the Content Lists to publish.  When defining the Edition, the unpublish Content Lists would be sequenced before publish Content Lists so only expired content was unpublished, rather than inadvertently unpublishing new content.</p>
+<p class="listnote">In Rhythmyx Version Mako, this is no longer a problem, and unpublishing behavior is handled as part of the Edition itself.</p>
+</li></ul><p class="bodytext">An Edition can also specify a set of tasks to run in association with the Edition.  Tasks may be run either before the Edition is processed or after Edition processing is completed.  For example, you can define a pre-Edition task to establish a connection to the remote Web server before publishing the content and breaking the connection after the Edition is complete; or you might define a post-Edition task to run a link checker.</p>
+<p class="bodytext">When you select the Editions node under a Site, Rhythmyx displays the Editions list in the View and Edit pane.  The Editions list displays all Editions associated with the parent Site.  Clicking the header of any column in the table sorts the rows in the table based on the order of that column.</p>
+<p class="widegraphic"><img src="hlp_editionlist.gif" alt="Mako_Edition List" height="179" width="596" vspace="2" hspace="2" align="bottom" border="0" /></p>
+<p class="bodytext">Use the <a id="h679" class="jumptemplate" title="Editions Editor" href="17815.htm" target="_self">Edition editor</a> to create and maintain Editions.  Use the <a id="h17862" class="jumptemplate" title="Associate Content List" href="17838.htm" target="_self">Add/Edit Content List dialog</a> to add Content Lists to an Edition or maintain the association between a Content List and an Edition.</p>
+<p class="bodytext">You can </p>
+<ul class="listbullet"><li class="listbullet"><a id="h15081" class="jumptemplate" title="Creating an Edition" href="17853.htm" target="_self">Create an Edition</a>;</li><li class="listbullet"><a id="h12303" class="jumptemplate" title="Modifying an Edition" href="17854.htm" target="_self">Modify an Edition</a> (including adding and removing Content Lists);</li><li class="listbullet"><a id="h12304" class="jumptemplate" title="Deleting an Edition" href="17855.htm" target="_self">Delete an Edition</a>.</li></ul><p class="bodytext">NOTE:  For information about scheduling an Edition to publish, see the <em class="emphasis">Rhythmyx Administration Manual</em> or, in the Help for the Rhythmyx Administation tab, see &quot;Scheduled Tasks&quot;.</p>
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
