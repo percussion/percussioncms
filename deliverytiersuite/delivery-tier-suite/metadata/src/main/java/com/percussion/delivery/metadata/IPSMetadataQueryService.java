@@ -55,28 +55,27 @@ public interface IPSMetadataQueryService
      *
      *
      */
-    public enum SORTTYPE
+     enum SORTTYPE
     {
         NONE, PROPERTY, METADATA
     }
 
-    // Column names in the properties table
-    public static final String PROP_DATEVALUE_COLUMN_NAME = "datevalue";
+     String PROP_DATEVALUE_COLUMN_NAME = "datevalue";
 
-    public static final String PROP_NUMBERVALUE_COLUMN_NAME = "numbervalue";
+     String PROP_NUMBERVALUE_COLUMN_NAME = "numbervalue";
 
-    public static final String PROP_STRINGVALUE_COLUMN_NAME = "stringvalue";
+     String PROP_STRINGVALUE_COLUMN_NAME = "stringvalue";
 
-    public static final String PROP_VALUEHASH_COLUMN_NAME="valueHash";
+     String PROP_VALUEHASH_COLUMN_NAME="valueHash";
 
-    public static final String PROP_TEXTVALUE_COLUMN_NAME = "textvalue";
+     String PROP_TEXTVALUE_COLUMN_NAME = "textvalue";
 
-    public static final String SORT_ORDER_ASCEND = "asc";
+     String SORT_ORDER_ASCEND = "asc";
 
-    public static final String SORT_ORDER_DESCEND = "desc";
+     String SORT_ORDER_DESCEND = "desc";
 
-    public Integer getQueryLimit();
+     Integer getQueryLimit();
 
-    public void setQueryLimit(Integer limit);
+      void setQueryLimit(Integer limit);
 
 }
