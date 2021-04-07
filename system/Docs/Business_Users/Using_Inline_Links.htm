@@ -1,0 +1,108 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Using Inline Links </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Inline Links, Inline Links	Types of Inline Links">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="UsingaDatabaseSearch.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Creating_Inline_Links_and_Inline_Images_in_Word.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Using Inline Links</h2>
+<p class="bodytext">An inline object is an object you create in the text of a Content Item.  You can insert inline objects into Content Editor fields that use the rich text editor or into body fields in Content Items that you create in Word.  </p>
+<p class="note">NOTE: This section assumes that when you choose to insert an inline object, the Content Browser opens, although in some systems a search dialog opens instead of the Content Browser.  </p>
+<p class="bodytext">Three types of inline objects are available:</p>
+<table width="982" cellpadding="2" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr align="left" valign="top">
+<td style = "border-bottom:1px solid #010101;" width="60"><p class="tablebodytext"><img src="cmslink.gif" alt="CMS link" height="20" width="25" vspace="2" hspace="2" align="bottom" border="0"></p>
+</td>
+<td style = "border-bottom:1px solid #010101;" width="120"><p class="tablebodytext">Inline Link</p>
+</td>
+<td style = "border-bottom:1px solid #010101;" width="802"><p class="tablebodytext">An inline link is a link to another Content Item that creates a hotspot on selected text in the assembled HTML output.  When a user clicks on this hotspot, the browser jumps to the formatted page of the Content Item specified as the target of the link.  (NOTE:  If the target page is not public or does not exist for some other reason, no link will be published.)  Because they create jumps to a new page, inline links can only link to formatted page Templates of a Content Item.  </p>
+<p class="tablebodytext">For example, suppose you were editing a Content Item and wanted to create a link on the selected text in the graphic below:</p>
+<p class="tablebodytext"><img src="inlinelinkselected60.gif" alt="Inline Link Selected in sys_EditLive control" height="207" width="624" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="tablebodytext">If you click the inline link button, Rhythmyx displays the <a id="h17825" class="jumptemplate" title="Using the Content Browser" href="17816.htm" target="_self">Content Browser</a> , which you can use to search for Content Items formatted as Page Templates.  Rhythmyx creates a link to the content item that you choose formatted using the page Template that you select. It adds hyperlink formatting in the rich text editor to indicate that the selected text is a link.  </p>
+<p class="tablebodytext"> </p>
+<p class="tablebodytext"><img src="inlinelinkadded60.gif" alt="Inline link added to text in sys_editlive control" height="207" width="625" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="tablebodytext">When Rhythmyx assembles the page, it creates a link on the text in the HTML. When you click on the link on the HTML page, your browser will jump to the targeted HTML page.</p>
+<p class="tablebodytext">Note: If the link does not access a page in a public State, when the original page is published the link does not appear. </p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border-bottom:1px solid #010101;" width="60"><p class="tablebodytext"><img src="cx_cmsinlinelinkvariant.gif" alt="CX_CMSInlineLinkVariant" height="26" width="26" vspace="2" hspace="2" align="bottom" border="0"></p>
+</td>
+<td style = "border-bottom:1px solid #010101;" width="120"><p class="tablebodytext">Inline Template</p>
+</td>
+<td style = "border-bottom:1px solid #010101;" width="802"><p class="tablebodytext">An inline Template inserts the content of the specified content item, formatted by the Snippet Template you select.  Inline Templates can only insert Snippet  Templates, since the content is assembled within another Content Item.  </p>
+<p class="tablebodytext">The formatted content does not necessarily link to another page, but it may.  For example, suppose we wanted to insert a link to another Content Item in the space below the  paragraph in the following field:</p>
+<p class="tablebodytext"><img src="inlinetemplate60.gif" alt="sys_editlive control" height="207" width="625" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="tablebodytext">When we click the inline Template button, Rhythmyx displays the <a id="h17825_2" class="jumptemplate" title="Using the Content Browser" href="17816.htm" target="_self">Content Browser</a>.  In this case, we choose the Search tab. After entering the search criteria, Rhythmyx displays the search results:</p>
+<p class="tablebodytext"><img src="contentbrowsersearchresults66.gif" alt="Content Browser Search Results" height="502" width="572" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="tablebodytext">We click the row for <em class="emphasis">Enterprise Investments Acquires . . . </em>The Template Selection window opens and you must choose the Template that you want to format the item.  Clicking on each Template shows you a preview of how it will appear.</p>
+<p class="tablebodytext"><img src="contentbrowserpreviewtemplate.gif" alt="Content Browser, Template Selection Window" height="361" width="558" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="tablebodytext">Leave the Template that you want to insert selected and click [<strong class="buttons">Select</strong>].  The following snippet, formatted as the Template is inserted into our field:</p>
+<p class="tablebodytext"><img src="inlinetemplatemako.gif" alt="Inline Template inserted" height="247" width="547" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="tablebodytext">&nbsp;</p>
+<p class="tablebodytext">When assembled, the inserted text is a link to the content item &quot;Enterprise Investments Acquires . . .&quot;.</p>
+<p class="tablebodytext">Note that you cannot edit the text of an inline Template.  If you want to edit this text, you must edit the inserted content item outside of the field.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="60"><p class="tablebodytext"><img src="o6832.gif" alt="" height="27" width="32" vspace="2" hspace="2" align="bottom" border="0">.</p>
+</td>
+<td width="120"><p class="tablebodytext">Inline Image</p>
+</td>
+<td width="802"><p class="tablebodytext">An inline image inserts an Image Content Item into the specified location.</p>
+<p class="tablebodytext">Note that you could use an inline Template to insert an image into a content item.  The option you prefer depends on how you want to control the attributes of the image.  If you want to use the rich text editor to control the attributes of the image, insert it using an inline image.  If you want to use the Content Type and Template to control the attributes of the image, insert it as an inline Template.  </p>
+<p class="tablebodytext">Another factor determining whether you use an inline image or an inline Template is whether you want to create an inline link on the image.  If you want to create an inline link on the image, you must insert it as an inline image so you can edit it to add the inline link.  You cannot use an inline Template because you cannot edit the inline Template to add the inline link.</p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">In This Section</p><p class="relateditem"><a href="Creating_Inline_Links_and_Inline_Images_in_Word.htm" target="_self">Creating Inline Links and Inline Images in Word</a></p><p class="relateditem"><a href="Creating_Inline_Links_in_a_Content_Editor.htm" target="_self">Creating Inline Links in a Content Editor</a></p><p class="relateditem"><a href="Inserting_Inline_Images_into_a_Content_Editor.htm" target="_self">Inserting Inline Images into a Content Editor</a></p><p class="relateditem"><a href="15375.htm" target="_self">Inserting External Links in a Content Editor</a></p><p class="relateditem"><a href="17830.htm" target="_self">Inserting an Inline Template into a Content Editor</a></p><p class="relateditem"><a href="17831.htm" target="_self">Creating an Inline Link on an Inline Image</a></p></td>
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Working_with_Content_Items.htm" target="_self">Working with Content Items</a></p><p class="relateditem"><a href="Action_Menus.htm" target="_self">Action Menus</a></p><p class="relateditem"><a href="9163.htm" target="_self">Action Panels</a></p><p class="relateditem"><a href="Creating_New_Items.htm" target="_self">Creating New Items</a></p><p class="relateditem"><a href="Entering_New_Content_into_a_Content_Editor.htm" target="_self">Entering New Content into a Content Editor</a></p><p class="relateditem"><a href="Editing_an_Item.htm" target="_self">Editing an Item</a></p><p class="relateditem"><a href="Viewing_an_Item.htm" target="_self">Viewing an Item</a></p><p class="relateditem"><a href="Viewing_Item_Properties.htm" target="_self">Viewing Item Properties</a></p><p class="relateditem"><a href="Editing_Content_in_a_Public_State.htm" target="_self">Editing Content in a Public State</a></p><p class="relateditem"><a href="17816.htm" target="_self">Using the Content Browser</a></p><p class="relateditem"><a href="Adding_Active_Assembly_Relationships.htm" target="_self">Performing Active Assembly Through a Content Editor</a></p><p class="relateditem"><a href="Managing_Content_Lifecycles.htm" target="_self">Managing Content Life cycles</a></p><p class="relateditem"><a href="Relationship_Management.htm" target="_self">Relationship Management</a></p><p class="relateditem"><a href="Revisions_Copies_and_Versions.htm" target="_self">Revisions, Copies, and Versions</a></p><p class="relateditem"><a href="Keyboard_Shortcuts_Available_in_Rhythmyx.htm" target="_self">Keyboard Shortcuts Available in Rhythmyx</a></p><p class="relateditem"><a href="Pasting_Copies_Versus_Links.htm" target="_self">Pasting: Copies Versus Links</a></p><p class="relateditem"><a href="purging_content_items.htm" target="_self">Purging Content Items</a></p><p class="relateditem"><a href="9224.htm" target="_self">Working with Rhythmyx Content Items Available in Web Folders</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

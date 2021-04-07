@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Server Console Commands for Flushing the Server and MetaData Caches </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Cache (flushing), Flushing	Flushing/cache, Metadata, Server	Cache">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Server_Console_Commands_for_Displaying_Resources.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="17922.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc177616.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h5 class="heading5">Server Console Commands for Flushing the Server and MetaData Caches</h5>
+<table width="600" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="110"><p class="tableheading">MetaData Cache</p>
+</th>
+<th style = "border:1px solid #010101;" width="245"><p class="tableheading">&nbsp;</p>
+</th>
+<th style = "border:1px solid #010101;" width="245"><p class="tableheading">&nbsp;</p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="110"><p class="tableheading"><strong class="specialbold">To . . . </strong></p>
+</th>
+<th style = "border:1px solid #010101;" width="245"><p class="tableheading"><strong class="specialbold">Enter the command . . . </strong></p>
+</th>
+<th style = "border:1px solid #010101;" width="245"><p class="tableheading"><strong class="specialbold">Notes</strong></p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Flush the metadata cache</p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="tablebodytext"><code class="monospace"><code class="monospace">flush dbmd [-d datasource] [-t table] </code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="tablebodytext">The <code class="monospace">-d database</code> and <code class="monospace">-t table</code>, parameters are optional.</p>
+<p class="tablebodytext">Examples:</p>
+<p class="tablebodytext">To flush metadata for a backend table named dbo.RXARTICLE:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">flush dbmd -d rxmaster -t RXARTICLE</code></code></p>
+<p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Get Help with the <code class="monospace">flush dbmd</code> command</p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="bodytext"><code class="monospace"><code class="monospace">flush dbmd </code></code></p>
+<p class="tablebodytext">OR</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">flush dbmd -h</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="tablebodytext">Example:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">flush dbmd -h</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;command&gt;flush dbmd &lt;/command&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultCode&gt;0&lt;/resultCode&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultText&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">Format of this command is:</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">flush dbmd -d [datasource] -t [table]</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">or</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">flush dbmd [-h]</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">The switches are not case sensitive, and the space  </code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">.	.	.</code></code></p>
+</td>
+</tr>
+
+</table>
+<p class="tablebodytext"></p>
+<table width="600" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="110"><p class="tableheading">Server Cache</p>
+</th>
+<th style = "border:1px solid #010101;" width="245"><p class="tableheading">&nbsp;</p>
+</th>
+<th style = "border:1px solid #010101;" width="245"><p class="tableheading">&nbsp;</p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="110"><p class="tableheading"><strong class="specialbold">To . . . </strong></p>
+</th>
+<th style = "border:1px solid #010101;" width="245"><p class="tableheading"><strong class="specialbold">Enter the command . . . </strong></p>
+</th>
+<th style = "border:1px solid #010101;" width="245"><p class="tableheading"><strong class="specialbold">Notes</strong></p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Delete all data from the server cache</p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="bodytext"><code class="monospace"><code class="monospace">flush cache </code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="tablebodytext">Flushes all assembler and resource pages.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Delete specific data from the server cache</p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="tablebodytext"><code class="monospace"><code class="monospace">For assembler pages:</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">flush cache assembler [applicationname];[contentid];<br />[revisionid];[variantid]</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">For resource pages:</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">flush cache resource [applicationname];[datasetname]</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="tablebodytext">The parameters must be supplied in the specified orders; they may be omitted, but the semi-colon placeholder must be included. </p>
+<p class="tablebodytext">Example:</p>
+<p class="tablebodytext">To flush all pages where contentid=135 and revisionid=1:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">flush cache ;135;1;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;command&gt;flush cache ;135;1;&lt;/command&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultCode&gt;1532&lt;/resultCode&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultText&gt;The cache has been flushed.&lt;/resultText&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;/PSXConsoleCommandResults&gt;</code></code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Display information from the server cache</p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="tablebodytext"><code class="monospace"><code class="monospace">dump cache</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="tablebodytext">Displays hit rate, total hits, total misses, number of items in cache, memory used, disk space used, average size of item, and disk hit rate. Amounts displayed are combined totals for cached assembler and resource pages</p>
+<p class="tablebodytext">Example:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">dump cache</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;command&gt;dump cache &lt;/command&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;CacheStatistics&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;totalHits&gt;0&lt;/totalHits&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;totalRequests&gt;0&lt;/totalRequests&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;hitRate&gt;0%&lt;/hitRate&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;diskHitRate&gt;0%&lt;/diskHitRate&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;memoryUsage&gt;0 bytes&lt;/memoryUsage&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;diskUsage&gt;0 bytes&lt;/diskUsage&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;totalItems&gt;0&lt;/totalItems&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;AverageItemSize&gt;0 bytes&lt;/AverageItemSize&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;/CacheStatistics&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;/PSXConsoleCommandResults&gt;</code></code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Start the server cache</p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="tablebodytext"><code class="monospace"><code class="monospace">start cache</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="tablebodytext">Starts both assembler and resource caching.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Stop and restart the server cache</p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="tablebodytext"><code class="monospace"><code class="monospace">restart cache</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="tablebodytext">Stops cache, restarts cache, and displays cache statistics on the server console. Applies to both assembler and resource page caching. Statistics are combined totals for assembler and resource pages.</p>
+<p class="tablebodytext">Example:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">restart cache</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">Cache             9/6/02 11:00 AM: Restarting cache with new settings</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;command&gt;restart cache &lt;/command&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;CacheStatistics&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;totalHits&gt;0&lt;/totalHits&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;totalRequests&gt;0&lt;/totalRequests&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;hitRate&gt;0%&lt;/hitRate&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;diskHitRate&gt;0%&lt;/diskHitRate&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;memoryUsage&gt;0 bytes&lt;/memoryUsage&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;diskUsage&gt;0 bytes&lt;/diskUsage&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;totalItems&gt;0&lt;/totalItems&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;AverageItemSize&gt;0 bytes&lt;/AverageItemSize&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;/CacheStatistics&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultCode&gt;1536&lt;/resultCode&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultText&gt;The server has restarted caching.&lt;/resultText&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;/PSXConsoleCommandResults&gt;</code></code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="110"><p class="tablebodytext">Stop the server cache</p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="tablebodytext"><code class="monospace"><code class="monospace">stop cache</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="245"><p class="tablebodytext">Flushes cache, stops it, and displays cache statistics on the console. Applies to both assembler and resource caching. Statistics are combined totals for assembler and resource pages.</p>
+<p class="tablebodytext">Example:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">stop cache</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">Cache             9/6/02 11:26 AM: Stopping cache</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;command&gt;stop cache &lt;/command&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;CacheStatistics&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;totalHits&gt;0&lt;/totalHits&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;totalRequests&gt;0&lt;/totalRequests&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;hitRate&gt;0%&lt;/hitRate&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;diskHitRate&gt;0%&lt;/diskHitRate&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;memoryUsage&gt;0 bytes&lt;/memoryUsage&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;diskUsage&gt;0 bytes&lt;/diskUsage&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;totalItems&gt;0&lt;/totalItems&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;AverageItemSize&gt;0 bytes&lt;/AverageItemSize&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;/CacheStatistics&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultCode&gt;1534&lt;/resultCode&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultText&gt;The server has stopped caching.&lt;/resultText&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;/PSXConsoleCommandResults&gt;</code></code></p>
+</td>
+</tr>
+
+</table>
+<p class="tablebodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Server_Console_Commands_by_Function.htm" target="_self">Server Console Commands by Function</a></p><p class="relateditem"><a href="General_Server_Console_Commands.htm" target="_self">General Server Console Commands</a></p><p class="relateditem"><a href="Server_Console_Commands_for_Applications.htm" target="_self">Server Console Commands for Applications</a></p><p class="relateditem"><a href="Server_Console_Commands_for_Displaying_Resources.htm" target="_self">Server Console Commands for Displaying Resources</a></p><p class="relateditem"><a href="17922.htm" target="_self">Server Console Commands for Search</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

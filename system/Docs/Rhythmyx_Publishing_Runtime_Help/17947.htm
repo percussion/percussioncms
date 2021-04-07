@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Reviewing Publishing Logs </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Logs, Logs	Edition Logs, Logs	Site Logs, Status">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="17957.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="17949.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="indexpage.htm" target="TOC"><img src="123.gif" alt="Book Index" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h1 class="heading1">Reviewing Publishing Logs</h1>
+<p class="bodytext">Rhythmyx maintains a log of the results of each Edition publishing job.  You can access these logs in two ways:</p>
+<ul class="listbullet"><li class="listbullet">The Runtime Edition dialog lists all logs for the Edition.<p class="widegraphic"><img src="help_runtimeeditionnostatus.gif" alt="Help_Runtime Edition No Status" height="238" width="594" vspace="2" hspace="2" align="bottom" border="0" /></p>
+</li><li class="listbullet">The Publishing Logs dialog lists all logs for all Editions in the Site.<p class="widegraphic"><img src="help_publishinglog.gif" alt="Help_Publishing Log" height="529" width="620" vspace="2" hspace="2" align="bottom" border="0" /></p>
+<p class="listcontinue">The Status column indicates the outcome of the publishing run.  This column contains one of the following graphics:</p>
+<table width="618" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="60"><p class="tableheading">Graphic</p>
+</td>
+<td style = "border:1px solid #010101;" width="150"><p class="tableheading">Brief description</p>
+</td>
+<td style = "border:1px solid #010101;" width="408"><p class="tableheading">Full Description</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="60"><p class="tablebodytext"><img src="edition_completed.gif" alt="edition completed icon" height="16" width="16" vspace="2" hspace="2" align="bottom" border="0" /></p>
+</td>
+<td style = "border:1px solid #010101;" width="150"><p class="tablebodytext">Completed</p>
+</td>
+<td style = "border:1px solid #010101;" width="408"><p class="tablebodytext">All Content Lists were processed successfully and all Content Items were published successfully.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="60"><p class="tablebodytext"><img src="edition_completed_contentlist_failure.gif" alt="edition completed with failures icon" height="16" width="16" vspace="2" hspace="2" align="bottom" border="0" /></p>
+</td>
+<td style = "border:1px solid #010101;" width="150"><p class="tablebodytext">Completed with failures</p>
+</td>
+<td style = "border:1px solid #010101;" width="408"><p class="tablebodytext">Publishing of one or more Content Items may have failed.  Check the log for the run to identify the Content Items for which publishing failed to determine the causes of the failures.</p>
+<p class="tablebodytext">Publishing of one or more Content Lists may have failed.  Check the console log (&lt;Rhythmyxroot&gt;/console.log) to determine which Content Lists failed and why.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="60"><p class="tablebodytext"><img src="edition_canceled_by_user.gif" alt="edition cancelled icon" height="16" width="16" vspace="2" hspace="2" align="bottom" border="0" /></p>
+</td>
+<td style = "border:1px solid #010101;" width="150"><p class="tablebodytext">Cancelled</p>
+</td>
+<td style = "border:1px solid #010101;" width="408"><p class="tablebodytext">The Content Items were assembled and prepared for delivery but the Edition was cancelled by the user before the Content Items were delivered.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="60"><p class="tablebodytext"><img src="edition_terminated_abnormally.gif" alt="edition aborted icon" height="16" width="16" vspace="2" hspace="2" align="bottom" border="0" /></p>
+</td>
+<td style = "border:1px solid #010101;" width="150"><p class="tablebodytext">Aborted</p>
+</td>
+<td style = "border:1px solid #010101;" width="408"><p class="tablebodytext">The publishing job was aborted.  </p>
+</td>
+</tr>
+
+</table>
+<p class="listnote">In some cases, the total number of Content Items reported in the log may not equal the total number of Content Items queued for processing.  Logs results are only recorded for Content Items that have been processed by the Assembly Engine.  Content Items that have been queued but not assembled will not have log results. </p>
+</li><li class="listbullet">The Publishing Status page lists all Editions currently running or that were run within the past hour.  <p class="widegraphic"><img src="adm_pubstatus.gif" alt="Adm_ Publishing Status" height="126" width="598" vspace="2" hspace="2" align="bottom" border="0" /></p>
+</li></ul><p class="bodytext">You can access details of each log.  When you click on the log entry, Rhythmyx displays the Log View in the View and Edit pane.</p>
+<p class="widegraphic"><img src="help_publishingjoblogview.gif" alt="Help_Publishing Job Log View" height="218" width="516" vspace="2" hspace="2" align="bottom" border="0" /></p>
+<p class="bodytext">The Log View displays a list of the Content Items published with summary information about each Content Item.  For details about a Content Item, double-click on the Content Item.  Rhythmyx displays the Published Item Details in the View and Edit pane.</p>
+<p class="widegraphic"><img src="help_publisheditemdetail.gif" alt="Help_Published Item Detail" height="382" width="769" vspace="2" hspace="2" align="bottom" border="0" /></p>
+<p class="bodytext">The Published Item Details includes publishing details for the Content Item in the Edition job.  If publishing of the Content Item failed, the dialog displays an detailed error message.</p>
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Workflow Actions </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Implementing_Quick_Edit.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc177593.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="indexpage.htm" target="TOC"><img src="123.gif" alt="Book Index" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Workflow Actions</h2>
+<p class="bodytext">A Workflow Action is an automatic action that can be added to a Transition. &nbsp;Rhythmyx executes the Workflow Action when Transitioning a content item from one State to another. &nbsp;For example, when a content item is approved for Transition to a Public State, all other content items that refer to that item need to be &quot;touched&quot; so the Publisher will republish them with updated links. &nbsp;A Workflow Action could be developed and added to the Transition to touch all of the other content items to ensure that they will be updated.</p>
+<p class="bodytext">A Workflow Action is an extension of the IPSExtension Java extension. &nbsp;Thus, a Workflow Action extension must follow all of the requirements of Rhythmyx extensions, including thread safety. &nbsp;&nbsp;The Workflow Action extension must include a <code class="monospace">performAction</code> method and implement the IPSWorkflowAction interface. &nbsp;The <code class="monospace">performAction</code> method has two inputs: &nbsp;the request context and an instance of IPSWorkFlowContext. &nbsp;The code of the <code class="monospace">performAction</code> method defines the actual Workflow Action.</p>
+<p class="bodytext">To make the Workflow Action extension available, you must register it in the Rhythmyx Server Administrator. &nbsp;When registering a Workflow Action extension, you must select <code class="monospace">com.percussion.extension.IPSWorkflowAction</code> as the <strong class="specialbold">Supported Interface</strong>.</p>
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
