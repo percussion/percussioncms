@@ -116,30 +116,4 @@
 
     <taskdef name="PSZip" classname="com.percussion.ant.PSZip"/>
 
-    <!--==========================================================-->
-    <!-- PSDropView                                               -->
-    <!--                                                          -->
-    <!-- Drops the specified view if it exists.                   -->
-    <!--==========================================================-->
-    <macrodef name="PSDropView">
-        <attribute name="view" default=""/>
-        <attribute name="failonerror" default="true"/>
-        <attribute name="silenceerrors" default="false"/>
-
-        <sequential>
-            <if>
-                <PSTableViewExistsWizCondition isView="true" objectName="@{view}"/>
-                <then>
-                    <PSExecSQLStmt
-                            printExceptionStackTrace="true"
-                            qualifyViewNames="@{view}"
-                            sql="DROP VIEW @{view}"
-                            failonerror="@{failonerror}"
-                            silenceerrors="@{silenceerrors}"
-                    />
-                </then>
-            </if>
-        </sequential>
-    </macrodef>
-
 </antlib>

@@ -1,0 +1,62 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Checking Content In and Out </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Assembly_Workflow_and_Publishing.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Forcing_a_Checkin.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h4 class="heading4">Checking Content In and Out</h4>
+<p class="bodytext">Rhythmyx includes a check-in and check-out feature that allows multiple users to access a Content Item but prevents more than one user at a time from actively editing an item. &nbsp;When you check out a Content Item, you make it available to you to edit, and make it unavailable to all other users. &nbsp;When you have finished working with the Content Item and have updated your changes to the database, check the item back in to make it available to other users. &nbsp;</p>
+<p class="bodytext">Check-in and check-out are special types of Transitions that do not move a Content Item from one State to another, but change their accessibility by setting a lock flag that indicates whether a user has checked the item out, and which user has checked the item out. Users cannot check-in or check-out items that are in a public State. Check-in and check-out are available from the <em class="emphasis">Workflow &gt; Transition</em> sub-menu of the Action Menu.&nbsp;</p>
+<p class="bodytext">While a Content Item is checked out:</p>
+<ul class="listbullet"><li class="listbullet">no other user can check out that Content Item; </li><li class="listbullet">only the user who has that Content Item checked out can edit it;</li><li class="listbullet">only the user who has that Content Item checked out can create a new Copy of it;</li><li class="listbullet">no other user can perform a workflow action on the Content Item, except the Administrator, who can perform a <a id="h6907" class="jumptemplate" title="Forcing a Check In" href="Forcing_a_Checkin.htm" target="_self">forced check in</a>.</li></ul><p class="bodytext">While a Content Item is checked in:</p>
+<ul class="listbullet"><li class="listbullet">any user who has access to the Content Item can check it out;</li><li class="listbullet">any user who has access can perform a workflow transition on the Content Item.</li></ul><p class="bodytext">Some of the actions available in the Action Menu cause Rhythmyx to automatically check items in and out for you. When you select <em class="emphasis">Edit </em>in the Action Menu, if the Content Item is not already checked out, Rhythmyx checks it out to you. &nbsp;When you perform a Workflow transition on a Content Item from the Action Menu, if the item is not already checked in, Rhythmyx checks it in before performing the Workflow transition.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">In This Section</p><p class="relateditem"><a href="Forcing_a_Checkin.htm" target="_self">Forcing a Check In</a></p><p class="relateditem"><a href="Errors_When_Checking_in_a_Content_Item.htm" target="_self">Errors When Checking a Content Item In</a></p></td>
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Workflow.htm" target="_self">Workflow</a></p><p class="relateditem"><a href="Assembly_Workflow_and_Publishing.htm" target="_self">Assembly, Workflow, and Publishing</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

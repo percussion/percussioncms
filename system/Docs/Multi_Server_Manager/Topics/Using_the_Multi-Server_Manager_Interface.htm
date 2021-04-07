@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Using the Multi-Server Manager Interface </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Multi-Server Manager	Interface">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="15408.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Descriptors_View.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h1 class="heading1">Using the Multi-Server Manager Interface</h1>
+<p class="bodytext">The Rhythmyx <a title="Multi-Server Manager" href="18764.htm#o18765">Multi-Server Manager</a> window consists of a <strong class="specialbold"><a title="Server Groups Tree" href="18764.htm#o18777">Server Groups Tree</a></strong>, a <strong class="specialbold">Status Bar</strong>, a<strong class="specialbold"> <a title="Details Pane" href="18764.htm#o18779">Details Pane</a></strong>, and a <strong class="specialbold">Menu Bar</strong>.</p>
+<p class="widegraphic"><img src="emmainwindowcallout-60.gif" alt="Linked GIF" height="226" width="794" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext"><strong class="specialbold">Server Groups Tree</strong></p>
+<p class="bodytext">The <strong class="specialbold">Server Groups Tree</strong> displays all of the servers registered with your Rhythmyx Multi-Server Manager.  The top nodes are the servers' Rhythmyx repositories.  Below each repository node is a server name node, and below that are nodes for Source and/or Target elements on the server if they exist. A Source node with a <strong class="specialbold">Descriptors</strong> node under it is present if you have saved any descriptor files on the server.  A Target node with an <strong class="specialbold">Archives</strong> node and a <strong class="specialbold">Packages</strong> node under it is present if you have installed any archives on the server. </p>
+<p class="bodytext">If you save your <a id="h6085" class="jumptemplate" title="Connect to Server" href="Connect_to_Server.htm" target="_self">login credentials</a>, when you click an unconnected server node, the Multi-Server Manager automatically connects you to it. Right-click on the server name node to open a Server Action menu.</p>
+<p class="widegraphic"><img src="emserveractionmenu-56.gif" alt="EMServerActionMenu-56.bmp" height="119" width="128" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">The Server Action menu includes the following options</p>
+<ul class="listbullet"><li class="listbullet">Disconnect/Connect   <ul class="listbullet2"><li class="listbullet2">Connect - Connect client (Multi-Server Manager) to the server or open the Connect to Server dialog.</li><li class="listbullet2">Disconnect - Disconnects the server from the client (Multi-Server Manager). </li></ul></li><li class="listbullet">Registration - edit the registration of the server.</li><li class="listbullet">Policy Settings - Set Rhythmyx application policy settings.  The selected server will give these settings to all applications installed on it. </li><li class="listbullet">Identify <a title="ID Types" href="18764.htm#o18784">ID Types</a> - Specify ID Types for all server objects on the selected server.</li><li class="listbullet">Define <a title="Transforms" href="18764.htm#o18787">Transforms</a> - Map elements and datasources for the selected server.</li><li class="listbullet">Delete - Delete the server registration and remove the node and its contents from the table.</li></ul><p class="bodytext"><strong class="specialbold">Status Bar</strong></p>
+<p class="bodytext">When you select a repository node, the <strong class="specialbold">Status Bar</strong> displays repository information:</p>
+<p class="widegraphic"><img src="emstatusrepository-56.gif" alt="Status Repository Node" height="109" width="612" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">When you select a server node or any node below the server node, the <strong class="specialbold">Status Bar</strong> displays server information:</p>
+<p class="widegraphic"><img src="emstatusserver-60.gif" alt="Linked GIF" height="120" width="801" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytextright"></p>
+<p class="bodytext"><strong class="specialbold">Menu Bar</strong></p>
+<p class="bodytext">The Menu Bar displays links to three drop-down menus:</p>
+<ul class="listbullet"><li class="listbullet">Action menu<p class="widegraphic"><img src="emaction-56.gif" alt="" height="102" width="152" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li></ul><p class="list2">The Action menu includes the following options:</p>
+<ul class="listbullet2"><li class="listbullet2"><em class="emphasis">Register Server</em> - Register a server with the Multi-Server Manager.</li><li class="listbullet2"><em class="emphasis">Create <a title="Archive" href="18764.htm#o18769">Archive</a></em> - Open the <a id="h6158" class="jumptemplate" title="Creating and Editing Archives and Generating Descriptors" href="Creating_and_Editing_Archives_and_Descriptors.htm" target="_self">Create Archive/Descriptor Wizard</a>. Disabled (gray) if no servers are registered.</li><li class="listbullet2"><em class="emphasis">Install Archive</em> - Open the Install Archive Wizard. Disabled (gray) if no servers are registered.</li><li class="listbullet2"><em class="emphasis">Exit</em> - Close the Rhythmyx Multi-Server Manager.</li></ul><ul class="listbullet"><li class="listbullet">Edit menu</li></ul><p class="list2">You must select a server node to enable options in the Edit Menu.</p>
+<p class="widegraphic"><img src="emedit-56.gif" alt="" height="102" width="161" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="list2">The Edit menu includes the following options:</p>
+<ul class="listbullet2"><li class="listbullet2"><em class="emphasis">Registration</em> - Edit the registration of the server.</li><li class="listbullet2"><em class="emphasis">Policy Settings</em> - Set Rhythmyx application policy settings on the selected server. These settings will apply to all applications installed on the server. Enabled only if the server is connected.</li><li class="listbullet2"><em class="emphasis">Identify ID Types </em>- Specify ID Types for all hard-coded IDs in server objects on the selected server. Enabled only if the server is connected.</li><li class="listbullet2"><em class="emphasis">Define Transforms</em> - Map elements and datasources for the selected server and the target server. Enabled only if the server is connected.</li></ul><ul class="listbullet"><li class="listbullet">Help Menu<p class="widegraphic"><img src="emhelpmenu-56.gif" alt="" height="62" width="201" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li></ul><p class="list2">The Help menu lets you display the Rhythmyx build and release and opens the online Rhythmyx Multi-Server Manager Help.</p>
+<ul class="listbullet2"><li class="listbullet2"><em class="emphasis">About</em> - Display the Rhythmyx build and release.</li><li class="listbullet2"><em class="emphasis">Multi-Server Manager Help</em> - Open Multi-Server Manager online help.</li></ul><p class="bodytextright"></p>
+<p class="bodytext"><strong class="specialbold">Details Pane</strong></p>
+<p class="bodytext">The <strong class="specialbold">Details Pane</strong> displays information about the node selected in the <strong class="specialbold">Server Groups Tree</strong>. Click on a <strong class="specialbold">Descriptors</strong>, <strong class="specialbold">Archives</strong> or <strong class="specialbold">Packages</strong> node to see details about it in the <strong class="specialbold">Details Pane</strong>.</p>
+<p class="bodytext">The possible views in the <strong class="specialbold">Details Pane</strong> are </p>
+<ul class="listbullet"><li class="listbullet"><strong class="specialbold"><a id="h6086" class="jumptemplate" title="Descriptors View" href="Descriptors_View.htm" target="_self">Descriptors View</a></strong></li><li class="listbullet"><strong class="specialbold"><a id="h6087" class="jumptemplate" title="Archives View" href="Archives_View.htm" target="_self">Archives View</a></strong></li><li class="listbullet"><strong class="specialbold"><a id="h6088" class="jumptemplate" title="Packages View" href="Packages_View.htm" target="_self">Packages View</a></strong></li></ul>
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
+

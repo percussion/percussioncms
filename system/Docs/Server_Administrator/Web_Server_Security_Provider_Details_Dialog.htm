@@ -1,0 +1,62 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Web Server Security Provider Details Dialog </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Security	Security Providers	Web Server Security Provider Details Dialog">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Setting_up_a_Web_Server_Security_Provider_for_Single_Sign-on.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Adding_a_Web_Server_Security_Provider.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h5 class="heading5">Web Server Security Provider Details Dialog</h5>
+<p class="bodytext">Use the Web Server Security Provider Details dialog to create and manage Web server and Web application server security providers.</p>
+<p class="widegraphic"><img src="sa_webserversecurityprovider_57.gif" alt="Web Server Security Provider Details Dialog" height="216" width="397" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="subheading">Field Descriptions</p>
+<p class="bodytext"><strong class="specialbold">Security Provider Name</strong> Required.  Name of the Security Provider.  The name can include spaces.</p>
+<p class="bodytext"><strong class="specialbold">Authentication user header name</strong> Required.  The HTTP header variable Rhythmyx examines to find the authenticated user.  This name must match the name specified in the <code class="monospace">authUserHeaderName</code> parameter in the setup of the Rhythmyx servlet on the Web server.  If Rhythmyx cannot locate this value, the user will not be authenticated by this security provider.</p>
+<p class="bodytext"><strong class="specialbold">User role list header name</strong> Required.  The http header variable Rhythmyx examines to determine the Roles to which the authenticated user belongs.  These Roles are included in the session..  The name must match the name specified in the <code class="monospace">userRolesHeaderName</code> parameter in the setup of the Rhythmyx servlet on the Web server.  The value is case-insensitive and the default value is <em class="emphasis">RxUserRoles</em>.  If Rhythmyx cannot locate this value, it queries for the Roles internally on the server.  </p>
+<p class="bodytext"><strong class="specialbold">Role list delimiter</strong> Required.  Specifies the character or characters used to separate each Role in the list of Roles.  The default value is a semicolon (;).  For example, <em class="emphasis">Author;Editor</em>.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Web_Server.htm" target="_self">Web Server</a></p><p class="relateditem"><a href="Implementing_Single_Sign-on.htm" target="_self">Implementing Single Sign-on</a></p><p class="relateditem"><a href="Adding_a_Web_Server_Security_Provider.htm" target="_self">Adding a Web Server Security Provider</a></p><p class="relateditem"><a href="Modifying_a_Web_Server_Security_Provider.htm" target="_self">Modifying a Web Server Security Provider</a></p><p class="relateditem"><a href="Deleting_a_Web_Server_Security_Provider.htm" target="_self">Deleting a Web Server Security Provider</a></p><p class="relateditem"><a href="Interfacing_to_Rhythmyx_Through_Web_Servers.htm" target="_self">Interfacing to Rhythmyx Through Web Servers</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,309 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> System Variables </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Variables	System">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="17905.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="16842.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1776036.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">System Variables</h3>
+<p class="bodytext">Simple system variables all begin with the string &quot;$sys&quot;.</p>
+<p class="bodytext">Some of these variables come with pre-defined bindings to values.  Others require the user to define the value for the variable.  In several cases, (such as $sys.mimetype and $sys.charset) you can map an item property directly to the binding; these bindings do not execute a function.</p>
+<p class="bodytext">For details about the variable type, see the <a class="javadocinnewwindow" title="" href="../JavaDocs/index.html" target="_blank">JavaDoc</a>.</p>
+<table width="606" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="156"><p class="tableheading">Variable</p>
+</th>
+<th style = "border:1px solid #010101;" width="135"><p class="tableheading">Type</p>
+</th>
+<th style = "border:1px solid #010101;" width="315"><p class="tableheading">Description</p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.activeAssembly</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">Boolean</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">Bound to the value true if the Template is invoked for Active Assembly Preview.</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:</strong>  Templates</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.assemblyItem</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext"><a class="javadocinnewwindow" title="" href="../Javadocs/com/percussion/services/assembly/IPSAssemblyItem.html" target="_blank">IPSAssemblyItem</a></p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">The current Content Item, assembled.  This variable is required to call Slot Content Finders and to generate locations.</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:</strong>  Templates</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.binary</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">javax.jcr.Property or Byte Array</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">Value of the binary field for a template.  Required for Binary Templates.</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:</strong>  Templates</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.charset</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">Value of the Characterset field of the Template.  The bindings can override the value specified in the Template.  Default value is <em class="emphasis">UTF-8</em>.]</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:</strong>  Templates<strong class="specialbold">  </strong></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.crossSiteLink</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">Boolean</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext"><em class="emphasis">True </em>if the Dependent Content Item in the ActiveAssembly Relationship is on a different Site.</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:</strong>  Location Schemes</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.currentslot</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">java.util.Map</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">Container for data calculated in the #initslot macro.</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:  </strong>  Templates<strong class="specialbold">  </strong></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.ctx.Class.Name</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">Bound to the Velocity context.  Required for the use of certain Velocity tools functions, such as $tools.render.  </p>
+<p class="tablebodytext"><strong class="specialbold">Used in:</strong>  Templates and Location Schemes</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.index</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">Integer</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">A loop counter for Slot contents; can only be used in a Slot.  The index of the Content Items in the Slot.  Indexing begins at 1.  (In other words, the first Content Item in the Slot is index1,  the second index 2, and so on.)  This variable can be used to modify the rendering of different rows in the Slot, or to add more data to the Snippet rendering.</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:  </strong>  Templates</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.item</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">javax.jcr.Node</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">Contains the fields and children of the current Content Item.  Each field, and each child, is considered a property of the $sys.item variable.</p>
+<p class="tablebodytext">Use the getProperty method to refer to a field of the Content Item. Usually, you will use the getString method to return a string, although you can also return other Java data types.   For example, $sys.item.getProperty(displaytitle).getString refers to the value of the displaytitle field of the current Content Item as a string value.  For details see the JavaDoc for javax.jcr.Property in the JSR-170 JavaDoc.</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:</strong>  Templates and Location Schemes</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.mimetype</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">Value of the MIMEType field of the Template.  The bindings can override the value specified in the Template.  Required for Binary Templates.  Default value is <em class="emphasis">text/html</em>.</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:</strong>  Templates<strong class="specialbold">  </strong></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.params</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">Map&lt;String,String&gt;[]</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">Provides access to HTML parameters passed from the Content Item being assembled to the Template.   An assembly request includes the following parameters:</p>
+<table width="301" cellpadding="2" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr align="left" valign="top">
+<td width="90"><p class="tableheading">Name</p>
+</td>
+<td width="210"><p class="tableheading">Description</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="90"><p class="tablebodytext">sys_path</p>
+</td>
+<td width="210"><p class="tablebodytext">Path to the Content Item being assembled.  </p>
+<p class="tablebodytext">Required.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="90"><p class="tablebodytext">sys_siteid</p>
+</td>
+<td width="210"><p class="tablebodytext">The Site identifier.  </p>
+<p class="tablebodytext">Optional</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="90"><p class="tablebodytext">sys_context</p>
+</td>
+<td width="210"><p class="tablebodytext">The name of the Context used to assemble the Content Item.  </p>
+<p class="tablebodytext">Required.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="90"><p class="tablebodytext">sys_itemfilter</p>
+</td>
+<td width="210"><p class="tablebodytext">The name of the Item Filter to use to filter Related Content when assembling the Content Item.  Required.  </p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="90"><p class="tablebodytext">sys_template</p>
+</td>
+<td width="210"><p class="tablebodytext">The name  or ID of the Template to use to assemble the Content Item.  </p>
+<p class="tablebodytext">Required.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="90"><p class="tablebodytext">sys_command</p>
+</td>
+<td width="210"><p class="tablebodytext">If specified with the value <em class="emphasis">editrc</em>, the Content Item is assembled in Active Assembly mode, including Active Assembly decorations.  If specified as null or any other value, the Content Item is assembled without Active Assembly decorations.  </p>
+<p class="tablebodytext">Required.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="90"><p class="tablebodytext">sys_reinit</p>
+</td>
+<td width="210"><p class="tablebodytext">If specified with the value <em class="emphasis">true</em>, the Velocity engine in re-initialized before assembling the Content Item, which causes all macros to be reloaded.  If not included or specified with the value false, the Velocity engine is not re-initialized before assembling the Content Item and cached Templates are used.</p>
+<p class="tablebodytext">Optional.</p>
+</td>
+</tr>
+
+</table>
+<p class="tablebodytext"><strong class="specialbold">Used in:  </strong>  Templates and Location Schemes</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.path</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">The path of the Folder where the Content Item resides.  The path returned by this variable only uses the name specified for the Folder, not the alternative name specified in the Folder Properties.</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:</strong>  Location Schemes</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.pub_path</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">The publication path of the Content Item.  If any Folder in the path has an alternative name specified in the Folder Properties, that name is used in the path returned by this variable.</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:</strong>  Location Schemes</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.site.globalTemplate</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">Name of the Global Template of the Site.  If the Global Template is undefined, returns null.  </p>
+<p class="tablebodytext"><strong class="specialbold">Used in:</strong>  Location Schemes</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.site.id</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext"><a class="javadocinnewwindow" title="" href="../Javadocs/com/percussion/utils/guid/IPSGuid.html" target="_blank">IPSGuid</a></p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">ID of the Site, as a GUID</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:  </strong>  Templates and Location Schemes</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.site.path</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">Path in the Folder tree from the current Content Item to the Site Folder</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:  </strong>  Templates and Location Schemes</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.site.url</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">URL of the Site defined in the <strong class="specialbold">Site Address</strong> field in the Site registration.</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:</strong>  Location Schemes</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.template</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">The input text of the Velocity template.  Used to override the default text of the template.  (NOTE: overriding the default text requires a custom extension.).</p>
+<p class="tablebodytext"><strong class="specialbold">Used in: </strong> Templates</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.template.prefix</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">Location prefix from the Template definition.</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:</strong>  Location Schemes</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.template.suffix</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">Location suffix from the Template definition.</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:</strong>  Location Schemes</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="156"><p class="tablebodytext">$sys.variables</p>
+</td>
+<td style = "border:1px solid #010101;" width="135"><p class="tablebodytext">Map&lt;String,String&gt;[]</p>
+</td>
+<td style = "border:1px solid #010101;" width="315"><p class="tablebodytext">Provides access to context variables for the current Site.</p>
+<p class="tablebodytext"><strong class="specialbold">Used in:  </strong>Templates and Location Schemes</p>
+</td>
+</tr>
+
+</table>
+<p class="tableheading"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="17905.htm" target="_self">JEXL Variables and Functions</a></p><p class="relateditem"><a href="16842.htm" target="_self">System Functions</a></p><p class="relateditem"><a href="15458.htm" target="_self">Database Publishing Variables</a></p><p class="relateditem"><a href="15532.htm" target="_self">Velocity Tool Extensions</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

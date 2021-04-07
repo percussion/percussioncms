@@ -1,0 +1,206 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Interfacing to Rhythmyx as a Servlet on J2EE Servers </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="J2EE Server, Web Server	Connecting to Rhythmyx	J2EE">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Interfacing_to_Rhythmyx_Through_Web_Servers.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="14196.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h6 class="heading6">Interfacing to Rhythmyx as a Servlet on J2EE Servers</h6>
+<p class="bodytext">The following procedure is a generic procedure for installing Rhythmyx as a servlet on a J2EE server.  The procedure for specific servers may require a different file structure, modification of individual steps, or additional steps.  Consult the documentation for your J2EE server for the correct procedure to install a servlet.  This procedure is written for servers that use J2EE Servlet Spec 2.2.  Servers using different versions of the servlet spec may require different procedures.</p>
+<p class="bodytext">To install Rhythmyx as a servlet:</p>
+<ol class="listnumber"><li class="listnumber">Create a Rhythmyx subdirectory in the web applications subdirectory of your web/web application server.  Consult the documentation for your server for the correct location of the applications subdirectory.</li><li class="listnumber">In this Rhythmyx directory, create a WEB-INF subdirectory.  In this directory, create a lib subdirectory.  The final structure should resemble the following:<pre class="preformatted">      WebApps</pre>
+<pre class="preformatted">         Rhythmyx</pre>
+<pre class="preformatted">            WEB-INF</pre>
+<pre class="preformatted">               lib</pre>
+</li><li class="listnumber">In the /Rhythmyx/WEB-INF directory, create a deployment descriptor (web.xml).  You can modify an existing web.xml or copy the following code and modify it to match your installation:<p class="codeexample">&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;</p>
+<p class="codeexample">&lt;!DOCTYPE web-app</p>
+<p class="codeexample">	PUBLIC &quot;-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN&quot;</p>
+<p class="codeexample">	&quot;http://java.sun.com/j2ee/dtds/web-app_2_2.dtd&quot;&gt;</p>
+<p class="codeexample">&lt;web-app&gt;</p>
+<p class="codeexample">	&lt;display-name&gt;Rhythmyx&lt;/display-name&gt;</p>
+<p class="codeexample">	&lt;description&gt;The Rhythmyx Server front end&lt;/description&gt;</p>
+<p class="codeexample">	&lt;servlet&gt;</p>
+<p class="codeexample">		&lt;servlet-name&gt;Rhythmyx&lt;/servlet-name&gt;</p>
+<p class="codeexample">		&lt;display-name&gt;Rhythmyx Servlet Router&lt;/display-name&gt;</p>
+<p class="codeexample">		&lt;description&gt;no description&lt;/description&gt;</p>
+<p class="codeexample">			&lt;servlet-class&gt;com.percussion.hooks.servlet.RhythmyxServlet&lt;/servlet-class&gt;</p>
+<p class="codeexample">				&lt;init-param&gt;</p>
+<p class="codeexample">					&lt;param-name&gt;HostCount&lt;/param-name&gt;</p>
+<p class="codeexample">					&lt;param-value&gt;1&lt;/param-value&gt;      </p>
+<p class="codeexample">				&lt;/init-param&gt;</p>
+<p class="codeexample">				&lt;init-param&gt;</p>
+<p class="codeexample">					&lt;param-name&gt;Host1&lt;/param-name&gt;</p>
+<p class="codeexample">					&lt;param-value&gt;Host Machine name&lt;/param-value&gt;</p>
+<p class="codeexample">				&lt;/init-param&gt;</p>
+<p class="codeexample">				&lt;init-param&gt;</p>
+<p class="codeexample">					&lt;param-name&gt;Port1&lt;/param-name&gt;</p>
+<p class="codeexample">					&lt;! - -This is the default Rhythmyx port.  The value of the parameter should be your Rhythmyx port - - !&gt;</p>
+<p class="codeexample">					&lt;param-value&gt;9992&lt;/param-value&gt;</p>
+<p class="codeexample">				&lt;/init-param&gt;</p>
+<p class="codeexample">			&lt;/servlet&gt;  </p>
+<p class="codeexample">		&lt;servlet-mapping&gt;</p>
+<p class="codeexample">		&lt;servlet-name&gt;Rhythmyx&lt;/servlet-name&gt;</p>
+<p class="codeexample">			&lt;url-pattern&gt;*&lt;/url-pattern&gt;</p>
+<p class="codeexample">		&lt;/servlet-mapping&gt;</p>
+<p class="codeexample">&lt;security-constraint&gt;</p>
+<p class="codeexample">    &lt;display-name&gt;MySecurity Constraint&lt;/display-name&gt;</p>
+<p class="codeexample">    &lt;web-resource-collection&gt;</p>
+<p class="codeexample">      &lt;web-resource-name&gt;Entire Application&lt;/web-resource-name&gt;</p>
+<p class="codeexample">      &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</p>
+<p class="codeexample">    &lt;/web-resource-collection&gt;</p>
+<p class="codeexample">    &lt;auth-constraint&gt;</p>
+<p class="codeexample">      &lt;description&gt;Admin&lt;/description&gt;</p>
+<p class="codeexample">      &lt;role-name&gt;Admin&lt;/role-name&gt;</p>
+<p class="codeexample">    &lt;/auth-constraint&gt;</p>
+<p class="codeexample">   &lt;/security-constraint&gt;</p>
+<p class="codeexample">&lt;/web-app&gt;</p>
+</li><li class="listnumber">To support Single Sign-on to Rhythmyx through your Web application server, include the following additional parameters in the servlet definition:<table width="738" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="369"><p class="tableheading"><strong class="specialbold"><strong class="specialbold">Parameter</strong></strong></p>
+</td>
+<td style = "border:1px solid #010101;" width="369"><p class="tableheading"><strong class="specialbold"><strong class="specialbold">Description</strong></strong></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="369"><p class="tablebodytext">EnableSSO</p>
+</td>
+<td style = "border:1px solid #010101;" width="369"><p class="tablebodytext">Flag indicating whether to use Single Sign-On when communicating with the Rhythmyx server.  The default value, <code class="monospace">false</code>, does not allow Single Sign-On.  Change the value to <code class="monospace">true</code> to allow Single Sign-on.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="369"><p class="tablebodytext">authUserHeaderName</p>
+</td>
+<td style = "border:1px solid #010101;" width="369"><p class="tablebodytext">The value of this parameter is the name of the HTTP header variable that the servlet will add to the request when it forwards the request to the Rhythmyx server.  The value of the header is set to the name of the authenticated user obtained from the Web application server.  </p>
+<p class="tablebodytext">The value of the <code class="monospace">authUserHeaderName</code> parameter must match the value in the <strong class="specialbold">Authenticated user header name</strong> field in the Web Server Security Provider Details dialog for the Web server security provider.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="369"><p class="tablebodytext">userRolesHeaderName</p>
+</td>
+<td style = "border:1px solid #010101;" width="369"><p class="tablebodytext">The value of this parameter is the name of the HTTP header variable that the servlet will add to the request when it forwards the request to the Rhythmyx server.  The value of the header is set to a comma-separated list of Role of which the user specified in the <code class="monospace">authUserHeaderName</code> parameter is a member.  </p>
+<p class="tablebodytext">The value of the <code class="monospace">userRolesHeaderName</code> parameter must match the value in the <strong class="specialbold">User role list header name</strong> field in the Web Server Security Provider Details dialog for the Web server security provider.</p>
+</td>
+</tr>
+
+</table>
+<p class="listcontinue">For example:</p>
+<p class="codeexample">&lt;init-param&gt;</p>
+<p class="codeexample">		&lt;param-name&gt;EnableSSO&lt;/param-name&gt;</p>
+<p class="codeexample">		&lt;param-value&gt;true&lt;/param-value&gt;</p>
+<p class="codeexample">	&lt;/init-param&gt;</p>
+<p class="codeexample">&lt;init-param&gt;</p>
+<p class="codeexample">		&lt;param-name&gt;authUserHeaderName&lt;/param-name&gt;</p>
+<p class="codeexample">		&lt;param-value&gt;Auth_User&lt;/param-value&gt;</p>
+<p class="codeexample">&lt;/init-param&gt;</p>
+<p class="codeexample">&lt;init-param&gt;</p>
+<p class="codeexample">		&lt;param-name&gt;userRolesHeaderName&lt;/param-name&gt;</p>
+<p class="codeexample">		&lt;param-value&gt;RxUserRoles&lt;/param-value&gt;</p>
+<p class="codeexample">&lt;/init-param&gt;</p>
+</li><li class="listnumber">To enable use of SSL, include the useSSL parameter with the value true.  For example:<p class="codeexample">&lt;init-param&gt;</p>
+<p class="codeexample">		&lt;param-name&gt;useSSL&lt;/param-name&gt;</p>
+<p class="codeexample">		&lt;param-value&gt;true&lt;/param-value&gt;</p>
+<p class="codeexample">&lt;/init-param&gt;</p>
+<p class="listcontinue">In addition, you must configure the Rhythmyx server and any remote Publishers to use SSL.  For details about configuring the Rhythmyx server to use SSL, see &quot;SSL Server Parameters&quot;.  For details about configuring a remote Publisher to use SSL, see &quot;Enabling SSL in the Publisher Server&quot; in &quot;Implementing Publishing in Rhythmyx&quot;.</p>
+</li><li class="listnumber">If your SOAP message router is in a location other than the default location, you must add the following additional parameters to specify the location:<p class="codeexample">&lt;init-param&gt;</p>
+<p class="codeexample">		&lt;param-name&gt;RxSoapContext&lt;/param-name&gt;</p>
+<p class="codeexample">		&lt;param-value&gt;/soap&lt;/param-value&gt;</p>
+<p class="codeexample">&lt;/init-param&gt;   </p>
+<p class="codeexample">&lt;init-param&gt;</p>
+<p class="codeexample">		&lt;param-name&gt;RxSoapService&lt;/param-name&gt;</p>
+<p class="codeexample">		&lt;param-value&gt;messagerouter&lt;/param-value&gt;</p>
+<p class="codeexample">&lt;/init-param&gt; </p>
+</li><li class="listnumber">You can include other parameters for special purposes:<table width="1162" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="158"><p class="tableheading"><strong class="specialbold"><strong class="specialbold">Parameter</strong></strong></p>
+</td>
+<td style = "border:1px solid #010101;" width="480"><p class="tableheading"><strong class="specialbold"><strong class="specialbold">Description</strong></strong></p>
+</td>
+<td style = "border:1px solid #010101;" width="525"><p class="tableheading"><strong class="specialbold"><strong class="specialbold">Example </strong></strong></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="158"><p class="tablebodytext">RxLogLocation</p>
+</td>
+<td style = "border:1px solid #010101;" width="480"><p class="tablebodytext">Specifies the location of the properties file for log4j, the logging tool used in Rhythmyx.  Use this parameter if you want to override the default log4j behavior.  If this parameter is not specified, Rhythmyx uses the default <code class="monospace">com.percussion.hooks.servlet.log4j.properties</code> in the <code class="monospace">servlet.jar</code> file.</p>
+</td>
+<td style = "border:1px solid #010101;" width="525"><p class="codeexample">&lt;init-param&gt;</p>
+<p class="codeexample">		&lt;param-name&gt;RxLogLocation&lt;/param-name&gt;</p>
+<p class="codeexample">		&lt;param-value&gt;c:\log4j\properties&lt;/param-value&gt;</p>
+<p class="codeexample">&lt;/init-param&gt;</p>
+<p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="158"><p class="tablebodytext">HostOverride</p>
+</td>
+<td style = "border:1px solid #010101;" width="480"><p class="tablebodytext">Specifies the name of the host HTTP header when communicating with the Rhythmyx server.</p>
+<p class="tablebodytext">Use this parameter if you need to override the host name due to the configuration of proxy server (typically, because the name and port of the proxy server are different from the name and port of the host of the Rhythmyx servlet).</p>
+</td>
+<td style = "border:1px solid #010101;" width="525"><p class="codeexample">&lt;init-param&gt;</p>
+<p class="codeexample">		&lt;param-name&gt;HostOverride&lt;/param-name&gt;</p>
+<p class="codeexample">		&lt;param-value&gt;AlternateHostName&lt;/param-value&gt;</p>
+<p class="codeexample">&lt;/init-param&gt;</p>
+<p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="158"><p class="tablebodytext">roleListUrl</p>
+</td>
+<td style = "border:1px solid #010101;" width="480"><p class="tablebodytext">Specifies the URL from which to derive the list of server Roles for the servlet.  Use this parameter if you want to derive the list of Role names from a source other than the default URL (<code class="monospace">sys_psxAnonymousCataloger/getRoles.xml</code>); for example, if you want to derive the list of Roles from another Rhythmyx applications or from the list of roles on a portal.</p>
+</td>
+<td style = "border:1px solid #010101;" width="525"><p class="codeexample">&lt;init-param&gt;</p>
+<p class="codeexample">		&lt;param-name&gt;roleListUrl&lt;/param-name&gt;</p>
+<p class="codeexample">		&lt;param-value&gt;rx_restrictedCataloger/getRoles.xml&lt;/param-value&gt;</p>
+<p class="codeexample">&lt;/init-param&gt;</p>
+</td>
+</tr>
+
+</table>
+</li><li class="listnumber">Copy the <code class="monospace">Rhythmyx.war</code> file from the <code class="monospace">Rhythmyx/InstallableApps/FrontEnd</code> directory  to the <code class="monospace">/Webapp/Rhythmyx/WEB-INF/lib</code> directory.</li><li class="listnumber">Start your application.  Consult your web/web application server documentation for the procedure for stopping and restarting applications.</li><li class="listnumber">Test your servlet.  Consult your web/web application server documentation for the correct procedure.</li><li class="listnumber">To access the Rhythmyx Workbench as a servlet, you will need to activate the HTTP Authorization Header.  To activate the HTTP Authorization header, in the root directory of the Rhythmyx server installation, create a simple text file with the name RhythmyxWorkbench.ja. This file should consist of a single line:<p class="codeexample">-DrhythmyxsendHttpAuthorization</p>
+<p class="listcontinue">This parameter does not require a value.</p>
+</li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Interfacing_to_Rhythmyx_Through_Web_Servers.htm" target="_self">Interfacing to Rhythmyx Through Web Servers</a></p></td>
+</tr>
+</table>
+
+</body>
+</html>
+
+
