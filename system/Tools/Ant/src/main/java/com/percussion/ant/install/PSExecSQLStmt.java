@@ -161,12 +161,9 @@ public class PSExecSQLStmt extends PSAction
             strStmt = qualifyViewNames(strStmt, dbmsDef);
 
             PSLogger.logInfo("Executing statement : " + strStmt);
-            PSLogger.logInfo("*******Connection Closed." + conn.isClosed());
             try (Statement stmt = conn.createStatement()) {
                stmt.execute(strStmt);
-               PSLogger.logInfo("Successfully executed statement.");
             } catch (Exception e) {
-               PSLogger.logInfo("Error Occured in Stmt Execute." + e.getMessage());
                PSLogger.logError(e);
             }
 
