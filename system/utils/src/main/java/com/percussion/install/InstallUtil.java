@@ -1198,12 +1198,7 @@ public class InstallUtil
    {
       String className = null;
       Class driverClass = null;
-      Driver m_extDriver = null;
       className = RxInstallerProperties.getResources().getString(driver);
-      List m_jarUrls = null;
-
-      if (className == null)
-         throw new SQLException("Driver " + driver + " is not supported by the current installer.");
 
       try {
          if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL)) {
@@ -1242,7 +1237,7 @@ public class InstallUtil
                      URL urlList[] = new URL[size];
                      for (int i = 0; i < size; i++) {
                         InstallUtil.logInfo("Loading " + m_jarUrls.get(i));
-                        urlList[i] = (URL)m_jarUrls.get(i);
+                        urlList[i] = (URL) m_jarUrls.get(i);
                      }
 
                      ClassLoader loader = (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {
@@ -1278,75 +1273,57 @@ public class InstallUtil
 
             }
          } else {
+            if (m_extDriver == null) {
+               Path dir = Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_JDBC_DRIVER_LOCATION);
+               if (Files.exists(dir)) {
 
-            Path dir = Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_JDBC_DRIVER_LOCATION);
-            if (Files.exists(dir)) {
-
-            }else if (Files.exists(Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_DTS_DRIVER_LOCATION))){
-               dir = Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_DTS_DRIVER_LOCATION);
-            }else if(Files.exists(Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_STAGING_DTS_DRIVER_LOCATION))){
-               dir = Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_STAGING_DTS_DRIVER_LOCATION);
-            }
-
-            try {
-               List<File> files = Files.list(dir).map(Path::toFile)
-                       .collect(Collectors.toList());
-
-               URL[] urlList = new URL[files.size()];
-               int i = 0;
-               for (File f : files) {
-                  urlList[i] = f.toURI().toURL();
-                  i++;
+               } else if (Files.exists(Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_DTS_DRIVER_LOCATION))) {
+                  dir = Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_DTS_DRIVER_LOCATION);
+               } else if (Files.exists(Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_STAGING_DTS_DRIVER_LOCATION))) {
+                  dir = Paths.get(m_rootDir, PSJdbcUtils.DEFAULT_STAGING_DTS_DRIVER_LOCATION);
                }
-               ClassLoader loader = (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {
-                  @Override
-                  public Object run() {
-                     return new URLClassLoader(urlList);
+
+               try {
+                  List<File> files = Files.list(dir).map(Path::toFile)
+                          .collect(Collectors.toList());
+
+                  URL[] urlList = new URL[files.size()];
+                  int i = 0;
+                  for (File f : files) {
+                     urlList[i] = f.toURI().toURL();
+                     i++;
                   }
-               });
-
-               if (className == null) {
-                  throw new SQLException("Cannot load driver of " + driver + " className is not defined.");
-               }
-               System.setProperty("jdbc.drivers",className);
-               driverClass = Class.forName(className, true, loader);
-               InstallUtil.logInfo("Loaded " + className);
-               if (driverClass != null) {
-                  Object objDriver = driverClass.newInstance();
-                  if (objDriver != null) {
-                     logInfo("Successfully loaded driver " + className);
-                     if (objDriver instanceof Driver) {
-                        m_extDriver = (Driver) objDriver;
-                        logInfo(objDriver.getClass().getName() + " is a valid driver.");
-
-                        DriverManager.registerDriver((Driver) objDriver);
-                        logInfo("Registered driver: " + className);
-
-                     } else {
-                        logError(objDriver.getClass().getName() + " is not a valid Driver!");
+                  ClassLoader loader = (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {
+                     @Override
+                     public Object run() {
+                        return new URLClassLoader(urlList);
                      }
-                  } else {
-                     logError("Unable to instantiate driver: " + objDriver.getClass().getName());
+                  });
+
+                  System.setProperty("jdbc.drivers", className);
+                  driverClass = Class.forName(className, true, loader);
+                  Object objDriver = driverClass.newInstance();
+                  logInfo("Successfully loaded driver " + className);
+                  if (objDriver instanceof Driver) {
+                     m_extDriver = (Driver) objDriver;
+                      DriverManager.registerDriver((Driver) objDriver);
+                   } else {
+                     logError(objDriver.getClass().getName() + " is not a valid Driver!");
                   }
 
-               } else {
-                  logError("Unable to load configured driver class:" + className + " from classpath.");
+               } catch (InstantiationException ie) {
+                  logError("InstantiationException : " + ie.getMessage());
+                  ie.printStackTrace();
+               } catch (IllegalAccessException iae) {
+                  logError("IllegalAccessException : " + iae.getMessage());
+                  iae.printStackTrace();
+               } catch (NoSuchFieldError err) {
+                  logError("NoSuchFieldError : " + err.getMessage());
+                  err.printStackTrace();
+               } catch (IOException e) {
+                  e.printStackTrace();
+                  logError(e.getMessage());
                }
-            } catch (InstantiationException ie) {
-               logError("InstantiationException : " + ie.getMessage());
-               ie.printStackTrace();;
-               driverClass = null;
-            } catch (IllegalAccessException iae) {
-               logError("IllegalAccessException : " + iae.getMessage());
-               iae.printStackTrace();
-               driverClass = null;
-            } catch (NoSuchFieldError err) {
-               logError("NoSuchFieldError : " + err.getMessage());
-               err.printStackTrace();
-               driverClass = null;
-            }catch (IOException e) {
-               e.printStackTrace();
-               logError(e.getMessage());
             }
          }
       }
@@ -1372,9 +1349,22 @@ public class InstallUtil
       }
       String dbUrl = PSJdbcUtils.getJdbcUrl(driver, server);
       Properties props = PSSqlHelper.makeConnectProperties(dbUrl, db, uid, pw);
-      logInfo("Connecting to: URL= " + dbUrl + " Driver= " + m_extDriver.toString() + " UID =" + uid + " Pw= " + pw);
-      Connection conn = m_extDriver.connect(dbUrl, props);
-      logInfo("Is Connecting CLOSED? " + conn.isClosed());
+      logInfo("Connecting to: URL= " + dbUrl + " UID =" + uid );
+      Connection conn;
+      if(m_extDriver == null) {
+         conn = DriverManager.getConnection(dbUrl, props);
+      }else{
+         logInfo("Connecting with direct driver.");
+         conn = m_extDriver.connect(dbUrl,props);
+      }
+      if (conn != null)
+      {
+         if (db != null)
+            conn.setCatalog(db);
+      }else{
+         logError("Unable to establish database connection.");
+      }
+
       return conn;
 
 
@@ -1452,8 +1442,6 @@ public class InstallUtil
 
       String className;
       Class driverClass;
-      Driver loadedDriver=null;
-      Driver m_extDriver = null;
 
       String strJTdsSqlServerDesc = RxInstallerProperties.getResources().getString("jtdssqlserverdesc");
 
@@ -1463,10 +1451,6 @@ public class InstallUtil
          className = RxInstallerProperties.getResources().getString("jtds");
       else
          className = RxInstallerProperties.getResources().getString(driver);
-
-      if (className == null) {
-         throw new SQLException("Cannot load driver of " + driver + " className is not defined.");
-      }
 
       try
       {
@@ -1532,7 +1516,7 @@ public class InstallUtil
                   logError(objDriver.getClass().getName() + " is not a valid Driver!");
                }
             } else {
-               logError("Unable to instantiate driver: " + objDriver.getClass().getName());
+               logError("Unable to instantiate driver: " + driverClass);
             }
 
          } else {
@@ -1624,36 +1608,15 @@ public class InstallUtil
       if (port == null || port.trim().length() == 0)
          return false;
 
-      ServerSocket s = null;
-      try
-      {
-         s = new ServerSocket(Integer.parseInt(port));
+      try(ServerSocket  s = new ServerSocket(Integer.parseInt(port))){
 
          return s.isBound();
-      }
-      catch (NumberFormatException e)
+      } catch (IOException e) {
+         PSLogger.logError("Given Port is in use: "+ e.getMessage() + port );
+      } catch (NumberFormatException e)
       {
-         System.out.println("Given Invalid port: " + port);
+         PSLogger.logError("Given Invalid port: " + e.getMessage() + port );
       }
-      catch (IOException e)
-      {
-         System.out.println("Given Port is in use: " + port);
-      }
-      finally
-      {
-         if (s != null)
-         {
-            try
-            {
-               s.close();
-            }
-            catch (IOException e1)
-            {
-               e1.printStackTrace(); // should never happen
-            }
-         }
-      }
-
       return false;
    }
 
@@ -1673,7 +1636,7 @@ public class InstallUtil
       {
          String msg = "Failed to get machine host name. " + e.getLocalizedMessage();
 
-         System.out.println(msg);
+         PSLogger.logError(msg);
       }
 
       return "localhost";
@@ -1700,7 +1663,7 @@ public class InstallUtil
       {
          String msg = "Failed to get a domain name. " + e.getLocalizedMessage();
 
-         System.out.println(msg);
+         PSLogger.logError(msg);
       }
 
       return "";
@@ -1868,6 +1831,8 @@ public class InstallUtil
    private static String m_rootDir = ".";
 
    private static boolean ms_isSilentInstall = false;
+   private static Driver m_extDriver = null;
+   private static List m_jarUrls = null;
 
 
 }
