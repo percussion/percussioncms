@@ -1,0 +1,22 @@
+<html lang="en">
+    <head>
+        <title> TextFormat Buttons </title>
+	<div class="rxbodyfield">
+<h2 id="Insert_Edit_Link_Dialog_and_Field_Definitions" class="showhide_heading">Insert/Edit Link Dialog and  Field Definitions</h2>
+If you want to insert an inline link, select text or an  image in the rich text editor and click <span class="img"><a href="tiki-download_file.php?fileId=252&amp;display" rel="shadowbox[g];type=img"><img border="0" src="tiki-download_file.php?fileId=252" /></a></span>.<br />If you want to edit an inline link, click anywhere on  the link and click <span class="img"><a href="tiki-download_file.php?fileId=252&amp;display" rel="shadowbox[g];type=img"><img border="0" src="tiki-download_file.php?fileId=252" /></a></span>.<br /><br />If the text or image does not already contain a  link on it, the dialog fields are empty to enable you to create a link. If the  text or image already contains a link on it, the dialog fields are filled with  data defining the link, and you can edit them.<br /><span class="img"><a href="tiki-download_file.php?fileId=259&amp;display" rel="shadowbox[g];type=img"><img border="0" src="tiki-download_file.php?fileId=259" /></a></span><br />
+<div class="icon_edit_section"><a href="tiki-editpage.php?page=Insert-Edit+Link+Dialog&amp;hdr=2"><img alt="Edit Section" border="0" class="icon" height="16" src="pics/icons/page_edit_section.png" title="Edit Section" width="16" /></a></div>
+<h3 id="Fields" class="showhide_heading">Fields</h3>
+<strong>Link URL</strong> - Holds the URL  of the page or anchor that the link accesses. You can do one of the  following:<br /> 
+<ul>
+<li>enter an external URL </li>
+<li>click <span class="img"><a href="tiki-download_file.php?fileId=257&amp;display" rel="shadowbox[g];type=img"><img border="0" src="tiki-download_file.php?fileId=257" /></a></span> to browse for an existing page or resource in CM1. <br />When  you click <span class="img"><a href="tiki-download_file.php?fileId=257&amp;display" rel="shadowbox[g];type=img"><img border="0" src="tiki-download_file.php?fileId=257" /></a></span>, the following dialog opens: <br />xx to be completed in Part  2 of this story xx </li>
+<li>Do not enter anything in the field and choose an anchor in the  <strong>Anchors</strong> drop list. When you choose an anchor, the dialog adds the  anchor's address <em>#anchorname</em> to this field. </li>
+</ul>
+<strong>Anchors</strong> -  Drop list including all anchors on the current page xx to be determined - if  users can choose anchors on another page xx and an empty option. Choose one of  the anchors if you want the link to access that point on the page. When you  choose an anchor, the dialog overwrites any previously entered value in <strong>Link  URL</strong> with the anchor's address <em>#anchorname</em>.<br /><strong>Target</strong> - Window  or frame in which page accessed by the link opens. Options are:<br /> 
+<ul>
+<li>(default) Open in this window / frame </li>
+<li>Open in new window (_blank) </li>
+<li>Open in parent window / frame (_parent) </li>
+<li>Open in top frame (replaces all frames (_top) </li>
+</ul>
+<strong>Title</strong> -  Tooltip text. When you hover your cursor over the link, text entered into  <strong>Title</strong> appears as a tooltip. Default is the title of the page accessed by  the link.</div>

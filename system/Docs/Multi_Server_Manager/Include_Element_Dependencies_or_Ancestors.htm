@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Include Element Dependencies or Ancestors </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Create Archive/Descriptor Wizard	Include Element Dependencies or Ancestors Dialog">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Identify_ID_Types.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Choosing_User_Dependencies.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Include Element Dependencies or Ancestors</h2>
+<p class="bodytext">The Include <a title="Dependencies" href="18764.htm#o18772">Dependencies</a> or <a title="Ancestors" href="18764.htm#o18775">Ancestors</a> dialog lets you specify the dependencies or ancestors that you want to include in your descriptor with the Rhythmyx elements that you have chosen, and lets you specify user defined dependencies. If you are performing a Custom archive creation, you can also edit the <a title="ID Types" href="18764.htm#o18784">ID Types</a> in server objects associated with dependencies.</p>
+<p class="widegraphic"><img src="emdependency65.gif" alt="Create Archive/Descriptor Wizard" height="675" width="619" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">The Include Dependencies or Ancestors dialog displays each element that you have included in the descriptor under <strong class="specialbold">Packages</strong>. When you select an element under <strong class="specialbold">Packages</strong>, the dialog displays a tree of the dependencies for the element. A main node is included for each of the Dependency types (local, shared, server, system, user defined) present in the element list.  Expand these nodes to see the dependency elements and their dependencies and ancestors. Each dependency may have any of the other dependency types, which are listed below it. Check boxes next to dependency and ancestor names indicate your options for including them in Packages:</p>
+<ul class="listbullet"><li class="listbullet">a checked, disabled check box indicates that you are including a dependency by default.</li><li class="listbullet">an unchecked, disabled check box indicates that you cannot include a dependency, but it is required on the target server</li><li class="listbullet">a checked or unchecked, enabled check box indicates that you may choose whether or not to include a dependency. If you do not include it, it should be present on the target server.</li></ul><p class="bodytext">Each dependency type and ancestors are treated differently in the tree: </p>
+<table width="570" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="96"><p class="tableheading">Dependency Type</p>
+</th>
+<th style = "border:1px solid #010101;" width="120"><p class="tableheading">Description</p>
+</th>
+<th style = "border:1px solid #010101;" width="192"><p class="tableheading">Appearance in Dependency Tree</p>
+</th>
+<th style = "border:1px solid #010101;" width="162"><p class="tableheading">Example</p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="96"><p class="tablebodytext">Local </p>
+</td>
+<td style = "border:1px solid #010101;" width="120"><p class="tablebodytext">Dependencies that make up the <a title="Package" href="18764.htm#o18771">Package</a> for an element and must be installed with it.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Checked, disabled check boxes.</p>
+</td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">For a Slot Package, the Slot definition is a local dependency .</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="96"><p class="tablebodytext">Shared </p>
+</td>
+<td style = "border:1px solid #010101;" width="120"><p class="tablebodytext">Installable dependencies that are installed with Rhythmyx, must be present for an element to function properly, but are not a required part of its Package. They are &quot;shared&quot; because they may be dependencies of other Packages. </p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Unchecked, enabled check boxes (allow you to optionally include them in package).</p>
+</td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">A Content Type definition is a shared dependency of a Slot that uses it not because it is a part of the Slot's Package, but because the Slot requires it for proper functioning.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="96"><p class="tablebodytext">System </p>
+</td>
+<td style = "border:1px solid #010101;" width="120"><p class="tablebodytext">Elements that are installed with Rhythmyx and must be present on the target server for a Package to function correctly, but cannot be installed by the <a title="Multi-Server Manager" href="18764.htm#o18765">Multi-Server Manager</a>. System dependencies usually begin with the prefix sys_. </p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Unchecked, disabled check boxes.</p>
+</td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">The sys_EditBox control is a system dependency of the Contacts Content Type application.  It is a non-installable element installed with Rhythmyx that the application requires to function.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="96"><p class="tablebodytext">Server </p>
+</td>
+<td style = "border:1px solid #010101;" width="120"><p class="tablebodytext">Elements that are not installed with Rhythmyx but must be present on the target server for a Package to function correctly. They cannot be installed by the Multi-Server Manager. </p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Unchecked, disabled check boxes.</p>
+</td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">A handler that you added to your Rhythmyx system and is required to process a Rhythmyx extension and a role are server dependencies.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="96"><p class="tablebodytext">User Defined </p>
+</td>
+<td style = "border:1px solid #010101;" width="120"><p class="tablebodytext">Files used by elements in a Package that the Multi-Server Manager does not discover, but the user specifies.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">You can add User Defined dependencies to a Package or as an independent Package under User Dependencies. A User Dependency is only available if you added a custom User Dependency element in the Add Elements to the <a title="Archive" href="18764.htm#o18769">Archive</a> dialog.</p>
+</td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">An implementer can include the extension PSImageInfoExtractor.java as a user dependency for the sys_File control since the extension is often used with the control but the Multi-Server Manager does not automatically add it as a dependency.</p>
+<p class="tablebodytext">&nbsp;</p>
+<p class="tablebodytext">If you include table data, the Multi-Server Manager installs all rows from the source table:</p>
+<ul class="tablelistbullet"><li class="tablelistbullet">If the table does not have a primary key, the Multi-Server Manager inserts all source table rows into the target table.</li><li class="tablelistbullet"> If the table has a primary key, the Multi-Server Manager updates target table rows with matching source table rows, and inserts non-matching source table rows into the target table.</li></ul></td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="96"><p class="tablebodytext">Ancestors</p>
+</td>
+<td style = "border:1px solid #010101;" width="120"><p class="tablebodytext">Elements outside a dependency's Package that use the dependency.</p>
+<p class="tablebodytext">The Multi-Server Manager cannot locate as ancestors server objects which have undefined ID Types.  To locate all possible ancestors, you must specify ID Types for all elements on the server with literal identifiers</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Enabled check boxes (allow you to optionally include them in package).</p>
+</td>
+<td style = "border:1px solid #010101;" width="162"><p class="tablebodytext">In a dependency tree for the Image Content Type definition, the Slots that  allow the Image Content Type to  appear in them are listed as Ancestors.  </p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext">The Multi-Server Manager cross checks for dependencies within and between an archive's packages. In the Include Dependencies or Ancestors dialog, dependencies that appear multiple times are preceded by the icon <img src="msmmultdependency.gif" alt="Linked GIF" height="20" width="21" vspace="2" hspace="2" align="bottom" border="0">. </p>
+<p class="bodytext">Checking or unchecking its check box in one location affects it in all locations. For example, in the following graphic, the RXS_CT_SHARED Table Schema appears as a checked shared dependency under both the Shared Group and the rxs_Support_ce application nodes. If you uncheck RXS_CT_SHARED below Shared Group, the node below rxs_Support_ce automatically becomes unchecked. (This is also true across packages; a dependency checked in one package is automatically checked in other packages.) During installation, the Multi-Server Manager verifies if it has already installed a dependency,and does not install the dependency each time it finds it. </p>
+<p class="widegraphic"><img src="emchecking65.gif" alt="Dependency appearing multiple times" height="595" width="625" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">To complete the Include Element Dependencies or Ancestors dialog:</p>
+<ol class="listnumber"><li class="listnumber">Click an element under <strong class="specialbold">Packages</strong>. </li><li class="listnumber">In <strong class="specialbold">Description</strong>, optionally enter a comment about the package that will display under the <strong class="specialbold">Description</strong> heading in <strong class="specialbold"><a title="Packages View" href="18764.htm#o18810">Packages View</a></strong> after the package is installed. </li><li class="listnumber">Fully expand the Dependency tree. <br>NOTE: Expanding ancestors may be slow due to the length of the search required.</li><li class="listnumber">Check the check boxes of any <a title="Shared Dependencies" href="18764.htm#o18791">Shared Dependencies</a> or Ancestors that you want to include in your descriptor.</li><li class="listnumber">If you check a shared Dependency that can stand alone as a <a title="Package Type" href="18764.htm#o18776">Package Type</a>, such as a workflow, a confirmation dialog pops up.  <p class="widegraphic"> <img src="emdeploymenttype-56.gif" alt="EMDeployment Type" height="134" width="433" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="listcontinue">If you confirm adding the Dependency, <strong class="specialbold">Packages</strong> displays the new element name. When you click the new element under <strong class="specialbold">Packages</strong>, it displays a dependency tree for the element, and you can check optional dependencies. Dependencies do not appear under the element name in the original view. NOTE: The Multi-Server Manager orders the new dependency package before the &quot;parent&quot; package so that the parent can access the dependency after it installs.  Do not move the new package after the &quot;parent&quot; package. </p>
+<p class="listcontinue">If you uncheck a shared Dependency that is a Package Type, the Wizard prompts you to confirm its removal, and removes it from the <strong class="specialbold">Packages</strong> list.</p>
+</li><li class="listnumber">If you expand or check a Dependency that does not have ID Types defined, the Wizard displays an <a id="h6161" class="jumptemplate" title="Identify ID Types Dialog" href="Identify_ID_Types_Dialog.htm" target="_self">Identify ID Type dialog</a>.  Specify the ID Types for the Dependency.</li><li class="listnumber">If you are in <em class="emphasis">Custom</em> archive creation mode and if user-defined Dependencies are supported by any of the dependencies in the tree, when you select the dependency, the [<strong class="buttons">User Dependencies</strong>] button becomes enabled. If you want to add user-defined Dependencies, click [<strong class="buttons">User Dependencies</strong>]. The Wizard displays a file browser that lets you select files from the server root. After you select a file, the Wizard includes the user-defined dependency below the selected element wherever it appears in the Dependency tree.</li><li class="listnumber">Repeat steps 2 through 7 for all of the elements listed under <strong class="specialbold">Packages</strong>.</li><li class="listnumber">If you added a User Dependencies custom element in the <a id="h6107" class="jumptemplate" title="Add Elements to the Archive" href="Add_Elements_to_the_Archive.htm" target="_self">Add Elements to the Archive dialog</a>, <strong class="specialbold">Packages</strong> lists User Dependency (Custom).  To add an independently installable user defined dependency (one that is not included in another Package), click User Dependency (Custom) under <strong class="specialbold">Packages</strong>.<p class="listcontinue">Select the <em class="emphasis">User Dependency (Custom)</em> folder node and click the [<strong class="buttons">User Dependencies</strong>] button to select a user-defined dependency from a file browser that displays the contents of the Rhythmyx root directory.  After you select the file, it displays in the tree.</p>
+<p class="widegraphic"><img src="emadduserdependency56.gif" alt="EMUserDependencyAdd56" height="461" width="586" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">Click the arrows to the right of <strong class="specialbold">Packages</strong> to change the installation order of the elements in the descriptor. See <em class="emphasis"><a id="h6107_2" class="jumptemplate" title="Add Elements to the Archive" href="Add_Elements_to_the_Archive.htm" target="_self">Add elements to the archive</a></em> for information about Package order.</li><li class="listnumber">Click [<strong class="buttons">Next&gt;&gt;</strong>] to proceed to the <a id="h6095" class="jumptemplate" title="Create Archive or Descriptor" href="Create_Archive_or_Descriptor.htm" target="_self">Create Archive or Descriptor dialog</a>.</li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">In This Section</p><p class="relateditem"><a href="Choosing_User_Dependencies.htm" target="_self">Choosing User Dependencies</a></p></td>
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Creating_and_Editing_Archives_and_Descriptors.htm" target="_self">Creating and Editing Archives and Generating Descriptors</a></p><p class="relateditem"><a href="Choose_a_Server_and_or_Descriptor.htm" target="_self">Choose a Server and/or Descriptor</a></p><p class="relateditem"><a href="Choose_Create_Mode.htm" target="_self">Choose Create Mode</a></p><p class="relateditem"><a href="Add_Elements_to_the_Archive.htm" target="_self">Add Elements to the Archive</a></p><p class="relateditem"><a href="Identify_ID_Types.htm" target="_self">Identify ID Types</a></p><p class="relateditem"><a href="Create_Archive_or_Descriptor.htm" target="_self">Create Archive or Descriptor</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
+

@@ -32,6 +32,7 @@ import org.apache.tools.ant.BuildException;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.Properties;
@@ -103,7 +104,7 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
                     stmt.execute(strStmt);
                     PSLogger.logInfo("Successfully executed statement.");
                 }
-            }
+
         }catch( Exception ex ) {
                 if(!isFailonerror()){
                     if(!isSilenceErrors()){
@@ -116,7 +117,14 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
                     }
                     throw new BuildException(ex);
                 }
+            }finally {
+                if(dbType.equals("derby"))
+                    InstallUtil.shutDownDerby();
             }
+        } catch (IOException e) {
+            PSLogger.logError("IO Exception." + e.getMessage());
+
         }
     }
+}
 

@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Run_Edition_Template </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Notifications	Run_Edition_Template">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+<script language="javascript" type="text/javascript" src="dhtml_popup.js"></script>
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="19436.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="19442.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1776132.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h4 class="heading4">Run_Edition_Template</h4>
+<p class="bodytext">The Run_Edition_Template provides a generic notification template for a notification that is very commonly desired in Rhythmyx:  the results of running an Edition.  This template generates an e-mail message that reports:</p>
+<ul class="listbullet"><li class="listbullet">the result of the run;<ul class="listbullet2"><li class="listbullet2">if the run completed successfully, how many individual Content Items were published successfully and how many individual Content Items failed to publish;</li><li class="listbullet2">if the run failed, the cause of the failure</li></ul></li><li class="listbullet">the Site to which the Edition was published;</li><li class="listbullet">the time publishing was initiated;</li><li class="listbullet">the elapsed processing time; and</li><li class="listbullet">the URL of the log of the Edition publishing run.<p class="widegraphic"><a id="h19438" class="expandinghtmlblocklink" title="Run_Edition_Template Expanding HTML Block" href="javascript:toggleBlock('19438')" target="_self"><img id="i19438" class="expandicon" src="arrowright.gif" alt="" border="0" />Screenshot of Run_Edition_Template</a></p>
+<div id="d19438" class="widegraphic" style="display:none"><p class="widegraphic"><img src="help_tasknotificationeditor.gif" alt="Help_Task Notification Editor" height="534" width="620" vspace="2" hspace="2" align="bottom" border="0" /></p>
+</div></li></ul><p class="bodytext">The code in the <strong class="specialbold">Subject</strong> field generates text similar to one of the following</p>
+<p class="codeexample">Publishing of the Edition &lt;EditionName&gt; was completed successfully.</p>
+<p class="listcontinue">This text is generated if processing of the Edition was successful.  The text &lt;EditionName&gt; will be replaced with the name of the Edition that was processed.</p>
+<p class="codeexample">Publishing of the Edition &lt;EditionName&gt; failed to complete.</p>
+<p class="listcontinue">This text is generated if processing of the Edition failed.  The text &lt;EditionName&gt; will be replaced with the name of the Edition that was processed.</p>
+<p class="bodytext">The code in the <strong class="specialbold">Template</strong> field first tells the recipient the Site to which the Edition was published.  </p>
+<p class="codeexample">Site: $sys.siteName</p>
+<p class="bodytext">Next, the message provides details regarding the success or failure of the publishing run.  If the run was successful. the number of successful and failed Content Items is listed.  </p>
+<p class="codeexample">#if ($sys.completed) </p>
+<p class="codeexample">Success Count: $sys.successCount</p>
+<p class="codeexample">Failure Count: $sys.failureCount</p>
+<p class="bodytext">If the run failed, a description of the failure is included:</p>
+<p class="codeexample">#else</p>
+<p class="codeexample">The problem was: $sys.problemDesc</p>
+<p class="bodytext">Following that, the e-mail notes the time that the Edition was launched and the elapsed time to run it:</p>
+<p class="codeexample">Starting Time: $tools.date.format(&quot;yyyy-MM-dd HH:mm:ss&quot;, $sys.executionDatetime)</p>
+<p class="codeexample">Elapse Time: $tools.number.format(&quot;00&quot;, $tools.math.div($sys.executionElapsedTime,3600000)):$tools.number.format(&quot;00&quot;, $tools.math.div($sys.executionElapsedTime,60000)):$tools.number.format(&quot;00&quot;, $tools.math.div($sys.executionElapsedTime,1000))</p>
+<p class="bodytext">The value of the $sys.execution.ElapsedTime is the amount of time, in milliseconds, to complete processing of the Edition.  Dividing by 3600000 yields the number of hours for the processing, dividing by 60000 yields the number of minutes, and dividing by 1000 yields the number of seconds.  Functions from the JEXL toolkit are used to calculate these values.</p>
+<p class="bodytext">Finally, the URL of the job log is included:</p>
+<p class="codeexample">Log URL: $sys.editionLogUrl</p>
+<p class="bodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="19436.htm" target="_self">Example Task Notifications</a></p><p class="relateditem"><a href="19442.htm" target="_self">Task_Template</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

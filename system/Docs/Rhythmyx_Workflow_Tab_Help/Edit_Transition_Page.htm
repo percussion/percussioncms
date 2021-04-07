@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Edit Transition Page </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Transitions	Circular, Transitions	Edit Transition Page">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Transitions.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Creating_a_New_Transition.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1775939.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Edit Transition Page</h3>
+<p class="bodytext">Use the Edit Transition page to maintain Transitions.</p>
+<p class="bodytext">You can access the Edit Transition page in the following ways:</p>
+<ul class="listbullet"><li class="listbullet">On the Edit Workflow page, click <strong class="specialbold"><strong class="specialbold">Transition</strong></strong> in the New box (accesses as New Transition page);</li><li class="listbullet">On the Edit Workflow page, click the name of the Transition you want to edit in the Transition box.<p class="widegraphic"><img src="edittransition50.gif" alt="Linked GIF" height="443" width="862" vspace="2" hspace="2" align="bottom" border="0" /></p>
+</li></ul><p class="subheading">Edit Transition Fields</p>
+<p class="bodytext"><strong class="specialbold"><strong class="specialbold">ID </strong></strong>&nbsp;Display only. &nbsp;The identifier associated with this Transition.</p>
+<p class="bodytext"><strong class="specialbold"><strong class="specialbold">Label</strong></strong> &nbsp;Mandatory. &nbsp;The label for this Transition.</p>
+<p class="bodytext"><strong class="specialbold"><strong class="specialbold">Description</strong></strong> &nbsp;Optional. &nbsp;Free-form description of the Transition.</p>
+<p class="bodytext"><strong class="specialbold"><strong class="specialbold">Trigger</strong></strong> &nbsp;Mandatory. &nbsp;The pre-requisite for the Transition.  Each Transition in the State requires a unique value in the Trigger field.</p>
+<p class="bodytext"><strong class="specialbold"><strong class="specialbold">From State</strong></strong> &nbsp;Display Only. &nbsp;The State from which the content is moving in the workflow.</p>
+<p class="bodytext"><strong class="specialbold"><strong class="specialbold">To State</strong></strong> &nbsp;Drop list. &nbsp;The State to which the content will move in the workflow. &nbsp;It is valid for a Transition to move the content to the same State as it came from. &nbsp;This is known as a <em class="emphasis"><em class="emphasis">circular transition</em></em>.</p>
+<p class="bodytext"><strong class="specialbold"><strong class="specialbold">Approval Type</strong></strong>  Drop List.  Specifies whether the Transition requires a specific number of approvals or approvals by specified Roles before the content can make this Transition.  Options are <em class="emphasis"><em class="emphasis">Specified Number</em></em> (specific number of approvals required for the Transition; approvals may come from any Role assigned to the current State of the content) and <em class="emphasis"><em class="emphasis">Each Role</em></em> (specific Roles must approve content before it can make this Transition).</p>
+<p class="bodytext"><strong class="specialbold"><strong class="specialbold">Approvals</strong></strong> <strong class="specialbold"><strong class="specialbold">Required</strong></strong> &nbsp;Required if the value of <strong class="specialbold"><strong class="specialbold">Approval Type</strong></strong> is <em class="emphasis"><em class="emphasis">Specified Number</em></em>.  Number of approvals required before the content can make this transition.</p>
+<p class="bodytext"><strong class="specialbold"><strong class="specialbold">Comment Required</strong></strong> &nbsp;Drop list. Whether the user has the option to enter a comment, or is required to make a comment when making this Transition. &nbsp;Choices are <em class="emphasis"><em class="emphasis">Optional </em></em>(Rhythmyx displays the comment popup, but the user can choose not to make a comment), <em class="emphasis"><em class="emphasis">Required </em></em>(user must enter a comment when making the Transition), and <em class="emphasis"><em class="emphasis">Do Not Show</em></em> (Rhythmyx does not display the comment popup).</p>
+<p class="bodytext"><strong class="specialbold"><strong class="specialbold">Default Transition</strong></strong>  Drop list.  Specifies whether the Transition is the default Transition used when a Relationship forces a Transition from the State.  Options are <em class="emphasis"><em class="emphasis">No</em></em> (default; the Transition is not the default Transition) and <em class="emphasis"><em class="emphasis">Yes</em></em> (the Transition is the default Transition).  NOTE:  Rhythmyx does not validate that a State has only one default Transition.  If multiple Transitions from a State have <em class="emphasis"><em class="emphasis">Yes</em></em> selected in the <strong class="specialbold"><strong class="specialbold">Default Transition</strong></strong> field, Rhythmyx uses the first in alphabetical order specified as a default Transition.</p>
+<p class="bodytext"><strong class="specialbold"><strong class="specialbold">Workflow Action</strong></strong> &nbsp;Drop list. &nbsp;The <a id="h1054" class="jumptemplate" title="Workflow Actions" href="Workflow_Actions.htm" target="_self">Workflow Action</a> associated with the Transition. &nbsp;Default is <em class="emphasis"><em class="emphasis">None</em></em>. &nbsp;Options include all Workflow Actions registered in the system.</p>
+<p class="bodytext"><strong class="specialbold"><strong class="specialbold">Transition Role</strong></strong> &nbsp;Drop list. &nbsp;Specifies whether a Member of each of the Roles assigned to the State must approve the Content Item before it can make the Transition, or only a Member of specific Roles.   Options are <em class="emphasis"><em class="emphasis">All Roles</em></em> (a Member of each of the Roles assigned to the State must approve the content before it can make the Transition) and <em class="emphasis"><em class="emphasis">Specified Roles</em></em> (a Member of each Role specified must approve the content before it can make the Transition.).</p>
+<p class="bodytext">If you want to notify users when content makes the Transition, add Transition Notifications.  </p>
+<p class="bodytext">Transitions Roles are required if you choose <em class="emphasis">Each Role</em> in the <strong class="specialbold">Approval Type</strong> field and <em class="emphasis">Specified Roles</em> in the <strong class="specialbold">Transition Role</strong> field for the Transition.  Note that Rhythmyx does not preserve approvals.  For example, suppose you have a Transition &quot;Ready for Publish&quot; from the QA State to the Public State, and this Transition requires approval from three Roles, QA, Editor, and Legal Reviewer.  The QA and Editor Roles approve the Content Item, but the Legal Review Role rejects it, sending it back to a previous State.  When the Content Item returns to the QA State, Rhythmyx does not remember that QA and Editor already approved it.  They will have to approve it again before it can make the &quot;Ready for Publish&quot; Transition.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Transitions.htm" target="_self">Transitions</a></p><p class="relateditem"><a href="Creating_a_New_Transition.htm" target="_self">Creating a New Transition</a></p><p class="relateditem"><a href="Editing_a_Transition.htm" target="_self">Editing a Transition</a></p><p class="relateditem"><a href="Deleting_a_Transition.htm" target="_self">Deleting a Transition</a></p><p class="relateditem"><a href="Maintaining_Transition_Roles.htm" target="_self">Maintaining Transition Roles</a></p><p class="relateditem"><a href="About_Aging.htm" target="_self">About Aging</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Writing Content List Queries </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Content lists, Content lists	maxrowsperpage, Queries, Content List	Writing, Server hanging">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="17869.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="18833.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1776024.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Writing Content List Queries</h2>
+<p class="bodytext">The value of the query parameter of the sys_SearchGenerator is written using JCR Query Language.  JCR Query Language is a language similar to Structured Query Language [SQL] used to query content Repositories.  </p>
+<p class="note">For additional details, see the JSR 170 spec at <a class="jumptemplate" title="jcp.org/en/jsr/detail?id=170" href="http://www." target="_self">http://www.jcp.org/en/jsr/detail?id=170</a>.</p>
+<p class="bodytext">If you are familiar with the use of  Structured Query Language to interact with relational databases, the format of a JCR Query Language query will look familiar:</p>
+<p class="codeexample">select rx:sys_contentid(,rx:sys_folderid) from rx:contenttype [,rx:contenttype…] where conditional expression </p>
+<p class="note">JSR-170 queries can also include an <code class="monospace">order by</code> clause, but this functionality is not useful in Content List generation.</p>
+<p class="bodytext">Note that all Rhythmyx elements in the query must be prefixed by the string rx:.  If you do not prefix a Rhythmyx element with this string, the output of the query will generate errors.  Also, all Rhythmyx elements should be formatted in lowercase (for example, to select Content Items of the Press Release Content Type, you would specify from <code class="monospace">rx:press_release</code>).  Note that spaces are not valid and should be replaced by underscores.</p>
+<p class="bodytext">The <code class="monospace">select</code> clause in the expression must include the field <code class="monospace">rx:sys_contentid,</code> and should include <code class="monospace">rx:folderid</code>.  Rhythmyx uses these fields to select the correct Content Items.</p>
+<p class="bodytext">The <code class="monospace">from</code> clause specifies one or more Content Types to include in the Content List.  Each Content Type specified must be prefixed with the <code class="monospace">rx:</code> string.  Use commas to separate Content Types.  To return all Content Types, specify <code class="monospace">nt:base</code>.</p>
+<p class="bodytext">The <code class="monospace">where</code> clause specifies the conditions used to select specific Content Items.  The following operators can be used:</p>
+<ul class="listbullet"><li class="listbullet">&lt; (less than)</li><li class="listbullet">&gt; (greater than)</li><li class="listbullet">= (equals)</li><li class="listbullet">&lt;= (less than or equal to)</li><li class="listbullet">&gt;= (greater than or equal to)</li><li class="listbullet">&lt;&gt; (does not equal)</li><li class="listbullet"><code class="monospace">LIKE</code></li></ul><p class="bodytext">Multiple conditions can be specified using the following operators (in order or precedence):</p>
+<ul class="listbullet"><li class="listbullet"><code class="monospace">NOT </code></li><li class="listbullet"><code class="monospace">AND </code></li><li class="listbullet"><code class="monospace">OR</code></li></ul><p class="bodytext">If a condition clause includes more than two conditions, use parentheses to group conditions.  Parentheses override the usual precedence order.  </p>
+<p class="bodytext">The <code class="monospace">LIKE</code> operator matches the pattern string specified with the operator.  The pattern string must be enclosed in single quotation marks and can use the wildcards &quot;<code class="monospace">%</code>&quot; (matches 0 or more characters) and &quot;_&quot; (matches one character).  When using the <code class="monospace">LIKE</code> operator, use <code class="monospace">jcr:path</code> to return Folder paths.  For example, the statement</p>
+<p class="codeexample">select rx:sys_contentid, rx:sys_revisionid from rx:generic where jcr:path like '//Sites/EnterpriseInvestments/Invest%' </p>
+<p class="bodytext">returns all Content Items of the Generic Content Type that have a path that starts with //Sites/EnterpriseInvestments/Invest, such as //Sites/EnterpriseInvestments/InvestmentAdvice and //Sites/EnterpriseInvestments/InvestmentPlans.</p>
+<p class="bodytext">If your server hangs when you attempt to preview or publish a large content list, you can add the maxrowsperpage parameter to your content list to preview or publish it as a series of smaller content lists. For example, if the server hangs when you use the following content list:</p>
+<p class="codeexample"><code class="monospace">/Rhythmyx/contentlist?sys_deliverytype=filesystem&amp;sys_assembly_context=301&amp;sys_contentlist=rffEiIncremental</code></p>
+<p class="bodytext">add the maxrowsperpage parameter as follows:</p>
+<p class="codeexample"><code class="monospace">/Rhythmyx/contentlist?sys_deliverytype=filesystem&amp;sys_assembly_context=301&amp;sys_contentlist=rffEiIncremental<br />&amp;maxrowsperpage=200</code></p>
+<p class="bodytext">Only use maxrowsperpage if necessary, and set it to the highest value that your system's memory can handle.</p>
+<p class="bodytext">You can use the <a id="h18834" class="jumptemplate" title="Testing JSR-170 Queries" href="18833.htm" target="_self">Query Debugger</a> to test your Content List query.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">In This Section</p><p class="relateditem"><a href="18833.htm" target="_self">Testing JSR-170 Queries</a></p></td>
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Content_Lists2.htm" target="_self">Content Lists</a></p><p class="relateditem"><a href="17863.htm" target="_self">Content List Editor</a></p><p class="relateditem"><a href="17866.htm" target="_self">Creating a Content List</a></p><p class="relateditem"><a href="17867.htm" target="_self">Modifying a Content List</a></p><p class="relateditem"><a href="17868.htm" target="_self">Copying a Content List</a></p><p class="relateditem"><a href="17869.htm" target="_self">Deleting a Content List</a></p><p class="relateditem"><a href="17870.htm" target="_self">Legacy Content List Editor</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

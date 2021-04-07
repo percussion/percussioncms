@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> sys_runPurgeTaskLog </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Notifications	sys_purgeTaskLog">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="19058.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="19057.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1776127.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h4 class="heading4">sys_runPurgeTaskLog</h4>
+<p class="bodytext">This Scheduled Task extension purges Scheduled Task log entries created more than a specified number of days in the past.  The following Task Notification variables are available from this extension:</p>
+<table width="609" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="168"><p class="tableheading">Variable Name</p>
+</td>
+<td style = "border:1px solid #010101;" width="54"><p class="tableheading">Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="387"><p class="tableheading">Description</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="168"><p class="tablebodytext">$numberofDays</p>
+</td>
+<td style = "border:1px solid #010101;" width="54"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="387"><p class="tablebodytext">Number of days in the past to preserve logs.  Logs older than the specified number of days will be purged,</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="168"><p class="tablebodytext">$tools.</p>
+</td>
+<td style = "border:1px solid #010101;" width="54"><p class="tablebodytext">&nbsp;</p>
+</td>
+<td style = "border:1px solid #010101;" width="387"><p class="tablebodytext">Velocity tools utilities available in Rhythmyx.  Available utilities are defined in the file &lt;Rhythmyxroot&gt;/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/ WEB-INF/config/velocity/tools.xml</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="168"><p class="tablebodytext">$sys.taskName</p>
+</td>
+<td style = "border:1px solid #010101;" width="54"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="387"><p class="tablebodytext">The name of the task.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="168"><p class="tablebodytext">$sys.completed</p>
+</td>
+<td style = "border:1px solid #010101;" width="54"><p class="tablebodytext">Booelan</p>
+</td>
+<td style = "border:1px solid #010101;" width="387"><p class="tablebodytext">True if job processing was completed; otherwise false.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="168"><p class="tablebodytext">$sys.problemDesc</p>
+</td>
+<td style = "border:1px solid #010101;" width="54"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="387"><p class="tablebodytext">If processing was not completed, the description of the problem that cased the failure.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="168"><p class="tablebodytext">$sys.executionDateTime</p>
+</td>
+<td style = "border:1px solid #010101;" width="54"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="387"><p class="tablebodytext">Starting date and time of processing of the extension.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="168"><p class="tablebodytext">$sys.executionElapsedTime</p>
+</td>
+<td style = "border:1px solid #010101;" width="54"><p class="tablebodytext">Long</p>
+</td>
+<td style = "border:1px solid #010101;" width="387"><p class="tablebodytext">The duration of the execution in milliseconds.</p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="19049.htm" target="_self">Default Task Notification Variables</a></p><p class="relateditem"><a href="19058.htm" target="_self">sys_runPurgePublishingLog</a></p><p class="relateditem"><a href="19057.htm" target="_self">sys_runCommand</a></p><p class="relateditem"><a href="19053.htm" target="_self">sys_runEdition</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
