@@ -1,0 +1,60 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Disabling Full-text Search </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Search Configuration	Full-text search, disabling">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="17801.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="12405.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h3 class="heading3">Disabling Full-text Search</h3>
+<p class="bodytext">To disable the full-text search engine, uncheck the <em class="emphasis">Enabled</em> checkbox on the Full-text Search tab of the Search tab in the Server Administrator.</p>
+<p class="bodytext">Disabling the full-text search engine is intended as a temporary measure on development servers only.  It is not intended to be used on production servers.  Nor is it intended to facilitate a permanent conversion from the full-text search engine to the light-weight database search engine.  </p>
+<p class="bodytext">When you disable the full-text search engine, any pre-defined searches you have configured in the View/Search Editor in the Rhythmyx Workbench will be unavailable for modification.  In the Content Explorer, these searches will still function, but they will use the light-weight database search engine functionality rather than the full-text search functionality, so running the search may return different results.</p>
+<p class="bodytext">Any existing user-defined saved searches in Content Explorer that were created using the full-text search engine that are saved again while it is disabled will be converted to use the light-weight database search engine.  They cannot be converted back to use the full-text search engine.  If you convert a saved search accidentally while the full-text search engine is disabled, you will have to recreate it after enabling the full text search engine.</p>
+<p class="bodytext">You determine whether or not individual fields will be included in full-text searches in the Rhythmyx Workbench's Field Properties Editor by checking or unchecking <strong class="specialbold">Allow this field to be searched</strong>. See the topic <em class="emphasis">Field Properties Editor</em> in the Workbench online help for more information.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="17889.htm" target="_self">Search Configuration</a></p><p class="relateditem"><a href="17803.htm" target="_self">How to Override the Default Text Analyzer</a></p><p class="relateditem"><a href="17801.htm" target="_self">How to Override the Default Text Extractor</a></p><p class="relateditem"><a href="12405.htm" target="_self">Configuring Maximum Search Results Returned</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

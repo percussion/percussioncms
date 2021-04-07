@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Server Properties Dialog - SSL Properties </title>
+<meta name="Generator" content="AITPublish">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="15028.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="15030.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Server Properties Dialog - SSL Properties</h2>
+<p class="bodytext">This section of the Server Properties Dialog allows you to enable or disable Secure Socket Layer (SSL) support in the Rhythmyx server. When the SSL KeyStore File parameter has a value, SSL support is enabled; when the parameter does not have a value, SSL support is disabled. By default, the SSL KeyStore File parameter and the other SSL parameters are not defined and SSL support is disabled.</p>
+<p class="widegraphic"><img src="servpropsslprop.gif" alt="Server Properties, SSL Properties" height="257" width="525" vspace="2" hspace="2" align="bottom" border="0"></p>
+<table width="708" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="144"><p class="tableheading">Parameter</p>
+</th>
+<th style = "border:1px solid #010101;" width="348"><p class="tableheading">Description</p>
+</th>
+<th style = "border:1px solid #010101;" width="216"><p class="tableheading">Default</p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">SSL KeyStore File</p>
+</td>
+<td style = "border:1px solid #010101;" width="348"><p class="tablebodytext">Name and location of the keystore  file that contains the server's public and private key and digital certificates. &nbsp;The path specified must be relative to the directory <code class="monospace">AppServer/server/rx/conf</code>.</p>
+</td>
+<td style = "border:1px solid #010101;" width="216"><p class="tablebodytext">None</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">SSL Key Password</p>
+</td>
+<td style = "border:1px solid #010101;" width="348"><p class="tablebodytext">The encrypted password for validating the key specified in <strong class="specialbold">SSL KeyStore File</strong>. </p>
+<p class="tablebodytext"><em class="emphasis"><em class="emphasis">Required when SSL KeyStore File is defined.</em></em></p>
+</td>
+<td style = "border:1px solid #010101;" width="216"><p class="tablebodytext">None</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Confirm SSL Key Password</p>
+</td>
+<td style = "border:1px solid #010101;" width="348"><p class="tablebodytext">The <strong class="specialbold">SSL Key Password</strong> reentered, to ensure that you entered the intended password in <strong class="specialbold">SSL Key Password</strong>.</p>
+</td>
+<td style = "border:1px solid #010101;" width="216"><p class="tablebodytext">None</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">Allowed SSL Ciphers</p>
+<p class="tablebodytext">&nbsp;</p>
+</td>
+<td style = "border:1px solid #010101;" width="348"><p class="tablebodytext">A list of allowed cipher suites (encryption protocols). Supported cipher suites are: </p>
+<p class="tablebodytext">SSL_DHE_DSS_WITH_DES_CBC_SHA</p>
+<p class="tablebodytext">SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA</p>
+<p class="tablebodytext">SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA</p>
+<p class="tablebodytext">SSL_RSA_WITH_RC4_128_MD5</p>
+<p class="tablebodytext">SSL_RSA_WITH_RC4_128_SHA</p>
+<p class="tablebodytext">SSL_RSA_WITH_DES_CBC_SHA</p>
+<p class="tablebodytext">SSL_RSA_WITH_3DES_EDE_CBC_SHA</p>
+<p class="tablebodytext">SSL_RSA_EXPORT_WITH_RC4_40_MD5</p>
+<p class="tablebodytext">For descriptions of these cipher suites, see <a class="jumptemplate" title="" href="http://www.mozilla.org/projects/security/pki/nss/ssl/fips-ssl-ciphersuites.html" target="_self">http://www.mozilla.org/projects/security/pki/nss/ssl/fips-ssl-ciphersuites.html</a>. </p>
+<p class="tablebodytext"><em class="emphasis"><em class="emphasis">Not required when SSL KeyStore File is defined.</em></em></p>
+</td>
+<td style = "border:1px solid #010101;" width="216"><p class="tablebodytext">SSL_RSA_WITH_RC4_128_MD5;<br>SSL_RSA_WITH_RC4_128_SHA; SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA</p>
+<p class="tablebodytext">&nbsp;</p>
+<p class="tablebodytext">NOTE: Rhythmyx uses these three cipher suites as defaults if you do not select any from the Allowed SSL Ciphers field. If you select one or more, your selections are used instead of the defaults.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="144"><p class="tablebodytext">SSL Port</p>
+</td>
+<td style = "border:1px solid #010101;" width="348"><p class="tablebodytext">Port that receives requests that require an SSL connection. </p>
+<p class="tablebodytext">&nbsp;<em class="emphasis">Not required when SSL KeyStore File is defined.</em></p>
+</td>
+<td style = "border:1px solid #010101;" width="216"><p class="tablebodytext">9443</p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext">To test whether you have implemented SSL correctly in the Rhythmyx server, enter in the browser:  </p>
+<p class="codeexample">https://&lt;<em class="emphasis">rhythmyxhostname</em>&gt;:9443/Rhythmyx</p>
+<p class="bodytext">where &lt;<em class="emphasis">rhythmyxhostname</em>&gt; is the name of the machine where your Rhythmyx server resides and 9443 is the SSL port you specified when you configured your server to use SSL.  If your browser presents the login dialog, SSL is working correctly.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Maintaining_Server_Properties.htm" target="_self">Maintaining Server Properties</a></p><p class="relateditem"><a href="18687.htm" target="_self">Server Properties Dialog - General Server Properties</a></p><p class="relateditem"><a href="15026.htm" target="_self">Server Properties Dialog - Logging Properties</a></p><p class="relateditem"><a href="15028.htm" target="_self">Server Properties Dialog - Applications Properties</a></p><p class="relateditem"><a href="15030.htm" target="_self">Server Properties Dialog - Application Server Properties</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+

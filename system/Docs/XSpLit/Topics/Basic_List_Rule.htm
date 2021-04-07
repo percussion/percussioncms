@@ -1,0 +1,79 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Basic List Rule </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Repeated Fields	List Item Repeating">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Repeating_Lists.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Nested_List_Rule.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h5 class="heading5">Basic List Rule</h5>
+<p class="bodytext"><a id="h4745" class="" title="About the Root Node" href="About_the_Root_Node.htm" target="_self">About the Root Node</a></p>
+<p class="bodytext">A list item repeats once for each time the first node (left to right) repeats. Any static text that is part of the list item repeats when the list item repeats. Any list item attributes also repeat.</p>
+<p class="bodytext">For example, if you had the field names <code class="monospace">psx-name/last</code> and <code class="monospace">psx-name/first</code> in the following HTML code:</p>
+<p class="codeexample">&lt;ul&gt;<br>  &lt;li&gt;&lt;span&gt;psx-name/last&lt;/span&gt;, &lt;span&gt;psx-name/first&lt;/span&gt;&lt;/li&gt;<br>&lt;/ul&gt;</p>
+<p class="bodytext">The list item contains two fields that share the <code class="monospace">name</code> node. Each item in the list repeats once per occurrence of <code class="monospace">name</code>.</p>
+<p class="bodytext">At design time, the output would look like the following:</p>
+<p class="widegraphic"><img src="8-d.gif" alt="" height="38" width="275" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">At runtime, the output would look like this:</p>
+<table width="436" cellpadding="2" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr align="left" valign="top">
+<td width="240"><p class="bodytext">Content: XML</p>
+</td>
+<td width="196"><p class="bodytext">Source: HTML</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="240"><p class="bodytext"><code class="monospace">&lt;people&gt;<br>  &lt;name&gt;<br>    &lt;first&gt;Joe&lt;/first&gt;<br>    &lt;last&gt;Smith&lt;/last&gt;<br>  &lt;/name&gt;<br>  &lt;name&gt;<br>    &lt;first&gt;Jane&lt;/first&gt;<br>    &lt;last&gt;Doe&lt;/last&gt;<br>  &lt;/name&gt;<br>  &lt;name&gt;<br>    &lt;first&gt;Sally&lt;/first&gt;<br>    &lt;last&gt;Jones&lt;/last&gt;<br>  &lt;/name&gt;<br>&lt;/people&gt;</code></p>
+</td>
+<td width="196"><p class="bodytext"><img src="z8-1.gif" alt="" height="62" width="103" vspace="2" hspace="2" align="bottom" border="0"></p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext">&nbsp; </p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Repeating_Lists.htm" target="_self">Repeating Lists</a></p><p class="relateditem"><a href="Nested_List_Rule.htm" target="_self">Nested List Rule</a></p><p class="relateditem"><a href="Extended_List_Nesting_Rule.htm" target="_self">Extended List Nesting Rule</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

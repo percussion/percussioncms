@@ -1,0 +1,310 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> $rx.asmhelper </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="System">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="16842.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="15435.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1776038.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h4 class="heading4">$rx.asmhelper</h4>
+<p class="bodytext">The methods of this function provide data for use in assembly.  The following methods are available:</p>
+<ul class="listbullet"><li class="listbullet">$rx.asmhelper.assemble</li><li class="listbullet">$rx.asmhelper.isAASlot (slot)</li><li class="listbullet">$rx.asmhelper.getPopupMenu</li><li class="listbullet">$rx.asmhelper.getSingleParamValue</li><li class="listbullet">$rx.asmhelper.getTitle ($sys.item.guid)</li><li class="listbullet">$rx.asmhelper.combine </li><li class="listbullet">$rx.asmhelper.childValues</li><li class="listbullet">$rx.asmhelper.mapValues</li></ul><p class="subheading">$rx.asmhelper.assemble  </p>
+<p class="bodytext">	<strong class="specialbold">Returns</strong>  List&lt;IPSAssemblyResult&gt;</p>
+<p class="bodytext">	<strong class="specialbold">Used in</strong>  Templates</p>
+<p class="list2">Assembles the related Content Items in the specified Slot of the specified Content Item using the specified parameter values as overrides.</p>
+<table width="588" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tableheading">Name</p>
+</td>
+<td style = "border:1px solid #010101;" width="119"><p class="tableheading">Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="378"><p class="tableheading">Description</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">item</p>
+</td>
+<td style = "border:1px solid #010101;" width="119"><p class="tablebodytext"><a class="javadocinnewwindow" title="" href="../Javadocs/com/percussion/services/assembly/IPSAssemblyItem.html" target="_blank">IPSAssemblyItem</a></p>
+</td>
+<td style = "border:1px solid #010101;" width="378"><p class="tablebodytext">The Content Item whose related Content Items to assemble.  Use $sys.item.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">slot</p>
+</td>
+<td style = "border:1px solid #010101;" width="119"><p class="tablebodytext"><a class="javadocinnewwindow" title="" href="Javadocs/com/percussion/services/assembly/IPSTemplateSlot.html" target="_blank">IPSTemplateSlot</a></p>
+</td>
+<td style = "border:1px solid #010101;" width="378"><p class="tablebodytext">The Slot whose related Content Items to assemble.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">params</p>
+</td>
+<td style = "border:1px solid #010101;" width="119"><p class="tablebodytext">Map&lt;String,Object&gt;</p>
+</td>
+<td style = "border:1px solid #010101;" width="378"><p class="tablebodytext">Set of assembly parameters to use as overrides. </p>
+</td>
+</tr>
+
+</table>
+<p class="list2">Example:  <code class="monospace">$rx.asmhelper.assemble($sys.item, rffList, &quot;template='rffSnTitleCalloutLink'&quot; )</code> returns the contents of the rffList Slot assembled using the rffSnTitleCalloutLink Template. </p>
+<p class="subheading">$rx.asmhelper.isAASlot (slot)</p>
+<p class="bodytext">	<strong class="specialbold">Returns</strong>  boolean</p>
+<p class="bodytext">	<strong class="specialbold">Used in</strong>  Templates</p>
+<p class="list2">Returns true if the specified Slot is an Active Assembly Slot; otherwise returns false.  The Slot Content Finder defines whether the Slot is an Active Assembly Slot.  Of the Content Finders shipped with Rhythmyx, only Slots that use the sys_RelationshipContentFinder are considered Active Assembly Slots and will return true.</p>
+<p class="subheading">$rx.asmhelper.getPopupMenu</p>
+<p class="bodytext">	<strong class="specialbold">Returns</strong>  String</p>
+<p class="bodytext">	<strong class="specialbold">Used in</strong>  Templates</p>
+<p class="list2">Used internally.  Returns the popup menus used in Active Assembly.  The menuname parameter is optional; if not included, the menu is named using the Content ID of the specified Content Item.</p>
+<table width="576" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tableheading">Name</p>
+</td>
+<td style = "border:1px solid #010101;" width="119"><p class="tableheading">Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="366"><p class="tableheading">Description</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">itemguid</p>
+</td>
+<td style = "border:1px solid #010101;" width="119"><p class="tablebodytext"><a class="javadocinnewwindow" title="" href="../Javadocs/com/percussion/utils/guid/IPSGuid.html" target="_blank">IPSGuid</a></p>
+</td>
+<td style = "border:1px solid #010101;" width="366"><p class="tablebodytext">The GUID of the Content Item whose menus to retrieve.  Use $sys.item.guid.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">mode</p>
+</td>
+<td style = "border:1px solid #010101;" width="119"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="366"><p class="tablebodytext">The operational Mode of Content Explorer for which to display the Menu.  An operational Mode is a portion of Content Explorer for which unique menus can be displayed.  For additional details, see &quot;Action Menus&quot; in <em class="emphasis">Customizing Content Explorer</em>.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">uicontext</p>
+</td>
+<td style = "border:1px solid #010101;" width="119"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="366"><p class="tablebodytext">The Visibility Context for which to display the Menu.  </p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">menuname</p>
+</td>
+<td style = "border:1px solid #010101;" width="119"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="366"><p class="tablebodytext">Name to display for the menu.</p>
+</td>
+</tr>
+
+</table>
+<p class="subheading">$rx.asmhelper.getSingleParamValue</p>
+<p class="bodytext">	<strong class="specialbold">Returns</strong>  String</p>
+<p class="bodytext">	<strong class="specialbold">Used in</strong>  Templates</p>
+<p class="list2">Returns the value of the specified parameter.  If the specified parameter does not have a value, returns null.</p>
+<table width="570" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tableheading">Name</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tableheading">Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="354"><p class="tableheading">Description</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">params</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">Map&lt;String,String&gt;</p>
+</td>
+<td style = "border:1px solid #010101;" width="354"><p class="tablebodytext">Set of Content Item parameters.  Use $sys.params.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">key</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="354"><p class="tablebodytext">name of the parameter whose value you want to return.</p>
+</td>
+</tr>
+
+</table>
+<p class="list2">Example:  <code class="monospace">$rx.asmhelper.getSingleParamValue ($sys.params, sys_title)</code> returns the value in the sys_title field for the current Content Item.</p>
+<p class="subheading">$rx.asmhelper.getTitle ($sys.item.guid)</p>
+<p class="bodytext">	<strong class="specialbold">Returns</strong>  String</p>
+<p class="bodytext">	<strong class="specialbold">Used in</strong>  Templates</p>
+<p class="list2">Returns the title of the specified Content Item.</p>
+<p class="subheading">$rx.asmhelper.combine </p>
+<p class="bodytext">	<strong class="specialbold">Returns</strong>  Map&lt;String, Object&gt;</p>
+<p class="bodytext">	<strong class="specialbold">Used in</strong>  Templates</p>
+<p class="list2">Generates a new parameter map with the parameters from the urlquery &quot;overlaid&quot; over the parameters in the input parameter map.  The original input parameters still exist and are unchanged.  If a later function uses a parameter from the map that exists in both the original parameter map and the urlquery, the value of the parameter from the urlquery supersedes the value from the original parameter map.  If a later function uses a parameter that does not exist in the urlquery, it takes the value from the original parameter map. </p>
+<p class="list2">The value of the urlquery parameter can refer to another function.  In that case, you must develop a function that returns a parameter string.  For example, you could develop the function <code class="monospace">$user.example</code> to return the set of overlay parameters.  To use the output of this function, you would define the binding value <code class="monospace">$rx.asmhelp.combine($sys.params, $user.example)</code>.</p>
+<table width="576" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tableheading">Name</p>
+</td>
+<td style = "border:1px solid #010101;" width="137"><p class="tableheading">Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="348"><p class="tableheading">Description</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">params</p>
+</td>
+<td style = "border:1px solid #010101;" width="137"><p class="tablebodytext">Map&lt;String, String[]&gt;</p>
+</td>
+<td style = "border:1px solid #010101;" width="348"><p class="tablebodytext">Set of Content Item parameters.  Use $sys.params.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">urlquerystring</p>
+</td>
+<td style = "border:1px solid #010101;" width="137"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="348"><p class="tablebodytext">URL-query-style string, with names and values separated by equals, and each name and value pair separated by ampersands</p>
+</td>
+</tr>
+
+</table>
+<p class="subheading">$rx.asmhelper.combine </p>
+<p class="bodytext">	<strong class="specialbold">Returns</strong>  Map&lt;String, Object&gt;</p>
+<p class="bodytext">	<strong class="specialbold">Used in</strong>  Templates</p>
+<p class="list2">Generates a new parameter map with the parameters from the added parameter &quot;overlaid&quot; over the parameters in the input parameter map.  The original input parameters still exist and are unchanged.  If a later function uses a parameter from the map that exists in both the original parameter map and the added parameter, the value of the parameter from the added parameter supersedes the value from the original parameter map.  If a later function uses a parameter that does not exist in the added parameter, it takes the value from the original parameter map. </p>
+<table width="576" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tableheading">Name</p>
+</td>
+<td style = "border:1px solid #010101;" width="137"><p class="tableheading">Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="348"><p class="tableheading">Description</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">params</p>
+</td>
+<td style = "border:1px solid #010101;" width="137"><p class="tablebodytext">Map&lt;String, String[]&gt;</p>
+</td>
+<td style = "border:1px solid #010101;" width="348"><p class="tablebodytext">Set of Content Item parameters.  Use $sys.params.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">added</p>
+</td>
+<td style = "border:1px solid #010101;" width="137"><p class="tablebodytext">Map&lt;String, String[]&gt;</p>
+</td>
+<td style = "border:1px solid #010101;" width="348"><p class="tablebodytext">Map of additional parameters,</p>
+</td>
+</tr>
+
+</table>
+<p class="subheading">$rx.asmhelper.childValues</p>
+<p class="bodytext"><strong class="specialbold">	Returns</strong>  List&lt;Object&gt;</p>
+<p class="bodytext"><strong class="specialbold">	Used in</strong>  Templates</p>
+<p class="list2">Used for database publishing.  Returns a list of the values of the specified child Fieldset.</p>
+<table width="565" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tableheading">Name</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tableheading">Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tableheading">Description</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">parentNode</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">javax.jcr.Value</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tablebodytext">The Content Item whose child Fieldset children to return.  Use $sys.item.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">childName</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">javax.jcr.Value</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tablebodytext">Name of the child Fieldset whose values you want to return.  </p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">PropertyName</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">javax.jcr.Value</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tablebodytext">Name of the field to return from the child Fieldset whose values you want to return</p>
+</td>
+</tr>
+
+</table>
+<p class="list2">Example:  <code class="monospace">$rx.asmhelper.childValues($sys.item, Location, &quot;city&quot;)</code> would return a list of the values of the field city in the Location child Fieldset of the current Content Item.</p>
+<p class="subheading">$rx.asmhelper.mapValues</p>
+<p class="bodytext"><strong class="specialbold">	Returns</strong>  List&lt;Object&gt;</p>
+<p class="bodytext">	<strong class="specialbold">Used in</strong>  Templates</p>
+<p class="list2">Used for database publishing.  Takes the output of $rx.db.get (a list of values of specified columns in a database returned as a list of maps) as input. Returns the list of the values of the specified columns for inserting into the child table.</p>
+<table width="565" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tableheading">Name</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tableheading">Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tableheading">Description</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">mapList</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">List&lt;Map&lt;String, Object&gt;&gt;</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tablebodytext">List of maps.  Usually derived from the output of the $rx.db.get function.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">key</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tablebodytext">Name of the key in the mapList parameter whose values you want to return</p>
+</td>
+</tr>
+
+</table>
+<p class="list2"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="16842.htm" target="_self">System Functions</a></p><p class="relateditem"><a href="15435.htm" target="_self">$rx.codec</a></p><p class="relateditem"><a href="16840.htm" target="_self">$rx.cond</a></p><p class="relateditem"><a href="15436.htm" target="_self">$rx.db</a></p><p class="relateditem"><a href="15437.htm" target="_self">$rx.doc</a></p><p class="relateditem"><a href="15438.htm" target="_self">$rx.ext</a></p><p class="relateditem"><a href="15439.htm" target="_self">$rx.guid</a></p><p class="relateditem"><a href="15454.htm" target="_self">$rx.i18n</a></p><p class="relateditem"><a href="15459.htm" target="_self">$rx.keyword</a></p><p class="relateditem"><a href="15440.htm" target="_self">$rx.link</a></p><p class="relateditem"><a href="15441.htm" target="_self">$rx.location</a></p><p class="relateditem"><a href="15452.htm" target="_self">$rx.nav</a></p><p class="relateditem"><a href="17423.htm" target="_self">$rx.session</a></p><p class="relateditem"><a href="15433.htm" target="_self">$rx.string</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

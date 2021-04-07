@@ -1,0 +1,275 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE toc
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+<toc version="1.0">
+
+
+<tocitem text="Introduction" target="O15260" />
+<tocitem text="Using Rhythmyx" target="O6380" >
+    <tocitem text="Sessions, Communities, and Languages" target="O6386" >
+        <tocitem text="Sessions" target="O6387" />
+        <tocitem text="Communities" target="O15250" />
+        <tocitem text="Locales" target="O6803" />
+    </tocitem>
+    <tocitem text="Content Explorer Interface" target="O19271" >
+        <tocitem text="Reviewing Roles" target="O6390" />
+        <tocitem text="Changing Locales" target="O15368" />
+        <tocitem text="Changing Communities" target="O15230" />
+        <tocitem text="Refreshing the Page" target="O6392" />
+        <tocitem text="Navigating with Keystrokes" target="O16533" />
+        <tocitem text="Changing Content Explorer Options" target="O18683" />
+    </tocitem>
+    <tocitem text="Content Item Icons" target="O19273" />
+    <tocitem text="Working with Folders" target="O17538" >
+        <tocitem text="Folder Properties Dialog" target="O18010" />
+        <tocitem text="Creating New Folders" target="O14556" />
+        <tocitem text="Modifying Navigation in Folders" target="O20182" />
+        <tocitem text="Creating a Test Site" target="O18674" />
+        <tocitem text="Adding Folder ACL List Entries" target="O7837" >
+            <tocitem text="Copying Folder ACLs to Subfolders" target="O20398" />
+        </tocitem>
+        <tocitem text="Editing and Viewing Folders" target="O12317" />
+        <tocitem text="Adding Content To Folders" target="O6397" />
+        <tocitem text="Arranging Content in a Folder" target="O6398" />
+        <tocitem text="Removing Content from a Folder" target="O6399" />
+        <tocitem text="Acting on Content in a Folder" target="O6400" />
+        <tocitem text="Deleting a Folder" target="O6401" />
+    </tocitem>
+    <tocitem text="Finding Content" target="O6402" >
+        <tocitem text="Views" target="O6403" />
+        <tocitem text="Searching for Content Items" target="O8922" >
+            <tocitem text="Searching for Content Using the Full-text Search Engine" target="O8928" >
+                <tocitem text="Performing a Basic Search Using the Full-text Search Engine" target="O12347" />
+                <tocitem text="Advanced Searches When Using the Full-text Search Engine" target="O17873" >
+                    <tocitem text="Customizing Advanced Searches When Using the Full-text Search Engine" target="O18004" />
+                </tocitem>
+                <tocitem text="Rhythmyx Full-text Search Engine" target="O17874" >
+                    <tocitem text="Expand Query with Synonyms" target="O17805" />
+                    <tocitem text="Full-Text Search Query Syntax" target="O17902" >
+                        <tocitem text="Terms" target="O17904" />
+                        <tocitem text="Fields" target="O17907" />
+                        <tocitem text="Wildcard Searches" target="O17908" />
+                        <tocitem text="Fuzzy Searches" target="O17909" />
+                        <tocitem text="Proximity Searches" target="O17910" />
+                        <tocitem text="Range Queries" target="O17912" />
+                        <tocitem text="Boosting a Term" target="O17913" />
+                        <tocitem text="Boolean Operators" target="O17914" />
+                        <tocitem text="Grouping" target="O17915" />
+                        <tocitem text="Field Grouping" target="O17917" />
+                        <tocitem text="Escaping Special Characters" target="O17918" />
+                    </tocitem>
+                </tocitem>
+            </tocitem>
+            <tocitem text="Searching for Content Using the Database Search Engine" target="O8925" >
+                <tocitem text="Performing a Basic Search Using the Database Search Engine" target="O8926" />
+                <tocitem text="Customizing a Search When Using the Database Search Engine" target="O15811" />
+            </tocitem>
+            <tocitem text="Saving Search Queries" target="O8947" >
+                <tocitem text="Saving a Search Query" target="O8948" />
+                <tocitem text="Running a Saved Search Query" target="O8950" />
+                <tocitem text="Editing a Saved Search Query" target="O8951" />
+                <tocitem text="Deleting a Saved Search Query" target="O6409" />
+            </tocitem>
+        </tocitem>
+    </tocitem>
+    <tocitem text="Display Formats" target="O6410" />
+    <tocitem text="Using Calendar Controls" target="O3280" />
+    <tocitem text="Using the Rich Text Editor Control" target="O17861" />
+    <tocitem text="Sending a Content Item's URL to Another User" target="O9159" />
+    <tocitem text="Accessing a URL Link" target="O14928" />
+</tocitem>
+<tocitem text="Working with Content Items" target="O6381" >
+    <tocitem text="Action Menus" target="O16545" />
+    <tocitem text="Action Panels" target="O9163" />
+    <tocitem text="Creating New Items" target="O6413" >
+        <tocitem text="Creating New Items Globally in Content Explorer" target="O6414" />
+        <tocitem text="Creating New Items in a Content Explorer Folder" target="O6415" />
+    </tocitem>
+    <tocitem text="Entering New Content into a Content Editor" target="O19508" />
+    <tocitem text="Editing an Item" target="O16373" />
+    <tocitem text="Viewing an Item" target="O16067" />
+    <tocitem text="Viewing Item Properties" target="O3675" />
+    <tocitem text="Editing Content in a Public State" target="O7761" />
+    <tocitem text="Using the Content Browser" target="O17816" >
+        <tocitem text="The Content Browser, Sites Tab" target="O18981" />
+        <tocitem text="The Content Browser, Folders Tab" target="O18982" />
+        <tocitem text="The Content Browser, Search Tab" target="O16997" />
+        <tocitem text="The Content Browser, Template Selection Window" target="O17818" />
+        <tocitem text="Browsing for Content" target="O19394" />
+        <tocitem text="Using a Simple Full-Text Search" target="O17821" />
+        <tocitem text="Using an Advanced Full-text Search" target="O17822" />
+        <tocitem text="Using a Database Search" target="O17823" />
+    </tocitem>
+    <tocitem text="Using Inline Links" target="O17824" >
+        <tocitem text="Creating Inline Links and Inline Images in Word" target="O6833" />
+        <tocitem text="Creating Inline Links in a Content Editor" target="O17826" />
+        <tocitem text="Inserting Inline Images into a Content Editor" target="O17829" />
+        <tocitem text="Inserting External Links in a Content Editor" target="O15375" />
+        <tocitem text="Inserting an Inline Template into a Content Editor" target="O17830" />
+        <tocitem text="Creating an Inline Link on an Inline Image" target="O17831" />
+    </tocitem>
+    <tocitem text="Performing Active Assembly Through a Content Editor" target="O17300" >
+        <tocitem text="Performing Active Assembly in Expert Mode" target="O17832" />
+        <tocitem text="Managing Active Assembly in Expert Mode" target="O6473" />
+    </tocitem>
+    <tocitem text="Managing Content Life cycles" target="O6424" >
+        <tocitem text="Workflow" target="O6425" >
+            <tocitem text="Assembly, Workflow, and Publishing" target="O6835" />
+            <tocitem text="Checking Content In and Out" target="O6426" >
+                <tocitem text="Forcing a Check In" target="O6427" />
+                <tocitem text="Errors When Checking a Content Item In" target="O6428" />
+            </tocitem>
+        </tocitem>
+        <tocitem text="Performing a Transition on a Content Item" target="O16556" />
+        <tocitem text="Ad Hoc Assignment" target="O3048" />
+        <tocitem text="Dependency Constraints on Transitions" target="O6430" />
+        <tocitem text="Viewing the Audit Trail of a Content Item" target="O3299" />
+        <tocitem text="Previewing an Item" target="O6432" />
+    </tocitem>
+    <tocitem text="Relationship Management" target="O6433" >
+        <tocitem text="Relationships and Dependencies" target="O6434" />
+        <tocitem text="Using Impact Analysis to View Item Dependencies" target="O19276" />
+        <tocitem text="Handling Relationship Constraints" target="O6436" />
+    </tocitem>
+    <tocitem text="Revisions, Copies, and Versions" target="O6437" >
+        <tocitem text="Revisions" target="O6438" >
+            <tocitem text="Viewing Revisions" target="O12733" />
+            <tocitem text="Promoting a Revision" target="O6440" />
+        </tocitem>
+        <tocitem text="Copies" target="O6843" >
+            <tocitem text="Creating a New Copy" target="O16561" />
+            <tocitem text="Reviewing Copies" target="O6844" />
+        </tocitem>
+        <tocitem text="Versions" target="O6441" >
+            <tocitem text="Creating a New Version" target="O6442" />
+            <tocitem text="Reviewing Versions" target="O6443" />
+            <tocitem text="Promoting a Version" target="O6444" />
+        </tocitem>
+        <tocitem text="The Comparison Page" target="O15262" >
+            <tocitem text="Comparing Two Revisions of a Content Item" target="O15253" />
+        </tocitem>
+    </tocitem>
+    <tocitem text="Keyboard Shortcuts Available in Rhythmyx" target="O16534" />
+    <tocitem text="Pasting: Copies Versus Links" target="O18685" />
+    <tocitem text="Purging Content Items" target="O3226" />
+    <tocitem text="Working with Rhythmyx Content Items Available in Web Folders" target="O9224" />
+</tocitem>
+<tocitem text="Producing Websites" target="O17119" >
+    <tocitem text="Accessing the Active Assembly Interface" target="O16487" >
+        <tocitem text="Accessing the Active Assembly Interface from an Action Menu" target="O17120" />
+        <tocitem text="Accessing the Active Assembly Interface from a Content Editor" target="O17121" />
+        <tocitem text="Accessing the Active Assembly Interface from the Site Explorer Menu" target="O17122" />
+    </tocitem>
+</tocitem>
+<tocitem text="Moving Active Assembly Items Across Sites" target="O15392" >
+    <tocitem text="How Relationships Acquire Site or Folder Properties" target="O17112" />
+    <tocitem text="How to Move Dependent Items and Reset Active Assembly Links" target="O15397" />
+    <tocitem text="How to Remove Dependent Items and Reset Active Assembly Links" target="O15398" />
+</tocitem>
+<tocitem text="Producing Documents" target="O6383" >
+    <tocitem text="Using Active Assembly to Produce Documents" target="O19278" >
+        <tocitem text="Accessing the Document Assembly Window from an Action Menu" target="O15214" />
+        <tocitem text="Adding Related Content Using the Document Assembly Window" target="O6856" >
+            <tocitem text="Adding Related Content to a Document Slot by Searching" target="O19279" />
+            <tocitem text="Adding Related Content to a Document Slot by Dragging and Dropping" target="O15239" />
+            <tocitem text="Adding Related Content to a Document Slot by Copying and Pasting" target="O15228" />
+            <tocitem text="Creating Related Content in a Document Slot" target="O6863" />
+        </tocitem>
+        <tocitem text="Acting on Related Content in a Document Slot" target="O6865" />
+        <tocitem text="Managing Related Content in Documents" target="O6469" />
+        <tocitem text="Related Content Not Available for Document Assembly" target="O16630" />
+    </tocitem>
+</tocitem>
+<tocitem text="Lifecycle Analysis" target="O12945" >
+    <tocitem text="Retrieving Lifecycle Analysis Reports" target="O12946" />
+    <tocitem text="Refreshing Lifecycle Analysis Report Data" target="O12947" />
+    <tocitem text="Drilling into Report Data" target="O12948" />
+</tocitem>
+<tocitem text="Using Word in Rhythmyx" target="O7692" >
+    <tocitem text="Setting Up Word to Use Rhythmyx" target="O6384" />
+    <tocitem text="Prerequisites for Using the Rhythmyx Connector for Word" target="O3062" />
+    <tocitem text="Creating a New Word-based Content Item" target="O3129" />
+    <tocitem text="Editing Word in Rhythmyx" target="O3156" />
+</tocitem>
+<tocitem text="Using Rhythmyx in Globalized Environments" target="O6385" >
+    <tocitem text="Choosing a Language when Logging in to Rhythmyx" target="O14562" />
+    <tocitem text="Searching Internationalized Content" target="O6476" />
+    <tocitem text="Dates in Internationalized Content" target="O6477" />
+    <tocitem text="Creating Translation Content Items" target="O8887" />
+</tocitem>
+<tocitem text="Using Linkback" target="O19887" />
+<tocitem text="Content Explorer and Popup Blockers" target="O11162" />
+<tocitem text="Glossary of Terms" target="O7711" >
+    <tocitem text="Action Menu" target="O7750" />
+    <tocitem text="Active Assembly" target="O16584" />
+    <tocitem text="Active Assembly for Documents" target="O7725" />
+    <tocitem text="All Content" target="O7714" />
+    <tocitem text="Ancestor" target="O7715" />
+    <tocitem text="Audit Trail" target="O7716" />
+    <tocitem text="Community" target="O15252" />
+    <tocitem text="Content Editor" target="O7720" />
+    <tocitem text="Content Explorer" target="O7721" />
+    <tocitem text="Content Item" target="O7722" />
+    <tocitem text="Content Type" target="O7723" />
+    <tocitem text="Copy" target="O7755" />
+    <tocitem text="Delete" target="O7756" />
+    <tocitem text="Dependent" target="O7724" />
+    <tocitem text="Descendant" target="O7752" />
+    <tocitem text="Display Format" target="O7865" />
+    <tocitem text="Folder" target="O7726" />
+    <tocitem text="Impact Analysis" target="O7866" />
+    <tocitem text="Inbox" target="O7727" />
+    <tocitem text="Locale" target="O7728" />
+    <tocitem text="My Content" target="O7729" />
+    <tocitem text="Outbox" target="O7730" />
+    <tocitem text="Owner" target="O7749" />
+    <tocitem text="Page" target="O17105" />
+    <tocitem text="Promotable Version" target="O7754" />
+    <tocitem text="Properties" target="O7732" />
+    <tocitem text="Public State" target="O7733" />
+    <tocitem text="Publishing" target="O7864" />
+    <tocitem text="Purge" target="O7734" />
+    <tocitem text="Related Content" target="O15261" />
+    <tocitem text="Relationship" target="O7713" />
+    <tocitem text="Remove" target="O7861" />
+    <tocitem text="Revision" target="O7736" />
+    <tocitem text="Revision History" target="O7737" />
+    <tocitem text="Role" target="O7738" />
+    <tocitem text="Search" target="O7740" />
+    <tocitem text="Site" target="O7741" />
+    <tocitem text="Site Explorer" target="O17304" />
+    <tocitem text="Slot" target="O7751" />
+    <tocitem text="Snippet" target="O17106" />
+    <tocitem text="State" target="O7744" />
+    <tocitem text="Template" target="O14564" />
+    <tocitem text="Transition" target="O7745" />
+    <tocitem text="Translation Copy" target="O7753" />
+    <tocitem text="View" target="O7747" />
+    <tocitem text="Workflow" target="O7748" />
+</tocitem>
+</toc>

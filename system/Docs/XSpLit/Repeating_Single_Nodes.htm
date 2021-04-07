@@ -1,0 +1,93 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Repeating Single Nodes </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Repeated Fields	Single Nodes">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Repeating_in_Individual_Table_Cells.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Repeating_Multiple_Nodes.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h7 class="heading7">Repeating Single Nodes</h7>
+<p class="bodytext">If a field has a single node, the table row repeats once for each occurrence of the field in the run-time XML document.</p>
+<p class="bodytext">Suppose you have the following HTML code:</p>
+<p class="codeexample">&lt;table border=&quot;1&quot; width=&quot;40%&quot;&gt;<br>&lt;tr bgcolor=&quot;lightgrey&quot;&gt;<br>&lt;th align=&quot;left&quot;&gt;Features&lt;/th&gt;<br>&lt;/tr&gt;<br>&lt;tr&gt;<br>&lt;td align=&quot;center&quot;&gt;psx-itemfeature&lt;/td&gt;<br>&lt;/tr&gt;<br>&lt;/table&gt;</p>
+<p class="bodytext">At design time, the code would produce this output:</p>
+<p class="widegraphic"><img src="1-d.gif" alt="" height="61" width="373" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">At run time, the output would look like this for one occurrence of the field:</p>
+<table width="436" cellpadding="2" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr align="left" valign="top">
+<td width="218"><p class="bodytext">Content: XML</p>
+</td>
+<td width="218"><p class="bodytext">Output: HTML</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="218"><p class="bodytext"><code class="monospace">&lt;features&gt;<br>  &lt;itemfeature&gt;It's     cheap!&lt;/itemfeature&gt;<br>&lt;/features&gt;</code></p>
+</td>
+<td width="218"><p class="bodytext"><img src="z1-1.gif" alt="" height="54" width="249" vspace="2" hspace="2" align="bottom" border="0"></p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext">If there were more than one occurrence, the cell would repeat. In this example, the field repeats 3 times:</p>
+<table width="436" cellpadding="2" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr align="left" valign="top">
+<td width="218"><p class="bodytext">Content: XML</p>
+</td>
+<td width="218"><p class="bodytext">Output: HTML</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td width="218"><p class="bodytext"><code class="monospace">&lt;features&gt;<br>&nbsp; &lt;itemfeature&gt;It's cheap!&lt;/itemfeature&gt;<br>&nbsp; &lt;itemfeature&gt;It's easy!&lt;/itemfeature&gt;<br>&nbsp; &lt;itemfeature&gt;It's fun!&lt;/itemfeature&gt;<br>&lt;/features&gt;</code></p>
+</td>
+<td width="218"><p class="bodytext"><img src="z1-2.gif" alt="" height="93" width="250" vspace="2" hspace="2" align="bottom" border="0"></p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "226.8">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Repeating_in_Individual_Table_Cells.htm" target="_self">Repeating in Individual Table Cells</a></p><p class="relateditem"><a href="Repeating_Multiple_Nodes.htm" target="_self">Repeating Multiple Nodes</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

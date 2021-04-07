@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE map
+PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 1.0//EN"
+"../../../DTD/map_2_0.dtd">
+<map version="1.0">
+    <mapID target="O2206" url="Rhythmyx_Server.htm" />
+    <mapID target="O2281" url="Setting_Up_Rhythmyx_as_a_stand-alone_Server.htm" />
+    <mapID target="O1245" url="Operating_Rhythmyx_Servers.htm" />
+    <mapID target="O1998" url="Operating_Rhythmyx_Server_in_a_Windows_Environment.htm" />
+    <mapID target="O2327" url="Starting_Rhythmyx_Server_as_a_Windows_Service_in_Windows_NT.htm" />
+    <mapID target="O20428" url="Starting_Rhythmyx_Server_as_a_Service_in_Windows_2000.htm" />
+    <mapID target="O2328" url="Starting_Rhythmyx_Server_as_an_Application.htm" />
+    <mapID target="O1578" url="Defining_the_User_to_Act_as_Part_of_the_Operating_System.htm" />
+    <mapID target="O20429" url="Defining_the_User_to_Act_as_Part_of_the_Operating_System_in_Windows_2000.htm" />
+    <mapID target="O1580" url="Defining_the_User_to_Act_as_Part_of_the_Operating_System_in_Windows_NT.htm" />
+    <mapID target="O1775" url="Errors_During_Server_Initialization.htm" />
+    <mapID target="O2341" url="Stopping_Rhythmyx_Server_from_a_DOS_Window.htm" />
+    <mapID target="O2343" url="Stopping_Rhythmyx_Server_from_the_Services_Dialog.htm" />
+    <mapID target="O20430" url="Stopping_Rhythmyx_Server_from_a_Services_Dialog_in_Windows_2000.htm" />
+    <mapID target="O2344" url="Stopping_Rhythmyx_Server_from_the_Services_Dialog_in_Windows_NT.htm" />
+    <mapID target="O1406" url="Changing_Rhythmyx_Server_Settings_in_a_Windows_Environment.htm" />
+    <mapID target="O20431" url="Changing_Rhythmyx_Server_Settings_in_Windows_2000.htm" />
+    <mapID target="O1408" url="Changing_Rhythmyx_Server_Settings_in_Windows_NT.htm" />
+    <mapID target="O1997" url="Operating_Rhythmyx_Server_in_a_UNIX_Environment.htm" />
+    <mapID target="O2329" url="Starting_Rhythmyx_Server_in_a_Unix_Environment.htm" />
+    <mapID target="O6481" url="Starting_the_Rhythmyx_Server_as_a_Console_in_a_Unix_Environment.htm" />
+    <mapID target="O6482" url="Stopping_Rhythmyx_Server_in_a_Unix_Environment_When_Running_as_a.htm" />
+    <mapID target="O6483" url="Uninstalling_the_Rhythmyx_Daemon_Control_Scripts.htm" />
+    <mapID target="O2345" url="Stopping_Rhythmyx_Server_in_a_UNIX_Environment.htm" />
+    <mapID target="O1766" url="Enabling_and_Disabling_the_Pause_Option.htm" />
+    <mapID target="O17878" url="Rhythmyx_Server_Administrator.htm" />
+    <mapID target="O14566" url="How_to_Access_the_Server_Administrator.htm" />
+    <mapID target="O18616" url="Managing_Applications_and_Servers.htm" />
+    <mapID target="O2324" url="Starting_and_Stopping_Applications.htm" />
+    <mapID target="O18617" url="Monitoring_Statisitics.htm" />
+    <mapID target="O2521" url="Viewing_Application_Performance.htm" />
+    <mapID target="O18615" url="Optimizing_Performance.htm" />
+    <mapID target="O12384" url="12384.htm" />
+    <mapID target="O2954" url="Changing_Page_Cache_Settings_from_the_Server_Console.htm" />
+    <mapID target="O14145" url="14145.htm" />
+    <mapID target="O20412" url="20412.htm" />
+    <mapID target="O14155" url="14155.htm" />
+    <mapID target="O14153" url="14153.htm" />
+    <mapID target="O14152" url="14152.htm" />
+    <mapID target="O14147" url="14147.htm" />
+    <mapID target="O14161" url="14161.htm" />
+    <mapID target="O14162" url="14162.htm" />
+    <mapID target="O14163" url="14163.htm" />
+    <mapID target="O14148" url="14148.htm" />
+    <mapID target="O20419" url="20419.htm" />
+    <mapID target="O20420" url="20420.htm" />
+    <mapID target="O20415" url="20415.htm" />
+    <mapID target="O18629" url="Setting_logging.htm" />
+    <mapID target="O18631" url="18631.htm" />
+    <mapID target="O18633" url="18633.htm" />
+    <mapID target="O18638" url="18638.htm" />
+    <mapID target="O18639" url="18639.htm" />
+    <mapID target="O12631" url="12631.htm" />
+    <mapID target="O9978" url="9978.htm" />
+    <mapID target="O14177" url="14177.htm" />
+    <mapID target="O9949" url="9949.htm" />
+    <mapID target="O9950" url="9950.htm" />
+    <mapID target="O9951" url="9951.htm" />
+    <mapID target="O9952" url="9952.htm" />
+    <mapID target="O9953" url="9953.htm" />
+    <mapID target="O9954" url="9954.htm" />
+    <mapID target="O9955" url="9955.htm" />
+    <mapID target="O14231" url="14231.htm" />
+    <mapID target="O9957" url="9957.htm" />
+    <mapID target="O9958" url="9958.htm" />
+    <mapID target="O14228" url="14228.htm" />
+    <mapID target="O9960" url="9960.htm" />
+    <mapID target="O1887" url="JNDI_Group_Providers_Dialog.htm" />
+    <mapID target="O14233" url="14233.htm" />
+    <mapID target="O14234" url="14234.htm" />
+    <mapID target="O9963" url="9963.htm" />
+    <mapID target="O12668" url="12668.htm" />
+    <mapID target="O18606" url="Adding_a_Group_Provider.htm" />
+    <mapID target="O18607" url="Editing_a_Group_Provider.htm" />
+    <mapID target="O18608" url="Deleting_a_Group_Provider.htm" />
+    <mapID target="O9964" url="9964.htm" />
+    <mapID target="O9965" url="9965.htm" />
+    <mapID target="O9966" url="9966.htm" />
+    <mapID target="O9967" url="9967.htm" />
+    <mapID target="O9968" url="9968.htm" />
+    <mapID target="O9969" url="9969.htm" />
+    <mapID target="O9970" url="9970.htm" />
+    <mapID target="O14223" url="14223.htm" />
+    <mapID target="O9972" url="9972.htm" />
+    <mapID target="O9973" url="9973.htm" />
+    <mapID target="O14224" url="14224.htm" />
+    <mapID target="O14226" url="14226.htm" />
+    <mapID target="O9976" url="9976.htm" />
+    <mapID target="O9977" url="9977.htm" />
+    <mapID target="O14182" url="14182.htm" />
+    <mapID target="O14189" url="14189.htm" />
+    <mapID target="O14190" url="14190.htm" />
+    <mapID target="O14191" url="14191.htm" />
+    <mapID target="O10044" url="10044.htm" />
+    <mapID target="O12636" url="12636.htm" />
+    <mapID target="O18584" url="18584.htm" />
+    <mapID target="O18592" url="18592.htm" />
+    <mapID target="O18595" url="18595.htm" />
+    <mapID target="O18599" url="18599.htm" />
+    <mapID target="O18586" url="18586.htm" />
+    <mapID target="O18588" url="18588.htm" />
+    <mapID target="O10075" url="10075.htm" />
+    <mapID target="O18590" url="18590.htm" />
+    <mapID target="O18600" url="18600.htm" />
+    <mapID target="O18602" url="18602.htm" />
+    <mapID target="O20417" url="About_Security.htm" />
+    <mapID target="O1393" url="Blank_and_Multiple_Security.htm" />
+    <mapID target="O1256" url="Security_Providers_and_Authentication.htm" />
+    <mapID target="O18620" url="18620.htm" />
+    <mapID target="O12634" url="12634.htm" />
+    <mapID target="O14236" url="14236.htm" />
+    <mapID target="O14238" url="Adding_a_JNDI_Security_Provider.htm" />
+    <mapID target="O14239" url="Editing_a_JNDI_Security_Provider.htm" />
+    <mapID target="O1593" url="Deleting_a_JNDI_Security_Provider.htm" />
+    <mapID target="O2531" url="Web_Server.htm" />
+    <mapID target="O6488" url="Implementing_Single_Sign-on.htm" />
+    <mapID target="O6493" url="Single_Sign-on_and_the_Rhythmyx_Workbench_and_Server_Administrator.htm" />
+    <mapID target="O6495" url="Setting_up_a_Web_Server_Security_Provider_for_Single_Sign-on.htm" />
+    <mapID target="O6484" url="Web_Server_Security_Provider_Details_Dialog.htm" />
+    <mapID target="O6485" url="Adding_a_Web_Server_Security_Provider.htm" />
+    <mapID target="O6486" url="Modifying_a_Web_Server_Security_Provider.htm" />
+    <mapID target="O6487" url="Deleting_a_Web_Server_Security_Provider.htm" />
+    <mapID target="O4090" url="Interfacing_to_Rhythmyx_Through_Web_Servers.htm" />
+    <mapID target="O4091" url="Interfacing_to_Rhythmyx_as_a_Servlet_on_J2EE_Servers.htm" />
+    <mapID target="O14196" url="14196.htm" />
+    <mapID target="O14197" url="14197.htm" />
+    <mapID target="O14203" url="14203.htm" />
+    <mapID target="O14204" url="14204.htm" />
+    <mapID target="O14205" url="14205.htm" />
+    <mapID target="O14206" url="14206.htm" />
+    <mapID target="O14198" url="14198.htm" />
+    <mapID target="O14199" url="14199.htm" />
+    <mapID target="O18628" url="18628.htm" />
+    <mapID target="O1915" url="Maintaining_Access_Control_Lists.htm" />
+    <mapID target="O18609" url="Roles.htm" />
+    <mapID target="O18611" url="Default_Roles_and_Members.htm" />
+    <mapID target="O1273" url="Add_Edit_Role_Dialog.htm" />
+    <mapID target="O1955" url="Modify_Member_List_for__Role__Dialog.htm" />
+    <mapID target="O1984" url="New_Member_Dialog.htm" />
+    <mapID target="O1253" url="Role_and_Member_Properties.htm" />
+    <mapID target="O18613" url="Role_and_Member_Properties_Required_by_Rhythmyx_Functions.htm" />
+    <mapID target="O1285" url="Adding_a_New_Role.htm" />
+    <mapID target="O1692" url="Editing_a_Role.htm" />
+    <mapID target="O1601" url="Deleting_a_Role.htm" />
+    <mapID target="O1295" url="Adding_Existing_Members_to_a_Role.htm" />
+    <mapID target="O18612" url="Adding_New_Members_to_a_Role.htm" />
+    <mapID target="O1686" url="Editing_a_Member_s_Properties.htm" />
+    <mapID target="O1596" url="Deleting_a_Member_from_a_Role.htm" />
+    <mapID target="O3696" url="Maintaining_ACLs_at_the_Server_Level.htm" />
+    <mapID target="O18518" url="18518.htm" />
+    <mapID target="O18649" url="18649.htm" />
+    <mapID target="O18644" url="Creating_a_Server_ACL.htm" />
+    <mapID target="O18647" url="Editing_a_Server_ACL.htm" />
+    <mapID target="O1604" url="Deleting_a_Server_ACL.htm" />
+    <mapID target="O18521" url="Resolving_Conflicting_Access_Settings.htm" />
+    <mapID target="O1429" url="Communities_and_Security.htm" />
+    <mapID target="O17889" url="17889.htm" />
+    <mapID target="O17803" url="17803.htm" />
+    <mapID target="O17801" url="17801.htm" />
+    <mapID target="O17919" url="17919.htm" />
+    <mapID target="O12405" url="12405.htm" />
+    <mapID target="O1873" url="Interfacing_by_remote_console.htm" />
+    <mapID target="O4135" url="Server_Console_Commands.htm" />
+    <mapID target="O4136" url="Server_Console_Commands_by_Function.htm" />
+    <mapID target="O18652" url="General_Server_Console_Commands.htm" />
+    <mapID target="O4140" url="Server_Console_Commands_for_Applications.htm" />
+    <mapID target="O18653" url="Server_Console_Commands_for_Displaying_Resources.htm" />
+    <mapID target="O18654" url="Server_Console_Commands_for_Flushing_the_Server_and_MetaData_Caches.htm" />
+    <mapID target="O17922" url="17922.htm" />
+    <mapID target="O17923" url="Server_Console_Commands_in_Alphabetical_Order.htm" />
+    <mapID target="O18656" url="Configuring_the_Java_Plugin_Version_for_Content_Explorer.htm" />
+    <mapID target="O18658" url="Adding_a_Java_Plugin_Configuration.htm" />
+    <mapID target="O8118" url="Editing_and_Deleting_Plugin_Configurations.htm" />
+    <mapID target="O3624" url="Copyrights_and_Trademarks.htm" />
+</map>
+

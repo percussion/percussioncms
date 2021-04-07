@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<!DOCTYPE toc
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+<toc version="1.0">
+
+
+<tocitem text="About Rhythmyx Multi-Server Manager and Archive Installation" target="O6002" >
+    <tocitem text="How Multi-Server Manager Installation Works" target="O15192" />
+    <tocitem text="Package Types and their Dependencies" target="O14246" />
+    <tocitem text="Content Items to Deploy with Multi-Server Manager" target="O15408" />
+</tocitem>
+<tocitem text="Using the Multi-Server Manager Interface" target="O18741" >
+    <tocitem text="Descriptors View" target="O12151" />
+    <tocitem text="Archives View" target="O12152" />
+    <tocitem text="Packages View" target="O12153" />
+</tocitem>
+<tocitem text="Installation Check List" target="O5909" />
+<tocitem text="Maintaining Rhythmyx Server Registrations" target="O5911" >
+    <tocitem text="Server Registration and Maintenance Dialogs" target="O5912" />
+    <tocitem text="Edit/New Rhythmyx Server Registration" target="O12156" />
+    <tocitem text="Repository Alias" target="O12158" />
+    <tocitem text="Repository Change" target="O12241" />
+    <tocitem text="Connect to Server" target="O12160" />
+</tocitem>
+<tocitem text="Server Registration Maintenance Procedures" target="O5919" >
+    <tocitem text="Registering a Server" target="O5920" />
+    <tocitem text="Editing a Server Registration" target="O5921" />
+    <tocitem text="Connecting to a Server" target="O5922" />
+    <tocitem text="Maintaining Server Policy Settings" target="O12162" />
+</tocitem>
+<tocitem text="About Mapping Elements and Datasources and Identifying ID Types" target="O18715" >
+    <tocitem text="When to Map Elements and Datasources and Identify ID Types" target="O18716" />
+    <tocitem text="Mapping Source and Target Rhythmyx Elements" target="O15185" />
+    <tocitem text="Mapping Source and Target Datasources" target="O18717" />
+    <tocitem text="Identifying Types of Elements" target="O15186" />
+    <tocitem text="Identify ID Types Dialog" target="O17497" >
+        <tocitem text="Reading Descriptions in the Identify ID Types Dialog" target="O17500" />
+        <tocitem text="Specifying ID Types" target="O6061" />
+        <tocitem text="Using the Identify ID Types Dialog" target="O12218" />
+    </tocitem>
+    <tocitem text="Define Transforms for &lt;Server:Port&gt;" target="O18718" >
+        <tocitem text="Define Transforms for &lt;Server:Port&gt; Datasource Map Tab" target="O18719" />
+        <tocitem text="Edit/Add Datasource" target="O18721" />
+        <tocitem text="Define Transforms for &lt;Server:Port&gt; Element Maps Tab" target="O18723" />
+        <tocitem text="Edit/Add Mapping" target="O12168" />
+    </tocitem>
+    <tocitem text="Source to Target Transform Procedures" target="O18725" >
+        <tocitem text="Mapping Datasources" target="O18726" />
+        <tocitem text="Adding Datasource Mappings" target="O18728" />
+        <tocitem text="Editing a Datasource Mapping" target="O18729" />
+        <tocitem text="Deleting a Datasource Mapping" target="O18730" />
+        <tocitem text="Mapping Elements" target="O5947" />
+        <tocitem text="Adding an Element Name Mapping" target="O6067" />
+        <tocitem text="Editing an Element Name Mapping" target="O5948" />
+        <tocitem text="Deleting an Element Name Mapping" target="O5949" />
+    </tocitem>
+</tocitem>
+<tocitem text="Creating and Editing Archives and Generating Descriptors" target="O12171" >
+    <tocitem text="Choose a Server and/or Descriptor" target="O12036" />
+    <tocitem text="Choose Create Mode" target="O12038" />
+    <tocitem text="Add Elements to the Archive" target="O14248" />
+    <tocitem text="Identify ID Types" target="O12044" />
+    <tocitem text="Include Element Dependencies or Ancestors" target="O18731" >
+        <tocitem text="Choosing User Dependencies" target="O12049" />
+    </tocitem>
+    <tocitem text="Create Archive or Descriptor" target="O12059" />
+</tocitem>
+<tocitem text="Installing an Archive" target="O6075" >
+    <tocitem text="Preparing a Target Server for Installation" target="O6155" />
+    <tocitem text="Publishing Lock During Installation" target="O12737" />
+    <tocitem text="Using the Install Archive Wizard" target="O18740" >
+        <tocitem text="Select an Archive and Server Dialog" target="O12066" />
+        <tocitem text="Choose Installation Mode Dialog" target="O12068" />
+        <tocitem text="Add Packages to Install" target="O17515" />
+        <tocitem text="Transforms" target="O18736" >
+            <tocitem text="Advanced Transforms" target="O18737" />
+        </tocitem>
+        <tocitem text="Specify Actions for Warnings" target="O12820" />
+        <tocitem text="Summary" target="O12079" />
+    </tocitem>
+    <tocitem text="Reviewing Archives" target="O17518" >
+        <tocitem text="Reviewing Installed Packages" target="O5983" />
+        <tocitem text="Package Log Main Tab" target="O17520" />
+        <tocitem text="Package Log Transforms Tab" target="O17521" />
+        <tocitem text="Package Log Informed Warnings Tab" target="O15388" />
+        <tocitem text="Package Log Transaction Log Tab" target="O17523" />
+    </tocitem>
+    <tocitem text="Archiving an Entire Rhythmyx System" target="O18738" />
+</tocitem>
+<tocitem text="Rhythmyx Multi-Server Manager Best Practices" target="O11099" >
+    <tocitem text="The Development Environment" target="O6356" />
+    <tocitem text="Selecting an Archive Structure" target="O6357" />
+</tocitem>
+<tocitem text="Simple Example: Adding a New Field to a Content Editor" target="O17510" >
+    <tocitem text="Simple Example: Setting Up the Source and Target Servers" target="O17501" />
+    <tocitem text="Simple Example: Creating an Archive" target="O17503" />
+    <tocitem text="Simple Example: Installing the Archive" target="O17512" />
+    <tocitem text="Simple Example: Reviewing the Installation" target="O17506" />
+</tocitem>
+<tocitem text="Troubleshooting" target="O6316" />
+<tocitem text="Glossary of Terms" target="O18764" >
+    <tocitem text="Advanced Transforms" target="O18803" />
+    <tocitem text="Ancestors" target="O18775" />
+    <tocitem text="Archive" target="O18769" />
+    <tocitem text="Archive Summary" target="O18804" />
+    <tocitem text="Archives View" target="O18808" />
+    <tocitem text="Create Archive/Descriptor Wizard" target="O18789" />
+    <tocitem text="Custom Create Mode" target="O18822" />
+    <tocitem text="Custom Installation Mode" target="O18801" />
+    <tocitem text="Dependencies" target="O18772" />
+    <tocitem text="Descriptor" target="O18780" />
+    <tocitem text="Descriptors View" target="O18809" />
+    <tocitem text="Details Pane" target="O18779" />
+    <tocitem text="Guess All" target="O18802" />
+    <tocitem text="ID Types" target="O18784" />
+    <tocitem text="Install Archive Wizard" target="O18813" />
+    <tocitem text="Local Dependencies" target="O18790" />
+    <tocitem text="Manifest" target="O18781" />
+    <tocitem text="Mapping Datasources" target="O18783" />
+    <tocitem text="Mapping Elements" target="O18782" />
+    <tocitem text="Mappings" target="O18799" />
+    <tocitem text="Multi-Server Manager" target="O18765" />
+    <tocitem text="Package" target="O18771" />
+    <tocitem text="Package Log" target="O18807" />
+    <tocitem text="Package Type" target="O18776" />
+    <tocitem text="Packages View" target="O18810" />
+    <tocitem text="Publishing Lock" target="O18795" />
+    <tocitem text="Server Dependencies" target="O18793" />
+    <tocitem text="Server Groups Tree" target="O18777" />
+    <tocitem text="Shared Dependencies" target="O18791" />
+    <tocitem text="Source Server" target="O18766" />
+    <tocitem text="System Dependencies" target="O18792" />
+    <tocitem text="Target Server" target="O18767" />
+    <tocitem text="Transaction Log" target="O18811" />
+    <tocitem text="Transforms" target="O18787" />
+    <tocitem text="Typical Create Mode" target="O18821" />
+    <tocitem text="Typical Installation Mode" target="O18797" />
+    <tocitem text="User Defined Dependencies" target="O18794" />
+    <tocitem text="Validations" target="O18812" />
+</tocitem>
+</toc>

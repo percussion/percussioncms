@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Content List Editor </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="Content List Editor, Content lists">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Content_Lists2.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="17866.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1776018.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Content List Editor</h2>
+<p class="bodytext">Use Content List editor to create and maintain Content Lists.  </p>
+<p class="bodytext">To access the Content List editor:</p>
+<ul class="listbullet"><li class="listbullet">While viewing the List Content Lists dialog, in the Menu bar, choose <em class="emphasis">Action</em> &gt; <em class="emphasis">Create Content List</em>.</li><li class="listbullet">in the Navigation pane, expand the Sites node, expand the Site with which the Content List you want to modify is associated, expand the Editions node, and double-click on the Edition with which the Content List you want to modify is associated.<p class="widegraphic"><img src="hlp_contentlisteditor.gif" alt="Help_Content List Editor" height="585" width="837" vspace="2" hspace="2" align="bottom" border="0" /></p>
+</li></ul><p class="subheading">Field Descriptions</p>
+<p class="fielddescription"><strong class="fieldname">Name</strong>  Name of the Content List.  Content List names must be begin with a letter, and can contain any alphanumeric characters, underscores, hyphens, or dots (periods).</p>
+<p class="fielddescription"><strong class="fieldname">Description</strong>  Free-form text description of the Content List.  Value can contain any alphanumeric characters and punctuation marks.</p>
+<p class="fielddescription"><strong class="fieldname">Content List Type</strong>  Specifies whether the Content List is <em class="emphasis">Normal</em> or <em class="emphasis">Full</em>.  </p>
+<ul class="listbullet2"><li class="listbullet2">A Normal Content List clears the Site record, removes all existing Content Items from the target location, and publishes all Public Content Items in the Site.</li><li class="listbullet2">An Incremental Content List removes any expired Content Items from the Site, updates any Content Items that have changed since the last publishing run, and publishes any Content Items that became Public since the last Publishing run.</li></ul><p class="fielddescription"><strong class="fieldname">Delivery Type</strong>  The Delivery Type to use to deliver published Content Items to the output location.  Options include all Delivery Types defined in the system (by default, <em class="emphasis">File System</em>, <em class="emphasis">FTP</em>, <em class="emphasis">SFTP</em>, <em class="emphasis">Database)</em>.</p>
+<p class="fielddescription"><strong class="fieldname">Item Filter</strong>  The Item Filter to use to filter the original list of Content Items to produce a final list of Content Items to be published.</p>
+<p class="fielddescription"><strong class="fieldname">Generator</strong>  The Generator to use to select that base list of Content Items to be published.  This list is processed by the Item Filter to produce the final list. Options include all Generators registered in the system; the default options include:</p>
+<ul class="listbullet2"><li class="listbullet2">sys_Search <p class="listcontinue2">Generates a list based on a JCR query.</p>
+</li><li class="listbullet2">sys_PublishedItems <p class="listcontinue2">Outputs the list of Content Items currently published on the Site; must be used with the sys_SiteTemplateExpander. Used primarily for unpublishing in legacy systems implemented on Rhythmyx Version 6.5 or earlier.</p>
+</li><li class="listbullet2">sys_SelectedItems<p class="listcontinue2">Returns the list of selected Content Items.  Used in demand publishing.</p>
+</li></ul><p class="listcontinue">In most cases, when a Generator is selected, one or more parameter fields will be displayed in the Content List editor where you can enter Generator parameters.  The specific parameters depend on the Generator selected.</p>
+<p class="fielddescription"><strong class="fieldname">Template Expander</strong>  Extension that selects the Templates to use to assemble the Content Items.  Options include all Template Expanders registered in the system; the default options include:</p>
+<ul class="listbullet2"><li class="listbullet2">sys_SiteTemplateExpander<p class="listcontinue2">Publishes all Templates associated with the Site being published.</p>
+</li><li class="listbullet2">sys_ListTemplateExpander<p class="listcontinue2">Publishes only the listed Templates.</p>
+</li></ul><p class="listcontinue">In most cases, when a Template Expander is selected, one or more parameter fields will be displayed in the Content List editor where you can enter Template Expander parameters.  The specific parameters depend on the Template Expander selected.</p>
+<p class="fielddescription"><strong class="fieldname">Base Resource Path</strong>  (Advanced option)  Path to the Content List servlet.  Defaults to /Rhythmyx/contentlist.  Should only be changed if you implement an alternate Content List servlet.  For details about implementing servlets in Rhythmyx, see the <em class="emphasis">Rhythmyx Technical Reference Manual</em>.</p>
+<p class="fielddescription"><strong class="fieldname">Extra Parameters</strong>  (Advanced option)  Additional HTML parameters to include in the request to the Servlet.  Parameters must be coded as HTML parameters.</p>
+<p class="bodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Content_Lists2.htm" target="_self">Content Lists</a></p><p class="relateditem"><a href="17866.htm" target="_self">Creating a Content List</a></p><p class="relateditem"><a href="17867.htm" target="_self">Modifying a Content List</a></p><p class="relateditem"><a href="17868.htm" target="_self">Copying a Content List</a></p><p class="relateditem"><a href="17869.htm" target="_self">Deleting a Content List</a></p><p class="relateditem"><a href="14585.htm" target="_self">Writing Content List Queries</a></p><p class="relateditem"><a href="17870.htm" target="_self">Legacy Content List Editor</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
