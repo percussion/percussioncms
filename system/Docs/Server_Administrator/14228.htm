@@ -1,0 +1,67 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Directory Editor </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Directory Configurations	Directory Editor">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="9958.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="9960.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h6 class="heading6">Directory Editor</h6>
+<p class="bodytext">Use the Directory Editor to enter or modify Directory configuration data. </p>
+<p class="bodytext">To open an existing Directory configuration:</p>
+<ul class="listbullet"><li class="listbullet">double-click on the name of the desired Directory configuration on the Directories tab or</li><li class="listbullet">select the desired Directory on the Directories tab and click the [<strong class="buttons">Edit</strong>] button <p class="widegraphic"><img src="sa_directoryeditor_addnewdirectory_57.gif" alt="DirServicesDirectoryEditor" height="478" width="498" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li></ul><p class="subheading">Directory Editor Field Descriptions:</p>
+<p class="fielddescription"><strong class="fieldname">Name</strong>  A description of the Directory being registered. To be consistent with the naming scheme we used for the Authentication, we have named this Directory the Sun ONE Server Directory.</p>
+<p class="fielddescription"><strong class="fieldname">Catalog</strong>  The type of cataloging being done.  Rhythmyx defines two types of directory server cataloging. Choose the one that is right for your configuration.</p>
+<ul class="listbullet"><li class="listbullet">Shallow:  Rhythmyx retrieves only those records immediately below the search base</li><li class="listbullet">Deep:  Rhythmyx retrieves values from the search base and all sub-trees.  Depending on the size of the tree being cataloged, this setting can cause increased response times.</li></ul><p class="fielddescription"><strong class="fieldname">Factory</strong>  The class name for the factory used to create the contexts for connections to the directory server. The most common factories are provided in a drop list.</p>
+<ul class="listbullet"><li class="listbullet">LdapCtxFactory  Used for connections to LDAP servers, including Active Directory.  This is the most commonly used factory.</li><li class="listbullet">NISCtxFactory  Used for connections to NIS (Network Information Services) servers.</li></ul><p class="fielddescription"><strong class="fieldname">Authentication</strong>  Select the Authentication for this Directory from the drop list. If you need to create a new Authentication, choose &quot;New Authentication...&quot; from the drop list to display the Authentication Editor.</p>
+<p class="fielddescription"><strong class="fieldname">Provider URL</strong>  The provider URL defines the URL of the directory server and the location on the directory server where searches should begin. Click the ellipsis next to the field to display the <a id="h12644" class="jumptemplate" title="Provider URL Selector" href="9960.htm" target="_self">Provider URL Selector dialog</a>.  Use this dialog to help define the correct URL.</p>
+<p class="fielddescription"><strong class="fieldname">Return Attributes</strong>  Click the Insert New Entry icon to the right of the Return Attributes row to list any specific attribute names you want a directory search to return. If this table is filled in, only the specified attributes are returned with the search results. If the table in this field is empty, all attributes are returned with the search results.</p>
+<p class="fielddescription"><strong class="fieldname">Group Provider to make available </strong> Group providers define a source of group information to use when authenticating a user or when retrieving user attributes from a group.  Add and remove Group Providers in this field.</p>
+<p class="fielddescription"><strong class="fieldname">Enable debug output</strong>  Check this box to request debug output to the console.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="9957.htm" target="_self">Directory Configuration Dialogs</a></p><p class="relateditem"><a href="9958.htm" target="_self">Directories Tab</a></p><p class="relateditem"><a href="9960.htm" target="_self">Provider URL Selector</a></p><p class="relateditem"><a href="JNDI_Group_Providers_Dialog.htm" target="_self">JNDI Group Provider Details Dialog</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<!DOCTYPE index
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Index Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/index_1_0.dtd">
+
+<index version="1.0">
+
+
+    <indexitem text="Archives">
+        <indexitem target="O17518">Archive Summary Dialog</indexitem>
+        <indexitem target="O12171">Creating</indexitem>
+        <indexitem target="O12171">Editing</indexitem>
+        <indexitem target="O18738">For Entire Rhythmyx System  </indexitem>
+        <indexitem target="O18740">Installing</indexitem>
+        <indexitem target="O17518">Reviewing</indexitem>
+        <indexitem target="O6357">Structures</indexitem>
+    </indexitem>
+    <indexitem text="Create Archive/Descriptor Wizard">
+        <indexitem target="O14248">Add Elements to the Archive Dialog</indexitem>
+        <indexitem target="O12036">Choose a Server and/or Descriptor Dialog</indexitem>
+        <indexitem target="O12038">Choose Create Mode Dialog</indexitem>
+        <indexitem target="O12059">Create Archive or Descriptor Dialog</indexitem>
+        <indexitem target="O12044">Identify ID Types Dialog</indexitem>
+        <indexitem target="O18731">Include Element Dependencies or Ancestors Dialog</indexitem>
+        <indexitem target="O12171">Introduction</indexitem>
+        <indexitem target="O12049">User Dependencies</indexitem>
+    </indexitem>
+    <indexitem target="O18718">Define Transforms Dialog</indexitem>
+    <indexitem text="Descriptors">
+        <indexitem target="O12171">Creating</indexitem>
+    </indexitem>
+    <indexitem target="O6356">Development Environment</indexitem>
+    <indexitem text="Identifying ID Types">
+        <indexitem target="O17500">Descriptions in Identify ID Types Dialog</indexitem>
+        <indexitem target="O15186">Explanation and Example</indexitem>
+        <indexitem target="O12218">General Procedure</indexitem>
+        <indexitem target="O17497">Identify ID Types Dialog</indexitem>
+        <indexitem target="O18715">Introduction</indexitem>
+        <indexitem target="O6061">Procedure from Multi-Server Manager Window</indexitem>
+        <indexitem target="O18716">When to Identify</indexitem>
+    </indexitem>
+    <indexitem text="Install Archive Wizard">
+        <indexitem target="O18740">Using the Wizard</indexitem>
+    </indexitem>
+    <indexitem text="Installation">
+        <indexitem target="O18738">Entire Rhythmyx System</indexitem>
+        <indexitem target="O5909">Procedure</indexitem>
+        <indexitem target="O14246">Types  </indexitem>
+    </indexitem>
+    <indexitem text="Installation Example">
+        <indexitem target="O17503">Creating the Archive</indexitem>
+        <indexitem target="O17512">Installing the Archive</indexitem>
+        <indexitem target="O17510">Introduction</indexitem>
+        <indexitem target="O17501">Registering Servers</indexitem>
+        <indexitem target="O17506">Reviewing the Installation</indexitem>
+    </indexitem>
+    <indexitem text="Mapping Datasources">
+        <indexitem target="O18728">Adding</indexitem>
+        <indexitem target="O18719">Datasource Maps Tab of Define Transforms Dialog</indexitem>
+        <indexitem target="O18730">Deleting</indexitem>
+        <indexitem target="O18721">Edit/Add Datasource Dialog</indexitem>
+        <indexitem target="O18729">Editing</indexitem>
+        <indexitem target="O18717">Explanation</indexitem>
+        <indexitem target="O18715">Introduction</indexitem>
+        <indexitem target="O18726">Mapping</indexitem>
+        <indexitem target="O18716">When to Identify</indexitem>
+        <indexitem target="O18716">When to Map</indexitem>
+    </indexitem>
+    <indexitem text="Mapping DBMS Credentials">
+        <indexitem target="O18728">Adding</indexitem>
+        <indexitem target="O18729">Editing</indexitem>
+        <indexitem target="O18715">Introduction</indexitem>
+        <indexitem target="O18726">Mapping</indexitem>
+        <indexitem target="O18716">When to Identify</indexitem>
+        <indexitem target="O18716">When to Map</indexitem>
+    </indexitem>
+    <indexitem text="Mapping Elements">
+        <indexitem target="O6067">Adding</indexitem>
+        <indexitem target="O5949">Deleting</indexitem>
+        <indexitem target="O12168">Edit/Add Mapping Dialog</indexitem>
+        <indexitem target="O5948">Editing</indexitem>
+        <indexitem target="O18723">Element Maps Tab of Define Transforms Dialog</indexitem>
+        <indexitem target="O15185">Explanation and Examples</indexitem>
+        <indexitem target="O18715">Introduction</indexitem>
+        <indexitem target="O5947">Mapping</indexitem>
+        <indexitem target="O18716">When to Map</indexitem>
+    </indexitem>
+    <indexitem text="Multi-Server Manager">
+        <indexitem target="O12152">Archives View</indexitem>
+        <indexitem target="O11099">Best Practices</indexitem>
+        <indexitem target="O12151">Descriptors View</indexitem>
+        <indexitem target="O18741">Interface</indexitem>
+        <indexitem target="O6002">Introduction</indexitem>
+        <indexitem target="O15192">Limitations</indexitem>
+        <indexitem target="O12153">Packages View</indexitem>
+        <indexitem target="O15192">Prerequisites</indexitem>
+    </indexitem>
+    <indexitem target="O14246">Package Types  </indexitem>
+    <indexitem text="Packages">
+        <indexitem target="O15388">Package Log Informed Warnings Tab</indexitem>
+        <indexitem target="O17520">Package Log Main Tab</indexitem>
+        <indexitem target="O17523">Package Log Transaction Log Tab</indexitem>
+        <indexitem target="O17521">Package Log Transforms Tab</indexitem>
+        <indexitem target="O5983">Reviewing</indexitem>
+    </indexitem>
+    <indexitem text="Servers">
+        <indexitem target="O5922">Connecting</indexitem>
+        <indexitem target="O12160">Connection to Server Dialog</indexitem>
+        <indexitem target="O12156">Edit/New Rhythmyx Server Registration Dialog</indexitem>
+        <indexitem target="O5921">Editing Registration</indexitem>
+        <indexitem target="O12158">Enter Repository Alias Dialog</indexitem>
+        <indexitem target="O12162">Policy Settings</indexitem>
+        <indexitem target="O5920">Registering</indexitem>
+        <indexitem target="O12241">Repository Change Dialog</indexitem>
+    </indexitem>
+</index>
+

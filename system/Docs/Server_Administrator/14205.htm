@@ -1,0 +1,62 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> DBMS Table Security Property Details Authentication Tab </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="14204.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="14206.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h6 class="heading6">DBMS Table Security Property Details Authentication Tab</h6>
+<p class="bodytext">Use the Authentication tab of the DBMS Table Security Provider Details dialog to specify the columns where the authentication data is stored.</p>
+<p class="bodytext">You can also specify a password filter, a Rhythmyx extension that encrypts and decrypts the password so it can be stored in the database in encrypted form.</p>
+<p class="widegraphic"><img src="sa_dbmstablesecuritypropertyauthenticationtab.gif" alt="DBMS Table Security Propert yAuthentication Tab" height="374" width="553" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="subheading">Field Descriptions</p>
+<p class="bodytext"><strong class="specialbold">User Id column</strong>  The name of the column containing the user's login id. This column must be defined as the primary key, or it must be defined as the only key in a unique index. If this column does not guarantee uniqueness, Rhythmyx will not allow the column to be mapped as the login id.</p>
+<p class="bodytext"><strong class="specialbold">Password column</strong>  The name of the column containing the user's password.</p>
+<p class="bodytext"><strong class="specialbold">Filter extension name</strong>  Name of the Rhythmyx extension used to encrypt or decrypt the password so it can be stored encrypted in the database.  Rhythmyx is shipped with a default password filter, but you can create your own password filter extension.  Options include all password filter extensions defined in the system.  If no password filter extension is specified, the password is stored decrypted.</p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="14197.htm" target="_self">DBMS Table Security Property Details Dialog</a></p><p class="relateditem"><a href="14203.htm" target="_self">DBMS Table Security Property Details Provider Properties Tab</a></p><p class="relateditem"><a href="14204.htm" target="_self">DBMS Table Security Property Details Backend Connection Tab</a></p><p class="relateditem"><a href="14206.htm" target="_self">DBMS Table Security Property Details Attributes Tab</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

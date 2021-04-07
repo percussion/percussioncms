@@ -1,0 +1,65 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> About Security </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="18602.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Blank_and_Multiple_Security.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">About Security</h2>
+<p class="bodytext">Rhythmyx can interface to a number of different security provider types to authenticate users, designers, and administrators. &nbsp;A security provider is a system that:</p>
+<ul class="listbullet"><li class="listbullet">accepts user credentials;</li></ul><p class="bodytext">or </p>
+<ul class="listbullet"><li class="listbullet">maintains a directory of user accounts and their credentials.</li></ul><p class="bodytext">A security provider may do both. &nbsp;</p>
+<p class="bodytext">When a user provides credentials, Rhythmyx passes the credentials to the security provider. &nbsp;The security provider then authenticates the user. &nbsp;Authentication permits a server to identify a user and confirm that the user is who they claim to be. &nbsp;Security providers perform authentication after a user supplies their credentials. &nbsp;Credentials identify a user and are usually a log in name and password. &nbsp;Credentials can also be certificates, or in the most simple form, an IP address. &nbsp;When the credential is a DNS name, the syntax is *.percussion.com. See <a id="h579" class="jumptemplate" title="Blank and Multiple Security" href="Blank_and_Multiple_Security.htm" target="_self">Blank and Multiple Security</a>.</p>
+<p class="bodytext">Each ACL entry (in the Security tab of the Server Administrator) is associated with a security provider. &nbsp;If the same ACL entry is used for more than one security provider, each entry can have its own permission level. &nbsp;For example, a user named &quot;Chris&quot; with Oracle as a security provider could have different permissions than a user named &quot;Chris&quot; who has NT as a security provider.</p>
+<p class="bodytext">Administrators define security providers at the server level, but existing security providers can also be assigned to applications.</p>
+<p class="bodytext">Rhythmyx authenticates users against security providers in the order that they are specified in the Rhythmyx Server Administrator.</p>
+<p class="bodytext">Rhythmyx supports the following security provider types: </p>
+<ul class="listbullet"><li class="listbullet">SPNEGO (for more information, see <em class="emphasis">Single Sign-on Using SPNEGO</em> in <em class="emphasis">help.percussion.com/cmsystem</em>.</li><li class="listbullet"><a id="h20418" class="jumptemplate" title="Defining a Directory Connection Security Provider" href="12634.htm" target="_self">Directory Connection</a> </li><li class="listbullet"><a id="h1050" class="jumptemplate" title="Web Server" href="Web_Server.htm" target="_self">Web server</a></li><li class="listbullet"><a id="h632" class="jumptemplate" title="DBMS Table Security Provider" href="14196.htm" target="_self">Backend Table</a></li></ul><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">In This Section</p><p class="relateditem"><a href="Blank_and_Multiple_Security.htm" target="_self">Blank and Multiple Security</a></p><p class="relateditem"><a href="Security_Providers_and_Authentication.htm" target="_self">Security Providers and Authentication</a></p><p class="relateditem"><a href="Maintaining_Access_Control_Lists.htm" target="_self">Maintaining Access Control Lists</a></p><p class="relateditem"><a href="Communities_and_Security.htm" target="_self">Communities and Security</a></p></td>
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Rhythmyx_Server_Administrator.htm" target="_self">Rhythmyx Server Administrator</a></p><p class="relateditem"><a href="How_to_Access_the_Server_Administrator.htm" target="_self">How to Access the Server Administrator</a></p><p class="relateditem"><a href="Managing_Applications_and_Servers.htm" target="_self">Managing Applications and Servers</a></p><p class="relateditem"><a href="Optimizing_Performance.htm" target="_self">Optimizing performance</a></p><p class="relateditem"><a href="14145.htm" target="_self">Maintaining Datasources</a></p><p class="relateditem"><a href="Setting_logging.htm" target="_self">Setting Logging</a></p><p class="relateditem"><a href="12631.htm" target="_self">Using Directory Services</a></p><p class="relateditem"><a href="17889.htm" target="_self">Search Configuration</a></p><p class="relateditem"><a href="Interfacing_by_remote_console.htm" target="_self">Interfacing by remote console</a></p><p class="relateditem"><a href="Configuring_the_Java_Plugin_Version_for_Content_Explorer.htm" target="_self">Configuring the Java Plugin Version for Content Explorer</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

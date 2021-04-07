@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> $rx.nav </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="System">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="15441.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="17423.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc1776038.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h4 class="heading4">$rx.nav</h4>
+<p class="bodytext">The methods of this function are used in processing Managed Navigation.  They are only valid when applied to nodes returned from the Managed Navigation Slot Content Finder.</p>
+<p class="bodytext">Note:  Be careful not to confuse the methods of this function with the Managed Navigation variables, which begin with the prefix $nav.  If you attempt to specify this function as $nav, the system will return an error.</p>
+<p class="subheading">$rx.nav.findProperty</p>
+<p class="bodytext"><strong class="specialbold">	Returns</strong>  Property</p>
+<p class="bodytext">	<strong class="specialbold">Used in</strong>  Templates</p>
+<p class="list2">Starting at the specified node, searches up the navigation hierarchy to find a node that has a value for the specified property.</p>
+<table width="565" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="91"><p class="tableheading">Name</p>
+</th>
+<th style = "border:1px solid #010101;" width="125"><p class="tableheading">Type</p>
+</th>
+<th style = "border:1px solid #010101;" width="349"><p class="tableheading">Description</p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">node</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">Node</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tablebodytext">The node from which to start the search</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">propertyname</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tablebodytext">The name of the property to search for.</p>
+</td>
+</tr>
+
+</table>
+<p class="subheading">$rx.nav.findNode</p>
+<p class="bodytext"><strong class="specialbold">	Returns</strong>  Node</p>
+<p class="bodytext">	<strong class="specialbold">Used in</strong>  Templates</p>
+<p class="list2">Starting at the specified node, searches up the navigation hierarchy until it finds a node that has a child node with the specified name.</p>
+<table width="565" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="91"><p class="tableheading">Name</p>
+</th>
+<th style = "border:1px solid #010101;" width="125"><p class="tableheading">Type</p>
+</th>
+<th style = "border:1px solid #010101;" width="349"><p class="tableheading">Description</p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">node</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">Node</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tablebodytext">The node from which to start the search</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="91"><p class="tablebodytext">childname</p>
+</td>
+<td style = "border:1px solid #010101;" width="125"><p class="tablebodytext">String</p>
+</td>
+<td style = "border:1px solid #010101;" width="349"><p class="tablebodytext">The name of the child node to search for.</p>
+</td>
+</tr>
+
+</table>
+<p class="bodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="16842.htm" target="_self">System Functions</a></p><p class="relateditem"><a href="15434.htm" target="_self">$rx.asmhelper</a></p><p class="relateditem"><a href="15435.htm" target="_self">$rx.codec</a></p><p class="relateditem"><a href="16840.htm" target="_self">$rx.cond</a></p><p class="relateditem"><a href="15436.htm" target="_self">$rx.db</a></p><p class="relateditem"><a href="15437.htm" target="_self">$rx.doc</a></p><p class="relateditem"><a href="15438.htm" target="_self">$rx.ext</a></p><p class="relateditem"><a href="15439.htm" target="_self">$rx.guid</a></p><p class="relateditem"><a href="15454.htm" target="_self">$rx.i18n</a></p><p class="relateditem"><a href="15459.htm" target="_self">$rx.keyword</a></p><p class="relateditem"><a href="15440.htm" target="_self">$rx.link</a></p><p class="relateditem"><a href="15441.htm" target="_self">$rx.location</a></p><p class="relateditem"><a href="17423.htm" target="_self">$rx.session</a></p><p class="relateditem"><a href="15433.htm" target="_self">$rx.string</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+

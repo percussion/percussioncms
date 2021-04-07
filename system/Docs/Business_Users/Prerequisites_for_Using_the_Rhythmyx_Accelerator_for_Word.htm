@@ -1,0 +1,69 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Prerequisites for Using the Rhythmyx Connector for Word </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="Setting_Up_Word_to_Use_Rhythmyx.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="Creating_a_New_Word-based_Content_Item.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h2 class="heading2">Prerequisites for Using the Rhythmyx Connector for Word</h2>
+<p class="bodytext">When you use a Content Editor that uses the Rhythmyx Connector for Word, an Active X control uploads content written in MS Word to Rhythmyx and downloads Word files from Rhythmyx to MS Word. If the Active X control is not installed, the system prompts you to install it. The OCS requires the MSXML4.dll. Click [<strong class="buttons">Yes</strong>] when prompted to install the MSXML4.dll. </p>
+<p class="bodytext">A certificate for this OCX is stored on the Rhythmyx server. During the download process, your browser will display a security warning, with a link to the certificate. Click on this link to start the certification process. Accept the default options on the Install Certificate dialog to install the certificate. To disable this dialog and automatically install the certificate, see the procedure below.</p>
+<p class="widegraphic">.<img src="walksecuritywarning.gif" alt="WalkSecurityWarning.gif" height="336" width="441" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">When certificate is installed, refresh your browser. If the following security warning appears, you should modify your security settings; otherwise you will see this message every time you open a Word-based Content Editor.  </p>
+<p class="widegraphic"><img src="walkactivex.gif" alt="active x warning" height="137" width="342" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext">To Modify Security Settings in your browser:</p>
+<p class="note">This procedure uses Internet Explorer 5.5 as the browser; if you are using a different browser, set the corresponding settings as specified in Step 5.</p>
+<ol class="listnumber"><li class="listnumber">From the Menu bar, select Tools &gt; Internet Options. &nbsp;<p class="listcontinue">Internet Explorer displays the Internet Options dialog.</p>
+</li><li class="listnumber">Select the Security tab.<p class="widegraphic"><img src="internetoptions.gif" alt="" height="452" width="406" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">In the upper portion of the dialog, select <strong class="specialbold">Trusted Sites</strong>.</li><li class="listnumber">Click [<strong class="buttons">Sites</strong>].<p class="listcontinue">Internet Explorer displays the Trusted sites dialog.</p>
+<p class="widegraphic"><br><img src="addwebsite.gif" alt="Sites" height="335" width="384" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">Enter your Rhythmyx address in the<strong class="specialbold"> Add this Web site to the zone</strong> field and click [<strong class="buttons">Add</strong>].</li><li class="listnumber">Uncheck the <strong class="specialbold">Require server verification</strong> check box.</li><li class="listnumber">Click [OK].<p class="listcontinue">Internet Explorer returns to the Security tab.</p>
+</li><li class="listnumber">Click the [<strong class="buttons">Custom Level</strong>] button. &nbsp;<p class="listcontinue">Internet Explorer displays the Security Settings dialog.</p>
+<p class="widegraphic"> <img src="walksecuritysettings.gif" alt="" height="405" width="353" vspace="2" hspace="2" align="bottom" border="0"></p>
+</li><li class="listnumber">Under ActiveX Controls and Plugins, change the settings to the following:<ul class="listbullet2"><li class="listbullet2">Download signed ActiveX controls -- Enable (to avoid seeing the initial security warning)</li><li class="listbullet2">Download unsigned ActiveX controls -- Prompt</li><li class="listbullet2">Initialize and script ActiveX controls not marked as safe -- Enable (To avoid warnings for unsafe ActiveX controls)</li><li class="listbullet2">Run ActiveX controls and plug-ins -- Enable</li><li class="listbullet2">Script ActiveX controls marked safe for scripting -- Enable</li></ul></li><li class="listnumber">Click [<strong class="buttons">OK</strong>].</li></ol><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Using_Word_in_Rhythmyx.htm" target="_self">Using Word in Rhythmyx</a></p><p class="relateditem"><a href="Setting_Up_Word_to_Use_Rhythmyx.htm" target="_self">Setting Up Word to Use Rhythmyx</a></p><p class="relateditem"><a href="Creating_a_New_Word-based_Content_Item.htm" target="_self">Creating a New Word-based Content Item</a></p><p class="relateditem"><a href="Editing_Word_in_Rhythmyx.htm" target="_self">Editing Word in Rhythmyx</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

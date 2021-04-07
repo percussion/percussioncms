@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE index
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Index Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/index_1_0.dtd">
+
+<index version="1.0">
+
+
+    <indexitem target="O2276">$related</indexitem>
+    <indexitem text="Alias">
+        <indexitem target="O1549">Defining</indexitem>
+        <indexitem target="O1431">Example HTML</indexitem>
+        <indexitem target="O2501">Using in HTML</indexitem>
+    </indexitem>
+    <indexitem target="O3441">Buttons</indexitem>
+    <indexitem target="O1646">CDATA</indexitem>
+    <indexitem target="O3441">Commands</indexitem>
+    <indexitem target="O3481">Disabling Active Assembly</indexitem>
+    <indexitem text="DTD">
+        <indexitem target="O3419">Format in XSpLit</indexitem>
+        <indexitem target="O1264">XML</indexitem>
+    </indexitem>
+    <indexitem target="O3460">Dynamic Content</indexitem>
+    <indexitem text="Dynamic Content">
+        <indexitem target="O1409">Changing Prefix</indexitem>
+        <indexitem target="O3460">Formatting</indexitem>
+    </indexitem>
+    <indexitem target="O3410">Editing Text</indexitem>
+    <indexitem text="Field Names">
+        <indexitem target="O1829">Hierarchical</indexitem>
+        <indexitem target="O2212">Root Node</indexitem>
+    </indexitem>
+    <indexitem target="O3412">Finding and Replacing Text</indexitem>
+    <indexitem target="O3414">Finding Text</indexitem>
+    <indexitem text="Form Fields">
+        <indexitem target="O2014">Selected</indexitem>
+    </indexitem>
+    <indexitem target="O3460">Formatting Dynamic Content</indexitem>
+    <indexitem target="O1896">Formatting Local Fields</indexitem>
+    <indexitem target="O2014">Formatting Selecting Form Fields</indexitem>
+    <indexitem target="O3416">Going to a line of text</indexitem>
+    <indexitem text="HTML">
+        <indexitem target="O1842">Blocks</indexitem>
+        <indexitem target="O2180">Form Elements</indexitem>
+        <indexitem target="O2181">Lists</indexitem>
+    </indexitem>
+    <indexitem target="O1896">Keywords</indexitem>
+    <indexitem text="Local Fields">
+        <indexitem target="O1896">PSX</indexitem>
+    </indexitem>
+    <indexitem target="O2535">Marking Up Inline Content</indexitem>
+    <indexitem target="O3441">Menus</indexitem>
+    <indexitem target="O2551">Merging several XML contents</indexitem>
+    <indexitem target="O1842">no-escaping</indexitem>
+    <indexitem target="O3419">Overview</indexitem>
+    <indexitem text="PSX Prefix">
+        <indexitem target="O1791">Field Names</indexitem>
+        <indexitem target="O1896">for Local Content</indexitem>
+    </indexitem>
+    <indexitem target="O1549">psx-docalias</indexitem>
+    <indexitem target="O1900">psx-repeat</indexitem>
+    <indexitem target="O3481">psxeditslot</indexitem>
+    <indexitem text="Related Content">
+        <indexitem target="O2169">Defining for XSpLit</indexitem>
+        <indexitem target="O2276">Variable</indexitem>
+    </indexitem>
+    <indexitem text="Repeated Fields">
+        <indexitem target="O2180">Form Elements</indexitem>
+        <indexitem target="O1814">Formatting</indexitem>
+        <indexitem target="O1307">Input Element Example</indexitem>
+        <indexitem target="O1391">List Item Repeating</indexitem>
+        <indexitem target="O2181">Lists</indexitem>
+        <indexitem target="O2182">Multiple Nodes</indexitem>
+        <indexitem target="O1977">Nesting Input Element</indexitem>
+        <indexitem target="O1976">Nesting Select Lists</indexitem>
+        <indexitem target="O1977">Nesting Text Area Element</indexitem>
+        <indexitem target="O1900">Preventing</indexitem>
+        <indexitem target="O1900">psx-repeat</indexitem>
+        <indexitem target="O1260">Root Node</indexitem>
+        <indexitem target="O1788">Row Processing for Repeatable Formats</indexitem>
+        <indexitem target="O1787">Row Processing for Repeatable Lists</indexitem>
+        <indexitem target="O1390">Row Processing of Input Element</indexitem>
+        <indexitem target="O1390">Row Processing of Text Area Element</indexitem>
+        <indexitem target="O1389">Select List in Form</indexitem>
+        <indexitem target="O2184">Single Nodes</indexitem>
+        <indexitem target="O2538">Table Cells with Shared Nodes</indexitem>
+        <indexitem target="O2537">Table Cells without Shared Nodes</indexitem>
+        <indexitem target="O1979">Table Nesting Example</indexitem>
+        <indexitem target="O1978">Table Nesting for Lists</indexitem>
+        <indexitem target="O1980">Table Nesting for Shared Nodes</indexitem>
+        <indexitem target="O1981">Using Nested Tables for Formatting</indexitem>
+    </indexitem>
+    <indexitem target="O1260">Root Node</indexitem>
+    <indexitem target="O2317">rx_slots.xsl</indexitem>
+    <indexitem target="O1646">Scripts</indexitem>
+    <indexitem text="Slots">
+        <indexitem target="O1298">Adding Parameters to Slot Template</indexitem>
+        <indexitem target="O2169">Defining related content for XSpLit</indexitem>
+        <indexitem target="O3481">Disabling Active Assembly</indexitem>
+        <indexitem target="O2299">Formatting</indexitem>
+        <indexitem target="O2317">libraries</indexitem>
+        <indexitem target="O1569">Marking Up </indexitem>
+        <indexitem target="O2276">Related Content Variable</indexitem>
+        <indexitem target="O2307">Template Formatting</indexitem>
+    </indexitem>
+    <indexitem text="Span">
+        <indexitem target="O2169">Defining Related Content</indexitem>
+        <indexitem target="O2535">explained</indexitem>
+    </indexitem>
+    <indexitem target="O1646">Special Character Processing</indexitem>
+    <indexitem target="O3421">Status Bar</indexitem>
+    <indexitem text="Syntax">
+        <indexitem target="O1783">explained</indexitem>
+        <indexitem target="O1784">Exposed</indexitem>
+        <indexitem target="O2503">Exposed and Hidden Together</indexitem>
+        <indexitem target="O1786">Exposed with Tag Attributes</indexitem>
+        <indexitem target="O1785">Exposes with Tag Content</indexitem>
+        <indexitem target="O1826">Hidden</indexitem>
+        <indexitem target="O4372">Hidden with Tag Attributes</indexitem>
+        <indexitem target="O4370">Hidden with Tag Content</indexitem>
+        <indexitem target="O2304">Shortcut</indexitem>
+        <indexitem target="O4373">Shortcut Using Anchor Tag</indexitem>
+        <indexitem target="O4375">Shortcut Using Form Tag</indexitem>
+        <indexitem target="O2293">Shortcut Using Image Tag</indexitem>
+    </indexitem>
+    <indexitem target="O2317">sys</indexitem>
+    <indexitem target="O3434">Tabs</indexitem>
+    <indexitem target="O3431">Using</indexitem>
+    <indexitem text="XHTML">
+        <indexitem target="O3419">Format in XSpLit</indexitem>
+    </indexitem>
+    <indexitem text="XML">
+        <indexitem target="O1264">DTDs</indexitem>
+        <indexitem target="O3419">Format in XSpLit</indexitem>
+        <indexitem target="O2551">Merging several XML contents</indexitem>
+    </indexitem>
+    <indexitem text="XSL">
+        <indexitem target="O3419">Format in XSpLit</indexitem>
+    </indexitem>
+</index>
+

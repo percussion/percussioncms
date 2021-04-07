@@ -1,0 +1,63 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Role Provider Editor </title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="Generator" content="AITPublish">
+<meta name="Keywords" content="Role Providers	Role Provider Editor">
+<link rel="stylesheet" type="text/css" href="44.css">
+</head>
+<body text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000"><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="9973.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="14226.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0"></a></p></td>
+</tr>
+</table>
+<h6 class="heading6">Role Provider Editor</h6>
+<p class="bodytext">Use the Role Provider Editor to enter or modify Role Provider configuration data. </p>
+<p class="bodytext">To open an existing Role Provider configuration:</p>
+<ul class="listbullet"><li class="listbullet">double-click on the name of the desired Role Provider configuration on the Role Providers tab or</li><li class="listbullet">select the desired Role Provider on the Role Providers tab and click the [<strong class="buttons">Edit</strong>] button </li></ul><p class="bodytext">To create a new Role Provider configuration:</p>
+<p class="bodytext">Click the [<strong class="buttons">Add</strong>] button on the Role Providers tab. The <a id="h12652" class="jumptemplate" title="Role Provider Editor" href="14224.htm" target="_self">Role Provider Editor</a> appears.</p>
+<p class="widegraphic"><img src="sa_role_provider_editor_60.gif" alt="Role Provider Editor" height="171" width="293" vspace="2" hspace="2" align="bottom" border="0"></p>
+<p class="bodytext"><strong class="specialbold">Role Provider Editor Field Descriptions:</strong></p>
+<ul class="listbullet"><li class="listbullet">Name - A description of the Role Provider being registered. To be consistent with the other components of the directory server configuration, we used the name Sun ONE Server Role Provider.  (NOTE:  The Role Provider must have the same name as the Security Provider that will use the Roles provided.  If the Role Provider does not have the same name as the Security Provider, you will see the following error:<p class="codeexample"><code class="monospace">PSRoleCataloger  7/27/05 12:03 PM: Couldn't find a matching security provider for role provider: RoleProvider0</code></p>
+</li></ul><p class="list2">To avoid this error, the Role Provider and the Security Provider should have the same name.)</p>
+<ul class="listbullet"><li class="listbullet">Directory Set - The Directory Set being used to establish the connection to the defined Role Provider.  If an existing Directory Set does not appear in the drop list, select &quot;New Directory Set...&quot; from the drop list to bring up the Directory Set Editor and create a record for the Directory Set in Rhythmyx.</li><li class="listbullet">Role Delimiter - If the LDAP attribute specified in the <a id="h12653" class="jumptemplate" title="Directory Set Editor" href="9967.htm" target="_self">Directory Set Editor</a>'s <em class="emphasis">roleAttributeName</em> field is a single value attribute, you must check <strong class="specialbold">Role Delimiter</strong> to instruct LDAP to use a delimiter in the attribute's value to separate multiple Role names.</li><li class="listbullet">Use Delimiter - If you check <strong class="specialbold">Role Delimiter</strong>, this field becomes enabled, and you must enter the value of the delimiter to be used to separate Role names.</li></ul><table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "284">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="9972.htm" target="_self">Role Provider Dialogs</a></p><p class="relateditem"><a href="9973.htm" target="_self">Role Providers Tab</a></p></td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+

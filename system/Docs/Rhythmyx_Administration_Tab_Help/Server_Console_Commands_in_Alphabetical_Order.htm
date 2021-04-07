@@ -1,0 +1,357 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Server Console Commands in Alphabetical Order </title>
+<meta name="Generator" content="AITPublish" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Keywords" content="">
+<script type="text/javascript" src="dhtml_toc.js"></script>
+<script type="text/javascript" src="open_parent.js"></script>
+<link rel="stylesheet" href="stylesheet.css">
+<!-- <link rel="stylesheet" href="44.css"> -->
+<base target="BODY">
+</head>
+
+<body onload="loadParent()" text="#000000" link="#0000A0" alink="#008000" vlink="#FF0000">
+<table border="0" width="100%">
+  <tr valign="top"><td height="100%" > 
+    <table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "18">
+<p class="bodytext"><a href="17922.htm" target="_self"><img src="125.gif" alt="Previous Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "18">
+<p class="bodytext"><a href="17765.htm" target="_self"><img src="124.gif" alt="Next Topic" height="17" width="18" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+<td width= "48">
+<p class="bodytext"><a href="toc177615.htm" target="TOC"><img src="122.gif" alt="Book Contents" height="17" width="48" vspace="0" hspace="0" align="bottom" border="0" /></a></p></td>
+</tr>
+</table>
+<h4 class="heading4">Server Console Commands in Alphabetical Order</h4>
+<table width="600" cellpadding="2" cellspacing="0" border="1" style="border-collapse:collapse; border:1px solid #010101">
+<tr align="left" valign="top">
+<th style = "border:1px solid #010101;" width="270"><p class="tableheading">Command</p>
+</th>
+<th style = "border:1px solid #010101;" width="138"><p class="tableheading">Function</p>
+</th>
+<th style = "border:1px solid #010101;" width="192"><p class="tableheading">Notes</p>
+</th>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">debug search on</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Toggles the debug output of the search engine on.  </p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Equivalent to checking the <strong class="specialbold">Enable trace output</strong> box on the Server Administrator Search tab, but the setting does not persist past server shutdown.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">debug search off</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Toggles the debug output of the search engine off.  </p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Equivalent to unchecking the <strong class="specialbold">Enable trace output</strong> box on the Server Administrator Search tab, but the setting does not persist past server shutdown.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">dump cache</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Displays combined assembler and resource page information from the server cache.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Information displayed:</p>
+<ul class="tablelistbullet"><li class="tablelistbullet">hit rate</li><li class="tablelistbullet">total hits </li><li class="tablelistbullet">total misses</li><li class="tablelistbullet">number of items in cache</li><li class="tablelistbullet">memory used</li><li class="tablelistbullet">disk space used</li><li class="tablelistbullet">average size of item</li><li class="tablelistbullet">disk hit rate</li></ul></td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">dump datasources</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Displays a summary of datasources.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">dump handlers</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Display information about all handlers.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">dump resources</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Display information on various system resources.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Information displayed:</p>
+<ul class="tablelistbullet"><li class="tablelistbullet">database pool</li><li class="tablelistbullet">user thread</li><li class="tablelistbullet">request queue</li><li class="tablelistbullet">user session</li><li class="tablelistbullet">request dispatcher</li><li class="tablelistbullet">cache statistic information</li></ul></td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">flush cache</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Delete all data from the server cache.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Deletes all assembler and resource pages.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">flush cache assembler [applicationname];[contentid];<br />[revisionid];[variantid]</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace"> flush cache resource [applicationname];[datasetname]</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Delete specific data from the server cache. Deletes an assembler page if you use <code class="monospace">flush cache assembler;</code> deletes a resource page if you use<code class="monospace"> flush cache resource</code>.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">The parameters must be supplied in the specified order; they may be omitted, but the semi-colon placeholder must be included.</p>
+<p class="tablebodytext">Example:</p>
+<p class="tablebodytext">To flush all pages where contentid=135 and revisionid=1:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">flush cache assembler ;135;1;</code></code></p>
+<p class="tablebodytext">Example: </p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">To flush the page where application name= sys_Compare and Dataset=145:</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">flush cache resource sys_compare;145</code></code></p>
+<p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">flush dbmd </code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Get Help with the <code class="monospace">flush dbmd</code> command.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">flush dbmd -h</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Get Help with the <code class="monospace">flush dbmd</code> command.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">flush dbmd [-d datasource] [-t table] </code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Flush the metadata cache</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">The <code class="monospace">-d database</code> and <code class="monospace">-t table</code>, parameters are optional.</p>
+<p class="tablebodytext">Examples:</p>
+<p class="tablebodytext">To flush metadata for a backend table named dbo.RXARTICLE:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">flush dbmd -d rxmaster -t RXARTICLE</code></code></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">log dump</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Display server log on the console.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">This command may dump a very large amount of data onto the console.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">log flush</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Forces the server to write all pending messages in the log queue to the log database immediately and returns an empty log queue.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">restart application </code></code><em class="emphasis">applicationname</em></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Stop and restart a server application.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">restart cache</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Stop and restart the server cache, and display cache statistics on the server console.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Applies to both assembler and resource caching.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">search index item id</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Indexes a specific Content Item</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext"><em class="emphasis">id</em> is the Content Item ID of the item you want to index.  Indexing updates the appropriate search index with the text of the Content Item.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">search index recreate id</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Replaces current index with an empty index for a specific Content Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext"><em class="emphasis">id</em> is the Content Type ID or Content Type name of the Content Type whose index you want to empty. The search engine shuts down during this operation.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">search index type id</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Indexes all Content Items of a specific Content Type</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext"><em class="emphasis">id</em> is the Content Type ID or Content Type name of the Content Type whose Content Items you want to index.  The call returns after the items have been queued for indexing.  The amount of time required for the actual indexing depends on the number of Content Items queued; a large number of Content Items may take some time to queue.  Search results while indexing is taking place may not be fully up to date.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">search queue clear</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Remove search queue entries.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Remove search queue entries. (This may be useful if significant search terms are not being indexed because terms before them in the queue are slowing the indexing process. )</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">show applications</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Display a list of all server applications.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">show applications active</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Display a list of active server applications.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">show status application </code></code><em class="emphasis">applicationname</em></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Display statistics for server handling of requests to a specific application.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Information displayed:</p>
+<ul class="tablelistbullet"><li class="tablelistbullet">how long the application has been running</li><li class="tablelistbullet">the number of application events: <ul class="listbullet2"><li class="listbullet2">processed</li><li class="listbullet2">failed</li><li class="listbullet2">pending</li></ul></li><li class="tablelistbullet">the number of hits and misses by application events to the cache</li><li class="tablelistbullet">processing time for application events<ul class="listbullet2"><li class="listbullet2">average</li><li class="listbullet2">minimum</li><li class="listbullet2">maximum</li></ul></li></ul></td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">show status objectstore</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Display statistics for server handling of requests by Workbench and Server Administrator.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Information displayed:</p>
+<ul class="tablelistbullet"><li class="tablelistbullet">how long the server has been running</li><li class="tablelistbullet">the number of Workbench and Server Administrator events: <ul class="listbullet2"><li class="listbullet2">processed</li><li class="listbullet2">failed</li><li class="listbullet2">pending</li></ul></li><li class="tablelistbullet">the number of hits and misses by these events to the cache</li><li class="tablelistbullet">processing time for these events<ul class="listbullet2"><li class="listbullet2">average</li><li class="listbullet2">minimum</li><li class="listbullet2">maximum</li></ul></li></ul></td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">show status search</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Displays data about the current state of the search engine. </p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext"> Example output:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">&lt;PSXConsoleCommandResults&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;command&gt;status search &lt;/command&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultCode&gt;0&lt;/resultCode&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;resultText&gt;0: &lt;/resultText&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;SearchStatus runningStatus=&quot;Running&quot;&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;status program=&quot;engine&quot; state=&quot;running&quot;/&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">      &lt;status file-delete-count=&quot;0&quot; program=&quot;indexer&quot; uncommited-libs-count=&quot;0&quot;/&gt;</code></code></p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">   &lt;/SearchStatus&gt;</code></code></p>
+<ul class="tablelistbullet"><li class="tablelistbullet"><code class="monospace"><code class="monospace">&lt;/PSXConsoleCommandResults&gt;</code></code></li></ul></td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">show status server</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Display statistics for server handling of all requests.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Information displayed:</p>
+<ul class="tablelistbullet"><li class="tablelistbullet">how long the server has been running</li><li class="tablelistbullet">the number of server events: <ul class="listbullet2"><li class="listbullet2">processed</li><li class="listbullet2">failed</li><li class="listbullet2">pending</li></ul></li><li class="tablelistbullet">the number of hits and misses by server events to the cache</li><li class="tablelistbullet">processing time for server events<ul class="listbullet2"><li class="listbullet2">average</li><li class="listbullet2">minimum</li><li class="listbullet2">maximum</li></ul></li><li class="tablelistbullet">IDs of items in the queue</li></ul></td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">show version</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Display the version of the server and Rhythmyx build.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">start application </code></code><em class="emphasis">applicationname</em></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Start a server application.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">start cache</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Start the server cache.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Starts both assembler and resource caching.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">stop application </code></code><em class="emphasis">applicationname</em></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Stop a server application.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">stop server </code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Stop the server.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">stop cache</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Stop the server cache.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Flushes cache, stops it, and displays cache statistics on the console. Applies to both assembler and resource caching.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">trace flag1 [flag2] [flag3] [flag4] </code></code><em class="emphasis">applicationname</em></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Turn on up to four types of traces to interactively debug an application running on Rhythmyx.</p>
+<p class="tablebodytext">Link to Tracer Types and Flags (in Rhythmyx API)</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">Enter up to four trace flags in hexadecimal format.</p>
+<p class="tablebodytext">&nbsp;</p>
+<p class="tablebodytext">Example:</p>
+<p class="tablebodytext"><code class="monospace"><code class="monospace">trace 0x1 0x100 0x200 0x1000 sys_caContentSearch</code></code></p>
+<p class="tablebodytext">&nbsp;</p>
+<p class="tablebodytext">When tracing occurs, Rhythmyx returns output of <code class="monospace">&lt;Rhythmyx root&gt;/&lt;application name&gt;/~,application name&gt;.trace</code> to the console.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">trace default </code></code><em class="emphasis">applicationname</em></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">Turn on default tracing to interactively debug an application running on Rhythmyx.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">When tracing occurs, Rhythmyx returns the output of<code class="monospace"> &lt;Rhythmyx root&gt;/&lt;application name&gt;/~,application name&gt;.trace</code> to the console. </p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td style = "border:1px solid #010101;" width="270"><p class="tablebodytext"><code class="monospace"><code class="monospace">trace help</code></code></p>
+</td>
+<td style = "border:1px solid #010101;" width="138"><p class="tablebodytext">View tracing.</p>
+</td>
+<td style = "border:1px solid #010101;" width="192"><p class="tablebodytext">&nbsp;</p>
+</td>
+</tr>
+
+</table>
+<p class="tablebodytext"></p>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr valign="top">
+<td width= "227">
+<p class="relatedheading">See Also</p><p class="relateditem"><a href="Server_Console_Commands.htm" target="_self"></a></p><p class="relateditem"><a href="Server_Console_Commands_by_Function.htm" target="_self">Server Console Commands by Function</a></p></td>
+</tr>
+</table>
+
+
+
+  </td></tr>
+  <tr valign="bottom"><td>
+    <!-- Insert Your Footer Here -->
+  </td></tr>
+</table>
+</body>
+</html>
+
+
