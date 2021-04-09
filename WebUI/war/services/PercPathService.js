@@ -511,11 +511,6 @@
                     skipItems=$("#perc_delete_folder_force").get(0).checked?"NO":"YES";
                 }
                 var guid;
-                /*if(typeof $('a.perc-listing-category-FOLDER.perc_last_selected').attr("id")==='undefined'){
-                    guid = $('a.perc-listing-category-SECTION_FOLDER.perc_last_selected').attr("id").split("perc-finder-listing-")[1];
-                }else{
-                    guid = $('a.perc-listing-category-FOLDER.perc_last_selected').attr("id").split("perc-finder-listing-")[1];
-                }*/
 
                 if(typeof $('a.perc-listing-category-FOLDER.perc_last_selected').attr("id")!=='undefined'){
                     guid = $('a.perc-listing-category-FOLDER.perc_last_selected').attr("id").split("perc-finder-listing-")[1];
