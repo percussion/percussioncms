@@ -462,24 +462,35 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Path("/deleteFolder")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,MediaType.TEXT_PLAIN})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public String deleteFolderService(PSDeleteFolderCriteria criteria) throws PSPathServiceException {
+    public String deleteFolderService(PSDeleteFolderCriteria criteria) throws PSPathServiceException, PSDataServiceException, PSNotFoundException {
         if(log.isDebugEnabled()) log.debug("Attempting to delete folder: " + criteria.getPath());
-        int iGuid = 0;
-        if(!criteria.getGuid().isEmpty()) {
-            iGuid = idMapper.getContentId(criteria.getGuid());
-        }
+
         String currentUser = (String)PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
         log.info(criteria.getPath() + " has been deleted by: " + currentUser);
-        try {
-        PSSiteCopyUtils.throwCopySiteMessageIfNotAllowed(getSiteNameFromFolderPath(criteria.getPath()),
-                "deleteFolderService" , PSSiteCopyUtils.CAN_NOT_DELETE_FOLDER);
-        psContentEvent=new PSContentEvent(criteria.getGuid(),String.valueOf(iGuid),criteria.getPath(), PSContentEvent.ContentEventActions.delete, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
-        psAuditLogService.logContentEvent(psContentEvent);
 
-            return String.valueOf(super.deleteFolder(criteria));
-        } catch (PSValidationException | IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceLoadException | PSNotFoundException e) {
-            throw new WebApplicationException(e);
+        //CMS-7920 : finding item to get its type for next check.
+        PSPathItem item = super.find(criteria.getPath());
+
+        //CMS-7920 : The system folder delete was failing as they are file system files.
+        //Applied this check to not to send system folders to recycle bin.
+        if(item!=null && item.getType()!=null && !item.getType().equalsIgnoreCase(IPSPathService.FOLDER_TYPE_FILESYSTEM)){
+            int iGuid = 0;
+            if(!criteria.getGuid().isEmpty()) {
+                iGuid = idMapper.getContentId(criteria.getGuid());
+            }
+            try {
+                PSSiteCopyUtils.throwCopySiteMessageIfNotAllowed(getSiteNameFromFolderPath(criteria.getPath()),
+                        "deleteFolderService" , PSSiteCopyUtils.CAN_NOT_DELETE_FOLDER);
+                psContentEvent=new PSContentEvent(criteria.getGuid(),String.valueOf(iGuid),criteria.getPath(), PSContentEvent.ContentEventActions.delete, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
+                psAuditLogService.logContentEvent(psContentEvent);
+
+            } catch (PSValidationException e) {
+                throw new WebApplicationException(e);
+            }
         }
+
+        return String.valueOf(super.deleteFolder(criteria));
+
     }
 
     @PUT
