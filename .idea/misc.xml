@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="EntryPointsManager">
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="com.percussion.extension.IPSJexlMethod" />
+    </list>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="gwt" url="file://$PROJECT_DIR$/PCM-PkgMgtUI" />
@@ -24,6 +29,8 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/modules/perc-security-utils/pom.xml" />
         <option value="$PROJECT_DIR$/modules/perc-exceptions-spring/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/perc-toolkit/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/perc-taxonomy/pom.xml" />
       </list>
     </option>
   </component>

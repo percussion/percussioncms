@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>  <assembly-template id="1">
+    <bindings/>
+    <template-slot-ids/>
+    <guid>0-4-559</guid>
+    <active-assembly-type>Normal</active-assembly-type>
+    <assembler>Java/global/percussion/assembly/velocityAssembler</assembler>
+    <assembly-url>../assembler/render</assembly-url>
+    <charset>UTF-8</charset>
+    <description/>
+    <global-template/>
+    <global-template-usage>None</global-template-usage>
+    <label>soln_list_ItemCalloutDefaultSnip</label>
+    <location-prefix/>
+    <location-suffix/>
+    <mime-type>text/html</mime-type>
+    <name>soln_list_ItemCalloutDefaultSnip</name>
+    <output-format>Snippet</output-format>
+    <publish-when>Never</publish-when>
+    <style-sheet-path/>
+    <template>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+
+&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+  &lt;head&gt;
+    &lt;title&gt;#displayfield("displaytitle")&lt;/title&gt;
+	&lt;meta content="Percussion CMS" name="generator"/&gt;
+  &lt;/head&gt;
+  &lt;body style="background-image:none; background-color:#ffffff;"&gt;
+	&lt;div&gt;
+      #field("callout")
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</template>
+    <template-type>Shared</template-type>
+    <type>TEMPLATE</type>
+    <variant>false</variant>
+  </assembly-template>

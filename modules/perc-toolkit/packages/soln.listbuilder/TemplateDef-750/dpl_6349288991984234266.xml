@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>  <assembly-template id="1">
+    <bindings>
+      <binding id="2">
+        <execution-order>1</execution-order>
+        <expression>$user.soln_rss.createFeed($sys.item, "displaytitle,sys_title", "callout") </expression>
+        <id>-4221655159194765305</id>
+        <jexl-script id="3">
+          <text>$user.soln_rss.createFeed($sys.item, "displaytitle,sys_title", "callout");</text>
+        </jexl-script>
+        <variable>$feed</variable>
+      </binding>
+      <binding id="4">
+        <execution-order>2</execution-order>
+        <expression>$user.soln_rss.createEntries() </expression>
+        <id>-4221655159194765304</id>
+        <jexl-script id="5">
+          <text>$user.soln_rss.createEntries();</text>
+        </jexl-script>
+        <variable>$entries</variable>
+      </binding>
+      <binding id="6">
+        <execution-order>3</execution-order>
+        <expression>$rx.location.generate($sys.assemblyItem) </expression>
+        <id>-4221655159194765303</id>
+        <jexl-script id="7">
+          <text>$rx.location.generate($sys.assemblyItem);</text>
+        </jexl-script>
+        <variable>$link</variable>
+      </binding>
+      <binding id="8">
+        <execution-order>4</execution-order>
+        <expression>$feed.setLink($rx.codec.decodeFromXml($link))</expression>
+        <id>-4221655159194765302</id>
+        <jexl-script id="9">
+          <text>$feed.setLink($rx.codec.decodeFromXml($link));</text>
+        </jexl-script>
+        <variable/>
+      </binding>
+      <binding id="10">
+        <execution-order>5</execution-order>
+        <expression>$feed.setEntries($entries) </expression>
+        <id>-4221655159194765301</id>
+        <jexl-script id="11">
+          <text>$feed.setEntries($entries);</text>
+        </jexl-script>
+        <variable/>
+      </binding>
+    </bindings>
+    <template-slot-ids/>
+    <guid>0-4-750</guid>
+    <active-assembly-type>Normal</active-assembly-type>
+    <assembler>Java/global/percussion/assembly/velocityAssembler</assembler>
+    <assembly-url>../assembler/render</assembly-url>
+    <charset>UTF-8</charset>
+    <description/>
+    <global-template/>
+    <global-template-usage>None</global-template-usage>
+    <label>X- RSS Feed</label>
+    <location-prefix/>
+    <location-suffix/>
+    <mime-type>text/xml</mime-type>
+    <name>soln_list_rss_Feed</name>
+    <output-format>Page</output-format>
+    <publish-when>Default</publish-when>
+    <style-sheet-path/>
+    <template>#macro(rss_list_slot)
+#set($_list = $user.soln_list.getListBuilderItem($sys.assemblyItem))##
+$!user.soln_list.resolveQuery($_list)##
+#set($_params = $user.soln_list.getSlotParameters($_list))##
+$!_params.put("template", "soln_list_rss_Entry")##
+#initslot($_list.slot $!_params )##
+#endslot($_list.slot)##
+#end##
+#rss_list_slot()##
+$user.soln_rss.getRss($feed)</template>
+    <template-type>Shared</template-type>
+    <type>TEMPLATE</type>
+    <variant>false</variant>
+  </assembly-template>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXDependencyData>
+   <table allowSchemaChanges="n" alter="n" create="y" delolddata="n" isView="n" name="STATES">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="STATEID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="STATENAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="CONTENTVALID">
+            <jdbctype>CHAR</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="STATEDESC">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="WORKFLOWAPPID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="SORTORDER">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>STATEID</name>
+         <name>WORKFLOWAPPID</name>
+      </primarykey>
+      <indexdefinitions>
+         <index action="c" isUnique="n" name="IX_STATES_NAME">
+            <name>STATENAME</name>
+         </index>
+      </indexdefinitions>
+   </table>
+   <table name="STATES" onCreateOnly="yes">
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">1</column>
+         <column encoding="text" name="STATENAME">Draft</column>
+         <column encoding="text" name="CONTENTVALID">n</column>
+         <column encoding="text" name="STATEDESC">All the documents start here</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SORTORDER">10</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">2</column>
+         <column encoding="text" name="STATENAME">Pending</column>
+         <column encoding="text" name="CONTENTVALID">n</column>
+         <column encoding="text" name="STATEDESC">Items ready to be published</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SORTORDER">20</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">3</column>
+         <column encoding="text" name="STATENAME">Public</column>
+         <column encoding="text" name="CONTENTVALID">y</column>
+         <column encoding="text" name="STATEDESC">Published Items</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SORTORDER">30</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">4</column>
+         <column encoding="text" name="STATENAME">QuickEdit</column>
+         <column encoding="text" name="CONTENTVALID">i</column>
+         <column encoding="text" name="STATEDESC">Items that are quick edited from public</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SORTORDER">40</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="STATEID">5</column>
+         <column encoding="text" name="STATENAME">Archive</column>
+         <column encoding="text" name="CONTENTVALID">u</column>
+         <column encoding="text" name="STATEDESC">Unpublished Items</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="SORTORDER">50</column>
+      </row>
+   </table>
+</PSXDependencyData>

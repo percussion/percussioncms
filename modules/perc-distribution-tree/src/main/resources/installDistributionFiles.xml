@@ -305,24 +305,6 @@
         <mkdir dir="${install.config}/LDAP" />
         <PSCopy todir="${install.config}/LDAP" file="${configdir}/LDAP/ldapserver.xml" replaceType="never" />
 
-        <!-- Package Installer config -->
-        <!--  <if>
-              <isset property="DEVELOPMENT" />
-              <then>
-                  <PSCopy tofile="${install.config}/Installer/InstallPackages.xml" file="${configdir}/PackageInstaller/InstallPackages.dev.xml" />
-              </then>
-              <elseif>
-                  <equals arg1="${install.type}" arg2="new" />
-                  <then>
-                  -->
-       <!-- <PSCopy tofile="${install.config}/Installer/InstallPackages.xml" file="${configdir}/PackageInstaller/InstallPackages.new.xml" />
-    -->    <!-- </then>
-     </elseif>
-     <else>
-         <PSCopy tofile="${install.config}/Installer/InstallPackages.xml" file="${configdir}/PackageInstaller/InstallPackages.upgrade.xml" />
-     </else>
- </if>
--->
         <if>
             <and>
                 <isset property="delivery.target" />

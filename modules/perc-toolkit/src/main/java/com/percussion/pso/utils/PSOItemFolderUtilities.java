@@ -1,18 +1,13 @@
 package com.percussion.pso.utils;
 
-import java.util.ArrayList;
+import com.percussion.cms.PSCmsException;
+import com.percussion.design.objectstore.PSLocator;
+import com.percussion.server.webservices.PSServerFolderProcessor;
+import com.percussion.services.error.PSNotFoundException;
+import com.percussion.utils.guid.IPSGuid;
+
 import java.util.Arrays;
 import java.util.List;
-
-import com.percussion.cms.PSCmsException;
-import com.percussion.cms.objectstore.PSComponentSummaries;
-import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.design.objectstore.PSLocator;
-import com.percussion.server.PSRequest;
-import com.percussion.server.PSRequestContext;
-import com.percussion.server.webservices.PSServerFolderProcessor;
-import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.request.PSRequestInfo;
 
 
 /***
@@ -23,7 +18,10 @@ import com.percussion.utils.request.PSRequestInfo;
  *
  */
 public class PSOItemFolderUtilities {
-	
+
+	private PSOItemFolderUtilities(){
+		//Force static access
+	}
 	
 	/***
 	 * Given an item's GUID will return all of the folder paths that
@@ -31,30 +29,24 @@ public class PSOItemFolderUtilities {
 	 * 
 	 * @param guid A valid Guid, must not be null
 	 * @return An array of strings containing the folder paths. 
-	 * @throws PSCmsException
+	 * @throws PSCmsException Exception if one occurred
 	 */
 	public static List<String> getFolderPathsForItem(IPSGuid guid) throws PSCmsException{
-	  PSRequest req = (PSRequest) PSRequestInfo
-		       .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
 	
-			   PSServerFolderProcessor folderproc = new PSServerFolderProcessor(req,null);
+			   PSServerFolderProcessor folderproc =  PSServerFolderProcessor.getInstance();
 			   String[] ret = folderproc.getFolderPaths(new PSLocator(guid.getUUID(),-1));
 			   return  Arrays.asList(ret);
 	}
 	
-	 public static String getFolderPath(int id) throws PSCmsException {
-		   PSRequest req = (PSRequest) PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
-		   PSServerFolderProcessor folderproc = new PSServerFolderProcessor(req,null);
+	 public static String getFolderPath(int id) throws PSCmsException, PSNotFoundException {
+		   PSServerFolderProcessor folderproc =  PSServerFolderProcessor.getInstance();
 		   String[] ret = folderproc.getItemPaths(new PSLocator(id,-1));
 		   return  (ret.length>0) ? ret[0] : null;
 	   }
 
-	public static int getParentFolderId(int itemId) throws PSCmsException {
-		   PSRequest req = (PSRequest) PSRequestInfo
-	       .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
-		   PSServerFolderProcessor folderproc = new PSServerFolderProcessor(req,null);
-		   int id = folderproc.getIdByPath(getFolderPath(itemId));
-		   return id;
+	public static int getParentFolderId(int itemId) throws PSCmsException, PSNotFoundException {
+		   PSServerFolderProcessor folderproc =  PSServerFolderProcessor.getInstance();
+		   return folderproc.getIdByPath(getFolderPath(itemId));
 	}
 	
 	/***
@@ -64,10 +56,8 @@ public class PSOItemFolderUtilities {
 	 * @return
 	 * @throws PSCmsException
 	 */
-	 public static String getItemFolderPath(int id) throws PSCmsException {
-		   PSRequest req = (PSRequest) PSRequestInfo
-	       .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
-		   PSServerFolderProcessor folderproc = new PSServerFolderProcessor(req,null);
+	 public static String getItemFolderPath(int id) throws PSCmsException, PSNotFoundException {
+		   PSServerFolderProcessor folderproc = PSServerFolderProcessor.getInstance();
 		   String[] ret = folderproc.getItemPaths(new PSLocator(id,-1));
 		   
 		   if(ret.length>0){
@@ -77,12 +67,9 @@ public class PSOItemFolderUtilities {
 		   return  (ret.length>0) ? ret[0] : null;
 	   }
 	
-	 public static int getItemParentFolderId(int itemId) throws PSCmsException {
-		   PSRequest req = (PSRequest) PSRequestInfo
-	       .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
-		   PSServerFolderProcessor folderproc = new PSServerFolderProcessor(req,null);
-		   int id = folderproc.getIdByPath(getItemFolderPath(itemId));
-		   return id;
+	 public static int getItemParentFolderId(int itemId) throws PSCmsException, PSNotFoundException {
+		   PSServerFolderProcessor folderproc = PSServerFolderProcessor.getInstance();
+		   return folderproc.getIdByPath(getItemFolderPath(itemId));
 	}
 	
 }

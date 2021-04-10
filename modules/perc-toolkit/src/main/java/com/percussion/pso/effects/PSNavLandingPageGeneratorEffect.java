@@ -1,65 +1,31 @@
 package com.percussion.pso.effects;
 
-import java.text.MessageFormat;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.percussion.cms.PSCmsException;
-import com.percussion.cms.objectstore.IPSFieldValue;
-import com.percussion.cms.objectstore.PSAaRelationship;
-import com.percussion.cms.objectstore.PSAaRelationshipList;
-import com.percussion.cms.objectstore.PSActiveAssemblyProcessorProxy;
-import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSDateValue;
-import com.percussion.cms.objectstore.PSInvalidContentTypeException;
-import com.percussion.cms.objectstore.PSItemDefinition;
-import com.percussion.cms.objectstore.PSItemField;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
-import com.percussion.cms.objectstore.PSTextValue;
+import com.percussion.cms.objectstore.*;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
+import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.cms.objectstore.server.PSServerItem;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
-import com.percussion.fastforward.managednav.PSNavAbstractEffect;
-import com.percussion.fastforward.managednav.PSNavConfig;
-import com.percussion.fastforward.managednav.PSNavException;
-import com.percussion.fastforward.managednav.PSNavProxyFactory;
-import com.percussion.fastforward.managednav.PSNavRelationshipInfo;
-import com.percussion.fastforward.managednav.PSNavUtil;
+import com.percussion.fastforward.managednav.*;
 import com.percussion.relationship.IPSExecutionContext;
 import com.percussion.relationship.PSEffectResult;
 import com.percussion.relationship.annotation.PSEffectContext;
 import com.percussion.relationship.annotation.PSHandlesEffectContext;
-import com.percussion.rx.config.IPSConfigService;
-import com.percussion.rx.config.PSConfigServiceLocator;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
-import com.percussion.services.assembly.IPSAssemblyService;
-import com.percussion.services.assembly.IPSAssemblyTemplate;
-import com.percussion.services.assembly.IPSTemplateSlot;
-import com.percussion.services.assembly.PSAssemblyException;
-import com.percussion.services.assembly.PSAssemblyServiceLocator;
-import com.percussion.services.catalog.PSTypeEnum;
-import com.percussion.services.content.IPSContentService;
-import com.percussion.services.content.PSContentServiceLocator;
-import com.percussion.services.guidmgr.PSGuidManagerLocator;
-import com.percussion.services.guidmgr.impl.PSGuidManager;
-import com.percussion.services.system.IPSSystemService;
-import com.percussion.services.system.PSSystemServiceLocator;
-import com.percussion.services.system.impl.PSSystemService;
+import com.percussion.services.assembly.*;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.text.MessageFormat;
+import java.util.*;
 
 
 /***
@@ -88,7 +54,7 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 	public static String DEFAULT_LANDING_REQUIRED_FIELD_VALUES="navon.landingpage.default.required.fields.values";
 	public static String DEFAULT_LANDING_COMMUNITYID="navon.landingpage.default.communityid";
 	
-	 private static Log log = LogFactory.getLog(PSNavLandingPageGeneratorEffect.class); 
+	 private static Logger log = LogManager.getLogger(PSNavLandingPageGeneratorEffect.class);
 	 private String m_defaultContentType=null;
 	 private String m_defaultLandingTitleTemplate = "{0}-LP";
 	 private String m_defaultLandingDisplayTitleField = null;
@@ -222,7 +188,7 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 	 */
 	@Override public void init(com.percussion.extension.IPSExtensionDef extDef, java.io.File codeRoot) throws com.percussion.extension.PSExtensionException {
 		super.init(extDef, codeRoot);
-	};
+	}
 	
 	
 	@Override
@@ -250,7 +216,6 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 		}
 		else{
 			result.setSuccess();
-			return;
 		}
 	}
 
@@ -335,28 +300,23 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 					createNavOnLandingPageRelationship(req, info.getDependent(), lpLoc, landingSlot);
 		            }catch(Exception e){
 		            	result.setError(e.getLocalizedMessage());
-		            	return;
 		            }
 			         
 					log.debug("Landing page generation complete.");
 					result.setSuccess();
-					return;
 				}else{
 					log.debug("Skipping adding Landing Page as one is already defined.");
 					result.setSuccess();
-					return;
 				}
 			
 			}else{
 				log.debug("Skipping adding Landing Page for non-navon type.");
 				result.setSuccess();
-				return;
 			}
 			
 		} catch (PSNavException e) {
 			log.error("Unable to process NavOn slots for NavOn:" + dep.getContentId(),e);
 			result.setSuccess();
-			return;
 		}
 
 	}
@@ -447,7 +407,7 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 
            //Get the relationship proxy.
            PSNavProxyFactory pf = PSNavProxyFactory.getInstance(req);
-           PSRelationshipProcessorProxy relProxy = pf.getRelProxy();
+           PSRelationshipProcessor relProxy = pf.getRelProxy();
            
            //add the relationship to to the folder.
            relProxy.add(PSRelationshipConfig.TYPE_FOLDER_CONTENT, Collections.singletonList(lpLoc),
@@ -515,22 +475,18 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 	        log.debug("LandingPage slot is " + lpSlot.toString() + " " + landingSlotName);
 	        Collection<PSPair<IPSGuid, IPSGuid>> slotTempsAndCTs = lpSlot.getSlotAssociations();
 	        
-	        IPSAssemblyTemplate t=null;
+	        IPSAssemblyTemplate t;
 	        if(slotTempsAndCTs == null || slotTempsAndCTs.isEmpty()){
 	        	throw new PSNavException("Unable to locate a default template for the landing page " + landingSlotName);
 	        }else{
-	        	IPSGuid ct;
 	        	IPSGuid templateGUID = null;
-	        	
-	        	Iterator<PSPair<IPSGuid, IPSGuid>> it = slotTempsAndCTs.iterator();
-	        	while(it.hasNext()){
-	        		PSPair<IPSGuid, IPSGuid> p = it.next();
-	        		
-	        		    if(m_contentTypeId==p.getFirst().getUUID()){
-	        		    	templateGUID = (IPSGuid)p.getSecond();
-	        		    	break;
-	        		    }
-	        	}
+
+				for (PSPair<IPSGuid, IPSGuid> p : slotTempsAndCTs) {
+					if (m_contentTypeId == p.getFirst().getUUID()) {
+						templateGUID = p.getSecond();
+						break;
+					}
+				}
 	        	
 	        	t = asWs.findTemplate(templateGUID);
 	        }
