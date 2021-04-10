@@ -49,6 +49,8 @@ import java.util.List;
 public interface IPSPathService
 {
 
+    public static final String FOLDER_TYPE_FILESYSTEM = "FSFOLDER";
+
     /**
      * Gets the {@link IPSListViewHelper} implementation for this {@link IPSPathService}.
      * 
