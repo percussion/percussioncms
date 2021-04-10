@@ -18,5 +18,9 @@
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/modules/JCRUtils" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/modules/ListBuilder" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/modules/PSOImageEditor" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/modules/PSOPDFGenerator" vcs="Git" />
   </component>
 </project>

@@ -1,0 +1,112 @@
+<assemblytemplate id="1">
+    <guid>0-4-596</guid>
+    <active-assembly-type>Normal</active-assembly-type>
+    <assembler>Java/global/percussion/assembly/FOPAssembler</assembler>
+    <assembly-url>../assembler/render</assembly-url>
+    <bindings>
+        <binding id="2">
+            <execution-order>1</execution-order>
+            <expression>"John Doe"</expression>
+            <id>0</id>
+            <jexl-expression id="3">
+                <expression>"John Doe"</expression>
+            </jexl-expression>
+            <variable>$FOP.author</variable>
+        </binding>
+        <binding id="4">
+            <execution-order>2</execution-order>
+            <expression>$sys.item.getProperty("rx:keywords").String </expression>
+            <id>0</id>
+            <jexl-expression id="5">
+                <expression>$sys.item.getProperty("rx:keywords").String </expression>
+            </jexl-expression>
+            <variable>$FOP.keywords</variable>
+        </binding>
+        <binding id="6">
+            <execution-order>3</execution-order>
+            <expression>$sys.item.getProperty("rx:displaytitle").String</expression>
+            <id>0</id>
+            <jexl-expression id="7">
+                <expression>$sys.item.getProperty("rx:displaytitle").String</expression>
+            </jexl-expression>
+            <variable>$FOP.title</variable>
+        </binding>
+        <binding id="8">
+            <execution-order>4</execution-order>
+            <expression>$rx.session.getPSSessionID() </expression>
+            <id>0</id>
+            <jexl-expression id="9">
+                <expression>$rx.session.getPSSessionID() </expression>
+            </jexl-expression>
+            <variable>$XSLParam.sessionid</variable>
+        </binding>
+        <binding id="10">
+            <execution-order>5</execution-order>
+            <expression>$user.psoTransform.transform($sys.item.getProperty("rx:callout").String, "file:///home/admin/Rhythmyx/rx_resources/stylesheets/FOPExtractBody.xsl", $XSLParam)</expression>
+            <id>0</id>
+            <jexl-expression id="11">
+                <expression>$user.psoTransform.transform($sys.item.getProperty("rx:callout").String, "file:///home/admin/Rhythmyx/rx_resources/stylesheets/FOPExtractBody.xsl", $XSLParam)</expression>
+            </jexl-expression>
+            <variable>$callout</variable>
+        </binding>
+        <binding id="12">
+            <execution-order>6</execution-order>
+            <expression>$user.psoTransform.transform($sys.item.getProperty("rx:body").String, "file:///home/admin/Rhythmyx/rx_resources/stylesheets/FOPExtractBody.xsl",$XSLParam)</expression>
+            <id>0</id>
+            <jexl-expression id="13">
+                <expression>$user.psoTransform.transform($sys.item.getProperty("rx:body").String, "file:///home/admin/Rhythmyx/rx_resources/stylesheets/FOPExtractBody.xsl",$XSLParam)</expression>
+            </jexl-expression>
+            <variable>$body</variable>
+        </binding>
+    </bindings>
+    <charset>UTF-8</charset>
+    <content-ids/>
+    <description>PNG Template </description>
+    <global-template/>
+    <global-template-usage>None</global-template-usage>
+    <label>B - PNG</label>
+    <location-prefix/>
+    <location-suffix/>
+    <mime-type>image/png</mime-type>
+    <name>PNGTemplate</name>
+    <output-format>Page</output-format>
+    <publish-when>Default</publish-when>
+    <site-ids>
+        <site-id>301</site-id>
+        <site-id>303</site-id>
+    </site-ids>
+    <slot-ids/>
+    <template>
+&lt;fo:root xmlns:fo=&quot;http://www.w3.org/1999/XSL/Format&quot; xmlns:svg=&quot;http://www.w3.org/2000/svg&quot;&gt;
+    &lt;fo:layout-master-set&gt;
+        &lt;!-- layout information --&gt;
+        &lt;fo:simple-page-master master-name=&quot;simple&quot; page-height=&quot;15cm&quot; page-width=&quot;15cm&quot; margin=&quot;10pt&quot;&gt;
+            &lt;fo:region-body margin-bottom=&quot;0&quot;/&gt;
+        &lt;/fo:simple-page-master&gt;
+    &lt;/fo:layout-master-set&gt;
+    &lt;!-- end: defines page layout --&gt;
+    &lt;!-- start page-sequence--&gt;
+    &lt;fo:page-sequence initial-page-number=&quot;1&quot; master-reference=&quot;simple&quot;&gt;
+
+        &lt;!-- start fo:flow --&gt;
+        &lt;fo:flow flow-name=&quot;xsl-region-body&quot;&gt;
+
+            &lt;!-- this defines a title --&gt;
+            &lt;fo:block font-size="24pt" font-family="sans-serif" line-height="24pt" color="black" text-align="left" margin-bottom="20px"&gt;
+                #displayfield("displaytitle")
+            &lt;/fo:block&gt;
+
+            &lt;fo:block font-size="10pt" font-weight="normal" font-family="sans-serif" line-height="15pt" text-align="left"&gt;
+                $body
+            &lt;/fo:block&gt;
+
+        &lt;/fo:flow&gt;
+
+        &lt;!-- closes the flow element--&gt;
+    &lt;/fo:page-sequence&gt;
+    &lt;!-- closes the page-sequence --&gt;
+&lt;/fo:root&gt;
+    </template>
+    <template-type>Shared</template-type>
+    <variant>false</variant>
+</assemblytemplate>

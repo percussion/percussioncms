@@ -26,6 +26,7 @@ package com.percussion.fastforward.managednav;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSComponentProcessor;
 import com.percussion.cms.objectstore.PSActiveAssemblyProcessorProxy;
+import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.server.IPSRequestContext;
 import org.apache.logging.log4j.LogManager;
@@ -128,6 +129,10 @@ public class PSNavProxyFactory
       return m_compProxy;
    }
 
+   public PSRelationshipProcessor getRelProxy()
+   {
+      return m_relProxy;
+   }
    /**
     * Writes messages from this class to the log file.
     */

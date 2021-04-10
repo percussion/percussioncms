@@ -1,0 +1,38 @@
+<project name="Install Extension Files" default="install" basedir=".">
+
+    <!-- Install supplemental files -->
+    <target name="install">
+        <echo>Installing perc-toolkit files...</echo>
+        <copy todir="${install.dir}/jetty/base/webapps/Rhythmyx/user/pages">
+            <fileset dir="${install.dir}/PercToolkitExits/InstallDir/user/pages">
+                <include name="*.jsp"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${install.dir}/rxconfig/Workflow">
+            <fileset dir="${install.dir}/PercToolkitExits/InstallDir/rxconfig">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+
+        <mkdir dir="${install.dir}/rx_resources/tidy" />
+        <copy todir="${install.dir}/rx_resources/tidy">
+            <fileset dir="${install.dir}/PercToolkitExits/InstallDir/rx_resources/tidy">
+                <include name="*.properties"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring">
+            <fileset dir="${install.dir}/PercToolkitExits/InstallDir/webapp/WEB-INF/config/user/spring">
+                <include name="*.xml"/>
+            </fileset>
+        </copy>
+
+        <mkdir dir="${install.dir}/rx_resources/fop-assembler"/>
+        <copy todir="${install.dir}/rx_resources/fop-assembler">
+            <fileset dir="${install.dir}/PercToolkitExits/InstallDir/rx_resources/fop-assembler">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+    </target>
+</project>

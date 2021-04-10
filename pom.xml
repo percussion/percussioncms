@@ -86,11 +86,13 @@
         <module>modules/ant-install</module>
         <module>system/Tools/SSLTools</module>
         <module>modules/tlsutils</module>
+        <module>modules/perc-toolkit</module>
+        <module>modules/perc-taxonomy</module>
     </modules>
    <properties>
        <build.profile.id>dev</build.profile.id>
        <versionString>INTERNAL</versionString>
-        <jenkins.buildNumber>2020</jenkins.buildNumber>
+        <jenkins.buildNumber>2021</jenkins.buildNumber>
        <maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
        <buildNumber>${maven.build.timestamp}</buildNumber>
        <jacoco.it.execution.data.file>${project.build.directory}/coverage-reports/jacoco-it.exec</jacoco.it.execution.data.file>
@@ -98,6 +100,8 @@
        <jdk.version>1.8</jdk.version>
        <java.source.version>1.8</java.source.version>
        <slf4j.version>1.7.26</slf4j.version>
+       <fop.version>2.2</fop.version>
+       <avalon.version>4.1.5</avalon.version>
        <maven.version>[3.6.0,)</maven.version>
        <maven.toolchains.plugin.version>3.0.0</maven.toolchains.plugin.version>
        <versions.maven.plugin.version>2.7</versions.maven.plugin.version>
@@ -118,6 +122,7 @@
        <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
        <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
        <commons.file.upload.version>1.4</commons.file.upload.version>
+       <commons.validator.version>1.7</commons.validator.version>
        <maven.site.plugin.version>3.8.2</maven.site.plugin.version>
        <maven.release.plugin.version>3.0.0-M1</maven.release.plugin.version>
        <maven.scm.plugin.version>1.11.2</maven.scm.plugin.version>
@@ -151,6 +156,7 @@
        <lucene.version>8.7.0</lucene.version>
        <myfaces.version>1.1.5</myfaces.version>
        <ehcache.version>2.10.5</ehcache.version>
+       <simplexml.version>2.7.1</simplexml.version>
        <stax.version>1.0.1</stax.version>
         <poi.version>4.1.2</poi.version>
         <esapi.version>2.2.0.0-RC2</esapi.version>
@@ -1131,6 +1137,18 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.apache.xmlgraphics</groupId>
+                <artifactId>fop</artifactId>
+                <version>${fop.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>avalon-framework</groupId>
+                <artifactId>avalon-framework</artifactId>
+                <version>${avalon.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-annotations</artifactId>
                 <version>4.2.0</version>
@@ -1909,7 +1927,12 @@
             <dependency>
                 <groupId>commons-validator</groupId>
                 <artifactId>commons-validator</artifactId>
-                <version>1.1.4</version>
+                <version>${commons.validator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.simpleframework</groupId>
+                <artifactId>simple-xml</artifactId>
+                <version>${simplexml.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.gdata</groupId>
@@ -2284,9 +2307,6 @@
                 <artifactId>javahelp</artifactId>
                 <version>2.0.05</version>
             </dependency>
-
-            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-jexl -->
-
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-jexl3</artifactId>

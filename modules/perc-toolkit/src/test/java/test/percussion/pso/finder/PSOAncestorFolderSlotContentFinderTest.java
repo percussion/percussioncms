@@ -148,8 +148,8 @@ public class PSOAncestorFolderSlotContentFinderTest {
             /*
              * b has two children.
              */
-            PSItemSummary sumYes = new PSItemSummary(1, 1, "yes", 300, "generic");
-            PSItemSummary sumNo = new PSItemSummary(2, 1, "yes", 302, "blah");
+            PSItemSummary sumYes = new PSItemSummary(1, 1, "yes", 300, "generic",false);
+            PSItemSummary sumNo = new PSItemSummary(2, 1, "yes", 302, "blah",false);
             will(returnValue(asList(sumNo, sumYes)));
             
             /*
@@ -216,8 +216,8 @@ public class PSOAncestorFolderSlotContentFinderTest {
             /*
              * b has two children.
              */
-            PSItemSummary sumNotGeneric = new PSItemSummary(1, 1, "yes", 300, "NOT_GENERIC");
-            PSItemSummary sumNo = new PSItemSummary(2, 1, "yes", 302, "blah");
+            PSItemSummary sumNotGeneric = new PSItemSummary(1, 1, "yes", 300, "NOT_GENERIC",false);
+            PSItemSummary sumNo = new PSItemSummary(2, 1, "yes", 302, "blah",false);
             will(returnValue(asList(sumNo, sumNotGeneric)));
             
             /*

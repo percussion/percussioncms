@@ -1080,7 +1080,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
       }
       catch (PSAuthorizationException e)
       {
-         log.error("An autorization exception occurred while setting folder permissions.",e);
+         log.error("An authorization exception occurred while setting folder permissions.",e);
          throw new PSCmsException(e);
       }
 

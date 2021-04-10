@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>  <null id="1">
+    <choices>
+      <choice id="2">
+        <description>NULL</description>
+        <label>Bulleted List</label>
+        <sequence>1</sequence>
+        <value>ul</value>
+      </choice>
+      <choice id="3">
+        <description>NULL</description>
+        <label>Enumerated List</label>
+        <sequence>2</sequence>
+        <value>ol</value>
+      </choice>
+    </choices>
+    <guid>0-14-418</guid>
+    <description>Describes the list style. For example it might be bulleted or numbered or even a table.</description>
+    <id>418</id>
+    <keyword-type>1</keyword-type>
+    <label>soln_list_Style</label>
+    <name>soln_list_Style</name>
+    <sequence>0</sequence>
+    <type>KEYWORD_DEF</type>
+    <value>418</value>
+  </null>

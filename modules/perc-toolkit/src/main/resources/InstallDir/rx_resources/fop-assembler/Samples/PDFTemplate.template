@@ -1,0 +1,159 @@
+  <assemblytemplate id="1">
+    <guid>0-4-595</guid>
+    <active-assembly-type>Normal</active-assembly-type>
+    <assembler>Java/global/percussion/assembly/FOPAssembler</assembler>
+    <assembly-url>../assembler/render</assembly-url>
+    <bindings>
+      <binding id="2">
+        <execution-order>1</execution-order>
+        <expression>"John Doe"</expression>
+        <id>0</id>
+        <jexl-expression id="3">
+          <expression>"John Doe"</expression>
+        </jexl-expression>
+        <variable>$FOP.author</variable>
+      </binding>
+      <binding id="4">
+        <execution-order>2</execution-order>
+        <expression>$sys.item.getProperty("rx:keywords").String </expression>
+        <id>0</id>
+        <jexl-expression id="5">
+          <expression>$sys.item.getProperty("rx:keywords").String </expression>
+        </jexl-expression>
+        <variable>$FOP.keywords</variable>
+      </binding>
+      <binding id="6">
+        <execution-order>3</execution-order>
+        <expression>$sys.item.getProperty("rx:displaytitle").String</expression>
+        <id>0</id>
+        <jexl-expression id="7">
+          <expression>$sys.item.getProperty("rx:displaytitle").String</expression>
+        </jexl-expression>
+        <variable>$FOP.title</variable>
+      </binding>
+      <binding id="8">
+        <execution-order>4</execution-order>
+        <expression>$rx.session.getPSSessionID() </expression>
+        <id>0</id>
+        <jexl-expression id="9">
+          <expression>$rx.session.getPSSessionID() </expression>
+        </jexl-expression>
+        <variable>$XSLParam.sessionid</variable>
+      </binding>
+      <binding id="10">
+        <execution-order>5</execution-order>
+        <expression>$user.psoTransform.transform($sys.item.getProperty("rx:callout").String, "file:///home/admin/Rhythmyx/rx_resources/stylesheets/FOPExtractBody.xsl", $XSLParam)</expression>
+        <id>0</id>
+        <jexl-expression id="11">
+          <expression>$user.psoTransform.transform($sys.item.getProperty("rx:callout").String, "file:///home/admin/Rhythmyx/rx_resources/stylesheets/FOPExtractBody.xsl", $XSLParam)</expression>
+        </jexl-expression>
+        <variable>$callout</variable>
+      </binding>
+      <binding id="12">
+        <execution-order>6</execution-order>
+        <expression>$user.psoTransform.transform($sys.item.getProperty("rx:body").String, "file:///home/admin/Rhythmyx/rx_resources/stylesheets/FOPExtractBody.xsl",$XSLParam)</expression>
+        <id>0</id>
+        <jexl-expression id="13">
+          <expression>$user.psoTransform.transform($sys.item.getProperty("rx:body").String, "file:///home/admin/Rhythmyx/rx_resources/stylesheets/FOPExtractBody.xsl",$XSLParam)</expression>
+        </jexl-expression>
+        <variable>$body</variable>
+      </binding>
+    </bindings>
+    <charset>UTF-8</charset>
+    <content-ids/>
+    <description>PDF Template </description>
+    <global-template/>
+    <global-template-usage>None</global-template-usage>
+    <label>B - PDF</label>
+    <location-prefix/>
+    <location-suffix/>
+    <mime-type>application/pdf</mime-type>
+    <name>PDFTemplate</name>
+    <output-format>Page</output-format>
+    <publish-when>Default</publish-when>
+    <site-ids>
+      <site-id>301</site-id>
+      <site-id>303</site-id>
+    </site-ids>
+    <slot-ids/>
+    <style-sheet-path/>
+    <template>&lt;fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:svg="http://www.w3.org/2000/svg"&gt;
+		&lt;fo:layout-master-set&gt;
+     		&lt;!-- layout information --&gt;
+				&lt;fo:simple-page-master master-name="simple" page-height="29.7cm" page-width="21cm" margin-top="0mm" margin-bottom="0cm" margin-left="0cm" margin-right="0cm"&gt;
+					&lt;fo:region-body margin-top="5mm" margin-bottom="2cm" margin-left="5mm" margin-right="5mm"/&gt;
+					&lt;fo:region-before extent="3cm" background-color="#10264b" margin-top="4mm" margin-bottom="1mm" margin-left="1mm" margin-right="15mm"/&gt;
+					&lt;fo:region-after extent="5mm" background-color="#10264b"/&gt;
+					&lt;fo:region-start extent="5mm" background-color="#10264b"/&gt;
+					&lt;fo:region-end extent="5mm" background-color="#10264b"/&gt;
+				&lt;/fo:simple-page-master&gt;
+			&lt;/fo:layout-master-set&gt;
+			&lt;!-- end: defines page layout --&gt;
+			&lt;!-- start page-sequence--&gt;
+			&lt;fo:page-sequence initial-page-number="1" master-reference="simple"&gt;
+
+				&lt;fo:static-content flow-name="xsl-region-after"&gt;
+					&lt;fo:block text-align="end" font-size="10pt" font-family="sans-serif" line-height="14pt" color="white"&gt;
+						#displayfield("displaytitle") - p.
+               &lt;fo:page-number/&gt;
+					&lt;/fo:block&gt;
+				&lt;/fo:static-content&gt;
+
+				&lt;fo:static-content flow-name="xsl-region-start"&gt;
+					&lt;fo:block/&gt;
+				&lt;/fo:static-content&gt;
+
+				&lt;fo:static-content flow-name="xsl-region-end"&gt;
+					&lt;fo:block/&gt;
+				&lt;/fo:static-content&gt;
+
+				&lt;fo:static-content flow-name="xsl-region-before"&gt;
+					&lt;fo:block&gt;
+						&lt;fo:external-graphic src="../rx_resources/images/PDFmarginTop.jpg" content-width="20cm"/&gt;
+					&lt;/fo:block&gt;
+				&lt;/fo:static-content&gt;
+
+				&lt;!-- start fo:flow --&gt;
+				&lt;fo:flow flow-name="xsl-region-body"&gt;
+					&lt;!-- SET THE INTERNAL MARGINS SO THIS TEXT LOOKS CLEAR --&gt;
+					&lt;fo:block margin-top="10mm" margin-bottom="10mm" margin-left="10mm" margin-right="10mm" text-align="left"&gt;
+						&lt;!-- this defines a title --&gt;
+						&lt;fo:block font-size="24pt" font-family="sans-serif" font-style="italic" line-height="24pt" space-after.optimum="50pt" color="white" text-align="right"&gt;
+							#displayfield("displaytitle")
+						&lt;/fo:block&gt;
+
+						&lt;!-- this defines the Abstract Area --&gt;
+						&lt;fo:block margin-top="20mm" font-size="14pt" font-family="sans-serif" line-height="15pt" space-after.minimum="20pt"&gt;
+							&lt;fo:inline text-decoration="underline" font-weight="bold"&gt;Tag Line&lt;/fo:inline&gt;
+						&lt;/fo:block&gt;
+						&lt;fo:block font-size="12pt" font-family="sans-serif" line-height="15pt" space-after.optimum="50pt" text-align="justify"&gt;
+							#displayfield("description")
+						&lt;/fo:block&gt;
+
+						&lt;!-- this defines the Callout  Area --&gt;
+						&lt;fo:block margin-top="10mm" margin-bottom="4mm" font-size="14pt" font-family="sans-serif" line-height="15pt" space-after.optimum="20pt"&gt;
+							&lt;fo:inline text-decoration="underline" font-weight="bold"&gt;Summary&lt;/fo:inline&gt;
+						&lt;/fo:block&gt;
+						&lt;!-- body in this block --&gt;
+						&lt;fo:block font-size="10pt" font-weight="normal" font-family="sans-serif" line-height="15pt" space-after.optimum="30pt" text-align="justify"&gt;
+							$callout
+						&lt;/fo:block&gt;
+						&lt;!-- end of block --&gt;
+
+						&lt;!-- this defines the Body  Area --&gt;
+						&lt;fo:block margin-top="10mm" margin-bottom="4mm" font-size="14pt" font-family="sans-serif" line-height="15pt" space-after.optimum="20pt"&gt;
+							&lt;fo:inline text-decoration="underline" font-weight="bold"&gt;Detail&lt;/fo:inline&gt;
+						&lt;/fo:block&gt;
+						&lt;!-- body in this block --&gt;
+						&lt;fo:block font-size="10pt" font-weight="normal" font-family="sans-serif" line-height="15pt" space-after.optimum="30pt" text-align="justify"&gt;
+							$body
+						&lt;/fo:block&gt;
+					&lt;/fo:block&gt;
+				&lt;/fo:flow&gt;
+				&lt;!-- closes the flow element--&gt;
+			&lt;/fo:page-sequence&gt;
+			&lt;!-- closes the page-sequence --&gt;
+&lt;/fo:root&gt;</template>
+    <template-type>Shared</template-type>
+    <variant>false</variant>
+  </assemblytemplate>

@@ -179,19 +179,6 @@
         </fileset>
     </copy>
 
-    <echo>Checking for existing PSO Toolkit deployment...</echo>
-    <mkdir dir="${install.dir}/jetty/base/lib/extra"/>
-    <copy verbose="true" todir="${install.dir}/jetty/base/lib/extra" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
-        <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib">
-            <include name="PSOToolkit*.jar"/>
-            <include name="pso-toolkit*.jar"/>
-        </fileset>
-        <fileset dir="${install.dir}/AppServer/server/rx/lib">
-            <include name="PSOToolkit*.jar"/>
-            <include name="pso-toolkit*.jar"/>
-        </fileset>
-    </copy>
-
     <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
         <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/user">
         </fileset>
@@ -887,7 +874,19 @@
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-nav-${project.parent.version}.jar" destDir="ManagedNavExits"/>
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-default-template-${project.parent.version}.jar" destDir="DefaultTemplateExits"/>
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-linkback-${project.parent.version}.jar" destDir="LinkbackExits"/>
-
+        <if>
+            <available file="${install.dir}/LinkbackExits/install-files.xml"/>
+            <then>
+                <ant antfile="${install.dir}/LinkbackExits/install-files.xml" inheritall="true"/>
+            </then>
+        </if>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/perc-toolkit-${project.parent.version}.jar" destDir="PercToolkitExits"/>
+        <if>
+            <available file="${install.dir}/PercToolkitExits/install-files.xml"/>
+            <then>
+                <ant antfile="${install.dir}/PercToolkitExits/install-files.xml" inheritall="true"/>
+            </then>
+        </if>
     </target>
 
     <!--==========================================================-->
@@ -924,7 +923,7 @@
                             <exclude name="**/META-INF" />
                         </patternset>
                     </unzip>
-                    <copy file="${install.dir}/@{destDir}/Extensions.xml" tofile="C:\\DevEnv\\dev\\modules\\perc-distribution-tree\\target\\classes/distribution/Extensions/@{destDir}-ext.xml"/>
+                    <copy file="${install.dir}/@{destDir}/Extensions.xml" tofile="${project.basedir}/modules/perc-distribution-tree/target/classes/distribution/Extensions/@{destDir}-ext.xml"/>
                     <PSExtensions installLocation="@{destDir}" />
                 </then>
                 <else>

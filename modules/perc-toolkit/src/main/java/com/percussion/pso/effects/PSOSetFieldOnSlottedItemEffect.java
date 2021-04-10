@@ -43,14 +43,14 @@ import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /***
  * This effect is intended to be used on AA relationships
  * to set the property of an item when an item is added to
- * a given slot. 
- * 
- * @author natechadwick
+ * a given slot.
  *
  */
 @PSHandlesEffectContext(required=PSEffectContext.ALL)
@@ -60,7 +60,7 @@ public class PSOSetFieldOnSlottedItemEffect implements IPSEffect{
 	/**
 	 * Logger for this class
 	 */
-	private static final Log log = LogFactory.getLog(PSOSetFieldOnSlottedItemEffect.class);
+	private static final Logger log = LogManager.getLogger(PSOSetFieldOnSlottedItemEffect.class);
 	private static IPSContentWs mCws;  
 	private static IPSGuidManager mGmgr; 
 
@@ -89,8 +89,6 @@ public class PSOSetFieldOnSlottedItemEffect implements IPSEffect{
 	/***
 	 * Inner class for handling the user configured parameters for the extension
 	 * on the Relationship Effect parameters dialog.
-	 * @author natechadwick
-	 *
 	 */
 	private class ConfiguredParams{
 
@@ -351,13 +349,10 @@ public class PSOSetFieldOnSlottedItemEffect implements IPSEffect{
 							log.error(e);
 						} catch (IOException e) {
 							log.error(e);
-						} catch (PSCmsException e) {
+						} catch (PSCmsException | PSInvalidContentTypeException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-						} catch (PSInvalidContentTypeException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}finally{}
+						} finally{}
 				}
 			
 			
@@ -366,6 +361,11 @@ public class PSOSetFieldOnSlottedItemEffect implements IPSEffect{
 		}
 		
 		result.setSuccess();
+	}
+
+	@Override
+	public void recover(Object[] params, IPSRequestContext request, IPSExecutionContext context, PSExtensionProcessingException e, PSEffectResult result) throws PSExtensionProcessingException {
+		//TODO: Implement me
 	}
 
 

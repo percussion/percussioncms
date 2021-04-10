@@ -11,31 +11,11 @@
  */
 package com.percussion.pso.jexl;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.percussion.cms.PSCmsException;
-import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSFolderProperty;
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.extension.IPSJexlExpression;
-import com.percussion.extension.IPSJexlMethod;
-import com.percussion.extension.IPSJexlParam;
-import com.percussion.extension.PSExtensionException;
-import com.percussion.extension.PSExtensionProcessingException;
-import com.percussion.extension.PSJexlUtilBase;
+import com.percussion.extension.*;
 import com.percussion.pso.utils.PSOItemFolderUtilities;
-import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.data.PSAssemblyWorkItem;
@@ -43,15 +23,21 @@ import com.percussion.services.assembly.impl.nav.PSNavHelper;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.data.PSItemSummary;
 import com.percussion.services.contentmgr.IPSNode;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.jcr.RepositoryException;
+import java.io.File;
+import java.util.*;
 
 /**
  * JEXL functions for folder manipulation. 
@@ -109,17 +95,16 @@ public class PSOFolderTools extends PSJexlUtilBase implements IPSJexlExpression
    @IPSJexlMethod(description="get the folder path for this item", 
          params={@IPSJexlParam(name="itemId", description="the item GUID")})
    public String getParentFolderPath(IPSGuid itemId) 
-   throws PSErrorException, PSExtensionProcessingException, PSCmsException   
+   throws PSErrorException, PSCmsException
    {
 	  String errmsg; 
 	  
 	  List<String> paths = getParentFolderPaths(itemId);
-      if(paths.size() == 0)
+      if(paths.isEmpty())
       {
          errmsg = "no paths returned for " + itemId; 
          log.info(errmsg);
          return null;
-         //throw new PSExtensionProcessingException(0, errmsg); 
       }
       if(paths.size() == 1)
       {
@@ -263,7 +248,13 @@ public class PSOFolderTools extends PSJexlUtilBase implements IPSJexlExpression
            returns="The folder path (String)"
    )
    public String getFolderPath(int id) throws PSCmsException {
-	  return PSOItemFolderUtilities.getFolderPath(id);
+       try {
+           return PSOItemFolderUtilities.getFolderPath(id);
+       } catch (PSNotFoundException e) {
+           log.error(e.getMessage());
+           log.debug(e.getMessage(),e);
+           throw new PSCmsException(e);
+       }
    }
   
    /**
@@ -305,29 +296,30 @@ public class PSOFolderTools extends PSJexlUtilBase implements IPSJexlExpression
     * Get the folder id for a folder path. 
     * @param path the path for the item
     * @return content item id for the folder
-    * @throws PSCmsException 
+    * @throws PSCmsException Exception if an error occurred
     */
    @IPSJexlMethod(description="get the folder id for this folder path", 
          params={@IPSJexlParam(name="path", description="The path to get the id for")})
    public int getIdForPath(String path) throws PSCmsException {
-	   PSRequest req = (PSRequest) PSRequestInfo
-       .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
-	   PSServerFolderProcessor folderproc = new PSServerFolderProcessor(req,null);
-	   int id = folderproc.getIdByPath(path);
-	   return id;
+	   PSServerFolderProcessor folderproc = PSServerFolderProcessor.getInstance();
+	   return folderproc.getIdByPath(path);
    }
    
    /**
     * Get the folder id for a item id 
     * @param itemId the id to find the parent folder id for
     * @return content item id for the folder
-    * @throws PSCmsException 
+    * @throws PSCmsException Exception if an error occurred
     */
    @IPSJexlMethod(description="get the parent folder id for this item id", 
 	         params={@IPSJexlParam(name="itemId", description="The item id to find the folder id for")})
 	   public int getParentFolderId(int itemId) throws PSCmsException {
-	   	return PSOItemFolderUtilities.getParentFolderId(itemId);
-	   }
+       try {
+           return PSOItemFolderUtilities.getParentFolderId(itemId);
+       } catch (PSNotFoundException e) {
+           throw new PSCmsException(e);
+       }
+   }
 	      
    
    @Override
