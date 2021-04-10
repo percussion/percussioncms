@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXDependencyData>
+   <table allowSchemaChanges="n" alter="n" create="y" delolddata="n" isView="n" name="WORKFLOWAPPS">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="WORKFLOWAPPID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="WORKFLOWAPPNAME">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="ADMINISTRATOR">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="INITIALSTATEID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="WORKFLOWAPPDESC">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="VERSION">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>WORKFLOWAPPID</name>
+      </primarykey>
+   </table>
+   <table name="WORKFLOWAPPS" onCreateOnly="yes">
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="WORKFLOWAPPNAME">soln_list_workflow</column>
+         <column encoding="text" name="ADMINISTRATOR">Admin</column>
+         <column encoding="text" name="INITIALSTATEID">1</column>
+         <column encoding="text" name="WORKFLOWAPPDESC">This workflow is assigned to all communities</column>
+         <column encoding="text" name="VERSION">3</column>
+      </row>
+   </table>
+</PSXDependencyData>

@@ -9,17 +9,16 @@
  ******************************************************************************/
 package com.percussion.pso.legacy;
 
-import java.util.Map;
-
-import org.apache.commons.jexl.Script;
-
 import com.percussion.data.PSConversionException;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSExtensionParams;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase;
+import com.percussion.utils.jexl.IPSScript;
 import com.percussion.utils.jexl.PSJexlEvaluator;
+
+import java.util.Map;
 
 /**
  * A UDF that evaluates a JEXL expression.  This can be used in XML 
@@ -60,7 +59,7 @@ public class PSOJexlEvaluatorUDF extends PSSimpleJavaUdfExtension
       eval.bind("$param" ,htmlParams);
       try
       {
-         Script e = PSJexlEvaluator.createScript(expression);
+         IPSScript e = PSJexlEvaluator.createScript(expression);
          return eval.evaluate(e);
       }
       catch (Exception e1)

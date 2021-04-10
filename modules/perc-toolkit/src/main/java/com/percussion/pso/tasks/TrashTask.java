@@ -118,10 +118,13 @@ import com.percussion.workflow.PSWorkflowRoleInfo;
  * these have been used to bypass regular process steps and validation code to force
  * adding of items to folders, and transitions that may have failed through regular mechanisms.
  * 
- * 
+ * @deprecated
+ * @see com.percussion.recycle.service.IPSRecycleService
+ * @since 8.0.0
  * @author stephenbolton
  * @version $Revision: 1.0 $
  */
+@Deprecated()
 public class TrashTask implements IPSTask {
 	/**
 	 * logger for this class.
@@ -380,8 +383,7 @@ public class TrashTask implements IPSTask {
 		// find orphans 200 at a time
 		// Orphaned Items not in folder cache so need to use relationships
 		final Map<Integer, Set<Integer>> orphanedItems = getOrphanedItems();
-		final PSServerFolderProcessor folderproc = new PSServerFolderProcessor(
-				req, null);
+		final PSServerFolderProcessor folderproc = PSServerFolderProcessor.getInstance();
 		int orphanCount = 0;
 		for (final Entry<Integer, Set<Integer>> entry : orphanedItems
 				.entrySet()) {
@@ -738,7 +740,7 @@ public class TrashTask implements IPSTask {
 		PSRequestInfo.initRequestInfo(params);
 		log.debug("Current username is " + userName);
 
-		folderproc = new PSServerFolderProcessor(req, null);
+		folderproc =  PSServerFolderProcessor.getInstance();
 
 	}
 
@@ -849,8 +851,7 @@ public class TrashTask implements IPSTask {
 	private boolean trasitionFolderItems(PSLocator folder, int level)
 			throws FatalTaskException {
 		boolean containsItems = false;
-		final PSServerFolderProcessor folderproc = new PSServerFolderProcessor(
-				req, null);
+		final PSServerFolderProcessor folderproc = PSServerFolderProcessor.getInstance();
 		PSComponentSummary[] summaries = null;
 		try{
 			summaries = folderproc.getChildSummaries(folder);
@@ -919,7 +920,7 @@ public class TrashTask implements IPSTask {
 			log.debug("Deleting empty folder "
 					+ folderproc.getItemPaths(folder)[0]);
 				folderproc.delete("PSFolder", new PSKey[] { folder });
-			} catch (PSCmsException e) {
+			} catch (PSCmsException | com.percussion.services.error.PSNotFoundException e) {
 				throw new FatalTaskException("Cannot delete folder folder="+folder.getId(),e);
 			}
 		}
@@ -936,7 +937,7 @@ public class TrashTask implements IPSTask {
 		String path = "";
 		try {
 			path = folderproc.getItemPaths(new PSLocator(id,-1))[0];
-		} catch (PSCmsException e) {
+		} catch (PSCmsException | com.percussion.services.error.PSNotFoundException e) {
 			log.debug("Cannot get folder path for id "+id);
 		}
 		return path;

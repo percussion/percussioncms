@@ -1,34 +1,16 @@
 package com.percussion.pso.workflow;
 
-import java.io.File;
-import java.rmi.RemoteException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSFolderProperty;
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.extension.IPSWorkFlowContext;
-import com.percussion.extension.IPSWorkflowAction;
-import com.percussion.extension.PSExtensionException;
-import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.extension.*;
 import com.percussion.extension.services.PSDatabasePool;
 import com.percussion.pso.utils.PSOItemFolderUtilities;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.security.IPSBackEndRoleMgr;
@@ -42,6 +24,16 @@ import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
 import com.percussion.webservices.security.IPSSecurityDesignWs;
 import com.percussion.webservices.security.PSSecurityWsLocator;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.rmi.RemoteException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
 
 /***
  * Workflow Action that will switch the item to the community specified by the 
@@ -59,7 +51,7 @@ public class PSOSwitchCommunityWorkflowAction implements IPSWorkflowAction{
 	 */
 	public static final String DEFAULT_COMMUNITY_NAME  = "defaultCommunityName";
 	public static final String PARAM_BASE = "com.percussion.pso.workflow.PSOSwitchCommunityWorkflowAction";
-	private static final Log log = LogFactory.getLog(PSOSwitchCommunityWorkflowAction.class);
+	private static final Logger log = LogManager.getLogger(PSOSwitchCommunityWorkflowAction.class);
 	private static IPSGuidManager gmgr = null;
 	private static IPSContentWs m_cws;
 	private static IPSSecurityDesignWs secSvc = null;
@@ -110,13 +102,12 @@ public class PSOSwitchCommunityWorkflowAction implements IPSWorkflowAction{
 		try {
 			folderid = PSOItemFolderUtilities.getItemParentFolderId(Integer.parseInt(contentid));
 			
-		} catch (NumberFormatException e1) {
-			log.error("Error detecting parent Folder for item " + contentid,e1);
-		} catch (PSCmsException e1) {
-			log.error("Error detecting parent Folder for item " + contentid,e1);
+		} catch (NumberFormatException | PSNotFoundException | PSCmsException e1) {
+			log.error("Error detecting parent Folder for item {} Error: {}" , contentid,e1.getMessage());
+			log.debug(e1.getMessage(),e1);
 		}
-		
-	    String user = request.getUserName();
+
+		String user = request.getUserName();
 	    String session = request.getUserSessionId();
 	    String targetCommunity = getDefaultCommunityProperty(folderid);
 	    
@@ -127,7 +118,7 @@ public class PSOSwitchCommunityWorkflowAction implements IPSWorkflowAction{
 	    
 	    IPSCatalogSummary comm = findCommunityByName(targetCommunity);
 	    if(comm == null){
-	    	log.warn("Unable to load community " +  targetCommunity + " , skipping Community Switching action");
+	    	log.warn("Unable to load community {} , skipping Community Switching action", targetCommunity);
 	    	return; //Do nothing further as there is no community configured.
 	    }
 	    // Test to be sure that the Workflow and State are visible in the target commnity. 
@@ -241,9 +232,9 @@ public class PSOSwitchCommunityWorkflowAction implements IPSWorkflowAction{
 			}
 		}
 		
-		log.debug("Workflow valid in community = " + match_wf);
+		log.debug("Workflow valid in community = {}", match_wf);
 		
-		/* NOTE: Apparently State visibility is not implemented. 
+		/* TODO: Apparently State visibility is not implemented.
 		 * v = secSvc.getVisibilityByCommunity(comms, PSTypeEnum.WORKFLOW_STATE, user, session);
 		
 		//Make sure the target workflow state is also in the list
@@ -257,12 +248,10 @@ public class PSOSwitchCommunityWorkflowAction implements IPSWorkflowAction{
 			}
 		}*/
 		
-			log.debug("Workflow State valid in community = " + match_state);
-		} catch (RemoteException e) {
+			log.debug("Workflow State valid in community = {}",  match_state);
+		} catch (RemoteException | PSErrorResultsException e) {
 			log.error("Error calculating Workflow visibility in new community", e);
-		} catch (PSErrorResultsException e) {
-			log.error("Error calculating Workflow visibility in new community", e);
-		}finally{}
+		}
 		
 		return (match_wf);
 	}
@@ -270,7 +259,7 @@ public class PSOSwitchCommunityWorkflowAction implements IPSWorkflowAction{
 	/**
 	 * Initialize the backend CMS services. 
 	 */
-	private void initServices(){
+	private static void initServices(){
 			 gmgr = PSGuidManagerLocator.getGuidMgr();
 			 m_cws = PSContentWsLocator.getContentWebservice();
 	         secSvc = PSSecurityWsLocator.getSecurityDesignWebservice();  	   
@@ -310,7 +299,7 @@ public class PSOSwitchCommunityWorkflowAction implements IPSWorkflowAction{
 		Map<String,String> props = getFolderProperties(folder_id);
 		if(props.containsKey(DEFAULT_COMMUNITY_NAME)){
 			community = props.get(DEFAULT_COMMUNITY_NAME);
-			log.info("Default community identified in parent folder " + folder_id + ". Community: " + community);
+			log.info("Default community identified in parent folder {}. Community: {}",folder_id, community);
 			return community;
 		}
 		//start recursive code to check the next parent folder if no defaultCommunity is set
@@ -319,10 +308,10 @@ public class PSOSwitchCommunityWorkflowAction implements IPSWorkflowAction{
 					nextParentFolderId = PSOItemFolderUtilities.getItemParentFolderId(folder_id);
 				} catch (NumberFormatException e) {
 					log.error("Cannot retreive parent folder ID: current folder ID is not a number", e);
-				} catch (PSCmsException e) {
+				} catch (PSNotFoundException | PSCmsException e) {
 					log.error("Error retreiving next parent folder ID", e);
 				}
-				
+
 			if(nextParentFolderId != 0 && nextParentFolderId != 1){
 				community = getDefaultCommunityProperty(nextParentFolderId);
 			}
@@ -336,10 +325,9 @@ public class PSOSwitchCommunityWorkflowAction implements IPSWorkflowAction{
 	 * @param id The id of the folder. 
 	 * @return A Map containing folder properties in Name, Value pairs.  Never null. May be empty.  
 	 */
-	@SuppressWarnings("unchecked")
 	private Map<String,String> getFolderProperties(int id){
 		
-		Map<String, String> props = new HashMap<String, String>();
+		Map<String, String> props = new HashMap<>();
 		
 		try{
 			
@@ -354,12 +342,11 @@ public class PSOSwitchCommunityWorkflowAction implements IPSWorkflowAction{
 	             PSFolderProperty prop = it.next();
 	             props.put(prop.getName(), prop.getValue());
 	         }
-			} catch (PSErrorResultsException e) {
-				log.error("Error looking up properties for folder: " + id + ".",e);
-			} catch (PSCmsException e) {
-				log.error("Error looking up path for folder: " + id + ".",e);
+			} catch (PSErrorResultsException | PSCmsException | PSNotFoundException e) {
+				log.error("Error looking up path for folder: {} Error: {}" , id , e.getMessage());
+				log.debug(e.getMessage(),e);
 			}
-		
+
 		return props;
 	}
 	

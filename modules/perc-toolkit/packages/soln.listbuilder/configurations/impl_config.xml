@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="
+   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+      
+   <bean id="soln_list_List_ct" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="soln_list_List_ct"/>
+      <property name="type" value="NODEDEF"/>
+      <property name="propertySetters">
+         <list>
+            <bean class="com.percussion.rx.config.impl.PSContentTypeSetter">
+               <property name="properties">
+                  <map>
+                     <entry key="defaultWorkflow" value="${soln.listbuilder.list.DefaultWorkflowName}"/>
+                     <!-- property names for managing the associations -->
+                     <entry key="templates" value="${soln.listbuilder.list.AllowedTemplates}"/>
+                     <entry key="workflows" value="${soln.listbuilder.list.AllowedWorkflows}"/>
+                  </map>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+   <bean id="soln_list_ContentType" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="soln_list_ContentType"/>
+      <property name="type" value="KEYWORD_DEF"/>
+      <property name="propertySetters">
+         <bean class="com.percussion.rx.config.impl.PSKeywordSetter">
+            <property name="properties">
+               <map>
+                  <entry key="choicePairs" value="${soln.listbuilder.auto.ContentTypes}"/>
+               </map>
+            </property>
+         </bean>
+      </property>
+   </bean>
+   <bean id="soln_list_FolderPaths" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="soln_list_FolderPaths"/>
+      <property name="type" value="KEYWORD_DEF"/>
+      <property name="propertySetters">
+         <bean class="com.percussion.rx.config.impl.PSKeywordSetter">
+            <property name="properties">
+               <map>
+                  <entry key="choicePairs" value="${soln.listbuilder.auto.FolderPaths}"/>
+               </map>
+            </property>
+         </bean>
+      </property>
+   </bean>
+   <bean id="soln_list_SnippetName" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="soln_list_SnippetName"/>
+      <property name="type" value="KEYWORD_DEF"/>
+      <property name="propertySetters">
+         <bean class="com.percussion.rx.config.impl.PSKeywordSetter">
+            <property name="properties">
+               <map>
+                  <entry key="choicePairs" value="${soln.listbuilder.auto.Snippets}"/>
+               </map>
+            </property>
+         </bean>
+      </property>
+   </bean>
+   <bean id="soln_list_ManualSlot" class="com.percussion.rx.config.impl.PSObjectConfigHandler">
+      <property name="name" value="soln_list_ManualSlot"/>
+      <property name="type" value="SLOT"/>
+      <property name="propertySetters">
+         <bean class="com.percussion.rx.config.impl.PSTemplateSlotSetter">
+            <property name="properties">
+               <map>
+                  <entry key="contentTypeTemplatePairs" value="${soln.listbuilder.manual.Allowed}"/>
+               </map>
+            </property>
+         </bean>
+      </property>
+   </bean>
+</beans>

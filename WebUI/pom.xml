@@ -638,12 +638,17 @@
             <artifactId>extensions-sfp</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>extensions-nav</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-toolkit</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-tinymce</artifactId>

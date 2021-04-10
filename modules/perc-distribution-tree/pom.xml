@@ -41,6 +41,7 @@
         <rxapps-directory>${basedir}/target/rxapps</rxapps-directory>
         <rxapps.source>${rxapps-directory}/perc-rxapps-${project.version}</rxapps.source>
         <packages-directory>${basedir}/target/packages</packages-directory>
+
         <derby-home>${basedir}/target/derby-home</derby-home>
         <db.user>CMDB</db.user>
         <db.pass.enc>7cf3be70d83a6948</db.pass.enc>
@@ -161,6 +162,14 @@
                             </artifactItem>
                             <artifactItem>
                                 <groupId>com.percussion</groupId>
+                                <artifactId>perc-toolkit</artifactId>
+                                <version>${project.version}</version>
+                                <type>zip</type>
+                                <outputDirectory>${packages-directory}</outputDirectory>
+                            </artifactItem>
+
+                            <artifactItem>
+                                <groupId>com.percussion</groupId>
                                 <artifactId>extensions-main</artifactId>
                                 <version>${project.version}</version>
                                 <type>jar</type>
@@ -193,6 +202,16 @@
                                 <overWrite>true</overWrite>
                                 <outputDirectory>${extensions-directory}/WorkflowExits</outputDirectory>
                             </artifactItem>
+
+                            <artifactItem>
+                                <groupId>com.percussion</groupId>
+                                <artifactId>perc-toolkit</artifactId>
+                                <version>${project.version}</version>
+                                <type>jar</type>
+                                <overWrite>true</overWrite>
+                                <outputDirectory>${extensions-directory}/PercToolkitExits</outputDirectory>
+                            </artifactItem>
+
                         </artifactItems>
                         <excludes>META-INF/**</excludes>
 
@@ -226,10 +245,6 @@
 
                             <ant antfile="${basedir}/src/main/resources/installDistributionFiles.xml" inheritAll="true" inheritRefs="true" />
 
-                     <!--       <ant antfile="${basedir}/src/main/resources/distribution/rxconfig/Installer/install.xml" target="install" inheritAll="true" inheritRefs="true">
-                                <property name="basedir" location="${basedir}/src/main/resources/distribution/rxconfig/Installer"/>
-                            </ant>
-                     -->
                         </target>
                     </configuration>
                 </execution>

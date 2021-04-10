@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.percussion.taxonomy.domain.Node" table="TAX_NODE">
+	<id name="Id" column="ID" type="integer"> 
+		<generator class="com.percussion.data.utils.PSNextNumberHibernateGenerator"/>
+	</id>
+    <many-to-one name="taxonomy" class="com.percussion.taxonomy.domain.Taxonomy" column="TAXONOMY_ID" fetch="join" not-null="true"/>
+    <many-to-one name="node_status" class="com.percussion.taxonomy.domain.Node_status" column="NODE_STATUS_ID" fetch="join" not-null="true"/>
+    <property name="Search" column="search" type="string"/>
+    <many-to-one name="parent" class="com.percussion.taxonomy.domain.Node" column="PARENT_ID" fetch="join"/>
+    <property name="Default_community_id" column="DEFAULT_COMMUNITY_ID" type="integer"/>
+    <property name="Not_leaf" column="NOT_LEAF" type="boolean" not-null="true"/>
+    <property name="isNodeSelectable" column="IS_NODE_SELECTABLE" type="boolean" not-null="true"/>
+    <property name="In_use" column="IN_USE" type="boolean"/>
+    <property name="Created_by_id" column="CREATED_BY_ID" type="string" not-null="true"/>
+    <property name="Created_at" column="CREATED_AT" type="timestamp" not-null="true"/>
+    <property name="Modified_by_id" column="MODIFIED_BY_ID" type="string" not-null="true"/>
+    <property name="Modified_at" column="MODIFIED_AT" type="timestamp" not-null="true"/>
+    <set name="values" fetch="join" order-by="ID asc" inverse="true" lazy="false">
+        <key column="NODE_ID" />
+        <one-to-many class="com.percussion.taxonomy.domain.Value" />
+    </set>
+	<set name="relatedNodesForNodeId" fetch="join" order-by="ID asc" inverse="true" >
+      <key column="NODE_ID"/>
+      <one-to-many class="com.percussion.taxonomy.domain.Related_node"/>
+    </set>
+	 <set name="nodeEditors" fetch="join" order-by="ID asc" inverse="true" >
+      <key column="NODE_ID"/>
+      <one-to-many class="com.percussion.taxonomy.domain.Node_editor"/>
+    </set>
+  </class>
+
+	<query name="findNodesByAttribute">
+        <![CDATA[SELECT DISTINCT n 
+        		 FROM Node n INNER JOIN n.values values 
+        		 WHERE values.attribute = :attribute]]>
+	</query>
+  
+</hibernate-mapping>

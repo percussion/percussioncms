@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="CT_SOLN_LIST_LIST_CT">
+   <row>
+      <column action="c" limitSizeForIndex="n" name="CONTENTID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="REVISIONID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="DISPLAYTITLE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PERC_LIST_DATE_RANGE_START">
+         <jdbctype>TIMESTAMP</jdbctype>
+         <allowsnull>yes</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PERC_LIST_DATE_RANGE_END">
+         <jdbctype>TIMESTAMP</jdbctype>
+         <allowsnull>yes</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PERC_LIST_TITLE">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>512</size>
+         <allowsnull>yes</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PERC_LIST_COUNT">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="CALLOUT">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="QUERY">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="PERC_LIST_QUERY">
+         <jdbctype>CLOB</jdbctype>
+         <allowsnull>yes</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="SOLN_LIST_SLOT">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="SOLN_LIST_SNIPPET">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>255</size>
+         <allowsnull>yes</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="SOLN_LIST_CHILDSNIPPET">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="SOLN_LIST_FOLDERPATHS">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>2048</size>
+         <allowsnull>yes</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="SOLN_LIST_JS">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+      </column>
+   </row>
+   <primarykey action="c">
+      <name>CONTENTID</name>
+      <name>REVISIONID</name>
+   </primarykey>
+</table>

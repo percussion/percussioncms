@@ -27,8 +27,8 @@ import com.percussion.utils.timing.PSStopwatchStack;
 import org.apache.commons.jexl3.JexlException;
 import org.apache.commons.jexl3.JexlExpression;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,8 +40,8 @@ import java.util.Map;
  * evaluated. Before evaluation the {@link #bind(String, Object)} may be called
  * as needed to bind initial values into the context for use in expressions.
  * After a number of expressions are evaluated using
- * {@link #evaluate(String, JexlExpression)}, the results can be extracted by
- * calling {@link #getContext()}.
+ * {@link #evaluate(String, IPSScript)} , the results can be extracted by
+ * calling {@link #getVars()}.
  * 
  * @author dougrand
  */
@@ -51,7 +51,7 @@ public class PSJexlEvaluator
    /**
     * Commons logger for evaluator
     */
-   private static Log ms_log = LogFactory.getLog(PSJexlEvaluator.class);
+   private static final Logger log = LogManager.getLogger(PSJexlEvaluator.class);
 
    
    /**
@@ -545,7 +545,7 @@ public class PSJexlEvaluator
       }
       catch (Exception e)
       {
-         ms_log.error(e);
+         log.error(e);
          return null;
       }
    }
@@ -565,7 +565,7 @@ public class PSJexlEvaluator
        }
       catch (Exception e)
       {
-         ms_log.error(e);
+         log.error(e);
          return null;
       }
    }
