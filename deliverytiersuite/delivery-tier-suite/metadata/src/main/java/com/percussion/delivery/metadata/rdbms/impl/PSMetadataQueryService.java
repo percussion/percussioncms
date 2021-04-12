@@ -76,7 +76,7 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 public class PSMetadataQueryService implements IPSMetadataQueryService
 {
     private SessionFactory sessionFactory;
-    private PSHashCalculator hashCalculator = new PSHashCalculator();
+    private final PSHashCalculator hashCalculator = new PSHashCalculator();
 
     @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
