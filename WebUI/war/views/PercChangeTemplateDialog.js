@@ -63,13 +63,13 @@
             $.getJSON(queryPath, function(spec)
             {
                 templateSummaries = spec['TemplateSummary'];
-                if (templateSummaries.length <= 1 && templateId != "") 
+                if (templateSummaries.length <= 1 && templateId !== "")
                 {
                     _openAlertDialog();
                 }
                 else 
                 {
-                    _openTemplateDialog()
+                    _openTemplateDialog();
                 }
             });
             
@@ -156,7 +156,7 @@
             function _submit()
             {
                 // If the selected template is same as current template - abort the ajax call and return
-                if(dialog.find("#perc-select-template").val() ==  currentTemplateId) {
+                if(dialog.find("#perc-select-template").val() ===  currentTemplateId) {
                        dialog.remove();
                        return;
                 }
@@ -165,7 +165,7 @@
                 var migrateContentRestData =  {"MigrateContentRestData":{"siteName":sitename,"templateId":dialog.find("#perc-select-template").val(),"refPageId":"","pageIds":pageIds,"sourceType":sourceType}};
                 $.PercTemplateService().assignTemplateAndMigrateContent(migrateContentRestData, function(status, result)
                 { 
-                    if (status == $.PercServiceUtils.STATUS_SUCCESS) 
+                    if (status === $.PercServiceUtils.STATUS_SUCCESS)
                     {
                         dialog.remove();
                         successCallBack();
@@ -209,7 +209,7 @@
                     });
                     
                     //Capture the name of current template for a given page                    
-                    if (this.id == templateId)                   
+                    if (this.id === templateId)
                     {
                         currentTemplateName = this.name;
                         currentTemplateId = this.id;
@@ -244,7 +244,7 @@
                 function createTemplateEntry(data, templateId)
                 {
                     var tempDiv = "<div class=\"item\">";
-                    if(data.id == templateId) {
+                    if(data.id === templateId) {
                         tempDiv = "<div class=\"item perc-selected-item\">";
                     }
                     var temp = tempDiv +
@@ -266,6 +266,6 @@
             
         }// End open dialog
         return changeTemplateDialogApi;
-    }
+    };
     
 })(jQuery);
