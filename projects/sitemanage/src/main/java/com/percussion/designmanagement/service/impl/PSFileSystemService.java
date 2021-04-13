@@ -39,9 +39,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.PosixFileAttributes;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import static org.springframework.util.StringUtils.trimLeadingCharacter;
@@ -71,7 +77,7 @@ public class PSFileSystemService implements IPSFileSystemService
      * Max length allowed for folder names.
      */
     public static final Integer FOLDER_NAME_MAX_LENGTH = 255;
-    
+
     /**
      * The maximum allowed size for a file. It is configurable via spring.
      */
@@ -220,6 +226,17 @@ public class PSFileSystemService implements IPSFileSystemService
         File newFolder = new File(folderPath.getAbsolutePath(), newName);
         
         FileUtils.forceMkdir(newFolder);
+        File parent = folderPath.getParentFile();
+        //set parent owner/permissions to newly created file as parents'.
+        UserPrincipal owner = java.nio.file.Files.getOwner(parent.toPath());
+        java.nio.file.Files.setOwner(newFolder.toPath(),owner);
+        PosixFileAttributeView posixViewParent = Files.getFileAttributeView(parent.toPath(),
+                PosixFileAttributeView.class);
+        PosixFileAttributes attribs = posixViewParent.readAttributes();
+        Set<PosixFilePermission> permissions = attribs.permissions();
+        PosixFileAttributeView posixViewFile = Files.getFileAttributeView(newFolder.toPath(),
+                PosixFileAttributeView.class);
+        posixViewFile.setPermissions(permissions);
         
         return newFolder;
     }
@@ -368,17 +385,15 @@ public class PSFileSystemService implements IPSFileSystemService
         Validate.notNull(filePath, "path cannot be null");
         
         File fileToDelete = getFile(filePath);
-
-        boolean deleted = false;
         if (fileToDelete.exists())
         {
-            deleted = fileToDelete.delete();
+            try {
+                Files.delete(fileToDelete.toPath());
+            } catch (IOException e) {
+                throw new PSFileOperationException("Could not delete the file '" + fileToDelete.getName() + "'." + e.getMessage());
+            }
         }
 
-        if (!deleted)
-        {
-            throw new PSFileOperationException("Could not delete the file '" + fileToDelete.getName() + "'.");
-        }
     }
 
     /* (non-Javadoc)
@@ -498,52 +513,51 @@ public class PSFileSystemService implements IPSFileSystemService
      * @see com.percussion.designmanagement.service.IPSFileSystemService#fileUpload(java.lang.String, java.io.InputStream)
      */
     @Override
-    public void fileUpload(String path, InputStream pageContent) throws PSFileOperationException
-    {
-        BufferedInputStream in = new BufferedInputStream(pageContent);
-        
-        try
-        {
+    public void fileUpload(String path, InputStream pageContent) throws PSFileOperationException {
+        try (BufferedInputStream in = new BufferedInputStream(pageContent)) {
+
             validateFileUpload(path);
-        }
-        catch(PSFileAlreadyExistsException e)
-        {
-            // if the file already exists and we got to this method, the
-            // user had confirmed the overwriting, so we can continue
-        }
-        
-        File file = getFile(path);
-        
-        // create the file if it does not exists
-        try
-        {
-            OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-            
-            int bytesCopied = IOUtils.copy(in, out);
-            out.flush();
-            out.close();
-            in.close();
-            
-            // validate the file length
-            if(fileSizeExceeded(bytesCopied))
-            {
-                FileUtils.deleteQuietly(file);
-                throw new PSFileSizeExceededException("The maximum allowed size for a file is " + maxFileSize + " MB.");
+            File file = getFile(path);
+            File parent = file.getParentFile();
+
+            // create the file if it does not exists
+
+            try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
+
+                int bytesCopied = IOUtils.copy(in, out);
+                out.flush();
+                out.close();
+                in.close();
+
+                // validate the file length
+                if (fileSizeExceeded(bytesCopied)) {
+                    FileUtils.deleteQuietly(file);
+                    throw new PSFileSizeExceededException("The maximum allowed size for a file is " + maxFileSize + " MB.");
+                }
+                //set parent owner/permissions to newly created file as parents'.
+                UserPrincipal owner = java.nio.file.Files.getOwner(parent.toPath());
+                java.nio.file.Files.setOwner(file.toPath(), owner);
+                PosixFileAttributeView posixViewParent = Files.getFileAttributeView(parent.toPath(),
+                        PosixFileAttributeView.class);
+                PosixFileAttributes attribs = posixViewParent.readAttributes();
+                Set<PosixFilePermission> permissions = attribs.permissions();
+                PosixFileAttributeView posixViewFile = Files.getFileAttributeView(file.toPath(),
+                        PosixFileAttributeView.class);
+                posixViewFile.setPermissions(permissions);
             }
-        }
-        catch (IOException e)
-        {
+
+        } catch (IOException e) {
             throw new PSFileOperationException("An error ocurred when uploading the file.", e);
         }
     }
-    
-    /*
+
+        /*
      * (non-Javadoc)
      * @see com.percussion.designmanagement.service.IPSFileSystemService#fileSizeExceeded(java.io.InputStream)
      */
     private boolean fileSizeExceeded(int fileSize)
     {
-        long maxSizeInBytes = new Float(maxFileSize * 1024).longValue() * 1024;
+        long maxSizeInBytes = Float.valueOf(maxFileSize * 1024).longValue() * 1024;
         
         // fileSize < 0 is necessary as that means the copied bytes are more
         // than Integer.MAX_VALUE
