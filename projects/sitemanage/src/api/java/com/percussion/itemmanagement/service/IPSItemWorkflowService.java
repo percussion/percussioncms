@@ -29,6 +29,7 @@ import com.percussion.itemmanagement.data.PSItemStateTransition;
 import com.percussion.itemmanagement.data.PSItemTransitionResults;
 import com.percussion.itemmanagement.data.PSItemUserInfo;
 import com.percussion.share.data.PSNoContent;
+import com.percussion.share.service.exception.PSValidationException;
 
 import java.util.Set;
 
@@ -362,5 +363,27 @@ public interface IPSItemWorkflowService
      * Constant for the remove transition trigger.
      */
     public static final String TRANSITION_TRIGGER_REMOVE = "Remove";
+
+    /**
+     * Constant for the remove current state : Pending.
+     */
+    public static final String CURRENT_STATE_PENDING = "Pending";
+
+    /**
+     * Constant for the remove current state : Live.
+     */
+    public static final String CURRENT_STATE_LIVE = "Live";
+
+    /**
+     * Determines if the quick edit trigger is available for the current user for the given item in its current state (pending or live), which
+     * means, can the current user use this trigger to transition the item?
+     *
+     * @param id of the item, never blank.
+     * @param trigger the transition trigger, never blank.
+     * @param currentState "Pending" or "Live", never blank.
+     *
+     * @return <code>true</code> if the item can be transitioned using the trigger, <code>false</code> otherwise.
+     */
+    public boolean isQuickEditTriggerAvailableForPendingOrLivePage(String id, String trigger, String currentState) throws PSValidationException;
     
 }
