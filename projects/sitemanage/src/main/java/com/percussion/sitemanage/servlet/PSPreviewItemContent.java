@@ -147,20 +147,22 @@ public class PSPreviewItemContent extends HttpServlet
      */
     private String createAssemblyUrl(String path, String revision, String renderType) throws PSDataServiceException, PSNotFoundException, PSCmsException {
         IPSGuid id = getItemId(path, revision);
-
+        if (id!=null) {
             IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
             PSComponentSummary item = objMgr.loadComponentSummary(id.getUUID());
-            
-            if (item.isFolder())
-            {
-                PSSiteSummary siteSum = siteDao.findByPath("/"+path);
+
+            if (item.isFolder()) {
+                PSSiteSummary siteSum = siteDao.findByPath("/" + path);
                 if (!path.endsWith("/"))
-                    path+="/";
+                    path += "/";
                 path += siteSum.getDefaultDocument();
                 // get default page id
                 id = getItemId(path, revision);
             }
-        
+        }
+        if (id==null)
+            throw new PSNotFoundException(path);
+
         PSInlineLinkRequest linkRequest = new PSInlineLinkRequest();
         linkRequest.setTargetId(id.toString());
         PSInlineRenderLink renderLink;
@@ -192,9 +194,7 @@ public class PSPreviewItemContent extends HttpServlet
             }
             
             int id = srv.getIdByPath(path);
-            
-           
-            
+
             if (id == -1)
                 throw new PSNotFoundException("Cannot find item with path = \"" + path + "\".");
             
