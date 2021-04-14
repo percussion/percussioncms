@@ -34,7 +34,7 @@
     fixIframeHeight = function() {
     	$("#perc-widget-library").width($("#tabs-3").width() - 45);
         var frame  = $('#frame');
-        if(frame.length == 0)
+        if(frame.length === 0)
             return;
              
         var header = $('.perc-main');
@@ -56,29 +56,29 @@
         }        
         frame.height( wh - bot);
         frame.width(ww);    
-    }
+    };
     
     fixTemplateHeight = function(){
     	
     	fixBottomHeight();
     	
-    }
+    };
     
     fixBottomHeight = function() {
     	var currentView = $.PercNavigationManager.getView();
     	var bottomContentDiv;
     	var bottomVerticalOffset;
     	
-        if(currentView == $.PercNavigationManager.VIEW_DESIGN) {
+        if(currentView === $.PercNavigationManager.VIEW_DESIGN) {
             bottomContentDiv     = $('.perc-templates-layout');
             // 47px come from padding-top and padding bottom of the element selected
             bottomVerticalOffset = bottomContentDiv.position().top + 47;
-        } else if(currentView == $.PercNavigationManager.VIEW_WORKFLOW) {
+        } else if(currentView === $.PercNavigationManager.VIEW_WORKFLOW) {
            bottomContentDiv     = $('.perc-whitebg');          
            bottomVerticalOffset = $('#tabs').position().top + 90; 
            // (90 = The difference between the start of the #tab div and .perc-whitebg div)
            $(".perc-finder-fix").css('padding-bottom', 0);
-        } else if(currentView == $.PercNavigationManager.VIEW_PUBLISH) {
+        } else if(currentView === $.PercNavigationManager.VIEW_PUBLISH) {
             bottomContentDiv     = $('.perc-whitebg');
             if ($("#tabs").length) 
             {
@@ -87,14 +87,14 @@
              else if($("#perc-pub-inline-help").length) {
                  bottomVerticalOffset = $('#perc-pub-inline-help').position().top + 90;
              }
-        } else if(currentView == $.PercNavigationManager.VIEW_DASHBOARD) {
+        } else if(currentView === $.PercNavigationManager.VIEW_DASHBOARD) {
             bottomContentDiv     = $('.perc-body-background');
             bottomVerticalOffset = $('.perc-body-background').position().top;
         } else {
             return;
         }
     	
-        if(bottomContentDiv.css('display')!='none') {
+        if(bottomContentDiv.css('display')!=='none') {
             var wh, ww;
             if( window.innerHeight )
             {
@@ -110,14 +110,14 @@
             bottomContentDiv.height(wh - bottomVerticalOffset);
         }
     
-    }
+    };
     /**
      * Handles the Finder resize for pages that do not have the IFrames.
      */
     fixHeight = function(){
         
         var currentView = $.PercNavigationManager.getView();
-        if( currentView == $.PercNavigationManager.VIEW_SITE_ARCH)
+        if( currentView === $.PercNavigationManager.VIEW_SITE_ARCH)
         {
             var percdropshadow = $('.perc-main');
             if(percdropshadow.length > 0)
@@ -130,6 +130,6 @@
         // the resize event sets both the height and the width
         // but we want to leave the width auto so finder can grow/shrink when window is resized 
         $(".perc-finder").width("auto");
-    }
+    };
 
 })(jQuery);
