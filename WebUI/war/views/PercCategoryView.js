@@ -56,7 +56,7 @@
             moveNodeDown                    : moveNodeDown,
             publishToDTS                    : publishToDTS
             
-        }
+        };
 
         // A snippet to adjust the frame size on resizing the window.
         $(window).resize(function() {
@@ -102,7 +102,7 @@
                  optionsAsString += '<option value="' + siteArray[i] + '"' +selectedString+ '>' + siteArray[i] + '</option>';
              }
              $( selectionid ).html( optionsAsString );
-        };
+        }
         
         function stringToList(string)
         {
@@ -145,7 +145,7 @@
                  addSitesToDropdown("#perc-category-site-dropdown",sitesList,null, true);
                  sitename = $('#perc-category-site-dropdown').find(":selected").val();
                  controller.getCategories(sitename);
-             })
+             });
              
             
             $( "#perc-category-site-dropdown" ).change(function() {
@@ -215,7 +215,7 @@
                 }
 
                 var tree = container.dynatree("getTree");
-                if(tree.count() == 1)
+                if(tree.count() === 1)
                     alertDialog(I18N.message("perc.ui.category.view@Delete Category"), I18N.message("perc.ui.category.view@Cannot Delete Node"));
                 else {
                     isDelete = true;
@@ -300,7 +300,7 @@
                 {
                     parent = node.parent;
                     parent.activate();
-                    if (!node.parent.childList.length == 0)
+                    if (node.parent.childList.length === 0)
                         node.remove();
                     
                     node = parent;
@@ -313,7 +313,7 @@
                 }
                 displayCategoryDetails(node);
                 try {
-                    node.childList[0].activate()
+                    node.childList[0].activate();
                 }catch(err) {}
             });
             
@@ -358,7 +358,7 @@
             
             var categorytree = treedata.topLevelNodes;
             
-            if (categorytree == null || typeof categorytree == "undefined" || categorytree.length == 0)
+            if (categorytree == null || typeof categorytree == "undefined" || categorytree.length === 0)
             {
                 categorytree = [ // Pass an array of nodes.
                 {
@@ -448,7 +448,7 @@
             $("#perc-category-selectable-field").prop("disabled", true);
             $("#perc-category-selectable-field").addClass("perc-category-field-readonly");
             var selectable = node.data.selectable;
-            if(selectable == true || selectable === "true") {
+            if(selectable === true || selectable === "true") {
                 $("#perc-category-selectable-field").prop("checked", true);
             }
             else {
@@ -458,7 +458,7 @@
             $("#perc-category-show-in-page-field").prop("disabled", true);
             $("#perc-category-show-in-page-field").addClass("perc-category-field-readonly");
             var sinpmd = node.data.showInPgMetaData;
-            if(sinpmd === "true" || sinpmd == true) {
+            if(sinpmd === "true" || sinpmd === true) {
                 $("#perc-category-show-in-page-field").prop("checked", true);
             }
             else {
@@ -486,7 +486,7 @@
             $("#perc-category-name-field").on('keyup', function() {
                  var node = container.dynatree("getActiveNode");
                  var text =  $( this ).val();
-                 if (text=="") text="[empty]";
+                 if (text==="") text="[empty]";
                  node.data.title = $( this ).val();
                  node.render();
             });
@@ -571,7 +571,7 @@
         function alertDialog(title, message, w) {
             var parentNode;
             
-            if(w == null || w == undefined || w == "" || w < 1)
+            if(w == null || w === undefined || w === "" || w < 1)
                 w = 400;
             $.perc_utils.alert_dialog({
                 title: title,
@@ -592,7 +592,7 @@
         function errorDialog(title, message, w, useCallback) {
             var parentNode;
             
-            if(w == null || w == undefined || w == "" || w < 1)
+            if(w == null || w === undefined || w === "" || w < 1)
                 w = 400;
             $.perc_utils.alert_dialog({
                 title: title,
@@ -627,7 +627,7 @@
             
             var switchtoNode = null;
             if(upTarget != null)
-                switchtoNode = upTarget
+                switchtoNode = upTarget;
             else if (parentNode!=null)
             {
                 switchtoNode = parentNode;
@@ -644,11 +644,11 @@
             
             var destinationNode = null;
             var children =  root.childList;
-            if ( children == null || typeof children == "undefined" || children.length==0)
+            if ( children == null || typeof children == "undefined" || children.length===0)
             {
                 destinationNode = root;
                 child=true;
-            } else if (children.length==1 && children[0].data.title == "New Category")
+            } else if (children.length===1 && children[0].data.title === "New Category")
             {
                 return children[0];
             } else {
@@ -660,7 +660,7 @@
                 } 
             }
 
-            if (child==true)
+            if (child===true)
             {
                 addTo = destinationNode;
             } 
@@ -693,7 +693,7 @@
             var nodeKey = node.data.key;
             var childNode;
             
-            if ($('#perc-allowedsites-field option:not(:checked)').length == 0)
+            if ($('#perc-allowedsites-field option:not(:checked)').length === 0)
             {
                 allowedSites=null;
             } else {
@@ -846,7 +846,7 @@
                     
                     if(parent.data.title == null) {
                         i++;
-                        if(sourceNode.data.id != node.data.id)
+                        if(sourceNode.data.id !== node.data.id)
                             tempNode = node;
                         else {
                             if(i > 1) {
@@ -863,8 +863,8 @@
                 parentNode.visit(function(node) {
                     i++;
                     var p = node.getParent();
-                    if(p.data.id == parentNode.data.id) {
-                        if(sourceNode.data.id != node.data.id)
+                    if(p.data.id === parentNode.data.id) {
+                        if(sourceNode.data.id !== node.data.id)
                             tempNode = node;
                         else {
                             if(i > 1) {
@@ -903,7 +903,7 @@
                     var parent = node.getParent();
                     
                     if(parent.data.title == null) {
-                        if(sourceNode.data.id != node.data.id) {
+                        if(sourceNode.data.id !== node.data.id) {
                             if(i > 0) {
                                 targetNode = node;
                                 return false;
@@ -920,8 +920,8 @@
             } else {
                 parentNode.visit(function(node) {
                     var p = node.getParent();
-                    if(p.data.id == parentNode.data.id) {
-                        if(sourceNode.data.id != node.data.id) {
+                    if(p.data.id === parentNode.data.id) {
+                        if(sourceNode.data.id !== node.data.id) {
                             if(i > 0) {
                                 targetNode = node;
                                 return false;
@@ -947,7 +947,7 @@
         
         function publishToDTS(node, deliveryServer) {
             var catArray = manageDynaProps();
-            if (sitename == null || typeof sitename == "undefined" || sitename=="")
+            if (sitename == null || typeof sitename == "undefined" || sitename==="")
             {
                 alertDialog(I18N.message("perc.ui.category.view@Select A Site"), I18N.message("perc.ui.category.view@Select A Site Content"));
                 return;

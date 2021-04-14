@@ -142,7 +142,7 @@
                 regionMargin = this.margin;
                 attributes = this.attributes;
                 // update auto resize checkbox based on model value
-                this.noAutoResize = this.noAutoResize == undefined ? false : this.noAutoResize;
+                this.noAutoResize = this.noAutoResize === undefined ? false : this.noAutoResize;
                 $('#perc-region-auto-resize').attr("checked", this.noAutoResize);
                 // update field's disabled attribute
                 updateSizeFields(this.noAutoResize);
@@ -152,13 +152,13 @@
 
             var percDataOverrides = [];
 
-            if (regionWidth == "")
+            if (regionWidth === "")
                 regionWidth = I18N.message("perc.ui.edit.region.properties.dialog@Enter Width");
-            if (regionHeight == "")
+            if (regionHeight === "")
                 regionHeight = I18N.message("perc.ui.edit.region.properties.dialog@Enter Height");
-            if (regionPadding == "")
+            if (regionPadding === "")
                 regionPadding = I18N.message("perc.ui.edit.region.properties.dialog@Enter Padding");
-            if (regionMargin == "")
+            if (regionMargin === "")
                 regionMargin = I18N.message("perc.ui.edit.region.properties.dialog@Enter Margin");
             if (!_layoutModel.isResponsiveBaseTemplate()) {
                 percDataOverrides.push({rowContent: ["Width", regionWidth]});
@@ -265,13 +265,13 @@
             var fieldGroups = [
                 {groupName: "perc-region-edit-properties-container", groupLabel: "Region based CSS"},
                 {groupName: "perc-region-edit-attributes-container", groupLabel: "Region HTML attributes"},
-                , {groupName: "perc-region-edit-css-container'", groupLabel: "Use additional CSS classes"}
-                , {groupName: "perc-region-edit-cssoverrides-container", groupLabel: "CSS overrides"}
+                {groupName: "perc-region-edit-css-container'", groupLabel: "Use additional CSS classes"},
+                {groupName: "perc-region-edit-cssoverrides-container", groupLabel: "CSS overrides"}
             ];
             $.each(fieldGroups, function (index) {
                 // Create HTML markup with the groupName minimizer/maximizer and 
                 // insert it before the 1st field in each group
-                var minmaxClass = (index == 0) ? "perc-items-minimizer" : "perc-items-maximizer";
+                var minmaxClass = (index === 0) ? "perc-items-minimizer" : "perc-items-maximizer";
                 var groupHtml =
                     "<div class='perc-section-header'>" +
                     "<div class='perc-section-label' groupName='" + this.groupName + "'>" +
@@ -280,7 +280,7 @@
                     "</div>";
                 dialog.find('#' + this.groupName).before(groupHtml);
                 // The first group will be the only one expanded (hide all others)
-                index != 0 && dialog.find('#' + this.groupName).hide();
+                index !== 0 && dialog.find('#' + this.groupName).hide();
             });
 
             // Bind collapsible event
@@ -320,7 +320,7 @@
             if (selected.length > 0)
                 selectedValue = selected.val();
 
-            if (selectedValue == "replaceedits") {
+            if (selectedValue === "replaceedits") {
                 $.PercRegionCSSHandler.saveRegionCSS(tempRegionId);
                 saveRegionEditProperties(tempRegion, tempRegionId);
             }
@@ -365,7 +365,7 @@
             for (i = 0; i < dataTableAttributes.length; i++) {
                 var name = $.trim($(dataTableAttributes[i][0]).text());
                 var value = $.trim($(dataTableAttributes[i][1]).text());
-                if (name.length > 0) {attributes.push({name: name, value: value})};
+                if (name.length > 0) {attributes.push({name: name, value: value});}
             }
 
             var regionWidth = $.trim($(dataTableOverrides[0][1]).text());
@@ -373,13 +373,13 @@
             var regionPadding = $.trim($(dataTableOverrides[2][1]).text());
             var regionMargin = $.trim($(dataTableOverrides[3][1]).text());
 
-            if (regionWidth == I18N.message("perc.ui.edit.region.properties.dialog@Enter Width"))
+            if (regionWidth === I18N.message("perc.ui.edit.region.properties.dialog@Enter Width"))
                 regionWidth = "";
-            if (regionHeight == I18N.message("perc.ui.edit.region.properties.dialog@Enter Height"))
+            if (regionHeight === I18N.message("perc.ui.edit.region.properties.dialog@Enter Height"))
                 regionHeight = "";
-            if (regionPadding == I18N.message("perc.ui.edit.region.properties.dialog@Enter Padding"))
+            if (regionPadding === I18N.message("perc.ui.edit.region.properties.dialog@Enter Padding"))
                 regionPadding = "";
-            if (regionMargin == I18N.message("perc.ui.edit.region.properties.dialog@Enter Margin"))
+            if (regionMargin === I18N.message("perc.ui.edit.region.properties.dialog@Enter Margin"))
                 regionMargin = "";
 
             if (oTableOverrides.find("td").hasClass("perc-disabled")) {
@@ -395,7 +395,7 @@
             var padding = regionPadding;
             var margin = regionMargin;
             var noAutoResize = $('#perc-region-auto-resize').is(":checked");
-            noAutoResize = noAutoResize == undefined || noAutoResize == "" ? false : noAutoResize;
+            noAutoResize = noAutoResize === undefined || noAutoResize === "" ? false : noAutoResize;
 
             // TODO: make sure that the values are valid
             // automatically convert numbers to pixels
@@ -421,7 +421,7 @@
                 this.height = height;
                 this.padding = padding;
                 this.margin = margin;
-                this.fixed = width.toLowerCase() != 'auto';
+                this.fixed = width.toLowerCase() !== 'auto';
                 this.noAutoResize = noAutoResize;
                 this.attributes = attributes;
             });
@@ -440,15 +440,16 @@
                 var name = $.trim($(dataTableAttributes[i][0]).text());
                 var value = $.trim($(dataTableAttributes[i][1]).text());
 
-                if (name.length > 0) {attributes.push({name: name, value: value})};
+                if (name.length > 0) {attributes.push({name: name, value: value});
+                }
             }
 
             var regionPadding = $.trim($(dataTableOverrides[0][1]).text());
             var regionMargin = $.trim($(dataTableOverrides[1][1]).text());
 
-            if (regionPadding == I18N.message("perc.ui.edit.region.properties.dialog@Enter Padding"))
+            if (regionPadding === I18N.message("perc.ui.edit.region.properties.dialog@Enter Padding"))
                 regionPadding = "";
-            if (regionMargin == I18N.message("perc.ui.edit.region.properties.dialog@Enter Margin"))
+            if (regionMargin === I18N.message("perc.ui.edit.region.properties.dialog@Enter Margin"))
                 regionMargin = "";
 
             if (oTableOverrides.find("td").hasClass("perc-disabled")) {
@@ -460,7 +461,7 @@
             var padding = regionPadding;
             var margin = regionMargin;
             var noAutoResize = $('#perc-region-auto-resize').is(":checked");
-            noAutoResize = noAutoResize == undefined || noAutoResize == "" ? false : noAutoResize;
+            noAutoResize = noAutoResize === undefined || noAutoResize === "" ? false : noAutoResize;
 
             // TODO: make sure that the values are valid
             // automatically convert numbers to pixels
@@ -488,19 +489,19 @@
             var id = $('#perc-region-name').val();
 
             // verify that the region ID is not blank
-            if (id == "") {
+            if (id === "") {
                 var message = "Region Name can not be blank.";
                 $.perc_utils.alert_dialog({title: 'Region Name Error', content: message, width: '595px'});
                 return;
             }
-            ;
+
             // to fix bug cms#2947 code start here
             var dataTableAttributes = oTableAttributes.fnGetData();
             var invalidAttributeMessage='';
             for (i = 0; i < dataTableAttributes.length; i++) {
                 var name = $.trim($(dataTableAttributes[i][0]).text()).toLowerCase();
-                if(name=='id' || name=='title' || name=='href' || name=='name'){
-                    invalidAttributeMessage += invalidAttributeMessage.length==0?name+' ':','+name+' ';
+                if(name==='id' || name==='title' || name==='href' || name==='name'){
+                    invalidAttributeMessage += invalidAttributeMessage.length===0?name+' ':','+name+' ';
                 }
             }
             if(invalidAttributeMessage){
@@ -510,14 +511,14 @@
             }
             // end cms#2947
             // verify that the region ID has changed and that it is not already in use
-            if (previousRegionId != id && _layoutModel.containsRegionId(id)) {
+            if (previousRegionId !== id && _layoutModel.containsRegionId(id)) {
                 // if id is already in use, alert user and return without updating region properties
                 var message = "Region Name '" + id + "' is already in use.\nPlease use another name.";
                 $.perc_utils.alert_dialog({title: 'Region Name Already Exists', content: message, width: '595px'});
                 return;
             }
-            ;
-            if (previousRegionId != id) {
+
+            if (previousRegionId !== id) {
                 $.PercRegionCSSHandler.getRegionCSS(id, renameCheckCallback);
             }
             else {
@@ -527,7 +528,7 @@
             }
 
             function renameCheckCallback(status, data, id) {
-                if (status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if (status === $.PercServiceUtils.STATUS_SUCCESS) {
                     if (data.RegionCSS.properties != null) {
                         tempRegion = region;
                         tempRegionId = id;
@@ -550,6 +551,6 @@
         }
 
         return percEditRegionPropertiesDialogApi;
-    }
+    };
 
 })(jQuery);
