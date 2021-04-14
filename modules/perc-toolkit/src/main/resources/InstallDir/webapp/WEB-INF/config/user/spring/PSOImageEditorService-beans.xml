@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:cxf="http://cxf.apache.org/core"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+http://cxf.apache.org/core
+http://cxf.apache.org/schemas/core.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.2.xsd
+http://cxf.apache.org/jaxrs
+http://cxf.apache.org/schemas/jaxrs.xsd">
+
+   <bean id="imedImageSizeDefinitionManager" class="com.percussion.pso.imageedit.services.impl.ImageSizeDefinitionManagerImpl">
+      <property name="sizes">
+         <list>
+            <bean class="com.percussion.pso.imageedit.data.ImageSizeDefinition">
+               <property name="code" value="thumb"/>
+               <property name="label" value="Smallest Image"/>
+               <property name="height" value="100" />
+               <property name="width" value="100"/> 
+               <property name="binaryTemplate" value="imedBnThumb"/>
+               <property name="snippetTemplate" value="imedSnThumb"/>
+            </bean>
+            <bean class="com.percussion.pso.imageedit.data.ImageSizeDefinition">
+               <property name="code" value="midsize"/>
+               <property name="label" value="Midsize Image"/>
+               <property name="height" value="250" />
+               <property name="width" value="350"/> 
+               <property name="binaryTemplate" value="imedBnMidsize"/>
+               <property name="snippetTemplate" value="imedSnMidsize"/>
+            </bean>
+             <bean class="com.percussion.pso.imageedit.data.ImageSizeDefinition">
+               <property name="code" value="midheight"/>
+               <property name="label" value="Midheight Image"/>
+               <property name="height" value="250" />
+               <property name="width" value="0"/> 
+               <property name="binaryTemplate" value="imedBnMidsize"/>
+               <property name="snippetTemplate" value="imedSnMidsize"/>
+            </bean>
+            <bean class="com.percussion.pso.imageedit.data.ImageSizeDefinition">
+               <property name="code" value="midwidth"/>
+               <property name="label" value="Midwidth Image"/>
+               <property name="height" value="0" />
+               <property name="width" value="200"/> 
+               <property name="binaryTemplate" value="imedBnMidsize"/>
+               <property name="snippetTemplate" value="imedSnMidsize"/>
+            </bean>
+         </list>
+      </property>
+      <property name="sizedImageNodeName" value="sized"/>
+      <property name="sizedImagePropertyName" value="size_code" />
+      <property name="failureImagePath" value="rx_resources/addins/psoimageeditor/images/failure.jpg" />  
+   </bean>
+
+ 
+   
+   <!-- Cache beans used for image cache -->
+   <bean id="imageEditorCacheManager"
+   	class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" name="imageCacheManager">
+	 <property name="cacheManagerName" value="imageEditorCacheManager"/>
+      <property name="shared" value="true"/>
+	</bean>
+
+   <bean id="ImageMetaDataCacheRegion"
+   	class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+   	<property name="cacheManager">
+   		<ref local="imageEditorCacheManager" />
+   	</property>
+   	<property name="cacheName" 
+   		value="com.percussion.pso.imageeditor.ImageMetaData" />
+   	<property name="eternal" value="no" />
+   	<property name="diskPersistent" value="yes" />
+   	<property name="maxElementsInMemory" value="2000" /> 
+   	<property name="overflowToDisk" value="yes" />
+   	<property name="timeToIdle" value="3600" />
+   	<property name="timeToLive" value="3600" />  
+   </bean>
+
+   <bean id="imedImageMetaDataCacheImpl"
+   	class="com.percussion.pso.imageedit.services.cache.impl.ImageCacheManagerImpl">
+   	<property name="cache" ref="ImageMetaDataCacheRegion" />
+   </bean>
+
+</beans>
