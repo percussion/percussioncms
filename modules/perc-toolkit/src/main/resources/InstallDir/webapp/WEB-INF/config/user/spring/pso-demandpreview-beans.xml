@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:cxf="http://cxf.apache.org/core"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+http://cxf.apache.org/core
+http://cxf.apache.org/schemas/core.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.2.xsd
+http://cxf.apache.org/jaxrs
+http://cxf.apache.org/schemas/jaxrs.xsd">
+  
+    <!-- bean for site edition lookup configuration -->
+	<bean id="PSOSiteEditionLookUpService" class="com.percussion.pso.demandpreview.service.impl.SiteEditionLookUpServiceImpl"
+	   init-method="init">
+	   <property name="siteLookUpMap">
+	   	<map>
+		    <!-- add an entry in the map for each site where publication previews are desired --> 	   
+    	   		<entry key="PreviewTestSite"> <!--  the key is the name of the original site. -->	
+	   		    <bean class="com.percussion.pso.demandpreview.service.SiteEditionConfig">
+	   		        <property name="siteName" value="PreviewSite" /> <!-- the site where the publishing will occur -->
+	   		        <property name="editionName" value="PreviewEdition"/> <!--  the edition used for the publish -->
+	   		        <property name="assemblyContext" value="1" />  <!--  the assembly context for the edition  -->
+	   		        <property name="contextURLRootVar" value="rxs_urlroot" /> <!--  Optional: the context variable to use for generating the hyperlink -->
+	   		    </bean>
+	   		</entry>
+	   	</map>
+	   </property>   
+	</bean>
+	
+	<!-- bean for demand publisher facade service -->
+	<bean id="PSODemandPublisherBean" class="com.percussion.pso.demandpreview.service.impl.DemandPublisherBean"
+	 init-method="init" >
+	   <!-- timeout in seconds -->
+	   <property name="timeout" value="30"/>
+	</bean>
+	
+	<!-- bean for link builder service -->
+	<bean id="PSOLinkBuilderBean"  class="com.percussion.pso.demandpreview.service.impl.LinkBuilderBean" /> 
+	
+	<!-- bean for Default Page template service  -->
+	<bean id="PSODefaultPageTemplateBean"  class="com.percussion.pso.demandpreview.service.impl.DefaultPageTemplateBean" 
+	init-method="init"/>
+	 
+</beans>
