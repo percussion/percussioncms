@@ -139,6 +139,12 @@
             <artifactId>hibernate-core</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>rxutils</artifactId>
+            <version>8.0.3-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
