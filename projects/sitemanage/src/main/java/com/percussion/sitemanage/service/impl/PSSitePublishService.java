@@ -608,6 +608,11 @@ public class PSSitePublishService implements IPSSitePublishService
                 tdActionPublishProps.setEnabled(true);
             }
 
+            //Added this check to check if Quick edit trigger is available after pending or live status of page to enable publish action.
+            if(itemWorkflowService.isQuickEditTriggerAvailableForPendingOrLivePage(id, IPSItemWorkflowService.TRANSITION_TRIGGER_EDIT, IPSItemWorkflowService.CURRENT_STATE_PENDING) || itemWorkflowService.isQuickEditTriggerAvailableForPendingOrLivePage(id, IPSItemWorkflowService.TRANSITION_TRIGGER_EDIT, IPSItemWorkflowService.CURRENT_STATE_LIVE)){
+                tdActionPublishProps.setEnabled(true);
+            }
+
             pubActions.add(tdActionPublishProps);
 
             //Changed enable scheduled action to be false by default.
@@ -616,6 +621,11 @@ public class PSSitePublishService implements IPSSitePublishService
             //Otherwise for eg. the contributor user who is not supposed to have publish rights will have the scheduled publish enabled for them.
             if (itemWorkflowService.isTriggerAvailable(id, IPSItemWorkflowService.TRANSITION_TRIGGER_PUBLISH))
             {
+                tdActionScheduleProps.setEnabled(true);
+            }
+
+            //Added this check to check if Quick edit trigger is available after pending or live status of page to enable schedule publish action.
+            if(itemWorkflowService.isQuickEditTriggerAvailableForPendingOrLivePage(id, IPSItemWorkflowService.TRANSITION_TRIGGER_EDIT, IPSItemWorkflowService.CURRENT_STATE_PENDING) || itemWorkflowService.isQuickEditTriggerAvailableForPendingOrLivePage(id, IPSItemWorkflowService.TRANSITION_TRIGGER_EDIT, IPSItemWorkflowService.CURRENT_STATE_LIVE)){
                 tdActionScheduleProps.setEnabled(true);
             }
 
