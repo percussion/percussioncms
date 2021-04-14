@@ -51,22 +51,22 @@
             //TODO:I18N Dailog Title Below
             var dialogTitle = currentStep?I18N.message("perc.ui.workflow.steps.view@Configure Step"):I18N.message("perc.ui.workflow.steps.view@New Step");
             var buttons = {};
-            dialog = $(" <div id='perc-workflow-addstep-dialog'>"
-                    + "     <div id='perc-wfconfig-wrapper'>"
-                    + "         <span style='position: relative; float: right; margin-top: -28px;'><label>" +I18N.message("perc.ui.general@Denotes Required Field") + "</label></span>"                    
-                    + "         <div class = 'perc-required-field'>" +I18N.message("perc.ui.edit.workflow.step.dialog@Step Name") + "<br/><input maxlength = '50' name='perc-wfstep-name' id='perc-wfstep-name' class = '" 
-                    + className
-                    + "' type='text'"
-                    + isreadOnly
-                    + "/></div>"
-                    + "         <span style='color:red'></span>"
-                    + "         <div><div style='font-weight:bold; margin-bottom:5px'>" +I18N.message("perc.ui.edit.workflow.step.dialog@Roles") + "</div>"
-                    + "         <div >" +I18N.message("perc.ui.edit.workflow.step.dialog@Specify Permissions") + "</div><br/>"                    
-                    + "         <div id='perc-wfconfig-roles-wrapper' style='background:#fff'>" 
-                    + "  </div></div></div>"
-                    + "  <div class='ui-layout-south'>" 
-                    + "    <div id='perc_buttons' style='z-index: 100;'></div>"
-                    + "  </div></div>"
+            dialog = $(" <div id='perc-workflow-addstep-dialog'>" +
+                     "     <div id='perc-wfconfig-wrapper'>" +
+                     "         <span style='position: relative; float: right; margin-top: -28px;'><label>" +I18N.message("perc.ui.general@Denotes Required Field") + "</label></span>" +
+                     "         <div class = 'perc-required-field'>" +I18N.message("perc.ui.edit.workflow.step.dialog@Step Name") + "<br/><input maxlength = '50' name='perc-wfstep-name' id='perc-wfstep-name' class = '" +
+                     className +
+                     "' type='text'" +
+                     isreadOnly +
+                     "/></div>" +
+                     "         <span style='color:red'></span>" +
+                     "         <div><div style='font-weight:bold; margin-bottom:5px'>" +I18N.message("perc.ui.edit.workflow.step.dialog@Roles") + "</div>" +
+                     "         <div >" +I18N.message("perc.ui.edit.workflow.step.dialog@Specify Permissions") + "</div><br/>" +
+                     "         <div id='perc-wfconfig-roles-wrapper' style='background:#fff'>" +
+                     "  </div></div></div>" +
+                     "  <div class='ui-layout-south'>" +
+                     "    <div id='perc_buttons' style='z-index: 100;'></div>" +
+                     "  </div></div>"
                     )
                     .perc_dialog(
                     {
@@ -117,7 +117,7 @@
         // Render the content of the dialog
         function renderDialogContent(isUpdate, workflowStep) {       
           $.PercUserService.getRoles(function(status, rolesJson) {
-                if(status == $.PercServiceUtils.STATUS_ERROR) {
+                if(status === $.PercServiceUtils.STATUS_ERROR) {
                     utils.alertDialog(I18N.message("perc.ui.edit.workflow.step.dialog@Error Loading Roles"), rolesJson);
                     return;
                 }
@@ -175,14 +175,14 @@
                 for(var j=0; j<possiblePermissions.length; j++){
                     var roleRowElement = $('<td></td>');
                     // Check and disabled the Submit, Reject and Approve transistions for Admin and Designer roles
-                    if(isReadOnly && j!= possiblePermissions.length - 1 ){
+                    if(isReadOnly && j!== possiblePermissions.length - 1 ){
                         var checkbox = $('<input type="checkbox" checked="true" disabled="true" />');
                     }else{
                         var checkbox = $('<input type="checkbox" />');
                     }
                     
                     // Keep the Notify box for Admin enabled and uncheck by default while disabled and uncheck for all other Roles.
-                    if((possiblePermissions[j] == "Notify" || possiblePermissions[j] == "Publish") && !isReadOnly) {
+                    if((possiblePermissions[j] === "Notify" || possiblePermissions[j] === "Publish") && !isReadOnly) {
                        $(checkbox).attr('disabled', true)
                     }
                     //Bind the click even to the checkboxes
@@ -245,10 +245,10 @@
             //Find the row directly rather than looping
             $(".perc-wfconfig-row").each(function() {
                 var row = this;
-                if($(row).find('td.perc-column-0').text() == roleName) {
-                    matchPermissions(roleName, notifyStatus, roleTransitions, row)
+                if($(row).find('td.perc-column-0').text() === roleName) {
+                    matchPermissions(roleName, notifyStatus, roleTransitions, row);
                     return;
-                };
+                }
             });
         }
         
@@ -256,7 +256,7 @@
         function matchPermissions(roleName, notifyStatus, roleTransitions, row) {
             var isReadOnly = isReadOnlyRole(roleName);
             $(row).find('td:not(".perc-column-0")').each(function(){
-                var column = this
+                var column = this;
                 var className = $(column).attr('class');
                 className = className.replace('perc-','');
                 if(!$.isArray(roleTransitions))
@@ -268,12 +268,12 @@
                 for (i=0; i<roleTransitions.length; i++) {
                     var tempName = roleTransitions[i];
                     tempName = tempName.transitionPermission.toLowerCase();
-                    if(className == tempName){
+                    if(className === tempName){
                         $(column).find('input').attr('checked','checked');
-                        if(tempName == "publish" && !isReadOnly) {
+                        if(tempName === "publish" && !isReadOnly) {
                             $(column).find('input').removeAttr('disabled', false);                        
                         }
-                        if(tempName == "approve" && !isReadOnly) {
+                        if(tempName === "approve" && !isReadOnly) {
                             $(row).find('td.perc-publish input').removeAttr('disabled', false);                        
                         }
                     }
@@ -318,7 +318,7 @@
         }
         
         function isReadOnlyRole(roleName){
-            return roleName == "Admin" || roleName == "Designer";
+            return roleName === "Admin" || roleName === "Designer";
         }
             
         // On click of 'Save' button, build the step object and send it to server. 'SuccessCallback' will refresh the step container.
@@ -326,7 +326,7 @@
         {
             var stepName = $.trim($("#perc-wfstep-name").val());
             
-            if(stepName.indexOf("??") != -1) {
+            if(stepName.indexOf("??") !== -1) {
                 var validationError = I18N.message("perc.ui.workflow.steps.view@Invalid Character Sequence Quesitonmarks") + "'??'.";
                 $.perc_utils.alert_dialog({"title":I18N.message("perc.ui.workflow.view@Workflow Validation Error"),"content":validationError});
                 return;
@@ -346,7 +346,7 @@
                 $.each(possiblePermissions, function(){
                     var permName = this+"";
                     if(roleRow.find(".perc-" + permName.toLowerCase() + " :checked").length > 0){
-                        var transition ={"transitionPermission" : permName}
+                        var transition ={"transitionPermission" : permName};
                         rolePermissions.push(transition);
                     }
                 });
@@ -369,7 +369,7 @@
                                                 "stepRoles":stepRoles
                                     }]
                             }
-            }            
+            };
             var stepName = $.trim($("#perc-wfstep-name").val());
             $.PercBlockUI();
             //call the service to update the step data if 'isUpdate' is true
@@ -419,5 +419,5 @@
             }
         }
         }
-    }        
+    };
 })(jQuery);
