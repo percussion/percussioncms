@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:cxf="http://cxf.apache.org/core"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
 	   xmlns:context="http://www.springframework.org/schema/context"
 	   xmlns:jaxrs="http://cxf.apache.org/jaxrs"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans.xsd
-http://cxf.apache.org/jaxrs
-http://cxf.apache.org/schemas/jaxrs.xsd
-
-
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+http://cxf.apache.org/core
+http://cxf.apache.org/schemas/core.xsd
 http://www.springframework.org/schema/context
-http://www.springframework.org/schema/context/spring-context-2.5.xsd
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-
-	<import resource="classpath:META-INF/cxf/cxf.xml" />
-	<import resource="classpath:META-INF/cxf/cxf-extension-jaxrs-binding.xml" />
-	<import resource="classpath:META-INF/cxf/cxf-extension-http-binding.xml" />
-	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+http://www.springframework.org/schema/context/spring-context-4.2.xsd
+http://cxf.apache.org/jaxrs
+http://cxf.apache.org/schemas/jaxrs.xsd">
 
 	<context:component-scan base-package="com.percussion.pso.restservice" />
 
@@ -32,14 +30,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="methodCacheInterceptor"
 		class="com.percussion.pso.restservice.utils.MethodCacheInterceptor">
 		<property name="cache">
-			<ref local="methodCache" />
+			<ref bean="methodCache" />
 		</property>
 	</bean>
 
 	<bean id="methodCachePointCut"
 		class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
 		<property name="advice">
-			<ref local="methodCacheInterceptor" />
+			<ref bean="methodCacheInterceptor" />
 		</property>
 		<property name="patterns">
 			<list>
@@ -80,15 +78,5 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
-	<jaxrs:client username="admin1" password="demo" id="restItemClient"
-		address="http://localhost:9992/Rhythmyx/services" serviceClass="com.percussion.pso.restservice.IItemRestService"
-		inheritHeaders="true">
-		<jaxrs:headers>
-			<entry key="Accept" value="text/xml" />
-			<entry key="RX_USEBASICAUTH" value="true" />
-		</jaxrs:headers>
-	</jaxrs:client>
-	
-	
 
 </beans>
