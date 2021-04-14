@@ -55,7 +55,7 @@
             // Get back each theme entry. data contains a DOM object. 
         
             controller.getThemeList(function(status, data) {
-                if (status == true) {
+                if (status === true) {
                     //////////////////////////////////
                     // Iterate over each theme entry
                     //////////////////////////////////
@@ -100,14 +100,14 @@
 
         function saveCSS(callback){
             var currentView = $.PercNavigationManager.getView();
-            if(currentView == $.PercNavigationManager.VIEW_EDITOR) {
+            if(currentView === $.PercNavigationManager.VIEW_EDITOR) {
                 controller.save(callback);                
             }
-            else if (currentView == $.PercNavigationManager.VIEW_EDIT_TEMPLATE) {
+            else if (currentView === $.PercNavigationManager.VIEW_EDIT_TEMPLATE) {
                 callbackFunc = callback || function (){};
                 controller.setOverrideCSS();
                 controller.save(function (status, data) {
-                    if (status == true) {
+                    if (status === true) {
                         dirtyController.setDirty(false, "template");
                         callbackFunc();
                     }
@@ -144,5 +144,5 @@
             $j(selector_closeLink_selected).css('display','inline');
             
         }
-    }
+    };
 })(jQuery,jQuery.Percussion);

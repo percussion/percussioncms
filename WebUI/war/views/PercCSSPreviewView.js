@@ -46,7 +46,7 @@
                 },
                 callback: function(elem){
                      if(widgetDefs[elem.attr('widgetdefid')].hasCssPrefs)
-                        editWidgetCssProperties(elem)
+                        editWidgetCssProperties(elem);
                 },
                 tooltip: I18N.message("perc.ui.css.preview.view@Configure")
          }
@@ -64,7 +64,7 @@
         $.perc_finder().addActionListener(function(action, data) {
             
             // verify that we are deleting an asset
-            if(action == $.perc_finder().ACTIONS.DELETE && (data.type == 'asset' || data.type == 'page')) {
+            if(action === $.perc_finder().ACTIONS.DELETE && (data.type === 'asset' || data.type === 'page')) {
                 if (typeof(data.isOpen) != 'undefined' && data.isOpen)
                 {
                     // current item is open for edit, no need to refresh as it will be cleared
@@ -73,15 +73,15 @@
                 
                 // find out where we are, what view and what tab within that view
                 var currentView     = $.PercNavigationManager.getView();
-                if(currentView == $.PercNavigationManager.VIEW_DESIGN) {
+                if(currentView === $.PercNavigationManager.VIEW_DESIGN) {
                     var currentTabIndex = $("#tabs").tabs('option', 'selected');
-                    if(currentTabIndex == 3) {
+                    if(currentTabIndex === 3) {
                     	dirtyController.setDirty(true, "template", saveCSS); 
                     	initRender();
                     }
-                } else if(currentView == $.PercNavigationManager.VIEW_EDITOR) {
+                } else if(currentView === $.PercNavigationManager.VIEW_EDITOR) {
                     var currentTabIndex = $("#perc-pageEditor-tabs").tabs('option', 'selected');
-                    if(currentTabIndex == 2) {
+                    if(currentTabIndex === 2) {
                         dirtyController.setDirty(true, "page", saveCSS);
                     	initRender();
                     }
@@ -92,14 +92,14 @@
         function saveCSS(callback){
             var currentView = $.PercNavigationManager.getView();
             var cssController = P.cssController( model, $("#frame"), P.CSSPreviewView( $("#frame"), model) );
-            if(currentView == $.PercNavigationManager.VIEW_EDITOR) {
+            if(currentView === $.PercNavigationManager.VIEW_EDITOR) {
                 cssController.save(callback);                
             }
-            else if (currentView == $.PercNavigationManager.VIEW_EDIT_TEMPLATE) {
+            else if (currentView === $.PercNavigationManager.VIEW_EDIT_TEMPLATE) {
                 callbackFunc = callback || function (){};
                 cssController.setOverrideCSS();
                 cssController.save(function (status, data) {
-                    if (status == true) {
+                    if (status === true) {
                         dirtyController.setDirty(false, "template");
                         callbackFunc();
                     }
@@ -118,7 +118,7 @@
             {
                 var scriptOff = I18N.message( "perc.ui.menu@JavaScript Off" );
                 var scriptOn = I18N.message( "perc.ui.menu@JavaScript On" );
-                if($(__this).text() == scriptOff)
+                if($(__this).text() === scriptOff)
                 {
                     $(__this).text(scriptOn);
                     $(__this).attr("title", I18N.message("perc.ui.content.view@Turns On JavaScript"));
@@ -290,6 +290,6 @@
                 });
             return iframe.contents().find(".perc-widget");
         }
-    }
+    };
 
 })(jQuery,jQuery.Percussion);
