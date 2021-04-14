@@ -58,6 +58,21 @@ public class SimplifyParameters
       }
       return outMap; 
    }
+
+   public static Map<String,String> simplifyMapStringStringArray(Map<String,String[]> input)
+   {
+      Map<String,String> outMap = new LinkedHashMap<String,String>();
+
+      for(Map.Entry<String,String[]> entry : input.entrySet())
+      {
+         String key = entry.getKey();
+         Object value = entry.getValue();
+         log.trace("Entry Name " + key + " value type " + value.getClass().getCanonicalName());
+         String sval = simplifyValue(value);
+         outMap.put(key, sval);
+      }
+      return outMap;
+   }
    
    @SuppressWarnings("unchecked")
    public static String simplifyValue(Object value)

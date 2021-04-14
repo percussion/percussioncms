@@ -1,0 +1,1 @@
+-Xrunjdwp:server=y,transport=dt_socket,address=4142,suspend=n
