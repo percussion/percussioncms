@@ -89,6 +89,8 @@ public class PSPreviewItemContent extends HttpServlet
         try
         {
             String type = request.getParameter("type");
+            if (requestUri.endsWith(".css"))
+                return;
             String url = createAssemblyUrl(requestUri, revision, type);
             
             HttpServletRequest forwardReq = getRequestFromUrl(url, request);
@@ -148,19 +150,19 @@ public class PSPreviewItemContent extends HttpServlet
     private String createAssemblyUrl(String path, String revision, String renderType) throws PSDataServiceException, PSNotFoundException, PSCmsException {
         IPSGuid id = getItemId(path, revision);
 
-            IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
-            PSComponentSummary item = objMgr.loadComponentSummary(id.getUUID());
-            
-            if (item.isFolder())
-            {
-                PSSiteSummary siteSum = siteDao.findByPath("/"+path);
-                if (!path.endsWith("/"))
-                    path+="/";
-                path += siteSum.getDefaultDocument();
-                // get default page id
-                id = getItemId(path, revision);
-            }
-        
+        IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
+        PSComponentSummary item = objMgr.loadComponentSummary(id.getUUID());
+
+        if (item.isFolder())
+        {
+            PSSiteSummary siteSum = siteDao.findByPath("/"+path);
+            if (!path.endsWith("/"))
+                path+="/";
+            path += siteSum.getDefaultDocument();
+            // get default page id
+            id = getItemId(path, revision);
+        }
+
         PSInlineLinkRequest linkRequest = new PSInlineLinkRequest();
         linkRequest.setTargetId(id.toString());
         PSInlineRenderLink renderLink;
@@ -168,10 +170,10 @@ public class PSPreviewItemContent extends HttpServlet
             renderLink = linkService.renderPreviewPageLink(id.toString(), renderType);
         else
             renderLink = linkService.renderPreviewResourceLink(linkRequest);
-        
+
         return renderLink.getUrl();
     }
-    
+
     /**
      * Gets the ID of the item from its path.
      * @param path the path if the item in question.
@@ -182,7 +184,7 @@ public class PSPreviewItemContent extends HttpServlet
     private IPSGuid getItemId(String path, String revision) throws PSNotFoundException, PSCmsException {
         path = escapeChars(path);
         path = PSPathUtils.getFolderPath(path);
-       
+
         int revisionId = -1;
         PSServerFolderProcessor srv = PSServerFolderProcessor.getInstance();
 
@@ -190,11 +192,11 @@ public class PSPreviewItemContent extends HttpServlet
             {
                 revisionId = Integer.parseInt(revision);
             }
-            
+
             int id = srv.getIdByPath(path);
-            
-           
-            
+
+
+
             if (id == -1)
                 throw new PSNotFoundException("Cannot find item with path = \"" + path + "\".");
             

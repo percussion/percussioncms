@@ -119,7 +119,7 @@
                     var key = dashboardConfigMetaKey + ".mid." + instanceId + ".";
                     $.PercMetadataService.deleteEntryByPrefix(key, function(status, msg)
                     {
-                        if (status == jQuery.PercServiceUtils.STATUS_ERROR)
+                        if (status === jQuery.PercServiceUtils.STATUS_ERROR)
                         {
                             //Maybe log here when we have a good way to log
                         }
@@ -221,7 +221,7 @@
         });
         $.PercMetadataService.save(dashboardConfigMetaKey, config, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
 
                 if (typeof(callback) == 'function') callback($.PercServiceUtils.STATUS_SUCCESS);
@@ -250,11 +250,11 @@
                 {
                     $.PercMetadataService.deleteEntry(dashboardConfigMetaKey, function(status, result)
                     {
-                        if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                        if (status === $.PercServiceUtils.STATUS_SUCCESS)
                         {
                             $.PercMetadataService.deleteEntryByPrefix(dashboardConfigMetaKey + ".", function(status, result)
                             {
-                                if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                                if (status === $.PercServiceUtils.STATUS_SUCCESS)
                                 {
                                     window.location.reload();
                                 }
@@ -293,7 +293,7 @@
     function makeLocalUrl(path)
     {
 
-        if(nonSslPort == -1){
+        if(nonSslPort === -1){
             return hostScheme + "://" + hostAddress + path;
         }else{
             return hostScheme + "://" + hostAddress + ":" + nonSslPort + path;
@@ -315,7 +315,7 @@
     {
         $.PercMetadataService.find(dashboardConfigMetaKey, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 if (result == null) result = {};
                 var obj = result.metadata;
@@ -339,7 +339,7 @@
                     for (i = (config.DashboardConfig.gadgets.length - 1); i >= 0; i--)
                     {
                         var current = config.DashboardConfig.gadgets[i];
-                        if ($.inArray(current.url, adminOnlyGadgets) != -1)
+                        if ($.inArray(current.url, adminOnlyGadgets) !== -1)
                         {
                             config.DashboardConfig.gadgets.splice(i, 1);
                         }
@@ -374,7 +374,7 @@
     {
         $.PercDashboardService.getTrayGadgets($('.perc-gadget-type').val(), function(status, data)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 gadgetList = data.Gadget;
             }
@@ -397,7 +397,7 @@
 
     function _resize(newSize)
     {
-        if (newSize != westSize)
+        if (newSize !== westSize)
         {
             westSize = newSize;
         }
@@ -419,7 +419,7 @@
             {
                 getUserDashboardConfig(function(status, results)
                 {
-                    if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                    if (status === $.PercServiceUtils.STATUS_SUCCESS)
                     {
                         westSize = 500;
                         if (layout)
@@ -457,10 +457,10 @@
             $.perc_pathmanager.open_path( "/Sites/?startIndex=1&maxResults=1", true,
                 function(folder_spec){
                     var calculatedHeight = 639;
-                    if (navigator.userAgent.indexOf('MSIE') != -1) {
+                    if (navigator.userAgent.indexOf('MSIE') !== -1) {
                         calculatedHeight = 656;
                     }
-                    if (folder_spec.PagedItemList.childrenCount == 0){
+                    if (folder_spec.PagedItemList.childrenCount === 0){
                         $.perc_utils.confirm_dialog({
                             id: "perc-splashscreen",
                             type: "CANCEL_START",
@@ -764,7 +764,7 @@
     {
         var content = gadget.find(".gadgets-gadget-content");
         var display = content.css("display");
-        if (display == "block") return true;
+        if (display === "block") return true;
         return false;
     }
 
@@ -805,7 +805,7 @@
         var workflowSelect = $('[name="m_' + gadgetId + '_up_ssworkflow"]');
         $.PercWorkflowService().getStatusByWorkflow(workflowSelect.val(), function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 var statusSelect = $('[name="m_' + gadgetId + '_up_status"]');
                 statusSelect.find('option').remove();
@@ -826,7 +826,7 @@
      */
     function checkDateFromEmpty(dateText, inst)
     {
-        if (dateText == "")
+        if (dateText === "")
         {
             var months3Back = new Date();
             months3Back.setMonth(months3Back.getMonth() - 3);
@@ -841,7 +841,7 @@
      */
     function checkDateToEmpty(dateText, inst)
     {
-        if (dateText == "")
+        if (dateText === "")
         {
             var today = new Date();
             $(this).datepicker('setDate', today);
@@ -867,7 +867,7 @@
                 onClose: checkDateToEmpty
             });
 
-        if (dateFromInput.val() == "")
+        if (dateFromInput.val() === "")
         {
             var today = new Date();
             var months3Back = new Date();
@@ -917,7 +917,7 @@
     {
         var $column = $("#col-" + col);
         var $existing = $column.children(".perc-gadget:eq(" + row + ")");
-        if ($existing.length == 0)
+        if ($existing.length === 0)
         {
             $column.append(gadgetHTML);
         }
@@ -951,7 +951,7 @@
         var gContentDiv = "gadget-content-" + i;
         var div = document.getElementById(gContentDiv);
         var tog = $("#tog-" + i);
-        if (div.style.display == 'none')
+        if (div.style.display === 'none')
         {
             tog.removeClass("ui-icon-circle-triangle-n").addClass("ui-icon-circle-triangle-s");
             div.style.display = 'block';
@@ -996,7 +996,7 @@
 
         $.PercServiceUtils.makeJsonRequest("/cm/gadgets/metadata", $.PercServiceUtils.TYPE_POST, false, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback(result.data);
             }
@@ -1114,14 +1114,14 @@
             if (typeof($(gadget).data('gadget').type) != "undefined")
             {
                 var type = $(gadget).data('gadget').type;
-                if (type.toLowerCase() == "custom")
+                if (type.toLowerCase() === "custom")
                 {
                     var category = $(gadget).data('gadget').category;
                     if (typeof(category) != "undefined")
                     {
                         $.each(category.split(","), function(index, value)
                         {
-                            if (value != "" && $.inArray(value, customCategories) == -1)
+                            if (value !== "" && $.inArray(value, customCategories) === -1)
                             {
                                 customCategories.push(value);
                             }
@@ -1137,7 +1137,7 @@
 
         //Determine the options for the category filter
         $('.perc-gadget-category-custom').remove();
-        if (typeSelected == "all")
+        if (typeSelected === "all")
         {
             $('.perc-gadget-category-predefined').show();
             if (customCategories.length > 0)
@@ -1145,11 +1145,11 @@
                 categoryFilter.append($('<option />').addClass('perc-gadget-category-custom').val('other').text('Other'));
             }
         }
-        if (typeSelected == "percussion" || typeSelected == "community")
+        if (typeSelected === "percussion" || typeSelected === "community")
         {
             $('.perc-gadget-category-predefined').show();
         }
-        if (typeSelected == "custom")
+        if (typeSelected === "custom")
         {
             $('.perc-gadget-category-predefined').hide();
             $.each(customCategories, function(index, value)
@@ -1178,14 +1178,14 @@
     {
         var selectedCategory = $('.perc-gadget-category').val();
         var predefinedCategories = [];
-        if (selectedCategory == "all")
+        if (selectedCategory === "all")
         {
             return true;
         }
-        if (selectedCategory == "other")
+        if (selectedCategory === "other")
         {
             var type = $(gadget).data('gadget').type;
-            return (type.toLowerCase() == "custom");
+            return (type.toLowerCase() === "custom");
         }
         if (typeof($(gadget).data('gadget').category) == 'undefined')
         {
@@ -1197,7 +1197,7 @@
         {
             predefinedCategories[i] = text.toLowerCase();
         });
-        return ($.inArray(selectedCategory, category) != -1);
+        return ($.inArray(selectedCategory, category) !== -1);
     }
 
     /**
@@ -1322,7 +1322,7 @@
         {
             var dashboardColumn = $(this);
             var columnGadgets = dashboardColumn.find(".perc-gadget");
-            if (columnGadgets.length == 0)
+            if (columnGadgets.length === 0)
             {
                 var dashboardColumnPosition = dashboardColumn.position();
                 var dashboardContainPosition = dashboardContainer.position();
@@ -1363,14 +1363,14 @@
     function addGadgetDropArea(dashboardGadget, columnIndex, rowIndex, left, top, width, height)
     {
         // you have to at least give me the dashboardGadget or the sizes
-        if (dashboardGadget == undefined && (width == undefined || height == undefined)) throw "Exception in PercDashboard.addGadgetDropArea(): Unable to calculate Gadget Drop Area size. " + "At least a Dashboard Gadget or sizes are needed to add a gadget drop area. " + "Neither have been provided";
+        if (dashboardGadget === undefined && (width === undefined || height === undefined)) throw "Exception in PercDashboard.addGadgetDropArea(): Unable to calculate Gadget Drop Area size. " + "At least a Dashboard Gadget or sizes are needed to add a gadget drop area. " + "Neither have been provided";
 
         // if you dont give me a dashboardGadget, then you have to give me position
-        if (dashboardGadget == undefined && (left == undefined || top == undefined || columnIndex == undefined || rowIndex == undefined)) throw "Exception in PercDashboard.addGadgetDropArea(): Unable to calculate Gadget Drop Area location. " + "At least a Dashboard Gadget or a location is needed to add a gadget drop area. " + "Neither have been provided";
+        if (dashboardGadget === undefined && (left === undefined || top === undefined || columnIndex === undefined || rowIndex === undefined)) throw "Exception in PercDashboard.addGadgetDropArea(): Unable to calculate Gadget Drop Area location. " + "At least a Dashboard Gadget or a location is needed to add a gadget drop area. " + "Neither have been provided";
 
         // if I do have a dashboardGadget, try to infer position and size from it,
         // but honor position and size parameters passed in explicitly
-        if (dashboardGadget != undefined)
+        if (dashboardGadget !== undefined)
         {
             var dashboardGadgetPosition = dashboardGadget.position();
 
@@ -1378,12 +1378,12 @@
             var columnIndexString = gadgetParentColumnId.replace("col-", "");
 
             // if passed in honor the parameters otherwise get from dashboard gadget
-            top = top == undefined ? dashboardGadgetPosition.top : top;
-            left = left == undefined ? dashboardGadgetPosition.left : left;
-            columnIndex = columnIndex == undefined ? parseInt(columnIndexString) : columnIndex;
-            rowIndex = rowIndex == undefined ? dashboardGadget.prevAll().length : rowIndex;
-            width = width == undefined ? dashboardGadget.width() : width;
-            height = height == undefined ? dashboardGadget.height() : height;
+            top = top === undefined ? dashboardGadgetPosition.top : top;
+            left = left === undefined ? dashboardGadgetPosition.left : left;
+            columnIndex = columnIndex === undefined ? parseInt(columnIndexString) : columnIndex;
+            rowIndex = rowIndex === undefined ? dashboardGadget.prevAll().length : rowIndex;
+            width = width === undefined ? dashboardGadget.width() : width;
+            height = height === undefined ? dashboardGadget.height() : height;
         }
 
         var gadgetDropArea = gadgetDrop.clone();
@@ -1394,7 +1394,7 @@
         gadgetDropArea.data("columnIndex", columnIndex);
         gadgetDropArea.data("rowIndex", rowIndex);
 
-        if (rowIndex == 0 && dashboardContainer.scrollTop() == 0)
+        if (rowIndex === 0 && dashboardContainer.scrollTop() === 0)
         {
             $("body").append(gadgetDropArea);
             top = dashboardContainer.position().top;
@@ -1428,7 +1428,7 @@
                     {
                         var instanceid = ui.draggable.attr("instanceid");
                         var origPos = ui.helper.data("origPos");
-                        if (origPos && origPos.col == columnIndex && origPos.row == rowIndex) return false;
+                        if (origPos && origPos.col === columnIndex && origPos.row === rowIndex) return false;
                         moveGadget(instanceid, columnIndex, rowIndex);
                     }
                     else if (ui.helper.hasClass("perc-tray-item"))
@@ -1478,7 +1478,7 @@
 
     function isFirstGadget(dashboardGadget)
     {
-        return dashboardGadget.prevAll(".perc-gadget[perc-helper!=true]").length == 0;
+        return dashboardGadget.prevAll(".perc-gadget[perc-helper!=true]").length === 0;
     }
 
     /**
@@ -1487,7 +1487,7 @@
      */
     function isLastGadget(dashboardGadget)
     {
-        return dashboardGadget.nextAll(".perc-gadget[perc-helper!=true]").length == 0;
+        return dashboardGadget.nextAll(".perc-gadget[perc-helper!=true]").length === 0;
     }
 
     /**
@@ -1510,7 +1510,7 @@
      */
     function isFeedbackVisible(feedback, rowIndex)
     {
-        if (rowIndex == 0) if (dashboardContainer.scrollTop() == 0) return true;
+        if (rowIndex === 0) if (dashboardContainer.scrollTop() === 0) return true;
         else return false;
         var dashboardContainerPosition = dashboardContainer.position();
         var feedbackPosition = feedback.offset();
@@ -1597,7 +1597,7 @@
     function handleOverflowHeader(element)
     {
         var title = element.attr("title");
-        if (title == '')
+        if (title === '')
         {
             return true;
         }
