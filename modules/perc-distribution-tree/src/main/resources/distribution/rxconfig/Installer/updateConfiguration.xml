@@ -301,13 +301,12 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">]]></repla
         <!-- percSystem.xml Resources -->
         <PSCopy tofile="${install.dir}/rxconfig/Resources/percSystem.xml" file="${install.src}/rxconfig/Resources/percSystem.xml" replaceType="always"/>
 
-
         <echo>Updating Publisher Beans files...</echo>
 
         <if>
             <available file="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/publisher-beans.xml" type="file"/>
             <then>
-                <copy file="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/publisher-beans.xml" tofile="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/publisher-beans.xml_copy" />
+               <copy file="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/publisher-beans.xml" tofile="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/publisher-beans.xml_copy" />
                 <if>
                     <available file="publisherBeans.xsl" type="file"/>
                     <then>
@@ -319,12 +318,14 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">]]></repla
                         <echo>publisherBeans.xsl Not Found</echo>
                     </else>
                 </if>
+                <delete file="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/publisher-beans.xml_copy"/>
             </then>
             <else>
                 <echo>${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring/publisher-beans.xml Not Found</echo>
             </else>
 
         </if>
+
     </target>
 
 </project>
