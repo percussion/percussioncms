@@ -123,8 +123,21 @@
         percParseInt : percParseInt,
         logToServer : logToServer,
         checkValidUserSession : checkValidUserSession,
-        checkMandatoryFieldsEmpty : checkMandatoryFieldsEmpty
+        checkMandatoryFieldsEmpty : checkMandatoryFieldsEmpty,
+        getContentId : getContentId
     };
+
+    function getContentId(id)
+    {
+        if (id !== null && id !== undefined){
+            var idArray = id.split("-");
+            return idArray[idArray.length - 1];
+        } else {
+            console.warn("Cannot get contentId from given Asset.")
+            return false;
+        }
+    }
+
     function percParseInt(value)
     {
         var result = null;
