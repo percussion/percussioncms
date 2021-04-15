@@ -1218,7 +1218,7 @@
             }
 
             //Check out the new page before opening it.
-            //var ok = false;
+
 
             // get dirty state from the singleton where the page, template, and/or asset have updated the status
             // if they have become dirty
@@ -1537,7 +1537,7 @@
                 question: createDialogQuestion(data),
                 cancel: function()
                 {
-                    return;
+
                 },
                 success: function()
                 {
