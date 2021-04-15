@@ -53,18 +53,18 @@
         }
         else{
             var url = $.perc_paths.RECENT_ROOT + type;
-            if(type == $.PercRecentListService.RECENT_TYPE_TEMPLATE || 
-                type == $.PercRecentListService.RECENT_TYPE_SITE_FOLDER)
+            if(type === $.PercRecentListService.RECENT_TYPE_TEMPLATE || 
+                type === $.PercRecentListService.RECENT_TYPE_SITE_FOLDER)
                 url += "/" + site;
             var serviceCallback = function(status, result){
-                    if(status == $.PercServiceUtils.STATUS_SUCCESS){
+                    if(status === $.PercServiceUtils.STATUS_SUCCESS){
                         deferred.resolve(result);
                     } else {
                         var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                         $.perc_utils.info(I18N.message("perc.ui.page.optimizer.service@Access CM1 Page Optimizer") + defaultMsg);
                         deferred.reject(defaultMsg);
                     }
-            }
+            };
             $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,serviceCallback);
         }
         return deferred.promise();
@@ -82,8 +82,8 @@
         }
         else{
             var url = $.perc_paths.RECENT_ROOT + type;
-            if(type == $.PercRecentListService.RECENT_TYPE_TEMPLATE || 
-                type == $.PercRecentListService.RECENT_TYPE_SITE_FOLDER)
+            if(type === $.PercRecentListService.RECENT_TYPE_TEMPLATE || 
+                type === $.PercRecentListService.RECENT_TYPE_SITE_FOLDER)
                 url += "/" + site;
             var postdata = {"value":data};
             $.ajax({

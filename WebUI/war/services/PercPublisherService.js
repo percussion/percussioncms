@@ -22,7 +22,7 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-/****
+/***
  * Service calls for the Publish page.
  */
 var regions;
@@ -61,9 +61,9 @@ var publishingServer;
 
 
     function isEC2InstanceCheck(callback) {
-        serviceUrl = $.perc_paths.SERVER_DETAILS + 'isEC2Instance';
+        var serviceUrl = $.perc_paths.SERVER_DETAILS + 'isEC2Instance';
         $.PercServiceUtils.makeRequest(serviceUrl, $.PercServiceUtils.TYPE_GET,false, callback);
-    };
+    }
 
     /**
      *
@@ -76,7 +76,7 @@ var publishingServer;
 
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, [results.request, results.textstatus, results.error]);
             }
@@ -84,9 +84,9 @@ var publishingServer;
             {
                 callback(true, [results.data, results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeRequest(pubUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
-    };
+    }
 
     /**
      * Gets current job status for publish page.
@@ -98,7 +98,7 @@ var publishingServer;
 
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, [results.request, results.textstatus, results.error]);
             }
@@ -106,9 +106,9 @@ var publishingServer;
             {
                 callback(true, [results.data, results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(pubUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback, "");
-    };
+    }
 
     /*
      * A service to get the list of all available logs for a given site.
@@ -120,7 +120,7 @@ var publishingServer;
         var pubUrl = $.perc_paths.PUBLISH_LOGS + "/";
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, [results.request, results.textstatus, results.error]);
             }
@@ -128,9 +128,9 @@ var publishingServer;
             {
                 callback(true, [results.data, results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(pubUrl, $.PercServiceUtils.TYPE_POST, false, serviceCallback, pubObject);
-    };
+    }
 
     /**
      * Gets the FTP information from the server
@@ -139,10 +139,9 @@ var publishingServer;
      */
     function getSitePublishProperties(site, callback)
     {
-        var self = this;
         $.PercServiceUtils.makeJsonRequest($.perc_paths.SITE_GET_PUBLISH_PROPERTIES + "/" + site, $.PercServiceUtils.TYPE_GET, false, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }
@@ -152,7 +151,7 @@ var publishingServer;
                 callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
             }
         });
-    };
+    }
 
     /**
      * Send the FTP information to the server
@@ -175,11 +174,9 @@ var publishingServer;
      */
     function updateSitePublishProperties(sitePublishObj, callback)
     {
-        var self = this;
-
         $.PercServiceUtils.makeJsonRequest($.perc_paths.SITE_UPDATE_PUBLISH_PROPERTIES, $.PercServiceUtils.TYPE_POST, false, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }
@@ -189,7 +186,7 @@ var publishingServer;
                 callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
             }
         }, sitePublishObj);
-    };
+    }
 
 
     /*
@@ -206,7 +203,7 @@ var publishingServer;
         };
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, [results.request, results.textstatus, results.error]);
             }
@@ -214,9 +211,9 @@ var publishingServer;
             {
                 callback(true, [results.data, results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(pubUrl, $.PercServiceUtils.TYPE_POST, false, serviceCallback, obj);
-    };
+    }
 
     /* @param jobList (List of string) of jobs ids to purge
      * @param callback (function) callback function to be invoked when ajax call returns
@@ -233,7 +230,7 @@ var publishingServer;
         };
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, [results.request, results.textstatus, results.error]);
             }
@@ -241,9 +238,9 @@ var publishingServer;
             {
                 callback(true, [results.data, results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeRequest(pubUrl, $.PercServiceUtils.TYPE_POST, false, serviceCallback, obj, contentType, dataType);
-    };
+    }
 
     /** Get the list of servers for supplied 'site'
      * @param siteId : The id of currently loaded site
@@ -254,7 +251,7 @@ var publishingServer;
         var serviceUrl = $.perc_paths.SERVER_DETAILS + siteId;
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, [results.request, results.textstatus, results.error]);
             }
@@ -263,10 +260,10 @@ var publishingServer;
 
                 callback(true, [results.data, results.textstatus, siteId]);
             }
-        }
+        };
 
         $.PercServiceUtils.makeRequest(serviceUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
-    };
+    }
 
     /**
      * Get the properties for selected 'server'
@@ -279,7 +276,7 @@ var publishingServer;
         var serviceUrl = $.perc_paths.SERVER_DETAILS + siteId + "/" + serverId;
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, [results.request, results.textstatus, results.error]);
             }
@@ -288,9 +285,9 @@ var publishingServer;
                 var pubserver = results.data;
                 callback(true, [pubserver, results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(serviceUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
-    };
+    }
 
     /**
      *  A service to create/update a new server for a given site based on 'serverId' value
@@ -303,7 +300,7 @@ var publishingServer;
         var serviceUrl = $.perc_paths.SERVER_DETAILS + siteName + "/" + server;
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 //var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
                 callback(false, results);
@@ -312,9 +309,9 @@ var publishingServer;
             {
                 callback(true, [results.data, results.textstatus]);
             }
-        }
+        };
         //If serverId is not avaliable - Create a New Server
-        if (propObj.serverInfo.serverId == null || propObj.serverInfo.serverId == '' || propObj.serverInfo.serverId == 'undefined')
+        if (propObj.serverInfo.serverId === null || propObj.serverInfo.serverId === '' || propObj.serverInfo.serverId === 'undefined')
         {
             $.PercServiceUtils.makeJsonRequest(serviceUrl, $.PercServiceUtils.TYPE_POST, false, serviceCallback, propObj);
         }
@@ -323,7 +320,7 @@ var publishingServer;
         {
             $.PercServiceUtils.makeJsonRequest(serviceUrl, $.PercServiceUtils.TYPE_PUT, false, serviceCallback, propObj);
         }
-    };
+    }
 
     /**
      *  A service to Delete a Server from specified Site
@@ -336,7 +333,7 @@ var publishingServer;
         var serviceUrl = $.perc_paths.SERVER_DETAILS + siteId + "/" + serverId;
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
                 callback(false, defaultMsg);
@@ -346,9 +343,9 @@ var publishingServer;
             {
                 callback(true, [results.data, results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeRequest(serviceUrl, $.PercServiceUtils.TYPE_DELETE, false, serviceCallback);
-    };
+    }
 
 
 
@@ -361,10 +358,10 @@ var publishingServer;
         if(regions != null){
             callback(true, [regions, ""]);
         }
-        serviceUrl = $.perc_paths.SERVER_DETAILS + 'availableRegions';
+        var serviceUrl = $.perc_paths.SERVER_DETAILS + 'availableRegions';
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
 
                 callback(false, [results.request, results.textstatus, results.error]);
@@ -374,19 +371,19 @@ var publishingServer;
                 regions=results.data;
                 callback(true, [results.data, results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeRequest(serviceUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
-    };
+    }
 
 
     function getAvailablePublishingServer(callback,serverType)
     {
 
-        serviceUrl = $.perc_paths.SERVER_DETAILS + 'availablePublishingServer'+ "/" + serverType;
-        ;
+        var serviceUrl = $.perc_paths.SERVER_DETAILS + 'availablePublishingServer'+ "/" + serverType;
+        
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
 
                 callback(false, [results.request, results.textstatus, results.error]);
@@ -396,9 +393,9 @@ var publishingServer;
                 publishingServer=results.data;
                 callback(true, [results.data, results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeRequest(serviceUrl, $.PercServiceUtils.TYPE_GET, true, serviceCallback);
-    };
+    }
 
     /**
      * A method to get the available database drivers
@@ -406,10 +403,10 @@ var publishingServer;
      */
     function getAvailableDrivers(callback)
     {
-        serviceUrl = $.perc_paths.SERVER_DETAILS + 'availableDrivers';
+        var serviceUrl = $.perc_paths.SERVER_DETAILS + 'availableDrivers';
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, [results.request, results.textstatus, results.error]);
             }
@@ -417,9 +414,9 @@ var publishingServer;
             {
                 callback(true, [results.data, results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeRequest(serviceUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
-    };
+    }
 
     /**
      * A method to get the available Delivery Servers
@@ -427,10 +424,10 @@ var publishingServer;
      */
     function getAvailableDeliveryServers(callback)
     {
-        serviceUrl = $.perc_paths.SERVER_DETAILS + 'availableDeliveryServers';
+        var serviceUrl = $.perc_paths.SERVER_DETAILS + 'availableDeliveryServers';
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, [results.request, results.textstatus, results.error]);
             }
@@ -438,9 +435,9 @@ var publishingServer;
             {
                 callback(true, [results.data, results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeRequest(serviceUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
-    };
+    }
 
     /**
      * A service to stop the running publishing server
@@ -448,10 +445,10 @@ var publishingServer;
      */
     function stopPubJob(pubId, callback)
     {
-        serviceUrl = $.perc_paths.STOP_PUB_SERVER + pubId;
+        var serviceUrl = $.perc_paths.STOP_PUB_SERVER + pubId;
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, [results.request, results.textstatus, results.error]);
             }
@@ -459,9 +456,9 @@ var publishingServer;
             {
                 callback(true, [results.data, results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(serviceUrl, $.PercServiceUtils.TYPE_POST, false, serviceCallback);
-    };
+    }
 
     /**
      * A service to get the local default path(folder location) for the server
@@ -470,10 +467,10 @@ var publishingServer;
     function getLocalFolderPath(siteId, type, callback)
     {
 
-        serviceUrl = $.perc_paths.DEFAULT_PUB_PATH  + siteId + '/File/Local/' +type.toUpperCase();
+        var serviceUrl = $.perc_paths.DEFAULT_PUB_PATH  + siteId + '/File/Local/' +type.toUpperCase();
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, [results.request, results.textstatus, results.error]);
             }
@@ -481,9 +478,9 @@ var publishingServer;
             {
                 callback(true, [results.data, results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeRequest(serviceUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
-    };
+    }
 
     /**
      * Function to get incremental items for the given site and server.
@@ -496,7 +493,7 @@ var publishingServer;
     function getIncrementalItems(siteName, serverName, startIndex, pageSize, callback)
     {
         _getIncrementalOrRelatedItems(true, siteName, serverName, startIndex, pageSize, callback);
-    };
+    }
 
     /**
      * Function to get incremental related items for the given site and server.
@@ -509,7 +506,7 @@ var publishingServer;
     function getIncrementalRelatedItems(siteName, serverName, startIndex, pageSize, callback)
     {
         _getIncrementalOrRelatedItems(false, siteName, serverName, startIndex, pageSize, callback);
-    };
+    }
 
     /*
      * Private method to get the incremental or incremental related content.
@@ -520,7 +517,7 @@ var publishingServer;
         var serviceUrl = basePath  + siteName + '/' + serverName + '?startIndex=' + startIndex + '&pageSize=' + pageSize;
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, $.PercServiceUtils.extractDefaultErrorMessage(results.request));
             }
@@ -528,9 +525,9 @@ var publishingServer;
             {
                 callback(true, results.data);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(serviceUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
-    };
+    }
 
     /**
      * Calls the server to incremental publish the supplied server of the supplied site
@@ -548,7 +545,7 @@ var publishingServer;
 
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, $.PercServiceUtils.extractDefaultErrorMessage(results.request));
             }
@@ -556,9 +553,9 @@ var publishingServer;
             {
                 callback(true, [results.data, results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeRequest(pubUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
-    };
+    }
 
 
 
@@ -579,7 +576,7 @@ var publishingServer;
 
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, $.PercServiceUtils.extractDefaultErrorMessage(results.request));
             }
@@ -587,8 +584,8 @@ var publishingServer;
             {
                 callback(true, [results.data, results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeRequest(pubUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
-    };
+    }
 
 })(jQuery);
