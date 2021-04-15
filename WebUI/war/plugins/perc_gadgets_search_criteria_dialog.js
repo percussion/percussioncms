@@ -258,14 +258,18 @@
                             );
                             for (var i = 0; i < data.length; i++)
                             {
-                                var id = data[i].id
+                                var id = data[i].id;
+
+                                //CMS-7925 : The filter was not working expected while filtering on templates. Content id extracted and passed to filter results on templates.
+                                var contentId = percJQuery.perc_utils.getContentId(id);
+
                                 var name = data[i].name;
                                 var optionElement = $("<OPTION>")
                                                 .html(name)
-                                                .attr("value", id);
+                                                .attr("value", contentId);
                                 if (criteriaData.template != null)
                                 {
-                                    if (id == criteriaData.template["value"])
+                                    if (contentId == criteriaData.template["value"])
                                     {
                                         optionElement.attr("selected", "selected");
                                     }
