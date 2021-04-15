@@ -32,7 +32,7 @@ public class PSExtensionHelperTest
     * @see junit.framework.TestCase#setUp()
     */
    @Before
-   protected void setUp() throws Exception
+   public void setUp() throws Exception
    {
       m_output = new HashSet<Integer>();
       XMLUnit.setControlParser("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
