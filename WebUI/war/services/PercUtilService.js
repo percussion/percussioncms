@@ -37,13 +37,12 @@
     };
 
     function getPrivateKeys(callback, async){
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.UTIL_GET_PRIVATE_KEYS,
             $.PercServiceUtils.TYPE_GET,
             !async,
             function(status, result){
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result);
                 }
@@ -69,14 +68,13 @@
      * @type string
      */
     function encryptString(str, callback, async){
-        var self = this;
         var object = {"psmap":{"entries":{"entry":{"key":"string","value":str}}}};
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.UTIL_ENCRYPT_STRING,
             $.PercServiceUtils.TYPE_POST,
             !async,
             function(status, result){
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data.psmap.entries.entry.value);
                 }
@@ -103,7 +101,6 @@
      * @type string
      */
     function encryptStrings(values, callback, async){
-        var self = this;
         var object = {"pslist":{"list":[]}};
         object.pslist.list = values;
         $.PercServiceUtils.makeJsonRequest(
@@ -111,7 +108,7 @@
             $.PercServiceUtils.TYPE_POST,
             !async,
             function(status, result){
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, convertMapToArray(result.data.psmap.entries));
                 }
@@ -134,7 +131,7 @@
         var tempArray = [];
         var result = [];
 
-        if(mapEntries.entry ==  undefined){
+        if(mapEntries.entry ===  undefined){
             $.each(mapEntries,function( k, v ) {
                 result[k] = v;
             });
@@ -169,14 +166,13 @@
      * @type string
      */
     function decryptString(str, callback, async){
-        var self = this;
         var object = {"psmap":{"entries":{"entry":{"key":"string","value":str}}}};
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.UTIL_DECRYPT_STRING,
             $.PercServiceUtils.TYPE_POST,
             !async,
             function(status, result){
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data.psmap.entries.entry.value);
                 }

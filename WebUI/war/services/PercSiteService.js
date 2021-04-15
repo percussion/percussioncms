@@ -49,11 +49,10 @@
      */
     function updateSiteProperties(siteProps, callback)
     {
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
         $.perc_paths.SITE_UPDATE_PROPERTIES, $.PercServiceUtils.TYPE_POST, false, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }
@@ -74,12 +73,10 @@
      */
     function getSiteProperties(site, callback)
     {
-        var self = this;
-
         $.PercServiceUtils.makeJsonRequest(
         $.perc_paths.SITE_GET_PROPERTIES + "/" + site, $.PercServiceUtils.TYPE_GET, false, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }
@@ -99,11 +96,10 @@
      */
     function copySite(postObject, callback)
     {
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
         $.perc_paths.SITE_COPY, $.PercServiceUtils.TYPE_POST, false, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }
@@ -125,11 +121,10 @@
      */
     function validateCopySiteFolders(postObject, callback)
     {
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
         $.perc_paths.SITE_COPY_VALIDATE_FOLDERS, $.PercServiceUtils.TYPE_POST, false, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }
@@ -149,11 +144,10 @@
      */
     function copySiteInfo(callback)
     {
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
         $.perc_paths.SITE_COPY_INFO, $.PercServiceUtils.TYPE_GET, false, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }
@@ -182,8 +176,7 @@
      */
     function getTemplates(siteName, callback, widgetDefId)
     {
-        var self = this;
-        var sendURL = "";
+        var sendURL;
 
         if (widgetDefId != null)
         {
@@ -197,7 +190,7 @@
         $.PercServiceUtils.makeJsonRequest(
         sendURL, $.PercServiceUtils.TYPE_GET, false, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }
@@ -213,7 +206,7 @@
         var templUrl = $.perc_paths.TEMPLATES_READONLY + "?type=" + type;
         //Load regular base templates
         $.PercServiceUtils.makeJsonRequest(templUrl,$.PercServiceUtils.TYPE_GET,true,function(status, result){
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback(true, result.data);
                 }
@@ -235,12 +228,10 @@
      */
     function getSites(callback)
     {
-        var self = this;
-
         $.PercServiceUtils.makeJsonRequest(
         $.perc_paths.SITES_ALL + "/", $.PercServiceUtils.TYPE_GET, false, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }
@@ -278,7 +269,7 @@
             $.ajaxSetup({
                 timeout: 60000
             });
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }
@@ -307,13 +298,13 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
                 else
                 {
-                    defaultMsg = I18N.message("perc.ui.site.service@Unexpected Error Importing");
+                    var defaultMsg = I18N.message("perc.ui.site.service@Unexpected Error Importing");
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
                 }
             },
@@ -328,7 +319,7 @@
      */
     function createSiteFromUrlStatus(siteCreationJobId, callback)
     {
-        var jobId  = siteCreationJobId.Long == undefined ? siteCreationJobId : siteCreationJobId.Long;
+        var jobId  = siteCreationJobId.Long === undefined ? siteCreationJobId : siteCreationJobId.Long;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.JOB_STATUS + '/' + jobId,
             $.PercServiceUtils.TYPE_GET,
@@ -338,7 +329,7 @@
                 var data,
                     serviceStatus = $.PercServiceUtils.STATUS_SUCCESS;
 
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     // NOTE that the progress could be -1, but that is something that the user of
                     // the service must check, the request has been successful
@@ -364,7 +355,7 @@
      */
     function createSiteFromUrlResult(siteCreationJobId, callback)
     {
-        var jobId  = siteCreationJobId.Long == undefined ? siteCreationJobId : siteCreationJobId.Long;
+        var jobId  = siteCreationJobId.Long === undefined ? siteCreationJobId : siteCreationJobId.Long;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.SITE_CREATE_FROM_URL_RESULT + '/'+ jobId,
             $.PercServiceUtils.TYPE_GET,
@@ -374,7 +365,7 @@
                 var data,
                     serviceStatus = $.PercServiceUtils.STATUS_SUCCESS;
 
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     data = result.data;
                 }
@@ -404,7 +395,7 @@
             function (status, result)
             {
                 var data, serviceStatus = $.PercServiceUtils.STATUS_SUCCESS;
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                 	data = result.data;
                 }
@@ -431,12 +422,11 @@
     function getSaaSSiteNames(filterUsedSites)
     {
         var deferred = $.Deferred();
-        var self = this;
 
         $.PercServiceUtils.makeJsonRequest(
         $.perc_paths.SAAS_SITES_NAMES + "?filterUsedSites=" + filterUsedSites, $.PercServiceUtils.TYPE_GET, false, function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 deferred.resolve(result.data);
             }

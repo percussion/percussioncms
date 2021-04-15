@@ -79,16 +79,13 @@
      * {"UserList":{"users":["Admin","Contributor"]}}
      * 
      */       
-    function getUsers(callback){
-
-        var self = this;
-         
+    function getUsers(callback) {
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.USER_USERS,
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     //Convert all users values to string.
                     result.data.UserList.users = convertToString(result.data.UserList.users);
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
@@ -112,14 +109,13 @@
      * {"User":{"name":"","roles":["Admin","Contributor"]}}
      * 
      */       
-    function findUser(username, callback){
-        var self = this;
+    function findUser(username, callback) {
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.USER_FIND + "/" + username,
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     result.data.User.name = result.data.User.name.toString();//CXF return a numeric value if the name contains just numbers
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 } 
@@ -143,13 +139,12 @@
      * 
      */       
     function changePassword(userObj, callback){
-    	var self = this;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.CHANGEPW,
             $.PercServiceUtils.TYPE_PUT,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 } else {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
@@ -174,20 +169,19 @@
      */       
     function findDirectoryUsers(usernameStartsWith, callback){
 
-        if(usernameStartsWith == null) {
+        if(usernameStartsWith === null) {
             callback($.PercServiceUtils.STATUS_ERROR, I18N.message("perc.ui.user.service@Null String"));
             return;
         }
         usernameStartsWith = usernameStartsWith.replace(/%+$/, "");
         var urlfindExternalUsernamesThatStartwith = $.perc_paths.USER_EXTERNAL_FIND + "/" + encodeURIComponent(usernameStartsWith) + "%25";
-        var self = this;
 
         $.PercServiceUtils.makeJsonRequest(
             urlfindExternalUsernamesThatStartwith,
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                         
@@ -218,20 +212,18 @@
      */
     function importDirectoryUsers(usersJSON, callback){
         
-        if(usersJSON == null || usersJSON == undefined || usersJSON.ImportUsers.externalUsers.length == 0) {
+        if(usersJSON === null || usersJSON === undefined || usersJSON.ImportUsers.externalUsers.length === 0) {
             callback($.PercServiceUtils.STATUS_ERROR, I18N.message("perc.ui.user.service@Null or Empty List of Users"));
             return;
         }
-        
-        var self = this;
-        
+
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.USER_EXTERNAL_IMPORT,
             $.PercServiceUtils.TYPE_POST,
             false,
             function(status, result) {
                 
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                         
@@ -257,16 +249,13 @@
      * {"DirectoryServiceStatus":{"status":"ENABLED"}}
      *
      */       
-    function getDirectoryStatus(callback){
-
-        var self = this;
-
+    function getDirectoryStatus(callback) {
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.USER_EXTERNAL_STATUS,
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                         
@@ -290,16 +279,13 @@
      * {"RoleList":{"roles":["Admin","Contributor","Editor"]}}
      * 
      */       
-    function getRoles(callback){
-
-        var self = this;
-         
+    function getRoles(callback) {
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.USER_ROLES,
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     //Convert all roles values to string.
                     result.data.RoleList.roles = convertToString(result.data.RoleList.roles);
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
@@ -325,17 +311,14 @@
      * {"User":{"name":"username", "password":"p@$$w0rd", "roles":["Admin","Contributor"]}}
      * 
      */
-    function createUser(userObj, callback){
-        
-        var self = this;
-        
+    function createUser(userObj, callback) {
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.USER_CREATE,
             $.PercServiceUtils.TYPE_POST,
             false,
             function(status, result) {
                 
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     
                         callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                         
@@ -355,15 +338,12 @@
      * @param callback function to be called when user is retrieved.
      * response status and userObj is passed back to the callback.
      */       
-    function deleteUser(username, callback){
-
-        var self = this;
-        
+    function deleteUser(username, callback) {
         $.PercServiceUtils.makeDeleteRequest(
             $.perc_paths.USER_DELETE + "/" + username,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                         
@@ -392,13 +372,12 @@
      * 
      */                    
     function updateUser(userObj, callback){
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.USER_UPDATE,
             $.PercServiceUtils.TYPE_POST,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                       
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                         
@@ -426,14 +405,13 @@
      * 
      */       
     function findRole(rolename, callback){
-        var self = this;
         var strObj = {"psstring":{"value":rolename}};
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.ROLE_FIND,
             $.PercServiceUtils.TYPE_POST,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     result.data.Role.name = result.data.Role.name.toString(); //CXF return a numeric value if the name contains just numbers
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 } else {
@@ -458,7 +436,7 @@
             $.PercServiceUtils.TYPE_POST,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 } else {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
@@ -482,13 +460,12 @@
      * 
      */
     function createRole(roleObj, callback){
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.ROLE_CREATE,
             $.PercServiceUtils.TYPE_POST,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                         callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 } else {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
@@ -514,13 +491,12 @@
      * 
      */
     function updateRole(roleObj, callback){
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.ROLE_UPDATE,
             $.PercServiceUtils.TYPE_POST,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 } else {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
@@ -544,13 +520,12 @@
      * 
      */
     function getAvailableUsers(roleObj, callback){
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.ROLE_AVAILABLE_USERS,
             $.PercServiceUtils.TYPE_POST,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     //Convert all users values to string.
                     result.data.UserList.users = convertToString(result.data.UserList.users);
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
@@ -574,8 +549,6 @@
      *           would be the error message.
      */
     function getAccessLevel(type, itemId, callback, parentFolderPath, sync){
-        var self = this;
-
         var reqObj;
         if (type != null)
         {
@@ -591,7 +564,7 @@
             $.PercServiceUtils.TYPE_POST,
             (typeof(sync) != 'undefined' && sync != null && sync) ? true : false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data.AccessLevel.accessLevel);
                 } else {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
@@ -615,13 +588,12 @@
      * 
      */
     function validateDeleteRole(roleObj, callback){
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.ROLE_DELETE_VALIDATE,
             $.PercServiceUtils.TYPE_POST,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 } else {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
@@ -644,13 +616,12 @@
      * 
      */
     function validateDeleteUsers(userList, callback){
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.ROLE_REMOVE_USERS_VALIDATE,
             $.PercServiceUtils.TYPE_POST,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 } else {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
@@ -669,7 +640,7 @@
         itemList = $.perc_utils.convertCXFArray(itemList);
         $.each(itemList, function(k,v){
             itemList[k] = v.toString();
-        })
+        });
         return itemList;
     }
     

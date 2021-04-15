@@ -42,8 +42,8 @@
     {
         var url = $.perc_paths.PAGE_OPT_ACTIVE;
         var serviceCallback = function(status, result){
-                if(status == $.PercServiceUtils.STATUS_SUCCESS){
-                    var isActive = result.data && result.data=="true"; 
+                if(status === $.PercServiceUtils.STATUS_SUCCESS){
+                    var isActive = result.data && result.data === "true";
                     if(!isActive){
                         $.perc_utils.info(I18N.message("perc.ui.page.optimizer.service@Page Optimizer Not Enabled"));
                     }
@@ -53,7 +53,7 @@
                     $.perc_utils.info(I18N.message("perc.ui.page.optimizer.service@Access CM1 Page Optimizer") + defaultMsg);
                     callback(false, defaultMsg);
                 }
-        }
+        };
         $.PercServiceUtils.makeRequest(url,$.PercServiceUtils.TYPE_GET,true,serviceCallback);
     }
     
@@ -63,13 +63,13 @@
     {
         var url = $.perc_paths.PAGE_OPT_DATA + pageId;
         var serviceCallback = function(status, result){
-                if(status == $.PercServiceUtils.STATUS_SUCCESS){
+                if(status === $.PercServiceUtils.STATUS_SUCCESS){
                     callback(true, result.data.PageOptimizerData);
                 } else {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback(false, defaultMsg);
                 }
-        }
+        };
 
         $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,serviceCallback);
     }
@@ -81,13 +81,13 @@
     {
         var url = $.perc_paths.PAGE_OPT_INFO;
         var serviceCallback = function(status, result){
-                if(status == $.PercServiceUtils.STATUS_SUCCESS){
+                if(status === $.PercServiceUtils.STATUS_SUCCESS){
                     callback(true, result.data.PageOptimizerInfo);
                 } else {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback(false, defaultMsg);
                 }
-        }
+        };
 
         $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,serviceCallback);
     }

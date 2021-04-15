@@ -46,7 +46,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -73,7 +73,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -116,7 +116,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data.licenseStatus);
                 }
@@ -164,7 +164,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback(true, result.data);
                 }
@@ -197,7 +197,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback(true, result.data);
                 }
