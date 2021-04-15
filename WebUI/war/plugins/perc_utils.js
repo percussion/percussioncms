@@ -129,7 +129,7 @@
 
     function getContentId(id)
     {
-        if (id != null && id != undefined){
+        if (id !== null && id !== undefined){
             var idArray = id.split("-");
             return idArray[idArray.length - 1];
         } else {
