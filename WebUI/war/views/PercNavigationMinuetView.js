@@ -44,7 +44,7 @@ $(document).ready(function() {
 function bindNavigationEvents() {
 
     $('.perc-nav-item').on('click keypress', function(event) {
-        if(event.type == 'click' || event.which == 13) {
+        if(event.type === 'click' || event.which === 13) {
             processNavigationRequest(this);
         }
     });
@@ -64,11 +64,11 @@ function bindNavigationEvents() {
 
     $('.perc-change-password-field').keyup(function() {
         password.validateNewPassword();
-    })
+    });
 
     $('.perc-submit-password-change').click(function() {
         password.submitNewPassword();
-    })
+    });
 
 }
 
@@ -115,7 +115,7 @@ function toggleNavigation() {
 *   while other overalays are open on top of the nav
 */
 function navigationEscapeListener(action) {
-    if(action == true) {
+    if(action === true) {
         $('#percNavigationBody').on('keydown', function(event) {
             if(event.key === 'Escape') {
                 $('#percToggleNavigation').trigger('click');
@@ -123,7 +123,7 @@ function navigationEscapeListener(action) {
         });
     }
     else {
-        $('#percNavigationBody').off('keydown')
+        $('#percNavigationBody').off('keydown');
     }
 }
 

@@ -30,7 +30,7 @@ var layoutModel;
     var layout;
     var requireMigration = false;
 
-    P.layoutView = function( iframe, model, layoutController, removeThis, setDirty ) {
+    P.layoutView = function( iframe, model, layoutController) {
 
         $.perc_utils.debug("Calling layoutView()");
 
@@ -101,7 +101,7 @@ var layoutModel;
                 //Note this uses allWidgetDefs to account for Pages with Widgets that have been deleted or are disabled or currently filtered in widget tray.
                 name : 'configure',
                 img : function (elem){
-                    if (allWidgetDefs[elem.attr('widgetdefid')].id == "percRawHtml")
+                    if (allWidgetDefs[elem.attr('widgetdefid')].id === "percRawHtml")
                         var imgSrc = '/cm/images/icons/editor/buttonConfigure2Gray';
                     else
                         var imgSrc = '/cm/images/icons/editor/configureInactive';
@@ -109,7 +109,7 @@ var layoutModel;
                     //if(!widgetDefs[elem.attr('widgetdefid')].hasUserPrefs)
                     if(layoutModel.isTemplate() || allWidgetDefs[elem.attr('widgetdefid')].hasUserPrefs)
                     {
-                        if (allWidgetDefs[elem.attr('widgetdefid')].id == "percRawHtml")
+                        if (allWidgetDefs[elem.attr('widgetdefid')].id === "percRawHtml")
                             var imgSrc =  '/cm/images/icons/editor/buttonConfigure2';
                         else
                             var imgSrc =  '/cm/images/icons/editor/configure';
@@ -134,7 +134,7 @@ var layoutModel;
                         assetId : widget.attr('assetid'),
                         regionId : widget.closest('.perc-region').attr('id'),
                         ownerId : widget.attr('ownerId')
-                    }
+                    };
 
                     $.perc_utils.confirm_dialog({
                         id: "convertHTMLWidget",
@@ -147,7 +147,7 @@ var layoutModel;
                         success:
                             function(){
                                 layoutController.convertHTMLWidget(widgetObj, function(status, message){
-                                    if(status == $.PercServiceUtils.STATUS_SUCCESS){
+                                    if(status === $.PercServiceUtils.STATUS_SUCCESS){
                                         refreshRender();
                                         setLayoutDirty( true );
                                     }
@@ -170,7 +170,7 @@ var layoutModel;
 
                     // elem is the DIV to which we add the menu
                     // if the DIV's parent is not a DIV, then this must be the top most DIV
-                    if($(elem).parent()[0].nodeName != "DIV")
+                    if($(elem).parent()[0].nodeName !== "DIV")
 
                     // if this is the top DIV, then we dont want to add a delete menu: return null
                         return null;
@@ -190,7 +190,7 @@ var layoutModel;
 
                     // elem is the DIV to which we add the menu
                     // if the DIV's parent is not a DIV, then this must be the top most DIV
-                    if($(elem).parent()[0].nodeName != "DIV")
+                    if($(elem).parent()[0].nodeName !== "DIV")
 
                     // if this is the top DIV, then use one delete icon
                         return '/cm/images/images/buttonConfigStandalone';
@@ -285,7 +285,7 @@ var layoutModel;
                     catch (err)
                     {
                         $.perc_utils.info(I18N.message("perc.ui.layout.view@Failed To Fill Widget") + newAsset.widgetId + I18N.message("perc.ui.layout.view@Error Is") + err);
-                        updatedHtml = $("").wrapAll("<div></div>").parent();  ;
+                        updatedHtml = $("").wrapAll("<div></div>").parent();
                     }
                     updatedHtml.find('a[tempURL]').each(function(){
                         var realURL = $(this).attr('tempURL');
@@ -339,7 +339,7 @@ var layoutModel;
             {
                 var scriptOff = I18N.message( "perc.ui.menu@JavaScript Off" );
                 var scriptOn = I18N.message( "perc.ui.menu@JavaScript On" );
-                if($(__this).text() == scriptOff)
+                if($(__this).text() === scriptOff)
                 {
                     $(__this).text(scriptOn);
                     $(__this).attr("title", "Turns on JavaScript");
@@ -414,7 +414,7 @@ var layoutModel;
         $.perc_finder().addActionListener(function(action, data) {
 
             // verify that we are deleting an asset
-            if(action == $.perc_finder().ACTIONS.DELETE && (data.type == 'asset' || data.type == 'page')) {
+            if(action === $.perc_finder().ACTIONS.DELETE && (data.type === 'asset' || data.type === 'page')) {
 
                 if (typeof(data.isOpen) != 'undefined' && data.isOpen)
                 {
@@ -424,12 +424,12 @@ var layoutModel;
 
                 // find out where we are, what view and what tab within that view
                 var currentView     = $.PercNavigationManager.getView();
-                if(currentView == $.PercNavigationManager.VIEW_DESIGN) {
+                if(currentView === $.PercNavigationManager.VIEW_DESIGN) {
                     var currentTabIndex = $("#tabs").tabs('option', 'selected');
-                    if(currentTabIndex == 2) initRender();
-                } else if(currentView  == $.PercNavigationManager.VIEW_EDITOR) {
+                    if(currentTabIndex === 2) initRender();
+                } else if(currentView  === $.PercNavigationManager.VIEW_EDITOR) {
                     var currentTabIndex = $("#perc-pageEditor-tabs").tabs('option', 'selected');
-                    if(currentTabIndex == 1) initRender();
+                    if(currentTabIndex === 1) initRender();
                 }
             }
         });
@@ -497,7 +497,7 @@ var layoutModel;
                 getFixedNoAutoResize(region);
                 // mark leaf regions
                 var subregions = region.find(".perc-region");
-                if(subregions.length == 0)
+                if(subregions.length === 0)
                     region.addClass("perc-region-leaf");
 
                 // the code below is commented for bug CML-4549
@@ -563,7 +563,7 @@ var layoutModel;
             });
 
             // show error indicator only if there are errors
-            var inEditTemplateView = $.PercNavigationManager.getView() == $.PercNavigationManager.VIEW_EDIT_TEMPLATE;
+            var inEditTemplateView = $.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDIT_TEMPLATE;
             var visibility = (checkForErrors() && inEditTemplateView)? "visible" : "hidden";
             $("#perc-error-alert").css("visibility", visibility);
             $.PercInspectionToolHandler.afterRenderCallback();
@@ -592,7 +592,7 @@ var layoutModel;
                 if(layoutModel.canOverride(this) || layoutModel.isTemplate()) {
 
                     var regionId = this.regionId;
-                    if(regionId != "percRoot") {
+                    if(regionId !== "percRoot") {
                         var region = $(iframe.contents().find('#'+regionId)[0]);
 
                         // we can only add regions in a template, not in a page
@@ -602,7 +602,7 @@ var layoutModel;
                         }
 
                         //only leaf regions should accept widget drops
-                        if (region.find(".perc-region").length == 0)
+                        if (region.find(".perc-region").length === 0)
                             addWidgetLibraryDrops( region );
                         addSorting( region );
                     }
@@ -691,9 +691,9 @@ var layoutModel;
             var regionBottom = region.offset().top + region.height();
             var widgets      = region.find(".perc-widget");
             currentDragOverRegion = regionId;
-            if(widgets.length == 0) {
+            if(widgets.length === 0) {
                 region.css("background-color","#CAF589");
-            } else if(wOverlap == 0){
+            } else if(wOverlap === 0){
                 var lastWidget = region.find(".perc-widget:last");
                 var lastWidgetId = lastWidget.attr("widgetid");
                 var offset = lastWidget.offset();
@@ -756,11 +756,11 @@ var layoutModel;
             var horizontalParent = parentRegion.hasClass("perc-horizontal");
             var isParent = region.find(".perc-region").length>0;
             $.each( dirs, function(index) {
-                if(index == AFTER && (!horizontalParent || siblingRegion.length == 0))
+                if(index === AFTER && (!horizontalParent || siblingRegion.length === 0))
                     return true;
-                if(index == BELOW && (horizontalParent || siblingRegion.length == 0))
+                if(index === BELOW && (horizontalParent || siblingRegion.length === 0))
                     return true;
-                if(index == CENTER && isParent)
+                if(index === CENTER && isParent)
                     return true;
                 // uncomment if you don't want border drop areas on leafs (Paul's suggestion)
                 // if(index >= NORTH && index <= WEST && !isParent)
@@ -808,7 +808,7 @@ var layoutModel;
                         // remove feedback when hover out but only if you've reached the top region
                         var grandParent = $(this).parent().parent()[0];
                         var grandParentTag = grandParent.tagName;
-                        if(grandParentTag == "BODY") {
+                        if(grandParentTag === "BODY") {
                             layout
                                 .find(".perc-region")
                                 .removeClass("perc-hover-region-feedback");
@@ -868,7 +868,7 @@ var layoutModel;
                     start : function(event,ui) {
                         // we'll compute the largest of the sibling heights to make them all the same
                         // we'll store them temporarily so that we can reset them when we stop sorting
-                        originalHeights = new Object();
+                        originalHeights = {};
                         // get the children of the enclosing horizontal region and iterate over the children
                         var children = $(this).find(".perc-horizontal > .perc-region");
                         // look for the biggest height
@@ -1006,7 +1006,7 @@ var layoutModel;
                 });
             }
 
-            if(curRegion.row || (curRegion.columns && curRegion.large == "large-12")){
+            if(curRegion.row || (curRegion.columns && curRegion.large === "large-12")){
                 regionResizing.css("border","1px solid #33C9ED");
                 return;
             }
@@ -1018,7 +1018,7 @@ var layoutModel;
             var position = layoutModel.getRegionPosition(regionId);
             //Only east side of the border is used for resizing.
             //Avoid resizing of the last child, if both current child and next child have size of 1 we can't resize.
-            if(position == parentReg.children.length - 1 || (nextRegion!=null && (curRegion.large=="large-1" && nextRegion.large == "large-1")))
+            if(position === parentReg.children.length - 1 || (nextRegion!=null && (curRegion.large==="large-1" && nextRegion.large === "large-1")))
                 return;
             var curRegWidth = regionResizing.outerWidth();
             var nextRegWidth = regionResizing.next().outerWidth();
@@ -1049,8 +1049,8 @@ var layoutModel;
                     });
                     regL = Math.round(regionResizing.outerWidth()/minw);
                     regR = Math.round(regionResizing.next().outerWidth()/minw);
-                    regL = regL==0?1:regL;
-                    regR = regR==0?1:regR;
+                    regL = regL===0?1:regL;
+                    regR = regR===0?1:regR;
                     var lCols = parseInt(curRegion.large.split("-")[1],10);
                     var rCols = parseInt(nextRegion.large.split("-")[1],10);
                     if((lCols + rCols) > (regL + regR)){
@@ -1075,7 +1075,7 @@ var layoutModel;
          */
         function getFixedNoAutoResize(activeRegion){
             var noautoresize = activeRegion.attr("noautoresize");
-            if(noautoresize != undefined){
+            if(noautoresize !== undefined){
                 //remove the bad attribute
                 activeRegion.removeAttr("noautoresize");
                 activeRegion.attr("data-noautoresize",noautoresize);
@@ -1094,7 +1094,7 @@ var layoutModel;
             var noautoresize = getFixedNoAutoResize(regionResizing);
 
 
-            if(noautoresize == "true") {
+            if(noautoresize === "true") {
                 regionResizing.css("border","1px solid #33C9ED");
                 return;
             }
@@ -1112,7 +1112,7 @@ var layoutModel;
                     // get the sibling
                     rightSiblingRegion = regionResizing.next();
                     // if the sibling is not auto resizable, return
-                    if(getFixedNoAutoResize(rightSiblingRegion) == "true")
+                    if(getFixedNoAutoResize(rightSiblingRegion) === "true")
                         return;
                     // calculate the total width of this regionResizing plus sibling
                     totalSize = regionResizing.width() + rightSiblingRegion.width();
@@ -1125,7 +1125,7 @@ var layoutModel;
                     // as we resize, change also the sibling's width
                     rightSiblingRegion = regionResizing.next();
                     // if the sibling is not auto resizable, return
-                    if(getFixedNoAutoResize(rightSiblingRegion) == "true")
+                    if(getFixedNoAutoResize(rightSiblingRegion) === "true")
                         return;
                     ratio = ui.size.width / totalSize;
                     rightSiblingRegion.width( totalSize - regionResizing.width() );
@@ -1139,10 +1139,10 @@ var layoutModel;
                         this.height = ui.size.height;
                     });
                     if(regionResizing.parent().hasClass("perc-horizontal")) {
-                        if(getFixedNoAutoResize(rightSiblingRegion) == "true")
+                        if(getFixedNoAutoResize(rightSiblingRegion) === "true")
                             return;
                         // if the width changed, update the sibling's width as well
-                        if(ui.originalSize.width != ui.size.width){
+                        if(ui.originalSize.width !== ui.size.width){
                             layoutModel.editRegion(rightSiblingRegion.attr("id"), function(){
                                 this.width = totalSize - ui.size.width;
                             });
@@ -1226,7 +1226,7 @@ var layoutModel;
             deleteRegionDialog.parent().find('.perc-ok').unbind().click( function() {
 
                 // if OK, then find out what their choice was to delete or not the content
-                var deleteContent = $('#perc-delete-content-choice:checked').length!=0;
+                var deleteContent = $('#perc-delete-content-choice:checked').length!==0;
 
                 layoutController.removeRegion( regionId, deleteContent );
 
@@ -1246,12 +1246,12 @@ var layoutModel;
             var childRegionCount  = $(regionDiv).children().children(".perc-region").length;
             var widgetCount       = $(regionDiv).children().children(".perc-widget").length;
             var siblingCount      = $(parentDiv).children(".perc-region").length;
-            var hasOneChildRegion = childRegionCount == 1;
-            var isLeaf            = childRegionCount == 0;// && widgetCount == 0;
-            var isOnlyChild       = siblingCount == 1;
+            var hasOneChildRegion = childRegionCount === 1;
+            var isLeaf            = childRegionCount === 0;// && widgetCount == 0;
+            var isOnlyChild       = siblingCount === 1;
             var hasWidgets        = widgetCount > 0;
             var hasSiblings       = siblingCount > 1;
-            var hasSameDirectionAsParent = isRegionVertical == isParentVertical;
+            var hasSameDirectionAsParent = isRegionVertical === isParentVertical;
 
             // find out if the content of the region being deleted can be salvaged at all
             // if it's a leaf it cant be salvaged because there is no content
@@ -1272,10 +1272,10 @@ var layoutModel;
             var widgetId = elem.attr('widgetid'), widgetDefinitionId = elem.attr('widgetdefid');
             var setProp = function(name,value) {
                 layoutModel.editWidget( widgetId, function() {
-                    if (name == "sys_perc_name"){
+                    if (name === "sys_perc_name"){
                         this.name = value;
                     }
-                    else if (name == "sys_perc_description"){
+                    else if (name === "sys_perc_description"){
                         this.description = value;
                     }
                     else {
@@ -1327,7 +1327,7 @@ var layoutModel;
                     {
                         self.addClass("perc-widget-transperant");
                     }
-                    else if (layoutModel.isTemplate() && assetid != "" && !(widgetid in specialWidgets.ContentWidgets))
+                    else if (layoutModel.isTemplate() && assetid !== "" && !(widgetid in specialWidgets.ContentWidgets))
                     {
                         self.addClass("perc-widget-transperant");
                     }
@@ -1372,7 +1372,7 @@ var layoutModel;
         }
         function addWidgetInfoToolTips(widgetDefs){
             var cb = function(status, results){
-                if (status == $.PercServiceUtils.STATUS_ERROR) {
+                if (status === $.PercServiceUtils.STATUS_ERROR) {
                     var defMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
                     $.perc_utils.debug(I18N.message("perc.ui.publish.title@Error") + defMsg);
                     return;
@@ -1397,7 +1397,7 @@ var layoutModel;
 
                 });
 
-            }
+            };
             var url = $.perc_paths.WIDGET_INFO;
             var widgetIds = [];
             for(var i in widgetDefs)
@@ -1422,12 +1422,12 @@ var layoutModel;
             $.each($('.perc-widget-list .perc-widget-tool'), function(i, widget){
                 if (typeof($(widget).data('widget').type) != "undefined") {
                     var type = $(widget).data('widget').type;
-                    if (type.toLowerCase() == "custom"){
+                    if (type.toLowerCase() === "custom"){
                         var category = $(widget).data('widget').category;
                         if (typeof(category) != "undefined"){
                             $.each(category.split(","), function(index,value){
-                                if (value != "" && $.inArray(value, customCategories) == -1) { customCategories.push(value); }
-                            })
+                                if (value !== "" && $.inArray(value, customCategories) === -1) { customCategories.push(value); }
+                            });
                         }
                     }
                 }
@@ -1439,20 +1439,20 @@ var layoutModel;
 
             //Determine the options for the category filter
             $('.perc-widget-category-custom').remove();
-            if (typeSelected == "all"){
+            if (typeSelected === "all"){
                 $('.perc-widget-category-predefined').show();
                 if (customCategories.length>0){
                     categoryFilter.append($('<option />').addClass('perc-widget-category-custom').val('other').text('Other'));
                 }
             }
-            if (typeSelected == "percussion" || typeSelected == "community"){
+            if (typeSelected === "percussion" || typeSelected === "community"){
                 $('.perc-widget-category-predefined').show();
             }
-            if (typeSelected == "custom"){
+            if (typeSelected === "custom"){
                 $('.perc-widget-category-predefined').hide();
                 $.each(customCategories, function(index, value){
                     categoryFilter.append($('<option />').addClass('perc-widget-category-custom').val(value).text(value.charAt(0).toUpperCase() + value.slice(1)));
-                })
+                });
             }
         }
 
@@ -1475,10 +1475,10 @@ var layoutModel;
          */
         function containsCategory(widget){
             var selectedCategory = $('.perc-widget-category').val();
-            if (selectedCategory == "all") { return true; }
-            if (selectedCategory == "other"){
+            if (selectedCategory === "all") { return true; }
+            if (selectedCategory === "other"){
                 var type = $(widget).data('widget').type;
-                return (type.toLowerCase() == "custom");
+                return (type.toLowerCase() === "custom");
             }
             if(typeof($(widget).data('widget').category) == 'undefined') { return false; }
             var category = $(widget).data('widget').category.split(",");
@@ -1486,17 +1486,17 @@ var layoutModel;
             $('.perc-widget-category-predefined').text(function(i, text){
                 predefinedCategories[i] = text.toLowerCase();
             });
-            return ($.inArray(selectedCategory, category) != -1);
+            return ($.inArray(selectedCategory, category) !== -1);
         }
 
-        var regionOverflows = new Object();
+        var regionOverflows = {};
         function hideRegionOverflow() {
             // grab all the regions
             var regiones = iframe[0].contentWindow.$(".perc-region");
 
             // store their overflows temporarily
             // and override the overflows to hidden
-            regionOverflows = new Object();
+            regionOverflows = {};
             regiones.each(function(){
                 var regionId  = $(this).attr("id");
                 var reg = iframe[0].contentWindow.$(this);
@@ -1751,7 +1751,7 @@ var layoutModel;
          */
         function highlightRegionWidgetDrop(region) {
             var childWidgets = region.find(".perc-widget");
-            if(childWidgets.length == 0) {
+            if(childWidgets.length === 0) {
                 highlightTopOfRegion(region);
             } else {
                 var lastWidget = $(childWidgets[childWidgets.length-1]);
@@ -1872,7 +1872,7 @@ var layoutModel;
             layoutModel.eachRegion(function(){
                 if (layoutModel.canOverride(this) || layoutModel.isTemplate()) {
                     var regionId = this.regionId;
-                    if (regionId != "percRoot") {
+                    if (regionId !== "percRoot") {
                         var region = $(iframe.contents().find('#' + regionId)[0]);
 
                         // we can only add regions in a template, not in a page
@@ -1915,13 +1915,13 @@ var layoutModel;
             insideIframe(region).sortable({
                 disabled: status,
                 enable: !status
-            })
+            });
         }
         function removeResizing(regionResizing, status){
             insideIframe(regionResizing).resizable({
                 disabled: status,
                 enable: !status
-            })
+            });
         }
 
         $("#perc-error-alert").unbind().click(function(){
@@ -1945,7 +1945,7 @@ var layoutModel;
                 try {
                     var myrules = ss[i].cssRules ? ss[i].cssRules : ss[i].rules;
                     var cssRulesSize = myrules.length;
-                    if (cssRulesSize == 0) {
+                    if (cssRulesSize === 0) {
                         return true;
                     }
                 }
