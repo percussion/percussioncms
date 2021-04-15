@@ -6,8 +6,8 @@ import com.percussion.pso.relationshipbuilder.exit.PSExtensionHelper;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import junit.framework.TestCase;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -23,7 +23,7 @@ import java.util.Set;
 
 import static org.custommonkey.xmlunit.XMLAssert.*;
 
-public class PSExtensionHelperTest extends TestCase
+public class PSExtensionHelperTest
 {
 
    private Set<Integer> m_output;
@@ -31,7 +31,7 @@ public class PSExtensionHelperTest extends TestCase
    /* (non-Javadoc)
     * @see junit.framework.TestCase#setUp()
     */
-   @Override
+   @Before
    protected void setUp() throws Exception
    {
       m_output = new HashSet<Integer>();
