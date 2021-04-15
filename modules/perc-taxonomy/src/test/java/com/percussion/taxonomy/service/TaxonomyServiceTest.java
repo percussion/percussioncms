@@ -43,10 +43,12 @@ import com.percussion.taxonomy.repository.VisibilityServiceInf;
 import com.percussion.webservices.security.IPSSecurityWs;
 import com.percussion.webservices.security.PSSecurityWsLocator;
 import org.apache.cactus.ServletTestCase;
+import com.percussion.utils.testing.IntegrationTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -66,6 +68,7 @@ import static java.util.Arrays.asList;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 
+@Category(IntegrationTest.class)
 public class TaxonomyServiceTest extends ServletTestCase
 {
    private AttributeServiceInf attributeService;
