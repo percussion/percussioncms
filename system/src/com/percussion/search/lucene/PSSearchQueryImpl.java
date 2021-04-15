@@ -199,7 +199,6 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
    {
       boolean addGlobalBooleanQR = false;
       boolean addFullBooleanQR = false;
-      Query fqr = null;
       Query qr = null;
 
       String langString = (String) props
@@ -233,6 +232,7 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
       }
 
       Iterator iter = fieldQueries.keySet().iterator();
+      BooleanQuery.Builder builder = new BooleanQuery.Builder();
       while (iter.hasNext())
       {
          String fn = (String) iter.next();
@@ -240,14 +240,12 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
          if (StringUtils.isNotBlank(fq))
          {
             QueryParser fqp = new QueryParser(fn, an);
-            fqr = fqp.parse(fq);
-            if(fqr!=null)
-               addFullBooleanQR = true;
+            //CMS-7921 : The multiple search parameters were overwritten. Only last one was considered by lucene search query.
+            //The changes in this file in this commit is to fix that.
+            Query query = fqp.parse(fq);
+            builder.add(query, Occur.MUST);
          }
       }
-      BooleanQuery.Builder builder = new BooleanQuery.Builder();
-      if(addFullBooleanQR)
-         builder.add(new BooleanClause(fqr, Occur.MUST));
 
       if(addGlobalBooleanQR)
          builder.add(new BooleanClause(qr, Occur.MUST));
