@@ -66,7 +66,7 @@
        // after whole form has loaded, override the workflowid, add url filter to name field
        frame.load(function()
        {
-           if(initialized == false){
+           if(initialized === false){
                initialized = true;
                onIntialFrameLoad();
            }
@@ -81,15 +81,15 @@
         // render the save button
        if(newAsset)
        {
-           var menuId = $("#perc-layout-menu").length > 0 
-              ? '#perc-layout-menu' 
+           var menuId = $("#perc-layout-menu").length > 0 ?
+               '#perc-layout-menu'
               : '#perc-content-menu';
            $(menuId).html("");
            $('<button name="perc_wizard_save" class="btn btn-primary" id="perc-save-content" style="float:right; background-color: #00a8df; border-color: #00a3d9; color: #ffffff; border-radius: 4px; display:inline-block; cursor:pointer; padding-top: 6px; padding-bottom: 6px; padding-left: 12px; padding-right: 12px; text-align: center; font: 13.333px Arial !important; font-weight: normal; white-space: normal; vertical-align: middle; margin-top:11.5px; borer-style:outset; border-width:2px;">' +I18N.message("perc.ui.common.label@Save")+' </button>')
                .appendTo(menuId);
    
            // render cancel button
-           $('<button class="btn btn-primary" id="perc-cancel-content"style="float:right; background-color: #00a8df; border-color: #00a3d9; color: #ffffff; border-radius: 4px; display:inline-block; cursor:pointer; padding-top: 6px; padding-bottom: 6px; padding-left: 12px; padding-right: 12px; text-align: center; font: 13.333px Arial !important; font-weight: normal; white-space: normal; vertical-align: middle;margin-top:11.5px; borer-style:outset; border-width:2px ">' +I18N.message("perc.ui.change.pw@Close") +  '</button>')
+           $('<button class="btn btn-primary" id="perc-cancel-content" style="float:right; background-color: #00a8df; border-color: #00a3d9; color: #ffffff; border-radius: 4px; display:inline-block; cursor:pointer; padding-top: 6px; padding-bottom: 6px; padding-left: 12px; padding-right: 12px; text-align: center; font: 13.333px Arial !important; font-weight: normal; white-space: normal; vertical-align: middle;margin-top:11.5px; borer-style:outset; border-width:2px ">' +I18N.message("perc.ui.change.pw@Close") +  '</button>')
                .appendTo(menuId);
    
            // submit the form when save button is clicked
@@ -106,7 +106,7 @@
    }
    function onLaterFrameLoads(){
        //Make sure there are no errors.
-       if(frame.contents().find("#perc-content-edit-errors").length == 0)
+       if(frame.contents().find("#perc-content-edit-errors").length === 0)
        {
           if(newAsset)
           {
@@ -117,7 +117,7 @@
           {
              $.PercPathService.getPathItemById($.PercNavigationManager.getId(), 
                 function(status, result){
-                   if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                   if(status === $.PercServiceUtils.STATUS_SUCCESS)
                    {
                       var name = result.PathItem.name;
                       $.PercNavigationManager.setReopenAllowed(true);
@@ -242,10 +242,10 @@
       }
  
       form.find("[type=text]").keypress(function(event) {
-         if(event.keyCode == 13)
+         if(event.keyCode === 13)
          {
             return false;
-         };
+         }
       });
     }
 
@@ -259,7 +259,7 @@
     {
       // a hidden field contains the content id, retrieve it
       var assetContentId = frame.contents().find("[name=sys_contentid]").val();
-      if(assetContentId == "")
+      if(assetContentId === "")
       {
          $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: I18N.message("perc.ui.iframe.view@Unable To Create Asset")});
          return;
