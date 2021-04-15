@@ -50,24 +50,24 @@
             // create the perc_dialog with a placeholder for the selectable items
             // selectable items will go in the div with class .perc-items
             // the items are inserted by the controller
-            dialog = $("<div>"
-                + "<p class='perc-field-error' id='perc-save-error'></p>"
-                + "<form action='' method='GET'> "
-                + "  <label for='perc-select-template'>"+ I18N.message( "perc.ui.newassetdialog.label@Select Asset Type" ) + ": </label><br/>"
-                + "  <a class='prevPage browse left' style = 'margin:21px 0px 30px 0px'></a>"
-                + "  <div class='perc-scrollable' style = 'height:64px'>"
-                + "    <input type='hidden' id='perc-select-template'   name='template'/>"
-                + "    <input type='hidden' id='perc-editor-url'        name='url'/>"
-                + "    <input type='hidden' id='perc-workflow-id'       name='workflowId'/>"
+            dialog = $("<div>" +
+                 "<p class='perc-field-error' id='perc-save-error'></p>" +
+                 "<form action='' method='GET'> " +
+                 "  <label for='perc-select-template'>"+ I18N.message( "perc.ui.newassetdialog.label@Select Asset Type" ) + ": </label><br/>" +
+                 "  <a class='prevPage browse left' style = 'margin:21px 0px 30px 0px'></a>" +
+                 "  <div class='perc-scrollable' style = 'height:64px'>" +
+                 "    <input type='hidden' id='perc-select-template'   name='template'/>" +
+                 "    <input type='hidden' id='perc-editor-url'        name='url'/>" +
+                 "    <input type='hidden' id='perc-workflow-id'       name='workflowId'/>" +
                 // here is where the items will be inserted by the controller
-                + "    <div class='perc-items'>"
-                + "    </div>"
-                + "  </div>"
-                + "  <a class='nextPage browse right'style = 'margin:21px 0px 30px 0px' ></a>"
-                + "  <div class='ui-layout-south'>"
-                + "    <div id='perc_buttons' style='z-index: 100;'></div>"
-                + "  </div>"
-                + "</form></div>")
+                 "    <div class='perc-items'>" +
+                 "    </div>" +
+                 "  </div>" +
+                 "  <a class='nextPage browse right' style = 'margin:21px 0px 30px 0px' ></a>" +
+                 "  <div class='ui-layout-south'>" +
+                 "    <div id='perc_buttons' style='z-index: 100;'></div>" +
+                 "  </div>" +
+                 "</form></div>")
                 .perc_dialog(
                     {
                         title: I18N.message( "perc.ui.newassetdialog.title@New Asset" ),
@@ -103,7 +103,7 @@
                                             {
                                                 var bookmark = $.PercNavigationManager.getBookmark();
                                                 var last = $.PercNavigationManager.getMemento().lastLocation;
-                                                if (decodeURIComponent(bookmark) != last)
+                                                if (decodeURIComponent(bookmark) !== last)
                                                 {
                                                     window.location.href = last;
                                                 }
@@ -270,11 +270,11 @@
             $.perc_filterField(ti, slash_filter);
             $.perc_filterField(url, url_filter);
             $.perc_filterField('#perc-page-linktitle', slash_filter);
-        }// End open dialog
+        };// End open dialog
 
         $.PercNewAssetDialog.openViewer = function(folderPath,widgetId){
             $.PercAssetService.getAssetEditorForWidgetAndFolder(folderPath, widgetId, function(status, result){
-                if(status == $.PercServiceUtils.STATUS_ERROR){
+                if(status === $.PercServiceUtils.STATUS_ERROR){
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: I18N.message("perc.ui.new.asset.dialog@Unknown Error Asset")});
                     return;
                 }
@@ -307,15 +307,15 @@
                 });
 
             });
-        }
+        };
 
         function check_for_dirty_page()
         {
             $.PercFolderHelper().getAccessLevelByPath(finderPath.join('/'),false,function(status, result){
-                if(status == $.PercFolderHelper().PERMISSION_ERROR || result == $.PercFolderHelper().PERMISSION_READ)
+                if(status === $.PercFolderHelper().PERMISSION_ERROR || result === $.PercFolderHelper().PERMISSION_READ)
                 {
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.page.general@Warning"), content: I18N.message("perc.ui.new.asset.dialog@Permission For Asset")});
-                    return;
+
                 }
                 else
                 {
@@ -324,20 +324,20 @@
                     if (currentItem != null){
                         folderPath = currentItem.folderPaths;
                         //if the current item is a Folder select the current path.
-                        if (currentItem.type == "Folder"){
+                        if (currentItem.type === "Folder"){
                             folderPath = currentItem.folderPath;
                         }
                     }
                     $.PercUserService.getAccessLevel(null,-1,function(status, result){
-                        if(status == $.PercServiceUtils.STATUS_ERROR || result == $.PercUserService.ACCESS_READ || result == $.PercUserService.ACCESS_NONE)
+                        if(status === $.PercServiceUtils.STATUS_ERROR || result === $.PercUserService.ACCESS_READ || result === $.PercUserService.ACCESS_NONE)
                         {
                             $.perc_utils.alert_dialog({title: I18N.message("perc.ui.new.asset.dialog@New Asset"), content: I18N.message("perc.ui.new.asset.dialog@Not Authorized Asset")});
-                            return;
+
                         }
                         else
                         {
                             contentViewer.confirm_if_dirty(function(){
-                                if($.PercNavigationManager.getView() == $.PercNavigationManager.VIEW_EDIT_ASSET)
+                                if($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDIT_ASSET)
                                     $.PercNavigationManager.clearMemento();
                                 $.PercNavigationManager.goToLocation(
                                     $.PercNavigationManager.VIEW_EDIT_ASSET,
@@ -357,16 +357,16 @@
 
         function createAssetEditorEntry(assetEditor)
         {
-            var temp =    "<div class='item' for='@ITEM_ID@'>"
-                + "   <div class='item-id'>@ITEM_ID@</div>"
-                + "   <div class='item-editor-url'>@ITEM_URL@</div>"
-                + "   <div class='item-workflow-id'>@ITEM_WORKFLOW_ID@</div>"
-                + "   <table style='vertical-align:middle'>"
-                + "       <tr><td align='center' valign='middle'>"
-                + "           <img src='/Rhythmyx@IMG_SRC@'/>"
-                + "       </td><td style='vertical-align:middle'><span>@ITEM_LABEL@</span></td></tr>"
-                + "   </table>"
-                + "</div>";
+            var temp =    "<div class='item' for='@ITEM_ID@'>" +
+                 "   <div class='item-id'>@ITEM_ID@</div>" +
+                 "   <div class='item-editor-url'>@ITEM_URL@</div>" +
+                 "   <div class='item-workflow-id'>@ITEM_WORKFLOW_ID@</div>" +
+                 "   <table style='vertical-align:middle'>" +
+                 "       <tr><td align='center' valign='middle'>" +
+                 "           <img src='/Rhythmyx@IMG_SRC@'/>" +
+                 "       </td><td style='vertical-align:middle'><span>@ITEM_LABEL@</span></td></tr>" +
+                 "   </table>";
+                 "</div>";
             return temp.replace(/@IMG_SRC@/, assetEditor.icon)
                 .replace(/@ITEM_ID@/g, assetEditor.title)
                 .replace(/@ITEM_URL@/, assetEditor.url)
@@ -380,17 +380,17 @@
             return $.deparam.querystring().path;
         }
 
-        var newAssetButton = $('<a id="mcol-new-asset" class="perc-font-icon" title="'+I18N.message("perc.ui.new.asset.dialog@Click New Asset")+'"href="#" class="ui-disabled"><span class="icon-plus"></span><span class="icon-file-alt"></span></a>').perc_button();
+        var newAssetButton = $('<a id="mcol-new-asset" class="perc-font-icon" title="'+I18N.message("perc.ui.new.asset.dialog@Click New Asset")+'" href="#" class="ui-disabled"><span class="icon-plus"></span><span class="icon-file-alt"></span></a>').perc_button();
         function updateBtn(path)
         {
             finderPath = path;
 
             // If current view is Search then keep the button disabled (since no path to create is defined in Finder)
-            if ($.Percussion.getCurrentFinderView() == $.Percussion.PERC_FINDER_SEARCH_RESULTS || $.Percussion.getCurrentFinderView() == $.Percussion.PERC_FINDER_RESULT)
+            if ($.Percussion.getCurrentFinderView() === $.Percussion.PERC_FINDER_SEARCH_RESULTS || $.Percussion.getCurrentFinderView() === $.Percussion.PERC_FINDER_RESULT)
             {
                 enableButton(false);
             }
-            else if(path[1] == $.perc_paths.ASSETS_ROOT_NO_SLASH)
+            else if(path[1] === $.perc_paths.ASSETS_ROOT_NO_SLASH)
             {
                 newAssetButton.show();
                 enableButton(true);
@@ -401,7 +401,7 @@
                 else
                 {
                     $.PercFolderHelper().getAccessLevelByPath(path.join('/'),true,function(status, result){
-                        if(status == $.PercFolderHelper().PERMISSION_ERROR || result == $.PercFolderHelper().PERMISSION_READ)
+                        if(status === $.PercFolderHelper().PERMISSION_ERROR || result === $.PercFolderHelper().PERMISSION_READ)
                         {
                             enableButton(false);
                         }
@@ -410,7 +410,7 @@
             }
             else
             {
-                if(path[1] == $.perc_paths.DESIGN_ROOT_NO_SLASH || path[1] == $.perc_paths.SITES_ROOT_NO_SLASH || path[1] == $.perc_paths.RECYCLING_ROOT_NO_SLASH)
+                if(path[1] === $.perc_paths.DESIGN_ROOT_NO_SLASH || path[1] === $.perc_paths.SITES_ROOT_NO_SLASH || path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH)
                 {
                     newAssetButton.hide();
                 }
