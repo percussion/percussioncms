@@ -37,7 +37,7 @@
         var shouldPurge = path.indexOf($.perc_paths.RECYCLING_ROOT_NO_SLASH) !== -1;
 
         var title;
-        if (type == "section")
+        if (type === "section")
         {
             title = I18N.message( "perc.ui.finder.section.delete@Title" );
         }
@@ -82,11 +82,11 @@
 	 */
 	function cbDfileErrors(errors) {
 		var errorMsg = $.PercServiceUtils.extractDefaultErrorMessage(errors);
-		var defMessage = I18N.message("perc.ui.web.resources.service@Could Not Delete File")
+		var defMessage = I18N.message("perc.ui.web.resources.service@Could Not Delete File");
 		$.perc_utils.alert_dialog({
 			id : 'perc-finder-delete-error',
 			title : I18N.message("perc.ui.web.resources.service@Delete File Error"),
-			content : (errorMsg != "") ? errorMsg : defMessage
+			content : (errorMsg !== "") ? errorMsg : defMessage
 		});
 	}
 
@@ -95,9 +95,9 @@
 	 */
 	function createDelWarning(name) {
 		var confirm;
-		var middle = "";
+		var middle;
 
-		// type == fsfile
+		// type === fsfile
 		middle = "perc.ui.finder.fsfile.delete@Filename";
 		confirm = "perc.ui.finder.fsfile.delete@Confirm";
 
@@ -122,7 +122,7 @@
                       $.perc_paths.WEBRESOURCESMGT + path,
                       false,
                       function(status, result) {
-                          if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                          if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                               callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                           } else {
                               cbDfileErrors(result.request);

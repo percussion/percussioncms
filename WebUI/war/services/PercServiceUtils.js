@@ -137,7 +137,7 @@
             url: url,
             headers: {"perc-version": version},
             success: function (data, textstatus) {
-                var result = {
+                let result = {
                     data: data,
                     textstatus: textstatus
                 };
@@ -146,7 +146,7 @@
             error: function (request, textstatus, error) {
                 // look for status 204 which should not be an error
                 if (request.status === 204 || request.status === 1223) {
-                    var result = {
+                    let result = {
                         data: {},
                         textstatus: request.statusText
                     };
@@ -182,7 +182,7 @@
     function makeRequest(url, type, sync, callback, dataObject, contentType, dataType, noEscape, abortCallback) {
         var self = this;
         var version = $.isFunction($.getCMSVersion) ? $.getCMSVersion() : "";
-        if (dataType == null || typeof dataType == "undefined") {
+        if (dataType === null || typeof dataType === "undefined") {
             dataType = "text";
 
         }
@@ -202,7 +202,7 @@
             url: (noEscape) ? url : escape(url),
             headers: {"perc-version": version},
             success: function (data, textstatus) {
-                var result = {
+                let result = {
                     data: data,
                     textstatus: textstatus
                 };
@@ -211,7 +211,7 @@
             error: function (request, textstatus, error) {
                 // look for status 204 which should not be an error
                 if (request.status === 204 || request.status === 1223) {
-                    var result = {
+                    let result = {
                         data: {},
                         textstatus: request.statusText
                     };
@@ -274,7 +274,7 @@
             alert("Invalid type specified, must be GET or POST.");
             return;
         }
-        if (null == servicebase || 'undefined' == typeof (servicebase)) {
+        if (null === servicebase || 'undefined' === typeof (servicebase)) {
             // Let's see if jQuery.getDeliveryServiceBase exists and 
             // if so use it to get the service base
             if ('function' === typeof (jQuery.getDeliveryServiceBase)) {
@@ -591,7 +591,7 @@
                 msie: /msie/.test(ua) && !/opera/.test(ua)
             };
             //IE handles this differently from all other browsers, of course
-            if (b.msie && !error && typeof(request.responseText) == 'string' && request.responseText.length > 0) {
+            if (b.msie && !error && typeof(request.responseText) === 'string' && request.responseText.length > 0) {
                 return request.responseText;
             }
         }
@@ -639,7 +639,7 @@
         if (typeof(request.responseText) != 'undefined' && request.responseText.indexOf('<?xml') !== -1) {
             xmlResponse = $(request.responseText);
         }
-        else if (typeof(request) == 'string' && request.indexOf('<?xml') !== -1) {
+        else if (typeof(request) === 'string' && request.indexOf('<?xml') !== -1) {
             xmlResponse = $(request);
         }
         if (typeof(xmlResponse) != 'undefined' && xmlResponse.is('ValidationErrors')) {
