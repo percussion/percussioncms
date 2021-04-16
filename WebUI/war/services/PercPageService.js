@@ -77,7 +77,7 @@
         var url = $.perc_paths.CLEAR_MIGRATION_EMPTY_FLAG + "/" + contentId;
         function serviceCallback (status, results)
         {
-            //if (status == service.STATUS_ERROR)
+            //if (status === service.STATUS_ERROR)
             //{
                 // nothing to do in case of error
             //}
@@ -149,9 +149,9 @@
      */                   
     function getNonSEOPages(path, workflow, state, severity, keyword, callback)
     {
-       if(state == null)
+       if(state === null)
           state = "";
-       if(keyword == null)
+       if(keyword === null)
           keyword = "";   
        var obj = {NonSEOPagesRequest: {
           keyword: keyword,
@@ -166,7 +166,7 @@
           false,
           function(status, result)
           {
-             if(status == $.PercServiceUtils.STATUS_SUCCESS)
+             if(status === $.PercServiceUtils.STATUS_SUCCESS)
              {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
              }
@@ -190,7 +190,7 @@
        var getUrl = $.perc_paths.SAVE_PAGE_METADATA + "/" + pageId;
        
        var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false,[results.request,results.textstatus,results.error]);
             }
@@ -198,7 +198,7 @@
             {
                 callback(true,results.data);
             }
-        }        
+        };        
         $.PercServiceUtils.makeRequest(getUrl, $.PercServiceUtils.TYPE_POST, true, serviceCallback);
 
     }     
@@ -217,7 +217,7 @@
             $.PercServiceUtils.TYPE_POST,
             true,
             function(status, result){
-                if(status == $.PercServiceUtils.STATUS_SUCCESS){
+                if(status === $.PercServiceUtils.STATUS_SUCCESS){
                     callback($.PercServiceUtils.STATUS_SUCCESS, result);
                 } else {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
@@ -267,7 +267,7 @@
             false,
             function(status, result)
             {
-                if (status == $.PercServiceUtils.STATUS_ERROR)
+                if (status === $.PercServiceUtils.STATUS_ERROR)
                 {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
@@ -288,7 +288,7 @@
             false,
             function(status, result)
             {
-                if (status == $.PercServiceUtils.STATUS_ERROR)
+                if (status === $.PercServiceUtils.STATUS_ERROR)
                 {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
@@ -315,7 +315,7 @@
             false,
             function(status, result)
             {
-                if (status == $.PercServiceUtils.STATUS_ERROR)
+                if (status === $.PercServiceUtils.STATUS_ERROR)
                 {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
@@ -342,7 +342,7 @@
             false,
             function(status, result)
             {
-                if (status == $.PercServiceUtils.STATUS_ERROR)
+                if (status === $.PercServiceUtils.STATUS_ERROR)
                 {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
@@ -369,7 +369,7 @@
             false,
             function(status, result)
             {
-                if (status == $.PercServiceUtils.STATUS_ERROR)
+                if (status === $.PercServiceUtils.STATUS_ERROR)
                 {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
@@ -395,7 +395,7 @@
             false,
             function(status, result)
             {
-                if (status == $.PercServiceUtils.STATUS_ERROR)
+                if (status === $.PercServiceUtils.STATUS_ERROR)
                 {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
