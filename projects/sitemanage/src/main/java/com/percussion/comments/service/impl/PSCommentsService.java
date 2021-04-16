@@ -23,11 +23,14 @@
  */
 package com.percussion.comments.service.impl;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.notNull;
-
-import com.percussion.comments.data.*;
+import com.percussion.comments.data.PSComment;
+import com.percussion.comments.data.PSCommentIds;
+import com.percussion.comments.data.PSCommentList;
+import com.percussion.comments.data.PSCommentModeration;
+import com.percussion.comments.data.PSCommentsDefaultModerationState;
+import com.percussion.comments.data.PSCommentsSummary;
+import com.percussion.comments.data.PSCommentsSummaryList;
+import com.percussion.comments.data.PSSiteComments;
 import com.percussion.comments.service.IPSCommentsService;
 import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
 import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
@@ -44,28 +47,36 @@ import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSiteSummary;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONNull;
+import net.sf.json.JSONObject;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONNull;
-import net.sf.json.JSONObject;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * @author davidpardini
@@ -233,8 +244,10 @@ public class PSCommentsService implements IPSCommentsService
 
         String adminURl= pubServerService.getDefaultAdminURL(site);
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_COMMENTS,null,adminURl);
-        if (server == null)
-            throw new RuntimeException("Cannot find server with service of: " + PSDeliveryInfo.SERVICE_COMMENTS);
+        if (server == null) {
+            log.warn("Cannot find service of: {}", PSDeliveryInfo.SERVICE_COMMENTS);
+            return aggregatedComments;
+        }
 
         JSONObject postJson = new JSONObject();
         postJson.element("site", site);
@@ -299,9 +312,10 @@ public class PSCommentsService implements IPSCommentsService
             String adminURl= pubServerService.getDefaultAdminURL(site);
             PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_COMMENTS,null,adminURl);
 
-            //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_COMMENTS);
-            if (server == null)
-                throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_COMMENTS);
+            if (server == null) {
+                log.warn("Cannot find service of: {}", PSDeliveryInfo.SERVICE_COMMENTS);
+                return;
+            }
 
             // deletes
             if (!CollectionUtils.isEmpty(commentModeration.getDeletes()))
@@ -340,7 +354,11 @@ public class PSCommentsService implements IPSCommentsService
         {
             String adminURl= pubServerService.getDefaultAdminURL(data.getSite());
             PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_COMMENTS,null,adminURl);
-            //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_COMMENTS);
+            if(server == null){
+                log.warn("Cannot find service of: {}", PSDeliveryInfo.SERVICE_COMMENTS);
+                return;
+            }
+
             PSDeliveryClient deliveryClient = new PSDeliveryClient();
             deliveryClient.setLicenseOverride(licenseId);
 
@@ -350,11 +368,10 @@ public class PSCommentsService implements IPSCommentsService
             deliveryClient.push(new PSDeliveryActionOptions(server, COMMENT_DEFAULT_MODERATION_STATE_PATH,
                     HttpMethodType.PUT, true), setState.toString());
         }
-        // TODO: add more specific exception handlers. Can't right now because delivery tier hides them
         catch (Exception e)
         {
-            log.error("An unknown error occurred while retrieving the default moderation setting: ",e);
-            throw new RuntimeException("An unknown error occurred while retrieving the default moderation setting");
+            log.error("An unknown error occurred while retrieving the default moderation setting: {}",e.getMessage());
+            throw new WebApplicationException(e);
         }
     }
 
@@ -367,6 +384,10 @@ public class PSCommentsService implements IPSCommentsService
         {
             String adminURl= pubServerService.getDefaultAdminURL(site);
             PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_COMMENTS,null,adminURl);
+            if(server == null){
+                log.warn("Cannot find service of: {}", PSDeliveryInfo.SERVICE_COMMENTS);
+                return "";
+            }
             PSDeliveryClient deliveryClient = new PSDeliveryClient();
             deliveryClient.setLicenseOverride(licenseId);
 
@@ -388,10 +409,10 @@ public class PSCommentsService implements IPSCommentsService
         catch (Exception e)
         {
             String msg = "An error occurred while retrieving the default moderation setting.  "
-                    + e.getLocalizedMessage();
+                    + e.getMessage();
 
             log.error(msg);
-            throw new RuntimeException(msg);
+            throw new WebApplicationException(msg);
         }
     }
 
@@ -515,8 +536,10 @@ public class PSCommentsService implements IPSCommentsService
         // so we take the brute force approach, and just try them all.
         String adminURl= pubServerService.getDefaultAdminURL(name);
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_COMMENTS,null,adminURl);
-        if (server == null)
-            throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_COMMENTS);
+        if (server == null) {
+            log.warn("Cannot find service of: {}", PSDeliveryInfo.SERVICE_COMMENTS);
+            return summaries;
+        }
 
         try
         {
@@ -547,7 +570,7 @@ public class PSCommentsService implements IPSCommentsService
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSCommentsService.class);
+    public static Logger log = LogManager.getLogger(PSCommentsService.class);
 
     private static final String COMMENT_GET_COMMENTS_ON_PAGE = "/perc-comments-services/comment/moderation/asmoderator";
 
