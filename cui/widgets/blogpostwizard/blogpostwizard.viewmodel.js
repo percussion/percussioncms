@@ -72,11 +72,11 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
 		});
 		self.blogTitle.subscribe(function(){
             if (!self.autfillFocusLost()) {
-                self.blogFile(self.blogTitle().replace( /[ \_]/g, '-' ).replace( /[^a-zA-Z0-9\-\_]/g, '' ).replace(/[-]+/g, '-').toLowerCase());
+                self.blogFile(self.blogTitle().replace( /[ _]/g, '-' ).replace( /[^a-zA-Z0-9\-_]/g, '' ).replace(/[-]+/g, '-').toLowerCase());
             }
         });
         self.blogFile.subscribe(function(){
-			self.blogFile(self.blogFile().replace( /[ ]/g, '-' ).replace( /[\\\/\:\*\?\"<\>\|\#\;\%\']/g, '' ));
+			self.blogFile(self.blogFile().replace( /[ ]/g, '-' ).replace( /[\\\/:*?"<>|#;%']/g, '' ));
             if(self.fileHasFocus())
                 self.autfillFocusLost(true);
         });
@@ -111,8 +111,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
         });
 		
         
-        self.init = function(content){
-        }
+        self.init = function(content){};
         
         self.cleanWindow = function() {
             self.isBlogWizardVisible(false);
@@ -127,7 +126,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
             self.titleGainedFocus(false);
             self.autfillFocusLost(false);
 			self.fileHasFocus(false);
-        }
+        };
         
         self.openAddBlogPost = function() {
             $(self.constants.SECONDARY_BUTTON_SELECTOR).text(self.constants.SECONDARY_BUTTON_NAME);
@@ -154,14 +153,14 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
             }).fail(function(message){
                 PubSub.publish("OpenErrorDialog", message);
             });
-        }
+        };
         
         self.goBack = function() {
             if(self.isBlogWizardVisible()) {
                 self.cleanWindow();
                 PubSub.publish("Add Content", self);
             }
-        }
+        };
         
         self.createBlog = function() {
             if(self.isBlogWizardVisible()){
@@ -171,7 +170,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
                 }
                 if(validFields()) {
 					self.options.cm1Adaptor.getSiteProperties(self.selectedBlog().site, function(status, result) {
-						if(status == "success") { //replace it with constant $.PercServiceUtils.STATUS_SUCCESS
+						if(status === "success") { //replace it with constant $.PercServiceUtils.STATUS_SUCCESS
 							var fileName = self.blogFile();
 							var fileExt = result.SiteProperties.defaultFileExtention;
 							if (fileExt && fileName.lastIndexOf(".") < 0) {
@@ -186,7 +185,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
 							console.error('title: Error content: ' + result); //replace it with $.perc_utils.alert_dialog({title: 'Error', content: result});
 						}
 						self.options.cm1Adaptor.createPage(self.blogFile(), self.blogTitle(), self.selectedBlog().templateId, self.selectedBlog().folderPath).fail(function(message){
-							if(message == self.constants.NOT_AUTHORIZED_ERROR_MSG){
+							if(message === self.constants.NOT_AUTHORIZED_ERROR_MSG){
 								if(self.multipleBlogs())
 									 message = self.constants.NOT_AUTHORIZED_ERROR_MSG_RESPONSE_MULTIPLE + self.selectedBlog().title;
 								else
@@ -197,7 +196,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
 					});
                 }
             }
-        }
+        };
         
         ko.bindingHandlers.slideVisible = {
             init: function(element, valueAccessor) {
@@ -206,8 +205,12 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
             },
             update: function(element, valueAccessor) {
                 var value = valueAccessor();
-                ko.unwrap(value) ? $(element).slideDown() : $(element).slideUp();
+                if(ko.unwrap(value)) {
+                    $(element).slideDown();
+                } else {
+                    $(element).slideUp();
+                }
             }
         };
-    }
+    };
 });
