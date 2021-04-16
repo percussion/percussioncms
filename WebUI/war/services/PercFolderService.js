@@ -55,7 +55,7 @@
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result) {
-                if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                if (status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -81,7 +81,7 @@
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result) {
-                if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                if (status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -103,7 +103,7 @@
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result) {
-                if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                if (status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -129,7 +129,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -150,7 +150,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback(true, result.data);
                 }
@@ -171,7 +171,7 @@
             $.PercServiceUtils.TYPE_GET,
             sync,
             function(status, result) {
-                if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                if (status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -190,7 +190,7 @@
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result) {
-                if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                if (status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback(result.data);
                 }
