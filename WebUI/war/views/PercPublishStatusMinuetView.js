@@ -28,7 +28,7 @@
 
         return {
             renderPublishStatusSection: renderPublishStatusSection
-        }
+        };
 
         function renderPublishStatusSection() {
 
@@ -50,7 +50,7 @@
         }
 
         function getPublishStatusCallback(status, result) {
-            if(status == true && result[1] == 'success') {
+            if(status === true && result[1] === 'success') {
                 sitePublishStatusDeferred.resolve(result[0]);
             }
         }
@@ -63,11 +63,11 @@
         }
 
         function renderPublishStatusList(action, toggleFlag, clickEvent) {
-            if(action == 'refresh') {
+            if(action === 'refresh') {
                 activeSort = $('#percPublishStatusList .perc-active-sort');
                 eventObj = activeSort;
             }
-            if(action == 'click') {
+            if(action === 'click') {
                 eventObj = clickEvent;
             }
 
@@ -86,7 +86,7 @@
                 // If the jobIds have changed, refresh the logs and apply animations to status
                 // otherwise, just update the status without animation
 
-                if(JSON.stringify(currentJobs) != JSON.stringify(previousJobs)) {
+                if(JSON.stringify(currentJobs) !== JSON.stringify(previousJobs)) {
 
                     $('#percPublishStatusListTarget').animateCss('fadeOut', function() {
                         $.PercPublishLogsMinuetView(false).sortLogField(eventObj, publishStatusObject, 'templatePercPublishStatusList', 'percPublishStatusListTarget', 'SitePublishJob', toggleFlag);
@@ -123,7 +123,7 @@
                 response = {};
                 response.result = {};
                 response.source = I18N.message("perc.ui.publish.title@Stop Publishing Job");
-                if(result[1] == 'success') {
+                if(result[1] === 'success') {
                     response.result.warning = false;
                     response.result.status = I18N.message("perc.ui.publish.title@Successfully Stopped Publishing Job");
 
@@ -138,8 +138,8 @@
 
         function bindStatusEvents() {
             $('#percPublishStatusList .perc-sortable-header').on('click keypress', function(event) {
-                if(event.type == 'click' || event.which == 13) {
-                    renderPublishStatusList('click', true, this)
+                if(event.type === 'click' || event.which === 13) {
+                    renderPublishStatusList('click', true, this);
                 }
             });
         }
@@ -150,11 +150,11 @@
             });
         }
 
-    }
+    };
 
     Handlebars.registerHelper('publishProgress', function(completedItems, totalItems) {
         progress =  {};
-        if(completedItems == 0 & totalItems == 0) {
+        if(completedItems === 0 & totalItems === 0) {
             progress = 100;
         }
         else {

@@ -29,7 +29,7 @@
  *
  *
  */
-(function($, P)
+(function($)
 {
     $.PercWorkflowView = function()
     {
@@ -83,7 +83,7 @@
                 return;
             $.perc_utils.info(I18N.message("perc.ui.workflow.view@Cancelling Assigned Folders Job") + jobId);
             var callback = function(status, result){
-                if (status == $.PercServiceUtils.STATUS_ERROR) {
+                if (status === $.PercServiceUtils.STATUS_ERROR) {
                     $.perc_utils.info(result);
                 }
                 else{
@@ -146,7 +146,7 @@
             //create the workflow control for publish now to staging permissions
             generateRolesControl("perc-publish-now-roles-control",workflowName);
             
-            if(defaultWorkflow == workflowName) {
+            if(defaultWorkflow === workflowName) {
                 $(".perc-wf-default").find('input').attr('checked', 'checked').attr('disabled', true);                
             }
             $("#perc-update-workflow-name").val(workflowName).focus().change(function()
@@ -204,7 +204,7 @@
             var previousWorkflowName =  $(".perc-itemname[title='"+ workflowName+ "']").prev().attr('title');
             if (typeof(previousWorkflowName) == 'undefined')
                 previousWorkflowName =  $(".perc-itemname[title='"+ workflowName+ "']").next().attr('title');
-            if (previousWorkflowName == 'more')
+            if (previousWorkflowName === 'more')
                 previousWorkflowName =  $(".perc-moreLink").prev().attr('title');  
             var settings = {
             id: 'perc-wf-delete',
@@ -251,7 +251,7 @@
         {
             container.find(".perc-itemname[title='"+ defaultWorkflow+ "']").addClass('perc-default-wf-list-marker');
             $(".perc-default-wf-marker").hide();
-            var selectingSameWorkflow = workflowName == container.find(".perc-itemname.perc-item-selected").attr("title");
+            var selectingSameWorkflow = workflowName === container.find(".perc-itemname.perc-item-selected").attr("title");
             $("#perc-workflow-steps-container").data("workflowName", workflowName);
             hideWorkflowEditor();
             hideWorkflowUpdateEditor();
@@ -271,7 +271,7 @@
             });
             
             //Un-Bind Edit event if selected workflow is default
-            if(workflowName == defaultWorkflow)
+            if(workflowName === defaultWorkflow)
             {   
                 $(".perc-default-wf-marker").show();
                 container.find(".perc-item-delete-button").unbind().click();
@@ -290,7 +290,7 @@
         function saveNewWorkflow()
         {
             var workflowName = $("#perc-new-workflow-name").val();
-            if(workflowName.indexOf("??") != -1)
+            if(workflowName.indexOf("??") !== -1)
             {
                 var validationError = I18N.message("perc.ui.workflow.view@Workflow Invalid Characters");
                 $.perc_utils.alert_dialog(
@@ -339,7 +339,7 @@
             //User is trying to create workflow and set it as default, make sure workflow assignment is not in progress
             if(isDefault){
                 $.PercFolderService.isWorkflowAssignmentInProgress(function(status){
-                    if(status == "true"){
+                    if(status === "true"){
                         $.unblockUI();
                         $.perc_utils.alert_dialog({
                             "title" : I18N.message("perc.ui.page.general@Warning"),
@@ -369,7 +369,7 @@
             var previousWorkflowName = $("#perc-workflow-steps-container").data("workflowName");
             var newWorkflowName = $("#perc-update-workflow-name").val();
             var isDefault = $(".perc-wf-default input").is(':checked');
-            if(newWorkflowName.indexOf("??") != -1)
+            if(newWorkflowName.indexOf("??") !== -1)
             {
                 var validationError = I18N.message("perc.ui.workflow.view@Workflow Invalid Characters");
                 $.perc_utils.alert_dialog(
@@ -411,11 +411,11 @@
                 });
             }
             var currDefWf=$(".perc-default-wf-list-marker").attr("title");
-            var isDefaultChanged = isDefault && currDefWf != previousWorkflowName;
+            var isDefaultChanged = isDefault && currDefWf !== previousWorkflowName;
             //User is trying to change default workflow, make sure workflow assignment is not in progress
             if(isDefaultChanged){
                 $.PercFolderService.isWorkflowAssignmentInProgress(function(status){
-                    if(status == "true"){
+                    if(status === "true"){
                         $.unblockUI();
                         $.perc_utils.alert_dialog({
                             "title" : I18N.message("perc.ui.page.general@Warning"),
@@ -468,7 +468,7 @@
             }
             
             $.PercUserService.getRoles(function(status, rolesJson) {
-                if(status == $.PercServiceUtils.STATUS_ERROR) {
+                if(status === $.PercServiceUtils.STATUS_ERROR) {
                     utils.alertDialog(I18N.message("perc.ui.workflow.view@Error Loading Roles"), rolesJson);
                     return;
                 }
@@ -671,7 +671,7 @@
         function startSiteAssetFoldersLoadingJobs()
         {
             $.PercFolderService.startAssociatedFoldersJob("Sites", selectedWorkflow, function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_ERROR)
+                if(status === $.PercServiceUtils.STATUS_ERROR)
                 {
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: result});
                     return false;
@@ -682,7 +682,7 @@
                 siteJobId = result;
                 $.perc_utils.info(I18N.message("perc.ui.workflow.view@Started Associated Folders Jobs For Sites") + siteJobId); 
                 $.PercFolderService.startAssociatedFoldersJob("Assets", selectedWorkflow, function(status, result) {
-                    if(status == $.PercServiceUtils.STATUS_ERROR)
+                    if(status === $.PercServiceUtils.STATUS_ERROR)
                     {
                         $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: result});
                         return false;
@@ -704,14 +704,14 @@
                 if(siteJobId == null)
                     return;
                 $.PercFolderService.getAssociatedFoldersJobStatus(siteJobId, function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_ERROR)
+                if(status === $.PercServiceUtils.STATUS_ERROR)
                 {
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: result});
                     return false;
                 }
                 var status = result.GetAssginedFoldersJobStatus.status;
                 var message = result.GetAssginedFoldersJobStatus.message; // message will be blank if job is still running
-                if( message == ""  && status !== "100" )
+                if( message === ""  && status !== "100" )
                 {
                     setTimeout(loadSiteFolders, 2000);
                     return;
@@ -729,14 +729,14 @@
                 return;
             
             $.PercFolderService.getAssociatedFoldersJobStatus(assetJobId, function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_ERROR)
+                if(status === $.PercServiceUtils.STATUS_ERROR)
                 {
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: result});
                     return false;
                 }
                 var status = result.GetAssginedFoldersJobStatus.status;
                 var message = result.GetAssginedFoldersJobStatus.message; // message will be blank if job is still running
-                if( message == ""  && status !== "100" )
+                if( message === ""  && status !== "100" )
                 {
                     setTimeout(loadAssetFolders, 2000);
                     return;
@@ -770,7 +770,7 @@
 
         // Return the public api/interface
         return api;
-    }
+    };
     
     /**
      *  On document ready
@@ -779,7 +779,7 @@
     {
         $.wfViewObject = $.PercWorkflowView();
         $.PercFolderService.isWorkflowAssignmentInProgress(function(status){
-            if(status == "true"){
+            if(status === "true"){
                 $.wfViewObject.isWorkflowAvailable = false;
                 $("#perc-workflow-wrapper").empty().addClass("perc-workflow-unavailale-message-table").append("<div class='perc-workflow-unavailale-message'>Workflow assignment in process</div>");
             }

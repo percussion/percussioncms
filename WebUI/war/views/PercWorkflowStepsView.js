@@ -29,7 +29,7 @@
  *
  *
  */
-(function($, P)
+(function($)
 {
     var settings = {
         workflowObject : null,
@@ -47,7 +47,7 @@
         __loadWorkflowObject(settings.workflowName, function(workflowObject){
             __renderWorkflowSteps(workflowObject, function(){
                 __attachEvents();
-                $("#perc-workflow-steps-container table").removeClass("perc-workflow-steps-rendering").addClass("perc-workflow-steps-ready");;
+                $("#perc-workflow-steps-container table").removeClass("perc-workflow-steps-rendering").addClass("perc-workflow-steps-ready");
             });
         });
         
@@ -58,7 +58,7 @@
         __loadWorkflowObject(workflowName, function(workflowObject) {
             __renderWorkflowSteps(workflowObject, function(){
                 __attachEvents();
-                $("#perc-workflow-steps-container table").removeClass("perc-workflow-steps-rendering").addClass("perc-workflow-steps-ready");;
+                $("#perc-workflow-steps-container table").removeClass("perc-workflow-steps-rendering").addClass("perc-workflow-steps-ready");
             });
         });
         
@@ -69,7 +69,7 @@
         $.PercWorkflowService().getWorkflowObject(workflowName, function(status, result)
         {
             workflowObject = result[0];
-            if(status && (workflowObject != null) && (workflowObject != undefined))
+            if(status && (workflowObject !== null) && (workflowObject !== undefined))
             {
                 callback(workflowObject);
             }
@@ -128,20 +128,20 @@
                  $(percStepRolesItems).html(workflowStepRole).attr('title', workflowStepRole);
                  $(percStepRolesContainer).append(percStepRolesItems);
                  // Add more link after three items
-                if(j==2 && stepRoles.length > 3 ) {
+                if(j===2 && stepRoles.length > 3 ) {
                     var moreLink = $('<li class="perc-moreLink perc-visible">more</li>');
                     $(percStepRolesContainer).append(moreLink);                    
                  }
                  
                  //Add less link after the last element   
-                if(j == stepRoles.length - 1 && stepRoles.length > 3) {
+                if(j === stepRoles.length - 1 && stepRoles.length > 3) {
                      var lessLink = $('<li style = "display:none" class="perc-lessLink perc-ellipsis perc-hidden">less</li>');
                     $(percStepRolesContainer).append(lessLink);                     
                  }
             }                
             $(percStepColumn).append($(percStepRoles).append(percStepRolesContainer), percWorkflowActionText);
             
-            if(workflowStepName != "Archive"){
+            if(workflowStepName !== "Archive"){
                 $(percStepRow).find('#perc-workflow-column-wrapper').append(percStepColumn, percStepColumnSpacer);
                              
             }else{
@@ -249,11 +249,11 @@
         var successCallBack = function()
         {
             refresh(workflowName);                
-        }
+        };
         var cancelCallBack = function()
         {
             //For now there is nothing to do.
-        }            
+        };
         $.PercEditWorkflowStepDialog().open(isReservedStep,isUpdate, workflowStep, workflowName,previousStepName, currentStep, successCallBack, cancelCallBack);
 
      }    
@@ -300,11 +300,11 @@
         var successCallBack = function()
         {
             refresh(workflowName);
-        }
+        };
         var cancelCallBack = function()
         {
             //For now there is nothing to do.
-        }            
+        };
         $.PercEditWorkflowStepDialog().open(isReservedStep, isUpdate, workflowStep,workflowName,previousStepName, currentStep, successCallBack, cancelCallBack);
 
     }          
