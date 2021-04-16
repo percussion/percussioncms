@@ -51,7 +51,7 @@
         function _renderResults(status, result){
             var self = this;
             
-            if (status == $.PercServiceUtils.STATUS_ERROR) {
+            if (status === $.PercServiceUtils.STATUS_ERROR) {
                 var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                 $.perc_utils.alert_dialog({
                     title: I18N.message("perc.ui.publish.title@Error"),
@@ -175,10 +175,10 @@
         function _openInFinder(event){
             var data = event.data;
             $.PercPathService.validatePath(data.pagePath, function(status, result){
-                if (status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if (status === $.PercServiceUtils.STATUS_SUCCESS) {
                     //validatePath return the exact caseSensitive path.                    
                     $.perc_finder().open(result.split("/"), function(){
-                    })
+                    });
                 }
             });
         }

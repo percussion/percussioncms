@@ -44,7 +44,7 @@
             aData.push(dataNum);
         });
         return aData;
-    }
+    };
     //Convert milliseconds to HH:MM:SS form
     milliSecondsToHHMMSS = function(t)
     {
@@ -112,7 +112,7 @@
         {
             purgeLogs();
         });
-    }
+    };
     //Helper function to take care of the un/fold action
     FoldToggle = function(self, onFold)
     {
@@ -140,7 +140,7 @@
     publishCurrentSite = function()
     {
         var siteVal = siteName;
-        if (siteVal == "base")
+        if (siteVal === "base")
         {
             $.perc_utils.alert_dialog({
                 content: I18N.message("perc.ui.perc.pub.reports@Invalid Site"),
@@ -152,7 +152,7 @@
         this.service = $j.PercPublisherService(false);
         this.service.publishSite(siteVal, function(status, result)
         {
-            if (result[1] == "success")
+            if (result[1] === "success")
             {
                 $.perc_utils.alert_dialog({
                     content: I18N.message("perc.ui.perc.pub.reports@Site") + siteVal + I18N.message("perc.ui.perc.pub.reports@Started Publishing"),
@@ -187,7 +187,7 @@
         var siteId = $("#perc-site-id").val();
         this.service.getJobStatus(siteId, function(status, result)
         {
-            if (result[1] == "success")
+            if (result[1] === "success")
             {
                 var result0 = eval(result[0]);
                 renderLogs(result0.SitePublishJob);
@@ -229,7 +229,7 @@
                 publishLogs();
             }
             prevStatusCount = resLength;
-            if (resLength == 0)
+            if (resLength === 0)
             {
                 logString += "<tr><td>No jobs currently running</td>" +
                     "<td class = 'perc-ellipsis'></td>" +
@@ -242,7 +242,7 @@
             }
             else
             {
-                for (r in results)
+                for (var r in results)
                 {
                     var queued = 0;
                     var totalItems = results[r].totalItems;
@@ -379,7 +379,7 @@
                 I18N.message("perc.ui.publish.title@To Delete") +
                 "</th>" +
                 "</tr></thead><tbody>";
-            if (results.length == 0)
+            if (results.length === 0)
             {
                 logString += "<tr><td>No logs currently exist</td>" +
                     "<td class = 'perc-ellipsis'></td>" +
@@ -392,7 +392,7 @@
             }
             else
             {
-                for (r in results)
+                for (var r in results)
                 {
                     logString += "<tr>" + "<td class = 'perc-ellipsis'>" + results[r].status + "</td>" +
                         "<td class = 'perc-ellipsis'>" +
@@ -439,7 +439,7 @@
                 getLogDetails(rowData.jobId, rowData);
             }
 
-            for (r in results)
+            for ( r in results)
             {
 
                 var node = $j("#perc-view-detail-" + r);
@@ -533,7 +533,7 @@
                 renderLogs(result[0].SitePublishItem, publishRecord);
                 $j.fn.perc_toggle("#perc-publish-log-details-widget");
                 $j.fn.perc_toggle("#perc-publish-logs-widget");
-                if ($j("#perc-publish-log-details-widget").find(".perc-opened").length == 0)
+                if ($j("#perc-publish-log-details-widget").find(".perc-opened").length === 0)
                 {
                     $j("#perc-publish-log-details-widget").find(".perc-foldable").click();
                 }
@@ -730,7 +730,7 @@
                 });
             }
         });
-    }
+    };
     /****************** Binding onclick events with all the widgets and buttons toolbar ************************/
     $j(document).ready(function()
     {
