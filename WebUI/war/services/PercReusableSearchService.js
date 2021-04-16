@@ -41,7 +41,7 @@
             function(status, result)
             {
                 var data = $.perc_utils.convertCXFArray(result.data.UserList.users);
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, data);
                 }
@@ -69,7 +69,7 @@
             function(status, result)
             {
                 var data = $.perc_utils.convertCXFArray(result.data.EnumVals.entries);
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, data);
                 }
@@ -93,7 +93,7 @@
             function(status, result)
             {
                 var data = $.perc_utils.convertCXFArray(result.data.EnumVals.entries);
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, data);
                 }
@@ -117,7 +117,7 @@
             function(status, result)
             {
                 var data = $.perc_utils.convertCXFArray(result.data.EnumVals.entries);
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, data);
                 }
