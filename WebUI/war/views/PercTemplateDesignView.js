@@ -68,7 +68,7 @@
         //Snippet for displaying the inline help when no site is selected @Story 99
         var inline_help = $("#perc-pageEditor-menu-name").text();
 
-        if(inline_help == "")
+        if(inline_help === "")
         {
             $("#perc-site-templates-label").hide();
             $("#perc-site-templates-inline-help").show();
@@ -148,7 +148,7 @@
                 // remove all scrollbars in the templates view
                 $("body").css("overflow", "hidden");
 
-                return;
+
             }
         });
 
@@ -200,15 +200,15 @@
                         });
                         panelExpanderIcon.removeClass("perc-expanded").addClass("perc-collapsed");
                         window.clearInterval(intervalId);
-                        setPanelPreference(false)
+                        setPanelPreference(false);
                     }
                 }
-            })
+            });
             
             var siteName = $.PercNavigationManager.getSiteName();
             if (typeof(siteName) != "undefined"){
                 $.PercPageService.getUnassignedPagesBySite(siteName, 1, UNASSIGNED_MAX_RESULTS, function(status, result){
-                    if(status == $.PercServiceUtils.STATUS_SUCCESS){
+                    if(status === $.PercServiceUtils.STATUS_SUCCESS){
                         var panelSettings = JSON.parse($.cookie("perc-unassigned-panel-" + $.PercNavigationManager.getSiteName() + "-settings"));
                         var showPanel = false;
                         var pageNumber = 1;
@@ -217,7 +217,7 @@
                             pageNumber = panelSettings.pageNumber;
                         }
                         else{
-                            var unassignedResult = result.UnassignedResults
+                            var unassignedResult = result.UnassignedResults;
                             if (typeof(unassignedResult.unassignedItemList.childrenInPage) != "undefined")
                                 showPanel = unassignedResult.unassignedItemList.childrenInPage.length > 0;
                         }
@@ -229,7 +229,7 @@
                             intervalId = setInterval(requestUnassignedPages, 10000);
                         }
                     }
-                })
+                });
             }
             else{
                 panelExpanderIcon.addClass("perc-disabled");
@@ -240,17 +240,17 @@
             $.perc_filterField(percJump, $.perc_textFilters.ONLY_DIGITS);
             
             // Pagination controls - Previous button
-            $('.perc-unassigned-panel .perc-template-pages-controls .previous').click(unassignedPreviousClick)
+            $('.perc-unassigned-panel .perc-template-pages-controls .previous').click(unassignedPreviousClick);
             
             // Pagination controls - Next button - Click
-            $('.perc-unassigned-panel .perc-template-pages-controls .next').click(unassignedNextClick)
+            $('.perc-unassigned-panel .perc-template-pages-controls .next').click(unassignedNextClick);
             
              // Pagination controls - Text input for page selector
             $('.perc-unassigned-panel .perc-template-pages-controls').submit(function()
             {
                 requestUnassignedPages(parseInt(percJump.val()));
                 return false;
-            })
+            });
         }
         
         function unassignedPreviousClick(){
@@ -267,27 +267,27 @@
             if (typeof(pageNumber) == "undefined"){
                 //Use the current pageNumber
                 var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
-                var pageNumber = percJump.val()!=""? parseInt(percJump.val()): 1;
+                var pageNumber = percJump.val()!==""? parseInt(percJump.val()): 1;
             }
-            pageNumber = (pageNumber!=0)? pageNumber : 1;
+            pageNumber = (pageNumber!==0)? pageNumber : 1;
             setPanelPreference(null, pageNumber);
             var startIndex = (((pageNumber-1) * UNASSIGNED_MAX_RESULTS) + 1);
             var siteName = $.PercNavigationManager.getSiteName();
             
             if (typeof(siteName) != "undefined"){
                 $.PercPageService.getUnassignedPagesBySite(siteName, startIndex, UNASSIGNED_MAX_RESULTS, function(status, result){
-                    if(status == $.PercServiceUtils.STATUS_SUCCESS){
-                        var unassignedResult = result.UnassignedResults
+                    if(status === $.PercServiceUtils.STATUS_SUCCESS){
+                        var unassignedResult = result.UnassignedResults;
                         updateProgressBar(unassignedResult.importStatus);
                         drawUnassignedPages(unassignedResult.unassignedItemList);
                         var totalPages = unassignedResult.importStatus.catalogedPageCount + unassignedResult.importStatus.importedPageCount;
                         var childrenInPage = 0;
                         if (typeof(unassignedResult.unassignedItemList.childrenInPage) != "undefined")
-                            childrenInPage = $.perc_utils.convertCXFArray(unassignedResult.unassignedItemList.childrenInPage).length
+                            childrenInPage = $.perc_utils.convertCXFArray(unassignedResult.unassignedItemList.childrenInPage).length;
                         updatePaging(unassignedResult.unassignedItemList.startIndex, childrenInPage, totalPages);
                     }
                     else{}
-                })
+                });
             }
         }
         
@@ -343,7 +343,7 @@
             var totalPages = importStatus.catalogedPageCount + importStatus.importedPageCount;
             if (totalPages > 0)
                 progressWidth = ((importStatus.importedPageCount * 100) / totalPages);
-            if (progressWidth == 100){
+            if (progressWidth === 100){
                 progressMessage.show();
                 progressMessage.css("margin-left", "3px").text("Congratulations.");
                 progressContainer.hide();
@@ -359,7 +359,7 @@
                 progressMessage.text(message);
                 progressFinishedMessage.hide();
                 progressContainer.show();
-                if (totalPages == 0)
+                if (totalPages === 0)
                     progressContainer.css("background-color", "#D7D7D9");
                 else
                     progressContainer.css("background-color", "#E6E6E9");
@@ -370,7 +370,7 @@
         function drawUnassignedPages(unassignedItemList){
             var panel = $(".perc-unassigned-panel");
             //This panel gets reloaded every 10 seconds, capture the previous selection and reapply
-            var selectedPageId = panel.find(".perc-imported-page-selected").size()==1?panel.find(".perc-imported-page-selected").attr("id"):null;
+            var selectedPageId = panel.find(".perc-imported-page-selected").size()===1?panel.find(".perc-imported-page-selected").attr("id"):null;
             var pageContainer = panel.find(".perc-panel-pages-list");
             pageContainer.empty();
             var pageList = $("<ul/>");
@@ -426,7 +426,7 @@
                     case "Importing":
                         pageObj.find(".perc-left-img").attr("src","/Rhythmyx/sys_resources/images/running.gif");
                         pageObj.find(".perc-imported-page-dropdown").hide();
-                        pageObj.attr("disabled", "disabled")
+                        pageObj.attr("disabled", "disabled");
                         break;
                     case "Cataloged":
                         pageObj.find(".perc-left-img").attr("src","/Rhythmyx/sys_resources/images/iconSpider.png");
@@ -495,12 +495,12 @@
          */
         function setCurrentView(view)
         {
-            if(view == VIEW_MODE_THUMBNAILS)
+            if(view === VIEW_MODE_THUMBNAILS)
             {
                 $('#perc-activated-templates').removeClass('perc-templates-detailed');
                 _switchToThumbnailView();
             }
-            else if(view == VIEW_MODE_CATALOG)
+            else if(view === VIEW_MODE_CATALOG)
             {
                 $('#perc-activated-templates').addClass('perc-templates-detailed');
                 _switchToCatalogView();
@@ -602,7 +602,7 @@
 
             var siteName = $.PercNavigationManager.getSiteName();
 
-            if(currentMode == VIEW_MODE_CATALOG)
+            if(currentMode === VIEW_MODE_CATALOG)
             {
                 viewNames = [I18N.message("perc.ui.template.design.view@View"), I18N.message("perc.ui.template.design.view@Thumbnails")];
                 disableView = [true, true];
@@ -611,7 +611,7 @@
                 _switchToThumbnailView];
                 callbackData = [I18N.message("perc.ui.template.design.view@View"), I18N.message("perc.ui.template.design.view@Thumbnails")];
             }
-            else if(currentMode == VIEW_MODE_THUMBNAILS)
+            else if(currentMode === VIEW_MODE_THUMBNAILS)
             {
                 viewNames = [I18N.message("perc.ui.template.design.view@View"), I18N.message("perc.ui.template.design.view@Catalog")];
                 disableView = [true, true];
@@ -621,7 +621,7 @@
                 callbackData = [I18N.message("perc.ui.template.design.view@View"), I18N.message("perc.ui.template.design.view@Catalog")];
             }
 
-            if(siteName == null || siteName == "")
+            if(siteName == null || siteName === "")
             {
                 disableView[1] = false;
             }
@@ -701,7 +701,7 @@
                 panel.hide();
                 panelExpanderIcon.removeClass("perc-expanded").addClass("perc-collapsed");
                 window.clearInterval(intervalId);
-                setPanelPreference(false)
+                setPanelPreference(false);
             }
             panelExpander.hide();
             container.css("margin-left", "0px");
@@ -882,7 +882,7 @@
                                     var checkValue = $("#perc-import-template-frame").contents().find(".perc-template-import-field").val();
 
                                     // Show error message if user clicks Import without selecting any file.
-                                    if(checkValue == "")
+                                    if(checkValue === "")
                                     {
                                         $("#perc-import-template-frame").css('height', '67px');
                                         $("#perc-import-template-frame").contents().find(".perc-import-error").show();
@@ -919,7 +919,7 @@
             var templateName = $("#perc-import-template-frame").contents().find("body").text();
 
             //if import is success - reload the page and pass the name of newly created template as a parameter.
-            if(templateName != "null")
+            if(templateName !== "null")
             {
                 dialog.remove();
                 $.cookie("templateImport", templateName);

@@ -92,7 +92,7 @@
                             setDirty(false);
                             self.tabs('select', ui.index);
                             //Reset the JavaScript Off/On menu to JavaScript Off
-                            resetJavaScriptMenu()
+                            resetJavaScriptMenu();
                         }
                     );
                     return false;
@@ -100,10 +100,10 @@
                 else
                 {
                     //Reset the JavaScript Off/On menu to JavaScript Off
-                    resetJavaScriptMenu()
+                    resetJavaScriptMenu();
                 }
                 deactivateRegionToolButton();
-                if(ui.index == TEMPLATE_CONTENT ) {
+                if(ui.index === TEMPLATE_CONTENT ) {
                     // put back scrollbars in the content view as needed
                     $("body").css("overflow","auto");
                     //  Add Action dropdown menu under Content Tab (Template Editor)
@@ -117,7 +117,7 @@
                         percDropdownOptionLabels : actionNames,
                         percDropdownCallbacks    : [function(){}, function(){
 							 $.perc_template_metadata_dialog(gSelectTemp);
-						}, function(){_openPage()}],
+						}, function(){_openPage();}],
                         percDropdownCallbackData : [I18N.message("perc.ui.template.design.view@Actions"),I18N.message("perc.ui.template.design.view@Edit Meta Data"), I18N.message("perc.ui.template.design.view@Edit Page")],
                         percDropdownDisabledFlag : cActionStatus
                     }); 
@@ -160,7 +160,7 @@
                     return;
                 }
 
-                if(ui.index == TEMPLATE_LAYOUT) {
+                if(ui.index === TEMPLATE_LAYOUT) {
                     // put back scrollbars in the layout view as needed
                     $("body").css("overflow","auto");
                     //  Add Action dropdown menu under Layout Tab (Template Editor)                
@@ -171,7 +171,7 @@
                        layoutTemplateActions.PercDropdown({
                         percDropdownRootClass    : "perc-dropdown-actions-layout",
                         percDropdownOptionLabels : actionNames,
-                        percDropdownCallbacks    : [function(){},function(){_openPage()}],
+                        percDropdownCallbacks    : [function(){},function(){_openPage();}],
                         percDropdownCallbackData : [I18N.message("perc.ui.template.design.view@Actions"), I18N.message("perc.ui.template.design.view@Edit Page")],
                         percDropdownDisabledFlag : lActionStatus
                     });     
@@ -191,7 +191,7 @@
                     var percTemplateHelpLayoutMenu = true;
                     $.PercTemplateService().checkImportLogExists(gSelectTemp, function(status, results)
                     {
-                        if(status == $.PercServiceUtils.STATUS_ERROR)
+                        if(status === $.PercServiceUtils.STATUS_ERROR)
                             percTemplateHelpLayoutMenu = false;
                     });
                     
@@ -202,11 +202,11 @@
                     	percTemplateHelpLayout.PercDropdown({
                         percDropdownRootClass    : "perc-dropdown-help",
                         percDropdownOptionLabels : actionNamesHelp,
-                        percDropdownCallbacks    : [function(){}, function(){viewImportLog()},
+                        percDropdownCallbacks    : [function(){}, function(){viewImportLog();},
                                                     showVideoTutorialWindow,
-                                                    function(){openUrl("ImportFAQs", "https://help.percussion.com/in-product/import-faqs")},
-                                                    function(){openUrl("PercussionCommunity", "https://community.percussion.com")},
-                                                    function(){openUrl("MoreHelp", "https://help.percussion.com")}],
+                                                    function(){openUrl("ImportFAQs", "https://help.percussion.com/in-product/import-faqs");},
+                                                    function(){openUrl("PercussionCommunity", "https://community.percussion.com");},
+                                                    function(){openUrl("MoreHelp", "https://help.percussion.com");}],
                         percDropdownCallbackData : [I18N.message("perc.ui.template.design.view@Help"),I18N.message("perc.ui.template.design.view@Download Report Log"), I18N.message("perc.ui.template.design.view@Video Tutorials"), I18N.message("perc.ui.template.design.view@Import FAQs"), I18N.message("perc.ui.template.design.view@Percussion Community"), I18N.message("perc.ui.template.design.view@More Help")],
                         percDropdownDisabledFlag : disableActionsHelp
                     });                         
@@ -218,7 +218,7 @@
                     return;
                 }
 
-                if(ui.index == TEMPLATE_STYLE) {
+                if(ui.index === TEMPLATE_STYLE) {
                     // put back scrollbars in the style view as needed
                     $("body").css("overflow","auto");
                     
@@ -230,7 +230,7 @@
                        styleTemplateActions.PercDropdown({
                         percDropdownRootClass    : "perc-dropdown-actions-style",
                         percDropdownOptionLabels : sactionNames,
-                        percDropdownCallbacks    : [function(){},function(){_openPage()}],
+                        percDropdownCallbacks    : [function(){},function(){_openPage();}],
                         percDropdownCallbackData : [I18N.message("perc.ui.template.design.view@Actions"), I18N.message("perc.ui.template.design.view@Edit Page")],
                         percDropdownDisabledFlag : sActionStatus
                     });             
@@ -248,7 +248,7 @@
                     
                     model = P.templateModel( $.perc_templatemanager, gSelectTemp, setupCSS);
                     frame.css("display","block");
-                    return;
+
                 }
             }
             
@@ -265,13 +265,13 @@
                     .append(
                         $('<img id="perc_notfound_image" src="../images/images/VideoTutorialNotFound.png" width="480px" height="0px">')
                     )
-            )
+            );
             //Used a random dummy parameter to avoid cache
             dialogMarkup.append(
                 $('<img height="0px" width="0px" src="//help.percussion.com/Assets/Help/header/images/PercussionSwoosh.png?dummy=' + Math.random() + '">')
                     .error(handleUnreachableURL)
                     .load(showVideoIframe)
-            )
+            );
 
             var dialogButtons = {
                 "Close Normal": {
@@ -338,7 +338,7 @@
          */            
         function _openPage() {
             $.PercPathService.getPathItemById(memento.pageId, function(status, data){
-                    if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                    if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     	clearCacheRegionCSS();
                     	var querystring = $j.deparam.querystring();
                        var isEditMode = true;
@@ -356,7 +356,7 @@
                        $.PercNavigationManager.handleOpenPage(data.PathItem, isEditMode);
                     } else {
                         $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: data});
-                        return;
+
                     }
              });        
         }        
@@ -383,8 +383,8 @@
 
             cssController.setOverrideCSS();
 
-            cssController.save(function (status, data) {
-                if (status == true) {
+            cssController.save(function (status) {
+                if (status === true) {
                     dirtyController.setDirty(false, "template");
                 }
             });
@@ -431,10 +431,10 @@
             
             
             $("#region-tool").draggable({
-                start : function(event, ui) {
+                start : function() {
                     utils.addAutoScroll();
                 },
-                stop : function(event, ui) {
+                stop : function() {
                     utils.removeAutoScroll();
                 },
                 helper: 'clone',
