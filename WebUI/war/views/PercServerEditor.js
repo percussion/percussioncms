@@ -39,8 +39,8 @@
             renderEditor: renderEditor,
             setReadOnlyProperties: setReadOnlyProperties,
             loadLocalFolderPath: loadLocalFolderPath
-        }
-    }
+        };
+    };
     
     $(document).ready(function()
     {
@@ -58,20 +58,20 @@
         {
             $("#perc-servers-container").find('span.perc_field_error').remove();
             var driverValue = $(this).val();
-            if (driverValue == 'Select') 
+            if (driverValue === 'Select')
             {
                 $("#perc-editor-wrapper").html('');
                 return;
             }
             $("#perc-editor-wrapper").load("../app/includes/serverEditors/propEditor.jsp?editorName=" + driverValue, function()
             {
-                if (driverValue == 'FTP') 
+                if (driverValue === 'FTP')
                 {
                     loadPrivateFileKey();
                     secureFtp();
                     setPassPrivKey();
                 }
-                if (driverValue == 'Local') 
+                if (driverValue === 'Local')
                 {
                     updateFolderLocation();
                 }
@@ -136,19 +136,19 @@
                 $("#perc-editor-wrapper").load("../app/includes/serverEditors/propEditor.jsp?editorName=" + driverName, function()
                 {
                     setEditorProperties(propertyObj);
-                    if (driverName == 'FTP') 
+                    if (driverName === 'FTP')
                     {
                         loadPrivateFileKey(propMap['privateKey']);
                         secureFtp();
                         setPassPrivKey();
                     }
-                    if (driverName == 'Local') 
+                    if (driverName === 'Local')
                     {
                         updateFolderLocation();
                     }
                 });
             }
-            if(serverType == "STAGING")
+            if(serverType === "STAGING")
             {
                 $("#perc-pub-now").hide();
                 $("#perc-pub-now-wrapper").hide();
@@ -167,9 +167,9 @@
         var isDefaultInput = $(propContainer.find('input[percName="isDefault"]'));
         propContainer.find('input[percName="serverName"]').val(propObj.serverInfo.serverName);
         isDefaultInput.prop('checked', propObj.serverInfo.isDefault);
-        var ignoreAssets = $(propContainer.find('input[percName="ignoreUnModifiedAssets"]'))
+        var ignoreAssets = $(propContainer.find('input[percName="ignoreUnModifiedAssets"]'));
         ignoreAssets.prop('checked', propObj.serverInfo.ignoreUnModifiedAssets);
-        var publishRelatedItems = $(propContainer.find('input[percName="publishRelatedItems"]'))
+        var publishRelatedItems = $(propContainer.find('input[percName="publishRelatedItems"]'));
         publishRelatedItems.prop('checked', propObj.serverInfo.publishRelatedItems);
         //If server is default - disable the checkbox
         if (propObj.serverInfo.isDefault) 
@@ -191,11 +191,11 @@
             var popertyValue = '';
             $.each(this, function(propName, value)
             {
-                if (propName == 'key') 
+                if (propName === 'key')
                 {
                     propertyName = value;
                 }
-                if (propName == 'value') 
+                if (propName === 'value')
                 {
                     propertyValue = value;
                 }
@@ -203,11 +203,11 @@
             var propName = propertyName;
             var inputField = propContainer.find("input[percName=" + propName + "]");
             var inputType = inputField.attr('type');
-            if (inputType == 'text' || inputType == 'password') 
+            if (inputType === 'text' || inputType === 'password')
             {
                 inputField.val(propertyValue);
             }
-            else if (inputType == 'checkbox' || inputType == 'radio') 
+            else if (inputType === 'checkbox' || inputType === 'radio')
             {
                 inputField.prop("checked", propertyValue);
             }
@@ -233,11 +233,11 @@
             var popertyValue = '';
             $.each(this, function(propName, value)
             {
-                if (propName == 'key') 
+                if (propName === 'key')
                 {
                     propertyName = value;
                 }
-                if (propName == 'value') 
+                if (propName === 'value')
                 {
                     propertyValue = value;
                 }
@@ -268,29 +268,29 @@
             var propertyValue = '';
             $.each(this, function(propName, value)
             {
-                if (propName == 'key') 
+                if (propName === 'key')
                 {
                     propertyName = value;
                 }
-                if (propName == 'value') 
+                if (propName === 'value')
                 {
                     propertyValue = value;
                 }
                 
             });
-            if(propertyName == "ignoreUnModifiedAssets")
+            if(propertyName === "ignoreUnModifiedAssets")
             {
-                if(propertyValue == true)
+                if(propertyValue === true)
                     $("#perc-editor-prop-container").find("span[percName=" + propertyName + "]").text("Only modified assets will be published.");
                 else
                     $("#perc-editor-prop-container").find("span[percName=" + propertyName + "]").text("All assets will be published.");
             }
-            else if(propertyName == "publishRelatedItems")
+            else if(propertyName === "publishRelatedItems")
             {
-                if(propertyValue == true)
+                if(propertyValue === true)
                     $("#perc-editor-prop-container").find("span[percName=" + propertyName + "]").closest("li").show();
             }
-            else if(propertyName != "driver")
+            else if(propertyName !== "driver")
                 propContainer.find("span[percName=" + propertyName + "]").text(propertyValue);
         });
         if (propObj.serverInfo.isDefault) 
@@ -308,16 +308,16 @@
         var utilService = $j.PercUtilService;
         var privateKeys = utilService.getPrivateKeys(function(status, result)
         {
-            if (status == $.PercServiceUtils.STATUS_SUCCESS) 
+            if (status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 var pkFileList = $("#perc-ftp-private-file-key");
                 pkFileList.html("");
-                if (result.data.PrivateKeys != "") 
+                if (result.data.PrivateKeys !== "")
                 {
                     var keyNames = $.perc_utils.convertCXFArray(result.data.PrivateKeys.keyNames);
                     $.each(keyNames, function(val, text)
                     {
-                        if (selectedOption != 'undefined' && selectedOption == text) 
+                        if (selectedOption !== 'undefined' && selectedOption === text)
                         {
                             pkFileList.append($('<option selected="selected"></option>').val(text).html(text));
                         }
@@ -353,7 +353,7 @@
     function updateDriverOptions(typeValue)
     {
         $("#perc-driver").val('Select').removeAttr('disabled').css('background-color', '#FFFFFF');
-        if (typeValue == "File") 
+        if (typeValue === "File")
         {
             $('.file-driver, .database-driver').remove();    
             $('#perc-driver-filter').show();
@@ -378,7 +378,7 @@
             });
                                  
         }
-        else if (typeValue == "Database") 
+        else if (typeValue === "Database")
         {
             $('.file-driver, .database-driver').remove();            
             $('#perc-driver-filter').show();
@@ -403,7 +403,7 @@
                 }
             });
         }
-        else if (typeValue == "Select") 
+        else if (typeValue === "Select")
         {
             //Disable the driver drop down menu if Type is not selected
             $('#perc-driver').attr('disabled', true).css('background-color', '#CCCCCC');
@@ -447,13 +447,13 @@
     {
     
         var defaultServer = $("#perc-defaultServer").is(':checked');
-        if (defaultServer && pubServerType == "PRODUCTION") 
+        if (defaultServer && pubServerType === "PRODUCTION")
         {
             $("#perc-local-own-location").hide();
             $("#perc-local-default-location").show().val(defaultFolderLocation);
             
         }
-		else if (defaultServer && pubServerType == "STAGING")
+		else if (defaultServer && pubServerType === "STAGING")
 		{
 			$("#perc-local-own-location").hide();
 			$("#perc-local-default-location").show().val(defaultStagingLocation);
