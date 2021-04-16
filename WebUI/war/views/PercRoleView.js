@@ -46,7 +46,7 @@
             showNewRoleEditor      : showNewRoleEditor,
             alertDialog            : alertDialog,
             getDescription         : getDescription
-        }
+        };
 
         // A snippet to adjust the frame size on resizing the window.
         $(window).resize(function() {
@@ -106,7 +106,7 @@
                 createItem: addNewRole,
                 deleteItem: deleteRole,
                 selectedItem: controller.selectRole
-            }
+            };
 
             $.PercDataList.init(container, config);
         }
@@ -172,7 +172,7 @@
         }
 
         function showSelectedRoleEditor() {
-            if (controller.getSelectedRole() != "Admin" && controller.getSelectedRole() != "Designer"){
+            if (controller.getSelectedRole() !== "Admin" && controller.getSelectedRole() !== "Designer"){
                 $("#perc-roles-name-field")
                     .removeClass("perc-roles-field-readonly")
                     .removeAttr("readonly")
@@ -261,17 +261,17 @@
             $assignedUsers.html("");
 
             // iterate over the list of users and add it to the user option
-            for(i in assignedUsersArray) {
+            for(var i in assignedUsersArray) {
                 var userName = assignedUsersArray[i];
                 var liUser = $("<li class='perc-assigned-user-entry'/>")
                     .append(
                         $("<span />")
                             .html(userName)
                             .attr("title", userName)
-                    )
+                    );
                 //When Admin role is selected, if the list of users will contain the logged in user, then that user name will be disabled.
                 //Note: This ensures there is always at least one user in the Admin role.
-                if (controller.getSelectedRole() == "Admin" && (currentUser == userName)){
+                if (controller.getSelectedRole() === "Admin" && (currentUser === userName)){
                     liUser.find("span").css("color", "#000000");
                 }
                 else{
@@ -312,7 +312,7 @@
                 $(".perc-required-label").hide();
                 $("#perc-roles-edit-role-button").show();
             }
-            if (rolename == "Admin" || rolename == "Designer"){
+            if (rolename === "Admin" || rolename === "Designer"){
                 $.PercDataList.disableDeleteButton(container);
             }
             else{
@@ -328,8 +328,8 @@
             var descriptionField = $("#perc-roles-description-field");
             descriptionField
                 .addClass("perc-roles-field-readonly")
-                .attr("readonly","readonly")
-            if (descriptionField.val() == ""){
+                .attr("readonly","readonly");
+            if (descriptionField.val() === ""){
                 descriptionLabel.hide();
             }else{
                 descriptionLabel.show();
@@ -355,7 +355,7 @@
         function unhighlightAllUsers() {
             // unhighlight all users
             $(".perc-roles-assigned-users-list .perc-assigned-user-selected")
-                .removeClass("perc-assigned-user-selected")
+                .removeClass("perc-assigned-user-selected");
         }
 
         /**
@@ -408,7 +408,7 @@
         }
 
         function alertDialog(title, message, w) {
-            if(w == null || w == undefined || w == "" || w < 1)
+            if(w == null || w === "" || w < 1)
                 w = 400;
             $.perc_utils.alert_dialog({
                 title: title,
