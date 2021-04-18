@@ -318,10 +318,9 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
 
     /**
      * @return A JSON of the received data.
-     * @throws URIException
+     * @throws PSDeliveryClientException
      */
-    private JSON getJson()
-    {
+    private JSON getJson() throws PSDeliveryClientException {
         String response = pushOrGet(MediaType.APPLICATION_JSON);
         JSON obj = net.sf.json.JSONSerializer.toJSON(response);
 
@@ -336,8 +335,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * @param requestMessageBodyContentType
      * @return A string returned when the HTTP method is executed.
      */
-    private String pushOrGet(String requestMessageBodyContentType)
-    {
+    private String pushOrGet(String requestMessageBodyContentType) throws PSDeliveryClientException {
         String response = null;
         this.responseMessageBodyContentType = MediaType.APPLICATION_JSON;
 
@@ -381,8 +379,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      *             JSON of the expected type.
      *
      */
-    private JSONObject getJsonObject()
-    {
+    private JSONObject getJsonObject() throws PSDeliveryClientException {
         JSON obj;
         try
         {
@@ -390,7 +387,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         }
         catch (Exception ex)
         {
-            throw new PSDeliveryClientException("Error in executing the HTTP method: " + ex.getMessage());
+            throw new PSDeliveryClientException(ex);
         }
 
         if (obj instanceof JSONNull)
@@ -405,8 +402,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * (non-Javadoc)
      * @see com.percussion.delivery.client.IPSDeliveryClient#getJsonObject(com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions)
      */
-    public JSONObject getJsonObject(PSDeliveryActionOptions actionOptions)
-    {
+    public JSONObject getJsonObject(PSDeliveryActionOptions actionOptions) throws PSDeliveryClientException {
         prepare(actionOptions, null);
         return getJsonObject();
     }
@@ -415,8 +411,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * (non-Javadoc)
      * @see com.percussion.delivery.client.IPSDeliveryClient#getJsonObject(com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions, java.lang.Object)
      */
-    public JSONObject getJsonObject(PSDeliveryActionOptions actionOptions, Object requestMessageBody)
-    {
+    public JSONObject getJsonObject(PSDeliveryActionOptions actionOptions, Object requestMessageBody) throws PSDeliveryClientException {
         prepare(actionOptions, requestMessageBody);
         return getJsonObject();
     }
@@ -433,8 +428,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      *             JSON of the expected type.
      *
      */
-    private JSONArray getJsonArray()
-    {
+    private JSONArray getJsonArray() throws PSDeliveryClientException {
         JSON obj;
         try
         {
@@ -442,7 +436,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         }
         catch (Exception ex)
         {
-            throw new PSDeliveryClientException("Error in executing the HTTP method: " + ex.getMessage());
+            throw new PSDeliveryClientException(ex);
         }
 
         if (obj instanceof JSONNull)
@@ -457,8 +451,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * (non-Javadoc)
      * @see com.percussion.delivery.client.IPSDeliveryClient#getJsonArray(com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions)
      */
-    public JSONArray getJsonArray(PSDeliveryActionOptions actionOptions)
-    {
+    public JSONArray getJsonArray(PSDeliveryActionOptions actionOptions) throws PSDeliveryClientException {
         prepare(actionOptions, null);
         return getJsonArray();
     }
@@ -467,8 +460,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * (non-Javadoc)
      * @see com.percussion.delivery.client.IPSDeliveryClient#getJsonArray(com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions, java.lang.Object)
      */
-    public JSONArray getJsonArray(PSDeliveryActionOptions actionOptions, Object requestMessageBody)
-    {
+    public JSONArray getJsonArray(PSDeliveryActionOptions actionOptions, Object requestMessageBody) throws PSDeliveryClientException {
         prepare(actionOptions, requestMessageBody);
         return getJsonArray();
     }
@@ -478,8 +470,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * @see com.percussion.delivery.client.IPSDeliveryClient#push(com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions, java.lang.String, java.lang.Object)
      */
     public void push(PSDeliveryActionOptions actionOptions, String requestMessageBodyContentType,
-            Object requestMessageBody)
-    {
+            Object requestMessageBody) throws PSDeliveryClientException {
         prepare(actionOptions, requestMessageBody);
 
         String mediaType = StringUtils.isNotBlank(requestMessageBodyContentType) ? requestMessageBodyContentType :
@@ -488,8 +479,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         pushOrGet(mediaType);
     }
 
-    public void push(PSDeliveryActionOptions actionOptions, Object requestMessageBody)
-    {
+    public void push(PSDeliveryActionOptions actionOptions, Object requestMessageBody) throws PSDeliveryClientException {
        push(actionOptions, null, requestMessageBody);
     }
 
@@ -498,7 +488,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * (non-Javadoc)
      * @see com.percussion.delivery.client.IPSDeliveryClient#getString(com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions)
      */
-	public String getString(PSDeliveryActionOptions actionOptions) {
+	public String getString(PSDeliveryActionOptions actionOptions) throws PSDeliveryClientException {
         prepare(actionOptions, null);
         String response = pushOrGet(MediaType.APPLICATION_JSON);
         return response;
@@ -513,8 +503,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * @param actionOptions The PSDeliveryActionOptions object.
      * @param requestMessageBody The request message body
      */
-	private void prepare(PSDeliveryActionOptions actionOptions, Object requestMessageBody)
-    {
+	private void prepare(PSDeliveryActionOptions actionOptions, Object requestMessageBody) throws PSDeliveryClientException {
        if(actionOptions.getDeliveryInfo() == null)
        {
           log.error("Error getting info from delivery config file");
@@ -551,7 +540,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         catch (URIException e)
         {
             log.error("Error getting info from delivery config file");
-            throw new PSDeliveryClientException("Error getting info from delivery config file", e);
+            throw new PSDeliveryClientException(e);
         }
 
         protocol = uri.getScheme();
@@ -617,8 +606,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
 	 * @param actionOptions The PSDeliveryActionOptions object
 	 * @return The processed URL of the delivery service.
 	 */
-    private String processUrl(PSDeliveryActionOptions actionOptions)
-    {
+    private String processUrl(PSDeliveryActionOptions actionOptions) throws PSDeliveryClientException {
         PSDeliveryInfo server = actionOptions.getDeliveryInfo();
         
         String actionUrl = actionOptions.getActionUrl();
@@ -659,7 +647,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         catch (URIException e)
         {
             log.error("Error parsing URL: " + finalUrl);
-            throw new PSDeliveryClientException("Error parsing URL: " + finalUrl, e);
+            throw new PSDeliveryClientException(e);
         }
         
         return uri.getEscapedURI();
@@ -924,8 +912,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         }
     }
     
-    private boolean isSslEnabled(PSDeliveryActionOptions actionOptions)
-    {
+    private boolean isSslEnabled(PSDeliveryActionOptions actionOptions) throws PSDeliveryClientException {
         boolean sslEnabled = false;
         
         PSDeliveryInfo server = actionOptions.getDeliveryInfo();
@@ -950,7 +937,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         catch (URIException e)
         {
             log.error("Error getting info from delivery config file");
-            throw new PSDeliveryClientException("Error getting info from delivery config file", e);
+            throw new PSDeliveryClientException(e);
         }     
         return sslEnabled;
     }

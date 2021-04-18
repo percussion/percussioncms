@@ -32,6 +32,7 @@ import com.percussion.comments.data.PSCommentsSummary;
 import com.percussion.comments.data.PSCommentsSummaryList;
 import com.percussion.comments.data.PSSiteComments;
 import com.percussion.comments.service.IPSCommentsService;
+import com.percussion.delivery.client.IPSDeliveryClient;
 import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
 import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
@@ -284,13 +285,10 @@ public class PSCommentsService implements IPSCommentsService
 
                 aggregatedComments.add(currentComment);
             }
+        } catch (IPSDeliveryClient.PSDeliveryClientException e) {
+            e.printStackTrace();
         }
-        catch (Exception e)
-        {
-            String serviceUrl = server.getUrl() + COMMENT_GET_COMMENTS_ON_PAGE;
-            log.warn("Error getting all comments data from processor at : " + serviceUrl, e);
-            throw new WebApplicationException(e, Response.serverError().build());
-        }
+
 
         return new PSCommentList(aggregatedComments);
     }
@@ -428,8 +426,7 @@ public class PSCommentsService implements IPSCommentsService
      * @throws IOException
      */
     private void moderateCommentsOnDeliveryServer(PSDeliveryInfo server, String urlAction,
-                                                  Collection<PSSiteComments> commentsToModerate) throws IOException
-    {
+                                                  Collection<PSSiteComments> commentsToModerate) throws IOException, IPSDeliveryClient.PSDeliveryClientException {
         // Create JSON object to send to the delivery server
         PSCommentIds commentIds = new PSCommentIds();
         for (PSSiteComments siteComments : commentsToModerate)

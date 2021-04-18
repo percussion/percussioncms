@@ -23,13 +23,14 @@
  */
 package com.percussion.delivery.client;
 
-import static java.util.Arrays.asList;
-
-import java.util.ArrayList;
-
+import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
+import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
+import com.percussion.delivery.data.PSDeliveryInfo;
+import com.percussion.delivery.service.impl.PSDeliveryInfoLoader;
+import com.percussion.delivery.service.impl.PSDeliveryInfoLoaderTest;
+import com.percussion.proxyconfig.data.PSProxyConfig;
 import com.percussion.utils.testing.IntegrationTest;
 import net.sf.json.JSONArray;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -37,12 +38,9 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.springframework.util.Assert;
 
-import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
-import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
-import com.percussion.delivery.data.PSDeliveryInfo;
-import com.percussion.delivery.service.impl.PSDeliveryInfoLoader;
-import com.percussion.delivery.service.impl.PSDeliveryInfoLoaderTest;
-import com.percussion.proxyconfig.data.PSProxyConfig;
+import java.util.ArrayList;
+
+import static java.util.Arrays.asList;
 
 /**
  * @author natechadwick
@@ -75,7 +73,7 @@ public class PSDeliveryClientTests {
     }
     @Ignore
     @Test
-    public void testSSLwithTLS(){
+    public void testSSLwithTLS() throws IPSDeliveryClient.PSDeliveryClientException {
         PSDeliveryClient c = new PSDeliveryClient();
         PSDeliveryActionOptions opt = new PSDeliveryActionOptions(info, "/perc-metadata-services/application.wadl", true);
         
@@ -87,7 +85,7 @@ public class PSDeliveryClientTests {
     }
 
     @Test
-    public void testNoProxyConfig(){
+    public void testNoProxyConfig() throws IPSDeliveryClient.PSDeliveryClientException {
         PSDeliveryClient c = new PSDeliveryClient();
         PSProxyConfig proxyConfig = new PSProxyConfig();
 
@@ -100,7 +98,7 @@ public class PSDeliveryClientTests {
     }
     
     @Test
-    public void testNoProxyConfigBeanAvailable(){
+    public void testNoProxyConfigBeanAvailable() throws IPSDeliveryClient.PSDeliveryClientException {
         PSDeliveryClient c = new PSDeliveryClient();
         c.setLicenseOverride("-1");
         JSONArray result = c.getJsonArray(
@@ -110,7 +108,7 @@ public class PSDeliveryClientTests {
     }    
     
     @Test
-    public void testProxyConfig(){
+    public void testProxyConfig() throws IPSDeliveryClient.PSDeliveryClientException {
         PSDeliveryClient c = new PSDeliveryClient();
         PSProxyConfig proxyConfig = new PSProxyConfig();
         proxyConfig.setHost(PROXY_HOST_NO_AUTH);
@@ -153,7 +151,7 @@ public class PSDeliveryClientTests {
     }
     
     @Test
-    public void testProxyConfigUserAndPassword(){
+    public void testProxyConfigUserAndPassword() throws IPSDeliveryClient.PSDeliveryClientException {
         PSDeliveryClient c = new PSDeliveryClient();
         PSProxyConfig proxyConfig = new PSProxyConfig();
         proxyConfig.setHost(PROXY_HOST_AUTH);

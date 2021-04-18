@@ -24,14 +24,12 @@
 package com.percussion.delivery.client;
 
 import com.percussion.delivery.data.PSDeliveryInfo;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.ws.rs.core.MediaType;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import javax.ws.rs.core.MediaType;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -49,7 +47,7 @@ public interface IPSDeliveryClient
      * @return Returns the plain string object sent by the delivery tier. Never
      * <code>null</code>, maybe empty.
      */
-    public String getString(PSDeliveryActionOptions actionOptions);
+    public String getString(PSDeliveryActionOptions actionOptions) throws PSDeliveryClientException;
     
     /**
      * Requests a JSON Object from a delivery server.
@@ -60,7 +58,7 @@ public interface IPSDeliveryClient
      * returned, returns an empty JSONObject. Will never be <code>null</code>,
      * may be empty.
      */
-    public JSONObject getJsonObject(PSDeliveryActionOptions actionOptions);
+    public JSONObject getJsonObject(PSDeliveryActionOptions actionOptions) throws PSDeliveryClientException;
     
     /**
      * Requests a JSON Object from a delivery server, with the possibility to
@@ -79,7 +77,7 @@ public interface IPSDeliveryClient
      * may be empty.
      * 
      */
-    public JSONObject getJsonObject(PSDeliveryActionOptions actionOptions, Object requestMessageBody);
+    public JSONObject getJsonObject(PSDeliveryActionOptions actionOptions, Object requestMessageBody) throws PSDeliveryClientException;
     
     /**
      * Requests a JSON Array from a delivery server.
@@ -91,7 +89,7 @@ public interface IPSDeliveryClient
      * may be empty.
      * 
      */
-    public JSONArray getJsonArray(PSDeliveryActionOptions actionOptions);
+    public JSONArray getJsonArray(PSDeliveryActionOptions actionOptions) throws PSDeliveryClientException;
     
     /**
      * Requests a JSON Array from a delivery server, with the possibility to
@@ -110,7 +108,7 @@ public interface IPSDeliveryClient
      * may be empty.
      * 
      */
-    public JSONArray getJsonArray(PSDeliveryActionOptions actionOptions, Object requestMessageBody);
+    public JSONArray getJsonArray(PSDeliveryActionOptions actionOptions, Object requestMessageBody) throws PSDeliveryClientException;
     
     /**
      * Base method to send something to the delivery server, where you don't expect
@@ -128,7 +126,7 @@ public interface IPSDeliveryClient
      * getJsonObject(PSDeliveryActionOptions actionOptions).
      */
     public void push(PSDeliveryActionOptions actionOptions, String requestMessageBodyContentType,
-            Object requestMessageBody);
+            Object requestMessageBody) throws PSDeliveryClientException;
 
     /**
      * Convenience method, call {@link #push(PSDeliveryActionOptions, String, Object) push(PSDeliveryActionOptions, null, Object)}
@@ -141,7 +139,7 @@ public interface IPSDeliveryClient
      * in that case it runs in the same way as if you were using
      * getJsonObject(PSDeliveryActionOptions actionOptions).
      */
-    public void push(PSDeliveryActionOptions actionOptions, Object requestMessageBody);
+    public void push(PSDeliveryActionOptions actionOptions, Object requestMessageBody) throws PSDeliveryClientException;
 
     public enum HttpMethodType
     {
@@ -303,7 +301,7 @@ public interface IPSDeliveryClient
         }
     }
     
-    public static class PSDeliveryClientException extends RuntimeException
+    public static class PSDeliveryClientException extends Exception
     {
 
         /**
