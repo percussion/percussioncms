@@ -36,7 +36,13 @@ import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.itemmanagement.data.*;
+import com.percussion.itemmanagement.data.PSAssetSiteImpact;
+import com.percussion.itemmanagement.data.PSComment;
+import com.percussion.itemmanagement.data.PSItemDates;
+import com.percussion.itemmanagement.data.PSPageLinkedToItem;
+import com.percussion.itemmanagement.data.PSRevision;
+import com.percussion.itemmanagement.data.PSRevisionsSummary;
+import com.percussion.itemmanagement.data.PSSoProMetadata;
 import com.percussion.itemmanagement.service.IPSItemService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
@@ -89,13 +95,30 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
 import static com.percussion.share.service.exception.PSParameterValidationUtils.validateParameters;
 import static com.percussion.webservices.PSWebserviceUtils.getStateById;
@@ -354,9 +377,9 @@ public class PSItemService implements IPSItemService
 
 	    for(String id : assetIds){
 
-	    	Set<String> ownerPages = new HashSet<String>();
-		    Set<String> ownerTemplates = new HashSet<String>();
-		    Set<IPSSite> ownerSites = new HashSet<IPSSite>();
+	    	Set<String> ownerPages = new HashSet<>();
+		    Set<String> ownerTemplates = new HashSet<>();
+		    Set<IPSSite> ownerSites = new HashSet<>();
 
 			PSAssetSiteImpact impact = new PSAssetSiteImpact();
 
@@ -728,7 +751,7 @@ public class PSItemService implements IPSItemService
 
     /**
      * Prepares the supplied item for restoring a prior revision. Assumes that the item is valid for restoring.
-     * Make sure to call {@link #validateItemRestorable()} before calling this method.
+     * Make sure to call {@link #validateItemRestorable(String)} before calling this method.
      * Checks in the item if it is checked out to the current user.
      * Transitions to Quick edit state if the item is in Live or Pending state.
      * Uses the head locator to checkin and transition.
@@ -949,9 +972,13 @@ public class PSItemService implements IPSItemService
         }
 
         PSContentItem item = contentItemDao.find(id);
-        Map fields = item.getFields();
+
+        Map<String,Object> fields = item.getFields();
+
+
         fields.put(START_DATE, startDate);
         fields.put(END_DATE, endDate);
+
         item.setFields(fields);
         contentItemDao.save(item);
 try{

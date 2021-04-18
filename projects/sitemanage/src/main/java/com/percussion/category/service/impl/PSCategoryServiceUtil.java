@@ -24,13 +24,23 @@
 
 package com.percussion.category.service.impl;
 
-import static com.percussion.share.service.exception.PSParameterValidationUtils.validateParameters;
-
 import com.percussion.category.data.PSCategory;
 import com.percussion.category.data.PSCategoryNode;
 import com.percussion.category.marshaller.PSCategoryMarshaller;
 import com.percussion.category.marshaller.PSCategoryUnMarshaller;
+import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
+import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
+import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryClientException;
+import com.percussion.delivery.client.PSDeliveryClient;
+import com.percussion.delivery.data.PSDeliveryInfo;
+import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,19 +51,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-
-import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
-import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
-import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryClientException;
-import com.percussion.delivery.client.PSDeliveryClient;
-import com.percussion.delivery.data.PSDeliveryInfo;
-import com.percussion.delivery.service.IPSDeliveryInfoService;
+import static com.percussion.share.service.exception.PSParameterValidationUtils.validateParameters;
 
 public class PSCategoryServiceUtil {
     public static final String DUMMYROOT = "dummyroot";
@@ -238,7 +236,7 @@ public class PSCategoryServiceUtil {
         return categoryJson;
     }
 
-    public static void publishToDTS(String category, String sitename, String deliveryServer, IPSDeliveryInfoService deliveryService) {
+    public static void publishToDTS(String category, String sitename, String deliveryServer, IPSDeliveryInfoService deliveryService) throws PSDeliveryClientException {
 
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER, deliveryServer.toUpperCase());
         //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER);

@@ -32,6 +32,7 @@ import com.percussion.comments.data.PSSiteComments;
 import com.percussion.comments.service.IPSCommentsService;
 import com.percussion.comments.service.impl.PSCommentsService;
 import com.percussion.content.PSGenericContentGenerator;
+import com.percussion.delivery.client.IPSDeliveryClient;
 import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
 import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
@@ -53,9 +54,6 @@ import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pathmanagement.data.PSFolderPermission.Access;
 import com.percussion.pathmanagement.data.PSFolderProperties;
 import com.percussion.pathmanagement.data.PSPathItem;
-import com.percussion.pubserver.IPSPubServerService;
-import com.percussion.pubserver.data.PSPublishServerInfo;
-import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.data.IPSItemSummary;
@@ -65,7 +63,6 @@ import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.data.PSUnassignedResults;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.sitemanage.dao.IPSiteDao;
-import com.percussion.sitemanage.data.PSPubInfo;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSitePublishProperties;
 import com.percussion.sitemanage.data.PSSiteSummary;
@@ -83,7 +80,6 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class provide services to create content in a delivery server.
@@ -1223,8 +1219,7 @@ public class PSDeliveryContentGenerator extends PSGenericContentGenerator<Delive
      *
      * @param email The plain user email.
      */
-    private void deleteAccount(String email)
-    {
+    private void deleteAccount(String email) throws IPSDeliveryClient.PSDeliveryClientException {
         PSDeliveryClient deliveryClient = new PSDeliveryClient();
         PSDeliveryInfo server = deliveryInfoService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP);
         String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + IPSMembershipService.MEMBERSHIP

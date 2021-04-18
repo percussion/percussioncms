@@ -735,42 +735,51 @@ function assembleServerForms(serverObj) {
 
 function addRegionOptions(serverObj){
     $("#region").empty();
-    for (var i in regionsList) {
+    for (let i in regionsList) {
         $('#region').append(new Option(regionsList[i], regionsList[i]));
     }
 
     var selectedRegion = getArrayProperty(serverObj.serverInfo.properties, "key", "region");
     if(selectedRegion != null){
-        selectedRegion = selectedRegion.value;
+        if(regionsList.includes(selectedRegion.value))
+            selectedRegion = selectedRegion.value;
+        else
+            selectedRegion = null;
     }
     //Selecting Second Record as default because first one is us gov.
-    if(selectedRegion == null && regionsList.length > 2){
+    if(selectedRegion == null && regionsList.length >= 2){
         selectedRegion = regionsList[1];
     }
 
-
+    //Set the selected region
     $('#region').val(selectedRegion);
+
 }
 
 function addPublishingServerOptions(serverObj){
     getAllPublishingServer(serverObj.serverInfo.serverType);
-    $("#publishServer").empty();
-    for (var i in publishingServerList) {
-        $('#publishServer').append(new Option(publishingServerList[i], publishingServerList[i]));
+    let publishList =  $("#publishServer");
+    publishList.empty();
+    for (let i in publishingServerList) {
+        publishList.append(new Option(publishingServerList[i], publishingServerList[i]));
     }
 
-    var selectedserver = getArrayProperty(serverObj.serverInfo.properties, "key", "publishServer");
+    let selectedServer = getArrayProperty(serverObj.serverInfo.properties, "key", "publishServer");
 
-    //Selecting Second Record as default because first one is us gov.
-    if(selectedserver != null){
-        selectedserver = selectedserver.value;
+    if(selectedServer != null){
+        //Make sure the configured value is still an option
+        if(publishingServerList.includes(selectedServer.value)){
+            selectedServer = selectedServer.value;
+        }else{
+            selectedServer = null;
+        }
     }
-    if(selectedserver == null && publishingServerList.length > 1){
-        selectedserver = publishingServerList[0];
+    //Default to first entry
+    if(selectedServer == null && publishingServerList.length >= 1){
+        selectedServer = publishingServerList[0];
     }
-
-
-    $('#publishServer').val(selectedserver);
+    //Set the selected server
+    publishList.val(selectedServer);
 }
 
 function getPublishingServerBasedOnServerType(){

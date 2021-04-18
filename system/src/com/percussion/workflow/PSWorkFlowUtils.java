@@ -1058,7 +1058,6 @@ public class PSWorkFlowUtils
     * @throws PSInternalRequestCallException if thrown from internal request
     * @throws PSAuthorizationException if thrown from internal request
     */
-
    static public String getContentItemURL(int contentID,
                                           int revisionID,
                                           IPSRequestContext request,
@@ -2257,7 +2256,7 @@ public class PSWorkFlowUtils
     */
    public static boolean isSSLEnabledForNotification()
    {
-      return PSWorkFlowUtils.properties.getProperty("RX_SERVER_IS_SSLLINK_NOTIFICATION", "").equalsIgnoreCase("yes");
+      return PSWorkFlowUtils.properties.getProperty("RX_SERVER_IS_SSLLINK_NOTIFICATION", "no").equalsIgnoreCase("yes");
    }
    
    /**

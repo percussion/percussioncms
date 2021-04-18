@@ -27,6 +27,7 @@
  */
 package com.percussion.utils;
 
+import com.percussion.delivery.client.IPSDeliveryClient;
 import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
 import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
@@ -138,7 +139,7 @@ public class PSDTSStatusProvider
                     HttpMethodType.GET, false));
             return new PSPair<TaskStatus, String>(TaskStatus.SUCCESS, message);
         }
-        catch (RuntimeException e)
+        catch (RuntimeException | IPSDeliveryClient.PSDeliveryClientException e)
         {
             return new PSPair<TaskStatus, String>(TaskStatus.FAILED, e.getMessage());
         }
