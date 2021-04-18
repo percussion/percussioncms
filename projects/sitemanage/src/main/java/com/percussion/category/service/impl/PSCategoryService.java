@@ -33,6 +33,7 @@ import com.percussion.category.data.PSCategoryNode;
 import com.percussion.category.marshaller.PSCategoryMarshaller;
 import com.percussion.category.marshaller.PSCategoryUnMarshaller;
 import com.percussion.category.service.IPSCategoryService;
+import com.percussion.delivery.client.IPSDeliveryClient;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
@@ -45,9 +46,8 @@ import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.user.service.IPSUserService;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +76,7 @@ import java.util.Set;
 @Lazy
 public class PSCategoryService implements IPSCategoryService {
 
-    private static Log log = LogFactory.getLog(PSCategoryService.class);
+    private static final Logger log = LogManager.getLogger(PSCategoryService.class);
     private IPSUserService userService;
     private IPSDeliveryInfoService deliveryService;
     private IPSSiteDataService siteDataService;
@@ -388,11 +388,17 @@ public class PSCategoryService implements IPSCategoryService {
 
         String category = PSCategoryServiceUtil.prepareCategoryJson(getCategoryList(sitename));
 
-        if (deliveryserver.equalsIgnoreCase("Both")) {
-            PSCategoryServiceUtil.publishToDTS(category, sitename, "Production", deliveryService);
-            PSCategoryServiceUtil.publishToDTS(category, sitename, "Staging", deliveryService);
-        } else
-            PSCategoryServiceUtil.publishToDTS(category, sitename, deliveryserver, deliveryService);
+        try {
+            if (deliveryserver.equalsIgnoreCase("Both")) {
+                PSCategoryServiceUtil.publishToDTS(category, sitename, "Production", deliveryService);
+                PSCategoryServiceUtil.publishToDTS(category, sitename, "Staging", deliveryService);
+            } else {
+                PSCategoryServiceUtil.publishToDTS(category, sitename, deliveryserver, deliveryService);
+            }
+        } catch (IPSDeliveryClient.PSDeliveryClientException e) {
+           log.error(e.getMessage());
+           log.debug(e.getMessage(),e);
+        }
     }
 
     /**

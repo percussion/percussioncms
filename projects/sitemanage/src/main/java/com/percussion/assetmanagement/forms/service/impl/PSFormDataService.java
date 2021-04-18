@@ -24,26 +24,23 @@
 
 package com.percussion.assetmanagement.forms.service.impl;
 
-import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
-import static com.percussion.share.web.service.PSRestServicePathConstants.FIND_ALL_PATH;
-
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.assetmanagement.forms.data.PSFormSummary;
 import com.percussion.assetmanagement.forms.data.PSFormSummaryList;
 import com.percussion.assetmanagement.forms.service.IPSFormDataService;
+import com.percussion.delivery.client.IPSDeliveryClient;
 import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
 import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.percussion.pubserver.IPSPubServerService;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -53,16 +50,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.percussion.pubserver.IPSPubServerService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
+import static com.percussion.share.web.service.PSRestServicePathConstants.FIND_ALL_PATH;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * @author peterfrontiero
@@ -136,7 +133,7 @@ public class PSFormDataService implements IPSFormDataService
         if (server == null)
             return Collections.emptyList();
 
-        Map<String, PSFormSummary> formDataMap = new HashMap<String, PSFormSummary>();
+        Map<String, PSFormSummary> formDataMap = new HashMap<>();
         String procUrl = server.getUrl() + FORM_INFO_URL;
 
         List<PSFormSummary> result = new ArrayList<PSFormSummary>();
@@ -253,13 +250,19 @@ public class PSFormDataService implements IPSFormDataService
     @Path("/{name}/{site}")
     public void clearFormData(@PathParam("name") String name,@PathParam("site") String site) throws PSFormDataServiceException
     {
-        PSDeliveryInfo deliveryServer = findServer(site);
-        if (deliveryServer == null)
-            throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_FORMS);
+        try {
+            PSDeliveryInfo deliveryServer = findServer(site);
+            if (deliveryServer == null)
+                throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_FORMS);
 
-        PSDeliveryClient deliveryClient = new PSDeliveryClient();
-        deliveryClient.push(new PSDeliveryActionOptions(deliveryServer, FORM_INFO_URL + name, HttpMethodType.DELETE,
-                true), null);
+            PSDeliveryClient deliveryClient = new PSDeliveryClient();
+            deliveryClient.push(new PSDeliveryActionOptions(deliveryServer, FORM_INFO_URL + name, HttpMethodType.DELETE,
+                    true), null);
+        } catch (IPSDeliveryClient.PSDeliveryClientException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     /**
@@ -276,9 +279,13 @@ public class PSFormDataService implements IPSFormDataService
     {
         rejectIfBlank("exportFormData", "name", name);
 
+        try
+        {
         PSDeliveryInfo deliveryServer = findServer(site);
-        if (deliveryServer == null)
-            throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_FORMS);
+        if (deliveryServer == null) {
+            log.warn("Cannot find service of: " + PSDeliveryInfo.SERVICE_FORMS);
+            return "";
+        }
 
         String formPath = createFormNamePath(name);
         List<String> formsData = new ArrayList<String>();
@@ -290,13 +297,13 @@ public class PSFormDataService implements IPSFormDataService
         if (response != null)
             formsData.add(response);
 
-        try
-        {
+
             return formDataJoiner.joinFormData(formsData.toArray(new String[0]));
         }
         catch (Exception e)
         {
             log.error("Error while joining forms data: " + e.getMessage());
+            log.debug(e.getMessage(),e);
             return "";
         }
     }
