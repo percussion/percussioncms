@@ -74,7 +74,7 @@
       el.removeClass('perc-widget-visible-grid perc-widget-puff');
       el.find( '.perc-widget-menubar' ).remove();
    }
-   function add_region_dec( el, actions, pageId ) { 
+   function add_region_dec( el) {
       el.addClass('perc-region-visible-grid');
       //el.sortable();
    }
