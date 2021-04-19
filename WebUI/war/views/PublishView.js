@@ -70,12 +70,12 @@
                     });
                     return false;
                 }
-                if (ui.index === PUB_SERVERS)
+                if (ui.index == PUB_SERVERS) 
                 {
                     // Load the servers details for selected site                      
                     loadSiteServers();
                 }
-                if (ui.index === PUB_REPORTS)
+                if (ui.index == PUB_REPORTS) 
                 {
                     $("#perc-servers").html('');
                     getServersList(function(servers)
@@ -241,7 +241,7 @@
                             content: defaultMsg,
                             title: I18N.message("perc.ui.publish.title@Error")
                         });
-
+                        return;
                     }
                 });
             }
@@ -299,7 +299,7 @@
                     editorRenderer().setReadOnlyProperties(serverProperties);
                     
                     //Set the Format value based on Radio flag
-                    if (driver === 'FTP' || driver === 'Local')
+                    if (driver == 'FTP' || driver == 'Local') 
                     {
                         var isHTML = propMap["HTML"];
                         if (isHTML) 
@@ -312,7 +312,7 @@
                         }
                     }
                     //Convert the true/false to Yes/No for Secure FTP
-                    if (driver === 'FTP')
+                    if (driver == 'FTP') 
                     {
                         var isSecure = propMap["secure"];
                         if (isSecure) 
@@ -467,11 +467,11 @@
             var popertyValue = '';
             $.each(this, function(propName, value)
             {
-                if (propName === 'key')
+                if (propName == 'key') 
                 {
                     propertyName = value;
                 }
-                if (propName === 'value')
+                if (propName == 'value') 
                 {
                     propertyValue = value;
                 }
@@ -492,7 +492,7 @@
         $.PercDataList.enableButtons(container);
         // Capture the serverId as a global varialbe.
         serverId = serversIds["perc-" + serverName];
-        if (serverName === defaultServer.name)
+        if (serverName == defaultServer.name) 
         {
             $(".perc-item-delete-button").unbind().addClass('perc-item-disabled');
         }
@@ -504,7 +504,7 @@
             });
         }
         loadReadOnlyEditor();
-    }
+    };
     
     //Publish the site using selected server
     function publishServer()
@@ -515,7 +515,7 @@
         $.PercPublisherService().publishSite(siteName, serverName, function(status, result)
         {
             $.unblockUI();
-            if (result[1] === "success")
+            if (result[1] == "success") 
             {
                 var status = JSON.parse(result[0]).SitePublishResponse.status;
                 var msg = "";
@@ -552,7 +552,7 @@
     //Show the incremental publishing preview list dialog.
     function showIncrementalPreview(showRelated){
         $.PercIncrementalPreviewDialog.open(siteName, serverName, showRelated, function(action){
-            if(action === $.PercIncrementalPreviewDialog.CONTINUE){
+            if(action == $.PercIncrementalPreviewDialog.CONTINUE){
                 incrementalPublish();
             }
         });
@@ -659,7 +659,7 @@
                     };
                 }
                 
-                if(this.serverType === "STAGING")
+                if(this.serverType == "STAGING")
                 {
                 	stagingServer = this.serverName;
                 }
@@ -687,7 +687,7 @@
             //Select the first server by default
             if (loadServer) 
             {
-                selectServer(loadServer);
+                selectServer(loadServer)
             }
             else 
             {
@@ -700,7 +700,7 @@
         	}
             if (typeof(defaultServer) != "undefined") 
             {
-                var defaultServerItem = container.find(".perc-itemname[title='" + defaultServer.name + "']");
+                var defaultServerItem = container.find(".perc-itemname[title='" + defaultServer.name + "']")
                 defaultServerItem.addClass('perc-default-server-marker');
                 if (defaultServer.isModified) 
                 {
@@ -742,7 +742,7 @@
      */
     validateFields = function(errorObj)
     {
-        if (errorObj.error === 'Bad Request')
+        if (errorObj.error == 'Bad Request') 
         {
             var badFields = $.parseJSON(errorObj.request.responseText).ValidationErrors.fieldErrors;
             var badFieldsArray = [];
@@ -764,7 +764,7 @@
         else 
         {
             var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(errorObj.request);
-            if (defaultMsg === I18N.message("perc.ui.publish.view@Server No Longer Exists") || defaultMsg === I18N.message("perc.ui.publish.view@One Staging Server Per Site"))
+            if (defaultMsg == I18N.message("perc.ui.publish.view@Server No Longer Exists") || defaultMsg == I18N.message("perc.ui.publish.view@One Staging Server Per Site")) 
             {
                 $.perc_utils.alert_dialog({
                     content: defaultMsg,
@@ -821,12 +821,12 @@
             var type = container.find('select#publishType').val();
             var ignoreUnModifiedAssets = container.find('input[percName="ignoreUnModifiedAssets"]').is(':checked');
             var publishRelatedItems = container.find('input[percName="publishRelatedItems"]').is(':checked');
-            if (type === 'Select')
+            if (type == 'Select') 
             {
                 type = '';
             }
             var driver = container.find('select#perc-driver').val();
-            if (driver === 'Select')
+            if (driver == 'Select') 
             {
                 driver = '';
             }
@@ -844,18 +844,18 @@
                     var propVal;
                     var ignoreProp = false;
                     
-                    if (propType === 'radio')
+                    if (propType == 'radio') 
                     {
                         propVal = inputField.prop('checked');
                     }
-                    else if (propType === 'checkbox')
+                    else if (propType == 'checkbox') 
                     {
                         propVal = inputField.prop('checked');
                     }
                     else 
                     {
                         if(propName === 'password'){
-                            propVal = btoa(inputField.val());
+                            propVal = btoa(inputField.val())
                         }else{
                             propVal = inputField.val();
                         }
@@ -864,7 +864,7 @@
                     var propObjField = {
                         "key": propName,
                         "value": propVal
-                    };
+                    }
                     properties.push(propObjField);
                 });
                 // Add driver as property of server
@@ -883,7 +883,7 @@
                 	"value":publishRelatedItems
                 });
                 return properties;
-            };
+            }
             //Create the server Option Object
             var serverPropObj = {
                 serverInfo: {

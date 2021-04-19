@@ -26,7 +26,7 @@
  * Handles the region css changes performed while editing a template. It basically performs the CRUD operations
  * to update those properties.
  */
-(function($){
+(function($, P){
 
     var oTable;
     
@@ -68,9 +68,9 @@
             });
         
         
-        function getRegionCallback(status, data)
+        function getRegionCallback(status, data, id)
         {
-            if(status === $.PercServiceUtils.STATUS_SUCCESS)
+            if(status == $.PercServiceUtils.STATUS_SUCCESS)
             {
                 var percData = [];
                 var row;
@@ -148,7 +148,7 @@
     {
         var properties = [];
         var data = oTable.fnGetData();
-        if (data.length === 1 && $.trim(data[0][0]) === "")
+        if (data.length == 1 && $.trim(data[0][0]) == "")
             data.pop();
         if (data.length > 0)
         {
@@ -159,21 +159,19 @@
             
             var regionCSSObject = {
                     "RegionCSS":{
-                        "properties": properties,
-                        "regionName": id,
-                        "outerRegionName": getOuterMostRegion(),}
-
-
-                        } ;
+                        "properties": properties
+                        ,"regionName": id
+                        ,"outerRegionName": getOuterMostRegion()
+                        }}; 
             $.PercTemplateService().saveRegionCSS(
                     _themeName, 
                     _templateName, 
                     regionCSSObject,
-                    function(status) {
-                        if(status === $.PercServiceUtils.STATUS_SUCCESS)
+                    function(status, data) {
+                        if(status == $.PercServiceUtils.STATUS_SUCCESS)
                         {
                             tempDeletedRegions = jQuery.grep(tempDeletedRegions, function(value) {
-                                return value !== id;
+                                return value != id;
                             });
                             reloadRegionCSSFile();
                         }
@@ -186,8 +184,8 @@
                 _templateName, 
                 getOuterMostRegion(),
                 id,
-                function(status) {
-                    if(status === $.PercServiceUtils.STATUS_SUCCESS)
+                function(status, data) {
+                    if(status == $.PercServiceUtils.STATUS_SUCCESS)
                     {
                         tempDeletedRegions.push(id);
                         reloadRegionCSSFile();
@@ -227,7 +225,7 @@
      */
     function mergeRegionCSS()
     {
-        if (_themeName == null || _themeName === "" || _templateName == null || _templateName === "")
+        if (_themeName == null || _themeName == "" || _templateName == null || _templateName == "")
         {
         	return false;
         }
@@ -240,9 +238,9 @@
             for (var i = 0; i < deletedRegions.length; i++)
             {
                 var regionCSSObject = {
-                    "properties": null,
-                    "regionName": deletedRegions[i],
-                    "outerRegionName": getOuterMostRegion()
+                    "properties": null
+                    ,"regionName": deletedRegions[i]
+                    ,"outerRegionName": getOuterMostRegion()
                 }; 
                 deletedRegionsObjects.push(regionCSSObject);
             }
