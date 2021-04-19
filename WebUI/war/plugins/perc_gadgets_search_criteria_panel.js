@@ -55,7 +55,7 @@
             $.each(criteriaObj, function(index, value) {
                 var fieldName = value["name"];
                 var fieldValue = value["value"];
-                if (fieldValue != "@all")
+                if (fieldValue !== "@all")
                     panelContent +=     '<span class="perc-search-criteria-panel-content-spans" id="perc-search-criteria-panel-' + index + '">' + labels[index] +' = <span class="perc-search-criteria-panel-values-spans" id="perc-search-criteria-panel-' + index + '-value">' + fieldName + ';</span></span>&nbsp;';
             });
             panelContent += '    </div>';
@@ -63,7 +63,7 @@
 
        panelContent += '</div>';       
 
-       if (previousPanel.length == 0)
+       if (previousPanel.length === 0)
        {
            container.append(panelContent);
        }
@@ -99,7 +99,7 @@
     {
         var flag = true;
         $.each(criteriaObj, function(index, value) {
-        if (value["value"] != "@all")
+        if (value["value"] !== "@all")
             flag = false;
         });
         
