@@ -201,5 +201,5 @@
 		      stop: stopDrag
 		   };
 		*/
-	}
+	};
 })(jQuery);
