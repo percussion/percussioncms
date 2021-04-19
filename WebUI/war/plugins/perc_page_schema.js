@@ -49,48 +49,48 @@ $.perc_schemata = $.perc_schemata || {};
 </Page>
 */
 
-var test_xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-      + '<Page>'
-               + '<name>Page Name</name>'
-               + '<templateId>2000</templateId>'
-               + '<folderPath>//folderpath</folderPath>'
-               + '<author>authorName</author>'
-               + '<id>1000</id>'
-               + '<category>PAGE</category>'
-               + '<regionBranches>'
-                     + '<regionWidgetAssociations>'
-                           + '<regionWidget>'
-                                 + '<regionId>rid</regionId>'
-                                 + '<widgetItems>'
-                                       + '<widgetItem>'
-                                             + '<definitionId>STUFF</definitionId>'
-                                             + '<properties>'
-                                                + '<property>'
-                                                    + '<name>AAA</name>'
-                                                    + '<value>BBB</value>'
-                                                + '</property>'
-                                             + '</properties>'
-                                       + '</widgetItem>'
-                                 + '</widgetItems>'
-                           + '</regionWidget>'
-                     + '</regionWidgetAssociations>'
-                     + '<regions>'
-                           + '<region>'
-                                 + '<regionId>templateRegion</regionId>'
-                                 + '<children>'
-                                    + '<region>'
-                                       + '<regionId>rid</regionId>'
-                                       + '<children>'
-                                          + '<code>'
-                                             + "<templateCode>#region('' '' '' '' '')</templateCode>"
-                                          + '</code>'
-                                       + '</children>'
-                                    + '</region>'
-                                 + '</children>'
-                           + '</region>'
-                     + '</regions>'
-               + '</regionBranches>'
-      + '</Page>';
+var test_xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+       '<Page>' +
+                '<name>Page Name</name>' +
+                '<templateId>2000</templateId>' +
+                '<folderPath>//folderpath</folderPath>' +
+                '<author>authorName</author>' +
+                '<id>1000</id>' +
+                '<category>PAGE</category>' +
+                '<regionBranches>' +
+                      '<regionWidgetAssociations>' +
+                            '<regionWidget>' +
+                                  '<regionId>rid</regionId>' +
+                                  '<widgetItems>' +
+                                        '<widgetItem>' +
+                                              '<definitionId>STUFF</definitionId>' +
+                                              '<properties>' +
+                                                 '<property>' +
+                                                     '<name>AAA</name>' +
+                                                     '<value>BBB</value>' +
+                                                 '</property>' +
+                                              '</properties>' +
+                                        '</widgetItem>' +
+                                  '</widgetItems>' +
+                            '</regionWidget>' +
+                      '</regionWidgetAssociations>' +
+                      '<regions>' +
+                            '<region>' +
+                                  '<regionId>templateRegion</regionId>' +
+                                  '<children>' +
+                                     '<region>' +
+                                        '<regionId>rid</regionId>' +
+                                        '<children>' +
+                                           '<code>' +
+                                              "<templateCode>#region('' '' '' '' '')</templateCode>" +
+                                           '</code>' +
+                                        '</children>' +
+                                     '</region>' +
+                                  '</children>' +
+                            '</region>' +
+                      '</regions>' +
+                '</regionBranches>' +
+       '</Page>';
 
 
 var region_schema, code_schema, page_schema;
@@ -102,9 +102,9 @@ region_schema  = {
    'regionId': '$',
    'startTag': '$',
    'children': [function(tag){ 
-                if(tag == 'region') 
+                if(tag === 'region')
                    return region_schema;
-                if(tag == 'code')
+                if(tag === 'code')
                    return code_schema;
                 alert("Unhandled case");
                 return '$';}],

@@ -40,7 +40,7 @@
 	var re = new RegExp("\\#(.*?)\\{","g");
 	var tmpMatch = cssString.match(re);
 	
-	for (item in tmpMatch)
+	for (var item in tmpMatch)
 	    {
 		var tmpSelector = tmpMatch[item].substring(1,tmpMatch[item].length-1);
 		foundSelectors.push(tmpSelector);
@@ -71,7 +71,7 @@
 	var cssFragment = get_region_selector(cssString,selector);
 	var tmpre = new RegExp("\\{(.*?)\\}","g");   // match the selectors with delimiters.
 	var tmpPropertiesre = new RegExp("([^:]*):([^;]*);","g");  // match the key/value pairs inside a selector.
-	var cssProperties = new Object();
+	var cssProperties = {};
 	
 	/* Get the inside */
 	var tmpMatch = tmpre.exec(cssFragment);
@@ -84,7 +84,7 @@
 
 	// Traverse the properties, extract them, and cram them into cssProperties
 
-	for (propertyItem in propertiesArray)
+	for (var propertyItem in propertiesArray)
 	    {
 		// console.log("Key: "+propertyItem+" Value: "+propertiesArray[propertyItem]);
 		var tmpPropertyFragment = propertiesArray[propertyItem].match(/([^:]*):([^;]*);/g);
@@ -125,11 +125,11 @@
 	cssString = cssString.replace("\"",""); // HACK!
 
 	var cssSelectors = getRegionSelectorsFrom(cssString);
-	var regionCSS = new Object();
+	var regionCSS = {};
 
-	for (item in cssSelectors)
+	for (var item in cssSelectors)
 	    {
-		var tmp = new Object();
+		var tmp = {};
 		var currentSelector = cssSelectors[item];
 		tmp = get_properties_for(cssString,currentSelector);
 		regionCSS[currentSelector] = tmp;
@@ -151,10 +151,10 @@
 	var outputCSS = "";
 
 	// This is peeled back in a nested set of for's
-	for (selector in regionCSS)
+	for (var selector in regionCSS)
 	    {
 		outputCSS += "#" + selector + "{";
-		for (property in selector)
+		for (var property in selector)
 		    {
 			outputCSS += " " + property + ": " + selector[property] + "; ";
 		    }
