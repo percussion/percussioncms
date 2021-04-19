@@ -55,7 +55,7 @@
             showImportError        : showImportError,
             disableUserImport      : disableUserImport,
             alertDialog            : alertDialog
-        };
+        }
 
         // A snippet to adjust the frame size on resizing the window.
         $(window).resize(function() {
@@ -85,7 +85,7 @@
         // state variables
         var directoryServiceAvailable = true;
         var currentUserList = [];
-        var currentUserIds = {};
+        var currentUserIds = new Object();
         var addingNewUser = false;
         
         // I18N strings
@@ -194,7 +194,7 @@
                     selectedUserNames.push($(this).attr("id"));
                 });
                 
-                if(selectedUserNames.length === 0) {
+                if(selectedUserNames.length == 0) {
                     alertDialog(I18N.message("perc.ui.page.general@Warning"), I18N.message("perc.ui.users.import.dialogs@SelectOneUser"));
                     return;
                 }
@@ -220,7 +220,7 @@
             if(selectedUserCheckBoxes.length > 0) {
                 selectUserLabel.hide();
                 enableImportButton();
-            } else if(userCheckBoxes.length > 0 && selectedUserCheckBoxes.length === 0){
+            } else if(userCheckBoxes.length > 0 && selectedUserCheckBoxes.length == 0){
                 selectUserLabel.show();
                 disableImportButton();
             }
@@ -257,10 +257,10 @@
             var errorList = [];
             var duplicateList = [];
             for(u=0; u<users.length; u++) {
-                if(users[u].status !== "SUCCESS") {
-                    if(users[u].status === "ERROR")
+                if(users[u].status != "SUCCESS") {
+                    if(users[u].status == "ERROR")
                        errorList.push(users[u]);
-                    else if(users[u].status === "DUPLICATE")
+                    else if(users[u].status == "DUPLICATE")
                        duplicateList.push(users[u]);
                 }
             }
@@ -308,7 +308,7 @@
             $("#perc-users-email-label").hide();
             $("#perc-users-email-field").val("");
         
-           var availableRolesSelectList = $("#perc-users-available-roles > select");
+           var availableRolesSelectList = $("#perc-users-available-roles > select")
            var assignedRolesSelectList  = $("#perc-users-assigned-roles  > select");
         
             assignedRolesSelectList
@@ -327,7 +327,7 @@
         function updateListOfUsers(userArray) {
             
             currentUserList = userArray;
-            currentUserIds  = {};
+            currentUserIds  = new Object();
             
             // clear the list of users
             var $userListElement = $("#perc-username-list > ul");
@@ -482,7 +482,7 @@
                 .val("")
                 .change(function() {
                     dirtyController.setDirty(true, "user");
-                });
+                })
             $("#perc-users-email-label").show();
             unhighlightAllUsers();
             $("#perc-users-edit-user-button").hide();
@@ -571,9 +571,9 @@
             
             // go through all the roles and only add them to the available roles
             // if it's not already in the assigned roles array
-            for(var i in rolesArrayCache) {
+            for(i in rolesArrayCache) {
                 var assignedRole = assignedRoles[assignedIndex];
-                if(rolesArrayCache[i] !== assignedRole) {
+                if(rolesArrayCache[i] != assignedRole) {
                     var html = $("<option/>").val(rolesArrayCache[i]).html(rolesArrayCache[i]);
                     availableRoles.append(html);
                 } else {
@@ -595,7 +595,7 @@
                 .attr("readonly","readonly");
             $("#perc-users-email-field")
                 .addClass("perc-users-password-field-view-user")
-                .attr("readonly","readonly");
+                .attr("readonly","readonly")
             if ($("#perc-users-email-field").val() == ""){
                 $("#perc-users-email-label").hide();
             }else{
@@ -640,8 +640,8 @@
             var assignedRoleSelected = $("#perc-users-assigned-roles > select > option:selected");
             var selectedAssignedRoleValue = assignedRoleList.val();
             
-            if(selectedAssignedRoleValue === "Admin" && !controller.isAddingNewUser() &&
-            		 controller.getSelectedUser() === controller.getCurrentUser()) {
+            if(selectedAssignedRoleValue == "Admin" && !controller.isAddingNewUser()
+            		&& controller.getSelectedUser() == controller.getCurrentUser()) {
                alertDialog(I18N.message("perc.ui.page.general@Warning"), I18N.message("perc.ui.perc.user.view@Cannot Remove Admin"));
                return;
             }
