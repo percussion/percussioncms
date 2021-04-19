@@ -793,7 +793,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
    {
       PSRequest req = (PSRequest) PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
       PSFolderSecurityManager.setCheckFolderPermissions(false);
-      PSRelationshipDbProcessor relProcessor = new PSRelationshipDbProcessor(req);
+      PSRelationshipDbProcessor relProcessor = PSRelationshipDbProcessor.getInstance();
 
       try
       {
