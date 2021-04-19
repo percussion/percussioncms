@@ -293,8 +293,26 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
    public PSRelationship checkIfRelationshipAlreadyExists(PSRelationship rel){
       PSRelationshipProcessor processor = PSRelationshipProcessor.getInstance();
       PSRelationshipFilter filter = new PSRelationshipFilter();
-      filter.setDependentId(rel.getDependent().getId());
-      filter.setOwnerId(rel.getOwner().getId());
+
+      String name = rel.getConfig().getName();
+      if (name != null && name.trim().length() > 0)
+         filter.setName(name);
+
+      int ownerId = rel.getOwner().getId();
+      if (ownerId != -1)
+      {
+         int rev = rel.getOwner().getRevision();
+         filter.setOwner(new PSLocator(ownerId, rev));
+      }
+
+      int dependentId = rel.getDependent().getId();
+      if (dependentId != -1)
+         filter.setDependent(new PSLocator(dependentId, rel.getDependent().getRevision()));
+
+      String slotId = rel.getProperty(IPSHtmlParameters.SYS_SLOTID);
+      if (slotId != null && !slotId.trim().isEmpty())
+         filter.setProperty(IPSHtmlParameters.SYS_SLOTID, slotId + "");
+
       try {
          PSRelationshipSet relSet = processor.getRelationships(filter);
          for (int i = 0; i < relSet.size(); i++)
