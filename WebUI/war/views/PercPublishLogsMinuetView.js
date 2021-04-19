@@ -37,11 +37,11 @@
             renderSiteLogs: renderSiteLogs,
             renderPublishDetails: renderPublishDetails,
             sortLogField: sortLogField
-        };
+        }
 
         function renderSiteLogsSection() {
             renderSiteLogsContainer();
-            bindLogActions();
+            bindLogActions()
             renderSiteLogs();
         }
 
@@ -66,7 +66,7 @@
         }
 
         function getSiteLogsCallback(status, result) {
-            if(result[1] === 'success') {
+            if(result[1] == 'success') {
                 siteLogDataDeferred.resolve(result[0]);
             }
         }
@@ -77,7 +77,7 @@
                 response = {};
                 response.result = {};
                 response.source = I18N.message("perc.ui.publish.title@Delete Publishing Logs");
-                if(result[1] === 'success') {
+                if(result[1] == 'success') {
                     response.result.status = I18N.message("perc.ui.publish.title@Delete Logs Success");
                     refreshSiteLogs();
                 }
@@ -97,7 +97,7 @@
             requestObj = {};
             params.SitePublishLogRequest = {};
             $('.perc-report-selector').each(function() {
-                propertyName = $(this).prop('name');
+                propertyName = $(this).prop('name')
                 propertyValue = $(this).val();
                 requestObj[propertyName] = propertyValue;
             });
@@ -153,11 +153,11 @@
 
             dialogConfirmationResponseDeferred.done(function(response) {
 
-                if( response === 'confirm') {
+                if( response == 'confirm') {
                     deleteSelectedLogsResponseDeferred = $.Deferred();
                     deleteSelectedLogs();
                     deleteSelectedLogsResponseDeferred.done(function(response) {
-                        processAlert(response);
+                        processAlert(response)
 
                         // Only close the modal when we have a successful reponse
                         if(!(response.result.warning)) {
@@ -176,7 +176,7 @@
             startProcessRunningAlert();
             jobIdList = [];
             $('.perc-delete-log-item').each(function() {
-                if( this.checked === true) {
+                if( this.checked == true) {
                     jobId = $(this).data('perc-job-id');
                     jobIdList.push(jobId);
                 }
@@ -202,7 +202,7 @@
             });
 
             $('#percSitePublishingLogList .perc-sortable-header').on('click keydown',function(event) {
-                if(event.type === 'click' || event.which === 13) {
+                if(event.type == 'click' || event.which == 13) {
                     sortLogList('click', true, this);
                 }
             });
@@ -210,11 +210,11 @@
         }
 
         function sortLogList(action, toggleFlag, clickEvent) {
-            if(action === 'refresh') {
+            if(action == 'refresh') {
                 activeSort = $('#percSitePublishingLogList .perc-active-sort');
                 eventObj = activeSort;
             }
-            if(action === 'click') {
+            if(action == 'click') {
                 eventObj = clickEvent;
             }
             sortLogField(eventObj, serverLogObject, 'templatePercServerLogList', 'percServerLogListTarget', 'SitePublishJob', toggleFlag);
@@ -247,7 +247,7 @@
             });
 
             $('#percSitePublishingLogDetails .perc-sortable-header').on('click keydown', function(event) {
-                if(event.type === 'click' || event.which === 13) {
+                if(event.type == 'click' || event.which == 13) {
                     sortLogField(this, jobObject, 'templatePercPublishLogDetailsList', 'percPublishLogDetailsListTarget', 'SitePublishItem', true);
                 }
             });
@@ -268,7 +268,7 @@
 
         function filterPublishItemsByString(filterItemString) {
             $("#percPublishLogDetailsListTarget tr").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(filterItemString) > -1);
+                $(this).toggle($(this).text().toLowerCase().indexOf(filterItemString) > -1)
             });
         }
 
@@ -289,8 +289,8 @@
             });
 
             // Sort toggle prevents switching of sort order on refresh
-            if( $(eventObj).data('perc-sort-order') === 'asc') {
-                if(sortToggle === true) {
+            if( $(eventObj).data('perc-sort-order') == 'asc') {
+                if(sortToggle == true) {
                     $(eventObj).data('perc-sort-order', 'desc');
                     sortAttr = '-' + sortByProp;
                 }
@@ -299,7 +299,7 @@
                 }
             }
             else {
-                if(sortToggle === true) {
+                if(sortToggle == true) {
                     $(eventObj).data('perc-sort-order', 'asc');
                     sortAttr = sortByProp;
                 }
@@ -314,11 +314,11 @@
             $(eventObj).addClass('perc-active-sort').removeClass('perc-inactive-sort');
             processTemplate(dataObject, template, target);
 
-            if(target === 'percServerLogListTarget') {
+            if(target == 'percServerLogListTarget') {
                 bindLogsEvents();
             }
 
-            if(target === 'percPublishLogDetailsListTarget') {
+            if(target == 'percPublishLogDetailsListTarget') {
                 bindLogDetailsEvents();
             }
 
@@ -343,6 +343,6 @@
             };
         }
 
-    };
+    }
 
 })($);

@@ -46,7 +46,7 @@ function checkEC2Instance(){
 
     var checkCallback = function(status, result)
     {
-        if (status === "error")
+        if (status == "error")
         {
             isEC2Instance = false;
 
@@ -108,7 +108,7 @@ function getAllPublishingServer(serverType) {
     // Start by retrieving a list of regions
     publishingServerListDeferred = $.Deferred();
 
-    if(serverType === undefined){
+    if(serverType == undefined){
         serverType='PRODUCTION';
     }
     $j.PercPublisherService(false).getAvailablePublishingServer(getPublishServerCallback,serverType);
@@ -229,7 +229,7 @@ function processDeleteServerCallback(status, result) {
         response = {};
         response.result = {};
         response.source = I18N.message("perc.ui.publish.title@Delete Server");
-        if(result[1] === 'success') {
+        if(result[1] == 'success') {
             response.result.status = selectedServerData.serverInfo.serverName + ' ' + I18N.message("perc.ui.publish.title@Successfully Removed");
             deleteServerResponseDeferred.resolve(response);
         }
@@ -258,7 +258,7 @@ function updateServerPropertiesCallback(status, result) {
         response = {};
         response.result = {};
         response.source = I18N.message("perc.ui.publish.title@Server Configuration");
-        if(result[1] === 'success') {
+        if(result[1] == 'success') {
             response.result.warning = false;
             response.result.status = result[0].serverInfo.serverName + ' ' + I18N.message("perc.ui.publish.title@Updated Successfully");
             $('#percServerPropertiesModal').modal('toggle');
@@ -281,7 +281,7 @@ function updateServerPropertiesCallback(status, result) {
 
 function bindSitesEvents() {
     $('.perc-site-select').on('click keypress', function(event) {
-        if(event.type === 'click' || event.which === 13) {
+        if(event.type == 'click' || event.which == 13) {
             percSiteSelect(this);
         }
     });
@@ -336,7 +336,7 @@ function bindServerPropertiesEvents() {
     $('#percServerType').change(function() {
 
         $('#defaultServerFlag').trigger('click');
-        if($('#percServerType').val() === 'PRODUCTION') {
+        if($('#percServerType').val() == 'PRODUCTION') {
             $('#percPublishNowFlag').prop('disabled', false);
         }
         else{
@@ -427,14 +427,14 @@ function backToSites() {
 function updateDriverPropertiesUi() {
     selectedType = $('#publishType').val();
 
-    if(selectedType === 'File') {
+    if(selectedType == 'File') {
         $('#databaseDriver').hide();
         $('#fileDriver').show();
         selectedDriver = $('#fileDriver').val();
 
     }
 
-    if(selectedType === 'Database') {
+    if(selectedType == 'Database') {
         $('#databaseDriver').show();
         $('#fileDriver').hide();
         selectedDriver = $('#databaseDriver').val();
@@ -445,22 +445,22 @@ function updateDriverPropertiesUi() {
         desiredSection = 'percServerProperties' + selectedType + selectedDriver + 'Target';
 
         // Always show database common properties if type is database, hide if type is file
-        if(selectedType === 'Database' && currentSection === 'percServerPropertiesDatabaseCommonTarget') {
+        if(selectedType == 'Database' && currentSection == 'percServerPropertiesDatabaseCommonTarget') {
             $(this).show('fast');
             return true;
         }
-        else if(selectedType === 'File' && currentSection === 'percServerPropertiesDatabaseCommonTarget') {
+        else if(selectedType == 'File' && currentSection == 'percServerPropertiesDatabaseCommonTarget') {
             $(this).hide('fast');
             return true;
         }
 
         // Always show common properties and optional properties
-        if(currentSection === 'percServerPropertiesCommonTarget' || currentSection === 'percServerPropertiesOptionalTarget') {
+        if(currentSection == 'percServerPropertiesCommonTarget' || currentSection == 'percServerPropertiesOptionalTarget') {
             $(this).show('fast');
             return true;
         }
 
-        if(selectedType === 'Database' && (selectedDriver === 'MSSQL' || selectedDriver === 'MYSQL')) {
+        if(selectedType == 'Database' && (selectedDriver == 'MSSQL' || selectedDriver == 'MYSQL')) {
             $('#perc-database-name-container').show('fast');
         }
         else {
@@ -468,13 +468,13 @@ function updateDriverPropertiesUi() {
         }
 
         // Only show the local driver properties if the type is file and we don't have Amazon S3 selected
-        if(selectedType === 'File' && currentSection === 'percServerPropertiesFileLocalTarget' && selectedDriver !== 'AMAZONS3') {
+        if(selectedType == 'File' && currentSection == 'percServerPropertiesFileLocalTarget' && selectedDriver != 'AMAZONS3') {
             $(this).show('fast');
             return true;
         }
-        else if(selectedType === 'File' && currentSection === 'percServerPropertiesFileLocalTarget' && selectedDriver === 'AMAZONS3') {
+        else if(selectedType == 'File' && currentSection == 'percServerPropertiesFileLocalTarget' && selectedDriver == 'AMAZONS3') {
             $(this).hide('fast');
-            if(isEC2Instance != null && JSON.parse(isEC2Instance) === true){
+            if(isEC2Instance != null && JSON.parse(isEC2Instance) == true){
                 $("#s3accessSecurityKey").hide('fast');
             }else{
                 $("#s3accessSecurityKey").show('fast');
@@ -483,12 +483,12 @@ function updateDriverPropertiesUi() {
         }
 
         // Hide section if the section does not contain the type name
-        if((currentSection.indexOf(selectedType) >= 0)) {
+        if(!(currentSection.indexOf(selectedType) >= 0)) {
             $(this).hide('fast');
             return true;
         }
 
-        if(currentSection === desiredSection) {
+        if(currentSection == desiredSection) {
             $(this).show('fast');
         }
 
@@ -504,16 +504,16 @@ function updateDriverPropertiesUi() {
     *   server field is empty and a click event should be triggered
     */
 
-    if (selectedDriver === 'Local' && !($('#ownServerFlag').is(':checked'))) {
+    if (selectedDriver == 'Local' && !($('#ownServerFlag').is(':checked'))) {
         triggerEvent('defaultServerFlag', 'click');
     }
-    if (selectedDriver === 'FTP' && !($('#ownServerFlag').is(':checked'))){
+    if (selectedDriver == 'FTP' && !($('#ownServerFlag').is(':checked'))){
         triggerEvent('defaultServerFlag', 'click');
     }
-    if (selectedDriver === 'FTPS' && !($('#ownServerFlag').is(':checked'))) {
+    if (selectedDriver == 'FTPS' && !($('#ownServerFlag').is(':checked'))) {
         triggerEvent('defaultServerFlag', 'click');
     }
-    if (selectedDriver === 'SFTP' && !($('#ownServerFlag').is(':checked'))) {
+    if (selectedDriver == 'SFTP' && !($('#ownServerFlag').is(':checked'))) {
         triggerEvent('defaultServerFlag', 'click');
     }
 }
@@ -553,12 +553,12 @@ function filterSitesByString(siteFilterString) {
 
 function toggleSiteView(eventObj) {
     siteView = $(eventObj).find('input').val();
-    if(siteView === 'list') {
+    if(siteView == 'list') {
         $('#sitesCardView').fadeOut('fast', function() {
             $('#sitesListView').fadeIn('fast');
         });
     }
-    if(siteView === 'card') {
+    if(siteView == 'card') {
         $('#sitesListView').fadeOut('fast', function() {
             $('#sitesCardView').fadeIn('fast');
         });
@@ -579,13 +579,13 @@ function processPublish(eventData) {
     siteName = selectedSiteData.name;
     serverName = $(eventData).closest('.perc-publish-button-group').data('perc-server-name');
 
-    if (publishType === 'full') {
+    if (publishType == 'full') {
         startProcessRunningAlert();
         $j.PercPublisherService(false).publishSite(siteName, serverName, publishCallback);
     }
 
     // If the selected publish type is incremental, we will serve up the preview dialog first
-    if (publishType === 'incremental') {
+    if (publishType == 'incremental') {
         serverId = $(eventData).data('perc-server-id');
         processIncrementalPreview(serverId);
     }
@@ -603,14 +603,14 @@ function processIncrementalPreview(serverId) {
         serverType = serverProperties.serverInfo.serverType;
         console.log(serverProperties);
         $j.PercPublisherService(false).getIncrementalItems(siteName, serverName, 1, 1000000, function(status, result) {
-            status === 'error' || result.PagedItemList.childrenInPage.length === 0 ? incrementalPreviewObject = {} : incrementalPreviewObject = result;
+            status == 'error' || result.PagedItemList.childrenInPage.length == 0 ? incrementalPreviewObject = {} : incrementalPreviewObject = result;
             console.log(incrementalPreviewObject);
             processTemplate(incrementalPreviewObject, 'templateIncrementalPublishPreviewOverlay', 'percIncrementalPublishPreviewOverlayTarget');
             bindIncrementalPublishEvents();
             $('#percIncrementalPublishPreviewOverlayTarget').animateCss('fadeIn faster');
             $('#percIncrementalPublishPreviewOverlay').modal('_enforceFocus');
 
-            if(publishRelatedItems === "true" && serverType.toLowerCase() === 'production' && result.PagedItemList.childrenInPage.length > 0) {
+            if(publishRelatedItems == "true" && serverType.toLowerCase() == 'production' && result.PagedItemList.childrenInPage.length > 0) {
                 processIncrementalRelatedItemsPreview();
                 $('#percIncrementalRelatedItemsTarget').animateCss('fadeIn faster');
             }
@@ -621,7 +621,7 @@ function processIncrementalPreview(serverId) {
 
 function processIncrementalRelatedItemsPreview() {
     $j.PercPublisherService(false).getIncrementalRelatedItems(siteName, serverName, 1, 1000000, function(status, result) {
-        status === 'error' || result.PagedItemList.childrenInPage.length === 0 ? incrementalRelatedPreviewObject = {} : incrementalRelatedPreviewObject = result;
+        status == 'error' || result.PagedItemList.childrenInPage.length == 0 ? incrementalRelatedPreviewObject = {} : incrementalRelatedPreviewObject = result;
         console.log(incrementalRelatedPreviewObject);
         processTemplate(incrementalRelatedPreviewObject, 'templateIncrementalPublishRelatedItems', 'percIncrementalRelatedItemsTarget');
         bindIncrementalRelatedItemsEvents();
@@ -650,7 +650,7 @@ function processIncrementalPublish() {
     var itemsToApprove =[];
     $('#percIncrementalPublishRelatedItemsList tr input[type=checkbox]').each(function() {
         relatedItemData = $(this).closest('tr').data('perc-related-item');
-        if(this.checked === true && relatedItemData) {
+        if(this.checked == true && relatedItemData) {
             itemsToApprove.push(relatedItemData.id);
         }
     });
@@ -803,7 +803,7 @@ function deleteServerRequest() {
     });
 
     dialogConfirmationResponseDeferred.done(function(response) {
-        if(response === 'confirm') {
+        if(response == 'confirm') {
 
             deleteServerRequestDeferred = $.Deferred();
 
@@ -858,26 +858,26 @@ function processServerPropertiesForm(eventData) {
         serverType = selectedServerData.serverInfo.serverType;
     }
 
-    if (publishType === 'Select') {
+    if (publishType == 'Select') {
         publishType = '';
     }
     var driver;
 
-    if(publishType === 'File') {
+    if(publishType == 'File') {
         driver = serverForm.find('select#fileDriver').val();
     }
 
-    if(publishType === 'Database') {
+    if(publishType == 'Database') {
         driver = serverForm.find('select#databaseDriver').val();
     }
 
-    if (driver === 'Select') {
+    if (driver == 'Select') {
         driver = '';
     }
-    if (driver === 'FTP' || driver === 'FTPS') {
+    if (driver == 'FTP' || driver == 'FTPS') {
         $('#secureFTP').prop('checked', false);
     }
-    if(driver === 'SFTP'){
+    if(driver == 'SFTP'){
         $('#secureFTP').prop('checked', true);
     }
 
@@ -908,9 +908,9 @@ function processServerPropertiesForm(eventData) {
             var propVal;
             var ignoreProp = false;
 
-            if (propType === 'radio') {
+            if (propType == 'radio') {
                 propVal = inputField.prop('checked');
-            } else if (propType === 'checkbox') {
+            } else if (propType == 'checkbox') {
                 propVal = inputField.prop('checked');
             } else {
                 if (propName === 'password') {
@@ -924,12 +924,12 @@ function processServerPropertiesForm(eventData) {
             // are processed, the property name needs to be transformed to 'folder'
             // when the FTP driver is selected
 
-            if (driver === 'FTP' || driver === 'SFTP' || driver === 'FTPS') {
-                if (propName === 'defaultServerFlag') {
-                    if (propVal === true) {
+            if (driver == 'FTP' || driver == 'SFTP' || driver == 'FTPS') {
+                if (propName == 'defaultServerFlag') {
+                    if (propVal == true) {
                         folder = $('#defaultServer').val();
                     }
-                    if (propVal === false) {
+                    if (propVal == false) {
                         folder = $('#ownServer').val();
                     }
 
