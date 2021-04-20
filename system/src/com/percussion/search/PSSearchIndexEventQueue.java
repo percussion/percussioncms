@@ -1145,6 +1145,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
       {
          indexer.commit();
          engine.releaseSearchIndexer(indexer);
+         indexer.close();
       }
    }
 
@@ -1371,6 +1372,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
       finally
       {
          engine.releaseSearchIndexer(indexer);
+         indexer.close();
       }
    }
 
