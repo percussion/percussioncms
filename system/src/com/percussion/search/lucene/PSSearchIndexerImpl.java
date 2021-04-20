@@ -109,8 +109,7 @@ public class PSSearchIndexerImpl extends PSSearchIndexer
          try
          {
             IndexWriter iw = m_indexesNotCommitted.get(ctid);
-            // Default autocommit in 2.2 version, flush does commit also
-            iw.flush();
+            iw.commit();
             committedids.add(ctid);
          }
          catch (CorruptIndexException e)
@@ -148,7 +147,7 @@ public class PSSearchIndexerImpl extends PSSearchIndexer
          Long ctid = iter.next();
          try
          {
-            ms_indexWriters.get(ctid).flush();
+            ms_indexWriters.get(ctid).commit();
          }
          catch (CorruptIndexException e)
          {
@@ -323,8 +322,7 @@ public class PSSearchIndexerImpl extends PSSearchIndexer
          if (iw.ramBytesUsed()>=p) {
             try
             {
-               // Default autocommit in 2.2 version, flush does commit also
-               iw.flush();
+               iw.commit();
             }
             catch (CorruptIndexException e)
             {
@@ -338,6 +336,14 @@ public class PSSearchIndexerImpl extends PSSearchIndexer
                      "related to content type id " + type;  
                      ms_log.error(msg);
             }
+         }
+      }else{
+         try{
+            iw.commit();
+         }catch (IOException e) {
+            String msg = "IOException occurred while flushing index " +
+                    "related to content type id " + type;
+            ms_log.error(msg);
          }
       }
 
