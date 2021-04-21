@@ -67,7 +67,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
 			this.thumbnailPath = ko.observable(data.thumbnailPath);
 			
 			//If thumnailPath is empty use the path
-			if(!data.thumbnailPath && data.type == "Image Asset"){
+			if(!data.thumbnailPath && data.type === "Image Asset"){
 			    this.thumbnailPath(data.path);
 			}
 			
@@ -75,7 +75,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
 			
 			//ping the thumbnail path then ping the full path if that fails
             if (this.thumbnailPath()) {
-				var pingThumbnail = $.ajax({
+				$.ajax({
 					url: this.thumbnailPath(),
 					type: 'HEAD',
 					error: function(){
@@ -88,11 +88,11 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
 			}
 			
             this.isCopyAllowed = ko.computed(function(){
-                return utils.getPathType(itemSelf.path())=='site';
+                return utils.getPathType(itemSelf.path()) === 'site';
             });
 			
             this.isBookmarkAllowed = ko.computed(function(){
-                return utils.getPathType(itemSelf.path())=='site' && self.currentTab() != 'My Bookmarks';
+                return utils.getPathType(itemSelf.path()) === 'site' && self.currentTab() !== 'My Bookmarks';
             });
 
             this.isSelected = ko.observable(false);
@@ -102,7 +102,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
             this.hideRollover = function(data, event) {
                 this.isSelected(false);
             };
-        }
+        };
 				
 		self.contentListItems = ko.observableArray();
 		self.isLoading = ko.observable(false);
@@ -113,25 +113,25 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
         self.searchResults = [];
         self.hasMoreResults = ko.observable(false);
         self.showMoreResultsRow = ko.computed(function(){
-            return  self.currentTab() == self.constants.SEARCH_RESULTS && self.hasMoreResults; 
+            return  self.currentTab() === self.constants.SEARCH_RESULTS && self.hasMoreResults; 
         });
 		self.isEmpty = ko.computed(function () {
-            return self.contentListItems().length == 0 ? false : true;
+            return self.contentListItems().length !== 0;
         }, self);
         self.showMoreResults = function(){
             getSearchResults(self.searchInfo, true);
-        }
+        };
         PubSub.subscribe("TabChanged",function(msg,tabInfo){
             var tabName = tabInfo.name;
-            if(tabName == self.constants.MY_BOOKMARKS){
+            if(tabName === self.constants.MY_BOOKMARKS){
                 getMyBookmarks();
 				self.currentTab(tabName); 
             }
-            else if(tabName == self.constants.MY_RECENT){
+            else if(tabName === self.constants.MY_RECENT){
                 getRecentList();     
 				self.currentTab(tabName); 
             }
-            else if(tabName == self.constants.SEARCH_RESULTS){
+            else if(tabName === self.constants.SEARCH_RESULTS){
                 getSearchResults(tabInfo.info, false);     
                 self.currentTab(tabName); 
             }
@@ -139,13 +139,13 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
         });
         function refreshView(){
             var tabName = self.currentTab();
-            if(tabName == self.constants.MY_BOOKMARKS){
+            if(tabName === self.constants.MY_BOOKMARKS){
                 getMyBookmarks();
             }
-            else if(tabName == self.constants.MY_RECENT){
+            else if(tabName === self.constants.MY_RECENT){
                 getRecentList();     
             }
-            else if(tabName == self.constants.SEARCH_RESULTS){
+            else if(tabName === self.constants.SEARCH_RESULTS){
                 getSearchResults(self.searchInfo, false);     
             }
         }
@@ -156,7 +156,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
                 ko.utils.arrayForEach(results.ItemProperties, function(itemdata) {
                     items.push(new item(itemdata));
                 });
-				if(items.length == 0){
+				if(items.length === 0){
                     self.emptyContentMessage(self.constants.MY_BOOKMARKS_EMPTY_MSG);
                 }
                 self.contentListItems(items);
@@ -173,7 +173,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
                 ko.utils.arrayForEach(results.data.ItemProperties, function(itemdata) {
                     items.push(new item(itemdata));
                 });
-				if(items.length == 0){
+				if(items.length === 0){
                     self.emptyContentMessage(self.constants.MY_RECENT_EMPTY_MSG);
                 }
                 self.contentListItems(items);
@@ -185,7 +185,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
         }
         function getSearchResults(searchInfo, showMore){
             self.isLoading(true);
-            if(self.searchInfo.id == searchInfo.id && !showMore){
+            if(self.searchInfo.id === searchInfo.id && !showMore){
                 //User did not execute a new search but just clicked on search results tab display the cached results
                 self.contentListItems(self.searchResults);
                 self.isLoading(false);
@@ -206,7 +206,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
                             items.push(new item(itemdata));
                         });
                     }
-                    if (items.length == 0) {
+                    if (items.length === 0) {
                         self.emptyContentMessage(self.constants.SEARCH_RESULTS_EMPTY_MSG);
                     }
                     self.searchResults = showMore?self.searchResults.concat(items):items;
@@ -222,20 +222,20 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
             if(!$.isArray(self.searchResults))
                 return;
             var index = -1;
-            for(i=0;i<self.searchResults.length;i++){
-                if(self.searchResults[i].id == item.id){
+            for(let i=0;i<self.searchResults.length;i++){
+                if(self.searchResults[i].id === item.id){
                     index=i;
                     break;
                 }
             }
-            if(index!=-1)
+            if(index !== -1)
                 self.searchResults.splice(index, 1);
         }
         /**
          * Initialize the view model.
          */
         self.init = function() {
-        }
+        };
         
         self.launchOpen = function(item) {
             self.options.cm1Adaptor.openItem(item.path(),item.id()).fail(function(message){
@@ -273,7 +273,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
                 }).always(function(){
                     item.isSelected(false);
                 });
-            }
+            };
             var delCallback = function(){
                     self.options.cm1Adaptor.deleteItem(item.path(), item.id(), item.name()).done(function(){
                         removeItemFromSearchResults(item);
@@ -290,7 +290,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
                     }).always(function(){
                         item.isSelected(false);
                     });
-            }
+            };
 			var data = {message: self.constants.DELETE_PROMPT_MESSAGE, title:"Confirmation", primaryButton:{"text":"Yes", callback:delCallback}};
 			PubSub.publish("OpenConfirmationDialog", data);
         };
@@ -318,26 +318,30 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
             },
             update: function(element, valueAccessor) {
                 var value = valueAccessor();
-                ko.unwrap(value) ? $(element).stop().delay(300).fadeIn() : $(element).stop().stop().fadeOut(0);
+                var elm = $(element);
+                
                 if(ko.unwrap(value)) {
-                    var elm = $(element);
+                    elm.stop().delay(300).fadeIn();
+
                     var offset = $(".content-list-rollover-menu:visible").offset();
                     var containerOffset = $(".content-list").offset();
-					var rowHeight = $(".row").height();
+                    var rowHeight = $(".row").height();
                     var t = containerOffset.top + offset.top - $(window).scrollTop();
                     var h = elm.height();
                     var docH = $(window).height();
-                    
+
                     var isEntirelyVisible = (t + h - rowHeight <= docH);
-                    
+
                     if(! isEntirelyVisible) {
                         $(element).addClass('preview-inverted');
                     }
                     else {
                         $(element).removeClass('preview-inverted');
                     }
+                } else {
+                    elm.stop().stop().fadeOut(0);
                 }
             }
         };
-    }
+    };
 });

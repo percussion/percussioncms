@@ -40,7 +40,7 @@ define
             var month = months[parseInt(date.substr(5,2))-1];
             var day = date.substr(8,2);
             return month + " " + day + ", " + year;
-        };
+        }
         function getPathType(path){
             var pathType = "unknown";
             if(!path)
@@ -48,16 +48,16 @@ define
             var pathLower = path.toLowerCase();
             if (pathLower.match("^//sites/") || pathLower.match("^/sites/") || 
                 pathLower.match("^sites/")) {
-                    pathType = "site"
+                    pathType = "site";
             }
             else if(pathLower.match("^//assets/") || pathLower.match("^/assets/") || 
                 pathLower.match("^assets/")) {
-                    pathType = "asset"
+                    pathType = "asset";
             }
             return pathType;            
         }
         function getNormalizedPath(path){
-            var normPath = path, pathLower = path.toLowerCase();;
+            var normPath = path, pathLower = path.toLowerCase();
 
             if(pathLower.match("^//sites/") || pathLower.match("^//assets/") || pathLower.match("^/sites/") || pathLower.match("^/assets/") || pathLower.match("^sites/") || pathLower.match("^assets/")){
                 if(pathLower.match("^sites/") || pathLower.match("^assets/"))

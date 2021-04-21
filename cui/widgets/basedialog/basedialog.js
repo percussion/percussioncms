@@ -70,7 +70,7 @@ define (
 				var $dialogContainer = $("#add-wizard-dialog");
 				$dialogContainer.addwizard();
 				
-				var $dialogContainer = $("#search-dialog");
+				$dialogContainer = $("#search-dialog");
                 $dialogContainer.search();
 				
                 setTimeout(function () {
