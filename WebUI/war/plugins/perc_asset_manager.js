@@ -67,7 +67,7 @@
              type: "POST",
              data: JSON.stringify(awr),
              success: callback,
-             error: function(request, textstatus, error){
+             error: function(){
                    alert("error");
              }  
        });

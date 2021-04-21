@@ -61,7 +61,7 @@ var $perc_newSiteDialogLayout;
                         $.perc_filterField(templateNameField, $.perc_textFilters.URL);
 
                         // If the URL checkbox is unselected, disable the sitename field
-                        $('input[type=radio]').change(function(event)
+                        $('input[type=radio]').change(function()
                         {
                             // If the selected radio button is not the one for the
                             // URL option, make the URL field read only
@@ -95,7 +95,7 @@ var $perc_newSiteDialogLayout;
                         // We have to get the images for the perc_imageselect plugin
                         _loadTemplateList();
                         $("#perc-select-template-type").change(function(){
-                            if($(this).val() == "base"){
+                            if($(this).val() === "base"){
                                 $("#perc-base-template-lib").show();
                                 $("#perc-resp-template-lib").hide();
                             }
@@ -114,7 +114,7 @@ var $perc_newSiteDialogLayout;
                                 debug: true,
                                 rules: _getValidationRules(),
                                 messages: _getValidationMessages(),
-                                showErrors: function(errorMap, errorList) {
+                                showErrors: function() {
                                     if (this.pendingRequest < 1)
                                     {
                                         this.defaultShowErrors();
@@ -210,7 +210,7 @@ var $perc_newSiteDialogLayout;
          */
         function siteImportCallback(status, siteData)
         {
-            if (status != $.PercServiceUtils.STATUS_SUCCESS)
+            if (status !== $.PercServiceUtils.STATUS_SUCCESS)
             {
                 errorCallbackFallback(siteData);
                 return;
@@ -235,7 +235,7 @@ var $perc_newSiteDialogLayout;
          */
         function getTemplateIdCallback(status, teamplatesData)
         {
-            if (status != $.PercServiceUtils.STATUS_SUCCESS)
+            if (status !== $.PercServiceUtils.STATUS_SUCCESS)
             {
                 errorCallbackFallback(teamplatesData);
                 return;
@@ -253,7 +253,7 @@ var $perc_newSiteDialogLayout;
          */
         function getPageIdCallback(status, foldersData)
         {
-            if (status != $.PercServiceUtils.STATUS_SUCCESS)
+            if (status !== $.PercServiceUtils.STATUS_SUCCESS)
             {
                 errorCallbackFallback(foldersData);
                 return;
@@ -262,7 +262,7 @@ var $perc_newSiteDialogLayout;
             var pathItem;
 
             for (var i = 0; i < foldersData.PathItem.length; i++) {
-                if (foldersData.PathItem[i].category == 'LANDING_PAGE')
+                if (foldersData.PathItem[i].category === 'LANDING_PAGE')
                 {
                     pathItem = foldersData.PathItem[i];
                     i = foldersData.PathItem.length;
@@ -342,8 +342,8 @@ var $perc_newSiteDialogLayout;
     function _onOK(cbh)
     {
         var fields = _getFieldValues();
-        fields.selectedtemplate = $("#perc-select-template-type").val()=="base"?fields.perc_selected_basetemplate:fields.perc_selected_resptemplate;
-        if (fields.selectedtemplate.length == 0)
+        fields.selectedtemplate = $("#perc-select-template-type").val()==="base"?fields.perc_selected_basetemplate:fields.perc_selected_resptemplate;
+        if (fields.selectedtemplate.length === 0)
         {
             $.perc_utils.alert_dialog(
                 {
@@ -353,7 +353,7 @@ var $perc_newSiteDialogLayout;
             return;
         }
 
-        if (fields.templatename == null || $.trim(fields.templatename) == '')
+        if (fields.templatename == null || $.trim(fields.templatename) === '')
         {
             $.perc_utils.alert_dialog(
                 {
@@ -453,7 +453,7 @@ var $perc_newSiteDialogLayout;
         //we need to add an assertion 'framework' and check them here
         for (i = 0; i < response.SiteSummary.length; i++)
         {
-            if ((response.SiteSummary[i].name + "").toLowerCase() == value.toLowerCase())
+            if ((response.SiteSummary[i].name + "").toLowerCase() === value.toLowerCase())
             {
                 return false;
             }
