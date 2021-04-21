@@ -109,6 +109,7 @@ public class PSSearchIndexerImpl extends PSSearchIndexer
          try
          {
             IndexWriter iw = m_indexesNotCommitted.get(ctid);
+            iw.flush();
             iw.commit();
             committedids.add(ctid);
          }
@@ -147,6 +148,7 @@ public class PSSearchIndexerImpl extends PSSearchIndexer
          Long ctid = iter.next();
          try
          {
+            ms_indexWriters.get(ctid).flush();
             ms_indexWriters.get(ctid).commit();
          }
          catch (CorruptIndexException e)
@@ -322,6 +324,7 @@ public class PSSearchIndexerImpl extends PSSearchIndexer
          if (iw.ramBytesUsed()>=p) {
             try
             {
+               iw.flush();
                iw.commit();
             }
             catch (CorruptIndexException e)
@@ -339,6 +342,7 @@ public class PSSearchIndexerImpl extends PSSearchIndexer
          }
       }else{
          try{
+            iw.flush();
             iw.commit();
          }catch (IOException e) {
             String msg = "IOException occurred while flushing index " +
@@ -559,7 +563,7 @@ public class PSSearchIndexerImpl extends PSSearchIndexer
                }
            
                
-               lucField = new TextField(name, text, Field.Store.NO);
+               lucField = new TextField(name, text, Field.Store.YES);
                if(addToAllContent)
                   fieldData.add(text);
             }
