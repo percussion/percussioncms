@@ -55,7 +55,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
                     self.sitesList.push(siteData);
 				});
 				self.windowTitle(title);
-                if(title == "Add Content" && self.sitesList().length < 1) {
+                if(title === "Add Content" && self.sitesList().length < 1) {
                     self.errorMessage(self.constants.NO_SITE_AVAIABLE_MESSAGE);
                     setupErrorDialog("Warning");
                 }
@@ -72,7 +72,11 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
         });
 		
 		PubSub.subscribe("OpenErrorDialog",function(msg, message){
-			(message == self.constants.UNKNOWN_SERVER_ERROR) ? self.errorMessage(self.constants.UNKNOWN_SERVER_ERROR_RESPONSE) : self.errorMessage(message);
+		    if(message === self.constants.UNKNOWN_SERVER_ERROR) {
+                self.errorMessage(self.constants.UNKNOWN_SERVER_ERROR_RESPONSE);
+            } else {
+                self.errorMessage(message);
+            }
             setupErrorDialog("Error");
         });
 		
@@ -228,7 +232,6 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
             });
         }
 
-		self.init = function(content){
-		}
-    }
+		self.init = function(content){};
+    };
 });

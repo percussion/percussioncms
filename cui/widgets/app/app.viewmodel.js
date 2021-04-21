@@ -29,14 +29,14 @@ define(['knockout','pubsub', 'utils'], function(ko,PubSub, utils) {
         
         //****Tab sections Code*******//
         var Section = function (name, selected, enabled, info){
-            var self = this;
+            self = this;
             self.name = name;
             self.enabled = ko.observable(enabled);
             self.info = ko.observable(info);
             self.isSelected = ko.computed(function(){
                 return this === selected();
             },this);
-        }
+        };
         self.selectedSection = ko.observable();
         self.sections = ko.observableArray([
             new Section("My Recent", self.selectedSection, true, null),
@@ -52,21 +52,21 @@ define(['knockout','pubsub', 'utils'], function(ko,PubSub, utils) {
         });
         self.formatTabId = function(prefix, name){
             return utils.formatId(prefix, name);
-        }
+        };
         //****************//
         
         //***Buttons click handlers****//
         self.browseLibrary = function(){
             self.options.cm1Adaptor.openLibrary();
-        }
+        };
         self.addNew = function(){
 			var type = "Add Content";
             PubSub.publish("OpenDialog", type);
-        }
+        };
         self.search = function(){
             var type = "Search";
             PubSub.publish("OpenDialog", type);
-        }
+        };
         PubSub.subscribe("Search Executed", function(msg,criteria){
             self.searchSection.enabled(true);
             self.searchSection.info(criteria);
@@ -77,13 +77,13 @@ define(['knockout','pubsub', 'utils'], function(ko,PubSub, utils) {
         self.init = function() {
             var initialScreen = getParameterByName(window.parent,"initialScreen");
             self.selectedSection(self.sections()[0]);
-            if (initialScreen && initialScreen == "newitem") {
+            if (initialScreen && initialScreen === "newitem") {
                 self.addNew();
             }
-            else if (initialScreen && initialScreen == "search") {
+            else if (initialScreen && initialScreen === "search") {
                 self.search();
             }
-        }
+        };
         function getParameterByName(win, name) {
             name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
             var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -91,5 +91,5 @@ define(['knockout','pubsub', 'utils'], function(ko,PubSub, utils) {
             return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
         }
         //****************************//
-    }
+    };
 });
