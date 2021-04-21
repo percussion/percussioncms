@@ -213,14 +213,8 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
                    updateInstallOrUpgradeDatasource(datasource,dsConfig);
 
                }
-
                config.save();
-
-
-
                migrateLaxJavaSettingsToJetty();
-
-
            }
            catch (Exception e)
            {
@@ -231,6 +225,8 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
    }
 
     private void migrateLaxJavaSettingsToJetty() {
+
+        File jvmIni = new File(getRootDir(), "jetty/base/start.d/jvm.ini");
        Properties props = new Properties();
        File laxFile = new File(getRootDir(), PERCUSSION_SERVER_LAX);
        if (laxFile.exists()) {
@@ -255,11 +251,9 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
                 .collect(Collectors.toCollection(ArrayList::new));
 
         log.info("Migrating jvm args "+newArgs);
-        File jvmIni = new File(getRootDir(), "jetty/base/start.d/jvm.ini");
 
         if (!jvmIni.exists())
         {
-
             File defaultIni = new File(getRootDir(), "jetty/defaults/start.d/jvm.ini");
             if (defaultIni.exists())
             {
@@ -277,36 +271,39 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
         }
         else
         {
-
+            PSPurgableTempFile tempFile = null;
             try {
-                PSPurgableTempFile tempFile = new PSPurgableTempFile("psx",
+                tempFile = new PSPurgableTempFile("psx",
                         ".bin", null);
+            } catch (IOException e) {
+                log.error("Cannot create temp file. ");
+                return;
+            }
+            try (PrintWriter writer = new PrintWriter(tempFile)){
 
-                try (BufferedReader reader = new BufferedReader(new FileReader(jvmIni));
-                     final PrintWriter writer = new PrintWriter(tempFile)
-                ) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(jvmIni))) {
 
                     String line;
-                    while ((line = reader.readLine()) != null)
-                    {
-                        if (line.startsWith("-Xmx") || line.startsWith("-Xms") || newArgs.contains(line)){
+                    while ((line = reader.readLine()) != null) {
+                        if (line.startsWith("-Xmx") || line.startsWith("-Xms")) {
                             //CMS-6725 - Upgrade is commenting out memory settings on upgrade
-                            writer.println(line);
-                        }
-                        else
-                            writer.println(line);
+                            if (newArgs == null || newArgs.size() == 0) {
+                                writer.println(line);
+                            }
 
-                    }
-                    //CMS-6220 - Don't update file if not needed.
-                    if(newArgs!=null && newArgs.size()>0) {
-                        writer.println("#args below added from previous PercussionServer.lax");
-                        for (String arg : newArgs) {
-                            writer.println(arg);
+                        }else {
+                            writer.println(line);
                         }
-                        writer.println("#end of args from previous PercussionServer.lax");
                     }
+
                 } catch (IOException e) {
-                    log.error("Failed to write jvm.ini",e);
+                    log.error("Failed to read jvm.ini",e);
+                }
+                if(newArgs!=null && newArgs.size()>0) {
+                    for (String arg : newArgs) {
+                        log.info("#args from PercussionServer.lax :" + arg);
+                        writer.println(arg);
+                    }
                 }
                 if (tempFile.exists())
                     FileUtils.copyFile(tempFile, jvmIni);
@@ -317,6 +314,4 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
         }
 
     }
-
-
 }
