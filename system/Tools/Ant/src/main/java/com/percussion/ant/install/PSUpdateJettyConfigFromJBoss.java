@@ -52,6 +52,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -296,21 +297,28 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
                         }
                     }
 
-                } catch (IOException e) {
-                    log.error("Failed to read jvm.ini",e);
-                }
+
                 if(newArgs!=null && newArgs.size()>0) {
                     for (String arg : newArgs) {
                         log.info("#args from PercussionServer.lax :" + arg);
                         writer.println(arg);
                     }
                 }
-                if (tempFile.exists())
-                    FileUtils.copyFile(tempFile, jvmIni);
-                tempFile.release();
+
             } catch (IOException e) {
-                log.error("Failed to create temp file for jvm.ini",e);
+                log.error("Failed to read jvm.ini",e);
             }
+            } catch (FileNotFoundException e) {
+                log.error("Failed to find temp file for jvm.ini",e);
+            }
+
+            try {
+                Files.copy(tempFile.toPath(), jvmIni.toPath(),java.nio.file.StandardCopyOption
+                        .REPLACE_EXISTING);
+            } catch (IOException e) {
+                log.error("Failed to copy jvm.ini",e);
+            }
+            tempFile.release();
         }
 
     }
