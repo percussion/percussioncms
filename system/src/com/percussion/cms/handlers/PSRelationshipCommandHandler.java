@@ -195,8 +195,7 @@ public class PSRelationshipCommandHandler extends PSCommandHandler
                   relationshipType);
          }
 
-         PSRelationshipDbProcessor processor = new PSRelationshipDbProcessor(
-               data.getRequest());
+         PSRelationshipDbProcessor processor = PSRelationshipDbProcessor.getInstance();
          putRelationship(data, config, -1, owner, dependent,
             PSApplicationBuilder.REQUEST_TYPE_VALUE_INSERT, false, processor);
       }
@@ -440,8 +439,7 @@ public class PSRelationshipCommandHandler extends PSCommandHandler
          String command = getParameter(data.getRequest(),
             IPSHtmlParameters.SYS_COMMAND);
          
-         PSRelationshipDbProcessor processor = new PSRelationshipDbProcessor(
-               data.getRequest());
+         PSRelationshipDbProcessor processor = PSRelationshipDbProcessor.getInstance();
 
          if (command.equals(COMMAND_NAME) ||
             command.equals(COMMAND_NAME + "/" + COMMAND_CREATE))
