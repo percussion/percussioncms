@@ -203,6 +203,8 @@
             {
                 $("#revisionsTable").find(".perc-revisions-restore-img").click(function(){
                     var revId = $(this).attr("revId");
+                    dialog.remove();
+                    $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
                     $.PercRevisionService.restoreRevision(itemId,revId,afterRestore);
                 })
                 .bind("mouseenter", function(){
@@ -262,14 +264,14 @@
         function afterRestore(status,result)
         {
             var self = this;
-            
+            $.unblockUI();
             if(status == $.PercServiceUtils.STATUS_ERROR)
-            { 
+            {
                 var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: defaultMsg});
                 return;
             }
-            dialog.remove();
+
             $.PercNavigationManager.setReopenAllowed(true);
             var item = {
                     "id": $.PercNavigationManager.getId(),

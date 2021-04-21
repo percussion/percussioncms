@@ -391,8 +391,7 @@ public class PSCloneCommandHandler extends PSCommandHandler
       params.put(IPSHtmlParameters.SYS_CONTENTID, Integer.toString(fromCid));
       params.put(IPSHtmlParameters.SYS_REVISION, Integer.toString(fromRid));
       
-      PSRelationshipDbProcessor processor = 
-         new PSRelationshipDbProcessor(request);
+      PSRelationshipDbProcessor processor = PSRelationshipDbProcessor.getInstance();
       
       Map inlineRelationships = new HashMap();
 
