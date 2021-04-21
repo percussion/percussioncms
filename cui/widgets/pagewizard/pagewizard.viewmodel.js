@@ -49,10 +49,10 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
         self.selectedTemplateFilter = ko.observable("");
         self.selectedFolderFilter = ko.observable("");
 		self.recentFolderSelected = ko.computed(function(){
-			return self.selectedFolderFilter() == "Recent";
+			return self.selectedFolderFilter() === "Recent";
 		}, this);
 		self.allFoldersSelected = ko.computed(function(){
-			return self.selectedFolderFilter() == "All";
+			return self.selectedFolderFilter() === "All";
 		}, this);
         self.invalidPageTitle = ko.observable(false);
         self.invalidPageFile = ko.observable(false);
@@ -72,11 +72,11 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
 		self.initialFoldersLoad = true;
 		
 		self.emptyRecentFolders = ko.computed(function(){
-			return self.selectedFolderFilter() == "Recent" && self.folders().length == 0;
+			return self.selectedFolderFilter() === "Recent" && self.folders().length === 0;
 		},self);
 		
 		self.emptyRecentTemplates = ko.computed(function(){
-            return self.selectedTemplateFilter() == "Recent" && self.templates().length == 0;
+            return self.selectedTemplateFilter() === "Recent" && self.templates().length === 0;
         },self);
 
 		//TODO Autofill logic for title and filename
@@ -94,11 +94,11 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
         });
         self.pageTitle.subscribe(function(){
             if (!self.autfillFocusLost()) {
-                self.pageFile(self.pageTitle().replace( /[ \_]/g, '-' ).replace( /[^a-zA-Z0-9\-\_.]/g, '' ).replace(/[-]+/g, '-').toLowerCase());
+                self.pageFile(self.pageTitle().replace( /[ _]/g, '-' ).replace( /[^a-zA-Z0-9\-_.]/g, '' ).replace(/[-]+/g, '-').toLowerCase());
             }
         });
         self.pageFile.subscribe(function(){
-			self.pageFile(self.pageFile().replace( /[ ]/g, '-' ).replace( /[\\\/\:\*\?\"<\>\|\#\;\%\']/g, '' ));//.replace( /\.*$/g, '' )
+			self.pageFile(self.pageFile().replace( /[ ]/g, '-' ).replace( /[\\\/:*?"<>|#;%']/g, '' ));//.replace( /\.*$/g, '' )
             if(self.fileHasFocus())
                 self.autfillFocusLost(true);
         });
@@ -124,19 +124,19 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
 			self.pageTemplate("");
             self.pageFolder("");
 			if (self.selectedSite()) {
-				if (self.selectedTemplateFilter() == "Recent") {
+				if (self.selectedTemplateFilter() === "Recent") {
 					getRecentTemplates();
 				}
-				else if (self.selectedTemplateFilter() == "All") {
+				else if (self.selectedTemplateFilter() === "All") {
 					getAllTemplates();
 				}
 				else if(self.multipleSites()){
 					self.selectedTemplateFilter("Recent");
 				}
-				if (self.selectedFolderFilter() == "Recent") {
+				if (self.selectedFolderFilter() === "Recent") {
 					getRecentFolders();
 				}
-				else if (self.selectedFolderFilter() == "All") {
+				else if (self.selectedFolderFilter() === "All") {
 					self.initDynatree();      
 				}
                 else if(self.multipleSites()){
@@ -155,10 +155,10 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
         self.selectedTemplateFilter.subscribe(function() {
 			self.pageTemplate("");
             if(self.selectedSite()){
-                if(self.selectedTemplateFilter() == "Recent"){
+                if(self.selectedTemplateFilter() === "Recent"){
                     getRecentTemplates();
                 }
-                else if(self.selectedTemplateFilter() == "All"){
+                else if(self.selectedTemplateFilter() === "All"){
                     getAllTemplates();      
                 }
             }
@@ -168,10 +168,10 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
 		self.selectedFolderFilter.subscribe(function() {
 			self.pageFolder("");
 			if (self.selectedSite()) {
-				if (self.selectedFolderFilter() == "Recent") {
+				if (self.selectedFolderFilter() === "Recent") {
 					getRecentFolders();
 				}
-				else if (self.selectedFolderFilter() == "All") {
+				else if (self.selectedFolderFilter() === "All") {
 					self.initDynatree();      
 				}
 			}
@@ -184,7 +184,7 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
                 ko.utils.arrayForEach(templates, function(template) {
                     self.templates.push(template);
                 });
-				if(templates.length == 0){
+				if(templates.length === 0){
                     self.emptyContentMessage(self.constants.MY_RECENT_EMPTY_MSG);
 					if(self.initialTemplatesLoad){
 						self.initialTemplatesLoad = false;
@@ -205,7 +205,7 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
                 ko.utils.arrayForEach(templates, function(template) {
                     self.templates.push(template);
                 });
-				if(templates.length == 0){
+				if(templates.length === 0){
                     self.emptyContentMessage(self.constants.MY_RECENT_EMPTY_MSG);
                 }
             }).fail(function(message){
@@ -222,7 +222,7 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
                 ko.utils.arrayForEach(folders, function(folder) {
                     self.folders.push(folder);
                 });
-				if(folders.length == 0){
+				if(folders.length === 0){
                     self.emptyContentMessage(self.constants.MY_RECENT_EMPTY_MSG);
 					if(self.initialFoldersLoad){
 						self.initialFoldersLoad = false;
@@ -270,11 +270,9 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
 					}
 				});
 			}
-        }
+        };
         
-        self.switchTemplateFilter = function() {
-        
-        }
+        self.switchTemplateFilter = function() {};
         
         //when the secondary button is pressed go back
         PubSub.subscribe("Cancel",function(dia){
@@ -291,8 +289,7 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
             self.cleanWindow();
         });
         
-        self.init = function(content){
-        }
+        self.init = function(content){};
         
         self.cleanWindow = function() {
             self.isPageWizardVisible(false);
@@ -325,7 +322,7 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
 			}
 			self.dynatreeExists(false);
 			self.fileNameTooLong(false);
-        }
+        };
         
         self.openAddPage = function() {
 			self.initialTemplatesLoad = true;
@@ -353,14 +350,14 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
             self.invalidPageFile(false);
 			self.fileNameTooLong(false);
 			self.isPageWizardVisible(true);
-        }
+        };
         
         self.goBack = function() {
             if(self.isPageWizardVisible()) {
                 self.cleanWindow();
                 PubSub.publish("Add Content", self);
             }
-        }
+        };
         
         self.createPage = function() {
             if (self.isPageWizardVisible()) {
@@ -368,7 +365,7 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
                     self.isLoading(true);
                     
 					self.options.cm1Adaptor.getSiteProperties(self.selectedSite().name, function(status, result) {
-						if(status == "success") { //replace it with constant $.PercServiceUtils.STATUS_SUCCESS
+						if(status === "success") { //replace it with constant $.PercServiceUtils.STATUS_SUCCESS
 							var fileName = self.pageFile();
 							var fileExt = result.SiteProperties.defaultFileExtention;
 							if (fileExt && fileName.lastIndexOf(".") < 0) {
@@ -384,17 +381,17 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
 						}
 						
 						self.options.cm1Adaptor.createPage(self.pageFile(), self.pageTitle(), self.pageTemplate(), self.pageFolder()).fail(function(message){
-							if(message == self.constants.NOT_AUTHORIZED_ERROR_MSG){
+							if(message === self.constants.NOT_AUTHORIZED_ERROR_MSG){
 								message = self.constants.NOT_AUTHORIZED_ERROR_MSG_RESPONSE+ self.pageFolder();
 							}
 							PubSub.publish("OpenErrorDialog", message);
 						}).always(function(){
-							self.isLoading(false)
+							self.isLoading(false);
 						});
 					});
                 }
             }
-        }
+        };
 		
 		
         
@@ -405,8 +402,12 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
             },
             update: function(element, valueAccessor) {
                 var value = valueAccessor();
-                ko.unwrap(value) ? $(element).slideDown() : $(element).slideUp();
+                if(ko.unwrap(value)) {
+                    $(element).slideDown();
+                } else {
+                    $(element).slideUp();
+                }
             }
         };
-    }
+    };
 });
