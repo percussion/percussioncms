@@ -58,12 +58,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
 {
@@ -137,12 +132,15 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
          Query qr = prepareSearchQuery(globalQuery, fieldQueries, props);
 
          IndexSearcher searcher = new IndexSearcher(mr);
+         Set<String> fieldSet = new HashSet<>();
+         fieldSet.addAll(fieldQueries.keySet());
          int count = searcher.count(qr);
       if(count>0) {
          TopDocs docs = searcher.search(qr, count);
 
          for (ScoreDoc sd : docs.scoreDocs) {
             Document result = searcher.doc(sd.doc);
+            Document result1 = searcher.doc(sd.doc, fieldSet);
             String cid = result.get(IPSHtmlParameters.SYS_CONTENTID);
 
             /*
