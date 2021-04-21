@@ -90,7 +90,7 @@
                     $.PercBlockUI();
                     function assignFoldersWithWorkflow(){
                         $.PercFolderService.assignFoldersWithWorkflow(jsonAssignements, function(status, result) {
-                            if (status == $.PercServiceUtils.STATUS_ERROR)
+                            if (status === $.PercServiceUtils.STATUS_ERROR)
                             {
                                 $.perc_utils.alert_dialog({title: I18N.message('perc.ui.page.general@Warning'), content: result});
                             }
@@ -109,7 +109,7 @@
                         });
                     }
                     $.PercFolderService.isWorkflowAssignmentInProgress(function(status){
-                        if(status == "true"){
+                        if(status === "true"){
                             $.unblockUI();
                             $.perc_utils.alert_dialog({
                                 "title" : I18N.message("perc.ui.page.general@Warning"),
@@ -202,7 +202,7 @@
             resizable : true,
             modal: true,
             percButtons: buttons,
-            resizeStop: function(event, ui) { $('#perc-assign-workflow-wrapper').css('maxHeight', '100%'); }
+            resizeStop: function(event) { $('#perc-assign-workflow-wrapper').css('maxHeight', '100%'); }
         });
 
         // We need to do this since the dynatree needs to be added to the DOM
@@ -247,14 +247,14 @@
     function startSiteAssetFoldersLoadingJobs(selectedWorkflow)
     {
         $.PercFolderService.startAssociatedFoldersJob('Sites', selectedWorkflow, function(status, result) {
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.labels@Error"), content: result});
                 return false;
             }
             siteJobId = result;
             $.PercFolderService.startAssociatedFoldersJob('Assets', selectedWorkflow, function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_ERROR)
+                if(status === $.PercServiceUtils.STATUS_ERROR)
                 {
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.labels@Error"), content: result});
                     return false;
@@ -272,14 +272,14 @@
         if(siteJobId == null)
             return;
         $.PercFolderService.getAssociatedFoldersJobStatus(siteJobId, function(status, result) {
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.assign.workflow@Loading Site Folders Error"), content: result});
                 return false;
             }
             var status = result.GetAssginedFoldersJobStatus.status;
             var message = result.GetAssginedFoldersJobStatus.message; // message will be blank if job is still running
-            if( message == ""  && status !== "100" )
+            if( message === ""  && status !== "100" )
             {
                 setTimeout(loadSiteFolders, 1000);
                 return;
@@ -295,14 +295,14 @@
         if(assetJobId == null)
             return;
         $.PercFolderService.getAssociatedFoldersJobStatus(assetJobId, function(status, result) {
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 $.perc_utils.alert_dialog({title: I18N.messsage("perc.ui.assign.workflow@Loading Asset Folders Error"), content: result});
                 return false;
             }
             var status = result.GetAssginedFoldersJobStatus.status;
             var message = result.GetAssginedFoldersJobStatus.message; // message will be blank if job is still running
-            if( message == ""  && status !== "100" )
+            if( message === ""  && status !== "100" )
             {
                 setTimeout(loadAssetFolders, 1000);
                 return;
@@ -349,7 +349,7 @@
         if ($("#perc-assign-workflow-" + treeType + "-title-span").hasClass("collapsed"))
         {
             $(".perc-assign-workflow-" + treeType + "-apply-top").show();
-            if ((treeType == "sites" && originalSitesJson.folderItem && originalSitesJson.folderItem.length > 0) || (treeType == "assets" && originalAssetsJson.folderItem && originalAssetsJson.folderItem.length > 0))
+            if ((treeType === "sites" && originalSitesJson.folderItem && originalSitesJson.folderItem.length > 0) || (treeType === "assets" && originalAssetsJson.folderItem && originalAssetsJson.folderItem.length > 0))
                 $(".perc-assign-workflow-" + treeType + "-apply-bottom").show();
         }
         else
@@ -367,7 +367,7 @@
     function customOnRender(dtnode)
     {
         span                = $(dtnode.span);
-        if (span.find(".dynatree-custom-checkbox").length == 0)
+        if (span.find(".dynatree-custom-checkbox").length === 0)
         {
             var newSpan = $('<span />')
                 .addClass("dynatree-custom-checkbox")
@@ -377,7 +377,7 @@
                         $(eventHandler.currentTarget).toggleClass("dynatree-custom-checkbox-selected");
                         if ($(eventHandler.currentTarget).hasClass("dynatree-custom-checkbox-selected"))
                         {
-                            if ($.inArray(dtnode.data.key, selectedCustomCheckboxes) == -1)
+                            if ($.inArray(dtnode.data.key, selectedCustomCheckboxes) === -1)
                             {
                                 selectedCustomCheckboxes.push(dtnode.data.key);
                             }
@@ -396,7 +396,7 @@
             {
                 newSpan.addClass("dynatree-custom-checkbox-disabled");
             }
-            else if ($.inArray(dtnode.data.key, selectedCustomCheckboxes) != -1)
+            else if ($.inArray(dtnode.data.key, selectedCustomCheckboxes) !== -1)
             {
                 newSpan.addClass("dynatree-custom-checkbox-selected");
             }
@@ -455,7 +455,7 @@
     function selectCustomCheckbox(dtnode)
     {
         $(dtnode.span).find(".dynatree-custom-checkbox").addClass("dynatree-custom-checkbox-selected");
-        if ($.inArray(dtnode.data.key, selectedCustomCheckboxes) == -1)
+        if ($.inArray(dtnode.data.key, selectedCustomCheckboxes) === -1)
         {
             selectedCustomCheckboxes.push(dtnode.data.key);
         }
@@ -563,7 +563,7 @@
         selectedChildren    = parentSpan.next().find(".dynatree-selected");
 
         // If current node is checked and all of its children are checked too, turn it bold
-        if (dtnode.isSelected() && allMyChildren.length == selectedMyChildren.length)
+        if (dtnode.isSelected() && allMyChildren.length === selectedMyChildren.length)
         {
             span.addClass("perc-item-all-same-workflow");
         }
@@ -675,7 +675,7 @@
     function getAssignedPaths(jsonObject, workflowName, resultArray)
     {
         // Check that the node is assigned to the workflow
-        if (jsonObject.workflowName && jsonObject.workflowName == workflowName)
+        if (jsonObject.workflowName && jsonObject.workflowName === workflowName)
         {
             resultArray.push(jsonObject.id);
         }
@@ -689,7 +689,7 @@
         // make the call again - check if the children has more than one element
         // this is because of the CXF issue (a list with only one element is returned
         // as an object)
-        if (recursive_case = typeof(jsonObject.children.child.length) == 'undefined')
+        if (recursive_case === typeof (jsonObject.children.child.length) === 'undefined')
         {
             getAssignedPaths(jsonObject.children.child, workflowName, resultArray);
         }

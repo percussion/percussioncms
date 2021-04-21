@@ -120,7 +120,7 @@
     function setSection( path ) {
         var pathVal = '';
         
-        if ( path.category == 'ASSET' ) {
+        if ( path.category === 'ASSET' ) {
             pathVal = path.folderPaths;
         }
         else {
@@ -199,7 +199,7 @@
          */
         function validatePathAccessLevel( okCallback ) {
             // User should not create assets in 'Assets' root node
-            if ( selectedPath == $.perc_paths.ASSETS_ROOT ) {
+            if ( selectedPath === $.perc_paths.ASSETS_ROOT ) {
                 displayError(
                     errorLabelsSelectors.where,
                     I18N.message( 'perc.ui.saveassharedassetdialog.errormessage@You do not have permission to create an asset here.' )
@@ -211,8 +211,8 @@
                 selectedPath,
                 true,
                 function( status, result ) {
-                    var error = status == $.PercFolderHelper().PERMISSION_ERROR,
-                        onlyWrite = result == $.PercFolderHelper().PERMISSION_READ;
+                    var error = status === $.PercFolderHelper().PERMISSION_ERROR,
+                        onlyWrite = result === $.PercFolderHelper().PERMISSION_READ;
                     if ( error || onlyWrite ) {
                         displayError(
                             errorLabelsSelectors.where,
@@ -236,9 +236,9 @@
                 null,
                 -1,
                 function( status, result) {
-                    var error = status == $.PercServiceUtils.STATUS_ERROR,
-                        accessRead = result == $.PercUserService.ACCESS_READ,
-                        accessNone = result == $.PercUserService.ACCESS_NONE;
+                    var error = status === $.PercServiceUtils.STATUS_ERROR,
+                        accessRead = result === $.PercUserService.ACCESS_READ,
+                        accessNone = result === $.PercUserService.ACCESS_NONE;
                     if (  error || accessRead || accessNone ) {
                         displayError(
                             errorLabelsSelectors.where,
@@ -260,7 +260,7 @@
         function validatePathNotExists( okCallback ) {
             $.PercPathService.getLastExistingPath(selectedPath + '/' + assetName,
                 function( status, result ) {
-                    if ( result == selectedPath.replace($.perc_paths.ASSETS_ROOT + '/', '') + '/' + assetName ) {
+                    if ( result === selectedPath.replace($.perc_paths.ASSETS_ROOT + '/', '') + '/' + assetName ) {
                         displayError(
                             errorLabelsSelectors.name,
                             I18N.message( 'perc.ui.saveassharedassetdialog.errormessage@An asset with the same name already exists.' )
@@ -293,7 +293,7 @@
                 assetName,
                 selectedPath,
                 function( status, result ) {
-                    if ( status != $.PercServiceUtils.STATUS_SUCCESS ) {
+                    if ( status !== $.PercServiceUtils.STATUS_SUCCESS ) {
                         displayError( result );
                     }
                     else {
