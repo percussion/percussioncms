@@ -59,7 +59,7 @@
             selectedItem: function(){},
             truncateEntries:false,
             truncateEntriesCount:5
-         }   
+         };
     var currentItemList = [];
     var currentItemIds = new Object();
     var currentItemSelected = "";
@@ -69,7 +69,7 @@
         container.data('options', options);
         var head = $('<div class="perc-item-list-label" />')
                    .html(options.title);
-        container.append(head)                   
+        container.append(head);
         //At the top we could show a add or delete button
         if (options.enableDelete)
             container.find('.perc-item-list-label').append($('<div class="perc-item-delete-button" />').attr('title', options.deleteTitle));
@@ -81,7 +81,7 @@
         
         var list = $('<div class="perc-itemname-list" />').append($("<ul/>"));
         container.append(list);
-        updateList(container, [])
+        updateList(container, []);
         
         //bind create event
         container.find(".perc-item-add-button").unbind().click(function(){
@@ -133,12 +133,12 @@
                     
                 }
                 ulRoot.append(htmlLi);
-                if(options.truncateEntries && i==options.truncateEntriesCount)
+                if(options.truncateEntries && i===options.truncateEntriesCount)
                 {
                     ulRoot.append('<li class="perc-moreLink perc-visible" style = "display:block" title = "more">more</li>');                
                 }
                 
-                if(options.truncateEntries && i==itemList.length-1)
+                if(options.truncateEntries && i===itemList.length-1)
                 {
                     ulRoot.append('<li class="perc-lessLink perc-hidden" style = "display:none" title = "less">less</li>');         
                 }                

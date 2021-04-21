@@ -72,17 +72,17 @@
         {
             var actionUrl = $.perc_paths.WEBRESOURCESMGT_FILE_UPLOAD;
             // Basic dialog content HTML markup
-            var dialogContent = "<div id='perc-design-file-upload'>"
-                    + '<form id="perc-theme-file-upload-form" name="perc-theme-file-upload-form" enctype="multipart/form-data" method="post" action="' + actionUrl +'">'
+            var dialogContent = "<div id='perc-design-file-upload'>" +
+                     '<form id="perc-theme-file-upload-form" name="perc-theme-file-upload-form" enctype="multipart/form-data" method="post" action="' + actionUrl +'">' +
 //                    + '<span class="perc-required-legend"><label>* - ' + I18N.message("perc.ui.uploadtheme.form.text@denotes required field") + '</label></span>'
 //                        + '<label class="perc-required-field" for="upload-theme-file-attachment" accesskey="F"><u>F</u>ile name:</label><br>'
-                    + '<label for="upload-theme-file-attachment">File name:</label><br>'
-                        + '<input type="hidden" name="upload-theme-file-path" />'
-                        + '<input type="file" size="50" name="upload-theme-file-attachment" />'
-                    + '</form>'
+                     '<label for="upload-theme-file-attachment">File name:</label><br>' +
+                         '<input type="hidden" name="upload-theme-file-path" />' +
+                         '<input type="file" size="50" name="upload-theme-file-attachment" />' +
+                     '</form>' +
                     // hidden div that will hold the server response
-                    + '<div id="perc-theme-file-upload-response" style="display:none"></div>'
-                + "</div>";
+                     '<div id="perc-theme-file-upload-response" style="display:none"></div>' +
+                 "</div>";
             
             // Create the upload dialog
             var d = $(dialogContent).perc_dialog( {
@@ -146,7 +146,7 @@
          */
         function saveLogic()
         {   
-            if (checkFileFieldCompleted() == false)
+            if (checkFileFieldCompleted() === false)
             {
                 return false;
             }
@@ -163,10 +163,10 @@
         {
             var fileField = dialog.find('input:file');
             var errorLabel = dialog.find('label.perc_field_error');
-            if (fileField.val() == '')
+            if (fileField.val() === '')
             {
                 // Show the error message, if not shown previously
-                if (errorLabel.length == 0)
+                if (errorLabel.length === 0)
                 {
                     fileField.after('<label class="perc_field_error" for="upload-theme-file-attachment" style="display: block;">' + I18N.message("perc.ui.uploadtheme.form.text@Please select a file.") + '</label>');
                 }
@@ -193,9 +193,9 @@
             
             $.PercWebResourcesService.validateFileUpload(encodedPath, fileName, function(status, result)
                 {
-                    if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                    if (status === $.PercServiceUtils.STATUS_SUCCESS)
                     {
-                        if (result.data == $.PercServiceUtils.STATUS_SUCCESS)
+                        if (result.data === $.PercServiceUtils.STATUS_SUCCESS)
                         {
                             // No element with same name found in the path, proceed with the upload
                             uploadFile();
@@ -257,11 +257,11 @@
 
             // If there is a message in the response, open an alert with the error message and
             // reopen the upload dialog
-            if (textResponse == "")
+            if (textResponse === "")
             {
                 $.unblockUI();
                 dialog.remove();
-                finder.refresh(function() {;});
+                finder.refresh(function() {});
             }
             else
             {   
@@ -281,7 +281,7 @@
         {
             var textResponse = I18N.message("perc.ui.upload.theme.file.dialog@Unkown Error");
             
-            if (textStatus == "timeout")
+            if (textStatus === "timeout")
                 textResponse = I18N.message("perc.ui.upload.theme.file.dialog@Operation time");
             
             var options = {
@@ -303,13 +303,13 @@
             
             // Get the selected item from Column or List mode with the class FSFile
             selectedItemSpec = $("#perc-finder-listview .perc-datatable-row-highlighted").data("percRowData");
-            if (selectedItemSpec == undefined)
+            if (selectedItemSpec === undefined)
             {
                 var selectedItemSpec = $(".mcol-listing.perc-listing-type-FSFile.mcol-opened").data("spec");
             }
             
             // If we selected a file, pop out the last element
-            if (selectedItemSpec != undefined && selectedItemSpec.type == 'FSFile' && selectedItemSpec.leaf)
+            if (selectedItemSpec !== undefined && selectedItemSpec.type === 'FSFile' && selectedItemSpec.leaf)
             {
                 current_path.pop();
             }

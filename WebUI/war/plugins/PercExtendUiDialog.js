@@ -54,7 +54,7 @@
     $.ui.dialog.prototype._setData = function(key, value)
     {
         var self = this;
-        if (key == 'perc-buttons')
+        if (key === 'perc-buttons')
             self._createPercButtons(value);
         _setData.apply(this, [key, value]);
     };

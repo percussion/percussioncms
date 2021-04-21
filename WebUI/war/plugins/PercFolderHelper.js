@@ -82,7 +82,7 @@
             if(!fromCache || !pathItem)
             {
                $.PercPathService.getPathItemForPath(path, function(status, result){
-                   if(status==$.PercServiceUtils.STATUS_ERROR)
+                   if(status===$.PercServiceUtils.STATUS_ERROR)
                    {
                        callback(folderHelperConstants.PERMISSION_ERROR, result);
                        return;
@@ -102,7 +102,7 @@
             if(!fromCache || !pathItem)
             {
                 $.PercPathService.getPathItemById(objectId, function(status, result, errorCode){
-                    if(status==$.PercServiceUtils.STATUS_ERROR)
+                    if(status===$.PercServiceUtils.STATUS_ERROR)
                     {
                         callback(folderHelperConstants.PERMISSION_ERROR, result, errorCode);
                         return;
@@ -115,6 +115,6 @@
                 callback(folderHelperConstants.PERMISSION_SUCCESS,pathItem.accessLevel);
             }
         }
-    }
+    };
     
 })(jQuery);
