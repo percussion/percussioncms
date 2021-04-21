@@ -233,7 +233,7 @@
             {
                 // If something went wrong during the job creation, show the error status status.
                 // Else, invoke the polling of the job status
-                if (status != $.PercServiceUtils.STATUS_SUCCESS)
+                if (status !== $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     setErrorState();
                 }
@@ -259,7 +259,7 @@
             }
 
             config.pollingProgressCallback(importJobId, function(status, asyncJobStatus) {
-                if (status != $.PercServiceUtils.STATUS_SUCCESS || asyncJobStatus.status < 0)
+                if (status !== $.PercServiceUtils.STATUS_SUCCESS || asyncJobStatus.status < 0)
                 {
                     setErrorState();
                 }
@@ -286,7 +286,7 @@
                         importPercentage = asyncJobStatus.status;
                     }
 
-                    if (asyncJobStatus.status == 100)
+                    if (asyncJobStatus.status === 100)
                     {
                         // The job reached its end successfully, set the corresponding flag to true
                         importFinished = true;

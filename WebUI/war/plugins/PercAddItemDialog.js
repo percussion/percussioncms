@@ -80,7 +80,7 @@
                 //     backgroundImage = "url(" + baseUrl + "/images/images/buttonOkInactive.png)"
                 $("#perc-addItem-dialog-save")
                     .off('click')
-                    .off('mouseenter mouseleave')
+                    .off('mouseenter mouseleave');
                 //  .css("background-image", backgroundImage)
                 $(this).find('input').click(function(event){enableDisableSaveButton(buttonSave, dialog, callback); event.stopPropagation(); });
                 $(this).find('.perc-item-entry').click(function(event){clickRow(event, buttonSave, dialog, callback);});
@@ -104,7 +104,7 @@
                         $("<span />")
                             .html(itemName)
                             .attr("title", itemName)
-                    )
+                    );
                 // append html to DOM
                 container.append(html);
             }

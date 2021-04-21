@@ -24,7 +24,7 @@
  */
 
 (function($){
-   $.perc_template_layout_helper = new function(){
+   $.perc_template_layout_helper = function(){
    
    /*=============================================================
     *  Vars
@@ -67,11 +67,11 @@
       this.objectId = objectId;
       this.objectType = type;
 
-      if(type == this.Type.TEMPLATE)
+      if(type === this.Type.TEMPLATE)
       {
 			self.loadTemplate(objectId, this.Type.TEMPLATE, postCallback);
       }
-      else if(type == this.Type.PAGE)
+      else if(type === this.Type.PAGE)
       {
 			self = this;
 			this.page = new $.Perc_Page_class();
@@ -102,7 +102,7 @@
 			success: function(templateXml, textstatus)
 			{
 				// if we are editing a page, loadTemplate is being invoked right after loading the page.
-				if(type == self.Type.PAGE)
+				if(type === self.Type.PAGE)
 				{
 					// merge the Page XML and Template XML into the Template XMl and then treat just like editing a template. 
 					self.page.mergePageXmlIntoTemplateXml(templateXml);
@@ -112,7 +112,7 @@
 				//	TODO: make template and page loading independent of each other
 				//	create a controller to load page then related template (as an object)
 				//	and then notify page of its template object
-				if(type == self.Type.PAGE)
+				if(type === self.Type.PAGE)
 				{
 					self.page.setOriginalTemplate(self.templateObjectXml, self.rootRegion);
 				}
@@ -164,7 +164,7 @@
 		$regionWidgetAssociations.find("regionWidget").each(function()
 		{
 			id = $(this).find("regionId").text();
-			if(id == regionId)
+			if(id === regionId)
 				$regionWidget = $(this);
 		});
 		
@@ -200,7 +200,7 @@
 		});
 		
 		*/
-	}
+	};
 
 	this.parseTemplateObjectXml = function(xml, callback)
 	{
@@ -224,12 +224,12 @@
    this.parseRegions = function($region, parent)
    {
    	var self = this;
-      var prefix =  this.objectType = this.Type.TEMPLATE
-         ? this.regionTempPrefix
-         : this.regionPagePrefix;
+      var prefix =  this.objectType = this.Type.TEMPLATE;
+	   this.regionTempPrefix = "temp-region-";
+	   this.regionPagePrefix = "page-region-";
       
       var regionid = $region.children("regionId").text();
-      if(prefix == regionid.substr(0, prefix.length))
+      if(prefix === regionid.substr(0, prefix.length))
       {
          var idx = parseInt(regionid.substr(prefix.length));
          this.regionIdInc = Math.max(this.regionIdInc, idx);         
@@ -268,7 +268,7 @@
 			regionId = $(this).find("regionId").text();
 			parentRegion = self.getRegion(regionId, self.rootRegion);
 			var widget = null;
-			var widgets = new Object();
+			var widgets = {};
 			widgetItems = $(this).find("widgetItems");
 			widgetItems.find("widgetItem").each(function()
 			{
@@ -301,12 +301,12 @@
 	this.markTemplateRegionOverride = function(regionId)
 	{
 		this.page.overrideTemplateRegion(regionId);
-	}
+	};
 	
 	this.markTemplateWidgetOverride = function(regionId)
 	{
 		this.page.overrideTemplateWidget(regionId);
-	}
+	};
 	
 	//===================
 	//
@@ -320,19 +320,19 @@
 	//	this.templateModelToTemplateXml(false);
 	//	this.page.extractPageXmlFromTemplateXml(this.templateObjectXml);
 		this.page.clear(callback);
-	}	 
+	};
 
    	this.save = function(type, postCallback)
 	{
 		var self = this;
 		
-		if(type == this.Type.PAGE)
+		if(type === this.Type.PAGE)
 		{
 			this.templateModelToTemplateXml(true);
 			this.page.extractPageXmlFromTemplateXml(this.templateObjectXml);
 			this.page.save(postCallback);
 		}
-		else if(type == this.Type.TEMPLATE)
+		else if(type === this.Type.TEMPLATE)
 		{
 		
 			self.templateModelToTemplateXml(true);
@@ -343,7 +343,7 @@
 			{
 				var id = $(this).text();
 				var idInt = parseInt(id);
-				if(isNaN(idInt) || idInt == 0)
+				if(isNaN(idInt) || idInt === 0)
 				{
 					// fix for IE 7 & 8
 				//	$(this).remove();
@@ -509,7 +509,7 @@
 	this.createNewWidget = function(widgetDefinitionId, region)
 	{
 		return new $.Perc_Widget_class(this._createPseudoWidgetId(), widgetDefinitionId, region);
-	}
+	};
 	   
 	/**
 	 *	Creates new widget object instance and adds it to the region object
@@ -541,7 +541,7 @@
 	{
 		if(theparent == null)
 			theparent = this.rootRegion;
-		if(theparent.getId() == regionId)
+		if(theparent.getId() === regionId)
 			return theparent;
 		if(theparent.hasSubRegions())
 		{
@@ -662,10 +662,10 @@
     // create region ids when adding new regions.
 	this._createNewRegionId = function()
 	{
-		var prefix =  this.objectType = this.Type.TEMPLATE
-			? this.regionTempPrefix
-			: this.regionPagePrefix;
-		var pseudoId = prefix + (++this.regionIdInc)
+		var prefix =  this.objectType = this.Type.TEMPLATE;
+		this.regionTempPrefix = "temp-region-";
+		this.regionPagePrefix = "page-region-";
+		var pseudoId = prefix + (++this.regionIdInc);
 		return pseudoId; 
 	};
 
@@ -711,7 +711,7 @@
    
    this._moveWidgets = function(source, target){
       var widgets = source.getWidgets();
-      if(widgets == null || widgets.length == 0)
+      if(widgets == null || widgets.length === 0)
          return;
       for(var i = widgets.length - 1; i > -1; i--)
       {
@@ -721,7 +721,7 @@
    
    this._moveSubRegions = function(source, target){
       var subs = source.getSubRegions();
-      if(subs == null || subs.length == 0)
+      if(subs == null || subs.length === 0)
          return;
       for(var i = subs.length - 1; i > -1; i--)
       {

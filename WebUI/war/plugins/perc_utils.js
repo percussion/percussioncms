@@ -133,7 +133,7 @@
             var idArray = id.split("-");
             return idArray[idArray.length - 1];
         } else {
-            console.warn("Cannot get contentId from given Asset.")
+            console.warn("Cannot get contentId from given Asset.");
             return false;
         }
     }
@@ -161,7 +161,7 @@
         while (pathConstant.length > 0)
         {
             value = $.perc_displayformats[pathConstant.join("/")];
-            if (value != undefined)
+            if (value !== undefined)
             {
                 return value;
             }
@@ -238,7 +238,7 @@
         var showMandatoryFieldAlertPopUp=false;
         frame.contents().find("#perc-content-form").find('label').each(function(){
             if($(this).hasClass("perc-required-field")){
-                if($(this).siblings('input').val()==''){
+                if($(this).siblings('input').val()===''){
                     //dosubmit = false;
                     showMandatoryFieldAlertPopUp=true;
                 }
@@ -254,7 +254,7 @@
                     .append(
                         $('<p></p>')
                     )
-            )
+            );
 
             dialogMarkup.find('p').html(I18N.message("perc.ui.utils@Please fill all required fields"));
             var dialogButtons = {
@@ -353,14 +353,14 @@
     }
 
     function select( label, name, id ) {
-        return "<label for='"+id+"'>" + label + "</label><br/>"
-            + "<select name='"+name+"' id='"+id+"' ></select><br/>";
+        return "<label for='"+id+"'>" + label + "</label><br/>" +
+             "<select name='"+name+"' id='"+id+"' ></select><br/>";
     }
 
     function input( label, name, id, tabindex, type ) {
         type = type || "text";
-        return "<label for='"+id+"'>" + label + "</label><br/>"
-            + "<input type='"+type+"' name='"+name+"' id='"+id+"' ></input><br/>";
+        return "<label for='"+id+"'>" + label + "</label><br/>" +
+             "<input type='"+type+"' name='"+name+"' id='"+id+"' ></input><br/>";
     }
 
     function extract_path( path ) {
@@ -395,7 +395,7 @@
         $(window).trigger("resize").trigger("resize");
 
         return dlgContent;
-    }
+    };
 
     function initializeShowAgainCheck(event, ui){
         var showCheck =  $("<div/>")
@@ -549,7 +549,7 @@
                     click: function() {settings.dontSaveCallback(); dialog.dialog( "close" ); dialog.remove();},
                     id: "perc-confirm-generic-continue"
                 }
-            }
+            };
         }
         else if (settings.type === "CANCEL_CONTINUE")
         {
@@ -562,7 +562,7 @@
                     click: genericCancel,
                     id: "perc-confirm-generic-cancel"
                 }
-            }
+            };
         }
         else if (settings.type === "CANCEL_START")
         {
@@ -575,7 +575,7 @@
                     click: genericCancel,
                     id: "perc-confirm-generic-cancel"
                 }
-            }
+            };
         }
         else
         {
@@ -874,7 +874,7 @@
 
         if( type && type_icons[ type ] ){
 
-            if(type=="site"){
+            if(type==="site"){
                 returnIcon.src='/cm/images/images/iconWebsite.gif';
                 returnIcon.alt=I18N.message("perc.ui.images@SiteIconAlt");
                 returnIcon.title=I18N.message("perc.ui.images@SiteIconTitle");
@@ -882,7 +882,7 @@
                 return returnIcon;
             }
 
-            if( type=="percPage" ){
+            if( type==="percPage" ){
                 returnIcon.src =  '/cm/images/images/iconPage.gif';
                 returnIcon.alt=I18N.message("perc.ui.images@PageIconAlt");
                 returnIcon.title=I18N.message("perc.ui.images@PageIconTitle");
@@ -1146,7 +1146,7 @@
                 if (!$(this).hasClass("ui-layout-ignore"))
                     $(this).css("top", $(this).position().top - movedY);
             });
-        }
+        };
     }
 
     function removeAutoScroll(){
@@ -1458,7 +1458,7 @@
                 var ifr_source = $(this).attr('src');
                 if(ifr_source.length > 0){
                     var wmode = "wmode=transparent";
-                    if(ifr_source.indexOf('?') != -1){
+                    if(ifr_source.indexOf('?') !== -1){
                         $(this).attr('src',ifr_source+'&'+wmode);
                     }
                     else{
@@ -1549,13 +1549,13 @@
     $.percHideBodyScrollbars = function() {
         $("body")
             .css("overflow","hidden");
-    }
+    };
 
     $.percShowBodyScrollbars = function() {
         $("body")
             .css("position","")
             .css("overflow","");
-    }
+    };
 
     /**
      * Makes the folder editable, by finding the new folder node and simulating
@@ -1563,7 +1563,7 @@
      */
     function makeFolderEditable(pathItem){
         // Add the JEditable plugin to folders for rename functionality
-        var listing = $('#perc-finder-listing-' + pathItem.id)
+        var listing = $('#perc-finder-listing-' + pathItem.id);
         var $itemName = listing.children('.perc-finder-item-name');
         var pageItemType = pathItem.type;
 
@@ -1582,7 +1582,7 @@
                 var oldName = $nameEl.parent().attr('title');
                 if(value.length === 0)
                     return oldName;
-                if(value != oldName)
+                if(value !== oldName)
                 {
                     $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
                     $.PercPathService.renameFolder(
@@ -1591,7 +1591,7 @@
                         function(status, result, code){
                             if(status === $.PercServiceUtils.STATUS_SUCCESS)
                             {
-                                var pth = $.perc_finder().lastClickPath
+                                var pth = $.perc_finder().lastClickPath;
                                 if($.perc_finder().lastClickPath === null ||  typeof $.perc_finder().lastClickPath === "undefined")
                                 {
                                     pth = result.PathItem.path.split("/");
@@ -1606,8 +1606,8 @@
                                 $nameEl.text(oldName); // Reset back to old name
                                 $.unblockUI();
                                 var errorMsg = "";
-                                if (code === "renameFolderItem.reservedName" || code === "renameFolderItem.longName"
-                                    || code === "renameFolderItem.invalidCharInName")
+                                if (code === "renameFolderItem.reservedName" || code === "renameFolderItem.longName" ||
+                                     code === "renameFolderItem.invalidCharInName")
                                 {
                                     errorMsg = result.replace("<old_name>", oldName).replace("<new_name>", value);
                                 }
