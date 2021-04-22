@@ -303,15 +303,18 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
       {
          int rev = rel.getOwner().getRevision();
          filter.setOwner(new PSLocator(ownerId, rev));
+         filter.limitToOwnerRevision(true);
       }
 
       int dependentId = rel.getDependent().getId();
-      if (dependentId != -1)
+      if (dependentId != -1) {
          filter.setDependent(new PSLocator(dependentId, rel.getDependent().getRevision()));
+      }
 
       String slotId = rel.getProperty(IPSHtmlParameters.SYS_SLOTID);
       if (slotId != null && !slotId.trim().isEmpty())
          filter.setProperty(IPSHtmlParameters.SYS_SLOTID, slotId + "");
+
 
       try {
          PSRelationshipSet relSet = processor.getRelationships(filter);
