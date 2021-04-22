@@ -1554,14 +1554,9 @@ import static org.apache.commons.lang.Validate.notNull;
      */
     private boolean isValidSiteName(String siteName)
     {
-        boolean isValid = true;
         siteName = StringUtils.defaultString(siteName);
-        String stripped = siteName.replaceAll("[^a-zA-Z0-9\\-\\.]", "");
-        if(!stripped.equals(siteName))
-            isValid = false;
-        else if(siteName.replaceAll("[\\-\\.]", "").length()==0)
-            isValid = false;
-        return isValid;
+        return siteName.matches("^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$");
+
     }
 
     private boolean isReservedSiteName(String siteName)
