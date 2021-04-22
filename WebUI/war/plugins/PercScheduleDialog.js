@@ -48,7 +48,7 @@
         {
             var self = this;
             
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             { 
                 var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: defaultMsg});
@@ -155,9 +155,9 @@
             var publishDate = parseDateTime($('#perc_publish_date').val());
             var removalDate = parseDateTime($('#perc_removal_date').val());
             var serverTime = new Date();//parseDateTime($.PercServiceUtils.getServerDatetime());
-            if (publishDate != "" && removalDate !=""){
+            if (publishDate !== "" && removalDate !==""){
                 //with -0 convert the time to milliseconds
-                if (publishDate-0 == removalDate-0)
+                if (publishDate-0 === removalDate-0)
                 {
                     $.perc_utils.alert_dialog({content:I18N.message("perc.ui.schedule.dialog@Dates Cannot Be Same"), title:I18N.message("perc.ui.publish.title@Error")});
                     return false;
@@ -182,7 +182,7 @@
         }
         
         function parseDateTime(strDateTime){
-            if (strDateTime != "")
+            if (strDateTime !== "")
             {
                 var date = strDateTime.split(" ")[0].split("/");
                 var time = strDateTime.split(" ")[1].split(":");
@@ -218,14 +218,14 @@
                     // mark asset as dirty when date is selected
                     onSelect : function(dateText, inst) {
                         // if the top most jquery is defined
-                        if($.topFrameJQuery != undefined)
+                        if($.topFrameJQuery !== undefined)
                             // mark the asset as dirty
                             $.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
                     }
                 })
                 .bind('paste', function(evt){evt.preventDefault();})
                 .bind('keypress keydown', function(evt){
-                    if(evt.keyCode == 46 || evt.keyCode == 8 )
+                    if(evt.keyCode === 46 || evt.keyCode === 8 )
                     {
                         var field = evt.target;
                         field.value = "";
@@ -234,7 +234,7 @@
                         evt.preventDefault();
                         return;
                     }
-                    if(evt.charCode == 0 || typeof(evt.charCode) == 'undefined')
+                    if(evt.charCode === 0 || typeof(evt.charCode) == 'undefined')
                         return;                                     
                     evt.preventDefault();
                 });

@@ -169,8 +169,8 @@
             });
             if(approvedIds.length === 0 && rejectedIds.length === 0 && deletedIds.length === 0)
                 return null;
-            var moderation = new Object();
-            moderation.moderation = new Object();
+            var moderation = {};
+            moderation.moderation = {};
             if(approvedIds.length > 0) {
                 moderation.moderation.approves = [];
                 moderation.moderation.approves[0] = {site : site, comments : approvedIds};

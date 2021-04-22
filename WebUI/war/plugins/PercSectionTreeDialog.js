@@ -51,7 +51,7 @@
         var $dialog = null;
         // Get section tree
         $.Perc_SectionServiceClient.getTree(siteName, function(status, result){
-            if(status == $.PercServiceUtils.STATUS_SUCCESS)
+            if(status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 $dialog =   $("<div/>")
                     .append(
@@ -96,7 +96,7 @@
                             }
                         },
                         open: function(){
-                            if(okButton == "Select")
+                            if(okButton === "Select")
                             {
                                 $("#perc-movesection-move").hide();
                                 $("#perc-select-section-button").show();
@@ -154,9 +154,9 @@
          */
         function buildSectionTreeList(sectionNode){
             var results;
-            if(sectionNode.sectionType && sectionNode.sectionType != $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION)
+            if(sectionNode.sectionType && sectionNode.sectionType !== $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION)
                 return "";
-            if(sectionNode.id == excludeId)
+            if(sectionNode.id === excludeId)
                 return "";
             menuTitle = sectionNode.title + "";
             results = $("<li/>")
@@ -164,9 +164,9 @@
                 .attr("data", "icon:'section.png',sectionName:'" + menuTitle.replace(/'/g, "\\'").replace(/"/g, "\\\"") + "'")
                 .append(
                     $("<a/>").attr("href", "#").text(menuTitle)
-                )
+                );
 
-            if(sectionNode.childNodes != "")
+            if(sectionNode.childNodes !== "")
             {
                 var children = sectionNode.childNodes.SectionNode;
                 if (children === undefined) {
