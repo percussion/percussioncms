@@ -373,8 +373,7 @@
         <include name="PercussionCMShutdown.bat"/>
         <include name="PercussionServer.bin"/>
         <include name="PercussionServer.exe"/>
-        <!-- Not Deleting PercussionServer.lax as is used by PSUpdateJettyConfigFromJBoss deleting it there -->
-        <include name="PercussionServer.bin.lax"/>
+        <!-- Not Deleting PercussionServer.lax, PercussionServer.bin.lax as is used by PSUpdateJettyConfigFromJBoss deleting it there -->
         <include name="server_run_lock"/>
         <include name="shutdown.tmp"/>
         <include name="StartServer.bat"/>
