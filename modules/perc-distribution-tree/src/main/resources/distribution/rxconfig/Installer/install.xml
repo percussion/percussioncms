@@ -2,7 +2,7 @@
 <!--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2021 Percussion Software, Inc.
-  ~
+  ~PercussionServer.lax
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
   ~
@@ -257,7 +257,7 @@
         </copy>
         <echo>Configuring Datasource...</echo>
         <touch mkdirs="true" file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
-        <PSUpdateJettyConfigFromJBoss rootDir="${install.dir}"/>
+        <PSUpdateJettyConfigFromJBoss rootDir="${install.dir}" srcDir="${install.src}"/>
 
         <PSConfigurePort rootDir="${install.dir}"/>
 
@@ -373,7 +373,7 @@
         <include name="PercussionCMShutdown.bat"/>
         <include name="PercussionServer.bin"/>
         <include name="PercussionServer.exe"/>
-        <include name="PercussionServer.lax"/>
+        <!-- Not Deleting PercussionServer.lax as is used by PSUpdateJettyConfigFromJBoss deleting it there -->
         <include name="PercussionServer.bin.lax"/>
         <include name="server_run_lock"/>
         <include name="shutdown.tmp"/>

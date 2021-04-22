@@ -74,6 +74,8 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
     public static final String PERCUSSION_SERVER_LAX = "PercussionServer.lax";
     public static final String LAX_NL_JAVA_OPTION_ADDITIONAL = "lax.nl.java.option.additional";
 
+
+
     public static final ImmutableList<String> SKIP_ARGS=ImmutableList.of(
             "-Dprogram.name",
             "-Djava.endorsed.dirs",
@@ -83,6 +85,17 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
             "-Xrunjdwp",
             "-Dfile.encoding"
     );
+
+
+    public static String getSrcDir() {
+        return srcDir;
+    }
+
+    public static void setSrcDir(String srcDir) {
+        PSUpdateJettyConfigFromJBoss.srcDir = srcDir;
+    }
+
+    private static volatile String srcDir;
 
     /**
      * The repository location, relative to the Rhythmyx root.
@@ -226,7 +239,6 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
    }
 
     private void migrateLaxJavaSettingsToJetty() {
-
         File jvmIni = new File(getRootDir(), "jetty/base/start.d/jvm.ini");
        Properties props = new Properties();
        File laxFile = new File(getRootDir(), PERCUSSION_SERVER_LAX);
@@ -315,6 +327,9 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
             try {
                 Files.copy(tempFile.toPath(), jvmIni.toPath(),java.nio.file.StandardCopyOption
                         .REPLACE_EXISTING);
+                //Delete PercussionServer.lax file as didn't remove it in Install.xml
+                if(laxFile != null && laxFile.exists())
+                    Files.delete(laxFile.toPath());
             } catch (IOException e) {
                 log.error("Failed to copy jvm.ini",e);
             }

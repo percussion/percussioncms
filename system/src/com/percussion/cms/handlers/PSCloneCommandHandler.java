@@ -398,6 +398,7 @@ public class PSCloneCommandHandler extends PSCommandHandler
       //Get all relationships with this item as owner
       PSRelationshipFilter filter = new PSRelationshipFilter();
       filter.setOwner(new PSLocator(fromCid, fromRid));
+      filter.limitToOwnerRevision(true);
       Iterator relationships = processor.getRelationships(filter).iterator();
       if (!relationships.hasNext())
          return inlineRelationships;
