@@ -72,6 +72,7 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
     private static final Log log = LogFactory.getLog(PSUpdateJettyConfigFromJBoss.class);
 
     public static final String PERCUSSION_SERVER_LAX = "PercussionServer.lax";
+    public static final String PERCUSSION_SERVER_LINUX_LAX = "PercussionServer.bin.lax";
     public static final String LAX_NL_JAVA_OPTION_ADDITIONAL = "lax.nl.java.option.additional";
 
 
@@ -232,6 +233,9 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
         File jvmIni = new File(getRootDir(), "jetty/base/start.d/jvm.ini");
        Properties props = new Properties();
        File laxFile = new File(getRootDir(), PERCUSSION_SERVER_LAX);
+        if (!laxFile.exists()) {
+            laxFile = new File(getRootDir(), PERCUSSION_SERVER_LINUX_LAX);
+        }
        if (laxFile.exists()) {
            try (InputStream fis = new FileInputStream(laxFile)) {
                props.load(fis);
