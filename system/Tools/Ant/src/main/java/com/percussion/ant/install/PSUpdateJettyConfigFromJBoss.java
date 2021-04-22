@@ -87,16 +87,6 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
     );
 
 
-    public static String getSrcDir() {
-        return srcDir;
-    }
-
-    public static void setSrcDir(String srcDir) {
-        PSUpdateJettyConfigFromJBoss.srcDir = srcDir;
-    }
-
-    private static volatile String srcDir;
-
     /**
      * The repository location, relative to the Rhythmyx root.
      */
