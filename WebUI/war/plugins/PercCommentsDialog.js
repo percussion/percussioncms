@@ -53,7 +53,7 @@
         {
             var self = this;
             
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             { 
                 var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                 $.perc_utils.alert_dialog({title: 'Error', content: defaultMsg});
@@ -62,7 +62,7 @@
             }
             var revSummary = result.data.RevisionsSummary;
             var comments = revSummary.comments?$.isArray(revSummary.comments)?revSummary.comments:[revSummary.comments]:[];
-            if(comments.length == 0){
+            if(comments.length === 0){
                 $.perc_utils.alert_dialog({"title": I18N.message("perc.ui.comments.dialog@No Comments"),"content":I18N.message("perc.ui.comments.dialog@No Comments Yet")});
                 return;
             }
@@ -98,7 +98,7 @@
         {
             var $dialogHtml = $("<div id='perc-comments-container'/>");
             var commentHTML = "";
-            if(comments.length == 0){
+            if(comments.length === 0){
                 commentHTML += "<div class='perc-comments-row'>" + I18N.message("perc.ui.comments.dialog@No Comments Selected Page") + "</div>";
             }
             else{

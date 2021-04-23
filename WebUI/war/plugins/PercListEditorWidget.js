@@ -90,7 +90,7 @@
         
         // I18N
         var fieldHelpText = "";
-        if (options.help != undefined && options.help != null)
+        if (options.help !== undefined && options.help != null)
             fieldHelpText = options.help;
         else
             fieldHelpText = I18N.message("perc.ui.folderPropsDialog.inputField@Enter a username");
@@ -127,7 +127,7 @@
             .keypress(function(event) {
                 var code = (event.keyCode ? event.keyCode : event.which);
                 var itemText = inputField.val();
-                if(code == 13)
+                if(code === 13)
                     if(findItem(itemText))
                         addListItem(itemText);
             }).click(function(){
@@ -145,7 +145,7 @@
                 updateInputField("clear");
             });
 
-        if (options.results != undefined && options.results != null)
+        if (options.results !== undefined && options.results != null)
         {
             resultItems = options.results;
 
@@ -175,12 +175,12 @@
         function updateInputField(action) {
             // get input text
             var itemText = inputField.val();
-            if(action == "help" && itemText == "") {
+            if(action === "help" && itemText === "") {
                 inputField.css("font-style","italic");
                 inputField.css("color","gray");
                 inputField.val(fieldHelpText);
-            } else if(action == "clear") {
-                if(itemText == fieldHelpText)
+            } else if(action === "clear") {
+                if(itemText === fieldHelpText)
                     inputField.val("");
                 inputField.css("font-style","normal");
                 inputField.css("color","black");
@@ -202,7 +202,7 @@
         
         function findItem(item) {
             for(r=0; r<resultItems.length; r++)
-                if(item.toLowerCase() == resultItems[r].toLowerCase())
+                if(item.toLowerCase() === resultItems[r].toLowerCase())
                     return true;
             return false;
         }
@@ -215,7 +215,7 @@
         function setListItems(items) {
             // copy the items to a local array
             listItems = [];
-            if(items != undefined && items != null && items.length > 0) {
+            if(items !== undefined && items != null && items.length > 0) {
                 for(u=0; u<items.length; u++) {
                     listItems.splice(0,0,items[u]);
                     filterAllowedItems(items[u]);
@@ -244,7 +244,7 @@
             {
                 // remove it from result items
                 resultItems = $.grep(resultItems, function(value) {
-                    return value != listItem;
+                    return value !== listItem;
                 });
                 inputField.setOptions({data: resultItems});
             }
@@ -252,12 +252,12 @@
         
         function addListItem(listItem) {
             // basic validation
-            if(listItem == null || listItem == undefined || listItem == "")
+            if(listItem == null || listItem === "")
                 return;
 
             // dont allow duplicates
             for(li=0; li<listItems.length; li++)
-               if(listItem.toLowerCase() == listItems[li].toLowerCase())
+               if(listItem.toLowerCase() === listItems[li].toLowerCase())
                    return;
                    
             // add the new list item
@@ -273,7 +273,7 @@
             // find where did the element end up
             var index = -1;
             for(li=0; li<listItems.length; li++) {
-                if(listItem == listItems[li]) {
+                if(listItem === listItems[li]) {
                     index = li;
                     break;
                 }
@@ -283,7 +283,7 @@
             var next  = index+1;
             var newLi = list.find("li:nth-child("+next+")");
             var liHeight = list.find("li").height();
-            if(index != -1)
+            if(index !== -1)
                 scrollPane.scrollTop(index * liHeight);
                 
             // highlight the new li
@@ -299,7 +299,7 @@
             
             list.empty();
             for(u=0; u<listItems.length; u++) {
-                var li = listItem.replace(/_username_/g, listItems[u])
+                var li = listItem.replace(/_username_/g, listItems[u]);
                 list.append(li);
             }
             
@@ -315,12 +315,12 @@
             // iterate through the list of items looking for the index of the item to be removed
             var removeIndex = -1;
             for(li=0; li<listItems.length; li++)
-               if(listItem == listItems[li]) {
+               if(listItem === listItems[li]) {
                    removeIndex = li;
                    break;
                }
                
-            if(removeIndex != -1) {
+            if(removeIndex !== -1) {
                 listItems.splice(removeIndex,1);
 
                 if (resultItems != null)
@@ -341,9 +341,9 @@
                 .removeAttr("disabled");
             
             var inputText = inputField.val();
-            if(inputText != fieldHelpText)
+            if(inputText !== fieldHelpText)
                 inputField.css("color", "black");
-            if(inputText == "")
+            if(inputText === "")
                 updateInputField("help");
                 
             scrollPane
@@ -404,5 +404,5 @@
         function highlightListItem(listItem) {}
         
         function scrollToListItem(listItem) {}
-    }
+    };
 })(jQuery);
