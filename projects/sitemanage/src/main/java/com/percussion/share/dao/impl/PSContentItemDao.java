@@ -381,6 +381,7 @@ public class PSContentItemDao implements IPSContentItemDao
                     }
                     else if(value instanceof List)
                     {
+                        f.clearValues();
                        List<String> values  = (List<String>) value;
                        for(String val : values)
                        {
@@ -417,7 +418,7 @@ public class PSContentItemDao implements IPSContentItemDao
             {
                 folderId = contentWs.getIdByPath(paths.get(0));
             }
-                        
+
             IPSGuid guid = contentWs.saveItems(singletonList(coreItem), false, false, folderId).get(0);
             id = idMapper.getString(guid);
             
