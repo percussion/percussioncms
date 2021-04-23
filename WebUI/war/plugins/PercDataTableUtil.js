@@ -39,7 +39,7 @@
                 return "";
             }
         }
-    }
+    };
     
     /**
      * Converts pagedItemList data to $.PercDataTable consumable percData object.
@@ -90,7 +90,7 @@
             var column  = colsInfo[c];
             dtConfig.percColNames.push(column.name);
             dtConfig.percHeaders.push(column.label);
-            dtConfig.percWidths.push((column.width == -1 ? "*" : ($.browser.msie ? column.width - 20 : column.width ) ));
+            dtConfig.percWidths.push((column.width === -1 ? "*" : ($.browser.msie ? column.width - 20 : column.width ) ));
             dtConfig.percTypes.push({"sType" : column.type});
         }
         return dtConfig;
@@ -138,12 +138,12 @@
             if(activePage-i > 0)
                 pages.unshift(activePage-i);
             if(activePage+i <= totalPages)
-                pages.push(activePage+i)
+                pages.push(activePage+i);
         }
         
-        var pagedItems = $("<span/>")
+        var pagedItems = $("<span/>");
         for(i=0; i<pages.length; i++){
-            var clName = activePage == pages[i]?"paginate_active":"perc-paging-number";
+            var clName = activePage === pages[i]?"paginate_active":"perc-paging-number";
             var pageNum = pageSpan.clone().text(pages[i]).addClass(clName).data("startIndex",((pages[i]-1)*pageSize)+1);
             pagedItems.append(pageNum);
             if(i<pages.length-1){
@@ -158,11 +158,11 @@
             pagingCallback($(this).data("startIndex"));
         });
         pagingBar.find(".paginate_button").each(function(){
-           if($(this).data("startIndex") == (activePage-1)*pageSize + 1){
+           if($(this).data("startIndex") === (activePage-1)*pageSize + 1){
                $(this).addClass("perc-disabled").unbind();
            }
         });
         
         $(this).append(pagingBar);       
-    }
+    };
 })(jQuery); 

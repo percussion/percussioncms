@@ -73,7 +73,7 @@
             percButtons:{
                 "Save":{
                     click: function(){
-                        if ($("#perc_site_name").val() == ""){
+                        if ($("#perc_site_name").val() === ""){
                             $('#perc_copysite_error').text(I18N.message("perc.ui.copy.site.dialog@Site Name Required"));
                         }
                         else{
@@ -92,7 +92,7 @@
             id: "perc-copysite-dialog",
             open:function(){
                     $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
-                    generateNewSiteName(siteName)
+                    generateNewSiteName(siteName);
                     $.perc_filterField($("#perc_site_name"), $.perc_textFilters.HOSTNAME);
                     $('#perc_site_name').bind('keypress keydown', function(evt){
                         clearCopySiteErrorMessage();
@@ -111,7 +111,7 @@
         
         //Check the unicity of the Site name and confirm the copy process
         function validateAndConfirm(status, result){
-            if(status == $.PercServiceUtils.STATUS_SUCCESS){
+            if(status === $.PercServiceUtils.STATUS_SUCCESS){
                 var newSiteName = $("#perc_site_name").val();
                 if (!_validateUniqueSiteName(newSiteName, result)){
                     $('#perc_copysite_error').text(I18N.message("perc.ui.new.site.dialog@Unique Name Req"));
@@ -198,7 +198,7 @@
             $(".shareTypeButtons").live('change', function() {
                 clearCopySiteErrorMessage();
                 selectedCheckbox = $(this).attr("id");
-                if ($(this).attr("id") == "share-type-buttons-across-site")
+                if ($(this).attr("id") === "share-type-buttons-across-site")
                     $("#perc-share-assets-tree-container").css("display", "none");
                 else
                     $("#perc-share-assets-tree-container").css("display", "block");
@@ -220,7 +220,7 @@
                                 append(siteInput).
                                 append(radioButtons).
                                 append(treeContainer).
-                                append(labelError)
+                                append(labelError);
             
             return $dialogHtml;
         }
@@ -235,18 +235,18 @@
                           I18N.message("perc.ui.copy.site.dialog@Depending On Size") + siteName + "'. '" + newSiteName + I18N.message("perc.ui.copy.site.dialog@Will Be Added") +
                           I18N.message("perc.ui.copy.site.dialog@Finder When Copy Processing"),
                 success: function(){
-                            $('#perc-site-map-copy').addClass("perc-site-map-action-item-disabled")
+                            $('#perc-site-map-copy').addClass("perc-site-map-action-item-disabled");
                             
                             var jsonRequest = createRequestObject(newSiteName, siteName);
                             
                             $.PercSiteService.copySite(jsonRequest, function(status, result, defaultCode){
                                 
-                                if(status == $.PercServiceUtils.STATUS_ERROR && result != "")
+                                if(status === $.PercServiceUtils.STATUS_ERROR && result !== "")
                                 {
                                     $.perc_utils.alert_dialog({title: 'Error', content: result});
                                 }else{
                                     if ($('#perc-site-map-copy'))
-                                        $('#perc-site-map-copy').removeClass("perc-site-map-action-item-disabled")
+                                        $('#perc-site-map-copy').removeClass("perc-site-map-action-item-disabled");
                                 }
                             });
                         },
@@ -265,17 +265,17 @@
                 var nro = "";
                 siteName = siteName + '-copy';
                 while(!_validateUniqueSiteName(siteName + nro, result)){
-                    if (nro == "") {nro = 2;}
+                    if (nro === "") {nro = 2;}
                     else{nro++;}
                 }
                 $('#perc_site_name').val(siteName + nro);
                 $.unblockUI();
-            })
+            });
         }
         
         // Calls the service in the server to validate the folder sent before removing the dialog
         function _validateFolders(newSiteName){
-            if (selectedCheckbox == "share-type-buttons-selected-folder")
+            if (selectedCheckbox === "share-type-buttons-selected-folder")
             {
                 var jsonRequest = {"ValidateCopyFoldersRequest":{
                                         "srcFolder" : selectedTreePath.path.replace($.perc_paths.ASSETS_ROOT + "/", ""),
@@ -283,7 +283,7 @@
                
                 $.PercSiteService.validateCopySiteFolders(jsonRequest, function(statusFolders, resultFolders, defaultCodeFolders){
                     
-                    if(statusFolders == $.PercServiceUtils.STATUS_ERROR)
+                    if(statusFolders === $.PercServiceUtils.STATUS_ERROR)
                     {
                         $('#perc_copysite_error').text(resultFolders);
                         return false;
@@ -305,7 +305,7 @@
         function createRequestObject(newSiteName, siteName)
         {
             var jsonRequest = {"SiteCopyRequest":{"srcSite" : siteName, "copySite" : newSiteName, "assetFolder" : null}};
-            if (selectedCheckbox == "share-type-buttons-selected-folder")
+            if (selectedCheckbox === "share-type-buttons-selected-folder")
             {
                 jsonRequest.SiteCopyRequest.assetFolder = selectedTreePath.path.replace($.perc_paths.ASSETS_ROOT + "/", "");
             }
@@ -327,7 +327,7 @@
             //we need to add an assertion 'framework' and check them here
             for(i = 0; i < response.SiteSummary.length; i++)
             {
-                if((response.SiteSummary[i].name + "").toLowerCase() == value.toLowerCase())
+                if((response.SiteSummary[i].name + "").toLowerCase() === value.toLowerCase())
                 {
                     return false;
                 }

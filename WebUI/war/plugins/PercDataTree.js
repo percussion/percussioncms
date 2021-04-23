@@ -94,7 +94,7 @@
         // Extend options and assign as data in the container the options extended
         var options = $.extend(true, {}, defaultConfig, config);
         // Check that the instanceID property was defined
-        if (options.instanceIdSuffix == undefined) 
+        if (options.instanceIdSuffix === undefined)
         {
             throw "instanceIdSuffix must be defined.";
         }
@@ -107,7 +107,7 @@
         {
              // Create the head element that holds the collapse button, title and buttons
             var head = $('<div class="' + LABEL_HEAD_CLASS + '" />').html(options.title);//.css('color', '#0099CC');
-            container.append(head)
+            container.append(head);
             // Enable/disable collapse and add buttons (the sentence after '&&' is evaluated only if the option is truthy)
             options.collapsible  && head.append($('<span style="float: left;" class ="' + COLLAPSE_BTN_CLASS + ' ' + MINIMIZER_CLASS + '" />'));
             options.enableAdd    && head.append($('<div class="' + ADD_BTN_CLASS + '"/>').attr('title', options.addTitle));
@@ -181,7 +181,7 @@
         });
 
         // Once the tree is ready, update its contents with an empty collection,
-        if (options.listItem != undefined && typeof(options.listItem) == 'object')
+        if (options.listItem !== undefined && typeof(options.listItem) == 'object')
         {
             updateTree(container, options.listItem);
         }
@@ -196,7 +196,7 @@
     {
         // Get the current options (we set them in the init() method ) from the container
         options = container.data('options');
-        if (workflowName != undefined)
+        if (workflowName !== undefined)
         {
             selectedWorkflow = workflowName;
         }   
@@ -239,7 +239,7 @@
          */
         function addSubtreeContents(dynatree_node, dataSubtrees, levelLimit, level)
         {
-            if (levelLimit != undefined && level > levelLimit)
+            if (levelLimit !== undefined && level > levelLimit)
             {
                 return;
             }
@@ -264,8 +264,8 @@
 
                     // If the dataSubtree's workflow is not equal to the selected one, disable the checkbox,
                     // append the workflow between parenthesis and add a special class to it
-                    var has_workflow = typeof(this.workflowName) != 'undefined'
-                    if (options.showCheckboxes && has_workflow && this.workflowName != selectedWorkflow)
+                    var has_workflow = typeof(this.workflowName) != 'undefined';
+                    if (options.showCheckboxes && has_workflow && this.workflowName !== selectedWorkflow)
                     {
                         child_template.unselectable = true;
                         child_template.title = child_template.title + ' (' + this.workflowName + ')';
@@ -273,13 +273,13 @@
                     }
 
                     // If mark the checkbox only if the node is assigned to the current workflow
-                    if (options.showCheckboxes && has_workflow && this.workflowName == selectedWorkflow)
+                    if (options.showCheckboxes && has_workflow && this.workflowName === selectedWorkflow)
                     {
                         child_template.select = true;
                     }
 
                     // If the node has at least one descendant that belongs to other class, assing a special class
-                    if (! this.allChildrenAssociatedWithWorkflow || this.workflowName != selectedWorkflow)  
+                    if (! this.allChildrenAssociatedWithWorkflow || this.workflowName !== selectedWorkflow)
                     {
                         child_template.addClass = child_template.addClass + ' ' + CHILDREN_OTHER_WORKFLOW_CLASS;
                     }
@@ -287,7 +287,7 @@
                     {
                         // If the node has all of its descendant assigned to the selected workflow and the
                         // current node is checked, add a special class (bold)
-                        if (options.showCheckboxes && child_template.select == true)
+                        if (options.showCheckboxes && child_template.select === true)
                         {
                             child_template.addClass = child_template.addClass + ' ' + ALL_SAME_WORKFLOW_CLASS;
                         }
@@ -302,12 +302,12 @@
                     // Call recursively addSubtreeContents with dynatree_node.chldren
                     // we must also convert the 'children' property to an array (CXF problem)
 
-                    if(this.children!=undefined) {
+                    if(this.children!==undefined) {
                       var many_data_children = (this.children.child instanceof Array);
 
                     if (many_data_children)
                     {
-                        this.children != "" && addSubtreeContents(dynatree_node.getChildren()[i], this.children.child, levelLimit, level + 1);
+                        this.children !== "" && addSubtreeContents(dynatree_node.getChildren()[i], this.children.child, levelLimit, level + 1);
                     }
                     else
                     {
@@ -315,7 +315,7 @@
                         //this.children != "" && addSubtreeContents(dynatree_node.getChildren()[i], [this.children.child], levelLimit, level + 1);
                     }}
                 });
-                return;
+
             }
         }
     

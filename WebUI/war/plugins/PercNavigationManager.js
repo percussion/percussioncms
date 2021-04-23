@@ -120,7 +120,7 @@
                 break;
 
             default:
-                if(item['category'] == 'ASSET') {
+                if(item['category'] === 'ASSET') {
                     handleOpenAsset(item);
                 }
         }
@@ -140,13 +140,13 @@
         var toView = constants.VIEW_SITE_ARCH;
         // If already on design view then just change site
         // and reload design view
-        if(view == constants.VIEW_WORKFLOW)
+        if(view === constants.VIEW_WORKFLOW)
             toView = constants.VIEW_WORKFLOW;
 
-        if(view == constants.VIEW_DESIGN)
+        if(view === constants.VIEW_DESIGN)
             toView = constants.VIEW_DESIGN;
         //If already on publish iew then just change site and reload publish view
-        if(view == constants.VIEW_PUBLISH)
+        if(view === constants.VIEW_PUBLISH)
             toView = constants.VIEW_PUBLISH;
         changeLocation(item["id"],
             toView, mode, null, null, item["path"], null, null);
@@ -165,14 +165,14 @@
             return;
         }
         $.PercFolderHelper().getAccessLevelById(item["id"],false,function(status, result){
-            if(status == $.PercFolderHelper().PERMISSION_ERROR)
+            if(status === $.PercFolderHelper().PERMISSION_ERROR)
             {
                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: result});
-                return;
+
             }
             else
             {
-                if(isEditMode && result == $.PercFolderHelper().PERMISSION_READ)
+                if(isEditMode && result === $.PercFolderHelper().PERMISSION_READ)
                 {
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.page.general@Warning"), content: I18N.message("perc.ui.navi.manager@No Permissions For Page") + item["name"] +"'."});
                 }
@@ -192,16 +192,16 @@
      */
     function handleOpenFolder(pathItem){
         // first check that the path item is not FSFolder
-        if(pathItem.type == "FSFolder")
+        if(pathItem.type === "FSFolder")
         {
             // check that the path is allowed for renaming the folder
             var path = pathItem.path;
             var paths = path.split("/");
 
             // Disable the editable foldername if we are in the list view
-            if($.Percussion.getCurrentFinderView() != $.Percussion.PERC_FINDER_VIEW_COLUMN)
+            if($.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_VIEW_COLUMN)
             {
-                return;
+
             }
             else
             {
@@ -219,7 +219,7 @@
                 else
                 {
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.page.general@Warning"), content: I18N.message("perc.ui.navi.manager@System Folder")});
-                    return;
+
                 }
             }
         }
@@ -264,14 +264,14 @@
      */
     function handleOpenAsset(item, isEditMode){
         $.PercFolderHelper().getAccessLevelById(item["id"],false,function(status, result){
-            if(status == $.PercFolderHelper().PERMISSION_ERROR)
+            if(status === $.PercFolderHelper().PERMISSION_ERROR)
             {
                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: result});
-                return;
+
             }
             else
             {
-                if(isEditMode && result == $.PercFolderHelper().PERMISSION_READ)
+                if(isEditMode && result === $.PercFolderHelper().PERMISSION_READ)
                 {
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.page.general@Warning"), content: I18N.message("perc.ui.navi.manager@No Permissions For Asset") + item["name"] +"'."});
                 }
@@ -371,7 +371,7 @@
         var count = 0;
         for(var key in memento)
             ++count;
-        var mem = count == 0 ? null : encodeURIComponent(memento);
+        var mem = count === 0 ? null : encodeURIComponent(memento);
         buff += createUrl(buildParams(site, view, mode, id, name, path, pathType, mem));
         return buff;
     }
@@ -387,9 +387,9 @@
     {
         var pathType = constants.PATH_TYPE_UNKNOWN;
         if(pathStr) {
-            if(pathStr.indexOf($.perc_paths.ASSETS_ROOT + "/")==0)
+            if(pathStr.indexOf($.perc_paths.ASSETS_ROOT + "/")===0)
                 pathType = constants.PATH_TYPE_ASSET;
-            if(pathStr.indexOf($.perc_paths.SITES_ROOT + "/")==0)
+            if(pathStr.indexOf($.perc_paths.SITES_ROOT + "/")===0)
                 pathType = constants.PATH_TYPE_PAGE;
         }
         return pathType;
@@ -407,7 +407,7 @@
         if(path.indexOf(prefix) === 0)
         {
             var pos = path.indexOf("/", prefix.length);
-            if(pos == -1)
+            if(pos === -1)
                 pos = path.length;
             return path.substring(prefix.length, pos);
         }
@@ -431,7 +431,7 @@
         pathType = querystring.pathType;
         warningMessage = querystring.warningMessage;
 
-        javascriptOff = (querystring.disableJS == "true" ? true : false);
+        javascriptOff = (querystring.disableJS === "true" ? true : false);
         if(typeof(querystring.memento) != "undefined")
         {
             memento = JSON.parse(decodeURIComponent(querystring.memento));
@@ -444,9 +444,9 @@
     function loadUserInfoFromCookie()
     {
         userName = $.cookie("perc_userName");
-        isAdmin = $.cookie("perc_isAdmin") == 'true' ? true : false;
-        isDesigner = $.cookie("perc_isDesigner") == 'true' ? true : false;
-        isAccessibilityUser = $.cookie("perc_isAccessibilityUser") == 'true' ? true : false;
+        isAdmin = $.cookie("perc_isAdmin") === 'true' ? true : false;
+        isDesigner = $.cookie("perc_isDesigner") === 'true' ? true : false;
+        isAccessibilityUser = $.cookie("perc_isAccessibilityUser") === 'true' ? true : false;
 
         $.perc_utils.info("UserInfo", "userName: " + userName + ", isAdmin: " +  isAdmin + ", isDesigner: " +  isDesigner + ", isAccessibilityUser: " + isAccessibilityUser);
     }
@@ -456,23 +456,23 @@
         var toUrlParms = $.deparam.querystring(url);
         var current = $.deparam.querystring();
 
-        if (current.view != toUrlParms.view
-            || current.view === 'arch'
-            || current.path != toUrlParms.path
-            || current.mode != toUrlParms.mode
-            || current.id != toUrlParms.id
-            || current.name != toUrlParms.name
-            || current.debug != toUrlParms.debug
-            || current.autoTest != toUrlParms.autoTest
-            || current.pathType != toUrlParms.pathType
-            || current.memento != toUrlParms.memento)
+        if (current.view !== toUrlParms.view ||
+             current.view === 'arch' ||
+             current.path !== toUrlParms.path ||
+             current.mode !== toUrlParms.mode ||
+             current.id !== toUrlParms.id ||
+             current.name !== toUrlParms.name ||
+             current.debug !== toUrlParms.debug ||
+             current.autoTest !== toUrlParms.autoTest ||
+             current.pathType !== toUrlParms.pathType ||
+             current.memento !== toUrlParms.memento)
         {
             window.location.href = url;
         }
         else {
             window.history.pushState("object or string", "Title", url);
             loadContextFromUrl();
-            if (toUrlParms.view == "arch")
+            if (toUrlParms.view === "arch")
             {
                 $j("#perc_site_map").perc_site_map({
                     site: toUrlParms.site,
@@ -501,7 +501,7 @@
     {
         var url = createUrl(params);
         var len = pageChangeListeners.length;
-        if(len == 0)
+        if(len === 0)
         {
             doReloadIfRequred(url);
             return;
@@ -544,7 +544,7 @@
         var request = locationChangeRequests[id];
         request.continueFlag &= canContinue;
         ++request.listenersComplete;
-        if(request.listenersComplete == request.listenerTotal)
+        if(request.listenersComplete === request.listenerTotal)
         {
             if(request.continueFlag)
             {
@@ -583,7 +583,7 @@
      * @type boolean
      */
     function isBlank(str){
-        return (str == null || str.length == 0);
+        return (str == null || str.length === 0);
     }
 
 
@@ -898,7 +898,7 @@
          */
         addLocationChangeListener: function(listener)
         {
-            if($.inArray(listener, pageChangeListeners) == -1)
+            if($.inArray(listener, pageChangeListeners) === -1)
             {
                 pageChangeListeners.push(listener);
             }
@@ -932,7 +932,7 @@
         openPathItem: function(path)
         {
             $.PercPathService.getPathItemForPath(path, function(status, data){
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     data.PathItem.path = path;
                     onFinderItemOpen(data.PathItem);
@@ -940,7 +940,7 @@
                 else
                 {
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: data});
-                    return;
+
                 }
             });
 
@@ -954,7 +954,7 @@
          */
         openPage: function(path, isEditMode){
             $.PercPathService.getPathItemForPath(path, function(status, data){
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     data.PathItem.path = path;
                     handleOpenPage(data.PathItem, isEditMode);
@@ -962,26 +962,26 @@
                 else
                 {
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: data});
-                    return;
+
                 }
             });
         },
 
         openAsset : function(assetObj) {
             $.PercPathService.getPathItemById(assetObj.id, function(status, data){
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     data.PathItem.path = assetObj.path;
                     handleOpenAsset(data.PathItem, false);
                 } else {
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: data});
-                    return;
+
                 }
             });
         },
 
         openFolderDialog: function(path){
             $.PercPathService.getPathItemForPath(path, function(status, data){
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     data.PathItem.path = path;
                     handleOpenFolder(data.PathItem);
@@ -989,19 +989,19 @@
                 else
                 {
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: data});
-                    return;
+
                 }
             });
         },
 
         loadSiteProperties: function(siteName, callback){
             $.PercSiteService.getSiteProperties(siteName, function(status, result){
-                if (status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if (status === $.PercServiceUtils.STATUS_SUCCESS) {
                     siteProperties = result.SiteProperties;
                     if (typeof(callback) == "function")
                         callback(result.SiteProperties);
                 }
-            })
+            });
         },
 
         getSiteProperties: function(){

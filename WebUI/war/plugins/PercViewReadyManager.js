@@ -39,7 +39,7 @@
                 var compName = value;
                 if(self.getWrapper(compName)!=null){
                     alreadyInUse = true;
-                    return;
+
                 }
             });
             if(alreadyInUse) {
@@ -59,7 +59,7 @@
             $(this.wrappers).each(function(){
                 if(this.isComponentInWrapper(componentname, true)){
                     wrapper = this;
-                    return;
+
                 }
             });
             return wrapper;
@@ -72,7 +72,8 @@
         handleWrapperComplete:function(wrapperName){
             this.wrappers.splice($.inArray(wrapperName,this.wrappers),1);
             this.logMessage("Removed wrapper '" + wrapperName + "' from manager");
-            if (this.wrappers.length === 0) {
+
+            if(this.wrappers.length === 0){
                 $("#perc-ui-view-indicator").removeClass("perc-ui-view-processing").addClass("perc-ui-view-ready");
                 this.logMessage("The view is ready.");
             }

@@ -56,7 +56,7 @@
             {
                 var self = this;
                 
-                if(status == $.PercServiceUtils.STATUS_ERROR)
+                if(status === $.PercServiceUtils.STATUS_ERROR)
                 { 
                 	//TODO: TEST ME I18N
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: I18N.message("perc.ui.folder.properties.dialog@Folder Not Found") + pathItem.path});
@@ -75,7 +75,7 @@
                 }
                 
                 // If the path is two levels deep and begins with /Assets, then it's a root level asset folder (/Assets/rootAssetFolder/).
-                var isRootAssetFolder = (splitPath != undefined && splitPath.length==4 && splitPath[1] == 'Assets')
+                var isRootAssetFolder = (splitPath !== undefined && splitPath.length===4 && splitPath[1] === 'Assets');
 
                 //Initializes the permission to ADMIN ($.perc_finder().FOLDER_PERMISSIONS.PERMISSION_ADMIN)
                 var permission = $.PercFolderHelper().PERMISSION_ADMIN;
@@ -92,54 +92,54 @@
                     }
                 }
                 var checkStatus = [];
-                checkStatus[0] = permission == $.PercFolderHelper().PERMISSION_READ?" selected='true' ":"";
-                checkStatus[1] = permission == $.PercFolderHelper().PERMISSION_WRITE?" selected='true' ":"";
-                checkStatus[2] = permission == $.PercFolderHelper().PERMISSION_ADMIN?" selected='true' ":"";
+                checkStatus[0] = permission === $.PercFolderHelper().PERMISSION_READ?" selected='true' ":"";
+                checkStatus[1] = permission === $.PercFolderHelper().PERMISSION_WRITE?" selected='true' ":"";
+                checkStatus[2] = permission === $.PercFolderHelper().PERMISSION_ADMIN?" selected='true' ":"";
                 
                 dialog = $(
-                "<div>"
-                    + "<p class='perc-field-error' id='perc-save-error'></p>"
-                    + "<div style='background: #E6E6E9; padding-top: 5px; padding-right: 10px; text-align:right;'><label>" + I18N.message("perc.ui.general@Denotes Required Field") + "</label></div>"
-                    + "<div class='fieldGroup'>"
-                        + "<div id='perc-folder-general-properties-container'>"                                     
-                            + "<div>"
-                                + "<label for='perc-folder-name'class='perc-required-field'>" + I18N.message( "perc.ui.folderPropsDialog.label@Name" ) + ":</label> <br/> "
-                                + "<input type='text' class='required' tabindex='" + taborder + "' id='perc-folder-name' name='folder_name' maxlength='50' value=\""+ fProps.name +"\"/> <br/>"               
-                                + "<label id='perc_folder_duplicate_error' style='display: none;' class='perc_field_error'></label><br/>"
-                            + "</div>"
-                        + "</div>"
-                    + "</div>"                      
+                "<div>" +
+                     "<p class='perc-field-error' id='perc-save-error'></p>" +
+                     "<div style='background: #E6E6E9; padding-top: 5px; padding-right: 10px; text-align:right;'><label>" + I18N.message("perc.ui.general@Denotes Required Field") + "</label></div>" +
+                     "<div class='fieldGroup'>" +
+                         "<div id='perc-folder-general-properties-container'>" +
+                             "<div>" +
+                                 "<label for='perc-folder-name'class='perc-required-field'>" + I18N.message( "perc.ui.folderPropsDialog.label@Name" ) + ":</label> <br/> " +
+                                 "<input type='text' class='required' tabindex='" + taborder + "' id='perc-folder-name' name='folder_name' maxlength='50' value=\""+ fProps.name +"\"/> <br/>" +
+                                 "<label id='perc_folder_duplicate_error' style='display: none;' class='perc_field_error'></label><br/>" +
+                             "</div>" +
+                         "</div>" +
+                     "</div>" +
                     
-                    + "<div class='fieldGroup'>"
-                        + "<div id='perc-user-permissions-container'>"                  
-                            + "<label for='perc-folder-permission'>" + I18N.message( "perc.ui.folderPropsDialog.label@Permission" ) + ":</label> <br/>" +
+                     "<div class='fieldGroup'>" +
+                         "<div id='perc-user-permissions-container'>"  +
+                             "<label for='perc-folder-permission'>" + I18N.message( "perc.ui.folderPropsDialog.label@Permission" ) + ":</label> <br/>" +
                             
                                 // refactored from radio buttons to drop downs
                                 "<select name='perc-folder-permission' id='perc-folder-permission'>" +
                                 "     <option id='perc-folder-permission-option-read'  " + checkStatus[0] + " value='" + $.PercFolderHelper().PERMISSION_READ  + "'>" + I18N.message( "perc.ui.folderPropsDialog.permissionValue@Read"  ) + "</option>" +
                                 "     <option id='perc-folder-permission-option-write' " + checkStatus[1] + " value='" + $.PercFolderHelper().PERMISSION_WRITE + "'>" + I18N.message( "perc.ui.folderPropsDialog.permissionValue@Write" ) + "</option>" +
                                 "     <option id='perc-folder-permission-option-admin' " + checkStatus[2] + " value='" + $.PercFolderHelper().PERMISSION_ADMIN + "'>" + I18N.message( "perc.ui.folderPropsDialog.permissionValue@Admin" ) + "</option>" +
-                                "</select>"
+                                "</select>" +
                                     
-                            + "<input type='hidden' id='perc-folder-id' value='" + fProps.id + "'></input>"
-                            + "<input type='hidden' id='perc-folder-oldname' value=\"" + fProps.name + "\"></input>"
+                             "<input type='hidden' id='perc-folder-id' value='" + fProps.id + "'></input>" +
+                             "<input type='hidden' id='perc-folder-oldname' value=\"" + fProps.name + "\"></input>" +
 
                             // render the list editor widget for folder permission users in the following div
-                            + "<div id='perc-folder-permission-users'/>"
-                        + "</div>"
-                    + "</div>"
+                             "<div id='perc-folder-permission-users'/>" +
+                         "</div>" +
+                     "</div>" +
 
-                    + "<div class='fieldGroup' id='perc-asset-folder-security' style='display:none;'>"
-                        + "<div id='perc-asset-folder-sites-container'>"
-                            + "<label>Assets in this folder are available to:<br/></label>"
+                     "<div class='fieldGroup' id='perc-asset-folder-security' style='display:none;'>" +
+                         "<div id='perc-asset-folder-sites-container'>" +
+                             "<label>Assets in this folder are available to:<br/></label>" +
                             // The Droplist is generated dynamically later
-                        + "</div>"
-                    + "</div>"
+                         "</div>" +
+                     "</div>" +
 
-                    + "<div class='ui-layout-south'>"
-                    + "<div id='perc_buttons' style='z-index: 100;'></div>"
-                    +  "</div>"
-                    + "</div>").perc_dialog( {
+                     "<div class='ui-layout-south'>" +
+                     "<div id='perc_buttons' style='z-index: 100;'></div>" +
+                      "</div>" +
+                     "</div>").perc_dialog( {
                     resizable : false,
                     title: I18N.message( "perc.ui.folderPropsDialog.title@Folder Properties" ),
                     modal: true,
@@ -181,7 +181,7 @@
                     users[u] = writePrincipals[u].name;
 
                 $.PercUserService.getUsers(function(status, usersJson) {
-                    if(status == $.PercUserService.STATUS_ERROR) {
+                    if(status === $.PercUserService.STATUS_ERROR) {
                     	//TODO: TEST ME I18N
                        $.PercUserView.alertDialog(I18N.message("perc.ui.folder.properties.dialog@Error Loading Users"), usersJson);
                        return;
@@ -220,7 +220,7 @@
                             $.PercServiceUtils.TYPE_GET,
                             false,
                             function(status, result){
-                                if (status == $.PercServiceUtils.STATUS_SUCCESS) {
+                                if (status === $.PercServiceUtils.STATUS_SUCCESS) {
                                     // Un-hide Security collapsible panel
                                     $('#perc-asset-folder-security').show();
                                     
@@ -231,7 +231,7 @@
                                     // The list of allowed sites for the folder is a comma-sepparated 
                                     // string or a number (if only one site was allowed)
                                     var allowedSites = [];
-                                    if (fProps.allowedSites != undefined) {
+                                    if (fProps.allowedSites !== undefined) {
                                         if (typeof(fProps.allowedSites) == 'number') {
                                             allowedSites.push(fProps.allowedSites.toString());
                                         }
@@ -250,7 +250,7 @@
                                         var option = $("<option/>")
                                             .attr("value",sites[s].siteId)
                                             .attr("title",sites[s].name)
-                                            .text(sites[s].name)
+                                            .text(sites[s].name);
                                         if (selected) option.attr("selected", "selected");
                                         allowedSitesSelect.append(option);
                                     }
@@ -265,7 +265,7 @@
                                         uncheckAllText: I18N.message("perc.ui.folder.properties.dialog@Deselect All"),
                                         noneSelectedText: I18N.message("perc.ui.folder.properties.dialog@All sites allowed"),
                                         selectedText: function(numChecked, numTotal, checkedItems){
-                                            if(numChecked==0)
+                                            if(numChecked===0)
                                                 return I18N.message("perc.ui.folder.properties.dialog@All sites allowed");
                                             else
                                                 return I18N.message("perc.ui.folder.properties.dialog@Some sites allowed");
@@ -324,7 +324,7 @@
                     $("#perc-folder-name").val("");
                     $("#perc_folder_duplicate_error").text(I18N.message("perc.ui.folder.properties.dialog@Field Required"));
                     $("#perc_folder_duplicate_error").show();
-                    return
+                    return;
                 }
                 var folderName = $.trim($("#perc-folder-name").val());
                 folderName =  $.perc_textFilters.WINDOWS_FILE_NAME(folderName);
@@ -339,7 +339,7 @@
                 };
 
                 // If there was any allowedSites, add their IDs into the corresponding property
-                if (allowedSitesMultiselect != undefined) {
+                if (allowedSitesMultiselect !== undefined) {
                     var allowedSites = [];
                     $.each(allowedSitesMultiselect.multiselect('getChecked'), function(index) {
                         allowedSites.push($(this).val());
@@ -353,7 +353,7 @@
                     }
                 }
                 
-                if (currentAllowedSites != undefined && folderProps.FolderProperties.allowedSites != currentAllowedSites)
+                if (currentAllowedSites !== undefined && folderProps.FolderProperties.allowedSites !== currentAllowedSites)
                 {
                     var options = {
                                     id       : "perc-folder-properties-changed-allowed-sites-warning",
@@ -373,7 +373,7 @@
             }
             //If status is success removes the dialog and calls the call back with save option, shows the errors to the user otherwise.
             function _saveCallBack(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     // Save was successful close the dialog and invoke callback with no arguments
                     var newName = $.trim($("#perc-folder-name").val());
@@ -398,15 +398,15 @@
                     var defaultMsg = 
                     $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     var code = $.PercServiceUtils.extractFieldErrorCode(result.request);
-                    if(code == "`FolderProperties#name")
+                    if(code === "`FolderProperties#name")
                     {
-                        var msg = I18N.message("perc.ui.folder.properties.dialog@Cannot Rename Folder") + $("#perc-folder-oldname").val() 
-                        + I18N.message("perc.ui.folder.properties.dialog@To") + $.trim($("#perc-folder-name").val()) 
-                        + I18N.message("perc.ui.folder.properties.dialog@Object With Same Name");
+                        var msg = I18N.message("perc.ui.folder.properties.dialog@Cannot Rename Folder") + $("#perc-folder-oldname").val() +
+                         I18N.message("perc.ui.folder.properties.dialog@To") + $.trim($("#perc-folder-name").val()) +
+                         I18N.message("perc.ui.folder.properties.dialog@Object With Same Name");
                         $("#perc_folder_duplicate_error").text(msg);
                         $("#perc_folder_duplicate_error").show();
                     }
-                    else if(code == "saveFolderProperties#reservedName")
+                    else if(code === "saveFolderProperties#reservedName")
                     {
                         $("#perc_folder_duplicate_error").text(defaultMsg);
                         $("#perc_folder_duplicate_error").show();
@@ -422,15 +422,15 @@
             function _addFieldGroups() {
                 var dialog = $('#perc-folder-props-dialog');
                 var fieldGroups = [
-                    { groupName : "perc-folder-general-properties-container", groupLabel : I18N.message("perc.ui.folder.properties.dialog@General")}
-                    , { groupName : "perc-user-permissions-container", groupLabel : I18N.message("perc.ui.folder.properties.dialog@Permissions")}
-                    , { groupName : "perc-asset-folder-sites-container", groupLabel : I18N.message("perc.ui.folder.properties.dialog@Security")}
+                    { groupName : "perc-folder-general-properties-container", groupLabel : I18N.message("perc.ui.folder.properties.dialog@General")},
+                     { groupName : "perc-user-permissions-container", groupLabel : I18N.message("perc.ui.folder.properties.dialog@Permissions")},
+                     { groupName : "perc-asset-folder-sites-container", groupLabel : I18N.message("perc.ui.folder.properties.dialog@Security")}
                 ];
         
                 $.each(fieldGroups, function(index) {
                     // Create HTML markup with the groupName minimizer/maximizer and
                     // insert it before the 1st field in each group
-                    var minmaxClass = (index == 0) ? "perc-section-items-minimizer" : "perc-section-items-maximizer";
+                    var minmaxClass = (index === 0) ? "perc-section-items-minimizer" : "perc-section-items-maximizer";
                     var groupHtml =
                         "<div class='perc-section-header'>" +
                             "<div class='perc-section-label' groupName='" + this.groupName + "'>" +
@@ -441,7 +441,7 @@
                     dialog.find('#' + this.groupName).before(groupHtml);
 
                     // The first group will be the only one expanded (hide all others)
-                    index != 0 && dialog.find('#' + this.groupName).hide();
+                    index !== 0 && dialog.find('#' + this.groupName).hide();
                 });
 
                 // Bind collapsible event
