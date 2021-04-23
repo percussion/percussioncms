@@ -65,7 +65,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
 		});
 		
 		self.init = function(content){
-        }
+        };
 		
 		self.openAddWizard = function() {
 			$(self.constants.SECONDARY_BUTTON_TEXT_SELECTOR).text(self.constants.SECONDARY_BUTTON_NAME);
@@ -86,7 +86,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
             });
 			self.isAddWizardVisible(true);
 			self.contentTypeError(false);
-		}
+		};
 		
 		self.openNextWizardPanel = function() {
 			if(self.isAddWizardVisible()) {
@@ -98,20 +98,20 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
 					self.contentTypeError(true);
 				}
 			}
-		}
+		};
 		
 		self.closeDialog = function() {
 			if(self.isAddWizardVisible()) {
 				$(".base-dialog").dialog("close");
 			}
-		}
+		};
 		
 		self.cleanWindow = function() {
 			self.blogs([]);
 			self.isAddWizardVisible(false);
 			self.contentTypeError(false);
             self.selectedContentType("");
-		}
+		};
 		
 		ko.bindingHandlers.slideVisible = {
 			init: function(element, valueAccessor) {
@@ -120,9 +120,13 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
 			},
 			update: function(element, valueAccessor) {
 				var value = valueAccessor();
-				ko.unwrap(value) ? $(element).slideDown() : $(element).slideUp();
+				if(ko.unwrap(value)) {
+					$(element).slideDown();
+				} else {
+					$(element).slideUp();
+				}
 			}
 		};
 		
-    }
+    };
 });

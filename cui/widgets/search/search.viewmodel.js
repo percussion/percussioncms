@@ -118,8 +118,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
             self.cleanWindow();
         });
         
-        self.init = function(content){
-        }
+        self.init = function(content){};
         
         self.site.subscribe(function() {
             self.template("");
@@ -154,14 +153,14 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
             getWorkflows();
             getAssetTypes();
             self.isSearchVisible(true);
-        }
+        };
         
         self.closeDialog = function() {
             if(self.isSearchVisible()) {
                 self.cleanWindow();
                 $(".base-dialog").dialog("close");
             }
-        }
+        };
         
         self.cleanWindow = function() {
             self.isSearchVisible(false);
@@ -180,39 +179,39 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
             self.templates([]);
             self.assetType("");
             self.assetTypes([]);
-        }
+        };
         
         function generateSearchCriteria(){
             var type = self.selectedTypeFilter();
             var folderPath = "";
-            if(type=="Assets"){
+            if(type === "Assets"){
                 folderPath = "//Folders/$System$/Assets";
             }
-            else if(type=="Pages"){
+            else if(type === "Pages"){
                 folderPath = "//Sites/";
                 if(self.site()) {
-                    folderPath += self.site().name
+                    folderPath += self.site().name;
                 }
             }
             var searchCriteriaObj = {"SearchCriteria":{"query":self.keyword(),"folderPath":folderPath, "sortColumn":"sys_title","sortOrder":"asc","formatId":-1}};
             var searchFields = [];
-            if (self.fileName() != "")
+            if (self.fileName() !== "")
                 searchFields.push({"key": "sys_title", "value" : self.fileName()});        
-            if (self.lastModified() != "")
+            if (self.lastModified() !== "")
                 searchFields.push({"key": "sys_contentlastmodifier", "value" : self.lastModified()});        
             if (self.workflow())
                 searchFields.push({"key": "sys_workflowid", "value" : self.workflow().id});
             if (self.status())
                 searchFields.push({"key": "sys_contentstateid", "value" : self.status().id});        
-            if(type=="Pages"){
+            if(type === "Pages"){
                 if (self.template())
                     searchFields.push({"key": "templateid", "value" : self.template().id});
             }
-            else if(type=="Assets"){
+            else if(type === "Assets"){
                 if (self.assetType())
                     searchFields.push({"key": "sys_contenttypeid", "value" : self.assetType().contenttypeid});
             }
-            searchCriteriaObj.SearchCriteria["searchFields"] = {"entry":searchFields};
+            searchCriteriaObj.SearchCriteria.searchFields = {"entry":searchFields};
             return searchCriteriaObj;
         }       
         function validFields(){
@@ -242,7 +241,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
                 ko.utils.arrayForEach(statuses, function(status) {
                     self.statuses.push(status);
                 });
-                if(statuses.length == 0){
+                if(statuses.length === 0){
                     //TODO empty logic
                 }
             }).fail(function(message){
@@ -260,7 +259,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
                 ko.utils.arrayForEach(workflows, function(workflow) {
                     self.workflows.push(workflow);
                 });
-                if(workflows.length == 0){
+                if(workflows.length === 0){
                     //TODO empty logic
                 }
             }).fail(function(message){
@@ -278,7 +277,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
                 ko.utils.arrayForEach(types, function(type) {
                     self.assetTypes.push(type);
                 });
-                if(types.length == 0){
+                if(types.length === 0){
                     //TODO empty logic
                 }
             }).fail(function(message){
@@ -295,9 +294,13 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
             },
             update: function(element, valueAccessor) {
                 var value = valueAccessor();
-                ko.unwrap(value) ? $(element).slideDown() : $(element).slideUp();
+                if(ko.unwrap(value)) {
+                    $(element).slideDown();
+                } else {
+                    $(element).slideUp();
+                }
             }
         };
         
-    }
+    };
 });

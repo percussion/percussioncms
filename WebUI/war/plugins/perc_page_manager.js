@@ -36,7 +36,7 @@
 
         if (!$.perc_fakes.page_service.create_page) {
             $.perc_pathmanager.get_folder_path(path, function(fp){
-                createPage(fp, params, k, err)
+                createPage(fp, params, k, err);
             }, err);
         }
         else {

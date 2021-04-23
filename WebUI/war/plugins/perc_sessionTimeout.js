@@ -142,7 +142,7 @@
         // Turn on the warning dialog.
         function dialogOn() {
 
-            if (typeof uiVersion != 'undefined' && uiVersion == 'Minuet' && dialog != 'active') {
+            if (typeof uiVersion != 'undefined' && uiVersion === 'Minuet' && dialog !== 'active') {
                 openMinuetWarningDialog();
             }
             else {
@@ -174,7 +174,7 @@
         function dialogOff() {
 
             if (dialog !== null) {
-                if (typeof uiVersion !== 'undefined' && uiVersion == 'Minuet') {
+                if (typeof uiVersion !== 'undefined' && uiVersion === 'Minuet') {
                     hideSection('percDialogTarget', 'fadeOut', true);
                 }
                 else {

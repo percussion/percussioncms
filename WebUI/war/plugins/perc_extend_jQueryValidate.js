@@ -80,7 +80,7 @@
                 var extension = splitMatch[splitMatch.length - 1];
             }
             
-            return this.optional(element) || $.inArray(extension.toLowerCase(), binaryExtArray) == -1;
+            return this.optional(element) || $.inArray(extension.toLowerCase(), binaryExtArray) === -1;
        });
    
    $.validator.addMethod("perc_remote",

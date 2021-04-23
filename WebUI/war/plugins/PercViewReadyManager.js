@@ -72,6 +72,7 @@
         handleWrapperComplete:function(wrapperName){
             this.wrappers.splice($.inArray(wrapperName,this.wrappers),1);
             this.logMessage("Removed wrapper '" + wrapperName + "' from manager");
+
             if(this.wrappers.length === 0){
                 $("#perc-ui-view-indicator").removeClass("perc-ui-view-processing").addClass("perc-ui-view-ready");
                 this.logMessage("The view is ready.");

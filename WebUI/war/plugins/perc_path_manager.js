@@ -43,13 +43,13 @@ function is_leaf( path, if_leaf, if_folder, if_error ) {
     return function( pathitems ) {
         var specs = $.map( pathitems['PathItem'], function(s) {
                 var paths = s.path.split('/');
-                if( paths[paths.length - 1] == "" )
+                if( paths[paths.length - 1] === "" )
                 paths.pop();
                 s.path = $.map( paths, function(p) { return p; });
                 s.path_component = paths[ paths.length - 1 ];
                 return s;
         });
-        specs = $.grep( specs, function(s) { return s['type'] != 'percNavTree' && s['name'] != '.system'; } );
+        specs = $.grep( specs, function(s) { return s['type'] !== 'percNavTree' && s['name'] !== '.system'; } );
         callback( specs ); 
     };
     }
@@ -66,15 +66,15 @@ function _is_leaf(path, if_leaf, if_folder, if_error ) {
         var it = $.grep( specs['PathItem'], function( p ) { 
                  var path_components = p.path.split('/');
                  var e = path_components.pop();
-                 if( e == "" )
+                 if( e === "" )
                      e = path_components.pop();
-                 return e == path_end;
+                 return e === path_end;
                  } );
-        if( it.length == 0 ) {
+        if( it.length === 0 ) {
           if_error( I18N.message("perc.ui.path.manager@Item Not Found") ); //I18N
         }
         else {
-        if( it[0].leaf == true ) {
+        if( it[0].leaf === true ) {
             open_path( path, false, if_leaf, if_error );
         }
         else {
@@ -122,7 +122,7 @@ function add_folder( path, k, err ) {
     var nm = parent.pop();
     open_path( parent, true, function( folder_spec ) {
                var matches = $.grep( folder_spec['PathItem'], function(fs) {
-                   return fs['name'] == nm;
+                   return fs['name'] === nm;
                });
                if( matches.length > 0 ) {
                err( I18N.message( "perc.ui.saveasdialog.error@Duplicate folder" ) );
@@ -165,7 +165,7 @@ function open_path( path, folder, callback, err, paging ) {
                 type: 'GET',
                 success: callback,
                 error:  function(request, textstatus, error){
-                            if(request.status != 0)
+                            if(request.status !== 0)
                                 err(I18N.message("perc.ui.path.manager@No Path")+path_str);
                         },
                 url: serviceUrl, 
@@ -178,7 +178,7 @@ function open_path( path, folder, callback, err, paging ) {
                 type: 'GET',
                 success: callback,
                 error:  function(request, textstatus, error){
-                            if(request.status != 0)
+                            if(request.status !== 0)
                                 err(I18N.message("perc.ui.path.manager@No Path")+path_str);
                         },
                 url: $.perc_paths.PATH_ITEM + path_str,
@@ -219,7 +219,7 @@ function getItemProperties(path, callback)
     };
    var errorCallback = function(request, status, error){
         callback(false,$.PercServiceUtils.extractDefaultErrorMessage(request));
-   }
+   };
    var path_str = $.perc_utils.encodeURL(path);
    
    $.ajax( {
