@@ -225,6 +225,7 @@
    {
    	var self = this;
       var prefix =  this.objectType = this.Type.TEMPLATE;
+
 	   this.regionTempPrefix = "temp-region-";
 	   this.regionPagePrefix = "page-region-";
       
@@ -633,7 +634,7 @@
    {
       var reg = this.getRegion(regionId, this.rootRegion);
       var par = reg.getParent();
-      if(reg != null && par != null)
+      if(par != null)
       {
          par.insertSubRegion(par.removeSubRegion(regionId), index);
       }   
@@ -659,10 +660,11 @@
     *  Private Functions
     *============================================================*/
 
-    // create region ids when adding new regions.
+  // create region ids when adding new regions.
 	this._createNewRegionId = function()
 	{
 		var prefix =  this.objectType = this.Type.TEMPLATE;
+
 		this.regionTempPrefix = "temp-region-";
 		this.regionPagePrefix = "page-region-";
 		var pseudoId = prefix + (++this.regionIdInc);

@@ -115,23 +115,23 @@
 		}
 
 		function createDialogHTML(baseUrl) {
-			var dialogHTML = '<div class="pw-container">'
-				+ '    <form id="changePasswordForm" name="changePasswordForm" class="pw-form" novalidate>'
-				+ '        <div class="pw-status" style="display:none"></div>'
-				+ '        <p>'
-				+ '            <label for="newPassword">'
-				+ '                <span>' + I18N.message("perc.ui.change.pw@New Password") + '</span>'
-				+ '                <input type="password" id="newPassword" name="newPassword" placeholder= ' + I18N.message("perc.ui.change.pw@Enter New Password") + ' autofocus />'
-				+ '            </label>'
-				+ '            <label for="confirmPassword">'
-				+ '                <span>' + I18N.message("perc.ui.change.pw@Confirm New Password") + '</span>'
-				+ '                <input type="password" id="confirmPassword" name="confirmPassword" placeholder= ' + I18N.message("perc.ui.change.pw@Confirm New Password") + ' />'
-				+ '            </label>'
-				+ '                <button class="pw-submit" type="submit">'+ I18N.message("perc.ui.change.pw@Change Password") + '</button>'
-				+ '                <span class="pw-message" style="display:none">' + I18N.message("perc.ui.change.pw@Working on it") + '</span>'
-				+ '        </p>'
-				+ '    </form>'
-				+ '</div>';
+			var dialogHTML = '<div class="pw-container">' +
+				 '    <form id="changePasswordForm" name="changePasswordForm" class="pw-form" novalidate>' +
+				 '        <div class="pw-status" style="display:none"></div>' +
+				 '        <p>' +
+				 '            <label for="newPassword">' +
+				 '                <span>' + I18N.message("perc.ui.change.pw@New Password") + '</span>' +
+				 '                <input type="password" id="newPassword" name="newPassword" placeholder= ' + I18N.message("perc.ui.change.pw@Enter New Password") + ' autofocus />' +
+				 '            </label>' +
+				 '            <label for="confirmPassword">' +
+				 '                <span>' + I18N.message("perc.ui.change.pw@Confirm New Password") + '</span>' +
+				 '                <input type="password" id="confirmPassword" name="confirmPassword" placeholder= ' + I18N.message("perc.ui.change.pw@Confirm New Password") + ' />' +
+				 '            </label>' +
+				 '                <button class="pw-submit" type="submit">'+ I18N.message("perc.ui.change.pw@Change Password") + '</button>' +
+				 '                <span class="pw-message" style="display:none">' + I18N.message("perc.ui.change.pw@Working on it") + '</span>' +
+				 '        </p>' +
+				 '    </form>' +
+				 '</div>';
 			return dialogHTML;
 		}
 	}
