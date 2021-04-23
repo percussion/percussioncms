@@ -278,7 +278,11 @@ define(['knockout', 'pubsub', 'utils', 'dynatree'], function(ko,PubSub,utils,dyn
             },
             update: function(element, valueAccessor) {
                 var value = valueAccessor();
-                ko.unwrap(value) ? $(element).slideDown() : $(element).slideUp();
+                if(ko.unwrap(value)) {
+                    $(element).slideDown();
+                } else {
+                    $(element).slideUp();
+                }
             }
         };
     };
