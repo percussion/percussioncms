@@ -34,7 +34,7 @@
      * Opens the Page Optimizer Dialog and shows the optimizer details.
      * @param pagePath(String), assumed to be a valid page path
      */
-    function openDialog(pageId, pageName) 
+    function openDialog(pageId)
     {
         //Makes a service call and gets the page optimizer details, passes the createDialog as the callback
         $.PercBlockUI($.PercBlockUIMode.CURSORONLY);

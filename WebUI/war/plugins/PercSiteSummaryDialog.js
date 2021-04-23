@@ -27,7 +27,7 @@
 */
 ;(function ($) {
     
-    "use strict"
+    "use strict";
     
     var $content, order, minWidth, make3columnAt;
     
