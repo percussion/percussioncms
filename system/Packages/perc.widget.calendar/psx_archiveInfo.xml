@@ -40,7 +40,7 @@
             <Description>A widget based on Full Calendar (https://fullcalendar.io/).  This widget includes Calendar 1.0 which contains basic calendar support and Calendar 2.0 which adds support for Google Calendar, and iCal support.</Description>
             <Publisher name="Percussion Software" url="http://www.percussion.com"/>
             <CmsVersion max="9.0.0" min="2.5.0"/>
-            <Version>2.4.0</Version>
+            <Version>2.4.1</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies>
