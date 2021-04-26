@@ -266,10 +266,10 @@
                                 var name = data[i].name;
                                 var optionElement = $("<OPTION>")
                                                 .html(name)
-                                                .attr("value", contentId);
+                                                .attr("value", id);
                                 if (criteriaData.template != null)
                                 {
-                                    if (contentId == criteriaData.template["value"])
+                                    if (id == criteriaData.template["value"])
                                     {
                                         optionElement.attr("selected", "selected");
                                     }
