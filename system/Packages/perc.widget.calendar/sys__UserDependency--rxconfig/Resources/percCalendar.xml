@@ -36,4 +36,7 @@
 	<file id="calendar_js"  path="/web_resources/widgets/calendar/js/fullcalendar.min.js"  type="javascript" >
 	    <dependency refid="percSystem.jquery"/>
 	</file>
+	<file id="jquery_migrate_js"  path="/web_resources/cm/jslib/jquery-migrate-3.0.1.js"  type="javascript" context="PUBLISH">
+		<dependency refid="percSystem.jquery"/>
+	</file>
 </Resources>
