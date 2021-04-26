@@ -430,16 +430,19 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         try
         {
             String sql = "";
+            if(contentIDs.isEmpty()){
+                contentIDs.add(0);
+            }
             if(criteria.getFolderPath().contains("Assets")){
                 sql = "select CS.contentid from " + qualifyTableName("CONTENTSTATUS")
-                        + "WHERE P.CONTENTID IN (" + join(contentIDs, ",") + ") ";
+                        + " AS CS WHERE CS.CONTENTID IN (" + join(contentIDs, ",") + ") ";
                 sql = formGetByStatusSQLQuery(criteria, sql);
             }else{
                 sql = "SELECT P.CONTENTID "
                         + "FROM " + qualifyTableName("CT_PAGE")
                         + " AS P INNER JOIN " + qualifyTableName("CONTENTSTATUS")
                         + " AS CS ON P.CONTENTID = CS.CONTENTID "
-                        + "WHERE P.CONTENTID IN (" + join(contentIDs, ",") + ") ";
+                        + " WHERE P.CONTENTID IN (" + join(contentIDs, ",") + ") ";
                 sql = formGetByStatusSQLQuery(criteria, sql);
             }
 
