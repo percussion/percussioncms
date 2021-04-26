@@ -34,6 +34,7 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 import com.percussion.pagemanagement.dao.IPSPageDaoHelper;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pathmanagement.data.PSFolderProperties;
+import com.percussion.searchmanagement.data.PSSearchCriteria;
 import com.percussion.services.error.PSRuntimeException;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
@@ -421,5 +422,56 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
     
    
     private static Logger ms_logger = Logger.getLogger(PSPageDaoHelper.class);
+
+    @Transactional(noRollbackFor = Exception.class)
+    public Collection<Integer> findContentIdsByTemplateAndImportedPageIds(PSSearchCriteria criteria, List<Integer> contentIDs)
+    {
+        Session sess = getSession();
+        try
+        {
+            String sql = "";
+            if(criteria.getFolderPath().contains("Assets")){
+                sql = "select CS.contentid from " + qualifyTableName("CONTENTSTATUS")
+                        + "WHERE P.CONTENTID IN (" + join(contentIDs, ",") + ") ";
+                sql = formGetByStatusSQLQuery(criteria, sql);
+            }else{
+                sql = "SELECT P.CONTENTID "
+                        + "FROM " + qualifyTableName("CT_PAGE")
+                        + " AS P INNER JOIN " + qualifyTableName("CONTENTSTATUS")
+                        + " AS CS ON P.CONTENTID = CS.CONTENTID "
+                        + "WHERE P.CONTENTID IN (" + join(contentIDs, ",") + ") ";
+                sql = formGetByStatusSQLQuery(criteria, sql);
+            }
+
+            SQLQuery query = sess.createSQLQuery(sql);
+            return query.list();
+        }
+        catch (SQLException e)
+        {
+            String error = "Failed to get the fully qualified table name for 'CT_PAGE'";
+            ms_logger.error(error, e);
+            throw new PSRuntimeException(error, e);
+        }
+    }
+
+    private String formGetByStatusSQLQuery(PSSearchCriteria criteria, String sql){
+
+        if(criteria.getSearchFields().containsKey("templateid")){
+            sql = sql + " AND P.TEMPLATEID="+criteria.getSearchFields().get("templateid");
+        }
+        if(criteria.getSearchFields().containsKey("sys_contenttypeid")){
+            sql = sql + " AND CS.CONTENTTYPEID="+criteria.getSearchFields().get("sys_contenttypeid");
+        }
+        if(criteria.getSearchFields().containsKey("sys_contentstateid")){
+            sql = sql + " AND CS.CONTENTSTATEID="+criteria.getSearchFields().get("sys_contentstateid");
+        }
+        if(criteria.getSearchFields().containsKey("sys_workflowid")){
+            sql = sql + " AND CS.WORKFLOWAPPID="+criteria.getSearchFields().get("sys_workflowid");
+        }
+        if(criteria.getSearchFields().containsKey("sys_contentlastmodifier")){
+            sql = sql + " AND CS.CONTENTLASTMODIFIER LIKE '%"+criteria.getSearchFields().get("sys_contentlastmodifier")+"%'";
+        }
+        return  sql;
+    }
 
 }
