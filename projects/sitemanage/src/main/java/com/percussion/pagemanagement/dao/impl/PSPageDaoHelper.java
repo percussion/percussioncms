@@ -457,7 +457,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
     private String formGetByStatusSQLQuery(PSSearchCriteria criteria, String sql){
 
         if(criteria.getSearchFields().containsKey("templateid")){
-            sql = sql + " AND P.TEMPLATEID="+criteria.getSearchFields().get("templateid");
+            sql = sql + " AND P.TEMPLATEID='"+criteria.getSearchFields().get("templateid")+"'";
         }
         if(criteria.getSearchFields().containsKey("sys_contenttypeid")){
             sql = sql + " AND CS.CONTENTTYPEID="+criteria.getSearchFields().get("sys_contenttypeid");
