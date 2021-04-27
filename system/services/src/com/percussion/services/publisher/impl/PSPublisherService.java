@@ -2655,10 +2655,10 @@ public class PSPublisherService
          pubItem.assemblyUrl = status.getAssemblyUrl();
       }
       
-      if (status.getPublishedDate() != null)
-      {
-         pubItem.date = status.getPublishedDate();
-      }
+//      if (status.getPublishedDate() != null)
+//      {
+//         pubItem.date = status.getPublishedDate();
+//      }
       
       if (status.getPublishedLocation() != null)
       {

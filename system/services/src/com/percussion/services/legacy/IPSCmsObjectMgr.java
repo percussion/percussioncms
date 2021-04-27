@@ -111,6 +111,15 @@ public interface IPSCmsObjectMgr extends IPSCmsContentSummaries
     * @param ids the content IDs, never <code>null</code>, may be empty.
     */
    void setPostDate(Collection<Integer> ids);
+
+   /**
+    * Find the first publishDate for teh given Item
+    *
+    * @param contentId the id of the object for which postdate needs to be found, must never be <code>null</code>
+    *           or empty
+    * @return <code>null</code> if the publish date is not found
+    */
+   Date getFirstPublishDate(Integer contentId);
    
    /**
     * Performs update operation to the given content id list.  It clears the
@@ -137,6 +146,7 @@ public interface IPSCmsObjectMgr extends IPSCmsContentSummaries
     *    never <code>null</code>.
     */
    List<PSLocale> findLocaleByStatus(int status);
+
    
    /**
     * Find locales objects by the locale name and/or label.  

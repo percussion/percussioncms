@@ -32,6 +32,9 @@ import com.percussion.itemmanagement.service.impl.PSItemWorkflowService;
 import com.percussion.pagemanagement.data.PSPageChangeEvent;
 import com.percussion.pagemanagement.data.PSPageChangeEvent.PSPageChangeEventType;
 import com.percussion.pagemanagement.service.IPSPageChangeListener;
+import com.percussion.rest.Guid;
+import com.percussion.services.legacy.IPSCmsObjectMgrInternal;
+import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationServiceLocator;
@@ -40,6 +43,7 @@ import com.percussion.share.dao.IPSContentItemDao;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.dao.impl.PSContentItemDao;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -58,6 +62,7 @@ import org.apache.commons.logging.LogFactory;
 public class PSPageChangeHandler implements IPSPageChangeListener
 {
 
+    private IPSCmsObjectMgrInternal m_cmsObjectMgr = (IPSCmsObjectMgrInternal) PSCmsObjectMgrLocator.getObjectManager();;
     public PSPageChangeHandler()
     {
  
@@ -244,6 +249,13 @@ public class PSPageChangeHandler implements IPSPageChangeListener
       String newSummary = generatePageSummary(page.getId());
       if(pageFields.containsKey(PAGE_SUMMARY_FIELD_NAME))
       {
+          //Update Content Post Date equals to first publish date in case postdate is set to null
+          Integer intg = (new Guid(page.getId())).getUuid();
+          Date postDate = m_cmsObjectMgr.getFirstPublishDate(intg);
+          if(page.getFields() != null && page.getFields().get("sys_contentpostdate") == null
+                && postDate!= null){
+              page.getFields().put("sys_contentpostdate",postDate.toString());
+          }
          pageFields.put(PAGE_SUMMARY_FIELD_NAME, newSummary);
          contentItemDao.save(page);
       }
