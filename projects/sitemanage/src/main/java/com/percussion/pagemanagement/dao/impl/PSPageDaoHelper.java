@@ -434,7 +434,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
                 contentIDs.add(0);
             }
             if(criteria.getFolderPath().contains("Assets")){
-                sql = "select CS.contentid from " + qualifyTableName("CONTENTSTATUS")
+                sql = "select CS.CONTENTID from " + qualifyTableName("CONTENTSTATUS")
                         + " AS CS WHERE CS.CONTENTID IN (" + join(contentIDs, ",") + ") ";
                 sql = formGetByStatusSQLQuery(criteria, sql);
             }else{
