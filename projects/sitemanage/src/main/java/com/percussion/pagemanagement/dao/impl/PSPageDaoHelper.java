@@ -31,6 +31,7 @@ import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
+import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.pagemanagement.dao.IPSPageDaoHelper;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pathmanagement.data.PSFolderProperties;
@@ -435,7 +436,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
             }
             if(criteria.getFolderPath().contains("Assets")){
                 sql = "select CS.CONTENTID from " + qualifyTableName("CONTENTSTATUS")
-                        + " AS CS WHERE CS.CONTENTID IN (" + join(contentIDs, ",") + ") ";
+                        + " AS CS WHERE CS.CONTENTID IN (" + join(contentIDs, ",") + ") AND CS.CONTENTTYPEID != " + PSFolder.FOLDER_CONTENT_TYPE_ID;
                 sql = formGetByStatusSQLQuery(criteria, sql);
             }else{
                 sql = "SELECT DISTINCT P.CONTENTID "
