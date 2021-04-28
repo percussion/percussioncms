@@ -66,6 +66,10 @@ public interface IPSSearchService
      * @throws <code>PSFinderServiceException</code> if any error occurs.
      */
     public PSPagedItemPropertiesList getExtendedSearchResults(PSSearchCriteria criteria) throws PSSearchServiceException;
+
+    public List<Integer> getContentIdsForFetchingByStatus(PSSearchCriteria criteria);
+
+    public PSPagedItemList searchByStatus(PSSearchCriteria criteria, List<Integer> contentIdList) throws PSSearchServiceException, PSValidationException, PSNotFoundException, IPSDataService.DataServiceLoadException;
     
 
 }
