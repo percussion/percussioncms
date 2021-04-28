@@ -36,6 +36,10 @@ import com.percussion.pagemanagement.service.IPSPageService.PSPageException;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.recycle.service.IPSRecycleService;
+import com.percussion.searchmanagement.data.PSSearchCriteria;
+import com.percussion.searchmanagement.error.PSSearchServiceException;
+import com.percussion.searchmanagement.service.IPSSearchService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.impl.PSFolderHelper;
 import com.percussion.share.data.PSNoContent;
@@ -98,17 +102,20 @@ public class PSPageRestService
 
     private IPSFolderHelper folderHelper;
 
+    private IPSSearchService searchService;
+
     private static final String RECYCLED_TYPE = PSRelationshipConfig.TYPE_RECYCLED_CONTENT;
 
     private static final String FOLDER_TYPE = PSRelationshipConfig.TYPE_FOLDER_CONTENT;
 
     @Autowired
-    public PSPageRestService(IPSPageService pageService, IPSRecycleService recycleService, IPSFolderHelper folderHelper)
+    public PSPageRestService(IPSPageService pageService, IPSRecycleService recycleService, IPSFolderHelper folderHelper, IPSSearchService searchService)
     {
         super();
         this.pageService = pageService;
         this.recycleService = recycleService;
         this.folderHelper = folderHelper;
+        this.searchService = searchService;
     }
 
     /**
@@ -453,6 +460,18 @@ public class PSPageRestService
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e);
         }
+    }
+
+    @POST
+    @Path("/searchPageByStatus")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public PSPagedItemList search(PSSearchCriteria criteria) throws PSSearchServiceException, PSValidationException, PSNotFoundException, IPSDataService.DataServiceLoadException {
+        PSPagedItemList itemList = new PSPagedItemList();
+        List<Integer> contentIdsAllowedForSite = searchService.getContentIdsForFetchingByStatus(criteria);
+        itemList = searchService.searchByStatus(criteria, contentIdsAllowedForSite);
+
+        return itemList;
     }
 
 }
