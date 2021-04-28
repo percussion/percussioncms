@@ -25,6 +25,7 @@ package com.percussion.searchmanagement.service.impl;
 
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
+import com.percussion.pagemanagement.dao.IPSPageDaoHelper;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.search.objectstore.PSWSSearchField;
@@ -89,6 +90,9 @@ public class PSSearchService implements IPSSearchService
 {
 
     @Autowired
+    IPSPageDaoHelper ipsPageDaoHelper;
+
+    @Autowired
     public PSSearchService(IPSFolderHelper folderHelper, IPSIdMapper idMapper,
             IPSItemWorkflowService itemWorkflowService,  @Qualifier("cm1SearchListViewHelper") IPSListViewHelper listViewHelper, IPSUiService uiService,IPSRecycleService recycleService)
     {
@@ -111,6 +115,68 @@ public class PSSearchService implements IPSSearchService
     public PSPagedItemList search(PSSearchCriteria criteria) throws PSSearchServiceException, PSValidationException, PSNotFoundException, IPSDataService.DataServiceLoadException {
         List<Integer> contentIdList = searchForIds(criteria);
         return search(criteria, contentIdList);
+    }
+
+    @Override
+    public List<Integer> getContentIdsForFetchingByStatus(PSSearchCriteria criteria){
+        return getContentIdsForSearchByStatus(criteria);
+    }
+
+    private List<Integer> getContentIdsForSearchByStatus(PSSearchCriteria criteria){
+        if (criteria.getFormatId() == null)
+            throw new IllegalArgumentException("format Id cannot be blank.");
+        try
+        {
+            // Build a FTS query
+            PSSearchHandler searchHandler = new PSSearchHandler();
+            PSWSSearchParams searchParams = new PSWSSearchParams();
+
+            // get params
+            Map<String, String> searchFields = criteria.getSearchFields();
+            if (searchFields != null && !searchFields.isEmpty())
+            {
+                List<PSWSSearchField> wsSearchFields = new ArrayList<PSWSSearchField>();
+                for (Map.Entry<String, String> entry : searchFields.entrySet())
+                {
+                    wsSearchFields.add(new PSWSSearchField(entry.getKey(), "=", entry.getValue(), PSWSSearchField.CONN_ATTR_AND));
+                }
+
+                searchParams.setSearchFields(wsSearchFields);
+            }
+            String folderPath = criteria.getFolderPath();
+            if (!StringUtils.isBlank(folderPath))
+            {
+                searchParams.setFolderPathFilter(folderPath, true);
+            }
+
+            PSWSSearchRequest search = new PSWSSearchRequest(searchParams);
+
+            PSRequest request = PSWebserviceUtils.getRequest();
+
+            // Lucene search
+            List<Integer> contentIdList = searchHandler.searchAndGetContentIdsForSearchByStatus(request,search);
+            List<Integer> newContentIdList=new ArrayList<>();
+
+            for(Integer contentID:contentIdList){
+
+                if(!recycleService.isInRecycler(contentID.toString()))
+                    newContentIdList.add(contentID);
+            }
+
+            return newContentIdList;
+        }
+        catch (NumberFormatException nfe)
+        {
+            String errorMessage = "Error occurred while trying to parse the sys_contentid";
+            log.error(errorMessage, nfe);
+            throw new PSSearchServiceException(errorMessage, nfe);
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "Error occurred while trying to perform a full text search";
+            log.error(errorMessage, e);
+            throw new PSSearchServiceException(errorMessage, e);
+        }
     }
 
     @Override
@@ -166,6 +232,16 @@ public class PSSearchService implements IPSSearchService
             throw new IllegalArgumentException("format Id cannot be blank.");
         List<IPSItemEntry> allItemEntries = getSortedEntries(criteria, contentIdList);
         
+        return formatResults(criteria, allItemEntries);
+    }
+
+    @Override
+    public PSPagedItemList searchByStatus(PSSearchCriteria criteria, List<Integer> contentIdList)
+            throws PSSearchServiceException, PSValidationException, PSNotFoundException, IPSDataService.DataServiceLoadException {
+        if (criteria.getFormatId() == null)
+            throw new IllegalArgumentException("format Id cannot be blank.");
+        List<Integer> finalContentIdList = (List<Integer>) ipsPageDaoHelper.getContentIdsForFetchingByStatus(criteria, contentIdList);
+        List<IPSItemEntry> allItemEntries = getSortedEntries(criteria, finalContentIdList);
         return formatResults(criteria, allItemEntries);
     }
 

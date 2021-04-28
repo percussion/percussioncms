@@ -61,7 +61,7 @@ function getSearchResult(searchCriteriaObj, callback)
 
 function getAsyncSearchResult(searchCriteriaObj, callback)
 {
-    var setUrl = $.perc_paths.FINDER_SEARCH;
+    var setUrl = $.perc_paths.SEARCH_PAGE_ASSETS_BY_STATUS;
     
     var serviceCallback = function(status, results){
         if(status === $.PercServiceUtils.STATUS_ERROR)
