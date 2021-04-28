@@ -281,6 +281,30 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       return result;
    }
 
+   public List<Integer> searchAndGetContentIdsForSearchByStatus(PSRequest request,
+                                                                PSWSSearchRequest searchReq) throws PSException{
+
+      List<Integer> result = new ArrayList<Integer>();
+
+      PSWSSearchParams searchParams = searchReq.getSearchParams();
+      int commandMax = Integer.MAX_VALUE;
+
+      Set<Integer> allowedIds = null;
+      if (null != searchParams.getFolderPathFilter())
+      {
+         allowedIds = getIdsForFolderPath(request, searchParams);
+
+         // convert doc and return if the folder has no children
+         if (allowedIds.isEmpty())
+         {
+            return result;
+         }
+      }
+
+      return new ArrayList<Integer>(allowedIds);
+
+   }
+
    private Map<String, String> getFieldQueries(
          List<PSWSSearchField> extSearchFields)
    {
