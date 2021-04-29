@@ -23,21 +23,6 @@
  */
 package com.percussion.assetmanagement.service.impl;
 
-import static com.percussion.assetmanagement.service.impl.PSPreviewPageUtils.getPageWidgets;
-import static com.percussion.assetmanagement.service.impl.PSPreviewPageUtils.getUsedPageAssets;
-import static com.percussion.pagemanagement.assembler.PSWidgetContentFinderUtils.getLocalSharedAssetRelationships;
-import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-import static com.percussion.webservices.PSWebserviceUtils.getItemSummary;
-
-import static java.util.Arrays.asList;
-
-import static org.apache.commons.collections.CollectionUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.split;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.assetmanagement.dao.IPSAssetDao;
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSAssetDropCriteria;
@@ -81,6 +66,11 @@ import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorsException;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.system.IPSSystemWs;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -92,11 +82,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import static com.percussion.assetmanagement.service.impl.PSPreviewPageUtils.getPageWidgets;
+import static com.percussion.assetmanagement.service.impl.PSPreviewPageUtils.getUsedPageAssets;
+import static com.percussion.pagemanagement.assembler.PSWidgetContentFinderUtils.getLocalSharedAssetRelationships;
+import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
+import static com.percussion.webservices.PSWebserviceUtils.getItemSummary;
+import static java.util.Arrays.asList;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.split;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 @Component("widgetAssetRelationshipService")
 public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelationshipService
@@ -464,10 +461,11 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
         notEmpty(id, "id");
         PSRelationshipFilter filter = new PSRelationshipFilter();
         filter.setDependentId(idMapper.getGuid(id).getUUID());
-        filter.setCategory(PSRelationshipConfig.CATEGORY_ACTIVE_ASSEMBLY);
-        filter.limitToEditOrCurrentOwnerRevision(true);
+
+        filter.limitToEditOrCurrentOwnerRevision(restrictToOwnerCurrentRevision);
         Set<String> owners = new HashSet<String>();
         List<PSRelationship> rels = getRelationships(filter);
+
         for (PSRelationship rel : rels)
         {
             owners.add(idMapper.getString(rel.getOwner()));
