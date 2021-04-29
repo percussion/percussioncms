@@ -31,6 +31,7 @@ import com.percussion.delivery.metadata.data.PSMetadataBlogResult;
 import com.percussion.delivery.metadata.data.PSMetadataQuery;
 import com.percussion.delivery.metadata.data.PSMetadataRestCategory;
 import com.percussion.delivery.metadata.data.PSMetadataRestEntry;
+import com.percussion.delivery.metadata.error.PSMalformedMetadataQueryException;
 import com.percussion.delivery.metadata.impl.PSMetadataCategoriesHelper;
 import com.percussion.delivery.metadata.impl.PSMetadataTagsHelper;
 import com.percussion.delivery.metadata.impl.utils.PSPair;
@@ -490,6 +491,20 @@ public class PSMetadataQueryServiceTest extends TestCase
         }
 
         return count;
+    }
+
+    @Test
+    public void testCategoryQuery(){
+        PSMetadataQuery q = new PSMetadataQuery();
+
+        q.setTotalMaxResults(10);
+        try {
+            List<PSMetadataRestCategory> cats = service.executeCategoryQuery(q);
+
+
+        } catch (PSMalformedMetadataQueryException e) {
+            fail(e.getMessage());
+        }
     }
 
     @Test
