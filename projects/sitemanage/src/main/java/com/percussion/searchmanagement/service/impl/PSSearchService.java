@@ -101,6 +101,7 @@ public class PSSearchService implements IPSSearchService
         this.itemWorkflowService = itemWorkflowService;
         this.listViewHelper = listViewHelper;
         this.workflowService = PSWorkflowServiceLocator.getWorkflowService();
+        this.uiService = uiService;
         this.recycleService=recycleService;
     }
 
