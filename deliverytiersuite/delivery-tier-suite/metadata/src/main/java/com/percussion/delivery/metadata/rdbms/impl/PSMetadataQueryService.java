@@ -73,8 +73,7 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 @Repository
 @Scope("singleton")
-public class PSMetadataQueryService implements IPSMetadataQueryService
-{
+public class PSMetadataQueryService implements IPSMetadataQueryService {
     private SessionFactory sessionFactory;
     private final PSHashCalculator hashCalculator = new PSHashCalculator();
 
@@ -92,7 +91,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
      * Property datatype mappings, loaded by Spring.
      */
     protected PSPropertyDatatypeMappings datatypeMappings;
-    private Integer queryLimit=500;
+    private Integer queryLimit = 500;
 
     /**
      * ctor
@@ -100,18 +99,17 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
      * @param datatypeMappings
      * @param queryLimit
      */
-    public PSMetadataQueryService(PSPropertyDatatypeMappings datatypeMappings, Integer queryLimit)
-    {
+    public PSMetadataQueryService(PSPropertyDatatypeMappings datatypeMappings, Integer queryLimit) {
         this.datatypeMappings = datatypeMappings;
         this.queryLimit = queryLimit;
     }
 
-
     /**
      * "SELECT DISTINCT COUNT(ENTRY_ID), [name],stringvalue\n" +
-     *                 "FROM PERC_PAGE_METADATA_PROPERTIES WHERE\n" +
-     *                 "NAME = 'perc:category'\n" +
-     *                 "GROUP BY name, stringvalue  ORDER BY stringvalue";
+     * "FROM PERC_PAGE_METADATA_PROPERTIES WHERE\n" +
+     * "NAME = 'perc:category'\n" +
+     * "GROUP BY name, stringvalue  ORDER BY stringvalue";
+     *
      * @param query
      * @return
      */
@@ -119,16 +117,14 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         List<PSMetadataRestCategory> results = new ArrayList<>();
         List<PSCriteriaElement> entryCrit = new ArrayList<>();
         List<PSCriteriaElement> propsCrit = new ArrayList<>();
-        Map<String, String> sortColumns = new HashMap<>();
-        String orderBy = query.getOrderBy();
-        orderBy= StringEscapeUtils.escapeSql(orderBy);
+
+        StringBuffer whereClause = null;
 
         // Process criteria
-        if (query.getCriteria() != null)
-        {
+        if (query.getCriteria() != null) {
             PSCriteriaElement el = null;
             for (String s : query.getCriteria()) {
-                if(!s.isEmpty()){
+                if (!s.isEmpty()) {
                     el = new PSCriteriaElement(s);
                     if (PSMetadataQueryServiceHelper.ENTRY_PROPERTY_KEYS.contains(el.getName())) {
                         entryCrit.add(el);
@@ -139,25 +135,132 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             }
         }
 
-
-        String hql = "SELECT DISTINCT COUNT(p.entry.id), p.name ,p.stringvalue FROM PSDbMetadataProperty p inner join PSDbMetadataEntry e on p.entry.id = e.id WHERE p.name = 'perc:category' GROUP BY p.name, p.stringvalue  ORDER BY p.stringvalue";
-        try(Session session = getSession())
-        {
-
-            Query hq = session.createQuery(hql);
-
-            List<Object[]> cats = hq.list();
-
-            for(Object[] c : cats){
-               log.info("Count: {} Name {} Cat: {}", c[0], c[1], c[2]);
+        String clauseTemplate = " e.{0} {1} :{2}";
+        int paramIndex = 0;
+        Map<String, Object> paramValues = new HashMap<String, Object>();
+        Map<String, PSCriteriaElement.OPERATION_TYPE> paramOps = new HashMap<String, PSCriteriaElement.OPERATION_TYPE>();
+        for (PSCriteriaElement ce : entryCrit) {
+            if (whereClause == null) {
+                whereClause = new StringBuffer("WHERE ");
+            } else {
+                whereClause.append(" AND ");
             }
+            String replParam = "pagePropValue" + paramIndex++;
+            whereClause.append(MessageFormat.format(clauseTemplate, ce.getName(), ce.getOperation(), replParam));
+            paramValues.put(replParam, ce.getValue());
+            paramOps.put(replParam, ce.getOperationType());
+        }
+        clauseTemplate = " lower(p.name) = lower(:{4}) and p.{1} {2} :{3}";
+
+        int i=0;
+        for (PSCriteriaElement ce : propsCrit)
+        {
+            if (whereClause == null) {
+                new StringBuffer("WHERE ");
+            } else {
+                whereClause.append(" AND ");
+            }
+            String nameParam = "propName" + paramIndex;
+            String valueParam = "propValue" + paramIndex++;
+            Object value = ce.getValue();
+            String valueColumn = PSMetadataQueryServiceHelper.getValueColumnName(ce, datatypeMappings);
+
+            if(valueColumn.equals(PROP_DATEVALUE_COLUMN_NAME))
+            {
+                Calendar date = DatatypeConverter.parseDate(value.toString().replace(' ', 'T'));
+                value = new Date(date.getTimeInMillis());
+            }
+
+
+            if((valueColumn.equals(PROP_STRINGVALUE_COLUMN_NAME) ||
+                    valueColumn.equals(PROP_TEXTVALUE_COLUMN_NAME))
+                    && !ce.getOperation().equals(PSCriteriaElement.OPERATION_TYPE.LIKE.name())){
+                whereClause.append(MessageFormat.format(clauseTemplate, i++, PROP_VALUEHASH_COLUMN_NAME, ce.getOperation(), valueParam,
+                        nameParam));
+            }else {
+                whereClause.append(MessageFormat.format(clauseTemplate, i++, valueColumn, ce.getOperation(), valueParam,
+                        nameParam));
+            }
+
+            if(
+                    ce.getOperationType() == PSCriteriaElement.OPERATION_TYPE.LIKE
+                            && (value instanceof String)
+            ){
+                // Append HQL especial modifier to the end of LIKE
+                whereClause.append(" " + HQL_ESCAPE + " '" + ESCAPE_CHAR + "'");
+                value = escapeSpecialCharacters((String) value);
+            }
+
+            paramValues.put(nameParam, ce.getName());
+            if((valueColumn.equals(PROP_STRINGVALUE_COLUMN_NAME) ||
+                    valueColumn.equals(PROP_TEXTVALUE_COLUMN_NAME)||
+                    valueColumn.equals(PROP_VALUEHASH_COLUMN_NAME)) &&
+                    !ce.getOperationType().equals(PSCriteriaElement.OPERATION_TYPE.LIKE) &&
+                    !ce.getOperationType().equals(PSCriteriaElement.OPERATION_TYPE.IN)){
+                paramValues.put(valueParam, hashCalculator.calculateHash(value.toString()));
+            }else {
+                paramValues.put(valueParam, value);
+            }
+            paramOps.put(valueParam, ce.getOperationType());
+        }
+
+        if (whereClause == null) {
+            whereClause = new StringBuffer(" WHERE p.name = 'perc:category'");
+        } else {
+            whereClause.append(" AND p.name = 'perc:category' ");
         }
 
 
+        String hql = "SELECT DISTINCT COUNT(p.entry.id), p.name ,p.stringvalue FROM PSDbMetadataProperty p inner join PSDbMetadataEntry e on (p.entry.id = e.id) " + whereClause.toString() + " GROUP BY p.name, p.stringvalue  ORDER BY p.stringvalue";
+        log.debug(hql.toString());
 
+        try {
+            Session session = getSession();
+
+            Query hq = session.createQuery(hql);
+
+            for (String key : paramValues.keySet())
+            {
+                Object value = paramValues.get(key);
+                PSCriteriaElement.OPERATION_TYPE opType = paramOps.get(key);
+                if(opType == PSCriteriaElement.OPERATION_TYPE.IN)
+                {
+                    hq.setParameterList(key,
+                            PSMetadataQueryServiceHelper.parseToList(key, value.toString(), datatypeMappings, hashCalculator));
+                }
+                else if (value instanceof Date)
+                {
+                    hq.setTimestamp(key, (Date) value);
+                }
+                else if (value instanceof String)
+                {
+                    hq.setString(key, value.toString());
+                }
+            }
+
+            List<Object[]> cats = hq.list();
+
+            for (Object[] c : cats) {
+//                PSMetadataRestCategory mdq = new PSMetadataRestCategory();
+//                mdq.setCount(new PSPair<>());
+//                mdq.setCategory((String)c[2]);
+//                mdq.setCategory((String)c[2]);
+                log.info("Count: {} Name {} Cat: {}", c[0], c[1], c[2]);
+            }
+        } catch (Exception e) {
+            log.error("Query Failed : "+ query.toString(),e);
+            e.printStackTrace();
+        }
 
         return results;
+
     }
+
+
+
+
+
+
 
     /*
      * (non-Javadoc)
