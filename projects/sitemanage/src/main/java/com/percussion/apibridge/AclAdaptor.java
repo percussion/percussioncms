@@ -76,15 +76,18 @@ public class AclAdaptor implements IAclAdaptor {
         Guid g = null;
         IPSAcl acl = null;
 
-        if(!StringUtils.isEmpty(aclGuid))
-             g = new Guid(aclGuid);
-        else
+        if(!StringUtils.isEmpty(aclGuid)) {
+            g = new Guid(aclGuid);
+        }
+        else {
             g = null;
+        }
 
         try {
-            if(g != null)
+            if(g != null) {
                 acl = aclService.loadAcl(ApiUtils.convertGuid(g));
-        }catch(PSSecurityException e){
+            }
+        } catch(PSSecurityException e){
             log.error("Error loading acl " + aclGuid,e);
         }
          ret = ApiUtils.convertPSUserAccessLevel(
@@ -121,10 +124,12 @@ public class AclAdaptor implements IAclAdaptor {
 
            Acl ret = ApiUtils.convertAcl((PSAclImpl) aclService.loadAclForObject(ApiUtils.convertGuid(objectGuid)));
 
-             if(ret != null)
-                return ret;
-             else
+             if(ret != null) {
+                 return ret;
+             }
+             else {
                  throw new NotFoundException();
+             }
     }
 
     @Override
