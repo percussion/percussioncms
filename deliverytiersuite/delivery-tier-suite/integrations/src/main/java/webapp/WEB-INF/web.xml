@@ -58,6 +58,23 @@
       <url-pattern>/*</url-pattern>
    </filter-mapping>
 
+<filter>
+   <filter-name>ExpiresFilter</filter-name>
+   <filter-class>org.apache.catalina.filters.ExpiresFilter</filter-class>
+   <init-param>
+      <param-name>ExpiresDefault</param-name>
+      <param-value>access plus 5 minutes</param-value>
+   </init-param>
+   <init-param>
+      <param-name>ExpiresExcludedResponseStatusCodes</param-name>
+      <param-value>302, 500, 503</param-value>
+   </init-param>
+</filter>
+<filter-mapping>
+<filter-name>ExpiresFilter</filter-name>
+<url-pattern>/*</url-pattern>
+</filter-mapping>
+
    <servlet>
       <servlet-name>Jersey Spring Web Application</servlet-name>
       <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
