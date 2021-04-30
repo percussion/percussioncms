@@ -24,6 +24,7 @@
 package com.percussion.delivery.metadata;
 
 import com.percussion.delivery.metadata.data.PSMetadataQuery;
+import com.percussion.delivery.metadata.data.PSMetadataRestCategory;
 import com.percussion.delivery.metadata.impl.utils.PSPair;
 
 import java.util.List;
@@ -46,6 +47,7 @@ public interface IPSMetadataQueryService
      */
 
     public PSPair<List<IPSMetadataEntry>, Integer> executeQuery(PSMetadataQuery query) throws Exception;
+    public List<Object[]>  executeCategoryQuery(PSMetadataQuery query) throws Exception;
 
     /**
      * Based on the query hibernate return type would be different Following

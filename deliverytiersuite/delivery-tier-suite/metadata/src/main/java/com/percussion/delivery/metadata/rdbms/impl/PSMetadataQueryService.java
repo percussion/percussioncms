@@ -24,6 +24,7 @@
 package com.percussion.delivery.metadata.rdbms.impl;
 
 import com.percussion.delivery.metadata.IPSMetadataEntry;
+import com.percussion.delivery.metadata.IPSMetadataProperty;
 import com.percussion.delivery.metadata.IPSMetadataQueryService;
 import com.percussion.delivery.metadata.data.PSMetadataQuery;
 import com.percussion.delivery.metadata.data.PSMetadataRestCategory;
@@ -52,6 +53,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.ServletException;
 import javax.xml.bind.DatatypeConverter;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -73,8 +75,7 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 @Repository
 @Scope("singleton")
-public class PSMetadataQueryService implements IPSMetadataQueryService
-{
+public class PSMetadataQueryService implements IPSMetadataQueryService {
     private SessionFactory sessionFactory;
     private final PSHashCalculator hashCalculator = new PSHashCalculator();
 
@@ -92,7 +93,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
      * Property datatype mappings, loaded by Spring.
      */
     protected PSPropertyDatatypeMappings datatypeMappings;
-    private Integer queryLimit=500;
+    private Integer queryLimit = 500;
 
     /**
      * ctor
@@ -100,35 +101,53 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
      * @param datatypeMappings
      * @param queryLimit
      */
-    public PSMetadataQueryService(PSPropertyDatatypeMappings datatypeMappings, Integer queryLimit)
-    {
+    public PSMetadataQueryService(PSPropertyDatatypeMappings datatypeMappings, Integer queryLimit) {
         this.datatypeMappings = datatypeMappings;
         this.queryLimit = queryLimit;
     }
 
-
     /**
      * "SELECT DISTINCT COUNT(ENTRY_ID), [name],stringvalue\n" +
-     *                 "FROM PERC_PAGE_METADATA_PROPERTIES WHERE\n" +
-     *                 "NAME = 'perc:category'\n" +
-     *                 "GROUP BY name, stringvalue  ORDER BY stringvalue";
+     * "FROM PERC_PAGE_METADATA_PROPERTIES WHERE\n" +
+     * "NAME = 'perc:category'\n" +
+     * "GROUP BY name, stringvalue  ORDER BY stringvalue";
+     *
      * @param query
      * @return
      */
-    public List<PSMetadataRestCategory> executeCategoryQuery(PSMetadataQuery query) throws PSMalformedMetadataQueryException {
-        List<PSMetadataRestCategory> results = new ArrayList<>();
+    public List<Object[]> executeCategoryQuery(PSMetadataQuery query) throws PSMalformedMetadataQueryException {
+        List<Object[]> cats = new ArrayList<>();
         List<PSCriteriaElement> entryCrit = new ArrayList<>();
         List<PSCriteriaElement> propsCrit = new ArrayList<>();
-        Map<String, String> sortColumns = new HashMap<>();
-        String orderBy = query.getOrderBy();
-        orderBy= StringEscapeUtils.escapeSql(orderBy);
+        StringBuffer Q3 = null;
+        StringBuffer Q4 = null;
+
+
+        /**
+         * Following this Example Query Writing the query String below
+         * SELECT count(p4.ENTRY_ID), p4.name ,p4.stringvalue from PERC_PAGE_METADATA_PROPERTIES p4 where p4.ENTRY_ID
+         * in( select p.ENTRY_ID from PERC_PAGE_METADATA_PROPERTIES p where p.ENTRY_ID in(
+         * select p.ENTRY_ID from PERC_PAGE_METADATA_PROPERTIES p where  ((p.name = 'dcterms:title'  and p.stringvalue LIKE '%n%' ) or
+         * (p.name = 'dcterms:source'  and p.stringvalue = 'CaldTemp' )  ) and p.ENTRY_ID in( select e.pagePathHash from PERC_PAGE_METADATA e where e.type = 'page'
+         * AND  e.site = 'Callidus' AND  e.folder LIKE '%/News-Releases/%') )) AND p4.name = 'perc:category'  GROUP BY p4.name, p4.stringvalue  ORDER BY p4.stringvalueRDER BY p4.stringvalue
+         *
+         * Q4  = select e.pagePathHash from PERC_PAGE_METADATA e where e.type = 'page'
+         *       AND  e.site = 'Callidus' AND  e.folder LIKE '%/News-Releases/%')
+         *
+         * Q3 = select p.ENTRY_ID from PERC_PAGE_METADATA_PROPERTIES p where  ((p.name = 'dcterms:title'  and p.stringvalue LIKE '%n%' ) or
+                 (p.name = 'dcterms:source'  and p.stringvalue = 'CaldTemp' )  ) and p.ENTRY_ID in( Q4 )
+
+         * Q2 = select p.ENTRY_ID from PERC_PAGE_METADATA_PROPERTIES p where p.ENTRY_ID in(Q3)
+         * Q1 = SELECT count(p4.ENTRY_ID), p4.name ,p4.stringvalue from PERC_PAGE_METADATA_PROPERTIES p4 where p4.ENTRY_ID
+         *      in(Q2) AND p4.name = 'perc:category'  GROUP BY p4.name, p4.stringvalue  ORDER BY p4.stringvalue
+         *
+         */
 
         // Process criteria
-        if (query.getCriteria() != null)
-        {
+        if (query.getCriteria() != null) {
             PSCriteriaElement el = null;
             for (String s : query.getCriteria()) {
-                if(!s.isEmpty()){
+                if (!s.isEmpty()) {
                     el = new PSCriteriaElement(s);
                     if (PSMetadataQueryServiceHelper.ENTRY_PROPERTY_KEYS.contains(el.getName())) {
                         entryCrit.add(el);
@@ -140,24 +159,136 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         }
 
 
-        String hql = "SELECT DISTINCT COUNT(p.entry.id), p.name ,p.stringvalue FROM PSDbMetadataProperty p inner join PSDbMetadataEntry e on p.entry.id = e.id WHERE p.name = 'perc:category' GROUP BY p.name, p.stringvalue  ORDER BY p.stringvalue";
-        try(Session session = getSession())
+        StringBuffer Q4WhereClause = null;
+        String clauseTemplate = " e.{0} {1} :{2}";
+        int paramIndex = 0;
+        Map<String, Object> paramValues = new HashMap<String, Object>();
+        Map<String, PSCriteriaElement.OPERATION_TYPE> paramOps = new HashMap<String, PSCriteriaElement.OPERATION_TYPE>();
+        for (PSCriteriaElement ce : entryCrit) {
+            if (Q4WhereClause == null) {
+                Q4WhereClause = new StringBuffer(" WHERE ");
+            }else{
+                Q4WhereClause.append(" AND ");
+            }
+            String replParam = "pagePropValue" + paramIndex++;
+            Q4WhereClause.append(MessageFormat.format(clauseTemplate, ce.getName(), ce.getOperation(), replParam));
+            paramValues.put(replParam, ce.getValue());
+            paramOps.put(replParam, ce.getOperationType());
+        }
+        if(Q4WhereClause != null) {
+            Q4 = new StringBuffer(" select distinct e.id from PSDbMetadataEntry e ");
+            Q4.append(Q4WhereClause);
+        }
+
+        StringBuffer Q3WhereCaluse = null;
+        clauseTemplate = " lower(p.name) = lower(:{3}) and p.{0} {1} :{2}";
+
+         for (PSCriteriaElement ce : propsCrit)
         {
+            if (Q3WhereCaluse == null) {
+                Q3WhereCaluse = new StringBuffer("WHERE ( ");
+            } else {
+                Q3WhereCaluse.append(" OR ");
+            }
+            String nameParam = "propName" + paramIndex;
+            String valueParam = "propValue" + paramIndex++;
+            Object value = ce.getValue();
+            String valueColumn = PSMetadataQueryServiceHelper.getValueColumnName(ce, datatypeMappings);
 
-            Query hq = session.createQuery(hql);
+            if(valueColumn.equals(PROP_DATEVALUE_COLUMN_NAME))
+            {
+                Calendar date = DatatypeConverter.parseDate(value.toString().replace(' ', 'T'));
+                value = new Date(date.getTimeInMillis());
+            }
 
-            List<Object[]> cats = hq.list();
 
-            for(Object[] c : cats){
-               log.info("Count: {} Name {} Cat: {}", c[0], c[1], c[2]);
+            if((valueColumn.equals(PROP_STRINGVALUE_COLUMN_NAME) ||
+                    valueColumn.equals(PROP_TEXTVALUE_COLUMN_NAME))
+                    && !ce.getOperation().equals(PSCriteriaElement.OPERATION_TYPE.LIKE.name())){
+                Q3WhereCaluse.append(MessageFormat.format(clauseTemplate, PROP_VALUEHASH_COLUMN_NAME, ce.getOperation(), valueParam,
+                        nameParam));
+            }else {
+                Q3WhereCaluse.append(MessageFormat.format(clauseTemplate, valueColumn, ce.getOperation(), valueParam,
+                        nameParam));
+            }
+
+            if(
+                    ce.getOperationType() == PSCriteriaElement.OPERATION_TYPE.LIKE
+                            && (value instanceof String)
+            ){
+                // Append HQL especial modifier to the end of LIKE
+                Q3WhereCaluse.append(" " + HQL_ESCAPE + " '" + ESCAPE_CHAR + "'");
+                value = escapeSpecialCharacters((String) value);
+            }
+
+            paramValues.put(nameParam, ce.getName());
+            if((valueColumn.equals(PROP_STRINGVALUE_COLUMN_NAME) ||
+                    valueColumn.equals(PROP_TEXTVALUE_COLUMN_NAME)||
+                    valueColumn.equals(PROP_VALUEHASH_COLUMN_NAME)) &&
+                    !ce.getOperationType().equals(PSCriteriaElement.OPERATION_TYPE.LIKE) &&
+                    !ce.getOperationType().equals(PSCriteriaElement.OPERATION_TYPE.IN)){
+                paramValues.put(valueParam, hashCalculator.calculateHash(value.toString()));
+            }else {
+                paramValues.put(valueParam, value);
+            }
+            paramOps.put(valueParam, ce.getOperationType());
+        }
+        if(Q3WhereCaluse != null) {
+            Q3 = new StringBuffer(" select distinct p.entry.id from PSDbMetadataProperty p " );
+            Q3.append(Q3WhereCaluse).append(" )");
+            if(Q4 != null) {
+                Q3.append(" and p.entry.id in( ").append(Q4).append(" ) ");
             }
         }
 
+        StringBuffer Q2 = new StringBuffer("select distinct p2.entry.id from PSDbMetadataProperty p2 where p2.entry.id in( ");
+        if(Q3 != null) {
+            Q2.append(Q3).append(" )");
+        }else if(Q4 != null){
+            Q2.append(Q4).append(" )");
+        }
+
+        StringBuffer Q1 = new StringBuffer( "SELECT distinct count(p4.entry.id), p4.name ,p4.stringvalue from PSDbMetadataProperty p4" +
+                " where p4.entry.id in (").append(Q2).append( " )").append("AND p4.name = 'perc:category'  GROUP BY p4.name, p4.stringvalue  ORDER BY p4.stringvalue");
 
 
+        String hql = Q1.toString();
+        log.debug(hql.toString());
 
-        return results;
+        try(Session session = getSession()){
+
+            Query hq = session.createQuery(hql);
+            log.debug(hq.toString());
+            for (String key : paramValues.keySet())
+            {
+                Object value = paramValues.get(key);
+                PSCriteriaElement.OPERATION_TYPE opType = paramOps.get(key);
+                if(opType == PSCriteriaElement.OPERATION_TYPE.IN)
+                {
+                    hq.setParameterList(key,
+                            PSMetadataQueryServiceHelper.parseToList(key, value.toString(), datatypeMappings, hashCalculator));
+                }
+                else if (value instanceof Date)
+                {
+                    hq.setTimestamp(key, (Date) value);
+                }
+                else if (value instanceof String)
+                {
+                    hq.setString(key, value.toString());
+                }
+            }
+            //Returns List of Array with "Count: {} Name {} Cat: {}", c[0], c[1], c[2]
+            // Object[2,"perc:category","/Categories/Color/Blue"
+            // Object[1,"perc:category","/Categories/Color/Red"
+             cats = hq.getResultList();
+
+        } catch (Exception e) {
+            log.error("Query Failed : "+ query.toString(),e);
+        }
+        return cats;
     }
+
+
 
     /*
      * (non-Javadoc)
