@@ -59,7 +59,7 @@ import java.util.List;
 @Lazy
 public class ActionMenuAdaptor implements IActionMenuAdaptor {
 
-
+    private IPSUiDesignWs service;
 
 
     @Autowired
