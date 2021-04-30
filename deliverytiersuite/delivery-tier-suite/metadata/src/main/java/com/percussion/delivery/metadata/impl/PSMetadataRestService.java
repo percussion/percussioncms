@@ -304,7 +304,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             List<Object[]> cats = queryService.executeCategoryQuery(metadataQuery);
             PSMetadataCategoriesHelper psMetadataCategoriesHelper = new PSMetadataCategoriesHelper();
 
-            return psMetadataCategoriesHelper.processCatArray(cats);
+            return psMetadataCategoriesHelper.processCategorySummary(cats);
 
         }
         catch (Exception e)

@@ -97,16 +97,26 @@ public class PSMetadataCategoriesHelper
         }
     }
 
-    public List<PSMetadataRestCategory> processCatArray(List<Object[]> cats) throws ServletException
+    /**
+     *This method is responsible for return the list with categories, their
+     *      * occurrences and their childrens. First iterate by page and later by
+     *      * PropertyPage.
+     *
+     * @param categorySummary  Passes List of Array with "Count: {} Name {} Cat: {}", c[0], c[1], c[2]
+     *           Object[2,"perc:category","/Categories/Color/Blue"
+     *           Object[1,"perc:category","/Categories/Color/Red"
+     * @return PSMetadataRestCategory
+     * @throws ServletException
+     */
+    public List<PSMetadataRestCategory> processCategorySummary(List<Object[]> categorySummary) throws ServletException
     {
         try
         {
             PSMetadataRestCategory categoryTree = new PSMetadataRestCategory("dummyRoot");
             List<String> parsedCategories = new ArrayList<String>();
 
-            for (Object[] c : cats)
+            for (Object[] c : categorySummary)
             {
-
                 String[] categoriesValues = ((String)c[2]).split(",");
                 for (String category : categoriesValues)
                 {
