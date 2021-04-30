@@ -277,7 +277,9 @@ public class PSMetadataQueryService implements IPSMetadataQueryService {
                     hq.setString(key, value.toString());
                 }
             }
-
+            //Returns List of Array with "Count: {} Name {} Cat: {}", c[0], c[1], c[2]
+            // Object[2,"perc:category","/Categories/Color/Blue"
+            // Object[1,"perc:category","/Categories/Color/Red"
              cats = hq.getResultList();
 
         } catch (Exception e) {
