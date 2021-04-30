@@ -175,8 +175,9 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         String filename = StringUtils.substringAfterLast(path, "/");
        
         // should base on prefix stored on asset.  Would require a search for match in folder.
-        if (filename.startsWith("thumb_"))
+        if (filename.startsWith("thumb_")) {
             filename = StringUtils.substringAfter(filename, "thumb_");
+        }
         
         PSPathItem item = null;
         try
@@ -665,17 +666,21 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 
         String folder = StringUtils.substringBeforeLast(path, "/");
         String filename = StringUtils.substringAfterLast(path, "/");
-        if (PSFolderPathUtils.testHasInvalidChars(filename))
-            throw new IllegalArgumentException("cannot upload binary the following chars " +IPSConstants.INVALID_ITEM_NAME_CHARACTERS);
+        if (PSFolderPathUtils.testHasInvalidChars(filename)) {
+            throw new IllegalArgumentException("cannot upload binary the following chars " + IPSConstants.INVALID_ITEM_NAME_CHARACTERS);
+        }
 
         if (StringUtils.isEmpty(assetTypeStr))
         {
-            if (fileMimeType.startsWith("image"))
+            if (fileMimeType.startsWith("image")) {
                 assetTypeStr = "image";
-            else if (fileMimeType.startsWith("application/x-shockwave-flash"))
+            }
+            else if (fileMimeType.startsWith("application/x-shockwave-flash")) {
                 assetTypeStr = "flash";
-            else
+            }
+            else {
                 assetTypeStr = "file";
+            }
         }
 
         AssetType assetType = PSAssetCreator.getAssetType(assetTypeStr);
@@ -828,8 +833,9 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         {
             // Main Image
             ImageInfo image = new ImageInfo();
-            if (from.getFields().get("img_filename")!=null)
+            if (from.getFields().get("img_filename")!=null) {
                 image.setFilename(from.getFields().get("img_filename").toString());
+            }
             image.setExtension(from.getFields().get("img_ext").toString());
             image.setType(from.getFields().get("img_type").toString());
             image.setWidth(Integer.parseInt(from.getFields().get("img_width").toString()));
@@ -852,14 +858,18 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         else if (from.getType().equals(ASSET_TYPE_FILE))
         {
             BinaryFile file = new BinaryFile();
-            if (from.getFields().get("item_file_attachment_filename") != null)
+            if (from.getFields().get("item_file_attachment_filename") != null) {
                 file.setFilename(from.getFields().get("item_file_attachment_filename").toString());
-            if (from.getFields().get("item_file_attachment_size") != null)
+            }
+            if (from.getFields().get("item_file_attachment_size") != null) {
                 file.setSize(Long.parseLong(from.getFields().get("item_file_attachment_size").toString()));
-            if (from.getFields().get("item_file_attachment_type") != null)
+            }
+            if (from.getFields().get("item_file_attachment_type") != null) {
                 file.setType(from.getFields().get("item_file_attachment_type").toString());
-            if (from.getFields().get("item_file_attachment_ext") != null)
+            }
+            if (from.getFields().get("item_file_attachment_ext") != null) {
                 file.setExtension(from.getFields().get("item_file_attachment_ext").toString());
+            }
 
             to.setFile(file);
 
@@ -868,22 +878,30 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         else if (from.getType().equals(ASSET_TYPE_FLASH))
         {
             Flash flash = new Flash();
-            if (from.getFields().get("item_file_attachment_filename") != null)
+            if (from.getFields().get("item_file_attachment_filename") != null) {
                 flash.setFilename(from.getFields().get("item_file_attachment_filename").toString());
-            if (from.getFields().get("item_file_attachment_size") != null)
+            }
+            if (from.getFields().get("item_file_attachment_size") != null) {
                 flash.setSize(Long.parseLong(from.getFields().get("item_file_attachment_size").toString()));
-            if (from.getFields().get("item_file_attachment_type") != null)
+            }
+            if (from.getFields().get("item_file_attachment_type") != null) {
                 flash.setType(from.getFields().get("item_file_attachment_type").toString());
-            if (from.getFields().get("item_file_attachment_ext") != null)
+            }
+            if (from.getFields().get("item_file_attachment_ext") != null) {
                 flash.setExtension(from.getFields().get("item_file_attachment_ext").toString());
-            if (from.getFields().get("flashversion") != null)
+            }
+            if (from.getFields().get("flashversion") != null) {
                 flash.setFlashVersion(from.getFields().get("flashversion").toString());
-            if (from.getFields().get("usage") != null)
+            }
+            if (from.getFields().get("usage") != null) {
                 flash.setUsage(from.getFields().get("usage").toString());
-            if (from.getFields().get("item_file_attachment_width") != null)
+            }
+            if (from.getFields().get("item_file_attachment_width") != null) {
                 flash.setWidth(Integer.parseInt(from.getFields().get("item_file_attachment_width").toString()));
-            if (from.getFields().get("item_file_attachment_height") != null)
+            }
+            if (from.getFields().get("item_file_attachment_height") != null) {
                 flash.setHeight(Integer.parseInt(from.getFields().get("item_file_attachment_height").toString()));
+            }
 
             to.setFlash(flash);
 
@@ -1078,11 +1096,13 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 		 for(PSImageAssetReportLine row : images){
        	  String csvData = row.toCSVRow();
        	  
-		   	if(ret.isEmpty())
-				  ret.add(row.getHeaderRow());
+		   	if(ret.isEmpty()) {
+                ret.add(row.getHeaderRow());
+            }
 		   	
-       	  if(csvData != null)
-       		    ret.add(row.toCSVRow());
+       	  if(csvData != null) {
+              ret.add(row.toCSVRow());
+          }
          }
 		} catch (PSReportFailedToRunException e) {
 			log.error("An error occurred while running the nonCompliantImagesReport", e);
@@ -1102,12 +1122,14 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 				files = assetService.findNonCompliantFileAssets();
 		
 			 for(PSFileAssetReportLine row : files){
-	       		  if(ret.isEmpty())
-	       			  ret.add(row.getHeaderRow());
+	       		  if(ret.isEmpty()) {
+                      ret.add(row.getHeaderRow());
+                  }
 
 	       	  String csvData = row.toCSVRow();
-	       	  if(csvData != null)
-	       		  ret.add(row.toCSVRow());
+	       	  if(csvData != null) {
+                  ret.add(row.toCSVRow());
+              }
 	         }
 			} catch (PSReportFailedToRunException e) {
 				log.error("An error occurred while running the Non Compliant Files Report", e);
@@ -1127,13 +1149,15 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 				images = assetService.findAllImageAssets();
 		
 			 for(PSImageAssetReportLine row : images){
-				 if(ret.isEmpty())
-	       			 ret.add(row.getHeaderRow());
+				 if(ret.isEmpty()) {
+                     ret.add(row.getHeaderRow());
+                 }
 				 
 		       	  String csvData = row.toCSVRow();
 		       	  
-		       	  if(csvData != null)
-		       		  ret.add(row.toCSVRow());
+		       	  if(csvData != null) {
+                      ret.add(row.toCSVRow());
+                  }
 	         }
 			} catch (PSReportFailedToRunException e) {
 				log.error("An error occurred while running the All Images Report", e);
@@ -1155,11 +1179,13 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 		 for(PSFileAssetReportLine row : files){
        	  String csvData = row.toCSVRow();
        	  
-       	  if(ret.isEmpty())
- 			  ret.add(row.getHeaderRow());
+       	  if(ret.isEmpty()) {
+              ret.add(row.getHeaderRow());
+          }
        	
-       	  if(csvData != null)
-       		  ret.add(row.toCSVRow());
+       	  if(csvData != null) {
+              ret.add(row.toCSVRow());
+          }
          }
 		} catch (PSReportFailedToRunException e) {
 			log.error("An error occurred while running the All Files Report", e);
@@ -1216,12 +1242,15 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 						ctr++;
 				}
 			}
-			if(state.equals(WorkflowStates.APPROVE))
-				workflowHelper.transitionToPending(workflowList);
-			else if(state.equals(WorkflowStates.ARCHIVE))
-				workflowHelper.transitionToArchive(workflowList);
-			else if(state.equals(WorkflowStates.REVIEW))
-				workflowHelper.transitionToReview(workflowList);				
+			if(state == WorkflowStates.APPROVE) {
+                workflowHelper.transitionToPending(workflowList);
+            }
+			else if(state == WorkflowStates.ARCHIVE) {
+                workflowHelper.transitionToArchive(workflowList);
+            }
+			else if(state == WorkflowStates.REVIEW) {
+                workflowHelper.transitionToReview(workflowList);
+            }
 				
 			
 		}
@@ -1234,8 +1263,9 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 	public int approveAllAssets(URI baseUri, String  folderPath) throws BackendException {
 		int counter = 0;
 		try {
-            if (folderPath == null)
+            if (folderPath == null) {
                 folderPath = "";
+            }
 
             folderPath = StringUtils.substringBeforeLast(folderPath, "/");
             String path = folderPath;
@@ -1295,8 +1325,9 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 	public int archiveAllAssets(URI baseUri, String folder) throws BackendException {
 		int counter = 0;
 		try {
-            if (folder == null)
+            if (folder == null) {
                 folder = "";
+            }
 
             folder = StringUtils.substringBeforeLast(folder, "/");
             String path = folder;
@@ -1312,8 +1343,9 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
 	public int submitForReviewAllAssets(URI baseUri, String folder) throws BackendException {
         int counter = 0;
         try {
-            if (folder == null)
+            if (folder == null) {
                 folder = "";
+            }
 
             folder = StringUtils.substringBeforeLast(folder, "/");
             String path = folder;

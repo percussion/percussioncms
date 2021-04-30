@@ -136,10 +136,12 @@ public class ContextAdaptor implements IContextsAdaptor {
         IPSLocationScheme scheme = context.getDefaultScheme();
         if (scheme != null) {
             ret.setDefaultScheme(ApiUtils.copyLocationScheme(scheme));
-            if(scheme.getDescription()!=null)
-            ret.setDescription(context.getDescription());
-            if(scheme.getName() != null)
+            if(scheme.getDescription()!=null) {
+                ret.setDescription(context.getDescription());
+            }
+            if(scheme.getName() != null) {
                 ret.setName(scheme.getName());
+            }
         }
         List<IPSLocationScheme> schemesByContextId = siteManager.findSchemesByContextId(context.getGUID());
 
