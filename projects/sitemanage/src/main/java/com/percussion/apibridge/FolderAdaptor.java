@@ -296,10 +296,12 @@ public class FolderAdaptor implements IFolderAdaptor {
 		// Get Folder Guid
 		IPSItemSummary folderSummary = null;
 		try {
-			if(folderGuid == null)
+			if(folderGuid == null) {
 				folderSummary = folderHelper.findFolder(pathItem.getFolderPath());
-			else
+			}
+			else {
 				folderSummary = folderHelper.findItemById(folderGuid);
+			}
 
 		} catch (Exception e) {
 			throw new FolderNotFoundException();
@@ -338,8 +340,9 @@ public class FolderAdaptor implements IFolderAdaptor {
 
 
         // SubSections
-		if (!site.equals("Assets"))
+		if (!site.equals("Assets")) {
 			extractSectionInfo(baseUri, fullPath, folder, sectionType);
+		}
 
 		try{
 		// Sub Pages and Folders
@@ -350,8 +353,9 @@ public class FolderAdaptor implements IFolderAdaptor {
 			throw new BackendException(e);
 		}
 
-		if (StringUtils.startsWith(folder.getName(), EXTERNAL_SECTION_NAME_PREFIX))
+		if (StringUtils.startsWith(folder.getName(), EXTERNAL_SECTION_NAME_PREFIX)) {
 			folder.setName(StringUtils.substringAfter(folder.getName(), EXTERNAL_SECTION_NAME_PREFIX));
+		}
 
 		folder.setRecentUsers(new ArrayList<>());
 		
@@ -359,8 +363,9 @@ public class FolderAdaptor implements IFolderAdaptor {
 	}
 
 	private void checkAPIPermission() throws PSDataServiceException {
-		if (!userService.isAdminUser(userService.getCurrentUser().getName()))
+		if (!userService.isAdminUser(userService.getCurrentUser().getName())) {
 			throw new NotAuthorizedException();
+		}
 	}
 
 	private void extractSubPagesFolders(URI baseUri, PSPathItem pathItem, String pathUtilsPath, Folder folder) throws IPSPathService.PSPathServiceException, PSDataServiceException {
@@ -432,8 +437,9 @@ public class FolderAdaptor implements IFolderAdaptor {
 			folder.setEditUsers(editUsers);
 			if (permissions.getWritePrincipals() != null) {
 				for (Principal principal : permissions.getWritePrincipals()) {
-					if (!principal.getType().equals(PrincipalType.USER))
+					if (!principal.getType().equals(PrincipalType.USER)) {
 						throw new BackendException("Currently only support User type");
+					}
 
 					editUsers.add(principal.getName());
 
@@ -576,8 +582,9 @@ public class FolderAdaptor implements IFolderAdaptor {
 
 		String realName = folder.getName();
 		if (existingFolder.getSectionInfo() != null && existingFolder.getSectionInfo().getType() != null
-				&& existingFolder.getSectionInfo().getType().equalsIgnoreCase(PSSectionTypeEnum.externallink.name()))
+				&& existingFolder.getSectionInfo().getType().equalsIgnoreCase(PSSectionTypeEnum.externallink.name())) {
 			realName = EXTERNAL_SECTION_NAME_PREFIX + realName;
+		}
 
 		PSPathItem pathItem = null;
 		String fullPath = null;
@@ -727,11 +734,13 @@ public class FolderAdaptor implements IFolderAdaptor {
 
 				SectionInfo toSection = folder.getSectionInfo();
 				if (toSection != null) {
-					if (toSection.getDisplayTitle() != null)
+					if (toSection.getDisplayTitle() != null) {
 						req.setTitle(toSection.getDisplayTitle());
+					}
 
-					if (toSection.getNavClass() != null)
+					if (toSection.getNavClass() != null) {
 						req.setCssClassNames(toSection.getNavClass());
+					}
 
 					if (toSection.getTargetWindow() != null) {
 						req.setTarget(PSSectionTargetEnum.valueOf(toSection.getTargetWindow()));
@@ -1038,8 +1047,9 @@ public class FolderAdaptor implements IFolderAdaptor {
 			// Cannot find folder
 		}
 
-		if (parentSummary == null)
+		if (parentSummary == null) {
 			throw new BackendException("can only create section folders that are child folders of other sections.");
+		}
 
 		SectionInfo section = folder.getSectionInfo();
 		PSSiteSection newSection = null;
@@ -1068,8 +1078,9 @@ public class FolderAdaptor implements IFolderAdaptor {
 				request.setPageName("index.html");
 			}
 			String displayTitle = section.getDisplayTitle();
-			if (displayTitle == null)
+			if (displayTitle == null) {
 				displayTitle = folder.getName();
+			}
 
 			request.setPageLinkTitle(displayTitle);
 			request.setPageTitle(displayTitle);
@@ -1091,8 +1102,9 @@ public class FolderAdaptor implements IFolderAdaptor {
 			newSection = sectionService.create(request);
 
 		}
-		if (newSection != null)
+		if (newSection != null) {
 			newFolder = pathService.find(StringUtils.substring(newSection.getFolderPath(), 1));
+		}
 		return newFolder;
 	}
 
@@ -1100,12 +1112,14 @@ public class FolderAdaptor implements IFolderAdaptor {
 		String requestWorkflow = folder.getWorkflow();
 		if (requestWorkflow != null) {
 			int wfid;
-			if (requestWorkflow.equalsIgnoreCase("[default]"))
+			if (requestWorkflow.equalsIgnoreCase("[default]")) {
 				// Real strange code, wf is removed by passing this.
 				wfid = Integer.MIN_VALUE;
+			}
 
-			else
+			else {
 				wfid = workflowIdByName(requestWorkflow);
+			}
 
 			if (wfid != folderProperties.getWorkflowId()) {
 				folderProperties.setWorkflowId(wfid);
@@ -1139,8 +1153,9 @@ public class FolderAdaptor implements IFolderAdaptor {
 			// non section is admin. Unknown will be set to correct default
 			String level = folder.getAccessLevel();
 			if (isSection) {
-				if (!(level.equals("READ") || level.equals("WRITE")))
+				if (!(level.equals("READ") || level.equals("WRITE"))) {
 					level = "WRITE";
+				}
 			} else {
 				if (!(level.equals("READ") || level.equals("WRITE") || level.equals("ADMIN")))
 					level = "ADMIN";
@@ -1449,8 +1464,9 @@ public class FolderAdaptor implements IFolderAdaptor {
 		   IPSItemSummary item = getFolderPathItem(correctedSource);
 		   PSLocator sourceLoc = idMapper.getLocator(item.getId());
 
-		   if (item == null)
+		   if (item == null) {
 			   throw new NotFoundException("Source Folder " + folderPath + " was not found.  Please check the path and try again.");
+		   }
 
 		   IPSGuid guid = idMapper.getGuid(item.getId());
 		   List<IPSGuid> guids = new ArrayList<>();
@@ -1472,10 +1488,12 @@ public class FolderAdaptor implements IFolderAdaptor {
 				   null
 		   ));
 
-		   if (result != null)
+		   if (result != null) {
 			   throw new BackendException("Failed to copy folder");
-		   else
+		   }
+		   else {
 			   log.info("Copied folder:" + folderPath + " to " + targetFolderPath);
+		   }
 	   } catch (PSCmsException | PSDataServiceException | PSPathNotFoundServiceException e) {
 		  throw new BackendException(e);
 	   } catch (Exception e) {
@@ -1495,8 +1513,9 @@ public class FolderAdaptor implements IFolderAdaptor {
 				throw new NotFoundException(itemPath + " Not Found");
 			}
 
-			if (ps == null)
+			if (ps == null) {
 				throw new NotFoundException(itemPath + " Not Found");
+			}
 
 			ArrayList<IPSGuid> guids = new ArrayList<>();
 			guids.add(idMapper.getGuid(ps.getId()));
