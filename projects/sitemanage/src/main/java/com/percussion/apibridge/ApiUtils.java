@@ -82,8 +82,7 @@ public class ApiUtils {
 
     public static IPSGuid convertGuid(Guid guid){
 
-       IPSGuid ret = PSGuidManagerLocator.getGuidMgr().makeGuid(guid.getStringValue());
-       return ret;
+        return PSGuidManagerLocator.getGuidMgr().makeGuid(guid.getStringValue());
     }
 
     /***
@@ -95,10 +94,9 @@ public class ApiUtils {
         Community ret = new Community(c.getId(),convertGuid(c.getGUID()),c.getName(),c.getDescription(),c.getLabel());
 
         ArrayList<CommunityRole> roles = new ArrayList<>();
-        Iterator it = c.getRoleAssociations().iterator();
-        while(it.hasNext()){
+        for (IPSGuid ipsGuid : c.getRoleAssociations()) {
             CommunityRole assoc = new CommunityRole();
-            IPSGuid roleGuid = (IPSGuid)it.next();
+            IPSGuid roleGuid = ipsGuid;
             assoc.setCommunityGuid(ret.getGuid());
             assoc.setCommunityid(ret.getGuid().getLongValue());
             assoc.setRoleId(roleGuid.longValue());
@@ -259,7 +257,7 @@ public class ApiUtils {
     public  static UserAccessLevel convertPSUserAccessLevel(PSUserAccessLevel permissions) {
         UserAccessLevel ret = new UserAccessLevel();
 
-        HashSet perms = new HashSet();
+        HashSet<Permissions> perms = new HashSet<>();
         for(PSPermissions p : permissions.getPermissions()){
             perms.add(convertPSPermissions(p));
         }
@@ -348,8 +346,9 @@ public class ApiUtils {
             ret.setDescription(p_role.getDescription());
             ret.setHomePage(p_role.getHomepage());
             ret.setName(p_role.getName());
-            if(p_role.getUsers()!=null)
+            if(p_role.getUsers()!=null) {
                 ret.setUsers(p_role.getUsers());
+            }
         }
 
 
@@ -434,14 +433,13 @@ public class ApiUtils {
      * @return
      */
     public  static Principal convertPrincipal(com.percussion.rest.acls.Principal principal) {
-        Principal ret = new Principal() {
+
+        return new Principal() {
             @Override
             public String getName() {
                 return principal.getName();
             }
         };
-
-        return ret;
     }
 
     public static AclList convertAcls(List<IPSAcl> loadAcls) {
@@ -577,10 +575,10 @@ public class ApiUtils {
 
     public static UserPreferenceList convertUserProperties(Collection userProperties) {
 
-        Iterator properties = userProperties.iterator();
+        Iterator<PSPersistentProperty> properties = userProperties.iterator();
         ArrayList<UserPreference> up = new ArrayList<>();
         while(properties.hasNext()){
-            PSPersistentProperty prop = (PSPersistentProperty) properties.next();
+            PSPersistentProperty prop = properties.next();
             up.add(ApiUtils.convertPSPersistentProperty(prop));
         }
         return new UserPreferenceList(up);
@@ -619,15 +617,15 @@ public class ApiUtils {
     }
 
     public static List<ActionMenu> convertPSActionMenuList(List<PSActionMenu> actionMenus) {
-        ArrayList ret = new ArrayList<ActionMenu>();
-        for(PSActionMenu pa : actionMenus){
+        ArrayList<ActionMenu> ret = new ArrayList<>();
+        for(PSActionMenu pa : actionMenus) {
             ret.add(convertPSActionMenu(pa));
         }
 
         return ret;
     }
 
-    public static Object convertPSActionMenu(PSActionMenu pa) {
+    public static ActionMenu convertPSActionMenu(PSActionMenu pa) {
         ActionMenu ret = new ActionMenu();
 
         ret.setId(pa.getActionId());
