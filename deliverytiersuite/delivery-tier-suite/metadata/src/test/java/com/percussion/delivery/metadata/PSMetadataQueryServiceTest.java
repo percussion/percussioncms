@@ -499,7 +499,7 @@ public class PSMetadataQueryServiceTest extends TestCase
 
         q.setTotalMaxResults(10);
         try {
-            List<PSMetadataRestCategory> cats = service.executeCategoryQuery(q);
+            List<Object[]> cats = service.executeCategoryQuery(q);
 
 
         } catch (PSMalformedMetadataQueryException e) {
