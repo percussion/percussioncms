@@ -97,6 +97,42 @@ public class PSMetadataCategoriesHelper
         }
     }
 
+    public List<PSMetadataRestCategory> processCatArray(List<Object[]> cats) throws ServletException
+    {
+        try
+        {
+            PSMetadataRestCategory categoryTree = new PSMetadataRestCategory("dummyRoot");
+            List<String> parsedCategories = new ArrayList<String>();
+
+            for (Object[] c : cats)
+            {
+
+                String[] categoriesValues = ((String)c[2]).split(",");
+                for (String category : categoriesValues)
+                {
+                    if (category.trim().startsWith("/"))
+                    {
+                        category = category.trim().substring(1);
+                    }
+                    countCategories(category, categoryTree.getChildren(), parsedCategories, "");
+                }
+
+
+                parsedCategories = new ArrayList<String>();
+            }
+
+            alphaOrderCategories(categoryTree);
+            return categoryTree.getChildren();
+        }
+        catch (Exception e)
+        {
+            throw new ServletException(e);
+        }
+    }
+
+
+
+
     /**
      * This method is responsible for build the tree with the categories and
      * their occurrences. Moves through the "path" of the categories generating
