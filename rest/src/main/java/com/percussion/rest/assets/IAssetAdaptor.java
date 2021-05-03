@@ -26,6 +26,7 @@ package com.percussion.rest.assets;
 
 import com.percussion.rest.Status;
 import com.percussion.rest.errors.BackendException;
+import com.percussion.share.service.exception.PSDataServiceException;
 
 import javax.ws.rs.core.StreamingOutput;
 import java.io.InputStream;
@@ -43,7 +44,7 @@ public interface IAssetAdaptor
      * @param path
      * @return Asset Collection
      */
-    public Collection<Asset> getSharedAssets(URI baseURI, String path, String type) throws BackendException;
+    public Collection<Asset> getSharedAssets(URI baseURI, String path, String type) throws BackendException, PSDataServiceException;
 
     /**
      * Fetches a single asset by its ID.
@@ -51,16 +52,15 @@ public interface IAssetAdaptor
      * @param id
      * @return an Asset
      */
-    public Asset getSharedAsset(URI baseURI, String id) throws BackendException;
+    public Asset getSharedAsset(URI baseURI, String id) throws BackendException, PSDataServiceException;
 
     /**
      * Fetches a single asset by its path.  Can handle if filename starts with thumb_
      * 
-     * @param baseURI
      * @param path
      * @return an Asset
      */
-    public Asset getSharedAssetByPath(URI baseURI, String path) throws BackendException;
+    public Asset getSharedAssetByPath(URI baseURI, String path);
     
     /**
      * Deletes a single shared asset by its ID.
@@ -68,7 +68,7 @@ public interface IAssetAdaptor
      * @param id
      * @return operation status
      */
-    public Status deleteSharedAsset(String id) throws BackendException;
+    public Status deleteSharedAsset(String id) throws BackendException, PSDataServiceException;
 
     /**
      * Deletes a single shared asset by its ID.
@@ -114,8 +114,8 @@ public interface IAssetAdaptor
      * @param path path to asset
      * @param assetType to upload to.  if null or empty defaults based upon mime type.
      * @param inputStream
+     * @param fileMimeType
      * @param uploadFilename of original uploaded file
-     * @param fileMimeType  mime type of the file
      * @param forceCheckOut check out if the item is in use by another user
      * @return That asset
      * 
@@ -224,7 +224,7 @@ public interface IAssetAdaptor
      * @param folder
      * @return
      */
-    public int archiveAllAssets(URI baseUri, String folder) throws BackendException;
+    public int archiveAllAsets(URI baseUri, String folder) throws BackendException;
     
     /***
      * Submits all Assets to the Review state in the specified folder.
@@ -233,7 +233,7 @@ public interface IAssetAdaptor
      * @param folder
      * @return
      */
-    public int submitForReviewAllAssets(URI baseUri, String folder) throws BackendException;
+    public int submitForReviewAllAsets(URI baseUri, String folder) throws BackendException;
     
     
    /***
