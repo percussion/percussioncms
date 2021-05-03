@@ -25,6 +25,7 @@
 package com.percussion.rest.assets;
 
 import com.percussion.rest.Status;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.util.APIUtilities;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.annotations.Api;
@@ -51,6 +52,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -61,6 +63,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -162,14 +165,8 @@ public class AssetsResource
     {
        
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
-        try
-        {
-            path = java.net.URLDecoder.decode(path, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
+        path = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8.name());
+
         if (body == null || body.isEmpty())
             throw new RuntimeException("No file sent");
         Attachment att = body.get(0);
@@ -190,8 +187,12 @@ public class AssetsResource
         org.apache.tika.mime.MediaType mimeType = det.detect(tis, metadata);
         String fileMimeType = mimeType.toString();
 
-        return assetAdaptor.uploadBinary(uriInfo.getBaseUri(), path, assetType, tis,
-                uploadFilename, fileMimeType, forceCheckOut);
+        try {
+            return assetAdaptor.uploadBinary(uriInfo.getBaseUri(), path, assetType, tis,
+                    uploadFilename, fileMimeType, forceCheckOut);
+        } catch (BackendException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
     @GET
@@ -214,8 +215,15 @@ public class AssetsResource
         {
             // UTF-8 always supported
         }
-        
-        StreamingOutput out = assetAdaptor.getBinary(path);
+
+        StreamingOutput out;
+        try {
+            out = assetAdaptor.getBinary(path);
+        } catch (BackendException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
         Asset asset = assetAdaptor.getSharedAssetByPath(uriInfo.getBaseUri(), path);
 
         ResponseBuilder r = Response.ok(out);
@@ -263,7 +271,13 @@ public class AssetsResource
         String filename = StringUtils.substringAfterLast(path, "/");
         asset.setName(filename);
         asset.setFolderPath(StringUtils.substringBeforeLast(path, "/"));
-        return assetAdaptor.createOrUpdateSharedAsset(uriInfo.getBaseUri(), path, asset);
+        try {
+            return assetAdaptor.createOrUpdateSharedAsset(uriInfo.getBaseUri(), path, asset);
+        } catch (BackendException e) {
+            log.error(e.getMessage());
+            log.debug(e);
+            throw new WebApplicationException(e);
+        }
     }
     
     @DELETE
@@ -285,7 +299,13 @@ public class AssetsResource
         {
             // UTF-8 always supported
         }
-        return assetAdaptor.deleteSharedAssetByPath(path);
+        try {
+            return assetAdaptor.deleteSharedAssetByPath(path);
+        } catch (BackendException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
     
    
@@ -320,8 +340,13 @@ public class AssetsResource
             assetName = StringUtils.defaultString(m.group(5));
         }
         
-
-        return assetAdaptor.renameSharedAsset(uriInfo.getBaseUri(), siteName,apiPath,assetName, newName);
+        try {
+            return assetAdaptor.renameSharedAsset(uriInfo.getBaseUri(), siteName, apiPath, assetName, newName);
+        } catch (BackendException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
     
     @GET
@@ -602,10 +627,16 @@ public class AssetsResource
             @ApiResponse(code = 200, message = "Update OK")})
     public Status approveAllAssets(@PathParam("folderPath") String folder){
     	Status status = new Status("OK");
-    	
-    	int ctr = assetAdaptor.approveAllAssets(uriInfo.getBaseUri(), folder);
-    	status.setMessage("Approved " + ctr + " Assets");
-    	return status;
+
+    	try {
+            int ctr = assetAdaptor.approveAllAssets(uriInfo.getBaseUri(), folder);
+            status.setMessage("Approved " + ctr + " Assets");
+            return status;
+        } catch (BackendException e) {
+    	    log.error(e.getMessage());
+    	    log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
     
 
@@ -619,10 +650,16 @@ public class AssetsResource
             @ApiResponse(code = 200, message = "Update OK")})
     public Status archiveAllAssets(@PathParam("folderPath") String folder){
     	Status status = new Status("OK");
-    	
-    	int ctr = assetAdaptor.archiveAllAsets(uriInfo.getBaseUri(), folder);
-    	status.setMessage("Archived " + ctr + " Assets");
-    	return status;
+
+    	try {
+            int ctr = assetAdaptor.archiveAllAsets(uriInfo.getBaseUri(), folder);
+            status.setMessage("Archived " + ctr + " Assets");
+            return status;
+        } catch (BackendException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            throw new WebApplicationException(e);
+        }
     }
 
     public void setAssetAdaptor(IAssetAdaptor assetAdaptor){
@@ -639,9 +676,14 @@ public class AssetsResource
             @ApiResponse(code = 200, message = "Update OK")})
     public Status submitAllAssets(@PathParam("folderPath") String folder){
     	Status status = new Status("OK");
-    	
-    	int ctr = assetAdaptor.submitForReviewAllAsets(uriInfo.getBaseUri(), folder);
-    	status.setMessage("Submitted " + ctr + " Assets");
-    	return status;
+    	try {
+            int ctr = assetAdaptor.submitForReviewAllAsets(uriInfo.getBaseUri(), folder);
+            status.setMessage("Submitted " + ctr + " Assets");
+            return status;
+        } catch (BackendException e) {
+           log.error(e.getMessage());
+           log.debug(e.getMessage(),e);
+           throw new WebApplicationException(e);
+        }
     }
 }
