@@ -174,11 +174,9 @@ var baseURL;
     }
 
     //Create the LI node from a Category.
-    function parseNode(node) {
-        let countTotal = node.count.first;
-        let nodeStr = node.category;
-        if (countTotal > 0)
-            nodeStr = node.category + " (" + countTotal + ")";
+    function parseNode(node){
+        let countTotal = node.count.first + node.count.second;
+        let nodeStr = node.category + " (" + countTotal + ")";
 
         let query = JSON.parse(strJSON );
         query.criteria.push("perc:category LIKE '" + node.path + "%'");

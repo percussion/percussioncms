@@ -81,7 +81,7 @@ public class PSMetadataCategoriesHelper
                             {
                                 category = category.trim().substring(1);
                             }
-                            countCategories(category, 1,categoryTree.getChildren(), parsedCategories, "");
+                            countCategories(category, categoryTree.getChildren(), parsedCategories, "");
                         }
                     }
                 }
@@ -98,52 +98,6 @@ public class PSMetadataCategoriesHelper
     }
 
     /**
-     *This method is responsible for return the list with categories, their
-     *      * occurrences and their childrens. First iterate by page and later by
-     *      * PropertyPage.
-     *
-     * @param categorySummary  Passes List of Array with "Count: {} Name {} Cat: {}", c[0], c[1], c[2]
-     *           Object[2,"perc:category","/Categories/Color/Blue"
-     *           Object[1,"perc:category","/Categories/Color/Red"
-     * @return PSMetadataRestCategory
-     * @throws ServletException
-     */
-    public List<PSMetadataRestCategory> processCategorySummary(List<Object[]> categorySummary) throws ServletException
-    {
-        try
-        {
-            PSMetadataRestCategory categoryTree = new PSMetadataRestCategory("dummyRoot");
-            List<String> parsedCategories = new ArrayList<String>();
-
-            for (Object[] c : categorySummary)
-            {
-                String[] categoriesValues = ((String)c[2]).split(",");
-                for (String category : categoriesValues)
-                {
-                    if (category.trim().startsWith("/"))
-                    {
-                        category = category.trim().substring(1);
-                    }
-                    Long countL = (Long)c[0];
-                    int count = countL.intValue();
-                    countCategories(category,count, categoryTree.getChildren(), parsedCategories, "");
-                }
-                parsedCategories = new ArrayList<String>();
-            }
-
-            alphaOrderCategories(categoryTree);
-            return categoryTree.getChildren();
-        }
-        catch (Exception e)
-        {
-            throw new ServletException(e);
-        }
-    }
-
-
-
-
-    /**
      * This method is responsible for build the tree with the categories and
      * their occurrences. Moves through the "path" of the categories generating
      * the node if necessary and counting the occurrences at the same time.
@@ -155,7 +109,7 @@ public class PSMetadataCategoriesHelper
      * 
      */
 
-    private void countCategories(String pathCategory,int count, List<PSMetadataRestCategory> childrens,
+    private void countCategories(String pathCategory,List<PSMetadataRestCategory> childrens,
                                  List<String> parsedCategories, String currentPath)
     {
         if (!pathCategory.isEmpty())
@@ -183,18 +137,19 @@ public class PSMetadataCategoriesHelper
             {
                 if (pathCategory.equals(""))
                 {
-                    categoryNode.getCount().setFirst(count);
+                    categoryNode.getCount().setFirst(categoryNode.getCount().getFirst() + 1);
                 }
                 else
                 {
-                    categoryNode.getCount().setSecond(categoryNode.getCount().getSecond() + count);
+                    categoryNode.getCount().setSecond(categoryNode.getCount().getSecond() + 1);
                 }
                 parsedCategories.add(currentPath);
             }
 
-            countCategories(pathCategory,count, categoryNode.getChildren(), parsedCategories, currentPath);
+            countCategories(pathCategory, categoryNode.getChildren(), parsedCategories, currentPath);
         }
     }
+
     public void alphaOrderCategories(PSMetadataRestCategory categoryTree)
     {
         // Sort the children
