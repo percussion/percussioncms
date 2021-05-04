@@ -811,13 +811,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 #set($nLevel = $nLevel + 1)##
 #foreach ($category in $categories)##
 #if($maxRow > $nRow || $maxRow == 0)##
-#set($_countTotal = $category.getCount().getFirst() )##
-    #set($_countTotalStr = "")##
-    #if($_countTotal >0 )##
-    #set($_countTotalStr = ($_countTotal))##
-    #end##
+    #set($_countTotal = $category.getCount().getFirst() + $category.getCount().getSecond())##
 <li class="perc-category-element">
-<a title="$category.getCategory() $_countTotalStr " href="#">$category.getCategory() $_countTotalStr</a>
+    <a title="$category.getCategory() ($_countTotal)" href="#">$category.getCategory() ($_countTotal)</a>
 #if($category.getChildren().size() > 0)##
 #set($nRow = $nRow + 1)##
 #perc_processCategoryNodeExpanded($category.getChildren(), $maxRow, $nRow, $nLevel)##
@@ -842,13 +838,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 #set($nRow = $nRow + 1)##
 #end##
 #if(($nLevel != 1 || $nRow <= $maxRow) || $maxRow == 0)##
-#set($_countTotal = $category.getCount().getFirst() )##
-    #set($_countTotalStr = "")##
-    #if($_countTotal >0 )##
-        #set($_countTotalStr = ($_countTotal))##
-    #end##
+    #set($_countTotal = $category.getCount().getFirst() + $category.getCount().getSecond())##
 <li class="perc-category-element">
-<a title="$category.getCategory() $_countTotalStr" href="#">$category.getCategory() $_countTotalStr</a>
+    <a title="$category.getCategory() ($_countTotal)" href="#">$category.getCategory() ($_countTotal)</a>
 #if($category.getChildren().size() > 0)##
 #perc_processCategoryNodeCollapsible($category.getChildren(), $maxRow, $nLevel)##
 #end##
