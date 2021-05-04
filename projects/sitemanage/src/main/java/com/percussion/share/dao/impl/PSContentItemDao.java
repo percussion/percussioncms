@@ -349,47 +349,37 @@ public class PSContentItemDao implements IPSContentItemDao
             for (Entry<String, Object> nvp : contentItem.getFields().entrySet()) {
                 PSItemField f = coreItem.getFieldByName(nvp.getKey());
                 Object value = nvp.getValue();
-                if (f != null) 
-                {
-                	if(value == null)
-                	{
-                		f.clearValues();
-                	}
-                	else
-                	{
-	                    IPSFieldValue fv;
-	                    f.clearValues();
-	                    if (value instanceof PSPurgableTempFile)
-	                    {
-	                        fv = new PSPurgableFileValue((PSPurgableTempFile) value);                        
-	                        f.addValue(fv);
-	                    }
-	                    else if(value instanceof List)
-	                    {
-	                       @SuppressWarnings("unchecked")
-	                       List<String> values  = (List<String>) value;
-	                       for(String val : values)
-	                       {
-	                          fv = f.createFieldValue(val);
-	                          f.addValue(fv);
-	                       }
-	                    }
-	                    else if (value instanceof Long)
-	                    {
-	                    	fv = f.createFieldValue(Long.toString((Long)value));
-	                    	f.addValue(fv);
-	                    }
-	                    else if (value instanceof Integer)
-	                    {
-	                    	fv = f.createFieldValue(Integer.toString((Integer)value));
-	                    	f.addValue(fv);
-	                    }
-	                    else
-	                    {
-	                        fv = f.createFieldValue((String) value);
-	                        f.addValue(fv);
-	                    }
-                	}
+                if (f != null) {
+                    if (value == null) {
+                        f.clearValues();
+                    } else {
+                        IPSFieldValue fv;
+                        f.clearValues();
+                        if (value instanceof PSPurgableTempFile) {
+                            fv = new PSPurgableFileValue((PSPurgableTempFile) value);
+                            f.addValue(fv);
+                        } else if (value instanceof List) {
+                            @SuppressWarnings("unchecked")
+                            List<String> values = (List<String>) value;
+                            for (String val : values) {
+                                fv = f.createFieldValue(val);
+                                f.addValue(fv);
+                            }
+                        } else if (value instanceof Long) {
+                            fv = f.createFieldValue(Long.toString((Long) value));
+                            f.addValue(fv);
+                        } else if (value instanceof Integer) {
+                            fv = f.createFieldValue(Integer.toString((Integer) value));
+                            f.addValue(fv);
+                        } else {
+                            if (value != null) {
+                                fv = f.createFieldValue((String) value);
+                                f.addValue(fv);
+                            } else {
+                                f.clearValues();
+                            }
+                        }
+                    }
                 }
             }
             
@@ -401,7 +391,7 @@ public class PSContentItemDao implements IPSContentItemDao
                 folderId = contentWs.getIdByPath(paths.get(0));
             }
                         
-            IPSGuid guid = contentWs.saveItems(Arrays.asList(coreItem), false, false, folderId).get(0);
+            IPSGuid guid = contentWs.saveItems(singletonList(coreItem), false, false, folderId).get(0);
             id = idMapper.getString(guid);
             
             /*

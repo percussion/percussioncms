@@ -285,21 +285,20 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             return null;
         }
 
-        if(log.isDebugEnabled()){
-            log.debug("Metadata query criteria in the service is : {}" , metadataQuery.getCriteria());
-        }
+        log.debug("Metadata query criteria in the service is :" + metadataQuery.getCriteria().toString());
 
         try
         {
-            PSPair<List<IPSMetadataEntry>, Integer> metadataResults = queryService.executeQuery(metadataQuery);
-            List<IPSMetadataEntry> results = metadataResults.getFirst();
+            //Getting all pages that match query
+            List<Object[]> cats = queryService.executeCategoryQuery(metadataQuery);
             PSMetadataCategoriesHelper psMetadataCategoriesHelper = new PSMetadataCategoriesHelper();
 
-            return psMetadataCategoriesHelper.processCategories(results);
+            return psMetadataCategoriesHelper.processCategorySummary(cats);
+
         }
         catch (Exception e)
         {
-            log.error("Exception during getting categories : {}" , e.getMessage());
+            log.error("Exception during getting categories : " + e.getLocalizedMessage());
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }

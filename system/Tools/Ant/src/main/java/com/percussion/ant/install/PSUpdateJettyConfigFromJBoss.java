@@ -52,6 +52,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -71,6 +72,7 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
     private static final Log log = LogFactory.getLog(PSUpdateJettyConfigFromJBoss.class);
 
     public static final String PERCUSSION_SERVER_LAX = "PercussionServer.lax";
+    public static final String PERCUSSION_SERVER_LINUX_LAX = "PercussionServer.bin.lax";
     public static final String LAX_NL_JAVA_OPTION_ADDITIONAL = "lax.nl.java.option.additional";
 
     public static final ImmutableList<String> SKIP_ARGS=ImmutableList.of(
@@ -231,20 +233,22 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
    }
 
     private void migrateLaxJavaSettingsToJetty() {
-       Properties props = new Properties();
-       File laxFile = new File(getRootDir(), PERCUSSION_SERVER_LAX);
-       if (laxFile.exists()) {
-           try (InputStream fis = new FileInputStream(laxFile)) {
-               props.load(fis);
-           } catch (IOException e)
-           {
-               // Ignore
-           }
-       } else
-       {
-           log.info("No PercussionServer.lax file found. skipping");
-       }
-       String prop = props.getProperty(LAX_NL_JAVA_OPTION_ADDITIONAL,"");
+        File jvmIni = new File(getRootDir(), "jetty/base/start.d/jvm.ini");
+        Properties props = new Properties();
+        File laxFile = new File(getRootDir(), PERCUSSION_SERVER_LAX);
+        if (!laxFile.exists()) {
+            laxFile = new File(getRootDir(), PERCUSSION_SERVER_LINUX_LAX);
+        }
+        if (laxFile.exists()) {
+            try (InputStream fis = new FileInputStream(laxFile)) {
+                props.load(fis);
+            } catch (IOException e) {
+                // Ignore
+            }
+        } else {
+            log.info("No PercussionServer.lax file found. skipping");
+        }
+        String prop = props.getProperty(LAX_NL_JAVA_OPTION_ADDITIONAL, "");
         CommandLine execCommandLine = new CommandLine("sh");
         execCommandLine.addArguments(prop, false);
         String[] processedArgs = execCommandLine.getArguments();
@@ -254,69 +258,73 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
                         .noneMatch(arg::startsWith))
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        log.info("Migrating jvm args "+newArgs);
-        File jvmIni = new File(getRootDir(), "jetty/base/start.d/jvm.ini");
+        log.info("Migrating jvm args " + newArgs);
 
-        if (!jvmIni.exists())
-        {
+        if (!jvmIni.exists()) {
 
             File defaultIni = new File(getRootDir(), "jetty/defaults/start.d/jvm.ini");
-            if (defaultIni.exists())
-            {
+            if (defaultIni.exists()) {
                 try {
-                    FileUtils.copyFile(defaultIni,jvmIni);
+                    FileUtils.copyFile(defaultIni, jvmIni);
                 } catch (IOException e) {
                     log.error("Cannot copy default default/start.d/jvm.ini to jetty/base/start.d");
                 }
             }
 
         }
-        if (!jvmIni.exists())
-        {
+        if (!jvmIni.exists()) {
             log.error("Cannot find jvm.ini in jetty to update.  Will use default java options");
-        }
-        else
-        {
-
+        } else {
+            PSPurgableTempFile tempFile = null;
             try {
-                PSPurgableTempFile tempFile = new PSPurgableTempFile("psx",
+                tempFile = new PSPurgableTempFile("psx",
                         ".bin", null);
+            } catch (IOException e) {
+                log.error("Cannot create temp file. ");
+                return;
+            }
+            try (PrintWriter writer = new PrintWriter(tempFile)) {
 
-                try (BufferedReader reader = new BufferedReader(new FileReader(jvmIni));
-                     final PrintWriter writer = new PrintWriter(tempFile)
-                ) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(jvmIni))) {
 
                     String line;
-                    while ((line = reader.readLine()) != null)
-                    {
-                        if (line.startsWith("-Xmx") || line.startsWith("-Xms") || newArgs.contains(line)){
+                    while ((line = reader.readLine()) != null) {
+                        if (line.startsWith("-Xmx") || line.startsWith("-Xms")) {
                             //CMS-6725 - Upgrade is commenting out memory settings on upgrade
+                            if (newArgs == null || newArgs.size() == 0) {
+                                writer.println(line);
+                            }
+
+                        } else {
                             writer.println(line);
                         }
-                        else
-                            writer.println(line);
-
                     }
-                    //CMS-6220 - Don't update file if not needed.
-                    if(newArgs!=null && newArgs.size()>0) {
-                        writer.println("#args below added from previous PercussionServer.lax");
+
+
+                    if (newArgs != null && newArgs.size() > 0) {
                         for (String arg : newArgs) {
+                            log.info("#args from PercussionServer.lax :" + arg);
                             writer.println(arg);
                         }
-                        writer.println("#end of args from previous PercussionServer.lax");
                     }
+
                 } catch (IOException e) {
-                    log.error("Failed to write jvm.ini",e);
+                    log.error("Failed to read jvm.ini", e);
                 }
-                if (tempFile.exists())
-                    FileUtils.copyFile(tempFile, jvmIni);
-                tempFile.release();
-            } catch (IOException e) {
-                log.error("Failed to create temp file for jvm.ini",e);
+            } catch (FileNotFoundException e) {
+                log.error("Failed to find temp file for jvm.ini", e);
             }
+
+            try {
+                Files.copy(tempFile.toPath(), jvmIni.toPath(), java.nio.file.StandardCopyOption
+                        .REPLACE_EXISTING);
+                //Delete PercussionServer.lax file as didn't remove it in Install.xml
+                if (laxFile != null && laxFile.exists())
+                    Files.delete(laxFile.toPath());
+            } catch (IOException e) {
+                log.error("Failed to copy jvm.ini", e);
+            }
+            tempFile.release();
         }
-
     }
-
-
 }

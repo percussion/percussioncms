@@ -2186,9 +2186,8 @@ public class PSCmsObjectMgr
                     .setParameterList("ids", ids);
             int result = query.executeUpdate();
         PSItemSummaryCache cache = PSItemSummaryCache.getInstance();
-        if (cache != null && dateToSet != null)
+        if ((cache != null && dateToSet != null) && "m_contentPostDate".equals(fieldName))
             cache.updatePostDate(ids,dateToSet);
-            if (ms_log.isDebugEnabled())
                 ms_log.debug(String.format("Updating %s with %d ids, result updated %d rows", fieldName, ids.size(), result));
 
     }

@@ -294,8 +294,26 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
    public PSRelationship checkIfRelationshipAlreadyExists(PSRelationship rel){
       PSRelationshipProcessor processor = PSRelationshipProcessor.getInstance();
       PSRelationshipFilter filter = new PSRelationshipFilter();
-      filter.setDependentId(rel.getDependent().getId());
-      filter.setOwnerId(rel.getOwner().getId());
+      String name = rel.getConfig().getName();
+      if (name != null && name.trim().length() > 0)
+         filter.setName(name);
+
+      int ownerId = rel.getOwner().getId();
+      if (ownerId != -1)
+      {
+         int rev = rel.getOwner().getRevision();
+         filter.setOwner(new PSLocator(ownerId, rev));
+         filter.limitToOwnerRevision(true);
+      }
+
+      int dependentId = rel.getDependent().getId();
+      if (dependentId != -1) {
+         filter.setDependent(new PSLocator(dependentId, rel.getDependent().getRevision()));
+      }
+
+      String slotId = rel.getProperty(IPSHtmlParameters.SYS_SLOTID);
+      if (slotId != null && !slotId.trim().isEmpty())
+         filter.setProperty(IPSHtmlParameters.SYS_SLOTID, slotId + "");
       try {
          PSRelationshipSet relSet = processor.getRelationships(filter);
          for (int i = 0; i < relSet.size(); i++)
@@ -353,7 +371,7 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
     * Catalogs all dependents of the supplied owner that are related through
     * the provided relationship type.
     *
-    * @param type the relationship type to catalog, may be <code>null</code>
+    * @param relationshipType the relationship type to catalog, may be <code>null</code>
     *    but not empty, in which case the dependents of all relationship types
     *    will be returned. An exception is thrown if the requested type was
     *    not found in the relationship configuration.
@@ -933,7 +951,7 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
    /**
     * Get the relationship config for the supplied type.
     *
-    * @param type the relationship type for which to get the configuration,
+    * @param relationshipType the relationship type for which to get the configuration,
     *    not <code>null</code> or empty.
     * @return the relationship configuration, may be <code>null</code>.
     * @throws PSCmsException if the supplied relationship type is not defined
