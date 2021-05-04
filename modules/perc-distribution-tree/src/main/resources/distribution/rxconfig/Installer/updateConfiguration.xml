@@ -152,20 +152,6 @@
             </sequential>
         </macrodef>
 
-        <!-- Default jvm.ini -->
-        <add-config-if-missing srcFile="${install.dir}/jetty/defaults/start.d/jvm.ini" value="-XX:+DisableExplicitGC" />
-        <add-config-if-missing srcFile="${install.dir}/jetty/defaults/start.d/jvm.ini" value="-XX:+UseConcMarkSweepGC" />
-        <add-config-if-missing srcFile="${install.dir}/jetty/defaults/start.d/jvm.ini" value="-XX:NewSize=1000m" />
-        <add-config-if-missing srcFile="${install.dir}/jetty/defaults/start.d/jvm.ini" value="-XX:SurvivorRatio=16" />
-
-        <!-- Base jvm.ini -->
-        <add-config-if-missing srcFile="${install.dir}/jetty/base/start.d/jvm.ini" value="-XX:+DisableExplicitGC" />
-        <add-config-if-missing srcFile="${install.dir}/jetty/base/start.d/jvm.ini" value="-XX:+UseConcMarkSweepGC" />
-        <add-config-if-missing srcFile="${install.dir}/jetty/base/start.d/jvm.ini" value="-XX:NewSize=1000m" />
-        <add-config-if-missing srcFile="${install.dir}/jetty/base/start.d/jvm.ini" value="-XX:SurvivorRatio=16" />
-
-
-
         <echo>Updating user spring configuration...</echo>
         <replace dir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user/spring" value=" bean=" token=" local=">
             <include name="*.xml"/>
