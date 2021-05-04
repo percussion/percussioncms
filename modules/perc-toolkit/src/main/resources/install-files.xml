@@ -9,6 +9,14 @@
             </fileset>
         </copy>
 
+        <mkdir dir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/pages/psodemandpreview"/>
+        <copy todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/pages/psodemandpreview">
+            <fileset dir="${install.dir}/PercToolkitExits/InstallDir/webapp/WEB-INF/pages/psodemandpreview">
+                <include name="*.jsp"/>
+            </fileset>
+        </copy>
+
+
         <copy todir="${install.dir}/rxconfig/Workflow">
             <fileset dir="${install.dir}/PercToolkitExits/InstallDir/rxconfig">
                 <include name="**/*"/>

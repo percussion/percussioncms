@@ -38,7 +38,7 @@
     function getSiteSummaryDataFromServer (siteName, callback) {
         var url = $.perc_paths.SITE_STATS_SUMMARY + "/" + siteName;
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback($.PercServiceUtils.STATUS_ERROR,results);
             }
@@ -57,58 +57,8 @@
                var result = {id:sumData.siteId, statistics: statistics, issues: sumData.issues, abridged_log_message: sumData.abridgedErrorMessage};
                callback($.PercServiceUtils.STATUS_SUCCESS,result);
             }
-        }  
+        };
         $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,serviceCallback);
-        
-        /* Test Data****/
-       function fake(max) {
-           return Math.floor(Math.random() * max);
-       }
-       /*
-       var statistics, issues, result;
-       statistics = { 
-           "Pages": fake(1000), 
-           "Templates": fake(5), 
-           "Files": fake(170), 
-           "Style Sheets": fake(25), 
-           "Internal Links": fake(2400), 
-           //"links-external": fake(1019), 
-           //"links-broken": fake(213), 
-           // support new stats that might show up in the output
-           //docx: fake(24), 
-           //pptx: fake(217),
-           //foobar1: fake(24), 
-           //foobar2: fake(217),
-           //foobar3: fake(24), 
-           //foobar4: fake(217),
-           //foobar5: fake(24), 
-           //foobar6: fake(217)
-       };
-       function issue (txt) {
-           var uri, refrence, action, label = txt.toLowerCase();
-           uri = "//sites/www.foo.com/" + label +".htm";
-           name = label + ".htm";
-           action = "Link: //sites/www.food.com/missing" + label + ".htm with abacus" + label + ".htm";
-           reference = "//sites/www.foo.com/path/to/file/" + label + ".htm";
-           return {
-               type: "missing-" + label, 
-               resource: {name: name, uri: uri}, 
-               "ref-uri": reference,
-               suggestion: action
-           };
-       }
-       function issues(count) {
-           // NOTE: types must be code (not labels) they are used as css
-           var issues = [], types = ["page", "css", "asset", "random-thingy-1", "random-thingy-2"];
-           for (var i = 0; i < 100; i++) {
-               var type = Math.floor(Math.random() * 5);
-               issues.push(issue(types[type]));
-           }
-           return issues;
-       }
-       result = {id:siteId, statistics: statistics, issues: issues(100) };
-       callback($.PercServiceUtils.STATUS_SUCCESS, result);
-       */
     }
     
 })(jQuery);

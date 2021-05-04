@@ -71,7 +71,7 @@
             canForceDelete = true;
         }
         else
-        if (extractError != "") {
+        if (extractError !== "") {
             id = 'perc-finder-delete-error-open';
             content = extractError;
         }

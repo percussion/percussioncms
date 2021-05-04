@@ -47,39 +47,39 @@
             var siteName = "";
             if(finderPath) {
                 finderPath = finderPath.split("/");
-	            if (finderPath[1] == $.perc_paths.SITES_ROOT_NO_SLASH)
+	            if (finderPath[1] === $.perc_paths.SITES_ROOT_NO_SLASH)
 	            {
 	            	siteName = finderPath[2];
 	            }
             }
             var taborder = 30;
-            var dialogHtml = "<div>"
-                       + "<p class='perc-field-error' id='perc-save-error'></p><br/>"
-                       + "<span style='position: relative; float: right; margin-top: -44px; margin-right: -2px;'><label>* - denotes required field</label></span>"
-                       + "<form action='' method='GET'> ";
+            var dialogHtml = "<div>" +
+                        "<p class='perc-field-error' id='perc-save-error'></p><br/>" +
+                        "<span style='position: relative; float: right; margin-top: -44px; margin-right: -2px;'><label>* - denotes required field</label></span>" +
+                        "<form action='' method='GET'> ";
                        if(!templateId)
                        {
-                           dialogHtml = dialogHtml + "<label for='perc-select-template'>" +I18N.message("perc.ui.new.page.dialog@Select A Template") + "</label><br/>"
-                           + "<a class='prevPage browse left'></a>"
-                           + "<div class='perc-scrollable'><input type='hidden' id='perc-select-template' name='template'/>"
-                           + "<div class='perc-items'>"
-                           + "</div></div>"
-                           + "<a class='nextPage browse right' ></a>";
+                           dialogHtml = dialogHtml + "<label for='perc-select-template'>" +I18N.message("perc.ui.new.page.dialog@Select A Template") + "</label><br/>" +
+                            "<a class='prevPage browse left'></a>" +
+                            "<div class='perc-scrollable'><input type='hidden' id='perc-select-template' name='template'/>" +
+                            "<div class='perc-items'>" +
+                            "</div></div>" +
+                            "<a class='nextPage browse right' ></a>";
                        }
                        else
                        {
                            dialogHtml = dialogHtml + "<input type='hidden' id='perc-select-template' name='template' value='" + templateId + "'/>";
                        
                        }
-                       dialogHtml = dialogHtml + "<div style='float:left;>"
-                       + "<fieldset>"
-                       + "<label for='perc-page-linktext' class='perc-required-field'>" + (!templateId ? I18N.message( "perc.ui.newpagedialog.label@Page link text" ) : I18N.message( "perc.ui.newblogpostdialog.label@Post title" )) + ":</label> <br/> "
-                       + "<input type='text' tabindex='" + taborder + "' class='required' id='perc-page-linktext' name='page_linktext' maxlength='512'/> <br/> ";
+                       dialogHtml = dialogHtml + "<div style='float:left;>" +
+                        "<fieldset>" +
+                        "<label for='perc-page-linktext' class='perc-required-field'>" + (!templateId ? I18N.message( "perc.ui.newpagedialog.label@Page link text" ) : I18N.message( "perc.ui.newblogpostdialog.label@Post title" )) + ":</label> <br/> " +
+                        "<input type='text' tabindex='" + taborder + "' class='required' id='perc-page-linktext' name='page_linktext' maxlength='512'/> <br/> ";
 
                     if(!templateId)
                     {
-                        dialogHtml = dialogHtml 
-                            + "<input type='text' style = 'display:none' tabindex='" + taborder + "' id='perc-page-title' class='required' name='page_title' maxlength='512'/> "
+                        dialogHtml = dialogHtml +
+                             "<input type='text' style = 'display:none' tabindex='" + taborder + "' id='perc-page-title' class='required' name='page_title' maxlength='512'/> ";
                     }
                     else
                     {
@@ -87,21 +87,21 @@
                          * if the template id is set, we are creating a dialog for the blog post gadget
                          * so, for story 353, we do not show the page title field
                          */
-                        dialogHtml = dialogHtml 
-                            + "<label for='perc-page-title' class='perc-required-field' style='display: none;'>" + I18N.message( "perc.ui.newblogpostdialog.label@Hidden Post title" ) + ":</label> <br style='display: none;'/> "
-                            + "<input type='hidden' tabindex='" + taborder + "' id='perc-page-title' class='required' name='page_title' maxlength='512'/> <br style='display: none;'/>";
+                        dialogHtml = dialogHtml +
+                             "<label for='perc-page-title' class='perc-required-field' style='display: none;'>" + I18N.message( "perc.ui.newblogpostdialog.label@Hidden Post title" ) + ":</label> <br style='display: none;'/> " +
+                             "<input type='hidden' tabindex='" + taborder + "' id='perc-page-title' class='required' name='page_title' maxlength='512'/> <br style='display: none;'/>";
                     }
                     
                     // render the rest of the dialog
-                    dialogHtml = dialogHtml
-                       + "<label for='perc-page-name' class='perc-required-field'>" + (!templateId ? I18N.message( "perc.ui.newpagedialog.label@Page name" ) : I18N.message( "perc.ui.newblogpostdialog.label@Post name" )) + ":</label> <br/> "
-                       + "<input type='text' tabindex='" + taborder + "' class='required' id='perc-page-name' name='page_name' maxlength='255'/><br/> "
-                     + "</fieldset>"
-                     + "</div>"
-                       + "<div class='ui-layout-south'>" 
-                       + "<div id='perc_buttons' style='z-index: 100;'></div>"
-                       +  "</div>"
-                       + "</form> </div>";
+                    dialogHtml = dialogHtml +
+                        "<label for='perc-page-name' class='perc-required-field'>" + (!templateId ? I18N.message( "perc.ui.newpagedialog.label@Page name" ) : I18N.message( "perc.ui.newblogpostdialog.label@Post name" )) + ":</label> <br/> " +
+                        "<input type='text' tabindex='" + taborder + "' class='required' id='perc-page-name' name='page_name' maxlength='255'/><br/> " +
+                      "</fieldset>" +
+                      "</div>" +
+                        "<div class='ui-layout-south'>" +
+                        "<div id='perc_buttons' style='z-index: 100;'></div>" +
+                         "</div>" +
+                        "</form> </div>";
                        
             // if we are in the new blog post dialog, the width is 
             var dialogWidth = !templateId ?  800 : 420;
@@ -144,7 +144,7 @@
                 var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(request);
                 var code = $.PercServiceUtils.extractFieldErrorCode(request);
                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), id:'perc-error-dialog-confirm', content: defaultMsg, okCallBack:function(){
-                        if (code == 'page.alreadyExists') {
+                        if (code === 'page.alreadyExists') {
                             $('#perc-page-name').focus();
                         }
                      }
@@ -157,7 +157,7 @@
             
             function _submit(site)  {
             	$.PercSiteService.getSiteProperties(site, function(status, result) {
-					if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+					if(status === $.PercServiceUtils.STATUS_SUCCESS) {
 						var fileName = $(dialog.find('#perc-page-name')[0]).val();
 						var fileExt = result.SiteProperties.defaultFileExtention;
 						if (fileExt && fileName.lastIndexOf(".") < 0) {
@@ -215,7 +215,7 @@
                 $('#perc-select-template_perc_is').attr("style", selectLocalStyle);
                 
                 var queryPath;
-                if (finderPath[1] == $.perc_paths.SITES_ROOT_NO_SLASH)
+                if (finderPath[1] === $.perc_paths.SITES_ROOT_NO_SLASH)
                 {
                    queryPath = $.perc_paths.TEMPLATES_BY_SITE + '/' + finderPath[2];
                 }
@@ -258,18 +258,18 @@
                  */
                 function createTemplateEntry(data)
                 {
-                    var temp = "<div class=\"item\">"
-                       + "<div class=\"item-id\">@ITEM_ID@</div>"
-                       + "    <table>"
-                       + "        <tr><td align='left'>"
-                       + "            <img style='border:1px solid #E6E6E9' height = '86px' width = '122px' src=\"@IMG_SRC@\"/>" 
-                       + "        </td></tr>"
-                       + "        <tr><td>"
-                       + "            <div class='perc-text-overflow-container' style='text-overflow:ellipsis;width:122px;overflow:hidden;white-space:nowrap'>"
-                       + "                <div class='perc-text-overflow' style='float:none' title='@ITEM_TT@' alt='@ITEM_TT@'>@ITEM_LABEL@</div>"
-                       + "        </td></tr>"
-                       + "    </table>"        
-                       + "</div>";
+                    var temp = "<div class=\"item\">" +
+                        "<div class=\"item-id\">@ITEM_ID@</div>" +
+                        "    <table>" +
+                        "        <tr><td align='left'>" +
+                        "            <img style='border:1px solid #E6E6E9' height = '86px' width = '122px' src=\"@IMG_SRC@\"/>" +
+                        "        </td></tr>" +
+                        "        <tr><td>" +
+                        "            <div class='perc-text-overflow-container' style='text-overflow:ellipsis;width:122px;overflow:hidden;white-space:nowrap'>" +
+                        "                <div class='perc-text-overflow' style='float:none' title='@ITEM_TT@' alt='@ITEM_TT@'>@ITEM_LABEL@</div>" +
+                        "        </td></tr>" +
+                        "    </table>" +
+                        "</div>";
                        return temp.replace(/@IMG_SRC@/, data.imageThumbPath)
                           .replace(/@ITEM_ID@/, data.id)
                           .replace(/@ITEM_LABEL@/, data.name)
@@ -326,6 +326,6 @@
         
         }// End open dialog
         return newPageDialogApi;
-    }
+    };
 
 })(jQuery);

@@ -39,7 +39,7 @@
                 var compName = value;
                 if(self.getWrapper(compName)!=null){
                     alreadyInUse = true;
-                    return;
+
                 }
             });
             if(alreadyInUse) {
@@ -59,7 +59,7 @@
             $(this.wrappers).each(function(){
                 if(this.isComponentInWrapper(componentname, true)){
                     wrapper = this;
-                    return;
+
                 }
             });
             return wrapper;
@@ -72,7 +72,8 @@
         handleWrapperComplete:function(wrapperName){
             this.wrappers.splice($.inArray(wrapperName,this.wrappers),1);
             this.logMessage("Removed wrapper '" + wrapperName + "' from manager");
-            if(this.wrappers.length == 0){
+
+            if(this.wrappers.length === 0){
                 $("#perc-ui-view-indicator").removeClass("perc-ui-view-processing").addClass("perc-ui-view-ready");
                 this.logMessage("The view is ready.");
             }
@@ -92,23 +93,23 @@
             processedComponents : [],
             components : componentArray,
             isWrapperComplete : function(){
-                return this.wrapperStatus == "processed";
+                return this.wrapperStatus === "processed";
             },
             isComponentInWrapper : function(componentName, processedFlag){
-                return processedFlag?$.inArray(componentName, this.components)!=-1 && $.inArray(componentName, this.processedComponents) == -1 : $.inArray(componentName, this.components) != -1;;
+                return processedFlag?$.inArray(componentName, this.components)!==-1 && $.inArray(componentName, this.processedComponents) === -1 : $.inArray(componentName, this.components) !== -1;
             },
             handleComponentProgress:function(compName, progress){
-                if($.inArray(compName, this.components) == -1){
+                if($.inArray(compName, this.components) === -1){
                     $.PercViewReadyManager.logMessage("The component '" + compName + "' doesn't exist in the wrapper." + this.wrapperName);
                     return;
                 }
-                if(progress == "complete"){
+                if(progress === "complete"){
                     this.processedComponents.push(compName);
                     var compWrapper = $("#" + compName);
                     compWrapper.remove();
                     var component = $("[perc-ui-component='" + compName + "']");
                     component.addClass("perc-ui-component-ready").removeClass("perc-ui-component-processing");
-                    if(this.components.length == this.processedComponents.length){
+                    if(this.components.length === this.processedComponents.length){
                         this.wrapperStatus = "processed";
                         $.PercViewReadyManager.handleWrapperComplete(this.wrapperName);
                     }
@@ -141,5 +142,5 @@
             }
         };
         return wrapperApi;
-    }
+    };
 })(jQuery);

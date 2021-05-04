@@ -24,6 +24,7 @@
 package com.percussion.pagemanagement.dao;
 
 import com.percussion.pagemanagement.data.PSPage;
+import com.percussion.searchmanagement.data.PSSearchCriteria;
 import com.percussion.share.service.exception.PSValidationException;
 
 import java.util.Collection;
@@ -107,6 +108,8 @@ public interface IPSPageDaoHelper
      * @return list of page IDs, never <code>null</code>, may be empty.
      */
     Collection<Integer> findImportedPageIdsByTemplate(String templateId, List<Integer> pages);
+
+    public Collection<Integer> getContentIdsForFetchingByStatus(PSSearchCriteria criteria, List<Integer> contentIDs);
     
     /**
      * Makes a query to find the link text that is being used by the page in the

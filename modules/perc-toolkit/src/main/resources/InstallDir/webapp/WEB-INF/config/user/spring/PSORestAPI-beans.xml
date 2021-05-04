@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:cxf="http://cxf.apache.org/core"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+http://cxf.apache.org/core
+http://cxf.apache.org/schemas/core.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.2.xsd
+http://cxf.apache.org/jaxrs
+http://cxf.apache.org/schemas/jaxrs.xsd">
+
+	<context:component-scan base-package="com.percussion.pso.restservice" />
+
+	<bean id="methodCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref bean="sys_cacheManager" />
+		</property>
+		<property name="cacheName">
+			<value>com.percussion.pso.restservice.cache.METHOD_CACHE</value>
+		</property>
+	</bean>
+
+	<bean id="methodCacheInterceptor"
+		class="com.percussion.pso.restservice.utils.MethodCacheInterceptor">
+		<property name="cache">
+			<ref bean="methodCache" />
+		</property>
+	</bean>
+
+	<bean id="methodCachePointCut"
+		class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="methodCacheInterceptor" />
+		</property>
+		<property name="patterns">
+			<list>
+				<value>.*getWorkflowName</value>
+				<value>.*getStateName</value>
+				<value>.*getStateName</value>
+				<value>.*getSiteName</value>
+				<value>.*getFolderPath</value>
+				<value>.*getSlotName</value>
+				<value>.*getTemplateName</value>
+				<value>.*getContentTypeName</value>
+				<value>.*getCommunityName</value>
+				<value>.*getCommunityId</value>
+				<value>.*getItemDefinition</value>
+			</list>
+		</property>
+	</bean>
+	<!-- This needs work, need to figure out how to specify specific email events that code can wire itself to -->
+	<bean id="psoImportSystemInfo" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<bean class="com.percussion.pso.restservice.support.impl.ImportItemSystemInfoImpl" >
+	<!--  			<property name="sys_email_from"></property>
+				<property name="sys_email_to"></property>
+				<property name="email_level"></property>
+		        <property name="email_velo_template_names">
+					<list>
+						<value>importChangeNotificationEmail</value>
+						<value>unexpectedExceptionNotificationEmail</value>
+					</list>
+				</property>
+	-->
+			</bean>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>methodCachePointCut</value>
+			</list>
+		</property>
+	</bean>
+
+
+</beans>

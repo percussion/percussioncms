@@ -56,8 +56,7 @@
 
     function getThemeList(callback)
     {
-        $.ajax(
-            {
+        $.ajax({
                 url: $.perc_paths.THEME_SUMMARY_ALL,
                 // replace with constant.
                 dataType: "json",
@@ -71,7 +70,6 @@
                     callback(false, [textstatus, error]);
                 }
             });
-        return;
     }
 
     function getThemeCSS(themeName, callback)
@@ -84,9 +82,8 @@
                 type: "GET",
                 success: function(data, textstatus)
                 {
-                    $cssObject = $(data);
-
-                    $cssData = $cssObject.find("ThemeCSS CSS");
+                    var $cssObject = $(data);
+                    var $cssData = $cssObject.find("ThemeCSS CSS");
                     callback(true, $cssData);
 
                 },
@@ -95,7 +92,6 @@
                     callback(false, [textStatus, error]);
                 }
             });
-        return;
     }
 
     /**
@@ -111,13 +107,11 @@
      */
     function getRegionCSS(themeName, templateName, outerRegionName, regionName, callback)
     {
-        var self = this;
-
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.REGION_CSS + "/" + themeName  + "/" + templateName + "/" + outerRegionName + "/" + regionName,
             $.PercServiceUtils.TYPE_GET, false, function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -138,13 +132,11 @@
      */
     function regionCSSPrepareForEdit(themeName, templateName, callback)
     {
-        var self = this;
-
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.REGION_CSS_PREPARE_FOR_EDIT + "/" + themeName  + "/" + templateName,
             $.PercServiceUtils.TYPE_POST, false, function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -164,13 +156,11 @@
      */
     function regionCSSClearCache(themeName, templateName, callback)
     {
-        var self = this;
-
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.REGION_CSS_CLEAR_CACHE + "/" + themeName  + "/" + templateName,
             $.PercServiceUtils.TYPE_DELETE, false, function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -192,13 +182,11 @@
      */
     function regionCSSMerge(themeName, templateName, deletedRegionsJSON, callback)
     {
-        var self = this;
-
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.REGION_CSS_MERGE + "/" + themeName  + "/" + templateName,
             $.PercServiceUtils.TYPE_POST, false, function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -219,13 +207,11 @@
      */
     function saveRegionCSS(themeName, templateName, regionJSON, callback)
     {
-        var self = this;
-
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.REGION_CSS + "/" + themeName  + "/" + templateName,
             $.PercServiceUtils.TYPE_POST, false, function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -250,13 +236,11 @@
      */
     function deleteRegionCSS(themeName, templateName, outerRegionName, regionName, callback)
     {
-        var self = this;
-
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.REGION_CSS + "/" + themeName  + "/" + templateName + "/" + outerRegionName + "/" + regionName,
             $.PercServiceUtils.TYPE_DELETE, false, function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -275,8 +259,7 @@
      */
     function deleteTemplate(templateId, callback)
     {
-        $.ajax(
-            {
+        $.ajax({
                 url: $.perc_paths.TEMPLATE_LOAD_SAVE + "/" + templateId,
                 type: "DELETE",
                 success: function(data, textStatus)
@@ -290,7 +273,6 @@
                     callback(false, results);
                 }
             });
-        return;
     }
 
     /**
@@ -355,7 +337,7 @@
         function parseAssetDropCriteria(json)
         {
             var assetDropCriteria = {};
-            $.each(json['AssetDropCriteria'], function()
+            $.each(json.AssetDropCriteria, function()
             {
                 assetDropCriteria[this.widgetId] = new $.PercAssetDropCriteriaModel(
                     this.widgetId,
@@ -430,7 +412,7 @@
 
         var serviceCallback = function(status, results)
         {
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, [results.request, results.textstatus, results.error]);
             }
@@ -454,12 +436,10 @@
      */
     function getSiteProperties(site, callback)
     {
-        var self = this;
-
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.SITE_GET_PROPERTIES + "/" + site, $.PercServiceUtils.TYPE_GET, false, function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -481,7 +461,7 @@
         var url = $.perc_paths.UPDATE_INSPECTED_ELEMENT;
         var serviceCallback = function(status, results)
         {
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false, [results.request, results.textstatus, results.error]);
             }
@@ -544,7 +524,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data.TemplateSummary);
                 }
@@ -581,13 +561,13 @@
             false,
             function templateCreateFromUrlAsyncCallback(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
                 else
                 {
-                    defaultMsg = I18N.message("perc.ui.site.service@Unexpected Error Importing");
+                    var defaultMsg = I18N.message("perc.ui.site.service@Unexpected Error Importing");
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
                 }
             },
@@ -611,7 +591,7 @@
                 var data,
                     serviceStatus = $.PercServiceUtils.STATUS_SUCCESS;
 
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     // NOTE that the progress could be -1, but that is something that the user of
                     // the service must check, the request has been successful
@@ -646,7 +626,7 @@
                 var data,
                     serviceStatus = $.PercServiceUtils.STATUS_SUCCESS;
 
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     data = result.data.TemplateSummary;
                 }
@@ -680,7 +660,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data.Template);
                 }
@@ -707,7 +687,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -724,7 +704,7 @@
     /**
      * Migrate the content for the supplied page/pages.
      * @param {string} templateId - Id of the selected template
-     * @param {string} itemId - itemId can be a single page Id or a string 'ALL' (ALL == Apply template change to all dirty pages)
+     * @param {string} itemId - itemId can be a single page Id or a string 'ALL' (ALL === Apply template change to all dirty pages)
      * @param {function} callback - Callback function to re-paint the page list for a given template
      */
 
@@ -735,7 +715,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }

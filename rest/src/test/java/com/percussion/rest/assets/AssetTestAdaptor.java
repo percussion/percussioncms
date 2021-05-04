@@ -177,13 +177,13 @@ public class AssetTestAdaptor  implements IAssetAdaptor {
 	}
 
 	@Override
-	public int archiveAllAssets(URI baseUri, String folder) {
+	public int archiveAllAsets(URI baseUri, String folder) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int submitForReviewAllAssets(URI baseUri, String folder) {
+	public int submitForReviewAllAsets(URI baseUri, String folder) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

@@ -42,15 +42,13 @@
 
     
     function getCategories(sitename, callback){
-
-        var self = this;
          
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.CAT_ALL + "/" + sitename,
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 } 
                 else {
@@ -62,15 +60,13 @@
     }
     
     function editCategories(categories, sitename, callback) {
-    	
-    	 var self = this;
-       
+        
     	$.PercServiceUtils.makeJsonRequest(
             $.perc_paths.CAT_UPDATE + "/" + sitename,
             $.PercServiceUtils.TYPE_POST,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 } 
                 else {
@@ -83,14 +79,12 @@
     }
 
     function getTabLockData(callback) {
-    	var self = this;
-        
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.CAT_LOCK_INFO,
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 } 
                 else {
@@ -102,16 +96,14 @@
     }
     
     function lockCategoryTab(callback) {
-    	
-    	 var self = this;
-    	 var currentDate = (new Date()).toString();
+        var currentDate = (new Date()).toString();
          
      	$.PercServiceUtils.makeJsonRequest(
              $.perc_paths.CAT_LOCK_TAB + "/" + currentDate,
              $.PercServiceUtils.TYPE_POST,
              false,
              function(status, result) {
-                 if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                 if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                      callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                  } 
                  else {
@@ -123,15 +115,12 @@
     }
     
     function removeCatTabLock(callback) {
-    	
-    	var self = this;
-        
      	$.PercServiceUtils.makeJsonRequest(
              $.perc_paths.CAT_REMOVE_TAB_LOCK,
              $.PercServiceUtils.TYPE_POST,
              false,
              function(status, result) {
-                 if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                 if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                      callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                  } 
                  else {
@@ -143,9 +132,7 @@
     }
     
     function publishToDTS(deliveryServer, sitename, callback) {
-
-    	var self = this;
-        if (sitename==null || typeof sitename == "undefined" || sitename.length == 0)
+        if (sitename==null || typeof sitename === "undefined" || sitename.length === 0)
         {
             sitename="all";
         }
@@ -154,7 +141,7 @@
             $.PercServiceUtils.TYPE_POST,
             false,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     callback($.PercServiceUtils.STATUS_SUCCESS);
                 } 
                 else {

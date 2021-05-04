@@ -52,7 +52,7 @@
         // singleton to keep track of dirty state across various types of resources such as pages, templates and assets
         var dirtyController = $.PercDirtyController;
 
-        if ($.PercNavigationManager.getView() == $.PercNavigationManager.VIEW_EDITOR)
+        if ($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDITOR)
         {
             $.perc_iframe_fix($('#frame'));
         }
@@ -106,8 +106,8 @@
             $(".perc-page-status").show();
             $(".perc-page-name").show();
             getPageStatus(currentPageId);
-            var pglabel = $.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_EDIT?I18N.message('perc.ui.page.label@Editing Page'):I18N.message('perc.ui.page.label@Viewing Page');
-            var pgType = $.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_EDIT?"page-editing":"page-viewing";
+            var pglabel = $.PercNavigationManager.getMode() === $.PercNavigationManager.MODE_EDIT?I18N.message('perc.ui.page.label@Editing Page'):I18N.message('perc.ui.page.label@Viewing Page');
+            var pgType = $.PercNavigationManager.getMode() === $.PercNavigationManager.MODE_EDIT?"page-editing":"page-viewing";
             if (pageName)
             {
                 var titleValue = $.PercNavigationManager.getPath();
@@ -191,7 +191,7 @@
             var viewDropdown = $("#perc-dropdown-view");
 
 
-            if ($.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_READONLY)
+            if ($.PercNavigationManager.getMode() === $.PercNavigationManager.MODE_READONLY)
             {
                 //Action drop down menu in page readonly mode
                 actionsDropdown.PercDropdown(
@@ -218,7 +218,7 @@
             function _addMyPagesAction(pageId)
             {
                 $.PercPageService.isMyPage(pageId, function(status, result){
-                    if(status == $.PercServiceUtils.STATUS_ERROR)
+                    if(status === $.PercServiceUtils.STATUS_ERROR)
                     {
                         $(".perc-my-pages-action").addClass("perc-my-pages-error").attr("title", I18N.message("perc.ui.page.mypages@Error retrieving status"));
                     }
@@ -262,7 +262,7 @@
             function _removeFromMyPages(pageId)
             {
                 $.PercPageService.removeFromMyPages(pageId, function(status, result){
-                    if(status == $.PercServiceUtils.STATUS_ERROR)
+                    if(status === $.PercServiceUtils.STATUS_ERROR)
                     {
                         $.perc_utils.alert_dialog({title: I18N.message("perc.ui.labels@Error"),content: result});
                     }
@@ -410,7 +410,7 @@
                 });
                 $.PercAssetService.getUnusedAssets(currentPageId, populateOrphanAssets);
                 // View dropdowm in editmode
-                if ($.PercNavigationManager.getView() == $.PercNavigationManager.VIEW_EDITOR){
+                if ($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDITOR){
                     var viewDropDownData =
                         {
                             percDropdownRootClass: "perc-dropdown-page-view",
@@ -434,7 +434,7 @@
                 }
 
                 // Add workflow transition buttons
-                if (currentTabIndex == defaultTabIndex) loadTab(defaultTabIndex);
+                if (currentTabIndex === defaultTabIndex) loadTab(defaultTabIndex);
 
                 // Init Orphan Assets Menu Actions
                 initOrphanAssetsMenu();
@@ -462,7 +462,7 @@
         {
             $("#perc_orphan_assets_expander").show();
 
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 $("#perc_orphan_assets_maximizer").addClass("perc-disabled");
                 $("#perc_orphan_assets_expander").addClass("perc-disabled");
@@ -605,7 +605,7 @@
 
             // Is the orphan assets list empty?
             var remainingAssets = $("#perc_asset_library").find(".perc-orphan-assets-list").find("a");
-            if (remainingAssets.length == 0)
+            if (remainingAssets.length === 0)
             {
                 $.fn.percOrphanAssetsMaximizer(P);
                 $("#perc_orphan_assets_expander").addClass("perc-disabled").unbind();
@@ -700,7 +700,7 @@
                 }
             });
 
-        if ($.PercNavigationManager.getView() == $.PercNavigationManager.VIEW_EDITOR && $.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_EDIT)
+        if ($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDITOR && $.PercNavigationManager.getMode() === $.PercNavigationManager.MODE_EDIT)
         {
             $("#perc-wid-lib-expander").click(function()
             {
@@ -718,15 +718,15 @@
                     return;
                 }
             }
-            if (index == CONTENT_TAB)
+            if (index === CONTENT_TAB)
             {
                 loadContent(currentPageId);
             }
-            else if (index == LAYOUT_TAB)
+            else if (index === LAYOUT_TAB)
             {
                 loadLayout(currentPageId);
             }
-            else if (index == STYLES_TAB)
+            else if (index === STYLES_TAB)
             {
                 loadCss(currentPageId);
             }
@@ -953,7 +953,7 @@
                 $.PercItemPublisherService.getScheduleDates(pageId, function(status, result)
                 {
                     var scheduleDates = eval("(" + result + ")").ItemDates;
-                    if (scheduleDates.startDate && pageStatus == I18N.message("perc.ui.page.general@Pending"))
+                    if (scheduleDates.startDate && pageStatus === I18N.message("perc.ui.page.general@Pending"))
                     {
                         $(".perc-page-status-status").html(I18N.message("perc.ui.page.general@Approved For") + " " + scheduleDates.startDate);
                     }
@@ -978,7 +978,7 @@
             var startDate = scheduleDates.startDate;
             var itemType = view == $.PercNavigationManager.VIEW_EDIT_ASSET ? "Asset" : "Page";
             var itemId = scheduleDates.itemId;
-            if (startDate != "")
+            if (startDate !== "")
             {
                 var settings = {
                     id: "perc-confirm-publish-dialog",
@@ -1019,11 +1019,11 @@
         {
             var itemId = callbackData.pageId;
             var trName = callbackData.trName;
-            var itemType = view == $.PercNavigationManager.VIEW_EDIT_ASSET ? "Asset" : "Page";
+            var itemType = view === $.PercNavigationManager.VIEW_EDIT_ASSET ? "Asset" : "Page";
             var siteName = $.PercNavigationManager.getSiteName();
 
             // The user can create a page without selecting a site
-            if (siteName === undefined && itemType == "Page")
+            if (siteName === undefined && itemType === "Page")
             {
                 // Retrieve the page path folder by getting its data using its id,
                 // Stripe the //Sites prefix from it and retrieve the site's name
@@ -1039,7 +1039,7 @@
                             { */
                                 doIfDefaultServerNotModified(siteName, function()
                                 {
-                                    if (trName == I18N.message("perc.ui.page.menu@Publish"))
+                                    if (trName === I18N.message("perc.ui.page.menu@Publish"))
                                     {
                                         $.PercItemPublisherService.getScheduleDates(itemId, function(status, result)
                                         {
@@ -1059,17 +1059,17 @@
                                             }
                                         });
                                     }
-                                    else if (trName == I18N.message("perc.ui.page.menu@Take Down"))
+                                    else if (trName === I18N.message("perc.ui.page.menu@Take Down"))
                                     {
                                         // $.PercBlockUI();
                                         $.PercItemPublisherService.takeDownItem(itemId, itemType, _afterPublish);
                                     }
-                                    else if(trName == I18N.message("perc.ui.page.menu@Stage"))
+                                    else if(trName === I18N.message("perc.ui.page.menu@Stage"))
                                     {
                                         $.PercBlockUI();
                                         $.PercItemPublisherService.publishToStaging(itemId, itemType, _afterPublish);
                                     }
-                                    else if(trName == I18N.message("perc.ui.page.menu@Remove from Staging"))
+                                    else if(trName === I18N.message("perc.ui.page.menu@Remove from Staging"))
                                     {
                                         $.PercBlockUI();
                                         $.PercItemPublisherService.removeFromStaging(itemId, itemType, _afterPublish);
