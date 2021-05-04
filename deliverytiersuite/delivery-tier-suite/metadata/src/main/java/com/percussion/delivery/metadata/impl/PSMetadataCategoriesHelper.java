@@ -81,7 +81,7 @@ public class PSMetadataCategoriesHelper
                             {
                                 category = category.trim().substring(1);
                             }
-                            countCategories(category, categoryTree.getChildren(), parsedCategories, "");
+                            countCategories(category, 1,categoryTree.getChildren(), parsedCategories, "");
                         }
                     }
                 }
@@ -124,10 +124,10 @@ public class PSMetadataCategoriesHelper
                     {
                         category = category.trim().substring(1);
                     }
-                    countCategories(category, categoryTree.getChildren(), parsedCategories, "");
+                    Long countL = (Long)c[0];
+                    int count = countL.intValue();
+                    countCategories(category,count, categoryTree.getChildren(), parsedCategories, "");
                 }
-
-
                 parsedCategories = new ArrayList<String>();
             }
 
@@ -154,8 +154,9 @@ public class PSMetadataCategoriesHelper
      * @param currentPath assumed not <code>null</code>.
      * 
      */
-    private void countCategories(String pathCategory, List<PSMetadataRestCategory> childrens,
-            List<String> parsedCategories, String currentPath)
+
+    private void countCategories(String pathCategory,int count, List<PSMetadataRestCategory> childrens,
+                                 List<String> parsedCategories, String currentPath)
     {
         if (!pathCategory.isEmpty())
         {
@@ -182,19 +183,18 @@ public class PSMetadataCategoriesHelper
             {
                 if (pathCategory.equals(""))
                 {
-                    categoryNode.getCount().setFirst(categoryNode.getCount().getFirst() + 1);
+                    categoryNode.getCount().setFirst(count);
                 }
                 else
                 {
-                    categoryNode.getCount().setSecond(categoryNode.getCount().getSecond() + 1);
+                    categoryNode.getCount().setSecond(categoryNode.getCount().getSecond() + count);
                 }
                 parsedCategories.add(currentPath);
             }
 
-            countCategories(pathCategory, categoryNode.getChildren(), parsedCategories, currentPath);
+            countCategories(pathCategory,count, categoryNode.getChildren(), parsedCategories, currentPath);
         }
     }
-
     public void alphaOrderCategories(PSMetadataRestCategory categoryTree)
     {
         // Sort the children
