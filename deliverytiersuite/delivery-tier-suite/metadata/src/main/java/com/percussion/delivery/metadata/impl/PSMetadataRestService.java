@@ -300,11 +300,11 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
 
         try
         {
-            //Getting all pages that match query
-            List<Object[]> cats = queryService.executeCategoryQuery(metadataQuery);
+            PSPair<List<IPSMetadataEntry>, Integer> metadataResults = queryService.executeQuery(metadataQuery);
+            List<IPSMetadataEntry> results = metadataResults.getFirst();
             PSMetadataCategoriesHelper psMetadataCategoriesHelper = new PSMetadataCategoriesHelper();
 
-            return psMetadataCategoriesHelper.processCategorySummary(cats);
+            return psMetadataCategoriesHelper.processCategories(results);
 
         }
         catch (Exception e)
