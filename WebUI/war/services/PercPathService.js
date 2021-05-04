@@ -50,7 +50,7 @@
         // Retrieve the corresponding displayformat for the current path
         var displayFormatName = $.perc_utils.getDisplayFormat($.PercNavigationManager.getPath());
         // Search View has no path asigned, so it should always be the default one
-        if ($.Percussion.getCurrentFinderView() == $.Percussion.PERC_FINDER_SEARCH_RESULTS || $.Percussion.getCurrentFinderView() == $.Percussion.PERC_FINDER_RESULT)
+        if ($.Percussion.getCurrentFinderView() === $.Percussion.PERC_FINDER_SEARCH_RESULTS || $.Percussion.getCurrentFinderView() === $.Percussion.PERC_FINDER_RESULT)
             displayFormatName = $.perc_utils.getDisplayFormat("/");
         //var url = "http://localhost:9982/Rhythmyx/services/pathmanagement/path/item/displayFormat?userid=100";
         var url = $.perc_paths.DISPLAY_FORMAT + displayFormatName;
@@ -61,7 +61,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -87,7 +87,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -120,14 +120,13 @@
      */
     function getPathItemForPath(path, callback)
     {
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.PATH_ITEM + path,
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -161,14 +160,13 @@
      */
     function getPathItemById(id, callback)
     {
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.PATH_ITEM_BY_ID + "/" + id,
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -208,7 +206,7 @@
      */
     function getItemPropertiesByWorkflowState(path, workflow, state, callback)
     {
-        if(state == null)
+        if(state === null)
             state = "";
         var obj = {ItemByWfStateRequest: {
                 path: path,
@@ -221,7 +219,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -255,7 +253,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS);
                 }
@@ -280,14 +278,13 @@
      */
     function createNewFolder(path, callback)
     {
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.PATH_ADD_NEW_FOLDER + path,
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -308,14 +305,13 @@
      */
     function getFolderPathItem(path, callback)
     {
-        var self = this;
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.PATH_FOLDER +  $.perc_utils.encodeURL(path),
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -345,7 +341,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -376,7 +372,7 @@
             dataType: "text",
             type: 'GET',
             success: function(data) {
-                cbVdfSuccess(data, path, name, type, callback)},
+                cbVdfSuccess(data, path, name, type, callback);},
             error: cbVdfErrors });
     }
 
@@ -427,10 +423,10 @@
         $.PercServiceUtils.makeRequest(
             $.perc_paths.PATH_LAST_EXISTING + path,
             $.PercServiceUtils.TYPE_GET,
-            (sync != null && sync) ? true : false,
+            (sync !== null && sync) ? true : false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -457,7 +453,7 @@
             false,
             function(status, result)
             {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 }
@@ -482,7 +478,7 @@
         var shouldPurge = path.indexOf($.perc_paths.RECYCLING_ROOT_NO_SLASH) !== -1;
 
         var title;
-        if (type == "section")
+        if (type === "section")
         {
             title = I18N.message( "perc.ui.finder.section.delete@Title" );
         }
@@ -511,17 +507,11 @@
                     skipItems=$("#perc_delete_folder_force").get(0).checked?"NO":"YES";
                 }
                 var guid;
-
-                if(typeof $('a.perc-listing-category-FOLDER.perc_last_selected').attr("id")!=='undefined'){
-                    guid = $('a.perc-listing-category-FOLDER.perc_last_selected').attr("id").split("perc-finder-listing-")[1];
-                }else if(typeof $('a.perc-listing-category-SECTION_FOLDER.perc_last_selected').attr("id")!=='undefined'){
+                if(typeof $('a.perc-listing-category-FOLDER.perc_last_selected').attr("id")==='undefined'){
                     guid = $('a.perc-listing-category-SECTION_FOLDER.perc_last_selected').attr("id").split("perc-finder-listing-")[1];
-                }else if(typeof $('a.perc-listing-category-SYSTEM.perc_last_selected').attr("id")!=='undefined'){
-                    guid = $('a.perc-listing-category-SYSTEM.perc_last_selected').attr("id").split("perc-finder-listing-")[1];
                 }else{
                     guid = $('a.perc-listing-category-FOLDER.perc_last_selected').attr("id").split("perc-finder-listing-")[1];
                 }
-
                 //var guid = $('a.perc-listing-category-FOLDER.perc_last_selected').attr("id").split("perc-finder-listing-")[1];
                 var delCriteria  = {"DeleteFolderCriteria":{"path":path,"skipItems":skipItems, "shouldPurge": shouldPurge, "guid":guid}};
                 //var delCriteria  = {"DeleteFolderCriteria":{"path":path,"skipItems":skipItems, "shouldPurge": shouldPurge}};
@@ -555,11 +545,11 @@
     function cbVdfErrors(error)
     {
         var errorMsg = $.PercServiceUtils.extractDefaultErrorMessage(errors);
-        var defMessage = I18N.message("perc.ui.path.service@Failed to Delete Folder")
+        var defMessage = I18N.message("perc.ui.path.service@Failed to Delete Folder");
         $.perc_utils.alert_dialog( {
             id: 'perc-finder-delete-error',
             title: I18N.message("perc.ui.path.service@Delete Folder Error"),
-            content: (errorMsg != "")? errorMsg : defMessage});
+            content: (errorMsg !== "")? errorMsg : defMessage});
     }
 
     /**
@@ -568,11 +558,11 @@
     function cbDfErrors(errors)
     {
         var errorMsg = $.PercServiceUtils.extractDefaultErrorMessage(errors);
-        var defMessage = I18N.message("perc.ui.path.service@Failed to Delete Folder")
+        var defMessage = I18N.message("perc.ui.path.service@Failed to Delete Folder");
         $.perc_utils.alert_dialog( {
             id: 'perc-finder-delete-error',
             title: I18N.message("perc.ui.path.service@Delete Folder Error"),
-            content: (errorMsg != "")? errorMsg : defMessage});
+            content: (errorMsg !== "")? errorMsg : defMessage});
     }
 
     /**
@@ -584,7 +574,7 @@
         var warning;
         var middle = "";
         var del = "";
-        if (folderType == "Assets")
+        if (folderType === "Assets")
         {
             if (shouldPurge) {
                 warning = I18N.message("perc.ui.finder.folder.purge@WarningAssets",[name]);
@@ -611,14 +601,14 @@
                     I18N.message( "perc.ui.finder.folder.delete@DeleteLiveAssets" ) + "</label>";
             }
         }
-        else if (folderType == "fsfolder")
+        else if (folderType === "fsfolder")
         {
             confirm = "perc.ui.finder.fsfolder.delete@Confirm";
             warning = "perc.ui.finder.fsfolder.delete@Warning";
         }
         else
         {
-            if (folderType == "Sites")
+            if (folderType === "Sites")
             {
                 if (shouldPurge) {
                     confirm = "perc.ui.finder.folder.purge@ConfirmPages";
@@ -653,7 +643,7 @@
         }
 
         var first;
-        if (type == "Success")
+        if (type === "Success")
         {
             first = I18N.message( confirm, [name] );
         }
@@ -753,7 +743,7 @@
             $.PercServiceUtils.TYPE_GET,
             true,
             function(status, result) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback(true, result.data);
                 }

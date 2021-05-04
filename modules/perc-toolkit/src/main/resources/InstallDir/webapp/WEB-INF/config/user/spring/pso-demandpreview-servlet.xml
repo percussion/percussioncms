@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:cxf="http://cxf.apache.org/core"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+http://cxf.apache.org/core
+http://cxf.apache.org/schemas/core.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.2.xsd
+http://cxf.apache.org/jaxrs
+http://cxf.apache.org/schemas/jaxrs.xsd">
+
+   <bean id="PSODemandPreviewMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+   	  <property name="mappings">
+   	     <props>
+   	        <prop key="psodemandpreview/default.html">PSODemandPreviewController</prop>
+   	     </props>
+   	  </property>
+   </bean>
+   
+   <bean id="PSODemandPreviewViewResolver" class="com.percussion.pso.spring.NamespacedInternalResourceViewResolver" >
+      <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+      <property name="order" value="0" />
+      <property name="namespace" value="psodemandpreview" />
+      <property name="prefix" value="/WEB-INF/pages/psodemandpreview/" />
+      <property name="suffix" value=".jsp" /> 
+   </bean>
+   
+   <bean id="PSODemandPreviewController" class="com.percussion.pso.demandpreview.servlet.DemandPreviewController" 
+     init-method="init">
+       <property name="viewName" value="psodemandpreviewredirect" />
+       <property name="errorViewName" value="psodemandpreviewerror" /> 
+       <property name="demandPublisherService" ref="PSODemandPublisherBean" />
+       <property name="itemTemplateService" ref="PSODefaultPageTemplateBean" />
+       <property name="siteEditionLookUpService" ref="PSOSiteEditionLookUpService" />
+       <property name="linkBuilderService" ref="PSOLinkBuilderBean" /> 
+    </bean>
+   
+</beans>

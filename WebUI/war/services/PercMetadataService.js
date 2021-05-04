@@ -58,13 +58,12 @@
     * @type object
     */
    function find(key, callback){
-      var self = this;
       $.PercServiceUtils.makeJsonRequest(
          $.perc_paths.METADATA_FIND + "/" + key,
          $.PercServiceUtils.TYPE_GET,
          false,
          function(status, result){
-            if(status == $.PercServiceUtils.STATUS_SUCCESS)
+            if(status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }
@@ -97,13 +96,12 @@
     * @type array
     */
    function findByPrefix(prefix, callback){
-      var self = this;
       $.PercServiceUtils.makeJsonRequest(
          $.perc_paths.METADATA_FIND_BY_PREFIX + "/" + prefix,
          $.PercServiceUtils.TYPE_GET,
          false,
          function(status, result){
-            if(status == $.PercServiceUtils.STATUS_SUCCESS)
+            if(status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }
@@ -128,13 +126,12 @@
     * </pre>
     */
    function deleteEntry(key, callback){
-      var self = this;
       $.PercServiceUtils.makeJsonRequest(
          $.perc_paths.METADATA_DELETE + "/" + key,
          $.PercServiceUtils.TYPE_DELETE,
          false,
          function(status, result){
-            if(status == $.PercServiceUtils.STATUS_SUCCESS)
+            if(status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }
@@ -158,13 +155,12 @@
     * </pre>
     */
    function deleteEntryByPrefix(prefix, callback){
-      var self = this;
       $.PercServiceUtils.makeJsonRequest(
          $.perc_paths.METADATA_DELETE_BY_PREFIX + "/" + prefix,
          $.PercServiceUtils.TYPE_DELETE,
          false,
          function(status, result){
-            if(status == $.PercServiceUtils.STATUS_SUCCESS)
+            if(status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }
@@ -191,8 +187,7 @@
     * </pre>
     */
    function save(key, data, callback){
-      var self = this;
-      var rData = typeof(data) == 'object' ? JSON.stringify(data) : data;
+      var rData = typeof(data) === 'object' ? JSON.stringify(data) : data;
       var metadataObj = {
          "metadata": {
             "key": key,
@@ -204,7 +199,7 @@
          $.PercServiceUtils.TYPE_POST,
          false,
          function(status, result){
-            if(status == $.PercServiceUtils.STATUS_SUCCESS)
+            if(status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }
@@ -222,8 +217,7 @@
    * Function to save the global variables.
    */
    function saveGlobalVariables(key, data, callback){
-      var self = this;
-      var rData = typeof(data) == 'object' ? JSON.stringify(data) : data;
+      var rData = typeof(data) === 'object' ? JSON.stringify(data) : data;
       var metadataObj = {
          "metadata": {
             "key": key,
@@ -235,7 +229,7 @@
          $.PercServiceUtils.TYPE_POST,
          false,
          function(status, result){
-            if(status == $.PercServiceUtils.STATUS_SUCCESS)
+            if(status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
             }

@@ -104,17 +104,20 @@ public class DisplayFormatAdaptor implements IDisplayFormatAdaptor {
     private DisplayFormat copyDisplayFormat(PSDisplayFormat f) throws PSCmsException, PSUnknownNodeTypeException {
         DisplayFormat ret = new DisplayFormat();
 
-        if(f.getPropertyContainer()!= null)
+        if(f.getPropertyContainer()!= null) {
             ret.setProperties(copyDisplayFormatProps(f.getPropertyContainer()));
+        }
 
         ret.setInternalName(f.getInternalName());
 
-        if(f.getColumnContainer() != null)
+        if(f.getColumnContainer() != null) {
             ret.setColumns(copyDisplayFormatColumns(f.getColumnContainer()));
+        }
 
 
-        if(f.getAllowedCommunities() != null)
+        if(f.getAllowedCommunities() != null) {
             ret.setAllowedCommunities(copyAllowedCommunities(f.getAllowedCommunities()));
+        }
 
         ret.setAscendingSort(f.isAscendingSort());
         ret.setDescendingSort(f.isDescendingSort());

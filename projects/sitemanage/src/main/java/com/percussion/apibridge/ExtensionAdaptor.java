@@ -28,8 +28,8 @@ import com.percussion.extension.*;
 import com.percussion.extensions.IPSExtensionService;
 import com.percussion.rest.extensions.*;
 import com.percussion.util.PSSiteManageBean;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URI;
@@ -40,7 +40,8 @@ import java.util.*;
 public class ExtensionAdaptor implements IExtensionAdaptor {
 
     private IPSExtensionService extensionService;
-    private Log log = LogFactory.getLog(ExtensionAdaptor.class);
+    private Logger log = LogManager.getLogger(ExtensionAdaptor.class);
+
 
     @Autowired
     public ExtensionAdaptor(IPSExtensionService extensionService){
