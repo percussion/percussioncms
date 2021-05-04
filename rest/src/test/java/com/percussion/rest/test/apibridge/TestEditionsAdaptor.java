@@ -25,8 +25,14 @@
 package com.percussion.rest.test.apibridge;
 
 import com.percussion.rest.editions.IEditionsAdaptor;
+import com.percussion.rest.editions.PublishResponse;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TestEditionsAdaptor implements IEditionsAdaptor {
+
+    @Override
+    public PublishResponse publish(String id) {
+        return null;
+    }
 }
