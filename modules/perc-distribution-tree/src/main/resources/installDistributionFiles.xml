@@ -141,6 +141,12 @@
             </fileset>
         </copy>
 
+        <!-- Install Velocity Configuration Files -->
+        <mkdir dir="${assembly-directory}/rxconfig/velocity"/>
+        <copy todir="${assembly-directory}/rxconfig/velocity">
+            <fileset dir="${basedir}/../../system/Tools/velocity" includes="**/*" />
+        </copy>
+
         <mkdir dir="${assembly-directory}/rxconfig/secure"/>
 
         <copy todir="${assembly-directory}/rxconfig/secure">
