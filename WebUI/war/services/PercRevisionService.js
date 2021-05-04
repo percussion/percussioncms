@@ -79,12 +79,12 @@
         ida[0] = revId;
         itemId = ida.join("-");
         var url = $.perc_paths.ITEM_PROMOTE_REVISION + "/" + itemId;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
     
     function getLastComment(itemId, callback){
         var url = $.perc_paths.ITEM_LAST_COMMENT + "/" + itemId;
-        $.PercServiceUtils.makeRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);    
+        $.PercServiceUtils.makeRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
 })(jQuery);
     

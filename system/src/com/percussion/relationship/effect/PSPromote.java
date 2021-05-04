@@ -478,8 +478,7 @@ public class PSPromote extends PSEffect
       PSRelationshipSet relationshipsToModify = new PSRelationshipSet();
       PSRelationshipSet relationshipsToDelete = new PSRelationshipSet();
 
-      PSRelationshipDbProcessor processor =
-         new PSRelationshipDbProcessor(request);
+      PSRelationshipDbProcessor processor = PSRelationshipDbProcessor.getInstance();
 
       //get all outbound relationships (orig item is the owner item)
       PSRelationshipFilter filter = new PSRelationshipFilter();
