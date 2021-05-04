@@ -215,6 +215,10 @@
                         currentArchiveList.find(".perc-archive-list-container").html("").append(ul);
                     }
                     else {
+                        if(typeof (archiveList)!== "undefined") {
+                            archiveList = $.PercServiceUtils.toJSON(archiveList);
+                        }
+
                         //Set the variable if max entry value is defined
                         let flatItemToList=0;
                         if(typeof(numberEntries) !== "undefined" && numberEntries !== "")
