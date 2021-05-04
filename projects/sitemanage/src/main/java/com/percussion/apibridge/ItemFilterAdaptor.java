@@ -87,8 +87,9 @@ public class ItemFilterAdaptor implements IItemFilterAdaptor {
         Set<ItemFilterRuleDefinition> rules = new HashSet<>();
         for(IPSItemFilterRuleDef def : ruleDefs){
             ItemFilterRuleDefinition r = copyItemFilterRuleDef(def);
-            if(r != null)
+            if(r != null) {
                 rules.add(r);
+            }
         }
         ret.setRules(rules);
         return ret;

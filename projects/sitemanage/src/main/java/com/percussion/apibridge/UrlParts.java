@@ -115,17 +115,21 @@ class UrlParts
     	if(!site.equals(FolderAdaptor.ASSETS)){
 	        StringBuilder sb = new StringBuilder("//Sites/");
 	        sb.append(this.site);
-	        if (StringUtils.isNotEmpty(this.path))
-	            sb.append("/").append(this.path);
-	        if (StringUtils.isNotEmpty(this.name))
-	            sb.append("/").append(this.name);
+	        if (StringUtils.isNotEmpty(this.path)) {
+				sb.append("/").append(this.path);
+			}
+	        if (StringUtils.isNotEmpty(this.name)) {
+				sb.append("/").append(this.name);
+			}
 	        return sb.toString();
     	}else{
     		StringBuilder sb = new StringBuilder("//Assets/");
-	        if (StringUtils.isNotEmpty(this.path))
-	            sb.append("/").append(this.path);
-	        if (StringUtils.isNotEmpty(this.name))
-	            sb.append("/").append(this.name);
+	        if (StringUtils.isNotEmpty(this.path)) {
+				sb.append("/").append(this.path);
+			}
+	        if (StringUtils.isNotEmpty(this.name)) {
+				sb.append("/").append(this.name);
+			}
 	        return sb.toString();
     	}
     }

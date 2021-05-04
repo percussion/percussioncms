@@ -267,10 +267,12 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         wfInfo.setName(wf.getName());
 
         wfInfo.setCheckedOutUser(StringUtils.defaultString(summ.getCheckoutUserName()));
-        if(summ.getCheckoutUserName()!= null && !summ.getCheckoutUserName().isEmpty())
-        	wfInfo.setCheckedOut(true);
-        else
-        	wfInfo.setCheckedOut(false);
+        if(summ.getCheckoutUserName()!= null && !summ.getCheckoutUserName().isEmpty()) {
+            wfInfo.setCheckedOut(true);
+        }
+        else {
+            wfInfo.setCheckedOut(false);
+        }
 
         wfInfo.setState(itemProperties.getStatus());
 
@@ -320,8 +322,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         page.setOverridePostDate(overridePostDate);
 
         List<String> pageCategories = (List<String>) fields.get("page_categories_tree");
-        if (pageCategories != null)
+        if (pageCategories != null) {
             seo.setCategories(pageCategories);
+        }
 
         String autoGenerate = (String) fields.get("auto_generate_summary");
 
@@ -362,8 +365,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                 psPage.getRegionBranches());
 
         List<Region> updateRegions = page.getBody();
-        if (CollectionUtils.isEmpty(updateRegions))
+        if (CollectionUtils.isEmpty(updateRegions)) {
             return false;
+        }
 
         Map<String, PSMergedRegion> regionMap = tree.getMergedRegionMap();
 
@@ -378,10 +382,11 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                 PSMergedRegionOwner owner = existingRegion.getOwner();
 
                 List<PSWidgetInstance> existingInstances = existingRegion.getWidgetInstances();
-                if (existingInstances == null)
+                if (existingInstances == null) {
                     existingInstances = new ArrayList<>();
+                }
 
-                int instanceSize = (existingInstances == null) ? 0 : existingInstances.size();
+                int instanceSize = existingInstances.size();
 
                 // Can modify region if it is owned by the page, or there are
                 // not widgets in it from the template
@@ -400,12 +405,14 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 
                     if (existingWidget == null && regionEditable)
                     {
-                        if (StringUtils.isNotEmpty(updateWidget.getId()))
+                        if (StringUtils.isNotEmpty(updateWidget.getId())) {
                             throw new RuntimeException("Cannot find widget id " + updateWidget.getId() + " on region "
                                     + updateRegion.getName());
+                        }
 
-                        if (StringUtils.isEmpty(updateWidget.getId()) && StringUtils.isEmpty(updateWidget.getName()))
+                        if (StringUtils.isEmpty(updateWidget.getId()) && StringUtils.isEmpty(updateWidget.getName())) {
                             throw new RuntimeException("Must specify either id or name on widget");
+                        }
 
                         existingWidget = new PSWidgetItem();
                         existingWidget.setDefinitionId(updateWidget.getType());
@@ -433,12 +440,14 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                     for (Iterator<PSRegionWidgets> it = widgetAssoc.iterator(); it.hasNext();)
                     {
                         PSRegionWidgets widgetToAdd = it.next();
-                        if (!widgetToAdd.getRegionId().equals(updateRegion.getName()))
+                        if (!widgetToAdd.getRegionId().equals(updateRegion.getName())) {
                             newWidgetAssoc.add(widgetToAdd);
+                        }
                     }
 
-                    if (!clearRegion)
+                    if (!clearRegion) {
                         pullTemplateRegionToPage(psPage, template, updateRegion.getName());
+                    }
 
                     psPage.getRegionBranches().setRegionWidgetAssociations(newWidgetAssoc);
 
@@ -484,8 +493,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 
             String regionName = regionEntry.getKey();
             PSMergedRegion mergedRegion = regionEntry.getValue();
-            if (!CollectionUtils.isEmpty(mergedRegion.getSubRegions()))
+            if (!CollectionUtils.isEmpty(mergedRegion.getSubRegions())) {
                 continue;
+            }
             Region itemRegion = new Region();
             itemRegion.setName(regionName);
             itemRegions.add(itemRegion);
@@ -612,11 +622,13 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         {
             PSWidgetItem widget = instance.getItem();
 
-            if (updateWidget.getId() != null && widget.getId() != null && updateWidget.getId().equals(widget.getId()))
+            if (updateWidget.getId() != null && widget.getId() != null && updateWidget.getId().equals(widget.getId())) {
                 existingWidget = widget;
+            }
             if (updateWidget.getName() != null && widget.getName() != null
-                    && updateWidget.getName().equals(widget.getName()))
+                    && updateWidget.getName().equals(widget.getName())) {
                 existingWidget = widget;
+            }
 
         }
         return existingWidget;
@@ -626,8 +638,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
     {
         List<PSRegion> currentRegions = psPage.getRegionBranches().getRegions();
 
-        if (currentRegions == null)
+        if (currentRegions == null) {
             currentRegions = new ArrayList<>();
+        }
 
         boolean found = false;
         for (PSRegion checkRegion : currentRegions)
@@ -796,8 +809,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         }
         if (psPage == null)
         { 
-            if (PSFolderPathUtils.testHasInvalidChars(toPage.getName()))
-                throw new IllegalArgumentException("Cannot create a page with following chars in the name" +IPSConstants.INVALID_ITEM_NAME_CHARACTERS);
+            if (PSFolderPathUtils.testHasInvalidChars(toPage.getName())) {
+                throw new IllegalArgumentException("Cannot create a page with following chars in the name" + IPSConstants.INVALID_ITEM_NAME_CHARACTERS);
+            }
             
             
             createNewPage(baseUri, toPage, null);
@@ -836,8 +850,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
     private void createNewPage(URI baseUri, Page toPage, PSPage page) throws BackendException, PSDataServiceException {
         boolean newPage = (page == null);
 
-        if (page == null)
+        if (page == null) {
             page = new PSPage();
+        }
 
         // If required state is not set then get current state to return to.
         String endState = "Draft";
@@ -848,13 +863,16 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
             currentState = getWorkflowState(page);
         }
 
-        if (toPage.getWorkflow() != null && !StringUtils.isEmpty(toPage.getWorkflow().getState()))
+        if (toPage.getWorkflow() != null && !StringUtils.isEmpty(toPage.getWorkflow().getState())) {
             endState = toPage.getWorkflow().getState();
-        else
+        }
+        else {
             endState = currentState;
+        }
 
-        if (!newPage && wfHelper.isItemInApproveState(idMapper.getContentId(page.getId())))
+        if (!newPage && wfHelper.isItemInApproveState(idMapper.getContentId(page.getId()))) {
             currentState = setWorkflowState(page.getId(), "Quick Edit", new ArrayList<>());
+        }
 
         if (!newPage && !wfHelper.isCheckedOutToCurrentUser(page.getId()))
         {
@@ -876,23 +894,28 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 
         if (toPage.getCode() != null)
         {
-            if (toPage.getCode().getHead() != null)
+            if (toPage.getCode().getHead() != null) {
                 page.setAdditionalHeadContent(toPage.getCode().getHead());
-            if (toPage.getCode().getAfterStart() != null)
+            }
+            if (toPage.getCode().getAfterStart() != null) {
                 page.setAfterBodyStartContent(toPage.getCode().getAfterStart());
-            if (toPage.getCode().getBeforeClose() != null)
+            }
+            if (toPage.getCode().getBeforeClose() != null) {
                 page.setBeforeBodyCloseContent(toPage.getCode().getBeforeClose());
+            }
 
         }
 
         if (toPage.getSeo() != null)
         {
-            if (toPage.getSeo().getMetaDescription() != null)
+            if (toPage.getSeo().getMetaDescription() != null) {
                 page.setDescription(toPage.getSeo().getMetaDescription());
+            }
 
             // default title to page name;
-            if (toPage.getSeo().getBrowserTitle() != null)
+            if (toPage.getSeo().getBrowserTitle() != null) {
                 page.setTitle(toPage.getSeo().getBrowserTitle());
+            }
 
             Boolean hideSearch = toPage.getSeo().getHideSearch();
             page.setNoindex((hideSearch != null && hideSearch) ? "true" : "false");
@@ -909,11 +932,13 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 
         page.setFolderPath(folderUrl.getUrl());
         // default linktitle to name
-        if (toPage.getDisplayName() != null)
+        if (toPage.getDisplayName() != null) {
             page.setLinkTitle(toPage.getDisplayName());
+        }
 
-        if (toPage.getName() != null)
+        if (toPage.getName() != null) {
             page.setName(toPage.getName());
+        }
 
         String templateName = toPage.getTemplateName();
 
@@ -931,14 +956,16 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         {
 
             templateId = page.getTemplateId();
-            if (StringUtils.isEmpty(templateId))
+            if (StringUtils.isEmpty(templateId)) {
                 throw new RuntimeException("templateName is required");
+            }
         }
 
         template = templateService.load(templateId);
 
-        if (toPage.getDisplayName() != null)
+        if (toPage.getDisplayName() != null) {
             page.setLinkTitle(toPage.getDisplayName());
+        }
 
         updateRegionInfo(toPage, page, template);
         try {
@@ -973,12 +1000,15 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         }
         Map<String, Object> fields = contentItem.getFields();
         if(calInfo != null){
-            if (calInfo.getCalendars() != null)
+            if (calInfo.getCalendars() != null) {
                 fields.put("page_calendar", calInfo.getCalendars());
-            if (calInfo.getStartDate() != null)
+            }
+            if (calInfo.getStartDate() != null) {
                 fields.put("page_start_date", dateFormat.format(calInfo.getEndDate()));
-            if (calInfo.getEndDate() != null)
+            }
+            if (calInfo.getEndDate() != null) {
                 fields.put("page_end_date", dateFormat.format(calInfo.getEndDate()));
+            }
             isUpdated = true;
         }
         if (toPage.getOverridePostDate() != null){
@@ -1053,8 +1083,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
      * @param template
      */
     private void updateAssetInfo(URI baseUri, Page toPage, PSPage page, PSTemplate template) throws BackendException, PSDataServiceException {
-        if (toPage.getBody()==null)
+        if (toPage.getBody()==null) {
             return;
+        }
         
         Map<String, PSRelationship> assetWidgets = getUsedPageAssets(page, template);
 
@@ -1188,9 +1219,10 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                     }
                 }
 
-                if (!foundOrphan)
+                if (!foundOrphan) {
                     guidString = createAndAssociateLocalAsset(page.getId(), id, widget.getType(),
                             fields);
+                }
             }
             else  // existing asset
             {
@@ -1236,15 +1268,17 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         try {
             if (assetRels == null) {
                 // new shared asset
-                if (pathNotFound)
+                if (pathNotFound) {
                     throw new AssetNotFoundException();
+                }
                 PSAssetWidgetRelationship awRel = new PSAssetWidgetRelationship(page.getId(),
                         Long.parseLong(widget.getId()), widget.getType(), pathItem.getId(), 0);
                 awRel.setResourceType(PSAssetResourceType.shared);
                 assetService.createAssetWidgetRelationship(awRel);
             } else if (assetRels.getConfig().getName().equals("LocalContent")) {
-                if (!pathNotFound)
+                if (!pathNotFound) {
                     throw new BackendException("Cannot convert local asset to shared asset, asset already exists at " + fullPath);
+                }
                 PSAssetWidgetRelationship awRel = new PSAssetWidgetRelationship(page.getId(),
                         Long.parseLong(widget.getId()), widget.getType(), idMapper.getString(assetRels.getDependent()), 0);
                 assetService.shareLocalContent(asset.getName(), StringUtils.substringAfter(asset.getFolderPath(), "/"),
@@ -1252,8 +1286,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 
             } else {
                 if (idMapper.getContentId(pathItem.getId()) != assetRels.getDependent().getId()) {
-                    if (pathNotFound)
+                    if (pathNotFound) {
                         throw new AssetNotFoundException();
+                    }
 
                     PSAssetWidgetRelationship awRel = new PSAssetWidgetRelationship(page.getId(),
                             Long.parseLong(widget.getId()), widget.getType(), pathItem.getId(), 0);
@@ -1319,8 +1354,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 
             PSPage psPage = pageService.load(id);
 
-            if (psPage == null)
+            if (psPage == null) {
                 throw new PageNotFoundException(id);
+            }
 
             PSItemProperties itemProperties = pathService.findItemProperties(psPage.getFolderPath());
             PSComponentSummary summ = wfHelper.getComponentSummary(itemProperties.getId());
@@ -1345,10 +1381,12 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
             wfInfo.setName(wf.getName());
 
             wfInfo.setCheckedOutUser(StringUtils.defaultString(summ.getCheckoutUserName()));
-            if (summ.getCheckoutUserName() != null && !summ.getCheckoutUserName().isEmpty())
+            if (summ.getCheckoutUserName() != null && !summ.getCheckoutUserName().isEmpty()) {
                 wfInfo.setCheckedOut(true);
-            else
+            }
+            else {
                 wfInfo.setCheckedOut(false);
+            }
 
             wfInfo.setState(itemProperties.getStatus());
 
@@ -1389,8 +1427,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
             page.setOverridePostDate(overridePostDate);
 
             List<String> pageCategories = (List<String>) fields.get("page_categories_tree");
-            if (pageCategories != null)
+            if (pageCategories != null) {
                 seo.setCategories(pageCategories);
+            }
 
             String autoGenerate = (String) fields.get("auto_generate_summary");
 
@@ -1449,10 +1488,12 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
                         widgetDefId, newAsset.getId(), 0);
                 assetService.createAssetWidgetRelationship(awRel);
             }
-            if (newAsset != null)
+            if (newAsset != null) {
                 return newAsset.getId();
-            else
+            }
+            else {
                 return null;
+            }
         } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
             throw new BackendException(e.getMessage(), e);
         }
@@ -1461,8 +1502,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 	private int recursivelyWorkflowAllPages(WorkflowStates state, int counter, String path) throws IPSPathService.PSPathServiceException, PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException {
 		int ctr = counter;
 		
-		if(path == null)
-			path = "";
+		if(path == null) {
+            path = "";
+        }
 		
 		PSPathItem pi = pathService.find(path);
 		
@@ -1480,12 +1522,15 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 					ctr++;
 			}
 		}
-			if(state.equals(WorkflowStates.APPROVE))
-				wfHelper.transitionToPending(itemList);
-			else if(state.equals(WorkflowStates.ARCHIVE))
-				wfHelper.transitionToArchive(itemList);
-			else if(state.equals(WorkflowStates.REVIEW))
-				wfHelper.transitionToReview(itemList);
+			if(state == WorkflowStates.APPROVE) {
+                wfHelper.transitionToPending(itemList);
+            }
+			else if(state == WorkflowStates.ARCHIVE) {
+                wfHelper.transitionToArchive(itemList);
+            }
+			else if(state == WorkflowStates.REVIEW) {
+                wfHelper.transitionToReview(itemList);
+            }
 				
 	}
 		
@@ -1497,8 +1542,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         try {
             int counter = 0;
 
-            if (folderPath == null)
+            if (folderPath == null) {
                 folderPath = "";
+            }
 
             String path = folderPath;
 
@@ -1571,11 +1617,13 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 			 for(PSPageReportLine row : pages){
 	       	  String csvData = row.toCSVRow();
 	       	  
-	       	  if(ret.size()==0)
-	 			  ret.add(row.getHeaderRow());
+	       	  if(ret.size()==0) {
+                  ret.add(row.getHeaderRow());
+              }
 	       	
-	       	  if(csvData != null)
-	       		  ret.add(row.toCSVRow());
+	       	  if(csvData != null) {
+                  ret.add(row.toCSVRow());
+              }
 	         }
 			} catch (PSReportFailedToRunException | PSDataServiceException e) {
 				log.error("An error occurred while running the All Pages Report", e);
@@ -1591,8 +1639,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 		try {
             int counter = 0;
 
-            if (folderPath == null)
+            if (folderPath == null) {
                 folderPath = "";
+            }
 
             String path = folderPath;
 
@@ -1608,8 +1657,9 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
 		try {
             int counter = 0;
 
-            if (folderPath == null)
+            if (folderPath == null) {
                 folderPath = "";
+            }
 
             String path = folderPath;
 
