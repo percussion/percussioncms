@@ -337,33 +337,22 @@ public class PSItemService implements IPSItemService
             //If item can't be restored this method throws exception with a business message.
             validateItemRestorable(id);
 
-            PSComponentSummary sum = workflowHelper.getComponentSummary(id);
-
             //Create a list of ids and add the supplied item id first.
             List<String> ids = new ArrayList<>();
             ids.add(id);
-
-            //get all the local content items related to that revision and add them to the list.
-            Set<String> lids = waRelService.getLocalAssets(id);
-            ids.addAll(lids);
 
             try {
                 //prepare the item for promotion
                 prepareForRestore(id);
                 contentWs.promoteRevisions(idMapper.getGuids(ids));
-                //Adjust the relationships
-                sum = workflowHelper.getComponentSummary(id);
-                String cid = idMapper.getGuid(sum.getHeadLocator()).toString();
-                if (!lids.isEmpty()) {
-                    waRelService.adjustLocalContentRelationships(cid);
-                }
+
             } catch (Exception e) {
                 throw new WebApplicationException("An unexpected error occurred while restoring the prior revision, " +
                         "see log for details.", e);
             }
 
             return new PSNoContent("Item with id " + id + " has been restored.");
-        } catch (PSValidationException | PSItemServiceException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException | PSNotFoundException e) {
+        } catch (PSValidationException | PSItemServiceException | PSNotFoundException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());

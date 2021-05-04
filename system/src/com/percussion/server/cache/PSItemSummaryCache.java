@@ -437,7 +437,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
          mi_lastModifiedDateS = (String) columns.get(CONTENTLASTMODIFIEDDATE_COLUMN);
          mi_createdDateS = (String) columns.get(CONTENTCREATEDDATE_COLUMN);
 
-         mi_postDateS = (String) columns.get(CONTENTPOSTDATE_COLUMN)!=null ? (String) columns.get(CONTENTPOSTDATE_COLUMN) : (String) columns.get(CONTENTPUBLISHDATE_COLUMN);
+         mi_postDateS = (String) columns.get(CONTENTPOSTDATE_COLUMN);
          mi_tipRevision = (String) columns.get(TIPREVISION_COLUMN);
          mi_currentRevision = (String) columns.get(CURRENTREVISION_COLUMN);
          mi_publicRevision = (String) columns.get(PUBLIC_REVISION_COLUMN);

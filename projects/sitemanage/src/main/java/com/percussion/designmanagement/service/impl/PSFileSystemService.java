@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.attribute.GroupPrincipal;
 import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
@@ -224,19 +225,10 @@ public class PSFileSystemService implements IPSFileSystemService
         
         // build the new file
         File newFolder = new File(folderPath.getAbsolutePath(), newName);
-        
-        FileUtils.forceMkdir(newFolder);
+
+        Files.createDirectory(newFolder.toPath());
         File parent = folderPath.getParentFile();
-        //set parent owner/permissions to newly created file as parents'.
-        UserPrincipal owner = java.nio.file.Files.getOwner(parent.toPath());
-        java.nio.file.Files.setOwner(newFolder.toPath(),owner);
-        PosixFileAttributeView posixViewParent = Files.getFileAttributeView(parent.toPath(),
-                PosixFileAttributeView.class);
-        PosixFileAttributes attribs = posixViewParent.readAttributes();
-        Set<PosixFilePermission> permissions = attribs.permissions();
-        PosixFileAttributeView posixViewFile = Files.getFileAttributeView(newFolder.toPath(),
-                PosixFileAttributeView.class);
-        posixViewFile.setPermissions(permissions);
+        setParentFolderPermissionsToChild(parent,newFolder);
         
         return newFolder;
     }
@@ -532,23 +524,28 @@ public class PSFileSystemService implements IPSFileSystemService
                     FileUtils.deleteQuietly(file);
                     throw new PSFileSizeExceededException("The maximum allowed size for a file is " + maxFileSize + " MB.");
                 }
-                //set parent owner/permissions to newly created file as parents'.
-                UserPrincipal owner = java.nio.file.Files.getOwner(parent.toPath());
-                java.nio.file.Files.setOwner(file.toPath(), owner);
-                PosixFileAttributeView posixViewParent = Files.getFileAttributeView(parent.toPath(),
-                        PosixFileAttributeView.class);
-                PosixFileAttributes attribs = posixViewParent.readAttributes();
-                Set<PosixFilePermission> permissions = attribs.permissions();
-                PosixFileAttributeView posixViewFile = Files.getFileAttributeView(file.toPath(),
-                        PosixFileAttributeView.class);
-                posixViewFile.setPermissions(permissions);
+                setParentFolderPermissionsToChild(parent,file);
             }
 
         } catch (IOException e) {
             throw new PSFileOperationException("An error ocurred when uploading the file.", e);
         }
     }
-    
+
+    private void setParentFolderPermissionsToChild(File parent, File child) throws IOException {
+        //set parent owner/permissions to newly created file as parents'.
+        PosixFileAttributeView posixViewParent = Files.getFileAttributeView(parent.toPath(),
+                PosixFileAttributeView.class);
+        PosixFileAttributes parentAttribs = posixViewParent.readAttributes();
+        GroupPrincipal group = parentAttribs.group();
+        UserPrincipal owner = parentAttribs.owner();
+        Set<PosixFilePermission> permissions = parentAttribs.permissions();
+        PosixFileAttributeView posixViewFile = Files.getFileAttributeView(child.toPath(),
+                PosixFileAttributeView.class);
+        posixViewFile.setPermissions(permissions);
+        posixViewFile.setGroup(group);
+        posixViewFile.setOwner(owner);
+    }
     /*
      * (non-Javadoc)
      * @see com.percussion.designmanagement.service.IPSFileSystemService#fileSizeExceeded(java.io.InputStream)

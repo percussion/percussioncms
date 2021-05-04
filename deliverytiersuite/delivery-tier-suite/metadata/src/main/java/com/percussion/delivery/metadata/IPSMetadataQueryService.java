@@ -46,7 +46,7 @@ public interface IPSMetadataQueryService
      */
 
     public PSPair<List<IPSMetadataEntry>, Integer> executeQuery(PSMetadataQuery query) throws Exception;
-
+    public List<Object[]>  executeCategoryQuery(PSMetadataQuery query) throws Exception;
     /**
      * Based on the query hibernate return type would be different Following
      * enum is to handle the return type from the hibernate if NONE it returns
