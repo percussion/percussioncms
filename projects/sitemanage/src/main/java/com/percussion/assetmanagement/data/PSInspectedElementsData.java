@@ -47,8 +47,9 @@ public class PSInspectedElementsData
      */
     public List<PSHtmlAssetData> getNewAssets()
     {
-        if(newAssets == null)
+        if(newAssets == null) {
             newAssets = new ArrayList<>();
+        }
         return newAssets;
     }
 
@@ -63,8 +64,9 @@ public class PSInspectedElementsData
      */
     public List<PSAssetWidgetRelationship> getClearAssets()
     {
-        if(clearAssets == null)
+        if(clearAssets == null) {
             clearAssets = new ArrayList<>();
+        }
         return clearAssets;
     }
 
