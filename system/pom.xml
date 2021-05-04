@@ -1422,6 +1422,10 @@
             <artifactId>yuicompressor</artifactId>
             <version>2.4.8</version>
         </dependency>
+        <dependency>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+        </dependency>
 
     </dependencies>
     <distributionManagement>

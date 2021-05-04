@@ -25,15 +25,44 @@
 package com.percussion.apibridge;
 
 import com.percussion.rest.editions.IEditionsAdaptor;
+import com.percussion.rest.editions.PublishResponse;
+import com.percussion.rx.publisher.IPSPublisherJobStatus;
+import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.util.PSSiteManageBean;
+import com.percussion.utils.guid.IPSGuid;
+import com.percussion.webservices.publishing.IPSPublishingWs;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @PSSiteManageBean
 public class EditionAdaptor implements IEditionsAdaptor {
 
+    @Autowired
+    private IPSPublishingWs pubWs;
 
     public EditionAdaptor(){
+        //Default ctor
+    }
 
+    private IPSGuid getEditionGuidFromId(String id){
+        return PSGuidUtils.makeGuid(Long.parseLong(id), PSTypeEnum.EDITION);
+    }
+
+    @Override
+    public PublishResponse publish(String id) {
+
+       return loadPublishResponseFromStatus(pubWs.getPublishingJobStatus(
+               pubWs.startPublishingJob(
+                       getEditionGuidFromId(id),null)));
+    }
+
+    private PublishResponse loadPublishResponseFromStatus(IPSPublisherJobStatus status){
+        PublishResponse ret =  new PublishResponse();
+
+        ret.setDelivered(String.valueOf(status.countItemsDelivered()));
+        ret.setFailures(String.valueOf(status.countFailedItems()));
+        ret.setJobid(status.getJobId());
+        ret.setStatus(status.getState().getDisplayName());
+        return ret;
     }
 }
