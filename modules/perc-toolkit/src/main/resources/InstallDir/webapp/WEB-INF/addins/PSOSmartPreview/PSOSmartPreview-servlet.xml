@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+ http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+ http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">   
+
+   <bean id="previewUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+      <property name="mappings">
+         <props>
+             <prop key="default.html">actionPreviewController</prop>
+             <prop key="activeassembly.html">actionActiveAssemblyController</prop>
+             <prop key="multisite.html">multiSiteResolutionController</prop>
+             <prop key="multisiteaa.html">multiSiteAAResolutionController</prop>
+             <prop key="compare.html">actionCompareController</prop>
+             <prop key="slotpreview.html">actionSlotPreviewController</prop>
+         </props>
+      </property>      
+   </bean>
+   
+   <bean id="previewBeanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver" >
+      <property name="order" value="0" />
+   </bean>
+   
+   <bean id="previewJspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+       <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+       <property name="order" value="100"/>
+       <property name="prefix" value="/WEB-INF/addins/PSOSmartPreview/pages/"/>
+       <property name="suffix" value=".jsp"/>
+   </bean> 
+   
+   
+   <bean id="actionPreviewController" class="com.percussion.pso.preview.ActionPreviewController">
+      <property name="supportedMethods" value="GET,POST" />
+      <property name="viewName" value="xmlResultView" /> 
+      <property name="siteFolderFinder" ref="siteFolderFinder" /> 
+      <property name="testCommunityVisibility" value="false" />
+      <property name="snippetTargetStyle">
+        <value>toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=1,resizable=1,width=780,height=400</value>
+      </property>
+      <property name="urlBuilder" ref="previewUrlBuilder" />
+   </bean>
+   
+   <bean id="actionActiveAssemblyController"  class="com.percussion.pso.preview.ActionActiveAssemblyController">
+      <property name="supportedMethods" value="GET,POST" />
+      <property name="viewName" value="xmlResultView" /> 
+      <property name="testCommunityVisibility" value="false" /> 
+      <property name="siteFolderFinder" ref="siteFolderFinder" />
+      <property name="urlBuilder" ref="activeAssemblyUrlBuilder"/>
+      <property name="showSnippets" value="true" />
+      <property name="snippetTargetStyle">
+        <value>toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=1,resizable=1,width=780,height=400</value>
+      </property>
+   </bean>
+   
+   <bean id="actionCompareController" class="com.percussion.pso.preview.ActionSiteForwardingController">
+      <property name="baseUrl" value="/Rhythmyx/sys_Compare/compare.html" />
+      <property name="supportedMethods" value="GET,POST" />
+      <property name="siteFolderFinder" ref="siteFolderFinder" /> 
+      <property name="viewName" value="preview/multiplesiteonly" />
+      <property name="contentIdParam" value="sys_contentid1" />
+      <property name="revisionParam" value="sys_revision1" />      
+   </bean>
+   
+   <bean id="actionSlotPreviewController" class="com.percussion.pso.preview.ActionSiteForwardingController">
+      <property name="baseUrl" value="/Rhythmyx/sys_cxSupport/previewslotvariant.html" />
+      <property name="supportedMethods" value="GET,POST" />
+      <property name="siteFolderFinder" ref="siteFolderFinder" /> 
+      <property name="viewName" value="multiplesiteonly" />
+   </bean>
+      
+   <bean id="multiSiteResolutionController" class="com.percussion.pso.preview.MultiSiteResolutionController">
+     <property name="viewName" value="multiplesitepaths"/>
+     <property name="siteFolderFinder" ref="siteFolderFinder" />
+     <property name="urlBuilder" ref="previewUrlBuilder"/> 
+   </bean>
+
+   <bean id="multiSiteAAResolutionController" class="com.percussion.pso.preview.MultiSiteResolutionController">
+     <property name="viewName" value="multiplesitepaths"/>
+     <property name="siteFolderFinder" ref="siteFolderFinder" />
+     <property name="urlBuilder" ref="activeAssemblyUrlBuilder"/> 
+   </bean>
+   
+   <!-- Site Folder finder finds the locations for this item  -->
+   <bean id="siteFolderFinder" class="com.percussion.pso.preview.SiteFolderFinderImpl">
+      <!-- set testCommunityVisibility to true to filter sites by community visibility -->
+      <property name="testCommunityVisibility" value="false"  />
+      <property name="siteLoader" ref="siteLoader" />
+   </bean>
+
+   <!-- site loader bean holds site info.  Can be used in either the "singleton" or "session" scope 
+        When using session scope, there is a new set of IPSSite objects for each new user session. 
+        When using singleton scope, there is one list for all users.   -->
+   <bean id="siteLoader" class="com.percussion.pso.preview.CachingSiteLoaderImpl" scope="session" >
+      <!-- Site Reload Delay controls how sites are cached.
+      siteReloadDelay == 0 will load the site/template info only at startup. 
+      This may be useful for production servers.  
+      
+      siteReloadDelay < 0 will not cache the site info: it will be reloaded each time
+      it is requested.  
+      
+      Otherwise, it is the number of seconds between reloads.  For most servers, pick
+      a number between 60(one minute) and 600(10 minutes). 
+      
+      IMPORTANT: when using session scope, set this value to 0 
+       -->
+      <property name="siteReloadDelay" value="0" /> 
+      <!-- AOP scoped proxy is needed for session scope only -->
+      <aop:scoped-proxy/>
+   </bean>
+    
+   <bean id="configuredSiteLoader" class="com.percussion.pso.preview.ConfigurableSiteLoaderImpl" scope="session" >
+      <property name="allowedSites">
+          <list>
+              <value>site1</value>
+              <value>site2</value>
+          </list>
+      </property>
+      <property name="siteReloadDelay" value="0" /> 
+      <aop:scoped-proxy/>
+   </bean>
+   
+   <bean id="previewUrlBuilder" class="com.percussion.pso.preview.PreviewUrlBuilder"> 
+      <property name="defaultLocationUrl"  value="/Rhythmyx/assembler/render" /> 
+      <property name="multipleLocationUrl" value="/Rhythmyx/user/addins/psosmartpreview/multisite.html"/> 
+   </bean>
+   
+   <bean id="activeAssemblyUrlBuilder" class="com.percussion.pso.preview.ActiveAssemblyUrlBuilder">
+      <property name="defaultLocationUrl" value="/Rhythmyx/sys_action/checkoutaapage.xml"/>
+      <property name="multipleLocationUrl" value="/Rhythmyx/user/addins/psosmartpreview/multisiteaa.html"/>
+   </bean>
+        
+   <bean id="xmlResultView" class="com.percussion.pso.preview.SimpleXmlView">
+      <property name="contentType" value="text/xml" />
+      <property name="encoding" value="UTF-8" />
+      <property name="resultKey" value="result" />
+   </bean>
+   
+   <bean id="multipartResolver"
+    class="com.percussion.pso.preview.MultipartResolverEncoding" />
+   
+   <!-- bean id="contentTypeLogger"
+    class="com.percussion.pso.preview.ContentTypeLoggingInterceptor" />
+   -->
+
+</beans>

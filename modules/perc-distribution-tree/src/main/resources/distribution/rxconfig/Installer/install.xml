@@ -935,6 +935,10 @@
     </macrodef>
 
     <target name="alwaysCopyIfMissing">
+        <mkdir dir="${install.dir}/rxconfig/velocity"/>
+        <copy todir="${install.dir}/rxconfig/velocity">
+            <fileset dir="${install.src}/rxconfig/velocity" includes="**/*" />
+        </copy>
         <mkdir dir="${install.dir}/rxconfig/ssh-keys" />
         <touch file="${install.dir}/rxconfig/ssh-keys/config" />
         <mkdir dir="${install.dir}/rxconfig/trusted_certificates" />

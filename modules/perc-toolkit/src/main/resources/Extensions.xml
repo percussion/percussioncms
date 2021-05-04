@@ -1,8 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PSXExtensionHandlerConfiguration handlerName="Java">
+	<!-- Content RS -->
+	<Extension categorystring="" context="global/percussion/user/"
+			   deprecated="no" handler="Java" name="psoImporter"
+			   restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">Import JEXL utitlities</initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="className">com.percussion.pso.restservice.jexl.PSOImportJexl</initParam>
+		<interface name="com.percussion.extension.IPSJexlExpression" />
+		<suppliedResources />
+	</Extension>
 
-	<Extension categorystring="jexl" context="global/percussion/user/" deprecated="no" handler="Java" name="soln_list" restoreRequestParamsOnError="no">
-		<initParam name="com.percussion.user.description">Creates a JCR Query from a Node</initParam>
+	<Extension categorystring="" context="global/percussion/assemblers/"
+			   deprecated="no" handler="Java" name="importVelocityAssembler"
+			   restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">An Assembler for importing items</initParam>
+		<initParam name="com.percussion.extension.version">7</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="className">com.percussion.pso.imp.assembler.PSImportVelocityAssembler</initParam>
+		<initParam name="com.percussion.extension.assembly.libraries">sys_assembly.vm,rx_assembly.vm</initParam>
+		<initParam name="com.percussion.extension.assembly.fileSuffix">.vm</initParam>
+		<initParam name="com.percussion.extension.assembly.autoReload">yes</initParam>
+
+		<interface name="com.percussion.services.assembly.IPSAssembler" />
+
+		<suppliedResources />
+	</Extension>
+    <!-- Image Editor -->
+	<Extension categorystring="jexl" context="global/percussion/user/" deprecated="no" handler="Java" name="psoImageEditorTools" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">Image Editor Utility Functions</initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="className">com.percussion.pso.imageedit.services.jexl.ImageEditorTools</initParam>
+		<interface name="com.percussion.extension.IPSJexlExpression"/>
+		<suppliedResources/>
+	</Extension>
+	<Extension categorystring="contentlist" context="global/percussion/system/" deprecated="no" handler="Java" name="psoImageSizeTemplateExpander" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">Template expander that creates an entry for each defined image size</initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="className">com.percussion.pso.imageedit.services.ImageSizeTemplateExpander</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<interface name="com.percussion.services.publisher.IPSTemplateExpander"/>
+		<suppliedResources/>
+	</Extension>
+
+	<!-- List Builder -->
+	<Extension categorystring="jexl" context="global/percussion/user/" deprecated="no" handler="Java" name="psoImageEditorTools" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">Image Editor Utility Functions</initParam>
 		<initParam name="com.percussion.extension.version">1</initParam>
 		<initParam name="com.percussion.extension.reentrant">yes</initParam>
 		<initParam name="className">com.percussion.soln.listbuilder.ListBuilderJexl</initParam>
@@ -19,6 +64,113 @@
 		<suppliedResources/>
 	</Extension>
 
+   <!-- Relationship Builder -->
+	<Extension categorystring="contenteditor" context="user/" deprecated="no" handler="Java" name="pso_BuildAaRelationships" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">Builds AA relationships with the item being edited</initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="com.percussion.extension.relationshipbuilder.mode">BUILD</initParam>
+		<initParam name="className">com.percussion.pso.relationshipbuilder.exit.PSBuildAaRelationshipsExit</initParam>
+		<interface name="com.percussion.extension.IPSResultDocumentProcessor" />
+		<interface name="com.percussion.extension.IPSUdfProcessor" />
+		<PSXExtensionParamDef id="0">
+			<name>fieldName</name>
+			<dataType>java.lang.String</dataType>
+			<description>The name of the field providing the ids. (required)</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>slotName</name>
+			<dataType>java.lang.String</dataType>
+			<description>The name of the slot whose relationships should be modified to match ids contained in field. (required)</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>templateName</name>
+			<dataType>java.lang.String</dataType>
+			<description>The name of the template to be added to slot when relationships are created. (required)</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>sourceItemType</name>
+			<dataType>java.lang.String</dataType>
+			<description>If the item being edited is the owner of the relationship then set this to 'OWNER'. Vice versa set it to 'DEPENDENT'. (required)</description>
+		</PSXExtensionParamDef>
+		<suppliedResources />
+	</Extension>
+
+	<Extension categorystring="contenteditor" context="user/" deprecated="no" handler="Java" name="pso_SelectAaRelationships" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">Select choices based on AA relationships with the item being edited </initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="com.percussion.extension.relationshipbuilder.mode">SELECT</initParam>
+		<initParam name="className">com.percussion.pso.relationshipbuilder.exit.PSBuildAaRelationshipsExit</initParam>
+		<interface name="com.percussion.extension.IPSUdfProcessor" />
+		<interface name="com.percussion.extension.IPSFieldOutputTransformer" />
+		<interface name="com.percussion.extension.IPSItemOutputTransformer" />
+		<PSXExtensionParamDef id="0">
+			<name>fieldName</name>
+			<dataType>java.lang.String</dataType>
+			<description>The name of the field providing the ids. (required)</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>slotName</name>
+			<dataType>java.lang.String</dataType>
+			<description>The name of the slot whose relationships should be modified to match ids contained in field. (required)</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>templateName</name>
+			<dataType>java.lang.String</dataType>
+			<description>The name of the template to be added to slot when relationships are created. (required)</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>sourceItemType</name>
+			<dataType>java.lang.String</dataType>
+			<description>If the item being edited is the owner of the relationship then set this to 'OWNER'. Vice versa set it to 'DEPENDENT'. (required)</description>
+		</PSXExtensionParamDef>
+		<suppliedResources />
+	</Extension>
+
+	<Extension categorystring="contenteditor" context="user/" deprecated="no" handler="Java" name="pso_AddToFolders" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">Adds items to the folders.</initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="com.percussion.extension.relationshipbuilder.mode">BUILD</initParam>
+		<initParam name="className">com.percussion.pso.relationshipbuilder.exit.PSBuildFolderRelationshipsExit</initParam>
+		<interface name="com.percussion.extension.IPSResultDocumentProcessor" />
+		<PSXExtensionParamDef id="0">
+			<name>fieldName</name>
+			<dataType>java.lang.String</dataType>
+			<description>The name of the field providing the folder ids. (required)</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>jcrQuery</name>
+			<dataType>java.lang.String</dataType>
+			<description>The JCR query gets all the folders to look into (must select on sys_folderid).(required)</description>
+		</PSXExtensionParamDef>
+		<suppliedResources />
+	</Extension>
+
+	<Extension categorystring="contenteditor" context="user/" deprecated="no" handler="Java" name="pso_SelectFolders" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">Selects folders that item being editted is in.</initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="com.percussion.extension.relationshipbuilder.mode">SELECT</initParam>
+		<initParam name="className">com.percussion.pso.relationshipbuilder.exit.PSBuildFolderRelationshipsExit</initParam>
+		<interface name="com.percussion.extension.IPSUdfProcessor" />
+		<interface name="com.percussion.extension.IPSFieldOutputTransformer" />
+		<interface name="com.percussion.extension.IPSItemOutputTransformer" />
+		<PSXExtensionParamDef id="0">
+			<name>fieldName</name>
+			<dataType>java.lang.String</dataType>
+			<description>The name of the field providing the folder ids. (required)</description>
+		</PSXExtensionParamDef>
+		<PSXExtensionParamDef id="0">
+			<name>jcrQuery</name>
+			<dataType>java.lang.String</dataType>
+			<description>The JCR query gets all the folders to look into (must select on sys_folderid).(required)</description>
+		</PSXExtensionParamDef>
+		<suppliedResources />
+	</Extension>
+
+	<!-- PDF Assembler -->
 	<Extension categorystring="" context="global/percussion/assembly/" deprecated="no" handler="Java" name="FOPAssembler" restoreRequestParamsOnError="no">
 		<initParam name="com.percussion.user.description">FOP Assembler for PDF and other printable types.</initParam>
 		<initParam name="com.percussion.extension.assembly.libraries">sys_assembly.vm,rx_assembly.vm</initParam>
@@ -31,6 +183,7 @@
 		<interface name="com.percussion.services.assembly.IPSAssembler"/>
 		<suppliedResources/>
 	</Extension>
+
 	<Extension name="session" context="global/percussion/system" handler="Java" categorystring="jexl" deprecated="no">
 		<initParam name="com.percussion.user.description">Jexl extension for certain session data required for authentication.</initParam>
 		<initParam name="com.percussion.extension.version">1</initParam>
@@ -39,6 +192,7 @@
 		<interface name="com.percussion.extension.IPSJexlExpression"/>
 		<suppliedResources/>
 	</Extension>
+	<!-- Toolkit Extensions-->
 	<Extension categorystring="editiontask" context="global/percussion/task/" deprecated="no" handler="Java" name="perc_ExamplePostEditionTask" restoreRequestParamsOnError="no">
         <initParam name="com.percussion.user.description">
 	 	  Workflows the edition

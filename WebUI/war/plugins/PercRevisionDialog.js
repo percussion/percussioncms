@@ -75,7 +75,7 @@
         {
             var self = this;
             
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             { 
                 var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                 $.perc_utils.alert_dialog({title: 'Error', content: defaultMsg});
@@ -115,20 +115,20 @@
          */
         function createRevisionTable()
         {
-            var $dialogHtml = $("<div class='dataTables_wrapper' style='height: 100%; z-index: 4470;position:relative;' id='perc-revisions-container'>"
-                                +"<table id='revisionsTable' width='100%''>"
-                                    +"<thead>"
-                                        +"<tr>"
-                                            +"<th align='left' width='10%' id='perc-header-revision'><span class='col-name'>Revision</span></th>"
-                                            +"<th align='left' width='20%' id='perc-header-status'><span class='col-name'>Status</span></th>"
-                                            +"<th align='left' width='35%' id='perc-header-last-modified'><span class='col-name'>Last Modified</span></th>"
-                                            +"<th align='left' width='20%' id='perc-header-last-modifier'><span class='col-name'>Last Modifier</span></th>"
-                                            +"<th align='left' width='15%' id='perc-header-actions'><span class='col-name'>Actions</span></th>"
-                                        +"</tr>"
-                                    +"</thead>"
-                                    +"<tbody></tbody>"
-                                 +"</table>"
-                             +"</div>");
+            var $dialogHtml = $("<div class='dataTables_wrapper' style='height: 100%; z-index: 4470;position:relative;' id='perc-revisions-container'>" +
+                                "<table id='revisionsTable' width='100%''>" +
+                                    "<thead>" +
+                                        "<tr>" +
+                                            "<th align='left' width='10%' id='perc-header-revision'><span class='col-name'>Revision</span></th>" +
+                                            "<th align='left' width='20%' id='perc-header-status'><span class='col-name'>Status</span></th>" +
+                                            "<th align='left' width='35%' id='perc-header-last-modified'><span class='col-name'>Last Modified</span></th>" +
+                                            "<th align='left' width='20%' id='perc-header-last-modifier'><span class='col-name'>Last Modifier</span></th>" +
+                                            "<th align='left' width='15%' id='perc-header-actions'><span class='col-name'>Actions</span></th>" +
+                                        "</tr>" +
+                                    "</thead>" +
+                                    "<tbody></tbody>" +
+                                 "</table>" +
+                             "</div>");
             return $dialogHtml;
         }
         
@@ -156,7 +156,7 @@
                 var lastModifiedDateTime = lastModifiedDateParts.time;
                 
                 var lastCol = "";
-                if(itemCount == revdata.revId)
+                if(itemCount === revdata.revId)
                     lastCol = "<span title='" + I18N.message("perc.ui.revisionDialog.tooltip@LatestRevision") + "'>"+ I18N.message("perc.ui.revisionDialog.label@Latest") +"</span>";
                 else
                 {
@@ -178,11 +178,11 @@
             var iType = itemType;
             $("#revisionsTable").find(".perc-revisions-preview-img").click(function(){
                 var revId = $(this).attr("revId");
-                if(iType == $.PercRevisionDialog.ITEM_TYPE_PAGE)
+                if(iType === $.PercRevisionDialog.ITEM_TYPE_PAGE)
                 {
                    $.perc_finder().launchPagePreview(itemId, revId);
                 } 
-                else if(iType == $.PercRevisionDialog.ITEM_TYPE_ASSET)
+                else if(iType === $.PercRevisionDialog.ITEM_TYPE_ASSET)
                 {
                    $.perc_finder().launchAssetPreview(itemId, revId);
                 }
@@ -203,8 +203,6 @@
             {
                 $("#revisionsTable").find(".perc-revisions-restore-img").click(function(){
                     var revId = $(this).attr("revId");
-                    dialog.remove();
-                    $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
                     $.PercRevisionService.restoreRevision(itemId,revId,afterRestore);
                 })
                 .bind("mouseenter", function(){
@@ -243,12 +241,12 @@
                     $(".next").addClass("perc-active").removeClass("perc-disabled");
                     $(".last").addClass("perc-active").removeClass("perc-disabled");
                     // if on the first page disable First and Previous controls
-                    if(iStart == 0) {
+                    if(iStart === 0) {
                         $(".first").addClass("perc-disabled").removeClass("perc-active");
                         $(".previous").addClass("perc-disabled").removeClass("perc-active");
                     }
                     // if on the last page disable Last and Next controls
-                    if(iEnd == itemCount) {
+                    if(iEnd === itemCount) {
                         $(".next").addClass("perc-disabled").removeClass("perc-active");
                         $(".last").addClass("perc-disabled").removeClass("perc-active");
                     }
@@ -264,24 +262,25 @@
         function afterRestore(status,result)
         {
             var self = this;
-            $.unblockUI();
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             { 
                 var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: defaultMsg});
                 return;
             }
+            dialog.remove();
             $.PercNavigationManager.setReopenAllowed(true);
             var item = {
                     "id": $.PercNavigationManager.getId(),
                     "name": $.PercNavigationManager.getName(),
                     "path": $.PercNavigationManager.getPath()
                  };
-             if($.PercNavigationManager.getView() == $.PercNavigationManager.VIEW_EDITOR)
+             if($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDITOR)
              {
                 $.PercNavigationManager.handleOpenPage(item, true);
              }
-             else if($.PercNavigationManager.getView() == $.PercNavigationManager.VIEW_EDIT_ASSET)
+             else if($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDIT_ASSET)
              {
                 $.PercNavigationManager.handleOpenAsset(item, true);
              }

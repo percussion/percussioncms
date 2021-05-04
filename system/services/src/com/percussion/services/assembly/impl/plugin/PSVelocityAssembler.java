@@ -55,12 +55,25 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.RuntimeServices;
-import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
-import org.apache.velocity.runtime.resource.util.StringResourceRepository;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.regex.Pattern;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
@@ -79,8 +92,8 @@ import static org.apache.commons.lang.StringUtils.isBlank;
  * {@link IPSNotificationService#notifyEvent(PSNotificationEvent)}, so that the
  * the changes will be able to take effect right away.
  * <p>
- * This assembler will cache all compiled templates by default. However, 
- * <b>caching compiled templates may consume too much memory</b> for some 
+ * This assembler will cache all compiled templates by default. However,
+ * <b>caching compiled templates may consume too much memory</b> for some
  * templates. This behavior can be turn off with the following options:
  * <ul>
  *  <li>
@@ -88,26 +101,24 @@ import static org.apache.commons.lang.StringUtils.isBlank;
  *      which will turn off the caching behavior for all templates.
  *  </li>
  *  <li>
- *      Specify <code>"-Dno_cache_templates=template-1,template-2"</code> as one of 
+ *      Specify <code>"-Dno_cache_templates=template-1,template-2"</code> as one of
  *      the java options, which will turn off the caching behavior for only the
  *      specified templates.
  *  </li>
  *  <li>
- *      Specify a binding variable <code>"$sys.noCacheTemplate=true"</code> on 
+ *      Specify a binding variable <code>"$sys.noCacheTemplate=true"</code> on
  *      a template, which will turn off the caching behavior for current template.
  *  </li>
- * </ul> 
- * If a template caching is turned off, then any (snippet or child) templates used by 
+ * </ul>
+ * If a template caching is turned off, then any (snippet or child) templates used by
  * the template may inherit the none-cache behavior.
- * 
+ *
  * @author dougrand
  */
 public class PSVelocityAssembler extends PSAssemblerBase
-      implements
-         IPSNotificationListener
+        implements
+        IPSNotificationListener
 {
-   private Object lock1 = new Object();
-   
    /**
     * Start PI fragment for field and slot extraction end markup
     */
@@ -127,19 +138,19 @@ public class PSVelocityAssembler extends PSAssemblerBase
     * Precalculated expression for JEXL
     */
    private static final IPSScript SYS_MIMETYPE = PSJexlEvaluator
-         .createStaticExpression("$sys.mimetype");
+           .createStaticExpression("$sys.mimetype");
 
    /**
     * Precalculated expression for JEXL
     */
    private static final IPSScript SYS_CHARSET = PSJexlEvaluator
-         .createStaticExpression("$sys.charset");
+           .createStaticExpression("$sys.charset");
 
    /**
     * Precalculated expression for JEXL
     */
    private static final IPSScript SYS_TEMPLATE = PSJexlEvaluator
-         .createStaticExpression("$sys.template");
+           .createStaticExpression("$sys.template");
 
    /**
     * Storage for velocity templates that have been compiled. The key is the
@@ -157,20 +168,18 @@ public class PSVelocityAssembler extends PSAssemblerBase
     */
    protected static RuntimeServices ms_rs = null;
 
-
-   protected static StringResourceRepository ms_repository = null;
    /**
     * This is used to determine if an instance of this class has been registered
-    * to listen on any file changes, see {@link #PSVelocityAssembler()} for 
+    * to listen on any file changes, see {@link #PSVelocityAssembler()} for
     * detail. Default to <code>false</code>.
     */
    private static boolean ms_isListenOnFileChange = false;
-   
+
    /**
     * This is used to set the {@link RuntimeConstants#VM_LIBRARY} property of
     * the template engine {@link #ms_rs}. Default to <code>null</code>. It
     * is set by {@link #init(IPSExtensionDef, File)}.
-    * 
+    *
     */
    protected String m_libraries = null;
 
@@ -197,10 +206,10 @@ public class PSVelocityAssembler extends PSAssemblerBase
    private static String ms_localTemplatePath = null;
 
    /**
-    * Default constructor. This constructor must be called by the extended 
+    * Default constructor. This constructor must be called by the extended
     * classes.
     */
-   public PSVelocityAssembler() 
+   public PSVelocityAssembler()
    {
       // listen to any file changes that care to send a notification
       // for invoking {@link #initVelocity()} in case changing a macro file.
@@ -211,16 +220,16 @@ public class PSVelocityAssembler extends PSAssemblerBase
       if (! ms_isListenOnFileChange)
       {
          IPSNotificationService notifyService = PSNotificationServiceLocator
-               .getNotificationService();
+                 .getNotificationService();
          notifyService.addListener(EventType.FILE, this);
-         
+
          ms_isListenOnFileChange = true;
       }
    }
 
    @Override
    protected IPSAssemblyResult doAssembleSingle(IPSAssemblyItem item)
-         throws Exception
+           throws Exception
    {
       // Discover whether this is a partial assembly
       String part = item.getParameterValue(IPSHtmlParameters.SYS_PART, null);
@@ -238,20 +247,20 @@ public class PSVelocityAssembler extends PSAssemblerBase
       else
       {
          /*
-          * In a partial assembly, no global template is expanded. The 
+          * In a partial assembly, no global template is expanded. The
           * underlying macros add PIs to the output document that help the
           * code here separate the text from the surrounding formatting. The
-          * macros also use the information, if supplied, to suppress the 
+          * macros also use the information, if supplied, to suppress the
           * rendering of unneeded fields and slots.
           */
          if (item.hasNode())
             ms_logger.debug("Partially Assemble item "
-                  + item.getNode().getUUID());
+                    + item.getNode().getUUID());
          else
             ms_logger.debug("Partially Assemble item "
-                  + item.getParameterValue(IPSHtmlParameters.SYS_CONTENTID,
-                        "unknown"));
-         String pieces[] = part.split(":");
+                    + item.getParameterValue(IPSHtmlParameters.SYS_CONTENTID,
+                    "unknown"));
+         String[] pieces = part.split(":");
          if (pieces.length != 2)
          {
             ms_logger.warn("Bad sys_part parameter: " + part);
@@ -268,10 +277,10 @@ public class PSVelocityAssembler extends PSAssemblerBase
          if (pieces.length == 2)
          {
             Charset cset = PSStringUtils.getCharsetFromMimeType(rval
-                  .getMimeType());
+                    .getMimeType());
             String parttext = new String(rval.getResultData(), cset.name());
             String partstart = PSX_START + pieces[0] + " " + pieces[1]
-                  + END_PI;
+                    + END_PI;
             String partend = PSX_END + pieces[0] + " " + pieces[1] + END_PI;
             int start = parttext.indexOf(partstart);
             if (start >= 0)
@@ -280,13 +289,13 @@ public class PSVelocityAssembler extends PSAssemblerBase
                if (end >= 0)
                {
                   parttext = parttext
-                        .substring(start + partstart.length(), end);
+                          .substring(start + partstart.length(), end);
                   rval.setResultData(parttext.getBytes(cset.name()));
                }
             }
          }
 
-         ms_logger.debug("Partial Result is of type " + rval.getMimeType());
+         ms_logger.debug("Partial Result is of type {}",  rval.getMimeType());
          return rval;
       }
    }
@@ -301,7 +310,7 @@ public class PSVelocityAssembler extends PSAssemblerBase
     * The jexl expression object of the {@link #SYS_NO_CACHE_TEMPLATE}.
     */
    private static final IPSScript SYS_NO_CACHE_TEMPLATE_EXP = PSJexlEvaluator
-         .createStaticExpression(SYS_NO_CACHE_TEMPLATE);
+           .createStaticExpression(SYS_NO_CACHE_TEMPLATE);
 
    /**
     * Contains a set of template names whose compiled templates will not be
@@ -309,15 +318,15 @@ public class PSVelocityAssembler extends PSAssemblerBase
     * cache any of the compiled templates.
     */
    private volatile static Set<String> ms_noCacheTemplates = null;
-   
+
    /**
     * Determines if the system will cache the compiled template of the
     * specified template.
-    *  
+    *
     * @param templateName the name of the template in question, assumed not
-    * <code>null</code>. 
+    * <code>null</code>.
     * @param eval the jexl evaluator, assumed not <code>null</code>.
-    * 
+    *
     * @return <code>true</code> if the compiled template will not be cached.
     */
    private boolean isCacheTemplateOff(String templateName, PSJexlEvaluator eval)
@@ -354,10 +363,10 @@ public class PSVelocityAssembler extends PSAssemblerBase
     * Gets the value of the binding variable, {@link #SYS_NO_CACHE_TEMPLATE},
     * and return its value if exist; otherwise return <code>false</code> if
     * the binding variable does not exist.
-    * 
-    * @param eval the jex evaluator, used to retrieve and evaluate the 
+    *
+    * @param eval the jex evaluator, used to retrieve and evaluate the
     * binding variable, assumed not <code>null</code>.
-    * 
+    *
     * @return the value described above.
     */
    private boolean getNoCacheTemplateValue(PSJexlEvaluator eval)
@@ -378,12 +387,12 @@ public class PSVelocityAssembler extends PSAssemblerBase
 
    /**
     * Gets the template names, whose compiled template objects will not
-    * be cached. 
+    * be cached.
     * <br>
     * The template names are specified through a system property
     * "no_cache_templates", see the class description on the possible
-    * values of the property.  
-    * 
+    * values of the property.
+    *
     * @return the template names or "*". It may be empty if the system
     * property is not specified, never <code>null</code>.
     */
@@ -391,7 +400,7 @@ public class PSVelocityAssembler extends PSAssemblerBase
    {
       if (ms_noCacheTemplates != null)
          return ms_noCacheTemplates;
-      
+
       String nameProperty = System.getProperty("no_cache_templates");
       if (StringUtils.isBlank(nameProperty))
          return Collections.emptySet();
@@ -413,19 +422,19 @@ public class PSVelocityAssembler extends PSAssemblerBase
          templateNames.add(name);
       }
 
-      ms_logger.info("Cache compiled template is off for: "
-            + templateNames.toString());
+      ms_logger.info("Cache compiled template is off for: {}"
+              , templateNames);
 
       ms_noCacheTemplates = templateNames;
 
       return templateNames;
    }
-   
+
    @Override
    public IPSAssemblyResult assembleSingle(IPSAssemblyItem item)
    {
       if (item.getParameterValue("sys_reinit", "false")
-            .equalsIgnoreCase("true"))
+              .equalsIgnoreCase("true"))
       {
          try
          {
@@ -453,7 +462,7 @@ public class PSVelocityAssembler extends PSAssemblerBase
          catch (Exception e)
          {
             return getFailureResult(item, "exception retrieving template "
-                  + e.getLocalizedMessage());
+                    + e.getLocalizedMessage());
          }
 
          // Add currentslot map
@@ -465,31 +474,33 @@ public class PSVelocityAssembler extends PSAssemblerBase
          }
 
          VelocityContext ctx = PSVelocityUtils.getContext(item
-               .getBindings());
-         
+                 .getBindings());
+
          // Add $sys.ctx bindings so the velocity context is accessible for
          // some velocity tools
          eval.bind("$sys.ctx", ctx);
 
+         boolean isCacheOff = isCacheTemplateOff(item.getTemplate().getName(), eval);
 
-        String scriptName = item.getTemplate().getName();
-
-        Template t = null;
-          // Use template code itself as key to cache for template object.  Underlying cache size limits will handle memory size
-          //  Cache does not need modify check this way also.
-          if (ms_repository == null)
-              ms_repository = StringResourceLoader.getRepository("string");
-          try {
-              if (ms_repository.getStringResource(template) != null)
-                  t = ms_rs.getTemplate(template);
-              else {
-                  ms_repository.putStringResource(template, template);
-
-                  t = ms_rs.getTemplate(template);
-                  
+         try
+         {
+            Template t = ms_compiled_templates.get(template);
+            if (t == null)
+            {
+               try
+               {
+                  sws.start("parseVelocityTemplate");
+                  t = PSVelocityUtils.compileTemplate(template,
+                          item.getTemplate().getName(), ms_rs);
+                  if (!isCacheOff)
+                  {
+                     ms_compiled_templates.put(template, t);
                   }
-              if (t == null) {
-                  throw new IllegalArgumentException("Cannot find template in cache" + item.getTemplate().getName() + ":" + template);
+               }
+               finally
+               {
+                  sws.stop();
+               }
             }
 
             StringWriter writer = new StringWriter(4000);
@@ -497,35 +508,39 @@ public class PSVelocityAssembler extends PSAssemblerBase
             writer.close();
             String result = writer.toString();
 
-             String mtype = (String) eval.evaluate(SYS_MIMETYPE);
-             if (StringUtils.isBlank(mtype))
-                mtype = "text/html";
+            String mtype = (String) eval.evaluate(SYS_MIMETYPE);
+            if (StringUtils.isBlank(mtype))
+               mtype = "text/html";
 
-             if(PSServer.getProperty("compressOutput","false").equals("true")){
-                if(mtype.equals("text/html")) {
-                   result = compressHtml(result);
-                }else if(mtype.equals("text/xml")){
-                   result = compressXML(result);
-                }
-             }
+            if(PSServer.getProperty("compressOutput","false").equals("true")){
+               if(mtype.equals("text/html")) {
+                  result = compressHtml(result);
+               }else if(mtype.equals("text/xml")){
+                  result = compressXML(result);
+               }
+            }
 
             String charset = (String) eval.evaluate(SYS_CHARSET);
-              if (!StringUtils.isBlank(charset)) {
+            if (!StringUtils.isBlank(charset)) {
                // Canonicalize the charset
                Charset cset = Charset.forName(charset);
-               charset = cset.name();
+               if (cset != null) {
+                  charset = cset.name();
+               }else{
+                  charset = StandardCharsets.UTF_8.name();
+               }
                item.setResultData(result.getBytes(charset));
-              } else {
-                 item.setResultData(result.getBytes());
-              }
+            } else {
+               item.setResultData(result.getBytes());
+            }
 
-             if (!StringUtils.isBlank(charset))
-                mtype += ";charset=" + charset;
-             else
-                mtype += ";charset=utf-8";
-             item.setMimeType(mtype);
+            if (!StringUtils.isBlank(charset))
+               mtype += ";charset=" + charset;
+            else
+               mtype += ";charset=utf-8";
+            item.setMimeType(mtype);
 
-             item.setStatus(Status.SUCCESS);
+            item.setStatus(Status.SUCCESS);
             return (IPSAssemblyResult) item;
          }
          catch (Throwable ae)
@@ -547,17 +562,9 @@ public class PSVelocityAssembler extends PSAssemblerBase
             results.append(message);
             results.append(" \"");
             results.append("</h2><p>");
-            results.append(message +" : " +ae.toString());
+            results.append(message +" : " +ae.getMessage());
             results.append("</p></div></body></html>");
-            try
-            {
-               work.setResultData(results.toString().getBytes("UTF8"));
-            }
-            catch (UnsupportedEncodingException e)
-            {
-               //UTF8 should always be available
-               ms_log.error("UTF-8 not supported",e);
-            }
+            work.setResultData(results.toString().getBytes(StandardCharsets.UTF_8));
 
             return (IPSAssemblyResult) work;
 
@@ -663,22 +670,22 @@ public class PSVelocityAssembler extends PSAssemblerBase
    {
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
       PSComponentSummary summary = cms.loadComponentSummary(item.getId().getUUID());
-      
+
       return "Problem assembling output for item (name=\"" + summary.getName()
-            + "\", id=" + item.getId().toString() + ") with template: "
-            + item.getTemplate().getName() + ".";
+              + "\", id=" + item.getId().toString() + ") with template: "
+              + item.getTemplate().getName() + ".";
    }
-   
+
    @Override
    @SuppressWarnings("unused")
    public void init(IPSExtensionDef def, File codeRoot)
-         throws PSExtensionException
+           throws PSExtensionException
    {
       try
       {
 
          m_reload = def
-               .getInitParameter("com.percussion.extension.assembly.autoReload");
+                 .getInitParameter("com.percussion.extension.assembly.autoReload");
 
          // no need to init Velocity Engine again if it has been initialized.
          if (ms_rs != null)
@@ -688,19 +695,19 @@ public class PSVelocityAssembler extends PSAssemblerBase
       }
       catch (Exception e)
       {
-         throw new PSExtensionException("Java", e.getLocalizedMessage());
+         throw new PSExtensionException("Java", e.getMessage());
       }
    }
 
    /*
     * (non-Javadoc)
-    * 
+    *
     * @see com.percussion.services.notification.IPSNotificationListener#notifyEvent(com.percussion.services.notification.PSNotificationEvent)
     */
    public void notifyEvent(PSNotificationEvent event)
    {
       if (event.getType() == EventType.FILE
-            && event.getTarget() instanceof File)
+              && event.getTarget() instanceof File)
       {
          File cFile = (File) event.getTarget();
          if (isTemplateMacroPath(cFile.getAbsolutePath()))
@@ -713,10 +720,10 @@ public class PSVelocityAssembler extends PSAssemblerBase
    /**
     * Determines if the specified file path is a system or local template macro
     * path.
-    * 
+    *
     * @param path the file path in question. It may be <code>null</code> or
     *           empty.
-    * 
+    *
     * @return <code>true</code> if the specified file path is a system or
     *         local template macro path; otherwise return <code>false</code>.
     */
@@ -726,12 +733,12 @@ public class PSVelocityAssembler extends PSAssemblerBase
          return false;
 
       return (path.startsWith(getSysTemplateMacroPath()) || path
-            .startsWith(getLocalTemplateMacroPath()));
+              .startsWith(getLocalTemplateMacroPath()));
    }
 
    /**
     * Lazy load the system template macro path.
-    * 
+    *
     * @return the system template macro path.
     */
    private static String getSysTemplateMacroPath()
@@ -743,7 +750,7 @@ public class PSVelocityAssembler extends PSAssemblerBase
 
    /**
     * Lazy load the local template macro path.
-    * 
+    *
     * @return the local template macro path.
     */
    private static String getLocalTemplateMacroPath()
@@ -755,11 +762,11 @@ public class PSVelocityAssembler extends PSAssemblerBase
 
    /**
     * Gets all macro files from the specified directories.
-    * 
-    * @param sysDir the system directory that contains the velocity macros from 
+    *
+    * @param sysDir the system directory that contains the velocity macros from
     * the core system, assumed not <code>null</code>.
-    * @param localDir the directory contains the user specific velocity macros. 
-    * 
+    * @param localDir the directory contains the user specific velocity macros.
+    *
     * @return all the files with ".vm" extension (case insensitive) in the
     * specified directories, never <code>null</code>, may be empty.
     */
@@ -768,16 +775,39 @@ public class PSVelocityAssembler extends PSAssemblerBase
       StringBuffer buffer = new StringBuffer();
       getMacroFiles(buffer, sysDir);
       getMacroFiles(buffer, localDir);
-      
+
       return buffer.toString();
    }
-   
+
+
+   private String validateMacros(String macros){
+
+      String ret = "";
+      String[] vm_files = macros.split(",");
+
+
+      for(String s : vm_files){
+            Template t = ms_rs.getTemplate(s);
+            if(t.process()){
+               if(ret.isEmpty())
+                  ret = s;
+               else
+                  ret = ret + "," + s;
+            }else{
+               ms_logger.warn("Skipping load of VM  file: " + s + " due to parsing errors");
+            }
+
+      }
+
+      return ret;
+
+   }
    /**
     * Gets all macro files from the specified directory
     *
     * @param buffer the buffer for collecting all macro files and separated
     * with comma.
-    * @param location the directory that contains the velocity macros, assumed 
+    * @param location the directory that contains the velocity macros, assumed
     * not <code>null</code>.
     */
    private void getMacroFiles(StringBuffer buffer, String location)
@@ -786,9 +816,11 @@ public class PSVelocityAssembler extends PSAssemblerBase
       File dir = new File(location);
       for (File f : dir.listFiles(filter))
       {
+         PSVelocityUtils.preProcessTemplateFile(f);
+
          if (buffer.length() > 0)
             buffer.append(",");
-         
+
          buffer.append(f.getName());
       }
    }
@@ -806,7 +838,7 @@ public class PSVelocityAssembler extends PSAssemblerBase
          String name = pathname.getName();
          if (StringUtils.isBlank(name))
             return false;
-         
+
          int i = name.lastIndexOf('.');
          if ( i > 0 && (name.length() - i) == 3)
          {
@@ -822,116 +854,114 @@ public class PSVelocityAssembler extends PSAssemblerBase
     */
    private void initVelocity()
    {
-  ms_logger.info("Velocity reinitialized");
+      ms_logger.info("Velocity reinitialized");
 
-   Properties velProps = new Properties();
-   InputStream input = null;
+      Properties velProps = new Properties();
+      InputStream input = null;
 
-        try
-   {
-      input = new FileInputStream(PSServer.getRxConfigDir() + "/velocity.properties");
-      velProps.load(input);
+      try
+      {
+         input = new FileInputStream(PSServer.getRxConfigDir() + "/velocity.properties");
+         velProps.load(input);
+      }
+      catch (FileNotFoundException e1)
+      {
+         ms_logger.error("Unable to load velocity.properties file with message:);"
+                 + e1.getLocalizedMessage());
+      }
+      catch (IOException e)
+      {
+         ms_logger.error("Unable to read properties from velocity.properties file);"
+                 + "with message: " + e.getLocalizedMessage());
+      }
+
+
+
+
+      ms_rs = new RuntimeInstance();
+
+
+      String sys_templates = getSysTemplateMacroPath();
+      String rx_templates = getLocalTemplateMacroPath();
+
+      try{
+         ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,
+                 rx_templates);
+      }catch(Exception e){
+         ms_logger.error("Error initializing macros from rx_resources/vm folder!", e);
+         ms_rs.clearProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH);
+      }
+
+      try{
+         ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,
+                 sys_templates);
+      }catch(Exception e){
+         ms_logger.error("Error initializing macros from sys_resources/vm folder!",e);
+         ms_rs.clearProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH);
+      }
+
+      m_libraries = getMacroFiles(sys_templates, rx_templates);
+
+      /**
+       * The below updates are set in velocity.properties.
+       * They are being set here, too, as backup defaults
+       * in case the file is missing.
+       */
+      ms_rs.setProperty(RuntimeConstants.VM_PERM_INLINE_LOCAL, "true");
+      ms_rs.setProperty(RuntimeConstants.PARSER_HYPHEN_ALLOWED, "true");
+      ms_rs.setProperty(RuntimeConstants.VM_PERM_ALLOW_INLINE_REPLACE_GLOBAL, "true");
+      ms_rs.setProperty(RuntimeConstants.VM_PERM_ALLOW_INLINE, "true");
+      ms_rs.setProperty(RuntimeConstants.INPUT_ENCODING, "UTF-8");
+      ms_rs.setProperty(RuntimeConstants.CHECK_EMPTY_OBJECTS, "false");
+      ms_rs.setProperty(RuntimeConstants.SPACE_GOBBLING, "bc");
+      ms_rs.setProperty(RuntimeConstants.CONVERSION_HANDLER_CLASS, "none");
+      ms_rs.setProperty(RuntimeConstants.CHECK_EMPTY_OBJECTS, "true");
+
+      if (m_reload != null && m_reload.equalsIgnoreCase("yes"))
+      {
+         ms_logger.debug("Reload is on");
+         ms_rs.addProperty(RuntimeConstants.VM_LIBRARY_AUTORELOAD, "true");
+         ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_CACHE, "false");
+      }
+      else
+      {
+         ms_logger.debug("Reload is off, caching is on");
+         ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_CACHE, "true");
+      }
+
+      try{
+         ms_logger.debug("Sys path: " + sys_templates);
+         ms_rs.addProperty(RuntimeConstants.VM_LIBRARY, m_libraries);
+         ms_logger.debug("Velocity libraries: " + m_libraries);
+      }catch(Exception e){
+         ms_log.error("Error initializing Velocity macros.", e);
+         ms_rs.clearProperty(RuntimeConstants.VM_LIBRARY);
+
+      }
+
+      try
+      {
+         ms_rs.init(velProps);
+
+
+      }
+      catch (Exception e)
+      {
+         ms_logger.error("Problem initializing Velocity assembler, excluding rx_resources and attempting to re-initialize...", e);
+         ms_rs.clearProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH);
+         ms_rs.clearProperty(RuntimeConstants.VM_LIBRARY);
+         ms_rs.addProperty(RuntimeConstants.VM_LIBRARY, "sys_assembly.vm");
+         ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,sys_templates);
+         ms_rs.init(velProps);
+      }
+
+      ms_logger.debug("The current Velocity configuration is: " + ms_rs.getConfiguration().toString());
+
+      // Remove all compiled templates
+      synchronized (ms_compiled_templates)
+      {
+         ms_compiled_templates = new WeakHashMap<String, Template>();
+      }
    }
-        catch (FileNotFoundException e1)
-   {
-      ms_logger.error("Unable to load velocity.properties file with message:);"
-              + e1.getLocalizedMessage());
-   }
-        catch (IOException e)
-   {
-      ms_logger.error("Unable to read properties from velocity.properties file);"
-              + "with message: " + e.getLocalizedMessage());
-   }
 
-
-
-
-   ms_rs = new RuntimeInstance();
-
-
-   String sys_templates = getSysTemplateMacroPath();
-   String rx_templates = getLocalTemplateMacroPath();
-
-        try{
-   ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,
-           rx_templates);
-}catch(Exception e){
-   ms_logger.error("Error initializing macros from rx_resources/vm folder!", e);
-   ms_rs.clearProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH);
-}
-
-        try{
-   ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,
-           sys_templates);
-}catch(Exception e){
-   ms_logger.error("Error initializing macros from sys_resources/vm folder!",e);
-   ms_rs.clearProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH);
-}
-
-   m_libraries = getMacroFiles(sys_templates, rx_templates);
-
-   /**
-    * The below updates are set in velocity.properties.
-    * They are being set here, too, as backup defaults
-    * in case the file is missing.
-    */
-        ms_rs.setProperty(RuntimeConstants.VM_PERM_INLINE_LOCAL, "true");
-        ms_rs.setProperty(RuntimeConstants.PARSER_HYPHEN_ALLOWED, "true");
-        ms_rs.setProperty(RuntimeConstants.VM_PERM_ALLOW_INLINE_REPLACE_GLOBAL, "true");
-        ms_rs.setProperty(RuntimeConstants.VM_PERM_ALLOW_INLINE, "true");
-        ms_rs.setProperty(RuntimeConstants.INPUT_ENCODING, "UTF-8");
-        ms_rs.setProperty(RuntimeConstants.CHECK_EMPTY_OBJECTS, "false");
-        ms_rs.setProperty(RuntimeConstants.SPACE_GOBBLING, "bc");
-        ms_rs.setProperty(RuntimeConstants.CONVERSION_HANDLER_CLASS, "none");
-        ms_rs.setProperty(RuntimeConstants.CHECK_EMPTY_OBJECTS, "true");
-        //ms_rs.setProperty(RuntimeConstants.VM_PRESERVE_ARGUMENTS_LITERALS, "true");
-
-
-        if (m_reload != null && m_reload.equalsIgnoreCase("yes"))
-   {
-      ms_logger.debug("Reload is on");
-      ms_rs.addProperty(RuntimeConstants.VM_LIBRARY_AUTORELOAD, "true");
-      ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_CACHE, "false");
-   }
-        else
-   {
-      ms_logger.debug("Reload is off, caching is on");
-      ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_CACHE, "true");
-   }
-
-        try{
-   ms_logger.debug("Sys path: " + sys_templates);
-   ms_rs.addProperty(RuntimeConstants.VM_LIBRARY, m_libraries);
-   ms_logger.debug("Velocity libraries: " + m_libraries);
-}catch(Exception e){
-   ms_log.error("Error initializing Velocity macros.", e);
-   ms_rs.clearProperty(RuntimeConstants.VM_LIBRARY);
-
-}
-
-        try
-   {
-      ms_rs.init(velProps);
-
-
-   }
-        catch (Exception e)
-   {
-      ms_logger.error("Problem initializing Velocity assembler, excluding rx_resources and attempting to re-initialize...", e);
-      ms_rs.clearProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH);
-      ms_rs.clearProperty(RuntimeConstants.VM_LIBRARY);
-      ms_rs.addProperty(RuntimeConstants.VM_LIBRARY, "sys_assembly.vm");
-      ms_rs.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,sys_templates);
-      ms_rs.init(velProps);
-   }
-
-        ms_logger.debug("The current Velocity configuration is: " + ms_rs.getConfiguration().toString());
-
-   // Remove all compiled templates
-   synchronized (ms_compiled_templates)
-   {
-      ms_compiled_templates = new WeakHashMap<String, Template>();
-   }
-}
-   
 }

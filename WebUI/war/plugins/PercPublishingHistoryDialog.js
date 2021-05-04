@@ -51,7 +51,7 @@
                 aData.push( data );
             });
             return aData;
-        }
+        };
         // custom column sorting for Modified column
         $.fn.dataTableExt.afnSortData['perc-dom-date'] = function  ( oSettings, iColumn ) {
             var aData = [];
@@ -60,18 +60,18 @@
                 aData.push( data );
             });
             return aData;
-        }
+        };
     	
     	
     	getItemPublishingHistory(itemId).done(function(data){
-    		if(data.ItemPublishingHistory.length == 0){
+    		if(data.ItemPublishingHistory.length === 0){
                 $.perc_utils.alert_dialog({"title":I18N.message("perc.ui.publishing.history@No Publishing History") + itemType,"content":I18N.message("perc.ui.publishing.history@No Publishing History For") + ' ' + itemType});
                 return;
     		}
     		createDialog(data);
     	}).fail(function(errorMsg){
             $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: errorMsg});
-            return;
+
     	});
         var dialog;
         /**
@@ -114,19 +114,18 @@
          */
         function createPubHistoryTable()
         {
-            var $dialogHtml = $("<div class='dataTables_wrapper' style='height: 100%; z-index: 4470;position:relative;' id='perc-pubhistory-container'>"
-                                +"<table id='pubHistoryTable' width='100%''>"
-                                    +"<thead>"
-                                        +"<tr>"
-                                            +"<th align='left' width='30%' id='perc-header-server'><span class='col-name'>Server</span></th>"
-                                            +"<th align='left' width='30%' id='perc-header-date'><span class='col-name'>Date</span></th>"
-                                            +"<th align='left' width='20%' id='perc-header-operation'><span class='col-name'>Operation</span></th>"
-                                            +"<th align='left' width='20%' id='perc-header-status'><span class='col-name'>Status</span></th>"
-                                        +"</tr>"
-                                    +"</thead>"
-                                    +"<tbody></tbody>"
-                                 +"</table>"
-                             +"</div>");
+            var $dialogHtml = $("<div class='dataTables_wrapper' style='height: 100%; z-index: 4470;position:relative;' id='perc-pubhistory-container'>" +
+                                "<table id='pubHistoryTable' width='100%''>" +
+                                    "<thead>" +
+                                        "<tr>" +
+                                            "<th align='left' width='30%' id='perc-header-server'><span class='col-name'>Server</span></th>" +
+                                            "<th align='left' width='30%' id='perc-header-date'><span class='col-name'>Date</span></th>" +
+                                            "<th align='left' width='20%' id='perc-header-status'><span class='col-name'>Status</span></th>" +
+                                        "</tr>" +
+                                    "</thead>" +
+                                    "<tbody></tbody>" +
+                                 "</table>" +
+                             "</div>");
             return $dialogHtml;
         }
         
@@ -145,7 +144,7 @@
                 var pubDateDate = pubDateParts.date;
                 var pubDateTime = pubDateParts.time;
                 var errorMsg="";
-                if(pubEntry.status == "FAILURE"){
+                if(pubEntry.status === "FAILURE"){
                 	errorMsg = " title=\"" + pubEntry.errorMessage + "\" ";
                 }
                 var $rowHTML = $(
@@ -187,12 +186,12 @@
                     $(".next").addClass("perc-active").removeClass("perc-disabled");
                     $(".last").addClass("perc-active").removeClass("perc-disabled");
                     // if on the first page disable First and Previous controls
-                    if(iStart == 0) {
+                    if(iStart === 0) {
                         $(".first").addClass("perc-disabled").removeClass("perc-active");
                         $(".previous").addClass("perc-disabled").removeClass("perc-active");
                     }
                     // if on the last page disable Last and Next controls
-                    if(iEnd == itemCount) {
+                    if(iEnd === itemCount) {
                         $(".next").addClass("perc-disabled").removeClass("perc-active");
                         $(".last").addClass("perc-disabled").removeClass("perc-active");
                     }
@@ -209,14 +208,14 @@
             var deferred  = $.Deferred();
             var url = $.perc_paths.ITEM_PUB_HISTORY + itemId;
             var serviceCallback = function(status, result){
-                    if(status == $.PercServiceUtils.STATUS_SUCCESS){
+                    if(status === $.PercServiceUtils.STATUS_SUCCESS){
                         deferred.resolve(result.data);
                     } else {
                         var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                         $.perc_utils.info(I18N.message("perc.ui.publishing.history@Error Fetching History") + itemId + defaultMsg);
                         deferred.reject(defaultMsg);
                     }
-            }
+            };
             $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,serviceCallback);
             return deferred.promise();
         }

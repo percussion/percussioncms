@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXApplication active="no" appType="CONTENT_EDITOR" enabled="yes" hidden="no" id="1052" startPriority="0" version="2.0">
+	<name>psx_cerffGeneric</name>
+	<description>Creates Generic Content Items</description>
+	<requestRoot>psx_cerffGeneric</requestRoot>
+	<defaultRequestPage/>
+	<appExtensionContext>application/_stevegolinder_1069269626589/</appExtensionContext>
+	<PSXRevisionHistory>
+		<PSXRevisionEntry majorVersion="1" minorVersion="0">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20031119T122554037</time>
+		</PSXRevisionEntry>
+		<PSXRevisionEntry majorVersion="1" minorVersion="130">
+			<agent>BackEndTable:admin1</agent>
+			<description>Saved</description>
+			<time>20050701T144516959</time>
+		</PSXRevisionEntry>
+	</PSXRevisionHistory>
+	<PSXAcl id="0">
+		<PSXAclEntry id="0" type="user">
+			<name>Anonymous</name>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="no" designRead="no" designUpdate="no" modifyAcl="no"/>
+		</PSXAclEntry>
+		<PSXAclEntry id="0" type="user">
+			<name>Default</name>
+			<applicationAccessLevel dataCreate="yes" dataDelete="yes" dataQuery="yes" dataUpdate="yes" designDelete="yes" designRead="yes" designUpdate="yes" modifyAcl="yes"/>
+		</PSXAclEntry>
+		<multiMembershipBehavior/>
+	</PSXAcl>
+	<maxThreads>-1</maxThreads>
+	<maxRequestTime>-1</maxRequestTime>
+	<maxRequestsInQueue>-1</maxRequestsInQueue>
+	<userSessionEnabled>no</userSessionEnabled>
+	<userSessionTimeout>1</userSessionTimeout>
+	<requestTypeHtmlParamName>DBActionType</requestTypeHtmlParamName>
+	<requestTypeValueQuery>QUERY</requestTypeValueQuery>
+	<requestTypeValueInsert>INSERT</requestTypeValueInsert>
+	<requestTypeValueUpdate>UPDATE</requestTypeValueUpdate>
+	<requestTypeValueDelete>DELETE</requestTypeValueDelete>
+	<PSXContentEditor contentType="311" enableRelatedContent="yes" objectType="1" workflowId="5">
+		<PSXDataSet id="390">
+			<name>rffGeneric</name>
+			<description>default template</description>
+			<transactionType>none</transactionType>
+			<PSXContentEditorPipe id="0">
+				<name>cePipe</name>
+				<description>This is the ContentEditorLocaDef for Default ContentType</description>
+				<InputDataExits>
+					<PSXExtensionCallSet id="0">
+						<PSXExtensionCall id="10027">
+							<name>Java/global/percussion/xmldom/sys_xdTextCleanup</name>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text>body</text>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text>rxW2Ktidy.properties</text>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text>rxW2KserverPageTags.xml</text>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text/>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text/>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text>yes</text>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+						</PSXExtensionCall>
+						<PSXExtensionCall id="10026">
+							<name>Java/global/percussion/xmldom/sys_xdTextCleanup</name>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text>callout</text>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text>rxW2Ktidy.properties</text>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text>rxW2KserverPageTags.xml</text>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text/>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text/>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+							<PSXExtensionParamValue id="0">
+								<value>
+									<PSXTextLiteral id="0">
+										<text>yes</text>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+						</PSXExtensionCall>
+					</PSXExtensionCallSet>
+				</InputDataExits>
+				<ResultDataExits>
+					<PSXExtensionCallSet id="0">
+						<PSXExtensionCall id="0">
+							<name>Java/user/pso_BuildOwnerRelationshipsFromIds</name>
+							<PSXExtensionParamValue id="0">
+								<!-- field name -->
+								<value>
+									<PSXTextLiteral id="0">
+										<text>categories</text>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+							<PSXExtensionParamValue id="0">
+								<!-- slot name -->
+								<value>
+									<PSXTextLiteral id="0">
+										<text>pso_category</text>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+							<PSXExtensionParamValue id="0">
+								<!-- snippet template name TODO: match Adam's name -->
+								<value>
+									<PSXTextLiteral id="0">
+										<text>pso_category_snip</text>
+									</PSXTextLiteral>
+								</value>
+							</PSXExtensionParamValue>
+						</PSXExtensionCall>
+					</PSXExtensionCallSet>
+				</ResultDataExits>
+				<PSXContainerLocator>
+					<PSXTableSet>
+						<PSXTableLocator>
+							<PSXBackEndCredential id="275">
+								<alias>contentCredential</alias>
+								<comment/>
+								<datasource/>
+							</PSXBackEndCredential>
+						</PSXTableLocator>
+						<PSXTableRef alias="RXS_CT_GENERIC" name="RXS_CT_GENERIC"/>
+					</PSXTableSet>
+				</PSXContainerLocator>
+				<PSXContentEditorMapper>
+					<SystemFieldExcludes>
+						<FieldRef>sys_pathname</FieldRef>
+						<FieldRef>sys_pubdate</FieldRef>
+					</SystemFieldExcludes>
+					<SharedFieldIncludes>
+						<SharedFieldGroupName>shared</SharedFieldGroupName>
+						<SharedFieldGroupName>sharedtag</SharedFieldGroupName>
+						<SharedFieldExcludes>
+							<FieldRef>webdavowner</FieldRef>
+						</SharedFieldExcludes>
+					</SharedFieldIncludes>
+					<PSXFieldSet name="RXS_CT_GENERIC" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+						<PSXField name="cat_tmp" forceBinary="no" modificationType="user" showInPreview="yes" showInSummary="yes" type="shared">
+							<DataLocator>
+								<PSXTextLiteral id="0">
+									<text>this value will be replaced with selected category content ids by the extractIdsFromSlot exit</text>
+								</PSXTextLiteral>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>255</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited" />
+							<FieldRules>
+								<FieldOutputTranslation>
+									<PSXFieldTranslation>
+										<PSXExtensionCallSet id="0">
+											<PSXExtensionCall id="0">
+												<name>Java/user/pso_ExtractDependentIdsFromSlot</name>
+												<PSXExtensionParamValue id="0">
+													<!-- slot name -->
+													<value>
+														<PSXTextLiteral id="0">
+															<text>pso_category</text>
+														</PSXTextLiteral>
+													</value>
+												</PSXExtensionParamValue>
+											</PSXExtensionCall>
+										</PSXExtensionCallSet>
+										<ErrorLabel>
+											<PSXDisplayText>Failed to select category content ids</PSXDisplayText>
+										</ErrorLabel>
+									</PSXFieldTranslation>
+								</FieldOutputTranslation>
+							</FieldRules>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="no" userSearchable="no" visibleToGlobalQuery="no" />
+						</PSXField>
+
+						<PSXField name="categories" forceBinary="no" modificationType="user" showInPreview="yes" showInSummary="yes" type="shared">
+							<DataLocator>
+								<PSXTextLiteral id="0">
+									<text>This will be replaced</text>
+								</PSXTextLiteral>
+							</DataLocator>
+
+							<DataType>text</DataType>
+							<DataFormat>255</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited" />
+							<FieldRules>
+								<FieldOutputTranslation>
+									<PSXFieldTranslation>
+										<PSXExtensionCallSet id="0">
+											<PSXExtensionCall id="0">
+												<name>Java/user/pso_ExtractDependentIdsFromSlot</name>
+												<PSXExtensionParamValue id="0">
+													<!-- slot name -->
+													<value>
+														<PSXTextLiteral id="0">
+															<text>pso_category</text>
+														</PSXTextLiteral>
+													</value>
+												</PSXExtensionParamValue>
+											</PSXExtensionCall>
+										</PSXExtensionCallSet>
+										<ErrorLabel>
+											<PSXDisplayText>Failed to select category content id</PSXDisplayText>
+										</ErrorLabel>
+									</PSXFieldTranslation>
+								</FieldOutputTranslation>
+							</FieldRules>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="no" userSearchable="no" visibleToGlobalQuery="no" />
+						</PSXField>
+						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="placeholder" showInPreview="yes" showInSummary="yes" type="local">
+
+							<DataLocator>
+								<PSXBackEndColumn id="0">
+									<tableAlias>RXS_CT_GENERIC</tableAlias>
+									<column>PLACEHOLDER</column>
+									<columnAlias/>
+								</PSXBackEndColumn>
+							</DataLocator>
+							<DataType>text</DataType>
+							<DataFormat>1</DataFormat>
+							<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+							<FieldRules>
+								<PSXVisibilityRules dataHiding="xml">
+									<PSXRule boolean="and">
+										<PSXConditional id="8">
+											<variable>
+												<PSXTextLiteral id="9">
+													<text>1</text>
+												</PSXTextLiteral>
+											</variable>
+											<operator>=</operator>
+											<value>
+												<PSXTextLiteral id="10">
+													<text>2</text>
+												</PSXTextLiteral>
+											</value>
+											<boolean>AND</boolean>
+										</PSXConditional>
+									</PSXRule>
+								</PSXVisibilityRules>
+							</FieldRules>
+							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+						</PSXField>
+						<PSXFieldSet name="shared" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+							<PSXField forceBinary="no" modificationType="user" name="body" showInPreview="yes" showInSummary="yes" type="shared">
+								<DataType/>
+								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+							</PSXField>
+							<PSXField forceBinary="no" modificationType="user" name="callout" showInPreview="yes" showInSummary="yes" type="shared">
+								<DataType/>
+								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+							</PSXField>
+							<PSXField forceBinary="no" modificationType="user" name="filename" showInPreview="yes" showInSummary="no" type="shared">
+								<DataType/>
+								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+							</PSXField>
+						</PSXFieldSet>
+					</PSXFieldSet>
+					<PSXUIDefinition>
+						<PSXDisplayMapper fieldSetRef="RXS_CT_GENERIC" id="0">
+							<PSXDisplayMapping>
+								<FieldRef>sys_title</FieldRef>
+								<PSXUISet accessKey="s"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>displaytitle</FieldRef>
+								<PSXUISet accessKey="t"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_contentstartdate</FieldRef>
+								<PSXUISet accessKey="D"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_contentexpirydate</FieldRef>
+								<PSXUISet accessKey="e"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_reminderdate</FieldRef>
+								<PSXUISet accessKey="r"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>keywords</FieldRef>
+								<PSXUISet accessKey="K"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>description</FieldRef>
+								<PSXUISet accessKey="D"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>callout</FieldRef>
+								<PSXUISet accessKey="o"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>body</FieldRef>
+								<PSXUISet accessKey="B"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>cat_tmp</FieldRef>
+								<PSXUISet>
+									<Label>
+										<PSXDisplayText>cat_tmp:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="17" name="sys_EditBox"/>
+								</PSXUISet>
+
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>categories</FieldRef>
+								<PSXUISet>
+									<Label>
+										<PSXDisplayText>Categories:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="3256" name="sys_CategoryDropDownSingle"/>
+									<ErrorLabel>
+										<PSXDisplayText>Categories:</PSXDisplayText>
+									</ErrorLabel>
+									<PSXChoices sortOrder="ascending" type="internalLookup">
+										<PSXUrlRequest>
+											<Href>../pso_brief_auto/all_briefs.xml</Href>
+											<PSXParam name="sys_contentid">
+												<DataLocator>
+													<PSXHtmlParameter id="0">
+														<name>sys_contentid</name>
+													</PSXHtmlParameter>
+												</DataLocator>
+											</PSXParam>
+											<PSXParam name="sys_revision">
+												<DataLocator>
+													<PSXHtmlParameter id="0">
+														<name>sys_revision</name>
+													</PSXHtmlParameter>
+												</DataLocator>
+											</PSXParam>
+											<Anchor/>
+										</PSXUrlRequest>
+										<PSXNullEntry includeWhen="always" sortOrder="first">
+											<PSXEntry default="no" sequence="-1">
+												<PSXDisplayText>-- Select auto index query --</PSXDisplayText>
+												<Value></Value>
+											</PSXEntry>
+										</PSXNullEntry>
+									</PSXChoices>                 
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sharedtag</FieldRef>
+								<PSXUISet/>
+								<PSXDisplayMapper fieldSetRef="sharedtag" id="24042">
+									<PSXDisplayMapping>
+										<FieldRef>tag</FieldRef>
+										<PSXUISet/>
+									</PSXDisplayMapping>
+								</PSXDisplayMapper>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>filename</FieldRef>
+								<PSXUISet accessKey="F"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_suffix</FieldRef>
+								<PSXUISet accessKey="S"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_communityid</FieldRef>
+								<PSXUISet accessKey="m"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_workflowid</FieldRef>
+								<PSXUISet accessKey="w"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_lang</FieldRef>
+								<PSXUISet accessKey="l"/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_currentview</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>placeholder</FieldRef>
+								<PSXUISet>
+									<Label>
+										<PSXDisplayText>Placeholder:</PSXDisplayText>
+									</Label>
+									<PSXControlRef id="3256" name="sys_HiddenInput"/>
+									<ErrorLabel>
+										<PSXDisplayText>Placeholder:</PSXDisplayText>
+									</ErrorLabel>
+								</PSXUISet>
+							</PSXDisplayMapping>
+							<PSXDisplayMapping>
+								<FieldRef>sys_hibernateVersion</FieldRef>
+								<PSXUISet/>
+							</PSXDisplayMapping>
+						</PSXDisplayMapper>
+					</PSXUIDefinition>
+				</PSXContentEditorMapper>
+				<userProperties>
+					<userProperty name="Control19_Dependency10026">sys_xdTextCleanup</userProperty>
+					<userProperty name="Control24_DependencyIds">10027</userProperty>
+					<userProperty name="Control19_DependencyIds">10026</userProperty>
+					<userProperty name="Control24_Dependency10027">sys_xdTextCleanup</userProperty>
+				</userProperties>
+			</PSXContentEditorPipe>
+			<PSXPageDataTank id="389">
+				<schemaSource>file:unspecified</schemaSource>
+				<actionTypeXmlField/>
+			</PSXPageDataTank>
+			<PSXRequestor directDataStream="no" id="0">
+				<requestPage>rffGeneric</requestPage>
+				<SelectionParams/>
+				<ValidationRules/>
+				<characterEncoding>UTF-8</characterEncoding>
+				<MimeProperties>
+					<html>
+						<PSXTextLiteral id="0">
+							<text>text/html</text>
+						</PSXTextLiteral>
+					</html>
+					<htm>
+						<PSXTextLiteral id="0">
+							<text>text/html</text>
+						</PSXTextLiteral>
+					</htm>
+				</MimeProperties>
+			</PSXRequestor>
+		</PSXDataSet>
+		<PSXValidationRules maxErrorsToStop="10"/>
+		<PSXInputTranslations/>
+		<PSXOutputTranslations/>
+		<PSXWorkflowInfo type="inclusionary" values="4,5"/>
+	</PSXContentEditor>
+	<PSXLogger id="0" logAppStartStop="no" logAppStatistics="no" logBasicUserActivity="no" logDetailedUserActivity="no" logErrors="no" logExecutionPlan="no" logFullUserActivity="no" logMultipleHandlers="no" logServerStartStop="no"/>
+	<PSXTraceInfo id="0" traceAppHandlerProc="no" traceAppSecurity="no" traceBasicRequestInfo="no" traceConditionalEval="no" traceDbPool="no" traceEnabled="no" traceExitExec="no" traceExitProc="no" traceFileInfo="no" traceInitHttpVar="no" traceMapper="no" traceOutputColumnWidth="80" traceOutputConv="no" tracePostExitCgi="no" tracePostExitXml="no" tracePostPreProcHttpVar="no" traceResourceHandler="no" traceResultSet="no" traceSessionInfo="no" traceTimestampOnlyEnabled="no"/>
+	<PSXErrorWebPages id="387" returnHtml="yes"/>
+	<backEndLoginPassthru>no</backEndLoginPassthru>
+	<PSXNotifier id="388">
+		<providerType>SMTP</providerType>
+		<server>//jbr:1032</server>
+		<from/>
+	</PSXNotifier>
+	<userProperty name="savedFromWorkbench">Yes</userProperty>
+	<userProperty name="pageDatatankSrcType389">-1</userProperty>
+	<userProperty name="locationY388">100</userProperty>
+	<userProperty name="locationY390">33</userProperty>
+	<userProperty name="locationY387">55</userProperty>
+	<userProperty name="locationY386">10</userProperty>
+	<userProperty name="locationX388">16</userProperty>
+	<userProperty name="locationX390">42</userProperty>
+	<userProperty name="locationX387">16</userProperty>
+	<userProperty name="schemaSourceReadOnly389">false</userProperty>
+	<userProperty name="locationX386">16</userProperty>
+</PSXApplication>

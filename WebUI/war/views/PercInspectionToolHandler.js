@@ -135,7 +135,7 @@
                 if (!$(this).is(".buttonPressed"))
                     $(this).css("background-position", "0px 0px");
             }
-        )
+        );
     }
     
     /**
@@ -215,13 +215,13 @@
         var iframeJQuery = window.frames[0].jQuery;
         iframeJQuery(".perc-region.perc-region-leaf").filter(function(){
                 var regWidgets = iframeJQuery(this).find(".perc-widget");
-                return regWidgets.size()!=1 || //Select if there are more than 1 widget
-                regWidgets.eq(0).attr("widgetdefid") != 'percRawHtml' || //Select if the widget is not html
+                return regWidgets.size()!==1 || //Select if there are more than 1 widget
+                regWidgets.eq(0).attr("widgetdefid") !== 'percRawHtml' || //Select if the widget is not html
                 regWidgets.eq(0).hasClass(".perc-locked") || //Select if the widget is locked
-                regWidgets.eq(0).children().size()==0 || //If there are no elements under widget
-                regWidgets.eq(0).find(".html-sample-content").size() == 1 || //Select if the widget has sample content
-                (regWidgets.eq(0).children().size() == 1 && !regWidgets.eq(0).children().eq(0).is("div"))|| //Select if there is only one element and it is not div
-                (regWidgets.eq(0).children().size() == 1 && regWidgets.eq(0).children().eq(0).is("div") && regWidgets.eq(0).children().eq(0).children().length == 0 && regWidgets.eq(0).children().eq(0).outerHeight(true) == 0 && regWidgets.eq(0).children().eq(0).innerHeight() == 0); 
+                regWidgets.eq(0).children().size()===0 || //If there are no elements under widget
+                regWidgets.eq(0).find(".html-sample-content").size() === 1 || //Select if the widget has sample content
+                (regWidgets.eq(0).children().size() === 1 && !regWidgets.eq(0).children().eq(0).is("div"))|| //Select if there is only one element and it is not div
+                (regWidgets.eq(0).children().size() === 1 && regWidgets.eq(0).children().eq(0).is("div") && regWidgets.eq(0).children().eq(0).children().length === 0 && regWidgets.eq(0).children().eq(0).outerHeight(true) === 0 && regWidgets.eq(0).children().eq(0).innerHeight() === 0);
             }).addClass("perc-region-itool-unselectable");
     }
     
@@ -230,13 +230,13 @@
         var iframeJQuery = window.frames[0].jQuery;
         iframeJQuery(".perc-region.perc-region-leaf:not('.perc-region-itool-unselectable')").find(".perc-widget").each(function(){
             iframeJQuery(this).contents().filter(function(){
-                return this.nodeType == Node.TEXT_NODE && $.trim(iframeJQuery(this).text()).length > 0
+                return this.nodeType === Node.TEXT_NODE && $.trim(iframeJQuery(this).text()).length > 0;
             }).wrap('<span class="perc-itool-text-node-wrapper"/>');
             
-            if(iframeJQuery(this).children().size() == 1) //Drill into
+            if(iframeJQuery(this).children().size() === 1) //Drill into
             {
                 var currentElem = iframeJQuery(this);
-                while (currentElem.children().length == 1 && currentElem.children().eq(0).is("div"))
+                while (currentElem.children().length === 1 && currentElem.children().eq(0).is("div"))
                 {
                     currentElem.addClass("perc-itool-region-elem");
                     currentElem = currentElem.find("> div");
@@ -246,7 +246,7 @@
             else
             {
                 iframeJQuery(this).children().each(function(){
-                    if(iframeJQuery(this).outerHeight(true) == 0 && iframeJQuery(this).innerHeight() == 0)
+                    if(iframeJQuery(this).outerHeight(true) === 0 && iframeJQuery(this).innerHeight() === 0)
                     {
                         iframeJQuery(this).addClass("perc-zero-size-elem");
                     }
@@ -288,7 +288,7 @@
             	message:I18N.message("perc.ui.iframe.view@Page Form Based Sorry"), 
                 consoleMsg:I18N.message("perc.ui.iframe.view@Page Form Based Info")   
             };
-            if(!(inspectableElemenets.size()==1 && inspectableElemenets.eq(0).children().length == 1 && inspectableElemenets.eq(0).children().eq(0).is("form")))
+            if(!(inspectableElemenets.size()===1 && inspectableElemenets.eq(0).children().length === 1 && inspectableElemenets.eq(0).children().eq(0).is("form")))
             {
                 response.status = true;
                 response.message = "";
@@ -304,7 +304,7 @@
             	message:I18N.message("perc.ui.iframe.view@Page Table Based Sorry"), 
                 consoleMsg:I18N.message("perc.ui.iframe.view@Page Table Based Info")    
             };
-            if(!(inspectableElemenets.size()==1 && inspectableElemenets.eq(0).children().length == 1 && inspectableElemenets.eq(0).children().eq(0).is("table")))
+            if(!(inspectableElemenets.size()===1 && inspectableElemenets.eq(0).children().length === 1 && inspectableElemenets.eq(0).children().eq(0).is("table")))
             {
                 response.status = true;
                 response.message = "";
@@ -352,7 +352,7 @@
         }
         var inspectableElemenets = _iframe.contents().find(".perc-widget[widgetdefid='percRawHtml']:not('.perc-locked')").filter(":only-child").filter(function(){
             var curElem = window.frames[0].jQuery(this);
-            var isSampleContent = curElem.find(".html-sample-content").length == 1;
+            var isSampleContent = curElem.find(".html-sample-content").length === 1;
             return !(isSampleContent);
         });
 
@@ -545,7 +545,7 @@
             
             iframeContents.find(".perc-itool-highlighter").removeClass("perc-itool-highlighter");
             currentElem.find('div').each(function() {
-                var titleValue = iframeJQuery(this).attr('title')
+                var titleValue = iframeJQuery(this).attr('title');
                 iframeJQuery(this).attr('tempTitle', titleValue);
                 iframeJQuery(this).removeAttr('title');
             });
@@ -553,7 +553,7 @@
         }).mouseleave(function(){
             var currentElem = iframeJQuery(this);
             currentElem.find('div').each(function() {
-                var tempTitleValue = iframeJQuery(this).attr('tempTitle')
+                var tempTitleValue = iframeJQuery(this).attr('tempTitle');
                 iframeJQuery(this).attr('title', tempTitleValue);
                 iframeJQuery(this).removeAttr('tempTitle');
             });
@@ -568,7 +568,7 @@
         iframeJQuery('body').on('mouseenter', '.perc-itool-selectable-elem, .perc-itool-multi-selectable-highlighter', function(event){
         //iframeContents.find(".perc-itool-selectable-elem, .perc-itool-multi-selectable-highlighter").mouseenter(function(event){   
             var currentElem = iframeJQuery(this);
-            var isValidElem = iframeContents.find(".perc-itool-selected-elem").length == 0 || 
+            var isValidElem = iframeContents.find(".perc-itool-selected-elem").length === 0 ||
                                 event.shiftKey && iframeJQuery(this).hasClass("perc-itool-multi-selectable-highlighter") ||
                                 event.shiftKey && iframeJQuery(this).hasClass("perc-itool-multi-selectable");
             if(!isValidElem)
@@ -708,8 +708,8 @@
         //If the selected elements length is zero return from here or 
         //if selected element is only one and if it is div and if it has perc-itools-wrapper return from here
         //if the selected element's parent has a perc-itools-wrapper return from here.
-        if(selElems.length == 0 || 
-            (selElems.length == 1 && selElems.is("div") && iframeJQuery(selElems).hasClass("perc-itools-wrapper")) || 
+        if(selElems.length === 0 ||
+            (selElems.length === 1 && selElems.is("div") && iframeJQuery(selElems).hasClass("perc-itools-wrapper")) ||
             (iframeJQuery(selElems[0]).parent().hasClass("perc-itools-wrapper")))
             return;
 
@@ -725,7 +725,7 @@
         });
         
         iframeContents.find('.perc-sibling-div').remove();
-        if(selElems.length == 1 && selElems.is("div")) 
+        if(selElems.length === 1 && selElems.is("div"))
         {
             selElems.addClass('perc-itool-region-puff-self perc-make-me-region perc-self-wrapper perc-itools-wrapper').addClass(className);
             highlightSiblings(selElems);
@@ -744,8 +744,8 @@
         });
         
         // If user performs 'Side by Side' action - add the overflow:auto and height 100% to its parent so that below content don't overlap on columns
-        if(className == 'perc-col') {
-            if(selElems.length == 1) {
+        if(className === 'perc-col') {
+            if(selElems.length === 1) {
                 
                 selElems.parent().addClass('perc-clear');
             }
@@ -758,7 +758,7 @@
         }
         
         // If there is only one selected element,turn its border into blue. If there are mulitple selected element keep their border green but turn its wrapper div border to blue
-        if(selElems.length == 1) {
+        if(selElems.length === 1) {
             iframeJQuery('.perc-itool-selected-green-border').css('border-color', '#00afea');        
         }
         else {
@@ -779,13 +779,13 @@
         var iframeContents = _iframe.contents();
         var iframeJQuery = window.frames[0].jQuery;
         var selElems = iframeJQuery(".perc-itool-selected-elem");
-        if(selElems.length==0)
+        if(selElems.length===0)
             return;
         if(selElems.length>1)
             selElems.unwrap();
         //Unwrap the non-div elements
         iframeJQuery('.perc-itool-nov-div-wrapper').contents().unwrap();
-        if(className == 'perc-col') {
+        if(className === 'perc-col') {
             selElems.parent().removeClass('perc-clear');
         }            
         iframeJQuery(".perc-itools-wrapper").removeClass("perc-itools-wrapper perc-make-me-region").removeClass(className);
@@ -808,7 +808,7 @@
         highligheterDiv.offset({
             "top": selectedElement.offset().top,
             "left": selectedElement.offset().left
-         })
+         });
         highligheterDiv.height(selectedElement.innerHeight() - 10).width(selectedElement.innerWidth() - 10);
     }
      
@@ -914,7 +914,7 @@
     // This is especially done for the autotest where mouseover can't be fire.
     function _guardSplitRegions(flag){
         var iframeJQuery = window.frames[0].jQuery;
-        if (iframeJQuery('.perc-itools-wrapper').length == 0) {
+        if (iframeJQuery('.perc-itools-wrapper').length === 0) {
             if (flag) {
                 itoolPreviewMouseOver('perc-row',function(){
                     _splitRegions(flag);
@@ -978,7 +978,7 @@
             userRegionClasses = regionClasses ? regionClasses.split(" ") : [];
             for (i = 0; i < userRegionClasses.length; i++) {
                 var uclass = userRegionClasses[i];
-                if (uclass.indexOf("perc-") == -1) 
+                if (uclass.indexOf("perc-") === -1)
                     classesToApply += uclass + " ";
             }
             // We use "center" direction, since the temp regions are not deleted later in this case, so they
@@ -987,7 +987,7 @@
              _layoutFunctions.layoutController.addRegion(lastParentRegionPuff, "center", function(region){
                 originalRegionId = region.regionId;
                 _model.editRegion(region.regionId, function(){
-                    if (thisRegionId && thisRegionId != '')
+                    if (thisRegionId && thisRegionId !== '')
                         this.regionId = thisRegionId;
                     this.cssClass = classesToApply;
                     
@@ -1001,7 +1001,7 @@
                 });
             });
             
-            lastParentRegionPuff = thisRegionId && thisRegionId != '' ? thisRegionId : originalRegionId;
+            lastParentRegionPuff = thisRegionId && thisRegionId !== '' ? thisRegionId : originalRegionId;
             iframeJQuery(lastParentRegionPuff).addClass('perc-region-puff-gray');
         });
         
@@ -1016,13 +1016,13 @@
                 userRegionClasses = regionClasses ? regionClasses.split(" ") : [];
                 for (i = 0; i < userRegionClasses.length; i++) {
                     var uclass = userRegionClasses[i];
-                    if (uclass.indexOf("perc-") == -1) 
+                    if (uclass.indexOf("perc-") === -1)
                         classesToApply += uclass + " ";
                 }
             }
             _layoutFunctions.layoutController.addRegion(lastParentRegionPuff, regDirection, function(region){
                 _model.editRegion(region.regionId, function(){
-                    if (regionId && regionId != '')
+                    if (regionId && regionId !== '')
                         this.regionId = regionId;
                     this.cssClass = classesToApply;
                     

@@ -119,6 +119,7 @@
         MIGRATION_EMPTY_FLAG       : SERVICES.PAGEMGT + "/page/migrationEmptyFlag",
         CLEAR_MIGRATION_EMPTY_FLAG : SERVICES.PAGEMGT + "/page/clearMigrationEmptyFlag",
         RENDER_LINK_PREVIEW        : SERVICES.PAGEMGT + "/renderlink/preview",
+        SEARCH_PAGE_ASSETS_BY_STATUS           : SERVICES.PAGEMGT + "/page/searchPageByStatus",
 
         BLOG_LOAD : SERVICES.SITEMGT + "/section/blogs",
         POST_LOAD : SERVICES.SITEMGT + "/section/blogPosts",

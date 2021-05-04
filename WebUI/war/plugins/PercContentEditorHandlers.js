@@ -46,7 +46,7 @@
                 alert(I18N.message("perc.ui.content.editor.handlers@Must Be Function"));
                 return;
             }
-            if($.inArray(handler, this._handlers) == -1)
+            if($.inArray(handler, this._handlers) === -1)
             {
                 this._handlers.push(handler);
             }

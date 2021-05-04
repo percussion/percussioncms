@@ -37,4 +37,8 @@ public class AssetNotFoundException extends RestExceptionBase
 	{
 		super(RestErrorCode.ASSET_NOT_FOUND, message, null, Response.Status.NOT_FOUND);
 	}
+
+	public AssetNotFoundException(Throwable t){
+		super(t);
+	}
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<ContentEditor commandName="edit" contentTypeId="302" docType="sys_normal" enableRelatedContent="yes" itemLocale="en-us" mode="sys_edit" objectType="1" submitHref="rffBrief.html">
+    <ControlNameSet>
+    <ControlName>sys_DropDownSingle</ControlName>
+    <ControlName>sys_EditBox</ControlName>
+    <ControlName>sys_CalendarSimple</ControlName>
+    <ControlName>sys_CheckBoxTree</ControlName>
+    <ControlName>sys_EditLive</ControlName>
+    <ControlName>sys_HiddenInput</ControlName>
+    </ControlNameSet>
+ <ItemContent newDocument="no">
+      <DisplayField displayType="sys_normal">
+         <DisplayLabel sourceType="sys_local">Tree:</DisplayLabel>
+         <Control accessKey="" dataType="sys_local" dimension="array" isReadOnly="no" isRequired="no" name="sys_CheckBoxTree" paramName="tree">
+            <DisplayChoices>
+               <DisplayEntry selected="yes">
+                  <Value>307</Value>
+                  <DisplayLabel>307</DisplayLabel>
+               </DisplayEntry>
+               <DisplayEntry selected="yes">
+                  <Value>309</Value>
+                  <DisplayLabel>309</DisplayLabel>
+               </DisplayEntry>
+               <DisplayEntry selected="yes">
+                  <Value>318</Value>
+                  <DisplayLabel>318</DisplayLabel>
+               </DisplayEntry>
+            </DisplayChoices>
+            <ParamList>
+               <Param name="tree_src_url">../demo_groovy/run.xml?scriptName=demo/TaxTree.groovy</Param>
+            </ParamList>
+         </Control>
+        <Control/>
+      </DisplayField>
+    </ItemContent>
+</ContentEditor>

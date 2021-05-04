@@ -35,7 +35,7 @@
 
     function submitNewPassword() {
         validateNewPassword();
-        if(validPassword == true) {
+        if(validPassword === true) {
             startProcessRunningAlert();
             userInfo.password = $('#percNewPassword').val();
             payload = {};
@@ -56,7 +56,7 @@
             response = {};
             response.result = {};
             response.source = I18N.message("perc.ui.common.label@Change Password");
-            if( status == 'success' ) {
+            if( status === 'success' ) {
                 response.result.status = I18N.message("perc.ui.common.label@Change Password Success") + ' ' + result.User.name;
                 togglePassword();
             }
@@ -80,7 +80,7 @@
             oldPasswordErrorText = '\xa0';
         }
 
-        if( $('#percNewPassword').val() != $('#percConfirmNewPassword').val() ) {
+        if( $('#percNewPassword').val() !== $('#percConfirmNewPassword').val() ) {
             validPassword = false;
             passwordErrorText = I18N.message("perc.ui.common.label@Password Match");
         }
@@ -93,7 +93,7 @@
             passwordErrorText = '\xa0';
         }
 
-        if(  passwordErrorText != oldPasswordErrorText ) {
+        if(  passwordErrorText !== oldPasswordErrorText ) {
             $('.perc-change-password-error > span').fadeOut('fast', function() {
                 $('.perc-change-password-error > span').text(passwordErrorText);
             });

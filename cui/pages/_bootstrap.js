@@ -61,7 +61,7 @@ var requireJsConfig = {
             deps: ['jquery-ui']
         }
     }
-}
+};
 
 if (typeof(exports) !== 'undefined' && exports !== null) {
 	exports.requireJsConfig = requireJsConfig;
