@@ -262,7 +262,7 @@
                                 let daysInMonth = new Date(row.year, monthIndex, 0).getDate();
                                 let dateParam1 = row.year + "-"+ stringMonthParam + "-01 00:00:00";
                                 let dateParam2 = row.year + "-"+ stringMonthParam + "-" + daysInMonth + " 00:00:00";
-
+                                let a = {};
                                 //Generate the link text
                                 let linkText = row2.month + " " + row.year + " (" + row2.count + ")";
 
@@ -279,12 +279,12 @@
                                     query.criteria.push("dcterms:created >= '" + dateParam1 + "'");
                                     query.criteria.push("dcterms:created <= '" + dateParam2 + "'");
                                     let encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(query));
-                                    let a = $("<a>")
+                                    a = $("<a>")
                                         .attr("href", baseURL + pageResult + "?filter="+ row2.month + " " + row.year + encodedQuery)
                                         .text(linkText);
                                 }
                                 else{
-                                    let a = $("<a href = '#'>")
+                                    a = $("<a href = '#'>")
                                         .text(linkText);
                                 }
                                 let li = $("<li>")
@@ -295,7 +295,7 @@
                                 listCounter = listCounter + 1;
 
                                 //If max value is defined and counter is equal to max value break the month loop
-                                if(listCounter === flatItemToList && typeof(numberEntries) !== "undefined" && numberEntries != "")
+                                if(listCounter === flatItemToList && typeof(numberEntries) !== "undefined" && numberEntries !== "")
                                 {
                                     break;
                                 }
