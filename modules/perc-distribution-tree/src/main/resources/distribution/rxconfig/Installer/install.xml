@@ -939,6 +939,9 @@
         <copy todir="${install.dir}/rxconfig/velocity">
             <fileset dir="${install.src}/rxconfig/velocity" includes="**/*" />
         </copy>
+        <copy todir="${install.dir}/rxconfig/Server">
+            <fileset dir="${install.src}/rxconfig/velocity/2.2/config" includes="**/*.properties" />
+        </copy>
         <mkdir dir="${install.dir}/rxconfig/ssh-keys" />
         <touch file="${install.dir}/rxconfig/ssh-keys/config" />
         <mkdir dir="${install.dir}/rxconfig/trusted_certificates" />
