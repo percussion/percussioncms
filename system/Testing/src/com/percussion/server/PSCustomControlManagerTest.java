@@ -215,11 +215,11 @@ public class PSCustomControlManagerTest
    private static final String CONTROL_IMPORTS_CONTENT =
       "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" +
       "<!DOCTYPE xsl:stylesheet [\n" +
-         "<!ENTITY % HTMLlat1 SYSTEM \"/Rhythmyx/DTD/HTMLlat1x.ent\">\n" +
+         "<!ENTITY % HTMLlat1 SYSTEM \"./../../DTD/HTMLlat1x.ent\">\n" +
             "%HTMLlat1;\n" +
-         "<!ENTITY % HTMLsymbol SYSTEM \"/Rhythmyx/DTD/HTMLsymbolx.ent\">\n" +
+         "<!ENTITY % HTMLsymbol SYSTEM \"./../../DTD/HTMLsymbolx.ent\">\n" +
             "%HTMLsymbol;\n" +
-         "<!ENTITY % HTMLspecial SYSTEM \"/Rhythmyx/DTD/HTMLspecialx.ent\">\n" +
+         "<!ENTITY % HTMLspecial SYSTEM \"./../../DTD/HTMLspecialx.ent\">\n" +
             "%HTMLspecial;\n" +
       "]>\n" +
       "<xsl:stylesheet version=\"1.1\" " +

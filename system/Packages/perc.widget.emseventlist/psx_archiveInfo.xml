@@ -40,7 +40,7 @@
             <Description>Provides a Widget that can be Integrated with the EMS Software calendar.</Description>
             <Publisher name="Percussion Software, Inc." url="https://www.percussion.com"/>
             <CmsVersion max="9.0.0" min="5.3.15"/>
-            <Version>1.2.3</Version>
+            <Version>1.2.4</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>
