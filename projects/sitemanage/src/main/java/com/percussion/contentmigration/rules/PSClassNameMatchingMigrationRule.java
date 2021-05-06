@@ -49,8 +49,9 @@ public class PSClassNameMatchingMigrationRule extends PSBaseMatchingMigrationRul
     {
         // find region
         Element regionElem = findEnclosingRegionElement(widgetId, sourceDoc);
-        if(regionElem == null)
+        if(regionElem == null) {
             return null;
+        }
         
         // filter non-perc classnames
         PSClassNameMatcher srcMatch = new PSClassNameMatcher(regionElem);
@@ -88,8 +89,9 @@ public class PSClassNameMatchingMigrationRule extends PSBaseMatchingMigrationRul
         }
         
         Element match = findParentMatch(srcMatch, matches);
-        if (match == null)
+        if (match == null) {
             return null;
+        }
         
         return match.html();
     }
@@ -105,15 +107,18 @@ public class PSClassNameMatchingMigrationRule extends PSBaseMatchingMigrationRul
     private Element findParentMatch(PSClassNameMatcher srcMatch, List<PSClassNameMatcher> matches)
     {
         Set<String> classNames = srcMatch.getNextParentElementClasses();
-        if (classNames.isEmpty())
-            return null;  // nothing left to match
+        if (classNames.isEmpty()) {
+            return null;
+        }// nothing left to match
         
         filterParentMatches(matches, classNames);
-        if (matches.isEmpty())
+        if (matches.isEmpty()) {
             return null;
+        }
         
-        if (matches.size() == 1)
+        if (matches.size() == 1) {
             return matches.get(0).getSrcElement();
+        }
         
         // recurse up the parent stack and try again
         return findParentMatch(srcMatch, matches);
@@ -132,8 +137,9 @@ public class PSClassNameMatchingMigrationRule extends PSBaseMatchingMigrationRul
         while (iter.hasNext())
         {
             PSClassNameMatcher match = iter.next();
-            if (!match.matchParentClasses(classNames))
+            if (!match.matchParentClasses(classNames)) {
                 iter.remove();
+            }
         }
     }
 
@@ -160,8 +166,9 @@ public class PSClassNameMatchingMigrationRule extends PSBaseMatchingMigrationRul
                 elems = targetDoc.select("." + className);
                 for (Element element : elems)
                 {
-                    if(!found.contains(element))
+                    if(!found.contains(element)) {
                         found.add(element);
+                    }
                 }
             }
         }

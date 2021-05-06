@@ -120,8 +120,9 @@ public class PSFolderItem extends PSAbstractDataObject
      */
     public String getWorkflowName()
     {
-        if (workflowName == null)
+        if (workflowName == null) {
             return StringUtils.EMPTY;
+        }
         
         return workflowName;
     }
