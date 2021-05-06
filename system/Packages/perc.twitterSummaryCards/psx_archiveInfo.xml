@@ -40,7 +40,7 @@
             <Description>Provides a widget that adds Twitter summary card markup to published pages to improve the social sharing eperience.</Description>
             <Publisher name="Percussion Software, Inc." url="https://www.percussion.com"/>
             <CmsVersion max="9.0.0" min="5.2.5"/>
-            <Version>1.1.2</Version>
+            <Version>1.1.3</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>

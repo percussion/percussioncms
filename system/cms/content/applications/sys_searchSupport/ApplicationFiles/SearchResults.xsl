@@ -13,11 +13,11 @@
       bottom of the page. The actions are rendered in document order.
 -->
 <!DOCTYPE xsl:stylesheet [
-	<!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
+	<!ENTITY % HTMLlat1 SYSTEM "./../../DTD/HTMLlat1x.ent">
 	%HTMLlat1;
-	<!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
+	<!ENTITY % HTMLsymbol SYSTEM "./../../DTD/HTMLsymbolx.ent">
 	%HTMLsymbol;
-	<!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
+	<!ENTITY % HTMLspecial SYSTEM "./../../DTD/HTMLspecialx.ent">
 	%HTMLspecial;
 ]>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n">

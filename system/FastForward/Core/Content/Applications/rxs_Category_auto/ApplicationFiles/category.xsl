@@ -24,12 +24,12 @@
   -->
 
 <!DOCTYPE xsl:stylesheet [
-	<!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
-	%HTMLlat1;
-	<!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
-	%HTMLsymbol;
-	<!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
-	%HTMLspecial;
+		<!ENTITY % HTMLlat1 SYSTEM "../../DTD/HTMLlat1x.ent">
+		%HTMLlat1;
+		<!ENTITY % HTMLsymbol SYSTEM "../../DTD/HTMLsymbolx.ent">
+		%HTMLsymbol;
+		<!ENTITY % HTMLspecial SYSTEM "../../DTD/HTMLspecialx.ent">
+		%HTMLspecial;
 ]>
 <xsl:stylesheet exclude-result-prefixes="psxi18n" extension-element-prefixes="saxon" version="1.1" xmlns:psxi18n="urn:www.percussion.com/i18n" xmlns:saxon="http://icl.com/saxon" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:import href="file:sys_resources/stylesheets/assemblers/sys_InlineLinks.xsl"/>

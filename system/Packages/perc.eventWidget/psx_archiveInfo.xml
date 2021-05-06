@@ -40,7 +40,7 @@
             <Description>Widgets for Events and Calendars </Description>
             <Publisher name="Percussion Software" url="https://www.percussion.com"/>
             <CmsVersion max="9.0.0" min="1.0.0"/>
-            <Version>1.1.5</Version>
+            <Version>1.1.6</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--  
-<!DOCTYPE PSXContentEditor SYSTEM "/Rhythmyx/DTD/sys_ContentEditorLocalDef.dtd">
+<!DOCTYPE PSXContentEditor SYSTEM "./../../DTD/sys_ContentEditorLocalDef.dtd">
 -->
 <PSXContentEditor contentType="0" enableRelatedContent="yes" objectType="1" workflowId="5">
    <PSXDataSet id="768">
