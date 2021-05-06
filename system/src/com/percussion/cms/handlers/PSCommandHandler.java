@@ -934,7 +934,7 @@ public abstract class PSCommandHandler extends PSDataHandler
       {
          // need to truncate any params that are lists
          PSRequest request = data.getRequest();
-         request.setParameters((HashMap)request.getTruncatedParameters());
+         request.setParameters((Map)request.getTruncatedParameters());
 
          for (int i = 0; i < m_redirects.length; i++)
          {
