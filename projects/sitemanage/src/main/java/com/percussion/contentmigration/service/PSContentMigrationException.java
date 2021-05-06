@@ -47,8 +47,9 @@ public class PSContentMigrationException extends Exception
 
     public void setFailedItems(Map<String, String> failedItems)
     {
-        if(failedItems == null)
+        if(failedItems == null) {
             return;
+        }
         this.failedItems = failedItems;
     }
 }
