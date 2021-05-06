@@ -158,7 +158,7 @@ public class PSXmlDomContext
    public String getServerRoot()
    {
       if (null == m_req)
-         return "127.0.0.1:9992/Rhythmyx"; // defaults
+         return "127.0.0.1:9992/"; // defaults
       else
          return "127.0.0.1:" + m_req.getServerListenerPort()
                + PSServer.getRequestRoot();
