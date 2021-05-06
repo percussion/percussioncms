@@ -128,7 +128,7 @@ public class PSModifyStyleSheet
 
    /**
     * This will convert the server root for the entity reference in the provided
-    * XSL from "/rhythmyx/DTD/HTMLlat1x.ent" to "/Rhythmyx/DTD/HTMLlat1x.ent".
+    * XSL from "./../../DTD/HTMLlat1x.ent" to "./../../DTD/HTMLlat1x.ent".
     * 
     * @param strStyleSheet the file name of the style sheet to be modified
     * @returns <code>true</code> for error, <code>false</code> for success
@@ -165,23 +165,23 @@ public class PSModifyStyleSheet
          return true;
       } 
       
-      String strTest = "/rhythmyx/DTD/HTMLlat1x.ent";
+      String strTest = "./../../DTD/HTMLlat1x.ent";
       int index = buffer.toString().indexOf(strTest);
       if (index != -1)
          buffer.replace(index, index+strTest.length(), 
-                        "/Rhythmyx/DTD/HTMLlat1x.ent");
+                        "./../../DTD/HTMLlat1x.ent");
          
-      strTest = "/rhythmyx/DTD/HTMLsymbolx.ent";
+      strTest = "./../../DTD/HTMLsymbolx.ent";
       index = buffer.toString().indexOf(strTest);
       if (index != -1)
          buffer.replace(index, index+strTest.length(), 
-                        "/Rhythmyx/DTD/HTMLsymbolx.ent");
+                        "./../../DTD/HTMLsymbolx.ent");
          
-      strTest = "/rhythmyx/DTD/HTMLspecialx.ent";
+      strTest = "./../../DTD/HTMLspecialx.ent";
       index = buffer.toString().indexOf(strTest);
       if (index != -1)
          buffer.replace(index, index+strTest.length(), 
-                        "/Rhythmyx/DTD/HTMLspecialx.ent");
+                        "./../../DTD/HTMLspecialx.ent");
 
 
          try(FileOutputStream fOut = new FileOutputStream(xslFile)){

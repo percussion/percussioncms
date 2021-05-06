@@ -196,7 +196,7 @@ public class PSWidgetContentFinderUtils
                     rels.add(r);
                 }
             }
-            if (!rels.isEmpty())
+            if (rels.isEmpty())
                 return null;
 
             return rels.first();
