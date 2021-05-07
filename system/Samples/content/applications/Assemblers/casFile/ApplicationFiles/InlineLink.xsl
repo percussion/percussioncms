@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?><!DOCTYPE xsl:stylesheet [
-	<!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
-		%HTMLlat1;
-	<!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
-		%HTMLsymbol;
-	<!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
-		%HTMLspecial;
+        <!ENTITY % HTMLlat1 SYSTEM "../../DTD/HTMLlat1x.ent">
+        %HTMLlat1;
+        <!ENTITY % HTMLsymbol SYSTEM "../../DTD/HTMLsymbolx.ent">
+        %HTMLsymbol;
+        <!ENTITY % HTMLspecial SYSTEM "../../DTD/HTMLspecialx.ent">
+        %HTMLspecial;
 ]>
 
 <xsl:stylesheet extension-element-prefixes="saxon" version="1.1" xmlns:saxon="http://icl.com/saxon" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n" ><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_InlineLinks.xsl"/><xsl:import href="file:rx_resources/stylesheets/assemblers/rx_InlineLinks.xsl"/><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_Slots.xsl"/><xsl:import href="file:rx_resources/stylesheets/assemblers/rx_Slots.xsl"/><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_ContextTemplates.xsl"/><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_Globals.xsl"/><xsl:import href="file:rx_resources/stylesheets/assemblers/rx_Globals.xsl"/>

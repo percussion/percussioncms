@@ -24,12 +24,12 @@
   -->
 
 <!DOCTYPE xsl:stylesheet [
-	<!ENTITY % HTMLlat1 SYSTEM "../DTD/HTMLlat1x.ent">
-	%HTMLlat1;
-	<!ENTITY % HTMLsymbol SYSTEM "../DTD/HTMLsymbolx.ent">
-	%HTMLsymbol;
-	<!ENTITY % HTMLspecial SYSTEM "../DTD/HTMLspecialx.ent">
-	%HTMLspecial;
+		<!ENTITY % HTMLlat1 SYSTEM "../../DTD/HTMLlat1x.ent">
+		%HTMLlat1;
+		<!ENTITY % HTMLsymbol SYSTEM "../../DTD/HTMLsymbolx.ent">
+		%HTMLsymbol;
+		<!ENTITY % HTMLspecial SYSTEM "../../DTD/HTMLspecialx.ent">
+		%HTMLspecial;
 ]>
 <!--Inline link converter xsl to remove the sys_folderid attributes from the inline elements.-->
 <!--

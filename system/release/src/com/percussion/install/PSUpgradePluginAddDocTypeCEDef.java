@@ -75,7 +75,7 @@ public class PSUpgradePluginAddDocTypeCEDef implements IPSUpgradePlugin
          String docStr = bos.toString();
          
          docStr = InstallUtil.addDocType(docStr, "ContentEditorSystemDef",
-               "SYSTEM", "/Rhythmyx/DTD/sys_ContentEditorSystemDef.dtd");
+               "SYSTEM", "./../../DTD/sys_ContentEditorSystemDef.dtd");
          pw = new PrintWriter(new FileOutputStream(file));
          pw.write(docStr);
          file =  new File(RxUpgrade.getRxRoot() +

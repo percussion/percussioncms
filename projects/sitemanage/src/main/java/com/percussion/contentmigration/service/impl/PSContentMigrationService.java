@@ -347,16 +347,18 @@ public class PSContentMigrationService implements IPSContentMigrationService
         for (PSAssetDropCriteria adc : tplAssetDropCriteria)
         {
             tplWidgetIds.add(adc.getWidgetId());
-            if(adc.getExistingAsset())
+            if(adc.getExistingAsset()) {
                 tplContentWidgetIds.add(adc.getWidgetId());
+            }
                 
         }
         List<PSAssetDropCriteria> pageAssetDropCriteria = assetService.getWidgetAssetCriteria(pageId, true);
         for (PSAssetDropCriteria adc : pageAssetDropCriteria)
         {
             //If the widget is from template and it has content skip it. 
-            if(tplContentWidgetIds.contains(adc.getWidgetId()))
+            if(tplContentWidgetIds.contains(adc.getWidgetId())) {
                 continue;
+            }
             List<String> wc = new ArrayList<>(converterMap.keySet());
             wc.retainAll(adc.getSupportedCtypes());
             if(!adc.getExistingAsset() && converterMap.size() == wc.size() + adc.getSupportedCtypes().size())
@@ -436,10 +438,12 @@ public class PSContentMigrationService implements IPSContentMigrationService
                 //@TODO Create a widget on page in the specified region
             }
             
-            if(widget.fields != null && !widget.fields.isEmpty())
+            if(widget.fields != null && !widget.fields.isEmpty()) {
                 createAndAssociateAsset(pageId, widget);
-            else
+            }
+            else {
                 hasEmptyWidgets = true;
+            }
         }
         pageService.updateMigrationEmptyWidgetFlag(pageId, hasEmptyWidgets);
         

@@ -109,16 +109,18 @@ public class PSCookieConsentService implements IPSCookieConsentService {
 
            PSDeliveryInfo deliveryServer = findServer(siteName);
 
-           if (deliveryServer == null)
+           if (deliveryServer == null) {
                throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
+           }
 
            PSDeliveryClient deliveryClient = new PSDeliveryClient();
 
            String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
                    fullPath, HttpMethodType.GET, true));
 
-           if (response != null)
+           if (response != null) {
                log.debug(response);
+           }
 
            return response;
        } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
@@ -137,16 +139,18 @@ public class PSCookieConsentService implements IPSCookieConsentService {
 
             PSDeliveryInfo deliveryServer = findServer(siteName);
 
-            if (deliveryServer == null)
+            if (deliveryServer == null) {
                 throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
+            }
 
             PSDeliveryClient deliveryClient = new PSDeliveryClient();
 
             String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
                     TOTAL_ENTRIES_URL + "/" + siteName, HttpMethodType.GET, true));
 
-            if (response != null)
+            if (response != null) {
                 log.debug(response);
+            }
 
             return response;
         } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
@@ -163,16 +167,18 @@ public class PSCookieConsentService implements IPSCookieConsentService {
     public String getAllCookieConsentTotals() {
         PSDeliveryInfo deliveryServer = findServer();
         
-        if (deliveryServer == null)
+        if (deliveryServer == null) {
             throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
+        }
         
         PSDeliveryClient deliveryClient = new PSDeliveryClient();
         
         String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
                 TOTAL_ENTRIES_URL, HttpMethodType.GET, true));
         
-        if (response != null)
+        if (response != null) {
             log.debug(response);
+        }
         
         return response;
     }
@@ -188,16 +194,18 @@ public class PSCookieConsentService implements IPSCookieConsentService {
         
         PSDeliveryInfo deliveryServer = findServer();
         
-        if (deliveryServer == null)
+        if (deliveryServer == null) {
             throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
+        }
         
         PSDeliveryClient deliveryClient = new PSDeliveryClient();
         
         String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
                 DTS_URL, HttpMethodType.DELETE, true));
         
-        if (response != null)
+        if (response != null) {
             log.debug(response);
+        }
     }
     
     @Override
@@ -213,16 +221,18 @@ public class PSCookieConsentService implements IPSCookieConsentService {
 
           PSDeliveryInfo deliveryServer = findServer(siteName);
 
-          if (deliveryServer == null)
+          if (deliveryServer == null) {
               throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
+          }
 
           PSDeliveryClient deliveryClient = new PSDeliveryClient();
 
           String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
                   DTS_URL + "/" + siteName, HttpMethodType.DELETE, true));
 
-          if (response != null)
+          if (response != null) {
               log.debug(response);
+          }
       } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
          throw new WebApplicationException(e);
       }
@@ -238,8 +248,9 @@ public class PSCookieConsentService implements IPSCookieConsentService {
         String adminURl= pubServerService.getDefaultAdminURL(site);
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER,null,adminURl);
         //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER);
-        if (server == null)
+        if (server == null) {
             log.debug("Cannot find server with service of: " + PSDeliveryInfo.SERVICE_INDEXER);
+        }
 
         return server;
     }
@@ -248,8 +259,9 @@ public class PSCookieConsentService implements IPSCookieConsentService {
         //String adminURl= pubServerService.getDefaultAdminURL(site);
         //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER,null,adminURl);
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER);
-        if (server == null)
+        if (server == null) {
             log.debug("Cannot find server with service of: " + PSDeliveryInfo.SERVICE_INDEXER);
+        }
 
         return server;
     }

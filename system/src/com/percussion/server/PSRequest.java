@@ -1785,7 +1785,7 @@ public class PSRequest
    public void saveParams()
    {
       if (m_params!=null && isSavedParams()==false)
-         m_savedParams = (HashMap<String, Object>) Collections.synchronizedMap(
+         m_savedParams = (Map<String, Object>) Collections.synchronizedMap(
                  (Map<String,Object>)
                  new HashMap<String, Object>(m_params).clone());
    }

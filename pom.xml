@@ -209,8 +209,8 @@
        <quartz.version>2.3.2</quartz.version>
        <rome.version>1.15.0</rome.version>
        <maven.source.jar.plugin.version>3.2.0</maven.source.jar.plugin.version>
-       <velocity.version>2.2</velocity.version>
-       <velocity.tools.version>3.0</velocity.tools.version>
+       <velocity.version>2.3</velocity.version>
+       <velocity.tools.version>3.1</velocity.tools.version>
        <saxon.version>6.5.3</saxon.version>
        <eclipse-manifest-location>META-INF</eclipse-manifest-location>
     </properties>

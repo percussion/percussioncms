@@ -24,12 +24,12 @@
   -->
 
 <!DOCTYPE xsl:stylesheet [
-	<!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
-	%HTMLlat1;
-	<!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
-	%HTMLsymbol;
-	<!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
-	%HTMLspecial;
+		<!ENTITY % HTMLlat1 SYSTEM "../../DTD/HTMLlat1x.ent">
+		%HTMLlat1;
+		<!ENTITY % HTMLsymbol SYSTEM "../../DTD/HTMLsymbolx.ent">
+		%HTMLsymbol;
+		<!ENTITY % HTMLspecial SYSTEM "../../DTD/HTMLspecialx.ent">
+		%HTMLspecial;
 ]>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
    <xsl:import href="file:sys_resources/stylesheets/DefaultError.xsl"/>
