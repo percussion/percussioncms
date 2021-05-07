@@ -934,7 +934,7 @@ public abstract class PSCommandHandler extends PSDataHandler
       {
          // need to truncate any params that are lists
          PSRequest request = data.getRequest();
-         request.setParameters((HashMap)request.getTruncatedParameters());
+         request.setParameters((Map)request.getTruncatedParameters());
 
          for (int i = 0; i < m_redirects.length; i++)
          {
@@ -1483,7 +1483,7 @@ public abstract class PSCommandHandler extends PSDataHandler
       
       // may have mulitple child rows submitted in a single request
       Object[] childRowIds = request.getParameterList(childRowIdParamName);
-      if (childRowIds == null)
+      if (childRowIds == null || childRowIds.length == 0)
       {
          if (strChildId.equals("-1") || strChildId.equals("0"))
          {

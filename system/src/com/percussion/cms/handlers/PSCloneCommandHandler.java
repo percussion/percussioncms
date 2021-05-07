@@ -390,15 +390,15 @@ public class PSCloneCommandHandler extends PSCommandHandler
       
       params.put(IPSHtmlParameters.SYS_CONTENTID, Integer.toString(fromCid));
       params.put(IPSHtmlParameters.SYS_REVISION, Integer.toString(fromRid));
-      
-      PSRelationshipDbProcessor processor = 
-         new PSRelationshipDbProcessor(request);
+
+      PSRelationshipDbProcessor processor = PSRelationshipDbProcessor.getInstance();
       
       Map inlineRelationships = new HashMap();
 
       //Get all relationships with this item as owner
       PSRelationshipFilter filter = new PSRelationshipFilter();
       filter.setOwner(new PSLocator(fromCid, fromRid));
+      filter.limitToOwnerRevision(true);
       Iterator relationships = processor.getRelationships(filter).iterator();
       if (!relationships.hasNext())
          return inlineRelationships;

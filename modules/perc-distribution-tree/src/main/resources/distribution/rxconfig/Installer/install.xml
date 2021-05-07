@@ -358,8 +358,7 @@
         <include name="PercussionCMShutdown.bat"/>
         <include name="PercussionServer.bin"/>
         <include name="PercussionServer.exe"/>
-        <include name="PercussionServer.lax"/>
-        <include name="PercussionServer.bin.lax"/>
+        <!-- Not Deleting PercussionServer.lax, PercussionServer.bin.lax as is used by PSUpdateJettyConfigFromJBoss deleting it there -->
         <include name="server_run_lock"/>
         <include name="shutdown.tmp"/>
         <include name="StartServer.bat"/>
@@ -936,6 +935,13 @@
     </macrodef>
 
     <target name="alwaysCopyIfMissing">
+        <mkdir dir="${install.dir}/rxconfig/velocity"/>
+        <copy todir="${install.dir}/rxconfig/velocity">
+            <fileset dir="${install.src}/rxconfig/velocity" includes="**/*" />
+        </copy>
+        <copy todir="${install.dir}/rxconfig/Server">
+            <fileset dir="${install.src}/rxconfig/velocity/2.2/config" includes="**/*.properties" />
+        </copy>
         <mkdir dir="${install.dir}/rxconfig/ssh-keys" />
         <touch file="${install.dir}/rxconfig/ssh-keys/config" />
         <mkdir dir="${install.dir}/rxconfig/trusted_certificates" />

@@ -179,8 +179,7 @@ public class PSDeleteContent implements IPSRequestPreProcessor
             }
             
             // get all owner relationships for the current content id
-            PSRelationshipDbProcessor processor = 
-               new PSRelationshipDbProcessor(request);
+            PSRelationshipDbProcessor processor = PSRelationshipDbProcessor.getInstance();
             PSRelationshipFilter filter = new PSRelationshipFilter();
             int itemId = Integer.parseInt(request
                   .getParameter(IPSHtmlParameters.SYS_CONTENTID));

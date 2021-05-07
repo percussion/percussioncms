@@ -192,20 +192,20 @@
             </fileset>
         </copy>
         <echo>Dropping Metadata Tables.......</echo>
-        <PSExecDTSSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+        <PSExecDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
                           qualifyViewNames=""
-                          sql="if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'PERC_PAGE_METADATA_PROPERTIES');drop table PERC_PAGE_METADATA_PROPERTIES;"/>
-        <PSExecDTSSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
-                          qualifyViewNames="" sql="if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'PERC_PAGE_METADATA');drop table PERC_PAGE_METADATA;"/>
+                          sql="drop table PERC_PAGE_METADATA_PROPERTIES"/>
+        <PSExecDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                          qualifyViewNames="" sql="drop table PERC_PAGE_METADATA"/>
     </target>
 
 
     <target name="updateStagingDTSTableSchema">
         <echo>Dropping Staging Metadata Tables.......</echo>
-        <PSExecStagingDTSSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
-                                 qualifyViewNames="" sql="if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'PERC_PAGE_METADATA_PROPERTIES');drop table PERC_PAGE_METADATA_PROPERTIES;"/>
-        <PSExecStagingDTSSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
-                                 qualifyViewNames="" sql="if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'PERC_PAGE_METADATA');drop table PERC_PAGE_METADATA;"/>
+        <PSExecStagingDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                                 qualifyViewNames="" sql="drop table PERC_PAGE_METADATA_PROPERTIES"/>
+        <PSExecStagingDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                                 qualifyViewNames="" sql="drop table PERC_PAGE_METADATA"/>
 
     </target>
 

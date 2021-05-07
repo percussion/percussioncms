@@ -33,10 +33,18 @@ import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import java.io.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+
+
 public class PSCategoryLockInfo {
+
 
 	private static final Logger log = LogManager.getLogger(PSCategoryLockInfo.class);
 	private static final String LOCKINFOFILE =  "lock_info.json";

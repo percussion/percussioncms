@@ -40,7 +40,7 @@
             <Description/>
             <Publisher name="Percussion Software Inc." url="http://percussion.com"/>
             <CmsVersion max="9.0.0" min="1.6.0"/>
-            <Version>1.1.3</Version>
+            <Version>1.1.4</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>
