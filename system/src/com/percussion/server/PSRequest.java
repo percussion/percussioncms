@@ -1008,7 +1008,7 @@ public class PSRequest
          return new Object[]{ value };
        }
        else
-          return new Object[]{};
+          return null;
     }
 
    /**
