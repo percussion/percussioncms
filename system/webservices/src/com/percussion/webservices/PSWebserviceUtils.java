@@ -1334,7 +1334,7 @@ public class PSWebserviceUtils
 
       PSComponentSummary summary = PSWebserviceUtils.getItemSummary(locator
             .getId());
-      if (isItemCheckedOutToSomeoneElse(summary))
+      if (!isItemCheckedOutToUser(summary))
       {
          int errorCode = IPSWebserviceErrors.ITEM_NOT_CHECKOUT_BY_USER;
          PSErrorException error = new PSErrorException(errorCode,
