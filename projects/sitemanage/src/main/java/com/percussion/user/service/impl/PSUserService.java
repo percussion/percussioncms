@@ -30,6 +30,7 @@ import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.design.objectstore.PSAttribute;
 import com.percussion.design.objectstore.PSAttributeList;
+import com.percussion.design.objectstore.PSAttributeValue;
 import com.percussion.design.objectstore.PSSubject;
 import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
 import com.percussion.role.service.IPSRoleService;
@@ -904,10 +905,10 @@ public class PSUserService implements IPSUserService
                 PSAttribute attribute = attrs.getAttribute(EMAIL_ATTRIBUTE_NAME);
                 if (attribute != null)
                 {
-                    List<PSAttribute> attrList = attribute.getValues();
+                    List<String> attrList = attribute.getValues();
                     if (!attrList.isEmpty())
                     {
-                        email = attrList.get(0).toString();
+                        email =  attrList.get(0);
                     }
                 }
             }
