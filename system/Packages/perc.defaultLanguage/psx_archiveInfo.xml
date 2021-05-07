@@ -40,7 +40,7 @@
             <Description>A widget that sets the default-href lang attribute for international SEO purposes.</Description>
             <Publisher name="Percussion Software" url="https://www.percussion.com"/>
             <CmsVersion max="9.0.0" min="5.3.0"/>
-            <Version>2.4.5</Version>
+            <Version>2.4.6</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>

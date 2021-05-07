@@ -26,4 +26,6 @@ package com.percussion.rest.editions;
 
 public interface IEditionsAdaptor {
 
+    PublishResponse publish(String id);
+
 }

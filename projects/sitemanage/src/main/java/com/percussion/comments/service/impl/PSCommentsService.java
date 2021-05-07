@@ -23,6 +23,7 @@
  */
 package com.percussion.comments.service.impl;
 
+import com.percussion.category.dao.impl.PSCategoryDao;
 import com.percussion.comments.data.PSComment;
 import com.percussion.comments.data.PSCommentIds;
 import com.percussion.comments.data.PSCommentList;
@@ -58,6 +59,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -162,14 +165,18 @@ public class PSCommentsService implements IPSCommentsService
         String startParamString = "";
         String queryParamQMark = "";
         String queryParamAmper = "";
-        if (max != null)
+        if (max != null) {
             maxParamString = "max=" + max;
-        if (start != null)
+        }
+        if (start != null) {
             startParamString = "start=" + start;
-        if (isNotBlank(startParamString) || isNotBlank(maxParamString))
+        }
+        if (isNotBlank(startParamString) || isNotBlank(maxParamString)) {
             queryParamQMark = "?";
-        if (isNotBlank(startParamString) && isNotBlank(maxParamString))
+        }
+        if (isNotBlank(startParamString) && isNotBlank(maxParamString)) {
             queryParamAmper = "&";
+        }
 
         JSONObject postJson = new JSONObject();
         postJson.element("maxResults", max);
@@ -240,15 +247,17 @@ public class PSCommentsService implements IPSCommentsService
         try {
             List<PSComment> aggregatedComments = new ArrayList<>();
 
-            if (isBlank(pagePath))
+            if (isBlank(pagePath)) {
                 pagePath = "";
+            }
 
             pagePath = "/" + pagePath;
 
             String adminURl = pubServerService.getDefaultAdminURL(site);
             PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_COMMENTS, null, adminURl);
-            if (server == null)
+            if (server == null) {
                 throw new RuntimeException("Cannot find server with service of: " + PSDeliveryInfo.SERVICE_COMMENTS);
+            }
 
             JSONObject postJson = new JSONObject();
             postJson.element("site", site);
@@ -312,8 +321,9 @@ public class PSCommentsService implements IPSCommentsService
             PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_COMMENTS,null,adminURl);
 
             //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_COMMENTS);
-            if (server == null)
+            if (server == null) {
                 throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_COMMENTS);
+            }
 
             // deletes
             if (!CollectionUtils.isEmpty(commentModeration.getDeletes()))
@@ -423,8 +433,9 @@ public class PSCommentsService implements IPSCommentsService
     {
         // Create JSON object to send to the delivery server
         PSCommentIds commentIds = new PSCommentIds();
-        for (PSSiteComments siteComments : commentsToModerate)
+        for (PSSiteComments siteComments : commentsToModerate) {
             commentIds.getComments().addAll(siteComments.getComments());
+        }
 
         // Set the delivery client to use HTTPS information (protocol and port)
         // to connect
@@ -532,8 +543,9 @@ public class PSCommentsService implements IPSCommentsService
             throw new WebApplicationException(e);
         }
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_COMMENTS,null,adminURl);
-        if (server == null)
+        if (server == null) {
             throw new RuntimeException("Cannot find service of: " + PSDeliveryInfo.SERVICE_COMMENTS);
+        }
 
         try
         {
@@ -564,7 +576,7 @@ public class PSCommentsService implements IPSCommentsService
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSCommentsService.class);
+    private static final Logger log = LogManager.getLogger(PSCommentsService.class);
 
     private static final String COMMENT_GET_COMMENTS_ON_PAGE = "/perc-comments-services/comment/moderation/asmoderator";
 

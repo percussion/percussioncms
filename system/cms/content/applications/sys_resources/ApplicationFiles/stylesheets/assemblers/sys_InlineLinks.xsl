@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xsl:stylesheet [
-	<!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
-	%HTMLlat1;
-	<!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
-	%HTMLsymbol;
-	<!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
-	%HTMLspecial;
+		<!ENTITY % HTMLlat1 SYSTEM "../../DTD/HTMLlat1x.ent">
+		%HTMLlat1;
+		<!ENTITY % HTMLsymbol SYSTEM "../../DTD/HTMLsymbolx.ent">
+		%HTMLsymbol;
+		<!ENTITY % HTMLspecial SYSTEM "../../DTD/HTMLspecialx.ent">
+		%HTMLspecial;
 ]>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:html="http://www.w3.org/TR/REC-html40" xmlns:urldecoder="java.net.URLDecoder" exclude-result-prefixes="urldecoder" xmlns:psxi18n="urn:www.percussion.com/i18n" xmlns:psxSingleValueBuilder="urn:www.percussion.com/com.percussion.cms.PSSingleValueBuilder">
 	<!--Old template for anchor tags -->
