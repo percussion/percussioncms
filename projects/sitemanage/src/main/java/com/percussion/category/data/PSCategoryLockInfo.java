@@ -25,6 +25,14 @@
 package com.percussion.category.data;
 
 
+import com.percussion.server.PSRequest;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.user.service.IPSUserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,18 +40,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import com.percussion.share.service.exception.PSDataServiceException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 
-import com.percussion.server.PSRequest;
-import com.percussion.user.service.IPSUserService;
 
 public class PSCategoryLockInfo {
 	
-	private static Log log = LogFactory.getLog(PSCategoryLockInfo.class);
+
+	private static final Logger log = LogManager.getLogger(PSCategoryLockInfo.class);
 	private static final String LOCKINFOFILE =  "lock_info.json";
 	
 	public static void writeLockInfoToFile(IPSUserService userService, String date) throws PSDataServiceException {
@@ -75,8 +77,9 @@ public class PSCategoryLockInfo {
 	public static boolean isFileLocked() {
 		
 		JSONObject jsonObject = getLockInfo();
-			if(jsonObject != null)
-				return true;	
+			if(jsonObject != null) {
+				return true;
+			}
 		return false;
 	}
 	
@@ -132,8 +135,9 @@ public class PSCategoryLockInfo {
     
     		if(file.exists()) {
     			file.setWritable(true);
-    			if(file.delete())
-    				log.debug("File containing the user information who locked the Categories Tab has been deleted successfully.");
+    			if(file.delete()) {
+					log.debug("File containing the user information who locked the Categories Tab has been deleted successfully.");
+				}
     		}
     	}
 		

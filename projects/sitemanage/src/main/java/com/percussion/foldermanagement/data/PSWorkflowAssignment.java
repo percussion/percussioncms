@@ -79,8 +79,9 @@ public class PSWorkflowAssignment
 
     public String[] getAssignedFolders()
     {
-        if (assignedFolders == null)
-            return new String[] {};
+        if (assignedFolders == null) {
+            return new String[]{};
+        }
         
         return assignedFolders;
     }
@@ -92,10 +93,13 @@ public class PSWorkflowAssignment
 
     public String[] getUnassignedFolders()
     {
-        if (unassignedFolders == null)
-            return new String[] {};
-        
-        return unassignedFolders;
+        if (unassignedFolders == null) {
+            return new String[]{};
+        }
+        {
+
+            return unassignedFolders;
+        }
     }
 
     public void setUnassignedFolders(String[] unassignedFolders)
@@ -105,8 +109,9 @@ public class PSWorkflowAssignment
 
     public String[] getAppliedFolders()
     {
-        if (appliedFolders == null)
-            return new String[] {};
+        if (appliedFolders == null) {
+            return new String[]{};
+        }
         
         return appliedFolders;
     }

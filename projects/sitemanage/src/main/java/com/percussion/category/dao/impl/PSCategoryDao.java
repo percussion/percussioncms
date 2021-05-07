@@ -28,7 +28,8 @@ import com.percussion.category.dao.IPSCategoryDao;
 import com.percussion.services.contentmgr.impl.IPSContentRepository;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.utils.guid.IPSGuid;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -60,8 +61,7 @@ public class PSCategoryDao implements IPSCategoryDao {
     @Autowired
     private IPSIdMapper idMapper;
 
-    private static final Logger log = Logger.getLogger(PSCategoryDao.class
-            .getName());
+    private static final Logger log = LogManager.getLogger(PSCategoryDao.class);
 
     private PSCategoryDao() {
         // TODO Auto-generated constructor stub
