@@ -167,8 +167,9 @@ public class PSIntegrityTask  extends PSAbstractDataObject
     @Override
     public boolean equals(Object obj)
     {
-       if ( !(obj instanceof PSIntegrityTask) )
-          return false;
+       if ( !(obj instanceof PSIntegrityTask) ) {
+           return false;
+       }
        
        // use "name" & "value" should be enough to avoid same pair more than once to make sure the property names are unique for a task
        PSIntegrityTask b = (PSIntegrityTask) obj;
