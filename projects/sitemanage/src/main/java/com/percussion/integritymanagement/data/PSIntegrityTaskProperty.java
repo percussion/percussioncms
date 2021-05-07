@@ -80,8 +80,9 @@ public class PSIntegrityTaskProperty extends PSAbstractDataObject
     @Override
     public boolean equals(Object obj)
     {
-        if (!(obj instanceof PSIntegrityTaskProperty))
+        if (!(obj instanceof PSIntegrityTaskProperty)) {
             return false;
+        }
 
         // use "name" & "value" should be enough to avoid same pair more than
         // once to make sure the property names are unique within a PSPubServer

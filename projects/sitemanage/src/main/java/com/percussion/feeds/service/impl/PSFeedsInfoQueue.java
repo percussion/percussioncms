@@ -86,10 +86,12 @@ public class PSFeedsInfoQueue implements InitializingBean
      * or empty.
      */
     public void queueDescriptors(String site, String descriptors, String serverType) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException {
-        if(StringUtils.isBlank(site))
+        if(StringUtils.isBlank(site)) {
             throw new IllegalArgumentException("site cannot be null or empty.");
-        if(StringUtils.isBlank(descriptors))
+        }
+        if(StringUtils.isBlank(descriptors)) {
             throw new IllegalArgumentException("descriptors cannot be null or empty.");
+        }
         if(serverType.equalsIgnoreCase("STAGING")){
             PSMetadata data = new PSMetadata(META_KEY_STAGING_PREFIX + site, descriptors);
             metadataService.save(data);
@@ -152,8 +154,9 @@ public class PSFeedsInfoQueue implements InitializingBean
             {
                 while (true)// Main process loop that never ends
                 {
-                    if (Thread.currentThread().isInterrupted())
+                    if (Thread.currentThread().isInterrupted()) {
                         break;
+                    }
 
                     //Make sure secure key is up to date
                     checkKeyExchange();
@@ -161,14 +164,14 @@ public class PSFeedsInfoQueue implements InitializingBean
                     Collection<PSMetadata> prodResults = metadataService.findByPrefix(META_KEY_PREFIX);
                     Collection<PSMetadata> stagResults = metadataService.findByPrefix(META_KEY_STAGING_PREFIX);
 
-                    if (!prodResults.isEmpty())
+                    if (!prodResults.isEmpty()){
                         if(checkForData(prodResults)){
                             sendDescriptors(prodService, prodResults);
-                        }
-                    if (!stagResults.isEmpty())
+                        }}
+                    if (!stagResults.isEmpty()){
                         if(checkForData(stagResults)){
                             sendDescriptors(stagService, stagResults);
-                        }
+                        }}
 
 
                     //Increased time - TODO: Re-architect this service
@@ -203,8 +206,9 @@ public class PSFeedsInfoQueue implements InitializingBean
                     log.error("Error parsing FeedDescriptors from Metadata store. Stopping Feed Publish",e);
                     return false;
                 }
-                if(json.length()>0)
+                if(json.length()>0) {
                     return true;
+                }
             }
             return false;
 
