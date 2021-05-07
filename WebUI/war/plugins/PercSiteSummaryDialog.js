@@ -88,13 +88,15 @@
 	function displayWarnings (warnings) {
 		var i, key, warning, $div, $ui = $('<div>'), groups = {};
 		// group by type
-		for (i = 0; i < warnings.length; i++) {
-			warning = warnings[i];
-			$div = groups[warning.type] || (groups[warning.type] = $('<div>'));
-			$div = $('<dl>').appendTo($div);
-			$('<dt>').append($('<small>').html(I18N.message("perc.ui.siteSummary@Referenced by") + ": " + warning['refUri'])).appendTo($div);
-			$('<dd>').text(warning.suggestion).appendTo($div);
-		}
+        if(typeof(warnings) !== 'undefined'){
+            for (i = 0; i < warnings.length; i++) {
+                warning = warnings[i];
+                $div = groups[warning.type] || (groups[warning.type] = $('<div>'));
+                $div = $('<dl>').appendTo($div);
+                $('<dt>').append($('<small>').html(I18N.message("perc.ui.siteSummary@Referenced by") + ": " + warning['refUri'])).appendTo($div);
+                $('<dd>').text(warning.suggestion).appendTo($div);
+            }
+        }
         // put groups in display order
 		for (i = 0; i < order.length; i++) {
 			$div = groups[order[i]];
