@@ -118,7 +118,7 @@ public class PSExitNextNumber implements IPSRequestPreProcessor
        * with unique numbers.
        */
       Object[] htmlParamValues = request.getParameterList( htmlParamName );
-      if (htmlParamValues == null)
+      if (htmlParamValues == null || htmlParamValues.length == 0)
          htmlParamValues = new Object[] { null };
       for (int i = 0; i < htmlParamValues.length; i++)
       {
