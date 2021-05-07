@@ -72,7 +72,7 @@ public class PSCategoryDao implements IPSCategoryDao {
      */
     @Override
     public void delete(Set<String> ids, List<IPSGuid> pageIds) {
-        log.info("Ids to delete are: " + ids);
+        log.info("Ids to delete are: {}" , ids);
         Session session = getSession();
         String query = null;
         Query q = null;

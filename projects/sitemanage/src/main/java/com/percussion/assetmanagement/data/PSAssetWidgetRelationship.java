@@ -75,12 +75,14 @@ public class PSAssetWidgetRelationship extends PSAbstractDataObject
      */
     public PSAssetWidgetRelationship(String ownerId, long widgetId, String widgetName, String assetId, int assetOrder)
     {
-        if (StringUtils.isBlank(ownerId))
+        if (StringUtils.isBlank(ownerId)) {
             throw new IllegalArgumentException("ownerId may not be blank.");
-        if (StringUtils.isBlank(widgetName))
+        }
+        if (StringUtils.isBlank(widgetName)) {
             throw new IllegalArgumentException("widgetName may not be blank.");
-        if (StringUtils.isBlank(assetId))
-            throw new IllegalArgumentException("assetId may not be blank.");
+        }
+        if (StringUtils.isBlank(assetId)){
+            throw new IllegalArgumentException("assetId may not be blank.");}
         
         notNull(resourceType, "resourceType");
 

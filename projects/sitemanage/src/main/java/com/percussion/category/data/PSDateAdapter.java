@@ -32,8 +32,9 @@ public class PSDateAdapter extends XmlAdapter<String, LocalDateTime> {
 	@Override
 	public String marshal(LocalDateTime date) throws Exception {
 
-		if(date != null)
+		if(date != null) {
 			return date.toString();
+		}
 
 		return null;
 	}
