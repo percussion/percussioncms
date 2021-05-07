@@ -79,7 +79,7 @@ public class PSTranslationKeyValueAccessor implements IPSResultDocumentProcessor
 
       Object ps[] = request.getParameterList("sys_package");
       String packages[] = null;
-      if (ps != null)
+      if (ps != null && ps.length >0)
       {
          packages = new String[ps.length];
          System.arraycopy(ps, 0, packages, 0, ps.length);
