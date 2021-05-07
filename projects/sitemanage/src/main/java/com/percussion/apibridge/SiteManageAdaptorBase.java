@@ -81,17 +81,20 @@ public class SiteManageAdaptorBase
         String currentState = transitions.getStateName();
         String testCurrentState = currentState;
 
-        if (APPROVED_STATES.contains(testCurrentState))
-            testCurrentState = "Live";
+        if (APPROVED_STATES.contains(testCurrentState)) {
+			testCurrentState = "Live";
+		}
 
         String testWorkflowState = requestedWorkflowState;
 
-        if (APPROVED_STATES.contains(testWorkflowState))
-            testWorkflowState = "Live";
+        if (APPROVED_STATES.contains(testWorkflowState)) {
+			testWorkflowState = "Live";
+		}
 
-        if (stateChanges.contains(currentState))
-            throw new RuntimeException("Loop detected trying to get item into state " + testWorkflowState
-                    + ". Tried changing through following states " + stateChanges);
+        if (stateChanges.contains(currentState)) {
+			throw new RuntimeException("Loop detected trying to get item into state " + testWorkflowState
+					+ ". Tried changing through following states " + stateChanges);
+		}
 
         stateChanges.add(currentState);
 
@@ -100,9 +103,10 @@ public class SiteManageAdaptorBase
         {
             List<String> availableTriggers = transitions.getTransitionTriggers();
             String[] testTriggers = TRANSITION_MAP.get(testWorkflowState);
-            if (testTriggers == null)
-                // Default trigger list for custom states
-                testTriggers = TRANSITION_MAP.get(null);
+            if (testTriggers == null) {
+				// Default trigger list for custom states
+				testTriggers = TRANSITION_MAP.get(null);
+			}
 
             for (String trigger : testTriggers)
             {
