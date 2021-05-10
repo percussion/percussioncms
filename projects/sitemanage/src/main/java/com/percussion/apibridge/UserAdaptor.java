@@ -62,8 +62,8 @@ import com.percussion.webservices.security.IPSSecurityDesignWs;
 import com.percussion.webservices.security.IPSSecurityWs;
 import com.percussion.webservices.system.IPSSystemWs;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
@@ -75,7 +75,7 @@ import java.util.List;
 @Lazy
 public class UserAdaptor extends SiteManageAdaptorBase implements IUserAdaptor{
 
-	final static Logger log = LoggerFactory.getLogger(UserAdaptor.class);
+	final static Logger log = LogManager.getLogger(UserAdaptor.class);
 
     @Autowired
     private IPSSecurityWs securityWs;
@@ -183,8 +183,9 @@ public class UserAdaptor extends SiteManageAdaptorBase implements IUserAdaptor{
 			newUser.setName(user.getUserName());
 			newUser.setRoles(user.getRoles());
 
-			if (!user.getEmailAddress().isEmpty())
+			if (!user.getEmailAddress().isEmpty()) {
 				newUser.setEmail(user.getEmailAddress());
+			}
 		
 	/*	if(!user.getPassword().isEmpty()){
 			newUser.setPassword(user.getPassword());

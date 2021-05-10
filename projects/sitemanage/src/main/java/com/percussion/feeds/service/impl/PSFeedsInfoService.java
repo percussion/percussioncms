@@ -124,8 +124,9 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
      */
     public void setContentTypeIds()
     {
-        if(contentTypePage != -1)
+        if(contentTypePage != -1) {
             return;
+        }
         try
         {
             contentTypePage = (int)iDefMgr.contentTypeNameToId(CONTENT_TYPE_PAGE);
@@ -184,10 +185,12 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
             String descriptors = createDescriptorsJson(site, feeds, server.getServerType(),server.getPropertyValue("publishServer"));
             log.info("Queuing " + feeds.size() + " feeds for site {}" , site.getName());
             queue.queueDescriptors(site.getName(), descriptors, server.getServerType());
-            if(feeds.isEmpty())
+            if(feeds.isEmpty()) {
                 emptyFeedSetSent.add(site.getSiteId());
-            else if(emptyFeedSetSent.contains(site.getSiteId()))
+            }
+            else if(emptyFeedSetSent.contains(site.getSiteId())) {
                 emptyFeedSetSent.remove(site.getSiteId());
+            }
         }
         catch (JSONException | IPSGenericDao.LoadException | IPSGenericDao.SaveException e)
         {
@@ -221,9 +224,11 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
             URI uri = new URI(deliveryUrl);
             host = uri.getHost();
             int port = uri.getPort();
-            if (port != -1)
+            if (port != -1) {
                 host += ":" + port;
+            }
             host = uri.getScheme() + "://" + host;
+
         }
         catch (URISyntaxException e)
         {
@@ -263,8 +268,9 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
         try
         {
             String[] results = iDefMgr.getContentTypesUsingSharedFieldGroup("rssfeeds");
-            for(String ct : results)
+            for(String ct : results) {
                 cts.add(ct);
+            }
         }
         catch (PSInvalidContentTypeException e)
         {
@@ -318,8 +324,9 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
      */
     private void addParentItems(Collection<PSFeedInfo> feeds) throws PSException, InvalidQueryException, RepositoryException
     {
-        if (feeds.isEmpty())
+        if (feeds.isEmpty()) {
             return;
+        }
 
         PSRelationshipFilter pFilter = new PSRelationshipFilter();
         PSRelationshipFilter tFilter = new PSRelationshipFilter();
@@ -368,8 +375,9 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
      */
     private void filterFeeds(Collection<PSFeedInfo> feeds, long serverId)
     {
-        if (feeds.isEmpty())
+        if (feeds.isEmpty()) {
             return;
+        }
 
         Map<Integer, IPSSiteItem> sItems = new HashMap<>();
         IPSGuid sGuid = PSGuidUtils.makeGuid(serverId, PSTypeEnum.PUBLISHING_SERVER);
@@ -400,8 +408,9 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
                 }
             }
             //Remove pages not published
-            for(Integer rmv : remove)
+            for(Integer rmv : remove) {
                 feed.getPages().remove(rmv);
+            }
 
             //Use earliest published page as feed page parent and for site info
             if(ownerPage != null)
@@ -419,8 +428,9 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
 
         }
         //Remove feeds without pages
-        for(PSFeedInfo rmv : removeFeeds)
+        for(PSFeedInfo rmv : removeFeeds) {
             feeds.remove(rmv);
+        }
     }
 
     /**
@@ -430,8 +440,9 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
      */
     private void addQueries(Collection<PSFeedInfo> feeds)
     {
-        if (feeds.isEmpty())
+        if (feeds.isEmpty()) {
             return;
+        }
 
         Iterator<PSFeedInfo> it = feeds.iterator();
 
@@ -452,11 +463,13 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
                 data = div.attr("data-query");
             }
 
-            if (data!=null)
+            if (data!=null) {
                 feed.setQuery(data);
-            else
+            }
+            else {
                 // Remove item
                 it.remove();
+            }
         }
     }
 

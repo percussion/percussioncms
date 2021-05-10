@@ -38,6 +38,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.percussion.category.dao.impl.PSCategoryDao;
 import com.percussion.util.PSSiteManageBean;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.URI;
@@ -51,6 +52,8 @@ import org.apache.commons.logging.LogFactory;
 import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /***
@@ -80,7 +83,7 @@ public class PSEmsRestService {
      * The delivery service initialized by constructor, never <code>null</code>.
      */
     private IPSDeliveryInfoService deliveryService;
-    private  static Log log = LogFactory.getLog(PSEmsRestService.class);
+	private static final Logger log = LogManager.getLogger(PSEmsRestService.class);
     /***
      * The license Override if any
      */
