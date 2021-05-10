@@ -106,41 +106,52 @@ public class PSTransformCategoryNode {
    @Override
    public boolean equals(Object obj)
    {
-      if (this == obj)
+      if (this == obj) {
          return true;
-      if (obj == null)
+      }
+      if (obj == null) {
          return false;
-      if (getClass() != obj.getClass())
+      }
+      if (getClass() != obj.getClass()) {
          return false;
+      }
       PSTransformCategoryNode other = (PSTransformCategoryNode) obj;
       if (childNodes == null)
       {
-         if (other.childNodes != null)
+         if (other.childNodes != null) {
             return false;
+         }
       }
-      else if (!childNodes.equals(other.childNodes))
+      else if (!childNodes.equals(other.childNodes)) {
          return false;
+      }
       if (id == null)
       {
-         if (other.id != null)
+         if (other.id != null) {
             return false;
+         }
       }
-      else if (!id.equals(other.id))
+      else if (!id.equals(other.id)) {
          return false;
+      }
       if (label == null)
       {
-         if (other.label != null)
+         if (other.label != null) {
             return false;
+         }
       }
-      else if (!label.equals(other.label))
+      else if (!label.equals(other.label)) {
          return false;
+      }
       if (selectable == null)
       {
-         if (other.selectable != null)
+         if (other.selectable != null) {
             return false;
+         }
       }
-      else if (!selectable.equals(other.selectable))
+      else if (!selectable.equals(other.selectable)) {
          return false;
+      }
       return true;
    }
 }
