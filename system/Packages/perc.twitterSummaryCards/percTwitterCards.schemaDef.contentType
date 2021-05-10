@@ -31,7 +31,7 @@
       </column>
       <column action="c" limitSizeForIndex="n" name="IMAGE_OVERRIDE">
          <jdbctype>VARCHAR</jdbctype>
-         <size>50</size>
+         <size>1000</size>
          <allowsnull>yes</allowsnull>
          <defaultvalue/>
       </column>
