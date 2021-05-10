@@ -854,39 +854,36 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         httpMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
                 new DefaultHttpMethodRetryHandler(retryCount, true));
 
-       try(InputStream responseDataStream = httpMethod.getResponseBodyAsStream()){
-           int statusCode = this.executeMethod(httpMethod);
+        try {
 
-            String responseData = responseDataStream==null ? "" : IOUtils.toString(responseDataStream);
-            if (!successfullHttpStatusCodes.contains(statusCode))
-            {
-               failureCount = 0;
-               offline=false;
-               if (statusCode == HttpStatus.SC_UNAUTHORIZED)
-                {
-                    log.error("Authentication error. Check user and " +
-                            "password for this delivery server: "
-                            + httpMethod.getStatusLine());
-                    throw new RuntimeException("Authentication error. Check user and " +
-                            "password for this delivery server: " +
-                            httpMethod.getStatusLine());
+            int statusCode = this.executeMethod(httpMethod);
+
+            try (InputStream responseDataStream = httpMethod.getResponseBodyAsStream()) {
+
+                String responseData = responseDataStream == null ? "" : IOUtils.toString(responseDataStream);
+                if (!successfullHttpStatusCodes.contains(statusCode)) {
+                    failureCount = 0;
+                    offline = false;
+                    if (statusCode == HttpStatus.SC_UNAUTHORIZED) {
+                        log.error("Authentication error. Check user and " +
+                                "password for this delivery server: "
+                                + httpMethod.getStatusLine());
+                        throw new RuntimeException("Authentication error. Check user and " +
+                                "password for this delivery server: " +
+                                httpMethod.getStatusLine());
+                    } else {
+                        log.error("Error when executing method : " + httpMethod.getStatusLine() + " : " + responseData);
+                        throw new RuntimeException("Error when executing method: " + httpMethod.getStatusLine());
+                    }
+
+                } else {
+                    // TODO ensure correct character encoding
+                    if (statusCode == HttpStatus.SC_NO_CONTENT)
+                        return "";
+                    else
+                        return responseData;
                 }
-                else
-                {
-                    log.error("Error when executing method : " + httpMethod.getStatusLine() + " : " + responseData);
-                    throw new RuntimeException("Error when executing method: " + httpMethod.getStatusLine());
-                }
-
             }
-            else
-            {
-                // TODO ensure correct character encoding
-            	if (statusCode == HttpStatus.SC_NO_CONTENT)
-            		return "";
-            	else
-            		return responseData;
-            }
-
         }
         catch (IOException ex)
         {
