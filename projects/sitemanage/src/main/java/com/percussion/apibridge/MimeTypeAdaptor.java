@@ -28,6 +28,7 @@ import com.percussion.rest.mimetypes.IMimeTypeAdaptor;
 import com.percussion.rest.mimetypes.MimeType;
 import com.percussion.util.PSSiteManageBean;
 
+import java.util.Collections;
 import java.util.List;
 
 @PSSiteManageBean
@@ -40,7 +41,7 @@ public class MimeTypeAdaptor implements IMimeTypeAdaptor {
 
     @Override
     public List<MimeType> listMimeTypes() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override

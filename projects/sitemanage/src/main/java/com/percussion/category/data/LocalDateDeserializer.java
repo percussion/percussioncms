@@ -25,17 +25,17 @@
 package com.percussion.category.data;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.percussion.share.service.exception.PSDataServiceException;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.time.LocalDateTime;
 
 public class LocalDateDeserializer extends JsonDeserializer<LocalDateTime>
 {
-    private static Log log = LogFactory.getLog(LocalDateDeserializer.class);
+    private static final Logger log = LogManager.getLogger(LocalDateDeserializer.class);
     public LocalDateTime deserialize(JsonParser arg0, DeserializationContext arg1){
         String dateInStringFormat= "";
         try{
