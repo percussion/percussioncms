@@ -226,8 +226,9 @@ public class PSFeedsInfoService implements IPSFeedsInfoService
             int port = uri.getPort();
             if (port != -1) {
                 host += ":" + port;
-                host = uri.getScheme() + "://" + host;
             }
+            host = uri.getScheme() + "://" + host;
+
         }
         catch (URISyntaxException e)
         {
