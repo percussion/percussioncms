@@ -122,7 +122,8 @@ public class PSExecSQLStmt extends PSAction
             pw = PSLegacyEncrypter.getInstance(null).decrypt(pw,
                     PSJdbcDbmsDef.getPartOneKey(), null);
          }
-
+         driver = dbmsDef.getDriver();
+         PSLogger.logInfo("PSExecSQLStmt got DB driver: " + driver);
          try (Connection conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
                  props.getProperty("DB_SERVER"),
                  props.getProperty("DB_NAME"),
@@ -132,9 +133,7 @@ public class PSExecSQLStmt extends PSAction
 
             String strStmt = sql;
             String dbStrStmt = "";
-            driver = dbmsDef.getDriver();
 
-            PSLogger.logInfo("PSExecSQLStmt got DB driver: " + driver);
 
             if (driver.equalsIgnoreCase(PSJdbcUtils.DB2))
                dbStrStmt = sqlUDB;

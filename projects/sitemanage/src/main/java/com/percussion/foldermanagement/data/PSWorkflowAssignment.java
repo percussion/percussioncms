@@ -96,10 +96,8 @@ public class PSWorkflowAssignment
         if (unassignedFolders == null) {
             return new String[]{};
         }
-        {
+        return unassignedFolders;
 
-            return unassignedFolders;
-        }
     }
 
     public void setUnassignedFolders(String[] unassignedFolders)

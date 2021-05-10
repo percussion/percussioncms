@@ -80,12 +80,12 @@ public class PSContentEditCriteria extends PSAssetEditor
     */
    public void setFolderPath(String folderPath)
    {
-       if (folderPath == null || folderPath.equals(""))
-      {
+       if (folderPath == null) {
+          this.folderPath = "";
+       }
 
-         this.folderPath = folderPath;
+       this.folderPath = folderPath;
 
-      }
    }
    
    /**
