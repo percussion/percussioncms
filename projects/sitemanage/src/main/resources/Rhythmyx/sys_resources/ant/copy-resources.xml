@@ -81,7 +81,6 @@
 		<if>
 			<isset property="perc.site.config"/>
 			<then>
-		       		
 				<copy todir="${perc.site.web-inf}" overwrite="true" failonerror="true">
 		            <fileset dir="${perc.site.config}">
 		           		<exclude name="web.xml"/>
