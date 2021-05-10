@@ -61,8 +61,8 @@ import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -71,6 +71,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -94,12 +95,10 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     */
     private String licenseOverride="";
 
-    private static final String ENCODING_UTF8 = "UTF-8";
-
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSDeliveryClient.class);
+    public static final Logger log = LogManager.getLogger(PSDeliveryClient.class);
 
     /**
      * The number of times a method will be retried.
@@ -193,13 +192,13 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     private String responseMessageBodyContentType = MediaType.APPLICATION_JSON;
 
     // Make these set-able
-    private String requestMessageBodyEncoding = ENCODING_UTF8;
+    private final String requestMessageBodyEncoding = StandardCharsets.UTF_8.name();
 
     /**
      * The request message body content type is only used when the request body
      * is a String.
      */
-    private String requestMessageBodyContentType = MediaType.APPLICATION_JSON;
+    private static final String requestMessageBodyContentType = MediaType.APPLICATION_JSON;
 
     private IPSProxyConfigService proxyConfigService;
 
@@ -317,14 +316,10 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
 
     /**
      * @return A JSON of the received data.
-     * @throws URIException
      */
     private JSON getJson()
     {
-        String response = pushOrGet(MediaType.APPLICATION_JSON);
-        JSON obj = net.sf.json.JSONSerializer.toJSON(response);
-
-        return obj;
+        return net.sf.json.JSONSerializer.toJSON(pushOrGet(MediaType.APPLICATION_JSON));
     }
 
     /**
@@ -332,12 +327,12 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * HTTP method (according to <code>requestType</code> value), gets the response
      * and returns it.
      *
-     * @param requestMessageBodyContentType
+     * @param requestMessageBodyContentType Content Type
      * @return A string returned when the HTTP method is executed.
      */
     private String pushOrGet(String requestMessageBodyContentType)
     {
-        String response = null;
+        String response;
         this.responseMessageBodyContentType = MediaType.APPLICATION_JSON;
 
         switch (this.requestType)
@@ -375,7 +370,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * @return A JSONObject of the response from the server. If there is no data
      *         returned, returns an empty JSONObject. Will never be
      *         <code>null</code>, may be empty.
-     * @throws URIException
      * @throws PSDeliveryClientException if the remote server did not return
      *             JSON of the expected type.
      *
@@ -427,7 +421,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * @return A JSONArray of the response from the server. If there is no data
      *         returned, returns an empty JSONArray. Will never be
      *         <code>null</code>, may be empty.
-     * @throws URIException
      * @throws PSDeliveryClientException if the remote server did not return
      *             JSON of the expected type.
      *
@@ -499,8 +492,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      */
 	public String getString(PSDeliveryActionOptions actionOptions) {
         prepare(actionOptions, null);
-        String response = pushOrGet(MediaType.APPLICATION_JSON);
-        return response;
+       return pushOrGet(MediaType.APPLICATION_JSON);
 	}
 
     /**
@@ -537,7 +529,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         }
         PSDeliveryInfo server = actionOptions.getDeliveryInfo();
         URI uri;
-        String protocol, port;
+        String protocol;
+        String port;
 
         try
         {
@@ -568,7 +561,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         this.requestMessageBody = requestMessageBody;
 
         if (actionOptions.getSuccessfullHttpStatusCodes() != null &&
-                actionOptions.getSuccessfullHttpStatusCodes().size() > 0)
+                !actionOptions.getSuccessfullHttpStatusCodes().isEmpty())
             successfullHttpStatusCodes.addAll(actionOptions.getSuccessfullHttpStatusCodes());
 
         // Request information
@@ -628,7 +621,9 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         
         try
         {
-            String protocol, deliveryHost, port;            
+            String protocol;
+            String deliveryHost;
+            String port;
             
             if (actionOptions.isAdminOperation())
             {
@@ -658,7 +653,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         }
         catch (URIException e)
         {
-            log.error("Error parsing URL: " + finalUrl);
+            log.error("Error parsing URL: {}" , finalUrl);
             throw new PSDeliveryClientException("Error parsing URL: " + finalUrl, e);
         }
         
@@ -671,7 +666,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * @return A string containing the entire contents of the body of the
      *         response. May return <code>null</code> if there is an error
      *         processing the given url.
-     * @throws URIException 
      */
     private String executeGetMethod()
     {
@@ -691,7 +685,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         
         DeleteMethod deleteMethod = new DeleteMethod(this.requestUrl);
         
-        if (requestMessageBody != null && requestMessageBody instanceof NameValuePair[])
+        if (requestMessageBody instanceof NameValuePair[])
             deleteMethod.setQueryString((NameValuePair[]) requestMessageBody);
 
         return this.executeHttpMethod(deleteMethod);
@@ -700,11 +694,10 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     /**
      * Executes a PUT method against the given URL using authentication.
      * 
-     * @param requestMessageBodyContentType
+     * @param requestMessageBodyContentType Content Type
      * @return A string containing the entire contents of the body of the
      *         response. May return <code>null</code> if there is an error
      *         processing the given url.
-     * @throws IOException 
      */
     private String executePutMethod(String requestMessageBodyContentType)
     {
@@ -715,20 +708,16 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     /**
      * Executes a POST request against the given URL using authentication.
      * 
-     * @param requestMessageBodyContentType
+     * @param requestMessageBodyContentType Content Type
      * @return A string containing the entire contents of the body of the
      *         response. May return <code>null</code> if there is an error
      *         processing the given url.
-     * @throws URIException 
      */
     @SuppressWarnings("unchecked")
     private String executePostMethod(String requestMessageBodyContentType)
     {
          PostMethod postMethod = new PostMethod(this.requestUrl);
-        
-        // FIXME This code should not be here, but in executeEntityEnclosingMethod.
-        // The current version of Apache HttpClient used has some limitations that
-        // I couldn't workaround.
+
         if (this.requestMessageBody instanceof Collection<?>)
         {
             try
@@ -743,19 +732,14 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
                 String errorMessage = "Error in trying to set the request body for the POST method";
                 
                 log.error(errorMessage);
-                throw new RuntimeException(errorMessage);
+                throw new PSDeliveryClientException(errorMessage);
             }
         } else {
-           try
-         {
-            postMethod.setRequestEntity(new StringRequestEntity(this.requestMessageBody.toString(),"application/json",ENCODING_UTF8));
-         }
-         catch (UnsupportedEncodingException e)
-         {
-             // UTF-8 allways supported
-              log.error("Unsupported Exception for UTF-8?");
-        
-         }
+            try {
+                postMethod.setRequestEntity(new StringRequestEntity(this.requestMessageBody.toString(),"application/json", StandardCharsets.UTF_8.name()));
+            } catch (UnsupportedEncodingException e) {
+                throw new PSDeliveryClientException(e.getMessage());
+            }
         }
         
         return this.executeEntityEnclosingMethod(postMethod, requestMessageBodyContentType);
@@ -766,7 +750,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * the shared logic between POST and PUT.
      * 
      * @param httpMethod The HTTP method object to execute.
-     * @param requestMessageBodyContentType
+     * @param requestMessageBodyContentType Content Type
      * @return A string containing the entire contents of the body of the
      *         response. May return <code>null</code> if there is an error
      *         processing the given url.
@@ -803,7 +787,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
             String errorMessage = "Error in trying to set the request body for the HTTP method";
             
             log.error(errorMessage, e);
-            throw new RuntimeException(errorMessage);
+            throw new PSDeliveryClientException(errorMessage);
         }
         
         return this.executeHttpMethod(httpMethod);
@@ -827,7 +811,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         // By default, the content type is APPLICATION_JSON.
         if (httpMethod.getRequestHeader(HttpHeaders.CONTENT_TYPE) != null &&
                 isBlank(httpMethod.getRequestHeader(HttpHeaders.CONTENT_TYPE).getValue()))
-            httpMethod.setRequestHeader(HttpHeaders.CONTENT_TYPE, this.requestMessageBodyContentType);
+            httpMethod.setRequestHeader(HttpHeaders.CONTENT_TYPE, requestMessageBodyContentType);
 
            if (proxyConfig != null && proxyConfig.getHost() != null && proxyConfig.getPort() != null)
            {
@@ -860,24 +844,21 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
 
             try (InputStream responseDataStream = httpMethod.getResponseBodyAsStream()) {
 
-                String responseData = responseDataStream == null ? "" : IOUtils.toString(responseDataStream);
+                String responseData = responseDataStream == null ? "" : IOUtils.toString(responseDataStream,StandardCharsets.UTF_8);
                 if (!successfullHttpStatusCodes.contains(statusCode)) {
                     failureCount = 0;
                     offline = false;
+                    String msg;
                     if (statusCode == HttpStatus.SC_UNAUTHORIZED) {
-                        log.error("Authentication error. Check user and " +
-                                "password for this delivery server: "
-                                + httpMethod.getStatusLine());
-                        throw new RuntimeException("Authentication error. Check user and " +
-                                "password for this delivery server: " +
+                        msg = String.format("Authentication error. Check user and password for this delivery server: %s",
                                 httpMethod.getStatusLine());
                     } else {
-                        log.error("Error when executing method : " + httpMethod.getStatusLine() + " : " + responseData);
-                        throw new RuntimeException("Error when executing method: " + httpMethod.getStatusLine());
+                        msg = String.format("Error when executing method : %s : %s" , httpMethod.getStatusLine() , responseData);
                     }
+                    log.error(msg);
+                    throw new PSDeliveryClientException(msg);
 
                 } else {
-                    // TODO ensure correct character encoding
                     if (statusCode == HttpStatus.SC_NO_CONTENT)
                         return "";
                     else
@@ -890,10 +871,10 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
            failureCount++;
            if(failureCount > MAX_FAILURES){
               offline = true;
-              log.info("Delivery Services are unavailble.  Supressing further messages.");
+              log.info("Delivery Services are unavailable.  Suppressing further messages.");
            }
            if(!offline)
-              log.error("Fatal transport error: " + ex.getLocalizedMessage());
+              log.error("Fatal transport error: {}" , ex.getMessage());
             
            String reqUrl = this.requestUrl;
            try
@@ -907,7 +888,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
                  log.error(e.getLocalizedMessage());
            }
            if(!offline)
-              throw new RuntimeException("Unable to connect to delivery server at: " + reqUrl + ".");
+              throw new PSDeliveryClientException("Unable to connect to delivery server at: {}." + reqUrl + ".");
          return null;
         }
         finally
@@ -933,10 +914,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
             {
                 sslEnabled = true;
             }
-            else
-            {
-                sslEnabled = false;
-            }
+
 
         }
         catch (URIException e)
