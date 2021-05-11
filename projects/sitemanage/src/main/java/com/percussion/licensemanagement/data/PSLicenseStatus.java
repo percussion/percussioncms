@@ -322,8 +322,9 @@ public class PSLicenseStatus implements Serializable
     public Integer getUsageExceeded()
     {
         // If it's not activated. Eg: it's "inactive, registered" do not return the amount of days
-        if (this.usageExceeded == null || !this.activationStatus)
+        if (this.usageExceeded == null || !this.activationStatus) {
             return null;
+        }
         return PSDateUtils.getDaysDiff(this.usageExceeded, new Date());
     }
     

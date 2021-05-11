@@ -38,8 +38,8 @@ import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.IPSSystemProperties;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -111,7 +111,7 @@ public class PSLicenseService {
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSLicenseService.class);
+    private static final Logger log = LogManager.getLogger(PSLicenseService.class);
 
     /**
      * The delivery service initialized by constructor, never <code>null</code>.

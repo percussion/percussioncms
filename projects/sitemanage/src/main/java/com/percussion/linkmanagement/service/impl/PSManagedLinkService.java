@@ -63,8 +63,8 @@ import com.phloc.commons.url.URLValidator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -107,7 +107,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
      */
     public static final int UNASSIGNED_PARENT_ID = -1;
 
-    private static final Log log = LogFactory.getLog(PSManagedLinkService.class);
+	private static final Logger log = LogManager.getLogger(PSManagedLinkService.class);
 
     private IPSManagedLinkDao dao;
 
