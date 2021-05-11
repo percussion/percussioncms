@@ -257,8 +257,9 @@ public class PSItemService implements IPSItemService
                             break;
                         }
                     }
-                    if (!found)
-                        revisions.add(getRevision(sum));
+                    if (!found) {
+						revisions.add(getRevision(sum));
+					}
                 }
             }
             revSummary.setRevisions(revisions);
@@ -298,8 +299,9 @@ public class PSItemService implements IPSItemService
         Collections.reverse(historyEntries);
         for(int i=0; i < historyEntries.size(); i++){
         	PSContentStatusHistory entry = historyEntries.get(i);
-        	if(ArrayUtils.contains(WORKFLOW_TRANSITION_IGNORE_LIST, entry.getTransitionLabel()))
-        		continue;
+        	if(ArrayUtils.contains(WORKFLOW_TRANSITION_IGNORE_LIST, entry.getTransitionLabel())) {
+				continue;
+			}
         	lastComment = entry.getTransitionComment();
         	break;
         }
@@ -457,8 +459,9 @@ public class PSItemService implements IPSItemService
             		log.error("An error occurred while processing Asset Impact checking item properties for Page: {} Error: {}", page,e.getMessage());
             		log.debug(e.getMessage(),e);
             	}
-            	if(itemProps != null)
-            		pageArray.add(itemProps);
+            	if(itemProps != null) {
+					pageArray.add(itemProps);
+				}
             }
             JSONArray templateArray = new JSONArray();
             for (String templateId : ownerTemplates)
@@ -477,8 +480,9 @@ public class PSItemService implements IPSItemService
                 {
                     JSONObject templateItem = new JSONObject();
 
-                    if(template != null)
-                    	templateItem.put("template", template);
+                    if(template != null) {
+						templateItem.put("template", template);
+					}
 
                     if(sites!=null) {
                         if (sites.get(0) != null)
@@ -744,8 +748,9 @@ public class PSItemService implements IPSItemService
      */
     private String convertDate(String inputDate, boolean isForSave) throws ParseException
     {
-    	if(StringUtils.isBlank(inputDate))
-    		return "";
+    	if(StringUtils.isBlank(inputDate)) {
+			return "";
+		}
     	FastDateFormat format1 =  FastDateFormat.getInstance(isForSave?"MM/dd/yyyy hh:mm a":"yyyy-MM-dd HH:mm:ss.S");
         FastDateFormat format2 = FastDateFormat.getInstance(isForSave?"yyyy-MM-dd HH:mm:ss.S":"MM/dd/yyyy hh:mm a");
         Date dbDate = format1.parse(inputDate);
@@ -1309,8 +1314,9 @@ catch (Exception e){
                             titleCopyName = titleCopyNameBase + '-' + i++;
                         }
 
-                        if (unique_name != null)
-                            fieldMap.put(uniqueField, copyName);
+                        if (unique_name != null) {
+							fieldMap.put(uniqueField, copyName);
+						}
 
                         sumName = titleCopyName;
                     }
@@ -1533,8 +1539,9 @@ catch (Exception e){
             try
             {
                 id = folderHelper.findLegacyFolderIdFromPath(folderName);
-                if (id!=null)
-                    locator = new PSLocator(id.intValue());
+                if (id!=null) {
+					locator = new PSLocator(id.intValue());
+				}
             }
             catch (Exception e)
             {
@@ -1569,8 +1576,9 @@ catch (Exception e){
             PSItemProperties itemProps = null;
             try {
                 itemProps = folderHelper.findItemPropertiesById(idMapper.getGuid(new PSLocator(uItem.getItemId())).toString());
-                if (itemProps != null)
-                    items.add(itemProps);
+                if (itemProps != null) {
+					items.add(itemProps);
+				}
             } catch (IPSDataService.DataServiceLoadException | IPSGenericDao.LoadException e) {
                 log.error(e.getMessage());
                 log.debug(e.getMessage(),e);

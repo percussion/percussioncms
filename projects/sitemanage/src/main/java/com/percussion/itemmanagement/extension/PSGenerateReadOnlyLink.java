@@ -44,18 +44,15 @@ import com.percussion.util.PSUrlUtils;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Gets the url parameters which can be used to generate the read-only editor view link for a page or asset.
@@ -99,10 +96,12 @@ public class PSGenerateReadOnlyLink extends com.percussion.extension.PSSimpleJav
             if (paths.length == 0) {
                 String msg1 = "Failed to generate read-only link for content ID = " + id;
                 IPSCmsObjectMgr cmsMgr = PSCmsObjectMgrLocator.getObjectManager();
-                if (cmsMgr.findItemEntry(id.getUUID()) != null)
+                if (cmsMgr.findItemEntry(id.getUUID()) != null) {
                     log.warn(msg1 + " as the item does not exist.");
-                else
+                }
+                else {
                     log.warn(msg1 + " as the item is not under a folder.");
+                }
 
                 return url;
             }
@@ -188,8 +187,9 @@ public class PSGenerateReadOnlyLink extends com.percussion.extension.PSSimpleJav
      */
     private IPSGuid getContentId(Object[] params)
     {
-        if (params.length < 2)
-            throw new IllegalArgumentException("params must contain 2 parameters.");
+        if (params.length < 2) {
+			throw new IllegalArgumentException("params must contain 2 parameters.");
+		}
         
         int contentId = getIntParameter(params, 0);
         int revision = getIntParameter(params, 1);
@@ -200,8 +200,9 @@ public class PSGenerateReadOnlyLink extends com.percussion.extension.PSSimpleJav
     private int getIntParameter(Object params[], int index)
     {
         Object p = params[index];
-        if (!(p instanceof Integer))
-            throw new IllegalArgumentException("Parameter[" + index + "] is not Integer.");
+        if (!(p instanceof Integer)) {
+			throw new IllegalArgumentException("Parameter[" + index + "] is not Integer.");
+		}
         
         return ((Integer)p).intValue();
     }
@@ -209,8 +210,9 @@ public class PSGenerateReadOnlyLink extends com.percussion.extension.PSSimpleJav
     private String getStringParameter(Object params[], int index)
     {
         Object p = params[index];
-        if (!(p instanceof String))
-            throw new IllegalArgumentException("Parameter[" + index + "] is not String.");
+        if (!(p instanceof String)) {
+			throw new IllegalArgumentException("Parameter[" + index + "] is not String.");
+		}
         
         return (String) p;
     }
@@ -218,8 +220,9 @@ public class PSGenerateReadOnlyLink extends com.percussion.extension.PSSimpleJav
     private Boolean getBooleanParameter(Object params[], int index)
     {
         Object p = params[index];
-        if (!(p instanceof Boolean))
-            throw new IllegalArgumentException("Parameter[" + index + "] is not Boolean.");
+        if (!(p instanceof Boolean)) {
+			throw new IllegalArgumentException("Parameter[" + index + "] is not Boolean.");
+		}
         
         return (Boolean) p;
     }
