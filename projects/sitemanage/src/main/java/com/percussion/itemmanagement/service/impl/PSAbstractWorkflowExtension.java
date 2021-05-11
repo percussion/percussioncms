@@ -192,8 +192,9 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
         
         public static boolean passedStartPublishDate(PSComponentSummary summary)
         {
-            if (summary.getContentStartDate() == null)
+            if (summary.getContentStartDate() == null) {
                 return true;
+            }
             
             Date currentDate = new Date();
             return (summary.getContentStartDate().getTime() <= currentDate.getTime());
@@ -236,8 +237,9 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
             boolean skipped = false;
             Status s = item.getStatus();
             Operation o = item.getOperation();
-            if (log.isDebugEnabled())
+            if (log.isDebugEnabled()) {
                 log.debug(format("Item id: {2}, Operation:{0}, Status:{1}", o, s, item.getContentId()));
+            }
             if (o == Operation.PUBLISH && s == Status.SUCCESS)
             {
                 skipped = workflowItemIfPossible(item, site, isDefaultPubServer);
@@ -245,12 +247,14 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
             else
             {
                     // Only set on debug confusing warning to user otherwise.
-                    if (s != Status.SUCCESS)
-                        log.warn(format("Not workflowing item:{0} because Message:{3} Operation:{1}, Status{2}", 
-                            item.getContentId(), o,s, item.getMessage()));
-                    else
-                        log.debug(format("Not workflowing item:{0} because Message:{3} Operation:{1}, Status{2}", 
-                            item.getContentId(), o,s, item.getMessage()));
+                    if (s != Status.SUCCESS) {
+                        log.warn(format("Not workflowing item:{0} because Message:{3} Operation:{1}, Status{2}",
+                                item.getContentId(), o, s, item.getMessage()));
+                    }
+                    else {
+                        log.debug(format("Not workflowing item:{0} because Message:{3} Operation:{1}, Status{2}",
+                                item.getContentId(), o, s, item.getMessage()));
+                    }
             }
             
             return skipped;
@@ -298,15 +302,17 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
                 
                 //Skip the workflow transition if the item published does not match the current revision to cover scheduled publish case.
                 if(item.getRevisionId() != wfItem.itemSummary.getCurrentLocator().getRevision()){
-                    if (log.isDebugEnabled())
+                    if (log.isDebugEnabled()) {
                         log.debug("Item is most likely scheduled for a future publish: " + wfItem);
+                    }
                     wfItem.status = ItemStatus.IGNORED;
                     return true;
                 }
                 
                 if (isAlreadyWorkflowed(wfItem)) { 
-                    if (log.isDebugEnabled())
+                    if (log.isDebugEnabled()) {
                         log.debug("Item is already workflowed: " + wfItem);
+                    }
                     wfItem.status = ItemStatus.IGNORED;
                     return true;
                 }
@@ -342,8 +348,9 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
                     addToSuccessfulItems(wfItem);
                     wfItem.status = ItemStatus.PROCESSED;
                 }
-                else
+                else {
                     wfItem.status = ItemStatus.FAILED;
+                }
             }
             catch (Exception e)
             {
@@ -417,8 +424,9 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
                 {
                     if (isAlreadyWorkflowed(wfItem)) {
                         wfItem.status = ItemStatus.IGNORED;
-                        if (log.isDebugEnabled())
+                        if (log.isDebugEnabled()) {
                             log.debug("Did not workflow item: " + wfItem + " because its already been workflowed.");
+                        }
                         return success;
                     }
                     
@@ -427,14 +435,16 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
                         if (pageWfItem != null && !isAllowedSitePublishable(wfItem, pageWfItem))
                         {
                             wfItem.status = ItemStatus.IGNORED;
-                            if (log.isDebugEnabled())
+                            if (log.isDebugEnabled()) {
                                 log.debug("Did not workflow item: " + wfItem + " because its not allowed for the current site.");
+                            }
                             
                         }
                         else
                         {
-                            if (log.isDebugEnabled())
+                            if (log.isDebugEnabled()) {
                                 log.debug("Attempting to transition item: " + wfItem);
+                            }
                             transition(wfItem);
                             addToSuccessfulItems(wfItem);
                         }
@@ -578,8 +588,9 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
             	result = workflowHelper.isItemInStagingState(summary.getContentId());
             }
             else{
-            	if (summary.getPublicRevision() != -1)
-            		return true;
+            	if (summary.getPublicRevision() != -1) {
+                    return true;
+                }
             	result = workflowHelper.isItemInApproveState(summary.getContentId());
             }
 
