@@ -73,7 +73,7 @@
                         </PSXBackEndColumn>
                      </DataLocator>
                      <DataType>text</DataType>
-                     <DataFormat>50</DataFormat>
+                     <DataFormat>1000</DataFormat>
                      <DefaultValue>
                         <DataLocator>
                            <PSXTextLiteral id="0">
@@ -328,7 +328,7 @@
                               <PSXParam name="maxlength">
                                  <DataLocator>
                                     <PSXTextLiteral id="0">
-                                       <text>50</text>
+                                       <text>1000</text>
                                     </PSXTextLiteral>
                                  </DataLocator>
                               </PSXParam>

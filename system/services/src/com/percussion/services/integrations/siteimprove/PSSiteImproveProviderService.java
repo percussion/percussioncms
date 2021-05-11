@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.percussion.util.PSURLEncoder;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
@@ -62,8 +63,7 @@ public class PSSiteImproveProviderService implements IPSIntegrationProviderServi
    private static final String NEW_SITEIMPROVE_BASE_URL = "https://api-gateway.siteimprove.com/cms-recheck";
 
    private static final String PERCUSSION_CM1_VERSION = "Percussion CMS " + PSServer.getVersion();
-   private static final String SITEIMPROVE_TOKEN_URL = "https://my2.siteimprove.com/auth/token?cms="
-         + PERCUSSION_CM1_VERSION;
+   private static final String SITEIMPROVE_TOKEN_URL = "https://my2.siteimprove.com/auth/token?cms=";
    private static final String SITEIMPROVE_RECRAWL_SITE = "recrawl";
    private static final String SITEIMPROVE_RECHECK_PAGE = "recheck";
    private static final String SITEIMPROVE_TOKEN = "token";
@@ -95,7 +95,8 @@ public class PSSiteImproveProviderService implements IPSIntegrationProviderServi
        return "";
     }
 
-      GetMethod getMethod = new GetMethod(SITEIMPROVE_TOKEN_URL);
+      String SITEIMPROVE_TOKEN_QUERY_PARAM = PSURLEncoder.encodeQuery(PERCUSSION_CM1_VERSION);
+      GetMethod getMethod = new GetMethod(SITEIMPROVE_TOKEN_URL + SITEIMPROVE_TOKEN_QUERY_PARAM);
       try
       {
          executeMethod(getMethod);
