@@ -202,8 +202,9 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             ids.add(id);
 
             PSDataItemSummary sum = dataItemSummaryService.find(id);
-            if (sum == null)
+            if (sum == null) {
                 return new PSNoContent("checkIn");
+            }
 
             if (sum.getType().equals(IPSPageService.PAGE_CONTENT_TYPE)) {
                 ids.addAll(getLocalAssetIdsForCheckin(id));
@@ -391,12 +392,14 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         rejectIfBlank("isPublishablePage", "id", id);
         
         PSPage page = pageDao.find(id);
-        if (page == null)
+        if (page == null) {
             return true;
+        }
         IPSGuid guid = idMapper.getGuid(id);
         List<IPSSite> sites = siteMgr.getItemSites(guid);
-        if (sites == null || sites.size() == 0)
+        if (sites == null || sites.size() == 0) {
             return true;
+        }
         Long siteId = sites.get(0).getSiteId();
         
         // Create a set with shared and linked assets
@@ -635,11 +638,13 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     {
         try {
             int workflowId;
-            if (StringUtils.isEmpty(path))
+            if (StringUtils.isEmpty(path)) {
                 workflowId = getWorkflowId(workflowService.getDefaultWorkflowName());
+            }
             else {
-                if (!StringUtils.startsWith(path, "/"))
+                if (!StringUtils.startsWith(path, "/")) {
                     path = "/" + path;
+                }
                 try {
                     String folderPath = folderHelper.getFolderPath(path);
                     workflowId = folderHelper.getValidWorkflowId(folderHelper.findFolderProperties(folderHelper.findFolder(folderPath).getId()));
@@ -698,8 +703,9 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     
     @Override
     public int getLocalContentWorkflowId() throws PSItemWorkflowServiceException {
-        if(localContentWorkflowId > 0)
+        if(localContentWorkflowId > 0) {
             return localContentWorkflowId;
+        }
         
         List<PSObjectSummary> wfs = workflowService.findWorkflowSummariesByName("LocalContent");
         if (wfs.isEmpty())
@@ -877,19 +883,22 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         if (folderId != null)
         {
             PSFolderPermission.Access access = folderHelper.getFolderAccessLevel(idMapper.getString(folderId));
-            if (access == PSFolderPermission.Access.READ)
+            if (access == PSFolderPermission.Access.READ) {
                 return false;
+            }
         }
         
         PSComponentSummary sum = workflowHelper.getComponentSummary(id);
 
         //Check whether the user through his roles has permission to approve the asset
-        if (!isTriggerAvailable(id, IPSItemWorkflowService.TRANSITION_TRIGGER_APPROVE))
-        	return false;
+        if (!isTriggerAvailable(id, IPSItemWorkflowService.TRANSITION_TRIGGER_APPROVE)) {
+            return false;
+        }
         	
         // is the item checked out?
-        if (isEmpty(sum.getCheckoutUserName()))
+        if (isEmpty(sum.getCheckoutUserName())) {
             return true;
+        }
         
         // check in the item before transition (next call) if item is checked out by current user
         if (isItemCheckedOutToUser(sum))
@@ -993,8 +1002,9 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     public PSBulkApprovalJobStatus getBulkApproveStatus(String jobId, boolean isFull)
     {
         PSBulkApprovalJobStatus approvalJob = new PSBulkApprovalJobStatus();
-        if(!StringUtils.isNumeric(jobId))
+        if(!StringUtils.isNumeric(jobId)) {
             throw new IllegalArgumentException("jobId must be a number.");
+        }
         long job = Long.parseLong(jobId);
         approvalJob.setJobId(job);  
         
@@ -1009,10 +1019,12 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             
             PSApprovableItems items = new PSApprovableItems();
             
-            if(isFull)
+            if(isFull) {
                 items.setApprovableItems(jobResult.getApprovableItems());
-            else
+            }
+            else {
                 items.setProcessedItems(jobResult.getProcessedItems());
+            }
             
             items.setErrors(jobResult.getErrors());
             
