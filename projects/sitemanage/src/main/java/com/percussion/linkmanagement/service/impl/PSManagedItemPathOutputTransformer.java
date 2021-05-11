@@ -61,11 +61,13 @@ public class PSManagedItemPathOutputTransformer extends PSDefaultExtension imple
         String path = ep.getStringParam(0, null, true);
         String linkIdField = ep.getStringParam(1, null, false);
         
-        if(StringUtils.isBlank(linkIdField))
+        if(StringUtils.isBlank(linkIdField)) {
             return path;
+        }
         String linkId = (String) PSContentEditorWalker.getDisplayFieldValue(request.getInputDocument(), linkIdField);
-        if(StringUtils.isBlank(linkIdField))
+        if(StringUtils.isBlank(linkIdField)) {
             return path;
+        }
         
         
         String cid = request.getParameter(IPSHtmlParameters.SYS_CONTENTID);

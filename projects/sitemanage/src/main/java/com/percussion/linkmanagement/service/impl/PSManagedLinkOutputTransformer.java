@@ -57,8 +57,9 @@ public class PSManagedLinkOutputTransformer extends PSDefaultExtension implement
     {
         PSExtensionParams ep = new PSExtensionParams(params);
         String value = ep.getStringParam(0, null, true);
-        if(StringUtils.isBlank(value))
+        if(StringUtils.isBlank(value)) {
             return value;
+        }
         String cid = request.getParameter(IPSHtmlParameters.SYS_CONTENTID);
         //For new items content id doesn't exists, simply return the value
         if(StringUtils.isBlank(cid) || !StringUtils.isNumeric(cid))

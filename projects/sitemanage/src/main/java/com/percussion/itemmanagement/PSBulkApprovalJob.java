@@ -38,8 +38,8 @@ import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.user.service.IPSUserService;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSWebserviceUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +55,7 @@ import java.util.Map;
 public class PSBulkApprovalJob extends PSAsyncJob
 {
 
-    private static final Log log = LogFactory.getLog(PSBulkApprovalJob.class);
+    private static final Logger log = LogManager.getLogger(PSBulkApprovalJob.class);
 
     private static final String APPROVED_ITEM = "Approved";
 
@@ -171,8 +171,9 @@ public class PSBulkApprovalJob extends PSAsyncJob
      * @return true if the user has approve transition.
      */
     private boolean hasApproveTransition(PSApprovableItem item) throws PSValidationException {
-        if(isAdmin)
+        if(isAdmin) {
             return true;
+        }
         boolean result = true;
         if(!workflowHelper.isApproveAvailableToCurrentUser(item.getId()))
         {
@@ -191,8 +192,9 @@ public class PSBulkApprovalJob extends PSAsyncJob
      * @return true if user has at least write access or false.
      */
     private boolean hasFolderAccess(PSApprovableItem item) throws PSValidationException {
-        if(isAdmin)
+        if(isAdmin) {
             return true;
+        }
         //check folder permission
         IPSGuid itemGuid = idMapper.getGuid(item.getId());
         IPSGuid parentFolder = folderHelper.getParentFolderId(itemGuid);
