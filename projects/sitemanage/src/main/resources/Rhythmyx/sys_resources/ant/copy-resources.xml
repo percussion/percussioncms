@@ -81,6 +81,11 @@
 		<if>
 			<isset property="perc.site.config"/>
 			<then>
+				<echo>Delete Existing site configuration</echo>
+				<delete  dir="${perc.site.web-inf}/" includeEmptyDirs="true">
+					<fileset excludesfile="web.xml"/>
+				</delete>
+				<echo>Copy New site configuration</echo>
 				<copy todir="${perc.site.web-inf}" overwrite="true" failonerror="true">
 		            <fileset dir="${perc.site.config}">
 		           		<exclude name="web.xml"/>

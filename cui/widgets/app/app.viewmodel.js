@@ -29,11 +29,11 @@ define(['knockout','pubsub', 'utils'], function(ko,PubSub, utils) {
         
         //****Tab sections Code*******//
         var Section = function (name, selected, enabled, info){
-            self = this;
-            self.name = name;
-            self.enabled = ko.observable(enabled);
-            self.info = ko.observable(info);
-            self.isSelected = ko.computed(function(){
+            var self1 = this;
+            self1.name = name;
+            self1.enabled = ko.observable(enabled);
+            self1.info = ko.observable(info);
+            self1.isSelected = ko.computed(function(){
                 return this === selected();
             },this);
         };
