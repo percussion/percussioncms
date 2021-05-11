@@ -74,8 +74,9 @@ public class PSManagedItemPathInputTransformer extends PSDefaultExtension implem
         PSExtensionParams ep = new PSExtensionParams(params);
         String path = ep.getStringParam(0, null, true);
         String linkId = ep.getStringParam(1, null, false);
-        if(StringUtils.isBlank(path))
+        if(StringUtils.isBlank(path)) {
             return "";
+        }
         
         String result = "";
         String cid = request.getParameter(IPSHtmlParameters.SYS_CONTENTID);

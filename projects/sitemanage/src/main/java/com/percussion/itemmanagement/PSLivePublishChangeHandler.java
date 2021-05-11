@@ -55,14 +55,18 @@ import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.impl.PSSitePublishDaoHelper;
 import com.percussion.sitemanage.service.IPSSiteDataService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author JaySeletz
@@ -71,7 +75,7 @@ import java.util.*;
 @Component("livePublishChangeHandler")
 public class PSLivePublishChangeHandler implements IPSContentChangeHandler
 {
-    private static final Log log = LogFactory.getLog(PSLivePublishChangeHandler.class);
+    private static final Logger log = LogManager.getLogger(PSLivePublishChangeHandler.class);
     
     private IPSContentChangeService changeSvc;
     private IPSWorkflowHelper wfHelper;
@@ -147,8 +151,9 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
         String id = guid.toString();
         long contentTypeId = e.getContentTypeId();
         PSItemTypeEnum itemType = wfHelper.getItemTypeFromCType(contentTypeId);
-        if (!(itemType.equals(PSItemTypeEnum.PAGE) || itemType.equals(PSItemTypeEnum.ASSET)))
+        if (!(itemType.equals(PSItemTypeEnum.PAGE) || itemType.equals(PSItemTypeEnum.ASSET))) {
             return;
+        }
         
         if (wfHelper.isArchived(id))
         {
@@ -159,10 +164,12 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
             if (isPending(id))
             {
                 // if not scheduled, add.  If scheduled, remove queued entry if any
-                if (wfHelper.getComponentSummary(id).getContentStartDate() == null)
+                if (wfHelper.getComponentSummary(id).getContentStartDate() == null) {
                     handleAdd(id, itemType, PSContentChangeType.PENDING_LIVE, contentTypeId);
-                else
+                }
+                else {
                     doRemove(id, PSContentChangeType.PENDING_LIVE);
+                }
             }
             //Add or remove from staging
             if(isStagingItem(id))
@@ -182,15 +189,18 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
         String id = guid.toString();
         long contentTypeId = e.getContentTypeId();
         PSItemTypeEnum itemType = wfHelper.getItemTypeFromCType(contentTypeId);
-        if (!(itemType.equals(PSItemTypeEnum.PAGE) || itemType.equals(PSItemTypeEnum.ASSET)))
+        if (!(itemType.equals(PSItemTypeEnum.PAGE) || itemType.equals(PSItemTypeEnum.ASSET))) {
             return;
+        }
         
-        if (itemType.equals(PSItemTypeEnum.PAGE))
+        if (itemType.equals(PSItemTypeEnum.PAGE)) {
             doRemove(id);
+        }
         else
         {
-            if (isResource(contentTypeId))
+            if (isResource(contentTypeId)) {
                 doRemove(id);
+            }
         }
     }
 
@@ -253,8 +263,9 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
         }
         else
         {
-            if (isResource(contentTypeId))
+            if (isResource(contentTypeId)) {
                 doRemove(id);
+            }
             
             handleAssetChangeForPages(id);
         }

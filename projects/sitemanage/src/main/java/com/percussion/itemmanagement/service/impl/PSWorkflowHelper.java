@@ -138,8 +138,9 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
         
         try
         {
-        if (!isPage(idMapper.getString(id)))
+        if (!isPage(idMapper.getString(id))) {
             return;  // do nothing if not a page
+        }
         }
         catch (PSNotFoundException | PSValidationException e)
         {
@@ -162,8 +163,9 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
             PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_USER, PSSecurityProvider.INTERNAL_USER_NAME);
 
             IPSGuid navId = navService.findRelatedNavigationNodeId(id);
-            if (navId == null)
+            if (navId == null) {
                 return;  // do nothing if is not a landing page
+            }
 
             int navContentId = ((PSLegacyGuid)navId).getContentId();
 
@@ -520,18 +522,24 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
         
         try
         {
-            if (PSFolder.FOLDER_CONTENT_TYPE_ID == cTypeId)
+            if (PSFolder.FOLDER_CONTENT_TYPE_ID == cTypeId) {
                 type = PSItemTypeEnum.FOLDER;
-            else if (cTypeId == navService.getNavonContentTypeId())
+            }
+            else if (cTypeId == navService.getNavonContentTypeId()) {
                 type = PSItemTypeEnum.NAVON;
-            else if(cTypeId == navService.getNavtreeContentTypeId())
+            }
+            else if(cTypeId == navService.getNavtreeContentTypeId()) {
                 type = PSItemTypeEnum.NAVTREE;
-            else if(cTypeId == itemDefManager.contentTypeNameToId(IPSTemplateService.TPL_CONTENT_TYPE))
+            }
+            else if(cTypeId == itemDefManager.contentTypeNameToId(IPSTemplateService.TPL_CONTENT_TYPE)) {
                 type = PSItemTypeEnum.TEMPLATE;
-            else if(cTypeId == itemDefManager.contentTypeNameToId(IPSPageService.PAGE_CONTENT_TYPE))
+            }
+            else if(cTypeId == itemDefManager.contentTypeNameToId(IPSPageService.PAGE_CONTENT_TYPE)) {
                 type = PSItemTypeEnum.PAGE;
-            else
+            }
+            else {
                 type = PSItemTypeEnum.ASSET;
+            }
             
         }
         catch(Exception e)
@@ -637,8 +645,9 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
         List<String> trans = stateTrans.getTransitionTriggers();
         for (String tran : trans)
         {
-            if(tran.equalsIgnoreCase(WF_TRIGGER_APPROVE))
+            if(tran.equalsIgnoreCase(WF_TRIGGER_APPROVE)) {
                 return true;
+            }
         }
         return false;
     }
