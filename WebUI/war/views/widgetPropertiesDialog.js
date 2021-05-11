@@ -432,7 +432,7 @@ function countProperties(obj) {
             else if(datatype == 'bool' )
             {
                 var checked = (value==true || value=='true'||value=='on')?'CHECKED':'';
-                buff += '   <td class = "checkbox-size"><input class="perc-widget-property" name="'+this.name+'" type="checkbox" '+checked+this.required_attr+'> <label for="' + this.name + '">' + this.display_name+'</label></td>\n'+ '</tr>\n';
+                buff += '   <td class = "checkbox-size"><input class="perc-widget-property" name="'+this.name+'" type="checkbox" '+checked+ " " + this.required_attr+'> <label for="' + this.name + '">' + this.display_name+'</label></td>\n'+ '</tr>\n';
 
             }
             else if(datatype == 'enum')
