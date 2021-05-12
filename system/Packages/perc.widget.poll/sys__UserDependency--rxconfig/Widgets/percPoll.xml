@@ -100,6 +100,9 @@
 							#set($rlclass = "view-results-link view-results-link-action")
 						#end
 						<div class="$rlclass"><a href="javascript:void(0)">$viewResultsLinkText</a></div>
+					#else
+						#set($rlclass = "view-results-link view-results-link-action")
+						<div class="$rlclass"></div>
 					#end
 					<div class="poll-validation-text" style="display:none;">$validationText</div>
 				</div>

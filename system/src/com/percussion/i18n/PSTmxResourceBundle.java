@@ -422,10 +422,10 @@ public class PSTmxResourceBundle
       addResourcesToCache(getMasterResourceDoc(m_rxRootDir));
 
       //sys_resources/i18n files
-      processResourceFiles(Paths.get(m_rxRootDir,SYS_RESOURCES_I18NPATH));
+     // processResourceFiles(Paths.get(m_rxRootDir,SYS_RESOURCES_I18NPATH));
 
       //rx_resources/i18n files
-      processResourceFiles(Paths.get(m_rxRootDir,RX_RESOURCES_I18NPATH));
+     // processResourceFiles(Paths.get(m_rxRootDir,RX_RESOURCES_I18NPATH));
 
 
       // flush entire cache
@@ -455,6 +455,7 @@ public class PSTmxResourceBundle
         {
             PSConsole.printMsg(
                     SUBSYSTEM, "Invalid TMX Document. Header element missing");
+            return;
         }
 
         Element header=null;
@@ -468,6 +469,7 @@ public class PSTmxResourceBundle
         {
             PSConsole.printMsg(SUBSYSTEM,
                     "Invalid TMX Document. No supported language is specified in the header");
+            return;
         }
 
         Node elem = null;
