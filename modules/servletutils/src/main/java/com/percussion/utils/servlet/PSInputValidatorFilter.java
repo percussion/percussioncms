@@ -427,7 +427,7 @@ public class PSInputValidatorFilter implements Filter
                         }
                         catch (PatternSyntaxException e)
                         {
-                            log.error("Invalid Regular Expression, skipping restriction: " + ptn);
+                            log.error("Invalid Regular Expression, skipping restriction: {}" , ptn);
                             continue;
                         }
                     }
