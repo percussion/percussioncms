@@ -259,7 +259,7 @@ function countProperties(obj) {
                     properties += "\t"+this.userPrefDef[u].render();
             }
             if (sysProperties != "" && properties != ""){
-                systemContainer.append($(sysProperties))
+                systemContainer.append($(sysProperties));
                 html.append($("<div class='fieldGroup' />").append(systemContainer));
                 propertiesContainer.append($(properties));
                 html.append($("<div class='fieldGroup' />").append(propertiesContainer));
@@ -367,8 +367,8 @@ function countProperties(obj) {
             }
 
             return buff;
-        }
-    }
+        };
+    };
 
     $.perc_user_pref = function(datatype,default_value,display_name,name,required_field,enumValues)
     {
