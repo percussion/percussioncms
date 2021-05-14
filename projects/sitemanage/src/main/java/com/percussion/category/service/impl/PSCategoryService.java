@@ -426,9 +426,15 @@ public class PSCategoryService implements IPSCategoryService {
 
         @Override
         protected void doValidation(PSCategory category, PSBeanValidationException e) {
-            throw new NotImplementedException();
+            if (category != null && category.toJSON().contains("title\":\"\","))
+            {
+                String msg = "Category Name Cannot be blank.";
+                log.debug(msg);
+                e.rejectValue("title", "category.invalidName", msg);
+            }
         }
     }
+
 
     /**
      *
