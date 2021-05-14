@@ -30,7 +30,12 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -47,6 +52,10 @@ public class PSDispatcherFilter implements Filter {
     private static final String RHYTHMYX = "/Rhythmyx";
 
     private static final Pattern pattern = Pattern.compile("^.+\\/\\/[^\\/]+\\/Sites\\/([^\\/]*)", Pattern.MULTILINE);
+
+    private static final String[] bannedPaths = new String[]{
+            "/WEB-INF/"
+    };
 
     private static final String[] resourcePaths = new String[] {
             "/Sites/",
@@ -103,6 +112,11 @@ public class PSDispatcherFilter implements Filter {
 
         String strippedPath = path.startsWith(RHYTHMYX) ? StringUtils.substringAfter(path,RHYTHMYX) : path;
         String newPath = path;
+
+        if(Stream.of(bannedPaths).anyMatch(strippedPath::contains)){
+            ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
 
         if (Stream.of(resourcePaths).anyMatch(strippedPath::startsWith))
         {
