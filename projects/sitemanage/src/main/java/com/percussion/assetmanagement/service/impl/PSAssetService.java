@@ -1942,10 +1942,11 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
             PSPurgableTempFile ptf = new PSPurgableTempFile("tmp", extension, null, fileName, fileType, null);
             try(FileOutputStream fos = new FileOutputStream(ptf)) {
 				PSCopyStream.copyStream(request.getFileContents(), fos);
-			}
-            fieldsMap.put(fieldBase, ptf);
 
-            return assetDao.save(asset);
+				fieldsMap.put(fieldBase, ptf);
+
+				return assetDao.save(asset);
+			}
         }
         catch(Exception e)
         {
@@ -1985,18 +1986,19 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 
             try(FileOutputStream fos = new FileOutputStream(ptf)) {
 				PSCopyStream.copyStream(request.getFileContents(), fos);
+
+				fieldsMap.put(fieldBase, ptf);
+
+				IPSGuid guid = idMapper.getGuid(itemId);
+
+				if (forceCheckOut) {
+					List<IPSGuid> ids = new ArrayList<>();
+					ids.add(guid);
+					contentWs.checkinItems(ids, "Force check-in to update the binary in the asset.", true);
+				}
+				contentWs.prepareForEdit(guid);
+				return assetDao.save(asset);
 			}
-            fieldsMap.put(fieldBase, ptf);
-
-            IPSGuid guid = idMapper.getGuid(itemId);
-
-            if(forceCheckOut) {
-            	List<IPSGuid> ids = new ArrayList<>();
-            	ids.add(guid);
-            	contentWs.checkinItems(ids, "Force check-in to update the binary in the asset.", true);
-            }
-            contentWs.prepareForEdit(guid);
-            return assetDao.save(asset);
         }
         catch(Exception e)
         {
