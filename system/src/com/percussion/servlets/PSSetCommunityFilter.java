@@ -33,8 +33,8 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -52,7 +52,7 @@ import static com.percussion.servlets.PSSecurityFilter.isAuthenticated;
 
 public class PSSetCommunityFilter implements Filter
 {
-   private static final Log log = LogFactory.getLog(PSSetCommunityFilter.class);
+   private static final Logger log = LogManager.getLogger(PSSetCommunityFilter.class);
    
    /**
     * Filter the request, if the session of the request has been authenticated, 
@@ -101,7 +101,7 @@ public class PSSetCommunityFilter implements Filter
          {
             PSRequestInfo.initRequestInfo(httpReq);
             needsReset = true;
-            log.info("Need to reset Request ID: " + httpReq.getRemoteUser());
+            log.info("Need to reset Request ID: {}", httpReq.getRemoteUser());
          }
 
          PSRequest psReq = initRequest(httpReq, httpResp);
@@ -118,8 +118,7 @@ public class PSSetCommunityFilter implements Filter
                  PSAuthenticateUserUtils.SYS_DEFAULTCOMMUNITY);
          if (StringUtils.isBlank(communityName))
          {
-            log.debug("Cannot find a default community for user: \""
-                  + reqCtx.getUserName() + "\"");
+            log.debug("Cannot find a default community for user: {}", reqCtx.getUserName());
             return; // do nothing if cannot find default community.
          }
 
@@ -142,8 +141,9 @@ public class PSSetCommunityFilter implements Filter
       }
       finally
       {
-         if (needsReset)
+         if (needsReset) {
             PSRequestInfo.resetRequestInfo();
+         }
       }
    }
 
