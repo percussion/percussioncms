@@ -390,11 +390,18 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
      */
     private boolean isPublishablePage(String id) throws PSDataServiceException, PSNotFoundException {
         rejectIfBlank("isPublishablePage", "id", id);
-        
-        PSPage page = pageDao.find(id);
-        if (page == null) {
+
+        try{
+            PSPage page = pageDao.find(id);
+            if (page == null) {
+                return true;
+            }
+        }catch (IPSGenericDao.LoadException e){
+            //Returning true as earlier the find was returning null if the content types did not match but now LoadException is being thrown.
+            //Based on null it was returning true so returning true if LoadException is caught. CMS-7973
             return true;
         }
+
         IPSGuid guid = idMapper.getGuid(id);
         List<IPSSite> sites = siteMgr.getItemSites(guid);
         if (sites == null || sites.size() == 0) {
