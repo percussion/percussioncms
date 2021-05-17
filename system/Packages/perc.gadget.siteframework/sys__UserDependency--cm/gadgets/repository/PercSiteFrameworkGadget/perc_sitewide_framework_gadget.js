@@ -125,8 +125,15 @@ function renderFrameworkSettings(sitePropertiesData) {
 
         $('#percSitewideFrameworkTarget').append(gadgetHtml);
 
+        var siteName = site.name;
+
+        //CMS-7631 : Escape the "." character in the site name.
+        if(siteName.indexOf('.') != -1){
+            siteName= siteName.replace(/[^\w\s]/gi, '\\$&');
+        }
+
         // Each container needs to have separate accordion binding
-        $(`#perc-site-framework-container-${site.name}`).accordion({
+        $(`#perc-site-framework-container-`+siteName).accordion({
             active: false,
             collapsible: true
         });
@@ -222,9 +229,17 @@ function collectFrameworkUpdates() {
         };
         $this = $(this);
         frameworkObject.SiteProperties = $this.data('perc-site-properties');
-        frameworkObject.SiteProperties.overrideSystemFoundation = ( $(`#perc-foundation-override-${frameworkObject.SiteProperties.name}`).attr('checked')) ? true : false;
-        frameworkObject.SiteProperties.overrideSystemJQuery = ( $(`#perc-jquery-override-${frameworkObject.SiteProperties.name}`).attr('checked')) ? true : false;
-        frameworkObject.SiteProperties.overrideSystemJQueryUI = ( $(`#perc-jqueryui-override-${frameworkObject.SiteProperties.name}`).attr('checked')) ? true : false;
+
+        var siteName1 = frameworkObject.SiteProperties.name;
+
+        //CMS-7631 : Escape the "." character in the site name.
+        if(siteName1.indexOf('.') != -1){
+            siteName1= siteName1.replace(/[^\w\s]/gi, '\\$&');
+        }
+
+        frameworkObject.SiteProperties.overrideSystemFoundation = ( $(`#perc-foundation-override-`+siteName1).attr('checked')) ? true : false;
+        frameworkObject.SiteProperties.overrideSystemJQuery = ( $(`#perc-jquery-override-`+siteName1).attr('checked')) ? true : false;
+        frameworkObject.SiteProperties.overrideSystemJQueryUI = ( $(`#perc-jqueryui-override-`+siteName1).attr('checked')) ? true : false;
         frameworkObject.SiteProperties.siteAdditionalHeadContent = ( $this.find('.perc-site-framework-additional-head-content').val() == '' ) ? null : $this.find('.perc-site-framework-additional-head-content').val();
         frameworkObject.SiteProperties.siteAfterBodyOpenContent = ( $this.find('.perc-site-framework-after-body-open-content').val() == '' ) ? null : $this.find('.perc-site-framework-after-body-open-content').val();
         frameworkObject.SiteProperties.siteBeforeBodyCloseContent = ( $this.find('.perc-site-framework-before-body-close-content').val() == '' ) ? null : $this.find('.perc-site-framework-before-body-close-content').val();
