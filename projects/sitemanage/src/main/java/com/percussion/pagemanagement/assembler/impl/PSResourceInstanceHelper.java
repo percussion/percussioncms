@@ -223,8 +223,12 @@ public class PSResourceInstanceHelper
     private PSSiteSummary resolveSite(PSResourceInstance r) throws DataServiceNotFoundException, PSValidationException {
         if (r.getSite() != null) return r.getSite();
         PSSiteSummary site = r.getLinkContext().getSite();
-
-        site = siteDataService.findByPath(r.getItem().getFolderPath());
+        //If item is a resource e.g asset then folderpath = //Folders/$System$/Assets/uploads
+        //thus siteDataService.findByPath throws DataServiceNotFoundException which causes publishing of resources to fail
+        // thus adding the check to make sure we only make this call for pages and site related stuff
+        if(!r.getItem().isResource()) {
+            site = siteDataService.findByPath(r.getItem().getFolderPath());
+        }
 
         notNull(site, "Either the link context or the item needs to belong a site");
         return site;
