@@ -23,7 +23,11 @@
   --%>
 
 <% String cssProfile = request.getParameter("profile");
-    if(cssProfile == null || cssProfile==""){ %>
+    if(cssProfile == null || cssProfile=="") {
+        cssProfile = "3x";
+    }
+if(cssProfile == null || cssProfile==""){
+%>
 <link type="text/css" href="../css/layout.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="../css/percFinder.css" />
 <link rel="stylesheet" type="text/css" href="../css/percDialog.css" />
@@ -74,19 +78,19 @@
 <link rel="stylesheet" type="text/css" href="../css/PercViewDropdown.css"/>
 <link rel="stylesheet" type="text/css" href="../css/PercMultiDropDown.css"/>
 <link rel="stylesheet" type="text/css" href="../css/PercDatetimePicker.css"/>
-<link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/2x/libraries/fontawesome/css/font-awesome.css"/>
-<link rel="stylesheet" type="text/css" href="/cm/widgets/PercWizard/PercWizard.css"/>
-<link rel="stylesheet" type="text/css" href="/cm/widgets/PercFinderListView/PercFinderListView.css"/>
-<link rel="stylesheet" type="text/css" href="/cm/widgets/PercDataTable/PercDataTable.css"/>
-<link rel="stylesheet" type="text/css" href="/cm/widgets/PercFinderListView/PercFinderListView.css"/>
-<link rel="stylesheet" type="text/css" href="/cm/widgets/PercFinderTree/PercFinderTree.css" />
+<link rel="stylesheet" type="text/css" href="../jslib/profiles/2x/libraries/fontawesome/css/font-awesome.css"/>
+<link rel="stylesheet" type="text/css" href="../widgets/PercWizard/PercWizard.css"/>
+<link rel="stylesheet" type="text/css" href="../widgets/PercFinderListView/PercFinderListView.css"/>
+<link rel="stylesheet" type="text/css" href="../widgets/PercDataTable/PercDataTable.css"/>
+<link rel="stylesheet" type="text/css" href="../widgets/PercFinderListView/PercFinderListView.css"/>
+<link rel="stylesheet" type="text/css" href="../widgets/PercFinderTree/PercFinderTree.css" />
 
 <link rel="stylesheet" type="text/css" href="../css/jquery.autocomplete.css" />
 <%}else if(cssProfile.equals("3x")){%>
 <link rel="stylesheet" type="text/css" href="../jslib/profiles/3x/jquery/plugins/jquery-superfish/css/superfish.css"/>
 <link rel="stylesheet" type="text/css" href="../jslib/profiles/3x/jquery/plugins/jquery-layout/layout-default.css"/>
 <link type="text/css" rel="stylesheet" href="../jslib/profiles/3x/jquery/plugins/jquery-dropdown/jquery.dropdown.css" />
-<link type="text/css" rel="stylesheet" href="../jslib/profiles/3x/libraries/bootstrap/bootstrap.css" />
+<link type="text/css" rel="stylesheet" href="../jslib/profiles/3x/libraries/bootstrap/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="../css/percFinder.css" />
 <link rel="stylesheet" type="text/css" href="../css/percDialog.css" />
 <link rel="stylesheet" type="text/css" href="../css/perc_default.css" />
@@ -95,11 +99,11 @@
 <link rel="stylesheet" type="text/css" href="../css/PercViewDropdown.css"/>
 <link rel="stylesheet" type="text/css" href="../css/PercMultiDropDown.css"/>
 <link rel="stylesheet" type="text/css" href="../css/PercDatetimePicker.css"/>
-<link rel="stylesheet" type="text/css" href="/cm/widgets/PercWizard/PercWizard.css"/>
-<link rel="stylesheet" type="text/css" href="/cm/widgets/PercFinderListView/PercFinderListView.css"/>
-<link rel="stylesheet" type="text/css" href="/cm/widgets/PercDataTable/PercDataTable.css"/>
-<link rel="stylesheet" type="text/css" href="/cm/widgets/PercFinderListView/PercFinderListView.css"/>
-<link rel="stylesheet" type="text/css" href="/cm/widgets/PercFinderTree/PercFinderTree.css" />
+<link rel="stylesheet" type="text/css" href="../widgets/PercWizard/PercWizard.css"/>
+<link rel="stylesheet" type="text/css" href="../widgets/PercFinderListView/PercFinderListView.css"/>
+<link rel="stylesheet" type="text/css" href="../widgets/PercDataTable/PercDataTable.css"/>
+<link rel="stylesheet" type="text/css" href="../widgets/PercFinderListView/PercFinderListView.css"/>
+<link rel="stylesheet" type="text/css" href="../widgets/PercFinderTree/PercFinderTree.css" />
 
 <link rel="stylesheet" type="text/css" href="../css/jquery.autocomplete.css" />
 <%}%>

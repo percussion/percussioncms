@@ -187,7 +187,8 @@ Import PS Admin Security-->
     </tbody>
 </table>
 </body>
-<script src="/rx_resources/js/jquery-2.1.4.js"></script>
+<script src="/cm/cui/components/jquery/jquery.min.js"></script>
+<script src="/cm/cui/components/jquery-migrate/jquery-migrate.min.js"></script>
 <script src="/rx_resources/js/bootstrap/3.3.4/bootstrap.min.js"></script>
 <script>
     $(document).ready(function () {

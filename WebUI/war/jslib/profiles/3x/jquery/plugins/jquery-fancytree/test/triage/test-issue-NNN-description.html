@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Test Case | Fancytree</title>
+
+	<!-- Include assets from CDN, using latest stable version -->
+	<!-- (Sample file runs stand-alone, but requires an internet conenction.) -->
+
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<!--
+	<script src="../../lib/jquery.js"></script>
+	<script src="../../lib/jquery-ui.custom.js"></script>
+-->
+<!--
+	<link href="https://cdn.jsdelivr.net/npm/jquery.fancytree/dist/skin-win8/ui.fancytree.min.css"
+		rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js">
+		</script>
+-->
+	<!-- Include assets from local project folder -->
+	<!-- (Sample uses current code and runs without an internet conenction) -->
+
+	<link href="../../src/skin-win8/ui.fancytree.css" rel="stylesheet">
+	<script src="../../src/jquery-ui-dependencies/jquery.fancytree.ui-deps.js"></script>
+	<script src="../../src/jquery.fancytree.js"></script>
+	<script src="../../src/jquery.fancytree.ariagrid.js"></script>
+	<script src="../../src/jquery.fancytree.childcounter.js"></script>
+	<script src="../../src/jquery.fancytree.clones.js"></script>
+	<script src="../../src/jquery.fancytree.columnview.js"></script>
+	<script src="../../src/jquery.fancytree.dnd.js"></script>
+	<script src="../../src/jquery.fancytree.dnd5.js"></script>
+	<script src="../../src/jquery.fancytree.edit.js"></script>
+	<script src="../../src/jquery.fancytree.filter.js"></script>
+	<script src="../../src/jquery.fancytree.fixed.js"></script>
+	<script src="../../src/jquery.fancytree.glyph.js"></script>
+	<script src="../../src/jquery.fancytree.grid.js"></script>
+	<script src="../../src/jquery.fancytree.gridnav.js"></script>
+	<script src="../../src/jquery.fancytree.logger.js"></script>
+	<script src="../../src/jquery.fancytree.multi.js"></script>
+	<script src="../../src/jquery.fancytree.persist.js"></script>
+	<script src="../../src/jquery.fancytree.table.js"></script>
+	<script src="../../src/jquery.fancytree.themeroller.js"></script>
+	<script src="../../src/jquery.fancytree.wide.js"></script>
+
+<style type="text/css">
+/*
+ul.fancytree-container{
+	height: 150px;
+}
+*/
+</style>
+
+
+<script type="text/javascript">
+var SOURCE = [
+		{title: "Item 1", key: "node1"},
+		{title: "Folder 2", folder: true, expanded: true, key: "node2",
+			children: [
+				{title: "Sub-item 2.1", key: "node2.1"},
+				{title: "Sub-item 2.2", key: "node2.2"}
+			]
+		},
+		{title: "Lazy", key: "node3", lazy: true}
+	],
+	SOURCE_2 = [
+		{title: "LazyLoad result", folder: true, lazy: true}
+	];
+
+
+$(function(){
+	// Initialize Fancytree
+	$("#tree").fancytree({
+		extensions: [],
+		source: SOURCE,
+		// source: { url: "sample2.json" },
+		init: function(event, data) {
+		},
+		lazyLoad: function(event, data) {
+			data.result = SOURCE_2;
+			// data.result = { url: "sample_sub.json", debugDelay: 5000 };
+		},
+		loadChildren: function(event, data) {
+			// data.node.fixSelection3FromEndNodes();
+		}
+	});
+});
+</script>
+
+<script>
+$(function(){
+	$("#button1").click(function(event){
+		var tree = $.ui.fancytree.getTree(),
+			node = tree.getActiveNode();
+
+		alert(tree + ", active: " + node);
+	});
+});
+</script>
+
+</head>
+
+<body class="example">
+	<h1>Testcase for issue #NNN</h1>
+
+	<p class="description">
+		(TODO: optionally add a short description here...)
+	</p>
+
+	<button id="button1">Test 1</button>
+	<hr>
+
+	<div id="tree">
+	</div>
+</body>
+</html>

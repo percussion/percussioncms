@@ -28,7 +28,8 @@ var requireJsConfig = {
     paths: {
         'components': '/cm/cui/components',
         'text': '/cm/cui/components/requirejs-text/text',
-        'jquery': '/cm/cui/components/jquery/dist/jquery.min',
+        'jquery': '/cm/cui/components/jquery/jquery.min',
+        'jquery-migrate': '/cm/cui/components/jquery-migrate/jquery-migrate.min',
         'jquery-ui': '/cm/cui/components/jquery-ui/ui/minified/jquery-ui.custom.min',
         'knockout': '/cm/cui/components/knockoutjs/dist/knockout',
         'pubsub': '/cm/cui/components/pubsub-js/src/pubsub',
@@ -45,7 +46,6 @@ var requireJsConfig = {
         'utils'  : '/cm/cui/pages/utils',
         'css': 'css',
         'fontAwesome': '/cm/cui/components/font-awesome-4.1.0/css/font-awesome.min.css',
-        //'bootstrap':'/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.min.css',
         'bootstrap':'../jslib/profiles/3x/libraries/bootstrap/css/bootstrap.min.css',
         'bootstrap-theme':'/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap-theme.min.css'
     },

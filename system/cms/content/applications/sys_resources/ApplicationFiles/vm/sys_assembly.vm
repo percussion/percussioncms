@@ -601,7 +601,8 @@ $__style
 #foreach($js_link in $rx.pageutils.javascriptLinks($perc.linkContext, $sys.assemblyItem))##
 #if($js_link.getUrl().endsWith("/jquery.js"))##
 #if($perc.isEditMode() || $perc.isPreviewMode())##
-<script src="/cm/jslib/jquery.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/jquery-3.0.6.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
 #else##
 #if($perc.linkContext.site.overrideSystemJQuery==false)##
 #print_jquery("additionalHeadContent")##
@@ -1002,7 +1003,7 @@ $value.trim().replaceAll(" +"," ")##
 #if($perc.linkContext.mode.toString() == "PUBLISH")##
 #set($jQueryLocation = "/web_resources/cm/jslib/jquery.js")##
 #else##
-#set($jQueryLocation = "/cm/jslib/jquery.js")##
+#set($jQueryLocation = "/cm/jslib/profiles/3x/jquery-3.6.0.js")##
 #end##
 #end##
 #if( (($perc.linkContext.mode.toString() == "PUBLISH") && ($includeOnPublishedPage != "no")) || (($perc.linkContext.mode.toString() == "PREVIEW") && ($includeOnPublishedPage != "no")))##

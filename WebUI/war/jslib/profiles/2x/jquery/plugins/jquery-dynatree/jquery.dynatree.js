@@ -2454,7 +2454,7 @@ DynaTree.prototype = {
 		var match = null;
 		this.visit(function(node){
 //          window.console.log("%s", node);
-			if(node.data.key === key) {
+			if(node.key === key) {
 				match = node;
 				return false;
 			}

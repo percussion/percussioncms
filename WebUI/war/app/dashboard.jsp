@@ -190,8 +190,8 @@
         var trafficScale = <%=trafficScale%>;
 
         //Finder initialization code
-        $j(document).ready(function () {
-            $j.Percussion.PercFinderView();
+        $(document).ready(function () {
+            $.Percussion.PercFinderView();
 
             // update bottom DIV on window resize
             window.onresize = function () {
@@ -209,7 +209,7 @@
             fixBottomHeight();
 
             dashOptions = {columns: ["columnWest", "columnCenter", "columnEast"]};
-            $dashboard = $j.PercDashboard(dashOptions);
+            $dashboard = $.PercDashboard(dashOptions);
             $dashboard.load("/Rhythmyx/services/dashboardmanagement/dashboard/", function () {
                 $dashboard.setupTray();
                 $dashboard.showSplashDialog();
