@@ -153,7 +153,7 @@ fi
 
 
 cleanup(){
-	rm -rf ${PID_FILE}
+	rm -f ${PID_FILE}
 }
 ## add current processid to pid file Change directory and run Jetty start.jar
 _term() {
