@@ -115,7 +115,7 @@
 		}
 
 		function createDialogHTML(baseUrl) {
-			var dialogHTML = '<div class="pw-container">' +
+			return '<div class="pw-container">' +
 				 '    <form id="changePasswordForm" name="changePasswordForm" class="pw-form" novalidate>' +
 				 '        <div class="pw-status" style="display:none"></div>' +
 				 '        <p>' +
@@ -132,7 +132,6 @@
 				 '        </p>' +
 				 '    </form>' +
 				 '</div>';
-			return dialogHTML;
 		}
 	}
 })(jQuery);

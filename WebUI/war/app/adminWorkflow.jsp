@@ -70,8 +70,8 @@
     <!-- <link rel="stylesheet" type="text/css" href="../cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.min.css"/> -->
      <link rel="stylesheet" type="text/css" href="../jslib/profiles/3x/libraries/bootstrap/css/bootstrap.min.css"/>
     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%= locale%>"></script>
-    <script src="../cui/components/jquery/dist/jquery.min.js"></script>
-    <%--<script src="../cui/components/twitter-bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>--%>
+    <script src="../cui/components/jquery/jquery.min.js"></script>
+    <script src="../cui/components/jquery/jquery-migrate.min.js"></script>
     <script src="../jslib/profiles/3x/libraries/bootstrap/js/bootstrap.bundle.min.js"></script>
     <% if (isDebug) { %>
 
@@ -171,20 +171,20 @@
                 var ROLES_TAB = 1;
                 var USERS_TAB = 2;
                 var CATEGORIES_TAB = 3;
-                if (index == USERS_TAB) {
-                    // Update the 'Avaialble Roles'cache object
+                if (index === USERS_TAB) {
+                    // Update the 'Available Roles'cache object
                     $j.PercUserController.cacheAllRoles();
 
                     //Update the Assgined Roles list for currently selected user                 
                     $j("li.perc-users-selected").click();
                     $j("#perc-wf-update-cancel").click();
                 }
-                else if (index == ROLES_TAB) {
-                    //Update the Assgined Users list for currently selected role  
+                else if (index === ROLES_TAB) {
+                    //Update the Assigned Users list for currently selected role
                     $j("li.perc-item-selected").click();
                     $j("#perc-wf-update-cancel").click();
                 }
-                else if (index == WORKFLOW_TAB) {
+                else if (index === WORKFLOW_TAB) {
                     //Update the Workflow to get changes if a role has been deleted
                     var workflowName = $j("#perc-workflows-list .perc-itemname-list").find(".perc-item-selected").text();
                     if ($j.wfViewObject.isWorkflowAvailable) {
@@ -194,12 +194,12 @@
                             $j.PercWorkflowView().init();
                     }
                 }
-                else if (index == CATEGORIES_TAB) {
+                else if (index === CATEGORIES_TAB) {
 
                     $j.PercCategoryController.getTabLockData(function (lockinfo) {
                         var user = lockinfo.userName;
 
-                        if (user != null && user != "") {
+                        if (user != null && user !== "") {
                             var currentDate = new Date();
                             var lockDate = Date.parse(lockinfo.creationDate);
                             var diffMs = (currentDate - lockDate);
@@ -208,9 +208,9 @@
                             // compare the current time with the lock creation time. If the difference is more than or equal to 20 min, override the lock to the new user.
                             if (diffMins >= 20) {
                                 $j.PercCategoryController.lockCategoryTab();
-                            } else if (user != $j.PercNavigationManager.getUserName()) {
+                            } else if (user !== $j.PercNavigationManager.getUserName()) {
                                 $j.PercCategoryController.confirmDialog(I18n.message("perc.ui.admin.workflow@Categories Locked", [0]), function (action) {
-                                    if (action == "cancel") {
+                                    if (action === "cancel") {
                                         $j("#tabs").tabs('select', 0);
                                     }
                                 });

@@ -46,21 +46,20 @@ var $j = jQuery.noConflict();
   $.perc_redirect = function(url, args)
   {    
      // Find debug on query string
-     var isDebug = window.location.href.indexOf("debug=true") != -1;
-     var hasQuery = url.indexOf("?") != -1;
+     var isDebug = window.location.href.indexOf("debug=true") !== -1;
+     var hasQuery = url.indexOf("?") !== -1;
      if(isDebug)
      {
-        if(args == null || args == 'undefined')
-           args = new Object();
+        if(args == null || args === 'undefined')
+           args = {};
         args.debug = "true";
      }
-     var qStr =  (args == null || args == 'undefined') ? ""
+     var qStr =  (args == null || args === 'undefined') ? ""
         : $.param(args);
      if(qStr.length > 0)
         qStr = (hasQuery ? "&" : "?") + qStr;
-     var newUrl = url + qStr;
-     window.location.href = newUrl;
-  }  
+     window.location.href = url + qStr;
+  };
    
 })(jQuery);
 

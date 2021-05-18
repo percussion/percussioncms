@@ -1596,17 +1596,7 @@
      */
     function handleOverflowHeader(element)
     {
-        var title = element.attr("title");
-        if (title === '')
-        {
-            return true;
-        }
-        if ($.browser.msie) {
-            var width = element.parents().width() - 40;
-            element.css("width", width);
-        }
-        /*Uncomment the following statement to have ellipsis work in Firefox browser on window resize event*/
-        //element.text(title).textOverflow("...", false);
+        return element.attr("title") === '';
     }
 
 })(jQuery);

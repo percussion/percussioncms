@@ -104,7 +104,7 @@
   
   function is_string( arg ) {
     return typeof arg === 'string';
-  };
+  }
   
   // Why write the same function twice? Let's curry! Mmmm, curry..
   
@@ -114,19 +114,19 @@
     return function() {
       return func.apply( this, args.concat( aps.call( arguments ) ) );
     };
-  };
+  }
   
   // Get location.hash (or what you'd expect location.hash to be) sans any
   // leading #. Thanks for making this necessary, Firefox!
   function get_fragment( url ) {
     return url.replace( /^[^#]*#?(.*)$/, '$1' );
-  };
+  }
   
   // Get location.search (or what you'd expect location.search to be) sans any
   // leading #. Thanks for making this necessary, IE6!
   function get_querystring( url ) {
     return url.replace( /(?:^[^?#]*\?([^#]*).*$)?.*/, '$1' );
-  };
+  }
   
   // Section: Param (to string)
   // 
@@ -283,7 +283,7 @@
     }
     
     return result;
-  };
+  }
   
   jq_param[ str_querystring ]                  = curry( jq_param_sub, 0, get_querystring );
   jq_param[ str_fragment ] = jq_param_fragment = curry( jq_param_sub, 1, get_fragment );
@@ -458,7 +458,7 @@
     }
     
     return jq_deparam( url_or_params, coerce );
-  };
+  }
   
   jq_deparam[ str_querystring ]                    = curry( jq_deparam_sub, 0 );
   jq_deparam[ str_fragment ] = jq_deparam_fragment = curry( jq_deparam_sub, 1 );
@@ -603,7 +603,7 @@
       that.attr( attr, jq_param[ mode ]( url, params, merge_mode ) );
     });
     
-  };
+  }
   
   $.fn[ str_querystring ] = curry( jq_fn_sub, str_querystring );
   $.fn[ str_fragment ]    = curry( jq_fn_sub, str_fragment );
@@ -878,7 +878,8 @@
     var b = {
         ieQuirks: null,
         opera: /opera/.test(ua),
-        msie: /msie/.test(ua) && !/opera/.test(ua)
+        msie: /msie/.test(ua) && !/opera/.test(ua),
+        mozilla: /msie/.test(ua) && !/opera/.test(ua) && !/msie/.test(ua)
     };
 
   // A convenient shortcut.
@@ -906,7 +907,7 @@
   function get_fragment( url ) {
     url = url || loc.href;
     return url.replace( /^[^#]*#?(.*)$/, '$1' );
-  };
+  }
   
   // Property: jQuery.hashchangeDelay
   // 
@@ -1002,7 +1003,7 @@
         // Set initial history.
         set_history( get_fragment() );
       }
-    };
+    }
     
     // Start the polling loop.
     self.start = function() {

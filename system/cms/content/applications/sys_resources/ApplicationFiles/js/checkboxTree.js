@@ -127,10 +127,10 @@ return this.each(function() {
             var selNodes = dtnode.tree.getSelectedNodes();
             // convert to title/key array
             var selKeys = $.map(selNodes, function(node){
-                 return node.data.key;
+                 return node.key;
             });
             $('#' + inputId)[0].value = selKeys.join(separator);
-            updateNodeAria(dtnode)
+            updateNodeAria(dtnode);
           },
           onClick: function(dtnode, event) {
             // We should not toggle, if target was "checkbox", because this

@@ -34,7 +34,9 @@
 				<xsl:text>&#10;</xsl:text>
 				<script language="javascript" src="../tmx/tmx.jsp?/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang={$lang}">;</script>
 				<xsl:text>&#10;</xsl:text>
-				<script language="javascript" src="../../cm/jslib/jquery.js">;</script>
+				<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
+				<xsl:text>&#10;</xsl:text>
+				<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
 				<xsl:text>&#10;</xsl:text>
                 <script language="javascript" src="../../cm/jslib/jquery-ui.js">;</script>
                 <xsl:text>&#10;</xsl:text>

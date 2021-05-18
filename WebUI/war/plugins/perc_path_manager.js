@@ -43,8 +43,10 @@ function is_leaf( path, if_leaf, if_folder, if_error ) {
     return function( pathitems ) {
         var specs = $.map( pathitems['PathItem'], function(s) {
                 var paths = s.path.split('/');
-                if( paths[paths.length - 1] === "" )
-                paths.pop();
+                if( paths[paths.length - 1] === "" ) {
+                    paths.pop();
+                }
+
                 s.path = $.map( paths, function(p) { return p; });
                 s.path_component = paths[ paths.length - 1 ];
                 return s;

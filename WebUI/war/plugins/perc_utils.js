@@ -1515,7 +1515,7 @@
     }
     function max(array) {
         var mx = -1;
-        for(a=0; a<array.length; a++) {
+        for(let a=0; a<array.length; a++) {
             if(mx < array[a])
                 mx = array[a];
         }

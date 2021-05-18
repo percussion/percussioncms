@@ -52,7 +52,7 @@
             <link rel="stylesheet" type="text/css" href="../cssMin/perc_admin.packed.min.css" />
             <link rel="stylesheet" type="text/css" href="../css/layout.css" />
             <link rel="stylesheet" type="text/css" href="../css/styles.css" />
-             <script src="../jslib/jquery.js"></script> 
+            <%@include file="includes/common_js.jsp" %>
 
               <script>
               $(document).ready(function() {
