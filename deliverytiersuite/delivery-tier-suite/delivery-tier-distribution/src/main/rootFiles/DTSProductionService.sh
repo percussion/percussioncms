@@ -56,7 +56,7 @@ function checkForProductionDTSService() {
 		service=$(basename ${line})
 		echo "Found DTS service $service in $line"
 		serviceHome=$(bash -c "source ${line} >/dev/null 2>1 ; echo \${CTATALINA_HOME}")
-		echo Service Name: ${SERVICE_NAME} 
+		echo Service Name: ${SERVICE_NAME}
 		if [ "$serviceHome" == "$CATALINA_HOME" ]; then
 			currentService=${service}
 		fi
@@ -87,7 +87,7 @@ function removeServiceFromStartup {
 		echo "Removing links to /etc/rc*.d/S??${1} and /etc/rc*.d/K??${1}"
 		rm -f /etc/rc?.d/S??${SERVICE_NAME}
 		rm -f /etc/rc?.d/K??${SERVICE_NAME}
-	fi 
+	fi
 
 }
 
@@ -96,7 +96,7 @@ function removeServiceScript() {
 	set -x
 	rm -f "/etc/init.d/${SERVICE_NAME}"
 	rm -f "/etc/default/${SERVICE_NAME}"
-	{ set +x; } > /dev/null 2>&1 
+	{ set +x; } > /dev/null 2>&1
 }
 
 function abspath() {
@@ -179,6 +179,9 @@ cat <<-EOF > /etc/default/${SERVICE_NAME}
 	CATALINA_BASE="${CATALINA_HOME}"
 	CATALINA_OUT="${CATALINA_HOME}/logs/catalina.log"
 	CATALINA_PID="${TOMCAT_RUN}/PercussionProductionDTS.pid"
+	echo "Setting up pid folder /var/run${SERVICE_NAME} setting ownership to user=${RX_USER} group=${RX_GROUP}"
+  mkdir -p ${TOMCAT_RUN}
+  chown -R "${RX_USER}:${RX_GROUP}" "${TOMCAT_RUN}"
 EOF
 
 echo "Configuration for service ${SERVICE_NAME} in /etc/init.d/${SERVICE_NAME} must reinstall or update if paths change"
