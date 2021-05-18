@@ -138,7 +138,7 @@ echo in uninstall
     checkForJettyService
     if [ ! -z "$currentService" ];
     then
-        echo "A service with name $service with configuration at /etc/default/${service} is already set up to start this instance. Should be removed."
+       echo "A service with name $service with configuration at /etc/default/${service} is already set up to start this instance. Should be removed."
     fi
 
     echo "JETTY_ROOT=${JETTY_ROOT}"
@@ -181,7 +181,6 @@ echo in uninstall
     sed -e "s/\${rxjetty_service}/$SERVICE_NAME/" ${JETTY_DEFAULTS}/bin/rxjetty.sh > /etc/init.d/${SERVICE_NAME}
     chmod 755 "/etc/init.d/${SERVICE_NAME}"
 
-
     cat <<-EOF > /etc/default/${SERVICE_NAME}
     JAVA_HOME=${JAVA_HOME}
     JAVA=${JAVA_HOME}/bin/java
@@ -194,7 +193,11 @@ echo in uninstall
     JETTY_RUN=${JETTY_RUN}
     JETTY_PID=${JETTY_RUN}/rxjetty.pid
     JETTY_ARGS="--include-jetty-dir=${JETTY_DEFAULTS} jetty-started.xml"
-    JETTY_USER=${RX_USER}
+    JETTY_USER="${RX_USER}"
+	  mkdir -p ${JETTY_RUN}/${SERVICE_NAME}
+    chown -R "${RX_USER}:${RX_GROUP}" "/var/run/rxjetty/${SERVICE_NAME}"
+    chown -R "${RX_USER}:${RX_GROUP}" "${JETTY_RUN}/${SERVICE_NAME}"
+    chmod -R ugo+rw /var/run/rxjetty/${SERVICE_NAME}
 EOF
 
     echo "configuration for service ${SERVICE_NAME} in /etc/init.d/${SERVICE_NAME} must reinstall or update if paths change"
