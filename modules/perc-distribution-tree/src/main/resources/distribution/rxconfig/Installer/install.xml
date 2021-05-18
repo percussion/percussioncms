@@ -179,20 +179,7 @@
         </fileset>
     </copy>
 
-    <echo>Checking for existing PSO Toolkit deployment...</echo>
-    <mkdir dir="${install.dir}/jetty/base/lib/extra"/>
-    <copy verbose="true" todir="${install.dir}/jetty/base/lib/extra" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
-        <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib">
-            <include name="PSOToolkit*.jar"/>
-            <include name="pso-toolkit*.jar"/>
-        </fileset>
-        <fileset dir="${install.dir}/AppServer/server/rx/lib">
-            <include name="PSOToolkit*.jar"/>
-            <include name="pso-toolkit*.jar"/>
-        </fileset>
-    </copy>
-
-    <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
+       <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
         <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/user">
         </fileset>
     </copy>
