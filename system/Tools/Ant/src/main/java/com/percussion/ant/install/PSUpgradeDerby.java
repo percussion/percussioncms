@@ -26,8 +26,13 @@ package com.percussion.ant.install;
 
 
 import com.percussion.install.PSLogger;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.tools.ant.BuildException;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -36,6 +41,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLNonTransientConnectionException;
 import java.util.Properties;
+
 
 /***
  * Provides an ant task to upgrade a derby database.  Expects to be able to start the derby database in
@@ -122,6 +128,31 @@ public class PSUpgradeDerby extends PSAction {
         }
     }
 
+    public synchronized void loadDerbyJDBCJar() throws MalformedURLException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        PSLogger.logInfo("Loading DerbyDriver at RunTime");
+        File derbyJDBCDriver = null;
+        File dir = new File(getRootDir() + File.separator + "Deployment/Server/common/lib");
+        FileFilter fileFilter = new WildcardFileFilter("derby-*.jar");
+        File[] files = dir.listFiles(fileFilter);
+        if(files != null){
+            if(files.length == 1) {
+                derbyJDBCDriver = files[0];
+            }else{
+                derbyJDBCDriver = files[0];
+                PSLogger.logError("Multiple versions of DerbyDriver Exist in " + dir.toString());
+            }
+        }
+        if(derbyJDBCDriver == null){
+            PSLogger.logError("DerbyDriver is Missing");
+            return;
+        }
+        PSLogger.logInfo("Loading DerbyDriver File " + derbyJDBCDriver.toString());
+        java.net.URL url = derbyJDBCDriver.toURI().toURL();
+        java.lang.reflect.Method method = java.net.URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{java.net.URL.class});
+        method.setAccessible(true); /*promote the method to public access*/
+        method.invoke(Thread.currentThread().getContextClassLoader(), new Object[]{url});
+    }
+
     @Override
     public void execute() throws BuildException {
 
@@ -135,7 +166,14 @@ public class PSUpgradeDerby extends PSAction {
 
         try {
             Class.forName(driver).newInstance();
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+        } catch ( ClassNotFoundException e) {
+        try {
+            loadDerbyJDBCJar();
+            Class.forName(driver).newInstance();
+        }catch (Exception ex){
+            throw new BuildException("Unable to load embedded Derby driver");
+        }
+        }catch (InstantiationException | IllegalAccessException  ex){
             throw new BuildException("Unable to load embedded Derby driver");
         }
 
