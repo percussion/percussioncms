@@ -85,8 +85,9 @@ public class PSMembershipService implements IPSMembershipService
         String adminURl= pubServerService.getDefaultAdminURL(site);
         IPSDeliveryInfoService deliveryService  = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
-        if (server == null)
+        if (server == null) {
             throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);
+        }
         
         String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_USERS;
 
@@ -126,8 +127,9 @@ public class PSMembershipService implements IPSMembershipService
             String adminURl= pubServerService.getDefaultAdminURL(site);
             IPSDeliveryInfoService deliveryService = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
             PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
-            if (server == null)
+            if (server == null) {
                 throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);
+            }
 
         String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_ACCOUNT;
 
@@ -159,8 +161,9 @@ public class PSMembershipService implements IPSMembershipService
             String adminURl= pubServerService.getDefaultAdminURL(site);
             IPSDeliveryInfoService deliveryService = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
             PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
-            if (server == null)
+            if (server == null) {
                 throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);
+            }
 
             String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_ACCOUNT + "/" + email;
 
@@ -188,8 +191,9 @@ public class PSMembershipService implements IPSMembershipService
             String adminURl= pubServerService.getDefaultAdminURL(site);
             IPSDeliveryInfoService deliveryService = PSDeliveryInfoServiceLocator.getDeliveryInfoService();
             PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_MEMBERSHIP,null,adminURl);
-            if (server == null)
+            if (server == null) {
                 throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_MEMBERSHIP);
+            }
 
             String url = "/" + PSDeliveryInfo.SERVICE_MEMBERSHIP + MEMBERSHIP + ADMIN_USER_GROUP+"/"+site;
 

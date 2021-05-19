@@ -70,10 +70,12 @@ public class PSMaintenanceManagerRestService
     public Response getServerStatus()
     {
         Status status;
-        if (maintMgr.isWorkInProgress())
+        if (maintMgr.isWorkInProgress()) {
             status = Status.CONFLICT;
-        else
+        }
+        else {
             status = Status.OK;
+        }
         
         return Response.status(status).build();
     }
@@ -109,8 +111,9 @@ public class PSMaintenanceManagerRestService
                 maintMgr.clearFailures();
             }
         }
-        else
+        else {
             status = Status.OK;
+        }
         
         return Response.status(status).build();
     }

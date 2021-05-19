@@ -23,11 +23,6 @@
  */
 package com.percussion.pagemanagement.assembler.impl;
 
-import static com.percussion.util.IPSHtmlParameters.SYS_OVERWRITE_PREVIEW_URL_GEN;
-
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.pagemanagement.assembler.IPSRegionAssembler;
 import com.percussion.pagemanagement.assembler.IPSRegionsAssembler;
 import com.percussion.pagemanagement.assembler.PSMergedRegion;
@@ -42,6 +37,8 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.webservices.PSWebserviceUtils;
+import org.apache.commons.collections.list.AbstractListDecorator;
+import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,11 +50,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import org.apache.commons.collections.list.AbstractListDecorator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.util.StopWatch;
+import static com.percussion.util.IPSHtmlParameters.SYS_OVERWRITE_PREVIEW_URL_GEN;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Concurrently assemblies a collection of regions.
@@ -169,8 +167,9 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
             
             setPreviewUrlGenerator(request);
 
-            if ( isNotBlank(assemblyItem.getUserName()) )
+            if ( isNotBlank(assemblyItem.getUserName()) ) {
                 PSWebserviceUtils.setUserName(assemblyItem.getUserName());
+            }
                 
             
             List<PSRegionResult> regions = 
@@ -296,7 +295,8 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSConcurrentRegionsAssembler.class);
+
+    private static final Logger log = LogManager.getLogger(PSConcurrentRegionsAssembler.class);
 
 }
 

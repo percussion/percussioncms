@@ -53,11 +53,13 @@ public class PSSiteCopyProcessMonitor
 
     private static void updateStatusMessage(String stepName, String stepNum)
     {
-        if (monitor == null)
+        if (monitor == null) {
             return;
+        }
         
-        if (siteName == null)
+        if (siteName == null) {
             monitor.setMessage(IDLE_MSG);
+        }
         else
         {
             monitor.setMessage(MessageFormat.format(COPY_MSG, siteName, stepName, stepNum));
