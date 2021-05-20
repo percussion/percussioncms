@@ -383,11 +383,7 @@ aria-labelledby="$!{headerId}"##
 $!{listAriaLabel}##
 #end##
 #end##
-## Split locale to get language and country
-#if("" == "$!{locale}")##
-#set($locale="en-US")##
-#end##
-#set($localLanguageCountry = $rx.pageutils.getLanguageAndCountryFromLocale($locale))
+#set($localLanguageCountry = $rx.pageutils.getLanguageAndCountryFromLocale($locale))##
 #set($locale_lang = $localLanguageCountry.language)##
 #set($locale_country = $localLanguageCountry.country)##
 #set($ctor = $sys.getClass().forName('java.util.Locale').getConstructor($sys.getClass().forName('java.lang.String'), $sys.getClass().forName('java.lang.String')))##
