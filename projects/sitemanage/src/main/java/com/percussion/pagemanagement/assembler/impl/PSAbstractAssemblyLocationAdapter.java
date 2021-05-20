@@ -125,15 +125,17 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
     
     protected Number getAssemblyContext(PSAssemblyLocationRequest locationRequest) {
         String ac = locationRequest.getParameter(IPSHtmlParameters.SYS_ASSEMBLY_CONTEXT);
-        if (isNotBlank(ac))
+        if (isNotBlank(ac)) {
             return Integer.parseInt(ac);
+        }
         return null;
     }
     
     protected Number getDeliveryContext(PSAssemblyLocationRequest locationRequest) {
         String ac = locationRequest.getParameter(IPSHtmlParameters.SYS_DELIVERY_CONTEXT);
-        if (isNotBlank(ac))
+        if (isNotBlank(ac)) {
             return Integer.parseInt(ac);
+        }
         return null;
     }
     /**
@@ -164,8 +166,9 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
     
     protected Integer getPageNumber(PSAssemblyLocationRequest request) {
         String pagestr = request.getParameter("sys_page");
-        if (isNotBlank(pagestr))
+        if (isNotBlank(pagestr)) {
             return Integer.parseInt(pagestr);
+        }
         return null;
     }
     protected Integer getContext(PSAssemblyLocationRequest request) {
@@ -175,8 +178,9 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
     
     protected IPSGuid getFolderGuid(PSAssemblyLocationRequest request) {
         String fidstr = request.getParameter(IPSHtmlParameters.SYS_FOLDERID);
-        if(isNotBlank(fidstr))
-            return getGuidManager().makeGuid(new PSLocator(fidstr,"0"));
+        if(isNotBlank(fidstr)) {
+            return getGuidManager().makeGuid(new PSLocator(fidstr, "0"));
+        }
         return null;
         
     }
@@ -193,8 +197,9 @@ public abstract class PSAbstractAssemblyLocationAdapter implements IPSAssemblyLo
     
     protected IPSGuid getSiteGuid(PSAssemblyLocationRequest request) {
         String sitestr = request.getParameter(IPSHtmlParameters.SYS_SITEID);
-        if (isNotBlank(sitestr))
+        if (isNotBlank(sitestr)) {
             return getGuidManager().makeGuid(sitestr, PSTypeEnum.SITE);
+        }
         return null;
     }
 

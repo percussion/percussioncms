@@ -50,12 +50,14 @@ public class PSThumbnailProcessMonitor
 
     private static void setThumbnailCount(int count)
     {
-        if (monitor == null)
-            return; 
+        if (monitor == null) {
+            return;
+        }
         
         String msg = NO_THUMBNAIL_MSG;
-        if (count > 0)
+        if (count > 0) {
             msg = count == 1 ? THUMBNAIL_MSG : count + THUMBNAILS_MSG;
+        }
         
         monitor.setMessage(msg);
     }

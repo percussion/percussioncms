@@ -189,7 +189,10 @@ public class PSAssemblyItemBridge {
         resource = createResourceInstance(listItem, resourceId);
 
         List<PSResourceLinkAndLocation> linkAndLocations = resourceLinkandLocationService.resolveLinkAndLocations(resource);
-        if (linkAndLocations.isEmpty()) return null;
+        if (linkAndLocations.isEmpty()) {
+            return null;
+        }
+
         return linkAndLocations.get(0).getResourceLocation();
     }    
     
@@ -230,8 +233,9 @@ public class PSAssemblyItemBridge {
     public PSResourceInstance createResourceInstance(IPSAssemblyItem assemblyItem) throws PSAssemblyException {
         
         PSResourceInstance rvalue = getResourceInstance(assemblyItem);
-        if (rvalue != null)
+        if (rvalue != null) {
             return rvalue;
+        }
         
         String resourceDefinitionId = getResourceDefinitionId(assemblyItem);
         notNull(resourceDefinitionId, "resourceDefinitionId");
@@ -255,7 +259,7 @@ public class PSAssemblyItemBridge {
     public PSResourceLocation getResourceLocation(IPSAssemblyItem assemblyItem) throws PSAssemblyException, IPSAssetService.PSAssetServiceException {
         PSResourceInstance resource = createResourceInstance(assemblyItem);
         List<PSResourceLinkAndLocation> linkAndLocations = resourceLinkandLocationService.resolveLinkAndLocations(resource);
-        if (linkAndLocations.isEmpty()) return null;
+        if (linkAndLocations.isEmpty()){ return null;}
         return linkAndLocations.get(0).getResourceLocation();
     }
 
@@ -318,7 +322,7 @@ public class PSAssemblyItemBridge {
             }
             catch (Exception e)
             {
-                log.warn("Error generating folder path for folder id: " + folderId, e);
+                log.warn("Error generating folder path for folder id: {} " , folderId, e);
             }
         }
         /*
@@ -339,8 +343,9 @@ public class PSAssemblyItemBridge {
          * not care if it has a folder path or not.
          */
         if (path == null) {
-            if (log.isDebugEnabled())
+            if (log.isDebugEnabled()) {
                 log.debug("Could not find a proper folder path for item: " + asset);
+            }
         }
         
         asset.setFolderPath(path);
@@ -536,15 +541,19 @@ public class PSAssemblyItemBridge {
         tp.page = getPage(item);
         tp.template = getTemplate(item);
         
-        if (tp.page != null && log.isDebugEnabled())
+        if (tp.page != null && log.isDebugEnabled()) {
             log.debug("Using preview page set in bindings");
-        else if( log.isDebugEnabled() )
+        }
+        else if( log.isDebugEnabled() ) {
             log.debug("Page was not set in bindings.");
+        }
         
-        if (tp.template != null && log.isDebugEnabled())
+        if (tp.template != null && log.isDebugEnabled()) {
             log.debug("Using preview template set in bindings");
-        else if( log.isDebugEnabled() )
+        }
+        else if( log.isDebugEnabled() ) {
             log.debug("Template was not set in bindings.");
+        }
         
         String idTemplateOrPage = itemIdResolver.getId(item);
         
@@ -576,10 +585,12 @@ public class PSAssemblyItemBridge {
             }
         }
         
-        if (tp.page != null )
+        if (tp.page != null ) {
             itemIdResolver.updateItemId(tp.page);
-        if (tp.template != null)
+        }
+        if (tp.template != null) {
             itemIdResolver.updateItemId(tp.template);
+        }
         
         notNull(tp.page, "page");
         notNull(tp.template, "template");

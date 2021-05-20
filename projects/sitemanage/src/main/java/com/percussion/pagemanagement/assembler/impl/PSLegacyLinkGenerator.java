@@ -25,7 +25,11 @@ package com.percussion.pagemanagement.assembler.impl;
 
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.error.PSException;
-import com.percussion.pagemanagement.data.*;
+import com.percussion.pagemanagement.data.PSEmptyPage;
+import com.percussion.pagemanagement.data.PSInlineLinkRequest;
+import com.percussion.pagemanagement.data.PSInlineRenderLink;
+import com.percussion.pagemanagement.data.PSPage;
+import com.percussion.pagemanagement.data.PSRenderLinkContext;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
@@ -44,8 +48,8 @@ import com.percussion.webservices.content.IPSContentDesignWs;
 import net.sf.oval.constraint.NotBlank;
 import net.sf.oval.constraint.NotNegative;
 import net.sf.oval.constraint.NotNull;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.jcr.Node;
@@ -93,8 +97,9 @@ public class PSLegacyLinkGenerator
 
     protected PSLocationUtils getLocationUtils()
     {
-        if (locationUtils == null)
+        if (locationUtils == null) {
             locationUtils = new PSLocationUtils();
+        }
         return locationUtils;
     }
 
@@ -409,6 +414,7 @@ public class PSLegacyLinkGenerator
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSLegacyLinkGenerator.class);
+
+    private static final Logger log = LogManager.getLogger(PSLegacyLinkGenerator.class);
 }
 
