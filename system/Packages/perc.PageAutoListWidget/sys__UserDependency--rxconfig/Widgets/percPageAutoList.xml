@@ -630,7 +630,7 @@ $!{listAriaLabel}##
 <ul class="perc-list-main">##
 #end##
 <li class="perc-list-element">$!{listItemFormatStartTag}
-#set($localLanguageCountry = $rx.pageutils.getLanguageAndCountryFromLocale($locale))
+#set($localLanguageCountry = $rx.pageutils.getLanguageAndCountryFromLocale($locale))##
 #set($locale_lang = $localLanguageCountry.language)##
 #set($locale_country = $localLanguageCountry.country)##
 #if("$target" != "")##
