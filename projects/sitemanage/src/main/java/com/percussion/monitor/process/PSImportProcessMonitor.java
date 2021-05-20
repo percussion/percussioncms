@@ -52,13 +52,15 @@ public class PSImportProcessMonitor
     
     public static void setCatalogCount(int count)
     {
-        if (monitor == null)
+        if (monitor == null) {
             return;
+        }
         
         curCount = count;
         String msg = NO_CATALOG_PAGE_MSG;
-        if (count > 0)
+        if (count > 0) {
             msg = count == 1 ? CATALOG_PAGE_MSG : count + CATALOG_PAGES_MSG;
+        }
         
         monitor.setMessage(msg);
     }
