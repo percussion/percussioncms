@@ -382,7 +382,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
         {
             rolesAllowedByPathService = pathMatcher.getPathService(p).getRolesAllowed();
             
-            if (currentUserRoles != null && rolesAllowedByPathService != null &&
+            if (currentUserRoles != null && rolesAllowedByPathService != null && !rolesAllowedByPathService.isEmpty() &&
                     !CollectionUtils.containsAny(currentUserRoles, rolesAllowedByPathService))
                 continue;
             

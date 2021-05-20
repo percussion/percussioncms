@@ -512,8 +512,12 @@ public class PSFileSystemService implements IPSFileSystemService
     @Override
     public void fileUpload(String path, InputStream pageContent) throws PSFileOperationException {
         try (BufferedInputStream in = new BufferedInputStream(pageContent)) {
-
-            validateFileUpload(path);
+            try {
+                validateFileUpload(path);
+            }catch(PSFileAlreadyExistsException fae){
+                //We are already checking for this validation and getting confirmation from client.
+                //so, it can eb ignored
+            }
             File file = getFile(path);
             File parent = file.getParentFile();
 
@@ -541,6 +545,9 @@ public class PSFileSystemService implements IPSFileSystemService
         //set parent owner/permissions to newly created file as parents'.
         PosixFileAttributeView posixViewParent = Files.getFileAttributeView(parent.toPath(),
                 PosixFileAttributeView.class);
+        if(posixViewParent == null){
+            return;
+        }
         PosixFileAttributes parentAttribs = posixViewParent.readAttributes();
         GroupPrincipal group = parentAttribs.group();
         UserPrincipal owner = parentAttribs.owner();
