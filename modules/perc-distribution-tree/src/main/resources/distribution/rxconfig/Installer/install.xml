@@ -713,6 +713,8 @@
         <echo>Fixing Line Feed</echo>
         <fixcrlf srcdir="${install.dir}"  preservelastmodified="true">
             <patternset refid="text.files"/>
+            <exclude name="**/Deployment/**"/>
+            <exclude name="**/Staging/**"/>
         </fixcrlf>
 
         <if>
