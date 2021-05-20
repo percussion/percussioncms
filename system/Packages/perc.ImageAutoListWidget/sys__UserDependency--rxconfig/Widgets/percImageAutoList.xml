@@ -387,9 +387,9 @@ $!{listAriaLabel}##
 #if("" == "$!{locale}")##
 #set($locale="en-US")##
 #end##
-#set($localeSplit = $locale.split("-"))##
-#set($locale_lang = $localeSplit.get(0))##
-#set($locale_country = $localeSplit.get(1))##
+#set($localLanguageCountry = $rx.pageutils.getLanguageAndCountryFromLocale($locale))
+#set($locale_lang = $localLanguageCountry.language)##
+#set($locale_country = $localLanguageCountry.country)##
 #set($ctor = $sys.getClass().forName('java.util.Locale').getConstructor($sys.getClass().forName('java.lang.String'), $sys.getClass().forName('java.lang.String')))##
 #set($locale = $ctor.newInstance($locale_lang, $locale_country))##
 ##Setup Date Formatting
