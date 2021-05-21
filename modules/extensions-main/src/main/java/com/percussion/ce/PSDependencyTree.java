@@ -32,6 +32,8 @@ import com.percussion.server.PSServer;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
@@ -49,6 +51,9 @@ import java.util.Map;
  */
 public class PSDependencyTree implements IPSResultDocumentProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSDependencyTree.class);
+
    /*
     * Implementation of the method required by the interface IPSExtension.
     */
@@ -311,7 +316,8 @@ public class PSDependencyTree implements IPSResultDocumentProcessor
       }
       catch(Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
   }
 }

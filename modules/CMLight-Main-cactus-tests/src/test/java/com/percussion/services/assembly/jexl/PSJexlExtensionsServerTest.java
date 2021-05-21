@@ -44,6 +44,8 @@ import javax.jcr.Node;
 
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MethodInvocationException;
@@ -59,6 +61,9 @@ import org.junit.experimental.categories.Category;
 @Category(IntegrationTest.class)
 public class PSJexlExtensionsServerTest extends ServletTestCase
 {
+
+   private static final Logger log = LogManager.getLogger(PSJexlExtensionsServerTest.class);
+
    /**
     * Velocity engine instance, statically initialized
     */
@@ -73,7 +78,8 @@ public class PSJexlExtensionsServerTest extends ServletTestCase
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 

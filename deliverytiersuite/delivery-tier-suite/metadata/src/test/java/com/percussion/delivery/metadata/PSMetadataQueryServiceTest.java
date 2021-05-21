@@ -39,6 +39,8 @@ import com.percussion.delivery.metadata.rdbms.impl.PSDbMetadataEntry;
 import com.percussion.delivery.metadata.rdbms.impl.PSDbMetadataProperty;
 import com.percussion.delivery.metadata.rdbms.impl.PSMetadataQueryService;
 import junit.framework.TestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,6 +59,7 @@ import java.util.*;
         {"classpath:test-beans.xml"})
 public class PSMetadataQueryServiceTest extends TestCase
 {
+    private static final Logger log = LogManager.getLogger(PSMetadataQueryServiceTest.class);
 
     @Autowired
     public PSMetadataQueryService service;
@@ -640,7 +643,8 @@ public class PSMetadataQueryServiceTest extends TestCase
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
             fail(e.getMessage());
         }
     }
@@ -1568,7 +1572,8 @@ public class PSMetadataQueryServiceTest extends TestCase
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
             fail(e.getMessage());
         }
     }
@@ -1604,7 +1609,8 @@ public class PSMetadataQueryServiceTest extends TestCase
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
             fail(e.getMessage());
         }
 
@@ -1648,10 +1654,12 @@ public class PSMetadataQueryServiceTest extends TestCase
             }
 
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
             fail(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
             fail(e.getMessage());
         }
     }
@@ -1689,7 +1697,8 @@ public class PSMetadataQueryServiceTest extends TestCase
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
             fail(e.getMessage());
         }
     }

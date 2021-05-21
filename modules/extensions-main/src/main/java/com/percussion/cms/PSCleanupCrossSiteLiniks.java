@@ -49,7 +49,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 /**
@@ -132,8 +133,8 @@ public class PSCleanupCrossSiteLiniks extends PSDefaultExtension implements
       } 
       catch (Exception e) 
       {
-         e.printStackTrace();
-         ms_logger.error(e.toString());
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       } 
       finally 
       {
@@ -1153,6 +1154,5 @@ public class PSCleanupCrossSiteLiniks extends PSDefaultExtension implements
    /**
     * The logger instance for this class, never <code>null</code>.
     */
-   private static Logger ms_logger = Logger
-            .getLogger("PSCleanupCrossSiteLiniks");
+   private static final Logger log = LogManager.getLogger(PSCleanupCrossSiteLiniks.class);
 }

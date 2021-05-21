@@ -34,6 +34,8 @@ import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.utils.types.PSPair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 import java.util.HashMap;
@@ -44,6 +46,9 @@ import java.util.Map;
 @Category(IntegrationTest.class)
 public class PSLocationSchemeSetterTest extends PSConfigurationTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSLocationSchemeSetterTest.class);
+
    public void testGenerator() throws Exception
    {
       PSExtensionRef exit = getExtensionRef("sys_casGenericAssemblyLocation");
@@ -76,7 +81,8 @@ public class PSLocationSchemeSetterTest extends PSConfigurationTest
       }
       catch (PSExtensionException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       return null;
    }
