@@ -593,6 +593,9 @@
 
         </copy>
 
+        <echo>Deleting misplaced files....</echo>
+        <delete dir="${install.dir}/jetty/base/webapps/Rhythmyx/cm/WEB-INF" verbose="true" includeEmptyDirs="true" performgconfaileddelete="true" failonerror="false"/>
+
         <echo>Copy any missing files</echo>
         <copy todir="${install.dir}/rxconfig/Installer/data" overwrite="true">
             <fileset dir="${install.src}/rxconfig/Installer/data">
