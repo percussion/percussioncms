@@ -146,11 +146,15 @@
         <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
 
         <if>
-            <available file="${install.dir}${staging.dir}" type="dir"/>
+            <available file="${install.dir}" type="dir"/>
             <then>
-                <echo>Fixing line endings in ${install.dir}${staging.dir}...</echo>
-                <fixcrlf srcdir="${install.dir}${staging.dir}/Deployment"  preservelastmodified="true">
+                <echo>Fixing line endings in ${install.dir}...</echo>
+                <fixcrlf srcdir="${install.dir}/Deployment"  preservelastmodified="true">
                     <patternset refid="text.files"/>
+                </fixcrlf>
+                <fixcrlf srcdir="${install.dir}" preservelastmodified="true" >
+                    <includes name ="TomcatStartup.sh" />
+                    <includes name ="TomcatShutdown.sh" />
                 </fixcrlf>
             </then>
         </if>
