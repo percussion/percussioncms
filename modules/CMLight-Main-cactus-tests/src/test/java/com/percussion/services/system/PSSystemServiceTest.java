@@ -46,6 +46,8 @@ import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 /**
@@ -54,6 +56,9 @@ import org.junit.experimental.categories.Category;
 @Category(IntegrationTest.class)
 public class PSSystemServiceTest extends ServletTestCase
 {
+
+   private static final Logger log = LogManager.getLogger(PSSystemServiceTest.class);
+
    /**
     * Test loading and saving configurations
     * 
@@ -131,8 +136,8 @@ public class PSSystemServiceTest extends ServletTestCase
       }
       catch (Exception e)
       {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
    
@@ -204,7 +209,8 @@ public class PSSystemServiceTest extends ServletTestCase
             }
             catch (Exception e)
             {
-               e.printStackTrace();
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
             }
          }
          super.tearDown();
@@ -213,7 +219,8 @@ public class PSSystemServiceTest extends ServletTestCase
       catch (Exception e)
       {
          // TODO Auto-generated catch block
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
    
