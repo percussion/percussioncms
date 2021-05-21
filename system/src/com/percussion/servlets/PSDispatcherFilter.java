@@ -53,10 +53,6 @@ public class PSDispatcherFilter implements Filter {
 
     private static final Pattern pattern = Pattern.compile("^.+\\/\\/[^\\/]+\\/Sites\\/([^\\/]*)", Pattern.MULTILINE);
 
-    private static final String[] bannedPaths = new String[]{
-            "/WEB-INF/"
-    };
-
     private static final String[] resourcePaths = new String[] {
             "/Sites/",
             "/Assets/",
@@ -112,11 +108,6 @@ public class PSDispatcherFilter implements Filter {
 
         String strippedPath = path.startsWith(RHYTHMYX) ? StringUtils.substringAfter(path,RHYTHMYX) : path;
         String newPath = path;
-
-        if(Stream.of(bannedPaths).anyMatch(strippedPath::contains)){
-            ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
 
         if (Stream.of(resourcePaths).anyMatch(strippedPath::startsWith))
         {
