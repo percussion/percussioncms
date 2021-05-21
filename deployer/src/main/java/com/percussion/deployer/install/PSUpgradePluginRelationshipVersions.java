@@ -38,6 +38,8 @@ import com.percussion.services.pkginfo.utils.PSIdNameHelper;
 import com.percussion.util.IOTools;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -51,6 +53,9 @@ import java.sql.SQLException;
  */
 public class PSUpgradePluginRelationshipVersions implements IPSUpgradePlugin
 {
+
+   private static final Logger log = LogManager.getLogger(PSUpgradePluginRelationshipVersions.class);
+
    /**
     * Perform updates.
     */
@@ -117,7 +122,10 @@ public class PSUpgradePluginRelationshipVersions implements IPSUpgradePlugin
       {
          respType = PSPluginResponse.EXCEPTION;
          respMsg = e.getMessage();
-         e.printStackTrace(logger);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         log.debug(logger);
+         log.error(logger);
       }
       finally
       {
@@ -129,7 +137,10 @@ public class PSUpgradePluginRelationshipVersions implements IPSUpgradePlugin
             }
             catch (SQLException e)
             {
-               e.printStackTrace(logger);
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
+               log.debug(logger);
+               log.error(logger);
             }
          }
       }

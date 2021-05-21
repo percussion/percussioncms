@@ -41,6 +41,8 @@ import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.RepositoryException;
 import java.util.ArrayList;
@@ -59,6 +61,8 @@ import java.util.Set;
  */
 public class PSAssemblyServiceHelper
 {
+
+   private static final Logger log = LogManager.getLogger(PSAssemblyServiceHelper.class);
    
    /**
     * CTOR
@@ -208,7 +212,8 @@ public class PSAssemblyServiceHelper
       }
       catch (RepositoryException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       return cTypes;
    }
@@ -370,7 +375,8 @@ public class PSAssemblyServiceHelper
       }
       catch (PSCatalogException | PSNotFoundException | PSAssemblyException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       // sort the collection
       Collections.sort(m_slots, new SlotsComparer());

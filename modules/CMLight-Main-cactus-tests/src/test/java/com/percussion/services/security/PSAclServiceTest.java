@@ -31,6 +31,8 @@ import com.percussion.services.security.data.PSAclEntryImpl;
 import com.percussion.services.security.data.PSAclImpl;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,6 +47,7 @@ import static org.junit.Assert.*;
  */
 public class PSAclServiceTest
 {
+    private static final Logger log = LogManager.getLogger(PSAclServiceTest.class);
     //All test acls have this name so they can be easily deleted
     private static final String TEST_ACL_NAME = "aclUnitTest";
 
@@ -498,7 +501,8 @@ public class PSAclServiceTest
         catch (Exception e)
         {
             System.out.println("Failed while cleaning up test acls.");
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
 }

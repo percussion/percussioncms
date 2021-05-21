@@ -49,6 +49,8 @@ import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 /**
@@ -65,6 +67,9 @@ import org.junit.experimental.categories.Category;
 @Category(IntegrationTest.class)
 public class PSDeliveryHandlerPublishTest extends ServletTestCase
 {
+
+   private static final Logger log = LogManager.getLogger(PSDeliveryHandlerPublishTest.class);
+
    /**
     * Both testFilePublish() and testFtpPublish() failed from time to time on the build 
     * machine, but always work when manually run on a dev environment.
@@ -457,7 +462,8 @@ public class PSDeliveryHandlerPublishTest extends ServletTestCase
             }
             catch (InterruptedException e)
             {
-               e.printStackTrace();
+               log.error(e.getMessage());
+               log.debug(e.getMessage(),e);
             }
 
             status = PSRxPublisherServiceLocator.getRxPublisherService()

@@ -36,6 +36,8 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.util.IOTools;
 import com.percussion.util.PSArchiveFiles;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -53,6 +55,8 @@ import java.util.zip.ZipFile;
  */
 public class PSPackageLockManager
 {
+
+   private static final Logger log = LogManager.getLogger(PSPackageLockManager.class);
    /**
     * Invokes this application, must be run from the Rhythmyx root directory.
     *  
@@ -109,7 +113,9 @@ public class PSPackageLockManager
       catch (Exception e)
       {
          System.err.println("Error encountered during conversion");
-         e.printStackTrace(System.err);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         log.debug(System.err);
       }
    }
 
