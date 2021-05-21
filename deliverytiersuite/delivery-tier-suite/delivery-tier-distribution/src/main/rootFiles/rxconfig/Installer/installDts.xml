@@ -152,10 +152,8 @@
                 <fixcrlf srcdir="${install.dir}/Deployment"  preservelastmodified="true">
                     <patternset refid="text.files"/>
                 </fixcrlf>
-                <fixcrlf srcdir="${install.dir}" preservelastmodified="true" >
-                    <includes name ="TomcatStartup.sh" />
-                    <includes name ="TomcatShutdown.sh" />
-                </fixcrlf>
+                <fixcrlf srcdir="${install.dir}" includes="TomcatStartup.sh" preservelastmodified="true"  />
+                <fixcrlf srcdir="${install.dir}" includes="TomcatShutdown.sh" preservelastmodified="true" />
             </then>
         </if>
 
