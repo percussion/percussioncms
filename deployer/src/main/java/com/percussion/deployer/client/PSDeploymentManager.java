@@ -59,6 +59,8 @@ import com.percussion.utils.collections.PSMultiValueHashMap;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -84,6 +86,7 @@ import java.util.ResourceBundle;
 public class PSDeploymentManager
 {
 
+   private static final Logger log = LogManager.getLogger(PSDeploymentManager.class);
    /**
     * Creates a deployment manager using the supplied connection.
     *
@@ -1424,7 +1427,8 @@ public class PSDeploymentManager
             catch (Throwable t)
             {
                // record OutOfMemoryError on job control
-               t.printStackTrace();
+               log.error(t.getMessage());
+               log.debug(t.getMessage(), t);
                ctl.setErrorMessage(t.toString());
             }
          }
@@ -1488,7 +1492,8 @@ public class PSDeploymentManager
             catch (Throwable t)
             {
                // record OutOfMemoryError on job control
-               t.printStackTrace();
+               log.error(t.getMessage());
+               log.debug(t.getMessage(), t);
                ctl.setErrorMessage(t.toString());
             }
          }
@@ -1660,7 +1665,8 @@ public class PSDeploymentManager
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       finally
       {
@@ -1670,7 +1676,8 @@ public class PSDeploymentManager
          }
          catch (IOException e)
          {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
          }
       }
 

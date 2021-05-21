@@ -63,6 +63,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import java.io.ByteArrayInputStream;
@@ -332,7 +334,7 @@ public class PSConfigUtils
       catch (Exception e)
       {
          String errMsg = "Failed to load: \"" + f.getAbsolutePath() + "\".";
-         ms_log.error(errMsg, e);
+         log.error(errMsg, e);
          throw new PSConfigException(errMsg, e);
       }
    }
@@ -356,7 +358,7 @@ public class PSConfigUtils
             {
                String errMsg = "Failed to create dir: \""
                      + parent.getAbsolutePath() + "\".";
-               ms_log.error(errMsg);
+               log.error(errMsg);
                throw new PSConfigException(errMsg);
             }
          }
@@ -375,7 +377,7 @@ public class PSConfigUtils
       {
          String errMsg = "Failed to save object to: \"" + f.getAbsolutePath()
                + "\".";
-         ms_log.error(errMsg, e);
+         log.error(errMsg, e);
          throw new PSConfigException(errMsg, e);
       }
    }
@@ -641,7 +643,8 @@ public class PSConfigUtils
       }
       catch (PSExtensionException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       if (extRef == null)
       {
@@ -723,7 +726,7 @@ public class PSConfigUtils
    /**
     * The logger for this class
     */
-   static Log ms_log = LogFactory.getLog("PSConfigUtils");
+   private static final Logger log = LogManager.getLogger(PSConfigUtils.class);
 
    // Constants for property names
    public static final String PROP_NAME = "name";

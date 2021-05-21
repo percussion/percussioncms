@@ -35,8 +35,8 @@ import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -249,9 +249,7 @@ public class PSLocationSchemeSetter extends PSSimplePropertySetter
          if (!names.contains(p.getFirst()))
          {
             PSExtensionRef ref = new PSExtensionRef(extFQN);
-            ms_log.warn("Skip finder argument \"" + p.getFirst()
-                  + "\" since it is not a parameter defined by generator \""
-                  + ref.getExtensionName() + "\".");
+            log.warn("Skip finder argument \" {} \" since it is not a parameter defined by generator \" {}\".", p.getFirst(), ref.getExtensionName());
             continue;
          }
          params.add(p);
@@ -287,7 +285,8 @@ public class PSLocationSchemeSetter extends PSSimplePropertySetter
       }
       catch (PSExtensionException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       return null;
    }
@@ -295,7 +294,7 @@ public class PSLocationSchemeSetter extends PSSimplePropertySetter
    /**
     * The logger for this class
     */
-   static Log ms_log = LogFactory.getLog("PSLocationSchemeSetter");
+   private static final Logger log = LogManager.getLogger(PSLocationSchemeSetter.class);
 
    /**
     * The Jexl expression property name.
