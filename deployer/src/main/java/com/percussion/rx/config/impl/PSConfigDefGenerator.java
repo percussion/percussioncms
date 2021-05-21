@@ -30,6 +30,8 @@ import com.percussion.deployer.server.PSDeploymentHandler;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.utils.tools.PSParseFragments;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,6 +48,7 @@ import java.util.Map;
 public class PSConfigDefGenerator
 {
 
+   private static final Logger log = LogManager.getLogger(PSConfigDefGenerator.class);
    /**
     * Private ctor to inhibit instantiation.
     */
@@ -137,7 +140,8 @@ public class PSConfigDefGenerator
       catch (IOException e)
       {
          // FIXME Auto-generated catch block
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
    

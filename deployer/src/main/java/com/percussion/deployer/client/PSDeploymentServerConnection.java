@@ -532,6 +532,8 @@ public class PSDeploymentServerConnection
       }
       catch ( IOException ioe)
       {
+         log.error(ioe.getMessage());
+         log.debug(ioe.getMessage(), ioe);
          System.out.println("3. IOException occurred, rePOSTing: " + 
             ioe.getLocalizedMessage());
          try
@@ -542,19 +544,21 @@ public class PSDeploymentServerConnection
          }
          catch (Exception e)
          {
-            ms_log.error(e);
-            if (data != null && ms_log.isDebugEnabled())
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
+            if (data != null && log.isDebugEnabled())
             {
                try
                {
                   // log the request data to make debugging easier
-                  ms_log.debug(getParams(params));
+                  log.debug(getParams(params));
                   String request = new String(data, "ISO-8859-1");
-                  ms_log.debug(request);
+                  log.debug(request);
                }
                catch (UnsupportedEncodingException uee)
                {
-                  ms_log.error(uee);
+                  log.error(uee.getMessage());
+                  log.debug(uee.getMessage(), uee);
                }
             }
             throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
@@ -563,19 +567,21 @@ public class PSDeploymentServerConnection
       }
       catch (Exception e)
       {
-         ms_log.error(e);
-         if (data != null && ms_log.isDebugEnabled())
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         if (data != null && log.isDebugEnabled())
          {
             try
             {
                // log the request data to make debugging easier
-               ms_log.debug(getParams(params));
+               log.debug(getParams(params));
                String request = new String(data, "ISO-8859-1");
-               ms_log.debug(request);
+               log.debug(request);
             }
             catch (UnsupportedEncodingException uee)
             {
-               ms_log.error(uee);
+               log.error(uee.getMessage());
+               log.debug(uee.getMessage(), uee);
             }
          }
 
@@ -737,27 +743,29 @@ public class PSDeploymentServerConnection
             }
          } catch (IOException ioe) {
             if (repost) {
-               ms_log.error("6. IOException occurred rePOSTing: " +
-                       ioe.getLocalizedMessage());
+               log.error("6. IOException occurred rePOSTing: {}", ioe.getLocalizedMessage());
+               log.debug(ioe.getMessage(), ioe);
                doRepost = true;
             } else {
-               ms_log.error(ioe);
+               log.error(ioe.getMessage());
+               log.debug(ioe.getMessage(), ioe);
                throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
                        ioe.getLocalizedMessage());
             }
          } catch (Exception e) {
-            ms_log.error(e.getMessage());
-            ms_log.debug(e.getMessage(),e);
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
                     e.getLocalizedMessage());
          }
       } catch (IOException e) {
          if (repost) {
-            ms_log.error("6. IOException occurred rePOSTing: " +
-                    e.getMessage());
+            log.error("6. IOException occurred rePOSTing: {} ", e.getMessage());
+            log.debug(e.getMessage(), e);
             doRepost = true;
          } else {
-            ms_log.error(e);
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
                     e.getMessage());
          }
@@ -917,7 +925,8 @@ public class PSDeploymentServerConnection
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
       }
@@ -1089,8 +1098,8 @@ public class PSDeploymentServerConnection
                  PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
          ).encrypt(pwd);
       } catch (PSEncryptionException e) {
-         ms_log.error("Error encrypting password: {}" + e.getMessage());
-         ms_log.debug(e);
+         log.error("Error encrypting password: {}", e.getMessage());
+         log.debug(e.getMessage(), e);
          return "";
       }
 
@@ -1518,7 +1527,7 @@ public class PSDeploymentServerConnection
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static final Logger ms_log = LogManager.getLogger(PSDeploymentServerConnection.class);
+   private static final Logger log = LogManager.getLogger(PSDeploymentServerConnection.class);
 
    /**
     * Constant for the page to use when executing deployment requests against
