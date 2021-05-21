@@ -48,6 +48,8 @@ import java.util.Set;
 
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 import org.xml.sax.SAXException;
 
@@ -58,6 +60,8 @@ import org.xml.sax.SAXException;
 @Category(IntegrationTest.class)
 public class PSFilterServiceTest extends ServletTestCase
 {
+   private static final Logger log = LogManager.getLogger(PSFilterServiceTest.class);
+
    /**
     * Fixed authtype
     */
@@ -185,7 +189,8 @@ public class PSFilterServiceTest extends ServletTestCase
          }
          catch (Exception e)
          {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
             assert (false);
          }
       }
