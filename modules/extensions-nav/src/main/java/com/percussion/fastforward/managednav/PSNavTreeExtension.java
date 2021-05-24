@@ -117,7 +117,6 @@ public class PSNavTreeExtension extends PSDefaultExtension
          log.error(getClass().getName(), e);
          log.debug(e.getMessage(),e);
          log.error(e.getMessage());
-         e.printStackTrace();
 
          throw new PSExtensionProcessingException(0, e.getMessage());
 
@@ -127,7 +126,6 @@ public class PSNavTreeExtension extends PSDefaultExtension
          log.error("unexcepted exception");
          log.error(getClass().getName(), ex);
          log.debug(ex.getMessage(),ex);
-         ex.printStackTrace();
          throw new PSExtensionProcessingException(getClass().getName(), ex);
       }
 
