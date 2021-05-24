@@ -41,8 +41,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +79,8 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
     private IPSMaintenanceManager maintenanceManager;
     private IPSNotificationService notificationService;
     
-    private static final Log log = LogFactory.getLog(PSStartupPkgInstaller.class);
+
+    private static final Logger log = LogManager.getLogger(PSStartupPkgInstaller.class);
     private static final String MAINT_PROC_NAME = PSStartupPkgInstaller.class.getName();
     private static final String SAAS_FLAG = "doSAAS";
 
@@ -180,15 +181,16 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
         catch(Exception e)
         {
         	//Log the package as failed
-        	log.error("Package failed to uninstall. Stack trace:\n" + e.getLocalizedMessage(), e);
+        	log.error("Package failed to uninstall. Stack trace:\n {}" , e.getLocalizedMessage(), e);
         	failMaintWork();
         }
         finally
         {
-            if (packageFileList != null)
+            if (packageFileList != null) {
                 savePackageFileList(packageFileList);
+            }
         }
-        
+
         //We are finished.
         completeMaintWork();
         appendLogEntry("Packages successfully uninstalled", null, true);
@@ -331,12 +333,13 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
         {
             failMaintWork();
             
-            log.error("Package installation failed: " + e.getLocalizedMessage(), e);            
+            log.error("Package installation failed: {}" , e.getLocalizedMessage(), e);
         }
         finally
         {
-            if (packageFileList != null)
+            if (packageFileList != null) {
                 savePackageFileList(packageFileList);
+            }
         }
     }
 
@@ -351,7 +354,7 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
 	        	try {
 	        		mutableObjectStoreDir.mkdirs();
 				} catch (Exception e) {
-					log.error("Unable to create mutable object store directory: " + mutableObjectStoreDir.getAbsolutePath());
+					log.error("Unable to create mutable object store directory: {}" , mutableObjectStoreDir.getAbsolutePath());
 					throw new RuntimeException("Unable to create mutable object store directory: " + mutableObjectStoreDir.getAbsoluteFile());
 				}
 	        }
@@ -371,8 +374,9 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
 
 	private void notifyComplete()
     {
-        if (notificationService != null)
+        if (notificationService != null) {
             notificationService.notifyEvent(new PSNotificationEvent(EventType.STARTUP_PKG_INSTALL_COMPLETE, null));
+        }
     }
 
     private void completeMaintWork()
@@ -406,13 +410,15 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
         boolean isError = (ex != null);
         
         String output;
-        if (msg == null)
+        if (msg == null) {
             output = "\n";
+        }
         else
         {
             output = FastDateFormat.getInstance("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime()) + ": ";
-            if (isError)
+            if (isError) {
                 output += "ERROR: ";
+            }
             output += msg;
             output += "\n";
         }
@@ -432,7 +438,7 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
         }
         catch (IOException e)
         {
-            log.error("Failed to log entry to log file " + file.getAbsolutePath() + ": " + e.getLocalizedMessage());
+            log.error("Failed to log entry to log file {}: {}" , file.getAbsolutePath() , e.getLocalizedMessage());
         }
         finally
         {
@@ -441,19 +447,22 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
         
         if (logToServer && msg != null)
         {
-            if (isError)
+            if (isError) {
                 log.error(msg, ex);
-            else
+            }
+            else {
                 log.info(msg);
+            }
         }
     }
 
 
     private File getLogFile()
     {
-        if (logFilePath == null)
+        if (logFilePath == null) {
             return null;
-        
+        }
+
         if (logFile == null)
         {
             logFile = new File(PSServer.getRxDir(), logFilePath);
@@ -465,17 +474,19 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
     private File getPackageFile(String packageName) throws IOException
     {
         File file = new File(getPackageDir(), packageName + ".ppkg");
-        if (!file.exists())
+        if (!file.exists()) {
             throw new IOException("Package file does not exist: " + file.getPath());
-            
+        }
+
         return file;
     }
 
     private File getPackageDir()
     {
-        if (packageDir == null)
+        if (packageDir == null) {
             packageDir = new File(PSServer.getRxDir(), "Packages/Percussion");
-        
+        }
+
         return packageDir;
     }
 
@@ -499,7 +510,7 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
         }
         catch (Exception e)
         {
-            log.error("Failed to save package installer results to file " + packageFileListPath + ":" + e.getLocalizedMessage(), e);
+            log.error("Failed to save package installer results to file {}:{}" , packageFileListPath , e.getLocalizedMessage(), e);
         }
 
     }
@@ -530,7 +541,7 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
                 
             } 
             catch (SchedulerException e) {
-                log.error("Error pausing/resuming Quartz with message: " + e.getMessage());
+                log.error("Error pausing/resuming Quartz with message: {}" , e.getMessage());
             } 
             finally {
                 itemDefManager.commitUpdateNotifications();

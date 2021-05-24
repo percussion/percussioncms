@@ -41,6 +41,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -54,6 +56,8 @@ import org.w3c.dom.Element;
 public class PSCreateTranslations extends PSDefaultExtension
       implements IPSResultDocumentProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSCreateTranslations.class);
 
    /**
     * Required by the interface. This exit never modifies the stylesheet.
@@ -199,7 +203,8 @@ public class PSCreateTranslations extends PSDefaultExtension
          catch(Exception e)
          {
             if(request.isTraceEnabled())
-               e.printStackTrace();
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
             statusElem.setAttribute("status", e.getLocalizedMessage());
             continue;
          }

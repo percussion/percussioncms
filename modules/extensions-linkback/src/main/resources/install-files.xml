@@ -3,20 +3,20 @@
 
     <target name="install">
         <copy todir="${install.dir}/rx_resources/vm">
-            <fileset dir="${install.dir}/LinkBackExits/rx/rx_resources/vm">
+            <fileset dir="${install.dir}/LinkbackExits/rx/rx_resources/vm">
                 <include name="**/*.vm"/>
             </fileset>
         </copy>
 
         <mkdir dir="${install.dir}/jetty/base/webapps/Rhythmyx/ui/linkback"/>
         <copy todir="${install.dir}/jetty/base/webapps/Rhythmyx/ui/linkback">
-            <fileset dir="${install.dir}/LinkBackExits/rx/rxapp.war/ui/linkback">
+            <fileset dir="${install.dir}/LinkbackExits/rx/rxapp.war/ui/linkback">
                 <include name="**/*.jsp"/>
             </fileset>
         </copy>
 
         <copy todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/spring">
-            <fileset dir="${install.dir}/LinkBackExits/rx/rxapp.war/WEB-INF/config/spring">
+            <fileset dir="${install.dir}/LinkbackExits/rx/rxapp.war/WEB-INF/config/spring">
                 <include name="**/*.xml"/>
             </fileset>
         </copy>

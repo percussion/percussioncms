@@ -34,6 +34,8 @@ import com.percussion.utils.types.PSPair;
 import junit.framework.JUnit4TestAdapter;
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -52,6 +54,9 @@ import static com.percussion.extension.IPSExtension.LEGACY_ASSEMBLER;
 @Category(IntegrationTest.class)
 public class PSAssemblyTemplateTest extends ServletTestCase
 {
+
+   private static final Logger log = LogManager.getLogger(PSAssemblyTemplateTest.class);
+
    /**
     * Name of created template
     */
@@ -168,7 +173,8 @@ public class PSAssemblyTemplateTest extends ServletTestCase
             }
             catch (Exception e)
             {
-               e.printStackTrace();
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
             }
          }
       }

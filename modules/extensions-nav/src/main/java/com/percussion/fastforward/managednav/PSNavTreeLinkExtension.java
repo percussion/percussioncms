@@ -94,19 +94,15 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
       {
          req.printTraceMessage(e.getMessage());
          log.error("PSNavException found: {}", e.getMessage());
-         log.error(this.getClass().getName(), e);
-         log.error(e.getMessage());
-         e.printStackTrace();
+         log.debug(e.getMessage(), e);
 
          throw new PSExtensionProcessingException(0, e.getMessage());
 
       }
       catch (Exception ex)
       {
-         log.error("unexcepted exception");
-         log.error(this.getClass().getName(), ex);
+         log.error(ex.getMessage());
          log.debug(ex.getMessage(),ex);
-         ex.printStackTrace();
          throw new PSExtensionProcessingException(this.getClass().getName(), ex);
       }
    }
@@ -274,7 +270,6 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
       {
           log.debug("Got XML document from cache");
       }
-      //log.debug("XML="+PSXMLDomUtil.toString(resDoc.getDocumentElement()));
       log.debug("Variant id = {}", req.getParameter(IPSHtmlParameters.SYS_VARIANTID));
       PSNavXMLUtils.overrideTheme(req, resDoc);
       return resDoc;

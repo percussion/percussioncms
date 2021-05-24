@@ -56,6 +56,8 @@ import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 
 import org.apache.cactus.ServletTestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 import org.w3c.dom.Document;
 
@@ -70,6 +72,9 @@ import junit.framework.TestSuite;
 @Category(IntegrationTest.class)
 public class PSDirectoryServerCatalogerTest extends ServletTestCase
 {
+
+   private static final Logger log = LogManager.getLogger(PSDirectoryServerCatalogerTest.class);
+
    public static final String DEFAULT_CTX_FACTORY = "com.sun.jndi.ldap.LdapCtxFactory";
 
    /**
@@ -351,7 +356,8 @@ public class PSDirectoryServerCatalogerTest extends ServletTestCase
       }
       catch (NamingException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
       }
       finally
       {
@@ -395,7 +401,8 @@ public class PSDirectoryServerCatalogerTest extends ServletTestCase
       }
       catch (NamingException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
       }
       finally
       {

@@ -38,6 +38,8 @@ import com.percussion.util.IPSHtmlParameters;
 
 import java.util.HashMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 /**
@@ -55,6 +57,8 @@ public class PSAutoGenerateFileName extends PSDefaultExtension
       implements
          IPSResultDocumentProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSAutoGenerateFileName.class);
 
    /**
     * Required by the interface. Always return <code>false</code>.
@@ -149,15 +153,18 @@ public class PSAutoGenerateFileName extends PSDefaultExtension
       }
       catch (PSInternalRequestCallException irce)
       {
-         irce.printStackTrace();
+         log.error(irce.getMessage());
+         log.debug(irce.getMessage(), irce);
       }
       catch (PSAuthorizationException paex)
       {
-         paex.printStackTrace();
+         log.error(paex.getMessage());
+         log.debug(paex.getMessage(), paex);
       }
       catch (PSAuthenticationFailedException pafe)
       {
-         pafe.printStackTrace();
+         log.error(pafe.getMessage());
+         log.debug(pafe.getMessage(), pafe);
       }
       return doc;
    }

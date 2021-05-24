@@ -45,6 +45,8 @@ import java.util.List;
 
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 /**
@@ -55,6 +57,9 @@ import org.junit.experimental.categories.Category;
 @Category(IntegrationTest.class)
 public class PSManagedNavServiceTest extends ServletTestCase
 {
+
+   private static Logger log = LogManager.getLogger(PSManagedNavServiceTest.class);
+
    @Override
    public void setUp() throws Exception
    {
@@ -83,7 +88,8 @@ public class PSManagedNavServiceTest extends ServletTestCase
          }
          catch (Exception e)
          {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
          }
       }
    }

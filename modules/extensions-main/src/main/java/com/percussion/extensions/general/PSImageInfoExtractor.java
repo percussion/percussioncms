@@ -30,6 +30,8 @@ import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.util.PSPurgableTempFile;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -50,6 +52,8 @@ import javax.imageio.ImageIO;
 public class PSImageInfoExtractor extends PSFileInfo
    implements IPSItemInputTransformer
 {
+
+   private static final Logger log = LogManager.getLogger(PSImageInfoExtractor.class);
 
    /**
     * Pre processes the request.
@@ -103,7 +107,8 @@ public class PSImageInfoExtractor extends PSFileInfo
                      {
                         request.printTraceMessage(
                            "File Not Found Exception -- " + fnfe.toString());
-                        fnfe.printStackTrace();
+                        log.error(fnfe.getMessage());
+                        log.debug(fnfe.getMessage(), fnfe);
                      }
                      catch (Exception e)
                      {

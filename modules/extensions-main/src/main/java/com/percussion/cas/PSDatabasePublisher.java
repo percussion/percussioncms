@@ -40,6 +40,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -55,6 +57,9 @@ import org.w3c.dom.Text;
  */
 public class PSDatabasePublisher implements IPSResultDocumentProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSDatabasePublisher.class);
+
    // see IPSResultDocumentProcessor#canModifyStyleSheet()
    public boolean canModifyStyleSheet()
    {
@@ -161,7 +166,8 @@ public class PSDatabasePublisher implements IPSResultDocumentProcessor
       }
       catch (Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
          throw new PSExtensionProcessingException(0, t.getLocalizedMessage());
       }
       finally

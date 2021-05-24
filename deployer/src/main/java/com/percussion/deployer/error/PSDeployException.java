@@ -29,6 +29,8 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -51,6 +53,7 @@ import java.util.ResourceBundle;
 public class PSDeployException extends Exception
 {
 
+   private static final Logger log = LogManager.getLogger(PSDeployException.class);
    /**
     * Eclipse was complaining
     */

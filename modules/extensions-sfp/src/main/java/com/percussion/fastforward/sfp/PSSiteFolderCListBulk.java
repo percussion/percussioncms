@@ -240,15 +240,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
          PSExtensionProcessingException
    {
 
-      m_log.debug(
-         "NEW FOLDER. Path="
-         + parentFolderPath
-         + ", folderId="
-         + folderId
-         + ", Site folder path="
-         + siteFolderPath
-         + ", context="
-         + filenameContext);
+      log.debug("NEW FOLDER. Path={}, folderId={}, Site folder path={}, context={}", parentFolderPath, folderId, siteFolderPath, filenameContext);
 
       String folderPath;
       if (appendFolderName)
@@ -264,12 +256,12 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
          folderPath = parentFolderPath;
       }
 
-      m_log.debug("Processing: " + folderPath);
+      log.debug("Processing: {}", folderPath);
 
       boolean bExclude = !includeOverride && isFolderExcluded(folderId);
       boolean bOverrideInclude = false;
       if(bExclude)
-         m_log.debug("Excluding: " + folderPath);
+         log.debug("Excluding: {}", folderPath);
       if(bExclude && m_folderIncludeMode.equals(INCLUDE_MODE_UNFLAGGED))
       {
          // We can just stop here since all child folders are excluded

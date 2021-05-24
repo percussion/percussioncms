@@ -3021,4 +3021,28 @@ public class PSPageUtils extends PSJexlUtilBase
 
     private static Object metalock = new Object();
 
+    public PSLocaleLanguageCountry getLanguageAndCountryFromLocale(String locale){
+        PSLocaleLanguageCountry psLocaleLanguageCountry = new PSLocaleLanguageCountry();
+        if (locale == null  || "".equalsIgnoreCase(locale)){
+            locale = "en-US";
+        }
+
+        String[] localeSplitArr;
+
+        if(locale.contains("-")){
+           localeSplitArr = locale.split("-");
+           psLocaleLanguageCountry.setLanguage(localeSplitArr[0]);
+           psLocaleLanguageCountry.setCountry(localeSplitArr[1]);
+        }else if(locale.contains("_")){
+            localeSplitArr = locale.split("_");
+            psLocaleLanguageCountry.setLanguage(localeSplitArr[0]);
+            psLocaleLanguageCountry.setCountry(localeSplitArr[1]);
+        }else{
+            psLocaleLanguageCountry.setLanguage("en");
+            psLocaleLanguageCountry.setCountry("US");
+        }
+
+        return psLocaleLanguageCountry;
+    }
+
 }

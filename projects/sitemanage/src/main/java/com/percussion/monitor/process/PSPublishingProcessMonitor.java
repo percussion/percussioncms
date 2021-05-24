@@ -58,8 +58,9 @@ public class PSPublishingProcessMonitor implements IPSPublishingJobStatusCallbac
     
     private static void updateStatusMessage()
     {
-        if (monitor == null)
+        if (monitor == null) {
             return;
+        }
         
         int count;
         synchronized (jobIds)

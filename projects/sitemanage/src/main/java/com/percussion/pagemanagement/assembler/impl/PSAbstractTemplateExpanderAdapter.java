@@ -165,12 +165,15 @@ public abstract class PSAbstractTemplateExpanderAdapter<CACHE> implements IPSTem
         String ctx = parameters.get(IPSHtmlParameters.SYS_CONTEXT);
         String deliveryctx = parameters.get(IPSHtmlParameters.SYS_DELIVERY_CONTEXT);
         int context = 0;
-        if (deliveryctx != null)
+        if (deliveryctx != null) {
             context = Integer.parseInt(deliveryctx);
-        else if (ctx != null)
+        }
+        else if (ctx != null) {
             context = Integer.parseInt(ctx);
-        else
+        }
+        else {
             throw new RuntimeException("Either sys_context or sys_delivery_context must be specified");
+        }
         return context;
     }
     
