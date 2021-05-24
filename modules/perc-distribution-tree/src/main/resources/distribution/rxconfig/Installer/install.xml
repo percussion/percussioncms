@@ -118,7 +118,7 @@
     <echo>install.dir= ${install.dir}</echo>
     <echo>upgrade=${do.upgrade}</echo>
     <echo>install=${do.install}</echo>
-
+    <echo>Copying JDBC Jars...</echo>
     <mkdir dir="${install.dir}/jetty/base/lib/jdbc" />
     <copy todir="${install.dir}/jetty/base/lib/jdbc" overwrite="true" force="true">
         <fileset dir="${install.src}/jetty/base/lib/jdbc">
@@ -179,7 +179,7 @@
         </fileset>
     </copy>
 
-    <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
+       <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
         <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/user">
         </fileset>
     </copy>
@@ -225,8 +225,7 @@
 
     <target name="setupDB">
         <echo>Setting up Database</echo>
-        <ant antfile="installRepository.xml" inheritRefs="true" inheritall="true" target="installRepository">
-        </ant>
+        <ant antfile="installRepository.xml" inheritRefs="true"/>
     </target>
 
     <target name="configure_jetty">
@@ -386,6 +385,8 @@
         <include name="jetty/upstream/**"/>
         <include name="jetty/defaults/**"/>
         <include name="jetty/base/webapps/**"/>
+        <include name="**/*.bat"/>
+        <include name="**/*.sh"/>
     </patternset>
 
     <patternset id="upgrade.excludes">
@@ -575,6 +576,10 @@
                 <patternset refid="upgrade.overwrite"/>
                 <patternset refid="cache.file.excludes"/>
                 <patternset refid="upgrade.excludes"/>
+                <exclude name="**/Deployment/**"/>
+                <exclude name="**/Staging/**"/>
+                <exclude name="TomcatStartup.*"/>
+                <exclude name="TomcatShutdown.*"/>
             </fileset>
         </delete>
         <copy verbose="true" todir="${install.dir}" preservelastmodified="true" filtering="false" overwrite="true" force="true" includeEmptyDirs="true">
@@ -708,6 +713,8 @@
         <echo>Fixing Line Feed</echo>
         <fixcrlf srcdir="${install.dir}"  preservelastmodified="true">
             <patternset refid="text.files"/>
+            <exclude name="**/Deployment/**"/>
+            <exclude name="**/Staging/**"/>
         </fixcrlf>
 
         <if>
@@ -767,6 +774,8 @@
         <echo>Fixing Line Feeds</echo>
         <fixcrlf srcdir="${install.dir}" preservelastmodified="true">
             <patternset refid="text.files"/>
+            <exclude name="**/Deployment/**"/>
+            <exclude name="**/Staging/**"/>
         </fixcrlf>
 
         <if>
@@ -866,7 +875,7 @@
 
 
     <target name="updateExtensions">
-
+        <echo>Updating updateExtensions ...</echo>
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-main-${project.parent.version}.jar" destDir="Exits"/>
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-workflow-${project.parent.version}.jar" destDir="WorkflowExits"/>
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-sfp-${project.parent.version}.jar" destDir="SiteFolderPublishinExits"/>
@@ -922,6 +931,7 @@
                             <exclude name="**/META-INF" />
                         </patternset>
                     </unzip>
+                    <echo>Updating updateExtensions 2 ...</echo>
                     <copy file="${install.dir}/@{destDir}/Extensions.xml" tofile="${project.basedir}/modules/perc-distribution-tree/target/classes/distribution/Extensions/@{destDir}-ext.xml"/>
                     <PSExtensions installLocation="@{destDir}" />
                 </then>
@@ -951,6 +961,8 @@
                 <present present="srconly" targetdir="${install.dir}/web_resources/themes"/>
             </fileset>
         </copy>
+        <echo>Deleting misplaced files....</echo>
+        <delete dir="${install.dir}/jetty/base/webapps/Rhythmyx/cm/WEB-INF" verbose="true" includeEmptyDirs="true" performgconfaileddelete="true" failonerror="false"/>
     </target>
 
 </project>

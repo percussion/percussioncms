@@ -28,6 +28,8 @@ import com.percussion.deployer.error.PSDeployException;
 import com.percussion.util.PSResourceUtils;
 import com.percussion.utils.testing.UnitTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.w3c.dom.Document;
@@ -48,6 +50,9 @@ import static org.junit.Assert.assertTrue;
 @Category(UnitTest.class)
 public class PSPackageConfigurationTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSPackageConfigurationTest.class);
+
    public PSPackageConfigurationTest()
    {
       super();
@@ -154,7 +159,8 @@ public class PSPackageConfigurationTest
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw e;
       }
       finally

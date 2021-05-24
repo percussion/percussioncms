@@ -6,7 +6,7 @@
     "start": "node app"
   },
   "dependencies": {
-    "express": ">=4.17.1",
+    "express": "~4.17.1",
     "extend": "*",
     "jade": ">=1.11.0",
     "lodash": ">=4.17.21",

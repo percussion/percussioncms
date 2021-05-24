@@ -32,7 +32,8 @@ import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 /**
@@ -63,17 +64,19 @@ public class PSNavReset extends PSDefaultExtension
       catch (PSNavException e)
       {
          req.printTraceMessage(e.getMessage());
-         m_log.error("PSNavException found:" + e.getMessage());
-         m_log.error(PSNavAutoSlotExtension.class, e);
+         log.error("PSNavException found: {}", e.getMessage());
+         log.error(PSNavAutoSlotExtension.class, e);
+         log.debug(e.getMessage(), e);
 
          throw new PSExtensionProcessingException(0, e.getMessage());
 
       }
       catch (Exception ex)
       {
-         m_log.error("unexcepted exception");
-         m_log.error(getClass().getName(), ex);
-         ex.printStackTrace();
+         log.error("unexcepted exception");
+         log.error(getClass().getName(), ex);
+         log.debug(ex.getMessage(), ex);
+         log.debug(ex.getMessage(), ex);
          throw new PSExtensionProcessingException(getClass().getName(), ex);
       }
 
@@ -106,17 +109,17 @@ public class PSNavReset extends PSDefaultExtension
       catch (PSNavException e)
       {
          req.printTraceMessage(e.getMessage());
-         m_log.error("PSNavException found:" + e.getMessage());
-         m_log.error(PSNavAutoSlotExtension.class, e);
-
+         log.error("PSNavException found: {}", e.getMessage());
+         log.error(PSNavAutoSlotExtension.class, e);
+         log.debug(e.getMessage(), e);
          throw new PSExtensionProcessingException(0, e.getMessage());
 
       }
       catch (Exception ex)
       {
-         m_log.error("unexcepted exception");
-         m_log.error(getClass().getName(), ex);
-         ex.printStackTrace();
+         log.error("unexcepted exception");
+         log.error(getClass().getName(), ex);
+         log.debug(ex.getMessage(), ex);
          throw new PSExtensionProcessingException(getClass().getName(), ex);
       }
       return result;
@@ -125,5 +128,6 @@ public class PSNavReset extends PSDefaultExtension
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   Logger m_log = Logger.getLogger(getClass());
+   private static final Logger log = LogManager.getLogger(PSNavReset.class);
+
 }

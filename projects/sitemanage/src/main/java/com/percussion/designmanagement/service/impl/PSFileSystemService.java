@@ -161,7 +161,7 @@ public class PSFileSystemService implements IPSFileSystemService
         if (rootDirectory == null) {
             rootDirectory = new File(rootFolderPath);
         }
-        
+
         return rootDirectory;
     }
     
@@ -177,14 +177,14 @@ public class PSFileSystemService implements IPSFileSystemService
         if (!pathFile.exists()) {
             throw new FileNotFoundException("The path doesn't exist: " + path);
         }
-        
+
         File[] children = pathFile.listFiles();
         
         // Filter only for root path
         if (includes.isEmpty() || !StringUtils.equals(path, "/")) {
             return Arrays.asList(children);
         }
-        
+
         List<File> result = new ArrayList<>();
         //FB: NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE NC 1-17-16
         if(children!= null){
@@ -405,7 +405,7 @@ public class PSFileSystemService implements IPSFileSystemService
         if (StringUtils.isBlank(name)) {
             name = file.getParentFile().getName();
         }
-        
+
         return name;
     }
     
@@ -512,8 +512,12 @@ public class PSFileSystemService implements IPSFileSystemService
     @Override
     public void fileUpload(String path, InputStream pageContent) throws PSFileOperationException {
         try (BufferedInputStream in = new BufferedInputStream(pageContent)) {
-
-            validateFileUpload(path);
+            try {
+                validateFileUpload(path);
+            }catch(PSFileAlreadyExistsException fae){
+                //We are already checking for this validation and getting confirmation from client.
+                //so, it can eb ignored
+            }
             File file = getFile(path);
             File parent = file.getParentFile();
 
@@ -541,6 +545,9 @@ public class PSFileSystemService implements IPSFileSystemService
         //set parent owner/permissions to newly created file as parents'.
         PosixFileAttributeView posixViewParent = Files.getFileAttributeView(parent.toPath(),
                 PosixFileAttributeView.class);
+        if(posixViewParent == null){
+            return;
+        }
         PosixFileAttributes parentAttribs = posixViewParent.readAttributes();
         GroupPrincipal group = parentAttribs.group();
         UserPrincipal owner = parentAttribs.owner();

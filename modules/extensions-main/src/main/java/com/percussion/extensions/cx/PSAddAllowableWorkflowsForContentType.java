@@ -41,6 +41,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -75,6 +77,8 @@ import org.w3c.dom.Text;
 public class PSAddAllowableWorkflowsForContentType extends PSDefaultExtension
       implements IPSResultDocumentProcessor, IPSRequestPreProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSAddAllowableWorkflowsForContentType.class);
 
    /**
     * Required by the interface. This exit never modifies the stylesheet.
@@ -205,8 +209,10 @@ public class PSAddAllowableWorkflowsForContentType extends PSDefaultExtension
          }
          catch(Exception e)
          {
-            if(request.isTraceEnabled())
-               e.printStackTrace();
+            if(request.isTraceEnabled()){
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
+            }
             continue;
          }
       }

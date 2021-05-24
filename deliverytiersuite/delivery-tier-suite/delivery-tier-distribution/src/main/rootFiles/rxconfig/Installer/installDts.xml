@@ -34,9 +34,15 @@
     <property name="perc.dts.backup" value="${install.dir}/PreInstall/Backups" />
 
     <echo>Setting up TaskDefs</echo>
-    <path id="ant.deps">
+    <path id="ant.deps" cache="true">
         <fileset dir="${basedir}">
             <include name="perc-ant-${perc.version}.jar" />
+        </fileset>
+        <fileset dir="${install.src}/Deployment/Server/perc-lib" erroronmissingdir="false">
+            <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${install.src}/Deployment/Server/common/lib" erroronmissingdir="false">
+            <include name="**/*.jar" />
         </fileset>
         <fileset dir="${install.src}/Deployment/Server/perc-lib" erroronmissingdir="false">
             <include name="**/*.jar" />
@@ -49,7 +55,6 @@
     <classloader classpathref="ant.deps" parentfirst="false" name="ant.loader.ant.deps"/>
     <taskdef resource="com/percussion/ant/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
     <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
-
 
     <condition property="isWindows" else="false">
         <os family="windows" />
@@ -168,6 +173,26 @@
         <if>
             <istrue value="${install.prod.dts}"/>
             <then>
+                <echo>Fixing line endings in ${install.dir}...</echo>
+                <fixcrlf srcdir="${install.dir}/Deployment"  preservelastmodified="true">
+                    <patternset refid="text.files"/>
+                </fixcrlf>
+                <fixcrlf srcdir="${install.dir}" includes="TomcatStartup.sh" preservelastmodified="true"  />
+                <fixcrlf srcdir="${install.dir}" includes="TomcatShutdown.sh" preservelastmodified="true" />
+                <echo>Fixing executable file permissions...</echo>
+                <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                    <fileset dir="${install.dir}/Deployment">
+                        <include name="**/*.sh"/>
+                        <include name="**/*.bin"/>
+                    </fileset>
+                </chmod>
+                <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                    <fileset dir="${install.dir}">
+                        <include name="TomcatStartup.sh"/>
+                        <include name="TomcatShutdown.sh"/>
+                    </fileset>
+                </chmod>
+                <echo>Deleting Logging files...</echo>
                 <delete file="${install.dir}/Deployment/Server/conf/logging.properties" failonerror="false" verbose="true" quiet="false"/>
                 <delete dir="${install.dir}/Deployment/Server/webapps/manager" failonerror="false" verbose="true" quiet="false"/>
                 <delete dir="${install.dir}/Deployment/Server/webapps/host-manager" failonerror="false" verbose="true" quiet="false"/>
@@ -405,9 +430,14 @@
                     <!-- Restore customer configuration files -->
                     <echo>Installing new DTS files.2..</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/conf/perc" overwrite="true" verbose="true" failonerror="false">
-                        <fileset dir="${new.backup.dir}${staging.dir}/Server/conf/perc">
+                        <fileset dir="${new.backup.dir}${staging.dir}/Deployment/Server/conf/perc">
                             <include name="*.properties"/>
                             <include name="*.xml"/>
+                            <exclude name="perc-datasources.properties"/>
+                            <exclude name="perc-email.properties"/>
+                            <exclude name="perc-secured-sections.properties"/>
+                            <exclude name="perc-security.properties"/>
+                            <exclude name="perc-datasources.xml"/>
                         </fileset>
                     </copy>
 
@@ -483,6 +513,7 @@
                                 <then>
 
                                     <PSUpgradeDerby targetVersion="10.14.2.0"
+                                                    rootDir="${install.dir}${staging.dir}"
                                                     databasePath="${install.dir}${staging.dir}/Deployment/Server/derbydata/percmetadata"
                                                     username="APP"
                                                     password="test"
@@ -496,6 +527,7 @@
                                 <available file="${install.dir}${staging.dir}/Deployment/Server/derbydata/perccomments" type="dir"/>
                                 <then>
                                     <PSUpgradeDerby targetVersion="10.14.2.0"
+                                                    rootDir="${install.dir}${staging.dir}"
                                                     databasePath="${install.dir}${staging.dir}/Deployment/Server/derbydata/perccomments"
                                                     backupDirectory="${install.dir}${staging.dir}/backups"
                                                     username="APP"
@@ -509,6 +541,7 @@
                                 <available file="${install.dir}${staging.dir}/Deployment/Server/derbydata/percfeeds" type="dir"/>
                                 <then>
                                     <PSUpgradeDerby targetVersion="10.14.2.0"
+                                                    rootDir="${install.dir}${staging.dir}"
                                                     databasePath="${install.dir}${staging.dir}/Deployment/Server/derbydata/percfeeds"
                                                     backupDirectory="${install.dir}${staging.dir}/backups"
                                                     username="APP"
@@ -523,6 +556,7 @@
                                 <available file="${install.dir}${staging.dir}/Deployment/Server/derbydata/percforms" type="dir"/>
                                 <then>
                                     <PSUpgradeDerby targetVersion="10.14.2.0"
+                                                    rootDir="${install.dir}${staging.dir}"
                                                     databasePath="${install.dir}${staging.dir}/Deployment/Server/derbydata/percforms"
                                                     backupDirectory="${install.dir}${staging.dir}/backups"
                                                     username="APP"
@@ -536,6 +570,7 @@
                                 <available file="${install.dir}${staging.dir}/Deployment/Server/derbydata/percmembership" type="dir"/>
                                 <then>
                                     <PSUpgradeDerby targetVersion="10.14.2.0"
+                                                    rootDir="${install.dir}${staging.dir}"
                                                     databasePath="${install.dir}${staging.dir}/Deployment/Server/derbydata/percmembership"
                                                     backupDirectory="${install.dir}${staging.dir}/backups"
                                                     username="APP"
@@ -549,6 +584,7 @@
                                 <available file="${install.dir}${staging.dir}/Deployment/Server/derbydata/percpolls" type="dir"/>
                                 <then>
                                     <PSUpgradeDerby targetVersion="10.14.2.0"
+                                                    rootDir="${install.dir}${staging.dir}"
                                                     databasePath="${install.dir}${staging.dir}/Deployment/Server/derbydata/percpolls"
                                                     backupDirectory="${install.dir}${staging.dir}/backups"
                                                     username="APP"
@@ -562,6 +598,7 @@
                                 <available file="${install.dir}${staging.dir}/Deployment/Server/derbydata/percakamaiqueuedata" type="dir"/>
                                 <then>
                                     <PSUpgradeDerby targetVersion="10.14.2.0"
+                                                    rootDir="${install.dir}${staging.dir}"
                                                     databasePath="${install.dir}${staging.dir}/Deployment/Server/derbydata/percakamaiqueuedata"
                                                     backupDirectory="${install.dir}${staging.dir}/backups"
                                                     username="APP"

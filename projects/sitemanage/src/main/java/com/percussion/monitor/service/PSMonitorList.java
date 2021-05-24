@@ -55,8 +55,9 @@ public class PSMonitorList
             {
                 String name1 = o1.getStats().getEntries().get("name");
                 String name2 = o2.getStats().getEntries().get("name");
-                if (name1 == null)
-                    return -1;
+                if (name1 == null) {
+					return -1;
+				}
                 
                 return name1.compareToIgnoreCase(name2);
             }           

@@ -48,6 +48,8 @@ import com.percussion.util.PSPreparedStatement;
 import com.percussion.utils.container.IPSJndiDatasource;
 import com.percussion.utils.jdbc.*;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import javax.naming.NamingException;
@@ -62,6 +64,9 @@ import java.util.*;
  */
 public class PSDbmsHelper
 {
+
+   private static final Logger log = LogManager.getLogger(PSDbmsHelper.class);
+
    /**
     * Private ctor to enforce singleton pattern.
     */
@@ -215,7 +220,8 @@ public class PSDbmsHelper
       }
       catch (PSDeployException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       
       return new DataSourceInfo(dsSource, dsConfig);

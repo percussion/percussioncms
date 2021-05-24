@@ -55,11 +55,16 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.cactus.ServletTestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 @Category(IntegrationTest.class)
 public abstract class PSCrossSiteTestCase extends ServletTestCase
 {
+
+   private static final Logger log = LogManager.getLogger(PSCrossSiteTestCase.class);
+
    protected IPSContentWs c;
    protected IPSGuidManager g;
    protected IPSRelationshipService rservice;
@@ -154,7 +159,8 @@ public abstract class PSCrossSiteTestCase extends ServletTestCase
       }
       catch (InterruptedException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 
@@ -317,7 +323,8 @@ public abstract class PSCrossSiteTestCase extends ServletTestCase
          }
          catch (Exception e)
          {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
          }
       }
       

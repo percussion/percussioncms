@@ -232,6 +232,7 @@
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/icons2.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/icons2.gif"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/icons.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/icons.gif"/>
 
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery-migrate-3.0.1.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/jquery-migrate-3.0.1.js"/>
         <!-- jQuery Validate -->
         <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.validate.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/plugins/jquery-validation/jquery.validate.js"/>
 

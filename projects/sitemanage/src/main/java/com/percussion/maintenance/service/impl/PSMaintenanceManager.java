@@ -25,14 +25,13 @@ package com.percussion.maintenance.service.impl;
 
 import com.percussion.maintenance.service.IPSMaintenanceManager;
 import com.percussion.maintenance.service.IPSMaintenanceProcess;
+import org.apache.commons.lang.Validate;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class PSMaintenanceManager implements IPSMaintenanceManager
@@ -40,7 +39,7 @@ public class PSMaintenanceManager implements IPSMaintenanceManager
 
     private ConcurrentMap<String, IPSMaintenanceProcess> workingProcesses = new ConcurrentHashMap<>();
     private AtomicBoolean hasErrors = new AtomicBoolean(false);
-    private static final Log log = LogFactory.getLog(PSMaintenanceManager.class);
+    private static final Logger log = LogManager.getLogger(PSMaintenanceManager.class);
     
     @Override
     public void startingWork(IPSMaintenanceProcess process)

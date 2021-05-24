@@ -54,9 +54,9 @@ function checkForJbossService() {
 
     if [ ! -z "$currentService" ];
     then
-        if [ "$cleanupJBoss" != "true" ]; then  
+        if [ "$cleanupJBoss" != "true" ]; then
             echo "Warning Jboss startup /etc/init.d/${currentService} for this instance ${rxDir} exists use  to remove"
-            usage   
+            usage
         fi
         echo "Cleaning up JBoss init scripts"
         removeServiceFromStartup $currentService
@@ -67,7 +67,7 @@ function checkForJbossService() {
 
 function removeServiceFromStartup() {
 
-    echo "uninstalling service $1 from startup" 
+    echo "uninstalling service $1 from startup"
     if [[ $(type -P "chkconfig") ]]; then
         echo "Using command 'chkconfig "${1}" off'"
         chkconfig ${1} off
@@ -80,8 +80,8 @@ function removeServiceFromStartup() {
 
     if [ -d "/etc/rc.d/rc2.d" ]; then
         echo "Removing links to etc/rc.d/rc*.d/S??${1} and /etc/rc.d/rc*.d/K??${1}"
-        rm -f /etc/rc.d/rc?.d/S??${1}       
-        rm -f /etc/rc.d/rc?.d/K??${1}       
+        rm -f /etc/rc.d/rc?.d/S??${1}
+        rm -f /etc/rc.d/rc?.d/K??${1}
     fi
     if [ -d "/etc/rc2.d" ]; then
         echo "Removing links to etc/rc*.d/S??${1} and /etc/rc*.d/K??${1} "
@@ -95,7 +95,7 @@ function removeServiceFromStartup() {
 function removeServiceScript() {
 
     echo "removing files"
-    set -x  
+    set -x
     rm -f "/etc/init.d/${1}"
     rm -f "/etc/default/${1}"
     rm -rf "$JETTY_RUN"
@@ -106,7 +106,7 @@ function removeServiceScript() {
 
 
 
-distVersion=$(cat /proc/version 2>&1) 
+distVersion=$(cat /proc/version 2>&1)
 
 
 JETTY_ROOT=$(dirname $(dirname $(readlink -f "$0")))
@@ -121,7 +121,7 @@ JETTY_RUN=/var/run/rxjetty/${SERVICE_NAME}
 if [[ $(type -P "service") ]]; then
     serviceCmd="service ${SERVICE_NAME}"
 else
-    serviceCmd="/etc/init.d/${SERVICE_NAME}"    
+    serviceCmd="/etc/init.d/${SERVICE_NAME}"
 fi
 echo before uninstall $uninstall
 if [ "$uninstall" != "true" ];then
@@ -131,15 +131,14 @@ echo in uninstall
     if [  -f "/etc/init.d/${SERVICE_NAME}" ];then
         echo "Service $SERVICE_NAME already installed"
         exit 1
-    fi  
+    fi
 
 
     checkForJbossService
-    checkForJettyService    
+    checkForJettyService
     if [ ! -z "$currentService" ];
     then
-        echo "A service with name $service with configuration at /etc/default/${service} is already set up to start this instance"
-        exit 1
+       echo "A service with name $service with configuration at /etc/default/${service} is already set up to start this instance. Should be removed."
     fi
 
     echo "JETTY_ROOT=${JETTY_ROOT}"
@@ -172,16 +171,15 @@ echo in uninstall
 
     echo "setting up pid folder /var/run/${SERVICE_NAME} setting ownership to  user=${RX_USER} group=${RX_GROUP}"
 
-    mkdir -p ${JETTY_RUN}/${SERVICE_NAME}
+    mkdir -p ${JETTY_RUN}
     chown -R "${RX_USER}:${RX_GROUP}" "/var/run/rxjetty/${SERVICE_NAME}"
-    chown -R "${RX_USER}:${RX_GROUP}" "${JETTY_RUN}/${SERVICE_NAME}"
+    chown -R "${RX_USER}:${RX_GROUP}" "${JETTY_RUN}"
     chmod -R ugo+rw /var/run/rxjetty/${SERVICE_NAME}
 
     echo "copying startup script ${JETTY_DEFAULTS}/bin/jetty.sh /etc/init.d/${SERVICE_NAME}"
 
     sed -e "s/\${rxjetty_service}/$SERVICE_NAME/" ${JETTY_DEFAULTS}/bin/rxjetty.sh > /etc/init.d/${SERVICE_NAME}
     chmod 755 "/etc/init.d/${SERVICE_NAME}"
-
 
     cat <<-EOF > /etc/default/${SERVICE_NAME}
     JAVA_HOME=${JAVA_HOME}
@@ -196,6 +194,9 @@ echo in uninstall
     JETTY_PID=${JETTY_RUN}/rxjetty.pid
     JETTY_ARGS="--include-jetty-dir=${JETTY_DEFAULTS} jetty-started.xml"
     JETTY_USER=${RX_USER}
+	  mkdir -p ${JETTY_RUN}
+    chown -R "${RX_USER}:${RX_GROUP}" "/var/run/rxjetty/${SERVICE_NAME}"
+    chmod -R ugo+rw /var/run/rxjetty/${SERVICE_NAME}
 EOF
 
     echo "configuration for service ${SERVICE_NAME} in /etc/init.d/${SERVICE_NAME} must reinstall or update if paths change"
@@ -213,7 +214,7 @@ EOF
         echo "Using 'chkconfig ${SERVICE_NAME} on' to add to add to server startup"
         echo "Ignore if error is shown about runlevel 4"
         chkconfig ${SERVICE_NAME} off > /dev/null 2>&1
-        chkconfig ${SERVICE_NAME} on    
+        chkconfig ${SERVICE_NAME} on
     elif [[ $(type -P "update-rc.d") ]]; then
         echo "using 'update-rc.d ${SERVICE_NAME} defaults' to add to server startup"
         update-rc.d ${SERVICE_NAME} defaults
@@ -227,7 +228,7 @@ EOF
     fi
 
     echo "********"
-    echo "  Start service with '${serviceCmd} start'" 
+    echo "  Start service with '${serviceCmd} start'"
     echo "  Stop service with '${serviceCmd} stop'"
     echo "  use '${serviceCmd}' without parameters to check other options"
     echo "********"
@@ -238,10 +239,10 @@ echo checking for jetty service
 
     if [ ! -f "/etc/init.d/${SERVICE_NAME}" ];then
         echo "Service $SERVICE_NAME not installed in /etc/init.d/${SERVICE_NAME}"
-        exit 1  
+        exit 1
     fi
 
-    if cat "/etc/init.d/${SERVICE_NAME}" | grep -q "jetty"; then 
+    if cat "/etc/init.d/${SERVICE_NAME}" | grep -q "jetty"; then
         echo "Found service installed to /etc/init.d/${SERVICE_NAME}"
     else
         cat "/etc/init.d/${SERVICE_NAME}" | grep -q "jetty"

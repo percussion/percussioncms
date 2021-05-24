@@ -153,7 +153,7 @@
                     addClasses: false,
 	                activate: function(event,ui)
 	                {
-	                    startDrag();
+	                    startDrag(ui.draggable);
 	                }, 
 	                deactivate: function()
 	                {

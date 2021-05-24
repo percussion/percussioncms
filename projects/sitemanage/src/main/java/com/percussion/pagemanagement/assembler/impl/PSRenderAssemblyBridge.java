@@ -51,8 +51,8 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -242,10 +242,12 @@ public class PSRenderAssemblyBridge implements IPSRenderAssemblyBridge
         work.setParameterValue(IPSHtmlParameters.SYS_ITEMFILTER, "preview");
         work.setParameterValue(IPSHtmlParameters.SYS_TEMPLATE, String.valueOf(getDispatchTemplateId().getUUID()));
         work.setParameterValue(IPSHtmlParameters.SYS_CONTEXT, "0");
-        if (editMode)
+        if (editMode) {
             work.setParameterValue(PSPageAssemblyContextFactory.ASSEMBLY_PARAM_EDITMODE, "true");
-        if(scriptsOff)
+        }
+        if(scriptsOff) {
             work.setParameterValue(PSPageAssemblyContextFactory.ASSEMBLY_PARAM_SCRIPTSOFF, "true");
+        }
         work.setParameterValue(PSPageAssemblyContextFactory.ASSEMBLY_PARAM_EDITTYPE, editType.name());
         
         // get folder ID
@@ -264,7 +266,7 @@ public class PSRenderAssemblyBridge implements IPSRenderAssemblyBridge
             {
                 if (sites.size() > 1) 
                 {
-                    log.warn("Page or Template is associated with multiple sites: " + sites);
+                    log.warn("Page or Template is associated with multiple sites: {} " , sites);
                 }
                 int siteId = sites.get(0).getGUID().getUUID();
                 work.setParameterValue(IPSHtmlParameters.SYS_SITEID, siteId + "");
@@ -330,7 +332,9 @@ public class PSRenderAssemblyBridge implements IPSRenderAssemblyBridge
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSRenderAssemblyBridge.class);
+
+    private static final Logger log = LogManager.getLogger(PSRenderAssemblyBridge.class);
+
 
 
 }

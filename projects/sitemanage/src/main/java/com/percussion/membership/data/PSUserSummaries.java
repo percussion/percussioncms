@@ -60,10 +60,12 @@ public class PSUserSummaries
      */
     public PSUserSummaries(List<PSUserSummary> summaries)
     {
-        if (summaries == null)
+        if (summaries == null) {
             this.userSummaries = new ArrayList<>();
-        else
+        }
+        else {
             this.userSummaries = summaries;
+        }
     }
     
     public List<PSUserSummary> getSummaries()
