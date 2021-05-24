@@ -42,8 +42,8 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -57,6 +57,9 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
          IPSRequestPreProcessor,
          IPSResultDocumentProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSPublishEditionForPreview.class);
+
    /**
     * Inner class to implement a work thread to check on publishing status
     */
@@ -192,11 +195,11 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
    public void preProcessRequest(Object[] params, IPSRequestContext request)
          throws PSExtensionProcessingException
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
 
       if (params.length < 3)
       {
-         l.error("Insufficient parameters specified: " + params.length);
+         l.error("Insufficient parameters specified: {}", params.length);
          throw new IllegalArgumentException("The first three parameters"
                + " are required, see log for details");
       }
@@ -455,7 +458,8 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
          }
          catch (Exception e) //exception
          {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
          }
          finally
          {
@@ -505,7 +509,8 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       finally
       {

@@ -37,6 +37,8 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This pre-exit recursively looks up 0 or more (active assembly) parent items
@@ -50,6 +52,8 @@ public class PSTouchContentAndParentItems
    extends PSDefaultExtension 
    implements IPSRequestPreProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSTouchContentAndParentItems.class);
 
 
    /**
@@ -117,7 +121,8 @@ public class PSTouchContentAndParentItems
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new PSExtensionProcessingException(this.getClass().getName(), e);
       }
    }

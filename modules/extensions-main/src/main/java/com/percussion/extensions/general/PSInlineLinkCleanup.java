@@ -30,6 +30,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -85,6 +87,7 @@ public class PSInlineLinkCleanup
    extends PSDefaultExtension
    implements IPSResultDocumentProcessor
 {
+   private static final Logger log = LogManager.getLogger(PSInlineLinkCleanup.class);
    /**
     *
     * @param request the current request context
@@ -157,7 +160,8 @@ public class PSInlineLinkCleanup
       catch (Exception e)
       {
          traceMessage(request, e);
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       
       args[0] = new Long((System.currentTimeMillis()-startTime)/1000);
@@ -568,7 +572,8 @@ public class PSInlineLinkCleanup
                catch (Exception e)
                {
                   traceMessage(request, e);
-                  e.printStackTrace();
+                  log.error(e.getMessage());
+                  log.debug(e.getMessage(), e);
                   
                   Object[] args1 =
                      {
@@ -587,7 +592,8 @@ public class PSInlineLinkCleanup
          catch (Exception e)
          {
             traceMessage(request, e);
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
          }
       }
       
