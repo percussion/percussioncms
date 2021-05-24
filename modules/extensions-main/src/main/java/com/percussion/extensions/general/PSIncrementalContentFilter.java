@@ -31,6 +31,8 @@ import com.percussion.fastforward.utils.PSUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -109,6 +111,8 @@ public class PSIncrementalContentFilter extends PSDefaultExtension
       implements
          IPSResultDocumentProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSIncrementalContentFilter.class);
 
    /**
     * Process the request after the content list query has run.
@@ -210,7 +214,8 @@ public class PSIncrementalContentFilter extends PSDefaultExtension
       }
       catch (Exception ex)
       {
-         ex.printStackTrace();
+         log.error(ex.getMessage());
+         log.debug(ex.getMessage(), ex);
          throw new PSExtensionProcessingException(this.getClass().getName(), ex);
       }
    }
