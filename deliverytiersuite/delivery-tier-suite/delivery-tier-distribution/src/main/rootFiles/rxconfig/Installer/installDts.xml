@@ -169,12 +169,52 @@
         <if>
             <istrue value="${install.prod.dts}"/>
             <then>
+                <echo>Fixing line endings in ${install.dir}...</echo>
+                <fixcrlf srcdir="${install.dir}/Deployment"  preservelastmodified="true">
+                    <patternset refid="text.files"/>
+                </fixcrlf>
+                <fixcrlf srcdir="${install.dir}" includes="TomcatStartup.sh" preservelastmodified="true"  />
+                <fixcrlf srcdir="${install.dir}" includes="TomcatShutdown.sh" preservelastmodified="true" />
+                <echo>Fixing executable file permissions...</echo>
+                <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                    <fileset dir="${install.dir}/Deployment">
+                        <include name="**/*.sh"/>
+                        <include name="**/*.bin"/>
+                    </fileset>
+                </chmod>
+                <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                    <fileset dir="${install.dir}">
+                        <include name="TomcatStartup.sh"/>
+                        <include name="TomcatShutdown.sh"/>
+                    </fileset>
+                </chmod>
+                <echo>Deleting Logging files...</echo>
                 <delete file="${install.dir}/Deployment/Server/conf/logging.properties" failonerror="false" verbose="true" quiet="false"/>
                 <delete dir="${install.dir}/Deployment/Server/webapps/manager" failonerror="false" verbose="true" quiet="false"/>
                 <delete dir="${install.dir}/Deployment/Server/webapps/host-manager" failonerror="false" verbose="true" quiet="false"/>
                 <delete dir="${install.dir}/Deployment/Server/WEB-INF" failonerror="false"/>
             </then>
             <else>
+                <echo>Fixing line endings in ${install.dir}...</echo>
+                <fixcrlf srcdir="${install.dir}/Staging/Deployment"  preservelastmodified="true">
+                    <patternset refid="text.files"/>
+                </fixcrlf>
+                <fixcrlf srcdir="${install.dir}/Staging" includes="TomcatStartup.sh" preservelastmodified="true"  />
+                <fixcrlf srcdir="${install.dir}/Staging" includes="TomcatShutdown.sh" preservelastmodified="true" />
+                <echo>Fixing executable file permissions...</echo>
+                <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                    <fileset dir="${install.dir}/Staging/Deployment">
+                        <include name="**/*.sh"/>
+                        <include name="**/*.bin"/>
+                    </fileset>
+                </chmod>
+                <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                    <fileset dir="${install.dir}/Staging">
+                        <include name="TomcatStartup.sh"/>
+                        <include name="TomcatShutdown.sh"/>
+                    </fileset>
+                </chmod>
+                <echo>Deleting Logging files...</echo>
                 <delete file="${install.dir}/Staging/Deployment/Server/conf/logging.properties" failonerror="false" verbose="true" quiet="false"/>
                 <delete dir="${install.dir}/Staging/Deployment/Server/webapps/manager" failonerror="false" verbose="true" quiet="false"/>
                 <delete dir="${install.dir}/Staging/Deployment/Server/webapps/host-manager" failonerror="false" verbose="true" quiet="false"/>
@@ -406,7 +446,7 @@
                     <!-- Restore customer configuration files -->
                     <echo>Installing new DTS files.2..</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/conf/perc" overwrite="true" verbose="true" failonerror="false">
-                        <fileset dir="${new.backup.dir}${staging.dir}/Server/conf/perc">
+                        <fileset dir="${new.backup.dir}${staging.dir}/Deployment/Server/conf/perc">
                             <include name="*.properties"/>
                             <include name="*.xml"/>
                             <exclude name="perc-datasources.properties"/>
