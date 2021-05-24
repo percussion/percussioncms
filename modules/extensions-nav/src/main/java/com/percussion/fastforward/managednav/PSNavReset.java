@@ -109,7 +109,7 @@ public class PSNavReset extends PSDefaultExtension
       catch (PSNavException e)
       {
          req.printTraceMessage(e.getMessage());
-         log.error("PSNavException found:" + e.getMessage());
+         log.error("PSNavException found: {}", e.getMessage());
          log.error(PSNavAutoSlotExtension.class, e);
          log.debug(e.getMessage(), e);
          throw new PSExtensionProcessingException(0, e.getMessage());

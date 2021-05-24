@@ -215,17 +215,8 @@ public class PSSiteFolderContentList extends PSSiteFolderCListBase
          PSExtensionProcessingException
    {
 
-      m_log.debug(
-         "NEW FOLDER. Path="
-         + parentFolderPath
-         + ", Folder="
-         + folder.getName()
-         + ", Site folder path="
-         + siteFolderPath
-         + ", context="
-         + filenameContext);
-      m_log.debug("Folder id=" 
-         + folder.getLocator().getPart(PSLocator.KEY_ID)); 
+      log.debug("NEW FOLDER. Path={}, Folder={}, Site folder path={}, context={}", parentFolderPath, folder.getName(), siteFolderPath, filenameContext);
+      log.debug("Folder id={}", folder.getLocator().getPart(PSLocator.KEY_ID));
    
       String folderPath;
       if (appendFolderName)
@@ -242,13 +233,13 @@ public class PSSiteFolderContentList extends PSSiteFolderCListBase
          folderPath = parentFolderPath;
       }
 
-      m_log.debug("Processing: " + folderPath);
+      log.debug("Processing: {}", folderPath);
       
       boolean bExclude = !includeOverride
             && isFolderExcluded(folder.getContentId());
       boolean bOverrideInclude = false;
       if(bExclude)
-         m_log.debug("Excluding: " + folderPath);
+         log.debug("Excluding: {}", folderPath);
       if(bExclude && m_folderIncludeMode.equals(INCLUDE_MODE_UNFLAGGED))
       {
          // We can just stop here since all child folders are excluded
@@ -317,13 +308,14 @@ public class PSSiteFolderContentList extends PSSiteFolderCListBase
                   contentId,
                   revision },
                m_request);
-         m_log.debug("isPublishable " + contentId + "? " + isPublishable);
+         log.debug("isPublishable {} ? {}", contentId, isPublishable);
       }
       catch (PSCmsException e)
       {
          // the check failed; assume item is not publishable
-         m_log.error("ERROR: while checking contentvalid status");
-         m_log.error(getClass().getName(), e);
+         log.error("ERROR: while checking contentvalid status");
+         log.error(getClass().getName(), e);
+         log.debug(e.getMessage(), e);
       }
 
       if (isPublishable)
@@ -339,8 +331,7 @@ public class PSSiteFolderContentList extends PSSiteFolderCListBase
                (for debugging) */
             if (m_debugModeOn)
             {
-               m_log.debug(
-                  "including " + contentId + " without variants for debugging");
+               log.debug("including {} without variants for debugging", contentId);
                contentListItem =
                   generateListItem(
                      contentId,
@@ -380,10 +371,7 @@ public class PSSiteFolderContentList extends PSSiteFolderCListBase
                   if (isValid(contentListItem))
                      m_contentList.addItem(contentListItem);
                   else
-                     m_log.debug(
-                        "this variant/location of "
-                           + contentId
-                           + " does not need to be incrementally published");
+                     log.debug("this variant/location of {} does not need to be incrementally published", contentId);
                }
                else
                {
@@ -545,8 +533,7 @@ public class PSSiteFolderContentList extends PSSiteFolderCListBase
             false);
       if (lookupRequest == null)
       {
-         m_log.error("Cannot find query resource: " +
-               m_contentResourceName);
+         log.error("Cannot find query resource: {}", m_contentResourceName);
       }
       else
       {
@@ -554,15 +541,13 @@ public class PSSiteFolderContentList extends PSSiteFolderCListBase
          {
             Document results = lookupRequest.getResultDoc();
             variants = parseVariantLookupXML(results);
-            m_log.debug(
-               "found " + variants.size() + " variants for the site/item");
+            log.debug("found {} variants for the site/item", variants.size());
          }
          catch (PSInternalRequestCallException e)
          {
-            m_log.error(
-               "ERROR: while making internal request to "
-                  + m_contentResourceName);
-            m_log.error(getClass().getName(), e);
+            log.error("ERROR: while making internal request to {}", m_contentResourceName);
+            log.error(getClass().getName(), e);
+            log.debug(e.getMessage(), e);
             variants = new HashSet(); // never return a null
          }
       }
