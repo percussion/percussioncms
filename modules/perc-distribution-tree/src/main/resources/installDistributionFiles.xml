@@ -224,8 +224,8 @@
               file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/plugins/jquery-uploadify/jquery.uploadify.v2.1.0.min.js"/>
 
         <!-- jQuery.cookie-->
-        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.cookie.js"/>
-        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.min.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.cookie.min.js"/>
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.cookie.js"/>
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.min.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.cookie.js"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/ui.dynatree.css" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/ui.dynatree.css"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/vline.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/vline.gif"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/loading.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/loading.gif"/>
@@ -237,9 +237,12 @@
 
         <!-- Copy Font Awesome -->
         <copy todir="${assembly-directory}/web_resources/cm/css/fontawesome">
-            <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/1x/libraries/fontawesome" includes="**/*" />
+            <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/libraries/fontawesome/css" includes="**/*" />
         </copy>
 
+        <copy todir="${assembly-directory}/web_resources/cm/css/fontawesome">
+            <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/libraries/fontawesome" includes="**/*" />
+        </copy>
         <!-- Global Variables -->
 
         <!-- Install the workflow properties file -->
