@@ -76,7 +76,7 @@
              
              // If user types in the text area of the CSS override, mark the style as dirty
              // It is then reset if style is saved or cancelled
-             $("#perc-css-override-editor-area").unbind().change(function() {
+             $("#perc-css-override-editor-area").off("change").on("change", function() {
             	 dirtyController.setDirty(true, "style" , saveCSS);
              });
          }

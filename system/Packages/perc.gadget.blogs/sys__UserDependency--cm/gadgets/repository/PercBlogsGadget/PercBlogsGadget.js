@@ -44,17 +44,17 @@
         $("body").css("overflow", "hidden");
 
         $("#perc-add-post-button")
-            .click(function (event) {
+            .on("click", function (event) {
                 openNewPostDialog(event);
             });
 
         $("#perc-add-blog-button")
-            .click(function (event) {
+            .on("click", function (event) {
                 $.PercBlogsGadget.showNewBlogDialog(event);
             });
         $('#perc-add-blog-button').attr('title', I18N.message("perc.ui.blogs.Gadget.title@text"));
         $.PercBlogsGadget.load(siteName, selectedBlogId);
-    }
+    };
 
     $.PercBlogsGadget = {
         showNewBlogDialog: function (event) {
@@ -115,7 +115,7 @@
                     var tagsLine = "";
                     if (post.tags != undefined && post.tags.length > 0) {
                         tags = $.makeArray(post.tags).join(", ");
-                        var tagsLine = "<span class='tagsClass perc-ellipsis'>Tags: " + tags + "</span>";
+                        tagsLine = "<span class='tagsClass perc-ellipsis'>Tags: " + tags + "</span>";
                     }
 
                     var htmlTitleLine = '<span title="' + post.path + '" class="perc-callback">' + post.name + '</span>';

@@ -55,7 +55,7 @@
         <script  src="/cm/services/PercUtilService.js"></script>
         <script  src="/cm/services/PercServiceUtils.js"></script>
         <script  src="/cm/gadgets/repository/perc_cookie_consent_gadget/cookie_consent_gadget.js"></script>
-        <script  src="/cm/jslib/jquery.dataTables.js"></script>
+        <script  src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js"></script>
         <script  src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
 
         <div class="perc-gadget perc-cookie-consent-gadget" aria-label="cookie-consent gadget" data-moduleid="__MODULE_ID__">

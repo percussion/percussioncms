@@ -95,7 +95,8 @@
                 var dataFieldName = $(".perc-google-calendar").attr("id");
                 var dataStr = $("input[name='" + dataFieldName + "']").val();
                 var data = null;
-                if($.trim(dataStr).length>0){
+                dataStr = dataStr.trim();
+                if(dataStr.length>0){
                     data = JSON.parse(dataStr);
                 }
 
@@ -131,11 +132,11 @@
             window.parent.jQuery.PercContentPreSubmitHandlers.addHandler(_preSubmitHandler);
 
            //Widget behavioral events
-            $('.perc-table-remove').click(function () {
+            $('.perc-table-remove').on("click",function () {
                 $(this).parents('tr').detach();
             });
 
-            $('.perc-table-add').click(function () {
+            $('.perc-table-add').on("click",function () {
                 var $clone = $table.find('tr.hide').clone(true).removeClass('hide table-line');
                 $table.find('table').append($clone);
 
@@ -146,7 +147,7 @@
 				});
             });
 
-            $('.perc-toggle-help').click(function () {
+            $('.perc-toggle-help').on("click",function () {
                   if($('.perc-help').is(":visible")){
                          $('.perc-help').hide();
                   } else{
@@ -154,7 +155,7 @@
                   }
            });
 
-		   $('.perc-toggle-google-setup').click(function () {
+		   $('.perc-toggle-google-setup').on("click",function () {
                   if($('.perc-google-calendar').is(":visible")){
                          $('.perc-google-calendar').hide();
                   } else{
@@ -162,13 +163,15 @@
                   }
            });
 
-            $('.perc-table-up').click(function () {
+            $('.perc-table-up').on("click",function () {
                 var $row = $(this).parents('tr');
-                if ($row.index() === 1) return; // Don't go above the header
-                    $row.prev().before($row.get(0));
+                if ($row.index() === 1) {
+                    return; // Don't go above the header
+                }
+                $row.prev().before($row.get(0));
             });
 
-            $('.perc-table-down').click(function () {
+            $('.perc-table-down').on("click", function () {
                 var $row = $(this).parents('tr');
                 $row.next().after($row.get(0));
             });

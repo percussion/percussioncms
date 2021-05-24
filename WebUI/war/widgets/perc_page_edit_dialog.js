@@ -35,9 +35,9 @@
         var pageSysName = "";
         //We are now loading the form, the clear the content presubmit handlers.
         $.PercContentPreSubmitHandlers.clearHandlers();
-        if($.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_EDIT) {
+        if($.PercNavigationManager.getMode() === $.PercNavigationManager.MODE_EDIT) {
             //Edit mode
-            dialogTitle = I18N.message("perc.ui.page.edit.dialog@Edit Metadata")
+            dialogTitle = I18N.message("perc.ui.page.edit.dialog@Edit Metadata");
             dialogButtons = {
                 "Save":    {
                     click: function()    {_saveMetadata();},
@@ -138,7 +138,7 @@
             }            
             var cbAutoSummary = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-auto_generate_summary");
                var trAutoSummary = cbAutoSummary.closest('tr');
-               cbAutoSummary.click(_handleAutoSummary);
+               cbAutoSummary.on("click",_handleAutoSummary);
                if(!pageSysName){
                    pageSysName = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val();
                }
@@ -174,7 +174,7 @@
             iframeContainer.find("#perc-pageSum-container").after(FileNameField);
             
             //bind collapsible event
-            iframeContainer.find(".perc-section-label").unbind().click(function() {
+            iframeContainer.find(".perc-section-label").off('click').on('click',function() {
                 $(this).find(".perc-min-max").toggleClass('perc-items-minimizer').toggleClass('perc-items-maximizer');
                 var groupName = $(this).attr("group");
                 iframeContainer.find("div[groupName='" + groupName + "']").toggle();
@@ -182,8 +182,8 @@
             //Find all error 
             $.each(iframeContainer.find('div[type="sys_error"]'), function(){
             var secGroupName =  $(this).attr("groupName");
-            if(secGroupName != 'perc-pageSum-container')
-                iframeContainer.find("div[group='" + secGroupName + "']").click();
+            if(secGroupName !== 'perc-pageSum-container')
+                iframeContainer.find("div[group='" + secGroupName + "']").trigger('click');
             });
             setTimeout(_handleAutoSummary,600);
         }

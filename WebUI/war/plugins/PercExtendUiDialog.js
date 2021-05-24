@@ -429,23 +429,15 @@
                     .css("border-width", "2px")
                     .html(mappingName.txt)
                     .addClass(mappingName.cls )
-                    //.addClass(fn.cls)
-                    .click(function()
+                    .on("click",function()
                     {
                         fn.click.apply(self.element[0], arguments);
                     })
-                    .hover(function()
+                    .on("focus",function()
                     {
-                        // $(this).css('background-image', mapping[name].bgimageOver);
-                    }, function()
-                    {
-                        //  $(this).css('background-image', mapping[name].bgimage);
+                        $(this).addClass('ui-state-focus');
                     })
-                    .focus(function()
-                    {
-                        //$(this).addClass('ui-state-focus');
-                    })
-                    .blur(function()
+                    .on("blur",function()
                     {
                         $(this).removeClass('ui-state-focus');
                     })

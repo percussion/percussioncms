@@ -23,7 +23,6 @@
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
-
 <%
 String locale= PSRoleUtilities.getUserCurrentLocale();
 String lang="en";
@@ -47,8 +46,7 @@ if(locale==null){
     boolean isWdgActive = "true".equalsIgnoreCase(wdgBuilderParam.trim());
     String debugQueryString = isDebug ? "&debug=true" : "";     
 %>
-    <script  >
-    /*<![CDATA[*/  
+<script>
     function goToLocation(l)    {
         window.location.href = l;  
     }
@@ -112,7 +110,7 @@ if(locale==null){
             navMgr.goToLocation.apply(navMgr, navMgrArguments);
             $j(this).parents('.perc-actions-menu').hide();
         });
-        $j('.perc-topnav, .perc-topnav .perc-actions-menu').hover(clear, hide);
+        $j('.perc-topnav, .perc-topnav .perc-actions-menu').on("mouseenter",clear).on("mouseleave",hide);
 
     });
     /*]]>*/

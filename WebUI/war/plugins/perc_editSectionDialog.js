@@ -146,7 +146,7 @@ $.perc_editSectionDialog = function() {
                 var writePrincipals = [];
                 if(sectionProps.folderPermission.writePrincipals) {
                     writePrincipals = sectionProps.folderPermission.writePrincipals;
-                    writePrincipals = $.isArray(writePrincipals) ? writePrincipals : [writePrincipals];
+                    writePrincipals = Array.isArray(writePrincipals) ? writePrincipals : [writePrincipals];
                 }
                 
                 $("#perc-section-name").val(sectionProps.title);
@@ -235,7 +235,7 @@ $.perc_editSectionDialog = function() {
             });
             
             // Bind collapsible event
-            dialog.find(".perc-section-label").unbind().click(function() {
+            dialog.find(".perc-section-label").off("click").on("click",function() {
                 var self = $(this);
                 self.find(".perc-min-max")
                     .toggleClass('perc-items-minimizer')
@@ -262,10 +262,10 @@ $.perc_editSectionDialog = function() {
             else
                 requiresLogin.removeAttr('checked');
         
-            requiresLogin.unbind();
+            requiresLogin.off();
             if (sectionProps.secureSite && !sectionProps.secureAncestor){
                 requiresLogin.removeAttr('disabled').css('background-color', '#FFFFFF');
-                requiresLogin.unbind().click(function() {
+                requiresLogin.off("click").on("click",function() {
                     _manageGroupNameField();
                 });
             }

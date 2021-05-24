@@ -241,7 +241,7 @@
     {
         // Append the Activate button to the refresh information DIV
         var refreshButton = $(`<a href="#" class="perc-lmg-button perc-lmg-refresh hidden" alt="${I18N.message("perc.ui.gadgets.licenseMonitor@Refresh")}">${I18N.message("perc.ui.gadgets.licenseMonitor@Refresh")}</a>`);
-        refreshButton.click(refreshGadgetStatus);
+        refreshButton.on("click",refreshGadgetStatus);
         $('.perc-lmg-refresh-info').removeClass('nodisplay').append(refreshButton);
     }
 

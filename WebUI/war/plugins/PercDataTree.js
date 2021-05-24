@@ -113,11 +113,11 @@
             options.enableAdd    && head.append($('<div class="' + ADD_BTN_CLASS + '"/>').attr('title', options.addTitle));
 
             // Bind collapse and add button evetns
-            container.find('.' + COLLAPSE_BTN_CLASS).unbind().click(function() {
+            container.find('.' + COLLAPSE_BTN_CLASS).off("click").on("click",function() {
                 $(this).toggleClass(MINIMIZER_CLASS).toggleClass(MAXIMIZER_CLASS);
                 container.find('.' + TREELIST_CONTAINER_CLASS).slideToggle("fast");
             });
-            container.find('.' + ADD_BTN_CLASS).unbind().click(function() {
+            container.find('.' + ADD_BTN_CLASS).off("click").on("click",function() {
                 var options = container.data('options');
                 if (typeof(options.createItem) == 'function')
                 {                
@@ -330,8 +330,8 @@
         {
             container.find('.' + ADD_BTN_CLASS)
                 .removeClass('.' + DISABLED_ITEM_CLASS)
-                .unbind()
-                .click(function() {
+                .off("click")
+                .on("click",function() {
                     if (typeof(options.createItem) == 'function')
                     {
                         options.createItem();
@@ -351,7 +351,7 @@
         {
             container.find('.' + ADD_BTN_CLASS)
                 .addClass('.' + DISABLED_ITEM_CLASS)
-                .unbind();
+                .off();
         }
     }
 

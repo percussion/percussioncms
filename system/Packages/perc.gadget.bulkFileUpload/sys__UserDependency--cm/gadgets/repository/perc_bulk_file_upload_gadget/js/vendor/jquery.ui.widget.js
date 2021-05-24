@@ -98,7 +98,7 @@
       base = $.Widget;
     }
 
-    if ( $.isArray( prototype ) ) {
+    if ( Array.isArray( prototype ) ) {
       prototype = $.extend.apply( null, [ {} ].concat( prototype ) );
     }
 

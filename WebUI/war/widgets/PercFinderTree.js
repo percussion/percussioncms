@@ -264,7 +264,7 @@
                 dtnode.setLazyNodeStatus(DTNodeStatus_Ok);                
                 return;
             }
-            if(!$.isArray(temp)){
+            if(!Array.isArray(temp)){
                 temp = [temp];
             }
             

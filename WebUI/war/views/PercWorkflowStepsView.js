@@ -47,7 +47,7 @@
         __loadWorkflowObject(settings.workflowName, function(workflowObject){
             __renderWorkflowSteps(workflowObject, function(){
                 __attachEvents();
-                $("#perc-workflow-steps-container table").removeClass("perc-workflow-steps-rendering").addClass("perc-workflow-steps-ready");;
+                $("#perc-workflow-steps-container table").removeClass("perc-workflow-steps-rendering").addClass("perc-workflow-steps-ready");
             });
         });
         
@@ -58,7 +58,7 @@
         __loadWorkflowObject(workflowName, function(workflowObject) {
             __renderWorkflowSteps(workflowObject, function(){
                 __attachEvents();
-                $("#perc-workflow-steps-container table").removeClass("perc-workflow-steps-rendering").addClass("perc-workflow-steps-ready");;
+                $("#perc-workflow-steps-container table").removeClass("perc-workflow-steps-rendering").addClass("perc-workflow-steps-ready");
             });
         });
         
@@ -88,7 +88,6 @@
     function __renderWorkflowSteps(workflowObject, callback)
     {
         $("#perc-workflow-steps-container table").html("");
-        var workflowObject = workflowObject;
         var workflowName = workflowObject.Workflow.workflowName;
         var workflowStepName;
         var percStepRow = $('<tr><td><div id = "perc-workflow-column-wrapper" style = "float:left"></div></td></tr>');
@@ -111,7 +110,7 @@
             $(percStepColumn).attr('name', workflowStepName);             
             $(percStepLabel).html(workflowStepName).attr("title",workflowStepName);
             var stepRoles = workflowStep.stepRoles;
-            if(!$.isArray(stepRoles))
+            if(!Array.isArray(stepRoles))
             {
                 var tempArray = [];
                 tempArray.push(stepRoles);
@@ -210,27 +209,28 @@
     function __attachEvents()
     {
         //Bind add workflow step event
-        $('.perc-create-new-step').click(function(){
+        $('.perc-create-new-step').on("click",function(){
             __createNewStep(this);
         });
         
         // Bind delete workflow step event
-        $('.perc-step-delete-button').click(function() {
+        $('.perc-step-delete-button').on("click",function() {
             __deleteWorkflowStep(this);
         });
         
         // Bind update workflow step event
-        $('.perc-step-config-button, .perc-reserved-step-config-bttn').click(function() {
+        $('.perc-step-config-button, .perc-reserved-step-config-bttn').on("click",function() {
             __updateWorflowStep(this);
         });
         
         // Adjust the width of step container on window resize event
-        $(window).resize(function()
+        $(window).on("resize",function()
         {
             __calculateRowWidth();
         });
         //Bind the click event to 'more link' and 'less link'
-        $('#perc-workflow-steps-container .perc-moreLink, #perc-workflow-steps-container .perc-lessLink').click(function(){
+        $('#perc-workflow-steps-container .perc-moreLink, #perc-workflow-steps-container .perc-lessLink')
+            .on("click",function(){
             __activateMoreLessLink(this);
         });    
     }
@@ -249,11 +249,13 @@
         var successCallBack = function()
         {
             refresh(workflowName);                
-        }
+        };
+
         var cancelCallBack = function()
         {
             //For now there is nothing to do.
-        }            
+        }
+        ;
         $.PercEditWorkflowStepDialog().open(isReservedStep,isUpdate, workflowStep, workflowName,previousStepName, currentStep, successCallBack, cancelCallBack);
 
      }    
@@ -300,11 +302,11 @@
         var successCallBack = function()
         {
             refresh(workflowName);
-        }
+        };
         var cancelCallBack = function()
         {
             //For now there is nothing to do.
-        }            
+        };
         $.PercEditWorkflowStepDialog().open(isReservedStep, isUpdate, workflowStep,workflowName,previousStepName, currentStep, successCallBack, cancelCallBack);
 
     }          

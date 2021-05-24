@@ -44,8 +44,8 @@
 		        function()
 				{
 				    $("#dirty").val(${dirtyFlag});
-				    $("input").bind("change",makeDirty);
-				    $("textarea").bind("change",makeDirty);  
+				    $("input").on("change",makeDirty);
+				    $("textarea").on("change",makeDirty);
 				}
 		    );
                        
@@ -83,7 +83,7 @@
 			
 			function toggleSizedImages(fieldVal)
 			{
-				if (fieldVal != "" && fieldVal != null)
+				if (fieldVal !== "" && fieldVal != null)
 					setSizedImageVisibility("block");
 					
 				document.getElementById("action").value = "";

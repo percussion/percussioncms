@@ -40,11 +40,11 @@
 		<psxctl:Description>The Blog Index Page Control.</psxctl:Description>
         <psxctl:AssociatedFileList>
         				<psxctl:FileDescriptor name="jquery-ui.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery-ui.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>		
 			<psxctl:FileDescriptor name="PSJSUtils.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/PSJSUtils.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_utils.js" type="script" mimetype="text/javascript">
@@ -52,7 +52,7 @@
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>						
 			<psxctl:FileDescriptor name="jquery.validate.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.validate.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-validation/jquery.validate.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_extend_jQueryValidate.js" type="script" mimetype="text/javascript">
@@ -60,11 +60,11 @@
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>					
 			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/Jeditable.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
             <psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/PSJSUtils.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>	
 			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">

@@ -13,6 +13,7 @@
         "services/PercSiteService.js",
         "services/PercFormService.js",
         "services/PercCookieConsentService.js",
+        "services/PercItemPublisherService.js",
         "services/PercPathService.js",
         "services/PercMetadataService.js",
         "services/PercDashboardService.js",

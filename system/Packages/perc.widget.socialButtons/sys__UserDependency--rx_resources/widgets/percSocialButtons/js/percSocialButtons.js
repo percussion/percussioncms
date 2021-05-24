@@ -174,7 +174,7 @@
         function _attachEvents()
         {
             // Enables enter keyboard selection for the checkboxes
-            $('input:checkbox').keypress(function(e){
+            $('input:checkbox').on("keypress",function(e){
               if((e.keyCode ? e.keyCode : e.which) === 13){
                 $(this).trigger('click');
               }

@@ -25,7 +25,7 @@
 /* jshint nomen:false */
 /* global define, require, window, document, location, Blob, FormData */
 
-;(function (factory) {
+(function (factory) {
     'use strict';
     if (typeof define === 'function' && define.amd) {
         // Register as an anonymous AMD module:
@@ -338,7 +338,7 @@
             if ($.type(options.formData) === 'function') {
                 return options.formData(options.form);
             }
-            if ($.isArray(options.formData)) {
+            if (Array.isArray(options.formData)) {
                 return options.formData;
             }
             if ($.type(options.formData) === 'object') {
@@ -589,7 +589,7 @@
                 if (!paramName.length) {
                     paramName = [fileInput.prop('name') || 'files[]'];
                 }
-            } else if (!$.isArray(paramName)) {
+            } else if (!Array.isArray(paramName)) {
                 paramName = [paramName];
             }
             return paramName;

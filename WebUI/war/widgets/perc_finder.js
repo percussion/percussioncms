@@ -44,7 +44,7 @@ var defaults = {
         // 100 >= header and finder header areas
         return $(window).innerHeight() - 150;
     }
-}
+};
 
     if(assetPagination == null) {
         var url =  $.perc_paths.GET_ASSET_PAGINATION_CONFIG ;
@@ -130,26 +130,26 @@ function finder() {
     // attach event handlers to the dom
     $('body').on('click', '.perc-action-goto-or-search', finder_do_goto_or_search);
     $.perc_filterField($("#mcol-path-summary"), $.perc_textFilters.PATH);
-    $("#mcol-path-summary").bind('keyup', function(evt){
-        if (evt.keyCode == 13){
-            $("#mcol-path-summary").blur();
+    $(document).on("keyup","#mcol-path-summary",function(evt){
+        if (evt.keyCode === 13){
+            $("#mcol-path-summary").trigger("blur");
             finder_do_goto_or_search.apply(this, [evt]);
-            $("#mcol-path-summary").focus();
+            $("#mcol-path-summary").trigger("focus");
             evt.preventDefault();
             evt.stopPropagation();
         }
-        if (evt.keyCode == 27 || evt.keyCode == 9){
-            $("#mcol-path-summary").val(getCurrentPath().join("/")).blur();
-            $("#perc-finder-item-search").blur();
+        if (evt.keyCode === 27 || evt.keyCode === 9){
+            $("#mcol-path-summary").val(getCurrentPath().join("/")).trigger("blur");
+            $("#perc-finder-item-search").trigger("blur");
             evt.preventDefault();
             evt.stopPropagation();
         }
         // hide the message if it's visible
         showFinderErrorMessage(false);
     });
-    $(document).mousedown(function(evt){
-        if (evt.target.id != "perc-finder-go-action" && evt.target.id != "mcol-path-summary"){
-            $("#mcol-path-summary").blur();
+    $(document).on("mousedown touchstart",function(evt){
+        if (evt.target.id !== "perc-finder-go-action" && evt.target.id !== "mcol-path-summary"){
+            $("#mcol-path-summary").trigger("blur");
             if (evt.target.id != "perc-finder-search-submit" &&     // Need this condition to clean path when performing search
                 evt.target.id != "perc-finder-listing-Search" &&    // else any click in the screen will override the path in other view
                 $(evt.target).parents(".perc-datatable-row").length > 0)
@@ -159,26 +159,27 @@ function finder() {
 
         }
         if (evt.target.id != "perc-finder-item-search"){
-          $("#perc-finder-item-search").blur();
+          $("#perc-finder-item-search").trigger("blur");
         }
         // hide the message if it's visible
         showFinderErrorMessage(false);
     });
-    $("#perc-finder-go-action").click(function(){
+    $("#perc-finder-go-action").on("click",function(){
         var viaGoButton = true;
         goToNewPath(viaGoButton);
     });
 
     // dim the ui when the user is not in the finder
-    $('.perc-finder-outer').hover(function highligh_actions () {
+    $('.perc-finder-outer').on("mouseenter",function highligh_actions () {
         $(this).removeClass('ui-disabled');
-    }, function dim_actions () {
+    })
+        .on("mouseleave",function dim_actions () {
         $(this).addClass('ui-disabled');
     });
 
     function absPath(strPath){
         var path = strPath.split("/");
-        for(i=0; i < path.length; i++){
+        for(let i=0; i < path.length; i++){
             if (path[i] == ".."){
                 if (i-1 >= 0){
                     path.splice(i-1, 2);
@@ -220,8 +221,8 @@ function finder() {
             $.PercPathService.validatePath(newPath, function(status, result){
                 if (status == $.PercServiceUtils.STATUS_SUCCESS){
                     //validatePath return the exact caseSensitive path.
-                    $("#mcol-path-summary").val(result)
-                   if ($.PercNavigationManager.getView() == $.PercNavigationManager.VIEW_EDITOR) {
+                    $("#mcol-path-summary").val(result);
+                   if ($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDITOR) {
                        var viewWrapper = $j.PercComponentWrapper("perc-action-finder-go-clicked", ["perc-ui-component-finder"]);
                        var isWrapperSet = $j.PercViewReadyManager.setWrapper(viewWrapper);
                        if (!isWrapperSet) {
@@ -231,12 +232,12 @@ function finder() {
                            }
                        }
                    }
-                    open(result.split("/"), function(){})
+                    open(result.split("/"), function(){});
                 }
                 else {
                     showFinderErrorMessage(true,result);
                 }
-            })
+            });
         }
     }
 
@@ -256,7 +257,7 @@ function finder() {
                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: I18N.message("perc.ui.finder@Path not found") + newPath.join("/")});
                 refresh();
             }
-        })
+        });
     }
     
     function showFinderErrorMessage(show, message){
@@ -346,7 +347,7 @@ function finder() {
         expandCollapseFinder(!$(".perc-finder-body").is(":visible"));   
     }
 
-    $("#perc-finder-expander").click(percFinderMaximizer);
+    $("#perc-finder-expander").on("click",percFinderMaximizer);
 
     /** if not easy to coerce val into a number return def */
     function integer (val, def) {
@@ -425,7 +426,7 @@ function finder() {
             stop: on_stop_resize
         });
 
-        $(window).resize(function on_window_resize () {
+        $(window).on("resize",function on_window_resize () {
             $('.perc-finder-body').resizable('option', 'maxHeight', defaults.get_max_height());
         });
 
@@ -547,7 +548,7 @@ function finder() {
 
    function refresh(k){
       $('.mcol-opened').each(function(){
-         $(this).removeClass('mcol-opened')
+         $(this).removeClass('mcol-opened');
       });
       var fwrapper = $.PercViewReadyManager.getWrapper('perc-ui-component-finder');
       if($.PercNavigationManager.getView() == $.PercNavigationManager.VIEW_EDITOR && (fwrapper == null || fwrapper.wrapperName != "perc-action-finder-refresh")){
@@ -606,8 +607,8 @@ function finder() {
         finderOpenInProgress = false; 
         fireActionEvent(actions.FINDER_OPEN_END, null);
              
-        current_path =  ["","Sites"]
-        refresh(function(){})      
+        current_path =  ["","Sites"];
+        refresh(function(){});
        
 /*
         window.parent.jQuery.perc_utils.alert_dialog({
@@ -642,7 +643,7 @@ function finder() {
         
         //store the next child item to find the correct page that contains the item
         if (path.length > 0)
-            dir.data("child", path[0])
+            dir.data("child", path[0]);
         
         if (new_path.length > 1 && new_path[1] == $.perc_paths.DESIGN_ROOT_NO_SLASH)
         {
@@ -716,24 +717,24 @@ function finder() {
     }
     
     function pagePrevious(){
-        var dir = $(this).parents("td")
+        var dir = $(this).parents("td");
         var newStartIndex = dir.data('startIndex') - MAX_RESULTS;
-        dir.data('startIndex', newStartIndex)
-        load_folder(dir, $(this).closest('.perc-paging-finder').is('.perc-paging-finder-bottom'))
+        dir.data('startIndex', newStartIndex);
+        load_folder(dir, $(this).closest('.perc-paging-finder').is('.perc-paging-finder-bottom'));
     }
     
     function pageNext(){
-        var dir = $(this).parents("td")
+        var dir = $(this).parents("td");
         var newStartIndex = dir.data('startIndex') + MAX_RESULTS;
-        dir.data('startIndex', newStartIndex)
-        load_folder(dir, $(this).closest('.perc-paging-finder').is('.perc-paging-finder-bottom'))
+        dir.data('startIndex', newStartIndex);
+        load_folder(dir, $(this).closest('.perc-paging-finder').is('.perc-paging-finder-bottom'));
     }
     
     //Retrieve another page of paging result
     function load_folder(dir, scrollBottom) {
         //Generate the url with startIndex and maxResult.
-        var path = dir.data('path')
-        var startIndex = dir.data('startIndex')
+        var path = dir.data('path');
+        var startIndex = dir.data('startIndex');
         var str_path = $.perc_utils.encodeURL(path.join("/")) + "/?startIndex=" + startIndex + "&maxResults=" + MAX_RESULTS;
         
         $.perc_pathmanager.open_path( str_path, true, getChildren, err, true );
@@ -744,7 +745,7 @@ function finder() {
                     children[ ut.extract_path_end( this.path ) + "_item"] = this;
                 });
                 dir.data('totalResult', folder_spec['PagedItemList']['childrenCount']);
-                dir.data('startIndex', folder_spec['PagedItemList']['startIndex'])
+                dir.data('startIndex', folder_spec['PagedItemList']['startIndex']);
                 update_dir(dir, children);
                 if (scrollBottom)
                     dir.find('.mcol-direc-wrapper').attr({ scrollTop: dir.find('.mcol-direc-wrapper').attr("scrollHeight") });
@@ -772,9 +773,9 @@ function finder() {
                     .append($('<span class="perc-paging-text" />').text(headerText))
                     .append(
                         $('<div class="perc-paging-finder-navigator" />')
-                            .append($('<a class="perc-paging-finder-previous" />').text('<<').click(pagePrevious))
-                            .append($('<a class="perc-paging-finder-next"/>').text('>>').click(pageNext))
-                    ).addClass(position)
+                            .append($('<a class="perc-paging-finder-previous" />').text('<<').on("click",pagePrevious))
+                            .append($('<a class="perc-paging-finder-next"/>').text('>>').on("click",pageNext))
+                    ).addClass(position);
         header = $("<div/>").append(header).append("<div style='clear:both'/>");
         //Enable/disable navigation buttons
         //Check if have next items
@@ -789,7 +790,7 @@ function finder() {
         else
             header.find('.perc-paging-finder-previous').addClass('perc-hide-navigator');
             
-        return header
+        return header;
     }
 
     function pagingHeaderCountOnly(dir, position){
@@ -799,7 +800,7 @@ function finder() {
         var header = $('<div class="perc-paging-finder perc-paging-finder-top "/>')
             .data('name', position)
             .append($('<span class="perc-paging-text" />').text(headerText))
-            .append('')
+            .append('');
         return header;
     }
 
@@ -833,7 +834,7 @@ function finder() {
         
         //Add top paging Header 
         //Don't add headers in the first column.
-        if(dir.data('path').join('/') != "" && dir.find(".perc-paging-finder-top").size() == 0) {
+        if(dir.data('path').join('/') !== "" && dir.find(".perc-paging-finder-top").length === 0) {
             if(assetPagination && ( (dir.data('path').indexOf("Assets") >-1) || (dir.data('path').indexOf("Sites") >-1)) ) {
                 dir_container(dir).prepend(pagingHeaderCountOnly(dir, "perc-paging-finder-top"));
             }else{
@@ -841,7 +842,7 @@ function finder() {
             }
         }
         $.each( dChildren, function() {
-			if (!isLibMode || this.path != "/Search/") {
+			if (!isLibMode || this.path !== "/Search/") {
 				add_item(dir, make_item(this, open_from_dir(dir)));
 			}
         });
@@ -942,8 +943,8 @@ function finder() {
                           load_folder_path( ut.acop( item_path ) ) );
         }
 
-        listing.singleclick( onClick );
-        listing.dblclick( function(evt){
+        listing.on("singleclick", onClick );
+        listing.on("dblclick", function(evt){
             validatePath(evt, item_path, function(){
                 if(spec.type=="Folder" || item_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH)
                 {
@@ -953,7 +954,7 @@ function finder() {
                 {
                     fireOpenEvent(spec);
                 }
-            })
+            });
         });
         
         if(isDraggableItem(spec))
@@ -1001,7 +1002,7 @@ function finder() {
                return; // do not expand a site node
             
             setTimeout( function(){
-                    if( hoverCount == startCount ) {
+                    if( hoverCount === startCount ) {
                         onClick();
                     }
                 },
@@ -1227,20 +1228,20 @@ function finder() {
             var $itemNameEl = $evtTarget.children(".perc-finder-item-name");
             var $inputField = $itemNameEl.find("#perc_finder_inline_field_edit"); //local to event target
             var len = $inputField.length;
-            if(len == 0)
+            if(len === 0)
             { 
                var $editField = $("#perc_finder_inline_field_edit");
                if($editField.length > 0)
                {
                   lastClickPath = item_path;
-                  $editField.blur();
+                  $editField.trigger("blur");
                }               
-               $evtTarget.focus();
+               $evtTarget.trigger("focus");
                
                // Add a class to the last selected item and remove it from other items.
                //$('.perc_last_selected').removeClass("perc_last_selected");
                //$(this).addClass("perc_last_selected");
-               if ($.PercNavigationManager.getView() == $.PercNavigationManager.VIEW_EDITOR) {
+               if ($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDITOR) {
                    var viewWrapper = $j.PercComponentWrapper("perc-action-finder-item-clicked", ["perc-ui-component-finder"]);
                    var isWrapperSet = $j.PercViewReadyManager.setWrapper(viewWrapper);
                    if (!isWrapperSet) {
@@ -1270,7 +1271,7 @@ function finder() {
          // Add a mouse move listener to body only when dragging a finder item.
          $("body")
             .css("overflow", "visible")
-            .bind("mousemove.finderDrag", props, function(evt){
+            .on("mousemove.finderDrag",null, props, function(evt){
                /* Determine if we are dragging within the finder table.
                   If we are not then disable all droppables within the finder else
                   enable them.
@@ -1296,7 +1297,7 @@ function finder() {
          dragging = false;
          $("body")
             .css("overflow", "hidden")
-            .unbind("mousemove.finderDrag");
+            .off("mousemove.finderDrag");
          enableDisableFinderDroppables(true);
       }
     /**
@@ -1372,7 +1373,7 @@ function finder() {
                 if(isAssetResource)
                 {
                    $sum.find("#perc-asset-preview-link").each(function(){
-                      $(this).unbind().bind('click', function(){
+                      $(this).off('click').on('click', function(){
                          launchAssetPreview(spec['id']);
                       });
                    });
@@ -1380,7 +1381,7 @@ function finder() {
                 else
                 {
                    $sum.find("#perc-page-preview-link").each(function(){
-                      $(this).unbind().bind('click', function(){
+                      $(this).off('click').on('click', function(){
                          launchPagePreview(spec['id']);
                       });
                    });
@@ -1422,7 +1423,7 @@ function finder() {
                       nRef.document.title = nRef.document.title + I18N.message("perc.ui.finder@Revision") + revId + ")";                      
                       }, 1000); // There needs to be a delay for title to be ready
                 }
-                nRef.focus();
+                nRef.trigger("focus");
              });
           }
           else
@@ -1468,7 +1469,7 @@ function finder() {
                           nRef.document.title = nRef.document.title + I18N.message("perc.ui.finder@Revision") + revId + ")";                      
                           }, 1000); // There needs to be a delay for title to be ready
                     }
-                    nRef.focus();
+                    nRef.trigger("focus");
                 });
             }
             else {

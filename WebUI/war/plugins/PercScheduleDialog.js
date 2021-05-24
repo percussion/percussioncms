@@ -223,8 +223,8 @@
                             $.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
                     }
                 })
-                .bind('paste', function(evt){evt.preventDefault();})
-                .bind('keypress keydown', function(evt){
+                .on('paste', function(evt){evt.preventDefault();})
+                .on('keypress keydown', function(evt){
                     if(evt.keyCode === 46 || evt.keyCode === 8 )
                     {
                         var field = evt.target;

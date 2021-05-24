@@ -131,12 +131,12 @@
                 gSelectTemp = memento.templateId; 
                 gPageId = memento.pageId;
                 gSelectedView = memento.view;
-                $j(tabId).click();
+                $j(tabId).trigger("click");
                 
                 // Add close button to content menu
                 var closeButton = "<button style='float: right;' class='btn btn-primary perc-close' title='Click to Close' id='perc-template-close'>Close</button>";
-                $j("#perc-content-menu").append($j(closeButton));                
-                $j("#perc-template-close").click(function(){
+                $j("#perc-content-menu").append($j(closeButton));
+                $j("#perc-template-close").on("click",function(){
                     clearCacheRegionCSS(); 
                     // check in the page
                     if (gPageId != null && gPageId != "")
@@ -157,7 +157,7 @@
                     function clearCacheRegionCSS()
                     {
                         var model = $j.PercNavigationManager.getTemplateModel();
-                        if (model != undefined)
+                        if (model !== undefined)
                         {
                             $j.PercTemplateService().regionCSSClearCache(
                                     model.getTemplateObj().Template.theme, 
@@ -195,8 +195,9 @@
                 </jsp:include>
                 <div id="tabs" class = 'perc-template-tabs'>
                     <ul>                        
-                        <li><a id="perc-tab-content" href="#tabs-2" ><i18n:message key="perc.ui.web.mgt@Content"/></a>
-         </a></li>
+                        <li>
+                            <a id="perc-tab-content" href="#tabs-2" ><i18n:message key="perc.ui.web.mgt@Content"/></a>
+                        </li>
                         <li><a id="perc-tab-layout" href="#tabs-3" ><i18n:message key = "perc.ui.web.mgt@Layout"/></a></li>
                         <li><a id="perc-tab-style" href="#tabs-4" ><i18n:message key = "perc.ui.web.mgt@Style"/></a></li>
                         <div class="perc-template-details">

@@ -60,7 +60,7 @@ function countProperties(obj) {
             var dlgHeight = "auto";
             if (numOfFields > 10)
                 dlgHeight = "700";
-            if ($('#perc_edit_widget_properties > #perc-section-system-container').size() == 0)
+            if ($('#perc_edit_widget_properties > #perc-section-system-container').length == 0)
                 dialogOptions["height"] = dlgHeight;
             $("<div/>").append( widgetDef.render() ).perc_dialog(dialogOptions);
             _addFieldGroups();
@@ -123,7 +123,7 @@ function countProperties(obj) {
             var dialog = $('#perc_edit_widget_properties');
 
             //Identify is we will use grouping style or not.
-            if (dialog.find('#perc-section-system-container').size() > 0)
+            if (dialog.find('#perc-section-system-container').length > 0)
                 dialog.find('.ui-dialog-content.ui-widget-content').addClass('group-style');
 
             var fieldGroups = [
@@ -146,7 +146,7 @@ function countProperties(obj) {
             });
 
             // Bind collapsible event
-            dialog.find(".perc-section-label").unbind().click(function() {
+            dialog.find(".perc-section-label").off("click").on("click",function() {
                 var self = $(this);
                 self.find(".perc-min-max")
                     .toggleClass('perc-items-minimizer')

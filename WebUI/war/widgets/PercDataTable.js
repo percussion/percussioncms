@@ -163,7 +163,7 @@
             });
             
             // fix text overflow when window resizes
-            $(window).bind('resize', function(){
+            $(window).on('resize', function(){
                 $(".perc-ellipsis").each(function(){
                     handleOverflow($(this));
                 });

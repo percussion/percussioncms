@@ -103,13 +103,13 @@
         }
 
         // When the image or page browse button are clicked we clear the perc managed link ids
-        $(".perc-image-field-select-button").click(function(){
+        $(".perc-image-field-select-button").on("click",function(){
             var $el = $(this);
             var imgInputName = $el.attr("for");
             $('#' + imgInputName).attr('data-perc-image-path-link-id','');
         });
 
-        $(".perc-page-field-select-button").click(function(){
+        $(".perc-page-field-select-button").on("click",function(){
             var $el = $(this);
             var pageInputName = $el.attr("for");
             $('#' + pageInputName).attr('data-perc-page-path-link-id','');
@@ -162,11 +162,11 @@
             var dataStr = $("input[name='" + dataFieldName + "']").val();
 
             if(dataStr.indexOf('config')!==-1){
-                dataStr = dataStr.replace('config','percJSONConfig')
+                dataStr = dataStr.replace('config','percJSONConfig');
             }
 
             if(dataStr.indexOf('imagePath')!==-1){
-                dataStr = dataStr.replace(/imagePath/g,'percImagePath')
+                dataStr = dataStr.replace(/imagePath/g,'percImagePath');
             }
 
             $("input[name='" + dataFieldName + "']").val(dataStr);
@@ -247,14 +247,14 @@
             window.parent.jQuery.PercContentPreSubmitHandlers.addHandler(_preSubmitHandler);
 
             //Widget behavioral events
-            $('.perc-table-remove').click(function () {
+            $('.perc-table-remove').on("click",function () {
                 $(this).parents('tr').detach();
 
                 // check validation again so we can remove any warnings if necessary
                 validateAssetItems();
             });
 
-            $('.perc-table-add').click(function () {
+            $('.perc-table-add').on("click",function () {
                 var $clone = $table.find('tr.hide').clone(true).removeClass('hide table-line');
                 $table.find('table').append($clone);
 
@@ -282,10 +282,10 @@
 
 
             // This section listens for either a click or keypress on the move buttons
-            $('.perc-move-button-up').on('keypress click', function(){
+            $('.perc-move-button-up').on('keypress click', function(evt){
                 moveRowUp( $(this) );
             });
-            $('.perc-move-button-down').on('keypress click', function(){
+            $('.perc-move-button-down').on('keypress click', function(evt){
                 moveRowDown( $(this) );
             });
 
@@ -327,7 +327,7 @@
             //When content is submitted, loop through and build array of objects to push into the percJSONConfig array
             $(".perc-image-slider-row").each(function() {
                 if(!  $(this).hasClass("hide") ){
-                    var alt = new Object();
+                    var alt = {};
                     alt["percImagePath"] =  $(this).find(".perc-slider-image-path").val();
                     alt["imageCaption"] =  $(this).find(".perc-slider-image-caption").val();
                     alt["imageCaption2"] =  $(this).find(".perc-slider-image-caption-2").val();
@@ -357,7 +357,7 @@
             if(!validateForm()){return false;}
 
             //Get the Widget data and convert it to a JSON string that can be saved.
-            var data = new Object();
+            var data = {};
             data.sliderName = convertToSlug(  $("input[name='sliderName']").val());
             data.percJSONConfig=getData();
 

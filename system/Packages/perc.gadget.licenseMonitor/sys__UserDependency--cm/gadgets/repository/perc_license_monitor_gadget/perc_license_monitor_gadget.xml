@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="/cm/gadgets/repository/perc_license_monitor_gadget/perc_license_monitor_gadget.css" />
 
     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
-    <script  src="/cm/jslib/jquery.blockui.js"></script>
+    <script  src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.blockUI.js"></script>
     <script  src="/cm/plugins/perc_path_constants.js"></script>
     <script  src="/cm/plugins/perc_utils.js"></script>
     <script  src="/cm/services/PercServiceUtils.js"></script>

@@ -177,7 +177,7 @@
             isDefaultInput.attr('disabled', true);
         }
         var serverProperties = [];
-        if (!$.isArray(propObj.serverInfo.properties)) 
+        if (!Array.isArray(propObj.serverInfo.properties))
         {
             serverProperties.push(propObj.serverInfo.properties);
         }
@@ -219,7 +219,7 @@
     {
         var propertyMap = [];
         var serverProperties = [];
-        if (!$.isArray(properties)) 
+        if (!Array.isArray(properties))
         {
             serverProperties.push(properties);
         }
@@ -254,7 +254,7 @@
     {
         var propContainer = $("#perc-editor-prop");
         var serverProperties = [];
-        if (!$.isArray(propObj.serverInfo.properties)) 
+        if (!Array.isArray(propObj.serverInfo.properties))
         {
             serverProperties.push(propObj.serverInfo.properties);
         }
@@ -366,7 +366,7 @@
             {
                 if (status) 
                 {
-                    availableRegions = $.parseJSON(result[0]);
+                    availableRegions = JSON.parse(result[0]);
                     $.each(availableRegions, function(region, value)
                     {
                         if (!(value)) 
@@ -392,7 +392,7 @@
             {
                 if (status) 
                 {
-                    availabelDrivers = $.parseJSON(result[0]);
+                    availabelDrivers = JSON.parse(result[0]);
                     $.each(availabelDrivers, function(driver, value)
                     {
                         if (!(value)) 

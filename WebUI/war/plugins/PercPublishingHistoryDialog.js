@@ -81,7 +81,7 @@
         {
             var self = this;
             var pubHistory = data.ItemPublishingHistory;
-            if(!$.isArray(data.ItemPublishingHistory)){
+            if(!Array.isArray(data.ItemPublishingHistory)){
             	pubHistory = [data.ItemPublishingHistory];
             }
             var dialogHTML = createPubHistoryTable();

@@ -46,7 +46,7 @@
         // resize gadget to fit the rows
         itemsPerPage = rows;
         tableDiv = $("#perc-global-variables-table");
-        $("#perc-add-variable-button").click(function(){
+        $("#perc-add-variable-button").on("click", function(){
             _editVariable();
         });
         _renderGlobalVariablesTable(data);
@@ -128,8 +128,8 @@
         else
         {
             var varDataStr = globalVarData.metadata.data;
-            varData = $.parseJSON(varDataStr);
-            if(origName == "")
+            varData = JSON.parse(varDataStr);
+            if(origName === "")
             {
                 if(varData[varName])
                 {
@@ -170,10 +170,10 @@
             cancel:function(){},
             success:function(){
                     var varDataStr = globalVarData.metadata.data;
-                    var varData = $.parseJSON(varDataStr);
+                    var varData = JSON.parse(varDataStr);
                     delete varData[rowData.varName];
                     mdService.saveGlobalVariables("percglobalvariables", varData, function(status, result){
-                        if(status == PercServiceUtils.STATUS_SUCCESS)
+                        if(status === PercServiceUtils.STATUS_SUCCESS)
                         {
                             _expandNotify();
                         }
@@ -202,7 +202,7 @@
         if(data)
         {
             var varDataStr = data.metadata.data;
-            var varData = $.parseJSON(varDataStr);
+            var varData = JSON.parse(varDataStr);
             $.each(varData, function(name, value){
                 var dataRow = [];
                 dataRow.push([{content : name, title : name}]);

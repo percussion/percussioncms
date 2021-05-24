@@ -1437,7 +1437,7 @@ onchange    %Script;       #IMPLIED
       <psxctl:AssociatedFileList>
 
          <psxctl:FileDescriptor name="timepicker.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/js/jquery/timepicker/js/timepicker.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/timepicker.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
 
@@ -2886,7 +2886,7 @@ onchange    %Script;       #IMPLIED
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="ui.core.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../web_resources/cm/jslib/jquery.dynatree.js</psxctl:FileLocation>
+            <psxctl:FileLocation>../web_resources/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="checkboxTree.js" type="script" mimetype="text/javascript">
@@ -3572,7 +3572,7 @@ onchange    %Script;       #IMPLIED
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="timepicker.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/js/jquery/timepicker/js/timepicker.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/timepicker.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="jquery.tinymce.js" type="script" mimetype="text/javascript">

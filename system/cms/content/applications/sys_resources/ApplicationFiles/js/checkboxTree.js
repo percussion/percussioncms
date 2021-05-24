@@ -60,7 +60,7 @@ return this.each(function() {
         var hideCheckbox = node.attr('selectable') == 'no' ? true : false;
         var select = $.inArray(key,selected) != -1;
         var children = node.children();
-        var resultItem = { id : id, title: title, select: select, hideCheckbox: hideCheckbox, expand:true, key: key}
+        var resultItem = { id : id, title: title, select: select, hideCheckbox: hideCheckbox, expand:true, key: key};
         if (readonly)
             resultItem.unselectable = true;
         if (children.length) {
@@ -113,7 +113,7 @@ return this.each(function() {
     	  $(node.span).parent('li')
     	    .attr('aria-labelledby', idHandle);
 		*/
-    	};
+    	}
     	
     function displayTree(data) {
         $this.dynatree("destroy");
@@ -135,9 +135,9 @@ return this.each(function() {
           onClick: function(dtnode, event) {
             // We should not toggle, if target was "checkbox", because this
             // would result in double-toggle (i.e. no toggle)
-            if( dtnode.getEventTargetType(event) == "id" )
+            if( dtnode.getEventTargetType(event) === "id" )
               dtnode.toggleSelect();
-            updateNodeAria(dtnode)
+            updateNodeAria(dtnode);
           },
           onFocus : function (dtnode) {
               updateNodeAria(dtnode);
@@ -156,7 +156,7 @@ return this.each(function() {
               event.target.setAttribute('tabindex', '0');
               
         	  // 13 is enter, 32 is spacebar
-              if (event.keyCode == 32) {
+              if (event.keyCode === 32) {
               dtnode.toggleSelect();
               updateNodeAria(dtnode);
               return false;
@@ -204,7 +204,7 @@ return this.each(function() {
         displayTree(tree);
     });
 
-})};
+});};
 
 /*
  * Below is for testing and debuging.

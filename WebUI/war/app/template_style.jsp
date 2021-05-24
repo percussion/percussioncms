@@ -51,9 +51,9 @@
                 <ul>
                     <div id = "perc-dropdown-actions-style"></div>
                     <div id = "perc-dropdown-view-style"></div>
-                    <li onclick="$j(this).find('a').click();"><a class="perc-style-sub-tab" href="#perc-styleTabs-1"><i18n:message key = "perc.ui.template.layout@Select Theme"/></a></li>
-                    <li onclick="$j(this).find('a').click();"><a class="perc-style-sub-tab" href="#perc-styleTabs-2"><i18n:message key = "perc.ui.template.layout@View Theme CSS"/></a></li>
-                    <li onclick="$j(this).find('a').click();"><a class="perc-style-sub-tab" href="#perc-styleTabs-3"><i18n:message key = "perc.ui.template.layout@Override Theme CSS"/></a></li>
+                    <li onclick="$j(this).find('a').trigger('click');"><a class="perc-style-sub-tab" href="#perc-styleTabs-1"><i18n:message key = "perc.ui.template.layout@Select Theme"/></a></li>
+                    <li onclick="$j(this).find('a').trigger('click');"><a class="perc-style-sub-tab" href="#perc-styleTabs-2"><i18n:message key = "perc.ui.template.layout@View Theme CSS"/></a></li>
+                    <li onclick="$j(this).find('a').trigger('click');"><a class="perc-style-sub-tab" href="#perc-styleTabs-3"><i18n:message key = "perc.ui.template.layout@Override Theme CSS"/></a></li>
                     <div style="text-align: right; float : right" class="ui-layout-east">
                         <button id="perc-css-editor-save"   class="btn btn-primary" name="perc_wizard_save"   ><i18n:message key ="perc.ui.button@Save"/></button>
                         <button id="perc-css-editor-cancel" class="btn btn-primary" name="perc_wizard_cancel" ><i18n:message key ="perc.ui.common.label@Cancel"/></button>

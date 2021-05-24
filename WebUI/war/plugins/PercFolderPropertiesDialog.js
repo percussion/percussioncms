@@ -88,7 +88,7 @@
                     permission = fProps.permission.accessLevel;
                     if(fProps.permission.writePrincipals) {
                         writePrincipals = fProps.permission.writePrincipals;
-                        writePrincipals = $.isArray(writePrincipals) ? writePrincipals : [writePrincipals];
+                        writePrincipals = Array.isArray(writePrincipals) ? writePrincipals : [writePrincipals];
                     }
                 }
                 var checkStatus = [];
@@ -276,20 +276,20 @@
                                     // since the binding provided by the plugin doesn't work properly for some events.
                                     
                                     //refresh message when a checkbox is selected
-                                    $('input[name=multiselect_allowed-sites]').unbind('click');
-                                    $('input[name=multiselect_allowed-sites]').bind('click',function( e ){
-                                        $("#allowed-sites").multiselect('update');
-                                    });
+                                    $('input[name=multiselect_allowed-sites]').off('click')
+                                        .on('click',function( e ){
+                                                $("#allowed-sites").multiselect('update');
+                                        });
                                     
                                     //select all link (check all)
-                                    $('a.ui-multiselect-all').unbind('click.multiselect');
-                                    $('a.ui-multiselect-all').bind('click.multiselect', function( e ){
-                                        $("#allowed-sites").multiselect('checkAll');
-                                    });
+                                    $('a.ui-multiselect-all').off('click.multiselect')
+                                        .on('click.multiselect', function( e ){
+                                            $("#allowed-sites").multiselect('checkAll');
+                                         });
                                     
                                     //Deselect all link (uncheck all)
-                                    $('a.ui-multiselect-none').unbind('click.multiselect');
-                                    $('a.ui-multiselect-none').bind('click.multiselect', function( e ){
+                                    $('a.ui-multiselect-none').off('click.multiselect')
+                                        .on('click.multiselect', function( e ){
                                         $("#allowed-sites").multiselect('uncheckAll');
                                     });
                                 }
@@ -445,7 +445,7 @@
                 });
 
                 // Bind collapsible event
-                dialog.find(".perc-section-label").unbind().click(function() {
+                dialog.find(".perc-section-label").off("click").on("click",function() {
                     var self = $(this);
                     self.find(".perc-min-max")
                         .toggleClass('perc-section-items-minimizer')

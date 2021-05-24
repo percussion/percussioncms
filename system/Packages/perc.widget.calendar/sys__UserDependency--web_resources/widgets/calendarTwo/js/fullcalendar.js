@@ -584,7 +584,7 @@ function parseFieldSpecs(input) {
 	else if (typeof input === 'function') {
 		tokens = [ input ];
 	}
-	else if ($.isArray(input)) {
+	else if (Array.isArray(input)) {
 		tokens = input;
 	}
 
@@ -1171,7 +1171,7 @@ function makeMoment(args, parseAsUTC, parseZone) {
 				isAmbigZone = true;
 			}
 		}
-		else if ($.isArray(input)) {
+		else if (Array.isArray(input)) {
 			// arrays have no timezone information, so assume ambiguous zone
 			isAmbigZone = true;
 		}
@@ -6919,7 +6919,7 @@ var TimeGrid = FC.TimeGrid = Grid.extend(DayTableMixin, {
 		// might be an array value (for TimelineView).
 		// if so, getting the most granular entry (the last one probably).
 		input = view.opt('slotLabelFormat');
-		if ($.isArray(input)) {
+		if (Array.isArray(input)) {
 			input = input[input.length - 1];
 		}
 
@@ -10986,7 +10986,7 @@ function EventManager() { // assumed to be a calendar
 	// caller is responsible for incrementing pendingSourceCnt first.
 	function tryFetchEventSource(source, fetchId) {
 		_fetchEventSource(source, function(eventInputs) {
-			var isArraySource = $.isArray(source.events);
+			var isArraySource = Array.isArray(source.events);
 			var i, eventInput;
 			var abstractEvent;
 
@@ -11085,7 +11085,7 @@ function EventManager() { // assumed to be a calendar
 					}
 				);
 			}
-			else if ($.isArray(events)) {
+			else if (Array.isArray(events)) {
 				callback(events);
 			}
 			else {
@@ -11133,7 +11133,7 @@ function EventManager() { // assumed to be a calendar
 					success: function(events) {
 						events = events || [];
 						var res = applyAll(success, this, arguments);
-						if ($.isArray(res)) {
+						if (Array.isArray(res)) {
 							events = res;
 						}
 						callback(events);
@@ -11173,7 +11173,7 @@ function EventManager() { // assumed to be a calendar
 		var source;
 		var i;
 
-		if ($.isFunction(sourceInput) || $.isArray(sourceInput)) {
+		if ($.isFunction(sourceInput) || Array.isArray(sourceInput)) {
 			source = { events: sourceInput };
 		}
 		else if (typeof sourceInput === 'string') {
@@ -11197,7 +11197,7 @@ function EventManager() { // assumed to be a calendar
 			}
 
 			// for array sources, we convert to standard Event Objects up front
-			if ($.isArray(source.events)) {
+			if (Array.isArray(source.events)) {
 				source.origArray = source.events; // for removeEventSource
 				source.events = $.map(source.events, function(eventInput) {
 					return buildEventFromInput(eventInput, source);
@@ -11282,7 +11282,7 @@ function EventManager() { // assumed to be a calendar
 		if (!matchInputs) {
 			matchInputs = [];
 		}
-		else if (!$.isArray(matchInputs)) {
+		else if (!Array.isArray(matchInputs)) {
 			matchInputs = [ matchInputs ];
 		}
 
@@ -11449,7 +11449,7 @@ function EventManager() { // assumed to be a calendar
 		// This works because they have been converted to official Event Objects up front.
 		// (and as a result, event._id has been calculated).
 		for (i=0; i<sources.length; i++) {
-			if ($.isArray(sources[i].events)) {
+			if (Array.isArray(sources[i].events)) {
 				sources[i].events = $.grep(sources[i].events, filter, true);
 			}
 		}
@@ -11481,7 +11481,7 @@ function EventManager() { // assumed to be a calendar
 
 		for (i = 0; i < sources.length; i++) {
 			events = sources[i].events;
-			if ($.isArray(events)) {
+			if (Array.isArray(events)) {
 
 				for (j = 0; j < events.length; j++) {
 					rezoneEventDates(events[j]);
@@ -12137,7 +12137,7 @@ Calendar.prototype.computeBusinessHourEvents = function(wholeDay, input) {
 	else if ($.isPlainObject(input)) {
 		return this.expandBusinessHourEvents(wholeDay, [ input ]);
 	}
-	else if ($.isArray(input)) {
+	else if (Array.isArray(input)) {
 		return this.expandBusinessHourEvents(wholeDay, input, true);
 	}
 	else {

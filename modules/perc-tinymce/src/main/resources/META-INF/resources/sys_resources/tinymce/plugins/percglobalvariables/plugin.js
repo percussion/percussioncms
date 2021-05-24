@@ -89,7 +89,7 @@ tinymce.PluginManager.add('percglobalvariables', function(editor, url) {
             width: dialogWidth,
             modal: true
         });
-        dialog.find(".perc-gv-row").click(function(){
+        dialog.find(".perc-gv-row").on("click",function(){
             dialog.find(".perc-global-variable-selected").removeClass("perc-global-variable-selected");
             dialog.find("input:radio").attr('checked',false);
             $(this).addClass("perc-global-variable-selected").find('td').addClass("perc-global-variable-selected");

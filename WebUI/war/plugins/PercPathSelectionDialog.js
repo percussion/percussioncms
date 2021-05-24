@@ -122,7 +122,7 @@
                     settings.okCallback(pathItem);
                 };
                 var cancelCallback = function(){};
-                container.find(".perc-create-new-button").show().click(function() {
+                container.find(".perc-create-new-button").show().on("click",function() {
                     
                     if(!endsWith($('#perc_selected_path').text(),"/")) {
                         //TODO: I18N TESTME

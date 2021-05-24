@@ -99,7 +99,7 @@
         }
         
         return tableDom;
-    }
+    };
     
     function tableRedrawCallback() {
         var dataTable = $(this);
@@ -264,11 +264,11 @@
             {
                 if(row.rowData)
                 {
-                    rowTr.click(row.rowData, config.percRowClickCallback);
+                    rowTr.on("click",null,row.rowData, config.percRowClickCallback);
                 }
                 else
                 {
-                    rowTr.click(config.percRowClickCallback);
+                    rowTr.on("click",config.percRowClickCallback);
                 }
             }
 
@@ -276,11 +276,11 @@
             if(config.showPreviewBtnOnHover)
             {
                
-               rowTr.mouseover(function() {
+               rowTr.on("mouseover",function() {
                    $(this).css('background-color', '#CAF589');
                    $(this).find('.perc-preview-col').show();
                    
-                }).mouseout(function(){
+                }).on("mouseout",function(){
                     $(this).css('background-color', 'white');
                     $(this).find('.perc-preview-col').hide();
                 });
@@ -290,12 +290,11 @@
             {
                 if(row.rowData)
                 {
-                    rowTr.dblclick(row.rowData, config.percRowDblclickCallback);
-                  //rowTr.dblclick(function(){config.percRowDblclickCallback(row.rowData);});
+                    rowTr.on("dblclick",null,row.rowData, config.percRowDblclickCallback);
                 }
                 else
                 {
-                    rowTr.dblclick(config.percRowDblclickCallback);
+                    rowTr.on("dblclick",config.percRowDblclickCallback);
                 }
             }
 
@@ -342,15 +341,15 @@
                     var title = "";
                     var columnRow;
                     // iterate over the rows within a table cell
-                    if($.isArray(column)) {
+                    if(Array.isArray(column)) {
                         $.each(column, function(colRowIndex, element){
                             if(!element)
                                 element = "&nbsp;";
                             var columnRowData = element;
                             var firstLast = "";
-                            if(colRowIndex == 0)
+                            if(colRowIndex === 0)
                                 firstLast = "perc-first";
-                            else if(colRowIndex == column.length-1)
+                            else if(colRowIndex === column.length-1)
                                 firstLast = "perc-last";
                             else
                                 firstLast = "perc-middle";
@@ -363,7 +362,7 @@
                                 title = columnRowData.title;
                             }
                             
-                            if(title == "&nbsp;")
+                            if(title === "&nbsp;")
                                 title = "";
                             
                             // finally, wrap the content in a div and then add it to the table data
@@ -377,9 +376,9 @@
                                     .addClass("perc-callback");
                                 columnRow.append(cBack);
                                 if(row.rowData)
-                                    cBack.click(row.rowData, columnRowData.callback);
+                                    cBack.on("click",null, row.rowData, columnRowData.callback);
                                 else
-                                    cBack.click(columnRowData.callback);
+                                    cBack.on("click",columnRowData.callback);
                             }
                             else {
                                 columnRow
@@ -390,14 +389,14 @@
                             columnTd.append(columnRow);
                         });
                     } else {
-                        var title = element.title;
-                        var content = element.content;
-                        var columnRow = $("<div title='"+title+"' class='perc-datatable-columnrow perc-ellipsis perc-index-0 perc-first'>")
+                        let title = element.title;
+                        let content = element.content;
+                        let columnRow = $("<div title='"+title+"' class='perc-datatable-columnrow perc-ellipsis perc-index-0 perc-first'>")
                             .append(content);
                         columnTd.append(columnRow);
                     }
                 } else {
-                    var columnRow = $("<div class='perc-datatable-columnrow perc-ellipsis perc-index-0 perc-first'>")
+                    let columnRow = $("<div class='perc-datatable-columnrow perc-ellipsis perc-index-0 perc-first'>")
                         .append(element);
                     columnTd.append(columnRow);
                 }
@@ -469,16 +468,16 @@
                     var data = {};
                     data.colName = colName;
                     data.sortFunction = config.sortFunction;
-                    head.click(data, sortingHandler);
+                    head.on("click",null,data, sortingHandler);
                     
                     //Avoid select text on double click in the headers.
                     if($.browser.mozilla)
                         head.css('MozUserSelect','none');             
                     else if($.browser.msie)
-                        head.bind('selectstart',function(){return false;});
+                        head.on('selectstart',function(){return false;});
 
                     //SortOrder == asc or desc
-                    if (colName == config.sortColumn){
+                    if (colName === config.sortColumn){
                         head.addClass("sorting_" + config.sortOrder);
                     }
                 }
@@ -545,6 +544,6 @@
                 aData.push(date);
             });
             return aData;
-        }
+        };
     }
 })(jQuery); 

@@ -5612,7 +5612,7 @@ $.widget("ui.tabs", {
 		// set up animations
 		var hideFx, showFx;
 		if (o.fx) {
-			if ($.isArray(o.fx)) {
+			if (Array.isArray(o.fx)) {
 				hideFx = o.fx[0];
 				showFx = o.fx[1];
 			}

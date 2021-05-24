@@ -132,9 +132,9 @@ var Directory = {
 	var children = this.items();
 	
 	//Insert the new item into the correct place in the list according to tag-sorted order.
-	var sz = children.size();
-	for(var ii = 0; ii <= sz ; ii++) {
-	    if( ii == sz ) {
+	var sz = children.length;
+	for(let ii = 0; ii <= sz ; ii++) {
+	    if( ii === sz ) {
 		this._container().append(item);
 	    } else {
 		if ( item.cml_diritem('tag') < children.eq(ii).cml_diritem('tag') ) {
@@ -267,7 +267,7 @@ var DirItem = {
 	this.element.html( this._getData('closed_html') );
 	this.element.addClass('mcol-listing');
 	var self = this;
-	this.element.click( function() { 
+	this.element.on("click", function() {
 		//If the element is being dropped, ignore the click.
 		if( ! $(this).is(".ui-draggable-dragging") ) {
 		    if( self.element.is('.mcol-opened') ) {

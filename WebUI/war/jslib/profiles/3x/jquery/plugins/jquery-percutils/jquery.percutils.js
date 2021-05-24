@@ -43,6 +43,17 @@ var $j = jQuery.noConflict();
  * object properties.
  */
 (function($) {
+    //Temp replacement for jquery browser method
+    const bowser = Bowser.getParser(window.navigator.userAgent);
+  $.browser = {
+      "msie": bowser.isBrowser("ie",true),
+      "mozilla": bowser.isBrowser("firefox",true),
+      "chrome": bowser.isBrowser("chrome",true),
+      "safari": bowser.isBrowser("safari", true),
+      "opera": bowser.isBrowser("opera", true),
+      "edge": bowser.isBrowser("edge", true)
+  };
+
   $.perc_redirect = function(url, args)
   {    
      // Find debug on query string
@@ -83,13 +94,13 @@ var $j = jQuery.noConflict();
       // maxChars is used when the tgt field has a maxlength restriction
       maxChars = typeof(maxChars) != 'undefined' ? maxChars : -1;
        
-      $(src).bind('focus.textAutoFill', function(evt){
+      $(src).on('focus.textAutoFill', function(evt){
           var val = $(tgt).val();
           tgtEmpty = (val === 'undefined' || val === null || val === '' || ignoreEmpty === true);
           srcFocused = true;      
       });
 
-      $(src).bind('keyup.textAutoFill', {'filter': filter}, function(evt){
+      $(src).on('keyup.textAutoFill', {'filter': filter}, function(evt){
          var isDisabled = $(tgt).attr('disabled');
          if(!srcFocused)
          {
@@ -129,7 +140,7 @@ var $j = jQuery.noConflict();
 (function($) {
   $.perc_filterField = function(tgt, filter, callback)
   {
-      $(tgt).bind('keypress.filterField', {'filter': filter}, function(evt){
+      $(tgt).on('keypress.filterField', {'filter': filter}, function(evt){
          var filter = function(txt){return txt;};
          
          var rawCode = evt.charCode ? evt.charCode : evt.which;
@@ -155,10 +166,10 @@ var $j = jQuery.noConflict();
          }
       });
       
-      $(tgt).bind('blur.filterField', {'filter': filter}, function(evt){
+      $(tgt).on('blur.filterField', {'filter': filter}, function(evt){
          // Run through the filter on blur
          tgt.val(evt.data.filter(tgt.val()));
-         if($.isFunction(callback))
+         if(typeof callback === "function")
              callback($(tgt));
       });
       
@@ -177,7 +188,7 @@ var $j = jQuery.noConflict();
 (function($) {
   $.perc_filterFieldText = function(tgt, filter, splitChar)
   {
-      $(tgt).bind('keypress.filterField', {'filter': filter}, function(evt){
+      $(tgt).on('keypress.filterField', {'filter': filter}, function(evt){
          var filter = function(txt){return txt;};
          
          var rawCode = evt.charCode ? evt.charCode : evt.which;
@@ -230,7 +241,7 @@ var $j = jQuery.noConflict();
          }
       });
       
-      $(tgt).bind('blur.filterField', {'filter': filter}, function(evt){
+      $(tgt).on('blur.filterField', {'filter': filter}, function(evt){
          let theText = tgt.val();
          var filtered = "";
          if (typeof(splitChar) !== 'undefined' && splitChar.length === 1)
@@ -433,12 +444,12 @@ var $j = jQuery.noConflict();
     *  Set up the listeners for AJAX start and stop
     */
    $(document).ready(function(){
-      $('body').ajaxSend(
+      $(document).ajaxSend(
          function(){
             ajaxInProgress = true;
          }
       );
-      $('body').ajaxComplete(
+      $(document).ajaxComplete(
          function(){
             ajaxInProgress = false;
             processQueue();
@@ -509,102 +520,6 @@ var $j = jQuery.noConflict();
             element.textOverflow("...",false);
         }
     };
-})(jQuery);
-
-(function($){
-
-   /**
-     * Bind a event, with or without data
-     * Benefit over $.bind, is that $.binder(event, callback, false|{}|''|false) works.
-     * @version 1.0.0
-     * @date June 30, 2010
-     * @package jquery-sparkle {@link http://www.balupton/projects/jquery-sparkle}
-     * @author Benjamin "balupton" Lupton {@link http://www.balupton.com}
-     * @copyright (c) 2009-2010 Benjamin Arthur Lupton {@link http://www.balupton.com}
-     * @license GNU Affero General Public License version 3 {@link http://www.gnu.org/licenses/agpl-3.0.html}
-     */
-    $.fn.binder = $.fn.binder || function(event, data, callback){
-        // Help us bind events properly
-        var $this = $(this);
-        // Handle
-        if ( (callback) ) {
-            $this.bind(event, data, callback);
-        } else {
-            callback = data;
-            $this.bind(event, callback);
-        }
-        // Chain
-        return $this;
-    };
-
-    /**
-     * Event for performing a singleclick
-     * @version 1.1.0
-     * @date July 16, 2010
-     * @since 1.0.0, June 30, 2010
-     * @package jquery-sparkle {@link http://www.balupton/projects/jquery-sparkle}
-     * @author Benjamin "balupton" Lupton {@link http://www.balupton.com}
-     * @copyright (c) 2009-2010 Benjamin Arthur Lupton {@link http://www.balupton.com}
-     * @license GNU Affero General Public License version 3 {@link http://www.gnu.org/licenses/agpl-3.0.html}
-     */
-    $.fn.singleclick = $.fn.singleclick || function(data,callback){
-        return $(this).binder('singleclick',data,callback);
-    };
-    $.event.special.singleclick = $.event.special.singleclick || {
-        setup: function( data, namespaces ) {
-            $(this).bind('click', $.event.special.singleclick.handler);
-        },
-        teardown: function( namespaces ) {
-            $(this).unbind('click', $.event.special.singleclick.handler);
-        },
-        handler: function( event ) {
-            // Setup
-            var clear = function(event){
-                // Fetch
-                var Me = this;
-                var $el = $(Me);
-                // Fetch Timeout
-                var timeout = $el.data('singleclick-timeout')||false;
-                // Clear Timeout
-                if ( timeout ) {
-                    clearTimeout(timeout);
-                }
-                timeout = false;
-                // Store Timeout
-                $el.data('singleclick-timeout',timeout);
-            };
-            var check = function(event){
-                // Fetch
-                var Me = this;
-                clear.call(Me);
-                var $el = $(Me);
-                // Update the amount of times we have been clicked
-                $el.data('singleclick-clicks', ($el.data('singleclick-clicks')||0)+1);
-                // Handle Timeout for when All Clicks are Completed
-                var timeout = setTimeout(function(){
-                    // Fetch Clicks Count
-                    var clicks = $el.data('singleclick-clicks');
-                    // Clear Timeout
-                    clear.apply(Me,[event]);
-                    // Reset Click Count
-                    $el.data('singleclick-clicks',0);
-                    // Check Click Status
-                    if ( clicks === 1 ) {
-                        // There was only a single click performed
-                        // Fire Event
-                        event.type = 'singleclick';
-                        $.event.handle.apply(Me, [event]);
-                    }
-                },500);
-                // Store Timeout
-                $el.data('singleclick-timeout',timeout);
-            };
-            // Fire
-            check.apply(this,[event]);
-        }
-    };
-    
-
 })(jQuery);
 
 (function($){

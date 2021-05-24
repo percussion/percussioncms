@@ -87,10 +87,10 @@
     	nEditing = null;
 
     	var table = $(container);
-    	$('#' + config.percAddRowElementId).unbind("click");
-    	$(table).find('td span').die("click");
-        $(table).find('td input').die("click").die('focusout');
-        $(table).find('a.perc-inline-edit-datatable-delete-row').die('click');
+    	$('#' + config.percAddRowElementId).off("click");
+    	$(table).find('td span').off("click");
+        $(table).find('td input').off("click").off('focusout');
+        $(table).find('a.perc-inline-edit-datatable-delete-row').off('click');
     	table.html("");
 
     	var columnWidths = [];
@@ -404,7 +404,7 @@
         if (config.percAddRowElementId && config.percAddRowElementId != "")
         {
             // Add row action
-            $('#' + config.percAddRowElementId).click( function (e) {
+            $('#' + config.percAddRowElementId).on("click", function (e) {
                     e.preventDefault();
                     var data = oTable.fnGetData();
                     var value1 = "";
@@ -432,7 +432,7 @@
             } );
         }
 
-        $(table).find('td input').live('focusout', function (e) {
+        $(table).find('td input').on('focusout', function (e) {
             $(table).parent().find("label.visuallyhidden-with-placeholder").remove();
             $(table).parent().find("label.visuallyhidden").remove();
             e.stopPropagation();
@@ -478,7 +478,7 @@
             }
         });
         
-        $(table).find('td span').live('click', function (e) {
+        $(table).find('td span').on('click', function (e) {
             e.stopPropagation();
             e.preventDefault();
             if (!$(this).parents('td').hasClass("perc-disabled"))
@@ -504,10 +504,10 @@
             }
         });
 
-        $(table).find('td').live('click', function (e) {
+        $(table).find('td').on('click', function (e) {
             if ($(this).find("span").length > 0)
             {
-                $(this).find("span").click();
+                $(this).find("span").trigger("click");
             }
         });
                  
@@ -533,7 +533,7 @@
             nEditing = nRow;
         }
         // Delete row action
-        $(table).find('a.perc-inline-edit-datatable-delete-row').live('click', function (e) {
+        $(table).find('a.perc-inline-edit-datatable-delete-row').on('click', function (e) {
             e.stopPropagation();
             e.preventDefault();
             
@@ -544,7 +544,7 @@
         function deleteRow( nRow)
         {
             oTable.fnDeleteRow( nRow );
-            if (oTable.fnGetData().length == 0)
+            if (oTable.fnGetData().length === 0)
             {
                addRow(true);
             }
@@ -564,7 +564,7 @@
             });
             
             // fix text overflow when window resizes
-            $(window).bind('resize', function(){
+            $(window).on('resize', function(evt){
                 $(".perc-ellipsis").each(function(){
                     handleOverflow($(table));
                 });

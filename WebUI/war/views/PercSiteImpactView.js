@@ -60,7 +60,7 @@
                 return;
             }
             _createSiteImpactHtml(result.data);
-            $("#perc-site-impact-pages-wrapper .perc-site-impact-item").click(function(){
+            $("#perc-site-impact-pages-wrapper .perc-site-impact-item").on("click",function(){
                 var currentPageId = $(this).attr("id");
                 $.perc_finder().launchPagePreview(currentPageId);
             });

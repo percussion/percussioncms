@@ -262,7 +262,7 @@
                             maximized=true;
                           });
        
-              $(window).resize(resizer);
+              $(window).trigger("resize",resizer);
             }
           });
 

@@ -5,11 +5,11 @@
 (function($)
 {
     $(document).ready(function(){
-        $(".perc-page-field-select-button").click(function(){
+        $(".perc-page-field-select-button").on("click", function(){
             var $el = $(this);
             var pageInputName = $el.attr("for");
             var intialPath = $("#" + pageInputName ).val();
-            if($.trim(intialPath) == "")
+            if(intialPath.trim() === "")
                 intialPath = $.topFrameJQuery.cookie("perc-pagefield-path");
             var updatePageData = function(pathItem){
                 var path = pathItem.path;
@@ -30,11 +30,11 @@
                 $("#" + pageInputName ).attr("data-perc-page-content-id",pathItem.id.split(/[- ]+/).pop());
                 $("#" + pageInputName ).change();
 
-            }
+            };
 
             var validator = function(pathItem){
                 return pathItem && pathItem.type == "percPage"?null:"Please select a page.";
-            }
+            };
             var pathSelectionOptions = {
                 okCallback: updatePageData,
                 dialogTitle: "Select a page",
@@ -45,11 +45,11 @@
             $.topFrameJQuery.PercPathSelectionDialog.open(pathSelectionOptions);
         });
 
-        $(".perc-page-field-clear-button").click(function() {
+        $(".perc-page-field-clear-button").on("click", function() {
             var $el = $(this);
             var pageInputName = $el.attr("for");
             var intialPath = $("#" + pageInputName ).val();
-            if($.trim(intialPath) == "") {
+            if(intialPath.trim() === "") {
                 return;
             }
 

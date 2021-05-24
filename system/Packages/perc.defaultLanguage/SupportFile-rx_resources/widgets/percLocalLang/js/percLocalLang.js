@@ -64,7 +64,8 @@
                 var dataFieldName = $(".perc-local-lang").attr("id");
                 var dataStr = $("input[name='" + dataFieldName + "']").val();
                 var data = null;
-                if($.trim(dataStr).length>0){
+                dataStr = dataStr.trim();
+                if(dataStr.length>0){
                     data = JSON.parse(dataStr);
                 }    
                 
@@ -102,12 +103,12 @@
                 
                 // Page selection handler
                 $(document).ready(function(){
-                    $(".perc-page-field-select-button").click(function(){
+                    $(".perc-page-field-select-button").on("click", function(){
                         var $el = $(this);
                         var pageInputName = $el.attr("for");
                         var intialPath = $("#" + pageInputName ).val();
                         var pageLabel = $("#" + pageInputName ).attr('id');
-                        if($.trim(intialPath) == "")
+                        if(intialPath.trim() === "")
                             intialPath = $.topFrameJQuery.cookie("perc-pagefield-path");
                         var updatePageData = function(pathItem){
                             var path = "/" + pathItem.path;
@@ -188,19 +189,20 @@
             window.parent.jQuery.PercContentPreSubmitHandlers.addHandler(_preSubmitHandler);
            
            //Widget behavioral events
-            $('.perc-table-remove').click(function () {
+            $('.perc-table-remove').on("click", function () {
                 $(this).parents('tr').detach();
             });
             
-            $('.perc-table-add').click(function () {
+            $('.perc-table-add').on("click", function () {
                 var rowCount = $('.perc-local-lang-row');
-                if (rowCount == 1){
-                    var $clone = $table.find('tr.hide').clone(true).removeClass('hide table-line');
+                var $clone;
+                if (rowCount === 1){
+                    $clone = $table.find('tr.hide').clone(true).removeClass('hide table-line');
                     $table.find('table').append($clone);
                 } else {
                     var cloneNum = $('.perc-local-lang-row').length;
                     var newCloneId = "perc-content-page-selections-" + cloneNum;
-                    var $clone = $table.find('tr.hide').clone(true).removeClass('hide table-line');
+                    $clone = $table.find('tr.hide').clone(true).removeClass('hide table-line');
                     $clone.find('.perc-page-select input[type="text"]').attr('id', newCloneId);
                     $clone.find('.perc-page-select input[type="text"]').attr('value', '');
                     $clone.find('.perc-page-select input[type="button"]').attr('for', newCloneId);
@@ -208,7 +210,7 @@
                 }
             });
 
-            $('.perc-toggle-help').click(function () {
+            $('.perc-toggle-help').on("click", function () {
                   if($('.perc-help').is(":visible")){
                          $('.perc-help').hide();
                   } else{
@@ -216,13 +218,13 @@
                   }
            });
             
-            $('.perc-table-up').click(function () {
+            $('.perc-table-up').on("click",function () {
                 var $row = $(this).parents('tr');
                 if ($row.index() === 1) return; // Don't go above the header
                     $row.prev().before($row.get(0));
             });
 
-            $('.perc-table-down').click(function () {
+            $('.perc-table-down').on("click", function () {
                 var $row = $(this).parents('tr');
                 $row.next().after($row.get(0));
             });
@@ -237,7 +239,7 @@
             // Check all page selector fields for a valid page-id.
             $('.perc-page-select input[name="pageSelections"]:not("#perc-content-page-selections-0")').each(function(){
                 var selectedPageId = $(this).attr("data-page-id");
-                if (selectedPageId == "false" ){
+                if (selectedPageId === "false" ){
                     console.log("No page selected for page field.");
                     $('#perc-local-lang-editor').append('<div id="page-selection-error">Error: Page selection missing. Please select an alternate language page for each row.</div>')
                     validation = false;

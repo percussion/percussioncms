@@ -56,13 +56,13 @@
 
    function decorate_generic( el, visible, actions, pageId, add, rem ) {
       rem( el );
-      el.unbind( '.decorate' );
+      el.off( '.decorate' );
       if( visible ) {
          add( el, actions, pageId );
       }
       else {
-         el.bind('mouseenter.decorate', function(){ add( el, actions, pageId ); });
-         el.bind('mouseleave.decorate', function(){ rem( el ); });
+         el.on('mouseenter.decorate', function(){ add( el, actions, pageId ); });
+         el.on('mouseleave.decorate', function(){ rem( el ); });
       }
    }
 
@@ -89,7 +89,7 @@
 		  var icon = this.icon(),
 		  action = this.action;
 		  ul.append($("<li/>").append(icon));
-		  icon.bind("click.decorate",function(){ 
+		  icon.on("click.decorate",function(){
                                action(widget.attr('assetid'), widget.attr('widgetid'), widget.attr('widgetdefid'), pageId); }); 
               } );
       return bar;

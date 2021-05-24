@@ -57,7 +57,7 @@
                         buildQuery();
                     }
                     // if the top most jquery is defined
-                    if ($.topFrameJQuery != undefined)
+                    if ($.topFrameJQuery !== undefined)
                     // mark the asset as dirty
                         $.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
                 },
@@ -90,7 +90,7 @@
                         buildQuery();
                     }
                     // if the top most jquery is defined
-                    if ($.topFrameJQuery != undefined)
+                    if ($.topFrameJQuery !== undefined)
                     // mark the asset as dirty
                         $.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
                 },
@@ -103,14 +103,14 @@
 
         $('#perc-content-form').categoryListControl({});
 
-        $("#categorylist-title").click(function () {
+        $("#categorylist-title").on("click",function () {
             $("#criteria_for_list").toggle();
             $("#categorylist-title").toggleClass("categorylist-expand-image categorylist-close-image");
         });
-    };
+    }
 
     function readOnlyControl() {
-        $j("#categorylist-title").click(function () {
+        $j("#categorylist-title").on("click",function () {
             $j("#criteria_for_list").toggle();
             $j("#categorylist-title").toggleClass("categorylist-expand-image categorylist-close-image");
         });
@@ -123,21 +123,21 @@
 
         // Fill templates field
 
-        if (splitPath[0] != undefined && splitPath[0] != "") {
+        if (splitPath[0] !== undefined && splitPath[0] !== "") {
             $j.PercServiceUtils.makeJsonRequest(
                 $j.perc_paths.TEMPLATES_BY_SITE + "/" + splitPath[0],
                 $j.PercServiceUtils.TYPE_GET,
                 false,
                 function (status, result) {
-                    if (status == $j.PercServiceUtils.STATUS_SUCCESS) {
+                    if (status === $j.PercServiceUtils.STATUS_SUCCESS) {
                         var summaries = result.data.TemplateSummary;
                         var temps = {};
                         var tempsArray = [];
-                        var tempIds = ($j("#perc_template_list").val() != "") ? $j("#perc_template_list").val().split(',') : "";
-                        for (i = 0; i < summaries.length; i++) {
+                        var tempIds = ($j("#perc_template_list").val() !== "") ? $j("#perc_template_list").val().split(',') : "";
+                        for (let i = 0; i < summaries.length; i++) {
                             temps[summaries[i].id] = summaries[i].name;
                         }
-                        for (i = 0; i < tempIds.length; i++) {
+                        for (let i = 0; i < tempIds.length; i++) {
                             tempsArray[i] = temps[tempIds[i]];
                         }
                         tempsArray.sort();

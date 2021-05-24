@@ -7,12 +7,12 @@
 (function($)
 {
     $(document).ready(function(){
-        $(".perc-image-field-select-button").click(function(){
+        $(".perc-image-field-select-button").on("click", function(){
             var $el = $(this);
             var imgInputName = $el.attr("for");
             var eventSource = $("#" + imgInputName ).attr("data-perc-widget-event-source");
             var intialPath = $("#" + imgInputName ).val();
-            if($.trim(intialPath) == "")
+            if(intialPath.trim() === "")
                 intialPath = $.topFrameJQuery.cookie("perc-imagefield-path");
             var updateImageData = function(pathItem){
                 var path = pathItem.path;
@@ -55,11 +55,11 @@
             $.topFrameJQuery.PercPathSelectionDialog.open(pathSelectionOptions);
         });
 
-        $(".perc-image-field-clear-button").click(function() {
+        $(".perc-image-field-clear-button").on("click", function() {
             var $el = $(this);
             var imgInputName = $el.attr("for");
             var intialPath = $("#" + imgInputName ).val();
-            if($.trim(intialPath) == "") {
+            if(intialPath.trim() === "") {
                 return;
             }
 

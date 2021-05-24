@@ -87,8 +87,8 @@
     <!-- JavaScript Includes (order matters) -->
     <%@include file="includes/common_js.jsp" %>
     <%-- Common Utilities --%>
-    <script src="../jslib/jquery.text-overflow.js"></script>
-    <script src="../jslib/printThis.js"></script>
+    <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js"></script>
+    <script src="../jslib/profiles/3x/jquery/plugins/jquery-print-this/printThis.js"></script>
 
     <%--  Services --%>
     <script src="../services/PercTemplateService.js"></script>
@@ -112,7 +112,7 @@
     <script src="../widgets/perc_template_layout_widget.js"></script>
     <script src="../plugins/perc_layout_controller.js"></script>
     <script src="../plugins/perc_template_manager.js"></script>
-    <script src="../jslib/jquery.xmldom-1.0.js"></script>
+    <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.xmldom-1.0.js"></script>
     <script src="../plugins/perc_page_schema.js"></script>
     <script src="../plugins/perc_template_schema.js"></script>
     <script src="../plugins/perc_contentEditDecorate.js"></script>
@@ -153,7 +153,7 @@
     <!--[if gte IE 8]>
     <link rel="stylesheet" type="text/css" href="../css/IE8_styles.css"/><![endif]-->
 
-    <script  >
+    <script>
 
         var sGalleryThemeName = "";
         var selectedTemplate;

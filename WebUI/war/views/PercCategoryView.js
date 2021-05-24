@@ -59,7 +59,7 @@
         };
 
         // A snippet to adjust the frame size on resizing the window.
-        $(window).resize(function() {
+        $(window).on("resize",function() {
             fixIframeHeight();
             fixTemplateHeight();
         });
@@ -162,7 +162,7 @@
                 controller.getCategories(this.value);
             });
             
-            $("#perc-categories-add-category-button").unbind().click(function(){
+            $("#perc-categories-add-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
                     alertDialog(I18N.message("perc.ui.category.view@User Admin"), I18N.message("perc.ui.category.view@User Admin Delete"));
@@ -182,7 +182,7 @@
 
             });
 
-            $("#perc-categories-add-child-category-button").unbind().click(function(){
+            $("#perc-categories-add-child-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
                     alertDialog(I18N.message("perc.ui.category.view@User Admin"), I18N.message("perc.ui.category.view@User Admin Delete"));
@@ -202,7 +202,7 @@
 
             });
             
-            $("#perc-categories-delete-category-button").unbind().click(function(){
+            $("#perc-categories-delete-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
                     alertDialog(I18N.message("perc.ui.category.view@User Admin"), I18N.message("perc.ui.category.view@User Admin Delete"));
@@ -226,7 +226,7 @@
 
             });
             
-            $("#perc-categories-edit-category-button").unbind().click(function(){
+            $("#perc-categories-edit-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
                     alertDialog(I18N.message("perc.ui.category.view@User Admin"), I18N.message("perc.ui.category.view@User Admin Edit"));
@@ -245,7 +245,7 @@
                     
             });
             
-            $("#perc-categories-moveup-button").unbind().click(function(){
+            $("#perc-categories-moveup-button").off("click").on("click", function(){
                 
                 if (editing)
                 {
@@ -263,7 +263,7 @@
                 displayCategoryDetails(container.dynatree("getActiveNode"));
             });
             
-            $("#perc-categories-movedown-button").unbind().click(function(){
+            $("#perc-categories-movedown-button").off("click").on("click", function(){
                 
                 if (editing)
                 {
@@ -282,7 +282,7 @@
             });
             
             //Bind Save event
-            $("#perc-category-save").unbind().click(function(){
+            $("#perc-category-save").off("click").on("click", function(){
                 var node = container.dynatree("getActiveNode");
                 if (node.data.title === "New Category")
                 {
@@ -292,8 +292,7 @@
                 save();
             });
             //Bind Cancel event
-            $("#perc-category-cancel").unbind().click(function(){
-                //controller.cancel();
+            $("#perc-category-cancel").off("click").on("click", function(){
                 var node = container.dynatree("getActiveNode");
                 editing = false;
                 if (!node.data.saved)
@@ -317,7 +316,7 @@
                 }catch(err) {}
             });
             
-            $("#perc-categories-publish-staging").unbind().click(function(){
+            $("#perc-categories-publish-staging").off("click").on("click", function(){
                 if (editing)
                 {
                         currentlyEditing();
@@ -328,7 +327,7 @@
                 publishToDTS(node, "Staging");
             });
             
-            $("#perc-categories-publish-production").unbind().click(function(){
+            $("#perc-categories-publish-production").off("click").on("click", function(){
                 if (editing)
                 {
                         currentlyEditing();
@@ -339,7 +338,7 @@
                 publishToDTS(node, "Production");
             });
             
-            $("#perc-categories-publish-both").unbind().click(function(){
+            $("#perc-categories-publish-both").off("click").on("click", function(){
                 if (editing)
                 {
                         currentlyEditing();
@@ -505,11 +504,11 @@
                 $('#perc-category-selectable-field option[value="'+sitename+'"]').prop('selected',true);
             });
 
-            $("#perc-category-show-in-page-field").prop("disabled", false);
-            $("#perc-category-show-in-page-field").removeClass("perc-category-field-readonly");
+            $("#perc-category-show-in-page-field").prop("disabled", false)
+               .removeClass("perc-category-field-readonly");
         
             $("#perc-category-save-cancel-block").show();
-            $("#perc-category-name-field").focus();
+            $("#perc-category-name-field").trigger("focus");
         }
         
        

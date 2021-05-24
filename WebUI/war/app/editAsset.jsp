@@ -130,7 +130,7 @@
             UI related JavaScript files
     --%>
     <%-- --%>
-    <script src="../jslib/jquery.xmldom-1.0.js"></script>
+    <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.xmldom-1.0.js"></script>
 
     <script src="../plugins/perc_page_schema.js"></script>
     <script src="../plugins/perc_template_manager.js"></script>
@@ -146,7 +146,7 @@
     <script src="../plugins/perc_content_viewer.js"></script>
     <script src="../plugins/perc_contentEditDecorate.js"></script>
 
-    <script src="../jslib/jquery.jmodal.js"></script>
+    <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.jmodal.js"></script>
     <script src="../classes/perc_page_class.js"></script>
     <script src="../classes/perc_template_layout_class.js"></script>
     <script src="../plugins/perc_template_layout_helper.js"></script>
@@ -175,7 +175,7 @@
     <script src="../plugins/PercRevisionDialog.js"></script>
     <script src="../plugins/PercPublishingHistoryDialog.js"></script>
     <script src="../views/PercSiteImpactView.js"></script>
-    <script src="../jslib/timepicker.js"></script>
+    <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/timepicker.js"></script>
     <script src="../plugins/PercScheduleDialog.js"></script>
     <script src="../plugins/perc_ChangePwDialog.js"></script>
     <% } else { %>
@@ -196,7 +196,6 @@
     <script  >
         gDebug = <%= debug %>;
         $j(document).ready(function () {
-            //$j("#template_layout_root").template_layout();
             $j.Percussion.PercFinderView();
 
         });

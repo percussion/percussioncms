@@ -29,8 +29,8 @@
     var perc_utils = percJQuery.perc_utils;
     //On document ready replace the bookmarklet href with generated bookmarklet code and add the click event to the more info link.
     $(document).ready(function() {
-        $("#perc_linkback_anchor").attr("href",generateBookMarklet()).click(function(event){event.preventDefault();});
-        $("#perc_linkback_moreinfo_link").click(function(){displayMoreInfoDialog();});
+        $("#perc_linkback_anchor").attr("href",generateBookMarklet()).on("click",function(event){event.preventDefault();});
+        $("#perc_linkback_moreinfo_link").on("click",function(){displayMoreInfoDialog();});
     });
 
     /**
@@ -64,7 +64,7 @@
                 }
             },
             open:function(){
-                $(this).find("#perc_linkback_anchor").click(function(event){event.preventDefault();});
+                $(this).find("#perc_linkback_anchor").on("click",function(event){event.preventDefault();});
             },
             id: "perc-linkback-moreinfo-dialog",
             modal: true

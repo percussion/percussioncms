@@ -69,11 +69,11 @@
             var callbackOptions = {};
             
             
-            $.extend(this.settings, $.parseJSON($(this).attr('data-options')));
-			$.extend(this.settings.query, $.parseJSON($(this).attr('data-query')));
+            $.extend(this.settings, JSON.parse($(this).attr('data-options')));
+			$.extend(this.settings.query, JSON.parse($(this).attr('data-query')));
 			var rootElem = $("<div/>");
 			
-			if(this.settings.eventListLimitOverride > 0 && (this.settings.eventListLimitOverride != this.settings.maxEvents)){
+			if(this.settings.eventListLimitOverride > 0 && (this.settings.eventListLimitOverride !== this.settings.maxEvents)){
 			this.settings.maxEvents = this.settings.eventListLimitOverride;
 			}
 		

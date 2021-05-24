@@ -73,9 +73,9 @@
  *  (*) Dependencies
  *  /css/PercDropdown.css - overrides superfish's default styling to implement style guide
  *  /css/superfish.css
- *  /jslib/superfish.js
+ *  /jslib/profiles/3x/jquery/plugins/jquery-superfish/js/superfish.js
  *  /jslib/hoverIntent.js
- *  /jslib/PSJSUtils.js
+ *  /jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js
  *
  *  (*) Styling
  *  To style declare percDropdownRootClass in config and then use in your own CSS.
@@ -162,7 +162,7 @@
                 .css("cursor","default")
                 .html(labels[0]);
         } else {
-            var arrowClass = config.percDropdownRootClass ? config.percDropdownRootClass + "-split-button-arrow" : "perc-split-button-arrow"
+            var arrowClass = config.percDropdownRootClass ? config.percDropdownRootClass + "-split-button-arrow" : "perc-split-button-arrow";
             title
                 .html("&nbsp;")
                 .css("cursor","pointer")
@@ -186,12 +186,12 @@
             .addClass("perc-dropdown-title-"+labels[0])
             .data("callback", callbacks[0])
             .data("callbackData", callbackData[0])
-            .click(clickDropdown);
+            .on("click",clickDropdown);
 
         var dropdownOptionList = dropdown.find(".perc-dropdown-option-list");
         var dropdownOptionItemTemplate = dropdown.find(".perc-dropdown-option-item-template");
         var k = 0;
-        for(l=1; l<labels.length; l++){
+        for(let l=1; l<labels.length; l++){
             k = l;
             var dropdownOptionLabel = labels[l];
             var dropdownOptionItem = dropdownOptionItemTemplate.clone();
@@ -235,7 +235,7 @@
             dropdownOptionItem
                 .data("callback", callbacks[k])
                 .data("callbackData", callbackData[k])
-                .click(clickDropdown);
+                .on("click",clickDropdown);
         }
         dropdownOptionItemTemplate.remove();
         dropdown.superfish(config);
@@ -252,7 +252,7 @@
             $('ul.perc-dropdown-template-pages-items-dropdown > li > ul.perc-dropdown-option-list').css('max-height', '66px');
             $('ul.perc-dropdown-template-pages-items-dropdown > li > ul.perc-dropdown-option-list').css('overflow-y', 'auto');
         }
-    }
+    };
 
 
     /**

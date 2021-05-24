@@ -201,11 +201,13 @@ $.perc_editSiteSectionDialog = function() {
                 "</div>";
             dialog.find('#' + this.groupName).before(groupHtml);
             // The first group will be the only one expanded (hide all others)
-            index !== 0 && dialog.find('#' + this.groupName).hide();
+            if(index !== 0){
+                dialog.find('#' + this.groupName).hide();
+            }
         });
 
         // Bind collapsible event
-        dialog.find(".perc-section-label").unbind().click(function() {
+        dialog.find(".perc-section-label").off("click").on("click",function() {
             var self = $(this);
             self.find(".perc-min-max")
                 .toggleClass('perc-items-minimizer')
@@ -254,7 +256,7 @@ $.perc_editSiteSectionDialog = function() {
             $("#perc-site-login-page-label").removeClass('perc-required-field');
         }
         // Add Browse buttons functionality
-        $("#perc-site-login-page-browse").unbind().click(function(){
+        $("#perc-site-login-page-browse").off("click").on("click",function(){
             var dlgTitle = 'Select login page';
             var inputElemName = 'perc-site-login-page';
             handleBrowseButtonClick(dlgTitle, inputElemName );
@@ -336,34 +338,29 @@ $.perc_editSiteSectionDialog = function() {
             }
     });
 
-    // Commented out the Registration page value for now.
-    // $("#perc-site-registration-page-browse").click(function() {
-         // var dlgTitle = 'Select registration page';
-         // var inputElemName = 'perc-site-registration-page';
-         // handleBrowseButtonClick(dlgTitle, inputElemName );
-    // });
-    $("#perc-enable-canonical-url").click(function(){_handleCanonicalOption();});
+    $("#perc-enable-canonical-url").on("click",function(){_handleCanonicalOption();});
 
-    $("#perc-site-registration-confirmation-page-browse").click(function() {
+    $("#perc-site-registration-confirmation-page-browse").on("click",function() {
          var dlgTitle = 'Select registration confirmation page';
          var inputElemName = 'perc-site-registration-confirmation-page';
          handleBrowseButtonClick(dlgTitle, inputElemName );
     });
-    $("#perc-site-reset-pw-request-page-browse").click(function() {
+    $("#perc-site-reset-pw-request-page-browse").on("click",function() {
          var dlgTitle = 'Select password reset request page';
          var inputElemName = 'perc-site-reset-pw-request-page';
          handleBrowseButtonClick(dlgTitle, inputElemName );
     });
-    $("#perc-site-reset-password-page-browse").click(function() {
+    $("#perc-site-reset-password-page-browse").on("click",function() {
          var dlgTitle = 'Select password reset page';
          var inputElemName = 'perc-site-reset-password-page';
          handleBrowseButtonClick(dlgTitle, inputElemName );
     });
-    $("#perc-enable-site-security").unbind().click(function() {
+    $("#perc-enable-site-security").off("click").on("click", function() {
          _handleSecurityOption();
     });
-    $("#perc-site-login-page").bind('paste', function(evt){evt.preventDefault();})
-                .bind('keypress keydown', function(evt){
+
+    $("#perc-site-login-page").on('paste', function(evt){evt.preventDefault();})
+                .on('keypress keydown', function(evt){
                     if(evt.keyCode === 46 || evt.keyCode === 8 )
                     {
                         var field = evt.target;
@@ -383,7 +380,7 @@ $.perc_editSiteSectionDialog = function() {
    var $siteid = $('#perc-site-id');
    var $description = $('#perc-site-desc');
    var $loginPage = $('#perc-site-login-page');
-   //var $registrationPage = $('#perc-site-registration-page');
+
    var $registrationConfirmationPage = $('#perc-site-registration-confirmation-page');
    var $pwResetRequestPage = $('#perc-site-reset-pw-request-page');
    var $pwResetPage = $('#perc-site-reset-password-page');
@@ -403,7 +400,7 @@ $.perc_editSiteSectionDialog = function() {
           $("#perc-site-navigation-cssclassnames").val(props.cssClassNames);
           $siteid.val(props.id);
           $loginPage.val(props.loginPage);
-          //$registrationPage.val(props.registrationPage);
+
           $registrationConfirmationPage.val(props.registrationConfirmationPage);
           $pwResetRequestPage.val(props.resetRequestPasswordPage);
           $pwResetPage.val(props.resetPage);
@@ -455,7 +452,7 @@ $.perc_editSiteSectionDialog = function() {
             var writePrincipals = [];
             if(props.folderPermission.writePrincipals) {
                 writePrincipals = props.folderPermission.writePrincipals;
-                writePrincipals = $.isArray(writePrincipals) ? writePrincipals : [writePrincipals];
+                writePrincipals = Array.isArray(writePrincipals) ? writePrincipals : [writePrincipals];
             }
 
             //keep the original value to determine in the onsave event if the user change the secure site option.

@@ -184,8 +184,8 @@
             var $table = $('#perc-social-buttons-setup-editor');
 
             // Enables enter keyboard selection for the checkboxes
-            $('input:checkbox').keypress(function(e){
-              if((e.keyCode ? e.keyCode : e.which) == 13){
+            $('input:checkbox').on("keypress",function(e){
+              if((e.keyCode ? e.keyCode : e.which) === 13){
                 $(this).trigger('click');
               }
             });

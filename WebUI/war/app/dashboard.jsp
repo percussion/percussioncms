@@ -113,12 +113,13 @@
 
     <!-- CSS Includes -->
     <%@include file="includes/common_css.jsp" %>
+
     <link type="text/css" href="../css/perc_css_editor.css" rel="stylesheet"/>
     <link type="text/css" href="../css/styles.css" rel="stylesheet"/>
     <link type="text/css" href="../css/perc_template_layout.css" rel="stylesheet"/>
     <link type="text/css" href="../css/perc_mcol.css" rel="stylesheet"/>
     <link type="text/css" href="../css/perc_decoration.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/jquery.tooltip.css" rel="stylesheet"/>
+    <link type="text/css" href="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.tooltip.css" rel="stylesheet"/>
     <!-- Stuff needed for finder to work like Editor -->
     <link rel="stylesheet" type="text/css" href="../css/perc_newsitedialog.css"/>
     <link rel="stylesheet" type="text/css" href="../css/perc_new_page_button.css"/>
@@ -131,6 +132,13 @@
     <%@include file="includes/finder_js.jsp" %>
 
 
+    <!-- Start Dashboard CSS -->
+    <link type="text/css" href="../css/perc_mcol.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/styles.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/perc_newsitedialog.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/perc_new_page_button.css"/>
+    <link rel="../widgets/PercWizard/PercWizard.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/perc_ChangePw.css"/>
     <!-- Shindig { -->
     <link rel="stylesheet" type="text/css" media="screen" href="../gadgets/container/gadgets.css"/>
     <link rel="stylesheet" type="text/css" media="screen" href="../css/perc_dashboard.css"/>
@@ -139,32 +147,31 @@
     <link rel="stylesheet" type="text/css" media="screen" href="../css/perc_dashboard_IE.css"/>
     <![endif]-->
 
+    <!-- End Dashboard CSS -->
+    <!-- Start Dashboard JS -->
     <script src="../gadgets/js/rpc.js"></script>
     <script src="../gadgets/container/cookies.js"></script>
     <script src="../gadgets/container/util.js"></script>
     <script src="../gadgets/container/gadgets.js"></script>
     <script src="../gadgets/container/serverbaseduserprefstore.js"></script>
-    <!-- } Shindig -->
+
+
     <script src="../widgets/PercAutoScroll.js"></script>
-    <script src="../jslib/jquery.dynatree.js"></script>
-    <script src="../jslib/Jeditable.js"></script>
-    <script src="../jslib/PSJSUtils.js"></script>
-
-    <script src="../services/PercDashboardService.js"></script>
     <script src="../views/PercDashboard.js"></script>
-    <script src="../services/PercServiceUtils.js"></script>
-
     <script src="../services/perc_sectionServiceClient.js"></script>
-
-    <script src="../services/PercReusableSearchService.js"></script>
+    <script src="../services/PercServiceUtils.js"></script>
     <script src="../services/PercSiteService.js"></script>
     <script src="../services/PercFormService.js"></script>
+    <script src="../services/PercCookieConsentService.js"></script>
     <script src="../services/PercPathService.js"></script>
     <script src="../services/PercMetadataService.js"></script>
+    <script src="../services/PercDashboardService.js"></script>
     <script src="../services/PercActivityService.js"></script>
+    <script src="../services/PercReusableSearchService.js"></script>
     <script src="../widgets/PercWizard/PercWizard.js"></script>
     <script src="../plugins/perc_ChangePwDialog.js"></script>
-
+    <script src="../plugins/perc_newsitedialog.js"></script>
+<!-- End Dashboard JS -->
     <% } else { %>
     <link rel="stylesheet" type="text/css" href="../cssMin/perc_dashboard.packed.min.css"/>
 
@@ -186,33 +193,36 @@
     <script src="../jslibMin/perc_dashboard.packed.min.js"></script>
     <% } %>
     <script>
-        var fakeData = <%=fakeData%>;
-        var trafficScale = <%=trafficScale%>;
+        window.addEventListener('DOMContentLoaded', (event) => {
 
-        //Finder initialization code
-        $(document).ready(function () {
-            $.Percussion.PercFinderView();
+            var fakeData = <%=fakeData%>;
+            var trafficScale = <%=trafficScale%>;
 
-            // update bottom DIV on window resize
-            window.onresize = function () {
+            //Finder initialization code
+            $j(document).ready(function () {
+                $j.Percussion.PercFinderView();
 
-                // compute and dynamically set the size of the bottom DIV
-                // so that scrobars appear as needed
+                // update bottom DIV on window resize
+                window.onresize = function () {
+
+                    // compute and dynamically set the size of the bottom DIV
+                    // so that scrobars appear as needed
+                    fixBottomHeight();
+
+                    // mcol-path-summary is the input field right above the miller column. It shows the full path selected in the finder
+                    // the size should always be smaller than the enclosing DIV .perc-finder. Here we subtract 50px to make sure it is smaller
+                    //$perc-jquery("#mcol-path-summary").width($perc-jquery("#mcol-path-summary").parent().width() - ($perc-jquery("#mcol-path-summary").outerWidth(true) - $perc-jquery("#mcol-path-summary").width()) - $perc-jquery("#perc-finder-go-action").outerWidth(true) - 50);
+                };
+
+                // set bottom DIVs height at load time
                 fixBottomHeight();
 
-                // mcol-path-summary is the input field right above the miller column. It shows the full path selected in the finder
-                // the size should always be smaller than the enclosing DIV .perc-finder. Here we subtract 50px to make sure it is smaller
-                //$j("#mcol-path-summary").width($j("#mcol-path-summary").parent().width() - ($j("#mcol-path-summary").outerWidth(true) - $j("#mcol-path-summary").width()) - $j("#perc-finder-go-action").outerWidth(true) - 50);
-            };
-
-            // set bottom DIVs height at load time
-            fixBottomHeight();
-
-            dashOptions = {columns: ["columnWest", "columnCenter", "columnEast"]};
-            $dashboard = $.PercDashboard(dashOptions);
-            $dashboard.load("/Rhythmyx/services/dashboardmanagement/dashboard/", function () {
-                $dashboard.setupTray();
-                $dashboard.showSplashDialog();
+                dashOptions = {columns: ["columnWest", "columnCenter", "columnEast"]};
+                $dashboard = $j.PercDashboard(dashOptions);
+                $dashboard.load("/Rhythmyx/services/dashboardmanagement/dashboard/", function () {
+                    $dashboard.setupTray();
+                    $dashboard.showSplashDialog();
+                });
             });
         });
     </script>

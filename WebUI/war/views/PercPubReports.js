@@ -101,18 +101,19 @@
     disableDelete = function()
     {
         $j("#perc-publish-log-delete").addClass("perc-disabled");
-        $j("#perc-publish-log-delete").unbind('click');
+        $j("#perc-publish-log-delete").off('click');
     };
 
     //Helper function to enable delete button
     enableDelete = function()
     {
         $j("#perc-publish-log-delete").removeClass("perc-disabled");
-        $j("#perc-publish-log-delete").click(function()
+        $j("#perc-publish-log-delete").on("click", function(evt)
         {
             purgeLogs();
         });
-    }
+    };
+
     //Helper function to take care of the un/fold action
     FoldToggle = function(self, onFold)
     {
@@ -140,19 +141,19 @@
     publishCurrentSite = function()
     {
         var siteVal = siteName;
-        if (siteVal == "base")
+        if (siteVal === "base")
         {
             $.perc_utils.alert_dialog({
                 content: I18N.message("perc.ui.perc.pub.reports@Invalid Site"),
                 title: I18N.message("perc.ui.perc.pub.reports@Site Publish")
             });
-            $j("perc-manual-publish-widget").find("perc-foldable").click(FoldToggle(this));
+            $j("perc-manual-publish-widget").find("perc-foldable").on("click", FoldToggle(this));
             return true;
         }
         this.service = $j.PercPublisherService(false);
         this.service.publishSite(siteVal, function(status, result)
         {
-            if (result[1] == "success")
+            if (result[1] === "success")
             {
                 $.perc_utils.alert_dialog({
                     content: I18N.message("perc.ui.perc.pub.reports@Site") + siteVal + I18N.message("perc.ui.perc.pub.reports@Started Publishing"),
@@ -163,7 +164,7 @@
                 var foldable = $j("#perc-publish-jobs-widget").find(".perc-foldable");
                 if (!foldable.hasClass("perc-opened"))
                 {
-                    foldable.click();
+                    foldable.trigger("click");
                 }
                 else
                 {
@@ -444,7 +445,7 @@
 
                 var node = $j("#perc-view-detail-" + r);
                 node.data(_ROW_DATA_NAME, results[r]);
-                node.click(_handleViewDetails);
+                node.on("click",_handleViewDetails);
             }
 
             /************* Invoking dataTable plugin to make the columns sortable ****************************/
@@ -516,7 +517,7 @@
                         });
                     }
                     //Simulating consecutive click events on publish logs (to refresh)
-                    $j("#perc-publish-logs-widget").find(".perc-foldable").click().click();
+                    $j("#perc-publish-logs-widget").find(".perc-foldable").trigger("click").trigger("click");
                 });
             }
         };
@@ -533,9 +534,9 @@
                 renderLogs(result[0].SitePublishItem, publishRecord);
                 $j.fn.perc_toggle("#perc-publish-log-details-widget");
                 $j.fn.perc_toggle("#perc-publish-logs-widget");
-                if ($j("#perc-publish-log-details-widget").find(".perc-opened").length == 0)
+                if ($j("#perc-publish-log-details-widget").find(".perc-opened").length === 0)
                 {
-                    $j("#perc-publish-log-details-widget").find(".perc-foldable").click();
+                    $j("#perc-publish-log-details-widget").find(".perc-foldable").trigger("click");
                 }
             }
             else
@@ -682,9 +683,9 @@
             $("#perc-servers").append($('<option></option>').val(' ').html('All'));
             if (status)
             {
-                var serverProperties = $.parseJSON(result[0]);
+                var serverProperties = JSON.parse(result[0]);
                 var servers = [];
-                if (!$.isArray(serverProperties.serverInfo))
+                if (!Array.isArray(serverProperties.serverInfo))
                 {
                     servers.push(serverProperties.serverInfo);
                     servers = serverProperties.serverInfo;
@@ -735,7 +736,7 @@
     $j(document).ready(function()
     {
 
-        $j("#perc-publish-jobs-widget").find(".perc-foldable").click(function()
+        $j("#perc-publish-jobs-widget").find(".perc-foldable").on("click", function()
         {
             if ($j(this).hasClass("perc-opened"))
             {
@@ -746,16 +747,16 @@
                 startPublishCurrentStatus();
             });
         });
-        $j("#perc-publish-logs-widget").find(".perc-foldable").click(function()
+        $j("#perc-publish-logs-widget").find(".perc-foldable").on("click", function(evt)
         {
             FoldToggle(this, publishLogs);
             disableDelete();
         });
-        $j("#perc-publish-log-details-widget").find(".perc-foldable").click(function()
+        $j("#perc-publish-log-details-widget").find(".perc-foldable").on("click", function(evt)
         {
             FoldToggle(this);
         });
-        $j("#perc-publish-back").click(function()
+        $j("#perc-publish-back").on("click", function(evt)
         {
             $j.fn.perc_toggle("#perc-publish-log-details-widget");
             $j.fn.perc_toggle("#perc-publish-logs-widget");

@@ -49,24 +49,24 @@ function bindNavigationEvents() {
         }
     });
 
-    $('#percToggleNavigation').click(function() {
+    $('#percToggleNavigation').on("click", function() {
         toggleNavigation();
     });
 
-    $('.perc-toggle-about').click(function() {
+    $('.perc-toggle-about').on("click", function() {
         toggleAbout();
     });
 
-    $('.perc-toggle-password').click(function() {
+    $('.perc-toggle-password').on("click", function() {
         password.togglePassword();
         password.clearPasswordFields();
     });
 
-    $('.perc-change-password-field').keyup(function() {
+    $('.perc-change-password-field').on("keyup", function() {
         password.validateNewPassword();
     });
 
-    $('.perc-submit-password-change').click(function() {
+    $('.perc-submit-password-change').on("click", function() {
         password.submitNewPassword();
     });
 
@@ -99,12 +99,12 @@ function toggleNavigation() {
         $('#percNavigationBody').modal('_enforceFocus');
         navigationEscapeListener(true);
         $('#percNavigationBody').animateCss('slideInDown faster');
-        $('#percNavigationBody').focus();
+        $('#percNavigationBody').trigger("focus");
     }
     else {
         $('#percNavigationBody').animateCss('slideOutUp faster', function() {
             resetNavigation();
-            $('#percToggleNavigation').focus();
+            $('#percToggleNavigation').trigger("focus");
         });
     }
 }
@@ -139,7 +139,7 @@ function toggleAbout() {
             $('#percAbout').hide();
             $('#percNavigationBody').modal('_enforceFocus');
             navigationEscapeListener(true);
-            $('.perc-toggle-about').focus();
+            $('.perc-toggle-about').trigger("focus");
         });
     }
 }

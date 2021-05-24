@@ -57,10 +57,10 @@
         this.setView = setView;
 
         // choose column or list view
-        var chooseColumnView = $("#perc-finder-choose-columnview").click(setViewColumn);
-        var chooseListView = $("#perc-finder-choose-listview").click(setViewList);
-        var chooseSearchView = $("#perc-finder-search-submit").click(setViewSearch);
-        var chooseMyPagesView = $("#perc-finder-choose-mypagesview").click(setMyPagesView);
+        var chooseColumnView = $("#perc-finder-choose-columnview").on("click",setViewColumn);
+        var chooseListView = $("#perc-finder-choose-listview").on("click",setViewList);
+        var chooseSearchView = $("#perc-finder-search-submit").on("click",setViewSearch);
+        var chooseMyPagesView = $("#perc-finder-choose-mypagesview").on("click",setMyPagesView);
         setColumnViewButtonOn();
 
         // singleton to keep track of dirty state across various types of resources such as pages, templates and assets
@@ -97,12 +97,12 @@
             {
                 $("#perc-finder-item-search").attr('disabled', true);
                 $("#perc-finder-item-search").val("");
-                chooseSearchView.unbind("click");
+                chooseSearchView.off("click");
             }
             else
             {
                 $("#perc-finder-item-search").removeAttr('disabled');
-                chooseSearchView.click(setViewSearch);
+                chooseSearchView.on("click",setViewSearch);
             }
         };
 
@@ -114,11 +114,11 @@
         {
             if (disable)
             {
-                chooseListView.unbind("click");
+                chooseListView.off("click");
             }
             else
             {
-                chooseListView.click(setViewList);
+                chooseListView.on("click",setViewList);
             }
         };
 
@@ -135,16 +135,16 @@
         var pagingBar = "";
 
         // Bind the Enter key and Esc key on Input search field
-        $("#perc-finder-item-search").focus(function()
+        $("#perc-finder-item-search").on("focus",function()
         {
             $(this).css('color', '#FFFFFF').css('background-color', '#5a5d69');
-        }).bind('keyup', function(evt)
+        }).on('keyup', function(evt)
         {
             if (evt.keyCode === 13)
             {
-                $("#perc-finder-item-search").blur();
+                $("#perc-finder-item-search").trigger("blur");
                 performSearch();
-                $("#perc-finder-item-search").focus();
+                $("#perc-finder-item-search").trigger("focus");
                 evt.preventDefault();
                 evt.stopPropagation();
             }
@@ -267,15 +267,15 @@
             //Enable/disable navigation buttons
             //Check if have next items
             if ((totalResult - (startIndex - 1 + MAX_RESULTS)) > 0)
-                pagingBar.find('.perc-pagingbar-next').removeClass('perc-disabled-navigator').unbind('click').click(pageNext);
+                pagingBar.find('.perc-pagingbar-next').removeClass('perc-disabled-navigator').off('click').on("click",pageNext);
             else
-                pagingBar.find('.perc-pagingbar-next').addClass('perc-disabled-navigator').unbind('click');
+                pagingBar.find('.perc-pagingbar-next').addClass('perc-disabled-navigator').off('click');
 
             //Check if have previous items
             if (startIndex > MAX_RESULTS)
-                pagingBar.find('.perc-pagingbar-previous').removeClass('perc-disabled-navigator').unbind('click').click(pagePrevious);
+                pagingBar.find('.perc-pagingbar-previous').removeClass('perc-disabled-navigator').off('click').on("click",pagePrevious);
             else
-                pagingBar.find('.perc-pagingbar-previous').addClass('perc-disabled-navigator').unbind('click');
+                pagingBar.find('.perc-pagingbar-previous').addClass('perc-disabled-navigator').off('click');
         }
 
         //Attach the paging bar
@@ -361,7 +361,7 @@
                         {
                             if (content.PathItem.type === "Folder" || content.PathItem.type === "FSFolder")
                             {
-                                $(".perc-finder-menu #perc-finder-delete").removeClass('ui-enabled').addClass('ui-disabled').unbind('click');
+                                $(".perc-finder-menu #perc-finder-delete").removeClass('ui-enabled').addClass('ui-disabled').off('click');
                                 if (callback)
                                     callback();
                                 return;
@@ -374,7 +374,7 @@
                                 var selectedText = self.find('span').text();
                                 if (newPath === selectedText)
                                 {
-                                    self.parent().click();
+                                    self.parent().trigger("click");
                                     finder.scrollIntoView(self);
                                 }
                             });
@@ -702,13 +702,13 @@
                 {
                     $.PercIFrameView.renderAssetEditor(finder, null, assetEditorUrl, null, null, false);
                     addTransitionButtons("percAsset");
-                    $("#perc-revisions-button").unbind().perc_button().removeClass("ui-meta-pre-disabled").addClass("ui-meta-pre-enabled").click(function()
+                    $("#perc-revisions-button").off("click").perc_button().removeClass("ui-meta-pre-disabled").addClass("ui-meta-pre-enabled").on("click",function()
                     {
                         var isEditMode = $.PercNavigationManager.getMode() === $.PercNavigationManager.MODE_EDIT;
                         _openRevisions(assetId, aName, isEditMode);
                     });
 
-                    $("#perc-pubhistory-button").unbind().perc_button().removeClass("ui-meta-pre-disabled").addClass("ui-meta-pre-enabled").click(function()
+                    $("#perc-pubhistory-button").off("click").perc_button().removeClass("ui-meta-pre-disabled").addClass("ui-meta-pre-enabled").on("click",function()
                     {
                         _openPublishingHistory(assetId, aName);
                     });
@@ -958,7 +958,7 @@
                 {
                     var saveButton = '<button style="float: right;" name="perc_wizard_save" title="Save" class="btn btn-primary" id="perc-save-content">Save</button>';
                     $("#perc-content-menu").append($(saveButton));
-                    $("#perc-save-content").click(function()
+                    $("#perc-save-content").on("click",function()
                     {
                         var newAsset = !contentId || contentId == null;
                         if (!newAsset)
@@ -1007,7 +1007,7 @@
                     $.PercPathService.getPathItemForPath(currentContentPath, function(message, item)
                     {
                         var currentItem = item.PathItem;
-                        $("#perc-page-edit").data("currentItem", currentItem).click(function()
+                        $("#perc-page-edit").data("currentItem", currentItem).on("click",function()
                         {
                             var item = $(this).data("currentItem");
                             if ($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDITOR)
@@ -1034,7 +1034,7 @@
                 //Add close button, this will close the editor and switch to the dashboard
                 var closeButton = "<button class='btn btn-primary' id='perc-page-close'>" +I18N.message("perc.ui.change.pw@Close") + "</button>";
                 $("#perc-content-menu").append($(closeButton));
-                $("#perc-page-close").click(function()
+                $("#perc-page-close").on("click",function()
                 {
                     if (contentId)
                     {
@@ -1163,8 +1163,8 @@
                             percDropdownShowExpandIcon: false,
                             percDropdownResizeToElement: "#perc-dropdown-page-workflow"
                         });
-                        pageWorkflowDropdown.find('.perc-dropdown-title').unbind('click');
-                        pageWorkflowDropdown.children('a, button').click(function()
+                        pageWorkflowDropdown.find('.perc-dropdown-title').off('click');
+                        pageWorkflowDropdown.children('a, button').on("click",function()
                         {
                             dropdownActions[0](dropdownParams[0]);
                         });
@@ -1569,10 +1569,10 @@
             if (dialogFlag)
             {
                 $.PercScheduleDialog.open(itemId, assetName);
-                $(".ui-datepicker-trigger").click();
+                $(".ui-datepicker-trigger").trigger("click");
                 $("#ui-datepicker-div").css('z-index', 9501).css('display', 'none');
                 $("#ui-timepicker-div").css('z-index', 9501).css('display', 'none');
-                $("#perc-schedule-dialog-cancel").click();
+                $("#perc-schedule-dialog-cancel").trigger("click");
                 $.PercScheduleDialog.open(itemId, assetName);
                 dialogFlag = false;
             }

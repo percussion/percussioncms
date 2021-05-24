@@ -35,7 +35,7 @@
 			<xsl:with-param name="portal">yes</xsl:with-param>
 		</xsl:apply-templates>
 		<xsl:if test="$omitlink = ''">
-			<a class="Menu" href="javascript:void(0)" onclick="return true" onmousedown="PSEnterTopItem('{$actionsetid}',event)" onmouseout="PSExitTopItem('{$actionsetid}')">
+			<a class="Menu" href="javascript:void(0)" onclick="return true;" onmousedown="PSEnterTopItem('{$actionsetid}',event)" onmouseout="PSExitTopItem('{$actionsetid}')">
 				<img src="{$imagepath}/rxactionmenu.gif" border="0" align="absmiddle" alt="Action Menu"/>
 			</a>
 		</xsl:if>

@@ -37,9 +37,9 @@
 		</div>
 		<%@include file="/cm/app/includes/common_js.jsp" %>
 
-		<script src="/cm/jslib/jquery.timeago.js"></script>
-		<script src="/cm/jslib/jquery.getUrlParam.js"></script>
-		<script src="/cm/jslib/jquery.dataTables.FixedHeader.js"></script>
+		<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-timeago/jquery.timeago.js"></script>
+		<script src="/cm/jslib/war/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.getUrlParam.js"></script>
+		<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables-fixedheader/js/dataTables.fixedHeader.js"></script>
         <script src="/cm/widgets/PercDataTable.js"></script>
 		<script src="/cm/gadgets/repository/perc_comments_gadget/PercCommentsGadgetService.js"></script>
 		<script src="/cm/gadgets/repository/perc_comments_gadget/Perc_CommentsGadget_ViewComments.js"></script>
