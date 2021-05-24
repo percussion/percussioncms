@@ -25,6 +25,8 @@ package com.percussion.fastforward.calendar;
 
 import com.percussion.services.assembly.IPSAssemblyResult;
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MethodInvocationException;
@@ -59,6 +61,9 @@ import static org.junit.Assert.fail;
  */
 public class PSCalendarMonthModelTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSCalendarMonthModelTest.class);
+
     Mockery context = new Mockery();
 
     @Before
@@ -455,7 +460,8 @@ public class PSCalendarMonthModelTest
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 

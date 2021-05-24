@@ -33,6 +33,8 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSUrlUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,7 +42,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 
 /**
  * Defines methods to generate various types of assembly locations.
@@ -155,7 +156,8 @@ public class PSSiteFolderContentListLinkGenerator
       catch (MalformedURLException e)
       {
          // this exception should never occur
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new RuntimeException(e.toString());
       }
    }
@@ -237,7 +239,8 @@ public class PSSiteFolderContentListLinkGenerator
       catch (PSConversionException e)
       {
          log.error(this.getClass().getName(), e);
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       finally
       {
@@ -270,7 +273,8 @@ public class PSSiteFolderContentListLinkGenerator
       {
          // this exception should never occur
          log.error(this.getClass().getName(), e);
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new RuntimeException(e.toString());
       }
    }
@@ -321,10 +325,7 @@ public class PSSiteFolderContentListLinkGenerator
     */
    private IPSUdfProcessor m_generatorUDF = null;
 
-   /**
-    * Reference to Log4j singleton object used to log any errors or debug info.
-    */
-   private Logger log = Logger.getLogger(getClass());
+   private static final Logger log = LogManager.getLogger(PSSiteFolderContentListLinkGenerator.class);
 
    /**
     * String constant for the assembly generation UDF.

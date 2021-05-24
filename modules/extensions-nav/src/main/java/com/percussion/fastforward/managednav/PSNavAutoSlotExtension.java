@@ -41,7 +41,9 @@ import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlTreeWalker;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -105,12 +107,9 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
          IPSRequestContext req, Document resultDoc)
          throws PSParameterMismatchException, PSExtensionProcessingException
    {
-      ms_log.debug("Content id "
-            + req.getParameter(IPSHtmlParameters.SYS_CONTENTID)
-            + " Variant id "
-            + req.getParameter(IPSHtmlParameters.SYS_VARIANTID));
+      log.debug("Content id {} Variant id {} ", req.getParameter(IPSHtmlParameters.SYS_CONTENTID), req.getParameter(IPSHtmlParameters.SYS_VARIANTID));
 
-      ms_log.debug("User Session id " + req.getSecurityToken().getUserSessionId());
+      log.debug("User Session id {} ", req.getSecurityToken().getUserSessionId());
 
       try
       {
@@ -118,8 +117,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
          if (recurse != null && recurse instanceof Boolean
                && ((Boolean) recurse).booleanValue() == true)
          {
-            ms_log.error("Recursion violation in PSNavAutoSlot. Content Id="
-                  + req.getParameter(IPSHtmlParameters.SYS_CONTENTID));
+            log.error("Recursion violation in PSNavAutoSlot. Content Id= {} ", req.getParameter(IPSHtmlParameters.SYS_CONTENTID));
             //leave without adding any Navigation
             return resultDoc;
          }
@@ -141,7 +139,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
          }
          else
          {
-            ms_log.debug("Navon not found ");
+            log.debug("Navon not found ");
          }
 
          req.setPrivateObject(RECURSION_DETECT, null);
@@ -149,17 +147,18 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
       catch (PSNavException e)
       {
          req.printTraceMessage(e.getMessage());
-         ms_log.error("PSNavException found:" + e.getMessage());
-         ms_log.error(PSNavAutoSlotExtension.class, e);
+         log.error("PSNavException found: {}", e.getMessage());
+         log.error(PSNavAutoSlotExtension.class, e);
+         log.debug(e.getMessage(), e);
 
          throw new PSExtensionProcessingException(0, e.getMessage());
 
       }
       catch (Exception ex)
       {
-         ms_log.error("unexcepted exception");
-         ms_log.error(this.getClass().getName(), ex);
-         ex.printStackTrace();
+         log.error("unexcepted exception");
+         log.error(this.getClass().getName(), ex);
+         log.debug(ex.getMessage(), ex);
          throw new PSExtensionProcessingException(this.getClass().getName(), ex);
       }
 
@@ -181,34 +180,34 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
          throws PSNavException
    {
       String rxfolder = req.getParameter(IPSHtmlParameters.SYS_FOLDERID);
-      ms_log.debug("sys_folderid is " + rxfolder);
+      log.debug("sys_folderid is {} ", rxfolder);
       if (rxfolder == null || rxfolder.length() == 0)
       {
          rxfolder = req.getParameter("rx_folder");
-         ms_log.debug("rx_folder is " + rxfolder);
+         log.debug("rx_folder is {}", rxfolder);
       }
       if (rxfolder != null && rxfolder.length() > 0)
       {
-         ms_log.debug("folder id specifed is " + rxfolder);
+         log.debug("folder id specifed is {}", rxfolder);
          PSLocator folderLoc = new PSLocator(rxfolder);
          PSComponentSummary folderSummary = PSNavUtil.getItemSummary(req,
                folderLoc);
          if (folderSummary == null)
          {
-            ms_log.warn("rx_folder points to non-existant folder " + rxfolder);
+            log.warn("rx_folder points to non-existant folder {}", rxfolder);
             return null;
          }
          if (!folderSummary.isFolder())
          {
-            ms_log.warn("rx_folder points to an invalid folder " + rxfolder);
+            log.warn("rx_folder points to an invalid folder {}", rxfolder);
             return null;
          }
-         ms_log.debug("folder name is " + folderSummary.getName());
+         log.debug("folder name is {}", folderSummary.getName());
          PSNavFolder ourNav = PSNavFolderUtils.getNavParentFolder(req,
                folderSummary);
          if (ourNav == null)
          {
-            ms_log.debug("rx_folder does not contain a Navon");
+            log.debug("rx_folder does not contain a Navon");
             return null;
          }
          return ourNav.getNavonSummary();
@@ -257,17 +256,17 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
             .buildNavFolders(req, itemLoc);
       if (allFolders.isEmpty())
       { // no parent nav folders found
-         ms_log.debug("Item is not in any Nav folder");
+         log.debug("Item is not in any Nav folder");
          return null;
       }
       if (allFolders.size() == 1)
       {
-         ms_log.debug("Exactly 1 folder found");
+         log.debug("Exactly 1 folder found");
          ourFolder = allFolders.getFirst();
       }
       else
       {
-         ms_log.debug("Item found in " + allFolders.size() + " folders ");
+         log.debug("Item found in {}  folders ", allFolders.size());
          //find Site root -- use that to eliminate folders
          String siteId = req.getParameter(IPSHtmlParameters.SYS_SITEID);
          if (siteId != null && siteId.trim().length() > 0)
@@ -278,7 +277,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
             {
                if (siteRoot != null)
                {
-                  ms_log.debug("Found Site Root folder");
+                  log.debug("Found Site Root folder");
                   PSRelationshipProcessor relProxy = PSRelationshipProcessor.getInstance();
                   PSLocator siteLoc = siteRoot.getCurrentLocator();
                   String cType = PSRelationshipProcessorProxy.RELATIONSHIP_COMPTYPE;
@@ -288,13 +287,13 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
                   while (it.hasNext())
                   {
                      PSNavFolder tFolder = (PSNavFolder) it.next();
-                     ms_log.debug("Examining folder " + tFolder.getName());
+                     log.debug("Examining folder {}", tFolder.getName());
                      PSLocator lFolder = tFolder.getFolderSummary()
                            .getCurrentLocator();
                      if (relProxy.isDescendent(cType, siteLoc, lFolder,
                            PSRelationshipFilter.FILTER_NAME_FOLDER_CONTENT))
                      {
-                        ms_log.debug("Folder is a descendent of site");
+                        log.debug("Folder is a descendent of site");
                         siteFolders.add(tFolder);
                      }
                   }
@@ -310,10 +309,10 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
       }
       if (ourFolder != null)
       {
-         ms_log.debug("Selected folder is " + ourFolder.getName());
+         log.debug("Selected folder is {} ", ourFolder.getName());
          return ourFolder.getNavonSummary();
       }
-      ms_log.debug("No valid folder found");
+      log.debug("No valid folder found");
       return null;
    }
 
@@ -331,14 +330,14 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
    private void processSlots(IPSRequestContext req, PSComponentSummary navon,
          Document resultDoc, Document navonDoc) throws PSNavException
    {
-      ms_log.debug("processing slots");
+      log.debug("processing slots");
       //find the parent item
       PSLocator itemLoc = new PSLocator(req
             .getParameter(IPSHtmlParameters.SYS_CONTENTID), req
             .getParameter(IPSHtmlParameters.SYS_REVISION));
       PSComponentSummary itemSummary = PSNavUtil.getItemSummary(req, itemLoc);
 
-      ms_log.debug("Item name is " + itemSummary.getName());
+      log.debug("Item name is {}", itemSummary.getName());
 
       Map themeParams = buildThemeParams(req, navonDoc);
 
@@ -356,7 +355,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
          args[0] = new Integer(contentTypeId);
          args[1] = new Integer(variantId);
          String errMsg = MessageFormat.format(MSG_VARIANT, args);
-         ms_log.error(errMsg);
+         log.error(errMsg);
          return;
       }
       //list the slots on this variant
@@ -366,7 +365,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
       Element relatedContent = findRelatedContentElement(resultDoc);
       if (relatedContent == null)
       {
-         ms_log.warn("No related content, cannot process slots");
+         log.warn("No related content, cannot process slots");
          return;
       }
       String context = req.getParameter(IPSHtmlParameters.SYS_CONTEXT);
@@ -379,19 +378,19 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
       {
          PSVariantSlotType varSlot = (PSVariantSlotType) slots.next();
          int varSlotId = varSlot.getSlotId();
-         ms_log.debug("Processing Slot Id " + String.valueOf(varSlotId));
+         log.debug("Processing Slot Id {}", String.valueOf(varSlotId));
 
          //look for the slot in our set of nav slots.
          PSNavSlot navSlot = navSlots.getSlotById(varSlotId);
          if (navSlot != null)
          { // the slot is a nav slot
-            ms_log.debug("Processing Slot Name " + navSlot.getSlotName());
+            log.debug("Processing Slot Name {}", navSlot.getSlotName());
             Iterator navSlotVariants = navSlot.getVariantIterator();
             while (navSlotVariants.hasNext())
             {
                PSContentTypeVariant linkVar = (PSContentTypeVariant) navSlotVariants
                      .next();
-               ms_log.debug("Adding Variant " + linkVar.getName());
+               log.debug("Adding Variant {}", linkVar.getName());
 
                PSNavLink link = new PSNavLink();
                link.createLinkToDocument(req, navon, linkVar, themeParams);
@@ -402,7 +401,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
          } // if nav slot
          else
          { // this is not an error, we just skip over all other slots.
-            ms_log.debug("Not a Nav Slot");
+            log.debug("Not a Nav Slot");
          }
       } // while slot
 
@@ -423,7 +422,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
             ASSEMBLER_INFO_ELEM, true);
       if (assemblerInfo == null)
       { // no sys_AssemblerInfo element, can't go forward
-         ms_log.warn("No Assembler Info Element, cannot add Navigition Slots");
+         log.warn("No Assembler Info Element, cannot add Navigition Slots");
          return null;
       }
       Element relatedContent = walker.getNextElement(
@@ -431,7 +430,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
 
       if (relatedContent == null)
       {
-         ms_log.warn("No Related Content node... invalid document structure");
+         log.warn("No Related Content node... invalid document structure");
       }
 
       return relatedContent;
@@ -492,7 +491,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
    private static PSComponentSummary getSiteRoot(IPSRequestContext req,
          String siteId) throws PSNavException
    {
-      ms_log.debug("searching for site " + siteId);
+      log.debug("searching for site {}", siteId);
       try
       {
          Map smap = new HashMap();
@@ -500,29 +499,29 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
          IPSInternalRequest iq = req.getInternalRequest(SITEQUERY, smap, false);
          if (iq == null)
          {
-            ms_log.error("Site Query not found");
+            log.error("Site Query not found");
             throw new PSNavException("Site Query " + SITEQUERY + " not found ");
          }
          Document sdoc = iq.getResultDoc();
          if (sdoc == null)
          {
-            ms_log.error("Internal Request Error");
+            log.error("Internal Request Error");
             throw new PSNavException("Internal Request Error");
          }
 
          NodeList nl = sdoc.getElementsByTagName(SITE_ROOT_ELEM);
          if (nl.getLength() == 0)
          {
-            ms_log.error("Site not found " + siteId);
+            log.error("Site not found {}", siteId);
             return null;
          }
          String rootFolderName = PSXmlTreeWalker.getElementData(nl.item(0));
          if (rootFolderName == null || rootFolderName.trim().length() == 0)
          {
-            ms_log.warn("Site has no root folder " + siteId);
+            log.warn("Site has no root folder {}", siteId);
             return null;
          }
-         ms_log.debug("Site root is " + rootFolderName);
+         log.debug("Site root is {}", rootFolderName);
 
          PSRelationshipProcessor relProxy = PSRelationshipProcessor.getInstance();
 
@@ -531,8 +530,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
                PSRelationshipConfig.TYPE_FOLDER_CONTENT);
          if (rootFolder == null)
          {
-            ms_log.warn("Root Folder " + rootFolderName
-                  + " not found... check site configuration ");
+            log.warn("Root Folder {}  not found... check site configuration ", rootFolderName);
             return null;
          }
 
@@ -541,7 +539,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
       }
       catch (Exception ex)
       {
-         ms_log.error(PSNavAutoSlotExtension.class.getName(), ex);
+         log.error(PSNavAutoSlotExtension.class.getName(), ex);
       }
       return null;
    }
@@ -549,7 +547,7 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
    /**
     * Writes the log for debugging purposes.
     */
-   static Logger ms_log = Logger.getLogger(PSNavAutoSlotExtension.class);
+   private static final Logger log = LogManager.getLogger(PSNavAutoSlotExtension.class);
 
    /**
     * Local pointer to the singleton configuration instance.
