@@ -68,14 +68,13 @@ while(en.hasMoreElements())
 %>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<script src="/cm/jslib/profiles/3x/jquery/jquery-3.0.6.js"></script>
-<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
-<script src="image_editor_files/form.js"></script>
-<script src="image_editor_files/rotate.js"></script>
-<script src="image_editor_files/iutil.js"></script>
-<script src="image_editor_files/iresizable.js"></script>
-<script src="image_editor_files/image_editor_general.js"></script>
-<script>
+<script type="text/javascript" src="image_editor_files/jquery.js"></script>
+<script type="text/javascript" src="image_editor_files/form.js"></script>
+<script type="text/javascript" src="image_editor_files/rotate.js"></script>
+<script type="text/javascript" src="image_editor_files/iutil.js"></script>
+<script type="text/javascript" src="image_editor_files/iresizable.js"></script>
+<script type="text/javascript" src="image_editor_files/image_editor_general.js"></script>
+<script type="text/javascript">
 	var warningEditorClose = 'Are you sure you want to close the window?';
 	
 	var imageHistory = false;
