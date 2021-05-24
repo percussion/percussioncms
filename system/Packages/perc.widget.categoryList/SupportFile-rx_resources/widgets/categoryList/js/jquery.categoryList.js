@@ -213,7 +213,7 @@
                          var checked = $.inArray(tpl.id,pageTemplatesOptionsArray) == -1?"":" checked ='true' ";
                          $("#perc-pagetemplates-container").append($("<div class='perc-pagetemplates-entry'><input type='checkbox' class='perc-pagetemplates-chkbox'" + checked + " value='" + tpl.id + "'></input><span title='"+ tpl.name +"'>" + tpl.name + "</span></div>"));
                      }
-                     $(".perc-pagetemplates-chkbox").change(function(){    
+                     $(".perc-pagetemplates-chkbox").on("change",function(){
                          var pts = getPageTemplates();
                          pts = pts?pts:"";
                          $('[name="page_templates_list"]').val(pts);
@@ -266,7 +266,7 @@
                  var siteName = null;
                  if(folderPath && folderPath.indexOf("//Sites/")>-1)
                  {
-                     var siteName = folderPath.substring(("//Sites/").length);
+                     siteName = folderPath.substring(("//Sites/").length);
                      if(siteName.indexOf("/")>-1)
                         siteName = siteName.substring(0,siteName.indexOf("/"));
                  }
@@ -274,12 +274,12 @@
             }
             //Callbacks Event Code
     
-            $('#perc-content-edit-title_contains').change(function(){
+            $('#perc-content-edit-title_contains').on("change",function(){
                 buildQuery();
             });    
     
             //Build query if mouse leaves the form, i.e when the user goes to click on the save button which is not part of the iframe
-            $('#perc-content-form').mouseleave(function(){
+            $('#perc-content-form').on("mouseleave",function(){
                 buildQuery();
             });
     
@@ -291,21 +291,19 @@
                 //Set display date range
                 setDisplayDate($('[name="start_date"]').val(),"display_start_date");
                 setDisplayDate($('[name="end_date"]').val(),"display_end_date");        
-                $("#display_title_contains").val($('[name="title_contains"]').val());
-				$("#display_category_page_result").val($('[name="category_page_result"]').val());
-				
-				$("#display_category_page_result").blur(function(){
+
+				$("#display_category_page_result").val($('[name="category_page_result"]').val())
+                .on("blur",function(){
+                    $('[name="category_page_result"]').val($("#display_category_page_result").val());
+                }).on("change",function(){
                     $('[name="category_page_result"]').val($("#display_category_page_result").val());
                 });
-                $("#display_category_page_result").change(function(){
-                    $('[name="category_page_result"]').val($("#display_category_page_result").val());
-                });
-				
-                $("#display_title_contains").blur(function(){
+                $("#display_title_contains").val($('[name="title_contains"]').val())
+                .on("blur",function(){
                     $('[name="title_contains"]').val($("#display_title_contains").val());
                     buildQuery();
-                });
-                $("#display_title_contains").change(function(){
+                })
+                .on('change', function(){
                     $('[name="title_contains"]').val($("#display_title_contains").val());
                     buildQuery();
                 });
@@ -314,8 +312,8 @@
                 showSites();
                 
                 //Handle the results page browse button click
-                $("#perc_categorylist_resultspage_browse").click(function(){
-                     var dlgTitle = "Select Results Page"
+                $("#perc_categorylist_resultspage_browse").on("click",function(){
+                     var dlgTitle = "Select Results Page";
                      var inputElemId = "display_category_page_result";
                      handleBrowseButtonClick(dlgTitle, inputElemId );               
                 });
@@ -376,8 +374,7 @@
         //Function to handle click on browse button.
         function handleBrowseButtonClick(dlgTitle, inputElemId)
         {
-            $.perc_browser
-                    ({ 
+            $.perc_browser({
                         on_save: function(spec, closer, show_error)
                         {
                             var pagePath = spec.path;

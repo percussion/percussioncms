@@ -99,7 +99,7 @@
                     });
                     
             function _save(){
-            $("#perc-wfstep-save").unbind();
+            $("#perc-wfstep-save").off();
                 saveData(isUpdate, workflowName, workflowStep, previousStepName, function(){
                     _remove();  
                     successCallBack();
@@ -138,17 +138,17 @@
             $(roleHeaderRow).append(roleHeader);
             var stepPermissions = workflowStep.permissionNames;
             var tempNotify = ["Notify"];
-            if(!$.isArray(stepPermissions))
+            if(!Array.isArray(stepPermissions))
             {
                 var tempArray = [];
                 tempArray.push(stepPermissions);
                 stepPermissions = tempArray;
             }
-            
+            var possiblePermissions;
             if(isUpdate)
-                var possiblePermissions = stepPermissions.concat(tempNotify);    
+                possiblePermissions = stepPermissions.concat(tempNotify);
             else              
-                var possiblePermissions = $.PercEditWorkflowStepDialog().tempPossiblePermissions;
+                possiblePermissions = $.PercEditWorkflowStepDialog().tempPossiblePermissions;
                 
             $.each(possiblePermissions, function(index){
                 var roleHeader = $('<th>' + this + '</th>');
@@ -174,24 +174,25 @@
                 
                 for(var j=0; j<possiblePermissions.length; j++){
                     var roleRowElement = $('<td></td>');
+                    var checkbox;
                     // Check and disabled the Submit, Reject and Approve transistions for Admin and Designer roles
                     if(isReadOnly && j!== possiblePermissions.length - 1 ){
-                        var checkbox = $('<input type="checkbox" checked="true" disabled="true" />');
+                        checkbox = $('<input type="checkbox" checked disabled />');
                     }else{
-                        var checkbox = $('<input type="checkbox" />');
+                        checkbox = $('<input type="checkbox" />');
                     }
                     
                     // Keep the Notify box for Admin enabled and uncheck by default while disabled and uncheck for all other Roles.
                     if((possiblePermissions[j] === "Notify" || possiblePermissions[j] === "Publish") && !isReadOnly) {
-                       $(checkbox).attr('disabled', true)
+                       $(checkbox).prop('disabled', true);
                     }
                     //Bind the click even to the checkboxes
-                    $(checkbox).click(function() {
+                    $(checkbox).on("click", function(evt) {
                         updateNotification($(this), $(this).parent().parent());
                     });
                     $(roleRowElement).append(checkbox);
-                    $(roleRowElement).attr('class', generateColumnId(j+1));
-                    $(roleRowElement).attr('class', 'perc-'+ possiblePermissions[j].toLowerCase());
+                    $(roleRowElement).prop('class', generateColumnId(j+1));
+                    $(roleRowElement).prop('class', 'perc-'+ possiblePermissions[j].toLowerCase());
                     $(roleRow).append(roleRowElement);
                 }
                 $(roleTableBody).append(roleRow);
@@ -224,7 +225,7 @@
         function updatePermissions(workflowStep) {
             $("#perc-wfstep-name").val(workflowStep.stepName);
             var stepRoles = workflowStep.stepRoles;
-            if(!$.isArray(stepRoles))
+            if(!Array.isArray(stepRoles))
             {
                 var tempArray = [];
                 tempArray.push(stepRoles);
@@ -259,13 +260,13 @@
                 var column = this;
                 var className = $(column).attr('class');
                 className = className.replace('perc-','');
-                if(!$.isArray(roleTransitions))
+                if(!Array.isArray(roleTransitions))
                 {
                     var tempArray = [];
                     tempArray.push(roleTransitions);
                     roleTransitions = tempArray;
                 }
-                for (i=0; i<roleTransitions.length; i++) {
+                for (let i=0; i<roleTransitions.length; i++) {
                     var tempName = roleTransitions[i];
                     tempName = tempName.transitionPermission.toLowerCase();
                     if(className === tempName){
@@ -378,14 +379,14 @@
                  $.PercWorkflowService().updateWorkflowStep(workflowName, previousStepName, stepObj, function(status, result) {
                     if(status)
                     {
-                        $("#perc-wfstep-save").click(function() {                        
+                        $("#perc-wfstep-save").on("click", function(evt) {
                             _save();
                         });
                         successCallback();
                     }
                     else
                     {
-                        $("#perc-wfstep-save").click(function() {                        
+                        $("#perc-wfstep-save").on("click", function(evt) {
                             _save();
                         });
                         var errorMessage = $.PercServiceUtils.extractDefaultErrorMessage(result[0]);
@@ -400,14 +401,14 @@
                 $.PercWorkflowService().createNewWorkflowStep(workflowName, stepName, stepObj, function(status, result) {
                     if(status)
                     {
-                        $("#perc-wfstep-save").click(function() {                        
+                        $("#perc-wfstep-save").on("click",function(evt) {
                             _save();
                         });
                         successCallback();
                     }
                     else
                     {
-                        $("#perc-wfstep-save").click(function() {                        
+                        $("#perc-wfstep-save").on("click", function(evt) {
                             _save();
                         });
                         var errorMessage = $.PercServiceUtils.extractDefaultErrorMessage(result[0]);

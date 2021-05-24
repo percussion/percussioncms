@@ -5505,7 +5505,7 @@ $.widget( "ui.accordion", {
 		self.active.next().addClass( "ui-accordion-content-active" );
 
 		self._createIcons();
-		self.resize();
+		self.trigger("resize");
 		
 		// ARIA
 		self.element.attr( "role", "tablist" );
@@ -9126,7 +9126,7 @@ $.widget("ui.dialog", {
 			self._trigger('close', event);
 		}
 
-		$.ui.dialog.overlay.resize();
+		$.ui.dialog.overlay.trigger("resize");
 
 		// adjust the maxZ to allow other modal dialogs to continue to work (see #4309)
 		if (self.options.modal) {
@@ -9306,7 +9306,7 @@ $.widget("ui.dialog", {
 					ui.position.top - doc.scrollTop()];
 				$(this).removeClass("ui-dialog-dragging").height(heightBeforeDrag);
 				self._trigger('dragStop', event, filteredUi(ui));
-				$.ui.dialog.overlay.resize();
+				$.ui.dialog.overlay.trigger("resize");
 			}
 		});
 	},
@@ -9353,7 +9353,7 @@ $.widget("ui.dialog", {
 				options.height = $(this).height();
 				options.width = $(this).width();
 				self._trigger('resizeStop', event, filteredUi(ui));
-				$.ui.dialog.overlay.resize();
+				$.ui.dialog.overlay.trigger("resize");
 			}
 		})
 		.css('position', position)

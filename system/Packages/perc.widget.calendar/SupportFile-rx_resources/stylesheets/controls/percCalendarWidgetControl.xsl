@@ -51,14 +51,14 @@
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 <!-- JavaScript -->
-         <psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-                <psxctl:FileLocation>../../cm/jslib/Jeditable.js</psxctl:FileLocation>
+            <psxctl:FileDescriptor name="jquery.jeditable.js" type="script" mimetype="text/javascript">
+                <psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js</psxctl:FileLocation>
                 <psxctl:Timestamp/>
-        </psxctl:FileDescriptor>
-         <psxctl:FileDescriptor name="PSJSUtils.js" type="script" mimetype="text/javascript">
-                <psxctl:FileLocation>../../cm/jslib/PSJSUtils.js</psxctl:FileLocation>
+            </psxctl:FileDescriptor>
+            <psxctl:FileDescriptor name="jquery.percutils.js" type="script" mimetype="text/javascript">
+                <psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js</psxctl:FileLocation>
                 <psxctl:Timestamp/>
-        </psxctl:FileDescriptor>
+            </psxctl:FileDescriptor>
         <psxctl:FileDescriptor name="perc_path_constants.js" type="script" mimetype="text/javascript">
             <psxctl:FileLocation>../../cm/plugins/perc_path_constants.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
@@ -118,7 +118,7 @@
                }
 
             //Handle the results page browse button click
-                $("#perc_querylist_resultspage_browse").click(function(){
+                $("#perc_querylist_resultspage_browse").on("click",function(){
                      var dlgTitle = "Select Full Calendar Page"
                      var inputElemId = "full_calendar_page";
                      handleBrowseButtonClick(dlgTitle, inputElemId );

@@ -155,7 +155,7 @@
                     .append($('<div id="perc-assign-workflow-sites-expander" style="display: inline;"></div>')
                         .append($('<div id="perc-assign-workflow-sites-title-span" class="perc-assign-workflow-expander-image collapsed">&nbsp;</div>'))
                         .append('<span>' + I18N.message("perc.ui.assign.workflow@Sites Collapsible Panel") + '</span>')
-                        .click(function() {
+                        .on("click",function() {
                             $("#perc-assign-workflow-sites-tree-wrapper").toggle();
                             $("#perc-assign-workflow-sites-title-span").toggleClass('collapsed');
                             swapShowInfoSpans("sites");
@@ -178,7 +178,7 @@
                     .append($('<div id="perc-assign-workflow-assets-expander" style="display: inline;"></div>')
                         .append($('<div id="perc-assign-workflow-assets-title-span" class="perc-assign-workflow-expander-image collapsed">&nbsp;</div>'))
                         .append('<span> ' + I18N.message("perc.ui.assign.workflow@Assets Collapsible Panel") + ' </span>')
-                        .click(function() {
+                        .on("click",function() {
                             $("#perc-assign-workflow-assets-tree-wrapper").toggle();
                             $("#perc-assign-workflow-assets-title-span").toggleClass('collapsed');
                             swapShowInfoSpans("assets");
@@ -371,7 +371,7 @@
         {
             var newSpan = $('<span />')
                 .addClass("dynatree-custom-checkbox")
-                .click(function(eventHandler){
+                .on("click",function(eventHandler){
                     if (!$(eventHandler.currentTarget).hasClass("dynatree-custom-checkbox-disabled"))
                     {
                         $(eventHandler.currentTarget).toggleClass("dynatree-custom-checkbox-selected");

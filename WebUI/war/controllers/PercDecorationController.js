@@ -123,7 +123,7 @@
 
         function addClicks() {
             
-            allElements().unbind('click.decorate').bind( 'click.decorate', function(evt) {
+            allElements().off('click.decorate').on( 'click.decorate', function(evt) {
                 
                 // unselect the other decorator if this is selected
                 if(otherDecorator != null)
@@ -153,7 +153,7 @@
                 var checkLock = $(this).hasClass('perc-locked');
                 if(!checkLock)
                 {    
-                    $(this).unbind('dblclick.decorate').bind( 'dblclick.decorate', function(evt) {
+                    $(this).off('dblclick.decorate').on( 'dblclick.decorate', function(evt) {
                        evt.stopPropagation();
                        if ( _dblclickItem )
                        {
@@ -177,7 +177,7 @@
 
         function removeClicks()
         {
-            allElements().unbind( '.decorate' );
+            allElements().off( '.decorate' );
         }
 
         function addDecorations()
@@ -248,14 +248,14 @@
                 .attr("title", tooltip); 
              if(isInactive)
                 icon.css("cursor", "default");     
-             icon.click( function()
+             icon.on("click", function()
              {
                  item.callback( elem );
              });
-             icon.bind("mouseenter", function(){
+             icon.on("mouseenter", function(){
                 $(this).attr("src", overImg);
              }).
-                bind("mouseleave", function(){
+                on("mouseleave", function(){
                    $(this).attr("src", normalImg);
                 });
              menu.append( icon );

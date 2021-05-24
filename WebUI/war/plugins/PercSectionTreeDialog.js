@@ -173,7 +173,7 @@
                     children = sectionNode.childNodes;
                 }
                 var ulItem = $("<ul/>");
-                if($.isArray(children))
+                if(Array.isArray(children))
                 {
                     var len = children.length;
                     for(var i = 0; i < len; i++)

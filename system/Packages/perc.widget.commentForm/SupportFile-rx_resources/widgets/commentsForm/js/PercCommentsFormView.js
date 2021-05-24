@@ -170,13 +170,13 @@
     function initiActionButtons() {
     
             //Attach event to Edit button
-        $(".toggle-editor").live("click", function(){
+        $(document).on("click", ".toggle-editor",function(){
         
             // Deactivate old extended editor, since we can only have one active at a time.
             var extEditorElem = $("." + $.PercFormConstants.FIELD_EDITOR_EXT_CLASS);
             if (extEditorElem.length)
                 deactivateEditor(extEditorElem);
-            $(".defaultFocus").focus();
+            $(".defaultFocus").trigger("focus");
             
             var parent = $(this).parent().parent();
             var newElem = $.PercCommentsFormController().toggleFieldEditor(parent);
@@ -187,22 +187,16 @@
             }
             addConfig(newElem, isComment);        
             newElem = parent.parent().replaceWith(newElem);
-            $(".defaultFocus").focus();
+            $(".defaultFocus").trigger("focus");
             fieldType = parent.attr('type');
             if(fieldType === 'PercTextFieldControl') {
                 tinymce.EditorManager.execCommand('mceAddEditor', true, 'elm1');
             }
-
-             if($.browser.msie) {
-                 $("input[type = 'text']").css('height', '11px');
-             }
-             else {
-                 $("input[type = 'text']").css('height', 'auto');
-             }        
+            $("input[type = 'text']").css('height', 'auto');
         });
         
         //Attch event to Delete button
-        $(".delete-field").live("click", function() {
+        $(document).on("click",".delete-field", function() {
             if(tinymce.EditorManager.get('elm1') && $(this).parent().parent().children('#elm1').length > 0){                
                 tinymce.EditorManager.execCommand('mceRemoveEditor', true, 'elm1');
             } 
@@ -237,7 +231,7 @@
         });
    
         //Attach event to Configure button
-        $(".toggle-configure").live("click", function(){
+        $(document).on("click",".toggle-configure", function(){
             var controlWrapper = $(this).parent().parent().parent();
             var controlEl = $(this).parent().parent();
             var control = $.PercCommentsFormController().getControl(controlEl);           
@@ -245,13 +239,14 @@
         });
         
         //Toggle the control menu button on click event 
-        $("#perc-control-menu-button").click(function(){
+        $("#perc-control-menu-button").on("click",function(){
             $("#perc-control-menu-wrapper").show();
             $(this).hide();              
         });
         
         //Add mouse out and over event to control menu items        
-        $("#perc-control-menu-wrapper").unbind().hover(function(){},function() {
+        $("#perc-control-menu-wrapper").on("mouseenter",function(){})
+            .on("mouseleave",function() {
            $("#perc-control-menu-button").show();
            $(this).hide();
         });
@@ -263,7 +258,7 @@
     */
     function mouseActionOnMenu() {
     
-        $(".perc-control-label").mouseover(function() {
+        $(".perc-control-label").on("mouseenter",function(evt) {
             var bgimage = $(this).css('background-image');
             var fieldClass = $(this).attr('class');
             if(fieldClass.indexOf('disable') !== -1) {
@@ -278,7 +273,7 @@
                         'color':'83A9BB',
                         'background-image':bgimage,
                         'border-bottom':'1px solid #99C4D8'});       
-        }).mouseout(function(){
+        }).on("mouseleave",function(){
             var bgimage = $(this).css('background-image');
              bgimage = bgimage.replace(".png", ".png");
             var fieldClass = $(this).attr('class');
@@ -318,7 +313,7 @@
             var newElem = $.PercCommentsFormController().getNewFieldEditor(controlType);
             addEvents(newElem);
             $("#perc-form-dnd-fields").append(newElem);
-            newElem.find(".toggle-editor").click();
+            newElem.find(".toggle-editor").trigger("click");
             $("iframe").scrollTop(20000);                
     }
     
@@ -327,37 +322,37 @@
      */
     function onClickMenu() {
         //Add Text field
-        $(".form-text-label").click(function(){
+        $(".form-text-label").on("click",function(){
             var newElem = $.PercCommentsFormController().getNewFieldEditor("PercTextFieldControl");
             addEvents(newElem);
             $("#perc-form-dnd-fields").append(newElem);
-            newElem.find(".toggle-editor").click();
+            newElem.find(".toggle-editor").trigger("click");
             $("iframe").scrollTop(20000);
             tinymce.EditorManager.execCommand('mceAddEditor', true, 'elm1');
         });
         
         //Add URL Field
-        $(".form-website-label").click(function(){
+        $(".form-website-label").on("click",function(){
             deactivateMenuItem("form-website-label" , "PercURLFieldControl");
         });
         
         //Add Email field
-        $(".form-email-label").click(function(){
+        $(".form-email-label").on("click",function(){
             deactivateMenuItem("form-email-label" , "PercEmailFieldControl");
         });
         
         //Add Title field
-        $(".form-title-label").click(function(){
+        $(".form-title-label").on("click",function(){
             deactivateMenuItem("form-title-label" , "PercTitleFieldControl");
         });
         
         //Add Username field
-        $(".form-username-label").click(function(){
+        $(".form-username-label").on("click",function(){
             deactivateMenuItem("form-username-label" , "PercUserFieldControl");
         });
 
         //Add Honeypot field
-        $(".form-honeypot-label").click(function(){
+        $(".form-honeypot-label").on("click",function(){
             deactivateMenuItem("form-honeypot-label" , "PercHoneypotFieldControl");
         });
 
@@ -452,7 +447,7 @@
         var extEditorElem = $("." + $.PercFormConstants.FIELD_EDITOR_EXT_CLASS);
         if (extEditorElem.length)
             deactivateEditor(extEditorElem);
-        $(".defaultFocus").focus();
+        $(".defaultFocus").trigger("focus");
         var success = true;
 
         var formData = $.PercCommentsFormController().getFormData($("."+$.PercFormConstants.FORM_CLASS));
@@ -525,7 +520,7 @@
         {         
             preferences[i].pref.addControl(container, preferenceVals[preferences[i].pref.name], preferences[i].defaults);         
         }
-        $("#perc-field-prefs-apply").unbind().bind('click', function(){
+        $("#perc-field-prefs-apply").off("click").on('click', function(){
             for(i = 0; i < preferences.length; i++)
             {
                 preferenceVals[preferences[i].pref.name] = preferences[i].pref.onApply(preferenceVals,  preferences[i].defaults);         

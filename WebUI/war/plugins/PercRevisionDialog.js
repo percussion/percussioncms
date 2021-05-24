@@ -97,7 +97,7 @@
                 height:490
             };
 
-            percDialogObject.percButtons["Close"] = {
+            percDialogObject.percButtons.Close = {
                         click: function(){
                             dialog.remove();
                             },
@@ -141,7 +141,7 @@
         function addRevisionRows(revisionData)
         {
             var revSummary = revisionData.RevisionsSummary;
-            var revisions = $.isArray(revSummary.revisions)?revSummary.revisions:[revSummary.revisions];
+            var revisions = Array.isArray(revSummary.revisions)?revSummary.revisions:[revSummary.revisions];
             var itemCount = revisions.length;
             var isRestorable = revSummary.restorable;
             var restorableIcon = isRestorable?"restore.png":"restoreInactive.png";
@@ -176,7 +176,7 @@
                 $tbody.append($rowHTML);
             }
             var iType = itemType;
-            $("#revisionsTable").find(".perc-revisions-preview-img").click(function(){
+            $("#revisionsTable").find(".perc-revisions-preview-img").on("click",function(){
                 var revId = $(this).attr("revId");
                 if(iType === $.PercRevisionDialog.ITEM_TYPE_PAGE)
                 {
@@ -191,24 +191,24 @@
                    var eMsg = "Cannot preview unknown type.";
                    $.perc_utils.alert_dialog({title: 'Error', content: eMsg});
                 }
-            }).bind("mouseenter", function(){
+            }).on("mouseenter", function(){
                 $(this).attr("src", "/cm/images/icons/editor/previewOver.png");
             })
-               .bind("mouseleave", function(){
+               .on("mouseleave", function(){
                $(this).attr("src", "/cm/images/icons/editor/preview.png");
             });
             
             //Hanlde restore click events and icon hover events if the item is restorable
             if(isRestorable)
             {
-                $("#revisionsTable").find(".perc-revisions-restore-img").click(function(){
+                $("#revisionsTable").find(".perc-revisions-restore-img").on("click",function(){
                     var revId = $(this).attr("revId");
                     $.PercRevisionService.restoreRevision(itemId,revId,afterRestore);
                 })
-                .bind("mouseenter", function(){
+                .on("mouseenter", function(){
                     $(this).attr("src", "/cm/images/icons/editor/restoreOver.png");
                 })
-                   .bind("mouseleave", function(){
+                   .on("mouseleave", function(){
                    $(this).attr("src", "/cm/images/icons/editor/restore.png");
                 });
             }

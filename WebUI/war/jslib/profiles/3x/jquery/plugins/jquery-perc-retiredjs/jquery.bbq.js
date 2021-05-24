@@ -376,7 +376,7 @@
           // Simple key, even simpler rules, since only scalars and shallow
           // arrays are allowed.
           
-          if ( $.isArray( obj[key] ) ) {
+          if ( Array.isArray( obj[key] ) ) {
             // val is already an array, so push on the next value.
             obj[key].push( val );
             
@@ -735,7 +735,7 @@
       
       // For each passed key, delete the corresponding property from the current
       // state.
-      $.each( $.isArray( arr ) ? arr : arguments, function(i,v){
+      $.each( Array.isArray( arr ) ? arr : arguments, function(i,v){
         delete state[ v ];
       });
     }

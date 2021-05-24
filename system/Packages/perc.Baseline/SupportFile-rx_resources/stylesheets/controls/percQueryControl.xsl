@@ -64,11 +64,11 @@
 
 			<!-- JavaScript -->
 			<psxctl:FileDescriptor name="jquery-ui.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery-ui.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
-			<psxctl:FileDescriptor name="PSJSUtils.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/PSJSUtils.js</psxctl:FileLocation>
+			<psxctl:FileDescriptor name="jquery.percutils.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_path_constants.js" type="script" mimetype="text/javascript">
@@ -80,28 +80,28 @@
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.layout.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.layout.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-layout/jquery.layout_and_plugins.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.metadata.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.metadata.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.metadata.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="tools.scrollable-1.1.2.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/tools.scrollable-1.1.2.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="tools.scrollable.mousewheel-1.0.1.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/tools.scrollable.mousewheel-1.0.1.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.validate.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.validate.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-validation/jquery.validate.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<!-- SimpleDateFormat JS-->
 			<psxctl:FileDescriptor name="date.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/date.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/libraries/perc-retiredjs/date.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_extend_jQueryValidate.js" type="script" mimetype="text/javascript">
@@ -113,16 +113,16 @@
 				<psxctl:FileLocation>../../cm/plugins/perc_path_manager.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
-			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.dynatree.js</psxctl:FileLocation>
+			<psxctl:FileDescriptor name="jquery.dynatree.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
-			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.text-overflow.js</psxctl:FileLocation>
+			<psxctl:FileDescriptor name="jquery.text-overflow.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
-			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/Jeditable.js</psxctl:FileLocation>
+			<psxctl:FileDescriptor name="jquery.jeditable.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
@@ -165,7 +165,7 @@
 			// *********************************************************************
 			//This will be set from the widget config $date_format (set by velocity)
 			// *********************************************************************
-			$(this).focus();
+			$(this).trigger("focus");
 			var p_query_published_after = new Date(value);
 			var p_query_published_before = new Date($('[name="query_published_before"]').val());
 			<xsl:text disable-output-escaping="yes">
@@ -196,7 +196,7 @@
 			$('#display_query_published_before').datepicker({
 			onSelect:
 			function(value, date) {
-			$(this).focus();
+			$(this).trigger('focus');
 			var p_query_published_after = new Date($('[name="query_published_after"]').val());
 			var p_query_published_before = new Date(value);
 			<xsl:text disable-output-escaping="yes">
@@ -230,7 +230,7 @@
 
 		<script >
 			$j(document).ready(function(){
-				$j("#querylist-title").click(function () {
+				$j("#querylist-title").on("click",function () {
 					$j("#criteria_for_list").toggle();
 					$j("#querylist-title").toggleClass("querylist-expand-image querylist-close-image");
 				});
@@ -301,7 +301,7 @@
 
 				$j(".hasDatepicker").addClass('datadisplay');
 
-				$j("#querylist-title").click(function () {
+				$j("#querylist-title").on("click",function () {
 					$j("#criteria_for_list").toggle();
 					$j("#querylist-title").toggleClass("querylist-expand-image querylist-close-image");
 				});

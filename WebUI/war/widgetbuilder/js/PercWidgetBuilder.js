@@ -38,9 +38,9 @@ var WidgetBuilderApp = {};
     var currentTabIndex = 0;
     //Underscore template settings are overridden here to make it work with templates from JSP as the default <% is processed by JSP.
     _.templateSettings = {
-        interpolate: /\<\@\=(.+?)\@\>/gim,
-        evaluate: /\<\@(.+?)\@\>/gim,
-        escape: /\<\@\-(.+?)\@\>/gim
+        interpolate: /<\@\=(.+?)\@\>/gim,
+        evaluate: /<\@(.+?)\@\>/gim,
+        escape: /<\@\-(.+?)\@\>/gim
     };
     WidgetBuilderApp.startsWithAlphaRegEx = new RegExp('^[a-zA-Z]');
     $(document).ready(function(){
@@ -70,7 +70,7 @@ var WidgetBuilderApp = {};
             confirmIfDirty(function(){
                 notifyComplete(id, true);
             });
-        })
+        });
 
     });
     function confirmIfDirty(successCallback){
@@ -94,7 +94,7 @@ var WidgetBuilderApp = {};
     function addButtonClickHandlers()
     {
             
-        $("#perc-wb-button-new").unbind().click(function(){
+        $("#perc-wb-button-new").off("click").on("click",function(){
             handleWidgetNew();
         });
         $("#perc-widget-save").on("click",function(){
@@ -106,22 +106,22 @@ var WidgetBuilderApp = {};
         
         WidgetBuilderApp.updateToolBarButtons = function(disableButtons){
             if(disableButtons){
-                $("#perc-wb-button-delete").addClass("ui-disabled").removeClass("ui-enabled").unbind();
-                $("#perc-wb-button-edit").addClass("ui-disabled").removeClass("ui-enabled").unbind();
-                $("#perc-wb-button-deploy").addClass("ui-disabled").removeClass("ui-enabled").unbind();
+                $("#perc-wb-button-delete").addClass("ui-disabled").removeClass("ui-enabled").off();
+                $("#perc-wb-button-edit").addClass("ui-disabled").removeClass("ui-enabled").off();
+                $("#perc-wb-button-deploy").addClass("ui-disabled").removeClass("ui-enabled").off();
             }
             else{
-                $("#perc-wb-button-delete").removeClass("ui-disabled").addClass("ui-enabled").unbind().click(function(){
+                $("#perc-wb-button-delete").removeClass("ui-disabled").addClass("ui-enabled").off("click").on("click",function(){
                     handleWidgetDelete();
                 });
-                $("#perc-wb-button-edit").removeClass("ui-disabled").addClass("ui-enabled").unbind().click(function(){
+                $("#perc-wb-button-edit").removeClass("ui-disabled").addClass("ui-enabled").off("click").on("click",function(){
                     handleWidgetEdit();
                 });
-                $("#perc-wb-button-deploy").removeClass("ui-disabled").addClass("ui-enabled").unbind().click(function(){
+                $("#perc-wb-button-deploy").removeClass("ui-disabled").addClass("ui-enabled").off('click').on('click',function(){
                     handleWidgetDeploy();
                 });
             }
-        }
+        };
     }
 
     /**
@@ -219,12 +219,12 @@ var WidgetBuilderApp = {};
         var jsResObj = isNew ? result.get("jsFileList").resourceList : result.WidgetBuilderDefinitionData.jsFileList.resourceList;
         WidgetBuilderApp.jsResList = new WidgetBuilderApp.WidgetResourceCollection();
         var jsResModels = [];
-        if ($.isArray(jsResObj)) {
+        if (Array.isArray(jsResObj)) {
             $.each(jsResObj, function(){
                 jsResModels.push({name:this});
             }, this);
         }
-        else if($.trim(jsResObj)!=""){
+        else if(jsResObj.trim()!==""){
             jsResModels.push({name:jsResObj});
         }
         WidgetBuilderApp.jsResList.add(jsResModels);
@@ -234,14 +234,14 @@ var WidgetBuilderApp = {};
         var cssResObj = isNew ? result.get("cssFileList").resourceList : result.WidgetBuilderDefinitionData.cssFileList.resourceList;
         WidgetBuilderApp.cssResList = new WidgetBuilderApp.WidgetResourceCollection();
         var cssResModels = [];
-        if ($.isArray(cssResObj)) {
+        if (Array.isArray(cssResObj)) {
             $.each(cssResObj, function(){
                 cssResModels.push({
                     name: this
                 });
             }, this);
         }
-        else if($.trim(cssResObj)!=""){
+        else if(cssResObj.trim() !==""){
             cssResModels.push({name:cssResObj});
         }
         WidgetBuilderApp.cssResList.add(cssResModels);
@@ -253,7 +253,7 @@ var WidgetBuilderApp = {};
         $.perc_filterField(generalForm.find("input[name=widgetname]"), $.perc_textFilters.ALPHA_NUMERIC);
         $.perc_filterField(generalForm.find("input[name=version]"), $.perc_textFilters.DIGITS_DOT);
 		
-    };
+    }
     
     /**
      * Widget deploy button handler
@@ -368,13 +368,13 @@ var WidgetBuilderApp = {};
                 var errors = {};
                 var temp = result.WidgetBuilderValidationResults.results;
                 if(temp){
-                    $.isArray(temp)?valRes = temp:valRes.push(temp);
+                    Array.isArray(temp)?valRes = temp:valRes.push(temp);
                     $(valRes).each(function(){
-                        var cat = this.category
+                        var cat = this.category;
                         if(!errors[cat])
                             errors[cat] = [];
                         errors[cat].push({name:this.name,message:this.message});
-                    });;
+                    });
                     if(isOnSave){
                         for(var obj in errors){
                             showValidationErrors(obj,errors[obj]);
@@ -430,6 +430,6 @@ var WidgetBuilderApp = {};
     //This method is just written for selenium webdriver
     WidgetBuilderApp.updateGeneralModel = function(){
         $(currentWidgetView.el).find("input, textarea").trigger("change");
-    }
+    };
 
 })(jQuery);

@@ -103,14 +103,14 @@
 
         $('#perc-content-form').categoryListControl({});
 
-        $("#categorylist-title").click(function () {
+        $("#categorylist-title").on("click",function () {
             $("#criteria_for_list").toggle();
             $("#categorylist-title").toggleClass("categorylist-expand-image categorylist-close-image");
         });
     };
 
     function readOnlyControl() {
-        $j("#categorylist-title").click(function () {
+        $j("#categorylist-title").on("click", function () {
             $j("#criteria_for_list").toggle();
             $j("#categorylist-title").toggleClass("categorylist-expand-image categorylist-close-image");
         });

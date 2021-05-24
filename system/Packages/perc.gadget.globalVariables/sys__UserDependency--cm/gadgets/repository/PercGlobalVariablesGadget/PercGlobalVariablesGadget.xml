@@ -52,7 +52,7 @@
     
 	<script  src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
   
-    <script src="/cm/jslib/jquery.dataTables.js"></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js"></script>
     <!--script src="/cm/jslib/jquery.tools.min.js"></script-->
     
     <script src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js"></script>
@@ -61,7 +61,7 @@
     <script src="/cm/widgets/PercActionDataTable/PercActionDataTable.js" ></script>
     <script src="/cm/widgets/PercPageDataTable/PercPageDataTable.js"></script>
 
-    <script src="/cm/jslib/jquery.text-overflow.js"></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js"></script>
     <script src="/cm/gadgets/repository/PercGlobalVariablesGadget/PercGlobalVariablesGadget.js"></script>
     
     <script >

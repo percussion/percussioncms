@@ -83,7 +83,7 @@
     <link type="text/css" href="../css/perc_mcol.css" rel="stylesheet"/>
     <link type="text/css" href="../css/perc_decoration.css" rel="stylesheet"/>
     <link type="text/css" href="../demos.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/jquery.tooltip.css" rel="stylesheet"/>
+
     <!-- Stuff needed for finder to work like Editor -->
     <link rel="stylesheet" type="text/css" href="../css/perc_newsitedialog.css"/>
     <link rel="stylesheet" type="text/css" href="../css/perc_new_page_button.css"/>
@@ -115,11 +115,11 @@
         //Finder initialization code
         $j(document).ready(function () {
 
-            $j("#perc-manual-publish-widget").find(".perc-foldable").click();
+            $j("#perc-manual-publish-widget").find(".perc-foldable").trigger("click");
             $j.Percussion.PercFinderView();
             $j.PercUserView();
 
-            $j("select").keypress(function () {
+            $j("select").on("keypress",function () {
                 dirtyController.setDirty(true, "asset");
             });
 

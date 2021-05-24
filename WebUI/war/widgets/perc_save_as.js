@@ -236,7 +236,10 @@
     
         if( settings.new_folder_opt )
         {
-            top.parent().find('#perc-saveas-dialog-new-folder').click(function()    {  new_folder_callback(); });
+            top.parent().find('#perc-saveas-dialog-new-folder').on("click", function(e)
+            {
+                new_folder_callback();
+            });
         }
         else
         {
@@ -406,11 +409,11 @@
             {
                 if( leaf_selectable )
                 {
-                    anchor.click( selectAnchor );
-                    anchor.dblclick( function()
+                    anchor.on("click",  selectAnchor );
+                    anchor.on("dblclick", function(evt)
                     {
-                        anchor.click();
-                        $("#perc-saveas-dialog-save-button").click();
+                        anchor.trigger("click");
+                        $("#perc-saveas-dialog-save-button").trigger("click");
                     });
                 }
             }
@@ -418,9 +421,9 @@
             {
                 if( folder_selectable )
                 {
-                    anchor.click( selectAnchor );
+                    anchor.on("click", selectAnchor );
                 }
-                anchor.dblclick( function()
+                anchor.on("dblclick", function(evt)
                 {
                     set_path( item_path );
                 });

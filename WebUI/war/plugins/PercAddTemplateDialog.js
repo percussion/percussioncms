@@ -162,7 +162,7 @@
             function configureCustomEvents()
             {
                 // If URL radio button is selected disable the other fieldsets
-                dialog.find('input[type=radio]').change(function(event)
+                dialog.find('input[type=radio]').on("change",function(event)
                 {
                     var radioButtonSelected = this;
                     dialog.find('fieldset').each(function()
@@ -191,13 +191,13 @@
             {
                 dialog
                     .find('fieldset.perc_url_field')
-                    .bind('perc-add-template-dialog-disable-fieldset',function(event)
+                    .on('perc-add-template-dialog-disable-fieldset',function(event)
                     {
                         $(this).find('input[name="url"]')
                             .attr('readonly', 'readonly')
                             .attr('disabled', 'true');
                     })
-                    .bind('perc-add-template-dialog-enable-fieldset',function(event)
+                    .on('perc-add-template-dialog-enable-fieldset',function(event)
                     {
                         $(this).find('input[name="url"]')
                             .removeAttr('readonly')
@@ -210,11 +210,11 @@
                 // When enabling revert what disabling did
                 dialog
                     .find('fieldset.perc_percussion_template_field')
-                    .bind('perc-add-template-dialog-disable-fieldset',function(event)
+                    .on('perc-add-template-dialog-disable-fieldset',function(event)
                     {
                         $(this).addClass('disabled');
                     })
-                    .bind('perc-add-template-dialog-enable-fieldset',function(event)
+                    .on('perc-add-template-dialog-enable-fieldset',function(event)
                     {
                         $(this).removeClass('disabled');
                     });
@@ -255,7 +255,7 @@
             if (dialogForm.form())
             {
             	// close the dialog
-            	$("#perc_add_template_dialog .ui-icon-closethick").click();
+            	$("#perc_add_template_dialog .ui-icon-closethick").trigger("click");
             	
                 createTemplate();
             }

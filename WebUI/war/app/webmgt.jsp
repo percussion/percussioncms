@@ -117,7 +117,7 @@
       this include goes first since it loads infrastructure and common files
 --%>
 <%@include file="includes/common_js.jsp" %>
-
+<%@include file="includes/finder_js.jsp" %>
 <%--  Services
       ========
       Services should not have any dependencies other than the base common service PercServiceUtil.js
@@ -148,68 +148,68 @@
 --%>
 
 <%-- --%>
+    <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.xmldom-1.0.js"></script>
+    <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.jmodal.js"></script>
 
-<script src="../jslib/jquery.xmldom-1.0.js"></script>
+    <script src="../widgets/PercSimpleMenu/PercSimpleMenu.js"></script>
+    <script src="../widgets/PercPageDataTable/PercPageDataTable.js"></script>
+    <script src="../widgets/PercActionDataTable/PercActionDataTable.js"></script>
+    <script src="../widgets/PercAutoScroll.js"></script>
+    <script src="../services/PercPathService.js"></script>
+    <script src="../services/PercAssetService.js"></script>
+    <script src="../services/PercItemPublisherService.js"></script>
+    <script src="../services/PercWorkflowService.js"></script>
+    <script src="../services/PercRevisionService.js"></script>
+    <script src="../services/PercFolderService.js"></script>
+    <script src="../services/PercSiteImpactService.js"></script>
+    <script src="../services/PercUtilService.js"></script>
+    <script src="../services/PercLicenseService.js"></script>
+    <script src="../services/PercReusableSearchService.js"></script>
+    <script src="../controllers/PercCSSController.js"></script>
+    <script src="../views/PercNewAssetDialog.js"></script>
+    <script src="../views/PercCSSPreviewView.js"></script>
+    <script src="../views/PercChangeTemplateDialog.js"></script>
+    <script src="../views/PercSiteImpactView.js"></script>
+    <script src="../views/PercEditRegionPropertiesDialog.js"></script>
+    <script src="../plugins/perc_page_schema.js"></script>
+    <script src="../widgets/perc_asset_edit_dialog.js"></script>
+    <script src="../widgets/perc_page_edit_dialog.js"></script>
+    <script src="../widgets/perc_save_as.js"></script>
+    <script src="../plugins/perc_save_as_shared_asset_dialog.js"></script>
+    <script src="../widgets/perc_widget_library.js"></script>
+    <script src="../plugins/perc_contentEditDecorate.js"></script>
+    <script src="../plugins/perc_content_viewer.js"></script>
+    <script src="../classes/perc_page_class.js"></script>
+    <script src="../classes/perc_template_layout_class.js"></script>
+    <script src="../plugins/perc_template_layout_helper.js"></script>
+    <script src="../widgets/perc_template_layout_widget.js"></script>
+    <script src="../plugins/perc_layout_controller.js"></script>
+    <script src="../plugins/perc_template_manager.js"></script>
+    <script src="../plugins/perc_page_schema.js"></script>
+    <script src="../plugins/perc_template_schema.js"></script>
+    <script src="../models/PercTemplateModel.js"></script>
+    <script src="../models/PercPageModel.js"></script>
+    <script src="../services/PercTemplateService.js"></script>
+    <script src="../controllers/PercLayoutController.js"></script>
+    <script src="../controllers/PercSizeController.js"></script>
+    <script src="../controllers/PercDecorationController.js"></script>
+    <script src="../views/PercLayoutView.js"></script>
+    <script src="../views/PercInspectionToolHandler.js"></script>
+    <script src="../views/PercContentView.js"></script>
+    <script src="../views/widgetPropertiesDialog.js"></script>
+    <script src="../plugins/PercContentEditorHandlers.js"></script>
+    <script src="../plugins/PercRevisionDialog.js"></script>
+    <script src="../plugins/PercScheduleDialog.js"></script>
+    <script src="../plugins/PercCommentsDialog.js"></script>
+    <script src="../plugins/PercPublishingHistoryDialog.js"></script>
+    <script src="../services/PercPageOptimizerService.js"></script>
+    <script src="../plugins/PercPageOptimizerDialog.js"></script>
+    <script src="../plugins/PercContributorUiAdaptor.js"></script>
+    <script src="../services/PercBlogService.js"></script>
+    <script src="../plugins/perc_ChangePwDialog.js"></script>
+    <script src="../plugins/perc_newsitedialog.js"></script>
+    <script src="../services/perc_sectionServiceClient.js"></script>
 
-<script src="../plugins/perc_page_schema.js"></script>
-<script src="../plugins/perc_template_manager.js"></script>
-
-<script src="../plugins/perc_save_as_shared_asset_dialog.js"></script>
-<script src="../widgets/perc_asset_edit_dialog.js"></script>
-<script src="../widgets/perc_page_edit_dialog.js"></script>
-<script src="../widgets/perc_save_as.js"></script>
-
-<%@include file="includes/finder_js.jsp" %>
-<script src="../widgets/perc_collapsible.js"></script>
-<script src="../plugins/perc_layout_controller.js"></script>
-<script src="../widgets/perc_widget_library.js"></script>
-<script src="../plugins/perc_content_viewer.js"></script>
-<script src="../plugins/perc_contentEditDecorate.js"></script>
-<script src="../jslib/jquery.dataTables.js"></script>
-<script src="../jslib/jquery.dynatree.js"></script>
-
-<script src="../jslib/jquery.jmodal.js"></script>
-<script src="../classes/perc_page_class.js"></script>
-<script src="../classes/perc_template_layout_class.js"></script>
-<script src="../plugins/perc_template_layout_helper.js"></script>
-<script src="../widgets/perc_template_layout_widget.js"></script>
-
-<script src="../plugins/perc_template_schema.js"></script>
-<script src="../services/PercTemplateService.js"></script>
-<script src="../models/PercTemplateModel.js"></script>
-<script src="../models/PercPageModel.js"></script>
-<script src="../controllers/PercLayoutController.js"></script>
-<script src="../controllers/PercSizeController.js"></script>
-<script src="../controllers/PercDecorationController.js"></script>
-<script src="../controllers/PercCSSController.js"></script>
-<script src="../widgets/PercAutoScroll.js"></script>
-<script src="../views/PercLayoutView.js"></script>
-<script src="../views/PercInspectionToolHandler.js"></script>
-
-<script src="../views/PercContentView.js"></script>
-<script src="../views/PercCSSPreviewView.js"></script>
-<script src="../views/widgetPropertiesDialog.js"></script>
-
-<script src="../plugins/PercContentEditorHandlers.js"></script>
-<script src="../services/PercRevisionService.js"></script>
-<script src="../plugins/PercRevisionDialog.js"></script>
-<script src="../jslib/timepicker.js"></script>
-<script src="../plugins/PercScheduleDialog.js"></script>
-<script src="../views/PercChangeTemplateDialog.js"></script>
-
-<script src="../widgets/PercSimpleMenu/PercSimpleMenu.js"></script>
-<script src="../widgets/PercPageDataTable/PercPageDataTable.js"></script>
-<script src="../widgets/PercActionDataTable/PercActionDataTable.js"></script>
-<script src="../services/PercSiteImpactService.js"></script>
-<script src="../views/PercSiteImpactView.js"></script>
-<script src="../plugins/PercCommentsDialog.js"></script>
-<script src="../plugins/PercPublishingHistoryDialog.js"></script>
-<script src="../services/PercPageOptimizerService.js"></script>
-<script src="../plugins/PercPageOptimizerDialog.js"></script>
-<script src="../services/PercUtilService.js"></script>
-<script src="../plugins/PercContributorUiAdaptor.js"></script>
-<script src="../services/PercLicenseService.js"></script>
-<script src="../plugins/perc_ChangePwDialog.js"></script>
 <% } else { %>
 <script src="../jslibMin/perc_webmgt.packed.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../cssMin/perc_webmgt.packed.min.css"/>
@@ -229,7 +229,7 @@
     gDebug = <%= debug %>;
     //Create and initialize view wrapper and set it on manager.
     $j(document).ready(function () {
-        if (($j.PercNavigationManager.getMode() == $j.PercNavigationManager.MODE_EDIT) &&
+        if (($j.PercNavigationManager.getMode() === $j.PercNavigationManager.MODE_EDIT) &&
                 ($j.PercNavigationManager.getId())) {
 
             $j.PercLicenseService.getAllModuleLicenses(function (status, data) {

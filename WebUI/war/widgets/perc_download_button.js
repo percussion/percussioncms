@@ -83,11 +83,11 @@
         {
             if (flag)
             {
-                btn.removeClass('ui-disabled').addClass('ui-enabled').unbind('click').click( launchDownload );
+                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", launchDownload );
             }
             else
             {
-                btn.addClass('ui-disabled').removeClass('ui-enabled').unbind('click');
+                btn.addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
             btn.trigger('actions-change-enabled-state');
         }

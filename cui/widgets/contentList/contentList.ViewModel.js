@@ -198,7 +198,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
                     searchInfo.criteria.SearchCriteria.startIndex = results.PagedItemPropertiesList.startIndex + self.constants.SEARCH_MAX_RESULTS;
                     self.searchInfo = searchInfo;
                     self.hasMoreResults(searchInfo.criteria.SearchCriteria.startIndex <= results.PagedItemPropertiesList.childrenCount);
-                    if(!$.isArray(children)){
+                    if(!Array.isArray(children)){
                         children = [children];
                     }
                     if(results.PagedItemPropertiesList.childrenCount > 0){
@@ -219,7 +219,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
             }
         }
         function removeItemFromSearchResults(item){
-            if(!$.isArray(self.searchResults))
+            if(!Array.isArray(self.searchResults))
                 return;
             var index = -1;
             for(let i=0;i<self.searchResults.length;i++){

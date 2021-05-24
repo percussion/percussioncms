@@ -70,7 +70,7 @@
         // If its check the meta-data field will be eidtable and if unchecked
         // meta-data field will become disabled.
         });
-        $("#perc-enable-feed").live('click', function () {
+        $(document).on("click","#perc-enable-feed", function () {
             var metaFields = $("#perc-feed-name, #perc-feed-title, #perc-feed-description");
             metaFields.toggleClass('perc-rss-disabled');
             if($("#perc-feed-name").hasClass('perc-rss-disabled')){                

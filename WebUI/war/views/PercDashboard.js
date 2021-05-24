@@ -44,7 +44,7 @@
     var dragDelay = ($.PercNavigationManager.isAutoTest() ? 0 : 250);
 
     // fix text overflow when window resizes
-    $(window).bind('resize', function()
+    $(window).on('resize', function()
     {
         getWidthOfCol();
         $(".perc-ellipsis").each(function()
@@ -429,7 +429,8 @@
                         gadgetArray = new Array(results.DashboardConfig.gadgets.length);
                         gadgets.container.addSetTitleListener(_afterSetTitle);
                         renderGadgets(results.DashboardConfig.gadgets);
-                        $("#perc-dashboard-restore-menu").unbind().click(function()
+
+                        $(document).on("click","#perc-dashboard-restore-menu",function()
                         {
                             restore();
                         });
@@ -472,7 +473,7 @@
                             dontShowAgainAction: function(){},
                             success: function()
                             {
-                                $('#perc-finder-new-site').click();
+                                $('#perc-finder-new-site').trigger("click");
                             }
                         });
                         //Chrome have some issue recalculating the heigth
@@ -536,12 +537,12 @@
                 {
                     prefCount++;
                 } // Check if user prefs has values
-                gadgetObj["title"] = meta["title"];
-                $("#gid_" + gadgetObj.id).attr("name", meta["title"]);
-                gadgetObj["height"] = meta["height"];
-                gadgetObj["width"] = meta["width"];
-                gadgetObj["hasPrefs"] = prefCount > 0;
-                gadgetObj["metaKey"] = dashboardConfigMetaKey + ".mid." + gadgetObj.id + ".";
+                gadgetObj.title = meta.title;
+                $("#gid_" + gadgetObj.id).prop("name", meta.title);
+                gadgetObj.height = meta.height;
+                gadgetObj.width = meta.width;
+                gadgetObj.hasPrefs = prefCount > 0;
+                gadgetObj.metaKey = dashboardConfigMetaKey + ".mid." + gadgetObj.id + ".";
 
                 gadgets.container.layoutManager.addGadgetChromeId(gadgetObj.id, "gid_" + gadgetObj.id);
                 gadgets.container.renderGadget(gadgetObj);
@@ -588,7 +589,7 @@
         var title = $gadget.find(".gadgets-gadget-title");
         var titleButtons = $gadget.find(".gadgets-gadget-title-button-bar");
         titleButtons.css("float", "right");
-        var gadgetMenuButton = $("<img src='../images/images/gadgetMenuButton.png' class='perc-gadget-menu-button' style='cursor:pointer' title='Click to show the Gadget Menu' alt='Gadget menu icon'/>").click(function(event)
+        var gadgetMenuButton = $("<img src='../images/images/gadgetMenuButton.png' class='perc-gadget-menu-button' style='cursor:pointer' title='Click to show the Gadget Menu' alt='Gadget menu icon'/>").on("click",function(event)
         {
             event.stopPropagation();
             showMenu(self, titleBar, event);
@@ -625,32 +626,34 @@
 
         // update the menu items based on the current state of the gadget
         updateMinimizeExpandMenuItem(gadget);
+
         // handle maximize menu item
-        menuMinimize.unbind().click(function()
+        $(document).on("click","#perc-gadget-menu-minimize",function(eventObject )
         {
             minimizeGadget(gadget);
             menu.hide();
         });
 
         // handle remove menu item
-        menuRemove.unbind().click(function()
+        $(document).on("click","#perc-gadget-menu-remove", function(eventObject )
         {
             var instanceId = gadget.attr("instanceId");
             removeGadget(instanceId);
         });
 
         // handle expand menu item
-        menuExpand.unbind().click(function()
+        $(document).on("click", "#perc-gadget-menu-expand",function(eventObject )
         {
             expandGadget(gadget);
             menu.hide();
         });
 
         // handle edit settings
-        menuConfig.unbind().click(function()
+        $(document).on("click","#perc-gadget-menu-config", function(eventObject )
         {
             handlePrefs(instanceId);
         });
+
         if (hasPrefs)
         {
             menuConfig.show();
@@ -661,17 +664,19 @@
         }
 
         // hide the menu if you are about to resize the finder
-        $(".ui-resizable-handle").hover(function()
+        $(document).on("hover",".ui-resizable-handle",function(eventObject )
         {
             menu.hide();
         });
 
         // hide the menu if you hover away from it
-        menu.unbind().hover(function()
-        {}, function()
+        //TODO:
+      /* $(document).on("mouseout","#perc-gadget-menu",function(eventObject )
         {
             menu.hide();
         });
+        */
+
     }
 
     // check display attribute of gadget content
@@ -789,11 +794,10 @@
         var workflowSelect = $('[name="m_' + gadgetId + '_up_ssworkflow"]');
         if (workflowSelect.length > 0)
         {
-            workflowSelect.change(function()
+            workflowSelect.on("change",function()
             {
                 updateStatusOptions(gadgetId);
             });
-            //updateStatusOptions(gadgetId, workflowSelect.val());
         }
     }
 
@@ -1045,7 +1049,7 @@
         dashboardContainer = $(".perc-dashboard-container");
 
         expandGadgetTray();
-        $('.perc-gadget-type').unbind().change(function()
+        $(document).off("change",".perc-gadget-type", function()
         {
             loadGadgetListing(function()
             {
@@ -1055,14 +1059,16 @@
                 });
             });
         });
-        $('.perc-gadget-category').unbind().change(filterGadgetLibrary);
+
+        $(document).on("change",".perc-gadget-category",filterGadgetLibrary);
+
         populateTrayGadgets(function()
         {
             collapseGadgetTray();
             fixBottomHeight();
         });
 
-        gadgetTrayExpander.click(function()
+        gadgetTrayExpander.on("click",function()
         {
             toggleGadgetTray();
             fixBottomHeight();

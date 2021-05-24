@@ -75,15 +75,15 @@
 <!-- CSS Includes -->
 <%@include file="includes/common_css.jsp" %>
 <link rel="stylesheet" type="text/css" href="../css/styles.css"/>
-<link rel="stylesheet" type="text/css" href="../jslib/backgridjs/backgrid.min.css"/>
+<link rel="stylesheet" type="text/css" href="../jslib/profiles/3x/jquery/libraries/backgridjs/backgrid.css"/>
 <link rel="stylesheet" type="text/css" href="../widgetbuilder/css/perc_widgetbuilder.css"/>
 <link rel="stylesheet" type="text/css" href="../css/perc_ChangePw.css"/>
 
 <!-- JavaScript Includes (order matters) -->
 <%@include file="includes/common_js.jsp" %>
-<script src="../jslib/underscore-min.js"></script>
-<script src="../jslib/backbone-min.js"></script>
-<script src="../jslib/backgridjs/backgrid.min.js"></script>
+<script src="../jslib/profiles/3x/libraries/underscore/underscore.js"></script>
+<script src="../jslib/profiles/3x/libraries/backbone/backbone.js"></script>
+<script src="../jslib/profiles/3x/jquery/libraries/backgridjs/backgrid.js"></script>
 <script src="../widgetbuilder/js/PercWidgetBuilder.js"></script>
 <script src="../widgetbuilder/js/PercWidgetBuilderExpander.js"></script>
 <script src="../widgetbuilder/js/PercWidgetBuilderService.js"></script>

@@ -183,7 +183,7 @@
 
             // import additional stylesheet(s)
             if (opt.loadCSS) {
-                if ($.isArray(opt.loadCSS)) {
+                if (Array.isArray(opt.loadCSS)) {
                     jQuery.each(opt.loadCSS, function(index, value) {
                         $head.append("<link type='text/css' rel='stylesheet' href='" + this + "'>");
                     });

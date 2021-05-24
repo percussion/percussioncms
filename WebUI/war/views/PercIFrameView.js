@@ -45,7 +45,7 @@
        // get the frame at the bottom
        frame = $("#frame");
        frame.contents().remove(); 
-       frame.unbind( ".reload" );
+       frame.off( ".reload" );
        assetPath = path;
        newAsset = isNewAsset;
        workflowId = wfId;
@@ -93,17 +93,21 @@
                .appendTo(menuId);
    
            // submit the form when save button is clicked
-           $("#perc-save-content").unbind('click').click(function() { saveContent(true); });
+           $("#perc-save-content").off('click').on("click",function() { saveContent(true); });
    
            // reset the form when cancel button is clicked
-           $("#perc-cancel-content").unbind('click').click(function() { cancel(); });
+           $("#perc-cancel-content").off('click').on("click",function() { cancel(); });
    
-           // cancel and clear content of form
-           function cancel() {
-               $.PercNavigationManager.goToDashboard();
-           }
+
        }
+
+
    }
+
+    // cancel and clear content of form
+    function cancel() {
+        $.PercNavigationManager.goToDashboard();
+    }
    function onLaterFrameLoads(){
        //Make sure there are no errors.
        if(frame.contents().find("#perc-content-edit-errors").length === 0)
@@ -241,7 +245,7 @@
          $.perc_filterField(nameField, $.perc_textFilters.URL);
       }
  
-      form.find("[type=text]").keypress(function(event) {
+      form.find("[type=text]").on("keypress",function(event) {
          if(event.keyCode === 13)
          {
             return false;

@@ -75,7 +75,7 @@
            $(container).find(".perc-search-criteria-panel-content-spans:last .perc-search-criteria-panel-values-spans").html(
                 $(container).find(".perc-search-criteria-panel-content-spans:last .perc-search-criteria-panel-values-spans").html().slice(0,-1));
        
-       container.find("#perc-search-criteria-panel-content-select-filters").click(function()
+       container.find("#perc-search-criteria-panel-content-select-filters").on("click",function()
        {
             if ($.isFunction(config.selectFiltersCallback))
             {
@@ -85,7 +85,7 @@
        
        if ($.isFunction(config.refreshSearchCallback))
        {
-           container.find("#perc-search-criteria-panel-content-refresh-search").click(function()
+           container.find("#perc-search-criteria-panel-content-refresh-search").on("click",function()
            {
                 if ($.isFunction(config.refreshSearchCallback))
                 {

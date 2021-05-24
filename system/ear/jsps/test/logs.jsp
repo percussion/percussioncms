@@ -214,7 +214,7 @@ Import PS Admin Security-->
                 row.removeClass('active')
         })
 
-        $('#nextStartup').click(function (event) {
+        $('#nextStartup').on("click",function (event) {
 
             if (row == undefined)
                 rownum = 0;
@@ -230,15 +230,15 @@ Import PS Admin Security-->
 
 
         });
-        $('#previousStartup').click(function (event) {
+        $('#previousStartup').on("click", function (event) {
             var newrow;
 
 
         });
 
-        $('#nextWarning').click(function (event) {
+        $('#nextWarning').on("click", function (event) {
 
-            if (row == undefined)
+            if (row === undefined)
                 rownum = 0;
             else
                 rownum = row.attr("rownum")
@@ -259,18 +259,16 @@ Import PS Admin Security-->
 
 
         });
-        $('#previousWarning').click(function (event) {
+        $('#previousWarning').on("click", function (event) {
+            var newrow;
+        });
+
+        $('#nextError').on("click", function (event) {
             var newrow;
 
 
         });
-
-        $('#nextError').click(function (event) {
-            var newrow;
-
-
-        });
-        $('#previousError').click(function (event) {
+        $('#previousError').on("click", function (event) {
             var newrow;
 
 

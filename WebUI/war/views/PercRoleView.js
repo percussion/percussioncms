@@ -49,7 +49,7 @@
         }
 
         // A snippet to adjust the frame size on resizing the window.
-        $(window).resize(function() {
+        $(window).on("resize",function() {
             fixIframeHeight();
             fixTemplateHeight();
         });
@@ -76,7 +76,7 @@
 
         function init() {
             resetRoleDetails();
-            $("#perc-roles-edit-role-button").unbind().click(function(){
+            $("#perc-roles-edit-role-button").off("click").on("click", function(evt){
                 editingRole = true;
                 controller.editSelectedRole();
                 disableButtons();
@@ -84,16 +84,17 @@
             });
 
             //Bind Add Users to Role event
-            $(".perc-roles-addusers-button").unbind().click(addUsers);
+            $(".perc-roles-addusers-button").off("click").on("click", addUsers);
             //Bind remove Users from Role event
-            $(".perc-roles-removeusers-button").unbind().click(removeUsers);
+            $(".perc-roles-removeusers-button").off("click").on("click", removeUsers);
 
             //Bind Save event
-            $("#perc-roles-save").unbind().click(function(){
+            $("#perc-roles-save").off("click").on("click", function(evt){
                 save();
             });
+
             //Bind Cancel event
-            $("#perc-roles-cancel").unbind().click(function(){
+            $("#perc-roles-cancel").off().on("click", function(evt){
                 controller.cancel();
             });
 
@@ -275,7 +276,7 @@
                     liUser.find("span").css("color", "#000000");
                 }
                 else{
-                    liUser.click(selectUser);
+                    liUser.on("click", selectUser);
                 }
                 ulUsers.append(liUser);
             }
@@ -366,7 +367,7 @@
             if (editingRole){
                 $(".perc-roles-addusers-button")
                     .addClass("perc-item-disabled")
-                    .unbind();
+                    .off();
                 disableRemoveUsers();
             }
         }
@@ -375,21 +376,21 @@
             $.PercDataList.enableButtons(container);
             $(".perc-roles-addusers-button")
                 .removeClass("perc-item-disabled")
-                .unbind()
-                .click(addUsers);
+                .off("click")
+                .on("click", addUsers);
         }
 
         function enableRemoveUsers(){
             $(".perc-roles-removeusers-button")
                 .removeClass("perc-item-disabled")
-                .unbind()
-                .click(removeUsers);
+                .off("click")
+                .on("click", removeUsers);
         }
 
         function disableRemoveUsers(){
             $(".perc-roles-removeusers-button")
                 .addClass("perc-item-disabled")
-                .unbind();
+                .off();
         }
 
         function save() {
@@ -418,7 +419,7 @@
                 {
                     controller.updateListOfRoles(function()
                     {
-                        $("#perc-roles-list [data-id='perc-item-id-0']").click();
+                        $("#perc-roles-list [data-id='perc-item-id-0']").trigger("click");
                     });
                 }
             });

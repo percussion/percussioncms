@@ -68,7 +68,7 @@
 		$(getImageElement()).clone().appendTo("#hiddenImage");
 		enableCrop();
 		placeCropBox();
-		$("input").bind("change", makeDirty);
+		$("input").on("change", makeDirty);
 	}
 	
 	 

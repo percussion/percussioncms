@@ -281,12 +281,12 @@ function updateServerPropertiesCallback(status, result) {
 
 function bindSitesEvents() {
     $('.perc-site-select').on('click keypress', function(event) {
-        if(event.type == 'click' || event.which == 13) {
+        if(event.type === 'click' || event.which === 13) {
             percSiteSelect(this);
         }
     });
 
-    $('.perc-site-view-toggle-button').click(function() {
+    $('.perc-site-view-toggle-button').on("click", function(evt) {
         toggleSiteView(this);
     });
 
@@ -297,23 +297,23 @@ function bindSitesEvents() {
 }
 
 function bindSiteDetailsEvents() {
-    $('.perc-publish-button').click(function() {
+    $('.perc-publish-button').on("click", function(evt) {
         processPublish(this);
     });
 
-    $('#percRefreshServerList').click(function() {
+    $('#percRefreshServerList').on("click", function(evt) {
         refreshServerList();
     });
 
-    $('#percBackToSites').click(function() {
+    $('#percBackToSites').on("click", function(evt) {
         backToSites();
     });
 
-    $('#percAddServer').click(function() {
+    $('#percAddServer').on("click", function(evt) {
         addPublishingServer();
     });
 
-    $('.perc-edit-server-properties').click(function() {
+    $('.perc-edit-server-properties').on("click", function(evt) {
         editServerProperties(this);
     });
 
@@ -321,22 +321,22 @@ function bindSiteDetailsEvents() {
 
 function bindServerPropertiesEvents() {
 
-    $('.perc-clear-server').click(function() {
+    $('.perc-clear-server').on("click", function(evt) {
         clearSelectedServer();
     });
 
-    $('#percUpdateServerProperties').click(function() {
+    $('#percUpdateServerProperties').on("click", function(evt) {
         processServerPropertiesForm(this);
     });
 
-    $('#percDeleteServer').click(function() {
+    $('#percDeleteServer').on("click", function(evt) {
         deleteServerRequest();
     });
 
-    $('#percServerType').change(function() {
+    $('#percServerType').on("change", function(evt) {
 
         $('#defaultServerFlag').trigger('click');
-        if($('#percServerType').val() == 'PRODUCTION') {
+        if($('#percServerType').val() === 'PRODUCTION') {
             $('#percPublishNowFlag').prop('disabled', false);
         }
         else{
@@ -346,7 +346,7 @@ function bindServerPropertiesEvents() {
     });
 
     // Toggle server location input fields
-    $('#defaultServerFlag').click(function() {
+    $('#defaultServerFlag').on("click", function(evt) {
 
         $('#ownServer').fadeOut('fast', function() {
             getDefaultFolder();
@@ -356,7 +356,7 @@ function bindServerPropertiesEvents() {
 
     });
 
-    $('#ownServerFlag').click(function() {
+    $('#ownServerFlag').on("click", function(evt) {
         $('#defaultServer').fadeOut('fast', function() {
             $('#ownServer').fadeIn('fast');
         });
@@ -364,17 +364,17 @@ function bindServerPropertiesEvents() {
     });
 
 
-    $('.perc-driver-group').change(function() {
+    $('.perc-driver-group').on("change", function(evt) {
         updateDriverPropertiesUi();
     });
 
-    $('#publishType').change(function() {
+    $('#publishType').on("change", function(evt) {
         updateDriverPropertiesUi();
     });
 
     // FTP property bindings
 
-    $('.perc-password-key-flag').change(function() {
+    $('.perc-password-key-flag').on("change", function(evt) {
         if($('#privateKeyFlag').is(':checked')) {
             $('#secureFTP').prop('checked', true);
             $('#perc-ftp-password').prop('disabled', true);
@@ -386,7 +386,7 @@ function bindServerPropertiesEvents() {
         }
     });
 
-    $('#secureFTP').change(function() {
+    $('#secureFTP').on("change", function(evt) {
         if($('#secureFTP').is(':checked') && $('#privateKeyFlag').is(':checked')) {
             $('#perc-ftp-password').prop('disabled', true);
             $('#privateKeyFlag').prop('checked', true);
@@ -503,17 +503,17 @@ function updateDriverPropertiesUi() {
     *   to determine if that was the previously saved option. If not, we know the default
     *   server field is empty and a click event should be triggered
     */
-
-    if (selectedDriver == 'Local' && !($('#ownServerFlag').is(':checked'))) {
+    var ownServerFlag = $('#ownServerFlag');
+    if (selectedDriver === 'Local' && !(ownServerFlag.is(':checked'))) {
         triggerEvent('defaultServerFlag', 'click');
     }
-    if (selectedDriver == 'FTP' && !($('#ownServerFlag').is(':checked'))){
+    if (selectedDriver === 'FTP' && !(ownServerFlag.is(':checked'))){
         triggerEvent('defaultServerFlag', 'click');
     }
-    if (selectedDriver == 'FTPS' && !($('#ownServerFlag').is(':checked'))) {
+    if (selectedDriver === 'FTPS' && !(ownServerFlag.is(':checked'))) {
         triggerEvent('defaultServerFlag', 'click');
     }
-    if (selectedDriver == 'SFTP' && !($('#ownServerFlag').is(':checked'))) {
+    if (selectedDriver === 'SFTP' && !(ownServerFlag.is(':checked'))) {
         triggerEvent('defaultServerFlag', 'click');
     }
 }
@@ -629,11 +629,11 @@ function processIncrementalRelatedItemsPreview() {
 }
 
 function bindIncrementalPublishEvents() {
-    $('#percCloseIncrementalPublishPreviewOverlay').click(function() {
+    $('#percCloseIncrementalPublishPreviewOverlay').on("click", function() {
         hideSection('#percIncrementalPublishPreviewOverlayTarget', 'fadeOut faster');
     });
 
-    $('#percIncrementalPublishConfirm').click(function() {
+    $('#percIncrementalPublishConfirm').on("click", function() {
         processIncrementalPublish();
     });
 }
@@ -798,7 +798,7 @@ function deleteServerRequest() {
     $('.perc-fullscreen-dialog').modal('_enforceFocus');
 
     // Bind response click
-    $('.perc-confirmation-button').click(function() {
+    $('.perc-confirmation-button').on("click", function() {
         confirmationDialogCallback(this);
     });
 

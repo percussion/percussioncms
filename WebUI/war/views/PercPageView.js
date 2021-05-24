@@ -181,7 +181,7 @@
             }
 
             // Enable the Metadata
-            $("#perc-metadata-button").unbind().perc_button().removeClass("ui-meta-pre-disabled").addClass("ui-meta-pre-enabled").click(function()
+            $("#perc-metadata-button").off("click").perc_button().removeClass("ui-meta-pre-disabled").addClass("ui-meta-pre-enabled").on("click",function()
             {
                 $.perc_page_edit_dialog($.perc_finder(), pageViewAPI, currentPageId);
             });
@@ -226,12 +226,12 @@
                     {
                         if(result)
                         {
-                            $(".perc-my-pages-action").addClass("perc-remove-from-my-pages").attr("title", I18N.message("perc.ui.page.mypages@Remove from My Pages")).click(function(){_removeFromMyPages(pageId);});
+                            $(".perc-my-pages-action").addClass("perc-remove-from-my-pages").attr("title", I18N.message("perc.ui.page.mypages@Remove from My Pages")).on("click",function(){_removeFromMyPages(pageId);});
 
                         }
                         else
                         {
-                            $(".perc-my-pages-action").addClass("perc-add-to-my-pages").attr("title", I18N.message("perc.ui.page.mypages@Add to My Pages")).click(function(){_addToMyPages(pageId);});
+                            $(".perc-my-pages-action").addClass("perc-add-to-my-pages").attr("title", I18N.message("perc.ui.page.mypages@Add to My Pages")).on("click",function(){_addToMyPages(pageId);});
                         }
                     }
                 });
@@ -250,7 +250,7 @@
                     }
                     else
                     {
-                        $(".perc-my-pages-action").removeClass("perc-add-to-my-pages").addClass("perc-remove-from-my-pages").attr("title", I18N.message("perc.ui.page.mypages@Remove from My Pages")).unbind().click(function(){_removeFromMyPages(pageId);});
+                        $(".perc-my-pages-action").removeClass("perc-add-to-my-pages").addClass("perc-remove-from-my-pages").attr("title", I18N.message("perc.ui.page.mypages@Remove from My Pages")).off("click").on("click",function(){_removeFromMyPages(pageId);});
                     }
                 });
             }
@@ -268,7 +268,7 @@
                     }
                     else
                     {
-                        $(".perc-my-pages-action").removeClass("perc-remove-from-my-pages").addClass("perc-add-to-my-pages").attr("title", I18N.message("perc.ui.page.mypages@Add to My Pages")).unbind().click(function(){_addToMyPages(pageId);});
+                        $(".perc-my-pages-action").removeClass("perc-remove-from-my-pages").addClass("perc-add-to-my-pages").attr("title", I18N.message("perc.ui.page.mypages@Add to My Pages")).off("click").on("click",function(){_addToMyPages(pageId);});
                     }
                 });
             }
@@ -479,7 +479,7 @@
                 var orphanAssetsContainer = $(".perc-orphan-assets-list");
                 orphanAssetsContainer.empty();
                 var htmlAssets = "";
-                for (var i = 0; i < unusedAssets.length; i++)
+                for (let i = 0; i < unusedAssets.length; i++)
                 {
                     var asset = unusedAssets[i];
                     var hoverText = I18N.message("perc.ui.page.general@Local");
@@ -496,13 +496,13 @@
                             "relationshipId": asset.relationshipId
                         }).append(
                             $("<div />").css("position", "relative").addClass("perc-widget-tool").append(
-                                $("<img />").attr("src", asset.icon).data("iconSrc", asset.icon).data("overIconSrc", asset.overIcon).hover(handleIn, handleOut)).append(
+                                $("<img />").attr("src", asset.icon).data("iconSrc", asset.icon).data("overIconSrc", asset.overIcon).on('mouseenter',handleIn).on('mouseleave', handleOut)).append(
                                 $("<div />").css("overflow", "hidden").addClass("perc-asset-label").append(
-                                    $("<nobr />").html(asset.title)))).css('cursor', 'pointer').data('assetId', asset.id).data('assetType', asset.type).data('assetFolderPaths', folderPaths).data('widgetId', asset.widgetId).unbind().click(selectOrphanAsset)
+                                    $("<nobr />").html(asset.title)))).css('cursor', 'pointer').data('assetId', asset.id).data('assetType', asset.type).data('assetFolderPaths', folderPaths).data('widgetId', asset.widgetId).off("click").on("click",selectOrphanAsset)
                     );
                 }
                 // populates Orphan Assets tray and toggles it open/close
-                $("#perc_orphan_assets_expander").unbind().click(function()
+                $("#perc_orphan_assets_expander").off("click").on("click",function()
                 {
                     clearSelection();
                     $.fn.percOrphanAssetsMaximizer(P);
@@ -543,7 +543,7 @@
             }
         }
         // A snippet to adjust the frame size on resizing the window.
-        $(window).resize(function()
+        $(window).on("resize",function()
         {
             fixIframeHeight();
         });
@@ -554,8 +554,8 @@
         function initOrphanAssetsMenu()
         {
             $("#perc_asset_library").disableSelection();
-            $(".perc-ui-delete-asset").attr("src", "/cm/images/icons/editor/deleteInactive.png").unbind();
-            $(".perc-ui-edit-asset").attr("src", "/cm/images/icons/editor/editInactive.png").unbind();
+            $(".perc-ui-delete-asset").attr("src", "/cm/images/icons/editor/deleteInactive.png").off();
+            $(".perc-ui-edit-asset").attr("src", "/cm/images/icons/editor/editInactive.png").off();
         }
 
         function deleteOrphanAsset()
@@ -608,7 +608,7 @@
             if (remainingAssets.length === 0)
             {
                 $.fn.percOrphanAssetsMaximizer(P);
-                $("#perc_orphan_assets_expander").addClass("perc-disabled").unbind();
+                $("#perc_orphan_assets_expander").addClass("perc-disabled").off();
                 $("#perc_orphan_assets_maximizer").addClass("perc-disabled");
             }
         }
@@ -652,22 +652,22 @@
             var selected = $(parent).find(".perc-orphan-assets-selected");
             if (selected.length > 0)
             {
-                $(".perc-ui-delete-asset").attr("src", "/cm/images/icons/editor/delete.png").unbind().click(deleteOrphanAsset);
-                $(".perc-ui-edit-asset").attr("src", "/cm/images/icons/editor/edit.png").unbind().click(editOrphanAsset);
+                $(".perc-ui-delete-asset").attr("src", "/cm/images/icons/editor/delete.png").off("click").on("click",deleteOrphanAsset);
+                $(".perc-ui-edit-asset").attr("src", "/cm/images/icons/editor/edit.png").on("click",editOrphanAsset);
             }
             else
             {
-                $(".perc-ui-delete-asset").attr("src", "/cm/images/icons/editor/deleteInactive.png").unbind();
-                $(".perc-ui-edit-asset").attr("src", "/cm/images/icons/editor/editInactive.png").unbind();
+                $(".perc-ui-delete-asset").attr("src", "/cm/images/icons/editor/deleteInactive.png").off();
+                $(".perc-ui-edit-asset").attr("src", "/cm/images/icons/editor/editInactive.png").off();
             }
-            if (selected.length >= 2) $(".perc-ui-edit-asset").attr("src", "/cm/images/icons/editor/editInactive.png").unbind();
+            if (selected.length >= 2) $(".perc-ui-edit-asset").attr("src", "/cm/images/icons/editor/editInactive.png").off();
         }
 
         function clearSelection()
         {
             $(".perc-orphan-assets-list").find('a').removeClass("perc-orphan-assets-selected");
-            $(".perc-ui-delete-asset").attr("src", "/cm/images/icons/editor/deleteInactive.png").unbind();
-            $(".perc-ui-edit-asset").attr("src", "/cm/images/icons/editor/editInactive.png").unbind();
+            $(".perc-ui-delete-asset").attr("src", "/cm/images/icons/editor/deleteInactive.png").off();
+            $(".perc-ui-edit-asset").attr("src", "/cm/images/icons/editor/editInactive.png").off();
         }
 
         // Declare Content and Layout tabs
@@ -702,7 +702,7 @@
 
         if ($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDITOR && $.PercNavigationManager.getMode() === $.PercNavigationManager.MODE_EDIT)
         {
-            $("#perc-wid-lib-expander").click(function()
+            $("#perc-wid-lib-expander").on("click", function()
             {
                 $.fn.percWidLibMaximizer(P);
             });
@@ -831,19 +831,23 @@
             {
                 //Load preview content into the iFrame for readonly mode
                 var previewPath = $.perc_paths.PAGE_PREVIEW + currentPageId;
-                $("#frame").contents().remove();
-                $("#frame").attr("src", previewPath);
-                $("#frame").unbind().load(function()
+                $("#frame").contents().remove()
+                    .attr("src", previewPath)
+                    .off("load").on("load",function()
                 {
                     fixIframeHeight();
                     window.setTimeout(function()
                     {
                         $.perc_utils.handleLinks($("#frame"));
                     }, 500);
+
                     var frwrapper = $.PercViewReadyManager.getWrapper('perc-ui-component-editor-frame');
+
                     if(frwrapper != null)
                         frwrapper.handleComponentProgress('perc-ui-component-editor-frame', "complete");
+
                     var tbwrapper = $.PercViewReadyManager.getWrapper('perc-ui-component-editor-toolbar');
+
                     if(tbwrapper != null)
                         tbwrapper.handleComponentProgress('perc-ui-component-editor-toolbar', "complete");
                 });
@@ -901,13 +905,13 @@
         {
             fixIframeHeight();
             var cssController = P.cssController(pageModel, $("#frame"), P.CSSPreviewView($("#frame"), pageModel));
-            $("#perc-css-editor-save").click(function()
+            $("#perc-css-editor-save").on("click",function()
             {
                 cssController.save(function()
                 {});
             });
 
-            $("#perc-css-editor-cancel").click(function()
+            $("#perc-css-editor-cancel").on("click",function()
             {
                 pageModel.load();
                 dirtyController.setDirty(false, "template");
@@ -924,10 +928,10 @@
             if (dialogFlag)
             {
                 $.PercScheduleDialog.open(itemId, pageName);
-                $(".ui-datepicker-trigger").click();
+                $(".ui-datepicker-trigger").trigger("click");
                 $("#ui-datepicker-div").css('z-index', 9501).css('display', 'none');
                 $("#ui-timepicker-div").css('z-index', 9501).css('display', 'none');
-                $("#perc-schedule-dialog-cancel").click();
+                $("#perc-schedule-dialog-cancel").trigger("click");
                 $.PercScheduleDialog.open(itemId, pageName);
                 dialogFlag = false;
             }

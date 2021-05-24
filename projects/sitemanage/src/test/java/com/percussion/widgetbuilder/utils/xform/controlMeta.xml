@@ -117,7 +117,7 @@
         </psxctl:Dependencies>
          <psxctl:AssociatedFileList>
              <psxctl:FileDescriptor name="timepicker.js" type="script" mimetype="text/javascript">
-                <psxctl:FileLocation>../sys_resources/js/jquery/timepicker/js/timepicker.js</psxctl:FileLocation>
+                <psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/timepicker.js</psxctl:FileLocation>
                 <psxctl:Timestamp/>
              </psxctl:FileDescriptor>
              <psxctl:FileDescriptor name="jquery.tinymce.js" type="script" mimetype="text/javascript">

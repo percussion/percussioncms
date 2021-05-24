@@ -91,7 +91,6 @@
 <%@include file="includes/common_js.jsp" %>
 <%@include file="includes/finder_js.jsp" %>
 
-<script src="../jslib/jquery.dynatree.js"></script>
 <script src="../services/perc_sectionServiceClient.js"></script>
 <script src="../services/PercSiteService.js"></script>
 <script src="../plugins/PercEditSectionLinksDialog.js"></script>
@@ -124,10 +123,6 @@
                 $j.perc_finder().refresh();
             }
         });
-
-        // TODO
-        // fixBottomHeight();
-
         <%} else { %>
         $j("#perc_site_map").html("<div style='height: 10px;'></div><div id='perc-site-templates-inline-help'><%=inlineHelpMsg%></div>");
         <%}%>

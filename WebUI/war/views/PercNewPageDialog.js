@@ -235,7 +235,7 @@
                         });
                         $(".perc-items .item .item-id").hide();
                         // bind click event to each item to handle selection
-                        $(".perc-items .item").bind('click', function(){
+                        $(".perc-items .item").on('click', function(){
                             var itemId = $(this).find(".item-id").text(); 
                             $("#perc-select-template").val(itemId);
                             $(".perc-items .item").removeClass("perc-selected-item");

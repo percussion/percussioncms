@@ -51,7 +51,7 @@
     <link href="/cm/css/perc_gadgets_search_criteria_panel.css" rel="stylesheet" type="text/css" />
     <script  src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
   
-    <script src="/cm/jslib/jquery.dataTables.js"></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js"></script>
     <!--script src="/cm/jslib/jquery.tools.min.js"></script-->
     
     <script src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js"></script>
@@ -63,7 +63,7 @@
     <script src="/cm/plugins/perc_gadgets_search_criteria_panel.js" ></script>
     <script src="/cm/plugins/perc_gadgets_search_criteria_dialog.js" ></script>
     
-    <script src="/cm/jslib/jquery.text-overflow.js"></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js"></script>
     <script src="/cm/gadgets/repository/PercAssetStatusGadget/PercAssetStatusGadget.js?a=5"></script>
     
     <script >

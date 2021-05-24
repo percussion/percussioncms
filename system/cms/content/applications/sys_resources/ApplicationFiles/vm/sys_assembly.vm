@@ -678,9 +678,9 @@ display:none;
 #foreach($js_link in $rx.pageutils.javascriptLinks($perc.linkContext, $sys.assemblyItem))##
 #if($js_link.getUrl().endsWith("/jquery-ui.js"))##
 #if($perc.isEditMode())##
-<script src="/cm/jslib/jquery-ui.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"></script>
 #elseif ($perc.isPreviewMode() && ($perc.linkContext.site.overrideSystemJQueryUI==false) && ($jqueryUIwidget.size()==0) )##
-<script src="/cm/jslib/jquery-ui.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"></script>
 #else##
 #print_jqueryUI("additionalHeadContent")##
 #end##
@@ -752,7 +752,7 @@ ga('send', 'pageview');
 #else##
 <script>
 document.addEventListener("DOMContentLoaded", function(event) {
-(function($){$(document).ready(function(){$('a[href*="/.system/PageCatalog"]').attr('cataloged', 'true' );$('a[href*="/.system/PageCatalog"]').click(function(e) {alert('This page has not yet been imported. It will be available for preview after import is complete.');e.preventDefault();});})    })(jQuery);
+(function($){$(document).ready(function(){$('a[href*="/.system/PageCatalog"]').attr('cataloged', 'true' );$('a[href*="/.system/PageCatalog"]').on("click",function(e) {alert('This page has not yet been imported. It will be available for preview after import is complete.');e.preventDefault();});})    })(jQuery);
 });
 </script>
 #end##
@@ -1059,7 +1059,7 @@ crossorigin="$!{jQueryMigrateCrossOrigin}"
 #if($perc.linkContext.mode == "PUBLISH")##
 #set($jQueryLocation = "/web_resources/cm/jslib/jquery-ui.1.12.1.js")##
 #else##
-#set($jQueryLocation = "/cm/jslib/jquery-ui.js")##
+#set($jQueryLocation = "/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js")##
 #end##
 #end##
 #set($jQuerySRIHash = $widgetitem.getProperties().get("jQueryUILocationIntegrity"))##
@@ -1082,7 +1082,7 @@ crossorigin="$!{jQueryMigrateCrossOrigin}"
 #if($perc.linkContext.mode.toString() == "PUBLISH")##
 #set($jQueryLocation = "/web_resources/cm/jslib/jquery-ui.1.12.1.js")##
 #else##
-#set($jQueryLocation = "/cm/jslib/jquery-ui.js")##
+#set($jQueryLocation = "/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js")##
 #end##
 #end##
 #if( (($perc.linkContext.mode.toString() == "PUBLISH") && ($includeOnPublishedPage  !=  "no")) || (($perc.linkContext.mode.toString()  ==  "PREVIEW") && ($includeOnPublishedPage  !=  "no")))##

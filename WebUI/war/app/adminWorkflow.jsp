@@ -70,9 +70,7 @@
     <!-- <link rel="stylesheet" type="text/css" href="../cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.min.css"/> -->
      <link rel="stylesheet" type="text/css" href="../jslib/profiles/3x/libraries/bootstrap/css/bootstrap.min.css"/>
     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%= locale%>"></script>
-    <script src="../cui/components/jquery/jquery.min.js"></script>
-    <script src="../cui/components/jquery/jquery-migrate.min.js"></script>
-    <script src="../jslib/profiles/3x/libraries/bootstrap/js/bootstrap.bundle.min.js"></script>
+
     <% if (isDebug) { %>
 
     <!-- CSS Includes -->
@@ -82,7 +80,7 @@
     <link type="text/css" href="../css/percWorkflow.css" rel="stylesheet"/>
     <link type="text/css" href="../css/perc_mcol.css" rel="stylesheet"/>
     <link type="text/css" href="../css/perc_decoration.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/jquery.tooltip.css" rel="stylesheet"/>
+
     <!-- Stuff needed for finder to work like Editor -->
     <link rel="stylesheet" type="text/css" href="../css/perc_newsitedialog.css"/>
     <link rel="stylesheet" type="text/css" href="../css/perc_new_page_button.css"/>
@@ -90,7 +88,7 @@
     
     <!-- JavaScript Includes (order matters) -->
     <%@include file="includes/common_js.jsp" %>
-    <script src="../jslib/jquery.dynatree.js"></script>
+    <script src="../jslib/profiles/3x/libraries/bootstrap/js/bootstrap.bundle.min.js"></script>    
     <script src="../plugins/PercDataList.js"></script>
     <script src="../plugins/PercAddItemDialog.js"></script>
     <script src="../services/PercUserService.js"></script>
@@ -132,7 +130,7 @@
             $j.PercRoleView();
             $j.PercCategoryView();
             fixBottomHeight();
-            $j("select").keypress(function () {
+            $j("select").on("keypress",function () {
                 dirtyController.setDirty(true, "asset");
             });
             $j("#tabs").tabs({
@@ -176,13 +174,13 @@
                     $j.PercUserController.cacheAllRoles();
 
                     //Update the Assgined Roles list for currently selected user                 
-                    $j("li.perc-users-selected").click();
-                    $j("#perc-wf-update-cancel").click();
+                    $j("li.perc-users-selected").trigger("click");
+                    $j("#perc-wf-update-cancel").trigger("click");
                 }
                 else if (index === ROLES_TAB) {
                     //Update the Assigned Users list for currently selected role
-                    $j("li.perc-item-selected").click();
-                    $j("#perc-wf-update-cancel").click();
+                    $j("li.perc-item-selected").trigger("click");
+                    $j("#perc-wf-update-cancel").trigger("click");
                 }
                 else if (index === WORKFLOW_TAB) {
                     //Update the Workflow to get changes if a role has been deleted

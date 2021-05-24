@@ -112,7 +112,7 @@
          * warns the user. Sets the JavaScriptOff to true or false depending on the current status. Calls the
          * initRender to reinitialize the view.
          */
-        $("#perc-style-menu a.perc-dropdown-option-DisableJavaScript").unbind().click(function() {
+        $("#perc-style-menu a.perc-dropdown-option-DisableJavaScript").off("click").on("click", function() {
             var __this = this;
             var handleScripts = function()
             {
@@ -238,10 +238,10 @@
     
 	    function afterRender() 
 	    {
-	        iframe.contents().find("div").unbind();   // kill the editable events.
+	        iframe.contents().find("div").off();   // kill the editable events.
 	        widgetDecorator.refresh();
                 sanitizeHtml();
-	        iframe.contents().find("body").css("z-index","-1000").unbind().click(function() {
+	        iframe.contents().find("body").css("z-index","-1000").off("click").on("click", function() {
 	            widgetDecorator.unselectAll();
 	        });
 	    }

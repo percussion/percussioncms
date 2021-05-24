@@ -198,10 +198,10 @@
             if (1 < navLoc)
             {
                 // Make sure to unbind click first, goes crazy otherwise.
-                currDiv.find('.perc-goto-first').attr('aria-label', 'First page').attr('href', genPageUrl(1)).unbind('click').click(function(event) {
+                currDiv.find('.perc-goto-first').attr('aria-label', 'First page').attr('href', genPageUrl(1)).off('click').on("click", function(event) {
                     quickNav(target, 1, callback, callbackOptions, event);
                 }).parent().show();
-                currDiv.find('.perc-goto-pre').attr('aria-label', 'Previous page ' + (navLoc - 1)).attr('href', genPageUrl(navLoc -1)).unbind('click').click(function(event) {
+                currDiv.find('.perc-goto-pre').attr('aria-label', 'Previous page ' + (navLoc - 1)).attr('href', genPageUrl(navLoc -1)).off('click').on("click", function(event) {
                     quickNav(target, navLoc - 1, callback, callbackOptions, event);
                 }).parent().show();
 
@@ -215,22 +215,22 @@
             }
 
 
-            currDiv.find('.perc-first').attr('aria-label', 'Page ' + (center - 2)).attr('href', genPageUrl(center - 2)).text(center - 2).unbind('click').click(function(event) {
+            currDiv.find('.perc-first').attr('aria-label', 'Page ' + (center - 2)).attr('href', genPageUrl(center - 2)).text(center - 2).off('click').on("click",function(event) {
                 quickNav(target, center - 2, callback, callbackOptions, event);
             }).parent().show();
 
             // Unbind so we don't conflict with earlier calls of the same thing.
-            currDiv.find('.perc-second').attr('aria-label', 'Page ' + (center - 1)).attr('href', genPageUrl(center - 1)).text(center - 1).unbind('click').click(function(event){
+            currDiv.find('.perc-second').attr('aria-label', 'Page ' + (center - 1)).attr('href', genPageUrl(center - 1)).text(center - 1).off('click').on('click',function(event){
                 quickNav(target, center - 1, callback, callbackOptions, event);
             }).parent().show();
 
             //if not on last page already
             if (navLoc < target.totalPages)
             {
-                currDiv.find('.perc-goto-next').attr('aria-label', 'Next page ' + (navLoc + 1)).attr('href', genPageUrl(navLoc + 1)).unbind('click').click(function(event) {
+                currDiv.find('.perc-goto-next').attr('aria-label', 'Next page ' + (navLoc + 1)).attr('href', genPageUrl(navLoc + 1)).off('click').on("click",function(event) {
                     quickNav(target, navLoc + 1, callback, callbackOptions, event);
                 }).parent().show();
-                currDiv.find('.perc-goto-last').attr('aria-label', 'Last page ' + target.totalPages).attr('href', genPageUrl(target.totalPages)).unbind('click').click(function(event) {
+                currDiv.find('.perc-goto-last').attr('aria-label', 'Last page ' + target.totalPages).attr('href', genPageUrl(target.totalPages)).off('click').on('click',function(event) {
                     quickNav(target, target.totalPages, callback, callbackOptions, event);
                 }).parent().show();
 
@@ -246,7 +246,7 @@
         if(2 < target.totalPages)
         {
 
-            currDiv.find('.perc-third').attr('aria-label', 'Page ' + (center + 0)).attr('href', genPageUrl(center + 0)).text(center + 0).unbind('click').click(function(event){
+            currDiv.find('.perc-third').attr('aria-label', 'Page ' + (center + 0)).attr('href', genPageUrl(center + 0)).text(center + 0).off('click').on('click',function(event){
                 // We're passing in the same parameters to quickNav that we're getting from it,
                 // so it becomes a user initiated recursive function.
                 quickNav(target, center + 0, callback, callbackOptions, event);
@@ -254,18 +254,18 @@
         }
         if(3 < target.totalPages)
         {
-            currDiv.find('.perc-fourth').attr('aria-label', 'Page ' + (center + 1)).attr('href', genPageUrl(center + 1)).text(center + 1).unbind('click').click(function(event){
+            currDiv.find('.perc-fourth').attr('aria-label', 'Page ' + (center + 1)).attr('href', genPageUrl(center + 1)).text(center + 1).off('click').on('click',function(event){
                 quickNav(target, center + 1, callback, callbackOptions, event);
             }).parent().show();
         }
         if(4 < target.totalPages)
         {
-            currDiv.find('.perc-fifth').attr('aria-label', 'Page ' + (center + 2)).attr('href', genPageUrl(center + 2)).text(center + 2).unbind('click').click(function(event){
+            currDiv.find('.perc-fifth').attr('aria-label', 'Page ' + (center + 2)).attr('href', genPageUrl(center + 2)).text(center + 2).off('click').on('click',function(event){
                 quickNav(target, center + 2, callback, callbackOptions, event);
             }).parent().show();
         }
 
-        currDiv.find(navLocClass).attr('aria-label', 'Current page ' + navLoc).attr('href', genPageUrl(navLoc)).addClass('perc-current-page').unbind('click').click(function(event){
+        currDiv.find(navLocClass).attr('aria-label', 'Current page ' + navLoc).attr('href', genPageUrl(navLoc)).addClass('perc-current-page').off('click').on('click', function(event){
             event.preventDefault();});
 
         // Update page count.

@@ -27,13 +27,13 @@ function findTopMostJQuery() {
 }
 
 function addKeyPressDirtyEvents() {
-    jQuery("input").keypress(function(){
+    jQuery("input").on("keypress",function(){
         jQuery.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
     });
-    jQuery("textarea").keypress(function(){
+    jQuery("textarea").on("keypress",function(){
         jQuery.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
     });
-    jQuery("select").keypress(function(){
+    jQuery("select").on("keypress",function(){
         jQuery.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
     });
 }

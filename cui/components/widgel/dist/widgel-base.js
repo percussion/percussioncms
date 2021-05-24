@@ -109,7 +109,7 @@
                     throw ("Invalid ViewModel field name.  " + field + " does not exist.");
                 
                 if ((vModel[field] != null) && (ko.isSubscribable(vModel[field]))) {
-                    if ($.isArray(vModel[field]._latestValue)) {
+                    if (Array.isArray(vModel[field]._latestValue)) {
                         if (!(vModel[field].hasOwnProperty("PushData"))) {
                             throw ("Could not set array data. " + field + "property is observableArray but does not implement PushData() method.");
                         }
@@ -124,7 +124,7 @@
                         vModel[field](data[field]);
                     }
                 }
-                else if ($.isArray(data[field])) {
+                else if (Array.isArray(data[field])) {
                     // try pushData method (optional on regular arrays)
                     if (vModel[field].hasOwnProperty("PushData")) {
                         // empty out previous array with unshift so that we preserve any dynamically added properties like PushData
@@ -279,7 +279,7 @@
         
         // both not primitive?
         if ((!oldIsPrimitive) && (!newIsPrimitive)) {
-            if ($.isArray(oldV) && $.isArray(newV)) {
+            if (Array.isArray(oldV) && Array.isArray(newV)) {
                 if (newV.length != oldV.length) {
                     return false;
                 }

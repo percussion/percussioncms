@@ -733,14 +733,14 @@
         }   // end function percProcessEventList
 
 
-      $('#showCalendarButton-${calendarContentId}-${widgetId}').click(function() {
+      $('#showCalendarButton-${calendarContentId}-${widgetId}').on("click", function() {
         $('#perc-event-list-${calendarContentId}-${widgetId}').hide();
         Perc.range = 6;
         $('#calendar-${calendarContentId}-${widgetId}').fadeIn().fullCalendar( 'destroy' );
         initializeCalendar();
         $('#perc-button-container-${calendarContentId}-${widgetId}').fadeIn();
       });
-      $('#showListButton-${calendarContentId}-${widgetId}').click(function() {
+      $('#showListButton-${calendarContentId}-${widgetId}').on("click",function() {
         $('#perc-button-container-${calendarContentId}-${widgetId}').hide();
         $('#calendar-${calendarContentId}-${widgetId}').fullCalendar( 'destroy' );
         Perc.events['calendar-${calendarContentId}-${widgetId}'] = jQuery.Deferred();

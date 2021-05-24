@@ -56,7 +56,7 @@
 
               <script>
               $(document).ready(function() {
-                      $(".perc-template-import-field").change(function(){          
+                      $(".perc-template-import-field").on("change", function(){
                             $(".perc-import-error").hide();
                             $("#per-import-message").hide();
                             $("#perc-import-template-frame").css('height', '41px'); 

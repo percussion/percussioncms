@@ -32,9 +32,9 @@
         var spec;
 
         var btn = $('<a id="perc-finder-delete" class="perc-font-icon icon-remove" title="' + I18N.message("perc.ui.delete.page.button@Click Delete Page") + '"href="#" ></a>')
-            .unbind()
+            .off("click")
             .perc_button()
-            .click(deleteFn);
+            .on("click",deleteFn);
 
         function deleteFn() {
             var encodedPath = mcol_path;
@@ -42,7 +42,7 @@
                 encodedPath = $.perc_utils.encodePathArray(mcol_path);
             }
             $.PercFolderHelper().getAccessLevelByPath(encodedPath.join('/'), false, function (status, result) {
-                if (status == $.PercFolderHelper().PERMISSION_ERROR) {
+                if (status === $.PercFolderHelper().PERMISSION_ERROR) {
                     $.perc_utils.alert_dialog({ title: I18N.message("perc.ui.publish.title@Error"), content: result });
                     mcol.refresh();
                     return;
@@ -143,9 +143,9 @@
                     }
                 },
                 open: function () {
-                    $("#" + chkBoxId).click(function () {
+                    $("#" + chkBoxId).on("click",function () {
                         if ($(this).get(0).checked) {
-                            $("#perc-finder-delete-approved-ok").click(function () {
+                            $("#perc-finder-delete-approved-ok").on("click",function () {
                                 if ($("#" + chkBoxId).length > 0) {
                                     if ($("#" + chkBoxId).get(0).checked) {
                                         forceDeleteCallback();
@@ -192,7 +192,7 @@
             $.PercAssetService.deleteAsset(
                 assetId,
                 function () {
-                    delete_success(assetId, 'asset')
+                    delete_success(assetId, 'asset');
                 },
                 asset_delete_handle_error
             );
@@ -335,7 +335,7 @@
 		function validateIfAssetCanBeDeleted(spec,data,takeDownUrl) {
 		   // prepare confirm dialog asking if they really want to remove the asset
 			var dirtyType = $.PercDirtyController.dirtyObjectType;
-			var title = mcol_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH ? I18N.message('perc.ui.deleteassetdialog.title@Recycle Asset') : I18N.message('perc.ui.deleteassetdialog.title@Delete Asset')
+			var title = mcol_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH ? I18N.message('perc.ui.deleteassetdialog.title@Recycle Asset') : I18N.message('perc.ui.deleteassetdialog.title@Delete Asset');
 			var message = mcol_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH ? I18N.message("perc.ui.deleteassetdialog.purge@Confirm") : I18N.message("perc.ui.deleteassetdialog.warning@Confirm");
 			var options = {
 				id: 'perc-finder-delete-confirm',
@@ -362,7 +362,7 @@
 			{
 				delete_asset();
 			}
-		 }
+		 };
 
 		$.PercServiceUtils.makeJsonRequest(takeDownUrl, $.PercServiceUtils.TYPE_PUT, true, serviceCallback, data);
 	}
@@ -371,7 +371,7 @@
          * Delete folder success callback, simply refresh the finder.
          */
         function cbDfSuccess(data) {
-            setTimeout(function () { mcol.refresh() }, 200);
+            setTimeout(function () { mcol.refresh(); }, 200);
             var eventData = { type: 'folder' };
             finder.fireActionEvent(finder.ACTIONS.DELETE, eventData);
         }
@@ -419,17 +419,17 @@
 			{
 				delete_page(spec);
 			}
-		 }
+		 };
 
 		$.PercServiceUtils.makeJsonRequest(takeDownUrl, $.PercServiceUtils.TYPE_PUT, true, serviceCallback, data);
 	}
         // recycles an item.  now calls purge_page() if path starts with /Recycling.
         function delete_page(spec) {
             if (mcol_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH) {
-                purge_item(spec['PathItem']['id'], $.perc_paths.PAGE_PURGE, 'page');
+                purge_item(spec.PathItem.id, $.perc_paths.PAGE_PURGE, 'page');
                 return;
             }
-            $.PercRedirectHandler.createRedirect(spec['PathItem'].path, "", "page")
+            $.PercRedirectHandler.createRedirect(spec.PathItem.path, "", "page")
                 .fail(function (errMsg) {
                     $.perc_utils.alert_dialog({
                         title: I18N.message("perc.ui.contributor.ui.adaptor@Redirect creation error"), content: errMsg, okCallBack: function () {
@@ -590,15 +590,15 @@
                     }
 
                     if (!disable && mcol_path.length > 2) {
-                        if (type == 'site') {
-                            $(".perc-finder-menu #perc-finder-delete").removeClass('ui-enabled').addClass('ui-disabled').unbind('click');
+                        if (type === 'site') {
+                            $(".perc-finder-menu #perc-finder-delete").removeClass('ui-enabled').addClass('ui-disabled').off('click');
                         }
                         else {
-                            $(".perc-finder-menu #perc-finder-delete").removeClass('ui-disabled').addClass('ui-enabled').unbind().click(deleteFn);
+                            $(".perc-finder-menu #perc-finder-delete").removeClass('ui-disabled').addClass('ui-enabled').off('click').on('click',deleteFn);
                         }
                     }
                     else {
-                        $(".perc-finder-menu #perc-finder-delete").removeClass('ui-enabled').addClass('ui-disabled').unbind('click');
+                        $(".perc-finder-menu #perc-finder-delete").removeClass('ui-enabled').addClass('ui-disabled').off('click');
                     }
                 },
                 function (request) {

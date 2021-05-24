@@ -70,7 +70,7 @@
                             $("#perc-themes-table-row").append(renderGalleryEntry($name, $thumbUrl, $nameAsEntered));
             
                             // Selecting the theme
-                            $j("#theme-"+$name).click(function() {
+                            $j("#theme-"+$name).on("click",function() {
                             	// if user clicks on any theme from the gallery, then set the dirty flag
                             	dirtyController.setDirty(true,"style",saveCSS);
                             	

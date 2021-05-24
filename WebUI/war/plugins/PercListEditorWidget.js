@@ -107,41 +107,41 @@
         // listen to changes on the toggler element passed in the options
         // if the toggler changes, get its value and if it's in the toggle off array, then disable this whole component
         // otherwise enable it
-        options.toggler.change(function() {
+        options.toggler.on("change",function() {
             updateEnableStatus();
         });
 
         // show/hide input field to add a new item
-        startAddButton.unbind().click(function() {
+        startAddButton.off("click").on("click",function() {
             inputFieldDiv.toggle();
         });
 
         // handle plus button to add a new item
-        plusButton.click(function() {
+        plusButton.on("click",function() {
             var itemText = inputField.val();
             addListItem(itemText);
         });
         
         // handle enter key to add a new item
         inputField
-            .keypress(function(event) {
+            .on("keypress",function(event) {
                 var code = (event.keyCode ? event.keyCode : event.which);
                 var itemText = inputField.val();
                 if(code === 13)
                     if(findItem(itemText))
                         addListItem(itemText);
-            }).click(function(){
+            }).on("click",function(){
                 inputField.focus();
                 updatePlusButton();
                 updateInputField("clear");
                 list.find("li").removeClass("perc-ui-listedit-itemselected");
-            }).keyup(function(){
+            }).on('keyup',function(){
                 updatePlusButton();
-            }).change(function(){
+            }).on("change",function(){
             	updatePlusButton();
-            }).blur(function(){
+            }).on("blur",function(){
             	updateInputField("help");
-            }).focus(function(){
+            }).on("focus",function(){
                 updateInputField("clear");
             });
 
@@ -305,7 +305,7 @@
             
             // after rendering all the items, attach the delete buttons to a click handler
             deleteButtons = $(".perc-ui-permission-deletebutton");
-            deleteButtons.click(function() {
+            deleteButtons.on("click",function() {
                 var id = $(this).attr("id");
                 removeListItem(id);
             });
@@ -353,9 +353,9 @@
             deleteButtons.show();
             updatePlusButton();
             startAddButton
-                .unbind()
+                .off("click")
                 .removeClass("disabled")
-                .click(function() {
+                .on("click",function() {
                     inputFieldDiv.toggle();
             });
         }
@@ -373,20 +373,20 @@
             disablePlusButton();
             startAddButton
                 .addClass("disabled")
-                .unbind();
+                .off();
             list.find("li").removeClass("perc-ui-listedit-itemselected");
         }
 
         function disablePlusButton() {
             plusButton
                 .addClass("disabled")
-                .unbind();
+                .off();
         }
 
         function enablePlusButton() {
             plusButton
                 .removeClass("disabled")
-                .click(function() {
+                .on("click",function() {
                     var itemText = inputField.val();
                     addListItem(itemText);
             });            
@@ -394,7 +394,7 @@
         
         function updateEnableStatus() {
             var togglerValue = options.toggler.val();
-            if($.inArray(togglerValue, options.toggleroff) != -1) {
+            if($.inArray(togglerValue, options.toggleroff) !== -1) {
                 disable();
             } else {
                 enable();

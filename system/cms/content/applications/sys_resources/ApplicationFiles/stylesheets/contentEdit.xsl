@@ -34,13 +34,13 @@
 				<xsl:text>&#10;</xsl:text>
 				<script language="javascript" src="../tmx/tmx.jsp?/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang={$lang}">;</script>
 				<xsl:text>&#10;</xsl:text>
-				<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
+				<script src="../../cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
 				<xsl:text>&#10;</xsl:text>
-				<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
+				<script src="../../cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
 				<xsl:text>&#10;</xsl:text>
-                <script language="javascript" src="../../cm/jslib/jquery-ui.js">;</script>
+                <script language="javascript" src="../../cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"></script>
                 <xsl:text>&#10;</xsl:text>
-				<script language="javascript" src="../sys_resources/js/cm/init.js">;</script>
+				<script language="javascript" src="../sys_resources/js/cm/init.js"></script>
 				<xsl:text>&#10;</xsl:text>
 				<xsl:variable name="scripttags">
 					<xsl:apply-templates select="ControlNameSet/ControlName" mode="scriptfiles"/>
@@ -70,7 +70,7 @@
                             
                              if(!$("#perc-content-edit-metadata-link").hasClass('noClick')) {
                                 $(".perc-content-edit-data").hide();
-                                $("#perc-content-edit-metadata-link, #perc-content-edit-site-link").click(function () {
+                                $("#perc-content-edit-metadata-link, #perc-content-edit-site-link").on("click",function () {
                                     $(this).parent().find(".perc-content-edit-data").toggle();
                                     $(this).toggleClass('perc-spacer perc-tab-open');                                
                                 });

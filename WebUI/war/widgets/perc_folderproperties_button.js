@@ -36,8 +36,8 @@
     $.perc_build_folderproperties_button = function (finder, contentViewer)
     {
         var btn = $('<a id="perc-finder-folderproperties" href="#" title="Folder properties">Folder properties</a>');
-        var selectedItem = undefined;
-        var pathItemSpec = undefined;
+        var selectedItem;
+        var pathItemSpec;
 
         /**
          * Listener function that is added to the finder listeners, this method gets called whenever a path change
@@ -67,7 +67,7 @@
                 // Element selected in list mode: if the selectedItem is not a Folder, make
                 // selectedItem undefined, so the menu entry will not be enabled
                 pathItemSpec = selectedItem.data("percRowData");
-                if (pathItemSpec.type != 'Folder' && pathItemSpec.type != 'FSFolder') {
+                if (pathItemSpec.type !== 'Folder' && pathItemSpec.type !== 'FSFolder') {
                     selectedItem = undefined;
                 }
             }
@@ -113,10 +113,10 @@
         function enableButton(flag)
         {
             if (flag) {
-                btn.removeClass('ui-disabled').addClass('ui-enabled').unbind('click').click( clickHandler );
+                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", clickHandler );
             }
             else {
-                btn.addClass('ui-disabled').removeClass('ui-enabled').unbind('click');
+                btn.addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
             btn.trigger('actions-change-enabled-state');
         }

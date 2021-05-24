@@ -30,12 +30,12 @@
 
 //Creates a button to open/close the Widget Library.
 $.perc_create_widget_library = function( btn ) {
-    btn.unbind();
+    btn.off();
     btn.removeClass("ui-state-disabled").perc_button();
     function close_lib() {
 	$("#perc-pageEditor-toolbar-content").empty();
 	btn.removeClass("perc-widget-library-opened");
-    };
+    }
 
     function mk_widget(w) {
        var wdg;
@@ -44,11 +44,11 @@ $.perc_create_widget_library = function( btn ) {
 	    .addClass("perc-widget")
 	    .append($("<span/>").append(w['label']).addClass("perc-widget-label") )
 	    .append( $("<img src=\"" + w['icon'] + "\" alt=\"\"></img>") )
-	    .attr('id',"widget-" + w['id'] + "-" + $('.perc-widget').size())
+	    .attr('id',"widget-" + w['id'] + "-" + $('.perc-widget').length)
             .draggable({
                   appendTo: 'body',
                   helper: 'clone',
-                  start: function() { $.perc_iframe_drag.start(wdg) },
+                  start: function() { $.perc_iframe_drag.start(wdg); },
                   stop: $.perc_iframe_drag.stop
                   });
        //wdg.find('span').textOverflow('...', true);
@@ -60,7 +60,7 @@ $.perc_create_widget_library = function( btn ) {
 	return $.map(specs['WidgetSummary'], function(spec) {
 		   var sortDiv = $("<div/>").append( mk_widget( spec ) ).css({ 'float': 'left' } );
                    return sortDiv; });
-    };
+    }
     function open_lib() {
 	$.getJSON($.perc_paths.WIDGETS_ALL, function(js) {
 	    		region_tool='<div id="region-tool"><img src="../images/templates/perc-new-region-tool.gif"></div>';
@@ -70,8 +70,8 @@ $.perc_create_widget_library = function( btn ) {
 			      });
 		       });
 	btn.addClass( "perc-widget-library-opened" );
-    };
-    btn.click( function() { 
+    }
+    btn.on("click",function() {
 		   if( btn.is( '.perc-widget-library-opened' ) )
 		       close_lib();
 		   else

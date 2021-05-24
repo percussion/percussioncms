@@ -212,7 +212,7 @@
 
             oTableAttributes = $.PercInlineEditDataTable.init($('#perc-region-attributes-table'), regionAttributesConfig);
 
-            $("#perc-css-overrides-disable").click(function () {
+            $("#perc-css-overrides-disable").on("click", function () {
                 _toggleCssOverride(this.checked);
             });
 
@@ -220,7 +220,7 @@
                 $.PercInlineEditDataTable.enableTable($('#perc-css-overrides-table'), !state);
             }
 
-            $('#perc-region-edit').parent().find('.perc-ok').unbind().click(function () {
+            $('#perc-region-edit').parent().find('.perc-ok').off("click").on("click", function () {
                 saveRegionProperties(region);
             });
         }
@@ -284,7 +284,7 @@
             });
 
             // Bind collapsible event
-            dialog.find(".perc-section-label").unbind().click(function () {
+            dialog.find(".perc-section-label").off("click").on("click", function () {
                 var self = $(this);
                 self.find(".perc-min-max")
                     .toggleClass('perc-items-minimizer')

@@ -94,11 +94,11 @@
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.form.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.form.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-form/jquery.form.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.caret.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.caret.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.caret.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_utils.js" type="script" mimetype="text/javascript">

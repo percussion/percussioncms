@@ -118,7 +118,7 @@
                 renderRows(percWidgets, disabledWidgets, "perc-widget-config-table-perc");
                 renderRows(custWidgets, disabledWidgets, "perc-widget-config-table-cust");
                 miniMsg.dismissMessage(loadingMsg);
-                $("input.perc-widget-chkbox").click(function(){
+                $("input.perc-widget-chkbox").on("click",function(){
 
                 });
             }
@@ -147,7 +147,7 @@
             $("#" + tableId + " .perc-widget-config-col1").append(col1Html);
             $("#" + tableId + " .perc-widget-config-col2").append(col2Html);
             $("#" + tableId + " .perc-widget-config-col3").append(col3Html);
-            $(".perc-widget-chkbox").unbind().click(function(){
+            $(".perc-widget-chkbox").off("click").on("click", function(){
                 percJQuery.PercBlockUI(percJQuery.PercBlockUIMode.CURSORONLY);
                 var values = $('input:checkbox:not(:checked).perc-widget-chkbox').map(function () {
                   return this.name;

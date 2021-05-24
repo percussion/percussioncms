@@ -61,7 +61,7 @@ var $perc_newSiteDialogLayout;
                         $.perc_filterField(templateNameField, $.perc_textFilters.URL);
 
                         // If the URL checkbox is unselected, disable the sitename field
-                        $('input[type=radio]').change(function()
+                        $('input[type=radio]').on("change",function()
                         {
                             // If the selected radio button is not the one for the
                             // URL option, make the URL field read only
@@ -94,7 +94,7 @@ var $perc_newSiteDialogLayout;
                             });
                         // We have to get the images for the perc_imageselect plugin
                         _loadTemplateList();
-                        $("#perc-select-template-type").change(function(){
+                        $("#perc-select-template-type").on("change",function(){
                             if($(this).val() === "base"){
                                 $("#perc-base-template-lib").show();
                                 $("#perc-resp-template-lib").hide();
@@ -306,7 +306,7 @@ var $perc_newSiteDialogLayout;
             continueToNextStep = false;
 
             // Close the dialog to simulate wizard
-            $(".ui-dialog-titlebar .ui-icon-closethick").click();
+            $(".ui-dialog-titlebar .ui-icon-closethick").trigger("click");
 
             // Open the Import Progress dialog
             $.PercImportProgressDialog({

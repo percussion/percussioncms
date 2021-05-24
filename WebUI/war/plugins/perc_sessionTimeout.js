@@ -356,7 +356,7 @@
 
 
         function syncLast() {
-            var storageActivity = new Number(localStorage.getItem("lastActivity"));
+            var storageActivity = Number(localStorage.getItem("lastActivity"));
             if (storageActivity) {
                 var timeDiff = lastActivity - storageActivity;
                 if (timeDiff > 1000) {
@@ -396,11 +396,11 @@
             userActivity();
         }, false);
 
-        $(document).mousemove(function () {
+        $(document).on("mousemove",function () {
             userActivity();
         });
 
-        $(document).keypress(function () {
+        $(document).on("keypress",function () {
             userActivity();
         });
 

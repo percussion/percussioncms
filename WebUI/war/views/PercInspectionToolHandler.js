@@ -76,14 +76,14 @@
          * Bind the click event on the Region Tool Inspector button. On click remove all click events
          * bind to .perc-region and .perc-widget
          */
-        $("#perc-region-tool-inspector").unbind().click(function(event){
+        $("#perc-region-tool-inspector").off("click").on("click",function(event){
             updateRegionInspecToolButton();
             event.stopPropagation();
         });
                 
         //Bind the Undo button
         
-        $("#perc-undo-tool").unbind().click(function(){
+        $("#perc-undo-tool").off("click").on("click",function(){
             performUndo();
         });
         
@@ -108,7 +108,7 @@
             itoolPreviewMouseOut('perc-col');
         });
                 
-        $("#perc-region-tool-inspector").hover(
+        $("#perc-region-tool-inspector").on("mouseenter",
             function(e){
                 var relatedTarget = $(e.relatedTarget);
                 //Internet explorer handle different the relatedTarget on <a> tag
@@ -123,7 +123,8 @@
                 }
                 if (!$(this).is(".buttonPressed"))
                     $(this).css("background-position", "0px -34px");
-            },
+            })
+            .on("mouseleave",
             function(e){
                 var relatedTarget = $(e.relatedTarget);
                 //Internet explorer handle different the relatedTarget on <a> tag
@@ -215,13 +216,13 @@
         var iframeJQuery = window.frames[0].jQuery;
         iframeJQuery(".perc-region.perc-region-leaf").filter(function(){
                 var regWidgets = iframeJQuery(this).find(".perc-widget");
-                return regWidgets.size()!==1 || //Select if there are more than 1 widget
+                return regWidgets.lenght !==1 || //Select if there are more than 1 widget
                 regWidgets.eq(0).attr("widgetdefid") !== 'percRawHtml' || //Select if the widget is not html
                 regWidgets.eq(0).hasClass(".perc-locked") || //Select if the widget is locked
-                regWidgets.eq(0).children().size()===0 || //If there are no elements under widget
-                regWidgets.eq(0).find(".html-sample-content").size() === 1 || //Select if the widget has sample content
-                (regWidgets.eq(0).children().size() === 1 && !regWidgets.eq(0).children().eq(0).is("div"))|| //Select if there is only one element and it is not div
-                (regWidgets.eq(0).children().size() === 1 && regWidgets.eq(0).children().eq(0).is("div") && regWidgets.eq(0).children().eq(0).children().length === 0 && regWidgets.eq(0).children().eq(0).outerHeight(true) === 0 && regWidgets.eq(0).children().eq(0).innerHeight() === 0);
+                regWidgets.eq(0).children().length===0 || //If there are no elements under widget
+                regWidgets.eq(0).find(".html-sample-content").length === 1 || //Select if the widget has sample content
+                (regWidgets.eq(0).children().length === 1 && !regWidgets.eq(0).children().eq(0).is("div"))|| //Select if there is only one element and it is not div
+                (regWidgets.eq(0).children().length === 1 && regWidgets.eq(0).children().eq(0).is("div") && regWidgets.eq(0).children().eq(0).children().length === 0 && regWidgets.eq(0).children().eq(0).outerHeight(true) === 0 && regWidgets.eq(0).children().eq(0).innerHeight() === 0);
             }).addClass("perc-region-itool-unselectable");
     }
     
@@ -263,13 +264,14 @@
     function clearInspectableMarkup()
     {
         var iframeContents = _iframe.contents();
-        iframeContents.find(".perc-itool-selectable-elem").unbind("mouseenter");        
-        iframeContents.find(".perc-region-itool-unselectable").unbind("mouseenter");
-        iframeContents.find(".perc-region-itool-unselectable").unbind("mouseleave");
+        iframeContents.find(".perc-itool-selectable-elem").off("mouseenter");
+        iframeContents.find(".perc-region-itool-unselectable").off("mouseenter");
+        iframeContents.find(".perc-region-itool-unselectable").off("mouseleave");
         iframeContents.find(".perc-itool-selectable-elem").removeClass("perc-itool-selectable-elem");
         iframeContents.find(".perc-region-itool-unselectable").removeClass("perc-region-itool-unselectable");    
         iframeContents.find(".perc-itool-region-elem").removeClass("perc-itool-region-elem");    
-    }    
+    }
+
     
     function isUndoAvailable(){
         return undoBuffer.length > 0;
@@ -592,7 +594,7 @@
             
             currentElem.addClass("perc-itool-highlighter");
             
-            highligtherDiv.unbind("click").click(function(event){
+            highligtherDiv.off("click").on("click",function(event){
                 event.preventDefault();
                 itoolSelectionHandler(event);
             });

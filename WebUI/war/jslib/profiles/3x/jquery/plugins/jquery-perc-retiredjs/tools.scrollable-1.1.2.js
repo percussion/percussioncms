@@ -107,7 +107,7 @@
             },
             
             getSize: function() {
-                return self.getItems().size();  
+                return self.getItems().length;
             },
     
             getPageAmount: function() {
@@ -363,9 +363,9 @@
             // hovering
             if (hc) {
                 self.getItems().hover(function()  {
-                    $(this).addClass(hc);       
+                    $(this).addClass(hc);
                 }, function() {
-                    $(this).removeClass(hc);    
+                    $(this).removeClass(hc);
                 });                     
             }
             
@@ -373,7 +373,7 @@
             if (conf.clickable) {
                 self.getItems().each(function(i) {
                     $(this).unbind("click.scrollable").bind("click.scrollable", function(e) {
-                        if ($(e.target).is("a")) { return; }    
+                        if ($(e.target).is("a")) { return; }
                         return self.click(i);
                     });
                 });
@@ -408,7 +408,7 @@
                 });
                 
             } else  {
-                $(document).unbind(keyId);  
+                $(document).unbind(keyId);
             }               
 
         });
@@ -432,7 +432,7 @@
         
         this.each(function() {          
             el = new Scrollable($(this), conf);
-            $(this).data("scrollable", el); 
+            $(this).data("scrollable", el);
         });
         
         return conf.api ? el: this; 

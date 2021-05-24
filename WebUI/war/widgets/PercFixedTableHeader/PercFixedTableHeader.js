@@ -69,7 +69,7 @@
         remove = config.remove;
         if(remove)
         {
-            remove.bind("click", function()
+            remove.on("click", function()
             {
                 fixedTable.remove();
             });
@@ -79,14 +79,14 @@
         resizable = config.resizable;
         if(resizable)
         {
-            resizable.bind("resize", function()
+            resizable.on("resize", function()
             {
                 update();
             });
         }
 
         // update this widget if the window is resized
-        $(window).resize(function()
+        $(window).on("resize",function()
         {
             update();
         });
@@ -100,5 +100,5 @@
         }
 
         update();
-    }
+    };
 })(jQuery);
