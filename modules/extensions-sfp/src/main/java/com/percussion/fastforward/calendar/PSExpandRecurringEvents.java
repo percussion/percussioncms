@@ -33,6 +33,8 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSDataTypeConverter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -51,6 +53,8 @@ public class PSExpandRecurringEvents extends PSDefaultExtension
       implements
          IPSResultDocumentProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSExpandRecurringEvents.class);
    /**
     * Always <code>false</code>, as the stylesheet is never modified.
     * 
@@ -257,7 +261,8 @@ public class PSExpandRecurringEvents extends PSDefaultExtension
                 * we shouldn't have problems with our XML, but if we do, print
                 * the error and skip to the next event
                 */
-               e.printStackTrace();
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
                request.printTraceMessage("error parsing recurring event: " + e);
             }
          }
