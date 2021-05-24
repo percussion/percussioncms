@@ -2,10 +2,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"  %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<%@page import="com.percussion.pso.imageedit.data.MasterImageMetaData"%>
-<%@page import="com.percussion.pso.imageedit.data.UserSessionData"%>
 <%@page import="com.percussion.pso.imageedit.web.ImageUrlBuilder"%>
+<%@page import="com.percussion.pso.imageedit.data.*"%>
+<%@page import="java.util.Set"%>
+<%@page import="java.util.Iterator"%>
 <%@page import="org.apache.commons.lang.StringUtils"%>
+<%@page import="java.util.Collection"%>
 
 <%
 	ImageUrlBuilder iub = ((ImageUrlBuilder)request.getAttribute("ImageUrlBuilder"));

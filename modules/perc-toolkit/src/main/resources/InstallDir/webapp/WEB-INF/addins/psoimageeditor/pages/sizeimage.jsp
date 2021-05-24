@@ -3,17 +3,17 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<%@page import="com.percussion.pso.imageedit.services.jexl.ImageEditorTools"%>
 <%@page import="org.apache.commons.logging.Log"%>
 <%@page import="org.apache.commons.logging.LogFactory"%>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <!--
-        Dynamically replace the following:
-            - Name of the image in the JSP variable
-            - Image width in JSP variable
-            - Image height in JSP variable
-    -->
-    <%
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<!--
+	Dynamically replace the following:
+		- Name of the image in the JSP variable
+		- Image width in JSP variable
+		- Image height in JSP variable
+-->
+<%
 	//Get the basics first
 	Log log = LogFactory.getLog(getClass()); 
 	
@@ -24,16 +24,15 @@
 <meta http-equiv="Expires" content="-1" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="cache-control" content="no-cache" />
-<link rel="stylesheet" href="/sys_resources/css/menupage.css" type="text/css" />
-<link rel="stylesheet" href="/rx_resources/addins/psoimageeditor/css/image_editor_forms.css" type="text/css" />
-<script type="text/javascript" src="/cm/jslib/profiles/3x/jquery/jquery-3.0.6.js"></script>
-<script type="text/javascript" src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
-<script type="text/javascript" src="/rx_resources/addins/psoimageeditor/js/form.js"></script>
-<script type="text/javascript" src="/rx_resources/addins/psoimageeditor/js/rotate.js"></script>
-<script type="text/javascript" src="/rx_resources/addins/psoimageeditor/js/iutil.js"></script>
-<script type="text/javascript" src="/rx_resources/addins/psoimageeditor/js/iresizable.js"></script>
-<script type="text/javascript" src="/rx_resources/addins/psoimageeditor/js/image_editor_general.js"></script>
-<script type="text/javascript" src="/rx_resources/addins/psoimageeditor/js/psoimageeditor.js"></script>
+<link rel="stylesheet" href="/Rhythmyx/sys_resources/css/menupage.css" type="text/css" />	
+<link rel="stylesheet" href="/Rhythmyx/rx_resources/addins/psoimageeditor/css/image_editor_forms.css" type="text/css" />
+<script type="text/javascript" src="/Rhythmyx/rx_resources/addins/psoimageeditor/js/jquery.js"></script>
+<script type="text/javascript" src="/Rhythmyx/rx_resources/addins/psoimageeditor/js/form.js"></script>
+<script type="text/javascript" src="/Rhythmyx/rx_resources/addins/psoimageeditor/js/rotate.js"></script>
+<script type="text/javascript" src="/Rhythmyx/rx_resources/addins/psoimageeditor/js/iutil.js"></script>
+<script type="text/javascript" src="/Rhythmyx/rx_resources/addins/psoimageeditor/js/iresizable.js"></script>
+<script type="text/javascript" src="/Rhythmyx/rx_resources/addins/psoimageeditor/js/image_editor_general.js"></script>
+<script type="text/javascript" src="/Rhythmyx/rx_resources/addins/psoimageeditor/js/psoimageeditor.js"></script>
 <script type="text/javascript">
 
     var dirtyFlag = ${dirtyFlag}; 
@@ -68,7 +67,7 @@
 		$(getImageElement()).clone().appendTo("#hiddenImage");
 		enableCrop();
 		placeCropBox();
-		$("input").on("change", makeDirty);
+		$("input").bind("change", makeDirty);
 	}
 	
 	 
