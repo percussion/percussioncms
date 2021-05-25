@@ -150,7 +150,7 @@
         {
             var iframeContainer = $("#edit-page-metadata-frame").contents();
             iframeContainer.find("input[id='perc-content-edit-auto_generate_summary']").closest('div["type"]').attr("groupName", "perc-pageSum-container");
-            iframeContainer.find("input[id='perc-content-edit-page_noindex']").closest("div["type"]').attr("groupName", "perc-seo-container").hide();
+            iframeContainer.find("input[id='perc-content-edit-page_noindex']").closest("div['type']").attr("groupName", "perc-seo-container").hide();
             iframeContainer.find("label[for='sys_contentpostdate']").before('<div id = "perc-date-override">Override Post Date</div><span class = "perc-date-override-msg">' +I18N.message("perc.ui.page.edit.dialog@Page Will Appear Published") + '<br /></span>');
             var fieldGroups = [{groupName:"perc-pageSum-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@Page Summary"), fieldNames:["resource_link_title","sys_title","page_summary", "sys_contentpostdate","sys_contentpostdatetz"]},
                                {groupName:"perc-seo-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@SEO"), fieldNames:["page_title","page_description","page_noindex"]},
