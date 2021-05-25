@@ -119,7 +119,8 @@ public class PSPostExitHandler implements IPSResultDocumentProcessor
       }
       catch (Exception e)
       {
-        e.printStackTrace();
+          log.error(e.getMessage());
+          log.debug(e.getMessage(), e);
       }
       log.info("*** Ends Here ***");
     }
