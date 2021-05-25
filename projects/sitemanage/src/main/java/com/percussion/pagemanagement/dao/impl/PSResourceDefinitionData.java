@@ -32,8 +32,8 @@ import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDe
 import com.percussion.pagemanagement.data.PSThemeResource;
 import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
 import com.percussion.share.service.exception.PSDataServiceException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -136,7 +136,7 @@ public class PSResourceDefinitionData
         {
             String ct = resource.getContentType();
             if (isBlank(ct)) {
-                log.error("Content type is null for resource: " + resource);
+                log.error("Content type is null for resource: {} " , resource);
                 return;
             }
             String template = resource.getLegacyTemplate();
@@ -153,8 +153,9 @@ public class PSResourceDefinitionData
              * Add to primary asset resource assocations.
              */
             if(resource.isPrimary()) {
-                if (ct != null)
+                if (ct != null) {
                     primaryAssetResources.put(ct, resource);
+                }
             }
             
             /*
@@ -189,7 +190,8 @@ public class PSResourceDefinitionData
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSResourceDefinitionData.class);
+
+    private static final Logger log = LogManager.getLogger(PSResourceDefinitionData.class);
 
 
 }

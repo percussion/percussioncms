@@ -33,9 +33,9 @@ import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.impl.plugin.PSVelocityAssembler;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.utils.jexl.PSJexlEvaluator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StopWatch;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
@@ -134,7 +134,8 @@ public class PSPageAssembler extends PSVelocityAssembler
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSPageAssembler.class);
+
+    private static final Logger log = LogManager.getLogger(PSPageAssembler.class);
     
 
 }

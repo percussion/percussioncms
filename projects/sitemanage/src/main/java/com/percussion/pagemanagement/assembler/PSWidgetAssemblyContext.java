@@ -23,16 +23,15 @@
  */
 package com.percussion.pagemanagement.assembler;
 
+import com.percussion.pagemanagement.data.PSAbstractRegion;
+import com.percussion.utils.types.PSPair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.percussion.pagemanagement.data.PSAbstractRegion;
-import com.percussion.utils.types.PSPair;
 
 /**
  * The model for rendering a widget.
@@ -90,10 +89,12 @@ public class PSWidgetAssemblyContext extends PSAbstractAssemblyContext
         
         if (log.isDebugEnabled())
         {
-            if (widgetContents == null || widgetContents.isEmpty())
+            if (widgetContents == null || widgetContents.isEmpty()) {
                 log.debug("set widget contents to NULL or EMPTY.");
-            else
-               log.debug("set widget contents to " + widgetContents.size() + " items.");
+            }
+            else {
+                log.debug("set widget contents to " + widgetContents.size() + " items.");
+            }
         }
         if (this.widgetContents != null) 
         {
@@ -134,16 +135,19 @@ public class PSWidgetAssemblyContext extends PSAbstractAssemblyContext
         }
         else
         {
-            if (widgetContents == null)
+            if (widgetContents == null) {
                 widgetContents = new ArrayList<>();
+            }
             widgetContents.add(0, item);
         }
         if (log.isDebugEnabled())
         {
-            if (widgetContents == null || widgetContents.isEmpty())
+            if (widgetContents == null || widgetContents.isEmpty()) {
                 log.debug("set widget contents to NULL or EMPTY.");
-            else
+            }
+            else {
                 log.debug("set widget contents to " + widgetContents.size() + " items.");
+            }
         }
     }
     
@@ -157,8 +161,9 @@ public class PSWidgetAssemblyContext extends PSAbstractAssemblyContext
      */
     public PSRenderAsset getWidgetContent()
     {
-       if (widgetContents == null || widgetContents.isEmpty())
-          return null;
+       if (widgetContents == null || widgetContents.isEmpty()) {
+           return null;
+       }
        
        return widgetContents.get(0);
     }
@@ -172,6 +177,7 @@ public class PSWidgetAssemblyContext extends PSAbstractAssemblyContext
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSWidgetAssemblyContext.class);
+
+    private static final Logger log = LogManager.getLogger(PSWidgetAssemblyContext.class);
 
 }

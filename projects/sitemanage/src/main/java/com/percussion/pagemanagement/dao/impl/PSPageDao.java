@@ -49,8 +49,8 @@ import com.percussion.share.service.exception.PSPropertiesValidationException;
 import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -78,7 +78,8 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 	/**
 	 * Logger for this service.
 	 */
-	public static Log log = LogFactory.getLog(PSPageDao.class);
+
+	private static final Logger log = LogManager.getLogger(PSPageDao.class);
 
 	private IPSWidgetItemIdGenerator widgetItemIdGenerator;
 
@@ -134,8 +135,9 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 		try {
 			PSContentItem contentItem = getContentItemDao().findItemByPath(
 					fullFolderPath);
-			if (contentItem == null)
+			if (contentItem == null) {
 				return null;
+			}
 
 			//Do not return content items that aren't Page's!
 			if (contentItem.isPage()) {
@@ -165,8 +167,9 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 			throws PSDataServiceException {
 		PSContentItem contentItem = getContentItemDao().findItemByPath(name,
 				folderPath);
-		if (contentItem == null || !contentItem.isPage())
+		if (contentItem == null || !contentItem.isPage()) {
 			return null;
+		}
 		PSPage page = find(contentItem.getId());
 		handleThumbnail(page.getId());
 		return page;
@@ -279,8 +282,9 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 		page.setTags(tags);
 		PSHtmlMetadataUtils.fromMap(page, f);
 
-		if (isNumeric(templateContentMigrationVersion))
+		if (isNumeric(templateContentMigrationVersion)) {
 			page.setTemplateContentMigrationVersion(templateContentMigrationVersion);
+		}
 		page.setMigrationEmptyWidgetFlag("yes"
 				.equalsIgnoreCase(migrationEmptyWidgetFlag));
 	}
@@ -313,9 +317,10 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 				page.getTemplateContentMigrationVersion());
 		f.put("migrationemptywidgets",
 				page.isMigrationEmptyWidgetFlag() ? "yes" : "no");
-		if (page.getWorkflowId() != null)
+		if (page.getWorkflowId() != null) {
 			f.put(IPSHtmlParameters.SYS_WORKFLOWID,
 					Integer.toString(page.getWorkflowId()));
+		}
 
 		if (page.getRegionBranches() != null) {
 			widgetItemIdGenerator.generateIds(page.getRegionBranches());
