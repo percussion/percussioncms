@@ -400,8 +400,8 @@
                 assignedUsers.push($(this).html());
             });
 
-            var rolename  = $.trim($("#perc-roles-name-field").val());
-            var origRoleName  = $.trim($("#perc-orig-roles-name-field").val());
+            var rolename  = $("#perc-roles-name-field").val().trim();
+            var origRoleName  = $("#perc-orig-roles-name-field").val().trim();
 
             var description = $("#perc-roles-description-field").val();
             var homepage = $("#perc-roles-homepage-field").val();

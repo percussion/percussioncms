@@ -230,10 +230,10 @@
 <%if ("library".equals(initialScreen)) { %>
 <script>
     //Finder initialization code
-    $j(document).ready(function () {
-        $j.Percussion.PercFinderView();
-        $j("#top-menu .button").on("click",function () {
-            window.location.search = "?view=home&initialScreen=" + $j(this).attr("for");
+    $(document).ready(function () {
+        $.Percussion.PercFinderView();
+        $("#top-menu .button").on("click",function () {
+            window.location.search = "?view=home&initialScreen=" + $(this).attr("for");
         })
     });
 </script>

@@ -327,7 +327,7 @@
         {
             // Ask the controller to create the new template from URL and assign it to the
             // corresponding site
-            var url = $.trim(dialog.find('input[name="url"]').val());
+            var url = dialog.find('input[name="url"]').val().trim();
 
             // If the URL entered lacks the 'http(s)://' string prefix, append 'http://'
             if(! (/^(https?):\/\//i).test(url)) {

@@ -112,21 +112,21 @@
 <link rel="stylesheet" type="text/css" href="../css/IE8_styles.css"/><![endif]-->
 <script  >
 
-    $j(document).ready(function () {
+    $(document).ready(function () {
 
         <% if( site != null && site != ""){ %>
         var siteArchUrl = "<%=site%>";
 
-        $j("#perc_site_map").perc_site_map({
+        $("#perc_site_map").perc_site_map({
             site: siteArchUrl,
             onChange: function () {
-                $j.perc_finder().refresh();
+                $.perc_finder().refresh();
             }
         });
         <%} else { %>
-        $j("#perc_site_map").html("<div style='height: 10px;'></div><div id='perc-site-templates-inline-help'><%=inlineHelpMsg%></div>");
+        $("#perc_site_map").html("<div style='height: 10px;'></div><div id='perc-site-templates-inline-help'><%=inlineHelpMsg%></div>");
         <%}%>
-        $j.Percussion.PercFinderView();
+        $.Percussion.PercFinderView();
     });
 </script>
 </head>

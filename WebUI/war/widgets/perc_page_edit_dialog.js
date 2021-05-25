@@ -55,7 +55,7 @@
             dialogWidth = 800;
         } else {
             //Read-only mode
-            dialogTitle = I18N.message("perc.ui.page.edit.dialog@Metadata")
+            dialogTitle = I18N.message("perc.ui.page.edit.dialog@Metadata");
             dialogButtons = {
                 "Ok":    {
                     click: function()    {
@@ -94,12 +94,12 @@
         function _setPageContent(pageid)
         {
             var pageUrl = "";
-            if($.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_EDIT) {
+            if($.PercNavigationManager.getMode() === $.PercNavigationManager.MODE_EDIT) {
                 //Edit mode
-                pageUrl = $.perc_paths.PAGE_EDITURL + "/" + pageid
+                pageUrl = $.perc_paths.PAGE_EDITURL + "/" + pageid;
             } else {
                 //Read-only mode
-                pageUrl = $.perc_paths.PAGE_VIEWURL + "/" + pageid
+                pageUrl = $.perc_paths.PAGE_VIEWURL + "/" + pageid;
             }
             
             $.ajax({
@@ -150,7 +150,7 @@
         {
             var iframeContainer = $("#edit-page-metadata-frame").contents();
             iframeContainer.find("input[id='perc-content-edit-auto_generate_summary']").closest('div["type"]').attr("groupName", "perc-pageSum-container");
-            iframeContainer.find("input[id='perc-content-edit-page_noindex']").closest('div["type"]').attr("groupName", "perc-seo-container").hide();
+            iframeContainer.find("input[id='perc-content-edit-page_noindex']").closest("div["type"]').attr("groupName", "perc-seo-container").hide();
             iframeContainer.find("label[for='sys_contentpostdate']").before('<div id = "perc-date-override">Override Post Date</div><span class = "perc-date-override-msg">' +I18N.message("perc.ui.page.edit.dialog@Page Will Appear Published") + '<br /></span>');
             var fieldGroups = [{groupName:"perc-pageSum-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@Page Summary"), fieldNames:["resource_link_title","sys_title","page_summary", "sys_contentpostdate","sys_contentpostdatetz"]},
                                {groupName:"perc-seo-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@SEO"), fieldNames:["page_title","page_description","page_noindex"]},
@@ -166,7 +166,7 @@
                 for(var i=0;i<fields.length;i++)
                 {
                     var fieldDiv = iframeContainer.find("[for='" + fields[i] + "']").closest('div["type"]').attr("groupName", groupName);
-                    if(index!=0)
+                    if(index!==0)
                         fieldDiv.hide();
                 }
             });
@@ -209,7 +209,7 @@
                     css('padding', '0px').
                     addClass('datadisplay perc-tinymce-readonly').
                     html(content)
-                )
+                );
                 tinyMCESpan.hide();
             }
             else
@@ -299,7 +299,7 @@
          */
         function _saveMetadata()
         {
-                var fieldValue = $.perc_textFilters.WINDOWS_FILE_NAME($.trim($("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val()));
+                var fieldValue = $.perc_textFilters.WINDOWS_FILE_NAME($("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val().trim());
                 $("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val(fieldValue);
                 
             $.PercBlockUI();

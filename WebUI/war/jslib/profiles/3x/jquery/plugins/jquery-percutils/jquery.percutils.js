@@ -26,15 +26,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * Setting jQuery to No Conflict and bind to $j instead
- */
-var $j = jQuery.noConflict();
 
 /*
  * Define namespaces
  */
- $j.perc = {};
+
+ $.perc = {};
  
 /**
  * Redirect the page to the specified url.
@@ -234,7 +231,7 @@ var $j = jQuery.noConflict();
            
            var start = $(field).caret().start;
            var newVal = filtered;
-           field.value = $.trim(newVal);
+           field.value = newVal.trim();
            var cursorPos = start + 1;
            $(field).caret({start: cursorPos, end: cursorPos});
            evt.preventDefault();
@@ -259,7 +256,7 @@ var $j = jQuery.noConflict();
          }
          
          // Run through the filter on blur
-         tgt.val($.trim(filtered));
+         tgt.val(filtered.trim());
       });  
   };
 })(jQuery);

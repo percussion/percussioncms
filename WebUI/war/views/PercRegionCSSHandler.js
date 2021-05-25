@@ -70,7 +70,7 @@
         
         function getRegionCallback(status, data, id)
         {
-            if(status == $.PercServiceUtils.STATUS_SUCCESS)
+            if(status === $.PercServiceUtils.STATUS_SUCCESS)
             {
                 var percData = [];
                 var row;
@@ -148,20 +148,20 @@
     {
         var properties = [];
         var data = oTable.fnGetData();
-        if (data.length == 1 && $.trim(data[0][0]) == "")
+        if (data.length === 1 && data[0][0].trim() === "")
             data.pop();
         if (data.length > 0)
         {
             for (var i = 0; i < data.length; i++)
             {
-                properties.push({"name": $.trim($(data[i][0]).text()), "value": $.trim($(data[i][1]).text())});
+                properties.push({"name": $(data[i][0]).text().trim(), "value": $(data[i][1]).text().trim()});
             }
             
             var regionCSSObject = {
                     "RegionCSS":{
-                        "properties": properties
-                        ,"regionName": id
-                        ,"outerRegionName": getOuterMostRegion()
+                        "properties": properties,
+                        "regionName": id,
+                        "outerRegionName": getOuterMostRegion(),
                         }}; 
             $.PercTemplateService().saveRegionCSS(
                     _themeName, 
@@ -238,9 +238,9 @@
             for (var i = 0; i < deletedRegions.length; i++)
             {
                 var regionCSSObject = {
-                    "properties": null
-                    ,"regionName": deletedRegions[i]
-                    ,"outerRegionName": getOuterMostRegion()
+                    "properties": null,
+                    "regionName": deletedRegions[i],
+                    "outerRegionName": getOuterMostRegion()
                 }; 
                 deletedRegionsObjects.push(regionCSSObject);
             }

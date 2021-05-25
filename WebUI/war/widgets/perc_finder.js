@@ -202,17 +202,17 @@ function finder() {
         $("#perc-finder-choose-listview").removeClass('ui-state-disabled');
         $("#perc-finder-choose-columnview").removeClass('ui-state-disabled');
         $("#perc-finder-item-name").removeClass('mcol-opened');
-        var newPath = $.trim($("#mcol-path-summary").val());
+        var newPath = $("#mcol-path-summary").val().trim();
         var currPath = getCurrentPath().join("/");
         //eliminate duplicate "/"
         newPath = newPath.replace( /\/(\/)+/g, '/');
         //Convert a relative path to an absolute and correct path
         newPath = absPath(newPath);
-        newPath = (newPath.charAt(0) != "/") ? "/" + newPath : newPath;
-        newPath = (newPath == "/" || newPath == "")? "/" + getCurrentPath()[1] : newPath;
-        if (newPath == currPath && viaGoButton == true
-            && ($.Percussion.getCurrentFinderView() != $.Percussion.PERC_FINDER_SEARCH_RESULTS  // This condition avoids the check when
-                && $.Percussion.getCurrentFinderView() != $.Percussion.PERC_FINDER_RESULT)){    // in search view to force the path change
+        newPath = (newPath.charAt(0) !== "/") ? "/" + newPath : newPath;
+        newPath = (newPath === "/" || newPath === "")? "/" + getCurrentPath()[1] : newPath;
+        if (newPath === currPath && viaGoButton == true
+            && ($.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_SEARCH_RESULTS  // This condition avoids the check when
+                && $.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_RESULT)){    // in search view to force the path change
              return;
         }
         
@@ -223,11 +223,11 @@ function finder() {
                     //validatePath return the exact caseSensitive path.
                     $("#mcol-path-summary").val(result);
                    if ($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDITOR) {
-                       var viewWrapper = $j.PercComponentWrapper("perc-action-finder-go-clicked", ["perc-ui-component-finder"]);
-                       var isWrapperSet = $j.PercViewReadyManager.setWrapper(viewWrapper);
+                       var viewWrapper = $.PercComponentWrapper("perc-action-finder-go-clicked", ["perc-ui-component-finder"]);
+                       var isWrapperSet = $.PercViewReadyManager.setWrapper(viewWrapper);
                        if (!isWrapperSet) {
                            if (!isWrapperSet) {
-                               $j.PercViewReadyManager.showRenderingProgressWarning();
+                               $.PercViewReadyManager.showRenderingProgressWarning();
                                return;
                            }
                        }
@@ -555,11 +555,11 @@ function finder() {
               var compArray = [];
               compArray.push("perc-ui-component-finder");
               
-              var viewWrapper = $j.PercComponentWrapper("perc-action-finder-refresh",compArray);
-              var isWrapperSet = $j.PercViewReadyManager.setWrapper(viewWrapper);
+              var viewWrapper = $.PercComponentWrapper("perc-action-finder-refresh",compArray);
+              var isWrapperSet = $.PercViewReadyManager.setWrapper(viewWrapper);
               if(!isWrapperSet){
                   if(!isWrapperSet){
-                      $j.PercViewReadyManager.showRenderingProgressWarning();
+                      $.PercViewReadyManager.showRenderingProgressWarning();
                       return;
                   }
               }
@@ -671,9 +671,9 @@ function finder() {
                 //We have finished opening to our destination.               
                 
                 //Set the path summary to the correct path.
-                $j("#mcol-path-summary").val( new_path.join('/') );
+                $("#mcol-path-summary").val( new_path.join('/') );
                 // here we are injecting the siteimprove plugin
-                var searchPath = $j("#mcol-path-summary").val();
+                var searchPath = $("#mcol-path-summary").val();
                 if((searchPath.indexOf('/Sites') >= 0) && searchPath !== '/Sites') {
                     var siteName = getSiteNameByPath(searchPath);
                     injectSiteImprove(siteName);
@@ -853,7 +853,7 @@ function finder() {
             path_changed( new_path );
             finderOpenInProgress = false;
             //Set the path summary to the correct path.
-            $j("#mcol-path-summary").val( new_path.join('/') );
+            $("#mcol-path-summary").val( new_path.join('/') );
             //err( "Child \"" + path[0] + "\" does not exist" );
             var fwrapper = $.PercViewReadyManager.getWrapper('perc-ui-component-finder');
             if(fwrapper != null)
@@ -1242,11 +1242,11 @@ function finder() {
                //$('.perc_last_selected').removeClass("perc_last_selected");
                //$(this).addClass("perc_last_selected");
                if ($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDITOR) {
-                   var viewWrapper = $j.PercComponentWrapper("perc-action-finder-item-clicked", ["perc-ui-component-finder"]);
-                   var isWrapperSet = $j.PercViewReadyManager.setWrapper(viewWrapper);
+                   var viewWrapper = $.PercComponentWrapper("perc-action-finder-item-clicked", ["perc-ui-component-finder"]);
+                   var isWrapperSet = $.PercViewReadyManager.setWrapper(viewWrapper);
                    if (!isWrapperSet) {
                        if (!isWrapperSet) {
-                           $j.PercViewReadyManager.showRenderingProgressWarning();
+                           $.PercViewReadyManager.showRenderingProgressWarning();
                            return;
                        }
                    }

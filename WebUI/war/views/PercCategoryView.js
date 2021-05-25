@@ -702,7 +702,7 @@
             }
             
         
-            var categoryname  = $.trim($("#perc-category-name-field").val());
+            var categoryname  = $("#perc-category-name-field").val().trim();
            
             if (originalTitle !== categoryname)
             	node.data.previousCategoryName = originalTitle;

@@ -51,21 +51,22 @@
 		toStringArray:function(){
             var resArray = [];
             _.each(this.model.models, function (resource) {
-                var resName = $.trim(resource.get("name"));
-				if(resName != '')
+                var resName = resource.get("name").trim();
+				if(resName !== '')
 				    resArray.push(resName);
             }, this);
 			return resArray;
         }
     });
 	WidgetBuilderApp.addNewResource = function(type){
-		if(type=="JS"){
+		if(type==="JS"){
 			WidgetBuilderApp.jsResList.add(new WidgetBuilderApp.WidgetResourceModel());
 		}
-		else if(type=="CSS"){
+		else if(type==="CSS"){
             WidgetBuilderApp.cssResList.add(new WidgetBuilderApp.WidgetResourceModel());
 		}
-	}
+	};
+
     WidgetBuilderApp.WidgetResourceView = Backbone.View.extend({
         tagName:'div',
         events: {

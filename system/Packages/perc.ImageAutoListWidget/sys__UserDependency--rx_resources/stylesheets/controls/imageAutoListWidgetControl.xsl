@@ -208,7 +208,7 @@
 			<xsl:text disable-output-escaping="yes">
 				if(p_start_date >= p_end_date)
                 {
-                    $j.perc_utils.alert_dialog({title:"Error", content:"Created before date must be greater than Created on or after date.", okCallBack:function(){
+                    $.perc_utils.alert_dialog({title:"Error", content:"Created before date must be greater than Created on or after date.", okCallBack:function(){
                         setDisplayDate($('[name="end_date"]').val(),"display_end_date");
                         return false;
                     }});
@@ -235,10 +235,10 @@
 		</script>
 
 		<script >
-			$j(document).ready(function(){
-                $j("#autolist-title").on("click",function () {
-                    $j("#criteria_for_list").toggle();
-                    $j("#autolist-title").toggleClass("autolist-expand-image autolist-close-image");
+			$(document).ready(function(){
+                $("#autolist-title").on("click",function () {
+                    $("#criteria_for_list").toggle();
+                    $("#autolist-title").toggleClass("autolist-expand-image autolist-close-image");
                 });
             });
 		</script>
@@ -286,17 +286,17 @@
 	<xsl:template match="Control[@name='imageAutoListWidgetControl' and @isReadOnly='yes']" priority='10' mode="psxcontrol">
 		<script >
 	<![CDATA[
-            $j(document).ready(function(){
-                $j("#autolist-title").on("click",function () {
-                    $j("#criteria_for_list").toggle();
-                    $j("#autolist-title").toggleClass("autolist-expand-image autolist-close-image");
+            $(document).ready(function(){
+                $("#autolist-title").on("click",function () {
+                    $("#criteria_for_list").toggle();
+                    $("#autolist-title").toggleClass("autolist-expand-image autolist-close-image");
                 });
 
                 // Put asset library value in appropriate field
-                var assetlibrarypath = $j("#perc_asset_library_path").val().substring(26);
+                var assetlibrarypath = $("#perc_asset_library_path").val().substring(26);
                 var splitPath = assetlibrarypath.split("/");
 
-                $j("#perc_display_asset_library_path").text(assetlibrarypath);
+                $("#perc_display_asset_library_path").text(assetlibrarypath);
             });
             ]]>
    </script>

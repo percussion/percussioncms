@@ -91,14 +91,14 @@ $.extend({
         if( data.indexOf('{') < 0 ) {
           data = eval("(" + data + ")");
         }
-      }
+      };
       
       var getObject = function(data) {
         if(typeof data != "string") return data;
         
         data = eval("(" + data + ")");
         return data;
-      }
+      };
       
       if ( settings.type == "html5" ) {
         var object = {};
@@ -113,12 +113,12 @@ $.extend({
           var m = settings.cre.exec( elem.className );
           if ( m )
             data = m[1];
-        } else if ( settings.type == "elem" ) {
+        } else if ( settings.type === "elem" ) {
           if( !elem.getElementsByTagName ) return;
           var e = elem.getElementsByTagName(settings.name);
           if ( e.length )
-            data = $.trim(e[0].innerHTML);
-        } else if ( elem.getAttribute != undefined ) {
+            data = e[0].innerHTML.trim();
+        } else if ( elem.getAttribute !== undefined ) {
           var attr = elem.getAttribute( settings.name );
           if ( attr )
             data = attr;

@@ -40,7 +40,7 @@
             userInfo.password = $('#percNewPassword').val();
             payload = {};
             payload.User = userInfo;
-            $j.PercUserService.changePassword(payload, submitNewPasswordCallback);
+            $.PercUserService.changePassword(payload, submitNewPasswordCallback);
         }
         else {
             $('.perc-change-password-error > span').fadeOut('fast', function() {
@@ -125,10 +125,10 @@
     function getUserInfo() {
         userInfo = {};
         passwordDialog = {};
-        userInfo.name = $j.PercNavigationManager.getUserName();
-        $j.PercUserService.findUser(userInfo.name, function (status, response) {
-            if (status !== $j.PercUserService.STATUS_ERROR) {
-                userInfo.roles = $j.perc_utils.convertCXFArray(response.User.roles);
+        userInfo.name = $.PercNavigationManager.getUserName();
+        $.PercUserService.findUser(userInfo.name, function (status, response) {
+            if (status !== $.PercUserService.STATUS_ERROR) {
+                userInfo.roles = $.perc_utils.convertCXFArray(response.User.roles);
                 userInfo.email = response.User.email;
                 if (response.User.providerType !== 'INTERNAL') {
                     // Hide the change password option if we are an external user

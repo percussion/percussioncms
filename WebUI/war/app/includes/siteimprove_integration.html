@@ -15,13 +15,13 @@
 				var siteURL = '';
 				var page_url = '';
 
-				var paths = $j.perc_finder().getCurrentPath();
+				var paths = $.perc_finder().getCurrentPath();
 				if (paths[1] === 'Recycling') {
 				    return;
 				}
 	
 				if(viewType === 'editor' && idParam !== '' && idParam !== null) {
-					pagePath = $j.PercNavigationManager.getPath();
+					pagePath = $.PercNavigationManager.getPath();
 					pagePath = pagePath.substring(pagePath.split("/", 2).join("/").length+1);
 					//this means we are trying to load SI information for a site
 					//that does not have siteimprove enabled or trying to load
@@ -33,15 +33,15 @@
 				siteURL = window.location.protocol + "//" + window.location.host + SITEIMPROVE_CREDENTIALS_ROOT + "/" + siteName;
 	
 				// Make call to the PSSiteimprove.retrieveSiteImproveCredentials
-				$j.ajax({
+				$.ajax({
 					url: siteURL,
 					method: "GET",
 					headers: { "Accept": "application/json; odata=verbose" },
 					success: function (data) {
 						if(data === '' || typeof data === "undefined") {
 							console.log('Not able to retrieve token from Siteimprove endpoint.  Please make sure Siteimprove is enabled for this site if desired.');
-							$j('.si-toggle-container').hide();
-							$j('.si-iframe-container').hide();
+							$('.si-toggle-container').hide();
+							$('.si-iframe-container').hide();
 						}
 						else {
 							var credentials = JSON.parse(data.metadata.data);
@@ -69,7 +69,7 @@
 								}])
 							} // end else statement
 	
-							$j('.si-toggle-container').show();
+							$('.si-toggle-container').show();
 	
 							//if(window._si !== undefined){window._si.push(['showlog','']);} -- Leaving this line. In case we want to check logs from siteimprove in future.
 						}

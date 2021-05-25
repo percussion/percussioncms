@@ -159,7 +159,7 @@
             //an input field gets the data and the name of the input field is passed to the id of a div that contains
             //our editor class - we get the id from the div and pull the data from the input field.
             var dataFieldName = $(".perc-image-slider").attr("id");
-            var dataStr = $("input[name='" + dataFieldName + "']").val();
+            var dataStr = $("input[name='" + dataFieldName + "']").val().trim();
 
             if(dataStr.indexOf('config')!==-1){
                 dataStr = dataStr.replace('config','percJSONConfig');
@@ -172,7 +172,7 @@
             $("input[name='" + dataFieldName + "']").val(dataStr);
 
             var data = null;
-            if($.trim(dataStr).length>0){
+            if(dataStr.length>0){
                 data = JSON.parse(dataStr);
             }
 

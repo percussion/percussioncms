@@ -299,7 +299,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var classValue = $.trim($('#perc-field-class-value').val());
+                var classValue = $('#perc-field-class-value').val().trim();
                 // Remove extra spaces between classes
                 classValue = classValue.replace( /\s\s+/g, ' ' );
 
@@ -372,7 +372,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var nameValue = $.trim($('#perc-field-name-value').val());
+                var nameValue = $('#perc-field-name-value').val().trim();
                 // Remove extra spaces between classes
                 nameValue = nameValue.replace( /\s\s+/g, ' ' );
 
@@ -445,7 +445,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var titleValue = $.trim($('#perc-field-title-value').val());
+                var titleValue = $('#perc-field-title-value').val().trim();
                 // Remove extra spaces between classes
                 titleValue = titleValue.replace( /\s\s+/g, ' ' );
 
@@ -518,7 +518,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var idValue = $.trim($('#perc-field-id-value').val());
+                var idValue = $('#perc-field-id-value').val().trim();
 
                 if (idValue.length > 0)
                 {

@@ -35,8 +35,8 @@
     var defaultServer;
     var PUB_SERVERS = 0;
     var PUB_REPORTS = 1;
-    var service = $j.PercPublisherService(false);
-    this.utilService = $j.PercUtilService;
+    var service = $.PercPublisherService(false);
+    this.utilService = $.PercUtilService;
     var dirtyController = $.PercDirtyController;
     var editorRenderer = $.PercEditorRenderer;
     var serverProperties = {};
@@ -44,13 +44,13 @@
     var serverType = "PRODUCTION";
     var serversIds = [];
     
-    siteName = $j.PercNavigationManager.getSiteName();
+    siteName = $.PercNavigationManager.getSiteName();
     
     /****************** Binding onclick events with all the widgets and buttons toolbar ************************/
-    $j(document).ready(function()
+    $(document).ready(function()
     {
     
-        $j("#tabs").tabs({
+        $("#tabs").tabs({
             selected: 0,
             show: function()
             {
@@ -66,7 +66,7 @@
                         // if they click ok, then reset dirty flag and proceed to select the tab
                         dirtyController.setDirty(false);
                         cancel();
-                        $j("#tabs").tabs('select', ui.index);
+                        $("#tabs").tabs('select', ui.index);
                     });
                     return false;
                 }
@@ -222,7 +222,7 @@
             question: I18N.message("perc.ui.publish.view@About To Delete Server") + serverName + "'<br /><br />" + I18N.message("perc.ui.publish.view@Are You Sure Delete Server"),
             success: function()
             {
-                $j.PercPublisherService().deleteSiteServer(siteId, serverId, function(status, result)
+                $.PercPublisherService().deleteSiteServer(siteId, serverId, function(status, result)
                 {
                     if (status) 
                     {

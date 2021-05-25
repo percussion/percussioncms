@@ -160,13 +160,13 @@
         var global_templates;
         var global_all_templates = new Array();
 
-        $j(document).ready(function () {
-            $j.Percussion.templateDesignView();
-            $j.Percussion.PercFinderView();
+        $(document).ready(function () {
+            $.Percussion.templateDesignView();
+            $.Percussion.PercFinderView();
         });
 
         function percTempLibMaximizer() {
-            var $ = $j;
+            var ;
             if ($("#tabs-1 #perc-temp-lib-expander").hasClass("expander-enabled")) {
                 if ($("#tabs-1 .perc-template-container").hasClass("perc-visible")) {
                     $("#tabs-1 .perc-template-container").removeClass("perc-visible").addClass("perc-hidden");
@@ -187,7 +187,7 @@
         // this method is bound to body's onbeforeunload event
         // if method returns string, it's used to display message and confirmation to navigate away
         // if method returns nothing, navigation is allowed
-        var dirtyController = $j.PercDirtyController;
+        var dirtyController = $.PercDirtyController;
         function navigationEvent() {
             // if template is not dirty, return nothing and allow navigation
             // otherwise return alert message and display confirmantion box

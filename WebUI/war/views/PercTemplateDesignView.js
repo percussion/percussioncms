@@ -645,7 +645,7 @@
         function _cleanMementoView()
         {
             var memento;
-            memento = $j.PercNavigationManager.getMemento();
+            memento = $.PercNavigationManager.getMemento();
             memento['view'] = null;
         }
 

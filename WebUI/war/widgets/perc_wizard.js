@@ -30,9 +30,9 @@
  *
  * Example Usage:
  *
- * $j(document).ready(function() {
+ * $(document).ready(function() {
  *
- *      var $wizard = $j("<div></div>").perc_wizard({
+ *      var $wizard = $("<div></div>").perc_wizard({
  *         templateUrl: "../html/dialogs/perc_newSiteDialog.html",
  *         title: "New Site",
  *         height: 400
@@ -40,7 +40,7 @@
  *
  *      });
  *
- *      $j('#someButton').click(function() {
+ *      $('#someButton').click(function() {
  *           $wizard.perc_wizard('open');
  *      });
  * });

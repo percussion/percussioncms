@@ -107,7 +107,7 @@
 <!--[if gte IE 8]>
 <link rel="stylesheet" type="text/css" href="../css/IE8_styles.css"/><![endif]-->
 <script>
-    var dirtyController = $j.PercDirtyController;
+    var dirtyController = $.PercDirtyController;
     function navigationEvent() {
         // if template is not dirty, return nothing and allow navigation
         // otherwise return alert message and display confirmantion box

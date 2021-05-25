@@ -3,7 +3,7 @@
      //Remove white space (if any) from end of Name value    
     $("#perc-content-edit-sys_title, #perc-content-edit-displaytitle").change( function() {
         var updateTitleValue = $(this).val();
-        updateTitleValue = $.trim(updateTitleValue);
+        updateTitleValue = updateTitleValue.trim();
         $(this).val(updateTitleValue);
     });
 }); 

@@ -170,7 +170,7 @@
 	<xsl:template match="Control[@name='categoryListWidgetControl']" mode="psxcontrol">
 
 	<script >
-		$ = $j;
+		;
 		$(document).ready(function () {
 			$.categoryListWidget.psxControl(); // maintained in categoryListWidget.js
 		});
@@ -243,7 +243,7 @@
 				  mode="psxcontrol">
 	<script >
 	<![CDATA[
-		$j(document).ready(function () {
+		$(document).ready(function () {
 			$.categoryListWidget.readOnlyControl(); // maintained in categoryListWidget.js
 		});
 		]]>

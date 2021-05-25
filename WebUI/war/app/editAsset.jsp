@@ -195,8 +195,8 @@
 
     <script  >
         gDebug = <%= debug %>;
-        $j(document).ready(function () {
-            $j.Percussion.PercFinderView();
+        $(document).ready(function () {
+            $.Percussion.PercFinderView();
 
         });
 
@@ -204,7 +204,7 @@
         // this method is bound to body's onbeforeunload event
         // if method returns string, it's used to display message and confirmation to navigate away
         // if method returns nothing, navigation is allowed
-        var dirtyController = $j.PercDirtyController;
+        var dirtyController = $.PercDirtyController;
         function navigationEvent() {
             // if template is not dirty, return nothing and allow navigation
             // otherwise return alert message and display confirmantion box

@@ -711,10 +711,10 @@
         function loadTab(index, addWrapper)
         {
             if(addWrapper){
-                var viewWrapper = $j.PercComponentWrapper("perc-action-page-tab-selected",["perc-ui-component-editor-toolbar","perc-ui-component-editor-frame"]);
-                var isWrapperSet = $j.PercViewReadyManager.setWrapper(viewWrapper);
+                var viewWrapper = $.PercComponentWrapper("perc-action-page-tab-selected",["perc-ui-component-editor-toolbar","perc-ui-component-editor-frame"]);
+                var isWrapperSet = $.PercViewReadyManager.setWrapper(viewWrapper);
                 if(!isWrapperSet){
-                    $j.PercViewReadyManager.showRenderingProgressWarning();
+                    $.PercViewReadyManager.showRenderingProgressWarning();
                     return;
                 }
             }
@@ -775,7 +775,7 @@
                 'pageId': currentPageId,
                 'tabId': "perc-tab-layout"
             };
-            $j.PercNavigationManager.goToLocation($j.PercNavigationManager.VIEW_EDIT_TEMPLATE, $.PercNavigationManager.getSiteName(), null, null, null, $.PercNavigationManager.getPath(), null, memento);
+            $.PercNavigationManager.goToLocation($.PercNavigationManager.VIEW_EDIT_TEMPLATE, $.PercNavigationManager.getSiteName(), null, null, null, $.PercNavigationManager.getPath(), null, memento);
         }
 
         /**

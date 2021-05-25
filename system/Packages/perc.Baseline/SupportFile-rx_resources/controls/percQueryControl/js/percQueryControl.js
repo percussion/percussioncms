@@ -182,7 +182,7 @@
             */
             function showPageTemplates()
             {
-                $ = $j;   
+                ;   
                 //make an array from the comma delimited options string
                 var pageTemplatesOptionsArray = [];
         

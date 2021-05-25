@@ -189,11 +189,11 @@
             </xsl:call-template>
         // <![CDATA[
 
-            var siteName = parent.$j.PercNavigationManager.getSiteName();
+            var siteName = parent.$.PercNavigationManager.getSiteName();
 
             if (parentCategory.indexOf("{sitename}") !== -1)
             {
-                var siteName = parent.$j.PercNavigationManager.getSiteName();
+                var siteName = parent.$.PercNavigationManager.getSiteName();
                 parentCategory = parentCategory.replace("{sitename}",siteName);
             }
            

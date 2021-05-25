@@ -2994,7 +2994,7 @@
 		var cellProcess = function ( cell ) {
 			if ( colIdx === undefined || colIdx === i ) {
 				col = columns[i];
-				contents = $.trim(cell.innerHTML);
+				contents = cell.innerHTML.trim();
 	
 				if ( col && col._bAttrSrc ) {
 					var setter = _fnSetObjectDataFn( col.mData._ );
@@ -7724,7 +7724,7 @@
 				[ selector[i] ];
 	
 			for ( j=0, jen=a.length ; j<jen ; j++ ) {
-				res = selectFn( typeof a[j] === 'string' ? $.trim(a[j]) : a[j] );
+				res = selectFn( typeof a[j] === 'string' ? a[j].trim() : a[j] );
 	
 				if ( res && res.length ) {
 					out = out.concat( res );

@@ -322,7 +322,7 @@
                     if(status)
                     {
                         
-                        refreshWorkflowContainer($.trim(workflowName));                                        
+                        refreshWorkflowContainer(workflowName.trim());
                     }
                     else
                     {
@@ -397,7 +397,7 @@
             function updateWorkflowServiceCall(){
                 $.PercWorkflowService().updateWorkflow(previousWorkflowName, workflowObj, function(status, result){
                     if (status) {
-                        refreshWorkflowContainer($.trim(newWorkflowName));
+                        refreshWorkflowContainer(newWorkflowName.trim());
                     }
                     else {
                         var errorMessage = $.PercServiceUtils.extractDefaultErrorMessage(result[0]);
@@ -463,7 +463,7 @@
             var roles = [];
             if(workflowName)
             {
-                if($.trim(stagingRoleNames.get(workflowName)) !== "")
+                if(stagingRoleNames.get(workflowName).trim() !== "")
                 {
                     roles = stagingRoleNames.get(workflowName).split(";");
                 }
