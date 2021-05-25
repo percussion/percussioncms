@@ -40,8 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.pagemanagement.data.PSRenderLink;
 import com.percussion.pagemanagement.data.PSRenderLinkContext.Mode;
@@ -106,11 +106,15 @@ public class PSResourceLinkAndLocationUtils
         notEmpty(end, "Must have end paths.");
         String path = start;
         for (String p : end ) {
-            if (isNotBlank(p))
-                path = removeEnd(path, "/") + "/" + removeStart(p, "/");
+            if (isNotBlank(p)) {
+				path = removeEnd(path, "/") + "/" + removeStart(p, "/");
+			}
         }
-        if ("/".equals(path)) return path;
-        return removeEnd(path, "/");
+        if ("/".equals(path)){
+        	return path;}
+
+			return removeEnd(path, "/");
+
     }
     
     /**
@@ -164,8 +168,9 @@ public class PSResourceLinkAndLocationUtils
     		// not the first character of the id as to preserve the input as much as possible
     		if(StringUtils.isNotBlank(analyticsId)) {
     			int indexOfQuestionMark = analyticsId.indexOf("?");
-    			if(indexOfQuestionMark != 0)
-    				analyticsId = "?" + analyticsId;
+    			if(indexOfQuestionMark != 0) {
+					analyticsId = "?" + analyticsId;
+				}
     		}
     		
     		analyticsId = StringUtils.substringAfter(analyticsId, "?");
@@ -190,13 +195,13 @@ public class PSResourceLinkAndLocationUtils
 	    				}
 	    			}
 	    			catch (UnsupportedEncodingException e) {
-	    				log.error("Failed to encode url: " + url + ".  Exception is: " + e);
+	    				log.error("Failed to encode url: {}.  Exception is: {}",url, e);
 	    			}
     			} // end for loop
     			// cross site links are fully qualified non cross site are relative.
     			String checkUrl = url.startsWith("http") ? url : "http://localhost" + url;
     			if(!URLValidator.isValid(checkUrl)){
-    				log.warn("The link to asset with analyticsid: " + url + " appears to be invalid.");
+    				log.warn("The link to asset with analyticsid: {} appears to be invalid.",url);
     			}
     			
     		} // end if isNotBlank(analyticsId)
@@ -221,8 +226,9 @@ public class PSResourceLinkAndLocationUtils
     
     private static IPSAssemblyService getAssemblyService()
     {
-        if (ms_assemblyService == null)
-            ms_assemblyService = PSAssemblyServiceLocator.getAssemblyService();
+        if (ms_assemblyService == null) {
+			ms_assemblyService = PSAssemblyServiceLocator.getAssemblyService();
+		}
         
         return ms_assemblyService;
     }    
@@ -240,15 +246,16 @@ public class PSResourceLinkAndLocationUtils
         notNull(assemblyService);
         
         if(log.isDebugEnabled()) {
-            log.debug("Getting default links for resource: " + r);
+            log.debug("Getting default links for resource: {}" , r);
         }
         String baseName = (String) r.getItem().getFields().get("sys_title");
         String fileName = baseName;
         if (r.getLinkContext().isDeliveryContext())
         {
             String suffix = getLocationSuffix(r.getResourceDefinition(), assemblyService);
-            if (!isBlank(suffix))
-                fileName = fileName + suffix;
+            if (!isBlank(suffix)) {
+				fileName = fileName + suffix;
+			}
         }
         return createLinkAndLocationForFileName(r, fileName);
     }
@@ -328,7 +335,8 @@ public class PSResourceLinkAndLocationUtils
         isTrue( ! containsAny(path, "\\|<>?\":*"), "invalid path" );
     }
     
-    private static final Log log = LogFactory.getLog(PSResourceLinkAndLocationUtils.class);
+
+	private static final Logger log = LogManager.getLogger(PSResourceLinkAndLocationUtils.class);
     private static final String UTF_8 = "UTF-8";
 }
 

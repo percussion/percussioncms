@@ -27,8 +27,6 @@ import com.percussion.pagemanagement.dao.IPSResourceDefinitionGroupDao;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
-import com.percussion.pagemanagement.service.IPSResourceDefinitionService;
-import com.percussion.pagemanagement.service.IPSResourceDefinitionService.PSResourceDefinitionNotFoundException;
 import com.percussion.share.dao.PSFileDataRepository;
 import com.percussion.share.dao.PSXmlFileDataRepository;
 import com.percussion.share.service.exception.PSDataServiceException;
@@ -113,7 +111,7 @@ public class PSResourceDefinitionGroupDao
     public List<PSAssetResource> findAssetResourcesForType(String contentType) throws PSDataServiceException {
         notEmpty(contentType, "contentType");
         Set<PSAssetResource> rvalue = getData().getContentTypeAssetResources().get(contentType);
-        if(rvalue == null) return emptyList();
+        if(rvalue == null) {return emptyList();}
         return new ArrayList<>(rvalue);
     }
 
@@ -121,7 +119,7 @@ public class PSResourceDefinitionGroupDao
     public List<PSAssetResource> findAssetResourcesForLegacyTemplate(String template) throws PSDataServiceException {
         notEmpty(template, "template");
         Set<PSAssetResource> rvalue = getData().getLegacyTemplateAssetResources().get(template);
-        if(rvalue == null) return emptyList();
+        if(rvalue == null){ return emptyList();}
         return new ArrayList<>(rvalue);
     }
 
