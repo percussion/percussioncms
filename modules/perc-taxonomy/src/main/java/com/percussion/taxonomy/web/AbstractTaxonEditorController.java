@@ -52,9 +52,14 @@ import com.percussion.taxonomy.service.Related_nodeService;
 import com.percussion.taxonomy.service.Relationship_typeService;
 import com.percussion.taxonomy.service.TaxonomyService;
 import com.percussion.taxonomy.service.ValueService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 
 public abstract class AbstractTaxonEditorController extends AbstractControllerWithSecurityChecks {
+
+    private static final Logger log = LogManager.getLogger(AbstractTaxonEditorController.class);
+
     protected final boolean DEBUG = false;
     protected final Log logger = LogFactory.getLog(getClass());
     protected TaxonomyService taxonomyService;
@@ -181,7 +186,8 @@ public abstract class AbstractTaxonEditorController extends AbstractControllerWi
         try {
             return URLDecoder.decode(in, "UTF-8");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             return null;
         }
     }
