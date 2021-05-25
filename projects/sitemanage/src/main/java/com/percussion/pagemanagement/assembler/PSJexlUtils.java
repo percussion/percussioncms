@@ -26,9 +26,8 @@ package com.percussion.pagemanagement.assembler;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.utils.jexl.IPSScript;
 import com.percussion.utils.jexl.PSJexlEvaluator;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSJexlUtils
 {
@@ -44,8 +43,9 @@ public class PSJexlUtils
         Object original = eval.evaluate(exp);
         T rvalue;
         if (original == null) {
-            if (log.isTraceEnabled())
+            if (log.isTraceEnabled()) {
                 log.trace("Binding expression: " + exp.getSourceText() + " to " + value);
+            }
             eval.bind(exp.getSourceText(), value);
             rvalue = value;
         }
@@ -68,5 +68,6 @@ public class PSJexlUtils
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSJexlUtils.class);
+
+    private static final Logger log = LogManager.getLogger(PSJexlUtils.class);
 }

@@ -122,8 +122,9 @@ public class PSWidgetContentFinderUtils
         IPSGuid guid = getIdMapper().getItemGuid(id);
         
         List<PSRelationship> rels = getFinder().findRelationshipByOwner(guid);
-        if (relationshipName == null)
+        if (relationshipName == null) {
             return rels;
+        }
         
         Set<PSRelationship> sortSet = new HashSet<>();
         for (PSRelationship r : rels)
@@ -153,8 +154,9 @@ public class PSWidgetContentFinderUtils
         for (PSWidgetItem w : widgets)
         {
             PSRelationship r = getMatchRelationship(srcRels, w);
-            if (r != null)
+            if (r != null) {
                 result.add(r);
+            }
         }
         
         return result;
@@ -196,8 +198,9 @@ public class PSWidgetContentFinderUtils
                     rels.add(r);
                 }
             }
-            if (rels.isEmpty())
+            if (rels.isEmpty()) {
                 return null;
+            }
 
             return rels.first();
         } catch (PSDataServiceException | PSNotFoundException e) {
@@ -210,8 +213,9 @@ public class PSWidgetContentFinderUtils
     
     private static IPSIdMapper getIdMapper()
     {
-        if (idMapper == null)
+        if (idMapper == null) {
             idMapper = (IPSIdMapper) getWebApplicationContext().getBean("sys_idMapper");
+        }
         return idMapper;
     }
     
@@ -219,8 +223,9 @@ public class PSWidgetContentFinderUtils
     
     private static IPSWidgetService getWidgetService()
     {
-        if (widgetService == null)
+        if (widgetService == null) {
             widgetService = (IPSWidgetService) getWebApplicationContext().getBean("widgetService");
+        }
         return widgetService;
     }
     private static IPSWidgetService widgetService = null;    
@@ -252,16 +257,19 @@ public class PSWidgetContentFinderUtils
           notNull(r1);
           notNull(r2);
 
-          if (isBlank(m_criteria.getWidgetName()))
+          if (isBlank(m_criteria.getWidgetName())) {
               return compareUnnamed(r1, r2);
+          }
 
           String wname1 = r1.getProperty(PSRelationshipConfig.PDU_WIDGET_NAME);
           String wname2 = r2.getProperty(PSRelationshipConfig.PDU_WIDGET_NAME);
-          if (isBlank(wname1) && isNotBlank(wname2))
+          if (isBlank(wname1) && isNotBlank(wname2)) {
               return 1;
+          }
 
-          if (isNotBlank(wname1) && isBlank(wname2))
+          if (isNotBlank(wname1) && isBlank(wname2)) {
               return -1;
+          }
           
           return compareUnnamed(r1, r2);
        }
@@ -278,8 +286,9 @@ public class PSWidgetContentFinderUtils
            int sortRank1 = getSortRank(r1);
            int sortRank2 = getSortRank(r2);
            
-           if (sortRank1 != sortRank2)
+           if (sortRank1 != sortRank2) {
                return sortRank1 - sortRank2;
+           }
                
           /*
            * If this comparator returns zero, a set based on this comparator
@@ -298,8 +307,9 @@ public class PSWidgetContentFinderUtils
        private int getSortRank(PSRelationship rel)
        {
            String sort = rel.getProperty(PSRelationshipConfig.PDU_SORTRANK);
-           if (isBlank(sort))
+           if (isBlank(sort)) {
                return 0;
+           }
            try
            {
                return Integer.parseInt(sort);
@@ -314,8 +324,9 @@ public class PSWidgetContentFinderUtils
     
     private static PSRelationshipWidgetContentFinder getFinder()
     {
-        if (ms_finder == null)
+        if (ms_finder == null) {
             ms_finder = (PSRelationshipWidgetContentFinder) PSPageUtils.getWidgetContentFinder(null);
+        }
 
         return ms_finder;
     }

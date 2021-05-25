@@ -78,17 +78,20 @@ public class PSMetadataProperty
     {
         this();
 
-        if (name == null || name.length() == 0)
+        if (name == null || name.length() == 0) {
             throw new IllegalArgumentException("name cannot be null or empty.");
-        if (type == null)
+        }
+        if (type == null) {
             throw new IllegalArgumentException("type cannot be null.");
+        }
         this.setName(name);
         boolean nan = true;
         if (type == VALUETYPE.DATE)
         {
-            if (!(value instanceof Date))
+            if (!(value instanceof Date)) {
                 throw new IllegalArgumentException(
                         "Value type 'Date' was specified but the passed in value is not a date object.");
+            }
             setDatevalue((Date) value);
         }
         else if (type == VALUETYPE.NUMBER)
@@ -116,9 +119,10 @@ public class PSMetadataProperty
 
                 }
             }
-            if (nan)
+            if (nan) {
                 throw new IllegalArgumentException(
                         "The valuetype specified is 'NUMBER', but the passed in value is not a number.");
+            }
             setNumbervalue(d);
         }
         else if (type == VALUETYPE.TEXT)
@@ -129,9 +133,10 @@ public class PSMetadataProperty
         else if (type == VALUETYPE.STRING)
         {
             String val = value.toString();
-            if (val.length() > 4000)
+            if (val.length() > 4000) {
                 throw new IllegalArgumentException(
                         "The maximum length for a string value is 4000 chars, use a text value for greater lengths.");
+            }
             setStringvalue(val);
         }
     }
@@ -239,8 +244,9 @@ public class PSMetadataProperty
      */
     public PSMetadataEntry getMetadataEntry()
     {
-        if (id != null)
+        if (id != null) {
             return id.getMetadataEntry();
+        }
 
         return null;
     }
@@ -259,8 +265,9 @@ public class PSMetadataProperty
      */
     public String getName()
     {
-        if (id != null)
+        if (id != null) {
             return id.getName();
+        }
 
         return null;
     }
@@ -276,8 +283,9 @@ public class PSMetadataProperty
 
     public String getHash()
     {
-        if (id != null)
+        if (id != null) {
             return id.getValueHash();
+        }
 
         return null;
     }
@@ -333,10 +341,12 @@ public class PSMetadataProperty
      */
     public String getStringvalue()
     {
-        if (valuetype == VALUETYPE.STRING)
+        if (valuetype == VALUETYPE.STRING) {
             return stringvalue;
-        if (valuetype == VALUETYPE.TEXT)
+        }
+        if (valuetype == VALUETYPE.TEXT) {
             return textvalue;
+        }
         if (valuetype == VALUETYPE.DATE)
         {
             return datevalue.toString();
@@ -424,13 +434,15 @@ public class PSMetadataProperty
     @Override
     public boolean equals(Object obj)
     {
-        if (!(obj instanceof PSMetadataProperty) || obj == null)
+        if (!(obj instanceof PSMetadataProperty) || obj == null) {
             return false;
+        }
 
         PSMetadataProperty other = (PSMetadataProperty) obj;
 
-        if (this.id == null || other.id == null)
+        if (this.id == null || other.id == null) {
             return false;
+        }
 
         return this.id.equals(other.id);
     }
@@ -443,8 +455,9 @@ public class PSMetadataProperty
     @Override
     public int hashCode()
     {
-        if (this.id != null)
+        if (this.id != null) {
             return this.id.hashCode();
+        }
 
         return 0;
     }
@@ -454,8 +467,9 @@ public class PSMetadataProperty
      */
     private void createIdIfNull()
     {
-        if (id == null)
+        if (id == null) {
             id = new PropertyId();
+        }
     }
 
     public enum VALUETYPE {
@@ -526,10 +540,12 @@ class PropertyId implements Serializable
      */
     public void setName(String name)
     {
-        if (StringUtils.isEmpty(name))
+        if (StringUtils.isEmpty(name)) {
             this.name = null;
-        else
+        }
+        else {
             this.name = name;
+        }
     }
 
     /**
@@ -548,10 +564,12 @@ class PropertyId implements Serializable
      */
     public void calculateHash(Object value)
     {
-        if (value == null)
+        if (value == null) {
             valueHash = hashCalculator.calculateHash(StringUtils.EMPTY);
-        else
+        }
+        else {
             valueHash = hashCalculator.calculateHash(value.toString());
+        }
     }
 
     @Override
@@ -568,13 +586,15 @@ class PropertyId implements Serializable
     @Override
     public boolean equals(Object obj)
     {
-        if (!(obj instanceof PropertyId) || obj == null)
+        if (!(obj instanceof PropertyId) || obj == null) {
             return false;
+        }
 
         PropertyId other = (PropertyId) obj;
 
-        if (this.metadataEntry == null || other.metadataEntry == null)
+        if (this.metadataEntry == null || other.metadataEntry == null) {
             return false;
+        }
 
         return StringUtils.equals(this.metadataEntry.getPagepath(), other.metadataEntry.getPagepath())
                 && StringUtils.equals(this.name, other.name) && StringUtils.equals(this.valueHash, other.valueHash);
@@ -628,8 +648,9 @@ class HashCalculator
 
     private String getHex(byte[] raw)
     {
-        if (raw == null)
+        if (raw == null) {
             return null;
+        }
 
         final StringBuilder hex = new StringBuilder(2 * raw.length);
 
