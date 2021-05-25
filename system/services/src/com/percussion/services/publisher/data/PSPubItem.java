@@ -85,7 +85,11 @@ import com.percussion.services.publisher.IPSSiteItem.Status;
             + "where item.contentId = :contentId and " 
             + "item.templateId = :templateId and "
             + "item.serverId = :serverId and item.contextId = :context and "
-            + "item.location = :location")
+            + "item.location = :location"),
+
+        @NamedQuery(name = "getPostDate", query =
+                "select min(item.date) from PSPubItem item "
+                        + "where item.contentId = :contentId ")
             
 })
 public class PSPubItem implements java.io.Serializable, IPSPubItemStatus
