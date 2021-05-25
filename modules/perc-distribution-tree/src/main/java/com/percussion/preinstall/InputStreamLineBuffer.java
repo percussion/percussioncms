@@ -24,11 +24,17 @@
 
 package com.percussion.preinstall;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class InputStreamLineBuffer{
+
+    private static final Logger log = LogManager.getLogger(InputStreamLineBuffer.class);
+
     private InputStream inputStream;
     private ConcurrentLinkedQueue<String> lines;
     private long lastTimeModified;
@@ -57,7 +63,8 @@ public class InputStreamLineBuffer{
                         else sb.append((char)b); // append char to stringbuilder
                     }
                 } catch (IOException e){
-                    e.printStackTrace();
+                    log.error(e.getMessage());
+                    log.debug(e.getMessage(), e);
                 } finally {
                     isAlive = false;
                 }
