@@ -147,9 +147,10 @@ public class PSResourceInstanceHelper
                 links.add((PSResourceLinkAndLocation) rvalue);
             }
             else {
-                if (log.isDebugEnabled())
-                    log.debug("Script did not return an object of type : " 
-                            + PSResourceLinkAndLocation.class.getSimpleName());
+                if (log.isDebugEnabled()) {
+                    log.debug("Script did not return an object of type : {} "
+                            , PSResourceLinkAndLocation.class.getSimpleName());
+                }
             }
             return resourceInstance.getLinkAndLocations();
         }
@@ -199,8 +200,9 @@ public class PSResourceInstanceHelper
             		"the resource instance does not have a proper folder path: " + r);
         }
         
-        if (isBlank(path))
+        if (isBlank(path)) {
             path = "/";
+        }
         
         validateAsPhysicalPath(path);
         
@@ -221,8 +223,10 @@ public class PSResourceInstanceHelper
      * @return never <code>null</code>.
      */
     private PSSiteSummary resolveSite(PSResourceInstance r) throws DataServiceNotFoundException, PSValidationException {
-        if (r.getSite() != null) return r.getSite();
-        PSSiteSummary site = r.getLinkContext().getSite();
+        if (r.getSite() != null){ return r.getSite();}
+
+            PSSiteSummary site = r.getLinkContext().getSite();
+
         //If item is a resource e.g asset then folderpath = //Folders/$System$/Assets/uploads
         //thus siteDataService.findByPath throws DataServiceNotFoundException which causes publishing of resources to fail
         // thus adding the check to make sure we only make this call for pages and site related stuff

@@ -31,8 +31,8 @@ import java.util.Set;
 
 import com.percussion.util.PSSiteManageBean;
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.pagemanagement.dao.IPSWidgetItemIdGenerator;
 import com.percussion.pagemanagement.data.PSRegionWidgetAssociations;
@@ -103,7 +103,7 @@ public class PSWidgetItemIdGenerator implements IPSWidgetItemIdGenerator
                 {
                     String id = wi.getId();
                     if (ids.contains(id))
-                        log.error("Widget ID (" + id + ") is not unique. The widget is: " + wi.toString());
+                        log.error("Widget ID ({}) is not unique. The widget is: {}" ,id, wi.toString());
                     
                     ids.add(id); 
                 }
@@ -130,6 +130,7 @@ public class PSWidgetItemIdGenerator implements IPSWidgetItemIdGenerator
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSWidgetItemIdGenerator.class);
+
+    private static final Logger log = LogManager.getLogger(PSWidgetItemIdGenerator.class);
 
 }

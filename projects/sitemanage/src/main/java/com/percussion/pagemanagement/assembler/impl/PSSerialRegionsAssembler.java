@@ -42,8 +42,8 @@ import com.percussion.utils.request.PSRequestInfo;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -61,7 +61,8 @@ public class PSSerialRegionsAssembler implements IPSRegionsAssembler
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSerialRegionsAssembler.class);
+
+    private static final Logger log = LogManager.getLogger(PSSerialRegionsAssembler.class);
 
     public PSSerialRegionsAssembler() {
 

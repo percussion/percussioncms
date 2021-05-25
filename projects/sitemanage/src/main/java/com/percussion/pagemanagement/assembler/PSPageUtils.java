@@ -424,8 +424,9 @@ public class PSPageUtils extends PSJexlUtilBase
             {@IPSJexlParam(name = "id", description = "The id to convert to a guid")}, returns = "IPSGuid")
     public IPSGuid parseGuid(Object idObj)
     {
-        if (idObj == null)
+        if (idObj == null) {
             return null;
+        }
 
         IPSGuid guid;
         if (idObj instanceof IPSGuid)
@@ -504,8 +505,9 @@ public class PSPageUtils extends PSJexlUtilBase
                     {
                         for (PSWidgetInstance regionInstance : regionInstances)
                         {
-                            if (regionInstance.getDefinition().getId().equals(widgetName))
+                            if (regionInstance.getDefinition().getId().equals(widgetName)) {
                                 instances.add(regionInstance);
+                            }
                         }
                     } else {
                         instances = regionInstances;
@@ -526,8 +528,9 @@ public class PSPageUtils extends PSJexlUtilBase
                         {
                             for (PSWidgetInstance regionInstance : widgetInstanceList)
                             {
-                                if (regionInstance.getDefinition().getId().equals(widgetName))
+                                if (regionInstance.getDefinition().getId().equals(widgetName)) {
                                     instances.add(regionInstance);
+                                }
                             }
                         }
                     } else {
@@ -549,8 +552,9 @@ public class PSPageUtils extends PSJexlUtilBase
      */
     private Set<String> getWidgetDefIds(IPSAssemblyItem item) throws PSDataServiceException, RepositoryException {
         Set<String> widgetDefIds = new HashSet<>();
-        if (item == null)
+        if (item == null) {
             return widgetDefIds;
+        }
             PSPage page = getAssemblyItemBridge().getTemplateAndPage(item).getPage();
             PSTemplate template = getAssemblyItemBridge().getTemplateAndPage(item).getTemplate();
             List<PSWidgetItem> widgetList = page.getWidgets(template);
@@ -740,8 +744,9 @@ public class PSPageUtils extends PSJexlUtilBase
             // Find the Current Navigation node.
             String finder = "Java/global/percussion/widgetcontentfinder/perc_NavWidgetContentFinder";
             List<PSRenderAsset> navSelfList = widgetContents(item,widget,finder,null,true);
-            if (CollectionUtils.isEmpty(navSelfList))
+            if (CollectionUtils.isEmpty(navSelfList)) {
                 return new ArrayList<>();
+            }
 
             IPSProxyNode selfNode = (IPSProxyNode)navSelfList.get(0).getNode();
 
@@ -761,8 +766,9 @@ public class PSPageUtils extends PSJexlUtilBase
                     Property landingPageProp = navNode.getProperty("nav:landingPage");
                     langingPageNode = (PSContentNode)landingPageProp.getNode();
                     // If the original page was a landing page we don't need to recheck.
-                    if (langingPageNode.getGuid() == item.getId())
+                    if (langingPageNode.getGuid() == item.getId()) {
                         break;
+                    }
                 }
                 catch (PathNotFoundException e)
                 {
@@ -774,7 +780,9 @@ public class PSPageUtils extends PSJexlUtilBase
                     log.debug("Cannot get landing page, skipping", e);
 
                 }
-                if (langingPageNode == null ) break;
+                if (langingPageNode == null ) {
+                    break;
+                }
 
 
                 IPSGuid guid = langingPageNode.getGuid();
@@ -791,8 +799,9 @@ public class PSPageUtils extends PSJexlUtilBase
                 {
                     PSWidgetInstance newWidgetInstance = newWidgetInstances.get(0);
                     List<PSRenderAsset> testWidget = widgetContents(landingAssemblyItem,newWidgetInstance,null,null,false);
-                    if (!CollectionUtils.isEmpty(testWidget))
+                    if (!CollectionUtils.isEmpty(testWidget)) {
                         return testWidget;
+                    }
                 }
             }
 
@@ -837,8 +846,9 @@ public class PSPageUtils extends PSJexlUtilBase
             {@IPSJexlParam(name = "itemId", description = "itemId")}, returns = "boolean")
     public Boolean isInRecycler(String itemId)
     {
-        if (StringUtils.isBlank(itemId))
+        if (StringUtils.isBlank(itemId)) {
             return Boolean.FALSE;
+        }
         try {
             List<PSRelationshipData> psRelationshipDataList = relationshipService.findByDependentIdConfigId(idMapper.getContentId(itemId), PSRelationshipConfig.ID_RECYCLED_CONTENT);
             if (!psRelationshipDataList.isEmpty()) {
@@ -931,8 +941,9 @@ public class PSPageUtils extends PSJexlUtilBase
                     @IPSJexlParam(name = "parentId", description = "The parentId for the item under management")}, returns = "managed links updated source")
     public String updateManagedLinks(PSRenderLinkContext linkContext, String source, String parentId)
     {
-        if (StringUtils.isBlank(source))
+        if (StringUtils.isBlank(source)) {
             return source;
+        }
         return managedLinkService.renderLinks(linkContext, source, Boolean.FALSE, Integer.parseInt(parentId));
     }
 
@@ -951,8 +962,9 @@ public class PSPageUtils extends PSJexlUtilBase
                     @IPSJexlParam(name = "source", description = "The source JSON in which the managed links needs to be updated.")}, returns = "managed links updated source")
     public String updateManagedLinksInJSON(PSRenderLinkContext linkContext, String source)
     {
-        if (StringUtils.isBlank(source))
+        if (StringUtils.isBlank(source)) {
             return source;
+        }
 
         return managedLinkService.renderLinksInJSON(linkContext, source, Boolean.FALSE);
     }
@@ -974,8 +986,9 @@ public class PSPageUtils extends PSJexlUtilBase
                     @IPSJexlParam(name = "parentId", description = "The parentId for the item under management")}, returns = "managed links updated source")
     public String updateManagedLinks(PSRenderLinkContext linkContext, String source, Long serverId, String parentId)
     {
-        if (StringUtils.isBlank(source))
+        if (StringUtils.isBlank(source)) {
             return source;
+        }
         return managedLinkService.renderLinks(linkContext, source, isStagingServer(serverId), Integer.parseInt(parentId));
     }
 
@@ -1099,8 +1112,9 @@ public class PSPageUtils extends PSJexlUtilBase
                             + DEFAULT_WIDGET_CONTENT_FINDER + "\"");
                 }
             }
-            if (params == null)
+            if (params == null) {
                 params = new HashMap<>();
+            }
 
             IPSWidgetContentFinder finder = getWidgetContentFinder(finderName);
             if (finder == null)
@@ -1671,8 +1685,9 @@ public class PSPageUtils extends PSJexlUtilBase
     public List<PSPair<String, Integer>> getProcessedTags(List<PSRenderAsset> assemblyPages, String sortOption)
             throws RepositoryException
     {
-        if (assemblyPages == null)
+        if (assemblyPages == null) {
             throw new IllegalArgumentException("assemblyPages pages must not be null");
+        }
         List<String> tags = new ArrayList<>();
         for (PSRenderAsset assembledPage : assemblyPages)
         {
@@ -1837,12 +1852,14 @@ public class PSPageUtils extends PSJexlUtilBase
         long linkIdVal = NumberUtils.toLong(linkId, -1);
 
         String depId = "";
-        if (linkIdVal == -1)
+        if (linkIdVal == -1) {
             return depId;
+        }
 
         PSManagedLink link = managedLinkDao.findLinkByLinkId(linkIdVal);
-        if (link != null)
+        if (link != null) {
             depId = String.valueOf(link.getChildId());
+        }
 
         return depId;
     }
@@ -1926,8 +1943,9 @@ public class PSPageUtils extends PSJexlUtilBase
                             parentNode = getParentNode(nodes, jObj.getString((String) key), parentNode);
                             if (parentNode != null) {
                                 nodes = parentNode.getChildNodes();
-                                if (!parentNode.equals(prevParentNode))
+                                if (!parentNode.equals(prevParentNode)) {
                                     fieldCounter = fieldCounter + 1;
+                                }
                                 prevParentNode = parentNode;
                             }
                             nodeList = getCategoryList(nodes, jObj.getString((String) key));
@@ -1950,8 +1968,9 @@ public class PSPageUtils extends PSJexlUtilBase
             returns = "A PSCategoryNode object")
     public PSCategoryNode getCategoryByPath(String categoryPath)
     {
-        if (StringUtils.isEmpty(categoryPath))
+        if (StringUtils.isEmpty(categoryPath)) {
             return null;
+        }
         return  PSCategoryControlUtils.findCategoryNode(null, categoryPath, false, true);
 
     }
@@ -2044,8 +2063,9 @@ public class PSPageUtils extends PSJexlUtilBase
 
         for (PSCategoryNode node : nodes)
         {
-            if (node.getId().equals(selectedId))
+            if (node.getId().equals(selectedId)) {
                 node.setSelected(true);
+            }
             nodeList.add(node);
         }
 
@@ -2074,8 +2094,9 @@ public class PSPageUtils extends PSJexlUtilBase
                 if (node.getChildNodes() != null && !node.getChildNodes().isEmpty())
                 {
                     parentNode = getParentNode(node.getChildNodes(), selectedId, node);
-                    if (parentNode != null)
+                    if (parentNode != null) {
                         break;
+                    }
                 }
             }
         }
@@ -2086,9 +2107,10 @@ public class PSPageUtils extends PSJexlUtilBase
     private PSWidgetInstance getWidgetInstance(Object widget)
     {
         notNull(widget, "widget");
-        if (!(widget instanceof PSWidgetInstance))
+        if (!(widget instanceof PSWidgetInstance)) {
             throw new IllegalArgumentException(
                     "Must pass widget instance, e.g. $perc.widget, but cannot be  $perc.widget.item or $perc.widget.item.id");
+        }
 
         return (PSWidgetInstance) widget;
     }
@@ -2125,8 +2147,9 @@ public class PSPageUtils extends PSJexlUtilBase
      */
     public static IPSWidgetContentFinder getWidgetContentFinder(String finder)
     {
-        if (isBlank(finder))
+        if (isBlank(finder)) {
             finder = DEFAULT_WIDGET_CONTENT_FINDER;
+        }
 
         IPSExtensionManager emgr = PSServer.getExtensionManager(null);
         try
@@ -2194,8 +2217,9 @@ public class PSPageUtils extends PSJexlUtilBase
             else if (item instanceof Map<?, ?>)
             {
                 NameAndValue nv = getProperty((Map<?, ?>) item, fields);
-                if (nv == null && defaultValue == null)
+                if (nv == null && defaultValue == null) {
                     handleNoFieldFound(item, fields);
+                }
                 return nv == null ? null : StringEscapeUtils.escapeHtml(nv.value);
             }
             else
@@ -2223,8 +2247,9 @@ public class PSPageUtils extends PSJexlUtilBase
             /*
              * Use the default value if the propery is null
              */
-            if (prop == null)
+            if (prop == null) {
                 return StringEscapeUtils.escapeHtml(defaultValue.toString());
+            }
 
             String field = removeStart(prop.getName(), "rx:");
             isTrue(node != null, "Could not get node from item: ", item);
@@ -2300,8 +2325,9 @@ public class PSPageUtils extends PSJexlUtilBase
             returns = "A valid net.sf.json.JSONArray instance, may be empty.")
     public JSONArray createJsonArray(JSONObject jsonObj, String name)
     {
-        if(name==null || name.trim().equals(""))
+        if(name==null || name.trim().equals("")) {
             throw new IllegalArgumentException("name is required");
+        }
 
         JSONArray ret = new JSONArray();
 
@@ -2854,8 +2880,9 @@ public class PSPageUtils extends PSJexlUtilBase
      *         the site.
      */
     public String getWebPropertyId(String sitename) throws IPSGenericDao.LoadException {
-        if (StringUtils.isBlank(sitename))
+        if (StringUtils.isBlank(sitename)) {
             return "";
+        }
         String webPropertyId = analyticsProviderService.getWebPropertyId(sitename);
         if (webPropertyId != null)
         {
@@ -2872,8 +2899,9 @@ public class PSPageUtils extends PSJexlUtilBase
      *         google API key is not configure for the site.
      */
     public String getGoogleApiKey(String sitename) throws IPSGenericDao.LoadException {
-        if (StringUtils.isBlank(sitename))
+        if (StringUtils.isBlank(sitename)) {
             return "";
+        }
 
         String apiKey = analyticsProviderService.getGoogleApiKey(sitename);
         if (apiKey != null)
@@ -2990,8 +3018,9 @@ public class PSPageUtils extends PSJexlUtilBase
 
     public IPSFileSystemService getFileSystemService()
     {
-        if (fileSystemService == null)
+        if (fileSystemService == null) {
             fileSystemService = (IPSFileSystemService) getWebApplicationContext().getBean("webResourcesService");
+        }
         return fileSystemService;
     }
 

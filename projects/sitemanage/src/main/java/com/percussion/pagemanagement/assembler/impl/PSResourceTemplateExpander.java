@@ -41,8 +41,9 @@ import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 import java.io.File;
 import java.util.ArrayList;
@@ -79,8 +80,9 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
         notNull(contentListItem, "contentListItem");
         String contentTypeName = getContentTypeName(contentListItem);
 
-        if(log.isTraceEnabled())
+        if(log.isTraceEnabled()) {
             log.trace("Trying to expand: " + contentTypeName + " item: " + contentListItem);
+        }
         if (isPageType(contentTypeName)) {
             log.debug("Expanding page");
             if (contentListItem.getFolderId() == null) {
@@ -104,12 +106,12 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
                         " as it has no affiliated folder.");
                 return emptyList();
             }
-            log.debug("Expanding shared asset: " + contentTypeName);
+            log.debug("Expanding shared asset: {} " , contentTypeName);
             setLocation(contentListItem, parameters);
             return asList(contentListItem);
         }
         if(log.isDebugEnabled()) {
-            log.debug("Could not expand: " + contentTypeName);
+            log.debug("Could not expand: {} " , contentTypeName);
         }
         return emptyList();
         
@@ -148,8 +150,9 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
             setResourceAssemblyTemplate(template);
         }
         String[] ctypes = StringUtils.split(excludedContentTypesProperty, ",");
-        if (ctypes != null)
+        if (ctypes != null) {
             setExcludedContentTypes(asList(ctypes));
+        }
     }
     
     protected boolean isPageType(String contentTypeName) {
@@ -161,7 +164,9 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
     }
     protected boolean isContentTypePublishable(String contentTypeName) throws PSDataServiceException {
         boolean exclude = ! getExcludedContentTypes().contains(contentTypeName);
-        if (!exclude) return false;
+        if (!exclude) {
+            return false;
+        }
         List<PSAssetResource> assetResources = 
             resourceDefinitionService.findAssetResourcesForType(contentTypeName);
         return ! assetResources.isEmpty();
@@ -169,16 +174,18 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
 
     @Override
     protected IPSGuid getTemplateId(Map<String, String> parameters, TemplateCache cache) throws PSDataServiceException, PSAssemblyException {
-        if (cache.templateId != null)
+        if (cache.templateId != null) {
             return cache.templateId;
+        }
         
         String templateName = getResourceAssemblyTemplate();
         String resourceid = getResourceId(parameters);
         if (resourceid != null)
         {
             PSResourceDefinition resource = resourceDefinitionService.findResource(resourceid);
-            if (resource instanceof PSAssetResource)
-                templateName = ((PSAssetResource)resource).getLegacyTemplate();
+            if (resource instanceof PSAssetResource) {
+                templateName = ((PSAssetResource) resource).getLegacyTemplate();
+            }
         }
         notEmpty(templateName, "resourceAssemblyTemplate");
 
@@ -303,7 +310,7 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSResourceTemplateExpander.class);
+    private static final Logger log = LogManager.getLogger(PSResourceTemplateExpander.class);
     
 
 }
