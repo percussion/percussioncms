@@ -436,6 +436,27 @@
                                     <include name="server.xml"/>
                                 </fileset>
                             </copy>
+                            <if>
+                                <not>
+                                    <resourcecontains resource="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" substring="org.apache.catalina.valves.ErrorReportValve" />
+                                </not>
+                                 <then>
+                                    <echo>Adding Error Codes to Server.xml</echo>
+                                    <replace file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" summary="yes">
+                                        <replacetoken><![CDATA[ pattern="%h %l %u %t &quot;%r&quot; %s %b" />]]></replacetoken>
+                                        <replacevalue><![CDATA[pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+                                        <Valve className="org.apache.catalina.valves.ErrorReportValve"
+                                        errorCode.404="webapps/ROOT/error.html"
+                                        errorCode.414="webapps/ROOT/error.html"
+                                        errorCode.415="webapps/ROOT/error.html"
+                                        errorCode.501="webapps/ROOT/error.html"
+                                        errorCode.500="webapps/ROOT/error.html"
+                                        errorCode.502="webapps/ROOT/error.html"
+                                        showReport="false"
+                                        showServerInfo="false"/>]]></replacevalue>
+                                    </replace>
+                                </then>
+                            </if>
                         </then>
                     </if>
 
