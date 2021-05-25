@@ -134,7 +134,7 @@
 
         <if>
             <and>
-                <istrue value="${install.prod.dts}"/>
+                <isfalse value="${install.prod.dts}"/>
                 <istrue value="${stage.dts.upgrade}"/>
             </and>
             <then>
@@ -144,27 +144,6 @@
         </if>
 
         <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
-
-        <if>
-            <available file="${install.dir}" type="dir"/>
-            <then>
-                <echo>Fixing line endings in ${install.dir}...</echo>
-                <fixcrlf srcdir="${install.dir}/Deployment"  preservelastmodified="true">
-                    <patternset refid="text.files"/>
-                </fixcrlf>
-                <fixcrlf srcdir="${install.dir}" includes="TomcatStartup.sh" preservelastmodified="true"  />
-                <fixcrlf srcdir="${install.dir}" includes="TomcatShutdown.sh" preservelastmodified="true" />
-            </then>
-        </if>
-
-
-        <echo>Fixing executable file permissions...</echo>
-        <chmod failonerror="false" verbose="true" perm="ugo+rx">
-            <fileset dir="${install.dir}">
-                <include name="**/*.sh"/>
-                <include name="**/*.bin"/>
-            </fileset>
-        </chmod>
 
         <if>
             <istrue value="${install.prod.dts}"/>
@@ -295,7 +274,6 @@
                 </fileset>
             </copy>
 
-
             <if>
                 <and>
                     <available file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml"/>
@@ -327,14 +305,11 @@
             <if>
                 <isfalse value="@{upgrade}"/>
                 <then>
-
-
                     <copy todir="${install.dir}${staging.dir}" verbose="true">
                         <fileset dir="${install.src}">
                             <include name="Deployment/**" />
                         </fileset>
                     </copy>
-
 
                     <copy todir="${install.dir}${staging.dir}/" verbose="true">
                         <fileset dir="${install.src}">
@@ -399,7 +374,7 @@
 
                     <echo>Backing up existing DTS to ${new.backup.dir} ...</echo>
 
-                    <copy todir="${new.backup.dir}${staging.dir}" preservelastmodified="true" overwrite="true" force="true" verbose="true">
+                    <copy todir="${new.backup.dir}" preservelastmodified="true" overwrite="true" force="true" verbose="true">
                         <fileset dir="${install.dir}${staging.dir}/Deployment" />
                     </copy>
 
@@ -446,14 +421,9 @@
                     <!-- Restore customer configuration files -->
                     <echo>Installing new DTS files.2..</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/conf/perc" overwrite="true" verbose="true" failonerror="false">
-                        <fileset dir="${new.backup.dir}${staging.dir}/Deployment/Server/conf/perc">
+                        <fileset dir="${new.backup.dir}/Server/conf/perc">
                             <include name="*.properties"/>
                             <include name="*.xml"/>
-                            <exclude name="perc-datasources.properties"/>
-                            <exclude name="perc-email.properties"/>
-                            <exclude name="perc-secured-sections.properties"/>
-                            <exclude name="perc-security.properties"/>
-                            <exclude name="perc-datasources.xml"/>
                         </fileset>
                     </copy>
 
@@ -480,21 +450,21 @@
                     <echo>Restore mysql-connector if present in Server/common/lib.....................</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/common/lib"
                           verbose="true" failonerror="false">
-                        <fileset dir="${new.backup.dir}${staging.dir}/Server/common/lib">
+                        <fileset dir="${new.backup.dir}/Server/common/lib">
                             <include name="mysql-connector*.jar"/>
                         </fileset>
                     </copy>
                     <echo>Restore mysql-connector if present in Server/perc-lib again on re-upgrading upgraded environment............................................</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/common/lib"
                           verbose="true" failonerror="false">
-                        <fileset dir="${new.backup.dir}${staging.dir}/Server/perc-lib">
+                        <fileset dir="${new.backup.dir}/Server/perc-lib">
                             <include name="mysql-connector*.jar"/>
                         </fileset>
                     </copy>
                     <echo>Restore mysql-connector if present in Server/lib re-upgrading upgraded environment............................................</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/common/lib"
                           verbose="true" failonerror="false">
-                        <fileset dir="${new.backup.dir}${staging.dir}/Server/lib">
+                        <fileset dir="${new.backup.dir}/Server/lib">
                             <include name="mysql-connector*.jar"/>
                         </fileset>
                     </copy>
