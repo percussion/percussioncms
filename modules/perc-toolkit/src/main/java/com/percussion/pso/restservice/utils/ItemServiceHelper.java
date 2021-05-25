@@ -11,6 +11,8 @@ package com.percussion.pso.restservice.utils;
 
 import com.percussion.pso.restservice.model.Item;
 import com.percussion.pso.restservice.model.Items;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.io.DocumentResult;
 
@@ -25,6 +27,8 @@ import java.io.StringWriter;
 /**
  */
 public class ItemServiceHelper {
+
+	private static final Logger log = LogManager.getLogger(ItemServiceHelper.class);
 
 	/**
 	 * Method getItemXml.
@@ -42,7 +46,8 @@ public class ItemServiceHelper {
 			m.marshal( item, sw );
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 		sw.flush();
 		return sw.toString();
@@ -117,7 +122,8 @@ public class ItemServiceHelper {
 			m.marshal( item, dr );
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 
 		return dr.getDocument();

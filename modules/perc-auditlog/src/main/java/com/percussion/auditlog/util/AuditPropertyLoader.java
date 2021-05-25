@@ -24,6 +24,9 @@
 
 package com.percussion.auditlog.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,13 +34,16 @@ import java.util.Properties;
 
 public class AuditPropertyLoader {
 
+    private static final Logger log = LogManager.getLogger(AuditPropertyLoader.class);
+
     public static Properties loadProperties(String filePath){
         Properties prop = new Properties();
         try (InputStream input = new FileInputStream(filePath)) {
             prop.load(input);
 
         } catch (IOException ex) {
-            ex.printStackTrace();
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(), ex);
         }
 
         return prop;

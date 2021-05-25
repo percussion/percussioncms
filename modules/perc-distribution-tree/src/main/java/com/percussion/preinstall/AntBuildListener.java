@@ -24,6 +24,8 @@
 
 package com.percussion.preinstall;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.BuildEvent;
 import org.apache.tools.ant.BuildListener;
 
@@ -35,6 +37,8 @@ import org.apache.tools.ant.BuildListener;
  */
 public class AntBuildListener implements BuildListener {
 
+    private static final Logger log = LogManager.getLogger(AntBuildListener.class);
+
 
     @Override
     public void buildStarted(BuildEvent buildEvent) {
@@ -44,7 +48,8 @@ public class AntBuildListener implements BuildListener {
                 MainIAInstall.showProgress(MainIAInstall.installProxy, Main.currentLineNo, "Installing files...", buildEvent.getMessage());
             }
         }catch(Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
 
@@ -56,7 +61,8 @@ public class AntBuildListener implements BuildListener {
                 MainIAInstall.showProgress(MainIAInstall.installProxy, Main.currentLineNo, "Installation complete.", buildEvent.getMessage());
             }
         }catch(Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
 
@@ -68,7 +74,8 @@ public class AntBuildListener implements BuildListener {
                 MainIAInstall.showProgress(MainIAInstall.installProxy, Main.currentLineNo, "Starting Install phase...", buildEvent.getMessage());
             }
         }catch(Exception e){
-            e.printStackTrace();;
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
 
@@ -80,7 +87,8 @@ public class AntBuildListener implements BuildListener {
                 MainIAInstall.showProgress(MainIAInstall.installProxy, Main.currentLineNo, "Install phase complete.", buildEvent.getMessage());
             }
         }catch(Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
 
@@ -92,7 +100,8 @@ public class AntBuildListener implements BuildListener {
                 MainIAInstall.showProgress(MainIAInstall.installProxy, Main.currentLineNo, "Starting task...", buildEvent.getMessage());
             }
         }catch(Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
 
@@ -104,7 +113,8 @@ public class AntBuildListener implements BuildListener {
                 MainIAInstall.showProgress(MainIAInstall.installProxy, Main.currentLineNo, "Task complete.", buildEvent.getMessage());
             }
         }catch(Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
 
@@ -116,7 +126,8 @@ public class AntBuildListener implements BuildListener {
                 MainIAInstall.showProgress(MainIAInstall.installProxy, Main.currentLineNo, "Running installation...", buildEvent.getMessage());
             }
         }catch(Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
 }

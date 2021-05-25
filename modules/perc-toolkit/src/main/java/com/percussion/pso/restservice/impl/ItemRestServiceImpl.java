@@ -62,10 +62,10 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.common.util.Base64Exception;
 import org.apache.cxf.common.util.Base64Utility;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.io.DocumentResult;
 import org.springframework.stereotype.Service;
@@ -111,7 +111,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 	 * Logger for this class
 	 */
 
-	private static final Log log = LogFactory.getLog(ItemRestServiceImpl.class);
+	private static final Logger log = LogManager.getLogger(ItemRestServiceImpl.class);
 	
 	private static IPSWorkflowService wf = null;
 	
@@ -255,7 +255,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 				Node node = contentMgr.findItemsByGUID(guids, null).get(0);
 
 				int contenttypeid = Integer.valueOf(node.getProperty("rx:sys_contenttypeid").getString());
-				log.debug("content type id ="+contenttypeid);
+				log.debug("content type id ={}", contenttypeid);
 				String contentTypeName = isi.getContentTypeName(contenttypeid);
 				if (contenttypeid==101) {
 					isFolder=true;
@@ -284,7 +284,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 					FolderAcl itemAcl = new FolderAcl();
 					String aclComm = isi.getCommunityName(acl.getCommunityId());
 					itemAcl.setCommunityName(aclComm);
-					log.debug("Folder communityname is "+aclComm);
+					log.debug("Folder communityname is {}", aclComm);
 					List<AclItem> aclitems = new ArrayList<AclItem>();
 
 					Iterator entries = acls[0].iterator();
@@ -299,7 +299,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 						boolean write = entry.hasWriteAccess();
 						boolean admin = entry.hasAdminAccess();
 						boolean deny = entry.hasNoAccess();
-						log.debug("AclEntry name="+name+" type="+type);
+						log.debug("AclEntry name={} type={}", name, type);
 						AclItem aclItem = new AclItem();
 						aclItem.setAdmin(admin);
 						aclItem.setRead(read);
@@ -335,8 +335,8 @@ public class ItemRestServiceImpl implements IItemRestService {
 					int stateid = summary.getContentStateId();
 					int workflowid = summary.getWorkflowAppId();
 
-					log.debug("State  id = "+stateid);
-					log.debug("Workflow id = "+workflowid);
+					log.debug("State  id = {}", stateid);
+					log.debug("Workflow id = {}", workflowid);
 					if(workflowid > 0) {
 						item.setWorkflow(isi.getWorkflowName(workflowid));
 						item.setState(isi.getStateName(workflowid, stateid));
@@ -353,13 +353,16 @@ public class ItemRestServiceImpl implements IItemRestService {
 			}
 		} catch (PSErrorException e) {
 			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error("Error",e);
+			log.error(e.getMessage());
+			log.debug(e.getMessage(), e);
 		} catch (RepositoryException e) {
 			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error("Error",e);
+			log.error(e.getMessage());
+			log.debug(e.getMessage(), e);
 		} catch (Exception e) {
 			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error("Error",e);
+			log.error( e.getMessage());
+			log.debug(e.getMessage(), e);
 		} 
 
 		return item;
@@ -383,13 +386,13 @@ public class ItemRestServiceImpl implements IItemRestService {
 	@Consumes("text/xml")
 	public Item updateItem(Item item,
 			@QueryParam("updateOnly") @DefaultValue("false") boolean updateOnly) {
-		log.debug("UpdateOnly set to " + updateOnly);
+		log.debug("UpdateOnly set to {}", updateOnly);
 		try {
 	
 		initServices();
 		
 		int id = -1;
-		log.debug("Id referenced from item is " + item.getContentId());
+		log.debug("Id referenced from item is {}", item.getContentId());
 		if (item.getContentId() == null || item.getContentId() == -1) {
 			log.debug("No content id need to locate");
 			locateItem(item);
@@ -434,11 +437,11 @@ public class ItemRestServiceImpl implements IItemRestService {
 									if(currentField!=null){
 										DateValue currentValue = (DateValue)currentField.getValue();			
 										if(value == null || value.getDate()==null || currentValue==null || currentValue.getDate()==null){
-											log.debug(fieldName + " has a Null Date Value.. unable to compare.");
+											log.debug("{} has a Null Date Value.. unable to compare.", fieldName);
 										}else{
 											log.debug("Comparing Date values..");
 											if (!value.getDate().after(currentValue.getDate())) {
-												log.debug("Skipping item that has not been modified using field "+fieldName);
+												log.debug("Skipping item that has not been modified using field {}", fieldName);
 												updateItem=false;
 											}
 										
@@ -524,7 +527,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 						IPSRequestContext ctx = new PSRequestContext(cxreq);
 						userName = ctx.getUserContextInformation(
 								"User/Name", "").toString();
-						log.debug("Current username is " + userName);
+						log.debug("Current username is {}", userName);
 						// Default to user
 						String forceCheckinType = item.getForceCheckin() == null ? "user"
 								: item.getForceCheckin();
@@ -618,10 +621,13 @@ public class ItemRestServiceImpl implements IItemRestService {
 							system.transitionItems(Collections.singletonList(guids.get(0)), item.getTransition());
 						}catch(Exception ex){
 							try{
-								log.debug("Draft Transition failed." + item.getTransition() + " Trying edit transition " +item.getEditTransition() );
+								log.error(ex.getMessage());
+								log.debug("Draft Transition failed. {} Trying edit transition {}", item.getTransition(), item.getEditTransition() );
 								system.transitionItems(Collections.singletonList(guids.get(0)), item.getEditTransition());
 							}catch(Exception e){
-								log.warn("Unable to transition item using Transition Trigger " + item.getTransition());
+								log.error(e.getMessage());
+								log.debug(e.getMessage(), e);
+								log.warn("Unable to transition item using Transition Trigger {}", item.getTransition());
 								item.addError(ErrorCode.UNKNOWN_ERROR, "Unable to transition item to " + item.getState());
 							}
 						}
@@ -633,10 +639,12 @@ public class ItemRestServiceImpl implements IItemRestService {
 							system.transitionItems(Collections.singletonList(guids.get(0)), item.getEditTransition());
 						}catch(Exception e){
 							try{
-								log.debug("Edit Transition failed." + item.getEditTransition()  + " Trying new item transition " + item.getTransition());								
+								log.error(e.getMessage());
+								log.debug("Edit Transition failed. {} Trying new item transition {}", item.getEditTransition(), item.getTransition());
 								system.transitionItems(Collections.singletonList(guids.get(0)), item.getTransition());
 							}catch(Exception ex){
-								log.warn("Unable to transition item using Transition Trigger " + item.getEditTransition());
+								log.error(ex.getMessage());
+								log.warn("Unable to transition item using Transition Trigger {}", item.getEditTransition());
 								item.addError(ErrorCode.UNKNOWN_ERROR, "Unable to transition item to " + item.getState());
 							}
 						}
@@ -670,10 +678,12 @@ public class ItemRestServiceImpl implements IItemRestService {
 			log.error("Error", e);
 		} catch (PSErrorsException e) {
 			for (Entry<IPSGuid, Object> error : e.getErrors().entrySet()) {
-				log.debug("Error class is "+error.getClass().getName());
+				log.error(e.getMessage());
+				log.debug("Error class is {}", error.getClass().getName());
 				if (error instanceof PSInternalRequestCallException) {
 					PSInternalRequestCallException irce = (PSInternalRequestCallException)error;
-					log.debug("Cause is "+irce.getCause().getMessage());
+					log.error(e.getMessage());
+					log.debug("Cause is {}", irce.getCause().getMessage());
 				}
 				PSErrorException errorEx = (PSErrorException) error.getValue();
 
@@ -683,23 +693,26 @@ public class ItemRestServiceImpl implements IItemRestService {
 						ErrorCode.UNKNOWN_ERROR,
 						"Item " + errorid + " failed with error "
 						+ errorEx.getErrorMessage());
-				log.error("id=" + errorid + " message = "
-						+ errorEx.getMessage() + "stack=" + errorEx.getStack());
+				log.error("id={} message = {} stack=", errorid, errorEx.getMessage(), errorEx.getStack());
 				log.error("Error", e);
 			}
 
 		} catch (PSUnknownContentTypeException e) {
 			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error("Error", e);
+			log.error("Error {}", e.getMessage());
+			log.debug(e.getMessage(), e);
 		} catch (PSErrorException e) {
 			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error("Error", e);
+			log.error("Error {}", e.getMessage());
+			log.debug(e.getMessage(), e);
 		} catch (FileNotFoundException e) {
 			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error("Error", e);
+			log.error("Error {}", e.getMessage());
+			log.debug(e.getMessage(), e);
 		} catch (IOException e) {
 			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error("Error", e);
+			log.error("Error {}", e.getMessage());
+			log.debug(e.getMessage(), e);
 		} catch (PSErrorResultsException e) {
 			for (Entry<IPSGuid, Object> error : e.getErrors().entrySet()) {
 				PSErrorException errorEx = (PSErrorException) error.getValue();
@@ -708,20 +721,27 @@ public class ItemRestServiceImpl implements IItemRestService {
 						ErrorCode.UNKNOWN_ERROR,
 						"Item " + errorid + " failed with error "
 						+ errorEx.getErrorMessage());
-				log.error("id=" + errorid + " message = "
-						+ errorEx.getMessage() + "stack=" + errorEx.getStack());
-				log.error("Error", e);
+				log.error("id={} message = {} stack={}", errorid, errorEx.getMessage(), errorEx.getStack());
+				log.error("Error {}", e.getMessage());
+				log.debug(e.getMessage(), e);
 			}
 		} catch (PSDataExtractionException e) {
 			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error("Error", e);
+			log.error("Error {}", e.getMessage());
+			log.debug(e.getMessage(), e);
 		} catch (ItemRestException e) {
 			log.error("Unexpected exception",e);
+			log.error("Error {}", e.getMessage());
+			log.debug(e.getMessage(), e);
 			item.addError(e.getErrorCode(), e.getMessage());
 		}catch(ItemRestNotModifiedException e){
 			log.info("Skipping updates to item...");
+			log.error("Error {}", e.getMessage());
+			log.debug(e.getMessage(), e);
 		}  catch (Exception e) {
 			log.error("Unexpected Exception",e);
+			log.error("Error {}", e.getMessage());
+			log.debug(e.getMessage(), e);
 		item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
 		} 
 
@@ -1452,12 +1472,11 @@ public class ItemRestServiceImpl implements IItemRestService {
 		PSRelationshipProcessor proc = PSWebserviceUtils
 		.getRelationshipProcessor();
 
-		log.debug("Deleting relationships for id=" + owner.getId()
-				+ " revision=" + owner.getRevision());
+		log.debug("Deleting relationships for id={} revision={}", owner.getId(), owner.getRevision());
 		int[] rids = new int[rels.size()];
 		for (int i = 0; i < rels.size(); i++) {
 			rids[i] = rels.get(i).getRelId();
-			log.debug("Deleting rid=" + rids[i]);
+			log.debug("Deleting rid={}", rids[i]);
 		}
 
 		try {
@@ -1488,7 +1507,8 @@ public class ItemRestServiceImpl implements IItemRestService {
 			m.marshal(item, sw);
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 		sw.flush();
 		return sw.toString();
@@ -1528,7 +1548,8 @@ public class ItemRestServiceImpl implements IItemRestService {
 			m.marshal(item, dr);
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 
 		return dr.getDocument();
