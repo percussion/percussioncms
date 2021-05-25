@@ -231,7 +231,7 @@
         var iframeJQuery = window.frames[0].jQuery;
         iframeJQuery(".perc-region.perc-region-leaf:not('.perc-region-itool-unselectable')").find(".perc-widget").each(function(){
             iframeJQuery(this).contents().filter(function(){
-                return this.nodeType === Node.TEXT_NODE && $.trim(iframeJQuery(this).text()).length > 0;
+                return this.nodeType === Node.TEXT_NODE && iframeJQuery(this).text().trim().length > 0;
             }).wrap('<span class="perc-itool-text-node-wrapper"/>');
             
             if(iframeJQuery(this).children().size() === 1) //Drill into

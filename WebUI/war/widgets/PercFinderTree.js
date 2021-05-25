@@ -116,7 +116,7 @@
             this.intialPathExpanded = true;
             this.initialRenderCompleted = false;
             this.intialPathKey = null;
-            if(this.settings.initialPath && this.settings.initialPath != null && $.trim(this.settings.initialPath).length > 0)
+            if(this.settings.initialPath && this.settings.initialPath !== null && $.this.settings.initialPath.trim().length > 0)
             {
                 this.intialPathExpanded = false;
                 this.intialPathKey = this._generateKey(this.settings.initialPath);

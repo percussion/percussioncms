@@ -47,7 +47,8 @@
         var formFieldName = $(".PercFormWidget").attr("id");
         var formDataStr = $("input[name='" + formFieldName + "']").val();
         var formData = null;
-        if($.trim(formDataStr).length>0)
+        formDataStr = formDataStr.trim();
+        if(formDataStr.length>0)
             formData = JSON.parse(formDataStr);
             
         var editorHtml = $.PercCommentsFormController().getFormEditor(formData);
@@ -465,9 +466,10 @@
        
     function renderReadOnlyForm() {
         var formFieldName = $(".PercFormWidgetReadOnly").attr("id");
-        var formDataStr = $("input[name='" + formFieldName + "']").val();
+        var formDataStr = $("input[name='" + formFieldName + "']").val().trim();
         var formData = null;
-        if($.trim(formDataStr).length>0)
+
+        if(formDataStr.length>0)
             formData = JSON.parse(formDataStr);
         
         var editorHtml = $.PercCommentsFormController().getFormEditor(formData);

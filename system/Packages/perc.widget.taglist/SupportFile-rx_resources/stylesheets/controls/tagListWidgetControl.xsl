@@ -213,7 +213,7 @@
 			<xsl:text disable-output-escaping="yes">
 				if(p_start_date >= p_end_date)
                 {
-                    $j.perc_utils.alert_dialog({title:"Error", content:"First published before date must be greater than First published on or after date.", okCallBack:function(){
+                    $.perc_utils.alert_dialog({title:"Error", content:"First published before date must be greater than First published on or after date.", okCallBack:function(){
                         setDisplayDate($('[name="end_date"]').val(),"display_end_date");
                         return false;
                     }});
@@ -308,36 +308,36 @@
 	<xsl:template match="Control[@name='tagListWidgetControl' and @isReadOnly='yes']" priority='10' mode="psxcontrol">
 		<script >
 	<![CDATA[
-            $j(document).ready(function(){
+            $(document).ready(function(){
 
-                $j("#taglist-title").on("click",function () {
-                    $j("#criteria_for_list").toggle();
-                    $j("#taglist-title").toggleClass("taglist-expand-image taglist-close-image");
+                $("#taglist-title").on("click",function () {
+                    $("#criteria_for_list").toggle();
+                    $("#taglist-title").toggleClass("taglist-expand-image taglist-close-image");
                 });
 
                 // Put site value in website location field
-                var sitepath = $j("#perc_site_path").val().substring(8);
+                var sitepath = $("#perc_site_path").val().substring(8);
                 var splitPath = sitepath.split("/");
 
 
 
-                $j("#perc_display_site_path").text(sitepath);
+                $("#perc_display_site_path").text(sitepath);
 
                 // Fill templates field
 
                 if (splitPath[0] != undefined && splitPath[0] != "")
                 {
-                    $j.PercServiceUtils.makeJsonRequest(
-                            $j.perc_paths.TEMPLATES_BY_SITE + "/" + splitPath[0],
-                            $j.PercServiceUtils.TYPE_GET,
+                    $.PercServiceUtils.makeJsonRequest(
+                            $.perc_paths.TEMPLATES_BY_SITE + "/" + splitPath[0],
+                            $.PercServiceUtils.TYPE_GET,
                             false,
                             function(status, result){
-                                if(status == $j.PercServiceUtils.STATUS_SUCCESS)
+                                if(status == $.PercServiceUtils.STATUS_SUCCESS)
                                 {
                                     var summaries = result.data.TemplateSummary;
                                     var temps = {};
                                     var tempsArray = [];
-                                    var tempIds = ($j("#perc_template_list").val() != "") ? $j("#perc_template_list").val().split(',') : "";
+                                    var tempIds = ($("#perc_template_list").val() != "") ? $("#perc_template_list").val().split(',') : "";
                                     for(i = 0; i < summaries.length; i++)
                                     {
                                         temps[summaries[i].id] = summaries[i].name;
@@ -354,13 +354,13 @@
                                             buff += "<br/>";
                                         buff += tempsArray[i];
                                     }
-                                    $j("#perc_display_template_list").append(buff);
+                                    $("#perc_display_template_list").append(buff);
                                 }
                                 else
                                 {
                                     var defaultMsg =
-                                            $j.PercServiceUtils.extractDefaultErrorMessage(result.request);
-                                    $j.perc_utils.alert_dialog({title: 'Error', content: defaultMsg});
+                                            $.PercServiceUtils.extractDefaultErrorMessage(result.request);
+                                    $.perc_utils.alert_dialog({title: 'Error', content: defaultMsg});
                                 }
                             }
                     );

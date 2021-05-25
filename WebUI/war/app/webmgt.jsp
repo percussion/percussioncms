@@ -228,11 +228,11 @@
 <script>
     gDebug = <%= debug %>;
     //Create and initialize view wrapper and set it on manager.
-    $j(document).ready(function () {
-        if (($j.PercNavigationManager.getMode() === $j.PercNavigationManager.MODE_EDIT) &&
-                ($j.PercNavigationManager.getId())) {
+    $(document).ready(function () {
+        if (($.PercNavigationManager.getMode() === $.PercNavigationManager.MODE_EDIT) &&
+                ($.PercNavigationManager.getId())) {
 
-            $j.PercLicenseService.getAllModuleLicenses(function (status, data) {
+            $.PercLicenseService.getAllModuleLicenses(function (status, data) {
                 if (status &&
                         data.moduleLicenses &&
                         data.moduleLicenses.moduleLicenses) {
@@ -254,16 +254,16 @@
             });
         }
 
-        $j.PercViewReadyManager.init();
-        var viewWrapper = $j.PercComponentWrapper("perc-view-editor", ["perc-ui-component-finder", "perc-ui-component-editor-toolbar", "perc-ui-component-editor-frame"]);
-        $j.PercViewReadyManager.setWrapper(viewWrapper);
-        $j.Percussion.PercFinderView();
+        $.PercViewReadyManager.init();
+        var viewWrapper = $.PercComponentWrapper("perc-view-editor", ["perc-ui-component-finder", "perc-ui-component-editor-toolbar", "perc-ui-component-editor-frame"]);
+        $.PercViewReadyManager.setWrapper(viewWrapper);
+        $.Percussion.PercFinderView();
     });
     // dont allow navigation and window events if template is dirty
     // this method is bound to body's onbeforeunload event
     // if method returns string, it's used to display message and confirmation to navigate away
     // if method returns nothing, navigation is allowed
-    var dirtyController = $j.PercDirtyController;
+    var dirtyController = $.PercDirtyController;
     function navigationEvent() {
         // if template is not dirty, return nothing and allow navigation
         // otherwise return alert message and display confirmantion box

@@ -340,7 +340,7 @@
             $.PercPathService.getPathItemById(memento.pageId, function(status, data){
                     if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     	clearCacheRegionCSS();
-                    	var querystring = $j.deparam.querystring();
+                    	var querystring = $.deparam.querystring();
                        var isEditMode = true;
                         var folderPath = "";
                         if(typeof data.PathItem.folderPaths === 'undefined' ){
@@ -509,7 +509,7 @@
         
         function clearCacheRegionCSS()
         {
-            $j.PercTemplateService().regionCSSClearCache(
+            $.PercTemplateService().regionCSSClearCache(
                     model.getTemplateObj().Template.theme, 
                     model.getTemplateObj().Template.name, 
                     function(status, data) {});

@@ -121,7 +121,7 @@ $.perc_editSectionDialog = function() {
                                 cssClassNamesField.val(cssClassNamesField.val().replace(/ +/g, " "));
                                 
                                 var sectionName = dialog.find('form').find('#perc-section-url');
-                                var sectionNameValue = $.perc_textFilters.WINDOWS_FILE_NAME($.trim(sectionName.val()));
+                                var sectionNameValue = $.perc_textFilters.WINDOWS_FILE_NAME(sectionName.val().trim());
                                 sectionName.val(sectionNameValue);
                                 
                                 // submit the form

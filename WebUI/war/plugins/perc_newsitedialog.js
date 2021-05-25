@@ -273,9 +273,9 @@ var $perc_newSiteDialogLayout;
 
             // Finally we have all the things we want in the memento, retrieve the path (URL param)
             // and invoke the navigation manager
-            var querystring = $j.deparam.querystring();
-            $j.PercNavigationManager.goToLocation(
-                $j.PercNavigationManager.VIEW_DESIGN,
+            var querystring = $.deparam.querystring();
+            $.PercNavigationManager.goToLocation(
+                $.PercNavigationManager.VIEW_DESIGN,
                 fields.name,
                 null,
                 null,
@@ -293,8 +293,8 @@ var $perc_newSiteDialogLayout;
         if (dialog.find('input[type=radio]').filter(':checked').attr('id') === "type_url")
         {
             var fields = {
-                name: $.trim(siteNameField.val()),
-                baseUrl: $.trim(urlField.val())
+                name: siteNameField.val().trim(),
+                baseUrl: urlField.val().trim()
             };
 
             // If the URL entered lacks 'http(s)://' prefix, append 'http://'
@@ -353,7 +353,7 @@ var $perc_newSiteDialogLayout;
             return;
         }
 
-        if (fields.templatename == null || $.trim(fields.templatename) === '')
+        if (fields.templatename === null || fields.templatename.trim() === '')
         {
             $.perc_utils.alert_dialog(
                 {
@@ -372,7 +372,7 @@ var $perc_newSiteDialogLayout;
                 homePageTitle: I18N.message("perc.ui.new.site.dialog@Home Page"),
                 navigationTitle: I18N.message("perc.ui.new.site.dialog@Home Page"),
                 baseTemplateName: fields.selectedtemplate,
-                templateName: $.trim(fields.templatename)
+                templateName: fields.templatename.trim()
             }
         };
 

@@ -100,7 +100,7 @@
 
                 // Change the view here, after the items are loaded
                 var memento;
-                memento = $j.PercNavigationManager.getMemento();
+                memento = $.PercNavigationManager.getMemento();
 
                 if(memento.view != null)
                 {
@@ -593,7 +593,7 @@
             {
                 var memento;
                 var pageId;
-                memento = $j.PercNavigationManager.getMemento();
+                memento = $.PercNavigationManager.getMemento();
                 if(memento.templateId && memento.pageId && templateId == memento.templateId)
                 {
                     pageId = memento.pageId;
@@ -732,7 +732,7 @@
             function _changeTemplate(callbackData) {
                 var templateId = callbackData.templateId;
                 var pageId = callbackData.pageId;
-                $.PercChangeTemplateDialog().openDialog(pageId, templateId, $j.PercNavigationManager.getSiteName(), function() {  window.location.reload(); });
+                $.PercChangeTemplateDialog().openDialog(pageId, templateId, $.PercNavigationManager.getSiteName(), function() {  window.location.reload(); });
             }
 
             function _openThisPage(callbackData) {
@@ -906,7 +906,7 @@
 
                 var view = $.Percussion.getCurrentTemplatesView();
 
-                var querystring = $j.deparam.querystring();
+                var querystring = $.deparam.querystring();
                 var currentTemplateName = $("#" + templateId).find('.perc-template-thumbnail-container').attr('percbasetemplatename');
                 var memento = {
                     'templateName': currentTemplateName,
@@ -916,8 +916,8 @@
                     'tabId': "perc-tab-layout"
                 };
                 // Use the PercNavigationManager to switch to the template editor
-                $j.PercNavigationManager.goToLocation(
-                    $j.PercNavigationManager.VIEW_EDIT_TEMPLATE, querystring.site, null, null, null, querystring.path, null, memento);
+                $.PercNavigationManager.goToLocation(
+                    $.PercNavigationManager.VIEW_EDIT_TEMPLATE, querystring.site, null, null, null, querystring.path, null, memento);
             }
 
             // Adds a filter for non valid characters
@@ -977,7 +977,7 @@
             function _openPage(pageId) {
                 $.PercPathService.getPathItemById(pageId, function(status, data){
                     if(status == $.PercServiceUtils.STATUS_SUCCESS) {
-                        var querystring = $j.deparam.querystring();
+                        var querystring = $.deparam.querystring();
                         var isEditMode = true;
                         var folderPath = "";
                         if(Array.isArray(data.PathItem.folderPaths)){

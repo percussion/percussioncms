@@ -398,7 +398,7 @@ $.perc_content_viewer = function(options){
    }
    function _decorateLayout()
    {
-       widgetLib = $.perc_create_widget_library( $j('#perc-widget-library-button') );
+       widgetLib = $.perc_create_widget_library( $('#perc-widget-library-button') );
 
         actions = [
         {

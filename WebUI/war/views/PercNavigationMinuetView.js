@@ -23,7 +23,7 @@
  */
 
 var timerid;
-var navMgr = $j.PercNavigationManager;
+var navMgr = $.PercNavigationManager;
 var currentView = '<%=mainNavTab%>';
 var views = {
     home: 'VIEW_HOME',
@@ -74,9 +74,9 @@ function bindNavigationEvents() {
 
 function updateNavLocation(newSiteName, newPath) {
     updateQueryStringParam('site', newSiteName);
-    $j.PercNavigationManager.setSiteName(newSiteName);
+    $.PercNavigationManager.setSiteName(newSiteName);
     updateQueryStringParam('path', encodeURIComponent(newPath));
-    $j.PercNavigationManager.setPath(newPath);
+    $.PercNavigationManager.setPath(newPath);
 }
 
 function processNavigationRequest(eventObj) {

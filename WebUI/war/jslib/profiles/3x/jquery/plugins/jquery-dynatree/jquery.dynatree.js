@@ -1,27 +1,3 @@
-/*
- *     Percussion CMS
- *     Copyright (C) 1999-2021 Percussion Software, Inc.
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- *
- *     Mailing Address:
- *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percusssion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
-
 // Note: We currently allow eval() to parse the 'data' attribtes, when initializing from HTML.
 /*jslint laxbreak: true, browser: true, evil: true, indent: 0, white: false, onevar: false */
 
@@ -1369,8 +1345,8 @@ DynaTreeNode.prototype = {
 			var self = this;
 			var eventType = "nodeLoaded.dynatree." + this.tree.$tree.attr("id")
 				+ "." + this.data.key;
-			this.tree.$tree.bind(eventType, function(e, node, isOk){
-				self.tree.$tree.unbind(eventType);
+			this.tree.$tree.on(eventType, function(e, node, isOk){
+				self.tree.$tree.off(eventType);
 				self.tree.logInfo("loaded %o, %o, %o", e, node, isOk);
 				if(node !== self){
 					throw "got invalid load event";
@@ -2113,7 +2089,7 @@ DynaTree.prototype = {
 
 		// bind event handlers
 		this.logDebug("Dynatree._load(): bind events...");
-		this.$widget.bind();
+		this.$widget.on();
 
 		// --- Post-load processing
 		this.logDebug("Dynatree._load(): postInit...");
@@ -2405,9 +2381,9 @@ TODO: better?
 				title = $li.html();
 				var iPos = title.search(/<ul/i);
 				if( iPos>=0 ){
-					title = $.trim(title.substring(0, iPos));
+					title = title.substring(0, iPos).trim();
 				}else{
-					title = $.trim(title);
+					title = title.trim();
 				}
 //				self.logDebug("%o", title);
 			}
@@ -2430,9 +2406,9 @@ TODO: better?
 			}
 			// If a data attribute is present, evaluate as a JavaScript object
 			if( $li.attr("data") ) {
-				var dataAttr = $.trim($li.attr("data"));
+				var dataAttr = $li.attr("data").trim();
 				if( dataAttr ) {
-					if( dataAttr.charAt(0) != "{" ){
+					if( dataAttr.charAt(0) !== "{" ){
 						dataAttr = "{" + dataAttr + "}";
 					}
 					try {
@@ -2755,14 +2731,14 @@ $.widget("ui.dynatree", {
 
 	bind: function() {
 		// Prevent duplicate binding
-		this.unbind();
+		this.off();
 
 		var eventNames = "click.dynatree dblclick.dynatree";
 		if( this.options.keyboard ){
 			// Note: leading ' '!
 			eventNames += " keypress.dynatree keydown.dynatree";
 		}
-		this.element.bind(eventNames, function(event){
+		this.element.on(eventNames, function(event){
 			var dtnode = getDtNodeFromElement(event.target);
 			if( !dtnode ){
 				return true;  // Allow bubbling of other events
@@ -2818,12 +2794,12 @@ $.widget("ui.dynatree", {
 		// EVENTS
 		// disable click if event is configured to something else
 //		if (!(/^click/).test(o.event))
-//			this.$tabs.bind("click.tabs", function() { return false; });
+//			this.$tabs.on("click.tabs", function() { return false; });
 
 	},
 
 	unbind: function() {
-		this.element.unbind(".dynatree");
+		this.element.off(".dynatree");
 	},
 
 /* TODO: we could handle option changes during runtime here (maybe to re-render, ...)
@@ -2832,13 +2808,13 @@ $.widget("ui.dynatree", {
 	},
 */
 	enable: function() {
-		this.bind();
+		this.on();
 		// Call default disable(): remove -disabled from css:
 		$.Widget.prototype.enable.apply(this, arguments);
 	},
 
 	disable: function() {
-		this.unbind();
+		this.off();
 		// Call default disable(): add -disabled to css:
 		$.Widget.prototype.disable.apply(this, arguments);
 	},

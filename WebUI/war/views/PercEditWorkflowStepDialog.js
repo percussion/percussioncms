@@ -325,7 +325,7 @@
         // On click of 'Save' button, build the step object and send it to server. 'SuccessCallback' will refresh the step container.
         function saveData(isUpdate, workflowName, workflowStep, previousStepName, successCallback)
         {
-            var stepName = $.trim($("#perc-wfstep-name").val());
+            var stepName = $("#perc-wfstep-name").val().trim();
             
             if(stepName.indexOf("??") !== -1) {
                 var validationError = I18N.message("perc.ui.workflow.steps.view@Invalid Character Sequence Quesitonmarks") + "'??'.";
@@ -366,12 +366,12 @@
                                     "workflowName" : workflowName,
                                     "previousStepName" : previousStepName,
                                     "workflowSteps":[{
-                                                "stepName":$.trim($("#perc-wfstep-name").val()),
+                                                "stepName":$("#perc-wfstep-name").val().trim(),
                                                 "stepRoles":stepRoles
                                     }]
                             }
             };
-            var stepName = $.trim($("#perc-wfstep-name").val());
+            var stepName = $("#perc-wfstep-name").val().trim();
             $.PercBlockUI();
             //call the service to update the step data if 'isUpdate' is true
             if(isUpdate) {

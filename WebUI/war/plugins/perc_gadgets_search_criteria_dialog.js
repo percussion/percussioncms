@@ -123,7 +123,7 @@
                             
                             templateValue = (templateValue == null ? "@all" : templateValue);
                             stateValue = (stateValue == null ? "@all" : stateValue);
-                            modifiedValue = (modifiedValue == null || $.trim(modifiedValue) === "" ? "@all" : modifiedValue);
+                            modifiedValue = (modifiedValue == null || modifiedValue.trim() === "" ? "@all" : modifiedValue);
                             
                             var siteName = (siteValue === "@all" ? "All" : siteValue);
                             templateName = (templateValue === "@all" ? "All" : templateName);

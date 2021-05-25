@@ -291,7 +291,7 @@
         event.preventDefault();
 
         // Retrieve the activation code and encode it, because we are appending it to the URL
-        activationCode = $.trim(activationForm.find('#perc-lmg-activation-code').val());
+        activationCode = activationForm.find('#perc-lmg-activation-code').val().trim();
         activationCode = encodeURIComponent(activationCode);
         
         // Hide error message and check that the activationCode field is not empty

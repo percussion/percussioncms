@@ -3015,7 +3015,7 @@ onchange    %Script;       #IMPLIED
          </xsl:call-template>
          // <![CDATA[
             readonly = readonly == 'true' ? true : false;
-            var siteName = parent.$j.PercNavigationManager.getSiteName();
+            var siteName = parent.$.PercNavigationManager.getSiteName();
             siteurl = treeSrcUrl + "?" + "sitename="+ siteName + "&rootpath="+rootpath;
 
             var opts = {url : siteurl, selected : selectedValues, paramName : paramName, readonly : readonly};

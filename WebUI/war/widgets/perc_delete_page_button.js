@@ -543,8 +543,8 @@
             if (typeof memento != 'undefined') {
                 var mem = { 'templateId': memento.templateId, 'pageId': null };
                 // Use the PercNavigationManager to reload to the template editor without pageId
-                var querystring = $j.deparam.querystring();
-                $j.PercNavigationManager.goToLocation(
+                var querystring = $.deparam.querystring();
+                $.PercNavigationManager.goToLocation(
                     view,
                     querystring.site,
                     null,

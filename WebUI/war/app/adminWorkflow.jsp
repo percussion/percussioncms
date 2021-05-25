@@ -115,43 +115,43 @@
     <!--[if gte IE 8]>
     <link rel="stylesheet" type="text/css" href="../css/IE8_styles.css"/><![endif]-->
     <script  >
-        var dirtyController = $j.PercDirtyController;
+        var dirtyController = $.PercDirtyController;
         function navigationEvent() {
             // if template is not dirty, return nothing and allow navigation
             // otherwise return alert message and display confirmantion box
-            $j.wfViewObject.cancelJobs();
+            $.wfViewObject.cancelJobs();
             return dirtyController.navigationEvent();
         }
         //Initialization code
-        $j(document).ready(function () {
-            $j.Percussion.PercFinderView();
-            $j.PercWorkflowView();
-            $j.PercUserView();
-            $j.PercRoleView();
-            $j.PercCategoryView();
+        $(document).ready(function () {
+            $.Percussion.PercFinderView();
+            $.PercWorkflowView();
+            $.PercUserView();
+            $.PercRoleView();
+            $.PercCategoryView();
             fixBottomHeight();
-            $j("select").on("keypress",function () {
+            $("select").on("keypress",function () {
                 dirtyController.setDirty(true, "asset");
             });
-            $j("#tabs").tabs({
+            $("#tabs").tabs({
                 select: function (event, ui) {
                     if (dirtyController.isDirty()) {
                         // if dirty, then show a confirmation dialog                    
                         dirtyController.confirmIfDirty(function () {
                             // if they click ok, then reset dirty flag and proceed to select the tab
                             dirtyController.setDirty(false);
-                            $j.PercUserController.cancel();
-                            $j.PercRoleController.cancel();
-                            $j("#tabs").tabs('select', ui.index);
+                            $.PercUserController.cancel();
+                            $.PercRoleController.cancel();
+                            $("#tabs").tabs('select', ui.index);
                         });
                         return false;
                     }
 
                     if (ui.index != 3) {
-                        $j.PercCategoryController.getTabLockData(function (lockinfo) {
-                            if (lockinfo.userName == $j.PercNavigationManager.getUserName()) {
+                        $.PercCategoryController.getTabLockData(function (lockinfo) {
+                            if (lockinfo.userName == $.PercNavigationManager.getUserName()) {
                                 // delete the category tab lock file.
-                                $j.PercCategoryController.removeCatTabLock(function(){
+                                $.PercCategoryController.removeCatTabLock(function(){
                                 	
                                 });
                             }
@@ -171,30 +171,30 @@
                 var CATEGORIES_TAB = 3;
                 if (index === USERS_TAB) {
                     // Update the 'Available Roles'cache object
-                    $j.PercUserController.cacheAllRoles();
+                    $.PercUserController.cacheAllRoles();
 
                     //Update the Assgined Roles list for currently selected user                 
-                    $j("li.perc-users-selected").trigger("click");
-                    $j("#perc-wf-update-cancel").trigger("click");
+                    $("li.perc-users-selected").trigger("click");
+                    $("#perc-wf-update-cancel").trigger("click");
                 }
                 else if (index === ROLES_TAB) {
                     //Update the Assigned Users list for currently selected role
-                    $j("li.perc-item-selected").trigger("click");
-                    $j("#perc-wf-update-cancel").trigger("click");
+                    $("li.perc-item-selected").trigger("click");
+                    $("#perc-wf-update-cancel").trigger("click");
                 }
                 else if (index === WORKFLOW_TAB) {
                     //Update the Workflow to get changes if a role has been deleted
-                    var workflowName = $j("#perc-workflows-list .perc-itemname-list").find(".perc-item-selected").text();
-                    if ($j.wfViewObject.isWorkflowAvailable) {
+                    var workflowName = $("#perc-workflows-list .perc-itemname-list").find(".perc-item-selected").text();
+                    if ($.wfViewObject.isWorkflowAvailable) {
                         if (workflowName)
-                            $j.PercWorkflowStepsView.refresh(workflowName);
+                            $.PercWorkflowStepsView.refresh(workflowName);
                         else
-                            $j.PercWorkflowView().init();
+                            $.PercWorkflowView().init();
                     }
                 }
                 else if (index === CATEGORIES_TAB) {
 
-                    $j.PercCategoryController.getTabLockData(function (lockinfo) {
+                    $.PercCategoryController.getTabLockData(function (lockinfo) {
                         var user = lockinfo.userName;
 
                         if (user != null && user !== "") {
@@ -205,17 +205,17 @@
 
                             // compare the current time with the lock creation time. If the difference is more than or equal to 20 min, override the lock to the new user.
                             if (diffMins >= 20) {
-                                $j.PercCategoryController.lockCategoryTab();
-                            } else if (user !== $j.PercNavigationManager.getUserName()) {
-                                $j.PercCategoryController.confirmDialog(I18n.message("perc.ui.admin.workflow@Categories Locked", [0]), function (action) {
+                                $.PercCategoryController.lockCategoryTab();
+                            } else if (user !== $.PercNavigationManager.getUserName()) {
+                                $.PercCategoryController.confirmDialog(I18n.message("perc.ui.admin.workflow@Categories Locked", [0]), function (action) {
                                     if (action === "cancel") {
-                                        $j("#tabs").tabs('select', 0);
+                                        $("#tabs").tabs('select', 0);
                                     }
                                 });
                             }
                         } else {
                             // lock categories tab for the current user.
-                            $j.PercCategoryController.lockCategoryTab();
+                            $.PercCategoryController.lockCategoryTab();
                         }
                     });
                 }

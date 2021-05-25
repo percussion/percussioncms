@@ -1198,7 +1198,7 @@
                                     retVal = g(fn)(Instance, s, o, lName);
                             }
                         } catch (ex) {
-                            _log(options.errors.callbackError.replace(/EVENT/, $.trim((pane || "") + " " + lng)), false);
+                            _log(options.errors.callbackError.replace(/EVENT/, ((pane || "").trim() + " " + lng)), false);
                             if ($.type(ex) === "string" && string.length)
                                 _log("Exception:  " + ex, false);
                         }
@@ -1522,7 +1522,7 @@
                     if (type == "resizer" && $El.hasClass(root + _slide))
                         classes += (root + _slide + _hover) + (root + _pane + _slide + _hover);
 
-                    return $.trim(classes);
+                    return classes.trim();
                 }
                 , addHover = function (evt, el) {
                     var $E = $(el || this);
@@ -5485,7 +5485,7 @@ jQuery.cookie = function (name, value, options) {
                 , pair, data, i
             ;
             for (i = 0; pair = cs[i]; i++) {
-                data = $.trim(pair).split('='); // name=value => [ name, value ]
+                data = pair.trim().split('='); // name=value => [ name, value ]
                 if (data[0] == name) // found the layout cookie
                     return decodeURIComponent(data[1]);
             }

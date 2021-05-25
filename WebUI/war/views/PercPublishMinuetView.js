@@ -57,7 +57,7 @@ function checkEC2Instance(){
 
         }
     };
-    $j.PercPublisherService(false).isEC2InstanceCheck(checkCallback);
+    $.PercPublisherService(false).isEC2InstanceCheck(checkCallback);
 
 }
 
@@ -78,7 +78,7 @@ function getAllSites() {
 
     // Start by retrieving a list of sites
     siteListDeferred = $.Deferred();
-    $j.PercSiteService.getSites(getSitesCallback);
+    $.PercSiteService.getSites(getSitesCallback);
 
     siteListDeferred.done(function(siteList) {
         siteListObject = siteList;
@@ -94,7 +94,7 @@ function getAllRegions() {
 
     // Start by retrieving a list of regions
     regionListDeferred = $.Deferred();
-    $j.PercPublisherService(false).getAvailableRegions(getRegionsCallback);
+    $.PercPublisherService(false).getAvailableRegions(getRegionsCallback);
 
     regionListDeferred.done(function(rgnLst) {
         regionsList = rgnLst;
@@ -111,7 +111,7 @@ function getAllPublishingServer(serverType) {
     if(serverType == undefined){
         serverType='PRODUCTION';
     }
-    $j.PercPublisherService(false).getAvailablePublishingServer(getPublishServerCallback,serverType);
+    $.PercPublisherService(false).getAvailablePublishingServer(getPublishServerCallback,serverType);
 
     publishingServerListDeferred.done(function(pslLst) {
         publishingServerList = pslLst;
@@ -133,7 +133,7 @@ function getDefaultFolder() {
     else {
         serverType = selectedServerData.serverInfo.serverType;
     }
-    $j.PercPublisherService(false).getLocalFolderPath(selectedSiteData.siteId, serverType, getDefaultFolderCallback);
+    $.PercPublisherService(false).getLocalFolderPath(selectedSiteData.siteId, serverType, getDefaultFolderCallback);
     defaultFolderDeferred.done(function(defaultFolder) {
         $('input[name=defaultServer]').val(defaultFolder);
         $('#ownServer').fadeOut('fast', function() {
@@ -145,7 +145,7 @@ function getDefaultFolder() {
 
 function getSiteDetails() {
     serverListDeferred = $.Deferred();
-    $j.PercPublisherService(false).getServersList(selectedSiteData.siteId, getServersListCallback);
+    $.PercPublisherService(false).getServersList(selectedSiteData.siteId, getServersListCallback);
 
     serverListDeferred.done(function(serverList) {
         serverListObject = serverList;
@@ -568,7 +568,7 @@ function toggleSiteView(eventObj) {
 function processDeleteServer() {
     startProcessRunningAlert();
     deleteServerResponseDeferred = $.Deferred();
-    $j.PercPublisherService(false).deleteSiteServer(selectedSiteData.siteId, selectedServerData.serverInfo.serverId, processDeleteServerCallback);
+    $.PercPublisherService(false).deleteSiteServer(selectedSiteData.siteId, selectedServerData.serverInfo.serverId, processDeleteServerCallback);
     deleteServerResponseDeferred.done(function(response) {
         deleteServerRequestDeferred.resolve(response);
     });
@@ -581,7 +581,7 @@ function processPublish(eventData) {
 
     if (publishType == 'full') {
         startProcessRunningAlert();
-        $j.PercPublisherService(false).publishSite(siteName, serverName, publishCallback);
+        $.PercPublisherService(false).publishSite(siteName, serverName, publishCallback);
     }
 
     // If the selected publish type is incremental, we will serve up the preview dialog first
@@ -594,7 +594,7 @@ function processPublish(eventData) {
 
 function processIncrementalPreview(serverId) {
     serverPropertiesDeferred = $.Deferred();
-    $j.PercPublisherService(false).getServerProperties(selectedSiteData.siteId, serverId, function(status, result) {
+    $.PercPublisherService(false).getServerProperties(selectedSiteData.siteId, serverId, function(status, result) {
         serverPropertiesDeferred.resolve(result[0]);
     });
 
@@ -602,7 +602,7 @@ function processIncrementalPreview(serverId) {
         publishRelatedItems = getArrayProperty(serverProperties.serverInfo.properties, 'key', 'publishRelatedItems').value;
         serverType = serverProperties.serverInfo.serverType;
         console.log(serverProperties);
-        $j.PercPublisherService(false).getIncrementalItems(siteName, serverName, 1, 1000000, function(status, result) {
+        $.PercPublisherService(false).getIncrementalItems(siteName, serverName, 1, 1000000, function(status, result) {
             status == 'error' || result.PagedItemList.childrenInPage.length == 0 ? incrementalPreviewObject = {} : incrementalPreviewObject = result;
             console.log(incrementalPreviewObject);
             processTemplate(incrementalPreviewObject, 'templateIncrementalPublishPreviewOverlay', 'percIncrementalPublishPreviewOverlayTarget');
@@ -620,7 +620,7 @@ function processIncrementalPreview(serverId) {
 }
 
 function processIncrementalRelatedItemsPreview() {
-    $j.PercPublisherService(false).getIncrementalRelatedItems(siteName, serverName, 1, 1000000, function(status, result) {
+    $.PercPublisherService(false).getIncrementalRelatedItems(siteName, serverName, 1, 1000000, function(status, result) {
         status == 'error' || result.PagedItemList.childrenInPage.length == 0 ? incrementalRelatedPreviewObject = {} : incrementalRelatedPreviewObject = result;
         console.log(incrementalRelatedPreviewObject);
         processTemplate(incrementalRelatedPreviewObject, 'templateIncrementalPublishRelatedItems', 'percIncrementalRelatedItemsTarget');
@@ -655,7 +655,7 @@ function processIncrementalPublish() {
         }
     });
     // Call Publish Incremental with list of related items selected for approval.
-    $j.PercPublisherService(false).publishIncrementalWithApproval(siteName, serverName,JSON.stringify(itemsToApprove),publishCallback);
+    $.PercPublisherService(false).publishIncrementalWithApproval(siteName, serverName,JSON.stringify(itemsToApprove),publishCallback);
 }
 
 
@@ -698,7 +698,7 @@ function editServerProperties(eventData) {
     selectedServerData.action = 'update';
     selectedServerId = $(eventData).data('perc-server-id');
     serverPropertiesDeferred = $.Deferred();
-    $j.PercPublisherService(false).getServerProperties(selectedSiteData.siteId, selectedServerId, getServerPropertiesCallback);
+    $.PercPublisherService(false).getServerProperties(selectedSiteData.siteId, selectedServerId, getServerPropertiesCallback);
     serverPropertiesDeferred.done(function(currentProperties) {
         selectedServerData.serverInfo = currentProperties.serverInfo;
         assembleServerForms(selectedServerData);
@@ -720,8 +720,8 @@ function assembleServerForms(serverObj) {
     processTemplate(serverObj, 'templatePercServerPropertiesDatabaseMSSQL', 'percServerPropertiesDatabaseMSSQLTarget');
     processTemplate(serverObj, 'templatePercServerPropertiesDatabaseOracle', 'percServerPropertiesDatabaseOracleTarget');
 
-    privateKeyListDeferred = $j.Deferred();
-    $j.PercUtilService.getPrivateKeys(getPrivateKeysCallback);
+    privateKeyListDeferred = $.Deferred();
+    $.PercUtilService.getPrivateKeys(getPrivateKeysCallback);
     privateKeyListDeferred.done(function(keyData) {
         processTemplate(keyData.data.PrivateKeys, 'templatePrivateKeyOptions', 'privateKeyList');
     });
@@ -832,7 +832,7 @@ function deleteServerRequest() {
 
 function updateServerProperties(siteName, serverName, serverProperties) {
     startProcessRunningAlert();
-    $j.PercPublisherService(false).createUpdateSiteServer(siteName, serverName, serverProperties, updateServerPropertiesCallback);
+    $.PercPublisherService(false).createUpdateSiteServer(siteName, serverName, serverProperties, updateServerPropertiesCallback);
 }
 
 function processServerPropertiesForm(eventData) {

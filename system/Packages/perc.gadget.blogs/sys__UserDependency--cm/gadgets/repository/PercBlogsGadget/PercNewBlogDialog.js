@@ -51,14 +51,14 @@
     
     function getPageNameValue(wizardContentDom)
     {
-        return $.trim(wizardContentDom
-            .find("input#perc-page-name").val());
+        return wizardContentDom
+            .find("input#perc-page-name").val().trim();
     }
     
     function getBlogLinkTextValue(wizardContentDom)
     {
-        return $.trim(wizardContentDom
-            .find("input#perc-blog-text-link").val());
+        return wizardContentDom
+            .find("input#perc-blog-text-link").val().trim();
     }
     
     function afterTransition(currentStep, nextStep, wizard){

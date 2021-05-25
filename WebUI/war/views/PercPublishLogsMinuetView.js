@@ -62,7 +62,7 @@
         }
 
         function getSiteLogs(logParams) {
-            $j.PercPublisherService(false).getPublishingLogs(logParams, getSiteLogsCallback);
+            $.PercPublisherService(false).getPublishingLogs(logParams, getSiteLogsCallback);
         }
 
         function getSiteLogsCallback(status, result) {
@@ -126,7 +126,7 @@
         }
 
         function getPublishingLogDetails(jobId) {
-            $j.PercPublisherService(false).getPublishingLogDetails(jobId, getPublishingLogDetailsCallback);
+            $.PercPublisherService(false).getPublishingLogDetails(jobId, getPublishingLogDetailsCallback);
         }
 
         function deleteSelectedLogsRequest() {
@@ -181,7 +181,7 @@
                     jobIdList.push(jobId);
                 }
             });
-            $j.PercPublisherService(false).purgeJob(jobIdList, deleteSelectedLogsCallback);
+            $.PercPublisherService(false).purgeJob(jobIdList, deleteSelectedLogsCallback);
         }
 
         function bindLogActions() {

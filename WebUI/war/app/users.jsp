@@ -105,7 +105,7 @@
         // this method is bound to body's onbeforeunload event
         // if method returns string, it's used to display message and confirmation to navigate away
         // if method returns nothing, navigation is allowed
-        var dirtyController = $j.PercDirtyController;
+        var dirtyController = $.PercDirtyController;
         function navigationEvent() {
             // if template is not dirty, return nothing and allow navigation
             // otherwise return alert message and display confirmantion box
@@ -113,13 +113,13 @@
         }
 
         //Finder initialization code
-        $j(document).ready(function () {
+        $(document).ready(function () {
 
-            $j("#perc-manual-publish-widget").find(".perc-foldable").trigger("click");
-            $j.Percussion.PercFinderView();
-            $j.PercUserView();
+            $("#perc-manual-publish-widget").find(".perc-foldable").trigger("click");
+            $.Percussion.PercFinderView();
+            $.PercUserView();
 
-            $j("select").on("keypress",function () {
+            $("select").on("keypress",function () {
                 dirtyController.setDirty(true, "asset");
             });
 

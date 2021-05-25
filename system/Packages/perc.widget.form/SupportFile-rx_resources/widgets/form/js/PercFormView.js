@@ -41,9 +41,9 @@
     function initializeForm()
     {
         var formFieldName = $(".PercFormWidget").attr("id");
-        var formDataStr = $("input[name='" + formFieldName + "']").val();
+        var formDataStr = $("input[name='" + formFieldName + "']").val().trim();
         var formData = null;
-        if($.trim(formDataStr).length>0)
+        if(formDataStr.length>0)
             formData = JSON.parse(formDataStr);
 
         var editorHtml = $.PercFormController().getFormEditor(formData);
@@ -365,7 +365,7 @@
         var isFieldError = false;
         $(reqFieldIds).each(function(){
             var value = $("#" + this).val();
-            if($.trim(value)==='')
+            if(value.trim()==='')
             {
                 isFieldError = true;
                 $("#" + this).after(errorLabelHtml);

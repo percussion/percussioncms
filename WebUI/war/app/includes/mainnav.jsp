@@ -51,7 +51,7 @@ if(locale==null){
         window.location.href = l;  
     }
     
-    $j(function () {
+    $(function () {
 
         // Dynamically reverse the z-index stacking order, this is done to get
         // around IE issue with z-index stacking. Bug# CML-2032
@@ -59,16 +59,16 @@ if(locale==null){
         // Note Dialogs maust have a greater z-index then
         // this number
 
-        $j('div').each(function() {
-            if(!$j(this).hasClass('ui-dialog') && !$j(this).hasClass('ui-widget-overlay'))
+        $('div').each(function() {
+            if(!$(this).hasClass('ui-dialog') && !$(this).hasClass('ui-widget-overlay'))
             {
-                $j(this).css('z-index', zIndexNumber);
+                $(this).css('z-index', zIndexNumber);
                 zIndexNumber -= 10;
             }
         });
 
         var timerid;
-        var navMgr = $j.PercNavigationManager;
+        var navMgr = $.PercNavigationManager;
         var currentView = '<%=mainNavTab%>';
         var views = {
             home: 'VIEW_HOME',
@@ -86,31 +86,31 @@ if(locale==null){
         function hide () {
             clear();
             timerid = setTimeout(function () {
-                $j('.perc-topnav .perc-actions-menu').hide();
+                $('.perc-topnav .perc-actions-menu').hide();
             }, 800);
         }
         function set_label ($selected) {
             var val = $selected.html();
             $selected.addClass('ui-state-active');
-            $j('.perc-topnav label').html(val.toUpperCase()).attr("name",val.toUpperCase());
+            $('.perc-topnav label').html(val.toUpperCase()).attr("name",val.toUpperCase());
         }
         // initialize the current view label
         var selector = '[data-navmgr=' + views[currentView] + ']';
-        set_label($j(selector));
-        $j('body').on('click', function () {
-            $j(this).find('.perc-topnav .perc-actions-menu').hide();
+        set_label($(selector));
+        $('body').on('click', function () {
+            $(this).find('.perc-topnav .perc-actions-menu').hide();
         }).on('click', '.perc-topnav', function onTopNavClick (event) {
             clear();
             event.stopPropagation();
-            $j(this).find('.perc-actions-menu').show();
+            $(this).find('.perc-actions-menu').show();
         }).on('click', '.perc-topnav li', function onTopNavOptionClick (event) {
             event.stopPropagation();
-            var view = $j(this).data('navmgr');
+            var view = $(this).data('navmgr');
             var navMgrArguments = [navMgr[view], navMgr.getSiteName(), navMgr.getMode(), null, navMgr.getName(), navMgr.getPath(), navMgr.getPathType(), null];
             navMgr.goToLocation.apply(navMgr, navMgrArguments);
-            $j(this).parents('.perc-actions-menu').hide();
+            $(this).parents('.perc-actions-menu').hide();
         });
-        $j('.perc-topnav, .perc-topnav .perc-actions-menu').on("mouseenter",clear).on("mouseleave",hide);
+        $('.perc-topnav, .perc-topnav .perc-actions-menu').on("mouseenter",clear).on("mouseleave",hide);
 
     });
     /*]]>*/

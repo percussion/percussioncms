@@ -103,7 +103,7 @@
             var gPageId;
             var gSelectedView;
             var memento;
-            memento = $j.PercNavigationManager.getMemento();
+            memento = $.PercNavigationManager.getMemento();
             if(memento.tabId)
             {
                 var tabId = '#'+memento.tabId;
@@ -122,31 +122,31 @@
                 memento['isEditPage'] = false;
             }
        
-            $j(document).ready(function () {
-                var querystring = $j.deparam.querystring();
+            $(document).ready(function () {
+                var querystring = $.deparam.querystring();
            
-                $j.Percussion.templateView();
-                $j.Percussion.PercFinderView();
+                $.Percussion.templateView();
+                $.Percussion.PercFinderView();
                 
                 gSelectTemp = memento.templateId; 
                 gPageId = memento.pageId;
                 gSelectedView = memento.view;
-                $j(tabId).trigger("click");
+                $(tabId).trigger("click");
                 
                 // Add close button to content menu
                 var closeButton = "<button style='float: right;' class='btn btn-primary perc-close' title='Click to Close' id='perc-template-close'>Close</button>";
-                $j("#perc-content-menu").append($j(closeButton));
-                $j("#perc-template-close").on("click",function(){
+                $("#perc-content-menu").append($(closeButton));
+                $("#perc-template-close").on("click",function(){
                     clearCacheRegionCSS(); 
                     // check in the page
                     if (gPageId != null && gPageId != "")
                     {
-                        $j.PercWorkflowService().checkIn(gPageId, function(status, result){});
+                        $.PercWorkflowService().checkIn(gPageId, function(status, result){});
                     }
                     var memento = {'templateId' : gSelectTemp, 'pageId' : gPageId, 'view' : gSelectedView};
                     // Use the PercNavigationManager to switch to the template editor
-                    $j.PercNavigationManager.goToLocation(
-                            $j.PercNavigationManager.VIEW_DESIGN,
+                    $.PercNavigationManager.goToLocation(
+                            $.PercNavigationManager.VIEW_DESIGN,
                             querystring.site,
                             null,
                             null,
@@ -156,10 +156,10 @@
                             memento);
                     function clearCacheRegionCSS()
                     {
-                        var model = $j.PercNavigationManager.getTemplateModel();
+                        var model = $.PercNavigationManager.getTemplateModel();
                         if (model !== undefined)
                         {
-                            $j.PercTemplateService().regionCSSClearCache(
+                            $.PercTemplateService().regionCSSClearCache(
                                     model.getTemplateObj().Template.theme, 
                                     model.getTemplateObj().Template.name, 
                                     function(status, data) {});
@@ -172,7 +172,7 @@
             // this method is bound to body's onbeforeunload event
             // if method returns string, it's used to display message and confirmation to navigate away
             // if method returns nothing, navigation is allowed
-            var dirtyController = $j.PercDirtyController;
+            var dirtyController = $.PercDirtyController;
             function navigationEvent() {
                 // if template is not dirty, return nothing and allow navigation
                 // otherwise return alert message and display confirmantion box

@@ -305,7 +305,7 @@
      */
     function loadPrivateFileKey(selectedOption)
     {
-        var utilService = $j.PercUtilService;
+        var utilService = $.PercUtilService;
         var privateKeys = utilService.getPrivateKeys(function(status, result)
         {
             if (status == $.PercServiceUtils.STATUS_SUCCESS) 

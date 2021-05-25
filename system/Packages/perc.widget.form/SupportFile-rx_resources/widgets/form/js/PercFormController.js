@@ -187,9 +187,10 @@
                 if(!defaults || defaults["perc-validate-max-char"] !== "yes")
                     return true;
                 var isValid = true;
-                var val = $('#perc-field-max-char-value').val();
-                if($.trim(val) === "")
+                var val = $('#perc-field-max-char-value').val().trim();
+                if(val === "") {
                     return true;
+                }
                 var max = parseInt(val);
                 if(!max || max > 2048)
                 {
@@ -358,7 +359,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var classValue = $.trim($('#perc-field-class-value').val());
+                var classValue = $('#perc-field-class-value').val().trim();
                 // Remove extra spaces between classes
                 classValue = classValue.replace( /\s\s+/g, ' ' );
 
@@ -431,7 +432,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var nameValue = $.trim($('#perc-field-name-value').val());
+                var nameValue = $('#perc-field-name-value').val().trim();
                 // Remove extra spaces between classes
                 nameValue = nameValue.replace( /\s\s+/g, ' ' );
 
@@ -506,7 +507,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var titleValue = $.trim($('#perc-field-title-value').val());
+                var titleValue = $('#perc-field-title-value').val().trim();
                 // Remove extra spaces between classes
                 titleValue = titleValue.replace( /\s\s+/g, ' ' );
 
@@ -580,7 +581,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var sitekeyValue = $.trim($('#perc-field-recaptcha-sitekey-value').val());
+                var sitekeyValue = $('#perc-field-recaptcha-sitekey-value').val().trim();
 
                 if (sitekeyValue.length > 0)
                 {
@@ -654,7 +655,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var value = $.trim($('#perc-field-recaptcha-theme-value').val());
+                var value = $('#perc-field-recaptcha-theme-value').val().trim();
 
                 if (value.length > 0)
                 {
@@ -728,7 +729,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var value = $.trim($('#perc-field-recaptcha-size-value').val());
+                var value = $('#perc-field-recaptcha-size-value').val().trim();
 
                 if (value.length > 0)
                 {
@@ -803,7 +804,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var value = $.trim($('#perc-field-recaptcha-tabindex-value').val());
+                var value = $('#perc-field-recaptcha-tabindex-value').val().trim();
 
                 if (value.length > 0)
                 {
@@ -877,7 +878,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var value = $.trim($('#perc-field-recaptcha-callback-value').val());
+                var value = $('#perc-field-recaptcha-callback-value').val().trim();
 
                 if (value.length > 0)
                 {
@@ -952,7 +953,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var value = $.trim($('#perc-field-recaptcha-expired-callback-value').val());
+                var value = $('#perc-field-recaptcha-expired-callback-value').val().trim();
 
                 if (value.length > 0)
                 {
@@ -1027,7 +1028,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var value = $.trim($('#perc-field-recaptcha-error-callback-value').val());
+                var value = $('#perc-field-recaptcha-error-callback-value').val().trim();
 
                 if (value.length > 0)
                 {
@@ -1103,7 +1104,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var idValue = $.trim($('#perc-field-id-value').val());
+                var idValue = $('#perc-field-id-value').val().trim();
 
                 if (idValue.length > 0)
                 {
@@ -2953,7 +2954,7 @@
             fieldData.defaultValue = 0;
             var opts = $fieldElem.find('.dataDropDownSelect');
             opts.each(function(){
-                if($.trim($(this).val()) !== "")
+                if($(this).val().trim() !== "")
                 {
                     fieldData.options[i] = {
                         value : $(this).val(),
@@ -3119,7 +3120,7 @@
             fieldData.defaultValue = 0;
             var opts = $fieldElem.find('.option-dd');
             opts.each(function(){
-                if($.trim($(this).val()) !== "")
+                if($(this).val().trim() !== "")
                 {
                     fieldData.options[i] = {
                         value : $(this).val(),
@@ -3362,7 +3363,7 @@
             fieldData.defaultValue = 0;
             var opts = $fieldElem.find('.option-dd');
             opts.each(function(i){
-                    if($.trim($(this).val()) !== "")
+                    if($(this).val().trim() !== "")
                     {
                         fieldData.options[i] = {
                             value : $(this).val(),
@@ -3640,7 +3641,7 @@
             fieldData.defaultName = this.generateUID();
             var opts = $fieldElem.find('.option-dd');
             opts.each(function(){
-                    if($.trim($(this).val()) !== "")
+                    if($(this).val().trim() !== "")
                     {
                         fieldData.options[i] = {
                             value : $(this).val(),

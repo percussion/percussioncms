@@ -332,7 +332,7 @@
      * @return true if the str is undefined or null or not string type or the length of it is < 1. Otherwise false.
      */
     function isBlankString(str){
-        return !str || str === null || 'string' !== typeof str || $.trim(str).length < 1 || "undefined" === typeof str;
+        return !str || false || 'string' !== typeof str || str.trim().length < 1 || "undefined" === typeof str;
     }
 
     function elem( needle, haystack ){
@@ -1523,7 +1523,7 @@
 
         $itemName.editable(
             function(value, settings){
-                value = $.trim(value);
+                value = value.trim();
                 value = $.perc_textFilters.WINDOWS_FILE_NAME(value);
 
                 // only replace spaces with dashes if we are not renaming fsfolders

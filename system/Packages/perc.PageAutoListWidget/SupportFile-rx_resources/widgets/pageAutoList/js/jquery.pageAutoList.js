@@ -223,7 +223,7 @@ function buildQuery() {
             Multi Select list for the Page Templates
             */
         function showPageTemplates() {
-            $ = $j;
+            ;
             //make an array from the comma delimited options string
             var pageTemplatesOptionsArray = [];
 
@@ -286,7 +286,7 @@ function getDomPath(el) {
 
         
         function showCategories() {
-            $ = $j;
+            ;
             //make an array from the comma delimited options string
             var pageCategoriesOptionsArray = [];
 

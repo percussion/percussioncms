@@ -38,12 +38,14 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/b5599b836a.css" />
 
     <script  src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
+    <script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"</script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"</script>
     <script  src="/cm/plugins/perc_path_constants.js"></script>
     <script  src="/cm/plugins/perc_utils.js"></script>
     <script  src="/cm/services/PercServiceUtils.js"></script>
-    <script src="/cm/gadgets/repository/perc_bulk_file_upload_gadget/js/vendor/jquery.ui.widget.js"></script>
-    <script  src="/cm/widgets/PercFinderTree.js?"></script>
-    <script  src="/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js?"></script>
+    <script  src="/cm/widgets/PercFinderTree.js"></script>
+    <script  src="/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js"></script>
     <script src="/cm/gadgets/repository/perc_bulk_file_upload_gadget/js/jquery.fileupload.js"></script>
     <script  src="/cm/services/PercWorkflowService.js"></script>
     <script src="/cm/gadgets/repository/perc_bulk_file_upload_gadget/js/perc_bulk_file_upload_collapse.js"></script>

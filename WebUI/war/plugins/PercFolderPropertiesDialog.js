@@ -320,13 +320,13 @@
             //Calls the _saveCallBack to handle the server response on save.
             function _saveFolderProps(newWritePrincipals)  
             {
-                if ($.trim($("#perc-folder-name").val()).length < 1) {
+                if ($("#perc-folder-name").val().trim().length < 1) {
                     $("#perc-folder-name").val("");
                     $("#perc_folder_duplicate_error").text(I18N.message("perc.ui.folder.properties.dialog@Field Required"));
                     $("#perc_folder_duplicate_error").show();
                     return;
                 }
-                var folderName = $.trim($("#perc-folder-name").val());
+                var folderName = $("#perc-folder-name").val().trim();
                 folderName =  $.perc_textFilters.WINDOWS_FILE_NAME(folderName);
                 var folderProps =  {
                     FolderProperties : {
@@ -376,7 +376,7 @@
                 if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     // Save was successful close the dialog and invoke callback with no arguments
-                    var newName = $.trim($("#perc-folder-name").val());
+                    var newName = $("#perc-folder-name").val().trim();
                     dialog.remove();
                    if(folderSysPathName.match("^/Sites/") || folderSysPathName.match("^//Sites/")){
                        $.PercRedirectHandler.createRedirect(folderSysPathName,folderSysPath + "/" + newName,"folder")
@@ -401,10 +401,10 @@
                     if(code === "`FolderProperties#name")
                     {
                         var msg = I18N.message("perc.ui.folder.properties.dialog@Cannot Rename Folder") + $("#perc-folder-oldname").val() +
-                         I18N.message("perc.ui.folder.properties.dialog@To") + $.trim($("#perc-folder-name").val()) +
+                         I18N.message("perc.ui.folder.properties.dialog@To") + $("#perc-folder-name").val().trim() +
                          I18N.message("perc.ui.folder.properties.dialog@Object With Same Name");
-                        $("#perc_folder_duplicate_error").text(msg);
-                        $("#perc_folder_duplicate_error").show();
+                        $("#perc_folder_duplicate_error").text(msg)
+                        .show();
                     }
                     else if(code === "saveFolderProperties#reservedName")
                     {

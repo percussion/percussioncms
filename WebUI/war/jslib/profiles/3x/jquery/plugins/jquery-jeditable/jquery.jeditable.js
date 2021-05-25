@@ -126,7 +126,7 @@
             $(this).data('event.editable', settings.event);
 
             /* If element is empty add something clickable (if requested) */
-            if (!$.trim($(this).html())) {
+            if (!$(this).html().trim()) {
                 $(this).html(settings.placeholder);
             }
 
@@ -370,7 +370,7 @@
                                   $(self).html(value);
                                   self.editing = false;
                                   callback.apply(self, [self.innerHTML, settings]);
-                                  if (!$.trim($(self).html())) {
+                                  if (!$(self).html().trim()) {
                                       $(self).html(settings.placeholder);
                                   }
                               };
@@ -417,7 +417,7 @@
                                       }
                                       self.editing = false;
                                       callback.apply(self, [result, settings, submitdata]);
-                                      if (!$.trim($(self).html())) {
+                                      if (!$(self).html().trim()) {
                                           $(self).html(settings.placeholder);
                                       }
                                   },
@@ -449,7 +449,7 @@
                     if (false !== onreset.apply(form, [settings, self])) {
                         $(self).html(self.revert);
                         self.editing   = false;
-                        if (!$.trim($(self).html())) {
+                        if (!$(self).html().trim()) {
                             $(self).html(settings.placeholder);
                         }
                         /* Show tooltip again. */
@@ -700,7 +700,7 @@ var _supportInType = function (type) {
                             option = $('<option />').val(key).append(value);
 
                             // add the selected prop if it's the same as original or if the key is 'selected'
-                            if (json.selected === key || key === $.trim(original.revert)) {
+                            if (json.selected === key || key === original.revert.trim()) {
                                 $(option).prop('selected', 'selected');
                             }
 

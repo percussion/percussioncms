@@ -160,8 +160,8 @@
      */
     function assignNewAssetToWidget( dialogOptions )
     {
-        var assetName = $.trim( dialog.find( '#perc-saveas-shared-asset-dialog-name' ).val() );
-        var selectedPath = $.trim( dialog.find( '#perc-saveas-shared-asset-dialog-path' ).val() );
+        var assetName = dialog.find( '#perc-saveas-shared-asset-dialog-name' ).val().trim( );
+        var selectedPath =  dialog.find( '#perc-saveas-shared-asset-dialog-path' ).val().trim( );
         var errorLabelsSelectors = {
             'name': '#perc-saveas-shared-asset-dialog-name-error',
             'where': '#perc-saveas-shared-asset-dialog-where-error'

@@ -307,7 +307,7 @@
             TRUNCATELENGTH = 120;
         if (summary.length < TRUNCATELENGTH)
         {*/
-            if ($.trim(summary).length == 0)
+            if (summary.trim().length === 0)
                 return "&nbsp;";
             else
                 return summary;

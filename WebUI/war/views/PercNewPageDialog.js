@@ -191,7 +191,7 @@
                             debug: true,                    
                     submitHandler: function(form) {
                     var page_name = $(form).find('[name=page_name]').val( );
-                    page_name = $.trim(page_name);
+                    page_name = page_name.trim();
                     page_name = $.perc_textFilters.WINDOWS_FILE_NAME(page_name);
                     $(form).find('[name=page_name]').val(page_name);
                     $.perc_pathmanager.open_containing_folder( finderPath,

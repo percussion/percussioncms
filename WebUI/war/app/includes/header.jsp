@@ -58,17 +58,17 @@
 %>
 <script>
         var gIsSaaSEnvironment = <%=isSaaS%>;
-        $j(document).ready(function () {
-            $j('.perc-header #perc-help-about').on("click",function (e) {
-                $j.perc_utils.confirm_dialog({
+        $(document).ready(function () {
+            $('.perc-header #perc-help-about').on("click",function (e) {
+                $.perc_utils.confirm_dialog({
                     title: "About Percussion CMS",
                     type: "OK",
                     width: 400,
                     question: '<%= aboutMsg %>'
                 });
             });
-            $j('.perc-header #perc-changepw').on("click",function (e) {
-                $j.perc_ChangePwDialog.open();
+            $('.perc-header #perc-changepw').on("click",function (e) {
+                $.perc_ChangePwDialog.open();
             });
         });
 </script>

@@ -356,7 +356,7 @@
                     if (status)
                     {
                         percFinderListviewContainer.PercFinderListView(config, content);
-                        var newPath = $.trim($("#mcol-path-summary").val());
+                        var newPath = $("#mcol-path-summary").val().trim();
                         $.PercPathService.getPathItemForPath(newPath, function(status, content)
                         {
                             if (content.PathItem.type === "Folder" || content.PathItem.type === "FSFolder")
@@ -434,7 +434,7 @@
             if (currentFinderView === PERC_FINDER_SEARCH_RESULTS)
             {
                 // URL-encode the text to avoid jQuery bug:
-                var encodedSearchText = encodeURIComponent($.trim($("#perc-finder-item-search").val()));
+                var encodedSearchText = encodeURIComponent($("#perc-finder-item-search").val().trim());
                 var percFinderListviewContainer = $(".perc-finder").find('#perc-finder-listview');
                 percFinderListviewContainer.data('searchQuery', encodedSearchText);
                 percFinderListviewContainer.data('startIndex', 1);
@@ -595,8 +595,8 @@
                 $("#perc-finder-listing-Search").addClass('mcol-opened');
 
                 var percFinderListviewContainer = addListViewContainer();
-                var searchQuery = encodeURIComponent($.trim($("#perc-finder-item-search").val()));
-                if (searchQuery == null)
+                var searchQuery = encodeURIComponent($("#perc-finder-item-search").val().trim());
+                if (searchQuery === null)
                 {
                     // The original code appends the following message "unformatted (it lacks the
                     // columns of the search list view) and hardcoded":
@@ -1354,7 +1354,7 @@
         }
         else if (view === $.PercNavigationManager.VIEW_EDIT_ASSET && !contentId)
         {
-            var memento = $j.PercNavigationManager.getMemento();
+            var memento = $.PercNavigationManager.getMemento();
             if (memento.widgetId) {
                 $.PercNewAssetDialog.openViewer(memento.folderPath, memento.widgetId);
             }

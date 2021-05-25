@@ -28,7 +28,7 @@
 
         return {
             renderPublishStatusSection: renderPublishStatusSection
-        }
+        };
 
         function renderPublishStatusSection() {
 
@@ -46,11 +46,11 @@
         }
 
         function getPublishStatus() {
-            $j.PercPublisherService(false).getJobStatus(selectedSiteData.siteId, getPublishStatusCallback);
+            $.PercPublisherService(false).getJobStatus(selectedSiteData.siteId, getPublishStatusCallback);
         }
 
         function getPublishStatusCallback(status, result) {
-            if(status == true && result[1] == 'success') {
+            if(status === true && result[1] === 'success') {
                 sitePublishStatusDeferred.resolve(result[0]);
             }
         }
@@ -111,7 +111,7 @@
             startProcessRunningAlert();
             jobId = $(eventObj).data('perc-job-id');
             stopPublishingJobDeferred = $.Deferred();
-            $j.PercPublisherService(false).stopPubJob(jobId, stopPublishingJobCallback);
+            $.PercPublisherService(false).stopPubJob(jobId, stopPublishingJobCallback);
             stopPublishingJobDeferred.done(function(response) {
                 processAlert(response);
             });
