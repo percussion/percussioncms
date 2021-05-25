@@ -31,6 +31,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -48,6 +50,8 @@ import com.percussion.taxonomy.validation.UrlValidator;
  *
  */
 public class HibernateValueDAO extends HibernateDaoSupport implements ValueDAO {
+
+   private static final Logger log = LogManager.getLogger(HibernateValueDAO.class);
 
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -103,7 +107,8 @@ public class HibernateValueDAO extends HibernateDaoSupport implements ValueDAO {
          values = (Map<String, String>) this.getHibernateTemplate().execute(valueSetter);
          
       } catch (Exception e) {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       return values;
    }

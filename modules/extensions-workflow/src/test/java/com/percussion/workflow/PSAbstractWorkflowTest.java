@@ -25,6 +25,8 @@ package com.percussion.workflow;
 
 import com.percussion.data.PSSqlException;
 import com.percussion.util.PSPreparedStatement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -44,6 +46,9 @@ import java.util.Calendar;
 
 public abstract class PSAbstractWorkflowTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSAbstractWorkflowTest.class);
+
    /**
     * This is the executive method for running a test. It gets a database
     * connection and calls methods to parse the command line arguments, run the
@@ -106,10 +111,12 @@ public abstract class PSAbstractWorkflowTest
 
             }
             System.out.println("Stack Trace for original exception:");
-            throwable.printStackTrace();
+            log.error(throwable.getMessage());
+            log.debug(throwable.getMessage(), throwable);
          }
          System.out.println("Stack Trace for testing code:");
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), throwable);
       }
       finally
       {
@@ -310,12 +317,17 @@ public abstract class PSAbstractWorkflowTest
       {
          if(null != rs)
          {
-            try {rs.close();} catch (Throwable T) {T.printStackTrace();};
+            try {rs.close();} catch (Throwable T) {
+               log.error(T.getMessage());
+               log.debug(T.getMessage(), T);
+            };
          }
 
          if(null != stmt)
          {
-            try {stmt.close();} catch (Throwable T) {T.printStackTrace();};
+            try {stmt.close();} catch (Throwable T) {log.error(T.getMessage());
+               log.debug(T.getMessage(), T);
+            };
          }
 
       }

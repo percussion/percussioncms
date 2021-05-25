@@ -25,6 +25,9 @@
 package com.percussion.wrapper;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -36,6 +39,9 @@ import static com.percussion.wrapper.JettyStartUtils.info;
 import static org.eclipse.jetty.start.StartLog.error;
 
 public class MainProxy {
+
+    private static final Logger log = LogManager.getLogger(MainProxy.class);
+
     private static final String JETTY_START_MAIN_CLASS = "org.eclipse.jetty.start.Main";
 
     private Object main = null;
@@ -50,7 +56,8 @@ public class MainProxy {
             Constructor<?> constructor = cls.getConstructor();
             main = constructor.newInstance();
         } catch (MalformedURLException | ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
 
@@ -61,11 +68,14 @@ public class MainProxy {
             Method proceesCommand = main.getClass().getMethod("processCommandLine",args.getClass());
             return new StartArgsProxy(proceesCommand.invoke(main,new Object[]{args}));
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         return null;
     }
@@ -76,7 +86,8 @@ public class MainProxy {
             Method startCommand = main.getClass().getMethod("start",startArgs.getInstance().getClass());
             startCommand.invoke(main,new Object[]{startArgs.getInstance()});
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
 
 

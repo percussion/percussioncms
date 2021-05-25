@@ -36,6 +36,8 @@ import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCms;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -60,6 +62,9 @@ import java.util.List;
 public class PSExitAddEditAuthFlag implements
               IPSResultDocumentProcessor
 {
+
+    private static final Logger log = LogManager.getLogger(PSExitAddEditAuthFlag.class);
+
    /*
     * Implementation of the method required by the interface IPSExtension.
     */
@@ -210,7 +215,8 @@ public class PSExitAddEditAuthFlag implements
       catch(Throwable t)
       {
         System.err.println(t.getMessage());
-        t.printStackTrace();
+        log.error(t.getMessage());
+        log.debug(t.getMessage(), t);
       }
       finally
       {

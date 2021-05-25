@@ -27,6 +27,8 @@ import com.percussion.extension.*;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSPreparedStatement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.sql.Connection;
@@ -43,6 +45,9 @@ import java.util.Map;
  */
 public class PSExitNextNumberMaxPP implements IPSRequestPreProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSExitNextNumberMaxPP.class);
+
    /* Set the parameter count to not initialized */
    static private int ms_correctParamCount = NOT_INITIALIZED;
 
@@ -219,9 +224,15 @@ public class PSExitNextNumberMaxPP implements IPSRequestPreProcessor
       finally
       {
          if(null != rs)
-            try {rs.close();} catch (Throwable T) {T.printStackTrace();};
+            try {rs.close();} catch (Throwable T) {
+               log.error(T.getMessage());
+               log.debug(T.getMessage(), T);
+            };
          if(null != stmt)
-            try {stmt.close();} catch (Throwable T) {T.printStackTrace();};
+            try {stmt.close();} catch (Throwable T) {
+               log.error(T.getMessage());
+               log.debug(T.getMessage());
+            };
 
          try
          {

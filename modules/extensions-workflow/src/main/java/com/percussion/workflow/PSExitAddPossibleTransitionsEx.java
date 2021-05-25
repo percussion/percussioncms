@@ -44,6 +44,8 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCms;
 import com.percussion.utils.exceptions.PSORMException;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -62,6 +64,9 @@ import java.util.Map;
 public class PSExitAddPossibleTransitionsEx
    implements IPSResultDocumentProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSExitAddPossibleTransitionsEx.class);
+
    /**
     * This class is used to save and restore workflow state information 
     * during a single set of related requests.
@@ -458,7 +463,8 @@ public class PSExitAddPossibleTransitionsEx
          }
          catch (Exception e)
          {
-            e.printStackTrace();
+           log.error(e.getMessage());
+           log.debug(e.getMessage(), e);
             throw new PSExtensionProcessingException(m_fullExtensionName, e);
          }
       }

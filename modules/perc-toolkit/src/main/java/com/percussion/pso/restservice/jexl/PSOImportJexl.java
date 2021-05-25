@@ -29,8 +29,8 @@ import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.ccil.cowan.tagsoup.Parser;
 import org.dom4j.*;
 import org.dom4j.io.DocumentResult;
@@ -63,7 +63,7 @@ public class PSOImportJexl  extends PSJexlUtilBase implements IPSJexlExpression 
 	 * Logger for this class
 	 */
 
-	private static final Log log = LogFactory.getLog(PSOImportJexl.class);
+	private static final Logger log = LogManager.getLogger(PSOImportJexl.class);
 	private static final String HTTP_IFMODIFIED="If-Modified-Since";
 	private static final String HTTP_IFNONEMATCH="If-None-Match";
 	
@@ -135,7 +135,8 @@ public class PSOImportJexl  extends PSJexlUtilBase implements IPSJexlExpression 
 			doc=dr.getDocument();
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
+			log.debug(ex.getMessage(), ex);
 		} finally {
 			get.releaseConnection();
 		}
@@ -238,7 +239,8 @@ public class PSOImportJexl  extends PSJexlUtilBase implements IPSJexlExpression 
 				ret.setExistingItem(item);
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
+			log.debug(ex.getMessage(), ex);
 		} finally {
 			get.releaseConnection();
 		}
@@ -293,7 +295,8 @@ public class PSOImportJexl  extends PSJexlUtilBase implements IPSJexlExpression 
 		}
 		catch (DocumentException e)
 		{
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 
 		return document;
@@ -319,7 +322,8 @@ public class PSOImportJexl  extends PSJexlUtilBase implements IPSJexlExpression 
 		}
 		catch (DocumentException e)
 		{
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 
 		return document;
@@ -485,7 +489,8 @@ public class PSOImportJexl  extends PSJexlUtilBase implements IPSJexlExpression 
 				ret.setExistingItem(item);
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex.getMessage());
+			log.debug(ex.getMessage(), ex);
 		} finally {
 			
 			get.releaseConnection();
