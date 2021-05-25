@@ -41,14 +41,14 @@
  */
 (function($) {
     //Temp replacement for jquery browser method
-    const bowser = Bowser.getParser(window.navigator.userAgent);
+    const browserParser = bowser.getParser(window.navigator.userAgent);
   $.browser = {
-      "msie": bowser.isBrowser("ie",true),
-      "mozilla": bowser.isBrowser("firefox",true),
-      "chrome": bowser.isBrowser("chrome",true),
-      "safari": bowser.isBrowser("safari", true),
-      "opera": bowser.isBrowser("opera", true),
-      "edge": bowser.isBrowser("edge", true)
+      "msie": browserParser.isBrowser("ie",true),
+      "mozilla": browserParser.isBrowser("firefox",true),
+      "chrome": browserParser.isBrowser("chrome",true),
+      "safari": browserParser.isBrowser("safari", true),
+      "opera": browserParser.isBrowser("opera", true),
+      "edge": browserParser.isBrowser("edge", true)
   };
 
   $.perc_redirect = function(url, args)

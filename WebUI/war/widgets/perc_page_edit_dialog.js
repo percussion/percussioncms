@@ -28,8 +28,8 @@
  */
 (function($) {
     $.perc_page_edit_dialog = function(mcol, content_viewer, pageid) {
-        var dialogTitle="";
-        var dialogButtons="";
+        var dialogTitle;
+        var dialogButtons;
         var dialogHeight=0;
         var dialogWidth=0;
         var pageSysName = "";
@@ -129,14 +129,14 @@
         function _formatPageContent()
         {
             var iframeContainer = $("#edit-page-metadata-frame").contents();
-            $.perc_filterField($("#edit-page-metadata-frame").contents().find("[name=sys_title]"), $.perc_textFilters.URL);
-            $("#edit-page-metadata-frame").contents().find("#perc-content-edit-metadata-link").hide();
-            $("#edit-page-metadata-frame").contents().find("#perc-content-edit-metadata-panel .perc-content-edit-data").show();
-            if ($("#edit-page-metadata-frame").contents().find("#perc-content-edit-errors").length > 0) 
+            $.perc_filterField(iframeContainer.find("[name=sys_title]"), $.perc_textFilters.URL);
+            iframeContainer.find("#perc-content-edit-metadata-link").hide();
+            iframeContainer.find("#perc-content-edit-metadata-panel .perc-content-edit-data").show();
+            if (iframeContainer.find("#perc-content-edit-errors").length > 0)
             {
                 $("#edit-page-metadata-frame").contents().find("#perc-content-edit-errors label").html("Error saving the page meta-data.");
             }            
-            var cbAutoSummary = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-auto_generate_summary");
+            var cbAutoSummary = iframeContainer.find("#perc-content-edit-auto_generate_summary");
                var trAutoSummary = cbAutoSummary.closest('tr');
                cbAutoSummary.on("click",_handleAutoSummary);
                if(!pageSysName){
@@ -149,8 +149,8 @@
         function _addFieldGroups()
         {
             var iframeContainer = $("#edit-page-metadata-frame").contents();
-            iframeContainer.find("input[id='perc-content-edit-auto_generate_summary']").closest('div["type"]').attr("groupName", "perc-pageSum-container");
-            iframeContainer.find("input[id='perc-content-edit-page_noindex']").closest("div['type']").attr("groupName", "perc-seo-container").hide();
+            iframeContainer.find("input[id='perc-content-edit-auto_generate_summary']").closest('div[type]').attr("groupName", "perc-pageSum-container");
+            iframeContainer.find("input[id='perc-content-edit-page_noindex']").closest("div[type]").attr("groupName", "perc-seo-container").hide();
             iframeContainer.find("label[for='sys_contentpostdate']").before('<div id = "perc-date-override">Override Post Date</div><span class = "perc-date-override-msg">' +I18N.message("perc.ui.page.edit.dialog@Page Will Appear Published") + '<br /></span>');
             var fieldGroups = [{groupName:"perc-pageSum-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@Page Summary"), fieldNames:["resource_link_title","sys_title","page_summary", "sys_contentpostdate","sys_contentpostdatetz"]},
                                {groupName:"perc-seo-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@SEO"), fieldNames:["page_title","page_description","page_noindex"]},
@@ -158,19 +158,19 @@
                                {groupName:"perc-calendar-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@Calendar"), fieldNames:["page_calendar"]},
                                {groupName:"perc-headCode-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@Additional Code"), fieldNames:["additional_head_content","code_insert_after_body_start","code_insert_before_body_close"]}];
             $.each(fieldGroups, function(index){
-                var minmaxClass = index==0?"perc-items-minimizer":"perc-items-maximizer";
+                var minmaxClass = index===0?"perc-items-minimizer":"perc-items-maximizer";
                 var groupHtml = "<div id = '" + this.groupName + "' ><div class = 'perc-section-label' group='" + this.groupName + "'><span  class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel + "</div></div>";
-                var ceField = iframeContainer.find("[for='" + this.fieldNames[0] + "']").closest('div["type"]').before(groupHtml);
+                var ceField = iframeContainer.find("[for='" + this.fieldNames[0] + "']").closest('div[type]').before(groupHtml);
                 var fields = this.fieldNames;
                 var groupName = this.groupName;
-                for(var i=0;i<fields.length;i++)
+                for(let i=0;i<fields.length;i++)
                 {
-                    var fieldDiv = iframeContainer.find("[for='" + fields[i] + "']").closest('div["type"]').attr("groupName", groupName);
+                    var fieldDiv = iframeContainer.find("[for='" + fields[i] + "']").closest('div[type]').attr("groupName", groupName);
                     if(index!==0)
                         fieldDiv.hide();
                 }
             });
-            var FileNameField = iframeContainer.find("label[for='sys_title']").closest('div["type"]');
+            var FileNameField = iframeContainer.find("label[for='sys_title']").closest('div[type]');
             iframeContainer.find("#perc-pageSum-container").after(FileNameField);
             
             //bind collapsible event
@@ -228,7 +228,6 @@
             if ($("#edit-page-metadata-frame").contents().find("#perc-content-edit-errors").length > 0) 
             {
                 $.unblockUI();
-                return;
             }
             else
             {
@@ -247,7 +246,7 @@
                     $.PercPageService.savePageMetadata(pageid, function() {
                         $.PercPathService.getPathItemById($.PercNavigationManager.getId(), 
                                 function(status, result, errorCode){
-                                   if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                                   if(status === $.PercServiceUtils.STATUS_SUCCESS)
                                    {
                                        $.PercNavigationManager.setName(result.PathItem.name);
 
@@ -276,8 +275,8 @@
                                    else
                                    {
                                       $.unblockUI();
-                                        var msg = "";
-                                        if (errorCode == "cannot.find.item")
+                                        var msg;
+                                        if (errorCode === "cannot.find.item")
                                         {
                                             msg = I18N.message( 'perc.ui.common.error@Content Deleted' );
                                         }
@@ -299,8 +298,9 @@
          */
         function _saveMetadata()
         {
-                var fieldValue = $.perc_textFilters.WINDOWS_FILE_NAME($("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val().trim());
-                $("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val(fieldValue);
+                var iframeContainer = $("#edit-page-metadata-frame").contents();
+                var fieldValue = $.perc_textFilters.WINDOWS_FILE_NAME(iframeContainer.find("#perc-content-edit-sys_title").val().trim());
+                iframeContainer.find("#perc-content-edit-sys_title").val(fieldValue);
                 
             $.PercBlockUI();
              //call all the pre submit handlers if nothing returns flase, submit the form.
