@@ -79,7 +79,7 @@
                  * The valid types are determined in the file(s) that call this method. 
                  */
                  click: function(){
-                    if(settings.selectedItemValidator && $.isFunction(settings.selectedItemValidator))
+                    if(settings.selectedItemValidator && typeof settings.selectedItemValidator === "function")
                     {
                         var errMsg = settings.selectedItemValidator(selectedItem);
                         if(errMsg != null){

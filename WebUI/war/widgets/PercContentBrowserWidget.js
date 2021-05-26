@@ -83,7 +83,7 @@
         //If the type filter is a list, make it into a function which tests
         //for membership in that list. If a function has been passed in,
         //use that directly.
-        if( !$.isFunction( type_filter ) )
+        if( typeof type_filter !== "function" )
         {
             type_filter = function(x)
             {

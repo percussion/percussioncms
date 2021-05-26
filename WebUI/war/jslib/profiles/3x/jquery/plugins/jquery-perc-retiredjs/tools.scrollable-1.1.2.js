@@ -69,7 +69,7 @@
         
         // bind all callbacks from configuration
         $.each(conf, function(name, fn) {
-            if ($.isFunction(fn)) { $self.bind(name, fn); }
+            if (typeof fn === "function") { $self.bind(name, fn); }
         });
         
         if (wrap.length > 1) { wrap = $(conf.items, root); }
@@ -151,7 +151,7 @@
                 if (index === i) { return self; }               
                 
                 // function given as second argument
-                if ($.isFunction(time)) {
+                if (typeof time === "function") {
                     fn = time;
                 }
 
@@ -170,7 +170,7 @@
                 if (e.isDefaultPrevented()) { return self; }                
                 
                 // get the (possibly altered) speed
-                if (time === undefined || $.isFunction(time)) { time = conf.speed; }
+                if (time === undefined || typeof time === "function") { time = conf.speed; }
                 
                 function callback() {
                     if (fn) { fn.call(self, i); }

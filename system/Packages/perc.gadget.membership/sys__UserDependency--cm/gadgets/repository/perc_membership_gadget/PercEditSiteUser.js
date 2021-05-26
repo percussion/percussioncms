@@ -30,9 +30,7 @@
 
 $.PercEditSiteUser = function(site, userData, successCalBack)
 {
-    var userData = userData;
 	var dialogHTML = createDialogHtml();
-    var successCalBack = successCalBack;
     var siteName  = site;
 
     var dialog = window.parent.jQuery(dialogHTML).perc_dialog( {
@@ -64,7 +62,7 @@ $.PercEditSiteUser = function(site, userData, successCalBack)
         var groups = window.parent.jQuery("#perc_user_groups").val();
 		var userObj = {"UserGroup":{"email":userData.account, "groups":groups}};
 
-        if(siteName==""){
+        if(siteName===""){
             var sites = [];
             $(".perc-listing-type-site", window.parent.document).each(function() {
                 sites.push($(this).find("div.perc-finder-item-name").html());
@@ -72,7 +70,7 @@ $.PercEditSiteUser = function(site, userData, successCalBack)
             siteName = sites[0];
         }
         $.PercMembershipService.saveUser(siteName,userObj, function(status, data){
-	        if(status == $.PercServiceUtils.STATUS_SUCCESS){
+	        if(status === $.PercServiceUtils.STATUS_SUCCESS){
 				dialog.remove();
                 successCalBack(data);
 	        }
@@ -98,12 +96,12 @@ $.PercEditSiteUser = function(site, userData, successCalBack)
 								'<div id="perc_groups">' +
 									'<input type="text" id="perc_user_groups" class = "perc_dialog_input perc_dialog_field" name="perc_user_groups" maxlength="4000" value="' + userData.groups +'"/><br />' +
                                     I18N.message("perc.ui.editSectionDialog.label@Please use a comma to separate each group name") +
-								'</div>';
+								'</div>' +
 							'</div>';
 		return $(dialogHtml);
 		
 	}
 	
-}
+};
 
 })(jQuery); 

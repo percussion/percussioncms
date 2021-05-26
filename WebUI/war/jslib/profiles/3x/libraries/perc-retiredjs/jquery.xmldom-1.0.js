@@ -33,8 +33,8 @@
 				throw('Unable to parse XML');
 			}
 		} catch( e ) {
-			var msg = ( e.name == undefined ? e : e.name + ': ' + e.message );
-			if ( $.isFunction( onErrorFn ) ) {
+			var msg = ( e.name === undefined ? e : e.name + ': ' + e.message );
+			if ( typeof onErrorFn === "function") {
 				onErrorFn( msg );
 			} else {
 				$(document).trigger('xmlParseError', [ msg ]);

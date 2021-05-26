@@ -51,6 +51,13 @@
       "edge": browserParser.isBrowser("edge", true)
   };
 
+  $.type = function _type(item) {
+          const reTypeOf = /(?:^\[object\s(.*?)\]$)/;
+          return Object.prototype.toString.call(item)
+              .replace(reTypeOf, '$1')
+              .toLowerCase();
+  };
+
   $.perc_redirect = function(url, args)
   {    
      // Find debug on query string
@@ -538,4 +545,3 @@
  
  });
  })(jQuery);
-

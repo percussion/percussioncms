@@ -49,7 +49,7 @@
                         try {
                             if (isStr(fn)) // 'name' of a function
                                 fn = eval(fn);
-                            if ($.isFunction(fn))
+                            if (typeof fn === "function")
                                 g(fn)(Instance);
                         } catch (ex) {
                         }
@@ -1188,7 +1188,7 @@
                                     fn = eval(fn);
                             }
                             // execute the callback, if exists
-                            if ($.isFunction(fn)) {
+                            if (typeof fn === "function") {
                                 if (args.length)
                                     retVal = g(fn)(args[1]); // pass the argument parsed from 'list'
                                 else if (hasPane)
@@ -5911,7 +5911,7 @@ jQuery.cookie = function (name, value, options) {
             } else if (sm.enabled) {
                 // update the options from cookie or callback
                 // if options is a function, call it to get stateData
-                if ($.isFunction(sm.autoLoad)) {
+                if (typeof sm.autoLoad === "function") {
                     var d = {};
                     try {
                         d = sm.autoLoad(inst, inst.state, inst.options, inst.options.name || ''); // try to get data from fn
@@ -5928,7 +5928,7 @@ jQuery.cookie = function (name, value, options) {
             var sm = inst.options.stateManagement;
             if (sm.enabled && sm.autoSave) {
                 // if options is a function, call it to save the stateData
-                if ($.isFunction(sm.autoSave)) {
+                if (typeof sm.autoSave === "function") {
                     try {
                         sm.autoSave(inst, inst.state, inst.options, inst.options.name || ''); // try to get data from fn
                     } catch (e) {

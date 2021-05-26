@@ -143,7 +143,7 @@
         //If the type filter is a list, make it into a function which tests
         //for membership in that list. If a function has been passed in,
         //use that directly.
-        if( !$.isFunction( type_filter ) )
+        if(  typeof  type_filter !== "function" )
         {
             type_filter = function(x)
             {
@@ -192,7 +192,7 @@
     
         var root_direc = top.find( '#perc-saveas-dialog-direc' );
     
-        var path_select = top.find( '#perc-saveas-dialog-location' ).change(function()
+        var path_select = top.find( '#perc-saveas-dialog-location' ).on("change",function()
         {
             //Navigate to the path selected in the drop-down.
             var new_path = this.value.split('/');

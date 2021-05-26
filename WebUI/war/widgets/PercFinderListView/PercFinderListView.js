@@ -33,8 +33,9 @@
     {
         var self = $(this);
         var serviceData;
-        if($.isFunction(config.folderDblClickCallback))
+        if(typeof config.folderDblClickCallback === "function") {
             _folderDblClickCallback = config.folderDblClickCallback;
+        }
         if (serviceContent.PagedItemList !== undefined)
         {
             serviceData = $.perc_utils.convertCXFArray(serviceContent.PagedItemList.childrenInPage);

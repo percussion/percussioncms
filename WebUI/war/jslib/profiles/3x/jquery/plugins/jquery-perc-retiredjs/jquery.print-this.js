@@ -67,7 +67,7 @@
             // remove inline styles
             if (opt.removeInline) {
                 // $.removeAttr available jQuery 1.7+
-                if ($.isFunction($.removeAttr)) {
+                if (typeof $.removeAttr === "function") {
                     $doc.find("body *").removeAttr("style");
                 } else {
                     $doc.find("body *").attr("style", "");

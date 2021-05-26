@@ -65,7 +65,7 @@
             for(k=0;k<colsInfo.length;k++){
                 var name = colsInfo[k].name;
                 var dataUpdater = colsInfo[k].dataUpdater;
-                dataRow.push($.isFunction(dataUpdater)?dataUpdater(name, row):row[name]);
+                dataRow.push(typeof dataUpdater === "function" ?dataUpdater(name, row):row[name]);
             }
             var percContent = {"rowContent" : dataRow, "rowData" : row };
             percData.push(percContent);

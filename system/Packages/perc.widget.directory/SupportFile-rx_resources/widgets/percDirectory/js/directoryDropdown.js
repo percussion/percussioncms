@@ -110,8 +110,8 @@
             // must be modified to determine which text to use for the selector.
             container.append('<option value="-1">Search All Departments</option></br>');
             
-            for (var i = 0; i < orgNodes.length; i++) {
-                if (orgNodes[i].nodeType == 1) {
+            for (let i = 0; i < orgNodes.length; i++) {
+                if (orgNodes[i].nodeType === 1) {
                     const orgName = orgNodes[i].children[0].textContent;
                     const orgId = orgNodes[i].children[1].textContent;
                     container.append('<option value=' + orgId + '>' + orgName + '</option>');
@@ -138,7 +138,7 @@
          * Updates the department drop down with only departments
          * from the respective organization that has been selected.
          */
-        orgContainerSelect.change(function() {
+        orgContainerSelect.on("change",function() {
             isOrgSelectDirty = true;
             const selectedValue = orgContainerSelect.val();
 
@@ -153,7 +153,7 @@
          * Updates the organization drop down with the respective
          * parent organization.
          */
-        deptContainerSelect.change(function() {
+        deptContainerSelect.on("change",function() {
             isDeptSelectDirty = true;
             const selectedValue = deptContainerSelect.val();
             if (selectedValue !== null) {

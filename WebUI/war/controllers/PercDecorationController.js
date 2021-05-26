@@ -231,7 +231,7 @@
 
              //If the img is function then the gets the img src by calling it by passing the elem, otherwise treats it 
              //as the img src.
-             var iconSrc = $.isFunction(item.img)?item.img(elem):item.img;
+             var iconSrc = typeof item.img === "function" ?item.img(elem):item.img;
 
              // if the icon is null then do not add the menu to the item
              if(iconSrc === null)
@@ -239,7 +239,7 @@
              
              var isInactive = iconSrc.indexOf("Inactive", iconSrc.length - "Inactive".length) !== -1;     
 
-             var tooltip = $.isFunction(item.tooltip)?item.tooltip(elem):item.tooltip;
+             var tooltip = typeof item.tooltip === "function" ?item.tooltip(elem):item.tooltip;
              var normalImg = iconSrc + ".png"; 
              var overImg = iconSrc + "Over.png"; 
              var icon = $("<img src='"+ normalImg +"'/>")

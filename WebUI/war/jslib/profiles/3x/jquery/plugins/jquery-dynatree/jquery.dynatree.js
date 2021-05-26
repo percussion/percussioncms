@@ -672,11 +672,9 @@ DynaTreeNode.prototype = {
 	},
 
 	focus: function() {
-		// TODO: check, if we already have focus
-//		this.tree.logDebug("dtnode.focus(): %o", this);
 		this.makeVisible();
 		try {
-			$(this.span).find(">a").focus();
+			$(this.span).find(">a").trigger("focus");
 		} catch(e) { }
 	},
 
@@ -2089,7 +2087,7 @@ DynaTree.prototype = {
 
 		// bind event handlers
 		this.logDebug("Dynatree._load(): bind events...");
-		this.$widget.on();
+		this.$widget.bind();
 
 		// --- Post-load processing
 		this.logDebug("Dynatree._load(): postInit...");
@@ -2731,7 +2729,7 @@ $.widget("ui.dynatree", {
 
 	bind: function() {
 		// Prevent duplicate binding
-		this.off();
+		this.unbind();
 
 		var eventNames = "click.dynatree dblclick.dynatree";
 		if( this.options.keyboard ){

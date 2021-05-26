@@ -31,7 +31,7 @@
     $(document).ready(function(){
 
       //listens for dropdown changes and in addition to disabling unrelated inputs, will also uncheck enable option for disabled rows
-      $("#perc-social-button-type").change(function(){
+      $("#perc-social-button-type").on("change",function(){
 
         if( $(this).val() === 'page') {
           $(".perc-social-page-link").attr('disabled', false);

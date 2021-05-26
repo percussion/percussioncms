@@ -1313,7 +1313,7 @@ describe("jQuery matcher", function () {
     })
 
     it('should not fail when events is empty', function () {
-      $('#clickme').change(function () { })
+      $('#clickme').on("change",function () { })
       expect($('#clickme')).not.toHandle('click')
     })
 

@@ -242,7 +242,7 @@
 
                     var loaddata = {};
                     loaddata[settings.id] = self.id;
-                    if ($.isFunction(settings.loaddata)) {
+                    if (typeof settings.loaddata === "function") {
                         $.extend(loaddata, settings.loaddata.apply(self, [self.revert, settings]));
                     } else {
                         $.extend(loaddata, settings.loaddata);
@@ -261,7 +261,7 @@
                     });
                 } else if (settings.data) {
                     input_content = settings.data;
-                    if ($.isFunction(settings.data)) {
+                    if (typeof settings.data === "function") {
                         input_content = settings.data.apply(self, [self.revert, settings]);
                     }
                 } else {
@@ -281,7 +281,7 @@
                 buttons.apply(form, [settings, self]);
 
                 /* Add created form to self. */
-                if (settings.showfn && $.isFunction(settings.showfn)) {
+                if (settings.showfn && typeof settings.showfn === "function") {
                     form.hide();
                 }
 
@@ -291,7 +291,7 @@
                 $(self).append(form);
 
                 // execute the showfn
-                if (settings.showfn && $.isFunction(settings.showfn)) {
+                if (settings.showfn && typeof settings.showfn === "function") {
                     settings.showfn(form);
                 }
 
@@ -299,7 +299,7 @@
                 plugin.apply(form, [settings, self]);
 
                 /* Focus to first visible form element. */
-                form.find(':input:visible:enabled:first').focus();
+                form.find(':input:visible:enabled:first').trigger("focus");
 
                 /* Highlight input contents when requested. */
                 if (settings.select) {
@@ -307,7 +307,7 @@
                 }
 
                 /* discard changes if pressing esc */
-                $(this).keydown(function(e) {
+                $(this).on("keydown",function(e) {
                     if (e.which === 27) {
                         e.preventDefault();
                         reset.apply(form, [settings, self]);
@@ -317,21 +317,21 @@
                 /* Discard, submit or nothing with changes when clicking outside. */
                 /* Do nothing is usable when navigating with tab. */
                 if ('cancel' === settings.onblur) {
-                    input.blur(function(e) {
+                    input.on("blur",function(e) {
                         /* Prevent canceling if submit was clicked. */
                         t = self.setTimeout(function() {
                             reset.apply(form, [settings, self]);
                         }, 500);
                     });
                 } else if ('submit' === settings.onblur) {
-                    input.blur(function(e) {
+                    input.on("blur",function(e) {
                         /* Prevent double submit if submit was clicked. */
                         t = self.setTimeout(function() {
                             form.submit();
                         }, 200);
                     });
-                } else if ($.isFunction(settings.onblur)) {
-                    input.blur(function(e) {
+                } else if (typeof settings.onblur === "function") {
+                    input.on("blur",function(e) {
                         // reset the form if the onblur function returns false
                         if (false === settings.onblur.apply(self, [input.val(), settings, form])) {
                             reset.apply(form, [settings, self]);
@@ -364,7 +364,7 @@
                         if (false !== submit.apply(form, [settings, self])) {
 
                           /* Check if given target is function */
-                          if ($.isFunction(settings.target)) {
+                          if (typeof settings.target === "function") {
                              /* Callback function to handle the target reponse */
                               var responseHandler = function(value) {
                                   $(self).html(value);
@@ -387,7 +387,7 @@
                               submitdata[settings.name] = input.val();
                               submitdata[settings.id] = self.id;
                               /* Add extra data to be POST:ed. */
-                              if ($.isFunction(settings.submitdata)) {
+                              if (typeof settings.submitdata === "function") {
                                   $.extend(submitdata, settings.submitdata.apply(self, [self.revert, settings, submitdata]));
                               } else {
                                   $.extend(submitdata, settings.submitdata);
@@ -582,7 +582,7 @@ var _supportInType = function (type) {
 
                         $(cancel).click(function(event) {
                             var reset;
-                            if ($.isFunction($.editable.types[settings.type].reset)) {
+                            if (typeof ($.editable.types[settings.type].reset) === "function") {
                                 reset = $.editable.types[settings.type].reset;
                             } else {
                                 reset = $.editable.types.defaults.reset;
@@ -711,7 +711,7 @@ var _supportInType = function (type) {
                     // submit on change if no submit button defined
                     if (!settings.submit) {
                         var form = this;
-                        $(this).find('select').change(function() {
+                        $(this).find('select').on("change",function() {
                             form.submit();
                         });
                     }

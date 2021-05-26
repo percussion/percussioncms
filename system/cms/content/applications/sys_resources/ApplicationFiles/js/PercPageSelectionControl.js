@@ -27,13 +27,13 @@
 
                 // Save the page content id to data attribute and trigger a change event for
                 // Other scripts that might be listening for an event change
-                $("#" + pageInputName ).attr("data-perc-page-content-id",pathItem.id.split(/[- ]+/).pop());
-                $("#" + pageInputName ).change();
+                $("#" + pageInputName ).attr("data-perc-page-content-id",pathItem.id.split(/[- ]+/).pop())
+                    .trigger("change");
 
             };
 
             var validator = function(pathItem){
-                return pathItem && pathItem.type == "percPage"?null:"Please select a page.";
+                return pathItem && pathItem.type === "percPage"?null:"Please select a page.";
             };
             var pathSelectionOptions = {
                 okCallback: updatePageData,

@@ -668,7 +668,7 @@
     Axis.prototype.constructor = Axis;
     
     Axis.prototype.init = function() {
-        if ($.isFunction(this.renderer)) {
+        if (typeof this.renderer === "function") {
             this.renderer = new this.renderer();  
         }
         // set the axis name
@@ -1057,7 +1057,7 @@
     };
     
     Legend.prototype.init = function() {
-        if ($.isFunction(this.renderer)) {
+        if (typeof this.renderer === "function") {
             this.renderer = new this.renderer();  
         }
         this.renderer.init.call(this, this.rendererOptions);
@@ -1122,7 +1122,7 @@
     Title.prototype.constructor = Title;
     
     Title.prototype.init = function() {
-        if ($.isFunction(this.renderer)) {
+        if (typeof this.renderer === "function") {
             this.renderer = new this.renderer();  
         }
         this.renderer.init.call(this, this.rendererOptions);
@@ -1357,7 +1357,7 @@
             var comp = $.jqplot.getColorComponents(comp);
             this.fillColor = 'rgba('+comp[0]+','+comp[1]+','+comp[2]+','+this.fillAlpha+')';
         }
-        if ($.isFunction(this.renderer)) {
+        if (typeof this.renderer==="function") {
             this.renderer = new this.renderer();  
         }
         this.renderer.init.call(this, this.rendererOptions, plot);
@@ -1595,7 +1595,7 @@
     Grid.prototype.constructor = Grid;
     
     Grid.prototype.init = function() {
-        if ($.isFunction(this.renderer)) {
+        if (this.renderer === "function") {
             this.renderer = new this.renderer();  
         }
         this.renderer.init.call(this, this.rendererOptions);
@@ -2028,7 +2028,7 @@
                 throw new Error("Canvas dimension not set");
             }
             
-            if (options.dataRenderer && $.isFunction(options.dataRenderer)) {
+            if (options.dataRenderer && typeof options.dataRenderer === "function") {
                 if (options.dataRendererOptions) {
                     this.dataRendererOptions = options.dataRendererOptions;
                 }
@@ -2252,7 +2252,7 @@
             }
             
             if (data) {
-                if (options.dataRenderer && $.isFunction(options.dataRenderer)) {
+                if (options.dataRenderer && typeof options.dataRenderer==="funtion") {
                     if (options.dataRendererOptions) {
                         this.dataRendererOptions = options.dataRendererOptions;
                     }
@@ -11228,7 +11228,7 @@
         }
 
         // catch (effect, callback)
-        if ( $.isFunction( options ) ) {
+        if ( typeof  options === "function" ) {
             callback = options;
             speed = null;
             options = {};
@@ -11242,7 +11242,7 @@
         }
 
         // catch (effect, options, callback)
-        if ( $.isFunction( speed ) ) {
+        if ( typeof speed === "function" ) {
             callback = speed;
             speed = null;
         }
@@ -11308,10 +11308,10 @@
                     mode = args.mode;
 
                 function done() {
-                    if ( $.isFunction( complete ) ) {
+                    if ( typeof complete === "function" ) {
                         complete.call( elem[0] );
                     }
-                    if ( $.isFunction( next ) ) {
+                    if ( typeof  next === "function" ) {
                         next();
                     }
                 }

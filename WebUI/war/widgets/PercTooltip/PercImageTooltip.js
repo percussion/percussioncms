@@ -50,11 +50,10 @@
         }
         return textString;
     }
-    //console.assert(template('foo{{bar}}', ['bar'], {bar: 'd'}) === 'food');
 
     $.fn.PercImageTooltip = function(config) {
         var _clickCallback;
-        if (config != null && $.isFunction(config.clickCallback))
+        if (config != null && typeof config.clickCallback === "function")
             _clickCallback = config.clickCallback;
         else
             _clickCallback = function(){};

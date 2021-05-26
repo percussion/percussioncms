@@ -1,7 +1,7 @@
  jQuery(function($){
      
      //Remove white space (if any) from end of Name value    
-    $("#perc-content-edit-sys_title, #perc-content-edit-displaytitle").change( function() {
+    $("#perc-content-edit-sys_title, #perc-content-edit-displaytitle").on("change", function() {
         var updateTitleValue = $(this).val();
         updateTitleValue = updateTitleValue.trim();
         $(this).val(updateTitleValue);

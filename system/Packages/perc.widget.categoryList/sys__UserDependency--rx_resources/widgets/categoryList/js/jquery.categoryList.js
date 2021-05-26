@@ -111,13 +111,13 @@
 
         var queryOp=" where ";
 
-        if (p_site_path!=null && p_site_path!=""){
+        if (p_site_path!=null && p_site_path!==""){
 
             //Save site_path
             $('[name="site_path"]').val(p_site_path);
 
             // CM-43 add the trailing slash
-            if(p_site_path.substr(p_site_path.length - 1) != '/')
+            if(p_site_path.substr(p_site_path.length - 1) !== '/')
             {
                 p_query += queryOp + "jcr:path like '" + p_site_path + "/%'";
             }
@@ -182,7 +182,6 @@
             */
             function showPageTemplates()
             {
-                ;   
                 //make an array from the comma delimited options string
                 var pageTemplatesOptionsArray = [];
         
@@ -338,27 +337,27 @@
              */
             function addDelToDateControls()
             {
-                $('#display_end_date').keydown(function(evt){
+                $('#display_end_date').on("keydown",function(evt){
                     var rawCode = evt.charCode ? evt.charCode : evt.which;
-                    if(rawCode==46 || rawCode==8)
+                    if(rawCode===46 || rawCode===8)
                     {
                         $('#display_end_date').val("");
                         $('[name="end_date"]').val("");
                         buildQuery();
-                    } else if(rawCode==9) {
+                    } else if(rawCode===9) {
 			return true;
 		    } else {
 			return false;
 		    }
                 });
-                $('#display_start_date').keydown(function(evt){
+                $('#display_start_date').on("keydown",function(evt){
                     var rawCode = evt.charCode ? evt.charCode : evt.which;
-                    if(rawCode==46 || rawCode==8)
+                    if(rawCode===46 || rawCode===8)
                     {
                         $('#display_start_date').val("");
                         $('[name="start_date"]').val("");
                         buildQuery();
-                    } else if(rawCode==9) {
+                    } else if(rawCode===9) {
 			return true;
                     } else {
 			return false;

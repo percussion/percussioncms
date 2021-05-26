@@ -77,17 +77,17 @@
        
        container.find("#perc-search-criteria-panel-content-select-filters").on("click",function()
        {
-            if ($.isFunction(config.selectFiltersCallback))
+            if (typeof config.selectFiltersCallback === "function")
             {
                 config.selectFiltersCallback();
             }
        });
        
-       if ($.isFunction(config.refreshSearchCallback))
+       if (typeof config.refreshSearchCallback === "function")
        {
            container.find("#perc-search-criteria-panel-content-refresh-search").on("click",function()
            {
-                if ($.isFunction(config.refreshSearchCallback))
+                if ( typeof config.refreshSearchCallback === "function")
                 {
                     config.refreshSearchCallback();
                 }

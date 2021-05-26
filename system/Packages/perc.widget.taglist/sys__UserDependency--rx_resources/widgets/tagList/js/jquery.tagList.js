@@ -210,10 +210,10 @@
                      for(i=0; i<tpls.length; i++)
                      {
                          var tpl = tpls[i];
-                         var checked = $.inArray(tpl.id,pageTemplatesOptionsArray) == -1?"":" checked ='true' ";
+                         var checked = $.inArray(tpl.id,pageTemplatesOptionsArray) === -1?"":" checked ='true' ";
                          $("#perc-pagetemplates-container").append($("<div class='perc-pagetemplates-entry'><input type='checkbox' class='perc-pagetemplates-chkbox'" + checked + " value='" + tpl.id + "'></input><span title='"+ tpl.name +"'>" + tpl.name + "</span></div>"));
                      }
-                     $(".perc-pagetemplates-chkbox").change(function(){    
+                     $(".perc-pagetemplates-chkbox").on("change",function(){
                          var pts = getPageTemplates();
                          pts = pts?pts:"";
                          $('[name="page_templates_list"]').val(pts);

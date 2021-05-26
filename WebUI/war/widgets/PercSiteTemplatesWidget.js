@@ -405,7 +405,7 @@
                                     });
                             }
                             loadTemplatePages(templateId, 1);
-                            if(ui.helper.dropCallback && $.isFunction(ui.helper.dropCallback))
+                            if(ui.helper.dropCallback && typeof ui.helper.dropCallback === "function")
                             {
                                 ui.helper.dropCallback();
                             }
