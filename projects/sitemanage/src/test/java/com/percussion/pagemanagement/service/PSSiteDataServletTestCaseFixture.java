@@ -39,8 +39,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.percussion.share.service.exception.PSDataServiceException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.service.IPSAssetService;
@@ -65,6 +63,8 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.webservices.security.IPSSecurityWs;
 import com.percussion.webservices.security.PSSecurityWsLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSSiteDataServletTestCaseFixture
 {
@@ -169,7 +169,8 @@ public class PSSiteDataServletTestCaseFixture
 	        
 	        return siteSummary;
     	} catch(Exception e) {
-    		e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
     	}
     	
     	return null;
@@ -486,7 +487,7 @@ public class PSSiteDataServletTestCaseFixture
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSiteDataServletTestCaseFixture.class);
+    private static final Logger log = LogManager.getLogger(PSSiteDataServletTestCaseFixture.class);
     
 
 }

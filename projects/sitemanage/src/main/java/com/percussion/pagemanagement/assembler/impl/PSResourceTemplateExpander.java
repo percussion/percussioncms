@@ -135,7 +135,8 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
             PSResourceLocation loc = assemblyItemBridge.getResourceLocation(contentListItem, getResourceId(parameters));
             contentListItem.setLocation(loc.getFilePath());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
     
