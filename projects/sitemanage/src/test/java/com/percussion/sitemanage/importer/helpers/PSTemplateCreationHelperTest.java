@@ -53,6 +53,8 @@ import java.util.List;
 
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 /**
@@ -62,6 +64,8 @@ import org.junit.experimental.categories.Category;
 @Category(IntegrationTest.class)
 public class PSTemplateCreationHelperTest extends ServletTestCase
 {
+
+    private static final Logger log = LogManager.getLogger(PSTemplateCreationHelperTest.class);
 
     @Override
     protected void setUp() throws Exception
@@ -293,11 +297,14 @@ public class PSTemplateCreationHelperTest extends ServletTestCase
         {
             fail();
         } catch (IPSPageService.PSPageException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         } catch (PSTemplateImportException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         } catch (PSDataServiceException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
     
