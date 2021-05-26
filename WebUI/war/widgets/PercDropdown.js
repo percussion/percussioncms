@@ -168,11 +168,11 @@
                 .css("cursor","pointer")
                 .addClass(arrowClass)
                 .addClass('btn btn-primary perc-workflow-split-button-right')
-                .hover(
+                .on("mouseenter",
                     function(){
                         $(this)
                             .css("overflow","visible");
-                    },
+                    }).on("mouseleave",
                     function(){
                         $(this)
                             .css("overflow","visible");

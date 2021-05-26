@@ -132,10 +132,10 @@
                     menuItems.hide();
                     callback(data);
                 })
-                .hover(function() {
+                .on("mouseenter",function() {
                     let menuItem = $(this);
                     menuItem.addClass("perc-simplemenu-menuitem-hover");
-                },function() {
+                }).on("mouseleave",function() {
                     let menuItem = $(this);
                     menuItem.removeClass("perc-simplemenu-menuitem-hover");
                 });
@@ -153,19 +153,19 @@
         
         $menuTitle
             .on("click",menuTitleClick)
-            .hover(
+            .on("mouseenter",(
                 function() {
                     var menuItem = $(this);
                     menuItem.addClass("perc-simplemenu-title-hover");
-                },
+                }).on("mouseleave",
                 function() {
                     var menuItem = $(this);
                     menuItem.removeClass("perc-simplemenu-title-hover");
-                }
-            );
+                });
+
         // hide all menus if you exit the containing document
         // useful if used inside an iframe like a gadget
-        $(document).hover(null,
+        $(document).on("mouseenter",null).on("mouseleave",
             function() {
                 hideAllMenus();
             }
