@@ -49,7 +49,13 @@
         <link rel="stylesheet" type="text/css" href="/cm/css/perc_default.css" />
 
         <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
-
+        <script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"</script>
+        <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"</script>
+        <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"></script>
+        <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js" ></script>
+        <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js" ></script>
+        <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
+        <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js" ></script>
         <script  src="/cm/plugins/perc_utils.js" ></script>
         <script  src="/cm/cui/components/twitter-bootstrap-3.0.0/js/collapse.js"></script>
         <script  src="/cm/services/PercUtilService.js"></script>

@@ -54,7 +54,7 @@
 			}
 			findControls('soln_list_js').hide();
 			doToggle();
-			$('#soln_list_slot_select').change(function() {
+			$('#soln_list_slot_select').on("change",function() {
 				doToggle();
 			});
 			

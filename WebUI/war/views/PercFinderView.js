@@ -150,7 +150,7 @@
             }
             if (evt.keyCode === 27 || evt.keyCode === 9)
             {
-                $("#perc-finder-item-search").css('color', '#CCCCCC').css('background-color', '#41434F').blur();
+                $("#perc-finder-item-search").css('color', '#CCCCCC').css('background-color', '#41434F').trigger("blur");
                 evt.preventDefault();
                 evt.stopPropagation();
             }

@@ -35,7 +35,7 @@
     var perc_filters     = percJQuery.perc_textFilters;
     
     var isLargeColumn = true;       // if gadget is on the right side (large column)
-    var statusTable = undefined;
+    var statusTable;
     var tableDiv;
     var globalVarData = null;
     // API for this library
@@ -51,7 +51,7 @@
         });
         _renderGlobalVariablesTable(data);
 
-    }
+    };
 
     /**
      * Edit variable method called on either double click of the row or edit menu.

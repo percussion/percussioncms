@@ -1369,14 +1369,14 @@
     function addGadgetDropArea(dashboardGadget, columnIndex, rowIndex, left, top, width, height)
     {
         // you have to at least give me the dashboardGadget or the sizes
-        if (dashboardGadget === undefined && (width === undefined || height === undefined)) throw "Exception in PercDashboard.addGadgetDropArea(): Unable to calculate Gadget Drop Area size. " + "At least a Dashboard Gadget or sizes are needed to add a gadget drop area. " + "Neither have been provided";
+        if ((dashboardGadget === null || typeof dashboardGadget === "undefined") && (width === undefined || height === undefined)) throw "Exception in PercDashboard.addGadgetDropArea(): Unable to calculate Gadget Drop Area size. " + "At least a Dashboard Gadget or sizes are needed to add a gadget drop area. " + "Neither have been provided";
 
         // if you dont give me a dashboardGadget, then you have to give me position
-        if (dashboardGadget === undefined && (left === undefined || top === undefined || columnIndex === undefined || rowIndex === undefined)) throw "Exception in PercDashboard.addGadgetDropArea(): Unable to calculate Gadget Drop Area location. " + "At least a Dashboard Gadget or a location is needed to add a gadget drop area. " + "Neither have been provided";
+        if ((dashboardGadget === null || typeof dashboardGadget === "undefined") && (left === undefined || top === undefined || columnIndex === undefined || rowIndex === undefined)) throw "Exception in PercDashboard.addGadgetDropArea(): Unable to calculate Gadget Drop Area location. " + "At least a Dashboard Gadget or a location is needed to add a gadget drop area. " + "Neither have been provided";
 
         // if I do have a dashboardGadget, try to infer position and size from it,
         // but honor position and size parameters passed in explicitly
-        if (dashboardGadget !== undefined)
+        if (dashboardGadget!==  null && typeof dashboardGadget !== "undefined")
         {
             var dashboardGadgetPosition = dashboardGadget.position();
 

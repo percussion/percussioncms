@@ -40,7 +40,7 @@
          * the date format is hard coded for now and the widget $date_format has been commented out in the widget file percCategoryList.xml
          */
 
-        if(p_dateValue!=null && p_dateValue!="")
+        if(p_dateValue!=null && p_dateValue!=="")
         {        
             var dateFormat = "M/dd/yyyy" ;
             var dateObject = new Date(p_dateValue);    
@@ -111,13 +111,13 @@
 
         var queryOp=" where ";
 
-        if (p_site_path!=null && p_site_path!=""){
+        if (p_site_path!=null && p_site_path!==""){
 
             //Save site_path
             $('[name="site_path"]').val(p_site_path);
 
             // CM-43 add the trailing slash
-            if(p_site_path.substr(p_site_path.length - 1) != '/')
+            if(p_site_path.substr(p_site_path.length - 1) !== '/')
             {
                 p_query += queryOp + "jcr:path like '" + p_site_path + "/%'";
             }
@@ -127,16 +127,16 @@
             }
             queryOp = " and ";
         }
-        if (p_titlecontains!=null && p_titlecontains!=""){
+        if (p_titlecontains!=null && p_titlecontains!==""){
             p_query+=queryOp+"rx:page_title like '%"+p_titlecontains+"%'";
             queryOp=" and ";
         }
-        if (p_start_date!=null && p_start_date!=""){
+        if (p_start_date!=null && p_start_date!==""){
             p_query+=queryOp+"rx:sys_contentpostdate >='"+jxl_start_date+"'";
             queryOp=" and ";
         }    
 
-        if (p_end_date!=null && p_end_date!=""){
+        if (p_end_date!=null && p_end_date!==""){
             p_query+=queryOp+"rx:sys_contentpostdate <='"+jxl_end_date+"'";
             queryOp=" and ";
         }        
@@ -148,7 +148,7 @@
             $('[name="page_templates_list"]').val(p_pagetemplates.toString());
 
             p_query+=queryOp+" ( ";
-            for(i = 0; i < p_pagetemplates.length; i++)
+            for(let i = 0; i < p_pagetemplates.length; i++)
             {
                 p_query+="rx:templateid='"+p_pagetemplates[i]+"'";
 
@@ -182,14 +182,13 @@
             */
             function showPageTemplates()
             {
-                ;   
                 //make an array from the comma delimited options string
                 var pageTemplatesOptionsArray = [];
         
                 //Check if page_templates has been defined
                 if (typeof $('[name="page_templates_list"]').val() != "undefined")
                 {   
-                    var pageTemplatesOptionsArray = $('[name="page_templates_list"]').val().split(",");
+                    pageTemplatesOptionsArray = $('[name="page_templates_list"]').val().split(",");
                 }
 
                 $(document).ready( function(){
@@ -207,11 +206,11 @@
                  $('.ui-perc-categorylist-pagetypes').empty().append($('<div id="perc-pagetemplates-container"/>'));
                  $.getJSON(tplPath, function(data) {
                      var tpls = data.TemplateSummary;
-                     for(i=0; i<tpls.length; i++)
+                     for(let i=0; i<tpls.length; i++)
                      {
                          var tpl = tpls[i];
-                         var checked = $.inArray(tpl.id,pageTemplatesOptionsArray) == -1?"":" checked ='true' ";
-                         $("#perc-pagetemplates-container").append($("<div class='perc-pagetemplates-entry'><input type='checkbox' class='perc-pagetemplates-chkbox'" + checked + " value='" + tpl.id + "'></input><span title='"+ tpl.name +"'>" + tpl.name + "</span></div>"));
+                         var checked = $.inArray(tpl.id,pageTemplatesOptionsArray) === -1?"":" checked ='true' ";
+                         $("#perc-pagetemplates-container").append($("<div class='perc-pagetemplates-entry'><input type='checkbox' class='perc-pagetemplates-chkbox'" + checked + " value='" + tpl.id + "'/><span title='"+ tpl.name +"'>" + tpl.name + "</span></div>"));
                      }
                      $(".perc-pagetemplates-chkbox").on("change",function(){
                          var pts = getPageTemplates();
@@ -337,27 +336,27 @@
              */
             function addDelToDateControls()
             {
-                $('#display_end_date').keydown(function(evt){
+                $('#display_end_date').on("keydown",function(evt){
                     var rawCode = evt.charCode ? evt.charCode : evt.which;
-                    if(rawCode==46 || rawCode==8)
+                    if(rawCode===46 || rawCode===8)
                     {
                         $('#display_end_date').val("");
                         $('[name="end_date"]').val("");
                         buildQuery();
-                    } else if(rawCode==9) {
+                    } else if(rawCode===9) {
 			return true;
 		    } else {
 			return false;
 		    }
                 });
-                $('#display_start_date').keydown(function(evt){
+                $('#display_start_date').on("keydown",function(evt){
                     var rawCode = evt.charCode ? evt.charCode : evt.which;
-                    if(rawCode==46 || rawCode==8)
+                    if(rawCode===46 || rawCode===8)
                     {
                         $('#display_start_date').val("");
                         $('[name="start_date"]').val("");
                         buildQuery();
-                    } else if(rawCode==9) {
+                    } else if(rawCode===9) {
 			return true;
                     } else {
 			return false;

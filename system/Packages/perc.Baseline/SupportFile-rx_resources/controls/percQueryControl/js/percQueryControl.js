@@ -339,27 +339,27 @@
              */
             function addDelToDateControls()
             {
-                $('#display_query_published_before').keydown(function(evt){
+                $('#display_query_published_before').on("keydown",function(evt){
                     var rawCode = evt.charCode ? evt.charCode : evt.which;
-                    if(rawCode==46 || rawCode==8)
+                    if(rawCode===46 || rawCode===8)
                     {
                         $('#display_query_published_before').val("");
                         $('[name="query_published_before"]').val("");
                         buildQuery();
-                    } else if(rawCode==9) {
+                    } else if(rawCode===9) {
 			return true;
 		    } else {
 			return false;
 		    }
                 });
-                $('#display_query_published_after').keydown(function(evt){
+                $('#display_query_published_after').on("keydown",function(evt){
                     var rawCode = evt.charCode ? evt.charCode : evt.which;
-                    if(rawCode==46 || rawCode==8)
+                    if(rawCode===46 || rawCode===8)
                     {
                         $('#display_query_published_after').val("");
                         $('[name="query_published_after"]').val("");
                         buildQuery();
-                    } else if(rawCode==9) {
+                    } else if(rawCode===9) {
 			return true;
                     } else {
 			return false;

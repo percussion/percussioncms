@@ -110,9 +110,9 @@ $(document).ready(function () {
     });
 
     // Wire asset type select control
-    $('#perc-bulk-asset-type').change(function(){
+    $('#perc-bulk-asset-type').on("change", function(){
         var v = $('#perc-bulk-asset-type option:selected').val();
-        if(v == 'html' || v == 'richtext' || v == 'simpletext')
+        if(v === 'html' || v === 'richtext' || v === 'simpletext')
         {
             $('#perc-selector-wrapper').show();
         }

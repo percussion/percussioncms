@@ -148,7 +148,7 @@
              });
              
             
-            $( "#perc-category-site-dropdown" ).change(function() {
+            $( "#perc-category-site-dropdown" ).on("change",function() {
 
                 if (editing)
                 {

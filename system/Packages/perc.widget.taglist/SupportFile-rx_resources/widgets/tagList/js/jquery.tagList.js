@@ -213,7 +213,7 @@
                          var checked = $.inArray(tpl.id,pageTemplatesOptionsArray) == -1?"":" checked ='true' ";
                          $("#perc-pagetemplates-container").append($("<div class='perc-pagetemplates-entry'><input type='checkbox' class='perc-pagetemplates-chkbox'" + checked + " value='" + tpl.id + "'></input><span title='"+ tpl.name +"'>" + tpl.name + "</span></div>"));
                      }
-                     $(".perc-pagetemplates-chkbox").change(function(){    
+                     $(".perc-pagetemplates-chkbox").on("change",function(){
                          var pts = getPageTemplates();
                          pts = pts?pts:"";
                          $('[name="page_templates_list"]').val(pts);
@@ -244,7 +244,7 @@
                     {
                         //Reset the templates if site changes.
                         var oldPath = $('[name="site_path"]').val();
-                        if(oldPath != pathItem.folderPath && getSiteFromFolderPath(oldPath) != getSiteFromFolderPath(pathItem.folderPath))
+                        if(oldPath !== pathItem.folderPath && getSiteFromFolderPath(oldPath) !== getSiteFromFolderPath(pathItem.folderPath))
                         {
                            populateTemplateTypes(getSiteFromFolderPath(pathItem.folderPath),[]);
                         }

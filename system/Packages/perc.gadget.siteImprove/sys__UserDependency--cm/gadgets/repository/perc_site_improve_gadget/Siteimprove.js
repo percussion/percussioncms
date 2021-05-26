@@ -511,7 +511,7 @@ $(document).ready(function () {
         var $mySiteDropdown = $("#mySites");
 
         // need to do it first
-        $mySiteDropdown.change(function () {
+        $mySiteDropdown.on("change",function () {
 
             $("#save-config-status").removeClass();
             $("#save-config-status-failure-message").text("");

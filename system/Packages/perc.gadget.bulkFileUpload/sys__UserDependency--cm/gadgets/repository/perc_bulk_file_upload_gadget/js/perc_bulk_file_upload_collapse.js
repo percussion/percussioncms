@@ -37,7 +37,7 @@ $(document).ready(function() {
             changeText: false
         },
         function() {
-            $('#perc-bulk-target-collapser').blur();
+            $('#perc-bulk-target-collapser').trigger("blur");
         },
         function() {
             gadgets.window.adjustHeight(50 + $("#perc-bulk-form").height() + $("#perc-buttonbar").height() + $("#perc-buttonbar2").height());

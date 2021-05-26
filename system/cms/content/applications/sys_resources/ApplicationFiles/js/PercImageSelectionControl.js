@@ -30,8 +30,8 @@
 
                 // Save the image content id to data attribute and trigger an event change for other
                 // scripts that might be listening for an event change
-                $("#" + imgInputName ).attr("data-perc-image-content-id",pathItem.id.split(/[- ]+/).pop());
-                $("#" + imgInputName ).change();
+                $("#" + imgInputName ).attr("data-perc-image-content-id",pathItem.id.split(/[- ]+/).pop())
+                    .trigger("change");
 
             }
             //Create new button click function. The success callback is called with PathItem, if the new image creation is successful

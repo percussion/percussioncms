@@ -1126,7 +1126,7 @@
                 case 13: // enter
                 case 27: // esc
                     hide();
-                    input.blur();
+                    input.trigger("blur");
                     break;
             }
         })

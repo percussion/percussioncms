@@ -370,7 +370,7 @@
     $.fn.perc_dialog = function(options)    {
         //Passing perc classes to the dialog
         options.dialogClass='perc-dialog perc-dialog-corner-all';
-        options.zIndex=9500;
+       // options.zIndex=9500;
 
         //Call jquery dialog with all the options
         var dlgContent = $(this).dialog(options);
@@ -379,8 +379,8 @@
         if(options.id)    {
             uiDialog.attr('id', options.id);
         }
-        // Fix for CML-3917.  Forces window to resize twice which apparently fixes the problem.
-        $(window).trigger("resize").trigger("resize");
+
+        $(window).show();
 
         return dlgContent;
     };
@@ -1595,7 +1595,7 @@
                 onblur: "submit",
                 fieldid: 'perc_finder_inline_field_edit',
                 onedit: function(settings){
-                    $("#perc_finder_inline_field_edit").blur();
+                    $("#perc_finder_inline_field_edit").trigger("blur");
                 },
                 data: function(value, settings){
                     return $(this).parent().attr('title');

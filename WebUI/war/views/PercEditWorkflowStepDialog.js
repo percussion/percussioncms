@@ -205,12 +205,12 @@
             if(isUpdate)
             {
                 updatePermissions(workflowStep);
-                $("#perc-wfstep-name").blur();
+                $("#perc-wfstep-name").trigger("blur");
             }
             
             // Bind the click event to check-all/un-check-all input.
             
-            $('.perc-checkall').change(function() {            
+            $('.perc-checkall').on("change",function() {
             var inputClass = ".perc-" + $(this).attr('data') + " input:not(:disabled)";
                 if ($(this).attr("checked")) {
                     $("#perc-wfconfig-roles-table").find(inputClass).attr('checked', 'checked');

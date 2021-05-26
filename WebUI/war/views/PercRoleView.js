@@ -173,11 +173,11 @@
         }
 
         function showSelectedRoleEditor() {
-            if (controller.getSelectedRole() != "Admin" && controller.getSelectedRole() != "Designer"){
+            if (controller.getSelectedRole() !== "Admin" && controller.getSelectedRole() !== "Designer"){
                 $("#perc-roles-name-field")
                     .removeClass("perc-roles-field-readonly")
                     .removeAttr("readonly")
-                    .change(function() {
+                    .on("change",function() {
                         dirtyController.setDirty(true, "role");
                     });
             }
@@ -186,21 +186,21 @@
                 .removeClass("perc-roles-field-readonly")
                 .removeAttr("readonly")
                 .attr("style", "height: 55px;width: 100%;")
-                .change(function() {
+                .on("change",function() {
                     dirtyController.setDirty(true, "role");
                 });
             $("#perc-roles-description-label").show();
 
             $("#perc-roles-homepage-field")
                 .show()
-                .change(function() {
+                .on("change",function() {
                     dirtyController.setDirty(true, "role");
                 });
             $("#perc-roles-homepage-label").show();
             $("#perc-roles-homepage-field-readonly").hide();
             $("#perc-roles-edit-role-button").hide();
             $("#perc-role-save-cancel-block").show();
-            $("#perc-roles-description-field").focus();
+            $("#perc-roles-description-field").trigger("focus");
         }
 
         function showNewRoleEditor() {
@@ -208,8 +208,8 @@
                 .removeClass("perc-roles-field-readonly")
                 .removeAttr("readonly")
                 .val("")
-                .focus()
-                .change(function() {
+                .trigger("focus")
+                .on("change",function() {
                     dirtyController.setDirty(true, "role");
                 });
             $("#perc-roles-name-label").addClass("perc-required-field");
@@ -218,14 +218,14 @@
                 .removeAttr("readonly")
                 .attr("style", "height: 55px;width: 100%;")
                 .val("")
-                .change(function() {
+                .on("change",function() {
                     dirtyController.setDirty(true, "role");
                 });
             $("#perc-roles-description-label").show();
 
             $("#perc-roles-homepage-field")
                 .show()
-                .change(function() {
+                .on("change",function() {
                     dirtyController.setDirty(true, "role");
                 }).val("Home");
             $("#perc-roles-homepage-label").show();

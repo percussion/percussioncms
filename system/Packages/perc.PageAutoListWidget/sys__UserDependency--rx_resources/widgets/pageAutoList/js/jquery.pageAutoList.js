@@ -207,10 +207,10 @@ function buildQuery() {
                 var tpls = data.TemplateSummary, i;
                 for (i = 0; i < tpls.length; i++) {
                     var tpl = tpls[i];
-                    var checked = $.inArray(tpl.id, pageTemplatesOptionsArray) == -1 ? "" : " checked ='true' ";
+                    var checked = $.inArray(tpl.id, pageTemplatesOptionsArray) === -1 ? "" : " checked ='true' ";
                     $("#perc-pagetemplates-container").append($("<div class='perc-pagetemplates-entry'><input type='checkbox' class='perc-pagetemplates-chkbox'" + checked + " value='" + tpl.id + "'></input><span title='" + tpl.name + "'>" + tpl.name + "</span></div>"));
                 }
-                $(".perc-pagetemplates-chkbox").change(function () {
+                $(".perc-pagetemplates-chkbox").on("change",function () {
                     var pts = getPageTemplates();
                     pts = pts ? pts : "";
                     $('[name="page_templates_list"]').val(pts);
@@ -223,12 +223,12 @@ function buildQuery() {
             Multi Select list for the Page Templates
             */
         function showPageTemplates() {
-            ;
+
             //make an array from the comma delimited options string
             var pageTemplatesOptionsArray = [];
 
             //Check if page_templates has been defined
-            if (typeof $('[name="page_templates_list"]').val() != "undefined") {
+            if (typeof $('[name="page_templates_list"]').val() !== "undefined") {
                 pageTemplatesOptionsArray = $('[name="page_templates_list"]').val().split(",");
             }
 
@@ -286,13 +286,13 @@ function getDomPath(el) {
 
         
         function showCategories() {
-            ;
+
             //make an array from the comma delimited options string
             var pageCategoriesOptionsArray = [];
 
             //Check if page_templates has been defined
             if (typeof $('[name="page_category_list"]').val() != "undefined") {
-                var pageCategoriesOptionsArray = $('[name="page_category_list"]').val().split(",");
+                pageCategoriesOptionsArray = $('[name="page_category_list"]').val().split(",");
             }
 
             $(document).ready(function() {
@@ -362,12 +362,12 @@ function getDomPath(el) {
 
         //Callbacks Event Code
 
-        $('#perc-content-edit-title_contains').change(function () {
+        $('#perc-content-edit-title_contains').on("change",function () {
             buildQuery();
         });
 
         //Build query if mouse leaves the form, i.e when the user goes to click on the save button which is not part of the iframe
-        $('#perc-content-form').mouseleave(function () {
+        $('#perc-content-form').on("mouseleave",function () {
             buildQuery();
         });
 
@@ -401,25 +401,25 @@ function getDomPath(el) {
          * allows the Del key press to clear the date values.
          */
         function addDelToDateControls() {
-            $('#display_end_date').keydown(function (evt) {
+            $('#display_end_date').on("keydown",function (evt) {
                 var rawCode = evt.charCode ? evt.charCode : evt.which;
-                if (rawCode == 46 || rawCode == 8) {
+                if (rawCode === 46 || rawCode === 8) {
                     $('#display_end_date').val("");
                     $('[name="end_date"]').val("");
                     buildQuery();
-                } else if (rawCode == 9) {
+                } else if (rawCode === 9) {
                     return true;
                 } else {
                     return false;
                 }
             });
-            $('#display_start_date').keydown(function (evt) {
+            $('#display_start_date').on("keydown",function (evt) {
                 var rawCode = evt.charCode ? evt.charCode : evt.which;
-                if (rawCode == 46 || rawCode == 8) {
+                if (rawCode === 46 || rawCode === 8) {
                     $('#display_start_date').val("");
                     $('[name="start_date"]').val("");
                     buildQuery();
-                } else if (rawCode == 9) {
+                } else if (rawCode === 9) {
                     return true;
                 } else {
                     return false;
@@ -441,12 +441,12 @@ function getDomPath(el) {
             $('[name="hidePastResults"]').prop("checked", hidePastResultsFlag );
             var hideFilterDateType = $('[name="hide_past_results_filter"]').val();
             $('[name="perc-pageautolist-hide-past-results-date-type"][value="' + hideFilterDateType + '"]').prop('checked', true);
-            $("#display_title_contains").val($('[name="title_contains"]').val());
-            $("#display_title_contains").blur(function () {
+            $("#display_title_contains").val($('[name="title_contains"]').val()).
+                on("blur",function () {
                 $('[name="title_contains"]').val($("#display_title_contains").val());
                 buildQuery();
-            });
-            $("#display_title_contains").change(function () {
+            })
+            .on("change",function () {
                 $('[name="title_contains"]').val($("#display_title_contains").val());
                 buildQuery();
             });

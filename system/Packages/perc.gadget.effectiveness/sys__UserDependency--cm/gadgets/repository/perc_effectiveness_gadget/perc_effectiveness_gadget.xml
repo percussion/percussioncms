@@ -155,6 +155,13 @@
 	<!--[if IE]>
     <script  src="/cm/gadgets/repository/common/lib/jqplot/excanvas.js"></script>
 <![endif]-->
+        <script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"</script>
+        <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"</script>
+        <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"></script>
+        <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js" ></script>
+        <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js" ></script>
+        <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
+        <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js" ></script>
 	<script language="javascript"  src="/cm/gadgets/repository/common/lib/jqplot/jquery.jqplot.js"></script>
 	<script language="javascript"  src="/cm/gadgets/repository/common/lib/jqplot/jqplot.barRenderer.js"></script>
 	<script language="javascript"  src="/cm/gadgets/repository/common/lib/jqplot/jqplot.categoryAxisRenderer.js"></script>
