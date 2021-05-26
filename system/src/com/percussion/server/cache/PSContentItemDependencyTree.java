@@ -38,7 +38,8 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.util.PSStopwatch;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
@@ -217,11 +218,12 @@ public class PSContentItemDependencyTree
             value.add(dependency);
          }
          watch.stop();
-         ms_logger.debug("Initialize DependencyTree took: " + watch.toString());
+         log.debug("Initialize DependencyTree took: {}",  watch.toString());
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          String msg = e.toString();
          throw new RuntimeException(msg);
       }
@@ -1009,7 +1011,6 @@ public class PSContentItemDependencyTree
    /**
     * The log4j logger used for this class.
     */
-   private static Logger ms_logger = Logger
-         .getLogger(PSContentItemDependencyTree.class);
+   private static final Logger log = LogManager.getLogger(PSContentItemDependencyTree.class);
 
 }

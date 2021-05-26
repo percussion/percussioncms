@@ -128,7 +128,8 @@ public class PSDtdTreeMergeManager
       }
       catch (Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
   }
   */
@@ -181,7 +182,8 @@ public class PSDtdTreeMergeManager
       }
       catch (Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
   }
 
