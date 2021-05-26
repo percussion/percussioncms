@@ -2459,7 +2459,8 @@
 
                     // check option for auto-handling of pop-ups & drop-downs
                     if (o.showOverflowOnHover)
-                        $P.hover(allowOverflow, resetOverflow);
+                        $P.on("mouseenter", allowOverflow)
+                            .on("mouseleave", resetOverflow);
 
                     // if manually adding a pane AFTER layout initialization, then...
                     if (state.initialized) {
@@ -2595,10 +2596,10 @@
                             .css(_c.resizers.cssReq).css("zIndex", options.zIndexes.resizer_normal)
                             .css(o.applyDemoStyles ? _c.resizers.cssDemo : {}) // add demo styles
                             .addClass(rClass + " " + rClass + _pane)
-                            .hover(addHover, removeHover) // ALWAYS add hover-classes, even if resizing is not enabled - handle with CSS instead
-                            .hover(onResizerEnter, onResizerLeave) // ALWAYS NEED resizer.mouseleave to balance toggler.mouseenter
-                            .mousedown($.layout.disableTextSelection) // prevent text-selection OUTSIDE resizer
-                            .mouseup($.layout.enableTextSelection)  // not really necessary, but just in case
+                            .on("mouseenter",addHover).on("mouseleave", removeHover) // ALWAYS add hover-classes, even if resizing is not enabled - handle with CSS instead
+                            .on("mouseenter",onResizerEnter).on("mouseleave", onResizerLeave) // ALWAYS NEED resizer.mouseleave to balance toggler.mouseenter
+                            .on("mousedown",$.layout.disableTextSelection) // prevent text-selection OUTSIDE resizer
+                            .on("mouseup",$.layout.enableTextSelection)  // not really necessary, but just in case
                             .appendTo($N) // append DIV to container
                         ;
                         if ($.fn.disableSelection)
@@ -2618,7 +2619,7 @@
                                 .css(_c.togglers.cssReq) // add base/required styles
                                 .css(o.applyDemoStyles ? _c.togglers.cssDemo : {}) // add demo styles
                                 .addClass(tClass + " " + tClass + _pane)
-                                .hover(addHover, removeHover) // ALWAYS add hover-classes, even if toggling is not enabled - handle with CSS instead
+                                .on("mouseenter",addHover).on("mouseleave", removeHover) // ALWAYS add hover-classes, even if toggling is not enabled - handle with CSS instead
                                 .on("mouseenter", onResizerEnter) // NEED toggler.mouseenter because mouseenter MAY NOT fire on resizer
                                 .appendTo($R) // append SPAN to resizer DIV
                             ;

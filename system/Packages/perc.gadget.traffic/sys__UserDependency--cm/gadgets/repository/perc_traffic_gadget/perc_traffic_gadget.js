@@ -210,7 +210,7 @@
         trafficTitleError   = $("#perc-traffic-error-message");
         // gesture control for hiding and showing the details panel at the bottom
         hideDetailsLink = $("#perc-traffic-show-hide-details")
-            .hover(function(){
+            .on("mouseenter",function(){
                 if(isDetailsAvailable) {
                     $(this).css("cursor","pointer");
                 } else {
@@ -782,7 +782,7 @@
                 .appendTo("body")
                 .css("position", "absolute")
                 .hide()
-                .hover(function(){$(this).hide();});
+                .on("mouseenter", function(){$(this).hide();});
 
             var tWidth  = tooltip.width();
             var tHeight = tooltip.height();

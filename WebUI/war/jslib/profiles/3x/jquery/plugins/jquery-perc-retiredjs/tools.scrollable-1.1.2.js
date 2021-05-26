@@ -362,9 +362,9 @@
 
             // hovering
             if (hc) {
-                self.getItems().hover(function()  {
+                self.getItems().on("mouseenter",function()  {
                     $(this).addClass(hc);
-                }, function() {
+                }).on("mouseleave", function() {
                     $(this).removeClass(hc);
                 });                     
             }
