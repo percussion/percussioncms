@@ -23,6 +23,9 @@
  */
 package com.percussion.utils.tools;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,6 +49,7 @@ import java.util.TreeMap;
 public class PSOrganizeProperties
 {
 
+   private static final Logger log = LogManager.getLogger(PSOrganizeProperties.class);
    public static final String HEADER_COMMENTS = "HEADER_COMMENTS";
 
    /**
@@ -367,7 +371,8 @@ public class PSOrganizeProperties
       catch (IOException e)
       {
          // TODO Auto-generated catch block
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       return sb.toString();
    }

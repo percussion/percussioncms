@@ -282,7 +282,8 @@ public class PSItemDefManager
         catch (PSInvalidContentTypeException e) 
         {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     return dmapping;
 }

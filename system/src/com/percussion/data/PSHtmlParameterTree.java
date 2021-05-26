@@ -169,7 +169,8 @@ public class PSHtmlParameterTree
       // try {
       //    PSXmlDocumentBuilder.write(doc, System.out);
       // } catch (java.io.IOException e) {
-      //    e.printStackTrace();
+      //    log.error(e.getMessage());
+      //    log.debug(e.getMessage(), e);
       // }
       // System.out.println();
 
