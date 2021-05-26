@@ -33,6 +33,8 @@ import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 
 import java.io.File;
@@ -96,6 +98,7 @@ import java.util.StringTokenizer;
 
 public class PSExecSQLStmt extends PSAction
 {
+   private static final Logger log = LogManager.getLogger(PSExecSQLStmt.class);
    // see base class
    @Override
    public void execute() {
@@ -191,11 +194,14 @@ public class PSExecSQLStmt extends PSAction
          }
 
       } catch (FileNotFoundException e) {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       } catch (IOException e) {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       } catch (PSJdbcTableFactoryException e) {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 

@@ -29,6 +29,8 @@ import com.percussion.design.objectstore.PSSecurityProviderInstance;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.security.PSSecurityProvider;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -39,6 +41,8 @@ import org.w3c.dom.Text;
  */
 public class PSSecurityProviderInstanceSummary implements IPSCmsComponent
 {
+
+   private static final Logger log = LogManager.getLogger(PSSecurityProviderInstanceSummary.class);
 
    /**
     * Constructs a new <code>PSSecurityProvider</code> object.
@@ -72,7 +76,8 @@ public class PSSecurityProviderInstanceSummary implements IPSCmsComponent
       }
       catch(PSUnknownNodeTypeException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 
