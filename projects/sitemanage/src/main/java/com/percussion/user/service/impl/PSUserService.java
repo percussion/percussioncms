@@ -558,7 +558,8 @@ public class PSUserService implements IPSUserService
                     PSActionOutcome.SUCCESS);
             psAuditLogService.logUserManagementEvent(psUserManagementEvent);
         }catch (Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         return rvalue;
     }

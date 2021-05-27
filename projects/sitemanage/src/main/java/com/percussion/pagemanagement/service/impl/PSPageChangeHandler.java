@@ -234,7 +234,8 @@ public class PSPageChangeHandler implements IPSPageChangeListener
                return;
            }
        } catch (PSDataServiceException e) {
-           e.printStackTrace();
+           log.error(e.getMessage());
+           log.debug(e.getMessage(), e);
        }
    }
   

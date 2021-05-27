@@ -42,6 +42,8 @@ import java.util.zip.ZipFile;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
 import org.apache.tools.ant.helper.ProjectHelperImpl;
@@ -57,6 +59,7 @@ import org.apache.tools.ant.helper.ProjectHelperImpl;
 public class PSRxBuildInput
 {
 
+   private static final Logger log = LogManager.getLogger(PSRxBuildInput.class);
    /**
     * Contructs a new Ui
     * 
@@ -159,7 +162,8 @@ public class PSRxBuildInput
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          System.exit(1);
       }
 
@@ -186,7 +190,8 @@ public class PSRxBuildInput
          }
          catch (IOException e)
          {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
          }
       }
       patchDir.mkdir();
@@ -198,7 +203,8 @@ public class PSRxBuildInput
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 
@@ -268,7 +274,8 @@ public class PSRxBuildInput
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       finally
       {
@@ -1202,7 +1209,8 @@ public class PSRxBuildInput
       catch (IOException ioe)
       {
          System.out.printf("Unable to open file: %s", file);
-         ioe.printStackTrace();
+         log.error(ioe.getMessage());
+         log.debug(ioe.getMessage(), ioe);
       }
       finally
       {
@@ -1214,7 +1222,8 @@ public class PSRxBuildInput
             }
             catch (IOException e)
             {
-               e.printStackTrace();
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
             }
          }
       }
@@ -1343,7 +1352,8 @@ public class PSRxBuildInput
          }
          catch (Exception e)
          {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
          }
       }
    }

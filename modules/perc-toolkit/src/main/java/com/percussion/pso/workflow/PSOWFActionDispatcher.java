@@ -18,8 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionDef;
@@ -32,6 +30,8 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is the legacy version of the PSOWFActionDispatcher. 
@@ -66,7 +66,7 @@ import com.percussion.server.PSServer;
 public class PSOWFActionDispatcher extends PSDefaultExtension
     implements IPSWorkflowAction 
 {
-    private static final Log log = LogFactory.getLog(PSOWFActionDispatcher.class);
+    private static final Logger log = LogManager.getLogger(PSOWFActionDispatcher.class);
     public PSOWFActionDispatcher()
     {
         m_extensionDef = null;
@@ -158,12 +158,14 @@ public class PSOWFActionDispatcher extends PSDefaultExtension
         catch(FileNotFoundException fex)
         {
             log.error("Properties file not found: rxconfig/Workflow/dispatcher.properties", fex);
-            //fex.printStackTrace();
+            log.error(fex.getMessage());
+            log.debug(fex.getMessage(), fex);
         }
         catch(IOException ex)
         {
             log.error("Properties file could not be opened: rxconfig/Workflow/dispatcher.properties",ex);
-            //ex.printStackTrace();
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(), ex);
         }
         finally
         {

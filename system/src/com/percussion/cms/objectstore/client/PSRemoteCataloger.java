@@ -38,8 +38,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -49,7 +49,7 @@ import org.w3c.dom.Element;
  */
 public class PSRemoteCataloger implements IPSCataloger
 {
-	private Log logger = LogFactory.getLog(PSRemoteCataloger.class);
+	private static final Logger log = LogManager.getLogger(PSRemoteCataloger.class);
    /**
     * Ctor.
     * @param requester never <code>null</code>.
@@ -98,7 +98,9 @@ public class PSRemoteCataloger implements IPSCataloger
     	  if(doc != null)
     		  return doc.getDocumentElement();   	   
       }catch(Throwable t){
-    	  logger.error("An unexpected exception occurred while cataloging fields", t);
+         log.error("An unexpected exception occurred while cataloging fields", t);
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
     	  throw new PSCmsException(IPSCmsErrors.CONTENT_TYPE_CANNOT_BE_OPENED);
       }
     return null;
@@ -182,7 +184,8 @@ public class PSRemoteCataloger implements IPSCataloger
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          String[] args = {path, e.toString()};
          throw new PSCmsException(IPSCmsErrors.UNEXPECTED_CATALOG_ERROR, args);
       }

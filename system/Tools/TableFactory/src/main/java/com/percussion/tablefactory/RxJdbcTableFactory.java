@@ -56,6 +56,7 @@ import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 
+import org.apache.logging.log4j.LogManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -151,7 +152,8 @@ public class RxJdbcTableFactory
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
             m_logger.logMessage("Unable to create XML backup Documents");
             m_sStatus = "Unable to create XML backup Documents" ;
             return false;
@@ -198,7 +200,8 @@ public class RxJdbcTableFactory
                 catch(SQLException e)
                 {
                   sError = e.getMessage();
-                  e.printStackTrace();
+                    log.error(e.getMessage());
+                    log.debug(e.getMessage(), e);
                 }
 
                 if(sError.length() > 0)
@@ -422,7 +425,8 @@ public class RxJdbcTableFactory
       }
       catch(Exception e)
       {
-         e.printStackTrace();
+          log.error(e.getMessage());
+          log.debug(e.getMessage(), e);
          sStatus = e.getMessage();
       }
       return sStatus ;
@@ -1575,7 +1579,8 @@ public class RxJdbcTableFactory
             }
          } catch (Exception e)
          {
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
          }
          return sStatus;
       } // parseTableData()
@@ -1624,7 +1629,8 @@ public class RxJdbcTableFactory
          } catch (SQLException e)
          {
             System.out.println("\nConnection Error\n");
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
             sAction = "";
             sStatus = "Connection Error; failed to insert";
          }
@@ -1656,7 +1662,8 @@ public class RxJdbcTableFactory
                      }
                   } catch (Exception e)
                   {
-                     e.printStackTrace();
+                      log.error(e.getMessage());
+                      log.debug(e.getMessage(), e);
                      sStatus = e.getMessage();
                      return sStatus;
                   }
@@ -1682,7 +1689,8 @@ public class RxJdbcTableFactory
                      }
                   } catch (Exception e)
                   {
-                     e.printStackTrace();
+                      log.error(e.getMessage());
+                      log.debug(e.getMessage(), e);
                      sStatus = e.getMessage();
                      return sStatus;
                   }
@@ -1708,7 +1716,8 @@ public class RxJdbcTableFactory
                      }
                   } catch (Exception e)
                   {
-                     e.printStackTrace();
+                      log.error(e.getMessage());
+                      log.debug(e.getMessage(), e);
                      sStatus = e.getMessage();
                      return sStatus;
                   }
@@ -1749,7 +1758,8 @@ public class RxJdbcTableFactory
                      }
                   } catch (Exception e)
                   {
-                     e.printStackTrace();
+                      log.error(e.getMessage());
+                      log.debug(e.getMessage(), e);
                      System.out.println("Error:" + "\n\t" + sStatus);
                   }
                   break;
@@ -1848,7 +1858,8 @@ public class RxJdbcTableFactory
          } catch (SQLException e)
          {
             sStatus = e.getMessage();
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
             System.out.println("Error Inserting:\n" + e.getMessage());
             return sStatus;
          } finally
@@ -1916,7 +1927,8 @@ public class RxJdbcTableFactory
          catch (SQLException e)
          {
             System.out.println("\nConnection Error\n");
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
          }
 
          newColumns = null ;
@@ -2019,7 +2031,8 @@ System.out.println("NULL Values not allowed as Update Key");
          {
             sStatus = e.getMessage();
             System.out.println("Error setting Update SQL Statement");
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
             try
             {
               pStmt.close();
@@ -2035,7 +2048,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(SQLException e)
          {
-            e.printStackTrace();;
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
             System.out.println("Error Executing SQL Statement:\n" + e.getMessage());
             sStatus = e.getMessage();
             try
@@ -2103,7 +2117,8 @@ System.out.println("NULL Values not allowed as Update Key");
          catch (SQLException e)
          {
             System.out.println("\nConnection Error\n");
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
          }
 
          int i = 0 ;
@@ -2136,7 +2151,8 @@ System.out.println("NULL Values not allowed as Update Key");
          catch(SQLException e)
          {
             sStatus = e.getMessage();
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
             System.out.println("\nError on Delete Option:\n" +e.getMessage());
             try
             {
@@ -2153,7 +2169,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(SQLException e)
          {
-            e.printStackTrace();;
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
             System.out.println("Error Executing SQL Statement:\n" + e.getMessage());
             sStatus = e.getMessage();
             try
@@ -2373,7 +2390,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(SQLException e)
          {
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
          }
 
          return pStmt ;
@@ -2496,7 +2514,8 @@ System.out.println("NULL Values not allowed as Update Key");
 
                      } catch (SQLException e)
                      {
-                        e.printStackTrace();
+                         log.error(e.getMessage());
+                         log.debug(e.getMessage(), e);
                      }
                      sStatus = processTableData(dbmsDef, rxTable,
                            cDB.dataDoc,
@@ -2698,13 +2717,15 @@ System.out.println("NULL Values not allowed as Update Key");
                               }
                               catch(SQLException sqle)
                               {
-                                 sqle.printStackTrace();
+                                  log.error(sqle.getMessage());
+                                  log.debug(sqle.getMessage(), sqle);
                                  bUpgradeOk = true;
                               }
                            }
                            catch (SQLException e)
                            {
-                              e.printStackTrace();
+                               log.error(e.getMessage());
+                               log.debug(e.getMessage(), e);
                               sStatus = e.getMessage();
                               bUpgradeOk = false;
                            }
@@ -2804,7 +2825,8 @@ System.out.println("NULL Values not allowed as Update Key");
                            // Store Data in the XML Doc.
                            System.out.println("Exception encountered: "+
                                              "Storing old data in XML File\n");
-                           e.printStackTrace();
+                           log.error(e.getMessage());
+                           log.debug(e.getMessage(), e);
                         }
                         // TODO == This is other way == change later
                         if(sqlLog.errorMessage.length() == 0)
@@ -2883,7 +2905,8 @@ System.out.println("NULL Values not allowed as Update Key");
                            elementData);
                   } catch (Exception e)
                   {
-                     e.printStackTrace();
+                      log.error(e.getMessage());
+                      log.debug(e.getMessage(), e);
                   }
                } // if bExist
                else if (bExist == false) // TODO : Should we create and insert ?
@@ -2927,7 +2950,8 @@ System.out.println("NULL Values not allowed as Update Key");
             }
             catch (Exception e)
             {
-//          e.printStackTrace();// not worried about this outcome
+              log.error(e.getMessage());
+              log.debug(e.getMessage(), e);
             }
          }
 
@@ -2959,7 +2983,8 @@ System.out.println("NULL Values not allowed as Update Key");
             }
             catch (Exception e)
             {
-//          e.printStackTrace();// not worried about this outcome
+                log.error(e.getMessage());
+                log.debug(e.getMessage(), e);
             }
          }
 
@@ -3155,7 +3180,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
             orgTable.sError = "Error retrieving Meta Data on Row " + rowCount ;
             return orgTable;
          }
@@ -3237,7 +3263,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
             orgTable.sError = "Error retrieving Meta Data on Row " + rowCount ;
             return false ;
          }
@@ -3272,7 +3299,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
          }
          return count ;
       }
@@ -3311,7 +3339,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
          }
 
          String sColumn = new String();
@@ -3335,7 +3364,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
          }
 
          sqlLog = setColumnData(orgTable,rsResults);
@@ -3388,7 +3418,8 @@ System.out.println("NULL Values not allowed as Update Key");
                               e.getMessage()+"\n"+
                               e.getLocalizedMessage();
             sqlLog.rowCount = rowCount;
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
             return sqlLog;
          }
          vtOldTables.add(orgTable);
@@ -3455,7 +3486,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
          }
 
          return dataDoc ;
@@ -3506,7 +3538,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
          }
          return xmlDoc ;  // TODO  == Change this later - not required
       }
@@ -3611,7 +3644,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(SQLException e)
          {
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
             sqlLog.errorMessage =
                   "Error Inserting Data into " + oldTable.getTableName()+
                                     "\n\tStoring DATA and DTD in XML file";
@@ -3625,7 +3659,10 @@ System.out.println("NULL Values not allowed as Update Key");
                dtdXMLDoc = createDtdElement(dtdXMLDoc,sTableName,vtColumns);
                dataXMLDoc = createDataElement(dataXMLDoc,oldTable);
             }
-            catch(Exception en){en.printStackTrace();}
+            catch(Exception en){
+                log.error(en.getMessage());
+                log.debug(en.getMessage(), e);
+            }
             return sqlLog ;
          }
 
@@ -3718,7 +3755,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(SQLException e)
          {
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
             pStmt = null ;
          }
 
@@ -3780,7 +3818,8 @@ System.out.println("NULL Values not allowed as Update Key");
                }
                catch(Exception e)
                {
-                  e.printStackTrace();
+                   log.error(e.getMessage());
+                   log.debug(e.getMessage(), e);
                }
                break;
             case CREATE_NEW_OLD :
@@ -3806,7 +3845,8 @@ System.out.println("NULL Values not allowed as Update Key");
                }
                catch(Exception e)
                {
-                  e.printStackTrace();
+                   log.error(e.getMessage());
+                   log.debug(e.getMessage(), e);
                }
                break;
             default :
@@ -4749,7 +4789,8 @@ System.out.println("NULL Values not allowed as Update Key");
       {
          System.out.println();
          System.out.println("Exception encountered - copy aborted.");
-         e.printStackTrace();
+          log.error(e.getMessage());
+          log.debug(e.getMessage(), e);
       }
       finally
       {
@@ -4930,7 +4971,8 @@ System.out.println("NULL Values not allowed as Update Key");
       {
          System.out.println();
          System.out.println("Exception encountered - copy aborted.");
-         e.printStackTrace();
+          log.error(e.getMessage());
+          log.debug(e.getMessage(), e);
       }
       finally
       {
@@ -4965,4 +5007,6 @@ System.out.println("NULL Values not allowed as Update Key");
 
    static final int getChild = PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN;
    static final int getSibling = PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS;
+
+   private static org.apache.logging.log4j.Logger log = LogManager.getLogger(RxJdbcTableFactory.class);
 }

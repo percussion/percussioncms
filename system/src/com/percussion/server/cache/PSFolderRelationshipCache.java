@@ -299,7 +299,8 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new PSCacheException(
             IPSServerErrors.CACHE_UNEXPECTED_EXCEPTION, e.toString());
       }
@@ -330,7 +331,8 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
             catch (SQLException e)
             {
                // ignore, should not happen here.
-               e.printStackTrace();
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
             }
          }
       }
@@ -409,7 +411,8 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new PSCacheException(
             IPSServerErrors.CACHE_UNEXPECTED_EXCEPTION, e.toString());
       }
@@ -440,7 +443,8 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
             catch (SQLException e)
             {
                // ignore, should not happen here.
-               e.printStackTrace();
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
             }
          }
       }

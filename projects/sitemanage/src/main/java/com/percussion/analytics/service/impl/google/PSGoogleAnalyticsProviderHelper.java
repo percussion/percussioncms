@@ -164,7 +164,8 @@ public class PSGoogleAnalyticsProviderHelper
         } catch (PSAnalyticsProviderException e) {
             throw e;
         } catch (GeneralSecurityException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             log.error("Google Auth error:",e);
             throw new PSAnalyticsProviderException(e.getMessage(), CAUSETYPE.AUTHENTICATION_ERROR);
         } catch (IOException e) {
@@ -292,6 +293,6 @@ public class PSGoogleAnalyticsProviderHelper
       CAUSE_MAPPINGS.put("TermsNotAgreedException", CAUSETYPE.TERMS_NOT_AGREED);
    }
 
-   private static Logger log = LogManager.getLogger(PSGoogleAnalyticsProviderHelper.class);
+   private static final Logger log = LogManager.getLogger(PSGoogleAnalyticsProviderHelper.class);
 
 }

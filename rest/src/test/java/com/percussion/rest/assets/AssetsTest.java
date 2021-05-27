@@ -30,6 +30,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
 import com.percussion.utils.testing.IntegrationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -38,6 +40,8 @@ import static junit.framework.TestCase.assertTrue;
 @Category(IntegrationTest.class)
 public class AssetsTest extends MainTest
 {
+
+    private static final Logger log = LogManager.getLogger(AssetsTest.class);
     
     @Test
     public void testRenameAsset(){
@@ -50,7 +54,8 @@ public class AssetsTest extends MainTest
             assertTrue("New Name Should Match", response.getName().equals("newname.png"));
         } catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             throw e;
         }
 
