@@ -267,8 +267,9 @@ public class PSPubServerRestService
         for (PSDeliveryInfo deliveryInfo : psDeliveryInfoServiceList) {
             if (deliveryInfo.getServerType()!=null && !deliveryInfo.getServerType().equalsIgnoreCase("license")) {
 
-                if (deliveryInfo.getServerType()!=null && deliveryInfo.getServerType().equalsIgnoreCase(publishServer))
-                    serverList.add(deliveryInfo.getAdminUrl());
+                if (deliveryInfo.getServerType()!=null && deliveryInfo.getServerType().equalsIgnoreCase(publishServer)) {
+
+                }
 
             }
         }
