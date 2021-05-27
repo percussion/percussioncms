@@ -268,6 +268,7 @@ public class PSPubServerRestService
             if (deliveryInfo.getServerType()!=null && !deliveryInfo.getServerType().equalsIgnoreCase("license")) {
 
                 if (deliveryInfo.getServerType()!=null && deliveryInfo.getServerType().equalsIgnoreCase(publishServer)) {
+                    serverList.add(deliveryInfo.getAdminUrl());
 
                 }
 

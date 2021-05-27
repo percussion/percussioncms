@@ -376,7 +376,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
                 }
             }
         } catch (Exception e) {
-            log.error("Error Reading Log File : {}" , e.getMessage(), e);
+            log.error("Error Reading Log File : {}" , e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
     
@@ -647,8 +648,9 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         {
             //checkout if asset is worth checking out
             //if checked out by someone force checkout...
-            if(itemWorkflowService.isCheckedOutToSomeoneElse(guid))
-              itemWorkflowService.forceCheckOut(guid);
+            if(itemWorkflowService.isCheckedOutToSomeoneElse(guid)) {
+                itemWorkflowService.forceCheckOut(guid);
+            }
             else {
                 itemWorkflowService.checkOut(guid);
             }
@@ -796,15 +798,14 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
                 }
                 catch(Exception e)
                 {
-                    log.error("Failed to process asset with id: {}  due to : {}, Error: {}" , assetW.getId(),
-                             e.getMessage(), e.getMessage());
+                    log.error("Failed to process asset with id: {}  due to : {}" , assetW.getId(), e.getMessage());
                     log.debug(e.getMessage(),e);
                     assetW.setProcess(ItemWrapper.STATUS.FAIL);
                 }
                 assetCount += 1;
                 if(assetCount%250 == 0)
                 {
-                    log.info("Processed {}  assets out of ", assetCount ,  assetListSet.size());
+                    log.info("Processed {}  assets out of {}", assetCount ,  assetListSet.size());
                     try{logAssets();} catch (Exception e) {log.warn("Trouble logging assets." , e);}
                 }
             }
@@ -968,7 +969,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         } 
         catch (Exception e) 
         {
-            log.error("Error Reading Pages Log File : {}" , e.getMessage(), e);
+            log.error("Error Reading Pages Log File : {}" , e.getMessage());
+            log.debug(e.getMessage(),e);
         }
     }
 
@@ -992,7 +994,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             {
                 failed = true;
                 qpage.setProcess(ItemWrapper.STATUS.FAIL);
-                log.error("Failed to load and save the page with ID {}" , guid.toString(), e);
+                log.error("Failed to load and save the page with ID {}" , guid);
+                log.debug(e.getMessage(),e);
             }
             
             //Lets try to check in the page here.
@@ -1005,7 +1008,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             }
             catch(Exception e)
             {
-                log.error("Failed to check in the page after processing with ID:{}" , guid.toString(), e);
+                log.error("Failed to check in the page after processing with ID:{}" , guid);
+                log.debug(e.getMessage(),e);
             }
         }
     }
