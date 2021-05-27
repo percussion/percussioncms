@@ -489,7 +489,6 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
         }
         catch (PSInvalidXmlException | IOException | SAXException e)
         {
-            // TODO Auto-generated catch block
             log.error(e.getMessage());
             log.debug(e.getMessage(), e);
         }
