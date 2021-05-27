@@ -157,8 +157,7 @@
                 function() {
                     var menuItem = $(this);
                     menuItem.addClass("perc-simplemenu-title-hover");
-                }).on("mouseleave",
-                function() {
+                }).on("mouseleave", function() {
                     var menuItem = $(this);
                     menuItem.removeClass("perc-simplemenu-title-hover");
                 });

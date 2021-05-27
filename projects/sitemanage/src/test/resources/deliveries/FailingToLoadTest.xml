@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percusssion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<DeliveryServerConfig>
+    <DeliveryServer>
+        <server-type>PRODUCTION</server-type>
+        <connection-url>https://oldscollege-dts-updated.percussion.marketing</connection-url>
+        <user>ps_manager</user>
+        <password encrypted="true">-7a817995ebf59950e59a1641964fdd61</password>
+        <admin-connection-url>https://oldscollege-dts-updated.percussion.marketing:8443</admin-connection-url>
+        <allow-self-signed-certificate>true</allow-self-signed-certificate>
+        <availableServices>
+            <service>perc-form-processor</service>
+            <service>feeds</service>
+            <service>perc-comments-services</service>
+            <service>perc-metadata-services</service>
+            <service>perc-membership-services</service>
+            <service>perc-integrations</service>
+        </availableServices>
+    </DeliveryServer>
+    <DeliveryServer>
+        <server-type>STAGING</server-type>
+        <connection-url>https://oldscollege-dts-updated.percussion.marketing:9443</connection-url>
+        <server-type>STAGING</server-type>
+        <user>ps_manager</user>
+        <password encrypted="true">-7a817995ebf59950e59a1641964fdd61</password>
+        <admin-connection-url>https://oldscollege-dts-updated.percussion.marketing:9443</admin-connection-url>
+        <allow-self-signed-certificate>true</allow-self-signed-certificate>
+        <availableServices>
+            <service>perc-form-processor</service>
+            <service>feeds</service>
+            <service>perc-comments-services</service>
+            <service>perc-metadata-services</service>
+            <service>perc-membership-services</service>
+            <service>perc-integrations</service>
+        </availableServices>
+    </DeliveryServer>
+    <DeliveryServer>
+        <server-type>LICENSE</server-type>
+        <connection-url>https://delivery.percussion.com</connection-url>
+        <user>ps_manager</user>
+        <password encrypted="true">-7cd50422f40e9ee79d8bd0e3478f4621e6e9018044a2518f</password>
+        <admin-connection-url>https://delivery.percussion.com</admin-connection-url>
+        <allow-self-signed-certificate>false</allow-self-signed-certificate>
+        <availableServices>
+            <service>perc-thirdparty-services</service>
+            <service>perc-integrations</service>
+        </availableServices>
+    </DeliveryServer>
+</DeliveryServerConfig>

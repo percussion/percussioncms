@@ -166,7 +166,7 @@
         });
 
         function percTempLibMaximizer() {
-            var ;
+
             if ($("#tabs-1 #perc-temp-lib-expander").hasClass("expander-enabled")) {
                 if ($("#tabs-1 .perc-template-container").hasClass("perc-visible")) {
                     $("#tabs-1 .perc-template-container").removeClass("perc-visible").addClass("perc-hidden");
