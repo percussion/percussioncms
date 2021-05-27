@@ -220,8 +220,8 @@ public class PSDeliveryInfoLoader
 
 
         try(InputStream in = new FileInputStream(configFile)){
-            DeliveryServerConfig config = PSSerializerUtils.unmarshalWithValidation(in, DeliveryServerConfig.class);
-            return config;
+            return  PSSerializerUtils.unmarshalWithValidation(in, DeliveryServerConfig.class);
+
         }
         catch (Exception e)
         {

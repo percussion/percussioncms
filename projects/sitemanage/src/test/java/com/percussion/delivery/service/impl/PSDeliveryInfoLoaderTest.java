@@ -25,6 +25,7 @@
 package com.percussion.delivery.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import com.percussion.rx.delivery.IPSDeliveryErrors;
@@ -124,7 +125,23 @@ public class PSDeliveryInfoLoaderTest
         }
 
     }
-    
+
+    @Test
+    public void testFailingToLoad() throws Exception
+    {
+        //load a properly formatted delivery-servers with staging, production and licensing servers.
+        File tempConfigFile = createTempConfigFileBasedOn(this.getClass().getResourceAsStream("FailingToLoadTest.xml"));
+        try
+        {
+            loader = new PSDeliveryInfoLoader(tempConfigFile);
+        }
+        catch(PSServerConfigException configException)
+        {
+            configException.printStackTrace();
+            assertFalse(configException.getErrorCode() == IPSDeliveryErrors.BAD_DELIVERY_SERVER_CONFIGURATION);
+        }
+
+    }
 
     
     @Test

@@ -99,9 +99,9 @@ $.extend({
         data = eval("(" + data + ")");
         return data;
       };
-      
-      if ( settings.type == "html5" ) {
-        var object = {};
+
+      var object = {};
+      if ( settings.type === "html5" ) {
         $( elem.attributes ).each(function() {
           var name = this.nodeName;
           if(name.match(/^data-/)) name = name.replace(/^data-/, '');
@@ -109,7 +109,7 @@ $.extend({
           object[name] = getObject(this.nodeValue);
         });
       } else {
-        if ( settings.type == "class" ) {
+        if ( settings.type === "class" ) {
           var m = settings.cre.exec( elem.className );
           if ( m )
             data = m[1];
