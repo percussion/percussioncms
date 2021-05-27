@@ -25,6 +25,8 @@
 package com.percussion.tls;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.crypto.Cipher;
 import javax.net.ssl.HttpsURLConnection;
@@ -64,6 +66,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class TLSTester {
+
+    private static final Logger log = LogManager.getLogger(TLSTester.class);
 
     private static String OS = null;
     public static String getOsName()
@@ -231,9 +235,11 @@ public class TLSTester {
            //print_content(con);
 
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
 
@@ -258,13 +264,17 @@ public class TLSTester {
             myTrustStore.store(fo, KEYSTORE_PASS.toCharArray());
         }
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         } catch (KeyStoreException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         } catch (CertificateException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         return;
     }
@@ -286,7 +296,8 @@ public class TLSTester {
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+                    log.error(e.getMessage());
+                    log.debug(e.getMessage(), e);
             }
 
         }
@@ -315,9 +326,11 @@ public class TLSTester {
                 }
 
             } catch (SSLPeerUnverifiedException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
+                log.debug(e.getMessage(), e);
             } catch (IOException e){
-                e.printStackTrace();
+                log.error(e.getMessage());
+                log.debug(e.getMessage(), e);
             }
 
         }

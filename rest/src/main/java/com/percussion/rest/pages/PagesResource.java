@@ -34,6 +34,8 @@ import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.annotations.*;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
@@ -54,6 +56,9 @@ import java.util.regex.Pattern;
 @Api(value = "/pages", description = "Page Operations")
 public class PagesResource
 {
+
+    private static final Logger log = LogManager.getLogger(PagesResource.class);
+
     @Autowired
     private IPageAdaptor pageAdaptor;
     
@@ -389,7 +394,8 @@ public class PagesResource
 		     out = new PSCSVStreamingOutput(rows);
 		
 		} catch (Exception e) {
-			e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
 			return Response.serverError().build();
 		}
 		

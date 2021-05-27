@@ -205,7 +205,8 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         }
         catch (UnsupportedEncodingException e1)
         {
-            e1.printStackTrace();
+            log.error(e1.getMessage());
+            log.debug(e1.getMessage(), e1);
         }
         Collection<Asset> filteredAssets = new ArrayList<Asset>();
         // If the type is requested, collect those then filter by path if
@@ -630,7 +631,8 @@ try{
         catch (Exception e)
         {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
 
         return out;

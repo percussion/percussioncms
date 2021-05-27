@@ -37,6 +37,8 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -79,6 +81,9 @@ import static org.springframework.util.CollectionUtils.isEmpty;
  */
 public class PSSiteConfigUtils
 {
+
+    private static final Logger log = LogManager.getLogger(PSSiteConfigUtils.class);
+
     /**
      * Flag file extension. If a file called ${sitename}.tch is found inside the
      * log folder, we know that we need to publish the configurations files.
@@ -981,12 +986,15 @@ public class PSSiteConfigUtils
 
             writeToXmlFile(securityData, document);
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
 
         } catch (SAXException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
 
     }

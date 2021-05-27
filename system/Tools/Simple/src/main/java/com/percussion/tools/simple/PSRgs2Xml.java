@@ -24,6 +24,9 @@
 
 package com.percussion.tools.simple;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -44,7 +47,9 @@ import java.util.StringTokenizer;
  */
 public class PSRgs2Xml
 {
-   
+
+   private static final Logger log = LogManager.getLogger(PSRgs2Xml.class);
+
    /**
     * Construct a new converter.
     * @param rgsPath path to the rgs file to be converted, cannot be 
@@ -81,7 +86,8 @@ public class PSRgs2Xml
        }
        catch(IOException e)
        {
-          e.printStackTrace();
+          log.error(e.getMessage());
+          log.debug(e.getMessage(), e);
        }
        finally
        {
@@ -94,7 +100,8 @@ public class PSRgs2Xml
           }
           catch(IOException io)
           {
-             io.printStackTrace();   
+             log.error(io.getMessage());
+             log.debug(io.getMessage(), io);
           }
        }
    }

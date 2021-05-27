@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class is used to copy a workbench plugin's MANIFEST.MF file to the
@@ -50,6 +52,9 @@ import org.apache.commons.io.IOUtils;
  */
 public class PSCopyManifest
 {
+
+   private static final Logger log = LogManager.getLogger(PSCopyManifest.class);
+
    /**
     * Copy MANIFEST.MF after performing necessary clean-up.
     *
@@ -236,7 +241,8 @@ public class PSCopyManifest
       }
       catch(Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
          System.exit(1);
       }
    }

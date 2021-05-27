@@ -37,9 +37,14 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
 import junit.framework.TestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSRestClientTestCase
 {
+
+    private static final Logger log = LogManager.getLogger(PSRestClientTestCase.class);
+
     protected static final Client c;
     //private static final DefaultApacheHttpClientConfig cc = new DefaultApacheHttpClientConfig();
 
@@ -68,7 +73,8 @@ public class PSRestClientTestCase
             }
             } catch (Exception e)
             {
-                e.printStackTrace();
+                log.error(e.getMessage());
+                log.debug(e.getMessage(), e);
             }
        
         

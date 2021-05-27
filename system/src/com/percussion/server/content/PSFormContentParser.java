@@ -32,6 +32,8 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestParsingException;
 import com.percussion.server.PSServer;
 import com.percussion.util.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import java.io.*;
@@ -49,6 +51,8 @@ import java.util.*;
  */
 public class PSFormContentParser extends PSContentParser
 {
+
+   private static final Logger log = LogManager.getLogger(PSFormContentParser.class);
 
    /**
     * Parse the specified input stream and add it to the appropriate
@@ -154,7 +158,8 @@ public class PSFormContentParser extends PSContentParser
       {
          // This should never happen as we are supplying the proper
          //character encoding.
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }// This should never happen as we are supplying the non-null
 //String. There is no real IO.
 

@@ -33,6 +33,8 @@ import java.util.List;
 
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -43,6 +45,8 @@ import org.junit.experimental.categories.Category;
 @Category(IntegrationTest.class)
 public class PSImportLogDaoTest extends ServletTestCase
 {
+
+    private static final Logger log = LogManager.getLogger(PSImportLogDaoTest.class);
     
     @Override
     protected void setUp() throws Exception
@@ -133,7 +137,8 @@ public class PSImportLogDaoTest extends ServletTestCase
             assertNotNull(found);
             assertEquals(entry1.getLogEntryId(), found.getLogEntryId());
         } catch (IPSGenericDao.SaveException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         } finally
         {
             // clean up

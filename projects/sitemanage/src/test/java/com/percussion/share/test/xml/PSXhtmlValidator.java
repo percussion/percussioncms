@@ -39,6 +39,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
@@ -60,6 +62,9 @@ import org.xml.sax.SAXParseException;
  * @see PSMatchers#validXhtml()
  */
 public class PSXhtmlValidator {
+
+    private static final Logger log = LogManager.getLogger(PSXhtmlValidator.class);
+
     private DocumentBuilder parser;
     private PSXhtmlErrorHandler handler = new PSXhtmlErrorHandler();
 
@@ -102,7 +107,8 @@ public class PSXhtmlValidator {
             parser.setEntityResolver(new PSXhtmlEntityResolver());
             parser.setErrorHandler(handler);
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
     

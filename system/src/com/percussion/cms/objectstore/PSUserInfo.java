@@ -34,6 +34,8 @@ import com.percussion.util.PSHttpConnection;
 import com.percussion.util.PSRemoteAppletRequester;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -66,6 +68,8 @@ import java.util.Objects;
  */
 public class PSUserInfo implements IPSCmsComponent
 {
+
+   private static Logger log = LogManager.getLogger(PSUserInfo.class);
    /**
     * Default constructor. Does nothing. Must be followed by call to fromXml()
     * method. This is useful only to build an object in the fly means the state
@@ -101,7 +105,8 @@ public class PSUserInfo implements IPSCmsComponent
       }
       catch(Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new PSCmsException(1000, e.getMessage());
       }
    }
@@ -381,7 +386,8 @@ public class PSUserInfo implements IPSCmsComponent
       }
       catch(Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 

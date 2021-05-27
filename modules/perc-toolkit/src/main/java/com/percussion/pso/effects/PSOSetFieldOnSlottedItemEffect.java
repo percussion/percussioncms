@@ -332,6 +332,8 @@ public class PSOSetFieldOnSlottedItemEffect implements IPSEffect{
 										}
 									} catch (PSErrorException e) {
 										log.debug("Error processing slot relationships for item " + "" );
+										log.error(e.getMessage());
+										log.debug(e.getMessage(), e);
 									}finally{} 
 								}
 								
@@ -341,17 +343,21 @@ public class PSOSetFieldOnSlottedItemEffect implements IPSEffect{
 								clearProcessedFlag(request);
 								log.debug("Item updated.");
 							}else{
-								log.error("Unable to locate owner for relationship. Content ID:" + rel.getOwner().getId() + " not found!");
+								log.error("Unable to locate owner for relationship. Content ID: {} not found!", rel.getOwner().getId());
 							}
 						} catch (PSErrorResultsException e) {
-							log.error(e);
+							log.error(e.getMessage());
+							log.debug(e.getMessage(), e);
 						} catch (FileNotFoundException e) {
-							log.error(e);
+							log.error(e.getMessage());
+							log.debug(e.getMessage(), e);
 						} catch (IOException e) {
-							log.error(e);
+							log.error(e.getMessage());
+							log.debug(e.getMessage(), e);
 						} catch (PSCmsException | PSInvalidContentTypeException e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
+							log.error(e.getMessage());
+							log.debug(e.getMessage(),e);
 						} finally{}
 				}
 			

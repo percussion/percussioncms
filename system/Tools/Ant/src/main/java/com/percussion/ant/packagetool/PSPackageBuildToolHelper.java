@@ -26,6 +26,8 @@ package com.percussion.ant.packagetool;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,6 +42,9 @@ import java.util.*;
  */
 public class PSPackageBuildToolHelper
 {
+
+    private static final Logger log = LogManager.getLogger(PSPackageBuildToolHelper.class);
+
     /**
      * Files in the tempDirectory are with long paths the way in the packages.
      * Those get processed and flat file names are stored to destinationDirectory
@@ -473,7 +478,8 @@ public class PSPackageBuildToolHelper
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         finally
         {

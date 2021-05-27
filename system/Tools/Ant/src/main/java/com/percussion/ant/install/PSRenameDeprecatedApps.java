@@ -27,6 +27,8 @@ package com.percussion.ant.install;
 import com.percussion.install.PSLogger;
 import com.percussion.install.PSPreUpgradePluginDeprecatedSysApps;
 import com.percussion.util.PSProperties;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,6 +63,7 @@ import java.util.HashSet;
  */
 public class PSRenameDeprecatedApps extends PSAction
 {
+   private static final Logger log = LogManager.getLogger(PSRenameDeprecatedApps.class);
    // see base class
    @Override
    public void execute()
@@ -75,7 +78,8 @@ public class PSRenameDeprecatedApps extends PSAction
       catch(Exception e)
       {
          PSLogger.logError(e.getMessage());
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 

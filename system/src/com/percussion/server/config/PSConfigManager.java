@@ -34,6 +34,8 @@ import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -49,6 +51,9 @@ import java.util.Properties;
  */
 public class PSConfigManager
 {
+
+   private static final Logger log = LogManager.getLogger(PSConfigManager.class);
+
    /**
     * Private ctor to enforce the singleton design pattern. Creates a 
     * configuration manager. Use {@link #getInstance()} to obtain the singleton 
@@ -590,7 +595,8 @@ public class PSConfigManager
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          String[] args = {name, e.getLocalizedMessage()};
          throw new PSServerConfigException(
                IPSServerErrors.ERROR_LOAD_CONFIGS, args);

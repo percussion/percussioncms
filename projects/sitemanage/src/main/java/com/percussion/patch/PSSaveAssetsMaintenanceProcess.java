@@ -88,8 +88,8 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -103,7 +103,7 @@ import org.jsoup.select.Elements;
 public class PSSaveAssetsMaintenanceProcess implements Runnable,
         IPSMaintenanceProcess, IPSNotificationListener {
 
-    public static Log log = LogFactory.getLog(PSSaveAssetsMaintenanceProcess.class);
+    public static final Logger log = LogManager.getLogger(PSSaveAssetsMaintenanceProcess.class);
     static final String MAINT_PROC_NAME = PSSaveAssetsMaintenanceProcess.class.getName();
     private IPSMaintenanceManager maintenanceManager;
     private IPSItemWorkflowService itemWorkflowService;
@@ -232,7 +232,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             }
             catch(SQLException e)
             {
-                e.printStackTrace();
+                log.error(e.getMessage());
+                log.debug(e.getMessage(), e);
                 log.warn(e.getMessage());
                 return false;
             }
@@ -260,8 +261,9 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         try {
             result = stat.executeQuery(sqlStat);
         } catch (Exception e) {
-            e.printStackTrace();
-            log.error("executeSqlStatement : " + e.getMessage());               
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
+            log.error("executeSqlStatement : {}", e.getMessage());
         } 
         return result;
     }
@@ -443,8 +445,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         }
         catch(Exception e)
         {
-            e.printStackTrace();
             log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         return list;
     }
@@ -689,8 +691,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         }
         catch(Exception e)
         {
-            e.printStackTrace();
             log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         return list;
     }
