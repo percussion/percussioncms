@@ -165,15 +165,6 @@ public class PSHtmlParameterTree
          }
       }
 
-      // System.out.println("Generated XML from HTML:");
-      // try {
-      //    PSXmlDocumentBuilder.write(doc, System.out);
-      // } catch (java.io.IOException e) {
-      //    log.error(e.getMessage());
-      //    log.debug(e.getMessage(), e);
-      // }
-      // System.out.println();
-
       return doc;
    }
 

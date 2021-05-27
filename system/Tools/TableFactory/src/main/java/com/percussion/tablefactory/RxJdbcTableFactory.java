@@ -2950,8 +2950,8 @@ System.out.println("NULL Values not allowed as Update Key");
             }
             catch (Exception e)
             {
-//          log.error(e.getMessage());
-//          log.debug(e.getMessage(), e);// not worried about this outcome
+              log.error(e.getMessage());
+              log.debug(e.getMessage(), e);
             }
          }
 
@@ -2983,8 +2983,8 @@ System.out.println("NULL Values not allowed as Update Key");
             }
             catch (Exception e)
             {
-//          log.error(e.getMessage());
-//          log.debug(e.getMessage(), e);;// not worried about this outcome
+                log.error(e.getMessage());
+                log.debug(e.getMessage(), e);
             }
          }
 

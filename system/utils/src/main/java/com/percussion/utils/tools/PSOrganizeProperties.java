@@ -370,7 +370,6 @@ public class PSOrganizeProperties
       }
       catch (IOException e)
       {
-         // TODO Auto-generated catch block
          log.error(e.getMessage());
          log.debug(e.getMessage(), e);
       }
