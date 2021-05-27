@@ -66,10 +66,10 @@ public class PSGeneratePreviewLink extends com.percussion.extension.PSSimpleJava
             String msg1 = "Failed to generate friendly URL for content ID = " + id;
             IPSCmsObjectMgr cmsMgr = PSCmsObjectMgrLocator.getObjectManager();
             if (cmsMgr.findItemEntry(id.getUUID()) != null) {
-                log.debug(msg1 + " as the item does not exist.");
+                log.debug("{} as the item does not exist.", msg1);
             }
             else {
-                log.debug(msg1 + " as the item is not under a folder.");
+                log.debug("{} as the item is not under a folder.", msg1);
             }
             
             return "";            
