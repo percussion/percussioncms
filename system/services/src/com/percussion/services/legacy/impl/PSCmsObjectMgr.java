@@ -680,17 +680,23 @@ public class PSCmsObjectMgr
     * 
     * @see com.percussion.services.legacy.IPSCmsObjectMgr#loadComponentSummary(int)
     */
-   public PSComponentSummary loadComponentSummary(int contentid)
+   public PSComponentSummary loadComponentSummary(int contentid,boolean refresh)
    {
       Session s = sessionFactory.getCurrentSession();
-
-         PSComponentSummary sum = (PSComponentSummary) s.get(PSComponentSummary.class, contentid);
-         fixupLocator(sum);
-         return sum;
-
+      PSComponentSummary sum = (PSComponentSummary) s.get(PSComponentSummary.class, contentid);
+      if(refresh) {
+          s.refresh(sum);
       }
+       fixupLocator(sum);
+       return sum;
 
-   /**
+   }
+    public PSComponentSummary loadComponentSummary(int contentid)
+    {
+        return loadComponentSummary(contentid,false);
+    }
+
+    /**
     * Call this on all finders to cleanup component summaries.
     * 
     * @param summaries the summaries to modify, assumed never <code>null</code>

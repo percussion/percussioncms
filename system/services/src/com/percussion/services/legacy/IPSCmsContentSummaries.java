@@ -54,4 +54,6 @@ public interface IPSCmsContentSummaries
     * found.
     */
    PSComponentSummary loadComponentSummary(int id);
+   PSComponentSummary loadComponentSummary(int id,boolean refresh);
+
 }

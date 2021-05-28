@@ -276,9 +276,13 @@
 
             <if>
                 <and>
+                    <!-- Figure out if upgrading from 5.3 or from later versions based on that create new Server.xml -->
                     <available file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml"/>
                     <not>
                         <available file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml.5.3"/>
+                    </not>
+                    <not>
+                        <resourcecontains resource="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" substring="${http.SSLEnabled}" />
                     </not>
                     <equals arg1="@{upgrade}" arg2="true"/>
                 </and>
