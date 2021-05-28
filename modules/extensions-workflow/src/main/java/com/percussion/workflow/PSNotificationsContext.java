@@ -24,6 +24,8 @@
 package com.percussion.workflow;
 
 import com.percussion.tablefactory.PSJdbcTableFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -40,6 +42,9 @@ import javax.naming.NamingException;
 public class PSNotificationsContext extends PSAbstractWorkflowContext
 implements IPSNotificationsContext
 {
+
+   private static final Logger log = LogManager.getLogger(PSNotificationsContext.class);
+
    /**
     * Constructor specifying the workflowID and notification ID.
     *
@@ -106,7 +111,8 @@ implements IPSNotificationsContext
       }
       catch(IOException ioe)
       {
-         ioe.printStackTrace();
+         log.error(ioe.getMessage());
+         log.debug(ioe.getMessage());
       }
    }
 

@@ -335,7 +335,8 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
             }
          }
       } catch (PSCmsException e) {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       return null;
    }

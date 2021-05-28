@@ -150,7 +150,8 @@ public class PSDtdTree implements Serializable, PSDtdTreeVisitor, Cloneable
       }
       catch (Throwable t)
       {
-         t.printStackTrace();
+          log.error(t.getMessage());
+          log.debug(t.getMessage(), t);
       }
    }
 
@@ -400,7 +401,8 @@ public class PSDtdTree implements Serializable, PSDtdTreeVisitor, Cloneable
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+          log.error(e.getMessage());
+          log.debug(e.getMessage(), e);
          throw new PSCatalogException(
             IPSServerErrors.XML_PARSER_SAX_ERROR,
             e.toString());

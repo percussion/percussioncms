@@ -20,8 +20,8 @@ import static org.junit.Assert.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,8 +36,7 @@ public class PublishEditionServiceTest
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory
-         .getLog(PublishEditionServiceTest.class);
+   private static final Logger log = LogManager.getLogger(PublishEditionServiceTest.class);
 
    Mockery context; 
    IPSGuidManager gmgr;
@@ -92,8 +91,9 @@ public class PublishEditionServiceTest
       }
       catch (IllegalArgumentException iae) 
       {
-         //iae.printStackTrace(); 
          //this is expected
+         log.error(iae.getMessage());
+         log.debug(iae.getMessage(), iae);
       }
       
       try

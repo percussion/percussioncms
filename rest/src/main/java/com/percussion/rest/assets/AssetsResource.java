@@ -33,9 +33,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tika.config.TikaConfig;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.io.TikaInputStream;
@@ -84,7 +84,7 @@ public class AssetsResource
     
     private Pattern p = Pattern.compile("^\\/?([^\\/]+)(\\/(.*?))??(\\/([^\\/]+))?$");
 
-    public static Log log = LogFactory.getLog(AssetsResource.class);
+    public static Logger log = LogManager.getLogger(AssetsResource.class);
 
     private static class TikaConfigHolder {
         public static final TikaConfig INSTANCE = TikaConfig.getDefaultConfig();
@@ -134,7 +134,8 @@ public class AssetsResource
 			 rows = assetAdaptor.previewAssetImport(uriInfo.getBaseUri(), osPath, assetPath, replace, onlyIfDifferent, autoApprove);
 			 out = new PSCSVStreamingOutput(rows);
 		} catch (Exception e) {
-			e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
 			return Response.serverError().build();
 		}
         
@@ -370,7 +371,8 @@ public class AssetsResource
 		
 		} catch (Exception e) {
 		    log.error("Error occurred while generating Non ADA compliant images report, cause: {}", e);
-			//e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
 			return Response.serverError().build();
 		}
 		// check for empty resultset, if empty then return No Content message | CMS-3216
@@ -409,7 +411,8 @@ public class AssetsResource
 		
 		} catch (Exception e) {
 		    log.error("Error occurred while generating Non ADA compliant files report, cause: {}", e);
-			//e.printStackTrace(); //added in logger, so not required here
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
 			return Response.serverError().build();
 		}
         // check for empty resultset, if empty then return No Content message | CMS-3216

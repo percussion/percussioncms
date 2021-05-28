@@ -84,12 +84,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.experimental.categories.Category;
 
 @Category(IntegrationTest.class)
 public class PSAssetServiceTest extends PSServletTestCase
 {
+
+    private static final Logger log = LogManager.getLogger(PSAssetServiceTest.class);
+
     private static final String tempPrefix = "TemplateTest";
     private PSSiteDataServletTestCaseFixture fixture;
     private String templateId;
@@ -120,7 +126,8 @@ public class PSAssetServiceTest extends PSServletTestCase
 			
 		} catch (PSReportFailedToRunException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
 		}
     }
     

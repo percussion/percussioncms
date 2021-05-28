@@ -27,6 +27,8 @@ package com.percussion.ant.packagetool;
 import com.percussion.ant.PSPerforceHelper;
 import com.perforce.api.Env;
 import com.perforce.api.PerforceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.taskdefs.optional.perforce.P4Add;
 import org.apache.tools.ant.types.FileSet;
@@ -93,6 +95,9 @@ import java.io.File;
  */
 public class PSP4PackageAdd extends P4Add
 {
+
+   private static final Logger log = LogManager.getLogger(PSP4PackageAdd.class);
+
    /**
     * @param tempPath the tempPath to set
     */
@@ -165,7 +170,8 @@ public class PSP4PackageAdd extends P4Add
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 

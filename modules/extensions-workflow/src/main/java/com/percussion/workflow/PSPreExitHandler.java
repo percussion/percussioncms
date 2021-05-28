@@ -30,6 +30,8 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.tools.PrintNode;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.StringWriter;
@@ -40,6 +42,9 @@ import java.io.StringWriter;
  */
 public class PSPreExitHandler implements IPSRequestPreProcessor
 {
+
+  private static final Logger log = LogManager.getLogger(PSPreExitHandler.class);
+
   /**
   * Default constructor, as requiredL for use by IPSExtensionHandler.
   */
@@ -89,7 +94,8 @@ public class PSPreExitHandler implements IPSRequestPreProcessor
       }
       catch (Exception e)
       {
-        e.printStackTrace();
+          log.error(e.getMessage());
+          log.debug(e.getMessage(), e);
       }
       System.out.println("*** Ends Here ***");
     }

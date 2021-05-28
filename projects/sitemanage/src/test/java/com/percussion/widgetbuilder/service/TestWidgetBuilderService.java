@@ -42,12 +42,17 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.cactus.ServletTestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 @Category(IntegrationTest.class)
 public class TestWidgetBuilderService extends ServletTestCase
 {
+
+    private static final Logger log = LogManager.getLogger(TestWidgetBuilderService.class);
+
     IPSWidgetBuilderService service;
     
     public void setService(IPSWidgetBuilderService service)
@@ -201,7 +206,8 @@ public class TestWidgetBuilderService extends ServletTestCase
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             fail("Exception: " + e.getLocalizedMessage());
         }
         finally

@@ -24,6 +24,9 @@
 
 package com.percussion.wrapper;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
@@ -35,6 +38,8 @@ import java.util.concurrent.TimeUnit;
 import static com.percussion.wrapper.JettyStartUtils.*;
 
 public abstract class StartWrapper {
+
+    private static final Logger log = LogManager.getLogger(StartWrapper.class);
 
     protected static final String FS = File.separator;
     protected static final String CPS = System.getProperty("path.separator");
@@ -468,7 +473,8 @@ public abstract class StartWrapper {
                 watcher = myDir.getFileSystem().newWatchService();
                 myDir.register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
+                log.debug(e.getMessage(), e);
             }
         }
 
