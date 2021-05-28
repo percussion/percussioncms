@@ -134,7 +134,7 @@
 
         <if>
             <and>
-                <isfalse value="${install.prod.dts}"/>
+                <istrue value="${install.prod.dts}"/>
                 <istrue value="${stage.dts.upgrade}"/>
             </and>
             <then>
@@ -378,7 +378,7 @@
 
                     <echo>Backing up existing DTS to ${new.backup.dir} ...</echo>
 
-                    <copy todir="${new.backup.dir}" preservelastmodified="true" overwrite="true" force="true" verbose="true">
+                    <copy todir="${new.backup.dir}${staging.dir}" preservelastmodified="true" overwrite="true" force="true" verbose="true">
                         <fileset dir="${install.dir}${staging.dir}/Deployment" />
                     </copy>
 
@@ -425,7 +425,7 @@
                     <!-- Restore customer configuration files -->
                     <echo>Installing new DTS files.2..</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/conf/perc" overwrite="true" verbose="true" failonerror="false">
-                        <fileset dir="${new.backup.dir}/Server/conf/perc">
+                        <fileset dir="${new.backup.dir}${staging.dir}/Server/conf/perc">
                             <include name="*.properties"/>
                             <include name="*.xml"/>
                         </fileset>
@@ -433,10 +433,10 @@
 
                     <echo>Restore Server.xml... if perc_catalina is already created</echo>
                     <if>
-                        <available file="${new.backup.dir}/Server/conf/perc/perc-catalina.properties"/>
+                        <available file="${new.backup.dir}${staging.dir}/Server/conf/perc/perc-catalina.properties"/>
                         <then>
                             <copy todir="${install.dir}${staging.dir}/Deployment/Server/conf" overwrite="true" verbose="true" failonerror="false">
-                                <fileset dir="${new.backup.dir}/Server/conf">
+                                <fileset dir="${new.backup.dir}${staging.dir}/Server/conf">
                                     <include name="server.xml"/>
                                 </fileset>
                             </copy>
@@ -487,21 +487,21 @@
                     <echo>Restore mysql-connector if present in Server/common/lib.....................</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/common/lib"
                           verbose="true" failonerror="false">
-                        <fileset dir="${new.backup.dir}/Server/common/lib">
+                        <fileset dir="${new.backup.dir}${staging.dir}/Server/common/lib">
                             <include name="mysql-connector*.jar"/>
                         </fileset>
                     </copy>
                     <echo>Restore mysql-connector if present in Server/perc-lib again on re-upgrading upgraded environment............................................</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/common/lib"
                           verbose="true" failonerror="false">
-                        <fileset dir="${new.backup.dir}/Server/perc-lib">
+                        <fileset dir="${new.backup.dir}${staging.dir}/Server/perc-lib">
                             <include name="mysql-connector*.jar"/>
                         </fileset>
                     </copy>
                     <echo>Restore mysql-connector if present in Server/lib re-upgrading upgraded environment............................................</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/common/lib"
                           verbose="true" failonerror="false">
-                        <fileset dir="${new.backup.dir}/Server/lib">
+                        <fileset dir="${new.backup.dir}${staging.dir}/Server/lib">
                             <include name="mysql-connector*.jar"/>
                         </fileset>
                     </copy>
