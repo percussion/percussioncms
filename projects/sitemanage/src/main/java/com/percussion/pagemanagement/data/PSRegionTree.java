@@ -68,24 +68,27 @@ public class PSRegionTree extends PSRegionWidgetAssociations
     public List<PSRegion> getDescendentRegions()
     {
         PSRegion outer = getOuterRegion();
-        if (outer == null)
+        if (outer == null) {
             return Collections.emptyList();
+        }
         
         return outer.getAllRegions();
     }
 
     private PSRegion getOuterRegion()
     {
-        if (rootRegion == null)
+        if (rootRegion == null) {
             return null;
+        }
         
         PSRegion outerRegion = null;
         for (PSRegionNode node : rootRegion.getChildren())
         {
             if (node instanceof PSRegion)
             {
-                if (outerRegion != null)
+                if (outerRegion != null) {
                     throw new IllegalStateException("Region Tree must have only one outer region, but there are more than one.");
+                }
                 
                 outerRegion = (PSRegion) node;
             }

@@ -227,10 +227,12 @@ public class PSPubServerService implements IPSPubServerService
 
     @Override
     public PSPublishServerInfo getPubServer(String siteId, String serverId) throws PSPubServerServiceException {
-        if (isBlank(siteId))
+        if (isBlank(siteId)) {
             throw new IllegalArgumentException("Site id cannot be blank.");
-        if (isBlank(serverId))
+        }
+        if (isBlank(serverId)) {
             throw new IllegalArgumentException("Server id cannot be blank.");
+        }
 
         PSPublishServerInfo serverInfo = null;
         PSPubServer pubServer = null;
@@ -274,8 +276,9 @@ public class PSPubServerService implements IPSPubServerService
     @Override
     public List<PSPublishServerInfo> getPubServerList(String siteId) throws PSPubServerServiceException
     {
-        if (isBlank(siteId))
+        if (isBlank(siteId)) {
             throw new IllegalArgumentException("Site id cannot be blank.");
+        }
 
         List<PSPublishServerInfo> serversList = new ArrayList<>();
         try
@@ -314,8 +317,9 @@ public class PSPubServerService implements IPSPubServerService
     @Override
     public synchronized PSPublishServerInfo createPubServer(String siteId, String serverName, PSPublishServerInfo pubServerInfo)
             throws PSPubServerServiceException, PSDataServiceException, PSNotFoundException {
-        if (isBlank(siteId))
+        if (isBlank(siteId)) {
             throw new IllegalArgumentException("Site id cannot be blank.");
+        }
 
         convertPasswordFromBase64(pubServerInfo);
 
@@ -379,12 +383,14 @@ public class PSPubServerService implements IPSPubServerService
              *
              */
             boolean clearIncrementalQueue = false;
-            if(currentDefaultServer != null)
+            if(currentDefaultServer != null) {
                 clearIncrementalQueue = updatePreviousDefaultPubServer(currentDefaultServer, server, site, isDefaultServer);
+            }
 
             pubServerDao.savePubServer(server);
-            if (dbPubServer != null)
+            if (dbPubServer != null) {
                 serverFileService.saveDatabasePubServer(dbPubServer);
+            }
 
             //Create staging ondemand editions
             if(PSPubServer.STAGING.equalsIgnoreCase( server.getServerType()))
@@ -409,10 +415,12 @@ public class PSPubServerService implements IPSPubServerService
 
     @Override
     public PSPublishServerInfo updatePubServer(String siteId, String serverId, PSPublishServerInfo pubServerInfo) throws PSPubServerServiceException, PSDataServiceException, PSNotFoundException {
-        if (isBlank(siteId))
+        if (isBlank(siteId)) {
             throw new IllegalArgumentException("Site id cannot be blank.");
-        if (isBlank(serverId))
+        }
+        if (isBlank(serverId)) {
             throw new IllegalArgumentException("Server id cannot be blank.");
+        }
 
         boolean locked = tryToLockSite(siteId);
 
@@ -447,8 +455,9 @@ public class PSPubServerService implements IPSPubServerService
 
             server.setName(newServerName);
 
-            if (pubServerInfo.getDescription() != null)
+            if (pubServerInfo.getDescription() != null) {
                 server.setDescription(pubServerInfo.getDescription().trim());
+            }
 
             String oldType = server.getPublishType();
             boolean isDefaultServer = pubServerInfo.getIsDefault() ? true: false;
@@ -482,13 +491,15 @@ public class PSPubServerService implements IPSPubServerService
             if (!server.isSamePublish(oldServer))
             {
                 server.setHasFullPublisehd(false);
-                if (isDefaultServer)
+                if (isDefaultServer) {
                     clearIncrementalQueue = true;
+                }
             }
 
             String error = updateDBConfigFiles(site, oldType, currentServerName, newServerName, pubServerInfo);
-            if (error != null)
+            if (error != null) {
                 throw new PSPubServerServiceException(error);
+            }
 
             pubServerDao.savePubServer(server);
 
@@ -534,7 +545,8 @@ public class PSPubServerService implements IPSPubServerService
         }
         catch (Exception e)
         {
-            log.error("Failed to clear the incremental queue for site: " + site.getName(), e);
+            log.error("Failed to clear the incremental queue for site: {}, Error: {}" , site.getName(), e.getMessage());
+            log.debug(e.getMessage(),e);
         }
     }
 
@@ -546,8 +558,9 @@ public class PSPubServerService implements IPSPubServerService
     private String getPubServerName(String serverName) throws PSPubServerServiceException {
         serverName = StringUtils.trim(serverName);
 
-        if (StringUtils.isBlank(serverName))
+        if (StringUtils.isBlank(serverName)) {
             throw new PSPubServerServiceException("The server name cannot be empty.");
+        }
 
         return serverName;
     }
@@ -561,21 +574,25 @@ public class PSPubServerService implements IPSPubServerService
             IPSSite site = siteMgr.findSite(getSiteGuid(siteId));
             PSPubServer pubServer = pubServerDao.findPubServer(getPubServerGuid(serverId));
 
-            if (pubServer == null)
+            if (pubServer == null) {
                 throw new PSPubServerServiceException("The Server you have selected doesn't exist in the system. Please refresh and try again.");
+            }
 
-            if (site == null)
+            if (site == null) {
                 throw new PSPubServerServiceException("The Site you have selected doesn't exist in the system. Please refresh and try again.");
+            }
 
 
-            if (site.getDefaultPubServer() == pubServer.getServerId())
+            if (site.getDefaultPubServer() == pubServer.getServerId()) {
                 throw new PSPubServerServiceException("The server cannot be deleted because it is the default server.");
+            }
 
             List<PSSitePublishJob> jobs = statusService.getCurrentJobsBySite(siteId);
             for (PSSitePublishJob job : jobs)
             {
-                if (pubServer.getServerId() == job.getPubServerId())
+                if (pubServer.getServerId() == job.getPubServerId()) {
                     throw new PSPubServerServiceException("The server is being used by other user and cannot be deleted.");
+                }
             }
             if(PSPubServer.STAGING.equalsIgnoreCase( pubServer.getServerType()))
             {
@@ -587,8 +604,9 @@ public class PSPubServerService implements IPSPubServerService
         }
         finally
         {
-            if (locked)
+            if (locked) {
                 tryToUnlockSite(siteId);
+            }
         }
     }
 
@@ -601,8 +619,9 @@ public class PSPubServerService implements IPSPubServerService
         notNull(siteId);
 
         List<PSPubServer> pubServers = pubServerDao.findPubServersBySite(siteId);
-        if (pubServers == null)
+        if (pubServers == null) {
             return;
+        }
 
         for (PSPubServer pubServer : pubServers)
         {
@@ -634,8 +653,9 @@ public class PSPubServerService implements IPSPubServerService
     @Override
     public Boolean isDefaultServerModified(String siteId)
     {
-        if (isBlank(siteId))
+        if (isBlank(siteId)) {
             throw new IllegalArgumentException("Site id cannot be blank.");
+        }
 
         IPSSite site = siteMgr.findSite(getSiteGuid(siteId));
 
@@ -664,7 +684,8 @@ public class PSPubServerService implements IPSPubServerService
         }
         catch(Exception e)
         {
-            log.error("The site " + siteId + "does not exist.");
+            log.error("The site {} does not exist. Error: {}" , siteId, e.getMessage());
+            log.debug(e.getMessage(),e);
         }
 
         if (publishType.equalsIgnoreCase(PUBLISH_FILE_TYPE) && driver.equalsIgnoreCase(DRIVER_LOCAL))
@@ -688,8 +709,9 @@ public class PSPubServerService implements IPSPubServerService
         if (site != null && type != null)
         {
             defaultFolderLocation = siteDataService.getDefaultPublishingRoot(site, type, "");
-            if( isStaging )
-                defaultFolderLocation = defaultFolderLocation.replace("Deployment","Staging/Deployment");
+            if( isStaging ) {
+                defaultFolderLocation = defaultFolderLocation.replace("Deployment", "Staging/Deployment");
+            }
         }
 
         return normalizePath(defaultFolderLocation);
@@ -739,8 +761,9 @@ public class PSPubServerService implements IPSPubServerService
             throw new PSPubServerServiceException("");
         }
         PSPubServer server = pubServerDao.createServer(site);
-        if(server.getProperties() != null)
+        if(server.getProperties() != null) {
             server.getProperties().clear();
+        }
         server.setPublishType(PublishType.amazon_s3.toString());
         PSPublisherInfo pubInfo = siteConfig.getSiteConfig().getPublisherInfo();
         server.addProperty(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, pubInfo.getBucketName());
@@ -820,8 +843,9 @@ public class PSPubServerService implements IPSPubServerService
                 didChange = didChange | setFolderProperty(pubServer, site, serverRoot, false, null, true);
 
                 // if this has been changed, we need to require a new full publish
-                if (didChange)
+                if (didChange) {
                     pubServer.setHasFullPublisehd(false);
+                }
 
                 pubServerDao.savePubServer(pubServer);
             }
@@ -850,8 +874,9 @@ public class PSPubServerService implements IPSPubServerService
 
         pubServerDao.deletePubServer(pubServer);
 
-        if (!equalsIgnoreCase(pubServer.getPublishType(), PublishType.database.name()))
+        if (!equalsIgnoreCase(pubServer.getPublishType(), PublishType.database.name())) {
             return;
+        }
 
         try
         {
@@ -920,8 +945,9 @@ public class PSPubServerService implements IPSPubServerService
         //Grab old password for FTP in case we need it
         PSPubServerProperty oldPasswordProperty = server.getProperty(IPSPubServerDao.PUBLISH_PASSWORD_PROPERTY);
 
-        if (server.getProperties() != null)
+        if (server.getProperties() != null) {
             server.getProperties().clear();
+        }
 
         setPasswordProperty(server, pubServerInfo, oldPasswordProperty);
 
@@ -1214,8 +1240,9 @@ public class PSPubServerService implements IPSPubServerService
     {
         for (PSPubServerProperty property : properties)
         {
-            if (property.getName().equalsIgnoreCase(key))
+            if (property.getName().equalsIgnoreCase(key)) {
                 return property.getValue();
+            }
         }
         return null;
     }
@@ -1223,8 +1250,9 @@ public class PSPubServerService implements IPSPubServerService
     {
         for (PSPublishServerProperty property : properties)
         {
-            if (property.getKey().equalsIgnoreCase(key))
+            if (property.getKey().equalsIgnoreCase(key)) {
                 property.setValue(value);
+            }
         }
 
     }
@@ -1234,20 +1262,24 @@ public class PSPubServerService implements IPSPubServerService
         IPSEdition fullEdition = sitePublishDao.findEdition(pubServer.getGUID(), PubType.FULL);
         IPSPubStatus fullPubStatus = publisherService.findLastPubStatusByEdition(fullEdition.getGUID());
 
-        if (fullPubStatus != null)
+        if (fullPubStatus != null) {
             serverInfo.setLastFullPublishDate(fullPubStatus.getStartDate());
+        }
 
         // don't add incremental date if full pub required
-        if (!pubServer.hasFullPublished())
+        if (!pubServer.hasFullPublished()) {
             return;
+        }
 
         IPSEdition incrEdition = sitePublishDao.findEdition(pubServer.getGUID(), PubType.INCREMENTAL);
-        if (incrEdition == null)
+        if (incrEdition == null) {
             return;
+        }
 
         IPSPubStatus incrPubStatus = publisherService.findLastPubStatusByEdition(incrEdition.getGUID());
-        if (incrPubStatus != null)
+        if (incrPubStatus != null) {
             serverInfo.setLastIncrementalPublishDate(incrPubStatus.getStartDate());
+        }
     }
 
     /**
@@ -1590,8 +1622,9 @@ public class PSPubServerService implements IPSPubServerService
         for (PSPublishServerInfo server : servers)
         {
             // If is an update and the name did not change, ignore it.
-            if (serverName.equalsIgnoreCase(previousServername) && server.getServerName().equalsIgnoreCase(serverName))
+            if (serverName.equalsIgnoreCase(previousServername) && server.getServerName().equalsIgnoreCase(serverName)) {
                 return;
+            }
 
             if(server.getServerName().equalsIgnoreCase(serverName))
             {
@@ -1642,8 +1675,9 @@ public class PSPubServerService implements IPSPubServerService
         List<PSPubServer> servers = pubServerDao.findPubServersBySite(siteGuid);
         for (PSPubServer server : servers)
         {
-            if(server.getServerId() == pubServer.getServerId())
+            if(server.getServerId() == pubServer.getServerId()) {
                 return true;
+            }
         }
         return false;
     }
@@ -1689,18 +1723,18 @@ public class PSPubServerService implements IPSPubServerService
                 if (ownProperty.equalsIgnoreCase(Boolean.TRUE.toString()))
                 {
                     String ownServer = pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY);
-                    if (isBlank(ownServer))
+                    if (isBlank(ownServer)){
                         validateParameters("validateProperties").rejectField(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY.toString(),
-                                PROPERTY_FIELD_REQUIRED, ownServer).throwIfInvalid();
+                                PROPERTY_FIELD_REQUIRED, ownServer).throwIfInvalid();}
                 }
 
                 String defaultProperty = StringUtils.defaultString(pubServerInfo.findProperty(DEFAULT_SERVER_FLAG));
                 if (defaultProperty.equalsIgnoreCase(Boolean.TRUE.toString()))
                 {
                     String defaultServer = pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_DEFAULT_SERVER_PROPERTY);
-                    if (isBlank(defaultServer))
+                    if (isBlank(defaultServer)){
                         validateParameters("validateProperties").rejectField(IPSPubServerDao.PUBLISH_DEFAULT_SERVER_PROPERTY.toString(),
-                                PROPERTY_FIELD_REQUIRED, defaultServer).throwIfInvalid();
+                                PROPERTY_FIELD_REQUIRED, defaultServer).throwIfInvalid();}
                 }
             }
             else if(driver.equalsIgnoreCase(DRIVER_FTP) || driver.equalsIgnoreCase(DRIVER_FTPS) || driver.equalsIgnoreCase(DRIVER_SFTP)  )
@@ -1785,16 +1819,20 @@ public class PSPubServerService implements IPSPubServerService
 
             PSPubServer oldDefaultServer = pubServerDao.loadPubServerModifiable(previousDefaultServer.getGUID());
 
-            if (currentPublishingType.equalsIgnoreCase(PublishType.filesystem.toString()))
+            if (currentPublishingType.equalsIgnoreCase(PublishType.filesystem.toString())) {
                 newPublishingType = PublishType.filesystem_only.toString();
+            }
 
-            if (currentPublishingType.equalsIgnoreCase(PublishType.ftp.toString()))
+            if (currentPublishingType.equalsIgnoreCase(PublishType.ftp.toString())) {
                 newPublishingType = PublishType.ftp_only.toString();
-            if (currentPublishingType.equalsIgnoreCase(PublishType.ftps.toString()))
+            }
+            if (currentPublishingType.equalsIgnoreCase(PublishType.ftps.toString())) {
                 newPublishingType = PublishType.ftps_only.toString();
+            }
 
-            if (currentPublishingType.equalsIgnoreCase(PublishType.sftp.toString()))
+            if (currentPublishingType.equalsIgnoreCase(PublishType.sftp.toString())) {
                 newPublishingType = PublishType.sftp_only.toString();
+            }
 
             previousDefaultServer.setPublishType(newPublishingType);
 
@@ -1846,13 +1884,14 @@ public class PSPubServerService implements IPSPubServerService
 
     private boolean tryToLockSite(String siteId)
     {
-        if (StringUtils.isBlank(siteId))
+        if (StringUtils.isBlank(siteId)) {
             return false;
+        }
 
         boolean locked = lockMgr.getLock(siteId);
         if (!locked)
         {
-            log.error("Timeout attempting to lock publishing server for modification : " + siteId);
+            log.error("Timeout attempting to lock publishing server for modification : {} " , siteId);
             throw new RuntimeException("Timeout attempting to lock publishing server for modification, please try again later.");
         }
         return locked;
@@ -1863,7 +1902,7 @@ public class PSPubServerService implements IPSPubServerService
         boolean unlocked = lockMgr.releaseLock(siteId);
         if (!unlocked)
         {
-            log.warn("Unabled to release lock for site: " + siteId);
+            log.warn("Unabled to release lock for site: {}" , siteId);
         }
     }
 
@@ -2029,17 +2068,20 @@ public class PSPubServerService implements IPSPubServerService
         String publishType = pubServer.getPublishType();
         PSBaseDeliveryHandler handler = null;
         boolean result = true;
-        if(this.handlerMap.containsKey(publishType))
+        if(this.handlerMap.containsKey(publishType)) {
             handler = (PSBaseDeliveryHandler) this.handlerMap.get(publishType);
-        if(handler != null)
+        }
+        if(handler != null) {
             result = handler.checkConnection(pubServer, site);
+        }
         return result;
     }
 
     @Override
     public PSPubInfo getS3PubInfo(IPSGuid siteId) throws PSPubServerServiceException, PSNotFoundException {
-        if (siteId == null)
+        if (siteId == null) {
             throw new IllegalArgumentException("siteId must not be null");
+        }
         PSPubInfo pubInfo = null;
 
         IPSPubServer pubServer = getDefaultPubServer(siteId);
@@ -2059,8 +2101,9 @@ public class PSPubServerService implements IPSPubServerService
             accessKey = accessKeyProp.getValue();
 
             try {
-                if (accessKey != null)
+                if (accessKey != null) {
                     accessKey = decrypt(accessKey);
+                }
             } catch (Exception e) {
                 throw new PSPubServerServiceException(e);
             }
@@ -2109,7 +2152,9 @@ public class PSPubServerService implements IPSPubServerService
         }
         catch(Exception e)
         {
-            log.error("Error finding the pub server for the supplied id: " + serverId, e);
+            log.error("Error finding the pub server for the supplied id: {}, Error: {}" , serverId, e.getMessage());
+            log.debug(e.getMessage(),e);
+
         }
         return server;
     }

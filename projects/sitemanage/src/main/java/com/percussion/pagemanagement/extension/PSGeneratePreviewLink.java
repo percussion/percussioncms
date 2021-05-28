@@ -33,8 +33,8 @@ import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Generate "friendly" preview link or URL for a page or asset.
@@ -44,7 +44,8 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSGeneratePreviewLink extends com.percussion.extension.PSSimpleJavaUdfExtension
 {
-    private static Log ms_log = LogFactory.getLog(PSGeneratePreviewLink.class);
+
+    private static final Logger log = LogManager.getLogger(PSGeneratePreviewLink.class);
     
     /**
      * It returns a "friendly URL", which is the finder path from UI.
@@ -64,10 +65,12 @@ public class PSGeneratePreviewLink extends com.percussion.extension.PSSimpleJava
         {
             String msg1 = "Failed to generate friendly URL for content ID = " + id;
             IPSCmsObjectMgr cmsMgr = PSCmsObjectMgrLocator.getObjectManager();
-            if (cmsMgr.findItemEntry(id.getUUID()) != null)
-                ms_log.debug(msg1 + " as the item does not exist.");
-            else
-                ms_log.debug(msg1 + " as the item is not under a folder.");
+            if (cmsMgr.findItemEntry(id.getUUID()) != null) {
+                log.debug("{} as the item does not exist.", msg1);
+            }
+            else {
+                log.debug("{} as the item is not under a folder.", msg1);
+            }
             
             return "";            
         }
@@ -82,8 +85,9 @@ public class PSGeneratePreviewLink extends com.percussion.extension.PSSimpleJava
      */
     private IPSGuid getContentId(Object[] params)
     {
-        if (params.length < 2)
+        if (params.length < 2) {
             throw new IllegalArgumentException("params must contain 2 parameters.");
+        }
         
         int contentId = getIntParameter(params, 0);
         int revision = getIntParameter(params, 1);
@@ -94,8 +98,9 @@ public class PSGeneratePreviewLink extends com.percussion.extension.PSSimpleJava
     private int getIntParameter(Object params[], int index)
     {
         Object p = params[index];
-        if (!(p instanceof Integer))
+        if (!(p instanceof Integer)) {
             throw new IllegalArgumentException("Parameter[" + index + "] is not Integer.");
+        }
         
         return ((Integer)p).intValue();
     }
