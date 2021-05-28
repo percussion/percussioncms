@@ -38,14 +38,14 @@ import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.error.PSException;
-import com.percussion.log.PSLogManager;
-import com.percussion.log.PSLogServerWarning;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSWebServicesRequestHandler;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSNodePrinter;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+
 
 import java.io.IOException;
 import java.io.Reader;
@@ -56,6 +56,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -65,6 +66,7 @@ import org.xml.sax.InputSource;
  */
 public class PSInlineLinkProcessor
 {
+   private static final Logger logger = LogManager.getLogger(PSInlineLinkProcessor.class);
    /**
     * Force users to use the static methods.
     */
@@ -139,7 +141,7 @@ public class PSInlineLinkProcessor
       List inlinelinkFields = getInlineLinkFields(itemDef);
       if (inlinelinkFields.size() == 0)
          return;
-
+      logger.debug("Processing inline Link for : {} ", item.getId() );
       processInlineLinkItem(request, item, itemDef, relationships,
          inlinelinkFields.iterator(), communityId, bCheckout, checkin);
    }
@@ -311,12 +313,13 @@ public class PSInlineLinkProcessor
       if (!(fieldValue instanceof PSTextValue))
          return;
 
-      try
-      {
+
          String text = ((PSTextValue) fieldValue).getValueAsString();
          if (text.trim().length() == 0)
             return;
 
+      try
+      {
          // assume the text is a valid XML document, already tidied
          Document fieldDoc = PSXmlDocumentBuilder.createXmlDocument(
             new InputSource((Reader) new StringReader(text)), false);
@@ -332,21 +335,17 @@ public class PSInlineLinkProcessor
          }
          catch (IOException e1)
          {
-            int msgCode = IPSServerErrors.RAW_DUMP;
-            String msg =
-               "IOException occurred while writing the inline link field.\n"
-                  + e1.getLocalizedMessage();
-            Object[] args = { msg };
-            PSLogManager.write(new PSLogServerWarning(msgCode, args, true, null));
+
+            logger.warn("IOException occurred while writing the inline link field {} ERROR: {}.",itemField.getName(),e1.getMessage());
+            logger.debug(e1.getMessage(),e1);
          }
          text = swriter.toString();
-
-         itemField.addValue(new PSTextValue(text));
       }
       catch (Exception e)
       {
-         throw new PSCmsException(IPSCmsErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
+         logger.error("Error happened while parsing Field : {}, the inline link field value ERROR: {}.",itemField.getName(),e.getMessage());
+         logger.debug(e.getMessage(),e);
       }
+      itemField.addValue(new PSTextValue(text));
    }
 }

@@ -37,7 +37,9 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
 /**
@@ -57,6 +59,8 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
     * Work item being processed
     */
    private IPSAssemblyItem m_workItem = null;
+
+   private static final Logger log = LogManager.getLogger(PSInlineLinkProcessor.class);
 
    /**
     * Create a new inline link processor. One instance should be created for
@@ -100,7 +104,6 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
             PSTrackAssemblyError
                .addProblem("Problem processing inline links", e);
             PSXmlEncoder enc = new PSXmlEncoder();
-            Log log = LogFactory.getLog(PSInlineLinkProcessor.class);
             log.warn("Problem processing inline links", e);
             StringBuilder message = new StringBuilder();
             message
@@ -139,8 +142,13 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
          throws ParserConfigurationException, SAXException, IOException,
          XMLStreamException
    {
-      return PSSaxHelper.parseWithXMLWriter(body,
-            PSInlineLinkContentHandler.class, this);
+      try {
+         return PSSaxHelper.parseWithXMLWriter(body,
+                 PSInlineLinkContentHandler.class, this);
+      }catch (SAXException e){
+         log.debug("Skipping inline links for non XML field ", e);
+         return body;
+      }
    }
 
    /**

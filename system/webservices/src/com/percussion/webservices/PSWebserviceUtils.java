@@ -796,11 +796,11 @@ public class PSWebserviceUtils
     * 
     * @throws PSErrorException if the specified item does not exist.
     */
-   public static PSComponentSummary getItemSummary(int id)
+   public static PSComponentSummary getItemSummary(int id,boolean refresh)
       throws PSErrorException
    {
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
-      PSComponentSummary summary = cms.loadComponentSummary(id);
+      PSComponentSummary summary = cms.loadComponentSummary(id,refresh);
       if (summary == null)
       {
          int code = IPSWebserviceErrors.OBJECT_NOT_FOUND;
@@ -812,6 +812,12 @@ public class PSWebserviceUtils
       }
 
       return summary;
+   }
+
+   public static PSComponentSummary getItemSummary(int id)
+           throws PSErrorException
+   {
+      return getItemSummary(id,false);
    }
 
    /**
