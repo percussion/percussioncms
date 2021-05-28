@@ -85,17 +85,20 @@ public class PSPageListViewProcessor implements IPSListViewProcessor
             
             String templateName = null;
             String templateId = pageToTemplateIdMap.get(contentId);
-            if (templateId != null)
-                 templateName = templateMap.get(templateId);
+            if (templateId != null) {
+                templateName = templateMap.get(templateId);
+            }
             
-            if (templateName == null)
+            if (templateName == null) {
                 templateName = "";
+            }
             
             item.getDisplayProperties().put(TEMPLATE_NAME, templateName);
             
             String linkText = linkTextMap.get(contentId);
-            if (StringUtils.isBlank(linkText))
+            if (StringUtils.isBlank(linkText)) {
                 linkText = item.getName();
+            }
             
             item.getDisplayProperties().put(LINK_TEXT, linkText);
         }
@@ -115,8 +118,9 @@ public class PSPageListViewProcessor implements IPSListViewProcessor
         
         for (PSPathItem item : items)
         {
-            if (!item.isPage())
+            if (!item.isPage()) {
                 continue;
+            }
             
             pageMap.put(String.valueOf(idMapper.getContentId(item.getId())), item);
         }
@@ -156,8 +160,9 @@ public class PSPageListViewProcessor implements IPSListViewProcessor
                 } catch (PSDataServiceException e) {
                     log.warn("Template {} not found.",templateName);
                 }
-                if (template != null)
+                if (template != null) {
                     templateMap.put(templateId, template.getName());
+                }
             }
         }
         return templateMap;

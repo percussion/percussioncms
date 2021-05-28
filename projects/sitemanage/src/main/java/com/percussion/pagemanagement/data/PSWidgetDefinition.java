@@ -1707,8 +1707,9 @@ public class PSWidgetDefinition extends PSAbstractPersistantObject {
 
         public void setResponsive(Boolean isResponsive)
         {
-            if (isResponsive != null)
+            if (isResponsive != null) {
                 isResponsive = Boolean.FALSE;
+            }
             
             this.isResponsive = isResponsive;
         }
