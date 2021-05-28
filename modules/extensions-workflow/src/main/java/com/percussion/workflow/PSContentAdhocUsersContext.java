@@ -26,6 +26,8 @@ package com.percussion.workflow;
 import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSSqlHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,6 +46,8 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
 {
+
+   private static final Logger log = LogManager.getLogger(PSContentAdhocUsersContext.class);
 
    /**
     * Constructor specifying content ID, used to create a context with no
@@ -282,7 +286,8 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
       }
       catch (NullPointerException  e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw e;
       }
 
@@ -407,7 +412,8 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
       }
       catch (NullPointerException  e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw e;
       }
       finally

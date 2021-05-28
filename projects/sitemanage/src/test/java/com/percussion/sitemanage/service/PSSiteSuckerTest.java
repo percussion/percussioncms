@@ -60,6 +60,8 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.w3c.dom.Document;
@@ -72,7 +74,9 @@ import org.w3c.dom.Element;
 @Category(IntegrationTest.class)
 public class PSSiteSuckerTest extends PSServletTestCase
 {
-    
+
+    private static final Logger log = LogManager.getLogger(PSSiteSuckerTest.class);
+
     public void testSiteSucker() throws Exception
     {
         PSSecurityWsLocator.getSecurityWebservice().login(request, response, "Admin", "demo", null,
@@ -187,7 +191,8 @@ public class PSSiteSuckerTest extends PSServletTestCase
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
 
@@ -369,7 +374,8 @@ public class PSSiteSuckerTest extends PSServletTestCase
             }
             catch (FileNotFoundException e)
             {
-                e.printStackTrace();
+                log.error(e.getMessage());
+                log.debug(e.getMessage(), e);
             }
             return sb.toString();
         }

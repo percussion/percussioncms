@@ -33,8 +33,8 @@ import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.*;
 
 /**
@@ -47,7 +47,7 @@ import org.w3c.dom.*;
   * @version 6.0
   */
 public class PSParameterizedLegacyAutoSlotContentFinder extends PSBaseSlotContentFinder	implements IPSSlotContentFinder {
- private static Log _logger = LogFactory.getLog( PSParameterizedLegacyAutoSlotContentFinder.class.getName( ) );
+ private static final Logger log = LogManager.getLogger( PSParameterizedLegacyAutoSlotContentFinder.class.getName( ) );
  
  /**
    * This method returns a set of SlotItems retrieved from a legacy XML 
@@ -56,7 +56,7 @@ public class PSParameterizedLegacyAutoSlotContentFinder extends PSBaseSlotConten
    * (linkurl/@variantid) are of import to this routine.  
    */
 	protected Set<SlotItem> getSlotItems(IPSAssemblyItem item, IPSTemplateSlot slot, Map<String, Object> params )	throws RepositoryException, PSFilterException {
-  _logger.debug( "initializing. . ." );
+  log.debug( "initializing. . ." );
   //TreeSet<SlotItem> hits = new TreeSet<SlotItem>( new PSBaseSlotContentFinder.SlotItemOrder( ) );
   Set<SlotItem> hits = new LinkedHashSet<SlotItem>(); 
   Map<String, String> args = slot.getFinderArguments( );
@@ -64,7 +64,7 @@ public class PSParameterizedLegacyAutoSlotContentFinder extends PSBaseSlotConten
   if(StringUtils.isBlank( resource ) ) 
   {
       String emsg = "The resource parameter is required for a legacy auto slot content finder";
-      _logger.error(emsg); 
+      log.error(emsg);
       throw new IllegalArgumentException(emsg);
   }
   Map<String,String> resourceArgs = new HashMap<String,String>(); 
@@ -117,21 +117,21 @@ public class PSParameterizedLegacyAutoSlotContentFinder extends PSBaseSlotConten
     String contentId = e.getAttribute( "contentid" );
     PSGuid guid = new PSGuid( PSTypeEnum.TEMPLATE, templateId );
     
-    _logger.debug( "found node for CID #" + contentId + " and template #" + templateId + "." );
+    log.debug( "found node for CID # {} and template # {}.", contentId, templateId );
     id.clear( );
     id.add( Integer.parseInt( contentId ) );
     
     PSComponentSummary summary = mgr.loadComponentSummaries( id ).get( 0 );
     PSLegacyGuid legacyGuid = new PSLegacyGuid( summary.getCurrentLocator( ) );
     
-    _logger.debug( "new GUID is " + guid.toString( ) + "\nlegacy GUID is " + legacyGuid.toString( ) );
+    log.debug( "new GUID is {} \nlegacy GUID is {}", guid.toString( ), legacyGuid.toString( ) );
     hits.add( new PSBaseSlotContentFinder.SlotItem( legacyGuid, guid, i ) );
    }  //  for( int i=0; i<nodes.getLength( ); i++ )
    
-   _logger.debug( "found " + hits.size( ) + " items for legacy slot." );
+   log.debug( "found {} items for legacy slot.", hits.size() );
   } catch( PSInternalRequestCallException __ie ) {
-   _logger.error( __ie );
-   __ie.printStackTrace( );
+   log.error(__ie.getMessage());
+   log.debug(__ie.getMessage(), __ie);
    throw new RepositoryException( __ie.getMessage( ) );
   }  //  try
   

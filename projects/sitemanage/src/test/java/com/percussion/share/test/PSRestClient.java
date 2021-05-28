@@ -63,6 +63,8 @@ import org.apache.commons.lang.CharEncoding;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 
@@ -481,7 +483,7 @@ public class PSRestClient {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    protected final Log log = LogFactory.getLog(getClass());
+    protected static final Logger log = LogManager.getLogger(PSRestClient.class);
 
     
     

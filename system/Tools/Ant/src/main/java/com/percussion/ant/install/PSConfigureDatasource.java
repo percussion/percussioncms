@@ -36,6 +36,8 @@ import com.percussion.utils.jdbc.IPSDatasourceConfig;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSDatasourceConfig;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -78,6 +80,9 @@ import java.util.List;
  */
 public class PSConfigureDatasource extends PSAction
 {
+
+   private static final Logger log = LogManager.getLogger(PSConfigureDatasource.class);
+
    public void execute()
    {
       PSProperties props = null;
@@ -172,7 +177,8 @@ public class PSConfigureDatasource extends PSAction
       catch(Exception e)
       {
          PSLogger.logError(e.getMessage());
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
 
          throw new BuildException(e.getLocalizedMessage());
       }
