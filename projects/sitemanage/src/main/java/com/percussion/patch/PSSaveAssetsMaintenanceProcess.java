@@ -262,8 +262,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         try {
             result = stat.executeQuery(sqlStat);
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("executeSqlStatement : {}" , e.getMessage());
+            log.debug(e.getMessage(),e);
         } 
         return result;
     }
@@ -961,8 +961,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             while (it.hasNext()) 
             {
                 ItemWrapper page = it.next();
-                if (page.getStatus() == (ItemWrapper.STATUS.SUCCESS)
-                        || page.getStatus() == (ItemWrapper.STATUS.NOTQUALIFIED)) {
+                if (page.getStatus().equals(ItemWrapper.STATUS.SUCCESS)
+                        || page.getStatus().equals(ItemWrapper.STATUS.NOTQUALIFIED)) {
                     it.remove();
                 }
             }
