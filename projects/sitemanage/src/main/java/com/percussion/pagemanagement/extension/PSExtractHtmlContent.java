@@ -79,8 +79,9 @@ public class PSExtractHtmlContent implements IPSUdfProcessor
         Object objIsLoadForSearch = request.getPrivateObject(IPSConstants.LOAD_FOR_SEARCH_INDEX);
         boolean isLoadForSearch = (objIsLoadForSearch instanceof Boolean)
                 && ((Boolean) objIsLoadForSearch).booleanValue();
-        if (!isLoadForSearch)
+        if (!isLoadForSearch) {
             return "";
+        }
 
     	// We need at least the content id
         if (null == params || params.length == 0 || null == params[0] || StringUtils.isEmpty(params[0].toString()))
