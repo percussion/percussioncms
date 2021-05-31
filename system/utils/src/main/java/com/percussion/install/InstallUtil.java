@@ -1163,7 +1163,6 @@ public class InstallUtil
       String strUrl = "jar:file:";
       strUrl += jarFilePath;
       strUrl += "!/";
-      List m_jarUrls = null;
       try
       {
          if (m_jarUrls == null)
@@ -1199,7 +1198,8 @@ public class InstallUtil
       String className = null;
       Class driverClass = null;
       className = RxInstallerProperties.getResources().getString(driver);
-
+      if (className == null)
+         throw new SQLException("Driver " + driver + " is not supported by the current installer.");
       try {
          if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL)) {
             if (m_extDriver == null) {
@@ -1410,138 +1410,6 @@ public class InstallUtil
 
       return createLoadedConnection(driver, server, db, uid, pw);
    }
-
-   /**
-    * Create a new database connection for the provided driver type. Use the
-    * given server configuration to get the driver class. The caller of this
-    * function is responsible for closing the connection.
-    *
-    * @param driver the db driver type, may not be <code>null</code>.
-    * @param server the database server, may not be <code>null</code>.
-    * @param db the database to be used, may be <code>null</code>.
-    * @param uid the user Id, may not be <code>null</code>.
-    * @param pw the user password, may not be <code>null</code>.
-    *
-    * @return the created connection, may be <code>null</code>.
-    * @throws SQLException if any database related error occurred
-    */
-   public static Connection createStandardConnection(String driver, String server, String db, String uid, String pw)
-           throws SQLException
-   {
-      if (driver == null)
-         throw new IllegalArgumentException("driver may not be null");
-
-      if (server == null)
-         throw new IllegalArgumentException("server may not be null");
-
-      if (uid == null)
-         throw new IllegalArgumentException("uid may not be null");
-
-      if (pw == null)
-         throw new IllegalArgumentException("pw may not be null");
-
-      String className;
-      Class driverClass;
-
-      String strJTdsSqlServerDesc = RxInstallerProperties.getResources().getString("jtdssqlserverdesc");
-
-      if (driver.equals(PSJdbcUtils.ORACLE))
-         className = RxInstallerProperties.getResources().getString("oracle");
-      else if (driver.equals(strJTdsSqlServerDesc))
-         className = RxInstallerProperties.getResources().getString("jtds");
-      else
-         className = RxInstallerProperties.getResources().getString(driver);
-
-      try
-      {
-         Class.forName(className);
-      }
-      catch (ClassNotFoundException cls)
-      {
-         logError("Could not find the driver class : " + className);
-         logError("Exception : " + cls.getMessage());
-         throw new SQLException("JDBC driver class not found. " + cls.toString());
-      }
-      catch (LinkageError link)
-      {
-         logError("linkage error");
-         logError("Exception : " + link.getMessage());
-         throw new SQLException("JDBC driver could not be loaded. " + link.toString());
-      }
-      catch (Exception e)
-      {
-         logError("Exception : " + e.getMessage());
-         throw new SQLException("Exception. " + e.toString());
-      }
-
-      ClassLoader cl = ClassLoader.getSystemClassLoader();
-
-      URL[] urls = ((URLClassLoader)cl).getURLs();
-
-      logInfo("System class path:");
-      for(URL url: urls){
-         logInfo(url.getFile());
-      }
-
-      ClassLoader clExt = expandClasspath();
-      urls = ((URLClassLoader)clExt).getURLs();
-
-      logInfo("Extended class path:");
-      for(URL url: urls){
-         logInfo(url.getFile());
-      }
-
-      String dbUrl = PSSqlHelper.getJdbcUrl(driver, server);
-      Properties props = PSSqlHelper.makeConnectProperties(dbUrl, db, uid, pw);
-
-      logInfo("Connecting to: " + dbUrl);
-
-      //Set the jdbc driver classname property to include the driver in case it is not a type 4 driver.
-      System.setProperty("jdbc.drivers",className);
-      try {
-         driverClass = Class.forName(className, true, clExt);
-
-         if (driverClass != null) {
-            Object objDriver = driverClass.newInstance();
-            if (objDriver != null) {
-               logInfo("Successfully loaded driver " + className);
-               if (objDriver instanceof Driver) {
-                  m_extDriver = (Driver) objDriver;
-                  logInfo(objDriver.getClass().getName() + " is a valid driver.");
-
-                  DriverManager.registerDriver((Driver) objDriver);
-                  logInfo("Registered driver: " + className);
-
-               } else {
-                  logError(objDriver.getClass().getName() + " is not a valid Driver!");
-               }
-            } else {
-               logError("Unable to instantiate driver: " + driverClass);
-            }
-
-         } else {
-            logError("Unable to load configured driver class:" + className + " from classpath.");
-         }
-      } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
-         logError(e.getMessage());
-      }
-      Connection conn;
-      if(m_extDriver == null) {
-         conn = DriverManager.getConnection(dbUrl, props);
-      }else{
-         logInfo("Connecting with direct driver.");
-         conn = m_extDriver.connect(dbUrl,props);
-      }
-      if (conn != null)
-      {
-         if (db != null)
-            conn.setCatalog(db);
-      }else{
-         logError("Unable to establish database connection.");
-      }
-
-      return conn;
-  }
 
    /**
     * Converts a variable name to the InstallAnywhere format, which is:
