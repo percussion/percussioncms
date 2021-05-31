@@ -31,6 +31,7 @@ import com.percussion.security.PSEncryptor;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.util.PSSqlHelper;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import org.apache.logging.log4j.LogManager;
@@ -120,10 +121,13 @@ public class PSExecSQLStmt extends PSAction
          }
          String pw = props.getProperty("PWD");
          try {
-            pw = PSEncryptor.getInstance("AES", null).decrypt(pw);
+            pw = PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(pw);
          } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
-            pw = PSLegacyEncrypter.getInstance(null).decrypt(pw,
-                    PSJdbcDbmsDef.getPartOneKey(), null);
+            pw = PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(pw,
+                    PSJdbcDbmsDef.getPartOneKey(),null);
          }
          driver = dbmsDef.getDriver();
          PSLogger.logInfo("PSExecSQLStmt got DB driver: " + driver);
