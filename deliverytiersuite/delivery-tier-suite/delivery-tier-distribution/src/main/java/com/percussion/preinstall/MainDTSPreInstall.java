@@ -113,7 +113,7 @@ public class MainDTSPreInstall {
             File f = new File(staging);
             String prod = installPath.toFile() + File.separator + "Deployment";
             File f2 = new File(prod);
-            if((isProduction == null || isProduction.trim().equals("")) && Files.exists(f.toPath()) && !Files.exists(f2.toPath())){
+            if(Files.exists(f.toPath()) && !Files.exists(f2.toPath())){
                 isProduction="false";
             }
             //if isProduction value is not passed in and we are not able to figure out either, then set the value to be true
@@ -199,8 +199,6 @@ public class MainDTSPreInstall {
                 }
                 System.out.println("Creating file "+entryDest);
                 Files.copy(archive.getInputStream(entry), entryDest);
-
-
             }
         }
     }
