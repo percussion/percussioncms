@@ -350,8 +350,13 @@ public class PSContentItemDao implements IPSContentItemDao
                 PSItemField f = coreItem.getFieldByName(nvp.getKey());
                 Object value = nvp.getValue();
                 if (f != null) {
+                    //CMS-7974 : For filte type asset. The value if null was giving attachment not found validation error.
                     if (value == null) {
-                        f.clearValues();
+                        if(f !=null && f.getItemFieldMeta()!=null && f.getItemFieldMeta().isBinary()){
+                            value = f.getValue();
+                        }else{
+                            f.clearValues();
+                        }
                     } else {
                         IPSFieldValue fv;
                         f.clearValues();
