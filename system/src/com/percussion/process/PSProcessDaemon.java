@@ -361,7 +361,8 @@ public class PSProcessDaemon extends Thread
          else
          {
             if (null != t)
-               t.printStackTrace();
+               log.error(t.getMessage());
+            log.debug(t.getMessage(), t);
             log.info(TERM_MSG);
          }
       }
