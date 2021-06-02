@@ -1283,6 +1283,11 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
             PSBinaryFileValue val = (PSBinaryFileValue) field.getValue();
             fieldParams.put(field.getName(), val.getTempFile());
          }
+         else if (field.getValue() instanceof PSBinaryValue) // CMS-7974 : For Image type asset. No case for Binary value field type caused filed type to be set as String instead of PSPurgableTempFile and thus gave class cast exception in ImageAssetInputTranslation.
+         {
+            PSBinaryValue val = (PSBinaryValue) field.getValue();
+            fieldParams.put(field.getName(), val.getValueFile());
+         }
          else if (field.getItemFieldMeta().isMultiValueField())
          {
             List<String> newVals = new ArrayList<String>();
