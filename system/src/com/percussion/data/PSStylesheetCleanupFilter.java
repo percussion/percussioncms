@@ -37,8 +37,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.oro.text.GlobCompiler;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
@@ -67,8 +67,7 @@ import org.xml.sax.SAXException;
  */
 public class PSStylesheetCleanupFilter
 {
-   private static Log ms_log = LogFactory
-         .getLog(PSStylesheetCleanupFilter.class);
+   private static Logger log = LogManager.getLogger(PSStylesheetCleanupFilter.class);
 
    /**
     * Private ctor. This class is a singleton. Use {@link #getInstance(Element)}
@@ -140,8 +139,7 @@ public class PSStylesheetCleanupFilter
          }
          catch (Exception e)
          {
-            ms_log.error("Problem loading namespace configuration from file "
-                  + location, e);
+            log.error("Problem loading namespace configuration from file {}, error {} ", location, e.getMessage());
          }
          ms_instance.fromXml(doc.getDocumentElement());
       }
@@ -356,7 +354,8 @@ public class PSStylesheetCleanupFilter
          }
          catch (MalformedPatternException e)
          {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
          }
       }
       return false;

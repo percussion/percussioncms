@@ -31,6 +31,8 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.services.legacy.data.PSItemEntry;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -41,6 +43,9 @@ import org.w3c.dom.Element;
  */
 public class PSFolderEntry extends PSItemEntry
 {
+
+   private static final Logger log = LogManager.getLogger(PSFolderEntry.class);
+
    /**
     * Constructs an instance from the supplied parameters.
     *
@@ -198,7 +203,8 @@ public class PSFolderEntry extends PSItemEntry
       }
       catch (Exception e)
       {
-         e.printStackTrace(); // should never happen here.
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
 
       m_folderAcl = acl;

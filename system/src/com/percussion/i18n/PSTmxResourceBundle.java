@@ -34,7 +34,8 @@ import com.percussion.services.general.PSRhythmyxInfoLocator;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -68,6 +69,9 @@ import java.util.stream.Stream;
 public class PSTmxResourceBundle
    implements IPSTmxDtdConstants
 {
+
+    private static final Logger log = LogManager.getLogger(PSTmxResourceBundle.class);
+
    private static class TmxResourceBundleHolder
    {
       public static final PSTmxResourceBundle BUNDLE = new PSTmxResourceBundle();
@@ -85,14 +89,14 @@ public class PSTmxResourceBundle
       }
       catch(Exception t)
       {
-         Logger l = Logger.getLogger("TmxResourceBundle");
-         l.error("Unexpected error loading resources " 
-            + t.getLocalizedMessage());
+         Logger l = LogManager.getLogger("TmxResourceBundle");
+         l.error("Unexpected error loading resources {}", t.getLocalizedMessage());
          
          //if debug is on dump the stack to server console
          if(ms_Debug)
          {
-            t.printStackTrace();
+             log.error(t.getMessage());
+             log.debug(t.getMessage(), t);
          }
       }
    }
@@ -131,10 +135,9 @@ public class PSTmxResourceBundle
       }
       catch(Exception t)
       {
-         Logger l = Logger.getLogger("TmxResourceBundle");
-         l.error("Unexpected error during termination " 
-            + t.getMessage());
-        l.debug(t.getMessage(),t);
+         Logger l = LogManager.getLogger("TmxResourceBundle");
+         l.error("Unexpected error during termination {} ", t.getMessage());
+         l.debug(t.getMessage(),t);
       }
    }
 
