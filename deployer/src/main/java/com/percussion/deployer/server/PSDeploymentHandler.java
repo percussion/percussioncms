@@ -3621,15 +3621,20 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       if (pwd == null || pwd.trim().length() == 0)
          return "";
 
-      String key = uid == null || uid.trim().length() == 0
-            ? PSLegacyEncrypter.getInstance(
-              PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-      ).INVALID_DRIVER()
-            : uid;
+      String key = uid == null || uid.trim().length() == 0 ? PSLegacyEncrypter.getInstance(null).INVALID_DRIVER() :
+              uid;
 
-      return decryptPwd(pwd, PSLegacyEncrypter.getInstance(
-              PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-      ).INVALID_CRED(), key);
+      try {
+         return PSEncryptor.getInstance("AES",
+                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(pwd);
+      } catch (PSEncryptionException e) {
+         try {
+            return PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(null).INVALID_CRED(), key, pwd);
+         }catch (Exception ex){
+            ms_log.error("Error: Pwd Decryption Failed " + ex.getMessage());
+            return "";
+         }
+      }
    }
 
    /**
