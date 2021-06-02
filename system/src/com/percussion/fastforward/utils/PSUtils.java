@@ -31,6 +31,8 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -46,6 +48,9 @@ import java.util.StringTokenizer;
  */
 public class PSUtils
 {
+
+   private static final Logger log = LogManager.getLogger(PSUtils.class);
+
    /**
     * Tokenizes a string of comma-separated values into a Set.
     * 
@@ -233,7 +238,8 @@ public class PSUtils
          }
          catch (PSInternalRequestCallException e)
          {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             request.printTraceMessage("error making internal request to "
                     + requestName);
          }

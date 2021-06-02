@@ -24,6 +24,9 @@
 
 package com.percussion.EditableListBox;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -85,6 +88,9 @@ import javax.swing.table.TableModel;
 
 public class EditableListBox extends JPanel implements ActionListener
 {
+
+    private static final Logger log = LogManager.getLogger(EditableListBox.class);
+
 //
 // Constructors
 //
@@ -256,7 +262,8 @@ public class EditableListBox extends JPanel implements ActionListener
     }
     catch (IllegalArgumentException e)
     {
-      e.printStackTrace();
+        log.error(e.getMessage());
+        log.debug(e.getMessage(), e);
     }
 
     initListBox(listData);

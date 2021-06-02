@@ -43,6 +43,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -58,6 +60,9 @@ import org.xml.sax.SAXParseException;
  */
 public class PSXmlExtractor
 {
+
+   private static final Logger log = LogManager.getLogger(PSXmlExtractor.class);
+
    /**
     * Uses the specified Element to extract xml from the source file and write
     * it to the target file.  If a dtd is supplied, that is used to validate the
@@ -471,7 +476,8 @@ public class PSXmlExtractor
       {
          System.out.println("Extraction of " + element + " from " + source +
             " failed:");
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
    }
 
