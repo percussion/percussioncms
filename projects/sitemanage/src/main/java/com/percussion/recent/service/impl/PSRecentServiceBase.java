@@ -84,8 +84,9 @@ public class PSRecentServiceBase implements IPSRecentServiceBase
 
         // If the most recent is the same as value do not have to update
         // anything.
-        if (existingRecents.size() > 0 && existingRecents.get(0).getValue().equals(value))
+        if (existingRecents.size() > 0 && existingRecents.get(0).getValue().equals(value)) {
             return;
+        }
 
         existingRecents = deleteExtraRecents(type, existingRecents, value, true);
 
@@ -112,8 +113,9 @@ public class PSRecentServiceBase implements IPSRecentServiceBase
     {
         List<PSRecent> existingRecents = recentDao.find(user, siteName, type);
 
-        if (CollectionUtils.isNotEmpty(existingRecents))
+        if (CollectionUtils.isNotEmpty(existingRecents)) {
             recentDao.deleteAll(existingRecents);
+        }
     }
 
     /**
@@ -149,8 +151,9 @@ public class PSRecentServiceBase implements IPSRecentServiceBase
             toDelete.addAll(recents.subList(numOfElementsToKeep, recents.size()));
             recents = recents.subList(0, numOfElementsToKeep);
         }
-        if (!toDelete.isEmpty())
+        if (!toDelete.isEmpty()) {
             recentDao.deleteAll(toDelete);
+        }
         return recents;
     }
 
@@ -161,8 +164,9 @@ public class PSRecentServiceBase implements IPSRecentServiceBase
         Iterator<PSRecent> iterator = existingRecents.iterator();
         while (iterator.hasNext())
         {
-            if (!toDelete.contains(iterator.next().getValue()))
+            if (!toDelete.contains(iterator.next().getValue())) {
                 iterator.remove();
+            }
         }
         recentDao.deleteAll(existingRecents);
     }
