@@ -108,9 +108,8 @@ public class PSExtensionInstallTool
          doc = PSXmlDocumentBuilder.createXmlDocument(fIn, false);
       } catch (Exception e)
       {
-         log.error("Exception creating extension doc: ", e.getMessage());
+         log.error("Exception creating extension doc: {} ", e.getMessage());
          log.debug(e.getMessage(),e);
-         e.printStackTrace();
          System.exit(1);
       } finally
       {
@@ -129,9 +128,8 @@ public class PSExtensionInstallTool
       } 
       catch (Exception e)
       {
-         log.error("Exception installing extensions: {} ", e.toString());
+         log.error("Exception installing extensions: {} ", e.getMessage());
          log.debug(e.getMessage(),e);
-         e.printStackTrace();
          System.exit(1);
       }
 
@@ -454,7 +452,8 @@ public class PSExtensionInstallTool
       }
       catch (PSExtensionException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 

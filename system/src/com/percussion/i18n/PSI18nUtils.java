@@ -668,7 +668,8 @@ public class PSI18nUtils implements IPSI18nUtils {
       }
       catch(Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 }

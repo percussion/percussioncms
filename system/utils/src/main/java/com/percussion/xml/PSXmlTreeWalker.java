@@ -27,6 +27,8 @@ package com.percussion.xml;
 import com.percussion.utils.tools.IPSUtilsConstants;
 import com.percussion.utils.xml.IPSXmlErrors;
 import com.percussion.utils.xml.PSInvalidXmlException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
@@ -52,6 +54,9 @@ import java.util.StringTokenizer;
  */
 public class PSXmlTreeWalker implements Serializable
 {
+
+   private static final Logger log = LogManager.getLogger(PSXmlTreeWalker.class);
+
    /**
     * 
     */
@@ -1421,7 +1426,8 @@ public class PSXmlTreeWalker implements Serializable
       catch (Throwable t)
       {
          System.out.println(t.getMessage());
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
    }
 

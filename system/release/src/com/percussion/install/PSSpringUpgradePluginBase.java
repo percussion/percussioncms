@@ -36,6 +36,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -48,6 +50,8 @@ import org.w3c.dom.NodeList;
  */
 public abstract class PSSpringUpgradePluginBase implements IPSUpgradePlugin
 {
+
+   private static final Logger log = LogManager.getLogger(PSSpringUpgradePluginBase.class);
 
     /**
     * String constant for spring directory path relative to Rhythmyx root
@@ -194,13 +198,15 @@ public abstract class PSSpringUpgradePluginBase implements IPSUpgradePlugin
       }
       catch (FileNotFoundException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          System.err.println("PSSpringUpgradePluginBase: could not find " +
                "install-beans.xml");
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          System.err.println("PSSpringUpgradePluginBase: error encountered");
       }
       finally
