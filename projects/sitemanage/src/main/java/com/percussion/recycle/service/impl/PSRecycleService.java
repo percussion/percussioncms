@@ -203,8 +203,9 @@ public class PSRecycleService implements IPSRecycleService {
 
         }else if(path.startsWith(PSRecycleService.ASSETS_ROOT)){
             owner = new PSLocator(PSFolder.SYS_ASSETS_ID, -1);
-            if(pathids.size()>3)
-            siteId = pathids.get(3);
+            if(pathids.size()>3) {
+                siteId = pathids.get(3);
+            }
         }else if(path.startsWith(PSRecycleService.RECYCLING_ROOT)){
             return;
         }
@@ -411,8 +412,7 @@ public class PSRecycleService implements IPSRecycleService {
                 folderRel = rels.get(obj.index);
 
                 if (!obj.foundType && folderRel != null) {
-                    log.debug("Found a folder with id: " + parentLocator.getId() +
-                            " that needs to be updated to new relationship of type: " + newType);
+                    log.debug("Found a folder with id: {} that needs to be updated to new relationship of type: {}", parentLocator.getId(), newType);
                     //If folder has more items, then create new relationship
                     //else update existing one.
                     PSRelationshipFilter childFilter = generateOwnerFilter(folderRel.getDependent().getId(), RECYCLED_TYPE);
@@ -452,6 +452,7 @@ public class PSRecycleService implements IPSRecycleService {
 
         } catch (PSErrorsException | PSErrorException | PSErrorResultsException | PSCmsException e) {
             log.error("Error restoring folder with guid: {} Error: {}", guid, e.getMessage());
+            log.debug(e.getMessage(),e);
         }
     }
 
@@ -463,7 +464,7 @@ public class PSRecycleService implements IPSRecycleService {
      * @param newRel           the existing relationship which will be saved with the new relationship type.
      */
     private void saveNewRelationship(String relationshipType, PSRelationship newRel) throws PSErrorsException {
-        log.debug("Saving a new relationship of type: " + relationshipType + " and RID of: " + newRel.getId());
+        log.debug("Saving a new relationship of type: {} and RID of: {} ", relationshipType, newRel.getId());
         PSRelationshipConfig config = PSRelationshipCommandHandler.getRelationshipConfig(relationshipType);
         PSRelationship folderRel = new PSRelationship(-1, newRel.getOwner(), newRel.getDependent(), config);
         systemWs.saveRelationships(Collections.singletonList(folderRel));
@@ -472,7 +473,7 @@ public class PSRecycleService implements IPSRecycleService {
 
     private void renameFolder(PSCoreItem item, IPSGuid itemGuid, String originalRelTypeName) throws PSErrorException, PSCmsException {
         String folderName = item.getFieldByName("sys_title").getValue().getValueAsString();
-        log.debug("Renaming folder with id: " + itemGuid + " and name: " + folderName);
+        log.debug("Renaming folder with id: {} and name: {}" , itemGuid, folderName);
         PSFolder folder = contentWs.loadFolder(itemGuid, false);
         folder.setName(folderName);
         folder.setFolderPath(item.getFolderPaths().get(0));
@@ -611,7 +612,7 @@ public class PSRecycleService implements IPSRecycleService {
             }
         } catch (PSCmsException e) {
             //NOTE: We may want to flip this logic and return true on error depending on behavior we see - NC
-            log.warn("Unable to confirm if item: " + guid + " is in Recycler, assuming not. " + e.getMessage());
+            log.warn("Unable to confirm if item: {} is in Recycler, assuming not. {}", guid, e.getMessage());
             log.debug("Recycler check failed with:",e);
         }
 
@@ -647,7 +648,7 @@ public class PSRecycleService implements IPSRecycleService {
      * @param rel           the existing relationship which will be saved with the new relationship type.
      */
     private void updateRelationshipConfigId(String relationshipType, PSRelationship rel) throws PSErrorsException {
-        log.debug("Saving a new relationship of type: " + relationshipType + " and RID of: " + rel.getId());
+        log.debug("Saving a new relationship of type: {} and RID of: {}", relationshipType, rel.getId());
         PSRelationshipConfig config = PSRelationshipCommandHandler.getRelationshipConfig(relationshipType);
         rel.setConfig(config);
         //if relationship already exist, then delete it else update
@@ -692,11 +693,11 @@ public class PSRecycleService implements IPSRecycleService {
         List<PSRelationship> rels = systemWs.loadRelationships(filter);
         PSRelationship folderRel = null;
         FoundTypeAndFolderIndex obj = checkForExistingRelType(rels, newType, originalType);
-        if (-1 != obj.index)
+        if (-1 != obj.index) {
             folderRel = rels.get(obj.index);
+        }
         if (!obj.foundType && folderRel != null) {
-            log.debug("Found a folder with id: " + parentGuid.getUUID() +
-                    " that needs to be updated to new relationship of type: " + newType);
+            log.debug("Found a folder with id: {} that needs to be updated to new relationship of type: {}", parentGuid.getUUID(), newType);
             //If folder has more items, then create new relationship
             //else update existing one.
             PSRelationshipFilter childFilter = generateOwnerFilter(folderRel.getDependent().getId(), originalType);
@@ -727,14 +728,16 @@ public class PSRecycleService implements IPSRecycleService {
             }
 
             if (foundQuickEditTrigger) {
-                log.debug("Found an item that needs to be archived when recycled: " + dependentId);
+                log.debug("Found an item that needs to be archived when recycled: {}", dependentId);
                 try {
                     PSItemStatus status = contentWs.prepareForEdit(idMapper.getGuid(rel.getDependent()));
                     PSWebserviceUtils.transitionItem(dependentId, IPSItemWorkflowService.TRANSITION_TRIGGER_ARCHIVE,
                             "Recycle", null);
                     contentWs.releaseFromEdit(status, true);
                 } catch (PSErrorException e) {
-                    log.error("Error transitioning item to archive with id: " + dependentId, e);
+                    log.error("Error transitioning item to archive with id: {}, Error: {} ", dependentId, e.getMessage());
+                    log.debug(e.getMessage(),e);
+
                 }
             }
         }
@@ -816,7 +819,7 @@ public class PSRecycleService implements IPSRecycleService {
             return ;
         }
         String folderPaths = paths.get(0);
-        log.debug("Folder paths for the loaded item are: " + folderPaths);
+        log.debug("Folder paths for the loaded item are: {}", folderPaths);
         if(!checkValidPathPrefix(folderPaths)){
             return;
         }
@@ -861,7 +864,7 @@ public class PSRecycleService implements IPSRecycleService {
             } else {
                 sb.append("-" + counter);
             }
-            log.debug("Checking for item: " + sb.toString() + " to see if it exists for rename.");
+            log.debug("Checking for item: {} to see if it exists for rename.", sb.toString());
             idToCheck = getItemIdFromPath(sb.toString(), !isRecycledType ? RECYCLED_TYPE : FOLDER_TYPE);
             counter++;
         }
@@ -899,7 +902,7 @@ public class PSRecycleService implements IPSRecycleService {
 
     public static boolean checkValidPathPrefix(String sb) throws IllegalArgumentException {
         String currentPath = sb.toString();
-        log.debug("Looking for the correct path prefix.  The path is: " + currentPath);
+        log.debug("Looking for the correct path prefix.  The path is: {}", currentPath);
         if (currentPath.startsWith(SITES)) {
             return true;
         } else if (currentPath.startsWith("//" + ASSETS)) {
@@ -918,7 +921,7 @@ public class PSRecycleService implements IPSRecycleService {
 
     public static StringBuilder attachPathPrefix(StringBuilder sb) throws IllegalArgumentException {
         String currentPath = sb.toString();
-        log.debug("Looking for the correct path prefix.  The path is: " + currentPath);
+        log.debug("Looking for the correct path prefix.  The path is: {}", currentPath);
         if (currentPath.startsWith(SITES)) {
             return sb;
         } else if (currentPath.startsWith("//" + ASSETS)) {
