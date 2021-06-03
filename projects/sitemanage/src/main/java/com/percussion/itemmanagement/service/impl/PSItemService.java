@@ -85,6 +85,7 @@ import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSErrorResultsException;
@@ -527,7 +528,8 @@ public class PSItemService implements IPSItemService
     	try{
     		owners = waRelService.getRelationshipOwners(assetId,true);
     	}catch(Exception e){
-    		log.error("An error occurred looking up relationships for Asset " + assetId + " while processing Site Impact",e);
+            log.error("An error occurred looking up relationships for Asset {} while processing Site Impact Error: {}", assetId,e.getMessage() );
+            log.debug(e.getMessage(),e);
     	}
     	if(owners != null){
         for (String owner : owners)
@@ -942,7 +944,10 @@ public class PSItemService implements IPSItemService
         PSNoContent validationResponse = dateValidation(req);
         if (!validationResponse.getOperation().equals("Success"))
         {
-        	 throw new PSItemServiceException(validationResponse.getOperation());
+            String opName = "setItemDates";
+            PSValidationErrorsBuilder builder = validateParameters(opName).reject("Set Publish Dates",validationResponse.getOperation());
+            builder.throwIfInvalid();
+
         }
         String id = req.getItemId();
         IPSGuid guid = idMapper.getGuid(id);
@@ -982,7 +987,7 @@ public class PSItemService implements IPSItemService
         }
 
         PSContentItem item = contentItemDao.find(id);
-        Map fields = item.getFields();
+        Map<String,Object> fields = item.getFields();
         fields.put(START_DATE, startDate);
         fields.put(END_DATE, endDate);
         item.setFields(fields);
@@ -991,11 +996,11 @@ try{
     List<String> paths = folderHelper.findPaths(idMapper.getString(guid));
     String dependentId = guid.toString().substring(guid.toString().lastIndexOf("-") + 1, id.length());
 
-    if(startDate!="") {
+    if(! "".equals(startDate)) {
         psContentEvent = new PSContentEvent(guid.toString(), String.valueOf(dependentId), paths.get(0), PSContentEvent.ContentEventActions.pagePublishSchedule, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
         psAuditLogService.logContentEvent(psContentEvent);
     }
-    if(endDate!=""){
+    if(! "".equals(endDate)){
         psContentEvent = new PSContentEvent(guid.toString(), String.valueOf(dependentId), paths.get(0), PSContentEvent.ContentEventActions.pageRemovalSchedule, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
         psAuditLogService.logContentEvent(psContentEvent);
     }

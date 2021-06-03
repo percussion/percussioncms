@@ -316,7 +316,7 @@ public class PSPubServerService implements IPSPubServerService
 
     @Override
     public synchronized PSPublishServerInfo createPubServer(String siteId, String serverName, PSPublishServerInfo pubServerInfo)
-            throws PSPubServerServiceException, PSDataServiceException, PSNotFoundException {
+            throws PSPubServerServiceException, PSValidationException, PSNotFoundException {
         if (isBlank(siteId)) {
             throw new IllegalArgumentException("Site id cannot be blank.");
         }
@@ -855,12 +855,15 @@ public class PSPubServerService implements IPSPubServerService
     }
 
     private PSDatabasePubServer createDatabasePubServer(String siteName, String serverName, PSPublishServerInfo pubServerInfo,
-                                                        IPSSite site) throws PSDataServiceException {
+                                                        IPSSite site) throws PSValidationException {
         PSDatabasePubServer dbPubServer = generateDBPubServer(site.getSiteId(), siteName, serverName, pubServerInfo);
         String error = serverFileService.testDatabasePubServer(dbPubServer);
         if (error != null)
         {
-            throw new PSDataServiceException("Failed to connect to '" + serverName + "', the underlying error is: " + error);
+            String errorMsg = "Failed to connect to '" + serverName + "', the underlying error is: " + error;
+            PSValidationErrorsBuilder builder = validateParameters("createDatabasePubServer").reject("Database Connection Test",errorMsg);
+            builder.throwIfInvalid();
+
         }
         return dbPubServer;
     }
@@ -1708,7 +1711,9 @@ public class PSPubServerService implements IPSPubServerService
             List<PSPublishServerInfo> pubSrvs =  getPubServerList(siteId);
             for (PSPublishServerInfo srvInfo : pubSrvs) {
                 if(PSPubServer.STAGING.equalsIgnoreCase( srvInfo.getServerType())){
-                    throw new PSPubServerServiceException("Only one staging server is allowed per site.");
+                    String opName = "validateServer";
+                    PSValidationErrorsBuilder builder = validateParameters(opName).reject("Server Save","Only one staging server is allowed per site.");
+                    builder.throwIfInvalid();
                 }
             }
         }
