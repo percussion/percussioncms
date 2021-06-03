@@ -63,8 +63,9 @@ public class PSSecurityItemsDao implements IPSSecurityItemsDao
         try
         {
             privateKeys = fileSystemService.getChildren("/");
-            for (File file : privateKeys)
+            for (File file : privateKeys) {
                 keyNames.add(file.getName());
+            }
         }
         catch (FileNotFoundException e)
         {
