@@ -184,7 +184,7 @@ public abstract class PSPathItemService implements IPSPathService
             workflowId = itemWorkflowService.getWorkflowId(request.getWorkflow());
             stateId = itemWorkflowService.getStateId(request.getWorkflow(), request.getState());
         }
-        catch (PSItemWorkflowServiceException | PSValidationException e)
+        catch (PSItemWorkflowServiceException  e)
         {
             throw new PSPathServiceException(e);
         }
