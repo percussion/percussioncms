@@ -34,11 +34,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Provides a configurable Context loader that can be used as the contextClass param
@@ -72,7 +71,7 @@ public class PSConfigurableApplicationContext extends XmlWebApplicationContext
     private static final String CATALINA_BASE = "catalina.base";
 
     //Log4j2 may not be present when this is run - so use java basic logger
-    private static final Logger log = LogManager.getLogManager().getLogger(PSConfigurableApplicationContext.class.getName());
+    private static final Logger log = LogManager.getLogger(PSConfigurableApplicationContext.class);
 
     PSConfigurableApplicationContext(){
 
@@ -125,7 +124,7 @@ public class PSConfigurableApplicationContext extends XmlWebApplicationContext
                 
             targetContext = props.getProperty(PERC_CONTEXT_LOC, null);
         } catch (IOException e) {
-            log.severe(e.getMessage());
+            log.info(e.getMessage());
         }
 
         if(targetContext == null){
@@ -134,18 +133,16 @@ public class PSConfigurableApplicationContext extends XmlWebApplicationContext
             {
                     props.load(in);
                     targetContext = props.getProperty(PERC_CONTEXT_LOC,null);
-                    log.info(MessageFormat.format("Selected {0} from {1}",
-                            targetContext , PERC_CONTEXT_LOC ));
+                    log.info("Selected {} from {}",targetContext , PERC_CONTEXT_LOC );
             } catch (IOException e) {
-                log.severe(e.getMessage());
+                log.info(e.getMessage());
             }
         }
         
         //Fall back to defaults if none of the properties are found.
         if(targetContext == null || targetContext.equals("")){
-            log.info(MessageFormat.format(
-                    "Unable to find a configured ContextLocation - selecting default: {0}",
-                    DEFAULT_CONTEXT_CONFIG));
+            log.info("Unable to find a configured ContextLocation - selecting default: {}",
+                    DEFAULT_CONTEXT_CONFIG);
             targetContext = DEFAULT_CONTEXT_CONFIG;
         }
 
