@@ -63,8 +63,9 @@ public class PSSiteImportSummaryService implements IPSSiteImportSummaryService
     public void deleteBySiteId(int siteId)
     {
         PSSiteImportSummary summary = find(siteId);
-        if(summary != null)
+        if(summary != null) {
             summaryDao.delete(summary);
+        }
     }
 
     @Override

@@ -60,8 +60,8 @@ import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSUnknownContentTypeException;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -193,8 +193,9 @@ public class PSSiteContentDao
         // Create Home Page template
         try
         {
-            if(templateSummary == null)
+            if(templateSummary == null) {
                 templateSummary = createSiteTemplate(site);
+            }
 
             // Create Home Page
             PSPage page = new PSPage();
@@ -339,12 +340,13 @@ public class PSSiteContentDao
         // delete site folder
         try
         {
-            log.info("Deleting items for site in "+ site.getFolderPath());
+            log.info("Deleting items for site in {}", site.getFolderPath());
             deleteFolder(site.getFolderPath());
         }
         catch (Exception e)
         {
-            log.error("Error deleting site related items", e);
+            log.error("Error deleting site related items from folder: {}, Error: {}", site.getFolderPath(), e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new DeleteException("Failed to delete site folder: " + site.getFolderPath() + " while deleting site", e);
         }
         finally {
@@ -435,7 +437,7 @@ public class PSSiteContentDao
             site.setTemplateName(tempSummary.getName());
         }
         else {
-            log.warn("Site: " + site.getName() + " does not have a base template.");
+            log.warn("Site: {}, does not have a base template.", site.getName());
         }
     }
 
@@ -493,6 +495,6 @@ public class PSSiteContentDao
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSiteContentDao.class);
+    private static final Logger log = LogManager.getLogger(PSSiteContentDao.class);
 
 }

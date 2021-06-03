@@ -165,7 +165,7 @@ public class PSSiteDao implements IPSiteDao
     protected PSSite loadSite(String name) throws LoadException, PSNavException, DeleteException {
 
         PSSiteSummary sum = findSummary(name);
-        if(sum == null) return null;
+        if(sum == null){ return null;}
         PSSite site=null;
         try
         {
@@ -201,8 +201,8 @@ public class PSSiteDao implements IPSiteDao
     	IPSPublishingWs publishWs = PSPublishingWsLocator.getPublishingWebservice();
     	IPSSite site = publishWs.findSite(name);
     	
-        if (site == null)
-            throw new DeleteException("Cannot delete site because site does not exist, site: " + name);
+        if (site == null){
+            throw new DeleteException("Cannot delete site because site does not exist, site: " + name);}
         
         PSSiteSummary summary = new PSSiteSummary();
         sitePublishDao.convertToSummary(site, summary);
@@ -276,8 +276,9 @@ public class PSSiteDao implements IPSiteDao
         notEmpty(newName, "newName may not be blank");
         
         PSSite orig = find(origId);
-        if (orig==null)
+        if (orig==null) {
             throw new PSDataServiceException();
+        }
         
         PSSite copy = new PSSite();
         copy.setBaseTemplateName(orig.getBaseTemplateName());
@@ -301,8 +302,9 @@ public class PSSiteDao implements IPSiteDao
         List<PSSiteSummary> sums = findAllSummaries();
 
         for (PSSiteSummary sum : sums) {
-          if(sum.getName().equalsIgnoreCase(name))
+          if(sum.getName().equalsIgnoreCase(name)) {
               return sum;
+          }
         }
         return null;
     }

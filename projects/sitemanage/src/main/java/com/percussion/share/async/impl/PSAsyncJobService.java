@@ -98,8 +98,9 @@ public class PSAsyncJobService implements IPSAsyncJobService, IPSAsyncJobListene
     public void cancelJob(long jobId)
     {
         IPSAsyncJob job = m_jobMap.get(jobId);
-        if (job == null)
+        if (job == null) {
             return;
+        }
         
         // cancel the job
         job.cancelJob();
@@ -114,8 +115,9 @@ public class PSAsyncJobService implements IPSAsyncJobService, IPSAsyncJobListene
            }
            catch (InterruptedException e)
            {
-              if (job.isCompleted())
-                 break;
+              if (job.isCompleted()) {
+                  break;
+              }
            }
         }
 
@@ -131,8 +133,9 @@ public class PSAsyncJobService implements IPSAsyncJobService, IPSAsyncJobListene
     public void jobCompleted(long jobId)
     {
         IPSAsyncJob job = m_jobMap.get(jobId);
-        if (job == null)
+        if (job == null) {
             return;
+        }
         
         // remove self as listener
         job.removeJobListener(this);        
@@ -162,8 +165,9 @@ public class PSAsyncJobService implements IPSAsyncJobService, IPSAsyncJobListene
     {
         for (Entry<Long, IPSAsyncJob> entry : m_jobMap.entrySet())
         {
-            if (entry.getValue().isDiscarded())
+            if (entry.getValue().isDiscarded()) {
                 m_jobMap.remove(entry.getKey());
+            }
         }
     }
 

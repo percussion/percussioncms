@@ -157,14 +157,17 @@ public class PSSearchCriteria
     public boolean isEmpty(){
         boolean ret = true;
 
-        if(StringUtils.isNotEmpty(this.query))
+        if(StringUtils.isNotEmpty(this.query)) {
             ret = false;
+        }
 
-        if(StringUtils.isNotEmpty(this.folderPath) && !folderPath.equalsIgnoreCase("//Sites/") )
+        if(StringUtils.isNotEmpty(this.folderPath) && !folderPath.equalsIgnoreCase("//Sites/") ) {
             ret = false;
+        }
 
-        if(StringUtils.isNotEmpty(this.searchType))
+        if(StringUtils.isNotEmpty(this.searchType)) {
             ret = false;
+        }
 
         return ret;
     }
