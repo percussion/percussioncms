@@ -61,11 +61,13 @@ public abstract class PSAbstractEventQueue<T>
    {
       synchronized (m_runMonitor)
       {
-         if (m_run)
+         if (m_run) {
             throw new IllegalStateException("Index queue is already running");
+         }
 
-         if (m_shutdown)
+         if (m_shutdown) {
             throw new IllegalStateException("Index queue is shutting down");
+         }
 
          preStart();
 
@@ -77,8 +79,9 @@ public abstract class PSAbstractEventQueue<T>
 
                while(!m_shutdown)
                {
-                  if (!doRun())
+                  if (!doRun()) {
                      break;
+                  }
                }
 
                PSRequestInfo.resetRequestInfo();
@@ -107,8 +110,9 @@ public abstract class PSAbstractEventQueue<T>
    {
       synchronized(m_shutdownMonitor)
       {
-         if (m_shutdown)
+         if (m_shutdown) {
             return;
+         }
 
          // set shutdown flag and wait till the queue is shutdown
          m_shutdown = true;
