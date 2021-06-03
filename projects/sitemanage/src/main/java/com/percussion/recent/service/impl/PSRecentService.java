@@ -124,15 +124,16 @@ public class PSRecentService implements IPSRecentService
             }
             catch (Exception e)
             {
-                log.debug("removing error entry from recent item list {} Error: {}",
-                        entry,
-                        e.getMessage());
+                log.error("removing error entry from recent item list {}, Error: {}", entry, e.getMessage());
+                log.debug(e.getMessage(),e);
             }
-            if (itemProps == null)
+            if (itemProps == null) {
                 toDelete.add(entry);
+            }
         }
-        if (!toDelete.isEmpty())
+        if (!toDelete.isEmpty()) {
             recentService.deleteRecent(user, null, RecentType.ITEM, toDelete);
+        }
         return items;
     }
 
@@ -163,7 +164,7 @@ public class PSRecentService implements IPSRecentService
             // Cleanup old or invalid entries
             if (template == null)
             {
-                log.debug("Removing recent template not a current site template :" + entry);
+                log.debug("Removing recent template not a current site template :{}", entry);
                 toDelete.add(entry);
             }
             else 
@@ -172,8 +173,9 @@ public class PSRecentService implements IPSRecentService
             }
         }
 
-        if (!toDelete.isEmpty())
+        if (!toDelete.isEmpty()) {
             recentService.deleteRecent(user, siteName, RecentType.TEMPLATE, toDelete);
+        }
         return templates;
     }
 
@@ -198,7 +200,8 @@ public class PSRecentService implements IPSRecentService
             }
             catch (Exception e)
             {
-                log.debug("removing error entry from recent siteFolder list {}", entry, e);
+                log.error("removing error entry from recent siteFolder list {}, Error: {}", entry, e.getMessage());
+                log.debug(e.getMessage(),e);
             }
             if (pathItem == null)
                 toDelete.add(entry);
@@ -226,13 +229,14 @@ public class PSRecentService implements IPSRecentService
                 if (pathItem != null)
                     pathItems.add(pathItem);
                 else
-                    log.debug("Removing recent assetFolder entry find returned null :" + entry);
+                    log.debug("Removing recent assetFolder entry find returned null :{}" , entry);
 
                 // FB:NP_NULL_ON_SOME_PATH, UNUSED - NC 1-16-16 -  pathItem.getType();
             }
             catch (Exception e)
             {
-                log.debug("removing error entry from recent assetFolder list " + entry + " ", e);
+                log.error("removing error entry from recent assetFolder list {}, Error: {}", entry, e.getMessage());
+                log.debug(e.getMessage(),e);
             }
             if (pathItem == null)
                 toDelete.add(entry);
@@ -332,7 +336,7 @@ public class PSRecentService implements IPSRecentService
             // Cleanup old or invalid entries
             if (wtype == null)
             {
-                log.debug("Removing recent template not a current site template :" + entry);
+                log.debug("Removing recent template not a current site template : {}" , entry);
                 toDelete.add(entry);
             }
             else 
@@ -363,8 +367,8 @@ public class PSRecentService implements IPSRecentService
         try {
             recentService.renameSiteRecent(oldSiteName, newSiteName);
         } catch (Exception e) {
-            log.error("Error updating PSX_RECENT table to rename site from: " + oldSiteName +
-                    " to: " + newSiteName, e);
+            log.error("Error updating PSX_RECENT table to rename site from:{}, to {}, Error: {} ",oldSiteName, newSiteName, e.getMessage());
+            log.debug(e.getMessage(),e);
         }
     }
 

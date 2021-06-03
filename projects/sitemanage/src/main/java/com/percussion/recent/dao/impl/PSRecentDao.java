@@ -64,12 +64,15 @@ public class PSRecentDao
     {
         Session session = getSession();
         Criteria crit = session.createCriteria(PSRecent.class);
-        if (user!=null)
+        if (user!=null) {
             crit.add(Restrictions.eq("user", user));
-        if(siteName!=null)
+        }
+        if(siteName!=null) {
             crit.add(Restrictions.eq("siteName", siteName));
-        if(type!=null)
-            crit.add(Restrictions.eq("type", type)); 
+        }
+        if(type!=null) {
+            crit.add(Restrictions.eq("type", type));
+        }
         crit.addOrder(Order.asc("order"));
         return crit.list();
     }
