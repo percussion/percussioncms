@@ -28,6 +28,8 @@ import com.percussion.tools.PSCopyStream;
 import com.percussion.util.PSFileFilter;
 import com.percussion.util.PSFilteredFileList;
 import com.percussion.utils.tools.PSPatternMatcher;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,6 +53,9 @@ import java.util.StringTokenizer;
 public class PSLocaleRxResourceCopyHandler
    extends PSIdleDotter
 {
+
+   private static final Logger log = LogManager.getLogger(PSLocaleRxResourceCopyHandler.class);
+
    /**
     * Constructor. Needs valid Rhythmyx root directory and the new language
     * string.
@@ -551,7 +556,8 @@ public class PSLocaleRxResourceCopyHandler
       }
       catch(IOException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 }
