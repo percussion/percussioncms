@@ -35,6 +35,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.PrefixFileFilter;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.*;
 
 import javax.xml.XMLConstants;
@@ -61,6 +63,8 @@ import java.util.stream.Collectors;
  */
 public class InstallUtil
 {
+
+   private static final Logger log = LogManager.getLogger(InstallUtil.class);
 
    private static final String JETTY_PERC_LIB="jetty/defaults/lib/perc/";
    private static final String JETTY_PERC_LOGGING="jetty/defaults/lib/perc-logging/";
@@ -1313,15 +1317,19 @@ public class InstallUtil
 
                } catch (InstantiationException ie) {
                   logError("InstantiationException : " + ie.getMessage());
-                  ie.printStackTrace();
+                  log.error(ie.getMessage());
+                  log.debug(ie.getMessage(), ie);
                } catch (IllegalAccessException iae) {
                   logError("IllegalAccessException : " + iae.getMessage());
-                  iae.printStackTrace();
+                  log.error(iae.getMessage());
+                  log.debug(iae.getMessage(), iae);
                } catch (NoSuchFieldError err) {
                   logError("NoSuchFieldError : " + err.getMessage());
-                  err.printStackTrace();
+                  log.error(err.getMessage());
+                  log.debug(err.getMessage(), err);
                } catch (IOException e) {
-                  e.printStackTrace();
+                  log.error(e.getMessage());
+                  log.debug(e.getMessage(), e);
                   logError(e.getMessage());
                }
             }
@@ -1329,21 +1337,24 @@ public class InstallUtil
       }
       catch (ClassNotFoundException cls)
       {
-         cls.printStackTrace();
+         log.error(cls.getMessage());
+         log.debug(cls.getMessage(), cls);
          logError("Could not find the driver class : " + className);
          logError("Exception : " + cls.getMessage());
          throw new SQLException("JDBC driver class not found. " + cls.toString());
       }
       catch (LinkageError link)
       {
-         link.printStackTrace();
+         log.error(link.getMessage());
+         log.debug(link.getMessage(), link);
          logError("linkage error");
          logError("Exception : " + link.getMessage());
          throw new SQLException("JDBC driver could not be loaded. " + link.toString());
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          logError("Exception : " + e.getMessage());
          throw new SQLException("Exception. " + e.toString());
       }
