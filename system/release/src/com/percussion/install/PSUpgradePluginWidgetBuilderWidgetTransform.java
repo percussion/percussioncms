@@ -30,11 +30,15 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class PSUpgradePluginWidgetBuilderWidgetTransform implements IPSUpgradePlugin
 {
+
+   private static final Logger log = LogManager.getLogger(PSUpgradePluginWidgetBuilderWidgetTransform.class);
 
    /**
     * for Unit test purposes only
@@ -112,7 +116,8 @@ public class PSUpgradePluginWidgetBuilderWidgetTransform implements IPSUpgradePl
       catch(Exception e)
       {
          logMessage(e.getLocalizedMessage());
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       return null; 
    }

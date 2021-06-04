@@ -40,6 +40,8 @@ import com.percussion.util.PSUniqueObjectGenerator;
 import com.percussion.xml.PSDtdBuilder;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.*;
 
 import java.net.MalformedURLException;
@@ -57,6 +59,8 @@ import java.util.*;
  */
 class PSCopyHandler implements IPSCopyHandler
 {
+
+   private static final Logger log = LogManager.getLogger(PSCopyHandler.class);
    /**
     * Convenience ctor that calls
     * {@link #PSCopyHandler(PSContentEditorHandler, PSContentEditor,
@@ -447,7 +451,8 @@ class PSCopyHandler implements IPSCopyHandler
       }
       catch (PSInvalidContentTypeException e)
       {
-         e.printStackTrace(); // this is not possible
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e); // this is not possible
          throw new RuntimeException(e);
       }
    }

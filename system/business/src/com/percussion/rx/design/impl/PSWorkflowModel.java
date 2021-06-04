@@ -33,9 +33,14 @@ import java.text.MessageFormat;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSWorkflowModel extends PSLimitedDesignModel
 {
+
+   private static final Logger log = LogManager.getLogger(PSWorkflowModel.class);
+
    @Override
    public Object load(IPSGuid guid)
    {
@@ -120,7 +125,8 @@ public class PSWorkflowModel extends PSLimitedDesignModel
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 }
