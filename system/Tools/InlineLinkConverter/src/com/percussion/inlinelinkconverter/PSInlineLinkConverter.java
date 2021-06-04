@@ -44,6 +44,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -77,6 +79,9 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 
 public class PSInlineLinkConverter
 {
+
+   private static final Logger log = LogManager.getLogger(PSInlineLinkConverter.class);
+
    /**
     * Constructor, called by main with the loaded properties file and
     * xsl document which will be applied on the inline content.
@@ -130,7 +135,8 @@ public class PSInlineLinkConverter
       }
       catch (Exception ex) 
       {
-         ex.printStackTrace();
+         log.error(ex.getMessage());
+         log.debug(ex.getMessage(), ex);
          String errorMsg = "Error - failed to construct PSInlineLinkConverter"
             + ", caught exception: " + ex.getMessage();
          writeToLog(errorMsg);
@@ -281,7 +287,8 @@ public class PSInlineLinkConverter
 
          writeToLog(msg);
 
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
       finally
       {
@@ -351,7 +358,8 @@ public class PSInlineLinkConverter
          writeToLog("");
          writeToLog(contentType  + " - Not converting");
          writeToLog("Failed to get the content type definition. The registration may be wrong or the content type may not be running.");
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 
@@ -1127,11 +1135,13 @@ public class PSInlineLinkConverter
       }
       catch (TransformerConfigurationException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       catch (TransformerException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       return outNode;
    }

@@ -72,6 +72,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -84,6 +86,9 @@ import org.w3c.dom.Text;
  */
 public class PSChoiceBuilder
 {
+
+   private static final Logger log = LogManager.getLogger(PSChoiceBuilder.class);
+
    /**
     * Convenience method that calls {@link #addChoiceElement(Document, Element,
     * PSChoices, PSExecutionData, boolean, boolean, boolean)
@@ -830,7 +835,8 @@ public class PSChoiceBuilder
       catch (PSUnknownNodeTypeException e)
       {
          // Should never get here
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       
       String lang =

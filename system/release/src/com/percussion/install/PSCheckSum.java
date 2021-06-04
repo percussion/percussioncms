@@ -24,6 +24,9 @@
 
 package com.percussion.install;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -36,6 +39,8 @@ import java.util.zip.Checksum;
  */
 public class PSCheckSum
 {
+
+   private static final Logger log = LogManager.getLogger(PSCheckSum.class);
    /**
     * Run this program to obtain the checksum of any file. Usage is
     * java com.percussion.install.PSCheckSum <input file>
@@ -56,8 +61,9 @@ public class PSCheckSum
       }
       catch (IOException e)
       {
-         System.out.println("IOException : " + e.getMessage());
-         e.printStackTrace();
+         log.error("IOException : {}", e.getMessage());
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 
