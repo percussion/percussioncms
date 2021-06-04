@@ -264,8 +264,8 @@ public class PSParseUrlQueryString
       }
       catch (PSRequestParsingException e)
       {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       log.info(params);
    }

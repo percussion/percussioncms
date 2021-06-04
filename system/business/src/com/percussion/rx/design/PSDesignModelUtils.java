@@ -55,6 +55,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Util class for design models. Consists of static methods.
@@ -63,6 +65,8 @@ import org.apache.commons.lang.Validate;
  */
 public class PSDesignModelUtils
 {
+
+   private static final Logger log = LogManager.getLogger(PSDesignModelUtils.class);
    
    /**
     * Helper method to convert a given list of objects to list of strings if the
@@ -147,7 +151,8 @@ public class PSDesignModelUtils
       catch (PSCmsException e)
       {
          // this is not possible
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new RuntimeException(
                "Failed to create PSComponentProcessorProxy.", e);
       }

@@ -24,13 +24,14 @@
 
 package com.percussion.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -44,6 +45,12 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSPurgableTempFile extends File implements AutoCloseable
 {
+
+   /**
+    * logger
+    */
+   private static final Logger log = LogManager.getLogger(PSPurgableTempFile.class);
+
    /**
     * Convenience constructor that calls {@link #PSPurgableTempFile(String, 
     * String, File, String, String, String) PSPurgableTempFile(prefix, 
@@ -219,11 +226,13 @@ public class PSPurgableTempFile extends File implements AutoCloseable
             try {
                m_isDeleted = delete();
                if(!m_isDeleted)
-                  ms_log.debug("Could not delete tempfile "+this.getAbsolutePath(),new Throwable("STACKTRACE"));
+                  log.debug("Could not delete tempfile {}", this.getAbsolutePath(),new Throwable("STACKTRACE"));
                
             } catch (Exception e)
             {
-               ms_log.debug("Could not release temp file "+this.getAbsolutePath(),e);
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
+               log.debug("Could not release temp file {} ", this.getAbsolutePath(),e);
             }
       }
    }
@@ -289,15 +298,13 @@ public class PSPurgableTempFile extends File implements AutoCloseable
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }      
    }
    
 
-   /**
-    * logger
-    */
-   private static Log ms_log = LogFactory.getLog(PSPurgableTempFile.class);
+
    
    
    private static Object makeTempLock = new Object();

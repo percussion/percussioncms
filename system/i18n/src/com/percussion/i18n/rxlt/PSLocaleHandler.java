@@ -51,6 +51,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -75,6 +77,9 @@ import org.xml.sax.SAXException;
 public class PSLocaleHandler
    implements IPSActionHandler
 {
+
+   private static final Logger log = LogManager.getLogger(PSLocaleHandler.class);
+
    /**
     * This is a utility method to get array of all languages registered in the
     * Rhythmyx Content Manager. It makes use of the database settings from the
@@ -884,7 +889,8 @@ public class PSLocaleHandler
       }
       catch(Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 }

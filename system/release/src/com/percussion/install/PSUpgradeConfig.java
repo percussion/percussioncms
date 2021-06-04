@@ -26,6 +26,8 @@ package com.percussion.install;
 import com.percussion.util.PSProperties;
 import com.percussion.xml.PSXPathEvaluator;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -54,7 +56,9 @@ import java.util.jar.JarFile;
  */
 public class PSUpgradeConfig implements IPSUpgradeConfig
 {
-   
+
+   private static final Logger log = LogManager.getLogger(PSUpgradeConfig.class);
+
    /*
     * Constuctor of this class.
     * @param configFile Name of the configuration file.
@@ -730,7 +734,8 @@ public class PSUpgradeConfig implements IPSUpgradeConfig
       }
       catch (FileNotFoundException e1)
       {
-         e1.printStackTrace();
+         log.error(e1.getMessage());
+         log.debug(e1.getMessage(), e1);
          return false;
       }
       catch (IOException e1)
