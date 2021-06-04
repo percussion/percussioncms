@@ -30,6 +30,8 @@ import com.percussion.tools.simple.PSXmlExtractor;
 import com.percussion.utils.xml.PSEntityResolver;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -50,6 +52,9 @@ import java.net.URL;
  */
 public class ExtractAllEditorApplicationDefs
 {
+
+   private static final Logger log = LogManager.getLogger(ExtractAllEditorApplicationDefs.class);
+
    /**
     * Extract the defs from the specified apps.
     */
@@ -209,19 +214,23 @@ public class ExtractAllEditorApplicationDefs
                         }
                         catch(SAXException e)
                         {
-                           e.printStackTrace();
+                           log.error(e.getMessage());
+                           log.debug(e.getMessage(), e);
                         }
                         catch(FileNotFoundException e)
                         {
-                           e.printStackTrace();
+                           log.error(e.getMessage());
+                           log.debug(e.getMessage(), e);
                         }
                         catch(IOException e)
                         {
-                           e.printStackTrace();
+                           log.error(e.getMessage());
+                           log.debug(e.getMessage(), e);
                         }
                         catch(IllegalArgumentException e)
                         {
-                           e.printStackTrace();
+                           log.error(e.getMessage());
+                           log.debug(e.getMessage(), e);
                         }
                      }
 
@@ -230,15 +239,18 @@ public class ExtractAllEditorApplicationDefs
                   }
                   catch(SAXException e)
                   {
-                     e.printStackTrace();
+                     log.error(e.getMessage());
+                     log.debug(e.getMessage(), e);
                   }
                   catch(FileNotFoundException e)
                   {
-                     e.printStackTrace();
+                     log.error(e.getMessage());
+                     log.debug(e.getMessage(), e);
                   }
                   catch(IOException e)
                   {
-                     e.printStackTrace();
+                     log.error(e.getMessage());
+                     log.debug(e.getMessage(), e);
                   }
                   finally
                   {

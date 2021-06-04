@@ -33,6 +33,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
 /**
@@ -42,6 +44,9 @@ import org.xml.sax.SAXException;
  */
 public class PSCETemplateFilesCreator
 {
+
+    private static final Logger log = LogManager.getLogger(PSCETemplateFilesCreator.class);
+
   /**
    * Default constructor
    */
@@ -158,19 +163,23 @@ public class PSCETemplateFilesCreator
                       }
                       catch(PSCETemplateGenerator.PSCreateTemplateException e)
                       {
-                          e.printStackTrace();
+                          log.error(e.getMessage());
+                          log.debug(e.getMessage(), e);
                       }
                       catch(SAXException e)
                       {
-                          e.printStackTrace();
+                          log.error(e.getMessage());
+                          log.debug(e.getMessage(), e);
                       }
                       catch(FileNotFoundException e)
                       {
-                          e.printStackTrace();
+                          log.error(e.getMessage());
+                          log.debug(e.getMessage(), e);
                       }
                       catch(IOException e)
                       {
-                          e.printStackTrace();
+                          log.error(e.getMessage());
+                          log.debug(e.getMessage(), e);
                       }
                   }
               }
