@@ -58,8 +58,9 @@ public class PSSiteArchitectureDao implements IPSSiteArchitectureDao
      */
     public PSSiteArchitecture find(String id) throws LoadException
     {
-        if (id == null)
+        if (id == null) {
             throw new IllegalArgumentException("id must not be null");
+        }
         PSSiteArchitecture sa = createSiteArchitecture(id);
         return sa;
     }

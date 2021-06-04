@@ -101,8 +101,9 @@ public class PSRedirectService implements IPSRedirectService
             String path = StringUtils.isBlank(data.getToPath())
                     ? StringUtils.defaultString(data.getFromPath())
                     : StringUtils.defaultString(data.getToPath());
-            if(path.startsWith("/Sites/"))
-                path = "/" + path;
+            if(path.startsWith("/Sites/")) {
+				path = "/" + path;
+			}
             String sitename = getSiteNameFromPath(path);
             PSSiteSummary site = siteDataService.find(sitename,true);
             if(site.getPubInfo() != null){
@@ -114,7 +115,9 @@ public class PSRedirectService implements IPSRedirectService
         catch (Exception e)
         {
             status =RedirectValidationStatus.Error;
-            log.error("Error occurred validating the redirect object, data: " + getDataAsString(data), e);
+            log.error("Error occurred validating the redirect object, data: {}, Error: {}", getDataAsString(data), e.getMessage());
+			log.debug(e.getMessage(),e);
+
             response.setErrorMessage("A redirect rule cannot be created at this time, Please note the time and date and submit this problem to Percussion support.");
         }
         response.setStatus(status);
@@ -178,16 +181,19 @@ public class PSRedirectService implements IPSRedirectService
         {
             // If there is no redirect license, we don't have to log it for on
             // prem customers.
-            if (utilityService.isSaaSEnvironment())
-                log.error(e);
+            if (utilityService.isSaaSEnvironment()) {
+				log.error("Error: {}", e.getMessage());
+				log.debug(e.getMessage(),e);
+			}
         }
         return licInfo;
     }
 
     private RedirectValidationStatus validatePathStatus(String path, RedirectPathType type, PSSiteSummary site) throws DataServiceLoadException, Exception
     {
-        if(path.startsWith("/Sites"))
-            path = "/" + path;
+        if(path.startsWith("/Sites")) {
+			path = "/" + path;
+		}
         RedirectValidationStatus status = null;
         boolean isSitePublished = isSitePublished(site.getSiteId()+"");
         if (type.equals(RedirectPathType.page))
@@ -244,16 +250,19 @@ public class PSRedirectService implements IPSRedirectService
 			    
 		
 			}catch(Exception e){
-				log.error("Error creating redirect from " + request.getCondition() + " to " + request.getRedirectTo(),e);
+				log.error("Error creating redirect from {}, to {}, Error: {}", request.getCondition(), request.getRedirectTo(), e.getMessage());
+				log.debug(e.getMessage(),e);
 			}
 			if(response != null && response.getStatus() == 200){
 				ret.setStatusCode(PSRedirectStatus.SERVICE_OK);
 				ret.setMessage("Redirect created successfully.");
 			}else{
-				if(response != null)
+				if(response != null) {
 					ret.setMessage("An error occurred while saving the redirect.  Remote service returned status code: " + response.getStatus());
-				else
+				}
+				else {
 					ret.setMessage("An error occurred while saving the redirect.  Remote service returned status code: null");
+				}
 
 			}
 			

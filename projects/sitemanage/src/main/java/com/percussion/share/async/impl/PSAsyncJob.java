@@ -29,8 +29,8 @@ import com.percussion.share.async.IPSAsyncJob;
 import com.percussion.share.async.IPSAsyncJobListener;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.thread.PSThreadUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -57,7 +57,7 @@ public abstract class PSAsyncJob implements IPSAsyncJob
      */
     protected abstract void doInit(Object config) throws IPSFolderService.PSWorkflowNotFoundException;
     
-    private static final Log log = LogFactory.getLog(PSAsyncJob.class);
+    private static final Logger log = LogManager.getLogger(PSAsyncJob.class);
 
     /**
      * Required implementation for jobs running within the server that need to access the current request info.  
@@ -88,8 +88,9 @@ public abstract class PSAsyncJob implements IPSAsyncJob
      */
     protected void setStatus(int status)
     {
-        if ((status < 1 || status > 100) && status != ABORT_STATUS)
+        if ((status < 1 || status > 100) && status != ABORT_STATUS) {
             throw new IllegalArgumentException("invalid status: " + status);
+        }
 
         m_status = status;
     }
@@ -129,8 +130,9 @@ public abstract class PSAsyncJob implements IPSAsyncJob
     @Override
     public long getId()
     {
-        if (m_id == -1)
+        if (m_id == -1) {
             throw new IllegalStateException("setId() has not been called.");
+        }
 
         return m_id;
     }
@@ -151,8 +153,9 @@ public abstract class PSAsyncJob implements IPSAsyncJob
     @Override
     public void addJobListener(IPSAsyncJobListener listener)
     {
-        if (listener == null)
+        if (listener == null) {
             throw new IllegalArgumentException("listener may not be null");
+        }
 
         m_listeners.add(listener);
     }
@@ -160,8 +163,9 @@ public abstract class PSAsyncJob implements IPSAsyncJob
     @Override
     public void removeJobListener(IPSAsyncJobListener listener)
     {
-        if (listener == null)
+        if (listener == null) {
             throw new IllegalArgumentException("listener may not be null");
+        }
 
         m_listeners.remove(listener);
     }
@@ -177,8 +181,9 @@ public abstract class PSAsyncJob implements IPSAsyncJob
      */
     protected void setStatusMessage(String msg)
     {
-        if (msg == null || msg.trim().length() == 0)
+        if (msg == null || msg.trim().length() == 0) {
             throw new IllegalArgumentException("msg may not be null or empty");
+        }
 
         m_statusMessage = msg;
     }
@@ -217,7 +222,8 @@ public abstract class PSAsyncJob implements IPSAsyncJob
         }
         catch (Exception e) 
         {
-            log.error("Error running async job", e);
+            log.error("Error running async job, Error: {}", e.getMessage());
+            log.debug(e.getMessage(),e);
         }
         finally
         {
@@ -239,8 +245,9 @@ public abstract class PSAsyncJob implements IPSAsyncJob
     @Override
     public Object getResult()
     {
-        if (isCompleted())
+        if (isCompleted()) {
             m_isDiscarded.set(true);
+        }
         return m_result;
     }
 
@@ -278,7 +285,8 @@ public abstract class PSAsyncJob implements IPSAsyncJob
         }
         catch (Exception e)
         {
-            log.error("Unable to interrupt async job", e);
+            log.error("Unable to interrupt async job, Error: {}", e.getMessage());
+            log.debug(e.getMessage(),e);
         }
     }
     
