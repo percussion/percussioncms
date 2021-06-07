@@ -483,7 +483,13 @@
         <ant antfile="removeOldPatches.xml" target="removeOldPatches" inheritAll="true" inheritRefs="true" />
         <antcall target="alwaysCopyIfMissing" inheritall="true" inheritrefs="true"/>
         <ant antfile="updateConfiguration.xml" target="updateConfiguration" inheritAll="true" inheritRefs="true" />
+        <antcall target="upgradeSiteConfig" inheritall="true" inheritrefs="true" />
         <antcall target="renameCamelCasedFontAwsomeFolder"  inheritall="true" inheritrefs="true"/>
+    </target>
+
+    <target name="upgradeSiteConfig">
+        <echo>Upgrading Site Configs for Secure Sites...</echo>
+        <PSUpgradeSiteConfig rootDir="${install.dir}" />
     </target>
 
     <target name="renameCamelCasedFontAwsomeFolder">
