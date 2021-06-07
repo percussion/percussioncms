@@ -25,6 +25,9 @@
 package com.percussion.install;
 
 //java
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -35,6 +38,9 @@ import java.util.ResourceBundle;
   */
 public class RxInstallerProperties
 {
+
+    private static final Logger log = LogManager.getLogger(RxInstallerProperties.class);
+
   /**
    * Constructs an RxInstallerProperties
    */
@@ -60,9 +66,10 @@ public class RxInstallerProperties
      }
      catch(Throwable th)
      {
-        th.printStackTrace();
+         log.error(th.getMessage());
+         log.debug(th.getMessage(), th);
         
-        System.out.println("RxInstallerProperties: key missing: " + key);
+        log.info("RxInstallerProperties: key missing: " + key);
         
         return key;
      }
@@ -83,7 +90,8 @@ public class RxInstallerProperties
       }
       catch(MissingResourceException mre)
       {
-         mre.printStackTrace();
+          log.error(mre.getMessage());
+          log.debug(mre.getMessage(), mre);
       }
       
       return m_res;

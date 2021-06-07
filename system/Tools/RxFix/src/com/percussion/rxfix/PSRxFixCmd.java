@@ -38,6 +38,8 @@ import java.util.Map;
 
 import javax.naming.spi.NamingManager;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 /**
@@ -48,6 +50,9 @@ import org.springframework.mock.jndi.SimpleNamingContextBuilder;
  */
 public class PSRxFixCmd
 {
+
+   private static final Logger log = LogManager.getLogger(PSRxFixCmd.class);
+
    /**
     * Template to create install xml beans file
     */
@@ -397,7 +402,8 @@ public class PSRxFixCmd
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          logAndSaveError("Problem creating install beans: "
                + e.getLocalizedMessage());
       }

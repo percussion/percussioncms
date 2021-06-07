@@ -47,6 +47,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -59,6 +61,9 @@ import org.w3c.dom.Element;
 @SuppressWarnings("unchecked")
 public class Code
 {
+
+   private static final Logger log = LogManager.getLogger(Code.class);
+
    /**
     * Construct a Code object. This constructor should only be used by the
     * code generator tool (com.percussion.CodeGenerator.CodeGenerator class).
@@ -717,7 +722,8 @@ public class Code
       }
       catch(MissingResourceException mre)
       {
-         mre.printStackTrace();
+         log.error(mre.getMessage());
+         log.debug(mre.getMessage(), mre);
       }
       return ms_res;
    }

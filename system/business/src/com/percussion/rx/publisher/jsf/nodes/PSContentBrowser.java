@@ -38,8 +38,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is the base class for the backing beans of browsing Folders (for a site
@@ -52,7 +52,7 @@ public abstract class PSContentBrowser
    /**
     * The class log.
     */
-   private final static Log ms_log = LogFactory.getLog(PSContentBrowser.class);
+   private final static Logger log = LogManager.getLogger(PSContentBrowser.class);
    
    /**
     * The folder path, never <code>null</code> or empty after constructor.
@@ -131,9 +131,9 @@ public abstract class PSContentBrowser
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         ms_log.error("Failed to get folder id from path: " + path
-               + ", due to error: " + e.getMessage());
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         log.error("Failed to get folder id from path: {}, due to error: {}",path, e.getMessage());
          return;
       }
 
@@ -167,14 +167,14 @@ public abstract class PSContentBrowser
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         ms_log.error("Failed to get path for folderId=" + loc.getId()
-               + ", due to error: " + e.getMessage());
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         log.error("Failed to get path for folderId={}, due to error: {}", loc.getId(), e.getMessage());
          return null;
       }
       if (paths.length == 0)
       {
-         ms_log.warn("Cannot get path for folderId=" + loc.getId());
+         log.warn("Cannot get path for folderId= {}", loc.getId());
          return null;
       }
       
@@ -211,9 +211,9 @@ public abstract class PSContentBrowser
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         ms_log.error("Failed to get ancestor locators for folderid="
-               + m_folderId + ", due to error: " + e.getMessage());
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         log.error("Failed to get ancestor locators for folderid={}, due to error: {}", m_folderId, e.getMessage());
          return null;
       }
       PSLocator loc = locPath.get(locPath.size()-1);
@@ -257,7 +257,8 @@ public abstract class PSContentBrowser
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
 
       Collections.sort(folders);
