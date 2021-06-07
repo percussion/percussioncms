@@ -46,6 +46,8 @@ import com.percussion.webdav.PSWebdavServlet;
 import com.percussion.webdav.PSWebdavStatus;
 import com.percussion.webdav.error.PSWebdavException;
 import com.percussion.webdav.objectstore.PSWebdavContentType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -54,6 +56,8 @@ import com.percussion.webdav.objectstore.PSWebdavContentType;
 public class PSGetMethod
    extends PSWebdavMethod
 {
+
+   private static final Logger log = LogManager.getLogger(PSGetMethod.class);
 
    /**
     * Constructs an instance from the given parameters.
@@ -145,7 +149,8 @@ public class PSGetMethod
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          
          getResponse().getWriter().print(e.getLocalizedMessage());
          getResponse().setStatus(PSWebdavStatus.SC_OK);

@@ -28,6 +28,8 @@ import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.util.PSProperties;
 import com.percussion.util.PSSQLStatement;
 import com.percussion.util.PSSqlHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -60,6 +62,9 @@ import java.util.Vector;
 */
 public class PSOraConvertLONG2LOBTool
 {
+
+   private static final Logger log = LogManager.getLogger(PSOraConvertLONG2LOBTool.class);
+
    /** opened database connection */
    private Connection    m_conn;
 
@@ -238,7 +243,8 @@ public class PSOraConvertLONG2LOBTool
       }
       catch (SQLException ex)
       {
-         ex.printStackTrace();
+         log.error(ex.getMessage());
+         log.debug(ex.getMessage(), ex);
          String msg = PSJdbcTableFactoryException.formatSqlException(ex);
          throw ex;
       }
@@ -356,7 +362,8 @@ public class PSOraConvertLONG2LOBTool
             PSSqlHelper.rollback(m_conn);
 
          String msg = PSJdbcTableFactoryException.formatSqlException(sqlEx);
-         sqlEx.printStackTrace();
+         log.error(sqlEx.getMessage());
+         log.debug(sqlEx.getMessage(), sqlEx);
 
          logIt("SQLException tableName: " + curTable.getName() +
                " Executing ROLLBACK TRANSACTION " + " msg=" + msg);
@@ -369,7 +376,8 @@ public class PSOraConvertLONG2LOBTool
          if (m_conn!=null && !m_conn.isClosed())
             PSSqlHelper.rollback(m_conn);
 
-         ex.printStackTrace();
+         log.error(ex.getMessage());
+         log.debug(ex.getMessage(), ex);
 
          logIt("Exception tableName: " + curTable.getName() +
                " Executing ROLLBACK TRANSACTION " + " msg=" + ex.getMessage());
@@ -459,12 +467,14 @@ public class PSOraConvertLONG2LOBTool
       }
       catch (FileNotFoundException e1)
       {
-         e1.printStackTrace();
+         log.error(e1.getMessage());
+         log.debug(e1.getMessage(), e1);
          return;
       }
       catch (IOException e1)
       {
-         e1.printStackTrace();
+         log.error(e1.getMessage());
+         log.debug(e1.getMessage(), e1);
          return;
       }
       
@@ -549,19 +559,22 @@ public class PSOraConvertLONG2LOBTool
       catch(SQLException e)
       {
          String msg = PSJdbcTableFactoryException.formatSqlException(e);
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          logIt(msg);
       }
       catch(PSJdbcTableFactoryException jdbcEx)
       {
-         jdbcEx.printStackTrace();
+         log.error(jdbcEx.getMessage());
+         log.debug(jdbcEx.getMessage(), jdbcEx);
          logIt(jdbcEx.getMessage());
       }
       catch(Exception ex)
       {
          String msg = ex.getMessage();
          logIt(msg);
-         ex.printStackTrace();
+         log.error(ex.getMessage());
+         log.debug(ex.getMessage(), ex);
       }
    }
 
