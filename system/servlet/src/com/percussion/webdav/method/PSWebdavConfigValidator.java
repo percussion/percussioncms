@@ -59,6 +59,8 @@ import com.percussion.webdav.objectstore.IPSRxWebDavDTD;
 import com.percussion.webdav.objectstore.PSPropertyFieldNameMapping;
 import com.percussion.webdav.objectstore.PSWebdavConfigDef;
 import com.percussion.webdav.objectstore.PSWebdavContentType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class validates a WebDav configuration file, returning a report of all
@@ -66,6 +68,9 @@ import com.percussion.webdav.objectstore.PSWebdavContentType;
  */
 public class PSWebdavConfigValidator
 {
+
+   private static final Logger log = LogManager.getLogger(PSWebdavConfigValidator.class);
+
    /**
     * List of String exception msgs generated during the 
     * validation routines
@@ -228,13 +233,15 @@ public class PSWebdavConfigValidator
       }
       catch (PSWebdavException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          m_out.write("<h4>" + getResourceString("msg.errors.found") + "</h4>");
          writeError(e.getMessage(), ERROR);
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new ServletException(e.getMessage());
       }
 

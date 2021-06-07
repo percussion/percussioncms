@@ -39,6 +39,8 @@ import com.percussion.utils.testing.UnitTest;
 import org.apache.commons.io.IOUtils;
 
 import junit.framework.TestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -52,6 +54,9 @@ import static org.junit.Assert.assertTrue;
 @Category(IntegrationTest.class)
 public class PSTidyUtilsTest
 {
+
+    private static final Logger log = LogManager.getLogger(PSTidyUtilsTest.class);
+
     Properties m_tidyProperties = new Properties();;
 
     @Before
@@ -68,7 +73,8 @@ public class PSTidyUtilsTest
        }
        catch (Exception e)
        {
-          e.printStackTrace();
+           log.error(e.getMessage());
+           log.debug(e.getMessage(), e);
        }
        finally
        {

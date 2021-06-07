@@ -23,6 +23,8 @@
  */
 package com.percussion.install;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Element;
 
 /*
@@ -31,6 +33,8 @@ import org.w3c.dom.Element;
  */
 public class PSUpgradePluginMgr
 {
+
+   private static final Logger log = LogManager.getLogger(PSUpgradePluginMgr.class);
    /*
     * Constructor, creates this class object
     *
@@ -86,7 +90,8 @@ public class PSUpgradePluginMgr
       }
       catch(Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 
