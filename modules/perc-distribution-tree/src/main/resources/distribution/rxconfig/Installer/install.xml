@@ -488,7 +488,7 @@
     </target>
 
     <target name="upgradeSiteConfig">
-        <echo>UpGrading Site Configs for Secure Sites...</echo>
+        <echo>Upgrading Site Configs for Secure Sites...</echo>
         <PSUpgradeSiteConfig rootDir="${install.dir}" />
     </target>
 
