@@ -33,8 +33,6 @@ import java.util.Collection;
 
 import com.percussion.services.pubserver.IPSPubServer;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
@@ -46,6 +44,8 @@ import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
 import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.rx.delivery.data.PSDeliveryResult;
 import com.percussion.services.sitemgr.IPSSite;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -55,7 +55,7 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
     /**
      * Logger.
      */
-    private static Log ms_log = LogFactory.getLog(PSFtpsDeliveryHandler.class);
+    private static Logger log = LogManager.getLogger(PSFtpsDeliveryHandler.class);
 
     private int bufferSize=0;
 
@@ -145,7 +145,8 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
             try {
                 rval = new PSFtpsClient();
             } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
+                log.debug(e.getMessage(), e);
             }
             ms_ftps.set(rval);
         }
@@ -241,25 +242,25 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
 
         // must be called before connect
         if (getTimeout() != -1) {
-            ms_log.debug("Setting default timeout to " + getTimeout());
+            log.debug("Setting default timeout to {} ", getTimeout());
             ftp.setDefaultTimeout(getTimeout());
         }
 
         if (getConnectTimeout() != 0) {
-            ms_log.debug("Setting connect timeout to " + getConnectTimeout());
+            log.debug("Setting connect timeout to {}", getConnectTimeout());
             ftp.setConnectTimeout(getConnectTimeout());
         }
 
         if(this.controlKeepAliveTimeout>0){
-            ms_log.debug("Setting Control Keep Alive TimeOut to " + controlKeepAliveTimeout);
+            log.debug("Setting Control Keep Alive TimeOut to {} ", controlKeepAliveTimeout);
             // ftp.setControlKeepAliveReplyTimeout(controlKeepAliveTimeout);
         }
 
-        ms_log.debug("Setting client mode to " + useClientMode);
+        log.debug("Setting client mode to {} ", useClientMode);
         ftp.setUseClientMode(useClientMode);
-        ms_log.debug("Enabling UTF8 auto detection...");
+        log.debug("Enabling UTF8 auto detection...");
         //  ftp.setAutodetectUTF8(true);
-        ms_log.debug("Setting buffer size to " + bufferSize);
+        log.debug("Setting buffer size to {}", bufferSize);
         ftp.setBufferSize(bufferSize);
 
         if(ftp.isConnected()){
@@ -273,20 +274,20 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
         if (getUsePassiveMode())
         {
             if(this.useEPSVwithIPv4){
-                ms_log.debug("Enabling Extended Passive mode...");
+                log.debug("Enabling Extended Passive mode...");
                 ftp.setUseEPSVwithIPv4(true);
             }
-            ms_log.debug("Entering passive mode...");
+            log.debug("Entering passive mode...");
             ftp.enterLocalPassiveMode();
-            ms_log.debug("Disabling Remote verification...");
+            log.debug("Disabling Remote verification...");
             ftp.setRemoteVerificationEnabled(false);
         }else if (getActivePortEnd() != 0 && getActivePortStart() != 0 &&
                 ftp.getDataConnectionMode() == FTPSClient.ACTIVE_LOCAL_DATA_CONNECTION_MODE)
         {
             ftp.enterLocalActiveMode();
             ftp.setActivePortRange(getActivePortStart(), getActivePortEnd());
-            ms_log.debug("Entering active mode...");
-            ms_log.debug("Setting active port range to " + getActivePortStart() + "-" + getActivePortEnd());
+            log.debug("Entering active mode...");
+            log.debug("Setting active port range to {} - {}", getActivePortStart(),  getActivePortEnd());
         }
 
         // must be called after connect
@@ -295,7 +296,7 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
         }
 
         if(usePrivateDataChannel){
-            ms_log.debug("Enabling private Data Channel protocol...");
+            log.debug("Enabling private Data Channel protocol...");
             ftp.execPBSZ(0);
             ftp.execPROT("P");
         }
@@ -319,7 +320,9 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
                 }
                 catch (IOException ex)
                 {
-                    ms_log.error("Problem logout FTP", ex);
+                    log.error("Problem logout FTP {}", ex.getMessage());
+                    log.error(ex.getMessage());
+                    log.debug(ex.getMessage(), ex);
                 }
             }
 
@@ -330,7 +333,9 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
         }
         catch (IOException e)
         {
-            ms_log.error("Problem closing ftp connection", e);
+            log.error("Problem closing ftp connection {}", e.getMessage());
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         finally
         {
@@ -363,13 +368,13 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
         }
 
         if(ex != null)
-            ms_log.error(errorMsg,ex);
+            log.error(errorMsg,ex);
         else
-            ms_log.error(errorMsg);
+            log.error(errorMsg);
 
         if (failAll)
         {
-            ms_log.error("Cancelling publishing job...");
+            log.error("Cancelling publishing job...");
 
             return failAll(jobId, errorMsg);
         }
@@ -436,7 +441,7 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
 
             if(!FTPReply.isPositiveCompletion(ftp.sendCommand("OPTS UTF8 ON"))) {
                 // May only be a problem with Windows IIS FTP that does not follow spec and default to UTF-8
-                ms_log.warn("Error sending 'OPTS UTF8 ON' to ftp server, may not be a problem if server default is UTF-8:" + ftp.getReplyString());
+                log.warn("Error sending 'OPTS UTF8 ON' to ftp server, may not be a problem if server default is UTF-8: {}", ftp.getReplyString());
             }
 
             if (usePassiveMode)
@@ -444,15 +449,17 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
                 ftp.enterLocalPassiveMode();
                 ftp.setRemoteVerificationEnabled(false);
 
-                if (ms_log.isDebugEnabled())
+                if (log.isDebugEnabled())
                 {
-                    ms_log.debug("Entering passive mode.");
-                    ms_log.debug("Disabling Remote verification.");
+                    log.debug("Entering passive mode.");
+                    log.debug("Disabling Remote verification.");
                 }
             }
         }
         catch (Exception e)
         {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             return handleLoginError(jobId, "Problem connecting to ftps server: "
                     + e.getLocalizedMessage(), failAll);
         }
@@ -477,20 +484,20 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
         {
             ftp.setDefaultTimeout(timeout);
 
-            ms_log.debug(String.format("Checking connection to %s on port %s with timeout %s",info.ipAddress, info.port, timeout));
+            log.debug(String.format("Checking connection to %s on port %s with timeout %s",info.ipAddress, info.port, timeout));
             openSocketConnection(ftp, info.ipAddress, info.port);
             int reply = ftp.getReplyCode();
             if (!FTPReply.isPositiveCompletion(reply))
             {
-                ms_log.error(String.format("Did not get positive reply from FTP Server: %s", info.ipAddress));
+                log.error(String.format("Did not get positive reply from FTP Server: %s", info.ipAddress));
                 ftp.disconnect();
                 return false;
             }
 
-            ms_log.debug(String.format("Authenticating to FTP Server with Username %s",info.userName));
+            log.debug(String.format("Authenticating to FTP Server with Username %s",info.userName));
             if (!ftp.login(info.userName, info.password))
             {
-                ms_log.error(String.format("Authenticating to FTP Server with Username %s failed",info.userName));
+                log.error(String.format("Authenticating to FTP Server with Username %s failed",info.userName));
 
                 return false;
             }
@@ -500,7 +507,9 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
         }
         catch (Exception e)
         {
-            ms_log.error("FTP Connection Check Failed to connect", e);
+            log.error("FTP Connection Check Failed to connect {}", e.getMessage());
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             connected = false;
         }
         finally
@@ -652,8 +661,9 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
             }
             catch (Exception e)
             {
-                ms_log.error("Could not restore working directory: "
-                        + currentWorkingDirectory, e);
+                log.error(e.getMessage());
+                log.debug(e.getMessage(), e);
+                log.error("Could not restore working directory: {}", currentWorkingDirectory, e);
             }
         }
     }
@@ -737,7 +747,9 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
         }
         catch (IOException e)
         {
-            ms_log.error("Error remove " + (isFile ? "file" : "directory") + ": \"" + location + "\"", e);
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
+            log.error("Error remove " + (isFile ? "file" : "directory") + ": \"" + location + "\"", e);
             return isFile ? getItemResult(Outcome.FAILED, item, jobId, e.getLocalizedMessage()) : null;
         }
         finally
@@ -818,7 +830,7 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
      */
     private void parseActiveFTPPortRange() {
         if (getActivePortRange().indexOf("-") <= 0) {
-            ms_log.error("Active port range in publisher-beans.xml is incorrectly set."
+            log.error("Active port range in publisher-beans.xml is incorrectly set."
                     + " Must be in the format 60000-65000, for example.");
             return;
         }

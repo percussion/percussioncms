@@ -34,6 +34,8 @@ import javax.swing.tree.TreeModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 /**
@@ -41,6 +43,9 @@ import org.w3c.dom.Document;
  */
 public class PSCheckboxTreeModel extends DefaultTreeModel implements TreeModel
 {
+
+   private static final Logger log = LogManager.getLogger(PSCheckboxTreeModel.class);
+
    /**
     * Construct and populate the tree model.
     * 
@@ -143,7 +148,8 @@ public class PSCheckboxTreeModel extends DefaultTreeModel implements TreeModel
       }
       catch (MalformedURLException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new RuntimeException(e);
       }
    }

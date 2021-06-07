@@ -43,6 +43,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -52,6 +54,8 @@ import org.w3c.dom.Element;
  */
 public class PSArchive
 {
+
+   private static final Logger log = LogManager.getLogger(PSArchive.class);
 
    /**
     * Construct this object from an existing archive file.  This will open the
@@ -185,7 +189,8 @@ public class PSArchive
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          Object args[] = {m_archiveFile.getPath(), e.getLocalizedMessage()};
          throw new PSDeployException(IPSDeploymentErrors.ARCHIVE_READ_ERROR,
             args);

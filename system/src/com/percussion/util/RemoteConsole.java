@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 /**
@@ -45,6 +47,9 @@ import org.w3c.dom.Document;
  */
 public class RemoteConsole
 {
+
+   private static final Logger log = LogManager.getLogger(RemoteConsole.class);
+
    /**
    * Executes a command against the specified server.  This may be run in one of
    * 2 modes -- non-interactive and interactive.  If the first 4 parameters are
@@ -256,7 +261,8 @@ public class RemoteConsole
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       System.exit(result);
    }

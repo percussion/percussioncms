@@ -10,6 +10,9 @@
 
 package com.percussion.publisher.runner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
@@ -23,6 +26,9 @@ import javax.ws.rs.core.Response;
  */
 public class PSRemotePublisher
 {
+
+    private static final Logger log = LogManager.getLogger(PSRemotePublisher.class);
+
     /**
      * This method is the one which does actual publishing. It initiates
      * publication of an edition by making an HTTP request to the Rhythmyx
@@ -104,8 +110,8 @@ public class PSRemotePublisher
         }
         catch(Exception e)
         {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
 
     }
