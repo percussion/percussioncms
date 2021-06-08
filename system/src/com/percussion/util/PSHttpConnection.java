@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
@@ -51,7 +53,8 @@ import org.xml.sax.SAXException;
  */
 public class PSHttpConnection
 {
-   
+
+   private static final Logger log = LogManager.getLogger(PSHttpConnection.class);
 
    public PSHttpConnection(URL rxCodeBase, String  psSessionId)
    {
@@ -558,7 +561,8 @@ public class PSHttpConnection
       }
       catch (MalformedURLException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new RuntimeException(e);
       }
    }

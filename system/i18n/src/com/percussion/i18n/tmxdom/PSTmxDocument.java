@@ -48,6 +48,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -68,6 +70,9 @@ import org.xml.sax.SAXException;
 public class PSTmxDocument extends PSTmxNode
         implements IPSTmxDocument
 {
+
+   private static final Logger log = LogManager.getLogger(PSTmxDocument.class);
+
    /**
     * Default constructor. Creates an empty TMX document. Initializes default
     * merge configuration object and XSL document for sorting.
@@ -677,8 +682,8 @@ public class PSTmxDocument extends PSTmxNode
             }
          }
       } catch ( IOException | SAXException e) {
-         e.printStackTrace();
-
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 

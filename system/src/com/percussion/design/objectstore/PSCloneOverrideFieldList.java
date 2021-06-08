@@ -30,6 +30,8 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -42,6 +44,9 @@ import org.w3c.dom.NodeList;
  */
 public class PSCloneOverrideFieldList extends PSCollectionComponent
 {
+
+   private static final Logger log = LogManager.getLogger(PSCloneOverrideFieldList.class);
+
    /**
     * Construct a Java object from its XML representation. See the
     * {@link #toXml(Document) toXml} method for a description of the XML object.
@@ -179,7 +184,8 @@ public class PSCloneOverrideFieldList extends PSCollectionComponent
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 }

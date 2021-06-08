@@ -27,6 +27,8 @@ import com.percussion.rx.ui.jsf.beans.PSHelpTopicMapping;
 import com.percussion.rxfix.dbfixes.*;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.server.cache.PSCacheProxy;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,9 @@ import java.util.List;
  */
 public class PSRxFix
 {
+
+   private static final Logger log = LogManager.getLogger(PSRxFix.class);
+
    /**
     * Represents and entry in the ui model
     */
@@ -273,7 +278,8 @@ public class PSRxFix
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       return "admin-rxfix-preview";
    }
@@ -296,7 +302,8 @@ public class PSRxFix
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       return "admin-rxfix-preview";
    }

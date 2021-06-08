@@ -23,6 +23,9 @@
  */
 package com.percussion.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -46,6 +49,9 @@ import javax.swing.SwingConstants;
 
 public class GetUserInfoDialog extends JDialog  implements ActionListener
 {
+
+    private static final Logger log = LogManager.getLogger(GetUserInfoDialog.class);
+
   JPanel panel1 = new JPanel();
   BorderLayout borderLayout1 = new BorderLayout();
 
@@ -187,7 +193,8 @@ public class GetUserInfoDialog extends JDialog  implements ActionListener
         }
          catch(IOException e)
          {
-            e.printStackTrace();
+             log.error(e.getMessage());
+             log.debug(e.getMessage(), e);
          }
       }
    }
@@ -352,7 +359,8 @@ public class GetUserInfoDialog extends JDialog  implements ActionListener
       pack();
     }
     catch(Exception ex) {
-      ex.printStackTrace();
+        log.error(ex.getMessage());
+        log.debug(ex.getMessage(), ex);
     }
   }
 

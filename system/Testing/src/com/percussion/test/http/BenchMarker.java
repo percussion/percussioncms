@@ -38,6 +38,8 @@ import java.io.PrintStream;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.*;
 
 import java.util.Random;
@@ -49,6 +51,9 @@ import java.util.Random;
  */
 public class BenchMarker implements Runnable, LogSink
 {
+
+   private static final Logger log = LogManager.getLogger(BenchMarker.class);
+
    public BenchMarker()
    {
    }
@@ -213,7 +218,8 @@ public class BenchMarker implements Runnable, LogSink
     */
    public void log(Throwable t)
    {
-      t.printStackTrace();
+      log.error(t.getMessage());
+      log.debug(t.getMessage(), t);
    }
 
    /**

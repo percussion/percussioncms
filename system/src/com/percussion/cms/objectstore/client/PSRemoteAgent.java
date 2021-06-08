@@ -59,7 +59,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -72,6 +73,8 @@ import org.xml.sax.SAXException;
  */
 public class PSRemoteAgent
 {
+
+   private static final Logger log = LogManager.getLogger(PSRemoteAgent.class);
 
    /**
     * Constructs a new remote agent object without a requester set.
@@ -707,7 +710,7 @@ public class PSRemoteAgent
       }
       catch (PSCmsException ex)
       {
-         Logger.getInstance(getClass().getName()).info(ex);
+         log.info(ex);
          return null;
       }
    }
@@ -1286,7 +1289,8 @@ public class PSRemoteAgent
       }
       catch (IOException ioe)
       {
-         ioe.printStackTrace();
+         log.error(ioe.getMessage());
+         log.debug(ioe.getMessage(), ioe);
          throw new PSRemoteException(new PSException(ioe.getMessage()));
       }
    }

@@ -39,6 +39,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -51,6 +53,9 @@ import org.w3c.dom.Text;
 public class PSAction extends PSVersionableDbComponent
    implements IPSCatalogSummary, IPSCloneTuner
 {
+
+   private static final Logger log = LogManager.getLogger(PSAction.class);
+
    /**
     * Convenience constructor for {@link
     * #PSAction(String, String, String, String, String, int)
@@ -1392,8 +1397,9 @@ public class PSAction extends PSVersionableDbComponent
       }
       catch (PSUnknownNodeTypeException unte)
       {
-         System.out.println(unte.getLocalizedMessage());
-         unte.printStackTrace();
+         log.error(unte.getLocalizedMessage());
+         log.error(unte.getMessage());
+         log.debug(unte.getMessage(), unte);
       }
 
    }
@@ -1409,7 +1415,8 @@ public class PSAction extends PSVersionableDbComponent
       }
       catch (java.io.IOException ioe)
       {
-         ioe.printStackTrace();
+         log.error(ioe.getMessage());
+         log.debug(ioe.getMessage(), ioe);
       }
    }
 

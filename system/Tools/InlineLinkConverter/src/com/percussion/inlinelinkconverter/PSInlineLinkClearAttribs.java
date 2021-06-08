@@ -39,11 +39,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 public class PSInlineLinkClearAttribs extends PSInlineLinkConverter
 {
+
+   private static final Logger log = LogManager.getLogger(PSInlineLinkClearAttribs.class);
 
    public PSInlineLinkClearAttribs(Properties props, Document xslDoc)
    {
@@ -86,7 +90,8 @@ public class PSInlineLinkClearAttribs extends PSInlineLinkConverter
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       return resultList;
    }

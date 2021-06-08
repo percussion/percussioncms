@@ -28,6 +28,8 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.server.PSConsole;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -49,6 +51,8 @@ import java.util.ResourceBundle;
 ////////////////////////////////////////////////////////////////////////////////
 public class PSFormatVersion
 {
+
+    private static final Logger log = LogManager.getLogger(PSFormatVersion.class);
    /**
     * Constructor
     *
@@ -86,7 +90,8 @@ public class PSFormatVersion
        try {
            props.load(clazz.getResourceAsStream(path));
        } catch (IOException e) {
-           e.printStackTrace();
+           log.error(e.getMessage());
+           log.debug(e.getMessage(), e);
        }
 
        m_buildNumber = props.getProperty(KEY_BUILD_NUMBER);
@@ -556,47 +561,6 @@ public class PSFormatVersion
       return m_majorVersion + "." + m_minorVersion + "." + m_microVersion;  
    }
 
-   /**
-    * Used for testing.
-    */
-/*
-   public static void main( String [] args )
-   {
-      try
-      {
-         if ( null == args || args.length != 1 )
-         {
-            System.out.println( "Usage: java com.percussion.util.PSFormatVersion versionProperties" );
-            System.out.println( " example: java com.percussion.util.PSFormatVersion com.percussion.E2Designer.Version" );
-            System.exit(-1);
-         }
-
-         PSFormatVersion fv = new PSFormatVersion( args[0] );
-         System.out.println( "str= " + fv.getVersionString());
-         Document doc = PSXmlDocumentBuilder.createXmlDocument();
-         Element root = PSXmlDocumentBuilder.createRoot( doc, "version" );
-         root.appendChild( fv.toXml( doc ));
-         PSXmlDocumentBuilder.write(doc, System.out);
-
-         java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
-         PSXmlDocumentBuilder.write(doc, os);
-         System.out.println( "\r\n########\r\n" );
-
-         java.io.ByteArrayInputStream is = new java.io.ByteArrayInputStream( os.toByteArray());
-         doc = PSXmlDocumentBuilder.createXmlDocument( is, false );
-         PSXmlDocumentBuilder.write( doc, System.out );
-
-         System.out.println( "\r\n########\r\n" );
-         System.exit(0);
-      }
-      catch ( Exception e )
-      {
-         e.printStackTrace();
-      }
-   }
-*/
-   //////////////////////////////////////////////////////////////////////////////
-   // class storage
    private ResourceBundle m_res = null;
 
    /**

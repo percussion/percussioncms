@@ -24,6 +24,9 @@
 
 package com.percussion.testing;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +41,9 @@ import java.util.StringTokenizer;
 
 public class TestErrorCoverage 
 {
+
+   private static final Logger log = LogManager.getLogger(TestErrorCoverage.class);
+
    /**
     * Entry point for the error coverage test program.
     * <p>
@@ -64,7 +70,8 @@ public class TestErrorCoverage
       }
       catch (Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
    }
 

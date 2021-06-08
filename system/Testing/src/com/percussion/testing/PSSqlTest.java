@@ -24,6 +24,9 @@
 package com.percussion.testing;
 
 import com.percussion.util.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
@@ -42,6 +45,9 @@ import java.util.Properties;
  */
 public class PSSqlTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSSqlTest.class);
+
    /**
     * Create a new connection. The connection information is hard coded in 
     * this method.
@@ -221,7 +227,8 @@ public class PSSqlTest
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       finally
       {
@@ -298,7 +305,8 @@ public class PSSqlTest
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       finally
       {
@@ -388,7 +396,8 @@ public class PSSqlTest
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          
          if (e instanceof SQLException)
          {
@@ -417,7 +426,8 @@ public class PSSqlTest
             }
             catch (SQLException e)
             {
-               e.printStackTrace();
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
             }
             
             try { conn.close(); } catch (SQLException e) { /* noop */ }
