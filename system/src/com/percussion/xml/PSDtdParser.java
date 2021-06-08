@@ -28,6 +28,8 @@ package com.percussion.xml;
 
 import com.percussion.design.catalog.PSCatalogException;
 import com.percussion.server.IPSServerErrors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.xerces.impl.Constants;
 import org.apache.xerces.impl.dtd.DTDGrammarBucket;
 import org.apache.xerces.impl.dtd.XMLDTDDescription;
@@ -70,6 +72,8 @@ public class PSDtdParser
                XMLErrorHandler,
                XMLDTDHandler
 {
+
+   private static final Logger log = LogManager.getLogger(PSDtdParser.class);
 
    public PSDtdParser()
    {
@@ -545,7 +549,8 @@ public class PSDtdParser
             }
             catch (SAXException se)
             {
-               se.printStackTrace();
+               log.error(se.getMessage());
+               log.debug(se.getMessage(), se);
                throw new PSCatalogException(
                   IPSServerErrors.XML_PARSER_SAX_ERROR,
                   se.toString());
@@ -554,7 +559,8 @@ public class PSDtdParser
          }
          else
          {
-            xni.printStackTrace();
+            log.error(xni.getMessage());
+            log.debug(xni.getMessage(), xni);
             throw new PSCatalogException(
                IPSServerErrors.XML_PARSER_SAX_ERROR,
                xni.toString());

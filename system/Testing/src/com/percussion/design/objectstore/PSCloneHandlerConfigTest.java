@@ -34,6 +34,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -43,6 +45,9 @@ import org.w3c.dom.Element;
  */
 public class PSCloneHandlerConfigTest extends TestCase
 {
+
+   private static final Logger log = LogManager.getLogger(PSCloneHandlerConfigTest.class);
+
    // see base class
    public PSCloneHandlerConfigTest(String name)
    {
@@ -66,7 +71,8 @@ public class PSCloneHandlerConfigTest extends TestCase
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          assertTrue("PSCloneHandlerConfigSet ctor failed", false);
       }
       
@@ -87,7 +93,8 @@ public class PSCloneHandlerConfigTest extends TestCase
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          assertTrue("PSCloneHandlerConfigSet toXml failed", false);
       }
    }

@@ -26,6 +26,8 @@ package com.percussion.design.objectstore.server;
 import com.percussion.design.objectstore.PSApplication;
 import com.percussion.design.objectstore.PSObjectFactory;
 import com.percussion.error.PSException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -46,6 +48,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class PSXmlObjectStoreLockManagerTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSXmlObjectStoreLockManagerTest.class);
 
    @Rule
    public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -182,7 +186,8 @@ public class PSXmlObjectStoreLockManagerTest
          }
          catch (Throwable t)
          {
-            t.printStackTrace();
+            log.error(t.getMessage());
+            log.debug(t.getMessage(), t);
             PSXmlObjectStoreLockManagerTest.this.doAssert("Caught exception: " + t.toString(), false);
          }
       }
