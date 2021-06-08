@@ -39,6 +39,8 @@ import junit.framework.Test;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -53,6 +55,9 @@ import org.w3c.dom.NodeList;
  */
 public class PSRequestHandlerTestSuite extends TestSuite 
 {
+
+   private static final Logger log = LogManager.getLogger(PSRequestHandlerTestSuite.class);
+
    /*
     * This is the necessary request handler to run tests using
     * this class
@@ -97,8 +102,8 @@ public class PSRequestHandlerTestSuite extends TestSuite
       } 
       catch (ClassNotFoundException e) 
       {
-         //ignore, we got the class name off the stack so it should never happen
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
    

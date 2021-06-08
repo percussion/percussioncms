@@ -23,6 +23,8 @@
  */
 package com.percussion.install;
 import com.percussion.util.PSProperties;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,6 +32,9 @@ import java.io.IOException;
 
 public class RxDesignerOnlyPostInstaller
 {
+
+   private static final Logger log = LogManager.getLogger(RxDesignerOnlyPostInstaller.class);
+
    public RxDesignerOnlyPostInstaller() 
    {
       super();
@@ -56,7 +61,8 @@ public class RxDesignerOnlyPostInstaller
       }
       catch(IOException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
    

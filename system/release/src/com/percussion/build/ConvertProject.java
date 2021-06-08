@@ -24,6 +24,9 @@
 
 package com.percussion.build;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -34,6 +37,9 @@ import java.io.IOException;
  */
 public class ConvertProject
 {
+
+    private static final Logger log = LogManager.getLogger(ConvertProject.class);
+
    /**
     * Find and replace text in the tutorial. If either <code>strFind</code> or
     * <code>strReplace</code> is null, or if <code>strFind</code> is an empty string,
@@ -82,7 +88,8 @@ public class ConvertProject
 
       } catch(IOException e)
       {
-         e.printStackTrace();
+          log.error(e.getMessage());
+          log.debug(e.getMessage(), e);
       }
    }
 
@@ -205,7 +212,8 @@ public class ConvertProject
       }
       catch(IOException e)
       {
-          e.printStackTrace();
+          log.error(e.getMessage());
+          log.debug(e.getMessage(), e);
       }
   }
 }
