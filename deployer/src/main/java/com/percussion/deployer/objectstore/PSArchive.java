@@ -481,7 +481,8 @@ public class PSArchive
          throw new IllegalArgumentException(
             "archiveEntryPath may not be null or empty");
 
-      try(ZipOutputStream zs = getZipOutputStream()){
+      try{
+         ZipOutputStream zs = getZipOutputStream();
          PSArchiveFiles.archiveFile(zs, archiveEntryPath,
             file, extra);
       }

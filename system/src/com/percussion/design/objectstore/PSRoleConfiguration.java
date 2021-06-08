@@ -499,8 +499,8 @@ public class PSRoleConfiguration implements IPSDocument
       } catch (Throwable t)
       {
          log.error("Error : {}", t.getMessage());
+         log.error(t.getMessage());
          log.debug(t.getMessage(), t);
-         t.printStackTrace();
       } finally
       {
          try {

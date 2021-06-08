@@ -26,6 +26,8 @@ package com.percussion.util.servlet;
 
 import com.percussion.util.PSCharSets;
 import com.percussion.util.PSStringOperation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
@@ -52,6 +54,9 @@ class PSInternalRequestMultiPart
    extends PSInternalRequest
    implements HttpServletRequest
 {
+
+   private static Logger log = LogManager.getLogger(PSInternalRequestMultiPart.class);
+
    /**
     * Constructs an instance from a given servlet request.
     *
@@ -122,11 +127,13 @@ class PSInternalRequestMultiPart
       }
       catch (UnsupportedEncodingException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       catch (IOException ioe)
       {
-         ioe.printStackTrace();
+         log.error(ioe.getMessage());
+         log.debug(ioe.getMessage(), ioe);
       }
       m_prepared = true;
       // set header for "Content-Type" and "content-length"

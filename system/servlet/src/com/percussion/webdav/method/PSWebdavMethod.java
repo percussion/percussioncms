@@ -39,7 +39,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -75,6 +76,8 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 public abstract class PSWebdavMethod
    implements IPSWebdavConstants
 {
+
+   private static final Logger log = LogManager.getLogger(PSWebdavMethod.class);
 
    /**
     * Constructs an instance from the given parameters.
@@ -122,7 +125,9 @@ public abstract class PSWebdavMethod
       }
       catch (Exception ex)
       {
-         ms_logger.error("Caught exception: ", ex);          
+         log.error("Caught exception: {}", ex.getMessage());
+         log.error(ex.getMessage());
+         log.debug(ex.getMessage(), ex);
          throw new ServletException(ex);
       }
    }
@@ -134,24 +139,23 @@ public abstract class PSWebdavMethod
     */
    private void logRequestInfo() throws IOException
    {
-      if (! ms_logger.isDebugEnabled())
+      if (! log.isDebugEnabled())
          return;
       
         
-      ms_logger.debug(""); 
-      ms_logger.debug("RECEIVED REQUEST: =============== BEGIN ============="); 
-      ms_logger.debug("REQUEST METHOD: <<<<<<<<<<" + m_request.getMethod() 
-                     + ">>>>>>>>>>");
-      ms_logger.debug("URL: " + m_request.getRequestURL());
-      ms_logger.debug("QUERY STRING: " + m_request.getQueryString());
-      ms_logger.debug("REMOTE USER: " + m_request.getRemoteUser());
-      ms_logger.debug("CONTENT TYPE: " + m_request.getContentType());
-      ms_logger.debug("CONTENT LENGTH: " + m_request.getContentLength());
+      log.debug("");
+      log.debug("RECEIVED REQUEST: =============== BEGIN =============");
+      log.debug("REQUEST METHOD: <<<<<<<<<< {} >>>>>>>>>>", m_request.getMethod());
+      log.debug("URL: {}", m_request.getRequestURL());
+      log.debug("QUERY STRING: {}", m_request.getQueryString());
+      log.debug("REMOTE USER: {}", m_request.getRemoteUser());
+      log.debug("CONTENT TYPE: {}", m_request.getContentType());
+      log.debug("CONTENT LENGTH: {}", m_request.getContentLength());
       Enumeration names = m_request.getHeaderNames();
       while (names.hasMoreElements())
       {
          String name = (String)names.nextElement();
-         ms_logger.debug("HEADER: " + name + "=" + m_request.getHeader(name));
+         log.debug("HEADER: {} = {}", name, m_request.getHeader(name));
       }
       String bodyString = null;
       if (m_request.getContentLength() > 0)
@@ -168,8 +172,8 @@ public abstract class PSWebdavMethod
          }
       }
       if (bodyString != null)
-         ms_logger.debug("BODY:\n" + bodyString + "\n");
-      ms_logger.debug("RECEIVED REQUEST: =============== END =============\n"); 
+         log.debug("BODY:\n" + bodyString + "\n");
+         log.debug("RECEIVED REQUEST: =============== END =============\n");
    }
 
    /**
@@ -195,24 +199,24 @@ public abstract class PSWebdavMethod
       int status)
       throws IOException
    {
-      if (! ms_logger.isDebugEnabled())
+      if (! log.isDebugEnabled())
          return;
 
-      ms_logger.debug("");
-      ms_logger.debug("RESPONSE: =============== BEGIN =============");
+      log.debug("");
+      log.debug("RESPONSE: =============== BEGIN =============");
       if (body != null && body.length > 0)
       {
          if (mimetype.toLowerCase().startsWith("text"))
          {
             if (enc == null)
-               ms_logger.debug("RESPONSE BODY: \n" + new String(body) + "\n");
+               log.debug("RESPONSE BODY: \n" + new String(body) + "\n");
             else
-               ms_logger.debug(
+               log.debug(
                   "RESPONSE BODY: \n" + new String(body, enc) + "\n");
          }
          else
          {
-            ms_logger.debug(
+            log.debug(
                "RESPONSE BODY: ...binary content, "
                   + body.length
                   + " bytes...\n");
@@ -221,11 +225,11 @@ public abstract class PSWebdavMethod
       
       if (status >= 0)
       {      
-         ms_logger.debug("RESPONSE STATUS: " + status + " ("
+         log.debug("RESPONSE STATUS: " + status + " ("
                + PSWebdavStatus.getStatusText(status) + ")");
       }
 
-      ms_logger.debug("RESPONSE: =============== END =============\n"); 
+      log.debug("RESPONSE: =============== END =============\n");
    }      
    
    /**
@@ -373,7 +377,8 @@ public abstract class PSWebdavMethod
             }
             catch (Throwable e)
             {
-               e.printStackTrace();
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
                
                throw new PSWebdavException(
                   IPSWebdavErrors.XML_FAILED_CREATE_DOC_FROM_CONTENT,
@@ -1015,7 +1020,7 @@ public abstract class PSWebdavMethod
       if (checkoutUser != null && checkoutUser.trim().length() > 0
             && (!checkoutUser.equalsIgnoreCase(getRequest().getRemoteUser())))
       {
-         ms_logger.debug("\"" + comp.getName()
+         log.debug("\"" + comp.getName()
                + "\" has been checked out by another user, " + checkoutUser
                + ". Stop current execution.");
 
@@ -1167,8 +1172,6 @@ public abstract class PSWebdavMethod
     * The default depth.
     */
    public static final int INFINITY = Integer.MAX_VALUE;
-
-   private Logger ms_logger = Logger.getLogger(PSWebdavMethod.class);
 }
 
 

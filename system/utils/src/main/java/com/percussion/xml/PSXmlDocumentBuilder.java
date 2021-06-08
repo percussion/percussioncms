@@ -28,7 +28,8 @@ import com.percussion.utils.tools.IPSUtilsConstants;
 import com.percussion.utils.xml.PSEntityResolver;
 import com.percussion.utils.xml.PSProcessServerPageTags;
 import com.percussion.utils.xml.PSSaxParseException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -82,7 +83,7 @@ public class PSXmlDocumentBuilder {
     /**
      * The logger for this class.
      */
-    private static Logger ms_log = Logger.getLogger(PSXmlDocumentBuilder.class);
+    private static final Logger log = LogManager.getLogger(PSXmlDocumentBuilder.class);
 
     /**
      * New line's in XML are always <code>&lt;CR&gt;&lt;LF&gt;</code>, even on
@@ -1288,7 +1289,9 @@ public class PSXmlDocumentBuilder {
                 tree.write(sw, indent, omitXMLDeclaration, omitDocumentType);
                 retVal = sw.toString();
             } catch (IOException ioe) {
-                ms_log.error("Error converting node to string",ioe);
+                log.error("Error converting node to string {} ", ioe.getMessage());
+                log.error(ioe.getMessage());
+                log.debug(ioe.getMessage(), ioe);
                 retVal = ioe.getLocalizedMessage();
             } finally {
                 if (sw != null) {
@@ -1320,7 +1323,9 @@ public class PSXmlDocumentBuilder {
         try {
             PSXmlDocumentBuilder.write(doc, xmlDumpWriter);
         } catch (java.io.IOException e) {
-            ms_log.error("Error converting DOM Document to string",e);
+            log.error("Error converting DOM Document to string {}", e.getMessage());
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
 
         return xmlDumpWriter.toString();
@@ -1341,7 +1346,9 @@ public class PSXmlDocumentBuilder {
         try {
             PSXmlDocumentBuilder.write(node, xmlDumpWriter);
         } catch (java.io.IOException e) {
-            ms_log.error("Error converting DOM Document to string",e);
+            log.error("Error converting DOM Document to string {} ", e.getMessage());
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
 
         return xmlDumpWriter.toString();
@@ -1699,8 +1706,8 @@ public class PSXmlDocumentBuilder {
                 fos.write(str);
             }
         } catch (Throwable t) {
-            System.out.println(t.getMessage());
-            t.printStackTrace();
+            log.error(t.getMessage());
+            log.debug(t.getMessage(), t);
         }
     }
 

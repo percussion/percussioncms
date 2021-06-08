@@ -374,7 +374,8 @@ public class PSJavaPluginConfig implements IPSJavaPluginConfig
       }
       catch(Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 }
