@@ -164,8 +164,9 @@ public class PSTaskAdapter implements Job
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         log.error("Failed notification for task: " + job.getName(), e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         log.error("Failed notification for task: {} {}", job.getName(), e.getMessage());
       }
    }
 
@@ -572,9 +573,9 @@ public class PSTaskAdapter implements Job
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         log.error("Failed to format Notification Template id="
-               + nt.getId(), e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         log.error("Failed to format Notification Template id= {} : {}", nt.getId(), e.getMessage());
          return null;
       }
    }

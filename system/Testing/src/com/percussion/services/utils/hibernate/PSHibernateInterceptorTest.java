@@ -36,6 +36,8 @@ import com.percussion.services.memory.PSCacheAccessLocator;
 import com.percussion.utils.exceptions.PSORMException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.testing.IntegrationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -58,6 +60,9 @@ import static org.junit.Assert.assertNull;
 @Category(IntegrationTest.class)
 public class PSHibernateInterceptorTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSHibernateInterceptorTest.class);
+
    /**
     * How long to wait before continuing to allow notification to complete
     */
@@ -105,7 +110,8 @@ public class PSHibernateInterceptorTest
       }
       catch (PSFilterException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 

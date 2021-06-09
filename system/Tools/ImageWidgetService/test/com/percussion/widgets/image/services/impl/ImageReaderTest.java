@@ -34,6 +34,8 @@ import org.apache.commons.imaging.ImageInfo;
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.Imaging;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -51,6 +53,8 @@ import static org.junit.Assert.fail;
  */
 public class ImageReaderTest
 {
+
+   private static final Logger log = LogManager.getLogger(ImageReaderTest.class);
 
    @BeforeClass
    public static void runBeforeClass()
@@ -154,7 +158,8 @@ public class ImageReaderTest
       catch (Exception e)
       {
          Assert.fail("Caught exception on resize");
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       return success;
    }
@@ -188,7 +193,8 @@ public class ImageReaderTest
       catch (ImageReaderException imageReaderException)
       {
          Assert.fail("Caught image reader exception");
-         imageReaderException.printStackTrace();
+         log.error(imageReaderException.getMessage());
+         log.debug(imageReaderException.getMessage(), imageReaderException);
       }
       return bufferedImage;
    }
@@ -210,13 +216,15 @@ public class ImageReaderTest
       {
          Assert.fail("Caught image read exception getting image information:"
                + e.getMessage());
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       catch (IOException e)
       {
          Assert.fail("Caught IO exception getting image information:"
                + e.getMessage());
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       return imageInfo;
    }
