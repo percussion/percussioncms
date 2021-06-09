@@ -42,6 +42,8 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -107,6 +109,9 @@ import java.util.Map;
  */
 public class PSAAObjectId
 {
+
+   private static final Logger log = LogManager.getLogger(PSAAObjectId.class);
+
    /**
     * Constructor that takes a string representation of JSON array of values of
     * the parameters mentioned in the class description.
@@ -271,7 +276,8 @@ public class PSAAObjectId
             }
             catch (RepositoryException e)
             {
-               e.printStackTrace();
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
             }
             break;
          case AA_NODE_TYPE_PAGE :
@@ -890,8 +896,8 @@ public class PSAAObjectId
       }
       catch (JSONException e)
       {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       
    }

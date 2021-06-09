@@ -1195,7 +1195,8 @@ public class PSDependencyManager
          if (! modPkgNames.isEmpty())
             exportDesc.setModifiedPackages(modPkgNames.iterator());
       } catch (PSNotFoundException e) {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       } finally
       {
          setIsDependencyCacheEnabled(false);
@@ -2451,7 +2452,7 @@ public class PSDependencyManager
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger log = LogManager.getLogger(
+   private static final Logger log = LogManager.getLogger(
          "com.percussion.deploy.server.PSDependencyManager");
 
    /**
