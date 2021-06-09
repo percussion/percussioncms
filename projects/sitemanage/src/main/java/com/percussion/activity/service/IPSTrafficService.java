@@ -46,7 +46,7 @@ public interface IPSTrafficService
      * @param request List of traffic data types that is getting requested. Never <code>null</code>.
      * @return Never <code>null</code>. 
      */
-    public PSContentTraffic getContentTraffic(PSContentTrafficRequest request) throws PSTrafficServiceException;
+    public PSContentTraffic getContentTraffic(PSContentTrafficRequest request) throws PSTrafficServiceException, PSValidationException;
     
     /**
      * Gets the content traffic activity for the given site path, and specified date range.

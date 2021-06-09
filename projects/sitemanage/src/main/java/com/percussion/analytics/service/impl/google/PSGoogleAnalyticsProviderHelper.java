@@ -38,6 +38,8 @@ import com.google.api.services.analyticsreporting.v4.model.DateRange;
 import com.google.api.services.analyticsreporting.v4.model.ReportRequest;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.error.PSAnalyticsProviderException.CAUSETYPE;
+import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.utils.date.PSDateRange;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
@@ -91,8 +93,7 @@ public class PSGoogleAnalyticsProviderHelper
      * @throws PSAnalyticsProviderException if an error occurs when getting the service.
 
      */
-    public Analytics getAnalyticsService(String email, String key) throws PSAnalyticsProviderException
-    {
+    public Analytics getAnalyticsService(String email, String key) throws PSAnalyticsProviderException, PSValidationException {
         JacksonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
         com.google.api.services.analytics.Analytics service = null;
         // Construct a GoogleCredential object with the service account email
@@ -101,7 +102,8 @@ public class PSGoogleAnalyticsProviderHelper
             ObjectMapper mapper = new ObjectMapper();
             GoogleCreds creds = mapper.readValue(key, GoogleCreds.class);
             if (!StringUtils.equals(creds.getClient_email(), email)) {
-                throw new PSAnalyticsProviderException("Email does not match key file", CAUSETYPE.INVALID_CREDS);
+                PSValidationErrorsBuilder builder = new PSValidationErrorsBuilder(this.getClass().getCanonicalName());
+                builder.reject(CAUSETYPE.INVALID_CREDS.toString(), "Email does not match with key file").throwIfInvalid();
             }
             PrivateKey serviceAccountPrivateKey = privateKeyFromPkcs8(creds.getPrivate_key());
             GoogleCredential credential = new GoogleCredential.Builder()

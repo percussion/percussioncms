@@ -26,6 +26,7 @@ package com.percussion.analytics.service;
 import com.percussion.analytics.data.IPSAnalyticsQueryResult;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.date.PSDateRange;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public interface IPSAnalyticsProviderQueryService
     * @throws PSAnalyticsProviderException if any connection or data processing error occurs.
     */
    public List<IPSAnalyticsQueryResult> getVisitsViewsBySite(
-      String sitename, PSDateRange range) throws PSAnalyticsProviderException, IPSGenericDao.LoadException;
+      String sitename, PSDateRange range) throws PSAnalyticsProviderException, IPSGenericDao.LoadException, PSValidationException;
    
    /**
     * Retrieves the page views and unique page views for each page path and date within
@@ -85,7 +86,7 @@ public interface IPSAnalyticsProviderQueryService
     * @throws PSAnalyticsProviderException if any connection or data processing error occurs.
     */
    public List<IPSAnalyticsQueryResult> getPageViewsByPathPrefix(
-      String sitename, String pathPrefix, PSDateRange range) throws PSAnalyticsProviderException, IPSGenericDao.LoadException;
+      String sitename, String pathPrefix, PSDateRange range) throws PSAnalyticsProviderException, IPSGenericDao.LoadException, PSValidationException;
    
    // Field name constants
    public static final String FIELD_DATE = "date";
