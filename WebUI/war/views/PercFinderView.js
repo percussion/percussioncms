@@ -716,56 +716,56 @@
                     // Add Publishing dropdown
                     //if ($.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_EDIT)
                     //{
-                        $.PercItemPublisherService.getPublishActions(assetId, function(status, result)
+                    $.PercItemPublisherService.getPublishActions(assetId, function(status, result)
+                    {
+                        if (status)
                         {
-                            if (status)
+                            var pubActions = eval("(" + result + ")").PSPublishingActionList;
+                            if (pubActions.length > 0)
                             {
-                                var pubActions = eval("(" + result + ")").PSPublishingActionList;
-                                if (pubActions.length > 0)
+                                var actionNames = ["Publishing"];
+                                var disableAction = [false];
+                                $.each(pubActions, function()
                                 {
-                                    var actionNames = ["Publishing"];
-                                    var disableAction = [false];
-                                    $.each(pubActions, function()
-                                    {
-                                        actionNames.push(this.name);
-                                        disableAction.push(this.enabled);
+                                    actionNames.push(this.name);
+                                    disableAction.push(this.enabled);
 
-                                    });
-                                    //Add Publishing dropdown menu in toolbar
-                                    var publishNowDropdown = $("#perc-dropdown-publish-now");
-                                    publishNowDropdown.PercDropdown({
-                                        percDropdownRootClass: "perc-dropdown-publish-now",
-                                        percDropdownOptionLabels: actionNames,
-                                        percDropdownCallbacks: [function()
-                                        {
-                                        },
-                                            _publishItem, _openSchedule, _publishItem, _publishItem, _publishItem],
-                                        percDropdownCallbackData: ["Publishing", {
-                                            assetId: assetId,
-                                            aName: aName,
-                                            trName: I18N.message("perc.ui.finder.view@Publish")
-                                        }, {
-                                            assetId: assetId,
-                                            aName: aName
-                                        }, {
-                                            assetId: assetId,
-                                            aName: aName,
-                                            trName: I18N.message("perc.ui.finder.view@Take Down")
-                                        }, {
-                                            assetId: assetId,
-                                            aName: aName,
-                                            trName: I18N.message("perc.ui.finder.view@Stage")
-                                        }, {
-                                            assetId: assetId,
-                                            aName: aName,
-                                            trName: I18N.message("perc.ui.finder.view@Remove From Staging")
-                                        },
-                                            assetId],
-                                        percDropdownDisabledFlag: disableAction
-                                    });
-                                }
+                                });
+                                //Add Publishing dropdown menu in toolbar
+                                var publishNowDropdown = $("#perc-dropdown-publish-now");
+                                publishNowDropdown.PercDropdown({
+                                    percDropdownRootClass: "perc-dropdown-publish-now",
+                                    percDropdownOptionLabels: actionNames,
+                                    percDropdownCallbacks: [function()
+                                    {
+                                    },
+                                        _publishItem, _openSchedule, _publishItem, _publishItem, _publishItem],
+                                    percDropdownCallbackData: ["Publishing", {
+                                        assetId: assetId,
+                                        aName: aName,
+                                        trName: I18N.message("perc.ui.finder.view@Publish")
+                                    }, {
+                                        assetId: assetId,
+                                        aName: aName
+                                    }, {
+                                        assetId: assetId,
+                                        aName: aName,
+                                        trName: I18N.message("perc.ui.finder.view@Take Down")
+                                    }, {
+                                        assetId: assetId,
+                                        aName: aName,
+                                        trName: I18N.message("perc.ui.finder.view@Stage")
+                                    }, {
+                                        assetId: assetId,
+                                        aName: aName,
+                                        trName: I18N.message("perc.ui.finder.view@Remove From Staging")
+                                    },
+                                        assetId],
+                                    percDropdownDisabledFlag: disableAction
+                                });
                             }
-                        });
+                        }
+                    });
                     //}
 
                 }
@@ -1016,7 +1016,17 @@
                             }
                             else if ($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDIT_ASSET)
                             {
-                                $.PercNavigationManager.handleOpenAsset(item, true);
+                                //We are in AssetEditor but finder is having site selected, so need to find Asset
+                                if(item.name === "Sites"){
+                                    $.PercPathService.getPathItemById(contentId, function(status, data){
+                                        if(status === $.PercServiceUtils.STATUS_SUCCESS) {
+                                            $.PercNavigationManager.handleOpenAsset(data.PathItem, true);
+                                        } else {
+                                            $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: data});
+
+                                        }
+                                    });
+                                }
                             }
                             else
                             {
@@ -1630,41 +1640,41 @@
                 {
                     /*doIfCheckedOutToCurrentUser(itemId, function()
                     {*/
-                        if (trName === I18N.message("perc.ui.navMenu.publish@Publish"))
+                    if (trName === I18N.message("perc.ui.navMenu.publish@Publish"))
+                    {
+                        $.PercItemPublisherService.getScheduleDates(itemId, function(status, result)
                         {
-                            $.PercItemPublisherService.getScheduleDates(itemId, function(status, result)
+                            if (status)
                             {
-                                if (status)
-                                {
-                                    var scheduleDates = eval("(" + result + ")").ItemDates;
-                                    _confirmPublish(scheduleDates);
-                                }
-                                else
-                                {
-                                    $.perc_utils.alert_dialog({
-                                        content: I18N.message("perc.ui.finder.view@Get Saved Schedule"),
-                                        title: I18N.message("perc.ui.publish.title@Error")
-                                    });
-                                    return false;
-                                }
+                                var scheduleDates = eval("(" + result + ")").ItemDates;
+                                _confirmPublish(scheduleDates);
+                            }
+                            else
+                            {
+                                $.perc_utils.alert_dialog({
+                                    content: I18N.message("perc.ui.finder.view@Get Saved Schedule"),
+                                    title: I18N.message("perc.ui.publish.title@Error")
+                                });
+                                return false;
+                            }
 
-                            });
-                        }
-                        else if (trName === I18N.message("perc.ui.page.menu@Take Down"))
-                        {
-                            $.PercBlockUI();
-                            $.PercItemPublisherService.takeDownItem(itemId, itemType, _afterPublish);
-                        }
-                        else if(trName === I18N.message("perc.ui.page.menu@Stage"))
-                        {
-                            $.PercBlockUI();
-                            $.PercItemPublisherService.publishToStaging(itemId, itemType, _afterPublish);
-                        }
-                        else if(trName === I18N.message("perc.ui.page.menu@Remove from Staging"))
-                        {
-                            $.PercBlockUI();
-                            $.PercItemPublisherService.removeFromStaging(itemId, itemType, _afterPublish);
-                        }
+                        });
+                    }
+                    else if (trName === I18N.message("perc.ui.page.menu@Take Down"))
+                    {
+                        $.PercBlockUI();
+                        $.PercItemPublisherService.takeDownItem(itemId, itemType, _afterPublish);
+                    }
+                    else if(trName === I18N.message("perc.ui.page.menu@Stage"))
+                    {
+                        $.PercBlockUI();
+                        $.PercItemPublisherService.publishToStaging(itemId, itemType, _afterPublish);
+                    }
+                    else if(trName === I18N.message("perc.ui.page.menu@Remove from Staging"))
+                    {
+                        $.PercBlockUI();
+                        $.PercItemPublisherService.removeFromStaging(itemId, itemType, _afterPublish);
+                    }
 
                     /*}, function()
                     {
