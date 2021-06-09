@@ -24,7 +24,7 @@
 package com.percussion.analytics.service.impl;
 
 import com.percussion.analytics.error.PSAnalyticsProviderException;
-
+import com.percussion.share.service.exception.PSValidationException;
 import java.util.Map;
 
 /**
@@ -42,7 +42,7 @@ public interface IPSAnalyticsProviderHandler
     * profile display value. Never <code>null</code>, may be empty.
     * @throws <code>PSAnalyticsProviderException</code>, upon any error.
     */
-   public Map<String, String> getProfiles(String uid, String password) throws PSAnalyticsProviderException;
+   public Map<String, String> getProfiles(String uid, String password) throws PSAnalyticsProviderException, PSValidationException;
    
    /**
     * Tests a connection to the provider using the specified credentials.
@@ -50,5 +50,5 @@ public interface IPSAnalyticsProviderHandler
     * @param password the password for access to the provider. Cannot be <code>null</code> or empty.
     * @throws PSAnalyticsProviderException if failed to connect.
     */
-   public void testConnection(String uid, String password) throws PSAnalyticsProviderException;
+   public void testConnection(String uid, String password) throws PSAnalyticsProviderException, PSValidationException;
 }

@@ -27,6 +27,7 @@ import com.percussion.analytics.data.PSAnalyticsProviderConfig;
 import com.percussion.analytics.error.IPSAnalyticsErrorMessageHandler;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSValidationException;
 
 import java.util.Map;
 
@@ -74,7 +75,7 @@ public interface IPSAnalyticsProviderService
     * profile display value. Never <code>null</code>, may be empty.
     * @throws PSAnalyticsProviderException, upon any error.
     */
-   public Map<String, String> getProfiles(String uid, String password) throws PSAnalyticsProviderException, IPSGenericDao.LoadException;
+   public Map<String, String> getProfiles(String uid, String password) throws PSAnalyticsProviderException, IPSGenericDao.LoadException, PSValidationException;
    
    /**
     * Tests a connection to the provider using the specified credentials.
@@ -84,7 +85,7 @@ public interface IPSAnalyticsProviderService
     * If so it will attempt to use stored password or error if it does not find one.
     * @throws PSAnalyticsProviderException if failed to connect with the specified parameters.
     */
-   public void testConnection(String uid, String password) throws PSAnalyticsProviderException, IPSGenericDao.LoadException, IPSGenericDao.SaveException;
+   public void testConnection(String uid, String password) throws PSAnalyticsProviderException, IPSGenericDao.LoadException, IPSGenericDao.SaveException, PSValidationException;
    
    
    /**

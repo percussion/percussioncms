@@ -36,6 +36,7 @@ import com.percussion.analytics.data.IPSAnalyticsQueryResult;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.service.IPSAnalyticsProviderQueryService;
 import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.date.PSDateRange;
 import com.percussion.utils.date.PSDateRange.Granularity;
 
@@ -86,7 +87,7 @@ public class PSEffectivenessService implements IPSEffectivenessService
 
                 eList.add(new PSEffectiveness(ca.getName(), effectiveness));
             }
-            catch (PSAnalyticsProviderException | IPSGenericDao.LoadException e)
+            catch (PSAnalyticsProviderException | IPSGenericDao.LoadException | PSValidationException e)
             {
                 exceptions.add(e);
             }
@@ -112,7 +113,7 @@ public class PSEffectivenessService implements IPSEffectivenessService
      * @throws PSAnalyticsProviderException if an error occurs retrieving the analytics data.
      */
     private Long getViews(PSContentActivity ca, PSDateRange range, String resultKey)
-            throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
+            throws PSAnalyticsProviderException, IPSGenericDao.LoadException, PSValidationException {
         long views = 0L;
         
         List<IPSAnalyticsQueryResult> results = analyticsService.getPageViewsByPathPrefix(ca.getSiteName(),

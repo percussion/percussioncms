@@ -44,6 +44,7 @@ import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.utils.date.PSDateRange;
@@ -87,7 +88,7 @@ public class PSTrafficService implements IPSTrafficService
         this.pageService = pageService;
     }
     
-    public PSContentTraffic getContentTraffic(PSContentTrafficRequest request) throws PSTrafficServiceException {
+    public PSContentTraffic getContentTraffic(PSContentTrafficRequest request) throws PSTrafficServiceException, PSValidationException {
         PSContentTraffic results = new PSContentTraffic();
 
         FastDateFormat df = FastDateFormat.getInstance("MM/dd/yyyy");
@@ -391,7 +392,7 @@ public class PSTrafficService implements IPSTrafficService
      * @throws PSAnalyticsProviderException
      */
     public List<Integer> createAnalyticsActivity(PSDateRange range, List<Date> dates, 
-            String siteName, String usage) throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
+            String siteName, String usage) throws PSAnalyticsProviderException, IPSGenericDao.LoadException, PSValidationException {
         List<Integer> counts = new ArrayList<>(dates.size() - 1);
         //Fill in array with 0
         for(int i=0;i < dates.size()-1;i++)
