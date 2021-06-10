@@ -43,7 +43,7 @@
         // find all data tables inside this pane and resize them
         $($.fn.dataTable.fnTables(true)).each(function (i, table) {
             if ($.contains(oPane, table)) {
-                $(table).dataTable().fnAdjustColumnSizing();
+                $(table).dataTable().columns().adjust();
             }
         });
         

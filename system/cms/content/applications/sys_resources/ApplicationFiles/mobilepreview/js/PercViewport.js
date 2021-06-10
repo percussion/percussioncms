@@ -132,7 +132,7 @@ window.resizer = {};
             size.parentNode.style.top = '146px';
             size.parentNode.style.width = '351px';
             size.parentNode.style.right= '-136px';
-            d.getElementById("percexpand").className = "icon-double-angle-down icon-2x";
+            d.getElementById("percexpand").className = "icon-double-angle-down icon-2x fas fa-angle-double-down fa-2x";
             d.getElementById("percexpand").title = "Click to collapse mobile preview toolbar";
             d.getElementById("percexpand").id = "perccollapse";
             }
@@ -144,7 +144,7 @@ window.resizer = {};
             size.parentNode.style.top = '-14px';
             size.parentNode.style.width = '19px';
             size.parentNode.style.right= '30px';
-            d.getElementById("perccollapse").className = "icon-double-angle-up icon-2x";
+            d.getElementById("perccollapse").className = "icon-double-angle-up icon-2x fas fa-angle-double-up fa-2x";
             d.getElementById("perccollapse").title = "Click to expand mobile preview toolbar";
             d.getElementById("perccollapse").id = "percexpand";
             }            

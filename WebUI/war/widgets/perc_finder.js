@@ -98,7 +98,7 @@ function finder() {
            DELETE: 'delete', 
            FINDER_OPEN_START : 'open_start', 
            FINDER_OPEN_END: 'open_end'},
-           isLibMode = typeof gInitialScreen !== 'undefined' && gInitialScreen == "library";
+           isLibMode = ((typeof gInitialScreen !== 'undefined') && (gInitialScreen === "library"));
     //Preload images
     $.perc_utils.preLoadImages(
        "/cm/images/images/loading.gif"
@@ -150,15 +150,15 @@ function finder() {
     $(document).on("mousedown touchstart",function(evt){
         if (evt.target.id !== "perc-finder-go-action" && evt.target.id !== "mcol-path-summary"){
             $("#mcol-path-summary").trigger("blur");
-            if (evt.target.id != "perc-finder-search-submit" &&     // Need this condition to clean path when performing search
-                evt.target.id != "perc-finder-listing-Search" &&    // else any click in the screen will override the path in other view
+            if (evt.target.id !== "perc-finder-search-submit" &&     // Need this condition to clean path when performing search
+                evt.target.id !== "perc-finder-listing-Search" &&    // else any click in the screen will override the path in other view
                 $(evt.target).parents(".perc-datatable-row").length > 0)
             {
                 $("#mcol-path-summary").val(getCurrentPath().join("/"));
             }
 
         }
-        if (evt.target.id != "perc-finder-item-search"){
+        if (evt.target.id !== "perc-finder-item-search"){
           $("#perc-finder-item-search").trigger("blur");
         }
         // hide the message if it's visible
@@ -180,7 +180,7 @@ function finder() {
     function absPath(strPath){
         var path = strPath.split("/");
         for(let i=0; i < path.length; i++){
-            if (path[i] == ".."){
+            if (path[i] === ".."){
                 if (i-1 >= 0){
                     path.splice(i-1, 2);
                     i = i - 2;
@@ -190,7 +190,7 @@ function finder() {
                     i--;
                 }
             }
-            if(path[1] == "."){
+            if(path[1] === "."){
                 path.splice(i, 1);
                     i--;
             }
@@ -210,10 +210,9 @@ function finder() {
         newPath = absPath(newPath);
         newPath = (newPath.charAt(0) !== "/") ? "/" + newPath : newPath;
         newPath = (newPath === "/" || newPath === "")? "/" + getCurrentPath()[1] : newPath;
-        if (newPath === currPath && viaGoButton == true
+        if (newPath === currPath && viaGoButton === true
             && ($.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_SEARCH_RESULTS  // This condition avoids the check when
                 && $.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_RESULT)){    // in search view to force the path change
-             return;
         }
         
         else {
@@ -263,7 +262,7 @@ function finder() {
     function showFinderErrorMessage(show, message){
         var $message = $('.perc-finder-message');
         if (show) {
-            $message.empty().append('<i class="icon-bell" aria-hidden="true"></i>');
+            $message.empty().append('<i class="icon-bell fas fa-bell" aria-hidden="true"></i>');
             $('<label class="perc-finder-error"></label>').text(message).appendTo($message);
             $message.fadeIn();
         } else {
@@ -320,7 +319,7 @@ function finder() {
     */                                
     function expandCollapseFinder (expand) {
         var $button, $header, $finder = $(".perc-finder-body");
-        if($(".perc-finder-body").is(":visible") === expand) {
+        if($finder.is(":visible") === expand) {
             return; // Nothing to do
         }
         $button = $('#perc-finder-expander');
@@ -329,11 +328,17 @@ function finder() {
         if (expand) {
             $header.removeAttr('collapsed');
             $finder.slideDown(notify_resize);
-            $button.removeClass('icon-plus-sign').addClass('icon-minus-sign');
+            $button.removeClass('icon-plus-sign')
+                .removeClass('fa-plus').
+            addClass('icon-minus-sign').
+            addClass('fa-minus');
         } else {
             $header.attr('collapsed', true);
             $finder.slideUp(notify_resize);
-            $button.removeClass('icon-minus-sign').addClass('icon-plus-sign');
+            $button.removeClass('icon-minus-sign').
+            removeClass('fa-minus').
+            addClass('icon-plus-sign').
+            addClass('fa-plus');
         }
         var frame  = $('#frame');
         var header = $('.perc-main');
@@ -540,9 +545,9 @@ function finder() {
        * @type string
        */
       function idFromItem(item) {         
-         var postfix = typeof(item['id']) == 'undefined' 
-            ? item['path'].split("/")[1]
-            : item['id']; 
+         var postfix = typeof(item.id) === 'undefined'
+            ? item.path.split("/")[1]
+            : item.id;
          return FINDER_LISTING_ID_PREFIX + postfix;      
       }
 
@@ -551,7 +556,7 @@ function finder() {
          $(this).removeClass('mcol-opened');
       });
       var fwrapper = $.PercViewReadyManager.getWrapper('perc-ui-component-finder');
-      if($.PercNavigationManager.getView() == $.PercNavigationManager.VIEW_EDITOR && (fwrapper == null || fwrapper.wrapperName != "perc-action-finder-refresh")){
+      if($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDITOR && (fwrapper == null || fwrapper.wrapperName !== "perc-action-finder-refresh")){
               var compArray = [];
               compArray.push("perc-ui-component-finder");
               
@@ -740,12 +745,12 @@ function finder() {
         $.perc_pathmanager.open_path( str_path, true, getChildren, err, true );
             function getChildren( folder_spec ) {
                 var children = {};
-                $.each( $.perc_utils.convertCXFArray(folder_spec['PagedItemList']['childrenInPage']), function() {
+                $.each( $.perc_utils.convertCXFArray(folder_spec.PagedItemList.childrenInPage), function() {
                     //Use the postfix "_item" to avoid reserved name collision (e.g. toString, watch, toSource, etc).
                     children[ ut.extract_path_end( this.path ) + "_item"] = this;
                 });
-                dir.data('totalResult', folder_spec['PagedItemList']['childrenCount']);
-                dir.data('startIndex', folder_spec['PagedItemList']['startIndex']);
+                dir.data('totalResult', folder_spec.PagedItemList.childrenCount);
+                dir.data('startIndex', folder_spec.PagedItemList.startIndex);
                 update_dir(dir, children);
                 if (scrollBottom)
                     dir.find('.mcol-direc-wrapper').attr({ scrollTop: dir.find('.mcol-direc-wrapper').attr("scrollHeight") });
@@ -900,11 +905,11 @@ function finder() {
     function make_item( spec, open_rel ) {
        
         var tabindex = 10;
-        var pref = (spec['type'] == 'Folder') ? 'a' : 'z';
+        var pref = (spec['type'] === 'Folder') ? 'a' : 'z';
         var item_path = ut.extract_path( spec['path'] );
         var isSystemCategory = false;
         var icon;
-        if(spec && spec['category'] && spec['category']=='SYSTEM' && spec['type'] && spec['type']=='FSFile' && spec['name'] && spec['name'].indexOf('.') !=-1){
+        if(spec && spec['category'] && spec['category']==='SYSTEM' && spec['type'] && spec['type']==='FSFile' && spec['name'] && spec['name'].indexOf('.') !==-1){
             // customizing for case of category:system && it is a file type or image type.
             var ImageFileTypes = ['tif','jpg','jpeg','gif','png','tiff','jfif','jpe','bmp','dib'];
             var myFileType = spec['name'].substr(spec['name'].indexOf(".") + 1);
@@ -1022,12 +1027,12 @@ function finder() {
       function onDrop(event, ui){
          var itemPath = ui.draggable.data('spec').path;
          var itemType = ui.draggable.data('spec').type;
-         var targetPath = spec['path'];
-         var targetType = spec['type'];
+         var targetPath = spec.path;
+         var targetType = spec.type;
          $(this).removeClass("perc-finder-item-over");
          hoverCancel();
-         if(spec['accessLevel'] == $.PercFolderHelper().PERMISSION_READ || 
-                 ui.draggable.data('spec').accessLevel == $.PercFolderHelper().PERMISSION_READ)
+         if(spec['accessLevel'] === $.PercFolderHelper().PERMISSION_READ ||
+                 ui.draggable.data('spec').accessLevel === $.PercFolderHelper().PERMISSION_READ)
              return false;
          if(!canDrop(itemPath, targetPath, itemType, targetType))
             return false;       
@@ -1035,12 +1040,12 @@ function finder() {
             itemPath,
             targetPath,
             function(status, data){
-               if(status == $.PercServiceUtils.STATUS_SUCCESS)
+               if(status === $.PercServiceUtils.STATUS_SUCCESS)
                {
                   var type = null;
-                  if (itemType == "percPage")
+                  if (itemType === "percPage")
                       type = "page";
-                  else if (itemType == "Folder" && targetPath.indexOf("/Sites")==0)
+                  else if (itemType === "Folder" && targetPath.indexOf("/Sites")===0)
                       type = "folder";
                   if(type){
                        $.PercRedirectHandler.createRedirect(itemPath, targetPath + ui.draggable.data('spec').name, type)
@@ -1180,18 +1185,18 @@ function finder() {
           {
              var site1 = their_path.substr(1).split("/")[1];
              var site2 = our_path.substr(1).split("/")[1];
-             if(site1 != site2)
+             if(site1 !== site2)
                 return false;
           }
           // Do not allow dropping asset into a non folder
-          if(item.data('spec').category && item.data('spec').category == 'ASSET')
+          if(item.data('spec').category && item.data('spec').category === 'ASSET')
           {
-             if(!spec.type || spec.type != 'Folder')
+             if(!spec.type || spec.type !== 'Folder')
                 return false;
           }
                  
           if( our_path.length >= their_path.length &&
-              $.grep( their_path, function(c, ii) { return c == our_path[ii]; } ).length == 0 ) {
+              $.grep( their_path, function(c, ii) { return c === our_path[ii]; } ).length === 0 ) {
                  //their path is a subset of our path - don't allow
                  //item to be dragged into itself or its children
                  return false;
@@ -1199,7 +1204,7 @@ function finder() {
           
           var their_base = ut.extract_path( their_path )[1];
           var our_base = ut.extract_path( our_path )[1];
-          if( their_base != our_base ) {
+          if( their_base !== our_base ) {
              return false;
           }
 
@@ -1709,7 +1714,7 @@ function finder() {
         var index = path.indexOf('/', 1);
         var index2 = path.indexOf('/', index + 2);
 
-        if(index2 != -1) {
+        if(index2 !== -1) {
             var siteName = path.substring((index + 1), index2);
             return siteName;
         }

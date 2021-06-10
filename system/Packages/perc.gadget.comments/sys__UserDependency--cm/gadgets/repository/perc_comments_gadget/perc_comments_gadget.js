@@ -26,7 +26,7 @@
  * Depends upon the following:
  * /cm/jslib/jQuery.js
  * /cm/jslib/jQuery.dataTables.js
- * /cm/widgets/PercDataTable.js
+ * /cm/widgets/PercDataTable/PercDataTable.js
  * /cm/plugins/perc_path_constants.js - Ancestral Dependancy of PercCommentsGadgetService.js
  * /cm/services/PercServiceUtils.js - Ancestral Dependancy of PercCommentsGadgetService.js
  * /cm/gadgets/repository/perc_comments_gadget/PercCommentsGadgetService.js

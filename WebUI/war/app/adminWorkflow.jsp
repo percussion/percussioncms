@@ -66,7 +66,8 @@
     --%>
 
     <!-- Themes never should be concatenated or packed -->
-    <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.7.2.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.8.9.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
     <!-- <link rel="stylesheet" type="text/css" href="../cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.min.css"/> -->
      <link rel="stylesheet" type="text/css" href="../jslib/profiles/3x/libraries/bootstrap/css/bootstrap.min.css"/>
     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%= locale%>"></script>

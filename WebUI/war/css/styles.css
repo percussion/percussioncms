@@ -833,7 +833,6 @@ a#perc-page-close.perc-close,#perc-page-edit.perc-edit-button
     background-repeat:no-repeat;
     float:left;
     vertical-align:bottom;
-    width:100px;
 }
 
 .perc-template-thumbnail-container
@@ -3622,7 +3621,7 @@ li.ui-tabs-selected #perc-tab-style,#perc-tab-style:hover
 /* .ui-disabled:hover state */
 .ui-disabled.perc-font-icon:hover,
 .ui-disabled .perc-font-icon:hover {
-    text-shadow: 0px 1px silver;
+    text-shadow: 0 1px silver;
 }
 /* fixes for specific icons */
 .perc-font-icon.icon-sitemap {
@@ -3633,7 +3632,7 @@ li.ui-tabs-selected #perc-tab-style,#perc-tab-style:hover
 .perc-font-icon .icon-caret-down {
     /* secondary indicators */
     font-size: 0.5em;
-    text-decoration: super;
+    text-decoration: inherit;
 }
 /*These styles are font awesome styles*/
 .perc-font.perc-font-button, .perc-font-button a {

@@ -49,6 +49,7 @@
 <!DOCTYPE html>
 <html lang="<%= lang %>">
     <head>
+        <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
             <link rel="stylesheet" type="text/css" href="../cssMin/perc_admin.packed.min.css" />
             <link rel="stylesheet" type="text/css" href="../css/layout.css" />
             <link rel="stylesheet" type="text/css" href="../css/styles.css" />

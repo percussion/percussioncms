@@ -13,7 +13,6 @@
  *     Mailing Address:
  *
  *      Percussion Software, Inc.
- *      PO Box 767
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
@@ -23,19 +22,15 @@
  */
 
 (function($){
-    var TABLE_STATUS_FOOTER_PADDING_TOP = 5;
     var itemsPerPage = 5;
 
     // grab necessary Perc APIs
     var PercSearchService  = percJQuery.PercSearchService;
     var PercServiceUtils = percJQuery.PercServiceUtils;
     var perc_utils       = percJQuery.perc_utils;
-    var perc_paths       = percJQuery.perc_paths;
     var percWorkflowService = percJQuery.PercWorkflowService();
-    var percAssetService = percJQuery.PercAssetService;
 
     var isLargeColumn = true;       // if gadget is on the right side (large column)
-    var statusTable = undefined;
     var tableDiv;
     var tableData;
     var jobId;
@@ -76,8 +71,7 @@
 
     /**
      * Retrieves assets from a site that are in a particular status and then renders them as a table
-     * @param workflow (string) workflow of assets.
-     * @param status (string) status of assets. Empty string means any status.
+     * @param criteria gadget criteria
      */
     function loadGadget(criteria) {
         if(tableDiv.find(".dataTables_wrapper").length > 0)
@@ -85,26 +79,24 @@
             tableDiv.find(".dataTables_wrapper").remove();
         }
         // get the data and then pass it to createStatusTable to create the table
-        searchCriteriaObj = {"query": "", "folderPath": "//Folders/$System$/Assets", "sortColumn":"sys_title","sortOrder":"asc", "formatId":-1};
+        let searchCriteriaObj = {"query": "", "folderPath": "//Folders/$System$/Assets", "sortColumn":"sys_title","sortOrder":"asc", "formatId":-1};
 
         var searchFields = [];
-        if (criteria.assetType != "@all")
+        if (criteria.assetType !== "@all")
             searchFields.push({"key": "sys_contenttypeid", "value" : criteria.assetType});
-        if (criteria.workflow != "@all")
+        if (criteria.workflow !== "@all")
             searchFields.push({"key": "sys_workflowid", "value" : criteria.workflow});
-        if (criteria.state != "@all")
+        if (criteria.state !== "@all")
             searchFields.push({"key": "sys_contentstateid", "value" : criteria.state});
-        if (criteria.lasteditedby != "@all")
+        if (criteria.lasteditedby !== "@all")
             searchFields.push({"key": "sys_contentlastmodifier", "value" : criteria.lasteditedby});
 
-        //searchFields.push({"key": "sys_contenttypeid", "value" : "percPage"});
-
-        searchCriteriaObj["searchFields"] = {"entry":searchFields};
+        searchCriteriaObj.searchFields = {"entry":searchFields};
 
         PercSearchService
             .getAsyncSearchResult({"SearchCriteria":searchCriteriaObj},
                 function(status, data){
-                    if(status == true) {
+                    if(status === true) {
                         tableData = perc_utils.convertCXFArray(data.PagedItemList.childrenInPage);
                         createStatusTable(tableData);
                     } else {
@@ -115,8 +107,9 @@
 
                 });
     }
+
     function createStatusTable(data){
-        isLargeColumn = gadgets.window.getDashboardColumn() == 1; // if the gadget is in first column then we have to render it as large
+        isLargeColumn = gadgets.window.getDashboardColumn() === 1; // if the gadget is in first column then we have to render it as large
 
         var percData = [];
         var excludeActionMenu = true;
@@ -128,9 +121,9 @@
             var map = {};
             for(d=0;d<dataRow.length;d++)
             {
-                var data  = dataRow[d];
-                var name  = data[nameKey];
-                var value = data[valueKey];
+                let data  = dataRow[d];
+                let name  = data[nameKey];
+                let value = data[valueKey];
                 map[name] = value;
             }
             return map;
@@ -139,37 +132,40 @@
         $.each(itemProperties, function(index, item){
 
             var valuesMap = nameValueObjectArrayToMap(item.columnData.column, "name", "value");
-            //var lastModifiedDateParts = perc_utils.splitDateTime(item.lastModifiedDate);
-            var lastModifiedDateParts = perc_utils.splitDateTime(valuesMap["sys_contentlastmodifieddate"]);
 
-            var lastModifiedDateDate  = valuesMap["sys_contentlastmodifieddate"] == "" ? "" : lastModifiedDateParts.date;
-            var lastModifiedDateTime  = valuesMap["sys_contentlastmodifieddate"] == "" ? "" : lastModifiedDateParts.time;
+            var lastModifiedDateParts = perc_utils.splitDateTime(valuesMap.sys_contentlastmodifieddate);
 
-            //var lastModifier = item.lastModifier;
-            var lastModifier = valuesMap["sys_contentlastmodifier"];
+            var lastModifiedDateDate  = valuesMap.sys_contentlastmodifieddate === "" ? "" : lastModifiedDateParts.date;
+            var lastModifiedDateTime  = valuesMap.sys_contentlastmodifieddate === "" ? "" : lastModifiedDateParts.time;
 
-            var lastModifiedTimeAndWho = lastModifiedDateTime == "" ? "" : (lastModifiedDateTime + " ("+lastModifier+")");
+            var lastModifier = valuesMap.sys_contentlastmodifier;
+
+            var lastModifiedTimeAndWho = lastModifiedDateTime === "" ? "" : (lastModifiedDateTime + " ("+lastModifier+")");
             var lastModifiedDateAndTime = lastModifiedDateDate +' ' + lastModifiedDateTime; //Combine the last modified date & time
             //var lastPublishedDateParts = perc_utils.splitDateTime(item.lastPublishedDate);
 
-            var lastPublishedDateParts = typeof(valuesMap["sys_postdate"]) == "undefined" ? "" : perc_utils.splitDateTime(valuesMap["sys_postdate"]);
-            var lastPublishedDateDate = typeof(valuesMap["sys_postdate"]) == "undefined" || valuesMap["sys_postdate"] == "" ? "" : lastPublishedDateParts.date;
-            var lastPublishedDateTime = typeof(valuesMap["sys_postdate"]) == "undefined" || valuesMap["sys_postdate"] == "" ? "" : lastPublishedDateParts.time;
+            var lastPublishedDateParts = typeof(valuesMap.sys_postdate) == "undefined" ? "" : perc_utils.splitDateTime(valuesMap.sys_postdate);
+            var lastPublishedDateDate = typeof(valuesMap.sys_postdate) == "undefined" || valuesMap.sys_postdate === "" ? "" : lastPublishedDateParts.date;
+            var lastPublishedDateTime = typeof(valuesMap.sys_postdate) == "undefined" || valuesMap.sys_postdate === "" ? "" : lastPublishedDateParts.time;
             var lastPublishedDateAndTime = lastPublishedDateDate +' '+ lastPublishedDateTime;  //Combine the published date & time
-            var pageName = (valuesMap["linkText"] != null ? valuesMap["linkText"] : valuesMap["sys_title"]);
+            var pageName = (valuesMap.linkText != null ? valuesMap.linkText : valuesMap.sys_title);
             var assetId = item.id;
 
             var assetPath = (!Array.isArray(item.folderPaths) ? item.folderPaths.replace("//Folders/$System$","") + "/" + item.name : "");
-            var itemStatus = valuesMap["sys_statename"]; //sys_statename
+            var itemStatus = valuesMap.sys_statename; //sys_statename
             var type = WidgetLabelByContentTypeName[item.type];
 
-            var summary = "&nbsp;";
+            var summary;
+
             if(item.summary)
                 summary = $(item.summary).text();
-            var checkBoxContent = "<input class='perc-table-row-checkbox' type = 'checkbox' perc-id='" + assetId + "'/>";
+            else
+                summary = "&nbsp;";
+
+            var checkBoxContent = "<input class='perc-table-row-checkbox' type = 'checkbox' data-perc-id='" + assetId + "'/>";
             var previewColContent = "<div class ='perc-preview-col perc-datatable-columnrow' style = 'display:none;'><img src='/cm/gadgets/repository/perc_workflow_status_gadget/images/previewIcon.png'/></div><span></span>";
             var previewTitle = "Preview '" + pageName + "' page";
-            var statusContent = "<span class='perc-table-row-status' perc-id='" + assetId + "'>" + itemStatus + "</span><span class='perc-table-row-status-icon'></span>";
+            var statusContent = "<span class='perc-table-row-status' data-perc-id='" + assetId + "'>" + itemStatus + "</span><span class='perc-table-row-status-icon'></span>";
             var row = {rowData : {assetId : assetId, assetPath : assetPath}, rowContent : [[{content : checkBoxContent, callback:function(){}}],
                     [{content : pageName, title : assetPath, callback:$.PercOpenAsset}],
                     [{content : previewColContent, title: previewTitle, callback: $.PercPreviewAsset}],
@@ -323,9 +319,9 @@
         var aitems = dataObject.ApprovableItems.approvableItems;
         $.each(tableData, function(){
             var approvableItem = $.extend({}, this);
-            var isItemChecked = tableDiv.find(".perc-table-row-checkbox[perc-id='" + this.id + "']").is(":checked");
+            var isItemChecked = tableDiv.find(".perc-table-row-checkbox[data-perc-id='" + this.id + "']").is(":checked");
             if(isItemChecked)
-                tableDiv.find(".perc-table-row-status[perc-id='" + this.id + "']").next(".perc-table-row-status-icon").addClass("perc-table-row-status-tobeprocessed").html(statusImgHtml_tobe);
+                tableDiv.find(".perc-table-row-status[data-perc-id='" + this.id + "']").next(".perc-table-row-status-icon").addClass("perc-table-row-status-tobeprocessed").html(statusImgHtml_tobe);
             $.extend(approvableItem, {"approve" : isItemChecked});
             aitems.push(approvableItem);
         });
@@ -358,7 +354,7 @@
                 var approvalJob = results[0];
                 if(isFull)
                 {
-                    updateTable(approvalJob.BulkApprovalJob)
+                    updateTable(approvalJob.BulkApprovalJob);
                 }
                 else
                 {
@@ -388,7 +384,7 @@
             $.each(processedItems, function(){
                 var itemId = this.id;
                 var statusClass = "";
-                var temp = tableDiv.find(".perc-table-row-status[perc-id='" + itemId + "']").css("font-weight","bold").text(this.status);
+                var temp = tableDiv.find(".perc-table-row-status[data-perc-id='" + itemId + "']").css("font-weight","bold").text(this.status);
                 if(this.approvalStatus == "Failed")
                 {
                     var imgHtml = $(statusImgHtml_error).attr("title",this.approvalMessage);
@@ -461,13 +457,13 @@
 
         var dialogHTML = "<div id='perc-ba-error-main-wrapper'>" +
             "<div>The following assets were not approved.</div>" +
-            "<div scrollable='true' id='perc-ba-error-table-wrapper'>" +
-            "<table class='perc-ba-error-table' width='100%'>" +
+            "<div id='perc-ba-error-table-wrapper'>" +
+            "<table class='perc-ba-error-table'>" +
             tableRows +
             "</table>" +
             "</div>" +
             "</div>";
-        dialog = percJQuery(dialogHTML).perc_dialog( {
+        var dialog = percJQuery(dialogHTML).perc_dialog( {
             resizable : false,
             title: "Approval errors",
             modal: true,
@@ -567,30 +563,37 @@
         setDefaultWorkflow(function(){
             $.perc_gadgets_search_criteria_dialog.getSearchConfig("perc.user." + percJQuery.PercNavigationManager.getUserName() + ".dash.page.0.mid." + moduleId + ".prefs.search_criteria", function(resultObj)
             {
-                var dataObj = JSON.parse(resultObj);
+                var dataObj;
+                if(typeof resultObj === "string"){
+                    dataObj = JSON.parse(resultObj);
+                }
+
                 searchConfig = resultObj;
 
                 if ($.isEmptyObject(searchConfig))
                 {
                     percJQuery.PercMetadataService.find("perc.user." + percJQuery.PercNavigationManager.getUserName() + ".dash.page.0.prefs", function(status, data){
-                        if (status == percJQuery.PercServiceUtils.STATUS_SUCCESS)
+                        if (status === percJQuery.PercServiceUtils.STATUS_SUCCESS)
                         {
-                            if (data != null)
+                            if (data != null && typeof data !== "undefined")
                             {
-                                var dataObj = JSON.parse(data.metadata.data);
+                                var dataObj;
+                                if(typeof data.metadata.data === "string")
+                                    dataObj = JSON.parse(data.metadata.data);
+
                                 if (dataObj.userprefs["mid_" + moduleId] != null)
                                 {
                                     var metaPrefsObj = dataObj.userprefs["mid_" + moduleId];
                                     var newSearchCriteria = getDefaultConfig();
                                     if (metaPrefsObj.assetType != null)
                                     {
-                                        newSearchCriteria["assetType"] = {"name": metaPrefsObj.assetType, "value": metaPrefsObj.assetType};
+                                        newSearchCriteria.assetType = {"name": metaPrefsObj.assetType, "value": metaPrefsObj.assetType};
                                     }
                                     percJQuery.PercReusableSearchService.getWorkflows(function(status, result)
                                     {
-                                        if (metaPrefsObj.ssworkflow != null && metaPrefsObj.ssworkflow == "@all")
+                                        if (metaPrefsObj.ssworkflow != null && metaPrefsObj.ssworkflow === "@all")
                                         {
-                                            newSearchCriteria["workflow"] = {"name": "All", "value": "@all"};
+                                            newSearchCriteria.workflow = {"name": "All", "value": "@all"};
                                         }
                                         else
                                         {
@@ -598,15 +601,15 @@
                                             {
                                                 var value = result[i].displayValue;
                                                 var name = result[i].value;
-                                                if (metaPrefsObj.ssworkflow != null && metaPrefsObj.ssworkflow == name)
+                                                if (metaPrefsObj.ssworkflow != null && metaPrefsObj.ssworkflow === name)
                                                 {
-                                                    newSearchCriteria["workflow"] = {"name": name, "value": value};
+                                                    newSearchCriteria.workflow = {"name": name, "value": value};
                                                 }
                                             }
                                         }
-                                        if (newSearchCriteria["workflow"] != null && metaPrefsObj.status != null && metaPrefsObj.status != "@all" )
+                                        if (newSearchCriteria.workflow != null && metaPrefsObj.status != null && metaPrefsObj.status !== "@all" )
                                         {
-                                            percJQuery.PercReusableSearchService.getStates(newSearchCriteria["workflow"].name, function(status, result)
+                                            percJQuery.PercReusableSearchService.getStates(newSearchCriteria.workflow.name, function(status, result)
                                             {
                                                 for (var i = 0; i < result.length; i++)
                                                 {
@@ -614,7 +617,7 @@
                                                     var name = result[i].value;
                                                     if (metaPrefsObj.status != null && metaPrefsObj.status == name)
                                                     {
-                                                        newSearchCriteria["state"] = {"name": name, "value": value};
+                                                        newSearchCriteria.state = {"name": name, "value": value};
                                                     }
                                                 }
                                                 searchConfigCallback(newSearchCriteria);
@@ -622,7 +625,7 @@
                                         }
                                         else
                                         {
-                                            newSearchCriteria["state"] = {"name": "All", "value": "@all"};
+                                            newSearchCriteria.state = {"name": "All", "value": "@all"};
                                             searchConfigCallback(newSearchCriteria);
                                         }
                                     });
@@ -669,8 +672,8 @@
             var lasteditedby = searchConfig.modifiedby.value;
 
             var assetName = assetType === "" || assetType === "@all"? "(All Assets)" : WidgetLabelByContentTypeId[assetType]?"(" + WidgetLabelByContentTypeId[assetType] + ")":"";
-            var workflowName = searchConfig.workflow["name"] == "" || searchConfig.workflow["name"] == "All" ? "All Workflows" : searchConfig.workflow["name"];
-            var stateName = searchConfig.state["name"] == "" || searchConfig.state["name"] == "All" ? "All States" : searchConfig.state["name"];
+            var workflowName = searchConfig.workflow.name === "" || searchConfig.workflow.name === "All" ? "All Workflows" : searchConfig.workflow.name;
+            var stateName = searchConfig.state.name === "" || searchConfig.state.name === "All" ? "All States" : searchConfig.state.name;
 
             var title = "ASSETS BY STATUS: " + workflowName + " - " + stateName + " " + assetName;
             gadgets.window.setTitle(title);

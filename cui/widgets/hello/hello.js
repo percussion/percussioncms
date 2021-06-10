@@ -37,7 +37,7 @@ define (
         var widgetName = 'cui.hello';
         $.widGEL.baseWidget.injectCssFile('widgets.hello', requirejs.toUrl('widgets/hello/hello.css'));
         // $.widGEL.baseWidget.injectCssFile('jquery', requirejs.toUrl('css/jquery-ui-1.10.4.custom.css')); since this file does not exist
-        $.widGEL.baseWidget.injectCssFile('font.awesome', requirejs.toUrl('fontAwesome'));
+        $.widGEL.baseWidget.injectCssFile('font.awesome', requirejs.toUrl('fontawesome-css'));
         
         $.widget(widgetName, $.widGEL.baseWidget, {
             options: {

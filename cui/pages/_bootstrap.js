@@ -33,7 +33,7 @@ var requireJsConfig = {
         'jquery-ui': '/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui',
         'knockout': '/cm/cui/components/knockoutjs/dist/knockout',
         'pubsub': '/cm/cui/components/pubsub-js/src/pubsub',
-		'dynatree': '/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js',
+		'dynatree': '/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree',
         'widgel-base': '/cm/cui/components/widgel/dist/widgel-base',
         'perc-utils': '/cm/cui/components/perc-utils/dist',
         'perc-css': '/cm/cui/components/perc-css/perc.css',
@@ -45,7 +45,7 @@ var requireJsConfig = {
         'test'   : '/cm/cui/test',
         'utils'  : '/cm/cui/pages/utils',
         'css': 'css',
-        'fontAwesome': '/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css',
+        'fontawesome-css': '/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css',
         'bootstrap':'/cm/jslib/profiles/3x/libraries/bootstrap/css/bootstrap.min.css',
         'bootstrap-theme':'/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap-theme.min.css'
     },

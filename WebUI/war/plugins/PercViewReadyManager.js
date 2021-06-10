@@ -36,8 +36,7 @@
             var self = this;
             //If any of the component in the wrappertoset is not finished rendering then return false
             $(wrappertoset.components).each(function(index, value){
-                var compName = value;
-                if(self.getWrapper(compName)!=null){
+                if(self.getWrapper(value)!==null){
                     alreadyInUse = true;
 
                 }
@@ -87,7 +86,7 @@
         }
     };
     $.PercComponentWrapper = function(name, componentArray){
-        var wrapperApi = {
+        return {
             wrapperName : name,
             wrapperStatus : "initialized",
             processedComponents : [],
@@ -103,11 +102,13 @@
                     $.PercViewReadyManager.logMessage("The component '" + compName + "' doesn't exist in the wrapper." + this.wrapperName);
                     return;
                 }
+                let compWrapper;
+                let component;
                 if(progress === "complete"){
                     this.processedComponents.push(compName);
-                    var compWrapper = $("#" + compName);
+                    compWrapper = $("#" + compName);
                     compWrapper.remove();
-                    var component = $("[perc-ui-component='" + compName + "']");
+                    component = $("[perc-ui-component='" + compName + "']");
                     component.addClass("perc-ui-component-ready").removeClass("perc-ui-component-processing");
                     if(this.components.length === this.processedComponents.length){
                         this.wrapperStatus = "processed";
@@ -116,8 +117,8 @@
                 }
                 else{
                     $(".perc-ui-component-overlay").each(function(){
-                        var compWrapper = $(this);
-                        var component = $("[perc-ui-component='" + compWrapper.attr("id") + "']");
+                         compWrapper = $(this);
+                         component = $("[perc-ui-component='" + compWrapper.attr("id") + "']");
                         var compPos = component.position();
                         if(compPos == null)
                             return;
@@ -141,6 +142,5 @@
 
             }
         };
-        return wrapperApi;
     };
 })(jQuery);

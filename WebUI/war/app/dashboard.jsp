@@ -99,6 +99,7 @@
 
     <!-- Themes never should be concatenated or packed -->
     <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.8.9.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
     <link rel="stylesheet" type="text/css" href="/cm/gadgets/repository/PercBlogsGadget/PercNewBlogDialog.css"/>
     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%= locale%>"></script>
 
@@ -259,18 +260,18 @@
     <div id="perc-dashboard-gadget-tray" class="perc-tray perc-dashboard-gadget-tray">
         <div class="perc-dashboard-gadget-toolbar">
             <div id="perc-dashboard-gadget-tray-expander" class="perc-tray-expander perc-tray-expander-collapsed">
-                <a href="#" class="perc-tray-expander-label" onclick="return false;"> <i class="icon-cogs"></i><i18n:message key="perc.ui.dashboard@Add Dashboard Gadgets"/></a>
+                <a href="#" class="perc-tray-expander-label" onclick="return false;"> <i class="icon-cogs fas fa-cogs"></i><i18n:message key="perc.ui.dashboard@Add Dashboard Gadgets"/></a>
             </div>
             <div class="perc-gadget-filter">
                 <label><i18n:message key = "perc.ui.dashboard@Type"/></label>
                 <select class="perc-gadget-type">
                     <option value="all"><i18n:message key = "perc.ui.dashboard@View All"/></option>
-                    <option selected="true" value="percussion">Percussion</option>
+                    <option selected value="percussion">Percussion</option>
                     <option value="custom"><i18n:message key = "perc.ui.dashboard@Custom"/></option>
                 </select>
                 <label><i18n:message key = "perc.ui.dashboard@Category"/></label>
                 <select class="perc-gadget-category">
-                    <option class="perc-gadget-category-default" selected="true" value="all"><i18n:message key = "perc.ui.dashboard@View All"/></option>
+                    <option class="perc-gadget-category-default" selected value="all"><i18n:message key = "perc.ui.dashboard@View All"/></option>
                     <option class="perc-gadget-category-predefined" value="analytics"><i18n:message key = "perc.ui.dashboard@Analytics"/></option>
                     <option class="perc-gadget-category-predefined" value="blog"><i18n:message key = "perc.ui.dashboard@Blog"/></option>
                     <option class="perc-gadget-category-predefined" value="content"><i18n:message key = "perc.ui.dashboard@Content"/></option>
@@ -281,7 +282,7 @@
             </div>
             <div id="perc-dashboard-restore-menu" class="perc-dashboard-restore-menu" href="#"
                  title="<i18n:message key="perc.ui.dashboard@Restore Default Dashboard"/>" onclick="return false;">
-                <a href="#" class="perc-dashboard-restore-label"><i class="icon-dashboard"></i><i18n:message key="perc.ui.dashboard@Reset"/></a>
+                <a href="#" class="perc-dashboard-restore-label"><i class="icon-dashboard fas fa-chart-line"></i><i18n:message key="perc.ui.dashboard@Reset"/></a>
             </div>
         </div>
         <div class="perc-dashboard-gadget-list-container">

@@ -29,8 +29,6 @@
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.tooltip.js"></script>
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.autocomplete.js"></script>
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-superfish/js/superfish.js"></script>
-<script src="../jslib/profiles/3x/libraries/fontawesome/js/fontawesome-all.js"></script>
-<script src="../jslib/profiles/3x/libraries/fontawesome/js/v4-shims.js"></script>
 <script src="../jslib/profiles/3x/libraries/handlebars/handlebars-v4.0.12.js"></script>
 <script src="../jslib/profiles/3x/libraries/popper/popper.js"></script>
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/timepicker.js"></script>

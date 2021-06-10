@@ -165,7 +165,7 @@
      * @param {Object} message the message that needs to be logged must be a valid string if not no logging happens.
      */
     function logToServer(type, category, message){
-        if(!($.type( type ) === "string")){
+        if($.type( type ) !== "string"){
             return;
         }
         //Log client side
@@ -280,11 +280,14 @@
      *  @param dateTime (string) the string with the original UTC format
      *  @return the created date from the transformed string.
      */
-    function parseUTCintoDate (dateTime)
-    {
-        var dateTimeString = dateTime.replace(/(\d\d)-(\d\d)-(\d\d)/, "$1/$2/$3").replace(/([+-]\d\d):(\d\d)/, "$1$2").replace(/\.\d\d\d/, "").replace("T"," ");
-        var dateObject = new Date(dateTimeString);
-        return dateObject;
+    function parseUTCintoDate (dateTime) {
+        if (typeof dateTime !== "undefined") {
+            var dateTimeString = dateTime.replace(/(\d\d)-(\d\d)-(\d\d)/, "$1/$2/$3").replace(/([+-]\d\d):(\d\d)/, "$1$2").replace(/\.\d\d\d/, "").replace("T", " ");
+            return new Date(dateTimeString);
+        }else{
+            return dateTime;
+        }
+
     }
 
     /**
@@ -370,7 +373,7 @@
     $.fn.perc_dialog = function(options)    {
         //Passing perc classes to the dialog
         options.dialogClass='perc-dialog perc-dialog-corner-all';
-       // options.zIndex=9500;
+        options.zIndex=9500;
 
         //Call jquery dialog with all the options
         var dlgContent = $(this).dialog(options);
@@ -1418,7 +1421,7 @@
             // Remove target
             $(this).removeAttr("target");
             // Deactivate the link by replacing its href value
-            $(this).attr("href", "javascript:void(0)");
+            $(this).attr("href", "javascript:void(0);");
         });
         
     }

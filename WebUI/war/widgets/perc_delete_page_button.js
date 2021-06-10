@@ -31,7 +31,7 @@
         var warnCloseSpan = "</span>";
         var spec;
 
-        var btn = $('<a id="perc-finder-delete" class="perc-font-icon icon-remove" title="' + I18N.message("perc.ui.delete.page.button@Click Delete Page") + '"href="#" ></a>')
+        var btn = $('<a id="perc-finder-delete" class="perc-font-icon icon-remove fas fa-trash" title="' + I18N.message("perc.ui.delete.page.button@Click Delete Page") + '"href="#" ></a>')
             .off("click")
             .perc_button()
             .on("click",deleteFn);

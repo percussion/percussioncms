@@ -43,7 +43,7 @@ define (
         $.widGEL.baseWidget.injectCssFile('twitter.bootstrap.theme', requirejs.toUrl('bootstrap-theme'));
         $.widGEL.baseWidget.injectCssFile('widgets.app', requirejs.toUrl('widgets/app/app.css'));
         // $.widGEL.baseWidget.injectCssFile('jquery', requirejs.toUrl('css/jquery-ui-1.10.4.custom.css')); since this file does not exist
-        $.widGEL.baseWidget.injectCssFile('font.awesome', requirejs.toUrl('fontAwesome'));
+        $.widGEL.baseWidget.injectCssFile('font.awesome', requirejs.toUrl('fontawesome-css'));
         $.widGEL.baseWidget.injectCssFile('perc.css', requirejs.toUrl('perc-css'));
         $.widGEL.baseWidget.injectCssFile('opensans.css', requirejs.toUrl('opensans-css'));
         $.widGEL.baseWidget.injectCssFile('montserrat.css', requirejs.toUrl('montserrat-css'));

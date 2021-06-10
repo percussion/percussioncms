@@ -52,26 +52,26 @@
             //     2. Add to the previous condition(s): file should be under path "/Design/Web Resources/themes"
             //        {0:"", 1:"Design", 2:"Web Resources", 3:"themes", 4:"THEMENAME", 5:"THEMEFILE"}
             //     3. The element selected is a file (not a folder)
-            if(path[1] == $.perc_paths.DESIGN_ROOT_NO_SLASH && path.length > 4)
+            if(path[1] === $.perc_paths.DESIGN_ROOT_NO_SLASH && path.length > 4)
             {
                 // Get the selected item from Column or List mode with the class FSFile
-            	selectedItemSpec = $("#perc-finder-listview .perc-datatable-row-highlighted").data("percRowData");
-                if (selectedItemSpec == undefined)
+            	var selectedItemSpec = $("#perc-finder-listview .perc-datatable-row-highlighted").data("percRowData");
+                if (selectedItemSpec === undefined)
                 {
-                	var selectedItemSpec = $(".mcol-listing.perc-listing-type-FSFile.mcol-opened.perc_last_selected").data("spec");
+                	 selectedItemSpec = $(".mcol-listing.perc-listing-type-FSFile.mcol-opened.perc_last_selected").data("spec");
                 }
                 // Now check the 3rd condition, that the element selected is a file under Design
-                if (selectedItemSpec != undefined 
-                        && selectedItemSpec.type == 'FSFile'
-                        && selectedItemSpec.leaf)
+                if (selectedItemSpec !== undefined &&
+                    selectedItemSpec.type === 'FSFile' &&
+                    selectedItemSpec.leaf)
                 {
-                    updateButtonUrl(true)
+                    updateButtonUrl(true);
                     enableButton(true);
                     return;
                 }
             }
             // Any other option disables the button
-            updateButtonUrl(false)
+            updateButtonUrl(false);
             enableButton(false);
         }
 
@@ -97,7 +97,6 @@
          */
         function launchDownload()
         {
-            ;
         }
         
         /**
