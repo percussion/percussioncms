@@ -56,7 +56,7 @@
                     pageName = listSelectedRowData.name;
                 }
             }
-            else if (selectedPage[0] != undefined)
+            else if (selectedPage[0] !== undefined)
             {
                 id = selectedPage.attr("id");
             }
@@ -72,7 +72,7 @@
             }
             
             $.PercUserService.getAccessLevel("percPage", itemId,function(status, result){
-                if(status == $.PercServiceUtils.STATUS_ERROR || result == $.PercUserService.ACCESS_READ || result == $.PercUserService.ACCESS_NONE)
+                if(status === $.PercServiceUtils.STATUS_ERROR || result === $.PercUserService.ACCESS_READ || result === $.PercUserService.ACCESS_NONE)
                 {
                    $.perc_utils.alert_dialog({title: I18N.message("perc.ui.copy.page.button@Copy Page"), content: I18N.message("perc.ui.copy.page.button@Copy Page Authorization") + pageName + ".'"});
                    $.unblockUI();

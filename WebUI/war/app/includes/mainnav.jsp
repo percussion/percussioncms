@@ -117,7 +117,7 @@ if(locale==null){
     </script>
     <i18n:settings lang="<%= locale %>" prefixes="perc.ui." debug="<%= debug %>"/>
     <div class="perc-topnav" role="navigation" aria-label="<i18n:message key="perc.ui.navMenu.topnav@Top Navigation"/>">
-        <label></label><span class="icon-chevron-down" role="presentation"></span>
+        <label></label><span class="icon-chevron-down fas fa-chevron-down" role="presentation"></span>
         <ul id="perc-top-menu-bar" class="perc-actions-menu box_shadow_with_padding" role="menubar" aria-label="<i18n:message key="perc.ui.navMenu.topNav@Top Navigation"/>">
             <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_HOME"><i18n:message key="perc.ui.navMenu.home@Home"/></li>
             <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_DASHBOARD"><i18n:message key="perc.ui.navMenu.dashboard@Dashboard"/></li>

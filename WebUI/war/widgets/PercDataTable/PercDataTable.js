@@ -25,15 +25,15 @@
 /**
  *  Implements an abstraction of datatable plugin.
  *  @author Jose Annunziato
- *  
+ *
  */
 (function($) {
-    
+
     var MARGIN_PX = 16;
     var PADDING_BOTTOM_PX = 5;
     var tableDom;
     var configo;
-    
+
     /**
      *  PercDataTable(config)
      *  @param config
@@ -50,7 +50,7 @@
                         [{content : "Comment 5", title : "/Site/Site2"}],
                         ["8/22/33","22:44:55 PM"]],
                     rowData : {commentId : 21123, pageId : 2123, pagePath : "/sewq/dsa/cxz"}},...
-     *
+         *
      */
     $.fn.PercDataTable = function(config) {
         // fix aoColumns config based on percVisibleColumns
@@ -62,12 +62,12 @@
             });
             config.aoColumns = newAoColumns;
         }
-        
-        for(var c=0; c<config.aoColumns.length; c++){
+
+        for(let c=0; c<config.aoColumns.length; c++){
             var aoColumn = config.aoColumns[c];
             aoColumn.sSortDataType = "perc-type-"+aoColumn.sType;
         }
-        
+
         // build the HTML table and convert it to a dataTable
         config = $.extend(true, {}, defaultConfig, config);
         configo = config;
@@ -76,7 +76,7 @@
         tableDom
             .dataTable(config)
             .data("config",config);
-        
+
         // resize parent iframe's height to fit the table
         if(config.percExpandParentFrameVertically) {
             var height = tableDom.parents(".dataTables_wrapper").outerHeight() + MARGIN_PX;
@@ -97,14 +97,14 @@
             }
             $(parentFrame).height(frameHeight + PADDING_BOTTOM_PX);
         }
-        
+
         return tableDom;
     };
-    
+
     function tableRedrawCallback() {
         var dataTable = $(this);
         var config = dataTable.data("config");
-        
+
         if(config && config.percTableRedrawCallback)
         {
             if(typeof(config.percTableRedrawCallback) === "object")
@@ -133,30 +133,30 @@
                 paginator.show();
             paginator.css("position","absolute");
         }, 1);
-        
+
     }
-    
+
     function getParentFrame() {
         var arrFrames = parent.document.getElementsByTagName("IFRAME");
         for (var i = 0; i < arrFrames.length; i++) {
-            if (arrFrames[i].contentWindow == window)
+            if (arrFrames[i].contentWindow === window)
                 return arrFrames[i];
         }
     }
-    
+
     function footerRedrawCallback( nFoot, aasData, iStart, iEnd, aiDisplay ) {
         if (configo.bPaginate){
             var config = configo;
-            
+
             var itemsPerPage = config.iDisplayLength;
             var totalItemsCount = aiDisplay.length;
             var pages = Math.ceil(totalItemsCount / itemsPerPage);
             var currentPageNumber = Math.ceil(iEnd / itemsPerPage);
-            var pageOfPages = currentPageNumber + " of " + pages + (pages == 1 ? " Page" : " Pages");
+            var pageOfPages = currentPageNumber + " of " + pages + (pages === 1 ? " Page" : " Pages");
 
-            if(pages == 0)
+            if(pages ===- 0)
                 pageOfPages = "";
-            
+
             var pInfo = $(".perc-datatables-info");
             if(pInfo.length > 0){
                 pInfo.html(pageOfPages);
@@ -164,15 +164,15 @@
                 $("<div class='datatables_info perc-datatables-info'>"+pageOfPages+"</div>")
                     .appendTo("body");
             }
-            
+
             var gFooterBar = $(".perc-footer-bar");
-            if(gFooterBar.length == 0){
+            if(gFooterBar.length === 0){
                 $("<div class='perc-footer-bar'>&nbsp;</div>")
                     .appendTo("body");
             }
         }
     }
-    
+
     var defaultConfig = {
         percExpandParentFrameVertically : true,
         additionalIframeHeight : 0, //The Iframe height is calculated based on the rows and other things, if a gadget requires additional height they can specify by this property
@@ -235,22 +235,22 @@
     function buildTableDomFromData(config) {
         var data = config.percData;
         var headers = config.percHeaders;
-        
+
         // create the table and body
         var table = $("<table class='perc-datatable' style='table-layout : fixed' cellpadding='0' cellspacing='0'>");
         var tbody = $("<tbody>");
-        
+
         var aoColumns = config.aoColumns;
-        
+
         // iterate over the data containing rows
         $.each(data, function(rowIndex, element){
             var row = element;
 
             // mark the first and last table rows
             var firstLast = "";
-            if(rowIndex == 0)
+            if(rowIndex === 0)
                 firstLast = "perc-first";
-            else if(rowIndex == data.length-1)
+            else if(rowIndex === data.length-1)
                 firstLast = "perc-last";
 
             // create the table row
@@ -275,17 +275,17 @@
             // bind mouseover event callbacks
             if(config.showPreviewBtnOnHover)
             {
-               
-               rowTr.on("mouseover",function() {
-                   $(this).css('background-color', '#CAF589');
-                   $(this).find('.perc-preview-col').show();
-                   
+
+                rowTr.on("mouseover",function() {
+                    $(this).css('background-color', '#CAF589');
+                    $(this).find('.perc-preview-col').show();
+
                 }).on("mouseout",function(){
                     $(this).css('background-color', 'white');
                     $(this).find('.perc-preview-col').hide();
                 });
             }
-            
+
             if(config.percRowDblclickCallback)
             {
                 if(row.rowData)
@@ -301,16 +301,16 @@
             // iterate over the columns in each row
             var aoIndex = 0;
             $.each(row.rowContent, function(colIndex, element){
-                
+
                 // skip over non visible columns
                 if(config.percVisibleColumns)
                     if($.inArray(colIndex, config.percVisibleColumns)==-1)
                         return true;
-                
+
                 var aoColumn = aoColumns[aoIndex++];
                 var sType = aoColumn.sType;
                 var percType = "perc-type-"+sType;
-                
+
                 var column = element;
                 // mark the first and last column
                 var firstLast = "";
@@ -320,9 +320,9 @@
                     firstLast = "perc-last";
                 else
                     firstLast = "perc-middle";
-                
+
                 var headerClass = "";
-                //Header classes are auto generated by the element text, if the element text happens to be invalid for a class name, 
+                //Header classes are auto generated by the element text, if the element text happens to be invalid for a class name,
                 //users of this table can pass another array from which the header classes can be created
                 if(config.percHeaderClasses && config.percHeaderClasses[colIndex])
                 {
@@ -332,14 +332,14 @@
                 {
                     headerClass = "perc-"+config.percHeaders[colIndex].replace(/ /g,"-").toLowerCase();
                 }
-                
+
                 // create the table data
                 var columnTd = $("<td class='"+percType+" "+headerClass+" perc-datatable-column perc-ellipsis perc-index-"+colIndex+" perc-cell-"+colIndex+"-"+rowIndex+" "+firstLast+"' valign='top'>");
-                
-                if(typeof column == "object") {
+                var columnRow;
+                if(typeof column === "object") {
                     var content = "";
                     var title = "";
-                    var columnRow;
+
                     // iterate over the rows within a table cell
                     if(Array.isArray(column)) {
                         $.each(column, function(colRowIndex, element){
@@ -361,10 +361,10 @@
                                 content = columnRowData.content;
                                 title = columnRowData.title;
                             }
-                            
+
                             if(title === "&nbsp;")
                                 title = "";
-                            
+
                             // finally, wrap the content in a div and then add it to the table data
                             columnRow = $("<div style='width:100%' class='perc-datatable-columnrow perc-ellipsis perc-index-"+colRowIndex+" "+firstLast+"'>");
                             if(columnRowData.callback) {
@@ -385,18 +385,18 @@
                                     .attr("title", title)
                                     .append(content);
                             }
-                            
+
                             columnTd.append(columnRow);
                         });
                     } else {
                         let title = element.title;
                         let content = element.content;
-                        let columnRow = $("<div title='"+title+"' class='perc-datatable-columnrow perc-ellipsis perc-index-0 perc-first'>")
+                        columnRow = $("<div title='"+title+"' class='perc-datatable-columnrow perc-ellipsis perc-index-0 perc-first'>")
                             .append(content);
                         columnTd.append(columnRow);
                     }
                 } else {
-                    let columnRow = $("<div class='perc-datatable-columnrow perc-ellipsis perc-index-0 perc-first'>")
+                    columnRow = $("<div class='perc-datatable-columnrow perc-ellipsis perc-index-0 perc-first'>")
                         .append(element);
                     columnTd.append(columnRow);
                 }
@@ -408,7 +408,7 @@
         });
         // add the table body to the table
         table.append(tbody);
-        
+
         if(headers) {
             var thead = $("<thead>");
             var row = $("<tr class='perc-datatable-head-row'>");
@@ -416,27 +416,27 @@
             $.each(headers, function(index, element){
                 // skip over non visible columns
                 if(config.percVisibleColumns)
-                    if($.inArray(index, config.percVisibleColumns)==-1)
+                    if($.inArray(index, config.percVisibleColumns)===-1)
                         return true;
-                
+
                 var aoColumn = aoColumns[aoIndex++];
                 var sType = aoColumn.sType;
                 var percType = "perc-type-"+sType;
-                
+
                 var columnWidth = "";
                 if(config.percColumnWidths) {
                     if(index < config.percColumnWidths.length-1) {
                         columnWidth = config.percColumnWidths[index];
-                        if(columnWidth == "*")
+                        if(columnWidth === "*")
                             columnWidth = "";
                     } else {
                         columnWidth = config.percColumnWidths[config.percColumnWidths.length-1];
                     }
                 }
-                
+
                 if($.browser.msie || $.browser.webkit)
                     columnWidth = parseInt(columnWidth) + 20;
-                
+
                 columnWidth += "px";
 
                 var headerClass = "";
@@ -451,28 +451,28 @@
 
 
                 var firstLast = "";
-                if(index == 0)
+                if(index === 0)
                     firstLast = "perc-first";
-                else if(index == headers.length-1)
+                else if(index === headers.length-1)
                     firstLast = "perc-last";
                 else
                     firstLast = "perc-middle";
                 var head = $("<th class='"+percType+" "+headerClass+" perc-datatable-head-column perc-index-"+index+" "+firstLast+"'>")
                     .css('width', columnWidth);
-                
+
                 var sortingDirection = $("<span class='perc-sort' style='padding: 0px 10px 0px 0px; border-bottom:none'>&nbsp;</span>");
-                
+
                 //Asign external sort function.
-                if (typeof(config.sortFunction) != "undefined" && !config.bSort){
+                if (typeof(config.sortFunction) !== "undefined" && !config.bSort){
                     var colName = config.percColNames[index];
                     var data = {};
                     data.colName = colName;
                     data.sortFunction = config.sortFunction;
                     head.on("click",null,data, sortingHandler);
-                    
+
                     //Avoid select text on double click in the headers.
                     if($.browser.mozilla)
-                        head.css('MozUserSelect','none');             
+                        head.css('MozUserSelect','none');
                     else if($.browser.msie)
                         head.on('selectstart',function(){return false;});
 
@@ -481,7 +481,7 @@
                         head.addClass("sorting_" + config.sortOrder);
                     }
                 }
-                
+
                 head.append(element);
                 head.append(sortingDirection);
                 row.append(head);
@@ -491,10 +491,10 @@
         }
         if(config.bSort)
             declareCustomSortingFunctions();
-        
+
         return table;
     }
-    
+
     function sortingHandler(event){
         var head = $(this);
         var element = event.data.colName;
@@ -511,39 +511,40 @@
         }
         callback(element, order);
     }
-    
+
     function declareCustomSortingFunctions() {
         // custom column sorting for Change, Views, and Template column
         // checks to see if all data is the same and if so it changes it
         // so that it is unique to force it to sort in reverse order
-        $.fn.dataTableExt.afnSortData['perc-type-string'] = function  ( oSettings, iColumn ) {
+        /* $.fn.dataTableExt.afnSortData['perc-type-string'] = function  ( oSettings, iColumn ) {
             var aData = [];
             var data;
-            $( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+            $( 'td:eq('+iColumn+')', oSettings.api.rows().nodes() ).each( function () {
                 data = $(this).text();
                 aData.push( data );
             });
             return aData;
         };
-        
+
         $.fn.dataTableExt.afnSortData['perc-type-numeric'] = $.fn.dataTableExt.afnSortData['perc-type-string'];
-        
+
         // custom column sorting for date columns
         // changes the seconds so that if the date, minutes and hours are the same
         // it will be forced to sort in reverse order
         $.fn.dataTableExt.afnSortData['perc-type-date'] = function  ( oSettings, iColumn ) {
             var aData = [];
-            $( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+            $( 'td:eq('+iColumn+')', oSettings.rows(oSettings).nodes() ).each( function () {
                 var dateTimeArray = Array("", "");
                 var divs = $(this).find('div');
-                
+
                 dateTimeArray[0] = $(divs[0]).text();
-                dateTimeArray[1] = $(divs[1]).text();//(new String($(this).find('.bottom-line').text())).replace(/^(.*?)\s*\(.+$/, "$1"); // Get rid of username.
+                dateTimeArray[1] = $(divs[1]).text();
                 var dateString = dateTimeArray.join(' ');
                 var date = new Date(dateString);
                 aData.push(date);
             });
             return aData;
         };
+        */
     }
 })(jQuery); 

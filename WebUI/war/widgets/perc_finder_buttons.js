@@ -84,7 +84,7 @@
             // create new site button and its handler {
             var ns;
             if (!isLibMode) {
-                 ns = '<a id="perc-finder-new-site" class="perc-form ui-state-default perc-font-icon icon-sitemap" href="#" title="' + I18N.message("perc.ui.finder.buttons@Click New Site") + '"></a>';
+                 ns = '<a id="perc-finder-new-site" class="perc-form ui-state-default perc-font-icon icon-sitemap fas fa-sitemap" href="#" title="' + I18N.message("perc.ui.finder.buttons@Click New Site") + '"></a>';
                 percButtons.append(ns);
             }
 

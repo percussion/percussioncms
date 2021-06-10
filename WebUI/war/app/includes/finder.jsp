@@ -32,10 +32,10 @@
     <table class="perc-finder-header">
         <tr>
             <td class="perc-finder-view-options" <%if(isLibraryMode){%>style="display:none"<%}%>>
-                <a id='perc-finder-expander' class="perc-font-icon icon-plus-sign ui-state-enabled"></a>
-                <a id="perc-finder-choose-columnview" class="perc-font-icon icon-columns ui-active" title="<i18n:message key="perc.ui.finder@Column View"/>"></a>
-                <a id="perc-finder-choose-listview" class="perc-font-icon icon-list" title="<i18n:message key= "perc.ui.finder@List View"/>"></a>
-                <a id="perc-finder-choose-mypagesview" class="perc-font-icon icon-star" title="<i18n:message key ="perc.ui.finder@My Pages"/>"></a>
+                <a id='perc-finder-expander' class="perc-font-icon icon-plus-sign ui-state-enabled fas fa-plus"></a>
+                <a id="perc-finder-choose-columnview" class="perc-font-icon icon-columns ui-active fas fa-columns" title="<i18n:message key="perc.ui.finder@Column View"/>"></a>
+                <a id="perc-finder-choose-listview" class="perc-font-icon icon-list fas fa-list" title="<i18n:message key= "perc.ui.finder@List View"/>"></a>
+                <a id="perc-finder-choose-mypagesview" class="perc-font-icon icon-star fas fa-star" title="<i18n:message key ="perc.ui.finder@My Pages"/>"></a>
             </td>
             <td class="perc-finder-goto-or-search">
                 <div class="perc-wrapper <%if(!isLibraryMode){%>perc-wrapper-bg<%}%>">
@@ -46,7 +46,7 @@
                             </td>
                             <td class="perc-fixed">
                                 <%if(!isLibraryMode){%>
-	                                <a class="perc-action perc-action-goto-or-search perc-font-icon icon-search" href="#" role="button" title="Click to Search"></a>
+	                                <a class="perc-action perc-action-goto-or-search perc-font-icon icon-search fas fa-search" href="#" role="button" title="Click to Search"></a>
 	                                <div class="perc-hide" style="display:none;" aria-hidden="true">
 	                                    <!-- using this old ui behind the scenes to minimize code changes -->
 	                                    <a id="perc-finder-go-action" href="#"></a>

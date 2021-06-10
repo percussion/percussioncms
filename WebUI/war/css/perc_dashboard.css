@@ -44,21 +44,21 @@
 
 .perc-dashboard table {
     margin-left : 10px;
-    margin-top  : 0px;
-    border : 0px;
+    margin-top  : 0;
+    border : 0;
     border-collapse : collapse;
 }
 
 .perc-dashboard table td {
-    border : 0px;
+    border : 0;
 }
 
 .perc-dashboard table tr {
-    border : 0px;
+    border : 0;
 }
 
 .perc-dashboard table th {
-    border : 0px;
+    border : 0;
 }
 
 .perc-gadget-titlebar-shadow {
@@ -68,25 +68,15 @@
 
 .perc-gadget {
     -moz-background-clip:border;
-    -moz-background-inline-policy:continuous;
     -moz-background-origin:padding;
 
-    -moz-border-radius-bottomleft      : 4px;
-    -moz-border-radius-bottomright     : 4px;
-    -moz-border-radius-topleft         : 4px;
-    -moz-border-radius-topright        : 4px;
+    -moz-border-radius: 4px;
 
-    -webkit-border-top-left-radius     : 4px;
-    -webkit-border-top-right-radius    : 4px;
-    -webkit-border-bottom-left-radius  : 4px;
-    -webkit-border-bottom-right-radius : 4px;
+    -webkit-border-radius: 4px;
 
     background: white;
 
-    margin-bottom : 10px;
-    margin-right  : 10px;
-    margin-top : 0px;
-    margin-left : 0px;
+    margin: 0 10px 10px 0;
     width:auto;
 
     z-index : 10000;
@@ -94,7 +84,6 @@
 
 .perc-gadget-content {
     -moz-background-clip:border;
-    -moz-background-inline-policy:continuous;
     -moz-background-origin:padding;
     -moz-border-radius-bottomleft:4px;
     -moz-border-radius-bottomright:4px;
@@ -125,19 +114,19 @@
     font-size: 18px;
     color: #4b4a4a;
     overflow : hidden;
-    padding : 9px 0 0px 9px;
-    margin : 0px;
+    padding : 9px 0 0 9px;
+    margin : 0;
     background : #e6e6e9 none repeat scroll 0 0;
 }
 
 .perc-gadget-content .gadgets-gadget-chrome {
-    margin : 0px;
+    margin : 0;
     border : none;
 }
 
 .perc-dashboard .column {
-    margin : 0px;
-    padding : 0px;
+    margin : 0;
+    padding : 0;
 }
 
 .perc-gadget .gadgets-gadget-title {
@@ -182,7 +171,7 @@
 
 .perc-gadget-menu-item {
     background-color : white;
-    padding : 9px 0px 10px 14px;
+    padding : 9px 0 10px 14px;
 }
 .perc-gadget-menu-item:hover {
     background-color : #caf589;
@@ -192,11 +181,11 @@
 .box_shadow_with_padding {
     background-color: #41434f;
     /* FF3.5+ */
-    -moz-box-shadow: 0px 0px 8px #000000;
+    -moz-box-shadow: 0 0 8px #000000;
     /* Saf3.0+, Chrome */
-    -webkit-box-shadow: 0px 0px 8px #000000;
+    -webkit-box-shadow: 0 0 8px #000000;
     /* Opera 10.5, IE 9.0 */
-    box-shadow: 0px 0px 8px #000000;
+    box-shadow: 0 0 8px #000000;
 
 }
 
@@ -449,11 +438,18 @@ body {
     font-size: 11px;
     font-weight: normal;
 }
+
 #perc-ba-error-table-wrapper{
     background-color: white;
     height:250px;
     width:625px;
     margin-top:10px;
+    scroll-behavior: auto;
+    overflow: auto;
+}
+
+.perc-ba-error-table{
+    width:100%;
 }
 .perc-ba-error-table tr{
     height:30px;

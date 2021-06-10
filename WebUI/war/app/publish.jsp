@@ -63,7 +63,7 @@
          the minify target in the build.xml file. If this is not done then it won't
          get into the files used in production.
     --%>
-
+    <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%=locale%>"></script>
     <% if (isDebug) { %>
 

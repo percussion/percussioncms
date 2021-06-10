@@ -68,12 +68,12 @@
             $(".next").addClass("perc-percdatatable-active").removeClass("perc-percdatatable-disabled");
             $(".last").addClass("perc-percdatatable-active").removeClass("perc-percdatatable-disabled");
             // if on the first page disable First and Previous controls
-            if(iStart == 0) {
+            if(iStart === 0) {
                 $(".first").addClass("perc-percdatatable-disabled").removeClass("perc-percdatatable-active");
                 $(".previous").addClass("perc-percdatatable-disabled").removeClass("perc-percdatatable-active");
             }
             // if on the last page disable Last and Next controls
-            if(iEnd == aasData.length) {
+            if(iEnd === aasData.length) {
                 $(".next").addClass("perc-percdatatable-disabled").removeClass("perc-percdatatable-active");
                 $(".last").addClass("perc-percdatatable-disabled").removeClass("perc-percdatatable-active");
             }
@@ -91,7 +91,7 @@
         var isRightColumn = true;
         if(gadgets) {
             // if the gadget is in first column then we have to render it as large 
-            isRightColumn = gadgets.window.getDashboardColumn() == 1;
+            isRightColumn = gadgets.window.getDashboardColumn() === 1;
             sInfo = isRightColumn ? S_INFO_RIGHT : S_INFO_LEFT;
             if(columnWidths.length > 1)
                 columnWidths = isRightColumn ? config.percColumnWidths[0] : config.percColumnWidths[1];
@@ -118,7 +118,7 @@
             indices = config.percColsRight;
             
         var headerClasses = config.percHeaderClasses;
-        for(i=0; i<(indices.length); i++) {
+        for(let i=0; i<(indices.length); i++) {
             var h = indices[i];
             var header = headers[h];
             var headerClass = "";
@@ -136,10 +136,10 @@
         var percRows  = config.percData;
         var tableBody = table.find("tbody");
         tableBody.html("");
-        for(r=0; r<percRows.length; r++) {
+        for(let r=0; r<percRows.length; r++) {
             var tableRow = $("<tr class='perc-row-"+r+"'>");
             var percRow = percRows[r];
-            for(i=0; i<indices.length; i++) {
+            for(let i=0; i<indices.length; i++) {
                 var d = indices[i];
                 var tableData = $("<td class='perc-cell-"+r+"-"+i+"'>");
                 var data = percRow[d];
@@ -171,7 +171,7 @@
         }
                 
         return oTable;
-    }
+    };
 
     function handleOverflow(element) {
         var title = element.attr("title");
@@ -186,17 +186,18 @@
      *  same for percColsRight for the right column
      */
     function fixPercColsLeftAndRightIfUndefined(config) {
-        if(config.percColsLeft == undefined) {
+        var headers;
+        if(typeof config.percColsLeft === "undefined") {
             config.percColsLeft = [];
-            var headers = config.percHeaders;
-            for(h=0;h<headers.length;h++) {
+            headers = config.percHeaders;
+            for(let h=0;h<headers.length;h++) {
                 config.percColsLeft.push(h);
             }
         }
-        if(config.percColsRight == undefined) {
+        if(typeof config.percColsRight === "undefined") {
             config.percColsRight = [];
-            var headers = config.percHeaders;
-            for(h=0;h<headers.length;h++) {
+            headers = config.percHeaders;
+            for(let h=0;h<headers.length;h++) {
                 config.percColsRight.push(h);
             }
         }
@@ -211,31 +212,31 @@
             var different = false;
             var previous = null;
             var data;
-            $( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+            $( 'td:eq('+iColumn+')', oSettings.oApi.rows().nodes()).each( function () {
                 data = $(this).text();
-                if(previous != null && previous != data)
+                if(previous != null && previous !== data)
                     different = true;
                 previous = data;
                 aData.push( data );
             });
             if(!different) {
-                for(i=0; i<aData.length; i++) {
+                for(let i=0; i<aData.length; i++) {
                     aData[i] = aData[i] + i;
-                };
+                }
             }
             return aData;
-        }
+        };
 
         // custom column sorting for Page Link column
         $.fn.dataTableExt.afnSortData['dom-page'] = function  ( oSettings, iColumn ) {
             var aData = [];
-            $( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+            $( 'td:eq('+iColumn+')', oSettings.oApi.rows(oSettings).nodes() ).each( function () {
                 var data = $(this).text();
                 data = data.substring(0,data.indexOf("/"));
                 aData.push( data );
             });
             return aData;
-        }
+        };
 
         // custom column sorting for date columns
         // changes the seconds so that if the date, minutes and hours are the same
@@ -243,16 +244,16 @@
         $.fn.dataTableExt.afnSortData['dom-date'] = function  ( oSettings, iColumn ) {
             var aData = [];
             var seconds = 0;
-            $( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+            $( 'td:eq('+iColumn+')', oSettings.oApi.rows(oSettings).nodes() ).each( function () {
                 var dateTimeArray = Array("", "");
                 dateTimeArray[0] = $(this).find('.top-line').text();
-                dateTimeArray[1] = (new String($(this).find('.bottom-line').text())).replace(/^(.*?)\s*\(.+$/, "$1"); // Get rid of username.
+                dateTimeArray[1] = (""+$(this).find('.bottom-line').text()).replace(/^(.*?)\s*\(.+$/, "$1"); // Get rid of username.
                 var dateString = dateTimeArray.join(' ');
                 var date = new Date(dateString);
                 aData.push(new Date(date.setSeconds(seconds)));
                 seconds++;
             });
             return aData;
-        }
+        };
     }
 })(jQuery); 

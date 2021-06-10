@@ -1,5 +1,7 @@
 <!-- Start Common CSS -->
 <link type="text/css" href="../css/layout.css" rel="stylesheet" />
+<link type="text/css" href="../css/styles.css" rel="stylesheet" />
+<link type="text/css" href="../jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
 <link rel="stylesheet" type="text/css" href="../css/percFinder.css" />
 <link rel="stylesheet" type="text/css" href="../css/percDialog.css" />
 <link rel="stylesheet" type="text/css" href="../css/perc_default.css" />
