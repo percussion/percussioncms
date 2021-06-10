@@ -24,6 +24,9 @@
 
 package com.percussion.tools.simple;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +53,9 @@ import java.util.zip.ZipFile;
  */
 public class PSDirectoryAnalyzer
 {
+
+   private static final Logger log = LogManager.getLogger(PSDirectoryAnalyzer.class);
+
    /**
     * Performs analysis.
     *
@@ -266,7 +272,8 @@ public class PSDirectoryAnalyzer
       }
       catch (Exception e)
       {
-         e.printStackTrace(ms_pWriter);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       finally
       {
@@ -404,7 +411,8 @@ public class PSDirectoryAnalyzer
       }
       catch(Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
          System.exit(1);
       }
       finally

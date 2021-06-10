@@ -71,8 +71,8 @@ import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -213,7 +213,7 @@ public class PSSiteManager
    /**
     * Logger for the site manager
     */
-   static Log ms_log = LogFactory.getLog("PSSiteManager");
+   private static final Logger log = LogManager.getLogger("PSSiteManager");
 
    /**
     * Cache service, used to invalidate site information
@@ -276,9 +276,9 @@ public class PSSiteManager
       if (rval == null)
          throw new PSNotFoundException(siteid);
       
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
       {
-         ms_log.debug("Load un-cached site (id=" + siteid.toString()
+         log.debug("Load un-cached site (id=" + siteid.toString()
                + ", name=\"" + rval.getName() + "\".");
       }
 
@@ -323,9 +323,9 @@ public class PSSiteManager
 
 
 
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
       {
-         ms_log.debug("Load cached site (id=" + siteid.toString()
+         log.debug("Load cached site (id=" + siteid.toString()
                + ", name=\"" + rval.getName() + "\".");
       }
 
@@ -344,9 +344,9 @@ public class PSSiteManager
       if (site == null)
          throw new PSNotFoundException(siteid);
 
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
       {
-         ms_log.debug("Load cached site (id=" + siteid.toString()
+         log.debug("Load cached site (id=" + siteid.toString()
                + ", name=\"" + site.getName() + "\".");
       }
 
@@ -895,7 +895,8 @@ public class PSSiteManager
          }
          catch (PSCmsException e)
          {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             // this should never happen in a properly configured environment
             throw new PSSiteManagerException(
                   IPSSiteManagerErrors.UNEXPECTED_ERROR, e
@@ -933,7 +934,8 @@ public class PSSiteManager
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new PSSiteManagerException(
                IPSSiteManagerErrors.FAILED_FIND_ROOT_FOLDER_ID, site.getGUID(),
                site.getFolderRoot(), e.getLocalizedMessage());
@@ -969,7 +971,8 @@ public class PSSiteManager
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new PSSiteManagerException(
                IPSSiteManagerErrors.FAILED_GET_FOLDER_PATH, folderId, e
                      .getLocalizedMessage());
@@ -1098,7 +1101,9 @@ public class PSSiteManager
       catch (PSCmsException e)
       {
          String errMsg = "Failed to get sites for item id=" + contentId.toString();
-         ms_log.error(errMsg);
+         log.error(errMsg);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new RuntimeException(errMsg, e);
       }
       
@@ -1336,7 +1341,7 @@ public class PSSiteManager
    private void logSiteTemplateAssoc(
          Map<PSPair<IPSGuid, String>, Collection<IPSGuid>> assoc)
    {
-      if (!ms_log.isDebugEnabled())
+      if (!log.isDebugEnabled())
          return;
       
       String pattern = "Site (id={0}, name=\"{1}\") associate with Templates, IDs={2}.";
@@ -1353,7 +1358,7 @@ public class PSSiteManager
                k.getSecond(), buffer.toString() };
          MessageFormat form = new MessageFormat(pattern);
          String message = form.format(args);
-         ms_log.debug(message);
+         log.debug(message);
       }
    }
    
@@ -1407,7 +1412,7 @@ public class PSSiteManager
             ids.add(tempId); 
       }
       
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
          logSiteTemplateAssoc(siteToTemplateIds);
 
       return siteToTemplateIds;

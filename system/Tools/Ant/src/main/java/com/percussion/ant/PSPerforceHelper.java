@@ -29,6 +29,8 @@ import com.perforce.api.Env;
 import com.perforce.api.FileEntry;
 import com.perforce.api.PerforceException;
 import com.perforce.api.Utils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,7 @@ import java.util.List;
 public class PSPerforceHelper
 {
 
+    private static final Logger log = LogManager.getLogger(PSPerforceHelper.class);
 
     /**
      * Private constructor so that this class cannot be instantiated.
@@ -74,7 +77,8 @@ public class PSPerforceHelper
         }
         catch (CommitException e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -114,7 +118,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -152,7 +157,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -190,7 +196,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -225,7 +232,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -259,7 +267,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -309,7 +318,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -365,7 +375,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -399,7 +410,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new PerforceException(e.getMessage());
         }
         finally

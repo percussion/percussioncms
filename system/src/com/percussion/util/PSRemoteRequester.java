@@ -496,7 +496,8 @@ public class PSRemoteRequester implements IPSRemoteRequesterEx
             }
             catch(IOException ioe)
             {
-                ioe.printStackTrace();
+               log.error(ioe.getMessage());
+               log.debug(ioe.getMessage(), ioe);
             }
          }
       }
@@ -1101,14 +1102,12 @@ public class PSRemoteRequester implements IPSRemoteRequesterEx
          log.error("Error : {}", ioe.getMessage());
          log.error("Error : {}", ioe.getLocalizedMessage());
          log.debug(ioe.getMessage(),ioe);
-         ioe.printStackTrace();
       }
       catch (SAXException se)
       {
          log.error("Error : {}", se.getMessage());
          log.error("Error : {}", se.getLocalizedMessage());
          log.debug(se.getMessage(),se);
-         se.printStackTrace();
       }
       System.exit(1);
    }

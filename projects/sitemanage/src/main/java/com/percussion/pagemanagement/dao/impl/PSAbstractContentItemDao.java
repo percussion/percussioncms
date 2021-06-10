@@ -23,24 +23,23 @@
  */
 package com.percussion.pagemanagement.dao.impl;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.share.dao.IPSContentItemDao;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.percussion.share.service.exception.PSDataServiceException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notNull;
 
 
 public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> implements IPSGenericDao<T, String>
@@ -98,7 +97,7 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
     {
         notNull(id, "id");
         PSContentItem contentItem = contentItemDao.find(id);
-        if (contentItem == null) return null;
+        if (contentItem == null) {return null;}
         
         if ( ! getType().equals(contentItem.getType()) ) {
            throw new LoadException("Type does not match!");
@@ -145,14 +144,15 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
     
     protected String getFolderPath(PSContentItem contentItem) {
         List<String> paths = contentItem.getFolderPaths();
-        if (paths != null && ! paths.isEmpty()) return paths.get(0);
+        if (paths != null && ! paths.isEmpty()){ return paths.get(0);}
         return null;
     }
     
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSAbstractContentItemDao.class);
+
+    private static final Logger log = LogManager.getLogger(PSAbstractContentItemDao.class);
     
 
 }

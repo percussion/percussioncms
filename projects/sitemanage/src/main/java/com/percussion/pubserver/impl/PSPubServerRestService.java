@@ -133,13 +133,13 @@ public class PSPubServerRestService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPublishServerInfo createPubServer(@PathParam("siteId")
                                                        String siteId, @PathParam("serverName")
-                                                       String serverName, PSPublishServerInfo pubServerInfo)
+                                                       String serverName, PSPublishServerInfo pubServerInfo) throws PSValidationException,WebApplicationException
     {
         try {
             PSParameterValidationUtils.rejectIfBlank("create", "siteId", siteId);
             PSParameterValidationUtils.rejectIfBlank("create", "serverName", serverName);
             return service.createPubServer(siteId, serverName, pubServerInfo);
-        } catch (PSDataServiceException | PSNotFoundException | IPSPubServerService.PSPubServerServiceException e) {
+        } catch (PSNotFoundException | IPSPubServerService.PSPubServerServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e);
@@ -267,8 +267,10 @@ public class PSPubServerRestService
         for (PSDeliveryInfo deliveryInfo : psDeliveryInfoServiceList) {
             if (deliveryInfo.getServerType()!=null && !deliveryInfo.getServerType().equalsIgnoreCase("license")) {
 
-                if (deliveryInfo.getServerType()!=null && deliveryInfo.getServerType().equalsIgnoreCase(publishServer))
+                if (deliveryInfo.getServerType()!=null && deliveryInfo.getServerType().equalsIgnoreCase(publishServer)) {
                     serverList.add(deliveryInfo.getAdminUrl());
+
+                }
 
             }
         }

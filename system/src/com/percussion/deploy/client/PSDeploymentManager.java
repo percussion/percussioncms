@@ -65,6 +65,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -73,6 +75,8 @@ import org.w3c.dom.Element;
  */
 public class PSDeploymentManager
 {
+
+   private static final Logger log = LogManager.getLogger(PSDeploymentManager.class);
 
    /**
     * Creates a deployment manager using the supplied connection.
@@ -1253,7 +1257,8 @@ public class PSDeploymentManager
             catch (Throwable t)
             {
                // record OutOfMemoryError on job control
-               t.printStackTrace();
+               log.error(t.getMessage());
+               log.debug(t.getMessage(), t);
                ctl.setErrorMessage(t.toString());
             }
          }

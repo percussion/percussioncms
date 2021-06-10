@@ -24,6 +24,8 @@
 
 package com.percussion.preinstall;
 
+import org.apache.axis.utils.StringUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -197,8 +199,6 @@ public class MainDTSPreInstall {
                 }
                 System.out.println("Creating file "+entryDest);
                 Files.copy(archive.getInputStream(entry), entryDest);
-
-
             }
         }
     }

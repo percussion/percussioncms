@@ -37,6 +37,8 @@ import com.perforce.api.Debug;
 import com.perforce.api.Env;
 import com.perforce.api.EventLog;
 import com.perforce.api.P4JNI;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -69,6 +71,8 @@ import com.perforce.api.P4JNI;
  */
 public class PSP4Process
 {
+
+   private static final Logger log = LogManager.getLogger(PSP4Process.class);
 
    /**
     * Default no-argument constructor. If the runtime has not been established,
@@ -344,7 +348,8 @@ public class PSP4Process
             {
                // can't do anything from this thread, so just write out
                // the exception
-               t.printStackTrace();
+               log.error(t.getMessage());
+               log.debug(t.getMessage(), t);
             }
          }
       };
@@ -362,7 +367,8 @@ public class PSP4Process
             {
                // can't do anything from this thread, so just write out
                // the exception
-               t.printStackTrace();
+               log.error(t.getMessage());
+               log.debug(t.getMessage(), t);
             }
          }
       };
@@ -374,7 +380,8 @@ public class PSP4Process
       }
       catch (InterruptedException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 

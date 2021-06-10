@@ -58,8 +58,8 @@ import javax.faces.model.SelectItem;
 import javax.jcr.RepositoryException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This node represents a single context design object.
@@ -165,7 +165,8 @@ public class PSContextNode extends PSDesignNode
          try {
             m_context = smgr.loadContextModifiable(getGUID());
          } catch (PSNotFoundException e) {
-            ms_log.error(e.getMessage());
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             m_context = new PSPublishingContext();
          }
       }
@@ -414,8 +415,9 @@ public class PSContextNode extends PSDesignNode
       }
       catch (RepositoryException e)
       {
-         ms_log.error(
-               "Failed while cataloging content types for context node.", e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         log.error("Failed while cataloging content types for context node. {}", e.getMessage());
       }
       return results;
    }
@@ -446,8 +448,9 @@ public class PSContextNode extends PSDesignNode
       }
       catch (PSAssemblyException e)
       {
-         ms_log.error(
-               "Failed while cataloging templates for context node.", e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         log.error("Failed while cataloging templates for context node. {}", e.getMessage());
       }
       return results;
    }
@@ -649,7 +652,8 @@ public class PSContextNode extends PSDesignNode
       }
       catch (RepositoryException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          return null;
       }
       if (cts.size() == 0)
@@ -691,7 +695,9 @@ public class PSContextNode extends PSDesignNode
       }
       catch (Exception e)
       {
-         ms_log.error("Failure saving context or location scheme: ", e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         log.error("Failure saving context or location scheme: {} ", e.getMessage());
          return false;
       }
 
@@ -814,7 +820,9 @@ public class PSContextNode extends PSDesignNode
       }
       catch (PSNotFoundException e)
       {
-         ms_log.error("Failure loading Location Scheme: ", e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         log.error("Failure loading Location Scheme: {}", e.getMessage());
          return false;
       }
       return true;
@@ -1085,7 +1093,7 @@ public class PSContextNode extends PSDesignNode
    /**
     * The class log.
     */
-   private final static Log ms_log = LogFactory.getLog(PSContextNode.class);
+   private final static Logger log = LogManager.getLogger(PSContextNode.class);
    
    /**
     * The data object that this node represents. Lazily loaded by

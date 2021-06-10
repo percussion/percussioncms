@@ -36,8 +36,8 @@ import java.lang.reflect.InvocationTargetException;
 import javax.xml.bind.UnmarshalException;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Abstract root class for all generators. It provides methods to validate input
@@ -57,7 +57,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public abstract class PSGenericContentGenerator<T>
 {
-    protected Log log = LogFactory.getLog(getClass());
+    protected static Logger log = LogManager.getLogger(PSGenericContentGenerator.class);
     
     /**
      * The remote server URL.
@@ -234,7 +234,8 @@ public abstract class PSGenericContentGenerator<T>
             }
 
         } catch (IOException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
     
@@ -286,7 +287,8 @@ public abstract class PSGenericContentGenerator<T>
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new RuntimeException(e);
         }
     }    

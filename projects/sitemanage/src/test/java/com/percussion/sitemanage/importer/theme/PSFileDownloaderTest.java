@@ -44,6 +44,8 @@ import java.util.Map;
 
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.experimental.categories.Category;
 
@@ -55,6 +57,9 @@ import org.junit.experimental.categories.Category;
 @Ignore("TODO: Test is incorrectly getting picked up as a unit test.  Ignoring until that is fixed.")
 public class PSFileDownloaderTest extends ServletTestCase
 {
+
+    private static final Logger log = LogManager.getLogger(PSFileDownloaderTest.class);
+
     PSSiteImportCtx context;
     IPSSiteImportLogger logger = new PSSiteImportLogger(PSLogObjectType.SITE);
     IPSFileDownloader fileDownloader = new PSFileDownloader();
@@ -72,7 +77,8 @@ public class PSFileDownloaderTest extends ServletTestCase
         catch (Exception e1)
         {
             // FIXME Auto-generated catch block
-            e1.printStackTrace();
+            log.error(e1.getMessage());
+            log.debug(e1.getMessage(), e1);
         }
         
         if(!tempDir.exists())

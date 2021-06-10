@@ -28,6 +28,8 @@ import com.percussion.util.PSCollection;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,6 +50,9 @@ import java.util.Random;
  */
 public class PSJdbcStatementFactory
 {
+
+   private static final Logger log = LogManager.getLogger(PSJdbcStatementFactory.class);
+
    /**
     * Private ctor to disallow instantiation.
     */
@@ -823,7 +828,8 @@ public class PSJdbcStatementFactory
                }
                catch (Exception e) {
 
-                  e.printStackTrace();
+                  log.error(e.getMessage());
+                  log.debug(e.getMessage(), e);
                   System.out.println("Failed to get the binary value for hash " + value + " for table " + fullName);
                }
             }

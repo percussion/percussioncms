@@ -69,8 +69,9 @@ public class PSRedirectStatus {
 	 * @param msg  The status message.  If null will be coverted to  an empty string.
 	 */
 	public void setMessage(String msg){
-		if(msg == null)
+		if(msg == null) {
 			msg = "";
+		}
 		
 		message = msg;
 	}
@@ -88,8 +89,9 @@ public class PSRedirectStatus {
 	public PSRedirectStatus(String code, String msg){
 		statusCode = code;
 		
-		if(msg == null)
+		if(msg == null) {
 			msg = "";
+		}
 	
 		message = msg;
 	}

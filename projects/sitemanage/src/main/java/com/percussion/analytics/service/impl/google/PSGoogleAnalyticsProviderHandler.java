@@ -29,6 +29,8 @@ import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.error.PSAnalyticsProviderException.CAUSETYPE;
 import com.percussion.analytics.service.IPSAnalyticsProviderService;
 import com.percussion.analytics.service.impl.IPSAnalyticsProviderHandler;
+import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.share.validation.PSValidationErrorsBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -50,7 +52,7 @@ public class PSGoogleAnalyticsProviderHandler
   /* *//* (non-Javadoc)
     * @see com.percussion.analytics.service.impl.IPSAnalyticsProviderHandler#getProfiles(java.lang.String, java.lang.String)
     */
-    public Map<String, String> getProfiles(String uid, String password) throws PSAnalyticsProviderException
+    public Map<String, String> getProfiles(String uid, String password) throws PSAnalyticsProviderException, PSValidationException
     {
         Map<String, String> profiles = new LinkedHashMap<>();
         Map<String, String[]> temp = new TreeMap<>();
@@ -107,6 +109,9 @@ public class PSGoogleAnalyticsProviderHandler
             }
         } catch (Exception e)
         {
+            if(e instanceof PSValidationException){
+                throw (PSValidationException)e;
+            }
             throw new PSAnalyticsProviderException("Error occurred while attempting to retrieve profiles: "
                     + e.getLocalizedMessage(), e);
         }
@@ -116,21 +121,21 @@ public class PSGoogleAnalyticsProviderHandler
    /* (non-Javadoc)
     * @see com.percussion.analytics.service.impl.IPSAnalyticsProviderHandler#testConnection(java.lang.String, java.lang.String)
     */
-   public void testConnection(String uid, String password) throws PSAnalyticsProviderException
-   {
+   public void testConnection(String uid, String password) throws PSValidationException, PSAnalyticsProviderException {
       try
       {
          PSGoogleAnalyticsProviderHelper.getInstance().
                  getAnalyticsService(uid, password);
          getProfiles(uid, password);
       }     
-      catch (PSAnalyticsProviderException e)
+      catch (PSAnalyticsProviderException  e)
       {
          if(e.getCauseType() == CAUSETYPE.NO_ANALYTICS_ACCOUNT)
          {
             String msg = "No Analytics account found for the specified user.";
-            throw new PSAnalyticsProviderException(msg, e, e.getCauseType());
-            
+             PSValidationErrorsBuilder builder = new PSValidationErrorsBuilder(this.getClass().getCanonicalName());
+             builder.reject(PSAnalyticsProviderException.CAUSETYPE.INVALID_CREDS.toString(), msg).throwIfInvalid();
+
          }
          throw e;
       }

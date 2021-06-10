@@ -27,7 +27,8 @@ package com.percussion.share.extension;
 import com.percussion.server.IPSStartupProcess;
 import com.percussion.server.IPSStartupProcessManager;
 import com.percussion.server.PSServer;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.security.KeyStore;
@@ -45,8 +46,7 @@ import java.util.Properties;
  */
 public class PSImportCustCertificates implements IPSStartupProcess {
 
-    private static final Logger log = Logger
-            .getLogger(PSImportCustCertificates.class.getName());
+    private static final Logger log = LogManager.getLogger(PSImportCustCertificates.class.getName());
 
     public PSImportCustCertificates(){
 
@@ -64,7 +64,8 @@ public class PSImportCustCertificates implements IPSStartupProcess {
         try {
             run.doStartupWork(props);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
     @Override

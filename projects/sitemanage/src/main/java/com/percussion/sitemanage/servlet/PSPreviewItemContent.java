@@ -89,7 +89,7 @@ public class PSPreviewItemContent extends HttpServlet
         try
         {
             String type = request.getParameter("type");
-            if (requestUri.endsWith(".css"))
+            if (requestUri.endsWith(".css") || requestUri.endsWith("favicon.ico"))
                 return;
             String url = createAssemblyUrl(requestUri, revision, type);
             

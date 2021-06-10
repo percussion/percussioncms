@@ -47,8 +47,6 @@ import com.percussion.cms.objectstore.PSItemDefSummary;
 import com.percussion.cms.objectstore.PSItemDefinition;
 import com.percussion.cms.objectstore.PSItemField;
 import com.percussion.cms.objectstore.PSItemRelatedItem;
-import com.percussion.cms.objectstore.PSProcessorProxy;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.PSTextValue;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSDisplayError;
@@ -73,6 +71,12 @@ import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.transformation.converter.PSItemConverterUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -82,13 +86,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 /**
  * A PSCoreItem that is Rhythmyx server aware.  Meaning it can persist itself
@@ -1276,8 +1273,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
          PSItemField field = (PSItemField) fieldIter.next();
 
          // ignore the binary field if it has no value and never loaded.         
-         if (field.getValue() == null
-               && field.getItemFieldMeta().isBinary()
+         if (field.getItemFieldMeta().isBinary() && field.getValue() == null
                && (m_loadFlags & TYPE_BINARY) != TYPE_BINARY)
          {
             continue;
@@ -1286,6 +1282,11 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
          {
             PSBinaryFileValue val = (PSBinaryFileValue) field.getValue();
             fieldParams.put(field.getName(), val.getTempFile());
+         }
+         else if (field.getValue() instanceof PSBinaryValue) // CMS-7974 : For Image type asset. No case for Binary value field type caused filed type to be set as String instead of PSPurgableTempFile and thus gave class cast exception in ImageAssetInputTranslation.
+         {
+            PSBinaryValue val = (PSBinaryValue) field.getValue();
+            fieldParams.put(field.getName(), val.getValueFile());
          }
          else if (field.getItemFieldMeta().isMultiValueField())
          {

@@ -74,7 +74,8 @@ public class DemandPublisherBeanTest
          log.error("Timeout Exception " + ex,ex);
          fail("Exception"); 
       } catch (PSNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             fail(e.getMessage());
         }
    }

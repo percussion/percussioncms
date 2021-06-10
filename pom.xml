@@ -183,7 +183,7 @@
        <install.jre.version>8.222.10.1</install.jre.version>
        <axis.version>1.4.1</axis.version>
        <axiscore.version>1.4.2</axiscore.version>
-       <httpcomponents.version>4.5.8</httpcomponents.version>
+       <httpcomponents.version>4.5.13</httpcomponents.version>
        <tika.version>1.24.1</tika.version>
        <commons-cli.version>1.4</commons-cli.version>
        <opencsv.version>4.6</opencsv.version>
@@ -1755,7 +1755,7 @@
             <dependency>
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
-                <version>1.18</version>
+                <version>1.26</version>
                 <scope>runtime</scope>
             </dependency>
 

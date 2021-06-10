@@ -40,8 +40,8 @@ import com.percussion.utils.spring.PSSpringConfiguration;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -63,7 +63,7 @@ import static com.percussion.utils.jdbc.PSDatasourceResolver.DATASOURCE_RESOLVER
 
 public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdapter<DefaultConfigurationContextImpl> {
 
-    public static Log ms_log = LogFactory.getLog(JBossDatasourceConfigurationAdapter.class);
+    public static Logger log = LogManager.getLogger(JBossDatasourceConfigurationAdapter.class);
 
 
     private Path appServer = Paths.get("AppServer","server","rx");
@@ -120,7 +120,7 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
         Path loginConfig = root.resolve(loginConfigFile);
         if (!Files.exists(dsConfig) || !Files.exists(loginConfig))
         {
-            ms_log.debug("Debug cannot find jboss config skipping");
+            log.debug("Debug cannot find jboss config skipping");
             return true;
         }
         return false;
@@ -338,7 +338,9 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
                                     PSEncryptor.SECURE_DIR)
                     ).encrypt(ds.getPassword());
                 } catch (PSEncryptionException e) {
-                    ms_log.error("Error encrypting password: " + e.getMessage(),e);
+                    log.error("Error encrypting password: " + e.getMessage(),e);
+                    log.error(e.getMessage());
+                    log.debug(e.getMessage(), e);
                 }
 
                 PSSecureCredentials cred = new PSSecureCredentials(
@@ -466,7 +468,8 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
         catch (PSInvalidXmlException | IOException | SAXException e)
         {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
 
         return dsResolver;
@@ -486,8 +489,8 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
         }
         catch (PSInvalidXmlException | IOException | SAXException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
 
     }

@@ -24,31 +24,45 @@
 
 package com.percussion.share.web.service;
 
-import com.percussion.share.service.exception.PSSpringValidationException;
-import com.percussion.share.validation.PSValidationErrors;
+import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.share.validation.PSErrors;
 import com.percussion.util.PSSiteManageBean;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
+@Component
+@Produces(MediaType.APPLICATION_JSON)
 @PSSiteManageBean("validationExceptionMapper")
-public class PSValidationExceptionMapper extends PSAbstractExceptionMapper<PSSpringValidationException> implements ExceptionMapper<PSSpringValidationException> {
+public class PSValidationExceptionMapper extends PSAbstractExceptionMapper<PSValidationException> implements ExceptionMapper<PSValidationException> {
+
+        private static final String ERROR_MESSAGE = "REST exception mapper mapped exception:";
+
+        /**
+         * The log instance to use for this class, never <code>null</code>.
+         */
+        private static final Log log = LogFactory.getLog(PSValidationExceptionMapper.class);
 
     @Override
-    protected PSValidationErrors createErrors(PSSpringValidationException exception) {
-        return exception.getValidationErrors();
-        
+    @Produces(MediaType.APPLICATION_JSON)
+    protected PSErrors createErrors(PSValidationException exception) {
+            log.debug(ERROR_MESSAGE, exception);
+            return exception.getValidationErrors();
+
     }
 
     @Override
-    protected Status getStatus(PSSpringValidationException exception) {
-        return Status.BAD_REQUEST;
+    @Produces(MediaType.APPLICATION_JSON)
+    protected Status getStatus(PSValidationException exception)
+    {
+        return super.getStatus(exception);
     }
-    
-    
-    
 
 }

@@ -294,7 +294,8 @@ public class PSLogger
             }
             catch (Exception e)
             {
-               e.printStackTrace();
+               ms_Logger.error(e.getMessage());
+               ms_Logger.debug(e.getMessage(), e);
                
                setDefaultLog4JProps(props, logFilePath);
             }

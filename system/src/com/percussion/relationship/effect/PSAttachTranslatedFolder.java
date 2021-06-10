@@ -46,6 +46,8 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -103,6 +105,9 @@ import java.util.List;
  */
 public class PSAttachTranslatedFolder extends PSEffect
 {
+
+   private static final Logger log = LogManager.getLogger(PSAttachTranslatedFolder.class);
+
    /*
     * (non-Javadoc)
     * 
@@ -176,7 +181,8 @@ public class PSAttachTranslatedFolder extends PSEffect
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          result.setError(e);
       }
       
@@ -299,7 +305,8 @@ public class PSAttachTranslatedFolder extends PSEffect
       }
       catch (PSException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          result.setError(e);
       }
    }

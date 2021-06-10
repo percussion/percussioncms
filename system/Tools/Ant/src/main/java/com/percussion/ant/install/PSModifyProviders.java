@@ -57,6 +57,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 /**
@@ -89,6 +91,8 @@ import org.w3c.dom.Document;
  */
 public class PSModifyProviders extends PSAction
 {
+
+   private static final Logger log = LogManager.getLogger(PSModifyProviders.class);
    // see base class
    @Override
    public void execute()
@@ -117,7 +121,8 @@ public class PSModifyProviders extends PSAction
       catch(Exception e)
       {
          PSLogger.logError(e.getMessage());
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 
@@ -188,7 +193,8 @@ public class PSModifyProviders extends PSAction
       catch(Exception e)
       {
          PSLogger.logError(e.getMessage());
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 
@@ -309,7 +315,8 @@ public class PSModifyProviders extends PSAction
       catch (Exception e)
       {
          PSLogger.logError(e.getMessage());
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       finally
       {
@@ -369,7 +376,8 @@ public class PSModifyProviders extends PSAction
       catch (Exception e)
       {
          PSLogger.logError(e.getMessage());
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       finally
       {

@@ -33,7 +33,6 @@ import org.apache.commons.lang.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.jpa.QueryHints;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,10 +72,7 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
             CriteriaQuery<PSMembership> criteriaQuery = criteriaBuilder.createQuery(PSMembership.class);
             Root<PSMembership> root = criteriaQuery.from(PSMembership.class);
             criteriaQuery.select(root).where(criteriaBuilder.like(root.get("sessionId"), sessionId));
-            List<PSMembership> result = session.createQuery(criteriaQuery).
-                    addQueryHint(QueryHints.HINT_READONLY).
-                    addQueryHint(QueryHints.HINT_CACHEABLE).
-                    getResultList();
+            List<PSMembership> result = session.createQuery(criteriaQuery).getResultList();
 
             if (!result.isEmpty())
             {
@@ -125,10 +121,7 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
             CriteriaQuery<PSMembership> criteriaQuery = criteriaBuilder.createQuery(PSMembership.class);
             Root<PSMembership> root = criteriaQuery.from(PSMembership.class);
             criteriaQuery.select(root).where(criteriaBuilder.like(root.get("pwdResetKey"), pwdResetKey));
-            List<PSMembership> result = session.createQuery(criteriaQuery).
-                    addQueryHint(QueryHints.HINT_CACHEABLE).
-                    addQueryHint(QueryHints.HINT_READONLY).
-                    getResultList();
+            List<PSMembership> result = session.createQuery(criteriaQuery).getResultList();
             if (!result.isEmpty())
             {
                 if (result.size() > 1)
@@ -191,10 +184,7 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
             Root<PSMembership> root = criteriaQuery.from(PSMembership.class);
             criteriaQuery.select(root).orderBy(criteriaBuilder.asc(root.get("userId")));
 
-            return  session.createQuery(criteriaQuery).
-                    addQueryHint(QueryHints.HINT_READONLY).
-                    addQueryHint(QueryHints.HINT_CACHEABLE).
-                    getResultList();
+            return  session.createQuery(criteriaQuery).getResultList();
 
         }catch (Exception e){
             log.error(e.getMessage());
@@ -307,9 +297,7 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
         Predicate ctfPredicate = criteriaBuilder.like(upper,userId.toUpperCase());
         criteriaQuery.select(root).where(criteriaBuilder.and(ctfPredicate));
 
-        List<PSMembership> result = session.createQuery(criteriaQuery).
-                addQueryHint(QueryHints.HINT_CACHEABLE).
-                getResultList();
+        List<PSMembership> result = session.createQuery(criteriaQuery).getResultList();
 
         if (!result.isEmpty())
         {

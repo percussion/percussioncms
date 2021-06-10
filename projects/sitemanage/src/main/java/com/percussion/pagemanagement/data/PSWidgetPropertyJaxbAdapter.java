@@ -73,7 +73,7 @@ public class PSWidgetPropertyJaxbAdapter extends XmlAdapter<PSWidgetProperties, 
     {
         Map<String, Object> map = new HashMap<>();
         List<PSWidgetProperty> ps = props.getProperties();
-        if (ps == null) return map;
+        if (ps == null) {return map;}
         for(PSWidgetProperty wp : ps) {
             Object v = PSSerializerUtils.getObjectFromJson(wp.getValue());
             map.put(wp.getName(), v);

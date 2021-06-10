@@ -1582,7 +1582,8 @@ import static org.apache.commons.lang.Validate.notNull;
                 builder.throwIfInvalid();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
 
     }

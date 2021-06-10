@@ -33,9 +33,8 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import static org.apache.commons.lang.StringUtils.isBlank;
 
 /**
@@ -64,10 +63,12 @@ public class PSPageVariateAssembler extends PSPageAssembler
     protected String getTemplateSource(IPSAssemblyItem assemblyItem)
     {
         IPSAssemblyTemplate template = getAssemblyTemplate(assemblyItem);
-        if (template != null)
+        if (template != null) {
             return template.getTemplate();
-        else
+        }
+        else {
             return super.getTemplateSource(assemblyItem);
+        }
     }
 
     /**
@@ -103,5 +104,6 @@ public class PSPageVariateAssembler extends PSPageAssembler
         }
     }
     
-    private static final Log log = LogFactory.getLog(PSPageVariateAssembler.class);
+
+    private static final Logger log = LogManager.getLogger(PSPageVariateAssembler.class);
 }

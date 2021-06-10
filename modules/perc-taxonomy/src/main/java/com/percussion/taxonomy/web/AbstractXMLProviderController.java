@@ -47,10 +47,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
 import org.springframework.web.servlet.ModelAndView;
 
 public class AbstractXMLProviderController extends AbstractControllerWithSecurityChecks {
+
+	private static final Logger log = LogManager.getLogger(AbstractXMLProviderController.class);
 
 	public static final int NORMAL = 0;
 	public static final int NO_CHILDREN = 1;
@@ -195,7 +199,8 @@ public class AbstractXMLProviderController extends AbstractControllerWithSecurit
 		try {
 			serializer.write(root, baos);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 
 		HashMap<String, Object> myModel = new HashMap<String, Object>();

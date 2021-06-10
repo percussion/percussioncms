@@ -49,18 +49,16 @@ import com.percussion.services.assembly.PSTemplateNotImplementedException;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSTemplateBinding;
 import com.percussion.services.filter.PSFilterException;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.webservices.PSWebserviceUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StopWatch;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.RepositoryException;
@@ -127,7 +125,8 @@ public class PSPageAssemblyContextFactory
     /**
      * Logger
      */
-    private final static Log log = LogFactory.getLog(PSPageAssemblyContextFactory.class);
+
+    private static final Logger log = LogManager.getLogger(PSPageAssemblyContextFactory.class);
 
     @Autowired
     public PSPageAssemblyContextFactory(IPSAssemblyService assemblyService,
@@ -226,10 +225,12 @@ public class PSPageAssemblyContextFactory
                 break;
         }
         String editType = assemblyItem.getParameterValue(ASSEMBLY_PARAM_EDITTYPE, EditType.PAGE.name());
-        if (editType.equals(EditType.TEMPLATE.name()))
+        if (editType.equals(EditType.TEMPLATE.name())) {
             context.setEditType(EditType.TEMPLATE);
-        else
+        }
+        else {
             context.setEditType(EditType.PAGE);
+        }
 
         /*
          * Should we be doing the template parsing in the template service
@@ -281,10 +282,12 @@ public class PSPageAssemblyContextFactory
          * TODO (ychen) Need to verify the following when we get a chance later:
          * We should be able to use "widgetRegionAssembler" to render the page regions as well as template regions
          */
-        if (isHtml)
+        if (isHtml) {
             getOverridedRegionsAssembler().assembleRegions(overridedRegionAssembler, clonedAssemblyItem, context, pageRegions);
-        else
+        }
+        else {
             getOverridedRegionsAssembler().assembleRegions(widgetRegionAssembler, clonedAssemblyItem, context, pageRegions);
+        }
 
         sw.stop();
 
@@ -343,8 +346,9 @@ public class PSPageAssemblyContextFactory
             PSMergedRegion mr) throws IPSTemplateService.PSTemplateException {
         notNull(assemblyItem, "assemblyItem");
         notNull(mr, "mr");
-        if (log.isDebugEnabled())
+        if (log.isDebugEnabled()) {
             log.debug("Assembling Region: " + mr.getRegionId());
+        }
         
         IPSAssemblyItem clonedItem = (IPSAssemblyItem) assemblyItem.clone();
         String templateCode = PSRegionTreeUtils.treeToString(mr.getOriginalRegion());
@@ -366,7 +370,7 @@ public class PSPageAssemblyContextFactory
         }
         catch (Exception e)
         {
-            log.error("Failed to assemble regionId: " + mr.getRegionId());
+            log.error("Failed to assemble regionId: {} " , mr.getRegionId());
             throw new RuntimeException(e);
         }
         finally {
@@ -483,7 +487,7 @@ public class PSPageAssemblyContextFactory
         }
         catch (Throwable e)
         {
-            log.error("While running the widget there was a major error: " + e.getMessage());
+            log.error("While running the widget there was a major error: {} " , e.getMessage());
             log.debug("While running the widget there was a major error: ", e);
             String publish = assemblyItem.getParameterValue(IPSHtmlParameters.SYS_PUBLISH, null);
             boolean publishFlag = "publish".equals(publish);
@@ -500,9 +504,10 @@ public class PSPageAssemblyContextFactory
     private IPSAssemblyTemplate getAssemblyTemplate(String templateName, String templateCode) throws IPSTemplateService.PSTemplateException {
         notEmpty(templateName, "templateName");
         notEmpty(templateCode, "templateCode");        
-        if (log.isDebugEnabled())
-            log.debug(format("Creating assembly template with templateName:{0} and templateCode:{1}", 
-                    templateName, templateCode));
+        if (log.isDebugEnabled()) {
+            log.debug("Creating assembly template with templateName:{} and templateCode:{}",
+                    templateName, templateCode);
+        }
         IPSAssemblyTemplate baseTpl = getProxyAssemblyTemplate(templateName);
         baseTpl.setTemplate(templateCode);
         return baseTpl;
@@ -555,20 +560,21 @@ public class PSPageAssemblyContextFactory
         notNull(widget, "widget");
         notNull(widgetBaseTmpl, "widgetBaseTmpl");
         
-        if (StringUtils.isBlank(widgetBaseTmpl.getLabel()))
+        if (StringUtils.isBlank(widgetBaseTmpl.getLabel())) {
             widgetBaseTmpl.setLabel(widgetBaseTmpl.getName());
+        }
         IPSAssemblyTemplate tmpl = (IPSAssemblyTemplate) widgetBaseTmpl.clone();
 
         String templateContent = widget.getContent()  == null ? "" :  widget.getContent().getValue();
         
         if (isBlank(templateContent)) {
-            log.error("Widget definition does not have template code. WidgetId: " + widget.getId());
+            log.error("Widget definition does not have template code. WidgetId: {} " , widget.getId());
         }
         
         String templateCode = widget.getCode() == null ? ";" : widget.getCode().getValue();
         
         if(log.isTraceEnabled()) {
-            log.trace("Template Code: " + templateCode);
+            log.trace("Template Code: {} " , templateCode);
         }
        
         tmpl.setName(widget.getId());
@@ -604,16 +610,18 @@ public class PSPageAssemblyContextFactory
      */
     private List<PSTemplateBinding> createBindings(LinkedHashMap<String, String> bindings, int startingOrder)
     {
-        if (startingOrder < 1)
+        if (startingOrder < 1) {
             startingOrder = 1;
+        }
 
         List<PSTemplateBinding> tempBindings = new ArrayList<>();
 
         for (Map.Entry<String, String> entry : bindings.entrySet())
         {
-            if (StringUtils.isBlank(entry.getKey()))
+            if (StringUtils.isBlank(entry.getKey())) {
                 throw new IllegalArgumentException(
-                "the key of the bindings map must not be blank.");
+                        "the key of the bindings map must not be blank.");
+            }
             PSTemplateBinding tempBinding = new PSTemplateBinding();
             tempBinding.setExecutionOrder(startingOrder++);
             tempBinding.setExpression(entry.getValue());

@@ -24,6 +24,8 @@
 package com.percussion.install;
 
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import java.io.FileNotFoundException;
@@ -37,6 +39,9 @@ import java.util.Date;
  */
 public class RxUpgradeLog
 {
+
+   private static final Logger log = LogManager.getLogger(RxUpgradeLog.class);
+
    /**
     * Log object into a upgrade print stream.
     * @param o any object to log, may be <code>null</code>.
@@ -62,15 +67,18 @@ public class RxUpgradeLog
       }
       catch (FileNotFoundException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       catch (SAXException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
    

@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -66,6 +68,9 @@ import org.w3c.dom.Element;
 */
 public class PSCataloger
 {
+
+   private static final Logger log = LogManager.getLogger(PSCataloger.class);
+
    /**
     * Creates a cataloger that wil be connected to the server specified by the 
     * connection to serve the catalog requests.
@@ -189,7 +194,8 @@ public class PSCataloger
       {
          //we should not get here as this document is constructed by server
          //from catalog result set object.
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          Object[] args = {reqDoc.getDocumentElement().getTagName(), 
             respDoc.getDocumentElement().getTagName(), e.getLocalizedMessage()};
          throw new PSDeployException(

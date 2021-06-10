@@ -39,6 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -53,6 +55,9 @@ import org.xml.sax.SAXException;
  */
 public class PSCETemplateGenerator
 {
+
+   private static final Logger log = LogManager.getLogger(PSCETemplateGenerator.class);
+
    /**
     * Extracts the &lt;PSXContentEditor> element from the source file, modifies
     * the element to use that as template and writes the modified element to the
@@ -303,7 +308,8 @@ public class PSCETemplateGenerator
       {
          System.out.println("Creation of template from " + source +
                " is failed:");
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
    }
 

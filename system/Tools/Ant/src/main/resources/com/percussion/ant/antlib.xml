@@ -109,6 +109,7 @@
     <taskdef name="PSSyncFiles" classname="com.percussion.ant.PSSyncFiles"/>
     <taskdef name="PSUpgradeDerby" classname="com.percussion.ant.install.PSUpgradeDerby"/>
     <taskdef name="PSUpgradeEncryption" classname="com.percussion.ant.install.PSUpgradeEncryption"/>
+    <taskdef name="PSUpgradeSiteConfig" classname="com.percussion.ant.install.PSUpgradeSiteConfig"/>
 
     <typedef name="PSTruncateDirectoryMapper"
              classname="com.percussion.ant.PSTruncateDirectoryMapper"

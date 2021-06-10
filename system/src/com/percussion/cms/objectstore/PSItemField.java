@@ -30,17 +30,16 @@ import com.percussion.services.filestorage.extensions.IPSHashFileInfoExtension;
 import com.percussion.util.PSBase64Decoder;
 import com.percussion.util.PSCharSets;
 import com.percussion.util.PSXMLDomUtil;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * An object representation of the StandardItem.xsd Field element.
@@ -117,11 +116,8 @@ public class PSItemField extends PSItemComponent
       if (fieldValue == null)
          throw new IllegalArgumentException("fieldValue must not be null");
 
-      if (m_fieldValues.contains(fieldValue))
-      {
          m_fieldValues.remove(fieldValue);
       }
-   }
 
    /**
     * Adds a field value.  If <code>isMultiValue()</code> returns <code>
@@ -157,7 +153,6 @@ public class PSItemField extends PSItemComponent
     * When the field is loaded with data on an open.  The backend types will
     * determine which IPSFieldValue will be used to hold the data.
     */
-   @SuppressWarnings("unchecked")
    public void addValue(IPSFieldValue content)
    {
       if (content == null)
@@ -172,30 +167,34 @@ public class PSItemField extends PSItemComponent
       }
       else
       {
+         switch(m_fieldMeta.getBackendDataType()){
          // datatype text must be PSXmlValue or PSTextValue:
-         if ((m_fieldMeta.getBackendDataType() == PSItemFieldMeta.DATATYPE_TEXT)
-            && (!(content instanceof PSTextValue)
+            case PSItemFieldMeta.DATATYPE_TEXT:
+               if( (!(content instanceof PSTextValue)
                && !(content instanceof PSXmlValue)
                && !(m_fieldMeta.getFieldDef().getSubmitName().endsWith(IPSHashFileInfoExtension.HASH_PARAM_SUFFIX))))
             throw new IllegalArgumentException("Invalid IPSFieldValue - text value expected.");
 
+               break;
          // date must be PSDateValue
-         if ((m_fieldMeta.getBackendDataType() == PSItemFieldMeta.DATATYPE_DATE)
-            && (!(content instanceof PSDateValue)))
+            case PSItemFieldMeta.DATATYPE_DATE:
+               if(!(content instanceof PSDateValue))
             throw new IllegalArgumentException("date value type expected.");
-
+               break;
          // numeric must be PSTextValue (no need to wrap an integer or float):
-         if ((m_fieldMeta.getBackendDataType()
-            == PSItemFieldMeta.DATATYPE_NUMERIC)
-            && !(content instanceof PSTextValue))
+            case PSItemFieldMeta.DATATYPE_NUMERIC:
+               if(!(content instanceof PSTextValue))
             throw new IllegalArgumentException("text value type expected.");
+               break;
+         }
       }
 
       // if not multi-value hold only one:
-      if (!isMultiValue())
+      if (!isMultiValue()) {
          m_fieldValues.clear();
+      }
 
-      // todo when treat as xml is implemented add condition here.
+      //TODO: when treat as xml is implemented add condition here.
       
       m_fieldValues.add(content);
    }
@@ -251,14 +250,9 @@ public class PSItemField extends PSItemComponent
             PSBase64Decoder.decode(iBuf, oBuf);
 
             fieldValue = new PSBinaryValue(oBuf.toByteArray());
-         }
-         catch (UnsupportedEncodingException e) // this is not possible
+         } catch (IOException e) // this is not possible
          {
             throw new RuntimeException(e.toString());
-         }
-         catch (java.io.IOException ioe) // this is not possible
-         {
-            throw new RuntimeException(ioe.toString());
          }
       }
       else if (

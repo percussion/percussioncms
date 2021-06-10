@@ -219,7 +219,17 @@ public class PSCmsObjectMgr
     public void setPostDate(Collection<Integer> ids) {
         setPostDate(ids,new Date());
     }
-   
+
+    public Date getFirstPublishDate(Integer contentId){
+        Date postDate  = null;
+        Session session = sessionFactory.getCurrentSession();
+        Query q = session.getNamedQuery("getPostDate");
+        q.setParameter("contentId", contentId);
+        List result = q.list();
+        if(result != null && result.size()>0)
+            postDate = (Date) result.get(0);
+        return postDate;
+    }
    /*
     * (non-Javadoc)
     * 
@@ -670,17 +680,23 @@ public class PSCmsObjectMgr
     * 
     * @see com.percussion.services.legacy.IPSCmsObjectMgr#loadComponentSummary(int)
     */
-   public PSComponentSummary loadComponentSummary(int contentid)
+   public PSComponentSummary loadComponentSummary(int contentid,boolean refresh)
    {
       Session s = sessionFactory.getCurrentSession();
-
-         PSComponentSummary sum = (PSComponentSummary) s.get(PSComponentSummary.class, contentid);
-         fixupLocator(sum);
-         return sum;
-
+      PSComponentSummary sum = (PSComponentSummary) s.get(PSComponentSummary.class, contentid);
+      if(refresh) {
+          s.refresh(sum);
       }
+       fixupLocator(sum);
+       return sum;
 
-   /**
+   }
+    public PSComponentSummary loadComponentSummary(int contentid)
+    {
+        return loadComponentSummary(contentid,false);
+    }
+
+    /**
     * Call this on all finders to cleanup component summaries.
     * 
     * @param summaries the summaries to modify, assumed never <code>null</code>
@@ -1661,7 +1677,11 @@ public class PSCmsObjectMgr
       int objectType        = toInt(item[4], -1);
       String createdBy      = (String)item[5];
       Date lastModifiedDate = (Date)item[6];
-      Date postDate         = (Date)item[7]!=null ? (Date)item[7] : (Date)item[16];;
+       Date postDate         = (Date)item[7];
+       if(item[7] == null && item[16] != null) {
+           //Find the first PublishDate From PSX_PUBLICATION_DOC and set that as post Date.
+           postDate = getFirstPublishDate(contentId);
+       }
       Date createdDate      = (Date)item[8];
       int workflowId        = toInt(item[9], -1);
       int stateId           = toInt(item[10], -1);

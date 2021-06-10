@@ -10,8 +10,8 @@
 package com.percussion.pso.utils;
 
 import com.percussion.server.PSServer;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,7 +29,7 @@ import java.util.Properties;
  */
 public class HTTPProxyClientConfig {
 
-	 private static Log log = LogFactory.getLog(HTTPProxyClientConfig.class);
+	 private static final Logger log = LogManager.getLogger(HTTPProxyClientConfig.class);
 	   
 	private String proxyServer;
 	private String proxyPort;
@@ -73,8 +73,8 @@ public class HTTPProxyClientConfig {
 		} catch (FileNotFoundException e) {
 				log.debug(PSServer.BASE_CONFIG_DIR + "/Server/clientproxy.properties Configuration file not found.");
 			} catch (Exception e) {
-				e.printStackTrace();
-				log.debug(e.getMessage());
+				log.error(e.getMessage());
+				log.debug(e.getMessage(), e);
 			}
 	}
 	
