@@ -43,6 +43,8 @@ import com.percussion.analytics.error.PSAnalyticsProviderException.CAUSETYPE;
 import com.percussion.analytics.service.IPSAnalyticsProviderService;
 import com.percussion.analytics.service.impl.IPSAnalyticsProviderQueryHandler;
 import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.utils.date.PSDateRange;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -77,7 +79,7 @@ public class PSGoogleAnalyticsProviderQueryHandler implements IPSAnalyticsProvid
      * getPageViewsByPathPrefix( java.lang.String, java.lang.String,
      * com.percussion.utils.date.PSDateRange)
      */
-    public List<IPSAnalyticsQueryResult> getPageViewsByPathPrefix(String sitename, String pathPrefix, PSDateRange range) throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
+    public List<IPSAnalyticsQueryResult> getPageViewsByPathPrefix(String sitename, String pathPrefix, PSDateRange range) throws PSAnalyticsProviderException, IPSGenericDao.LoadException, PSValidationException {
         notEmpty(sitename);
         notNull(range);
 
@@ -182,7 +184,7 @@ public class PSGoogleAnalyticsProviderQueryHandler implements IPSAnalyticsProvid
      * getVisitsViewsBySite( java.lang.String,
      * com.percussion.utils.date.PSDateRange)
      */
-    public List<IPSAnalyticsQueryResult> getVisitsViewsBySite(String sitename, PSDateRange range) throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
+    public List<IPSAnalyticsQueryResult> getVisitsViewsBySite(String sitename, PSDateRange range) throws PSAnalyticsProviderException, IPSGenericDao.LoadException, PSValidationException {
         notEmpty(sitename);
         notNull(range);
 
@@ -413,7 +415,7 @@ public class PSGoogleAnalyticsProviderQueryHandler implements IPSAnalyticsProvid
      * @throws PSAnalyticsProviderException on any error that occurs while
      *             executing the query.
      */
-    private Report executeQuery(String sitename, ReportRequest requestQuery) throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
+    private Report executeQuery(String sitename, ReportRequest requestQuery) throws PSAnalyticsProviderException, IPSGenericDao.LoadException, PSValidationException {
         // Get user ID and password
         PSAnalyticsProviderConfig config = providerService.loadConfig(false);
         if (config == null)
@@ -428,12 +430,13 @@ public class PSGoogleAnalyticsProviderQueryHandler implements IPSAnalyticsProvid
 
     }
 
-    private String getProfileId(String sitename) throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
+    private String getProfileId(String sitename) throws PSAnalyticsProviderException, IPSGenericDao.LoadException, PSValidationException {
         String profileId = providerService.getProfileId(sitename);
         if (profileId == null)
         {
-            throw new PSAnalyticsProviderException("No profile set for site <" + sitename + ">.",
-                    PSAnalyticsProviderException.CAUSETYPE.NO_PROFILE);
+            PSValidationErrorsBuilder builder = new PSValidationErrorsBuilder(this.getClass().getCanonicalName());
+            String msg= "No profile set for site <" + sitename + ">.";
+            builder.reject(CAUSETYPE.NO_PROFILE.toString(),msg ).throwIfInvalid();
         }
 
         return profileId;

@@ -517,7 +517,8 @@ public class PSClassGenerator
       }
       catch(Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
    }
 

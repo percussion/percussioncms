@@ -27,6 +27,8 @@ package com.percussion.preinstall;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.utils.io.PathUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Replace;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -52,6 +54,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class Main {
+
+    private static final Logger log = LogManager.getLogger(Main.class);
 
     public static String DISTRIBUTION_DIR = "distribution";
     public static final String PERC_JAVA_HOME = "perc.java.home";
@@ -203,7 +207,8 @@ public class Main {
 
             }
         }   catch(Exception ex){
-            ex.printStackTrace();
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(), ex);
             error=true;
         }
     }
@@ -307,7 +312,8 @@ public class Main {
         }
 
         catch(Exception ex){
-            ex.printStackTrace();
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(), ex);
             processCode=-2;
             error=true;
         }
@@ -362,7 +368,8 @@ public class Main {
                     }
                 });
             }catch (Exception e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
+                log.debug(e.getMessage(), e);
             }
 
             if(!topLevelNodeStringPresent.get()){

@@ -143,8 +143,9 @@ public class PSRegionTreeUtils
     public static boolean isLeaf(PSRegionNode node) {
         if (node instanceof PSAbstractRegion) {
             List<? extends PSRegionNode>  nodes = ((PSAbstractRegion) node).getChildren();
-            if (nodes != null &&  ! nodes.isEmpty() )
+            if (nodes != null &&  ! nodes.isEmpty() ) {
                 return false;
+            }
         }
         return true;
     }

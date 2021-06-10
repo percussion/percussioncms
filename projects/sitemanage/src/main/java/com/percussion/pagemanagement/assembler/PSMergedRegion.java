@@ -108,8 +108,12 @@ public class PSMergedRegion
 
     public String getRegionId()
     {
-        if (originalRegion == null) return null;
-        return originalRegion.getRegionId();
+        if (originalRegion == null) {
+            return null;
+        }
+
+            return originalRegion.getRegionId();
+
     }
     
     

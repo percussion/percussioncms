@@ -31,8 +31,11 @@ import com.percussion.security.PSEncryptor;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.util.PSSqlHelper;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 
 import java.io.File;
@@ -96,6 +99,7 @@ import java.util.StringTokenizer;
 
 public class PSExecSQLStmt extends PSAction
 {
+   private static final Logger log = LogManager.getLogger(PSExecSQLStmt.class);
    // see base class
    @Override
    public void execute() {
@@ -117,10 +121,13 @@ public class PSExecSQLStmt extends PSAction
          }
          String pw = props.getProperty("PWD");
          try {
-            pw = PSEncryptor.getInstance("AES", null).decrypt(pw);
+            pw = PSEncryptor.getInstance("AES",
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(pw);
          } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
-            pw = PSLegacyEncrypter.getInstance(null).decrypt(pw,
-                    PSJdbcDbmsDef.getPartOneKey(), null);
+            pw = PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(pw,
+                    PSJdbcDbmsDef.getPartOneKey(),null);
          }
          driver = dbmsDef.getDriver();
          PSLogger.logInfo("PSExecSQLStmt got DB driver: " + driver);
@@ -191,11 +198,14 @@ public class PSExecSQLStmt extends PSAction
          }
 
       } catch (FileNotFoundException e) {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       } catch (IOException e) {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       } catch (PSJdbcTableFactoryException e) {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 

@@ -47,8 +47,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSSiteQueue
 {
@@ -62,7 +62,9 @@ public class PSSiteQueue
     private static final String POUND = "#";
     private static final String SLASH = "/";
     
-    static Log ms_log = LogFactory.getLog(PSSiteQueue.class);
+
+    private static final Logger ms_log = LogManager.getLogger(PSSiteQueue.class);
+
     
     /**
      * The actual request that will result in spawning a thread.
@@ -74,8 +76,9 @@ public class PSSiteQueue
     public PSSiteQueue()
     {
     	
-    	if (this.notificationService == null)
-    		notificationService = (PSNotificationService) getWebApplicationContext().getBean("sys_notificationService");
+    	if (this.notificationService == null) {
+            notificationService = (PSNotificationService) getWebApplicationContext().getBean("sys_notificationService");
+        }
     		idService = (PSIdMapper) getWebApplicationContext().getBean("sys_idMapper");
     		
     	 notificationService.addListener(EventType.PAGE_DELETE, new IPSNotificationListener()
@@ -206,8 +209,9 @@ public class PSSiteQueue
      */
     public Map<String, Object> getRequestInfoMap()
     {
-        if (m_requestInfoMap == null)
+        if (m_requestInfoMap == null) {
             throw new IllegalStateException("The request info has not been set yet.");
+        }
         
         return m_requestInfoMap;
     }
@@ -219,11 +223,13 @@ public class PSSiteQueue
      */
     public void setRequestInfoMap()
     {
-        if (m_requestInfoMap != null)
+        if (m_requestInfoMap != null) {
             return;
+        }
         
-        if (!PSRequestInfo.isInited())
+        if (!PSRequestInfo.isInited()) {
             throw new IllegalStateException("The request info has not been initialized.");
+        }
         
         m_requestInfoMap = PSRequestInfo.copyRequestInfoMap();
         PSRequest request = (PSRequest) m_requestInfoMap.get(PSRequestInfo.KEY_PSREQUEST);
@@ -346,24 +352,27 @@ public class PSSiteQueue
     
     private boolean isMaxCountReached()
     {
-        if (m_maxImportCount < 0)
+        if (m_maxImportCount < 0) {
             return false;
+        }
         
         int currentCount = m_importedIds.size();
-        if (m_importingIds.size() != 0)
-            currentCount = currentCount + m_importingIds.size(); 
+        if (m_importingIds.size() != 0) {
+            currentCount = currentCount + m_importingIds.size();
+        }
 
         return currentCount >= m_maxImportCount;
     }
     
     private void logState()
     {
-        if(! ms_log.isDebugEnabled())
+        if(! ms_log.isDebugEnabled()) {
             return;
+        }
         
-        ms_log.debug("[getNextId] m_importingId: " + m_importingIds);
-        ms_log.debug("[getNextId] m_catalogedIds: " + m_catalogedIds.toString());
-        ms_log.debug("[getNextId] m_importedIds: " + m_importedIds.toString());
+        ms_log.debug("[getNextId] m_importingId: {}", m_importingIds);
+        ms_log.debug("[getNextId] m_catalogedIds: {}", m_catalogedIds.toString());
+        ms_log.debug("[getNextId] m_importedIds: {}", m_importedIds.toString());
     }
 
     public void addImportedId(Integer id)

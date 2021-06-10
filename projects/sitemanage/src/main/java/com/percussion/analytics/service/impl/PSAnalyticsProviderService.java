@@ -33,6 +33,8 @@ import com.percussion.analytics.service.impl.google.PSGoogleAnalyticsProviderHan
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
 import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
@@ -168,7 +170,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
     * @see com.percussion.analytics.service.IPSAnalyticsProviderService#getProfiles(java.lang.String, java.lang.String)
     */
    public Map<String, String> getProfiles(String uid, String password)
-           throws PSAnalyticsProviderException, IPSGenericDao.LoadException {
+           throws PSAnalyticsProviderException, IPSGenericDao.LoadException,PSValidationException {
       if(StringUtils.isBlank(uid) || StringUtils.isBlank(password))
       {
          //one of the creds is null, try to use stored cred
@@ -182,7 +184,8 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
          }
          else
          {
-            throw new PSAnalyticsProviderException("User id and password are both required.");
+             PSValidationErrorsBuilder builder = new PSValidationErrorsBuilder(this.getClass().getCanonicalName());
+             builder.reject(PSAnalyticsProviderException.CAUSETYPE.INVALID_CREDS.toString(), "User id and password are both required.").throwIfInvalid();
          }
       }
       return handler.getProfiles(uid, password);
@@ -191,7 +194,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
    /* (non-Javadoc)
     * @see com.percussion.analytics.service.IPSAnalyticsProviderService#testConnection(java.lang.String, java.lang.String)
     */
-   public void testConnection(String uid, String password) throws PSAnalyticsProviderException, IPSGenericDao.LoadException, IPSGenericDao.SaveException {
+   public void testConnection(String uid, String password) throws PSAnalyticsProviderException, IPSGenericDao.LoadException, IPSGenericDao.SaveException, PSValidationException {
       if(StringUtils.isBlank(uid) || StringUtils.isBlank(password))
       {
          //one of the creds is null, try to use stored cred
@@ -205,7 +208,8 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
          }
          else
          {
-            throw new PSAnalyticsProviderException("User id and keyfile are both required.");
+             PSValidationErrorsBuilder builder = new PSValidationErrorsBuilder(this.getClass().getCanonicalName());
+             builder.reject(PSAnalyticsProviderException.CAUSETYPE.INVALID_CREDS.toString(), "User id and keyfile both required.").throwIfInvalid();
          }
       } 
       else

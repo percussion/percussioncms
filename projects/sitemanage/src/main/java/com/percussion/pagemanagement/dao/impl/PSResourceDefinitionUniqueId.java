@@ -102,8 +102,9 @@ public class PSResourceDefinitionUniqueId {
     
     
     public static void validateId(String name, String id) throws PSResourceDefinitionInvalidIdException {
-        if (isBlank(id))
+        if (isBlank(id)) {
             throw new PSResourceDefinitionInvalidIdException(name + " cannot be blank");
+        }
         if( contains(id, ".") ) {
             throw new PSResourceDefinitionInvalidIdException(name 
                     + " cannot contain " 

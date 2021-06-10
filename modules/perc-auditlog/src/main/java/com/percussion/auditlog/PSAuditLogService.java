@@ -32,11 +32,15 @@ import com.percussion.auditlog.util.AuditPropertyLoader;
 import com.percussion.auditlog.util.FileCreator;
 import com.percussion.utils.io.PathUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Properties;
 
 public class PSAuditLogService  implements IPSAuditLogService {
+
+    private static final Logger log = LogManager.getLogger(PSAuditLogService.class);
 
     private static AuditMiddleware middleware;
     private static Properties properties;
@@ -118,7 +122,8 @@ public class PSAuditLogService  implements IPSAuditLogService {
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
 
 
@@ -134,7 +139,8 @@ public class PSAuditLogService  implements IPSAuditLogService {
             properties = AuditPropertyLoader.loadProperties(PathUtils.getRxDir(null)+ File.separator+CONFIG_FILE_BASE);
             middleware.setProperties(properties);
         }catch (Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
 
     }

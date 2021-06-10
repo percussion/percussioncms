@@ -4,6 +4,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -20,7 +22,6 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 /**
  * This Java class can run on command line in main method
@@ -42,7 +43,7 @@ public class SSLCertificateChecker {
     private  boolean messagePostedFlag = false;
     private StringBuffer  messageBuffer = null;
 
-    static Logger log = Logger.getLogger(SSLCertificateChecker.class.getName());
+    private static final Logger log = LogManager.getLogger(SSLCertificateChecker.class.getName());
 
     public static void main(String[] args)  {
         if (args.length <2){
@@ -198,13 +199,15 @@ public class SSLCertificateChecker {
                 httpClient.execute(post);
 
             } catch (Exception ex) {
-                ex.printStackTrace();
+                log.error(ex.getMessage());
+                log.debug(ex.getMessage(), ex);
                 // handle exception here
             } finally {
                 try {
                     httpClient.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error(e.getMessage());
+                    log.debug(e.getMessage(), e);
                 }
                 messagePostedFlag = true;
                 messageBuffer = null;

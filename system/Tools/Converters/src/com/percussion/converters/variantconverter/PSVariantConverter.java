@@ -54,6 +54,8 @@ import java.util.Properties;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -71,6 +73,8 @@ import org.xml.sax.SAXException;
  */
 public class PSVariantConverter
 {
+
+   private static final Logger log = LogManager.getLogger(PSVariantConverter.class);
 
    /**
     * Updates the regular slot relationships by replacing the old variant id
@@ -132,7 +136,8 @@ public class PSVariantConverter
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       finally
       {
@@ -249,7 +254,8 @@ public class PSVariantConverter
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       System.exit(-1);
    }
@@ -392,18 +398,21 @@ public class PSVariantConverter
       }
       catch (FileNotFoundException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          exitProgram("Unable to locate file: " + DEFAULT_PROPERTIES_FILE);
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          exitProgram("Error loading properties from file ("
                + DEFAULT_PROPERTIES_FILE + "): " + e.toString());
       }
       catch (PSRemoteException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          exitProgram("Error loading the content type for the given " +
                 "property contentType");
       }
@@ -430,18 +439,21 @@ public class PSVariantConverter
       }
       catch (FileNotFoundException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          exitProgram("Unable to locate file: " + VARIANTS_CONVERTER_XSL);
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          exitProgram("Error loading xsl file (" + VARIANTS_CONVERTER_XSL
                + "): " + e.toString());
       }
       catch (SAXException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          exitProgram("Error parsing xsl file (" + VARIANTS_CONVERTER_XSL
                + "): " + e.toString());
       }
@@ -479,7 +491,8 @@ public class PSVariantConverter
          }
          catch (Exception e)
          {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             exitProgram("Error - caught unknown exception: " + e.getMessage());
          }
          
@@ -594,7 +607,8 @@ public class PSVariantConverter
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
    
@@ -628,7 +642,8 @@ public class PSVariantConverter
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       finally
       {

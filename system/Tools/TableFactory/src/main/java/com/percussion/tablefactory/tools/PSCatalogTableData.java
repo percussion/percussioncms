@@ -26,6 +26,8 @@ package com.percussion.tablefactory.tools;
 import com.percussion.tablefactory.*;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -42,6 +44,9 @@ import java.util.*;
  */ 
 public class PSCatalogTableData
 {
+
+   private static final Logger log = LogManager.getLogger(PSCatalogTableData.class);
+
    /**
     * Creates a <code>PSJdbcDbmsDef</code> by loading the specified properties 
     * file.  Assumes that the password in the properties file is encrypted.
@@ -248,7 +253,8 @@ public class PSCatalogTableData
       } catch (Exception e)
       {
          System.out.println( "Unexpected error: " );
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          System.exit( 1 );
       } finally
       {
@@ -449,7 +455,8 @@ public class PSCatalogTableData
          System.exit(0);
       }
       catch (Exception e) {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 

@@ -35,6 +35,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.types.Parameter;
 import org.apache.tools.ant.types.selectors.BaseExtendSelector;
 import org.apache.tools.ant.types.selectors.SelectorUtils;
@@ -46,7 +48,10 @@ import org.apache.tools.ant.types.selectors.SelectorUtils;
  * custom selector definition supported.
  */
 public class PSJunitFileSelector extends BaseExtendSelector
-{   
+{
+
+   private static final Logger log = LogManager.getLogger(PSJunitFileSelector.class);
+
    /**
     * Selects the file based on the filters specified.  See class header and
     * {@link org.apache.tools.ant.types.selectors.BaseSelector base class}
@@ -104,13 +109,15 @@ public class PSJunitFileSelector extends BaseExtendSelector
       }
       catch (NoClassDefFoundError e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          setError("Failed to load test class: " + className + ", filename: " + 
             filename + ", error: " + e.getLocalizedMessage());         
       }
       catch (ClassNotFoundException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          setError("Failed to load test class: " + className + ", filename: " + 
             filename + ", error: " + e.getLocalizedMessage());
       }
@@ -446,7 +453,8 @@ public class PSJunitFileSelector extends BaseExtendSelector
             catch (MalformedURLException e)
             {
                // ignore bad entries (that's what Java does)
-               e.printStackTrace();
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
             }
          }
       }

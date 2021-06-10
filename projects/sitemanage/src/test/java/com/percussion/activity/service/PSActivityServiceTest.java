@@ -37,11 +37,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.cactus.ServletTestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 @Category(IntegrationTest.class)
 public class PSActivityServiceTest extends ServletTestCase
 {
+
+    private static final Logger log = LogManager.getLogger(PSActivityServiceTest.class);
     private boolean hasStarted = false;
     private IPSActivityService activityService;
     
@@ -146,7 +150,8 @@ public class PSActivityServiceTest extends ServletTestCase
        }
        catch (Exception e)
        {
-          e.printStackTrace();
+           log.error(e.getMessage());
+           log.debug(e.getMessage(), e);
        }
     }
     

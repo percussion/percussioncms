@@ -24,6 +24,9 @@
 
 package com.percussion.tablefactory;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -40,6 +43,9 @@ import java.util.StringTokenizer;
 */
 public class RxTableInstallLogic
 {
+
+   private static final Logger log = LogManager.getLogger(RxTableInstallLogic.class);
+
    /**
    * Role delimiter (in role list)
    */
@@ -261,11 +267,13 @@ public class RxTableInstallLogic
       }
       catch(FileNotFoundException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       catch(IOException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
 
       String temp = properties.getProperty("DEBUG", "false");

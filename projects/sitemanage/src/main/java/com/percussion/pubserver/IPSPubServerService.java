@@ -29,6 +29,7 @@ import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSPubInfo;
 import com.percussion.utils.guid.IPSGuid;
 
@@ -81,7 +82,7 @@ public interface IPSPubServerService
      * @throws PSPubServerServiceException, if the supplied object is invalid.
      */
      PSPublishServerInfo createPubServer(String siteId, String serverName, PSPublishServerInfo pubServerInfo)
-             throws PSPubServerServiceException, PSDataServiceException, PSNotFoundException;
+             throws PSPubServerServiceException,  PSNotFoundException, PSValidationException;
 
     /**
      * Updates a publish server with the provided name.

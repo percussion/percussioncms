@@ -165,9 +165,10 @@ public class PSRoleService implements IPSRoleService
         String name = strWrapper.getValue();
         
         checkRole(name);
-        if (PSCollectionUtils.containsIgnoringCase(SYSTEM_ROLES, name))
+        if (PSCollectionUtils.containsIgnoringCase(SYSTEM_ROLES, name)) {
             PSParameterValidationUtils.validateParameters("delete").rejectField("name", "Cannot delete system role",
                     name).throwIfInvalid();
+        }
         
         removeUsersFromRole(name, find(name).getUsers());
                 
@@ -551,11 +552,13 @@ public class PSRoleService implements IPSRoleService
      * @param homepage the homepage to set if <code>null</code> or not a valid home page, then set to Dashboard.
      */
     private void setHomepage(String roleName, String homepage) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException {
-    	if(StringUtils.isBlank(roleName))
-    		throw new IllegalArgumentException("roleName must not be blank");
+    	if(StringUtils.isBlank(roleName)) {
+            throw new IllegalArgumentException("roleName must not be blank");
+        }
     	if(StringUtils.isBlank(homepage) || !(homepage.equals(HOMEPAGE_TYPE_DASHBOARD) || homepage.equals(HOMEPAGE_TYPE_EDITOR) || 
-    	        homepage.equals(HOMEPAGE_TYPE_HOME)))
-    		homepage = HOMEPAGE_TYPE_DASHBOARD;
+    	        homepage.equals(HOMEPAGE_TYPE_HOME))) {
+            homepage = HOMEPAGE_TYPE_DASHBOARD;
+        }
     	String key = META_DATA_HOMEPAGE_PREFIX + roleName;
     	PSMetadata md = mdService.find(key);
     	if(md == null)
@@ -575,8 +578,9 @@ public class PSRoleService implements IPSRoleService
      * @return String never <code>null</code>, if it is not set, returns "Dashboard".
      */
     private String getHomepage(String roleName) throws IPSGenericDao.LoadException {
-    	if(StringUtils.isBlank(roleName))
-    		throw new IllegalArgumentException("roleName must not be blank");
+    	if(StringUtils.isBlank(roleName)) {
+            throw new IllegalArgumentException("roleName must not be blank");
+        }
     	String key = META_DATA_HOMEPAGE_PREFIX + roleName;
     	PSMetadata md = mdService.find(key);
     	return (md == null? HOMEPAGE_TYPE_DASHBOARD : md.getData());

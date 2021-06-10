@@ -124,10 +124,12 @@ public class PSRegionResult {
     public String toString()
     {
         if (getErrorCause() != null) {
-            if(!publishMode)
+            if(!publishMode) {
                 return "Error Displaying Contents. See logs for more details";
-            else
+            }
+            else {
                 return "";
+            }
         }
         return result;
     }

@@ -24,11 +24,16 @@
 
 package com.percussion.wrapper;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Properties;
 
 public class JettyStartUtils {
+
+    private static final Logger log = LogManager.getLogger(JettyStartUtils.class);
 
     public static final String USAGE_RESOURCE_PATH = "usage.txt";
     private static final String JAVA_PROPS_PATH = "java.properties";
@@ -98,7 +103,8 @@ public class JettyStartUtils {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
+                log.debug(e.getMessage(), e);
             }
 
         return pid;
@@ -128,7 +134,8 @@ public class JettyStartUtils {
         try (InputStream input = new FileInputStream(file)) {
             prop.load(input);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(), ex);
             System.exit(1);
         }
         return prop;
@@ -168,7 +175,8 @@ public class JettyStartUtils {
             final File f = new File(PSServiceWrapper.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
             return locateRxDir(f);
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             System.exit(1);
         }
         return null;
@@ -216,7 +224,8 @@ public class JettyStartUtils {
     public static void debug(String s, Throwable t, Object... args) {
         if (debugEnabled) {
             logOut.println(String.format(s, args));
-            t.printStackTrace(logErr);
+            log.error(logErr);
+            log.debug(logErr);
         }
     }
 
@@ -226,7 +235,8 @@ public class JettyStartUtils {
 
     public static void error(String s, Throwable t, Object... args) {
         logErr.println(String.format(s, args));
-        t.printStackTrace(logErr);
+        log.error(logErr);
+        log.debug(logErr);
     }
 
     public static void info(String s, Object... args) {

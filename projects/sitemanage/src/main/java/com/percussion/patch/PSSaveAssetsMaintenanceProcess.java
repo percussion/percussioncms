@@ -42,7 +42,6 @@ import com.percussion.design.objectstore.PSExtensionCallSet;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldTranslation;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.impl.PSItemWorkflowService;
 import com.percussion.linkmanagement.service.IPSManagedLinkService;
@@ -63,6 +62,7 @@ import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.share.dao.impl.PSIdMapper;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.PSJsoupPreserver;
 import com.percussion.utils.io.PathUtils;
@@ -72,6 +72,13 @@ import com.percussion.utils.types.PSPair;
 import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.system.IPSSystemWs;
 import com.percussion.webservices.system.PSSystemWsLocator;
+import org.apache.commons.lang.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -87,13 +94,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 /**
  * Maintenance task to save all the assets related to managed links
@@ -103,7 +103,7 @@ import org.jsoup.select.Elements;
 public class PSSaveAssetsMaintenanceProcess implements Runnable,
         IPSMaintenanceProcess, IPSNotificationListener {
 
-    public static Log log = LogFactory.getLog(PSSaveAssetsMaintenanceProcess.class);
+    private static final Logger log = LogManager.getLogger(PSSaveAssetsMaintenanceProcess.class);
     static final String MAINT_PROC_NAME = PSSaveAssetsMaintenanceProcess.class.getName();
     private IPSMaintenanceManager maintenanceManager;
     private IPSItemWorkflowService itemWorkflowService;
@@ -159,8 +159,9 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
      */
     private void notifyComplete()
     {
-        if (notificationService != null)
+        if (notificationService != null) {
             notificationService.notifyEvent(new PSNotificationEvent(EventType.SAVE_ASSETS_PROCESS_COMPLETE, null));
+        }
     }
     
     /**
@@ -209,7 +210,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             Properties repprops = PSJdbcDbmsDef.loadRxRepositoryProperties(PSServer.getRxDir().getAbsolutePath());
             dbmsDef = new PSJdbcDbmsDef(repprops);
             connection = RxLogTables.createConnection(repprops);
-            log.debug("Connection Made: " + connection.toString());
+            log.debug("Connection Made: {}" , connection.toString());
         }
         catch(Exception e)
         {
@@ -232,14 +233,16 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             }
             catch(SQLException e)
             {
-                e.printStackTrace();
+                log.error(e.getMessage());
+                log.debug(e.getMessage(), e);
                 log.warn(e.getMessage());
                 return false;
             }
             conn = null; 
         }
-        else
+        else {
             log.warn("Connection already closed");
+        }
         return true;
     }
 
@@ -260,8 +263,9 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         try {
             result = stat.executeQuery(sqlStat);
         } catch (Exception e) {
-            e.printStackTrace();
-            log.error("executeSqlStatement : " + e.getMessage());               
+
+            log.error("executeSqlStatement : {}" , e.getMessage());
+            log.debug(e.getMessage(),e);
         } 
         return result;
     }
@@ -277,8 +281,9 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         File readFile = new File(PathUtils.getRxDir(null),assetsReadFilePath);
         if(readFile.exists())
             loadFailedAssetsFromFile(readFile);
-        else if(!logFile.exists())
+        else if(!logFile.exists()) {
             loadAssetsFromDB();
+        }
         else
         {
             log.info("Found previous assets file not processing assets.");
@@ -331,12 +336,13 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
            
             rawSelectStat = conn.createStatement();
             idresult = executeSqlStatement(rawSelectStat,typeIdSelect);
-            if (idresult != null)
-                addAssets(getAssetFromResult(idresult,"CONTENTID"));
+            if (idresult != null) {
+                addAssets(getAssetFromResult(idresult, "CONTENTID"));
+            }
         }
         catch(Exception e)
         {
-            log.error("Exception loading assets for type "+ typeName);
+            log.error("Exception loading assets for type {}", typeName);
         }
         finally
         {
@@ -344,7 +350,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             try{rawSelectStat.close();} catch(Exception e){}
             try{conn.close();} catch(Exception e){}
         }
-        log.info("Finished Loading Assets for type "+ typeName);
+        log.info("Finished Loading Assets for type {}", typeName);
         
     }
     
@@ -367,11 +373,13 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             {
                 ItemWrapper asset = it.next();
                 if(asset.getStatus() == ItemWrapper.STATUS.SUCCESS ||
-                        asset.getStatus() == ItemWrapper.STATUS.NOTQUALIFIED)
+                        asset.getStatus() == ItemWrapper.STATUS.NOTQUALIFIED) {
                     it.remove();
+                }
             }
         } catch (Exception e) {
-            log.error("Error Reading Log File : " + e.getMessage(), e);   
+            log.error("Error Reading Log File : {}" , e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
     
@@ -402,13 +410,15 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         {
             try
             {
-                if(resultSet!=null)
+                if(resultSet!=null) {
                     resultSet.close();
+                }
             } catch(Exception e){}
             try
             {
-                if(stat!=null)
+                if(stat!=null) {
                     stat.close();
+                }
             } catch(Exception e){}
             closeConnection();
         }
@@ -443,8 +453,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         }
         catch(Exception e)
         {
-            e.printStackTrace();
             log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         return list;
     }
@@ -483,8 +493,9 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             if(asset.getFields().get(field)!=null)
             {
                 prResult = processLinks(asset.getFields().get(field).toString());
-                if (prResult.getFirst())
-                    asset.getFields().put(field,prResult.getSecond());
+                if (prResult.getFirst()) {
+                    asset.getFields().put(field, prResult.getSecond());
+                }
                 qualified |= prResult.getFirst();
             }
         }
@@ -567,8 +578,9 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         Elements anchors = doc.select(IPSManagedLinkService.A_HREF + ":not(a["+IPSManagedLinkService.PERC_LINKID_ATTR+"])");
         //get all img links with an src attr but that does not have a perc-linkid attr
         Elements imgs = doc.select(IPSManagedLinkService.IMG_SRC + ":not(img["+IPSManagedLinkService.PERC_LINKID_ATTR+"])");
-        if(anchors.isEmpty() && imgs.isEmpty())
+        if(anchors.isEmpty() && imgs.isEmpty()) {
             hasUnmanagedLinks = false;
+        }
         else
         {
             hasUnmanagedLinks = qualifyLinkPaths(anchors, imgs);
@@ -638,16 +650,19 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         {
             //checkout if asset is worth checking out
             //if checked out by someone force checkout...
-            if(itemWorkflowService.isCheckedOutToSomeoneElse(guid))
-              itemWorkflowService.forceCheckOut(guid);
-            else
+            if(itemWorkflowService.isCheckedOutToSomeoneElse(guid)) {
+                itemWorkflowService.forceCheckOut(guid);
+            }
+            else {
                 itemWorkflowService.checkOut(guid);
+            }
             PSAsset assetnew = assetService.load(guid);
             assetnew.setFields(asset.getFields());
             asset = assetnew;
         }
-        else
+        else {
             asset = null;
+        }
         return asset;
     }
     
@@ -689,8 +704,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         }
         catch(Exception e)
         {
-            e.printStackTrace();
             log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         return list;
     }
@@ -710,8 +725,9 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
      */
     private void addAssets(Set<ItemWrapper> assets)
     {
-        for(ItemWrapper asset : assets)
+        for(ItemWrapper asset : assets) {
             assetListSet.add(asset);
+        }
     }
     
     /**
@@ -737,7 +753,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         {
             file.mkdirs();
         }
-        log.info("Logging Assets to " + assetsLogFilePath);
+        log.info("Logging Assets to {}" , assetsLogFilePath);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writeValue(new File(PathUtils.getRxDir(null),assetsLogFilePath), assetListSet);
     }
@@ -749,7 +765,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         {
             file.mkdirs();
         }
-        log.info("Logging Pages to " + pagesLogFilePath);
+        log.info("Logging Pages to {}" , pagesLogFilePath);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writeValue(new File(PathUtils.getRxDir(null),pagesLogFilePath), qualifiedPages);
     }
@@ -764,16 +780,18 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             log.info("Started asset processing.");
             //load the assets into the asset list
             loadAssets();
-            if(!assetListSet.isEmpty())
+            if(!assetListSet.isEmpty()) {
                 logAssets();
+            }
             int assetCount =0;
             for(ItemWrapper assetW : assetListSet)
             { 
                 try
                 {
                     PSAsset asset = checkOutAndLoadAsset(assetW.getId());
-                    if(asset == null)
+                    if(asset == null) {
                         assetW.setProcess(ItemWrapper.STATUS.NOTQUALIFIED);
+                    }
                     else
                     {
                         saveAsset(asset);
@@ -782,21 +800,22 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
                 }
                 catch(Exception e)
                 {
-                    log.error("Failed to process asset with id: " + assetW.getId() + " due to : " 
-                            + e.getMessage(), e);
+                    log.error("Failed to process asset with id: {}  due to : {}" , assetW.getId(), e.getMessage());
+                    log.debug(e.getMessage(),e);
                     assetW.setProcess(ItemWrapper.STATUS.FAIL);
                 }
                 assetCount += 1;
                 if(assetCount%250 == 0)
                 {
-                    log.info("Processed " + assetCount + " assets out of " + assetListSet.size());
+                    log.info("Processed {}  assets out of {}", assetCount ,  assetListSet.size());
                     try{logAssets();} catch (Exception e) {log.warn("Trouble logging assets." , e);}
                 }
             }
         }
         catch(Exception e)
         {
-            log.error("Could not run asset fix:" , e);
+            log.error("Could not run asset fix: {}" , e.getMessage());
+            log.debug(e.getMessage(),e);
         }
         
         //log state after having run through all ids if anything in the assetList 
@@ -945,13 +964,15 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             {
                 ItemWrapper page = it.next();
                 if (page.getStatus().equals(ItemWrapper.STATUS.SUCCESS)
-                        || page.getStatus().equals(ItemWrapper.STATUS.NOTQUALIFIED))
+                        || page.getStatus().equals(ItemWrapper.STATUS.NOTQUALIFIED)) {
                     it.remove();
+                }
             }
         } 
         catch (Exception e) 
         {
-            log.error("Error Reading Pages Log File : " + e.getMessage(), e);
+            log.error("Error Reading Pages Log File : {}" , e.getMessage());
+            log.debug(e.getMessage(),e);
         }
     }
 
@@ -975,19 +996,22 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             {
                 failed = true;
                 qpage.setProcess(ItemWrapper.STATUS.FAIL);
-                log.error("Failed to load and save the page with ID " + guid.toString(), e);
+                log.error("Failed to load and save the page with ID {}" , guid);
+                log.debug(e.getMessage(),e);
             }
             
             //Lets try to check in the page here.
             try
             {
                 itemWorkflowService.checkIn(guid);
-                if(!failed)
+                if(!failed) {
                     qpage.setProcess(ItemWrapper.STATUS.SUCCESS);
+                }
             }
             catch(Exception e)
             {
-                log.error("Failed to check in the page after processing with ID:" + guid.toString(), e);
+                log.error("Failed to check in the page after processing with ID:{}" , guid);
+                log.debug(e.getMessage(),e);
             }
         }
     }
@@ -1051,8 +1075,9 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
      */
     @Override
     public void notifyEvent(PSNotificationEvent notification) {
-        if(hasRun)
+        if(hasRun) {
             return;
+        }
         
         if (EventType.CORE_SERVER_POST_INIT == notification.getType())
         {
@@ -1067,8 +1092,9 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         if(EventType.SEARCH_INDEX_STATUS_CHANGE == notification.getType())
         {
             PSSearchIndexEventQueue indexQueue = PSSearchIndexEventQueue.getInstance();
-            if(indexQueue.getStatus().equals("Running"))
+            if(indexQueue.getStatus().equals("Running")) {
                 indexStarted = true;
+            }
         }
             
         if(coreStarted && indexStarted && packageStarted)

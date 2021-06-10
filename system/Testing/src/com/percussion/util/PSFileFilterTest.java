@@ -30,6 +30,8 @@ import java.io.RandomAccessFile;
 
 
 import com.percussion.utils.tools.PSPatternMatcher;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -43,6 +45,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class PSFileFilterTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSFileFilterTest.class);
 
    private File m_testDir;
    private String[] m_fileNames;
@@ -142,7 +146,8 @@ public class PSFileFilterTest
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 

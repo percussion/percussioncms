@@ -50,8 +50,8 @@ import java.util.List;
 import javax.jcr.RepositoryException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Pre exit to delete the workflow associations with the content types when a
@@ -77,7 +77,7 @@ public class PSExitDeleteWfCtypeAssociations implements IPSRequestPreProcessor
          String msg = "workflowid parameter is missing, skipping "
                + "the deletion of workflow content type associations.";
          request.printTraceMessage(msg);
-         ms_log.warn(msg);
+         log.warn(msg);
          return;
       }
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -94,7 +94,9 @@ public class PSExitDeleteWfCtypeAssociations implements IPSRequestPreProcessor
          String msg = "Failed to delete the workflow({0}) "
                + "association with the content types.";
          Object[] args = { wfGuid.toString() };
-         ms_log.warn(MessageFormat.format(msg, args), e);
+         log.warn(MessageFormat.format(msg, args), e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
 
    }
@@ -128,11 +130,12 @@ public class PSExitDeleteWfCtypeAssociations implements IPSRequestPreProcessor
          }
          catch (Exception e)
          {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             String msg = "Failed to delete the workflow({0}) "
                   + "association with the content type ({1}).";
             Object[] args = { wfGuid.toString(), ctGuid.toString() };
-            ms_log.warn(MessageFormat.format(msg, args), e);
+            log.warn(MessageFormat.format(msg, args), e);
          }
       }
 
@@ -151,7 +154,6 @@ public class PSExitDeleteWfCtypeAssociations implements IPSRequestPreProcessor
    /**
     * Reference to log for this class
     */
-   private final static Log ms_log = LogFactory
-         .getLog(PSExitDeleteWfCtypeAssociations.class);
+   private final static Logger log = LogManager.getLogger(PSExitDeleteWfCtypeAssociations.class);
 
 }

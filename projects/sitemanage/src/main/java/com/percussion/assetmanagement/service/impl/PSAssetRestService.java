@@ -215,11 +215,11 @@ public class PSAssetRestService
     @Path("/updateAssetWidgetRelationship")
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship awRel) 
+    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSValidationException,WebApplicationException
     {
         try {
             return assetService.updateAssetWidgetRelationship(awRel);
-        } catch (PSAssetServiceException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException | PSValidationException e) {
+        } catch (PSAssetServiceException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -228,12 +228,12 @@ public class PSAssetRestService
     @Path("/clearAssetWidgetRelationship")
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public PSAssetWidgetRelationship deleteAssetWidgetRelationship(PSAssetWidgetRelationship awRel) 
+    public PSAssetWidgetRelationship deleteAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSValidationException,WebApplicationException
     {
 
         try {
             assetService.clearAssetWidgetRelationship(awRel);
-        } catch (PSAssetServiceException | PSValidationException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
+        } catch (PSAssetServiceException |  IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
             throw new WebApplicationException(e.getMessage());
         }
         return awRel;
@@ -561,7 +561,7 @@ public class PSAssetRestService
     @GET
     @Path("/validateDelete/{id}")
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public PSNoContent validateDelete(@PathParam(PSRestServicePathConstants.ID_PATH_PARAM) String id)
+    public PSNoContent validateDelete(@PathParam(PSRestServicePathConstants.ID_PATH_PARAM) String id) throws PSValidationException,WebApplicationException
     {
         try {
             String opName = "validateDelete";
@@ -573,7 +573,7 @@ public class PSAssetRestService
             PSNoContent noContent = new PSNoContent(opName);
             noContent.setResult("SUCCESS");
             return noContent;
-        } catch (PSValidationException | IPSItemWorkflowService.PSItemWorkflowServiceException | PSNotFoundException e) {
+        } catch (IPSItemWorkflowService.PSItemWorkflowServiceException | PSNotFoundException e) {
            throw new WebApplicationException(e);
         }
     }

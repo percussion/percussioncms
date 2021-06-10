@@ -27,6 +27,9 @@ import com.percussion.test.io.IOTools;
 import com.percussion.test.io.IOTools;
 import com.percussion.test.io.LogSink;
 import com.percussion.util.PSURLEncoder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -46,6 +49,8 @@ import java.io.OutputStream;
  */
 public class HttpInteractive implements LogSink
 {
+
+   private static final Logger log = LogManager.getLogger(HttpInteractive.class);
    /**
     * The main entry point.
     */
@@ -66,13 +71,15 @@ public class HttpInteractive implements LogSink
             }
             catch (Throwable t)
             {
-               t.printStackTrace();
+               log.error(t.getMessage());
+               log.debug(t.getMessage(), t);
             }
          } while (again);
       }
       catch (Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
       System.err.println("Finished");
    }

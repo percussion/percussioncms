@@ -29,6 +29,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -37,6 +39,9 @@ import com.percussion.share.test.PSRestTestCase;
 
 public class PSAsyncJobStatusRestServiceTest extends PSRestTestCase<PSAsyncJobStatusRestClient>
 {
+
+    private static final Logger log = LogManager.getLogger(PSAsyncJobStatusRestServiceTest.class);
+
     @Override
     protected PSAsyncJobStatusRestClient getRestClient(@SuppressWarnings("unused")
     String baseUrl)
@@ -66,7 +71,8 @@ public class PSAsyncJobStatusRestServiceTest extends PSRestTestCase<PSAsyncJobSt
           }
           catch (InterruptedException e)
           {
-              e.printStackTrace();
+              log.error(e.getMessage());
+              log.debug(e.getMessage(), e);
           }
       }
       assertEquals(100, jobStatus.getStatus().intValue());

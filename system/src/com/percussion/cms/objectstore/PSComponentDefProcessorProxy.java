@@ -29,6 +29,8 @@ import com.percussion.util.PSRemoteRequester;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Element;
 
 /**
@@ -39,6 +41,8 @@ import org.w3c.dom.Element;
  */
 public class PSComponentDefProcessorProxy extends PSProcessorProxy
 {
+
+   private static final Logger log = LogManager.getLogger(PSComponentDefProcessorProxy.class);
 
    /**
     * Creates a proxy for a specific type of processor. Simply delegates to the
@@ -151,7 +155,8 @@ public class PSComponentDefProcessorProxy extends PSProcessorProxy
       }
       catch (Throwable ex)
       {
-         ex.printStackTrace();
+         log.error(ex.getMessage());
+         log.debug(ex.getMessage(), ex);
       }     
    }
 
@@ -219,8 +224,8 @@ public class PSComponentDefProcessorProxy extends PSProcessorProxy
       }
       catch (PSCmsException e)
       {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
           
       return proxy;

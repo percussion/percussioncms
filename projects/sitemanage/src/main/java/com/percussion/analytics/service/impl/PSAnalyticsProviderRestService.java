@@ -29,6 +29,7 @@ import com.percussion.analytics.error.PSAnalyticsProviderException.CAUSETYPE;
 import com.percussion.analytics.service.IPSAnalyticsProviderService;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSGAEntries;
+import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -71,8 +72,7 @@ public class PSAnalyticsProviderRestService
     @GET
     @Path("/profiles")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSGAEntries getProfiles() throws PSAnalyticsProviderException
-    {
+    public PSGAEntries getProfiles() throws PSAnalyticsProviderException, PSValidationException {
         try {
             PSGAEntries result = new PSGAEntries();
             result.setEntries(providerService.getProfiles(null, null));
@@ -94,9 +94,9 @@ public class PSAnalyticsProviderRestService
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Path("/testConnection/{uid}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public void testConnection(@PathParam(value = "uid") String uid, @Multipart(value = "file") Attachment attachment)
-            throws PSAnalyticsProviderException
-    {
+            throws PSAnalyticsProviderException, PSValidationException {
         try {
             String creds = null;
             try {

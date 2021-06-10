@@ -235,8 +235,8 @@
             $.each(config, function(key, value){
 
               // Checks to ensure that a valid URL has been entered
-              var urlregex = new RegExp("^(http:\/\/|https:\/\/){1}((www\.){1}([0-9A-Za-z]+\.)|(plus\.google\.){1})");
-              urlValid = urlregex.test(value.socialLink);
+              var urlregex = new RegExp("^(http:\/\/|https:\/\/){1}((www\.)?([0-9A-Za-z]+\.)|(plus\.google\.){1})");
+              var urlValid = urlregex.test(value.socialLink);
 
               if( data.buttonType == 'page' && value.enableButton === true && urlValid === false  ) {
                 invalid = true;

@@ -152,25 +152,6 @@
         <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
 
         <if>
-            <available file="${install.dir}" type="dir"/>
-            <then>
-                <echo>Fixing line endings in ${install.dir}...</echo>
-                <fixcrlf srcdir="${install.dir}"  preservelastmodified="true">
-                    <patternset refid="text.files"/>
-                </fixcrlf>
-            </then>
-        </if>
-
-
-        <echo>Fixing executable file permissions...</echo>
-        <chmod failonerror="false" verbose="true" perm="ugo+rx">
-            <fileset dir="${install.dir}">
-                <include name="**/*.sh"/>
-                <include name="**/*.bin"/>
-            </fileset>
-        </chmod>
-
-        <if>
             <istrue value="${install.prod.dts}"/>
             <then>
                 <echo>Fixing line endings in ${install.dir}...</echo>
@@ -279,26 +260,29 @@
                 </fileset>
             </copy>
 
-
             <if>
                 <and>
+                    <!-- Figure out if upgrading from 5.3 or from later versions based on that create new Server.xml -->
                     <available file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml"/>
                     <not>
                         <available file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml.5.3"/>
+                    </not>
+                    <not>
+                        <resourcecontains resource="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" substring="${http.SSLEnabled}" />
                     </not>
                     <equals arg1="@{upgrade}" arg2="true"/>
                 </and>
                 <then>
                     <echo>RENAMING SERVER XML to 5.3..</echo>
                     <copy file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" tofile="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml.5.3" overwrite="false" />
+                    <echo>Create New SERVER XML</echo>
+                    <copy verbose="true" todir="${install.dir}${staging.dir}/Deployment/Server/conf">
+                        <fileset dir="${install.src}/Deployment/Server/conf/">
+                            <include name="server.xml"/>
+                        </fileset>
+                    </copy>
                 </then>
             </if>
-
-            <copy verbose="true" todir="${install.dir}${staging.dir}/Deployment/Server/conf">
-                <fileset dir="${install.src}/Deployment/Server/conf/">
-                    <include name="server.xml"/>
-                </fileset>
-            </copy>
 
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/conf/Catalina/localhost/perc-caching.xml"/>
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/conf/Catalina/localhost/perc-comments-services.xml"/>
@@ -311,14 +295,11 @@
             <if>
                 <isfalse value="@{upgrade}"/>
                 <then>
-
-
                     <copy todir="${install.dir}${staging.dir}" verbose="true">
                         <fileset dir="${install.src}">
                             <include name="Deployment/**" />
                         </fileset>
                     </copy>
-
 
                     <copy todir="${install.dir}${staging.dir}/" verbose="true">
                         <fileset dir="${install.src}">
@@ -430,16 +411,44 @@
                     <!-- Restore customer configuration files -->
                     <echo>Installing new DTS files.2..</echo>
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server/conf/perc" overwrite="true" verbose="true" failonerror="false">
-                        <fileset dir="${new.backup.dir}${staging.dir}/Deployment/Server/conf/perc">
+                        <fileset dir="${new.backup.dir}${staging.dir}/Server/conf/perc">
                             <include name="*.properties"/>
                             <include name="*.xml"/>
-                            <exclude name="perc-datasources.properties"/>
-                            <exclude name="perc-email.properties"/>
-                            <exclude name="perc-secured-sections.properties"/>
-                            <exclude name="perc-security.properties"/>
-                            <exclude name="perc-datasources.xml"/>
                         </fileset>
                     </copy>
+
+                    <echo>Restore Server.xml... if perc_catalina is already created</echo>
+                    <if>
+                        <available file="${new.backup.dir}${staging.dir}/Server/conf/perc/perc-catalina.properties"/>
+                        <then>
+                            <copy todir="${install.dir}${staging.dir}/Deployment/Server/conf" overwrite="true" verbose="true" failonerror="false">
+                                <fileset dir="${new.backup.dir}${staging.dir}/Server/conf">
+                                    <include name="server.xml"/>
+                                </fileset>
+                            </copy>
+                            <if>
+                                <not>
+                                    <resourcecontains resource="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" substring="org.apache.catalina.valves.ErrorReportValve" />
+                                </not>
+                                 <then>
+                                    <echo>Adding Error Codes to Server.xml</echo>
+                                    <replace file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" summary="yes">
+                                        <replacetoken><![CDATA[ pattern="%h %l %u %t &quot;%r&quot; %s %b" />]]></replacetoken>
+                                        <replacevalue><![CDATA[pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+                                        <Valve className="org.apache.catalina.valves.ErrorReportValve"
+                                        errorCode.404="webapps/ROOT/error.html"
+                                        errorCode.414="webapps/ROOT/error.html"
+                                        errorCode.415="webapps/ROOT/error.html"
+                                        errorCode.501="webapps/ROOT/error.html"
+                                        errorCode.500="webapps/ROOT/error.html"
+                                        errorCode.502="webapps/ROOT/error.html"
+                                        showReport="false"
+                                        showServerInfo="false"/>]]></replacevalue>
+                                    </replace>
+                                </then>
+                            </if>
+                        </then>
+                    </if>
 
                     <!-- Adding hibernate Cache Region Factory class as part of Hibernate 5 upgrade -->
                     <if>

@@ -41,6 +41,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -49,6 +51,8 @@ import org.junit.rules.TemporaryFolder;
 
 public class PSDeliveryInfoLoaderTest
 {
+
+    private static final Logger log = LogManager.getLogger(PSDeliveryInfoLoaderTest.class);
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -261,9 +265,11 @@ public class PSDeliveryInfoLoaderTest
         }
         catch (URISyntaxException e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         } catch (PSServerConfigException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         
         return null;

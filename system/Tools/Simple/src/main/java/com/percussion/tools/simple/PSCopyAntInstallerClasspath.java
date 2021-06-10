@@ -33,6 +33,8 @@ import java.io.Writer;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class parses an eclipse external tools ant build file used for the ant
@@ -41,6 +43,9 @@ import org.apache.commons.io.IOUtils;
  */
 public class PSCopyAntInstallerClasspath
 {
+
+   private static final Logger log = LogManager.getLogger(PSCopyAntInstallerClasspath.class);
+
    /**
     * Copies jars which appear on the classpath to a specified directory.
     *
@@ -187,7 +192,8 @@ public class PSCopyAntInstallerClasspath
       }
       catch(Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
          System.exit(1);
       }
    }

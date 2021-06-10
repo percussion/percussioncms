@@ -65,6 +65,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 
@@ -158,6 +160,9 @@ import org.w3c.dom.Document;
  */
 public class PSUpdateHandler extends PSDataHandler
 {
+
+   private static final Logger log = LogManager.getLogger(PSUpdateHandler.class);
+
    /**
     * Construct a data modification handler to manage the inserting,
     * updating and deleting for the specified data set.
@@ -587,7 +592,8 @@ public class PSUpdateHandler extends PSDataHandler
          catch (IOException ioe)
          {
             // should never happen, ignore
-            ioe.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
          }         
          throw new PSInternalRequestCallException(
                   IPSDataErrors.INTERNAL_REQUEST_CALL_EXCEPTION, bout.toString());

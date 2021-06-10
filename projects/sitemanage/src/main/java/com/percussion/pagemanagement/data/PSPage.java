@@ -87,8 +87,9 @@ public class PSPage extends PSPageSummary implements IPSLinkableItem, IPSHtmlMet
             //on the template anymore.
             if(!tplWidgetMap.keySet().contains(r.getRegionId()) && tplRegIds.contains(r.getRegionId())){
                 List<PSWidgetItem> widgets = widgetMap.get(r.getRegionId());
-                if (widgets != null)
+                if (widgets != null) {
                     widgetList.addAll(widgets);
+                }
             }
         }
         return widgetList;

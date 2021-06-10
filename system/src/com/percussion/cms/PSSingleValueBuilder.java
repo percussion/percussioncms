@@ -78,6 +78,8 @@ import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -105,6 +107,9 @@ import static com.percussion.webservices.PSWebserviceUtils.isItemCheckedOutToUse
  */
 public class PSSingleValueBuilder extends PSDisplayFieldBuilder
 {
+
+   private static final Logger log = LogManager.getLogger(PSSingleValueBuilder.class);
+
    /**
     * Constant strings
     */
@@ -1711,7 +1716,8 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       }
       catch (ParseException e1) // ignore exception
       {
-         e1.printStackTrace();
+         log.error(e1.getMessage());
+         log.debug(e1.getMessage(), e1);
       }
       return result;
    }

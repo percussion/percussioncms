@@ -185,8 +185,7 @@ public class PSContentActivityService implements IPSContentActivityService
     @Path("/contenttraffic")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSContentTraffic getContentTraffic(PSContentTrafficRequest request) 
-    {
+    public PSContentTraffic getContentTraffic(PSContentTrafficRequest request) throws PSValidationException {
         try {
             return trafficService.getContentTraffic(request);
         } catch (PSTrafficServiceException e) {

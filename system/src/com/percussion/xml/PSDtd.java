@@ -105,7 +105,8 @@ public class PSDtd extends DTDGrammar
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          System.exit(1);
       }
 
@@ -127,7 +128,6 @@ public class PSDtd extends DTDGrammar
       {
          log.error("Error : {} ", e.getMessage());
          log.debug(e.getMessage(),e);
-         e.printStackTrace();
       }
    }
 

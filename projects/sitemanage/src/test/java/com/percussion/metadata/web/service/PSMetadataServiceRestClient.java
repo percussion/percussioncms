@@ -81,7 +81,8 @@ public class PSMetadataServiceRestClient extends PSDataServiceRestClient<PSMetad
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new RuntimeException(e);
         }
         
