@@ -36,6 +36,8 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -51,6 +53,9 @@ import java.util.List;
 public class PSContentService
    implements IPSContentService
 {
+
+   private static final Logger log = LogManager.getLogger(PSContentService.class);
+
    private SessionFactory sessionFactory;
 
    public SessionFactory getSessionFactory() {
@@ -510,7 +515,8 @@ public class PSContentService
         list = result.list();
         
       } catch(HibernateException he){
-         he.printStackTrace();
+         log.error(he.getMessage());
+         log.debug(he.getMessage(), he);
       }
 
       for(Object[] o : list){
