@@ -24,7 +24,8 @@
 package com.percussion.util.servlet;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -87,15 +88,15 @@ class PSInternalResponseXML
       if (isStreamUsed())
       {
          source = new InputSource(this.getInputStream());
-         m_logger.debug("using input stream");
+         log.debug("using input stream");
       }
       if (isWriterUsed())
       {
          Reader sr = new StringReader(this.getString());
          source = new InputSource(sr);
-         m_logger.debug("using string reader");
+         log.debug("using string reader");
       }
-      DocumentBuilder builder = getBuilder(m_logger);
+      DocumentBuilder builder = getBuilder(log);
       try
       {
          return builder.parse(source);
@@ -131,8 +132,9 @@ class PSInternalResponseXML
       }
       catch (ParserConfigurationException e)
       {
-         myLogger.error("Invalid XML Parser", e);
-         e.printStackTrace();
+         myLogger.error("Invalid XML Parser {}", e.getMessage());
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw (ParserConfigurationException) e.fillInStackTrace();
       }
    }
@@ -140,7 +142,7 @@ class PSInternalResponseXML
    /**
     * our private logger. Never <code>null</code>.
     */
-   private Logger m_logger = Logger.getLogger(this.getClass());
+   private static final Logger log = LogManager.getLogger(PSInternalResponseXML.class);
 
    /**
     * The factory instance for the XML parser. There is only one

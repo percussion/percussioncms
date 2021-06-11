@@ -91,7 +91,9 @@ public class PSImportCustCertificates implements IPSStartupProcess {
             if(certificates != null && (certificates.length > 0)){
                 for (int i=0;i<certificates.length;i++) {
                     File cert = certificates[i];
-                    appendCertKey (cert,keystore);
+                    if(!cert.isDirectory()) {
+                        appendCertKey(cert, keystore);
+                    }
                 }
                 File keystoreFile = new File(certificatePath);
                 // Save the new keystore contents

@@ -25,6 +25,8 @@ package com.percussion.webui.gadget.servlets;
 
 import com.percussion.server.PSServer;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.w3c.dom.Document;
@@ -45,6 +47,8 @@ import java.util.*;
  */
 public class GadgetRepositoryListingServlet extends HttpServlet
 {
+
+    private static final Logger log = LogManager.getLogger(GadgetRepositoryListingServlet.class);
 
     /* (non-Javadoc)
      * @see javax.servlet.http.HttpServlet#doGet(
@@ -171,7 +175,8 @@ public class GadgetRepositoryListingServlet extends HttpServlet
         catch (Exception e)
         {
             System.err.println("Failed to load gadget from file : " + config.getAbsolutePath());
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
 
         return gadget;
@@ -249,7 +254,8 @@ public class GadgetRepositoryListingServlet extends HttpServlet
             // incase if it happens logging it and returning empty Gadget
             // map.
             System.err.println("Failed to load gadget registry file :");
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         catch (SAXException e)
         {
@@ -257,7 +263,8 @@ public class GadgetRepositoryListingServlet extends HttpServlet
             // incase if it happens logging it and returning empty Gadget
             // map.
             System.err.println("Failed to parse gadget registry file :");
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         catch (Exception e)
         {
@@ -265,7 +272,8 @@ public class GadgetRepositoryListingServlet extends HttpServlet
             // incase if it happens logging it and returning empty Gadget
             // map.
             System.err.println("Failed to parse gadget registry file :");
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         return gadTypeMap;
     }

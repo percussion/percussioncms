@@ -44,6 +44,8 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The utility class used to modify properties for Content Type related
@@ -56,6 +58,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public class PSContentTypeUtils
 {
+
+   private static final Logger log = LogManager.getLogger(PSContentTypeUtils.class);
    
    /**
     * Checks whether the supplied rules has a required rule are not. Walks
@@ -251,7 +255,8 @@ public class PSContentTypeUtils
       {
          // We can safely ignore this as we are setting a valid value
          // here.
-         ve.printStackTrace();
+         log.error(ve.getMessage());
+         log.debug(ve.getMessage(), ve);
       }
    }
 

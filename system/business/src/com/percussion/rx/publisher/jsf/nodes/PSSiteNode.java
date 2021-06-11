@@ -416,9 +416,9 @@ public class PSSiteNode extends PSDesignNode
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         log.error("Failed to get folder id from path: " + path
-               + ", due to error: " + e.getMessage());
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         log.error("Failed to get folder id from path: {} , due to error: {}", path, e.getMessage());
          return -1;
       }
    }

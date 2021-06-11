@@ -34,6 +34,8 @@ import java.util.List;
 import com.percussion.utils.testing.IntegrationTest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -45,6 +47,9 @@ import static org.junit.Assert.*;
 @Category(IntegrationTest.class)
 public class PSContentServiceTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSContentServiceTest.class);
+
    /**
     * UnitTesting MSM Functionality. This is installing the translation settings
     * fresh on to a system that has no such settings.
@@ -185,7 +190,8 @@ public class PSContentServiceTest
          {
             System.out.println("error deleteing auto translations: " + 
                e.getLocalizedMessage());
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
          }
       }
    }

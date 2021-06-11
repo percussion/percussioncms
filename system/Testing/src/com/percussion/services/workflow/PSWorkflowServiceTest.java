@@ -73,6 +73,8 @@ import java.util.Set;
 
 import junit.framework.JUnit4TestAdapter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -87,6 +89,9 @@ import org.junit.experimental.categories.Category;
 @Category(IntegrationTest.class)
 public class PSWorkflowServiceTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSWorkflowServiceTest.class);
+
    /**
     * Fictitious user for testing
     */
@@ -1035,7 +1040,8 @@ public class PSWorkflowServiceTest
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
    
