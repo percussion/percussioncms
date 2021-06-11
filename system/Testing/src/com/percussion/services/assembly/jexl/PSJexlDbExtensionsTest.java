@@ -26,6 +26,8 @@ package com.percussion.services.assembly.jexl;
 
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MethodInvocationException;
@@ -43,6 +45,8 @@ import static org.junit.Assert.assertEquals;
 
 @Category(IntegrationTest.class)
 public class PSJexlDbExtensionsTest {
+
+    private static final Logger log = LogManager.getLogger(PSJexlDbExtensionsTest.class);
 
     /**
      * Get a precomputed velocity context with the jexl extensions registered.
@@ -123,7 +127,8 @@ public class PSJexlDbExtensionsTest {
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
 }

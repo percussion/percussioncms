@@ -51,8 +51,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.myfaces.trinidad.component.core.input.CoreSelectOneChoice;
 
 /**
@@ -163,8 +163,9 @@ public class PSLocationSchemeEditor extends PSBaseValidator
       catch (CloneNotSupportedException e)
       {
          // should never happen here.
-         e.printStackTrace();
-         ms_log.error("Failed to clone IPSLocationScheme", e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         log.error("Failed to clone IPSLocationScheme {}", e.getMessage());
          throw new RuntimeException("Failed to clone IPSLocationScheme"
                + e.getLocalizedMessage());
       }
@@ -957,7 +958,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
    /**
     * The class log.
     */
-   private final static Log ms_log = LogFactory.getLog(PSLocationSchemeEditor.class);
+   private final static Logger log = LogManager.getLogger(PSLocationSchemeEditor.class);
    
 }
 

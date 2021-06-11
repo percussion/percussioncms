@@ -34,6 +34,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -50,6 +52,8 @@ import com.percussion.xml.PSXmlDocumentBuilder;
  */
 public class PSWebdavConfigDef extends PSWebdavComponent
 {
+
+   private static final Logger log = LogManager.getLogger(PSWebdavConfigDef.class);
 
    /**
     * Constructs a <code>PSWebdavConfigDef</code> object from the supplied  
@@ -115,13 +119,15 @@ public class PSWebdavConfigDef extends PSWebdavComponent
       }
       catch (IOException ie)
       {
-         ie.printStackTrace();
+         log.error(ie.getMessage());
+         log.debug(ie.getMessage(), ie);
          throw new PSWebdavException(IPSWebdavErrors.IO_EXCEPTION_OCCURED, ie
                .getMessage());
       }
       catch (SAXException se)
       {
-         se.printStackTrace();
+         log.error(se.getMessage());
+         log.debug(se.getMessage(), se);
          throw new PSWebdavException(IPSWebdavErrors.SAX_EXCEPTION_OCCURED, se
                .getMessage());
       }
@@ -182,13 +188,15 @@ public class PSWebdavConfigDef extends PSWebdavComponent
       }
       catch (IOException ie)
       {
-         ie.printStackTrace();
+         log.error(ie.getMessage());
+         log.debug(ie.getMessage(), ie);
          throw new PSWebdavException(IPSWebdavErrors.IO_EXCEPTION_OCCURED, ie
                .getMessage());
       }
       catch (SAXException se)
       {
-         se.printStackTrace();
+         log.error(se.getMessage());
+         log.debug(se.getMessage(), se);
          throw new PSWebdavException(IPSWebdavErrors.SAX_EXCEPTION_OCCURED, se
                .getMessage());
       }
