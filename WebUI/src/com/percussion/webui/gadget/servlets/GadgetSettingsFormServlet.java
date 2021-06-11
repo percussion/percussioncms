@@ -31,7 +31,8 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -58,7 +59,8 @@ import java.util.Map;
  */
 public class GadgetSettingsFormServlet extends HttpServlet
 {
-   private static Logger m_log = Logger.getLogger(GadgetSettingsFormServlet.class.getName());
+   private static final Logger log = LogManager.getLogger(GadgetSettingsFormServlet.class.getName());
+
    private boolean sslSocketFactoryRegistered;
 
    private void registerSslProtocol()
@@ -190,7 +192,8 @@ public class GadgetSettingsFormServlet extends HttpServlet
       }
       catch(Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new IOException("Problem retrieving metadata.");
       }
    }

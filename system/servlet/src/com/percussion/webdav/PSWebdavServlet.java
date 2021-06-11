@@ -31,6 +31,8 @@ import com.percussion.webdav.method.PSMethodFactory;
 import com.percussion.webdav.method.PSWebdavMethod;
 import com.percussion.webdav.objectstore.PSWebdavConfig;
 import com.percussion.webdav.objectstore.PSWebdavConfigDef;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,8 +50,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
 /**
  * This is the WebDAV servlet class, which provides WebDAV services
  * for all WebDAV Client.
@@ -57,6 +57,8 @@ import org.apache.log4j.Logger;
 @SuppressWarnings(value={"unchecked"})
 public class PSWebdavServlet extends PSServletBase
 {
+
+   private static final Logger log = LogManager.getLogger(PSWebdavServlet.class);
    private static final long serialVersionUID = 1L;
 
    /**
@@ -71,7 +73,7 @@ public class PSWebdavServlet extends PSServletBase
          IllegalArgumentException
    {
       super.init(config); // this will initialize the log4j
-      ms_logger.debug("WebDAV Initialized");
+      log.debug("WebDAV Initialized");
 
    }
 
@@ -175,10 +177,9 @@ public class PSWebdavServlet extends PSServletBase
                      String rootPath = m_config.getRootPath();
                      if (!isNestedPath(rootPath)) {
                         ms_webdavConfigMap.put(servletName, m_config);
-                        ms_logger.debug("Added servletName: " + servletName);
+                        log.debug("Added servletName: {}", servletName);
                      } else {
-                        ms_logger.error("WebDAV configuration Error: \""
-                                + rootPath + "\" is a nested root.");
+                        log.error("WebDAV configuration Error: \" {} \" is a nested root.", rootPath);
                         throw new ServletException("Nested Rhythmyx RootPath "
                                 + rootPath);
                      }
@@ -188,7 +189,8 @@ public class PSWebdavServlet extends PSServletBase
          }
          catch (Exception e)
          {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new ServletException(e);
          }
       }
@@ -218,8 +220,7 @@ public class PSWebdavServlet extends PSServletBase
          if ((apath.indexOf(rxRoot) != -1)
                || (rxRoot.indexOf(apath) != -1))
          {
-            ms_logger.debug("Nested path found, the tested servletRoot: "
-                  + rxRoot + ", the registered root path: " + apath);
+            log.debug("Nested path found, the tested servletRoot: {} , the registered root path: {}", rxRoot, apath);
             status = true;
          }
       }
@@ -307,7 +308,7 @@ public class PSWebdavServlet extends PSServletBase
          throw new IllegalArgumentException("resp may not be null");
 
       String statusText = PSWebdavStatus.getStatusText(statusCode);
-      ms_logger.error(statusText, e);
+      log.error(statusText, e);
       try
       {
          resp.sendError(statusCode, statusText);
@@ -346,11 +347,6 @@ public class PSWebdavServlet extends PSServletBase
     * <code>init()</code>, never <code>null</code> or empty after that.
     */
    private PSWebdavConfig m_config;
-
-   /**
-    * The logger object for the current class, never <code>null</code>.
-    */
-   private Logger ms_logger = Logger.getLogger(PSWebdavServlet.class);
 
    /**
     * It contains a list of registered WebDAV config objects for all WebDAV
