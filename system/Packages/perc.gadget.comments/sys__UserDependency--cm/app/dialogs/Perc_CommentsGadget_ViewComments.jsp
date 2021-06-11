@@ -35,17 +35,12 @@
 	<body>
 		<div id="perc-gadget-comments-viewComments-container">
 		</div>
-		
-		<script src="/cm/jslib/jquery.js"></script>
-		<script src="/cm/jslib/jquery-ui.js"></script>
-		<script src="/cm/jslib/jquery.timeago.js"></script>
-		<script src="/cm/jslib/jquery.getUrlParam.js"></script>
-		<script src="/cm/jslib/jquery.dataTables.js"></script>
-		<script src="/cm/jslib/jquery.dataTables.FixedHeader.js"></script>
-        <script src="/cm/widgets/PercDataTable.js"></script>
-        <script src="/cm/plugins/perc_path_constants.js"></script>
-        <script src="/cm/plugins/perc_utils.js"></script>
-        <script src="/cm/services/PercServiceUtils.js"></script>
+		<%@include file="/cm/app/includes/common_js.jsp" %>
+
+		<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-timeago/jquery.timeago.js"></script>
+		<script src="/cm/jslib/war/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.getUrlParam.js"></script>
+		<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables-fixedheader/js/dataTables.fixedHeader.js"></script>
+        <script src="/cm/widgets/PercDataTable/PercDataTable.js"></script>
 		<script src="/cm/gadgets/repository/perc_comments_gadget/PercCommentsGadgetService.js"></script>
 		<script src="/cm/gadgets/repository/perc_comments_gadget/Perc_CommentsGadget_ViewComments.js"></script>
 	</body>

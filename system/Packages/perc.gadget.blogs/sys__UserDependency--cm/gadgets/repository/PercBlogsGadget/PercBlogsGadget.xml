@@ -57,9 +57,13 @@
     <link href="/cm/widgets/PercPageDataTable/PercPageDataTable.css" rel="stylesheet" type="text/css" />
     
     <script  src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
-    <script src="/cm/jslib/tools.scrollable-1.1.2.js" ></script>
-    <script src="/cm/jslib/tools.scrollable.mousewheel-1.0.1.js" ></script>
-    <script src="/cm/jslib/jquery.text-overflow.js" ></script>
+    <script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"</script>
+      <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"</script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js" ></script>
     <script src="/cm/plugins/perc_utils.js" ></script>
     <script src="/cm/plugins/PercViewCommentsDialog.js" ></script>
     
@@ -76,10 +80,10 @@
     <script src="/cm/widgets/PercScrollingTemplateBrowser/PercScrollingTemplateBrowser.js" ></script>
     <script src="/cm/gadgets/repository/PercBlogsGadget/PercBlogsGadget.js" ></script>
     <script src="/cm/gadgets/repository/PercBlogsGadget/PercNewBlogDialog.js" ></script>
-    <script src="/cm/jslib/jquery.dynatree.js" ></script>
+
     <script src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js" ></script>
     <script src="/cm/widgets/PercTooltip/PercTooltip.js" ></script>
-    <script src="/cm/jslib/jquery.dataTables.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js" ></script>
     <script src="/cm/widgets/PercDataTable/PercDataTable.js" ></script>
     <script src="/cm/widgets/PercActionDataTable/PercActionDataTable.js" ></script>
     <script src="/cm/widgets/PercPageDataTable/PercPageDataTable.js" ></script>
@@ -99,7 +103,7 @@
             var rows     = parseInt(prefs.getString("zrows"));
             var blogID   = "@null";
             
-            if(rows === NaN)
+            if(isNaN(rows))
                rows = 5;
             
             miniMsg    = new gadgets.MiniMessage(__MODULE_ID__);
@@ -120,7 +124,7 @@
                     
                     PercMetadataService.find("perc.user." + username + ".dash.page." + "0" + ".mid." + __MODULE_ID__ + "." + "selectedBlogID", function(status, result)
                     {
-                        if(status == PercServiceUtils.STATUS_SUCCESS)
+                        if(status === PercServiceUtils.STATUS_SUCCESS)
                         {
                             if(result == null || result.metadata.data == "@null")
                                 blogID = "@null";
@@ -137,7 +141,7 @@
                             {
                                 $("#perc-blogs-gadget").css("display","none");
                                 
-                                $("#perc-return-button").click(function(event){
+                                $("#perc-return-button").on("click",function(event){
                                     PercMetadataService.save("perc.user." + username + ".dash.page." + "0" + ".mid." + __MODULE_ID__ + "." + "selectedBlogID", "@null", function(){self.location.reload();});
                                 });
                                 $("#perc-blogs-gadget-drill").PercBlogsGadget("@all", rows, blogID, __MODULE_ID__);                    

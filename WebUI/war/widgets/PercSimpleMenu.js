@@ -123,20 +123,20 @@
                 .data("callbackData", callbackData[ml])
                 .data("callback", callbacks[ml])
                 .append($menuLabel)
-                // bind click event
-                .click(function() {
-                    var menuItem = $(this);
+                // on click event
+                .on("click",function(evt) {
+                    let menuItem = $(this);
                     var data = menuItem.data("callbackData");
                     var callback = menuItem.data("callback");
                     var menuItems = menuItem.parent();
                     menuItems.hide();
                     callback(data);
                 })
-                .hover(function() {
-                    var menuItem = $(this);
+                .on("mouseenter",function() {
+                    let menuItem = $(this);
                     menuItem.addClass("perc-simplemenu-menuitem-hover");
-                },function() {
-                    var menuItem = $(this);
+                }).on("mouseleave",function() {
+                    let menuItem = $(this);
                     menuItem.removeClass("perc-simplemenu-menuitem-hover");
                 });
             $menuItems.append($menuItem);
@@ -149,37 +149,36 @@
         $menu.data("config", config);
         $menuItems.hide();
         
-        $menuTitle.find("*").click(menuTitleClick);
+        $menuTitle.find("*").on("click",menuTitleClick);
         
         $menuTitle
-            .click(menuTitleClick)
-            .hover(
+            .on("click",menuTitleClick)
+            .on("mouseenter",(
                 function() {
                     var menuItem = $(this);
                     menuItem.addClass("perc-simplemenu-title-hover");
-                },
-                function() {
+                }).on("mouseleave", function() {
                     var menuItem = $(this);
                     menuItem.removeClass("perc-simplemenu-title-hover");
-                }
-            );
+                });
+
         // hide all menus if you exit the containing document
         // useful if used inside an iframe like a gadget
-        $(document).unbind().hover(null,
+        $(document).on("mouseenter",null).on("mouseleave",
             function() {
                 hideAllMenus();
             }
         );
         
         // hide all menus when clicking on body
-        $("body").click(function(event){
+        $("body").on("click",function(event){
             var target = $(event.target);
             var noParents = target.parents().length == 0;
             var menuParent = target.parent().hasClass("perc-simplemenu-menu");
             if(!noParents && !menuParent)
                 hideAllMenus();
         });
-    }
+    };
     
     function hideAllMenus() {
         var allMenus = $(".perc-simplemenu-menu");
@@ -194,14 +193,14 @@
     function menuTitleClick(event) {
         var menu = $($(event.target).parents(".perc-simplemenu-menu")[0]);
         var config = menu.data("config");
-        if(config == undefined)
+        if(config === undefined)
             return;
         var menuItems = menu.find(".perc-simplemenu-menuitems");
         var menuTitleExpanded  = config.menuTitleExpanded;
         var menuTitleCollapsed = config.menuTitleCollapsed;
         var menuTitle = menu.find(".perc-simplemenu-title");
         
-        var visible = menuItems.css("display") == "block";
+        var visible = menuItems.css("display") === "block";
         
         hideAllMenus();
         

@@ -73,7 +73,7 @@
                             "name": this.name,
                             "id": this.siteId
                         });
-                    })
+                    });
                   
                    
                     var list = $('#perc-default-lang-editor').find('tr.hide').find('select.perc-site-list');
@@ -88,15 +88,15 @@
                 //an input field gets the data and the name of the input field is passed to the id of a div that contains 
                 //our editor class - we get the id from the div and pull the data from the input field.
                 var dataFieldName = $(".perc-default-lang").attr("id");
-                var dataStr = $("input[name='" + dataFieldName + "']").val();
-                var data = null;
-                if($.trim(dataStr).length>0){
+                var dataStr = $("input[name='" + dataFieldName + "']").val().trim();
+
+                if(dataStr.length>0){
                     data = JSON.parse(dataStr);
                 }    
                 
                 if(data!=null){
                  var $table = $('#perc-default-lang-editor');    
-                 for(var i =0 ; i < data.config.length ; i++){
+                 for(let i =0 ; i < data.config.length ; i++){
                     var $clone = $table.find('tr.hide').clone(true).removeClass('hide table-line');
                         if (data.config[i].protocol) {
                             $clone.find('.perc-lang-protocol').val(data.config[i].protocol);
@@ -132,16 +132,16 @@
             window.parent.jQuery.PercContentPreSubmitHandlers.addHandler(_preSubmitHandler);
            
            //Widget behavioral events
-            $('.perc-table-remove').click(function () {
+            $('.perc-table-remove').on("click", function () {
                 $(this).parents('tr').detach();
             });
             
-            $('.perc-table-add').click(function () {
+            $('.perc-table-add').on("click", function () {
                 var $clone = $table.find('tr.hide').clone(true).removeClass('hide table-line');
                 $table.find('table').append($clone);
             });
 
-            $('.perc-toggle-help').click(function () {
+            $('.perc-toggle-help').on("click",function () {
                   if($('.perc-help').is(":visible")){
                          $('.perc-help').hide();
                   } else{
@@ -149,13 +149,13 @@
                   }
            });
             
-            $('.perc-table-up').click(function () {
+            $('.perc-table-up').on("click", function () {
                 var $row = $(this).parents('tr');
                 if ($row.index() === 1) return; // Don't go above the header
                     $row.prev().before($row.get(0));
             });
 
-            $('.perc-table-down').click(function () {
+            $('.perc-table-down').on("click", function () {
                 var $row = $(this).parents('tr');
                 $row.next().after($row.get(0));
             });
@@ -181,7 +181,7 @@
 
             $(".perc-defaultlang-row").each(function() {
                if(!  $(this).hasClass("hide")){
-                  var alt = new Object();
+                  var alt = {};
                   alt["protocol"] =  $(this).find(".perc-lang-protocol").val();
                   alt["siteid"] =  $(this).find(".perc-site-list").val();
                   alt["sitename"] = $(this).find(".perc-site-list option:selected").text();
@@ -207,7 +207,7 @@
            $("#perc-content-edit-sys_title").val($("#perc-content-edit-configurationName").val());
             
             //Get the Widget data and convert it to a JSON string that can be saved.
-            var data = new Object();
+            var data = {};
             data.config=getData();
             var fieldName = $(".perc-default-lang").attr("id");
             $("input[name='" + fieldName + "']").val(JSON.stringify(data));
@@ -215,5 +215,5 @@
         }
         
         return defaultLangEditorApi;
-      }
+      };
 })(jQuery);

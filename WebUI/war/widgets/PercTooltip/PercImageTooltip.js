@@ -50,16 +50,16 @@
         }
         return textString;
     }
-    //console.assert(template('foo{{bar}}', ['bar'], {bar: 'd'}) === 'food');
 
     $.fn.PercImageTooltip = function(config) {
         var _clickCallback;
-        if (config != null && $.isFunction(config.clickCallback))
+        if (config != null && typeof config.clickCallback === "function")
             _clickCallback = config.clickCallback;
         else
             _clickCallback = function(){};
         var element = $(this).
-        hover(function(event){$.PercImageTooltip.showTooltip(event, _clickCallback)}, function(){});
+        on("mouseenter",function(event){$.PercImageTooltip.showTooltip(event, _clickCallback);}).
+        on("mouseleave",function(){});
     };
 
     /**
@@ -74,8 +74,9 @@
         css("top","-10000px").
         css("left","-10000px").
         css("z-index","10000").
-        hover(function(event){$.PercImageTooltip.enterTooltip(event);}, function(event){$.PercImageTooltip.exitTooltip(event);}).
-        click(function(event){event.stopPropagation();}),
+        on("mouseenter", function(event){$.PercImageTooltip.enterTooltip(event);}).
+        on("mouseleave", function(event){$.PercImageTooltip.exitTooltip(event);}).
+        on("click",function(event){event.stopPropagation();}),
         /*
          * this is the hider DIV that will be as big as the tooltip and element
          * to emulate blur on both the tooltip and element to then hide the tooltip
@@ -85,7 +86,8 @@
         css("top","-10000px").
         css("left","-10000px").
         css("z-index","9000").
-        hover(function(event){$.PercImageTooltip.enterHider(event);}, function(event){$.PercImageTooltip.exitHider(event);}),
+        on("mouseenter",function(event){$.PercImageTooltip.enterHider(event);}).
+        on("mouseleave", function(event){$.PercImageTooltip.exitHider(event);}),
 
         /*
          *  State variables to keep track hover on tooltip and hider
@@ -115,7 +117,7 @@
                         $.PercImageTooltip.tooltipDom.find(".perc-tooltip-content").html(html);
                     },
                     error: function(request, textstatus, error){
-                        if ($(".perc-tooltip").position().top != -10000) {
+                        if ($(".perc-tooltip").position().top !== -10000) {
                             setTimeout(function(){
                                 url="/Rhythmyx/rx_resources/images/TemplateImages/AnySite/perc.base.plain_Thumb.png?nocache=0.16234142855889466";
                                 checkImageAvailable(url, pageData);
@@ -124,7 +126,7 @@
                     }
                 };
                 $.ajax(args);
-            }
+            };
 
             var element = $(event.currentTarget);
 
@@ -134,10 +136,10 @@
             var eWidth = element.width();
             var eHeight = element.height();
 
-            var data = $.parseJSON(element.attr("data"));
+            var data = JSON.parse(element.attr("data"));
 
             // dont bother with empty data
-            if (data == undefined || data == "" || data == null)
+            if (data === undefined || data === "" || data === null)
                 return;
 
             var imgSrc = "/Rhythmyx/rx_resources/images/TemplateImages/" + $.PercNavigationManager.getSiteName() + "/" + data.id + "-page.jpg"  + "?nocache=" + Math.random();
@@ -165,7 +167,7 @@
                 css("top", eTop).css("left", eLeft).css({
                 "background": "blue",
                 "opacity": 0.0
-            }).css("cursor", element.css("cursor")).unbind("click").click(function(event){
+            }).css("cursor", element.css("cursor")).off("click").on("click",function(event){
                 if ($.isFunction(_clickCallback))
                     _clickCallback(element, data.id);
                 if (element.data("events") && element.data("events")["click"] && element.data("events")["click"][0] && element.data("events")["click"][0].data && element.data("events")["click"][0].handler) {
@@ -202,9 +204,9 @@
         },
         hideTooltip : function(event) {
             // TODO: use named constants instead
-            if(this.tooltipHoverState == 0 && this.hiderHoverState == 0) {
+            if(this.tooltipHoverState === 0 && this.hiderHoverState === 0) {
                 this.tooltipDom.
-                blur().
+                trigger("blur").
                 css("top",-10000).
                 css("left",-10000).
                 find(".perc-tooltip-content").

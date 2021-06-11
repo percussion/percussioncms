@@ -473,27 +473,7 @@ return false;
 #end##
 <link rel="canonical" href="${perc.linkContext.getSite().getSiteProtocol()}://${perc.linkContext.getSite().getName()}${canLink}" />
 #set($defaultDocument = ${perc.linkContext.getSite().getDefaultDocument()})##
-<script>
-function percCanonicalRedirect(defaultDocument){
-if(document.querySelector("link[rel='canonical']"))
-canonicalLink=document.querySelector("link[rel='canonical']").getAttribute("href")
-}
-requestUrl=window.location.href;lastUrlElement=window.location.pathname.split('/').pop();urlPartsQueryString=requestUrl.split('?');urlPartsHash=requestUrl.split('#');
-if(typeof(canonicalLink)!='undefined'&&lastUrlElement==defaultDocument){
-if(urlPartsQueryString.length>1||urlPartsHash.length>1){
-if(urlPartsQueryString.length>1){
-redirectUrl=canonicalLink+'?'+urlPartsQueryString[1]
-}
-else if(urlPartsHash.length>1){
-redirectUrl=canonicalLink+'#'+urlPartsHash[1]
-}
-}else{
-redirectUrl=canonicalLink
-}
-window.location.replace(redirectUrl)
-}
-
-</script>
+<script>function percCanonicalRedirect(defaultDocument){if(document.querySelector("link[rel='canonical']")){canonicalLink=document.querySelector("link[rel='canonical']").getAttribute("href");}requestUrl=window.location.href;lastUrlElement=window.location.pathname.split('/').pop();urlPartsQueryString=requestUrl.split('?');urlPartsHash=requestUrl.split('#');if(typeof(canonicalLink)!=='undefined'&&lastUrlElement===defaultDocument){if(urlPartsQueryString.length>1||urlPartsHash.length>1){if(urlPartsQueryString.length>1){redirectUrl=canonicalLink+'?'+urlPartsQueryString[1];}else if(urlPartsHash.length>1){redirectUrl=canonicalLink+'#'+urlPartsHash[1];}}else{redirectUrl=canonicalLink;}window.location.replace(redirectUrl);}}</script>
 #if(${perc.linkContext.getSite().getCanonicalDist()} == "sections" && $perc.linkContext.getMode().name() != "PREVIEW")##
 <script>
 percCanonicalRedirect('${defaultDocument}');
@@ -601,7 +581,8 @@ $__style
 #foreach($js_link in $rx.pageutils.javascriptLinks($perc.linkContext, $sys.assemblyItem))##
 #if($js_link.getUrl().endsWith("/jquery.js"))##
 #if($perc.isEditMode() || $perc.isPreviewMode())##
-<script src="/cm/jslib/jquery.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/jquery-3.0.6.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
 #else##
 #if($perc.linkContext.site.overrideSystemJQuery==false)##
 #print_jquery("additionalHeadContent")##
@@ -677,9 +658,9 @@ display:none;
 #foreach($js_link in $rx.pageutils.javascriptLinks($perc.linkContext, $sys.assemblyItem))##
 #if($js_link.getUrl().endsWith("/jquery-ui.js"))##
 #if($perc.isEditMode())##
-<script src="/cm/jslib/jquery-ui.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"></script>
 #elseif ($perc.isPreviewMode() && ($perc.linkContext.site.overrideSystemJQueryUI==false) && ($jqueryUIwidget.size()==0) )##
-<script src="/cm/jslib/jquery-ui.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"></script>
 #else##
 #print_jqueryUI("additionalHeadContent")##
 #end##
@@ -751,7 +732,7 @@ ga('send', 'pageview');
 #else##
 <script>
 document.addEventListener("DOMContentLoaded", function(event) {
-(function($){$(document).ready(function(){$('a[href*="/.system/PageCatalog"]').attr('cataloged', 'true' );$('a[href*="/.system/PageCatalog"]').click(function(e) {alert('This page has not yet been imported. It will be available for preview after import is complete.');e.preventDefault();});})    })(jQuery);
+(function($){$(document).ready(function(){$('a[href*="/.system/PageCatalog"]').attr('cataloged', 'true' );$('a[href*="/.system/PageCatalog"]').on("click",function(e) {alert('This page has not yet been imported. It will be available for preview after import is complete.');e.preventDefault();});})    })(jQuery);
 });
 </script>
 #end##
@@ -1002,7 +983,7 @@ $value.trim().replaceAll(" +"," ")##
 #if($perc.linkContext.mode.toString() == "PUBLISH")##
 #set($jQueryLocation = "/web_resources/cm/jslib/jquery.js")##
 #else##
-#set($jQueryLocation = "/cm/jslib/jquery.js")##
+#set($jQueryLocation = "/cm/jslib/profiles/3x/jquery-3.6.0.js")##
 #end##
 #end##
 #if( (($perc.linkContext.mode.toString() == "PUBLISH") && ($includeOnPublishedPage != "no")) || (($perc.linkContext.mode.toString() == "PREVIEW") && ($includeOnPublishedPage != "no")))##
@@ -1058,7 +1039,7 @@ crossorigin="$!{jQueryMigrateCrossOrigin}"
 #if($perc.linkContext.mode == "PUBLISH")##
 #set($jQueryLocation = "/web_resources/cm/jslib/jquery-ui.1.12.1.js")##
 #else##
-#set($jQueryLocation = "/cm/jslib/jquery-ui.js")##
+#set($jQueryLocation = "/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js")##
 #end##
 #end##
 #set($jQuerySRIHash = $widgetitem.getProperties().get("jQueryUILocationIntegrity"))##
@@ -1081,7 +1062,7 @@ crossorigin="$!{jQueryMigrateCrossOrigin}"
 #if($perc.linkContext.mode.toString() == "PUBLISH")##
 #set($jQueryLocation = "/web_resources/cm/jslib/jquery-ui.1.12.1.js")##
 #else##
-#set($jQueryLocation = "/cm/jslib/jquery-ui.js")##
+#set($jQueryLocation = "/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js")##
 #end##
 #end##
 #if( (($perc.linkContext.mode.toString() == "PUBLISH") && ($includeOnPublishedPage  !=  "no")) || (($perc.linkContext.mode.toString()  ==  "PREVIEW") && ($includeOnPublishedPage  !=  "no")))##

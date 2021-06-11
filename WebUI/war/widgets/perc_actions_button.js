@@ -45,14 +45,17 @@
         var menuEntries = [cp, fp, db, ub, ri];
         // Create the menu and the button
         var menu = createMenuHTML(menuEntries)
-            .hover(preventHide, hideOnMouseOut);
+            .on("mouseenter",preventHide)
+            .on("mouseleave",hideOnMouseOut);
+
         var btnHtml ='<div id="perc-finder-actions" >'
             + '<a id="perc-finder-actions-button" class="perc-font-icon" title="' +I18N.message("perc.ui.actions.button@Select An Action") + '" href="#"><span class="icon-cog"></span><span class="icon-caret-down"></span></a>'
             + '</div>';
         var btn = $(btnHtml)
         //.perc_button()
             .append(menu)
-            .hover(preventHide, hideOnMouseOut);
+            .on("mouseenter",preventHide)
+            .on("mouseleave",hideOnMouseOut);
 
         // This flag, hideOnMouseOut and preventHide prevent an unnatural hiding of the menu
         var flag_show = false;
@@ -77,7 +80,7 @@
         {
             var target = $(event.target);
 
-            if (target.attr('id') == btn.attr('id'))
+            if (target.attr('id') === btn.attr('id'))
             {
                 flag_show = true;
                 return;
@@ -86,7 +89,6 @@
             if (target.is("#perc-finder-actions *"))
             {
                 flag_show = true;
-                return;
             }
         }
 
@@ -101,7 +103,7 @@
             }
             else
             {
-                if (menu.css('display') == 'none')
+                if (menu.css('display') === 'none')
                 {
                     showMenu(true);
                 }
@@ -145,11 +147,12 @@
             {
                 // We perform an "unbind" first, in case clickHandler has been bound several times by error
                 // (same thing in the else)
-                anchor.removeClass('ui-disabled').addClass('ui-enabled').unbind('click').click(clickHandler);
+                anchor.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    clickHandler);
             }
             else
             {
-                anchor.addClass('ui-disabled').removeClass('ui-enabled').unbind('click');
+                anchor.addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
         }
 
@@ -190,7 +193,7 @@
             {
                 // In this case, "this" represents the menu entry
                 var state_enabled = $(this).hasClass("ui-enabled");
-                if (entriesListenedLeft == 1 && entriesDisabled == menuEntries.length - 1)
+                if (entriesListenedLeft === 1 && entriesDisabled === menuEntries.length - 1)
                 {
                     // If there only 1 entry left to trigger the event, and the previous ones were
                     // all disabled, then its states determines the state of the button
@@ -218,7 +221,7 @@
             // Bind the declared function to the buttons in the array menuEntries
             for (m = 0; m < menuEntries.length; m++)
             {
-                menuEntries[m].bind('actions-change-enabled-state', entryChangeEnabledStateListener);
+                menuEntries[m].on('actions-change-enabled-state', entryChangeEnabledStateListener);
             }
         }
 
@@ -226,5 +229,5 @@
         // entries gets enabled. Check the bindChangeEnabledStateListener() function.
         bindChangeEnabledStateListener();
         return btn;
-    }
+    };
 })(jQuery);

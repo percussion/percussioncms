@@ -51,7 +51,7 @@ function createDialogObject() {
 }
 
 function bindFooterAlertEvents() {
-    $('#percDismissFooterAlert').click(function() {
+    $('#percDismissFooterAlert').on("click",function() {
         hideSection('#percFooterAlertTarget', 'fadeOutDown');
     });
 }
@@ -141,7 +141,7 @@ function requestResultsParser(source, status, result) {
     response = {};
     response.source = source;
     response.status = status;
-    if($.isArray(result)) {
+    if(Array.isArray(result)) {
         resultJSON = JSON.parse(result[0]);
         response.result = resultJSON.SitePublishResponse;
         if(response.result.warningMessage) {

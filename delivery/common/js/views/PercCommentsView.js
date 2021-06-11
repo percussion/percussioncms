@@ -320,7 +320,7 @@
                     )
                 }
             }
-            if($.isArray(settings.fields[0]))
+            if(Array.isArray(settings.fields[0]))
             {
                 // Use comment containers
                 for(z = 0; z < settings.fields.length; z++)

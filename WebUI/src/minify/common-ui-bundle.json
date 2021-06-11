@@ -4,13 +4,13 @@
       "type": "js",
       "name": "perc_common_ui.js",
       "files": [
-        "jslib/jquery.jsonp-2.1.4.js",
-        "jslib/simpledateformat.js",
-        "jslib/jquery.timeago.js",
-        "jslib/moment-with-locales.js",
-        "jslib/moment-jdateformatparser.js",
-        "jslib/jquery.bbq.js",
-        "jslib/jquery.jfeed.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.jsonp.js",
+        "jslib/profiles/3x/libraries/momentjs/plugins/moment-jdateformatparser/simpledateformat.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-timeago/jquery.timeago.js",
+        "jslib/profiles/3x/libraries/momentjs/moment-with-locales.js",
+        "jslib/profiles/3x/libraries/momentjs/plugins/moment-jdateformatparser/moment-jdateformatparser.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.bbq.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.jfeed.js",
         "../../delivery/common/js/plugins/PercResultsPaging.js",
         "../../delivery/common/js/services/PercPageListService.js",
         "../../delivery/common/js/services/PercBlogListService.js",
@@ -46,7 +46,7 @@
       "type": "js",
       "name": "perc_common_ui_slim.js",
       "files": [
-        "jslib/jquery.jsonp-2.1.4.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.jsonp.js",
         "services/PercServiceUtils.js"
       ]
     }

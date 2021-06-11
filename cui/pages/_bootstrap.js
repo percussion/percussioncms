@@ -28,11 +28,12 @@ var requireJsConfig = {
     paths: {
         'components': '/cm/cui/components',
         'text': '/cm/cui/components/requirejs-text/text',
-        'jquery': '/cm/cui/components/jquery/dist/jquery.min',
-        'jquery-ui': '/cm/cui/components/jquery-ui/ui/minified/jquery-ui.custom.min',
+        'jquery': '/cm/jslib/profiles/3x/jquery/jquery-3.6.0',
+        'jquery-migrate': '/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2',
+        'jquery-ui': '/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui',
         'knockout': '/cm/cui/components/knockoutjs/dist/knockout',
         'pubsub': '/cm/cui/components/pubsub-js/src/pubsub',
-		'dynatree': '/cm/cui/components/dynatree/jquery.dynatree.min',
+		'dynatree': '/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree',
         'widgel-base': '/cm/cui/components/widgel/dist/widgel-base',
         'perc-utils': '/cm/cui/components/perc-utils/dist',
         'perc-css': '/cm/cui/components/perc-css/perc.css',
@@ -44,9 +45,8 @@ var requireJsConfig = {
         'test'   : '/cm/cui/test',
         'utils'  : '/cm/cui/pages/utils',
         'css': 'css',
-        'fontAwesome': '/cm/cui/components/font-awesome-4.1.0/css/font-awesome.min.css',
-        //'bootstrap':'/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.min.css',
-        'bootstrap':'../jslib/profiles/3x/libraries/bootstrap/css/bootstrap.min.css',
+        'fontawesome-css': '/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css',
+        'bootstrap':'/cm/jslib/profiles/3x/libraries/bootstrap/css/bootstrap.min.css',
         'bootstrap-theme':'/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap-theme.min.css'
     },
     shim: {

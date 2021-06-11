@@ -64,11 +64,11 @@
 
 			<!-- JavaScript -->
 			<psxctl:FileDescriptor name="jquery-ui.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery-ui.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
-			<psxctl:FileDescriptor name="PSJSUtils.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/PSJSUtils.js</psxctl:FileLocation>
+			<psxctl:FileDescriptor name="jquery.percutils.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_path_constants.js" type="script" mimetype="text/javascript">
@@ -80,28 +80,28 @@
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.layout.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.layout.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-layout/jquery.layout_and_plugins.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.metadata.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.metadata.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.metadata.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="tools.scrollable-1.1.2.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/tools.scrollable-1.1.2.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="tools.scrollable.mousewheel-1.0.1.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/tools.scrollable.mousewheel-1.0.1.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.validate.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.validate.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-validation/jquery.validate.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<!-- SimpleDateFormat JS-->
 			<psxctl:FileDescriptor name="date.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/date.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/libraries/perc-retiredjs/date.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_extend_jQueryValidate.js" type="script" mimetype="text/javascript">
@@ -113,16 +113,16 @@
 				<psxctl:FileLocation>../../cm/plugins/perc_path_manager.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
-			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.dynatree.js</psxctl:FileLocation>
+			<psxctl:FileDescriptor name="jquery.dynatree.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
-			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.text-overflow.js</psxctl:FileLocation>
+			<psxctl:FileDescriptor name="jquery.text-overflow.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
-			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/Jeditable.js</psxctl:FileLocation>
+			<psxctl:FileDescriptor name="jquery.jeditable.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
@@ -165,7 +165,7 @@
 			// *********************************************************************
 			//This will be set from the widget config $date_format (set by velocity)
 			// *********************************************************************
-			$(this).focus();
+			$(this).trigger("focus");
 			var p_query_published_after = new Date(value);
 			var p_query_published_before = new Date($('[name="query_published_before"]').val());
 			<xsl:text disable-output-escaping="yes">
@@ -196,13 +196,13 @@
 			$('#display_query_published_before').datepicker({
 			onSelect:
 			function(value, date) {
-			$(this).focus();
+			$(this).trigger('focus');
 			var p_query_published_after = new Date($('[name="query_published_after"]').val());
 			var p_query_published_before = new Date(value);
 			<xsl:text disable-output-escaping="yes">
 				if(p_query_published_after >= p_query_published_before)
                 {
-                    $j.perc_utils.alert_dialog({title:"Error", content:"First published before date must be greater than First published on or after date.", okCallBack:function(){
+                    $.perc_utils.alert_dialog({title:"Error", content:"First published before date must be greater than First published on or after date.", okCallBack:function(){
                         setDisplayDate($('[name="query_published_before"]').val(),"display_query_published_before");
                         return false;
                     }});
@@ -229,10 +229,10 @@
 		</script>
 
 		<script >
-			$j(document).ready(function(){
-				$j("#querylist-title").click(function () {
-					$j("#criteria_for_list").toggle();
-					$j("#querylist-title").toggleClass("querylist-expand-image querylist-close-image");
+			$(document).ready(function(){
+				$("#querylist-title").on("click",function () {
+					$("#criteria_for_list").toggle();
+					$("#querylist-title").toggleClass("querylist-expand-image querylist-close-image");
 				});
 			});
 		</script>
@@ -297,38 +297,38 @@
 	<xsl:template match="Control[@name='percQueryControl' and @isReadOnly='yes']" priority='10' mode="psxcontrol">
 		<script >
 	<![CDATA[
-			$j(document).ready(function(){
+			$(document).ready(function(){
 
-				$j(".hasDatepicker").addClass('datadisplay');
+				$(".hasDatepicker").addClass('datadisplay');
 
-				$j("#querylist-title").click(function () {
-					$j("#criteria_for_list").toggle();
-					$j("#querylist-title").toggleClass("querylist-expand-image querylist-close-image");
+				$("#querylist-title").on("click",function () {
+					$("#criteria_for_list").toggle();
+					$("#querylist-title").toggleClass("querylist-expand-image querylist-close-image");
 				});
 
 				// Put site value in website location field
-				var sitepath = $j("#perc_site_path").val().substring(8);
+				var sitepath = $("#perc_site_path").val().substring(8);
 				var splitPath = sitepath.split("/");
 
 
 
-				$j("#perc_display_site_path").text(sitepath);
+				$("#perc_display_site_path").text(sitepath);
 
 				// Fill templates field
 
 				if (splitPath[0] != undefined && splitPath[0] != "")
 				{
-					$j.PercServiceUtils.makeJsonRequest(
-							$j.perc_paths.TEMPLATES_BY_SITE + "/" + splitPath[0],
-							$j.PercServiceUtils.TYPE_GET,
+					$.PercServiceUtils.makeJsonRequest(
+							$.perc_paths.TEMPLATES_BY_SITE + "/" + splitPath[0],
+							$.PercServiceUtils.TYPE_GET,
 							false,
 							function(status, result){
-								if(status == $j.PercServiceUtils.STATUS_SUCCESS)
+								if(status == $.PercServiceUtils.STATUS_SUCCESS)
 								{
 									var summaries = result.data.TemplateSummary;
 									var temps = {};
 									var tempsArray = [];
-									var tempIds = ($j("#perc_template_list").val() != "") ? $j("#perc_template_list").val().split(',') : "";
+									var tempIds = ($("#perc_template_list").val() != "") ? $("#perc_template_list").val().split(',') : "";
 									for(i = 0; i < summaries.length; i++)
 									{
 										temps[summaries[i].id] = summaries[i].name;
@@ -345,13 +345,13 @@
 											buff += "<br/>";
 										buff += tempsArray[i];
 									}
-									$j("#perc_display_template_list").append(buff);
+									$("#perc_display_template_list").append(buff);
 								}
 								else
 								{
 									var defaultMsg =
-											$j.PercServiceUtils.extractDefaultErrorMessage(result.request);
-									$j.perc_utils.alert_dialog({title: 'Error', content: defaultMsg});
+											$.PercServiceUtils.extractDefaultErrorMessage(result.request);
+									$.perc_utils.alert_dialog({title: 'Error', content: defaultMsg});
 								}
 							}
 					);

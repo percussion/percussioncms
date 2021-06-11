@@ -49,8 +49,9 @@
 <!DOCTYPE html>
 <html lang="<%= lang %>">
     <head>
-        <title><i18n:message key = "perc.ui.page.not.found@Page Not Found Error"/></title> 
-        <style type="text/css">
+        <title><i18n:message key = "perc.ui.page.not.found@Page Not Found Error"/></title>
+        <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
+        <style>
         body {background-color: #6C717C; font-family: Verdana; margin: 0; padding: 0; }
         .perc-login-logo { font-size: 48px; color: #121212; margin-top: 160px; margin-bottom: 100px;}
         #loginform .perc-form    {font-size: 14px; }

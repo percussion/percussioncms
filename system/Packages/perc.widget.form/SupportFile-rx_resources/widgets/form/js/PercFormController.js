@@ -187,9 +187,10 @@
                 if(!defaults || defaults["perc-validate-max-char"] !== "yes")
                     return true;
                 var isValid = true;
-                var val = $('#perc-field-max-char-value').val();
-                if($.trim(val) === "")
+                var val = $('#perc-field-max-char-value').val().trim();
+                if(val === "") {
                     return true;
+                }
                 var max = parseInt(val);
                 if(!max || max > 2048)
                 {
@@ -358,7 +359,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var classValue = $.trim($('#perc-field-class-value').val());
+                var classValue = $('#perc-field-class-value').val().trim();
                 // Remove extra spaces between classes
                 classValue = classValue.replace( /\s\s+/g, ' ' );
 
@@ -431,7 +432,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var nameValue = $.trim($('#perc-field-name-value').val());
+                var nameValue = $('#perc-field-name-value').val().trim();
                 // Remove extra spaces between classes
                 nameValue = nameValue.replace( /\s\s+/g, ' ' );
 
@@ -506,7 +507,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var titleValue = $.trim($('#perc-field-title-value').val());
+                var titleValue = $('#perc-field-title-value').val().trim();
                 // Remove extra spaces between classes
                 titleValue = titleValue.replace( /\s\s+/g, ' ' );
 
@@ -580,7 +581,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var sitekeyValue = $.trim($('#perc-field-recaptcha-sitekey-value').val());
+                var sitekeyValue = $('#perc-field-recaptcha-sitekey-value').val().trim();
 
                 if (sitekeyValue.length > 0)
                 {
@@ -654,7 +655,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var value = $.trim($('#perc-field-recaptcha-theme-value').val());
+                var value = $('#perc-field-recaptcha-theme-value').val().trim();
 
                 if (value.length > 0)
                 {
@@ -728,7 +729,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var value = $.trim($('#perc-field-recaptcha-size-value').val());
+                var value = $('#perc-field-recaptcha-size-value').val().trim();
 
                 if (value.length > 0)
                 {
@@ -803,7 +804,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var value = $.trim($('#perc-field-recaptcha-tabindex-value').val());
+                var value = $('#perc-field-recaptcha-tabindex-value').val().trim();
 
                 if (value.length > 0)
                 {
@@ -877,7 +878,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var value = $.trim($('#perc-field-recaptcha-callback-value').val());
+                var value = $('#perc-field-recaptcha-callback-value').val().trim();
 
                 if (value.length > 0)
                 {
@@ -952,7 +953,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var value = $.trim($('#perc-field-recaptcha-expired-callback-value').val());
+                var value = $('#perc-field-recaptcha-expired-callback-value').val().trim();
 
                 if (value.length > 0)
                 {
@@ -1027,7 +1028,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var value = $.trim($('#perc-field-recaptcha-error-callback-value').val());
+                var value = $('#perc-field-recaptcha-error-callback-value').val().trim();
 
                 if (value.length > 0)
                 {
@@ -1103,7 +1104,7 @@
             "onApply" : function(data, defaults)
             {
                 var newData = {};
-                var idValue = $.trim($('#perc-field-id-value').val());
+                var idValue = $('#perc-field-id-value').val().trim();
 
                 if (idValue.length > 0)
                 {
@@ -1446,7 +1447,7 @@
             );
             if(formData)
             {
-                formEditorHtml.find("input[name='perc-save-to']").change(function(event){
+                formEditorHtml.find("input[name='perc-save-to']").on("change",function(event){
                     if ($(this).val() === 'LocalServer')
                     {
                         if (this.checked)
@@ -1493,33 +1494,32 @@
                 formEditorHtml.find('#perc-formbuild-mail-to').prop('disabled', !formData.config.emailNotification);
                 formEditorHtml.find('#perc-formbuild-mail-subject').prop('disabled', !formData.config.emailNotification);
 
-                //formEditorHtml.find('#perc-formbuild-error-url-browse, #perc-formbuild-success-url-browse').click(function(){
-                //  browseDialog($(this).parent().children("input[type='text']").get(0));
-                //});
                 if(formData.config.processorType === "ExternalServer")
                 {
                     formEditorHtml.find("input[name='perc-save-to'][value='LocalServer']").removeAttr("checked");
-                    formEditorHtml.find("input[name='perc-save-to'][value='ExternalServer']").attr("checked","checked").click().change();
+                    formEditorHtml.find("input[name='perc-save-to'][value='ExternalServer']").attr("checked","checked").trigger("click").trigger("change");
                     formEditorHtml.find("input[name='perc-save-to-url']").val(formData.config.processorURL);
                 }
                 else
                 {
-                    formEditorHtml.find("input[name='perc-save-to'][value='LocalServer']").click().change();
+                    formEditorHtml.find("input[name='perc-save-to'][value='LocalServer']")
+                        .trigger("click")
+                        .trigger("change");
                 }
             }
 
-            formEditorHtml.find('.perc-encrypted-field').blur(function(){
+            formEditorHtml.find('.perc-encrypted-field').on("blur",function(){
                 updateEncryptedFields([$(this).attr("id")], true);
             });
 
-            formEditorHtml.find('#perc-form-metadata-email-notification').click(function(){
+            formEditorHtml.find('#perc-form-metadata-email-notification').on("click",function(){
                 var flag = !formEditorHtml.find('#perc-form-metadata-email-notification').is(":checked");
                 formEditorHtml.find('#perc-formbuild-mail-to').prop('disabled', flag);
                 formEditorHtml.find('#perc-formbuild-mail-subject').prop('disabled', flag);
                 formEditorHtml.find("input[name='perc-email-form']").removeAttr("checked");
             });
 
-            formEditorHtml.find('#perc-form-metadata-email-form').click(function(){
+            formEditorHtml.find('#perc-form-metadata-email-form').on("click",function(){
                 var flag = !formEditorHtml.find('#perc-form-metadata-email-form').is(":checked");
                 formEditorHtml.find("input[name='perc-email-notification']").removeAttr("checked");
                 formEditorHtml.find('#perc-formbuild-mail-to').get(0).setAttribute('disabled', 'disabled');
@@ -2954,7 +2954,7 @@
             fieldData.defaultValue = 0;
             var opts = $fieldElem.find('.dataDropDownSelect');
             opts.each(function(){
-                if($.trim($(this).val()) !== "")
+                if($(this).val().trim() !== "")
                 {
                     fieldData.options[i] = {
                         value : $(this).val(),
@@ -3120,7 +3120,7 @@
             fieldData.defaultValue = 0;
             var opts = $fieldElem.find('.option-dd');
             opts.each(function(){
-                if($.trim($(this).val()) !== "")
+                if($(this).val().trim() !== "")
                 {
                     fieldData.options[i] = {
                         value : $(this).val(),
@@ -3157,7 +3157,7 @@
                 var delete_function = function(){
                     if ($(this).parent().find(".add-control").is('.add-control')) {
                         $(this).parent().prev().append(addControl);
-                        $(this).parent().prev().find(".add-control").click(add_function);
+                        $(this).parent().prev().find(".add-control").on("click",add_function);
                         if (!$(this).parent().prev().prev().is("div")) {
                             $(this).parent().prev().find('.delete-control').remove();
                         }
@@ -3173,20 +3173,16 @@
                     newRow.append(addControl);
                     if (!$(this).parent().prev().is('div')) {
                         $(this).parent().append(deleteControl);
-                        $(this).parent().find(".delete-control").click(delete_function);
+                        $(this).parent().find(".delete-control").on("click",delete_function);
                     }
-                    newRow.find(".delete-control").click(delete_function);
-                    newRow.find(".add-control").click(add_function);
+                    newRow.find(".delete-control").on("click",delete_function);
+                    newRow.find(".add-control").on("click",add_function);
                     $(this).parent().parent().find('.fix').before(newRow);
                     $(this).remove();
 
                     //Fix the height of the input fields
+                    $("input[type = 'text']").css('height', 'auto');
 
-                    if($.browser.msie){
-                        $("input[type = 'text']").css('height', '11px');
-                    }else{
-                        $("input[type = 'text']").css('height', 'auto');
-                    }
                 };
 
                 // If there are no options in dropdown, then add just one.
@@ -3215,8 +3211,8 @@
                 //Add the final div
                 fieldEditorHtml.append("<div class='fix' style='clear:both;'></div>");
                 // For every button add the corresponding events.
-                fieldEditorHtml.find(".delete-control").click(delete_function);
-                fieldEditorHtml.find(".add-control").click(add_function);
+                fieldEditorHtml.find(".delete-control").on("click",delete_function);
+                fieldEditorHtml.find(".add-control").on("click",add_function);
                 fieldEditorHtmlWrapper.append(fieldEditorHtml);
             }
             else if(fieldData)
@@ -3367,7 +3363,7 @@
             fieldData.defaultValue = 0;
             var opts = $fieldElem.find('.option-dd');
             opts.each(function(i){
-                    if($.trim($(this).val()) !== "")
+                    if($(this).val().trim() !== "")
                     {
                         fieldData.options[i] = {
                             value : $(this).val(),
@@ -3408,7 +3404,7 @@
                 var delete_function = function(){
                     if ($(this).parent().find(".add-control").is('.add-control')) {
                         $(this).parent().prev().append(addControl);
-                        $(this).parent().prev().find(".add-control").click(add_function);
+                        $(this).parent().prev().find(".add-control").on("click",add_function);
                         if (!$(this).parent().prev().prev().is("div")) {
                             $(this).parent().prev().find('.delete-control').remove();
                         }
@@ -3424,10 +3420,10 @@
                     newRow.append(addControl);
                     if (!$(this).parent().prev().is('div')) {
                         $(this).parent().append(deleteControl);
-                        $(this).parent().find(".delete-control").click(delete_function);
+                        $(this).parent().find(".delete-control").on("click",delete_function);
                     }
-                    newRow.find(".delete-control").click(delete_function);
-                    newRow.find(".add-control").click(add_function);
+                    newRow.find(".delete-control").on("click",delete_function);
+                    newRow.find(".add-control").on("click", add_function);
                     $(this).parent().parent().find('.fix').before(newRow);
                     $(this).remove();
 
@@ -3465,8 +3461,8 @@
                 //Add the final div
                 fieldEditorHtml.append("<div class='fix' style='clear:both;'></div>");
                 // For every button add the corresponding events.
-                fieldEditorHtml.find(".delete-control").click(delete_function);
-                fieldEditorHtml.find(".add-control").click(add_function);
+                fieldEditorHtml.find(".delete-control").on("click",delete_function);
+                fieldEditorHtml.find(".add-control").on("click", add_function);
                 fieldEditorHtmlWrapper.append(fieldEditorHtml);
             }
             else if(fieldData)
@@ -3645,7 +3641,7 @@
             fieldData.defaultName = this.generateUID();
             var opts = $fieldElem.find('.option-dd');
             opts.each(function(){
-                    if($.trim($(this).val()) !== "")
+                    if($(this).val().trim() !== "")
                     {
                         fieldData.options[i] = {
                             value : $(this).val(),
@@ -3684,7 +3680,7 @@
                 var delete_function = function(){
                     if ($(this).parent().find(".add-control").is('.add-control')) {
                         $(this).parent().prev().append(addControl);
-                        $(this).parent().prev().find(".add-control").click(add_function);
+                        $(this).parent().prev().find(".add-control").on("click",add_function);
                         if (!$(this).parent().prev().prev().is("div")) {
                             $(this).parent().prev().find('.delete-control').remove();
                         }
@@ -3700,10 +3696,10 @@
                     newRow.append(addControl);
                     if (!$(this).parent().prev().is('div')) {
                         $(this).parent().append(deleteControl);
-                        $(this).parent().find(".delete-control").click(delete_function);
+                        $(this).parent().find(".delete-control").on("click",delete_function);
                     }
-                    newRow.find(".delete-control").click(delete_function);
-                    newRow.find(".add-control").click(add_function);
+                    newRow.find(".delete-control").on("click",delete_function);
+                    newRow.find(".add-control").on("click",add_function);
                     $(this).parent().parent().find('.fix').before(newRow);
                     $(this).remove();
 
@@ -3742,8 +3738,8 @@
                 //Add the final div
                 fieldEditorHtml.append("<div class='fix' style='clear:both;'></div>");
                 // For every button add the corresponding events.
-                fieldEditorHtml.find(".delete-control").click(delete_function);
-                fieldEditorHtml.find(".add-control").click(add_function);
+                fieldEditorHtml.find(".delete-control").on("click",delete_function);
+                fieldEditorHtml.find(".add-control").on("click",add_function);
                 fieldEditorHtmlWrapper.append(fieldEditorHtml);
             }
             else if(fieldData)

@@ -35,8 +35,8 @@
     var defaultServer;
     var PUB_SERVERS = 0;
     var PUB_REPORTS = 1;
-    var service = $j.PercPublisherService(false);
-    this.utilService = $j.PercUtilService;
+    var service = $.PercPublisherService(false);
+    this.utilService = $.PercUtilService;
     var dirtyController = $.PercDirtyController;
     var editorRenderer = $.PercEditorRenderer;
     var serverProperties = {};
@@ -44,13 +44,13 @@
     var serverType = "PRODUCTION";
     var serversIds = [];
     
-    siteName = $j.PercNavigationManager.getSiteName();
+    siteName = $.PercNavigationManager.getSiteName();
     
     /****************** Binding onclick events with all the widgets and buttons toolbar ************************/
-    $j(document).ready(function()
+    $(document).ready(function()
     {
     
-        $j("#tabs").tabs({
+        $("#tabs").tabs({
             selected: 0,
             show: function()
             {
@@ -66,7 +66,7 @@
                         // if they click ok, then reset dirty flag and proceed to select the tab
                         dirtyController.setDirty(false);
                         cancel();
-                        $j("#tabs").tabs('select', ui.index);
+                        $("#tabs").tabs('select', ui.index);
                     });
                     return false;
                 }
@@ -92,7 +92,7 @@
                         var pubLogContainer = $("#perc-publish-jobs-widget").find(".perc-foldable");
                         if (pubLogContainer.hasClass('perc-opened')) 
                         {
-                            pubLogContainer.click().click();
+                            pubLogContainer.trigger("click").trigger("click");
                         }
                     });
                 }
@@ -100,15 +100,13 @@
         });
         
         // Bind the click even to Edit Server Button
-        $("#perc-servers-wrapper").on('click', '#perc-server-edit', loadServerEditor);   
-        
-        // Bind the click event on Save button
-        $("#perc-servers-wrapper").on('click', '#perc-define-save', save);
-        // Bind the click event on Cancel button  
-        $("#perc-servers-container").on('click', '#perc-define-cancel', cancel);
-        $("#perc-servers-container").on('click', '#perc_wizard_cancel', cancel);
-        $("#perc-servers-container").on('click', '#perc-publish-now', publishServer);
-        $("#perc-servers-container").on('click', '#perc-full-publish-now', publishServer);
+        $("#perc-servers-wrapper").on('click', '#perc-server-edit', loadServerEditor)
+            .on('click', '#perc-define-save', save);
+
+        $("#perc-servers-container").on('click', '#perc-define-cancel', cancel)
+            .on('click', '#perc_wizard_cancel', cancel)
+            .on('click', '#perc-publish-now', publishServer)
+            .on('click', '#perc-full-publish-now', publishServer);
 
         if (siteName != null) 
         {
@@ -187,13 +185,13 @@
             id: "perc-server-type-dialog",
             width: 700
         });
-        dialog.find("#perc-staging-server-button").click(function(){
+        dialog.find("#perc-staging-server-button").on("click", function(evt){
             //dialog.remove();
         	$(".perc-text-button-selected").removeClass("perc-text-button-selected");
         	dialog.find("#perc-staging-server-button").addClass("perc-text-button-selected");
             selection = "STAGING";
         });
-        dialog.find("#perc-production-server-button").click(function(){
+        dialog.find("#perc-production-server-button").on("click", function(evt){
             //dialog.remove();
         	$(".perc-text-button-selected").removeClass("perc-text-button-selected");
         	dialog.find("#perc-production-server-button").addClass("perc-text-button-selected");
@@ -224,11 +222,11 @@
             question: I18N.message("perc.ui.publish.view@About To Delete Server") + serverName + "'<br /><br />" + I18N.message("perc.ui.publish.view@Are You Sure Delete Server"),
             success: function()
             {
-                $j.PercPublisherService().deleteSiteServer(siteId, serverId, function(status, result)
+                $.PercPublisherService().deleteSiteServer(siteId, serverId, function(status, result)
                 {
                     if (status) 
                     {
-                        var loadServer = $.parseJSON(result[0]).serverInfo.serverName;
+                        var loadServer = JSON.parse(result[0]).serverInfo.serverName;
                         //Get List of servers List and highlight the default         
                         renderServerList(previousServerName);
                         
@@ -427,10 +425,10 @@
             percDropdownShowExpandIcon: false,
             percDropdownResizeToElement: "#perc-dropdown-publish"
         });
-        publishDropdown.find('.perc-dropdown-title').unbind('click');
+        publishDropdown.find('.perc-dropdown-title').off('click');
         var propMap = _getPropertyMap(serverProperties.serverInfo.properties);
-        var showRelated = propMap["publishRelatedItems"];
-        publishDropdown.children('a').click(function()
+        var showRelated = propMap.publishRelatedItems;
+        publishDropdown.children('a').on("click", function()
         {
             showIncrementalPreview(showRelated);
         });
@@ -453,7 +451,7 @@
     {
         var propertyMap = [];
         var serverProperties = [];
-        if (!$.isArray(properties)) 
+        if (!Array.isArray(properties))
         {
             serverProperties.push(properties);
         }
@@ -467,11 +465,11 @@
             var popertyValue = '';
             $.each(this, function(propName, value)
             {
-                if (propName == 'key') 
+                if (propName === 'key')
                 {
                     propertyName = value;
                 }
-                if (propName == 'value') 
+                if (propName === 'value')
                 {
                     propertyValue = value;
                 }
@@ -494,17 +492,17 @@
         serverId = serversIds["perc-" + serverName];
         if (serverName == defaultServer.name) 
         {
-            $(".perc-item-delete-button").unbind().addClass('perc-item-disabled');
+            $(".perc-item-delete-button").off().addClass('perc-item-disabled');
         }
         else 
         {
-            $(".perc-item-delete-button").removeClass('perc-item-disabled').unbind().click(function()
+            $(".perc-item-delete-button").removeClass('perc-item-disabled').off("click").on("click", function(evt)
             {
                 deleteServer();
             });
         }
         loadReadOnlyEditor();
-    };
+    }
     
     //Publish the site using selected server
     function publishServer()
@@ -611,9 +609,9 @@
         {
             if (status) 
             {
-                var serverProperties = $.parseJSON(result[0]);
+                var serverProperties = JSON.parse(result[0]);
                 var servers = [];
-                if (!$.isArray(serverProperties.serverInfo)) 
+                if (!Array.isArray(serverProperties.serverInfo))
                 {
                     servers.push(serverProperties.serverInfo);
                     servers = serverProperties.serverInfo;
@@ -687,7 +685,7 @@
             //Select the first server by default
             if (loadServer) 
             {
-                selectServer(loadServer)
+                selectServer(loadServer);
             }
             else 
             {
@@ -700,7 +698,7 @@
         	}
             if (typeof(defaultServer) != "undefined") 
             {
-                var defaultServerItem = container.find(".perc-itemname[title='" + defaultServer.name + "']")
+                var defaultServerItem = container.find(".perc-itemname[title='" + defaultServer.name + "']");
                 defaultServerItem.addClass('perc-default-server-marker');
                 if (defaultServer.isModified) 
                 {
@@ -742,11 +740,11 @@
      */
     validateFields = function(errorObj)
     {
-        if (errorObj.error == 'Bad Request') 
+        if (errorObj.error === "Bad Request")
         {
-            var badFields = $.parseJSON(errorObj.request.responseText).ValidationErrors.fieldErrors;
+            var badFields = JSON.parse(errorObj.request.responseText).ValidationErrors.fieldErrors;
             var badFieldsArray = [];
-            if (!$.isArray(badFields)) 
+            if (!Array.isArray(badFields))
             {
                 badFieldsArray.push(badFields);
             }
@@ -855,7 +853,7 @@
                     else 
                     {
                         if(propName === 'password'){
-                            propVal = btoa(inputField.val())
+                            propVal = btoa(inputField.val());
                         }else{
                             propVal = inputField.val();
                         }
@@ -864,7 +862,8 @@
                     var propObjField = {
                         "key": propName,
                         "value": propVal
-                    }
+                    };
+
                     properties.push(propObjField);
                 });
                 // Add driver as property of server
@@ -883,7 +882,8 @@
                 	"value":publishRelatedItems
                 });
                 return properties;
-            }
+            };
+
             //Create the server Option Object
             var serverPropObj = {
                 serverInfo: {

@@ -33,9 +33,9 @@
 <script src="../widgets/PercContentBrowserWidget.js"></script>
 
 <script>
-	$j(document).ready(function()
+	$(document).ready(function()
 	{
-		$j.PercAssetBrowserWidget
+		$.PercAssetBrowserWidget
 		({
 		    // callback when user selects a leaf
 			on_click : function(spec)

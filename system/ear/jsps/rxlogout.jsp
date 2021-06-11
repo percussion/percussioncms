@@ -58,7 +58,8 @@
 		<link rel="stylesheet" type="text/css" href="/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.min.css"/>
     <script
             src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=en-us"></script>
-    <script src="/cm/cui/components/jquery/dist/jquery.min.js"></script>
+    <script src="/cm/cui/components/jquery/jquery.min.js"></script>
+    <script src="/cm/cui/components/jquery-migrate/jquery-migrate.min.js"></script>
     <script src="/cm/cui/components/twitter-bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
     </head>
     <body>
@@ -67,7 +68,7 @@
                 <td align="center">
                     <div class='perc-login'>
                         <form id="loginform" name="loginform" method="post" enctype="multipart/form-data">
-                            <div class='perc-login-logo'><img src="sys_resources/images/percussion-logo.png" alt="${rxcomp:i18ntext('general@Percussion Logo Alt',locale)}" title="${rxcomp:i18ntext('general@Percussion Logo Title',locale)}"/></div>   
+                            <div class='perc-login-logo'><img src="/sys_resources/images/percussion-logo.png" alt="${rxcomp:i18ntext('general@Percussion Logo Alt',locale)}" title="${rxcomp:i18ntext('general@Percussion Logo Title',locale)}"/></div>
                             <table class='perc-form'> 
                                 <tr>
                                     <td> 

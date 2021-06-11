@@ -81,7 +81,7 @@
     <script src="/cm/gadgets/repository/common/lib/jqplot/excanvas.js"></script>
 <![endif]-->
     
-    <script src="/cm/jslib/jquery.dataTables.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js" ></script>
     <script src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js" ></script>
     <script src="/cm/widgets/PercTooltip/PercTooltip.js" ></script>
     <script src="/cm/widgets/PercActionDataTable/PercActionDataTable.js" ></script>

@@ -7,12 +7,12 @@
 (function($)
 {
     $(document).ready(function(){
-        $(".perc-image-field-select-button").click(function(){
+        $(".perc-image-field-select-button").on("click", function(){
             var $el = $(this);
             var imgInputName = $el.attr("for");
             var eventSource = $("#" + imgInputName ).attr("data-perc-widget-event-source");
             var intialPath = $("#" + imgInputName ).val();
-            if($.trim(intialPath) == "")
+            if(intialPath.trim() === "")
                 intialPath = $.topFrameJQuery.cookie("perc-imagefield-path");
             var updateImageData = function(pathItem){
                 var path = pathItem.path;
@@ -30,8 +30,8 @@
 
                 // Save the image content id to data attribute and trigger an event change for other
                 // scripts that might be listening for an event change
-                $("#" + imgInputName ).attr("data-perc-image-content-id",pathItem.id.split(/[- ]+/).pop());
-                $("#" + imgInputName ).change();
+                $("#" + imgInputName ).attr("data-perc-image-content-id",pathItem.id.split(/[- ]+/).pop())
+                    .trigger("change");
 
             }
             //Create new button click function. The success callback is called with PathItem, if the new image creation is successful
@@ -55,11 +55,11 @@
             $.topFrameJQuery.PercPathSelectionDialog.open(pathSelectionOptions);
         });
 
-        $(".perc-image-field-clear-button").click(function() {
+        $(".perc-image-field-clear-button").on("click", function() {
             var $el = $(this);
             var imgInputName = $el.attr("for");
             var intialPath = $("#" + imgInputName ).val();
-            if($.trim(intialPath) == "") {
+            if(intialPath.trim() === "") {
                 return;
             }
 

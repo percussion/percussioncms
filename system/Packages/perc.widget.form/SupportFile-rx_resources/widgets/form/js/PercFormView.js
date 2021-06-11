@@ -41,9 +41,9 @@
     function initializeForm()
     {
         var formFieldName = $(".PercFormWidget").attr("id");
-        var formDataStr = $("input[name='" + formFieldName + "']").val();
+        var formDataStr = $("input[name='" + formFieldName + "']").val().trim();
         var formData = null;
-        if($.trim(formDataStr).length>0)
+        if(formDataStr.length>0)
             formData = JSON.parse(formDataStr);
 
         var editorHtml = $.PercFormController().getFormEditor(formData);
@@ -56,19 +56,19 @@
         $("#perc-form-control-wrapper").prepend($("#perc-form-top-row"));
 
         //Attach event to Edit button
-        $(".toggle-editor").live("click", function(){
+        $(document).on("click", ".toggle-editor",function(){
 
             // Deactivate old extended editor, since we can only have one active at a time.
             var extEditorElem = $("." + $.PercFormConstants.FIELD_EDITOR_EXT_CLASS);
             if (extEditorElem.length)
                 deactivateEditor(extEditorElem);
-            $(".defaultFocus").focus();
+            $(".defaultFocus").trigger("focus");
 
             var parent = $(this).parent().parent();
             var newElem = $.PercFormController().toggleFieldEditor(parent);
             addConfig(newElem);
             newElem = parent.parent().replaceWith(newElem);
-            $(".defaultFocus").focus();
+            $(".defaultFocus").trigger("focus");
             var fieldType = parent.attr('type');
             if(fieldType === 'PercDateControl'){
                 attachFormDatepicker();
@@ -86,7 +86,7 @@
         });
 
         //Attach event to Delete button
-        $(".delete-field").live("click", function(){
+        $(document).on("click",".delete-field", function(){
             if(tinymce.EditorManager.get('elm1') && $(this).parent().parent().children('#elm1').length > 0){
                 tinymce.EditorManager.execCommand('mceRemoveEditor', true, 'elm1');
             }
@@ -94,133 +94,134 @@
         });
 
         //Attach event to Configure button
-        $(".toggle-configure").live("click", function(){
+        $(document).on("click",".toggle-configure", function(){
             var controlEl = $(this).parent().parent();
             var control = $.PercFormController().getControl(controlEl);
             openPrefsDialog(controlEl, control().getAvailablePrefs());
         });
 
         //Add Date field            
-        $(".form-date-field-label").click(function(){
+        $(".form-date-field-label").on("click",function(){
             var newElem = $.PercFormController().getNewFieldEditor("PercDateControl");
             addEvents(newElem);
             $("#perc-form-dnd-fields").append(newElem);
             $("iframe").scrollTop(20000);
-            newElem.find(".toggle-editor").click();
+            newElem.find(".toggle-editor").trigger("click");
             attachFormDatepicker();
         });
 
         //Add Textarea field
-        $(".form-textarea-label").click(function(){
+        $(".form-textarea-label").on("click",function(){
             var newElem = $.PercFormController().getNewFieldEditor("PercTextareaFieldControl");
             addEvents(newElem);
             $("#perc-form-dnd-fields").append(newElem);
-            newElem.find(".toggle-editor").click();
+            newElem.find(".toggle-editor").trigger("click");
             $("iframe").scrollTop(20000);
         });
 
         //Add Check boxes
-        $(".form-check-boxes-label").click(function(){
+        $(".form-check-boxes-label").on("click",function(){
             var newElem = $.PercFormController().getNewFieldEditor("PercCheckBoxControl");
             addEvents(newElem);
             $("#perc-form-dnd-fields").append(newElem);
-            newElem.find(".toggle-editor").click();
+            newElem.find(".toggle-editor").trigger("click");
             $("iframe").scrollTop(20000);
         });
 
         //Add Radio buttons
-        $(".form-radio-buttons-label").click(function(){
+        $(".form-radio-buttons-label").on("click",function(){
             var newElem = $.PercFormController().getNewFieldEditor("PercRadioControl");
             addEvents(newElem);
             $("#perc-form-dnd-fields").append(newElem);
-            newElem.find(".toggle-editor").click();
+            newElem.find(".toggle-editor").trigger("click");
             $("iframe").scrollTop(20000);
         });
 
         //Add Submit Button
-        $(".form-submit-buttons-label").click(function(){
+        $(".form-submit-buttons-label").on("click",function(){
             var newElem = $.PercFormController().getNewFieldEditor("PercSubmitButtonControl");
             addEvents(newElem);
             $("#perc-form-dnd-fields").append(newElem);
-            newElem.find(".toggle-editor").click();
+            newElem.find(".toggle-editor").trigger("click");
             $("iframe").scrollTop(20000);
         });
 
         //Add Entry field
-        $(".form-entry-field-label").click(function(){
+        $(".form-entry-field-label").on("click", function(){
             var newElem = $.PercFormController().getNewFieldEditor("PercEntryFieldControl");
             addEvents(newElem);
             $("#perc-form-dnd-fields").append(newElem);
-            newElem.find(".toggle-editor").click();
+            newElem.find(".toggle-editor").trigger("click");
             $("iframe").scrollTop(20000);
         });
 
         // Add Drop down field 
-        $(".form-drop-down-label").click(function(){
+        $(".form-drop-down-label").on("click",function(){
             var newElem = $.PercFormController().getNewFieldEditor("PercDropDownControl");
             addEvents(newElem);
             $("#perc-form-dnd-fields").append(newElem);
             $("iframe").scrollTop(20000);
-            newElem.find(".toggle-editor").click();
+            newElem.find(".toggle-editor").trigger("click");
         });
 
         // Add Data Drop down field 
-        $(".form-data-drop-down-label").click(function(){
+        $(".form-data-drop-down-label").on("click",function(){
             var newElem = $.PercFormController().getNewFieldEditor("PercDataDropDownControl");
             addEvents(newElem);
             $("#perc-form-dnd-fields").append(newElem);
             $("iframe").scrollTop(20000);
-            newElem.find(".toggle-editor").click();
+            newElem.find(".toggle-editor").trigger("click");
         });
 
         //Add Text field
-        $(".form-text-label").click(function(){
+        $(".form-text-label").on("click",function(){
             var newElem = $.PercFormController().getNewFieldEditor("PercTextFieldControl");
             addEvents(newElem);
             $("#perc-form-dnd-fields").append(newElem);
-            newElem.find(".toggle-editor").click();
+            newElem.find(".toggle-editor").trigger("click");
             $("iframe").scrollTop(20000);
             tinymce.EditorManager.execCommand('mceAddEditor', true, 'elm1');
         });
 
         //Add Hidden field
-        $(".form-hidden-field-label").click(function(){
+        $(".form-hidden-field-label").on("click",function(){
             var newElem = $.PercFormController().getNewFieldEditor("PercHiddenFieldControl");
             addEvents(newElem);
             $("#perc-form-dnd-fields").append(newElem);
-            newElem.find(".toggle-editor").click();
+            newElem.find(".toggle-editor").trigger("click");
             $("iframe").scrollTop(20000);
             tinymce.EditorManager.execCommand('mceAddEditor', true, 'elm1');
         });
 
         //Add Honeypot field
-        $(".form-perc-honeypot-label").click(function(){
+        $(".form-perc-honeypot-label").on("click",function(){
             var newElem = $.PercFormController().getNewFieldEditor("PercHoneypotFieldControl");
             addEvents(newElem);
             $("#perc-form-dnd-fields").append(newElem);
-            newElem.find(".toggle-editor").click();
+            newElem.find(".toggle-editor").trigger("click");
             $("iframe").scrollTop(20000);
             tinymce.EditorManager.execCommand('mceAddEditor', true, 'elm1');
         });
 
         //Add recaptcha field
-        $(".form-perc-recaptcha-label").click(function(){
+        $(".form-perc-recaptcha-label").on("click",function(){
             var newElem = $.PercFormController().getNewFieldEditor("PercRecaptchaFieldControl");
             addEvents(newElem);
             $("#perc-form-dnd-fields").append(newElem);
-            newElem.find(".toggle-editor").click();
+            newElem.find(".toggle-editor").trigger("click");
             $("iframe").scrollTop(20000);
             tinymce.EditorManager.execCommand('mceAddEditor', true, 'elm1');
         });
 
         //Toggle the control menu button on click event 
-        $("#perc-control-menu-button").click(function(){
+        $("#perc-control-menu-button").on("click",function(){
             $("#perc-control-menu-wrapper").show();
             $(this).hide();
         });
 
         //Add mouse out and over event to control menu items        
-        $("#perc-control-menu-wrapper").unbind().hover(function(){},function() {
+        $("#perc-control-menu-wrapper").on("mouseenter",function(){})
+            .on("mouseleave",function() {
             $("#perc-control-menu-button").show();
             $(this).hide();
         });
@@ -262,7 +263,7 @@
         });
 
         //Change the control style on mouse over and out
-        $(".perc-control-label").mouseover(function() {
+        $(".perc-control-label").on("mouseenter", function() {
             var bgimage = $(this).css('background-image');
             bgimage = bgimage.replace(".png", "-over.png");
 
@@ -271,7 +272,7 @@
                 'cursor': 'pointer',
                 'background-image':bgimage,
                 'border-bottom':'1px solid #99C4D8'});
-        }).mouseout(function(){
+        }).on("mouseleave",function(){
             var bgimage = $(this).css('background-image');
             bgimage = bgimage.replace("-over.png", ".png");
             $(this).css({'background-color': '#3288B0',
@@ -291,13 +292,13 @@
             $("div[type='sys_error']").hide();
         }
         //Handle the success page browse button click
-        $("#perc-formbuild-success-url-browse").click(function(){
+        $("#perc-formbuild-success-url-browse").on("click",function(){
             var dlgTitle = "Select Success Page";
             var inputElemId = "perc-formbuild-success-url";
             handleBrowseButtonClick(dlgTitle, inputElemId );
         });
         //Handle the error page browse button click
-        $("#perc-formbuild-error-url-browse").click(function(){
+        $("#perc-formbuild-error-url-browse").on("click",function(){
             var dlgTitle = "Select Error Page";
             var inputElemId = "perc-formbuild-error-url";
             handleBrowseButtonClick(dlgTitle, inputElemId );
@@ -310,7 +311,7 @@
         // Meta data
         $("#perc-content-edit-metadata-link").hide();
         $("#perc-form-metadata-content").hide();
-        $("#perc-form-edit-metadata-link").click(function () {
+        $("#perc-form-edit-metadata-link").on("click",function () {
             $("#perc-form-metadata-content").toggle();
             $("#perc-form-edit-metadata-link").toggleClass('perc-form-spacer');
             $("#perc-form-edit-metadata-link").toggleClass('perc-form-meta-tab-open');
@@ -364,7 +365,7 @@
         var isFieldError = false;
         $(reqFieldIds).each(function(){
             var value = $("#" + this).val();
-            if($.trim(value)==='')
+            if(value.trim()==='')
             {
                 isFieldError = true;
                 $("#" + this).after(errorLabelHtml);
@@ -372,7 +373,7 @@
         });
         //Open the Meta-data section if there is any error
         if(isFieldError && $("#perc-form-edit-metadata-link").hasClass('perc-form-spacer')) {
-            $("#perc-form-edit-metadata-link").click();
+            $("#perc-form-edit-metadata-link").trigger("click");
         }
         return isFieldError;
     }
@@ -382,7 +383,7 @@
         var extEditorElem = $("." + $.PercFormConstants.FIELD_EDITOR_EXT_CLASS);
         if (extEditorElem.length)
             deactivateEditor(extEditorElem);
-        $(".defaultFocus").focus();
+        $(".defaultFocus").trigger("focus");
 
         var reqFieldIds = ["perc-formbuild-success-url","perc-formbuild-error-url"];
 
@@ -429,7 +430,8 @@
         var formFieldName = $(".PercFormWidgetReadOnly").attr("id");
         var formDataStr = $("input[name='" + formFieldName + "']").val();
         var formData = null;
-        if($.trim(formDataStr).length>0)
+        formDataStr = formDataStr.trim();
+        if(formDataStr.length>0)
             formData = JSON.parse(formDataStr);
 
         var editorHtml = $.PercFormController().getFormEditor(formData);
@@ -560,7 +562,7 @@
         // Meta data
         $("#perc-content-edit-metadata-link").hide();
         $("#perc-form-metadata-content").hide();
-        $("#perc-form-edit-metadata-link").click(function () {
+        $("#perc-form-edit-metadata-link").on("click",function () {
             $("#perc-form-metadata-content").toggle();
             $("#perc-form-edit-metadata-link").toggleClass('perc-form-spacer');
             $("#perc-form-edit-metadata-link").toggleClass('perc-form-meta-tab-open');
@@ -595,7 +597,6 @@
                 });
             $(".ui-button-text-only").attr('id','perc-field-prefs-apply');
             $("#perc-field-prefs-apply").css({"margin-right": "13px"});
-            //$(".ui-dialog-buttonpane button").replaceWith("<div id='perc-field-prefs-apply' class='ui-icon'></div>");
         }
 
         // Get the values that the form control has for all the preferences
@@ -606,14 +607,14 @@
         // Add each preference field to the dialog setting, with the corresponding value
         var container = prefsDialog.find("#perc-prefs-dialog-container");
         container.children().remove();
-        for(i = 0; i < preferences.length; i++)
+        for(let i = 0; i < preferences.length; i++)
         {
             preferences[i].pref.addControl(container, preferenceVals[preferences[i].pref.name], preferences[i].defaults);
         }
 
         // Object that will store the preferences values once the Apply button is clicked
         var preferencesAfterOnApply = {};
-        $('#perc-field-prefs-apply').unbind().bind('click', function() {
+        $('#perc-field-prefs-apply').on('click', function() {
 
             var isValid = true;
             for(i = 0; i < preferences.length; i++)

@@ -38,7 +38,7 @@ define(['jquery'], function($) {
      */
     var request = function(options) {
         options.dataType = options.dataType || 'json';
-        options.dataType = (options.dataType == 'undefined') ? undefined : options.dataType;
+        options.dataType = (options.dataType === 'undefined') ? undefined : options.dataType;
         
         var req = $.ajax({
             url: options.url,

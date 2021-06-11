@@ -78,11 +78,11 @@
 
 			<!-- JavaScript -->
 			<!--<psxctl:FileDescriptor name="jquery-ui.js" type="script" mimetype="text/javascript">-->
-			<!--<psxctl:FileLocation>../../cm/jslib/jquery-ui.js</psxctl:FileLocation>-->
+			<!--<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js</psxctl:FileLocation>-->
 			<!--<psxctl:Timestamp/>-->
 			<!--</psxctl:FileDescriptor>		-->
 			<psxctl:FileDescriptor name="PSJSUtils.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/PSJSUtils.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_path_constants.js" type="script" mimetype="text/javascript">
@@ -94,28 +94,28 @@
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.layout.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.layout.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cmjslib/profiles/3x/jquery/plugins/jquery-layout/jquery.layout_and_plugins.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.metadata.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.metadata.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.metadata.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="tools.scrollable-1.1.2.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/tools.scrollable-1.1.2.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="tools.scrollable.mousewheel-1.0.1.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/tools.scrollable.mousewheel-1.0.1.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.validate.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.validate.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-validation/jquery.validate.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<!-- SimpleDateFormat JS-->
 			<psxctl:FileDescriptor name="date.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/date.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/libraries/perc-retiredjs/date.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_extend_jQueryValidate.js" type="script" mimetype="text/javascript">
@@ -128,15 +128,15 @@
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
             <psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../../cm/jslib/jquery.dynatree.js</psxctl:FileLocation>
+            <psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
             </psxctl:FileDescriptor>
             <psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.text-overflow.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/Jeditable.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="PercContentBrowserWidget.js" type="script" mimetype="text/javascript">
@@ -170,7 +170,7 @@
 	<xsl:template match="Control[@name='categoryListWidgetControl']" mode="psxcontrol">
 
 	<script >
-		$ = $j;
+		;
 		$(document).ready(function () {
 			$.categoryListWidget.psxControl(); // maintained in categoryListWidget.js
 		});
@@ -243,7 +243,7 @@
 				  mode="psxcontrol">
 	<script >
 	<![CDATA[
-		$j(document).ready(function () {
+		$(document).ready(function () {
 			$.categoryListWidget.readOnlyControl(); // maintained in categoryListWidget.js
 		});
 		]]>

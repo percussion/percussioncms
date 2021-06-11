@@ -155,9 +155,9 @@
             .append(approvalActionAllLabel)
             .addClass("perc-gadget-comments-default-all");
         
-        approvalActionRejectAction.click(rejectAll);
-        approvalActionApproveAction.click(approveAll);
-        approvalActionDeleteAction.click(deleteAll);
+        approvalActionRejectAction.on("click",rejectAll);
+        approvalActionApproveAction.on("click",approveAll);
+        approvalActionDeleteAction.on("click", deleteAll);
         
         return approvalActionMenu;
     }
@@ -228,9 +228,9 @@
             .attr("currentState",  approvalState)
             .attr("originalState", approvalState);
 
-        approvalActionRejectAction.click(reject);
-        approvalActionApproveAction.click(approve);
-        approvalActionDeleteAction.click(deleteComment);
+        approvalActionRejectAction.on("click",reject);
+        approvalActionApproveAction.on("click", approve);
+        approvalActionDeleteAction.on("click",deleteComment);
         
         return approvalActionMenu;
     }
@@ -273,7 +273,7 @@
         $.each(allIndividualMenus, function(){
             var action = $(this);
             var state = action.attr("currentState");
-            if(state != firstState) {
+            if(state !== firstState) {
                 allTheSame = false;
                 return false;
             }

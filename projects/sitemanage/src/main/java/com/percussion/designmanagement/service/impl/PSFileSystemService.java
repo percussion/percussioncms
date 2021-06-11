@@ -161,7 +161,7 @@ public class PSFileSystemService implements IPSFileSystemService
         if (rootDirectory == null) {
             rootDirectory = new File(rootFolderPath);
         }
-        
+
         return rootDirectory;
     }
     
@@ -177,14 +177,14 @@ public class PSFileSystemService implements IPSFileSystemService
         if (!pathFile.exists()) {
             throw new FileNotFoundException("The path doesn't exist: " + path);
         }
-        
+
         File[] children = pathFile.listFiles();
         
         // Filter only for root path
         if (includes.isEmpty() || !StringUtils.equals(path, "/")) {
             return Arrays.asList(children);
         }
-        
+
         List<File> result = new ArrayList<>();
         //FB: NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE NC 1-17-16
         if(children!= null){
@@ -405,7 +405,7 @@ public class PSFileSystemService implements IPSFileSystemService
         if (StringUtils.isBlank(name)) {
             name = file.getParentFile().getName();
         }
-        
+
         return name;
     }
     

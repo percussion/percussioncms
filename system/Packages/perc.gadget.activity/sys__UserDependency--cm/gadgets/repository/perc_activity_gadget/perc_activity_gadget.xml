@@ -74,14 +74,17 @@
     <link href="/cm/widgets/PercDataTable/PercDataTable.css" rel="stylesheet" type="text/css" />
     <link href="/cm/widgets/PercPageDataTable/PercPageDataTable.css" rel="stylesheet" type="text/css" />
     <link href="/cm/widgets/PercSimpleMenu/PercSimpleMenu.css" rel="stylesheet" type="text/css" />
-    
-    <script src="/cm/jslib/jquery.dataTables.js" ></script>
-    <script src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js" ></script>
+     <script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"</script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"</script>
     <script src="/cm/widgets/PercActionDataTable/PercActionDataTable.js" ></script>
     <script src="/cm/widgets/PercPageDataTable/PercPageDataTable.js" ></script>
     <script src="/cm/widgets/PercDataTable/PercDataTable.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js" ></script>
+    <script src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js" ></script>
+
     
-    <script src="/cm/jslib/jquery.text-overflow.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
     <script src="/cm/gadgets/repository/perc_activity_gadget/perc_activity_gadget.js" ></script>
     
     <script >

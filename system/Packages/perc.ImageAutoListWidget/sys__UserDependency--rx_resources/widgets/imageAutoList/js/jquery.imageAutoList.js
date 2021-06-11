@@ -169,12 +169,12 @@
             }
             //Callbacks Event Code
     
-            $('#perc-content-edit-title_contains').change(function(){
+            $('#perc-content-edit-title_contains').on("change",function(){
                 buildQuery();
             });    
     
             //Build query if mouse leaves the form, i.e when the user goes to click on the save button which is not part of the iframe
-            $('#perc-content-form').mouseleave(function(){
+            $('#perc-content-form').on("mouseleave",function(){
                 buildQuery();
             });
     
@@ -186,12 +186,10 @@
                 //Set display date range
                 setDisplayDate($('[name="start_date"]').val(),"display_start_date");
                 setDisplayDate($('[name="end_date"]').val(),"display_end_date");        
-                $("#display_title_contains").val($('[name="title_contains"]').val());
-                $("#display_title_contains").blur(function(){
+                $("#display_title_contains").val($('[name="title_contains"]').val()).on("blur",function(){
                     $('[name="title_contains"]').val($("#display_title_contains").val());
                     buildQuery();
-                });
-                $("#display_title_contains").change(function(){
+                }).on("change",function(){
                     $('[name="title_contains"]').val($("#display_title_contains").val());
                     buildQuery();
                 });
@@ -205,27 +203,27 @@
              */
             function addDelToDateControls()
             {
-                $('#display_end_date').keydown(function(evt){
+                $('#display_end_date').on("keydown",function(evt){
                     var rawCode = evt.charCode ? evt.charCode : evt.which;
-                    if(rawCode==46 || rawCode==8)
+                    if(rawCode===46 || rawCode===8)
                     {
                         $('#display_end_date').val("");
                         $('[name="end_date"]').val("");
                         buildQuery();
-                    } else if(rawCode==9) {
+                    } else if(rawCode===9) {
 			return true;
 		    } else {
 			return false;
 		    }
                 });
-                $('#display_start_date').keydown(function(evt){
+                $('#display_start_date').on("keydown",function(evt){
                     var rawCode = evt.charCode ? evt.charCode : evt.which;
-                    if(rawCode==46 || rawCode==8)
+                    if(rawCode===46 || rawCode===8)
                     {
                         $('#display_start_date').val("");
                         $('[name="start_date"]').val("");
                         buildQuery();
-                    } else if(rawCode==9) {
+                    } else if(rawCode===9) {
 			return true;
                     } else {
 			return false;

@@ -414,7 +414,7 @@ $.extend( FixedHeader.prototype, {
 			null;
 		
 		if ( focus ) {
-			focus.blur();
+			focus.trigger("blur");
 		}
 
 		if ( mode === 'in-place' ) {
@@ -477,7 +477,7 @@ $.extend( FixedHeader.prototype, {
 		// Restore focus if it was lost
 		if ( focus && focus !== document.activeElement ) {
 			setTimeout( function () {
-				focus.focus();
+				focus.trigger("focus");
 			}, 10 );
 		}
 

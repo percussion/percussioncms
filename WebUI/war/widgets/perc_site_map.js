@@ -74,7 +74,7 @@
                 this.editSiteSectionDialog = $.perc_editSiteSectionDialog();
                 this.addActionsMenuItems();
                 // Handle window resize by doing a full layout of all levels
-                $(window).resize(function(){
+                $(window).on("resize",function(){
                     self.layoutAll();
                 });
             },
@@ -121,18 +121,8 @@
                         }
                     });
                     // Handle window resize by doing a full layout of all levels
-                    $(window).resize(function(){
-                        if($.browser.msie)
-                        {
-                            // Need to delay to give ie time to calculate container sizes
-                            // IE is lame.
-                            setTimeout( function(){self.layoutAll();}, 150);
-                        }
-                        else
-                        {
-                            self.layoutAll();
-                        }
-
+                    $(window).on("resize",function(){
+                        self.layoutAll();
                     });
                 }
             },
@@ -142,7 +132,7 @@
              */
             destroy: function(){
                 $.widget.prototype.destroy.apply(this, arguments);
-                $(window).unbind("resize");
+                $(window).off("resize");
             },
 
             /**
@@ -479,7 +469,7 @@
                 if(idx < levelCount)
                     this.removeLevel(idx + 1);
                 // unbind all events from this level first
-                $level.unbind(".level_" + idx);
+                $level.off(".level_" + idx);
 
                 // now remove it from the dom
                 $level.remove();
@@ -510,7 +500,7 @@
                             $delete.removeClass("perc-site-map-action-item-disabled")
                                 .addClass("perc-site-map-action-item-enabled")
                                 .attr("for", self.options.site)
-                                .bind("click", function(evt) {
+                                .on("click", function(evt) {
                                     self.onDeleteSiteDialog();
                                 });
                         }
@@ -526,7 +516,7 @@
                         .css("padding-right", "30px")
                         .attr("id", "perc-site-map-copy")
                         .text(I18N.message("perc.ui.site.map@Copy Site"))
-                        .bind("click", function(evt){
+                        .on("click", function(evt){
                             self.onCopySiteDialog();
                         });
                     $menu.append($copy);
@@ -539,7 +529,7 @@
                     .css("display", "table-cell")
                     .attr("id", "perc-site-map-move")
                     .text(I18N.message('perc.ui.sitemap.menuitem@Move Section'))
-                    .bind("click", function(evt){
+                    .on("click", function(evt){
                         self.onMoveWithDialog();
                     });
                 $menu.append($move);
@@ -690,7 +680,7 @@
                 this.addNodeCountArea($box, sectionObj, levelIdx);
                 if(levelIdx > 1)
                 {
-                    $box.bind("click", function(evt){
+                    $box.on("click", function(evt){
                         $(".perc-site-map-box-selected").removeClass("perc-site-map-box-selected");
                         $(this).addClass("perc-site-map-box-selected");
                         self.handleMoveActionItemState();
@@ -824,7 +814,7 @@
                     var count = this.convertCXFArray(sectionObj.childIds).length;
                     $pageCount.append($("<span value=\"" + count + "\"></span>").text(count));
 
-                    $nodeCount.bind("click." + "level_" + levelIdx,
+                    $nodeCount.on("click." + "level_" + levelIdx,
                         {"sectionId" : sectionObj.id}, function(evt){
                             self.onNodeCountClick(evt);
                         });
@@ -849,11 +839,11 @@
                     .attr("src", this.getImageSrc(image))
                     .attr("alt", tooltip)
                     .attr("title", tooltip)
-                    .bind("click." + namespace, data, onclick)
-                    .bind("mouseenter." + namespace, function(evt){
+                    .on("click." + namespace, data, onclick)
+                    .on("mouseenter." + namespace, function(evt){
                         $(this).attr("src", self.getImageSrc(image, true));
                     })
-                    .bind("mouseleave." + namespace, function(evt){
+                    .on("mouseleave." + namespace, function(evt){
                         $(this).attr("src", self.getImageSrc(image));
                     });
 
@@ -887,7 +877,7 @@
                 var self = this;
                 var $section = $("#" + sectionId);
                 //incase parent node is deleted then chilc node refresh fails.
-                if ($section[0] == undefined)
+                if ($section[0] === undefined)
                     return;
                 var data = $section.metadata({type: 'attr', name: 'data'});
                 var levelIdx =  parseInt(data.level);
@@ -898,7 +888,7 @@
                     var $expanded =
                         $("#perc_level_" + levelIdx + " .perc-site-map-nodes .perc-site-map-expanded");
 
-                    if($expanded.length == 1)
+                    if($expanded.length === 1)
                         this.collapseSection($expanded.attr("id"));
 
                     $section.addClass("perc-site-map-expanded");
@@ -1516,7 +1506,7 @@
                 var pdata = $parentSection.metadata({type: 'attr', name: 'data'});
                 if(pdata.childIds)
                 {
-                    if(jQuery.isArray(pdata.childIds)){
+                    if(Array.isArray(pdata.childIds)){
                         $.each(pdata.childIds, function(){
                             childIds.push(this.split("_")[0]);
                         });
@@ -1769,7 +1759,7 @@
                         "<div style=\"clear:both\"/>" +
                         "</div>" +
                         "</div>");
-                    delConfirmHtml.find(".perc-delete-section-text").click(function(){
+                    delConfirmHtml.find(".perc-delete-section-text").on("click",function(){
                         var forattr = $(this).attr("for");
                         delConfirmHtml.find("input[value=" + forattr + "]").prop("checked", true);
                     });

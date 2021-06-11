@@ -136,7 +136,7 @@
                 result[k] = v;
             });
         }else{
-            if(!$.isArray(mapEntries.entry))
+            if(!Array.isArray(mapEntries.entry))
                 tempArray.push(mapEntries.entry);
             else
                 tempArray = mapEntries.entry;

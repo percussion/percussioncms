@@ -43,7 +43,7 @@
   <link rel="stylesheet" href="/Rhythmyx/web_resources/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" type="text/css" media="all" /> 
   <link rel="stylesheet" href="/Rhythmyx/web_resources/themes/CM-3371/CM-3371.css" type="text/css" media="all" /> 
   <script src="/Rhythmyx/web_resources/cm/jslib/jquery.js"></script>
-  <script src="/Rhythmyx/web_resources/cm/jslib/jquery-ui.js"></script>
+  <script src="/Rhythmyx/web_resources/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"></script>
   <script src="/Rhythmyx/web_resources/cm/common/js/PercGlobalVariables.js"></script>
   <script src="/Rhythmyx/web_resources/cm/jslib/jquery.cookie.js"></script>
   <script src="/Rhythmyx/web_resources/cm/jslib/perc_membership.js"></script>
@@ -70,7 +70,7 @@
                 (function($){
                     $(document).ready(function(){
                         $('a[href*="/.system/PageCatalog"]').attr('cataloged', 'true' );
-                        $('a[href*="/.system/PageCatalog"]').click(function(e) {
+                        $('a[href*="/.system/PageCatalog"]').on("click",function(e) {
                             alert('This page has not yet been imported. It will be available for preview after import is complete.');
                             e.preventDefault();
                         });

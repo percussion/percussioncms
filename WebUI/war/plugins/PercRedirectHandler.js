@@ -279,7 +279,7 @@
         return dialogHtml;
     }
     function addBrowseHandler(dialog){
-        dialog.find("#perc-redirect-to-path-button").click(function(){
+        dialog.find("#perc-redirect-to-path-button").on("click",function(){
             var dlgTitle = I18N.message("perc.ui.redirect.handler@Select Path");
             var treeLabel = I18N.message("perc.ui.redirect.handler@To Path");
             var updateToPath = function(pathItem){

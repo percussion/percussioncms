@@ -1,18 +1,9 @@
 <?xml version="1.0"?>
-<!--
-/******************************************************************************
- *
- * [ feature.xml ]
- *
- * COPYRIGHT (c) 1999 - 2010 by Percussion Software, Inc., Woburn, MA USA.
- * All rights reserved. This material contains unpublished, copyrighted
- * work including confidential and proprietary information of Percussion.
- *
- ******************************************************************************
- -->
 <feature>
   <name>perc_jquery</name>
   <gadget>
-    <script src="jquery.min.js"/>
+    <!-- Copied as part of installDistributionFiles.xml -->
+    <script src="jquery-3.6.0.js"></script>
+    <script src="jquery-migrate-3.3.2.js"></script>
   </gadget>
 </feature>

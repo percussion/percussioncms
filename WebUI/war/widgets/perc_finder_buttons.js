@@ -44,12 +44,12 @@
          */
         function disableAllButtonsButSite()
         {
-            $( ".perc-finder-menu #perc-finder-preview" ).addClass('ui-disabled').removeClass('ui-enabled').unbind('click'); //Disabled
-            $( ".perc-finder-menu #perc-finder-actions-button" ).addClass('ui-disabled').removeClass('ui-enabled').unbind('click'); //Disabled
-            $( ".perc-finder-menu #perc-finder-delete" ).removeClass('ui-enabled').addClass('ui-disabled').unbind('click'); //Disabled
-            $( ".perc-finder-menu #perc-finder-new-folder" ).addClass('ui-disabled').removeClass('ui-enabled').unbind('click'); //Disabled
-            $( ".perc-finder-menu #mcol-new-page" ).addClass('ui-disabled').removeClass('ui-enabled').unbind('click'); //Disabled
-            $( ".perc-finder-menu #mcol-new-asset" ).addClass('ui-disabled').removeClass('ui-enabled').unbind('click'); //Disabled
+            $( ".perc-finder-menu #perc-finder-preview" ).addClass('ui-disabled').removeClass('ui-enabled').off('click'); //Disabled
+            $( ".perc-finder-menu #perc-finder-actions-button" ).addClass('ui-disabled').removeClass('ui-enabled').off('click'); //Disabled
+            $( ".perc-finder-menu #perc-finder-delete" ).removeClass('ui-enabled').addClass('ui-disabled').off('click'); //Disabled
+            $( ".perc-finder-menu #perc-finder-new-folder" ).addClass('ui-disabled').removeClass('ui-enabled').off('click'); //Disabled
+            $( ".perc-finder-menu #mcol-new-page" ).addClass('ui-disabled').removeClass('ui-enabled').off('click'); //Disabled
+            $( ".perc-finder-menu #mcol-new-asset" ).addClass('ui-disabled').removeClass('ui-enabled').off('click'); //Disabled
         }
         
         // this is called by PercPageView.js
@@ -62,17 +62,18 @@
             // create the delete page button and its handler
             var dp = $.perc_build_delete_page_button( finder, contentViewer );
             var percButtons = $('<div class="perc-finder-buttonbar"/>');
-            
-            //percButtons.append( "&nbsp;&nbsp;" );
+
             percButtons.append( dp );
-            var isLibMode = typeof gInitialScreen !== 'undefined' && gInitialScreen == "library";
+            var np;
+            var na;
+            var isLibMode = typeof gInitialScreen !== 'undefined' && gInitialScreen === "library";
             if (!isLibMode) {
                 // create the new page button and its handler
-                var np = $.perc_build_new_page_button(finder, contentViewer);
+                 np = $.perc_build_new_page_button(finder, contentViewer);
                 percButtons.append(np);
                 
                 // create the new asset button and its handler
-                var na = $.PercNewAssetDialog.init(finder, contentViewer);
+                 na = $.PercNewAssetDialog.init(finder, contentViewer);
                 percButtons.append(na);
             }
             // create the new folder button and its handler
@@ -81,8 +82,9 @@
 
             //Adding new site event
             // create new site button and its handler {
+            var ns;
             if (!isLibMode) {
-                var ns = '<a id="perc-finder-new-site" class="perc-form ui-state-default perc-font-icon icon-sitemap" href="#" title="' + I18N.message("perc.ui.finder.buttons@Click New Site") + '"></a>';
+                 ns = '<a id="perc-finder-new-site" class="perc-form ui-state-default perc-font-icon icon-sitemap fas fa-sitemap" href="#" title="' + I18N.message("perc.ui.finder.buttons@Click New Site") + '"></a>';
                 percButtons.append(ns);
             }
 
@@ -104,7 +106,7 @@
 
             $newSiteDialog = $.perc_createNewSiteDialog(onSuccessCallBackHandler);
 
-            $('#perc-finder-new-site').unbind('click').click(createFn);
+            $('#perc-finder-new-site').off('click').on("click",createFn);
             
             finder.addPathChangedListener( update_newsite_btn );
 
@@ -141,15 +143,15 @@
          */
         function update_newsite_btn() {
             if(!$.PercNavigationManager.isAdmin()){
-                $( ".perc-finder-menu #perc-finder-new-site" ).removeClass('ui-enabled').addClass('ui-disabled').unbind('click');
+                $( ".perc-finder-menu #perc-finder-new-site" ).removeClass('ui-enabled').addClass('ui-disabled').off('click');
             }
             else{
                 if(!$.PercNavigationManager.getPath().startsWith($.perc_paths.RECYCLING_ROOT)){
-                    $( ".perc-finder-menu #perc-finder-new-site" ).removeClass('ui-disabled').addClass('ui-enabled').unbind('click').click( createFn );
+                    $( ".perc-finder-menu #perc-finder-new-site" ).removeClass('ui-disabled').addClass('ui-enabled').off('click').on('click', createFn );
                 }else{
-                    $( ".perc-finder-menu #perc-finder-new-site" ).removeClass('ui-enabled').addClass('ui-disabled').unbind('click');
+                    $( ".perc-finder-menu #perc-finder-new-site" ).removeClass('ui-enabled').addClass('ui-disabled').off('click');
                 }
             }
         }
-    }
+    };
 })(jQuery);

@@ -204,29 +204,53 @@
 
         <copy tofile="${assembly-directory}/web_resources/cm/common/js/perc_common_ui_slim.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/common/js/perc_common_ui_slim.js"/>
 
-        <!-- Copy Java Script that is "Global" but not really global. -->
-        <!-- jQuery.cookie-->
-        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.cookie.js"/>
-        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.min.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.cookie.min.js"/>
+        <!-- Copy Java Script -->
+        <!-- jquery for gadgets -->
+        <copy tofile="${assembly-directory}/jetty/base/webapps/Rhythmyx/WEB-INF/classes/features/perc/jquery/jquery-3.6.0.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/jquery-3.6.0.js"/>
+        <copy tofile="${assembly-directory}/jetty/base/webapps/Rhythmyx/WEB-INF/classes/features/perc/jquery/jquery-migrate-3.3.2.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"/>
+        <copy tofile="${assembly-directory}/jetty/base/webapps/Rhythmyx/WEB-INF/classes/features/perc/core/es5.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/libraries/bowser/es5.js"/>
+        <!-- jquery for published site -->
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/jquery-3.6.0.js"/>
+        <!-- jquery migrate for published site -->
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery-migrate.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"/>
 
-        <!-- jQuery.dynatree -->
-        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.dynatree.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.dynatree.js"/>
-        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.dynatree.min.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.dynatree.min.js"/>
+        <!-- jquery ui -->
+        <copy tofile="${assembly-directory}/jetty/base/webapps/Rhythmyx/WEB-INF/classes/features/perc/jqueryUi/jquery-ui.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"/>
+        <!-- collapser -->
+        <copy tofile="${assembly-directory}/jetty/base/webapps/Rhythmyx/WEB-INF/classes/features/perc/collapser/jquery.collapser.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/plugins/jquery-collapser/jquery.collapser.js"/>
+
+        <!-- uploadify -->
+        <copy tofile="${assembly-directory}/jetty/base/webapps/Rhythmyx/WEB-INF/classes/features/perc/uploadify/swfobject.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/plugins/jquery-uploadify/swfobject.js"/>
+        <copy tofile="${assembly-directory}/jetty/base/webapps/Rhythmyx/WEB-INF/classes/features/perc/uploadify/jquery.uploadify.v2.1.0.min.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/plugins/jquery-uploadify/jquery.uploadify.v2.1.0.min.js"/>
+
+        <!-- jQuery.cookie-->
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.cookie.js"/>
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.min.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.cookie.js"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/ui.dynatree.css" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/ui.dynatree.css"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/vline.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/vline.gif"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/loading.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/loading.gif"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/icons2.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/icons2.gif"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/icons.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/icons.gif"/>
-
-        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery-migrate-3.0.1.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/jquery-migrate-3.0.1.js"/>
         <!-- jQuery Validate -->
-        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.validate.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/jquery.validate.js"/>
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.validate.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/plugins/jquery-validation/jquery.validate.js"/>
 
         <!-- Copy Font Awesome -->
         <copy todir="${assembly-directory}/web_resources/cm/css/fontawesome">
-            <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/1x/libraries/fontawesome" includes="**/*" />
+            <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/libraries/fontawesome/css" includes="**/*" />
         </copy>
 
+        <copy todir="${assembly-directory}/web_resources/cm/css/fontawesome">
+            <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/libraries/fontawesome" includes="**/*" />
+        </copy>
         <!-- Global Variables -->
 
         <!-- Install the workflow properties file -->

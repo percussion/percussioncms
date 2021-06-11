@@ -104,7 +104,7 @@ function mergeConfig(options, url) {
                 var config = {};
                 var css_path = options.content_css;
                 var external_plugins = options.external_plugins;
-                if ($.isArray(data)) {
+                if (Array.isArray(data)) {
                     $.each(data, function(i, item) {
                         if (
                             (!item.hasOwnProperty('roles') || $(options.userRoles).not(item.roles).length < $(options.userRoles).length) &&

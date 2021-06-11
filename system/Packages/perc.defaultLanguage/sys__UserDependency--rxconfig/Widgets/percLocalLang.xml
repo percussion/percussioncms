@@ -56,23 +56,23 @@
         $resultList = $rx.string.stringToMap(null);
         ##
         for ($j : $jsonArray) {
-            if ($j.has("protocol")) {
-                $protocol = $j.getString("protocol");
+            if ($.has("protocol")) {
+                $protocol = $.getString("protocol");
             } else {
                 $protocol = "";
             }
-            $temppath = $j.getString("pagepath");
+            $temppath = $.getString("pagepath");
             $pagepath = $temppath.replace("//Sites", "");
-            $pagename = $j.getString("pagename");
+            $pagename = $.getString("pagename");
             $folderpath = $temppath.replace($pagename,"");
             ##
-            $pageId = $j.getString("pageId");
-            $default = $j.getString("defLang");
+            $pageId = $.getString("pageId");
+            $default = $.getString("defLang");
             if ($default == null) {
                 $default = false;
             }
-            $lang = $j.getString("lang");
-            $country = $j.getString("country");
+            $lang = $.getString("lang");
+            $country = $.getString("country");
             ##
             if ($pageId != null && $pageId != "") {
                 $contentId = $rx.pageutils.parseGuid($pageId).getUUID();

@@ -401,15 +401,16 @@
                 $("#perc-role-delete-confirm")
                     .find("#perc-confirm-generic-yes")
                     .css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"})
-                    .unbind('mouseenter mouseleave')
-                    .hover(
+                    .off('mouseenter mouseleave')
+                    .on('mouseenter',
                         function() {
                             $(this).css({"background-color": "#d22f12","border-color": "#d22f12","color": "#ffffff"});
-                        },
+                        })
+                    .on('mouseleave',
                         function() {
                             $(this).css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"});
                         }
-                    )
+                    );
             }
             else
             {
@@ -448,15 +449,15 @@
                 $("#perc-roles-removeusers-confirm")
                 .find("#perc-confirm-generic-yes")
                 .css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"})
-                .unbind('mouseenter mouseleave')
-                .hover(
+                .off('mouseenter mouseleave')
+                .on('mouseenter',
                     function() {
                         $(this).css({"background-color": "#d22f12","border-color": "#d22f12","color": "#ffffff"});
-                    },
-                    function() {
+                    })
+                    .on('mouseleave',   function() {
                         $(this).css({"background-color": "#133c55", "border-color": "#133c55","color": "#ffffff"});
                     }
-                )
+                );
             }
         });
 

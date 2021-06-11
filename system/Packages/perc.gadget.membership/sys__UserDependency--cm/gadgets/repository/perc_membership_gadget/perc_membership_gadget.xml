@@ -53,10 +53,16 @@
     <link href="/cm/widgets/PercTooltip/PercTooltip.css" rel="stylesheet" type="text/css" />
 
     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
-
-    <script src="/cm/jslib/tools.scrollable-1.1.2.js" ></script>
-    <script src="/cm/jslib/tools.scrollable.mousewheel-1.0.1.js" ></script>
-    <script src="/cm/jslib/jquery.text-overflow.js" ></script>
+    <script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"</script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"</script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
     <script src="/cm/plugins/perc_utils.js" ></script>
     
     
@@ -67,7 +73,7 @@
     <script src="/cm/widgets/PercScrollingTemplateBrowser/PercScrollingTemplateBrowser.js" ></script>
     <script src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js"></script>
     <script src="/cm/widgets/PercTooltip/PercTooltip.js" ></script>
-    <script src="/cm/jslib/jquery.dataTables.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js" ></script>
     <script src="/cm/widgets/PercDataTable/PercDataTable.js" ></script>
     <script src="/cm/widgets/PercActionDataTable/PercActionDataTable.js?" ></script>
     <script src="/cm/widgets/PercPageDataTable/PercPageDataTable.js?q=1sdds12d" ></script>

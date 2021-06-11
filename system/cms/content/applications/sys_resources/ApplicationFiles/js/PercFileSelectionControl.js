@@ -7,11 +7,12 @@
 (function($)
 {
     $(document).ready(function(){
-        $(".perc-file-field-select-button").click(function(){
+        $(".perc-file-field-select-button").on("click",function(){
             var $el = $(this);
             var fileInputName = $el.attr("for");
             var intialPath = $("#" + fileInputName ).val();
-            if($.trim(intialPath) == "")
+
+            if(intialPath.trim() === "")
                  intialPath = $.topFrameJQuery.cookie("perc-filefield-path");
             var updateFileData = function(pathItem){
                 var path = pathItem.path;
@@ -32,7 +33,8 @@
             //Otherwise cancelcall back is called. 
             var openCreateFileDialog = function(successCallback, cancelCallback){
                 $.topFrameJQuery.PercCreateNewAssetDialog("percFile", successCallback, cancelCallback);    
-            }
+            };
+
             var validator = function(pathItem){
                 return pathItem && pathItem.type == "percFileAsset"?null:"Please select a file.";
             }            
@@ -48,11 +50,11 @@
             $.topFrameJQuery.PercPathSelectionDialog.open(pathSelectionOptions);
         });
 
-        $(".perc-file-field-clear-button").click(function() {
+        $(".perc-file-field-clear-button").on("click", function() {
             var $el = $(this);
             var fileInputName = $el.attr("for");
             var intialPath = $("#" + fileInputName ).val();
-            if($.trim(intialPath) == "") {
+            if(intialPath.trim() === "") {
                 return;
             }
 

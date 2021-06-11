@@ -61,7 +61,7 @@ var $perc_newSiteDialogLayout;
                         $.perc_filterField(templateNameField, $.perc_textFilters.URL);
 
                         // If the URL checkbox is unselected, disable the sitename field
-                        $('input[type=radio]').change(function()
+                        $('input[type=radio]').on("change",function()
                         {
                             // If the selected radio button is not the one for the
                             // URL option, make the URL field read only
@@ -94,7 +94,7 @@ var $perc_newSiteDialogLayout;
                             });
                         // We have to get the images for the perc_imageselect plugin
                         _loadTemplateList();
-                        $("#perc-select-template-type").change(function(){
+                        $("#perc-select-template-type").on("change",function(){
                             if($(this).val() === "base"){
                                 $("#perc-base-template-lib").show();
                                 $("#perc-resp-template-lib").hide();
@@ -273,9 +273,9 @@ var $perc_newSiteDialogLayout;
 
             // Finally we have all the things we want in the memento, retrieve the path (URL param)
             // and invoke the navigation manager
-            var querystring = $j.deparam.querystring();
-            $j.PercNavigationManager.goToLocation(
-                $j.PercNavigationManager.VIEW_DESIGN,
+            var querystring = $.deparam.querystring();
+            $.PercNavigationManager.goToLocation(
+                $.PercNavigationManager.VIEW_DESIGN,
                 fields.name,
                 null,
                 null,
@@ -293,8 +293,8 @@ var $perc_newSiteDialogLayout;
         if (dialog.find('input[type=radio]').filter(':checked').attr('id') === "type_url")
         {
             var fields = {
-                name: $.trim(siteNameField.val()),
-                baseUrl: $.trim(urlField.val())
+                name: siteNameField.val().trim(),
+                baseUrl: urlField.val().trim()
             };
 
             // If the URL entered lacks 'http(s)://' prefix, append 'http://'
@@ -306,7 +306,7 @@ var $perc_newSiteDialogLayout;
             continueToNextStep = false;
 
             // Close the dialog to simulate wizard
-            $(".ui-dialog-titlebar .ui-icon-closethick").click();
+            $(".ui-dialog-titlebar .ui-icon-closethick").trigger("click");
 
             // Open the Import Progress dialog
             $.PercImportProgressDialog({
@@ -353,7 +353,7 @@ var $perc_newSiteDialogLayout;
             return;
         }
 
-        if (fields.templatename == null || $.trim(fields.templatename) === '')
+        if (fields.templatename === null || fields.templatename.trim() === '')
         {
             $.perc_utils.alert_dialog(
                 {
@@ -372,7 +372,7 @@ var $perc_newSiteDialogLayout;
                 homePageTitle: I18N.message("perc.ui.new.site.dialog@Home Page"),
                 navigationTitle: I18N.message("perc.ui.new.site.dialog@Home Page"),
                 baseTemplateName: fields.selectedtemplate,
-                templateName: $.trim(fields.templatename)
+                templateName: fields.templatename.trim()
             }
         };
 

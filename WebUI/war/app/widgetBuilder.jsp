@@ -39,7 +39,6 @@
     boolean isDebug = "true".equals(debug);
     String debugQueryString = isDebug ? "?debug=true" : "";
     String ua = request.getHeader("User-Agent");
-    boolean isMSIE = (ua != null && ua.indexOf("MSIE") != -1);
     String site = request.getParameter("site");
     if (site == null)
         site = "";
@@ -66,7 +65,8 @@
 --%>
 
 <!-- Themes never should be concatenated or packed -->
-<link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.7.2.custom.css"/>
+<link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.8.9.custom.css"/>
+<link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
 <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%= locale %>"></script>
 <%@include file="../widgetbuilder/templates/templates.jsp" %>
 
@@ -75,15 +75,15 @@
 <!-- CSS Includes -->
 <%@include file="includes/common_css.jsp" %>
 <link rel="stylesheet" type="text/css" href="../css/styles.css"/>
-<link rel="stylesheet" type="text/css" href="../jslib/backgridjs/backgrid.min.css"/>
+<link rel="stylesheet" type="text/css" href="../jslib/profiles/3x/jquery/libraries/backgridjs/backgrid.css"/>
 <link rel="stylesheet" type="text/css" href="../widgetbuilder/css/perc_widgetbuilder.css"/>
 <link rel="stylesheet" type="text/css" href="../css/perc_ChangePw.css"/>
 
 <!-- JavaScript Includes (order matters) -->
 <%@include file="includes/common_js.jsp" %>
-<script src="../jslib/underscore-min.js"></script>
-<script src="../jslib/backbone-min.js"></script>
-<script src="../jslib/backgridjs/backgrid.min.js"></script>
+<script src="../jslib/profiles/3x/libraries/underscore/underscore.js"></script>
+<script src="../jslib/profiles/3x/libraries/backbone/backbone.js"></script>
+<script src="../jslib/profiles/3x/jquery/libraries/backgridjs/backgrid.js"></script>
 <script src="../widgetbuilder/js/PercWidgetBuilder.js"></script>
 <script src="../widgetbuilder/js/PercWidgetBuilderExpander.js"></script>
 <script src="../widgetbuilder/js/PercWidgetBuilderService.js"></script>
@@ -107,7 +107,7 @@
 <!--[if gte IE 8]>
 <link rel="stylesheet" type="text/css" href="../css/IE8_styles.css"/><![endif]-->
 <script>
-    var dirtyController = $j.PercDirtyController;
+    var dirtyController = $.PercDirtyController;
     function navigationEvent() {
         // if template is not dirty, return nothing and allow navigation
         // otherwise return alert message and display confirmantion box
@@ -126,19 +126,19 @@
         <table class="perc-wb-list-toolbar">
             <tr>
                 <td class="perc-wb-list-view-options">
-                    <a id='perc-wb-defs-expander' class="perc-font-icon icon-plus-sign ui-state-enabled"></a>
+                    <a id='perc-wb-defs-expander' class="perc-font-icon icon-plus-sign fas fa-plus ui-state-enabled"></a>
                 </td>
                 <td class="perc-wb-list-menu">
                     <div class="perc-wb-list-buttonbar" role="toolbar" aria-label="Widget Builder Toolbar">
-                        <a id="perc-wb-button-delete" class="perc-font-icon icon-remove ui-disabled"
+                        <a id="perc-wb-button-delete" class="perc-font-icon icon-remove fas fa-minus ui-disabled"
                            title="Click to delete selected widget" href="#" role="button"></a>
                         <a id="perc-wb-button-new" class="perc-font-icon" href="#" title="Click to create new widget"
-                           style="" role="button"><span class="icon-plus"></span><span class="icon-file"></span></a>
-                        <a id="perc-wb-button-edit" class="perc-font-icon icon-edit ui-disabled"
+                           style="" role="button"><span class="icon-plus fas fa-plus"></span><span class="icon-file fas fa-file"></span></a>
+                        <a id="perc-wb-button-edit" class="perc-font-icon icon-edit fas fa-edit ui-disabled"
                            title="Click to edit selected widget" href="#" role="button"></a>
-                        <a id="perc-wb-button-deploy" class="perc-font-icon icon-download-alt ui-disabled"
+                        <a id="perc-wb-button-deploy" class="perc-font-icon icon-download-alt fas fa-upload ui-disabled"
                            title="Click to deploy selected widget" href="#" role="button"></a>
-                        <a id="perc-wb-button-package-manager" class="perc-font-icon icon-folder-open"
+                        <a id="perc-wb-button-package-manager" class="perc-font-icon icon-folder-open fas fa-folder-open"
                            title="Click to access Package Manager" href="/cm/packages" role="button" target="_blank"></a>
                     </div>
                 </td>
@@ -185,7 +185,7 @@
                         class="ui-widget-content-header"><i18n:message key = "perc.ui.widget.builder@Content Editing Fields"/></span></span><span
                         class="perc-add-field-button"
                         style="float:left; margin-left:754px;margin-bottom:8px;display:inline-block;cursor:pointer;"
-                        onclick="javascript:WidgetBuilderApp.showFieldEditor(null);"><i18n:message key = "perc.ui.widget.builder@Add Field"/></span></div>
+                        onclick="WidgetBuilderApp.showFieldEditor(null);"><i18n:message key = "perc.ui.widget.builder@Add Field"/></span></div>
                 <div style="clear:both"></div>
                 <div class="perc-widget-field-header">
                     <div class="perc-widget-field-entry"><i18n:message key = "perc.ui.widget.builder@Name"/></div>
@@ -205,9 +205,9 @@
                         <div class="ui-widget-content-header"><i18n:message key = "perc.ui.widget.builder@Javascript Resources"/></div>
                     </div>
                     <div id="perc-add-js-resource-button" title="Add Javascript Resource"
-                         class="perc-add-resource-button" onclick="javascript:WidgetBuilderApp.addNewResource('JS');">
+                         class="perc-add-resource-button" onclick="WidgetBuilderApp.addNewResource('JS');">
                         <span class="perc-font-icon resource-tab-button-background"><span
-                                class="font-icon-size icon-plus"></span><span class="icon-file-alt"></span></span></div>
+                                class="font-icon-size icon-plus fas fa-plus"></span><span class="icon-file-alt fas fa-file-alt"></span></span></div>
                 </div>
                 <div style="clear:both"></div>
                 <div id="perc-widget-js-resources-container"></div>
@@ -219,9 +219,9 @@
                         <div class="ui-widget-content-header"><i18n:message key = "perc.ui.widget.builder@CSS Resources"/></div>
                     </div>
                     <div id="perc-add-css-resource-button" title="Add CSS Resource" class="perc-add-resource-button"
-                         onclick="javascript:WidgetBuilderApp.addNewResource('CSS');"><span
+                         onclick="WidgetBuilderApp.addNewResource('CSS');"><span
                             class="perc-font-icon resource-tab-button-background"><span
-                            class="font-icon-size icon-plus"></span><span class="icon-file-alt"></span></span></div>
+                            class="font-icon-size icon-plus fas fa-plus"></span><span class="icon-file-alt fas fa-file-alt"></span></span></div>
                 </div>
                 <div style="clear:both"></div>
                 <div id="perc-widget-css-resources-container"></div>
@@ -234,7 +234,7 @@
                         <div class="ui-widget-content-header"><i18n:message key = "perc.ui.widget.builder@Display HTML"/></div>
                     </div>
                     <div id="perc-display-html-auto-generate-button" class="perc-display-html-auto-generate-button"
-                         onclick="javascript:WidgetBuilderApp.autoGenerateHtml();"><i18n:message key = "perc.ui.widget.builder@Auto Generate"/>
+                         onclick="WidgetBuilderApp.autoGenerateHtml();"><i18n:message key = "perc.ui.widget.builder@Auto Generate"/>
                     </div>
                 </div>
                 <div style="clear:both"></div>

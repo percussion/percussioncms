@@ -94,7 +94,7 @@
                     $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
                     generateNewSiteName(siteName);
                     $.perc_filterField($("#perc_site_name"), $.perc_textFilters.HOSTNAME);
-                    $('#perc_site_name').bind('keypress keydown', function(evt){
+                    $('#perc_site_name').on('keypress keydown', function(evt){
                         clearCopySiteErrorMessage();
                     });
                     selectedTreePath = null;
@@ -195,7 +195,7 @@
                                     css("margin-top", "22px").
                                     css("margin-left", "10px");                                    
 
-            $(".shareTypeButtons").live('change', function() {
+            $(".shareTypeButtons").on('change', function() {
                 clearCopySiteErrorMessage();
                 selectedCheckbox = $(this).attr("id");
                 if ($(this).attr("id") === "share-type-buttons-across-site")

@@ -69,7 +69,7 @@
         
         // bind all callbacks from configuration
         $.each(conf, function(name, fn) {
-            if ($.isFunction(fn)) { $self.bind(name, fn); }
+            if (typeof fn === "function") { $self.bind(name, fn); }
         });
         
         if (wrap.length > 1) { wrap = $(conf.items, root); }
@@ -107,7 +107,7 @@
             },
             
             getSize: function() {
-                return self.getItems().size();  
+                return self.getItems().length;
             },
     
             getPageAmount: function() {
@@ -151,7 +151,7 @@
                 if (index === i) { return self; }               
                 
                 // function given as second argument
-                if ($.isFunction(time)) {
+                if (typeof time === "function") {
                     fn = time;
                 }
 
@@ -170,7 +170,7 @@
                 if (e.isDefaultPrevented()) { return self; }                
                 
                 // get the (possibly altered) speed
-                if (time === undefined || $.isFunction(time)) { time = conf.speed; }
+                if (time === undefined || typeof time === "function") { time = conf.speed; }
                 
                 function callback() {
                     if (fn) { fn.call(self, i); }
@@ -362,10 +362,10 @@
 
             // hovering
             if (hc) {
-                self.getItems().hover(function()  {
-                    $(this).addClass(hc);       
-                }, function() {
-                    $(this).removeClass(hc);    
+                self.getItems().on("mouseenter",function()  {
+                    $(this).addClass(hc);
+                }).on("mouseleave", function() {
+                    $(this).removeClass(hc);
                 });                     
             }
             
@@ -373,7 +373,7 @@
             if (conf.clickable) {
                 self.getItems().each(function(i) {
                     $(this).unbind("click.scrollable").bind("click.scrollable", function(e) {
-                        if ($(e.target).is("a")) { return; }    
+                        if ($(e.target).is("a")) { return; }
                         return self.click(i);
                     });
                 });
@@ -408,7 +408,7 @@
                 });
                 
             } else  {
-                $(document).unbind(keyId);  
+                $(document).unbind(keyId);
             }               
 
         });
@@ -432,7 +432,7 @@
         
         this.each(function() {          
             el = new Scrollable($(this), conf);
-            $(this).data("scrollable", el); 
+            $(this).data("scrollable", el);
         });
         
         return conf.api ? el: this; 

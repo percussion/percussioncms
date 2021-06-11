@@ -52,9 +52,15 @@
             <link href="/cm/gadgets/repository/perc_comments_gadget/perc_comments_gadget.css" rel="stylesheet" type="text/css" />
 
             <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
-            
-            <script src="/cm/jslib/jquery.dataTables.js" ></script>
-            <script src="/cm/jslib/json.js" ></script>
+            <script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"</script>
+            <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"</script>
+            <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"></script>
+            <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js" ></script>
+            <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js" ></script>
+            <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
+            <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js" ></script>
+            <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js" ></script>
+            <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/json2.js" ></script>
             <script src="/cm/plugins/perc_utils.js" ></script>
             <script src="/cm/plugins/perc_path_constants.js" ></script>
             <script src="/cm/plugins/PercViewCommentsDialog.js" ></script>

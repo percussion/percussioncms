@@ -110,24 +110,24 @@
          // Add events to the pseudo control          
          if(!childrenOnly)
          {
-           this._pseudoCtl.bind('keydown', function(evt){
+           this._pseudoCtl.on('keydown', function(evt){
               self._handleKeyDown(evt);
            });
            
-           this._pseudoCtl.bind('click', function(evt){
+           this._pseudoCtl.on('click', function(evt){
               $(this).focus();
            });
                               
          }
                   
          this._pseudoCtl.children(".perc_imageselect_item")
-         .bind('click', 
+         .on('click',
             function(evt){
               var idx = $(this).children(".perc_imageselect_index").text();
               self.selectIndex(idx);   
          });
          
-         this._pseudoCtl.children(".perc_imageselect_item").bind('dblclick', 
+         this._pseudoCtl.children(".perc_imageselect_item").on('dblclick',
             function(evt){
               if(self.options.hardSelect)
                  self._onSelect();    
@@ -145,13 +145,13 @@
          if(!childrenOnly)
          {
          this._pseudoCtl
-            .unbind('keydown')
-            .unbind('click');
+            .off('keydown')
+            .off('click');
          }
          
          this._pseudoCtl.children(".perc_imageselect_item")
-            .unbind('click')
-            .unbind('dblclick');
+            .off('click')
+            .off('dblclick');
                        
       },      
       

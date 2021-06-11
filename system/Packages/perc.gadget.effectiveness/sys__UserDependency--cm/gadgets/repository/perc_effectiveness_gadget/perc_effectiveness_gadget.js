@@ -61,7 +61,7 @@
 				threshold,
                 function (status, data) 
                 {
-                    if(status == PercServiceUtils.STATUS_SUCCESS) 
+                    if(status === PercServiceUtils.STATUS_SUCCESS)
                     {
                         $("#perc-chart").html('');
                         generateBreadcrumbs (path); 
@@ -351,9 +351,9 @@
 	/**
      *Associate click event with breadcrumb item/s
      */
-	$('#perc-breadcrumb-items').live('click', function()
+	$(document).on('click', '#perc-breadcrumb-items',function()
     {
-		var parentFolder = (path.indexOf("/") == (path.length - 1)) ? path : path + '/';	
+		var parentFolder = (path.indexOf("/") === (path.length - 1)) ? path : path + '/';
 		var relativePath  = $(this).attr("atitle");
 		$("li").each(function(){
 		

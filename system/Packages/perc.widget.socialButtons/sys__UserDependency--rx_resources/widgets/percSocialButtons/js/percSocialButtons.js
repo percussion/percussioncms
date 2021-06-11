@@ -31,7 +31,7 @@
     $(document).ready(function(){
 
       //listens for dropdown changes and in addition to disabling unrelated inputs, will also uncheck enable option for disabled rows
-      $("#perc-social-button-type").change(function(){
+      $("#perc-social-button-type").on("change",function(){
 
         if( $(this).val() === 'page') {
           $(".perc-social-page-link").attr('disabled', false);
@@ -112,9 +112,9 @@
                 //an input field gets the data and the name of the input field is passed to the id of a div that contains
                 //our editor class - we get the id from the div and pull the data from the input field.
                 var dataFieldName = $(".perc-social-buttons").attr("id");
-                var dataStr = $("input[name='" + dataFieldName + "']").val();
+                var dataStr = $("input[name='" + dataFieldName + "']").val().trim();
                 var data = null;
-                if($.trim(dataStr).length>0){
+                if(dataStr.length>0){
                     data = JSON.parse(dataStr);
                 }
 
@@ -174,7 +174,7 @@
         function _attachEvents()
         {
             // Enables enter keyboard selection for the checkboxes
-            $('input:checkbox').keypress(function(e){
+            $('input:checkbox').on("keypress",function(e){
               if((e.keyCode ? e.keyCode : e.which) === 13){
                 $(this).trigger('click');
               }

@@ -85,13 +85,12 @@
             if(type === $.PercRecentListService.RECENT_TYPE_TEMPLATE || 
                 type === $.PercRecentListService.RECENT_TYPE_SITE_FOLDER)
                 url += "/" + site;
-            var postdata = {"value":data};
+            var postdata = {};
+            postdata.value=data;
             $.ajax({
                  url: url,
                  type: "POST",
                  data: postdata,
-                 contentType: "application/x-www-form-urlencoded",
-                 dataType: "json"
             }).done(function(){
                 deferred.resolve();
             }).fail(function(jqXHR, textStatus){

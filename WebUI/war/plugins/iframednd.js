@@ -33,35 +33,7 @@
     
         var dragging = false;
 
-        /*
-              function update_height() {
-                 var h = 0, w = 0;
-                 if( $.browser.msie ) {
-                    var contentWindow = frame[0].contentWindow;
-                    var documentElement = contentWindow.document.documentElement;
-                    documentElement.scrollTop = 1000000000;
-                    documentElement.scrollLeft = 1000000000;
-                    h = documentElement.scrollTop;
-                    w = documentElement.scrollLeft;
-                 }
-                 else if( $.browser.mozilla ){
-                    h = frame[0].contentWindow.scrollMaxY;
-                    w = frame[0].contentWindow.scrollMaxX;
-        
-                 }
-                 else {
-                    frame[0].contentWindow.scrollTo( 10000000, 1000000 );
-                    h = frame[0].contentWindow.scrollY;
-                    w = frame[0].contentWindow.scrollX;
-                 }
-                 var oldHeight = frame.css('height') || frame.innerHeight();
-                 frame.attr('height', parseInt( oldHeight, 10 ) + h + 'px' );
-                 var oldWidth = frame.css('width') || frame.innerWidth();
-                 frame.attr('width', parseInt( oldWidth, 10 ) + w + 'px' );
-              }
-        
-              setInterval( update_height, 200);
-         */
+
 
         //Create an invisible div to put over the iframe
         var overlay = $("<div class=\"perc-iframe-overlay-dnd-container\"/>");
@@ -195,11 +167,6 @@
         //If a draggable needs to drag onto the iframe, it must call
         //startDrag() when dragging starts, end stopDrag() when dragging
         //stops
-		/*
-		   $.perc_iframe_drag = {
-		      start: startDrag,
-		      stop: stopDrag
-		   };
-		*/
+
 	};
 })(jQuery);

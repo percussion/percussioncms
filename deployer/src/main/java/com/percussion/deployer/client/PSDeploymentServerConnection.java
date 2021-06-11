@@ -534,7 +534,7 @@ public class PSDeploymentServerConnection
       {
          log.error(ioe.getMessage());
          log.debug(ioe.getMessage(), ioe);
-         System.out.println("3. IOException occurred, rePOSTing: " + 
+         System.out.println("3. IOException occurred, rePOSTing: " +
             ioe.getLocalizedMessage());
          try
          {

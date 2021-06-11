@@ -74,6 +74,7 @@
 <!-- Themes/skin never should be concatenated or packed -->
 <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.8.9.custom.css"/>
 <link rel='stylesheet' type='text/css' href='../css/dynatree/skin/ui.dynatree.css'/>
+    <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
 <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%=locale%>"></script>
 <% if (isDebug) { %>
 
@@ -91,7 +92,6 @@
 <%@include file="includes/common_js.jsp" %>
 <%@include file="includes/finder_js.jsp" %>
 
-<script src="../jslib/jquery.dynatree.js"></script>
 <script src="../services/perc_sectionServiceClient.js"></script>
 <script src="../services/PercSiteService.js"></script>
 <script src="../plugins/PercEditSectionLinksDialog.js"></script>
@@ -113,25 +113,21 @@
 <link rel="stylesheet" type="text/css" href="../css/IE8_styles.css"/><![endif]-->
 <script  >
 
-    $j(document).ready(function () {
+    $(document).ready(function () {
 
         <% if( site != null && site != ""){ %>
         var siteArchUrl = "<%=site%>";
 
-        $j("#perc_site_map").perc_site_map({
+        $("#perc_site_map").perc_site_map({
             site: siteArchUrl,
             onChange: function () {
-                $j.perc_finder().refresh();
+                $.perc_finder().refresh();
             }
         });
-
-        // TODO
-        // fixBottomHeight();
-
         <%} else { %>
-        $j("#perc_site_map").html("<div style='height: 10px;'></div><div id='perc-site-templates-inline-help'><%=inlineHelpMsg%></div>");
+        $("#perc_site_map").html("<div style='height: 10px;'></div><div id='perc-site-templates-inline-help'><%=inlineHelpMsg%></div>");
         <%}%>
-        $j.Percussion.PercFinderView();
+        $.Percussion.PercFinderView();
     });
 </script>
 </head>

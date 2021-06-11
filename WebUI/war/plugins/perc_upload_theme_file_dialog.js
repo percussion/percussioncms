@@ -124,21 +124,11 @@
             // See details at http://support.microsoft.com/kb/925014/en-us?fr=1
             var baseUrl = window.location.protocol + "//" + window.location.host + "/cm";
             var buttonSave = $("#perc-addItem-dialog-save");
-            //var backgroundImage = "url(" + baseUrl + "/images/images/buttonSave.png)";
-            //var backgroundImageOver = "url(" + baseUrl + "/images/images/buttonSaveOver.png)";
             
             buttonSave
-                //.css("background-image", backgroundImage)
-                .hover(
-                    function() {
-                    //    $(this).css('background-image', backgroundImageOver);
-                    },
-                    function() {
-                    //    $(this).css('background-image', backgroundImage);
-                    })
-                .unbind('click')
+                .off('click')
                 // Bind function to the click event in the button
-                .click(saveLogic); 
+                .on("click",saveLogic);
         }
         
         /**

@@ -183,7 +183,7 @@
 
             // import additional stylesheet(s)
             if (opt.loadCSS) {
-                if ($.isArray(opt.loadCSS)) {
+                if (Array.isArray(opt.loadCSS)) {
                     jQuery.each(opt.loadCSS, function(index, value) {
                         $head.append("<link type='text/css' rel='stylesheet' href='" + this + "'>");
                     });
@@ -241,7 +241,7 @@
                 // Ensure there is a selector, even if it's been mistakenly removed
                 var selector = opt.removeInlineSelector || '*';
                 // $.removeAttr available jQuery 1.7+
-                if ($.isFunction($.removeAttr)) {
+                if (typeof $.removeAttr === "function") {
                     $body.find(selector).removeAttr("style");
                 } else {
                     $body.find(selector).attr("style", "");

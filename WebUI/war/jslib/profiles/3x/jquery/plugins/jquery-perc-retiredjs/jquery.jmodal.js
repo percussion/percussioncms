@@ -12,8 +12,8 @@
 (function($){
 $.extend($.fn, {
     hideJmodal: function() {
-        $('#jmodal-overlay').animate({ opacity: 0 }, function() { $(this).css('display', 'none') });
-        $('#jquery-jmodal').animate({ opacity: 0 }, function() { $(this).css('display', 'none') });
+        $('#jmodal-overlay').animate({ opacity: 0 }, function() { $(this).css('display', 'none'); });
+        $('#jquery-jmodal').animate({ opacity: 0 }, function() { $(this).css('display', 'none'); });
         $('select').show();
     },
     jmodal: function(setting) {
@@ -39,12 +39,13 @@ $.extend($.fn, {
 
         var jmodal = $('#jquery-jmodal');
         var overlay = $('#jmodal-overlay');
-        if (jmodal.length == 0) {
+        var informationHTML = "";
+        if (jmodal.length === 0) {
 		var buttonHTML = "";
-		var informationHTML = "";
-		if(ps.buttonText.button1 !== undefined && ps.buttonText.button1 != '')	{buttonHTML += '<input id="perc_msg_dialogue_button1" type="button" value="' + ps.buttonText.button1 + '" />';} else {buttonHTML += '<input id="perc_msg_dialogue_button1" type="button" style="display:none; visibility:hidden;" value="" />'; ps.buttonText.button1 ="";}
-		if(ps.buttonText.button2 !== undefined && ps.buttonText.button2 != '')	{buttonHTML += '<input id="perc_msg_dialogue_button2" type="button" value="' + ps.buttonText.button2 + '" />';} else {buttonHTML += '<input id="perc_msg_dialogue_button2" type="button" style="display:none; visibility:hidden;" value="" />'; ps.buttonText.button2 ="";}
-		if(ps.buttonText.button3 !== undefined && ps.buttonText.button3 != '')	{buttonHTML += '<input id="perc_msg_dialogue_button3" type="button" value="' + ps.buttonText.button3 + '" />';} else {buttonHTML += '<input id="perc_msg_dialogue_button3" type="button" style="display:none; visibility:hidden;" value="" />'; ps.buttonText.button3 ="";}
+
+		if(ps.buttonText.button1 !== undefined && ps.buttonText.button1 !== '')	{buttonHTML += '<input id="perc_msg_dialogue_button1" type="button" value="' + ps.buttonText.button1 + '" />';} else {buttonHTML += '<input id="perc_msg_dialogue_button1" type="button" style="display:none; visibility:hidden;" value="" />'; ps.buttonText.button1 ="";}
+		if(ps.buttonText.button2 !== undefined && ps.buttonText.button2 !== '')	{buttonHTML += '<input id="perc_msg_dialogue_button2" type="button" value="' + ps.buttonText.button2 + '" />';} else {buttonHTML += '<input id="perc_msg_dialogue_button2" type="button" style="display:none; visibility:hidden;" value="" />'; ps.buttonText.button2 ="";}
+		if(ps.buttonText.button3 !== undefined && ps.buttonText.button3 !== '')	{buttonHTML += '<input id="perc_msg_dialogue_button3" type="button" value="' + ps.buttonText.button3 + '" />';} else {buttonHTML += '<input id="perc_msg_dialogue_button3" type="button" style="display:none; visibility:hidden;" value="" />'; ps.buttonText.button3 ="";}
 		if(ps.imageType === "Warning")	{
 			informationHTML	= "<img src='images/warning.gif' title='Warning'/>" + ps.title; 
 		}
@@ -81,8 +82,6 @@ $.extend($.fn, {
             jmodal = $('#jquery-jmodal');
             overlay = $('#jmodal-overlay');
 
-            //jmodal.append('<div style="position:absolute;top:100px;left:300px;background-color:#ff0000;width:400px;height:300px;z-index:8800">dd</div>');
-            //$(document.body).find('form:first-child') || $(document.body)
         }
         else {
             overlay.css({ opacity: 0, 'display': 'block' });
@@ -110,7 +109,7 @@ $.extend($.fn, {
                         .next()
                             .children('input:first-child')
                                 .attr('value', ps.buttonText.button1)
-                                    .unbind('click')
+                                    .off('click')
                                         .one('click', function(e) {
                                             var args = {
                                                 complete: $.fn.hideJmodal
@@ -120,7 +119,7 @@ $.extend($.fn, {
                                         })
 	                                    .next()
                                                 .attr('value', ps.buttonText.button2)
-		                                    .unbind('click')
+		                                    .off('click')
                                                     //.one('click', $.fn.hideJmodal);
 							.one('click', function(e) {
                                           		  var args = {
@@ -130,7 +129,7 @@ $.extend($.fn, {
 	                                        })
 					    .next()
                                                 .attr('value', ps.buttonText.button3)
-		                                    .unbind('click')
+		                                    .off('click')
                                                     //.one('click', $.fn.hideJmodal);
 							.one('click', function(e) {
                                           		  var args = {

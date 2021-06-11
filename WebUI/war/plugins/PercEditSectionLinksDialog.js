@@ -120,7 +120,7 @@ $.PercEditSectionLinksDialog = function() {
         }
     }
     //Add click handler to the select section eliipse button.
-    dialog.find(".perc-button-ellipse").click(function(){
+    dialog.find(".perc-button-ellipse").on("click",function(){
         $.PercSectionTreeDialog.open(siteName, null, "Select target section", "Target section", "Select", function(targetId,path){
             $("#perc-section-link-targetid").val(targetId);
             $("#perc-section-link-target").val(path);

@@ -155,7 +155,7 @@
                     .append($('<div id="perc-assign-workflow-sites-expander" style="display: inline;"></div>')
                         .append($('<div id="perc-assign-workflow-sites-title-span" class="perc-assign-workflow-expander-image collapsed">&nbsp;</div>'))
                         .append('<span>' + I18N.message("perc.ui.assign.workflow@Sites Collapsible Panel") + '</span>')
-                        .click(function() {
+                        .on("click",function() {
                             $("#perc-assign-workflow-sites-tree-wrapper").toggle();
                             $("#perc-assign-workflow-sites-title-span").toggleClass('collapsed');
                             swapShowInfoSpans("sites");
@@ -178,7 +178,7 @@
                     .append($('<div id="perc-assign-workflow-assets-expander" style="display: inline;"></div>')
                         .append($('<div id="perc-assign-workflow-assets-title-span" class="perc-assign-workflow-expander-image collapsed">&nbsp;</div>'))
                         .append('<span> ' + I18N.message("perc.ui.assign.workflow@Assets Collapsible Panel") + ' </span>')
-                        .click(function() {
+                        .on("click",function() {
                             $("#perc-assign-workflow-assets-tree-wrapper").toggle();
                             $("#perc-assign-workflow-assets-title-span").toggleClass('collapsed');
                             swapShowInfoSpans("assets");
@@ -321,7 +321,7 @@
             var tree_container_assets = $("#perc-assign-workflow-assets-tree");
             if(originalSitesJson.folderItem){
                 $.PercDataTree.updateTree(tree_container_sites, [originalSitesJson]);
-                $.each($("#datatree-workflow-sites").dynatree("getRoot").childList, function(){
+                $.each($("#datatree-workflow-sites").dynatree("getRoot").children, function(){
                     customOnExpand(this);
                 });
                 if (originalSitesJson.folderItem.length > 0)
@@ -329,7 +329,7 @@
             }
             if(originalAssetsJson.folderItem){
                 $.PercDataTree.updateTree(tree_container_assets, [originalAssetsJson]);
-                $.each($("#datatree-workflow-assets").dynatree("getRoot").childList, function(){
+                $.each($("#datatree-workflow-assets").dynatree("getRoot").children, function(){
                     customOnExpand(this);
                 });
                 if (originalAssetsJson.folderItem.length > 0)
@@ -371,7 +371,7 @@
         {
             var newSpan = $('<span />')
                 .addClass("dynatree-custom-checkbox")
-                .click(function(eventHandler){
+                .on("click",function(eventHandler){
                     if (!$(eventHandler.currentTarget).hasClass("dynatree-custom-checkbox-disabled"))
                     {
                         $(eventHandler.currentTarget).toggleClass("dynatree-custom-checkbox-selected");
@@ -604,15 +604,15 @@
         {
             return true;
         }
-        if (dtnode.childList == null)
+        if (dtnode.children == null)
         {
             return false;
         }
 
         var result = false;
-        for (var index = 0; index < dtnode.childList.length; index++)
+        for (var index = 0; index < dtnode.children.length; index++)
         {
-            result = result || hasDescendantSelected(dtnode.childList[index]);
+            result = result || hasDescendantSelected(dtnode.children[index]);
         }
         return  result;
     }
@@ -689,7 +689,7 @@
         // make the call again - check if the children has more than one element
         // this is because of the CXF issue (a list with only one element is returned
         // as an object)
-        if (recursive_case === typeof (jsonObject.children.child.length) === 'undefined')
+        if (typeof (jsonObject.children.child.length) === 'undefined')
         {
             getAssignedPaths(jsonObject.children.child, workflowName, resultArray);
         }

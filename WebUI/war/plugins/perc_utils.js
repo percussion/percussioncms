@@ -34,13 +34,14 @@
     document.onclick = function() {
         $.each($.globalEventIds, function(k, v) {
                 if($(k).hasClass('perc-visible')) {
-                    $(v).click();
+                    $(v).trigger("click");
                 }
             }
-        )};
+        );};
 
     $.ajaxSetup( { cache: false } );
     $.Percussion = $.Percussion || {};
+  
 
     $.perc_fakes = {
         path_service: false,
@@ -56,19 +57,6 @@
         }
     };
 
-//gives feedback on focus - not complete, but useful for debugging.
-    /*
-    setInterval( function() {
-                    $("a,input,button,textarea")
-                          .unbind('.focus')
-                          .bind( 'focus.focus', function(){
-                                     $(this).css({ border: 'thin dashed grey' } );
-                                        } )
-                       .bind( 'blur.focus', function(){
-                              $(this).css({border: 'none'});
-                              });
-    }, 500 );
-    */
 
     $.perc_utils = {
         id : id,
@@ -177,7 +165,7 @@
      * @param {Object} message the message that needs to be logged must be a valid string if not no logging happens.
      */
     function logToServer(type, category, message){
-        if(!($.type( type ) === "string")){
+        if($.type( type ) !== "string"){
             return;
         }
         //Log client side
@@ -292,11 +280,14 @@
      *  @param dateTime (string) the string with the original UTC format
      *  @return the created date from the transformed string.
      */
-    function parseUTCintoDate (dateTime)
-    {
-        var dateTimeString = dateTime.replace(/(\d\d)-(\d\d)-(\d\d)/, "$1/$2/$3").replace(/([+-]\d\d):(\d\d)/, "$1$2").replace(/\.\d\d\d/, "").replace("T"," ");
-        var dateObject = new Date(dateTimeString);
-        return dateObject;
+    function parseUTCintoDate (dateTime) {
+        if (typeof dateTime !== "undefined") {
+            var dateTimeString = dateTime.replace(/(\d\d)-(\d\d)-(\d\d)/, "$1/$2/$3").replace(/([+-]\d\d):(\d\d)/, "$1$2").replace(/\.\d\d\d/, "").replace("T", " ");
+            return new Date(dateTimeString);
+        }else{
+            return dateTime;
+        }
+
     }
 
     /**
@@ -330,7 +321,7 @@
         if(typeof(cxfarray) === 'undefined')
             return [];
 
-        if(!$.isArray(cxfarray))
+        if(!Array.isArray(cxfarray))
             return [cxfarray];
 
         return cxfarray;
@@ -344,7 +335,7 @@
      * @return true if the str is undefined or null or not string type or the length of it is < 1. Otherwise false.
      */
     function isBlankString(str){
-        return !str || str === null || 'string' !== typeof str || $.trim(str).length < 1 || "undefined" === typeof str;
+        return !str || false || 'string' !== typeof str || str.trim().length < 1 || "undefined" === typeof str;
     }
 
     function elem( needle, haystack ){
@@ -391,8 +382,8 @@
         if(options.id)    {
             uiDialog.attr('id', options.id);
         }
-        // Fix for CML-3917.  Forces window to resize twice which apparently fixes the problem.
-        $(window).trigger("resize").trigger("resize");
+
+        $(window).show();
 
         return dlgContent;
     };
@@ -761,10 +752,11 @@
 
     $.fn.perc_button = function( ) {
         this.addClass("ui-state-default ui-corner-all")
-            .hover(function(){
+            .on("mouseenter",function(){
                     if( ! $(this).hasClass("ui-state-disabled") )
                         $(this).addClass("ui-state-hover");
-                },
+                })
+            .on("mouseleave",
                 function(){
                     $(this).removeClass("ui-state-hover");
                 } );
@@ -803,7 +795,7 @@
      * @param {id} - The id of the icon to return
      */
     function choose_icon( type, icon , id) {
-        var returnIcon = new Object();
+        var returnIcon = {};
         var type_icons = {
             'site': '/cm/images/images/iconWebsite.gif',
             'Folder' : '/cm/images/images/iconFolder.gif',
@@ -979,24 +971,24 @@
      */
     $.fn.percWidLibMaximizer = function (P)    {
         var baseEle = "#perc-layout-menu";
-        if($j("#tabs-3").length)    {
+        if($jQuery("#tabs-3").length)    {
             baseEle = "#tabs-3 #perc-layout-menu";
         }
 
-        if($j(baseEle).parent().find(".perc-template-container").hasClass("perc-visible")) {
-            $j(baseEle).parent().find(".perc-template-container").removeClass("perc-visible").addClass("perc-hidden");
-            $j(baseEle).parent().find("#perc-wid-lib-expander").removeClass("perc-whitebg");
-            $j(baseEle).parent().find("#perc-wid-lib-minimizer").replaceWith('<a id="perc-wid-lib-maximizer" style="float: left;" href="#"></a>');
+        if($jQuery(baseEle).parent().find(".perc-template-container").hasClass("perc-visible")) {
+            $jQuery(baseEle).parent().find(".perc-template-container").removeClass("perc-visible").addClass("perc-hidden");
+            $jQuery(baseEle).parent().find("#perc-wid-lib-expander").removeClass("perc-whitebg");
+            $jQuery(baseEle).parent().find("#perc-wid-lib-minimizer").replaceWith('<a id="perc-wid-lib-maximizer" style="float: left;" href="#"></a>');
         } else {
-            var regionLibContainer   = $j(baseEle).parent().find(".perc-region-library-container");
+            var regionLibContainer   = $jQuery(baseEle).parent().find(".perc-region-library-container");
             // if region tray is visible, toggle it (close it) so that only the widget tray is shown
             if(regionLibContainer.hasClass("perc-visible")) {
                 $.fn.percRegionLibraryMaximizer(P);
             }
 
-            $j(baseEle).parent().find(".perc-template-container").removeClass("perc-hidden").addClass("perc-visible");
-            $j(baseEle).parent().find("#perc-wid-lib-expander").addClass("perc-whitebg");
-            $j(baseEle).parent().find("#perc-wid-lib-maximizer").replaceWith('<a id="perc-wid-lib-minimizer" style="float: left;" href="#"></a>');
+            $jQuery(baseEle).parent().find(".perc-template-container").removeClass("perc-hidden").addClass("perc-visible");
+            $jQuery(baseEle).parent().find("#perc-wid-lib-expander").addClass("perc-whitebg");
+            $jQuery(baseEle).parent().find("#perc-wid-lib-maximizer").replaceWith('<a id="perc-wid-lib-minimizer" style="float: left;" href="#"></a>');
         }
 
         // fix the height of the iframe based on the height of the top part
@@ -1011,16 +1003,16 @@
      */
     $.fn.percRegionLibraryMaximizer = function (P)    {
         var baseEle = "#perc-layout-menu";
-        if($j("#tabs-3").length)    {
+        if($jQuery("#tabs-3").length)    {
             baseEle = "#tabs-3 #perc-layout-menu";
         }
 
-        var parent = $j(baseEle).parent();
-        var regionLibraryContainer = $j(parent.find(".perc-region-library-container"));
-        var templateContainer      = $j(baseEle).parent().find(".perc-template-container");
-        var regionLibraryExpander  = $j(parent.find("#perc-region-library-expander" ));
-        var regionLibraryMaximizer = $j(parent.find("#perc-region-library-maximizer"));
-        var regionLibraryMinimizer = $j(parent.find("#perc-region-library-minimizer"));
+        var parent = $jQuery(baseEle).parent();
+        var regionLibraryContainer = $jQuery(parent.find(".perc-region-library-container"));
+        var templateContainer      = $jQuery(baseEle).parent().find(".perc-template-container");
+        var regionLibraryExpander  = $jQuery(parent.find("#perc-region-library-expander" ));
+        var regionLibraryMaximizer = $jQuery(parent.find("#perc-region-library-maximizer"));
+        var regionLibraryMinimizer = $jQuery(parent.find("#perc-region-library-minimizer"));
 
         if( regionLibraryContainer.hasClass("perc-visible")) {
             regionLibraryContainer.removeClass("perc-visible").addClass("perc-hidden");
@@ -1049,11 +1041,11 @@
      */
     $.fn.percOrphanAssetsMaximizer = function (P) {
         var baseEle = "#perc-layout-menu";
-        if($j("#tabs-2").length)    {
+        if($jQuery("#tabs-2").length)    {
             baseEle = "#tabs-2 #perc-content-menu";
         }
 
-        var parent = $j(baseEle).parent();
+        var parent = $jQuery(baseEle).parent();
         var orphanAssetsContainer = parent.find("#perc_asset_library");
         var orphanAssetsExpander  = parent.find("#perc_orphan_assets_expander" );
 
@@ -1079,7 +1071,7 @@
     function click_and_double_click( elem, single, dbl ){
         var clicked = false;
         var interval = 500; //milliseconds
-        elem.click( function() {
+        elem.on("click", function() {
             if( clicked ) {
                 //Double click - ignore the click event.
             } else {
@@ -1089,7 +1081,7 @@
                 single();
             }
         });
-        elem.dblclick( dbl );
+        elem.on("dblclick", dbl );
     }
     $.fn.perc_toggle = function( d )    {
         if($(d).length && $(d).hasClass('perc-hidden'))    {
@@ -1155,13 +1147,13 @@
 
 
     function unxml ( schema, data ) {
-        if( $.isFunction( schema ) ) {
+        if( typeof schema === "function" ) {
             schema = schema(data.get(0).tagName);
         }
         if( schema.valueOf() === '$' ) {
             return data.text();
         }
-        if( $.isArray( schema ) ) {
+        if( Array.isArray( schema ) ) {
             var ret = [];
             var child_schema = schema[0];
             var children = data.children();
@@ -1205,7 +1197,7 @@
     }
 
     function _rexml( schema, pageObj, elemName ) {
-        if( $.isFunction( schema ) ) {
+        if( typeof schema === "function") {
             schema = schema(pageObj._tagName);
         }
         if( schema.valueOf() === '$' ) {
@@ -1218,7 +1210,7 @@
                 else
                     return pageObj;
             }
-        } else if( $.isArray( schema ) ) {
+        } else if( Array.isArray( schema ) ) {
             var ret = "";
             if(schema.length === 1 && schema[0] === "$")
             {
@@ -1227,7 +1219,7 @@
                 {
                     ret += "<" + elemName + ">" + pageObj[i] + "</" + elemName + ">" ;
                 }
-            } else if( $.isArray( pageObj ) ) {
+            } else if( Array.isArray( pageObj ) ) {
                 $.each( pageObj, function() {
                     ret += "<" + this._tagName + ">" + _rexml( schema[0], this, this.tagName ) + "</" + this._tagName + ">" ;
                 } );
@@ -1240,7 +1232,7 @@
             var ret = "";
             $.each( schema, function(name) {
                 if( name in pageObj ) {
-                    var isStringArray = $.isArray(schema[name]) && schema[name].length === 1 && (schema[name])[0] === "$";
+                    var isStringArray = Array.isArray(schema[name]) && schema[name].length === 1 && (schema[name])[0] === "$";
                     if(!isStringArray) ret += "<" + name + ">";
                     ret += _rexml( schema[ name ], pageObj[ name ], name );
                     if(!isStringArray) ret += "</" + name + ">";
@@ -1332,14 +1324,7 @@
     {
         if( window.console && console && console.log)
         {
-            if( $.browser.msie )
-            {
-                console.log( arg );
-            }
-            else
-            {
-                console.log.apply( console, arguments );
-            }
+            console.log.apply( console, arguments );
         }
     }
 
@@ -1436,37 +1421,9 @@
             // Remove target
             $(this).removeAttr("target");
             // Deactivate the link by replacing its href value
-            $(this).attr("href", "javascript:void(0)");
-
-            /*
-            // For future use to handle the click ourselves, maybe
-            // Maybe checking for ctrl-click and then folowing
-            // the link. Notice we add the url into the event
-            // binding as extra data so that we retain the original href value
-            // and are able to use it in the events callback function.
-            // It is accessed as evt.data.url.
-            $(this).bind("click", {url: url}, function(evt){
-
-            });
-            */
-
+            $(this).attr("href", "javascript:void(0);");
         });
-        //Fix for YouTube iFrame Overlay and Z-Index Issues for IE
-        //CM-8286 -- Videos in Rich Text are placed over popup windows in Editor on IE
-        if($.browser.msie){
-            frame.contents().find("iframe").each(function(){
-                var ifr_source = $(this).attr('src');
-                if(ifr_source.length > 0){
-                    var wmode = "wmode=transparent";
-                    if(ifr_source.indexOf('?') !== -1){
-                        $(this).attr('src',ifr_source+'&'+wmode);
-                    }
-                    else{
-                        $(this).attr('src',ifr_source+'?'+wmode);
-                    }
-                }
-            });
-        }
+        
     }
 
 
@@ -1476,7 +1433,7 @@
      * @param list {array} The list of items to sort, may be modified.
      */
     function sortCaseInsensitive(list) {
-        if ($.isArray(list))
+        if (Array.isArray(list))
         {
             list.sort(function(x,y){
                 var a = String(x).toUpperCase();
@@ -1515,7 +1472,7 @@
     }
     function max(array) {
         var mx = -1;
-        for(a=0; a<array.length; a++) {
+        for(let a=0; a<array.length; a++) {
             if(mx < array[a])
                 mx = array[a];
         }
@@ -1569,7 +1526,7 @@
 
         $itemName.editable(
             function(value, settings){
-                value = $.trim(value);
+                value = value.trim();
                 value = $.perc_textFilters.WINDOWS_FILE_NAME(value);
 
                 // only replace spaces with dashes if we are not renaming fsfolders
@@ -1586,7 +1543,7 @@
                 {
                     $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
                     $.PercPathService.renameFolder(
-                        pathItem['path'],
+                        pathItem.path,
                         value,
                         function(status, result, code){
                             if(status === $.PercServiceUtils.STATUS_SUCCESS)
@@ -1641,7 +1598,7 @@
                 onblur: "submit",
                 fieldid: 'perc_finder_inline_field_edit',
                 onedit: function(settings){
-                    $("#perc_finder_inline_field_edit").blur();
+                    $("#perc_finder_inline_field_edit").trigger("blur");
                 },
                 data: function(value, settings){
                     return $(this).parent().attr('title');
@@ -1662,7 +1619,7 @@
      */
     function contains(enumVals, val) {
         var vals = enumVals.entries;
-        if (!$.isArray(vals))
+        if (!Array.isArray(vals))
         {
             var tempArray = [];
             tempArray.push(vals);

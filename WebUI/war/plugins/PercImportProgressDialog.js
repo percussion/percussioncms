@@ -190,10 +190,10 @@
             var doneButtonDisabled = $('#' + dialogButtons['Done Disabled'].id);
 
             // By default the DONE button is disabled (the enabled version is hidden)
-            var doneButton = $('#' + dialogButtons['Done'].id);
+            var doneButton = $('#' + dialogButtons.Done.id);
             doneButton.hide();
             // Set a custom event for enabling/disabling the DONE button
-            $('#' + CONSTANTS.IDS.MAIN_DIALOG).bind(
+            $('#' + CONSTANTS.IDS.MAIN_DIALOG).on(
                 CONSTANTS.OTHER.EVENTS_ENABLE_DONE_BUTTON,
                 function(event, flag)
                 {
@@ -208,7 +208,7 @@
          */
         function enableDoneButton(flag)
         {
-            var doneButton = $('#' + dialogButtons['Done'].id),
+            var doneButton = $('#' + dialogButtons.Done.id),
                 doneButtonDisabled = $('#' + dialogButtons['Done Disabled'].id);
             if (flag === true)
             {

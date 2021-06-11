@@ -48,7 +48,9 @@
             <link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
             <link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
 			<script language="javascript" src="../tmx/tmx.jsp?sys_lang={$lang}">;</script>
-			<script language="javascript" src="../../cm/jslib/jquery.js">;</script>
+             <script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
+             <xsl:text>&#10;</xsl:text>
+             <script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
             <script src="../sys_resources/js/browser.js">;</script>
             <script src="../sys_resources/js/href.js">;</script>
             <script language="javascript" src="../sys_resources/js/globalErrorMessages.js">;</script>

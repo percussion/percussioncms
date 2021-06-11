@@ -275,22 +275,22 @@ $.perc_content_viewer = function(options){
        $("#perc-pageEditor-menu-name").html(name);
        // Hook up the show/hide button to the decorator that we have initialized.
        $("#perc-pageEditor-show-hide")
-         .unbind().perc_button().removeClass("ui-state-disabled")
+         .off("click").perc_button().removeClass("ui-state-disabled")
          .html( I18N.message( "perc.ui.webmgt.pageeditor.menu@Hide" ) )
-         .click( function() { 
+         .on("click", function() {
                  decorated = !decorated;
                  var label = decorated ? I18N.message( "perc.ui.webmgt.pageeditor.menu@Hide" ): I18N.message( "perc.ui.webmgt.pageeditor.menu@Show" );
                  $(this).html( label );
                  redecorate(); } );
       // Enable the preview button
       $("#perc-metadata-button")
-        .unbind().perc_button().removeClass("ui-meta-pre-disabled")
-	.click( function() { _editPageMetadata(); });
+        .off("click").perc_button().removeClass("ui-meta-pre-disabled")
+	    .on("click", function() { _editPageMetadata(); });
 
       // Enable the preview button
       $("#perc-preview-button")
-        .unbind().perc_button().removeClass("ui-meta-pre-disabled")
-	.click( function() { _previewPage(); });
+        .off("click").perc_button().removeClass("ui-meta-pre-disabled")
+	    .on("click", function() { _previewPage(); });
 
       var tabs = $('#perc-pageEditor-tabs');
       tabs.tabs('enable');
@@ -321,11 +321,11 @@ $.perc_content_viewer = function(options){
 
        $("#perc-pageEditor-menu-name").html("");
        $("#perc-pageEditor-show-hide")
-         .unbind().addClass("ui-state-disabled");
+         .off().addClass("ui-state-disabled");
       $("#perc-metadata-button")
-        .unbind().addClass("ui-meta-pre-disabled");
+        .off().addClass("ui-meta-pre-disabled");
       $("#perc-preview-button")
-        .unbind().addClass("ui-meta-pre-disabled");
+        .off().addClass("ui-meta-pre-disabled");
 
       var tabs = $('#perc-pageEditor-tabs');
       tabs.tabs('disable');
@@ -346,7 +346,7 @@ $.perc_content_viewer = function(options){
    }
    function _decorateContent()
    {
-       $('#perc-widget-library-button').unbind().addClass('ui-state-disabled');
+       $('#perc-widget-library-button').off().addClass('ui-state-disabled');
 
 
       actions = [
@@ -398,7 +398,7 @@ $.perc_content_viewer = function(options){
    }
    function _decorateLayout()
    {
-       widgetLib = $.perc_create_widget_library( $j('#perc-widget-library-button') );
+       widgetLib = $.perc_create_widget_library( $('#perc-widget-library-button') );
 
         actions = [
         {
@@ -437,8 +437,8 @@ $.perc_content_viewer = function(options){
 
          if( $.browser.mozilla ) {
             var fr = $("#perc-pageEditor-content");
-            fr.unbind( ".reload" );
-            fr.bind( "load.reload", function(){
+            fr.off( ".reload" );
+            fr.on( "load.reload", function(){
                         fr.contents().find('body').append( $(styles) );
                         redecorate();
                         set_widget_drops();

@@ -103,7 +103,7 @@ $.perc_newSectionDialog = function() {
                 "Save":     {
                     click: function()   {
                        var sectionName = dialog.find('form').find('#perc-section-url');
-                       var sectionNameValue = $.perc_textFilters.WINDOWS_FILE_NAME($.trim(sectionName.val()));
+                       var sectionNameValue = $.perc_textFilters.WINDOWS_FILE_NAME(sectionName.val().trim());
                        sectionName.val(sectionNameValue);               
                         _submit();
                     },
@@ -120,7 +120,7 @@ $.perc_newSectionDialog = function() {
             width: 800
         });
     //Add onchange event to the type select box
-    dialog.find("#perc-section-type").change(function(){
+    dialog.find("#perc-section-type").on("change",function(){
         $("#perc-section-container").hide();
         $("#perc-section-link-container").hide();
         $("#perc-external-link-container").hide();
@@ -142,7 +142,7 @@ $.perc_newSectionDialog = function() {
         }
     });
     //Add click handler to the select section eliipse button.
-    dialog.find("#perc-section-link-targetid-button").click(function(){
+    dialog.find("#perc-section-link-targetid-button").on("click",function(){
         var dlgTitle = I18N.message("perc.ui.newSectionDialog.label@Target Section");
         var treeLabel = I18N.message("perc.ui.newSectionDialog.label@Select target section");
         $.PercSectionTreeDialog.open(site, null, treeLabel, dlgTitle, "Select", function(targetId,path){
@@ -151,7 +151,7 @@ $.perc_newSectionDialog = function() {
         });
     });
     //Add click handler to the select target folder ellipse button.
-    dialog.find("#perc-convert-folder-path-button").click(function(){
+    dialog.find("#perc-convert-folder-path-button").on("click",function(){
         var dlgTitle = I18N.message("perc.ui.newSectionDialog.label@Target Folder");
         var treeLabel = I18N.message("perc.ui.newSectionDialog.label@Select target folder");
         var updateTargetFolderPath = function(pathItem){
@@ -173,7 +173,7 @@ $.perc_newSectionDialog = function() {
                     return;
                 }
                 var optionStr = "";
-                var pages = $.isArray(data.psobj)?data.psobj:[data.isobj];
+                var pages = Array.isArray(data.psobj)?data.psobj:[data.isobj];
                 $.each(pages, function(){
                     optionStr += "<option value=\"" + this.name + "\">" + this.name + "</option>"; 
                 });
@@ -249,7 +249,7 @@ $.perc_newSectionDialog = function() {
    
     $.getJSON( queryPath, function( spec ) {
         //Load template selector
-        $.each( spec['TemplateSummary'], function() {
+        $.each( spec.TemplateSummary, function() {
             itemContainer.append(createTemplateEntry(this));
             $("div.perc-scrollable").scrollable({
                 items: ".perc-items",
@@ -258,7 +258,7 @@ $.perc_newSectionDialog = function() {
             });
             $(".perc-items .item .item-id").hide();
             // bind click event to each item to handle selection
-            $(".perc-items .item").bind('click', function(){
+            $(".perc-items .item").on('click', function(){
                 var itemId = $(this).find(".item-id").text(); 
                 $("#perc-select-template").val(itemId);
                 $(".perc-items .item").removeClass("perc-selected-item");

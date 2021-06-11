@@ -183,6 +183,13 @@
               font-family: 'Open Sans', sans-serif;
            }
         </style>
+        <script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"</script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"</script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js" ></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js" ></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js" ></script>
         <script  src="/cm/plugins/perc_utils.js"></script>
         <script  src="/cm/plugins/perc_path_constants.js"></script>
         <script  src="/cm/services/PercServiceUtils.js"></script>
@@ -239,7 +246,7 @@
                  {
                      if(status == $.PercServiceUtils.STATUS_SUCCESS)
                      {
-                         if(result.data && typeof(result.data.providerConfig) == 'object')
+                         if(result.data && typeof(result.data.providerConfig) === 'object')
                          {
                             _storedConfig = result.data.providerConfig;
                             _hasStoredPwd = true;
@@ -553,7 +560,7 @@
                  }
                  // Add select change event bindings
                  sitesContainer.find(".perc-ga-profile-list").each(function(){
-                    $(this).bind("change.sitelists", function(){
+                    $(this).on("change.sitelists", function(){
                         var site = $(this).attr('id').substr(21);
                        $(this).children("option").each(function(){
                           var self = $(this);
@@ -574,7 +581,7 @@
                  });
 
                  sitesContainer.find(".perc-ga-apikey-field").each(function(){
-                    $(this).focus(apiKeyFocus).blur(apiKeyBlur)
+                    $(this).on("focus",apiKeyFocus).on("blur",apiKeyBlur);
                 })
               }
               else
@@ -655,10 +662,10 @@
               var $save = $("#perc-ga-save");
               var $delete = $("#perc-ga-delete");
 
-              $connect.unbind().bind('click', _onConnect);
-              $cancel.unbind().bind('click', _onCancel);
-              $save.unbind().bind('click', _onSave);
-              $delete.unbind().bind('click', _onDelete);
+              $connect.off('click').on('click', _onConnect);
+              $cancel.off('click').on('click', _onCancel);
+              $save.off('click').on('click', _onSave);
+              $delete.off('click').on('click', _onDelete);
 
 
            }
@@ -684,15 +691,14 @@
 
               }
 
-              $user.unbind().bind('blur', _handleButtonState).bind('keyup',
+              $user.off().on('blur', _handleButtonState).on('keyup',
                  function(){
                     _validCreds = false;
                     $pwd.val("");
                     _hasStoredPwd = false;
                     _handleButtonState();
-
                  });
-              $pwd.unbind().bind('blur', _handleButtonState).bind('change',
+              $pwd.off().on('blur', _handleButtonState).on('change',
                  function(){
                     _hasStoredPwd = false;
                     _validCreds = false;

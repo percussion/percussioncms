@@ -582,7 +582,7 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
                 validator = function (pathItem) {
                     return pathItem && pathItem.type === 'percImageAsset' ? null : 'Please select an image.';
                 };
-                jQuery('[aria-label=\'Edit image\']').find('.mce-btn.mce-open').click(function() {
+                jQuery('[aria-label=\'Edit image\']').find('.mce-btn.mce-open').on("click",function() {
                     var pathSelectionOptions = {
                         okCallback: updateLinkData,
                         dialogTitle: 'Select an image',

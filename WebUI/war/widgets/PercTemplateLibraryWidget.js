@@ -63,7 +63,7 @@
 
             // Bind the behavior to the Site Silter:
             // Whenever the Site Filter changes load the correponding templates
-            $('#perc-templates-filter').change(function()
+            $('#perc-templates-filter').on("change",function()
             {
                 self._loadTemplates();
             });
@@ -183,7 +183,7 @@
 	            // Append the selection behavior to each of the template listings
 				// THIS ENABLES TEMPLATES UNDER THE ADD TEMPLATES DIALOG TO BE SELECTED
 	            // TODO: make a more specific selector (the parent should be the base element)
-				var templates = $(".template").click('singleclick', function()
+				var templates = $(".template").on("click",function()
 				{
 					// unselect selected div and then select the new div
 					$("#perc-template-lib .perc-selected").removeClass("perc-selected");

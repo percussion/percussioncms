@@ -46,7 +46,7 @@
 
         //If it is gadget add the event to the popout icon, if not hide the popout icon
         if(isGadget){
-            $("#perc-process-monitor-popout").click(function(){
+            $("#perc-process-monitor-popout").on("click",function(){
                 var winwidth = 800, winheight=400;
                 var leftpos = (screen.width - winwidth) / 2;
                 var toppos = (screen.height - winheight) / 3;
@@ -59,7 +59,7 @@
         }
 
         //Disable refresh button as we will be loading the data
-        $("#perc-process-monitor-status-refresh").addClass("perc-disabled").click(function(){
+        $("#perc-process-monitor-status-refresh").addClass("perc-disabled").on("click",function(){
             renderStatusRows();
         });
 
@@ -100,9 +100,9 @@
                     var name = "";
                     var message = "";
                     $.each(entries, function(){
-                        if(this.key == "name")
+                        if(this.key === "name")
                             name =  I18N.message("perc.ui.gadgets.processmonitor@"+this.value);
-                        if(this.key == "message")
+                        if(this.key === "message")
                             message = I18N.message("perc.ui.gadgets.processmonitor@"+this.value);
                     });
                     statusRows += rowTempl.replace(/@@NAME@@/g, name).replace("@@STATUS@@",message);

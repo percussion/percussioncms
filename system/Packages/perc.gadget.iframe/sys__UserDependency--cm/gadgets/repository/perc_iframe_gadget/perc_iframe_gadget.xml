@@ -56,7 +56,7 @@
             }
             var appWidth = $("#perc-iframe-gadget").width();
             var appHeight = prefs.getString('height_value');
-            if(isNaN(appHeight) || $.trim(appHeight) == '') {
+            if(isNaN(appHeight) || appHeight.trim() === '') {
                 appHeight = DEFAULT_HEIGHT;
             }
             gadgets.window.setTitle(title); 

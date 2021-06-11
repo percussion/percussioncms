@@ -52,7 +52,7 @@
         autoGenerate:function (){
             var model = this.model;
             var self = this;
-            if($.trim(model.get("widgetHtml")).length > 0)
+            if(model.get("widgetHtml").trim().length > 0)
             {
                 var settings = {
                     id: 'perc-widget-replace-confirm',
@@ -91,6 +91,6 @@
     });
     WidgetBuilderApp.autoGenerateHtml = function(){
         WidgetBuilderApp.widgetHtmlView.autoGenerate();
-    }
+    };
 
 })(jQuery);

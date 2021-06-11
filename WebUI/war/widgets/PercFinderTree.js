@@ -36,7 +36,7 @@
  * onClick(function) - the callback function to be called on clicking a node.
  * classNames(object) - dynatree classes can be overridden with this option. see http://wwwendt.de/tech/dynatree/doc/dynatree-doc.html
  *                      for available class name of dynatree. Example: {container:"my-container-class-name",...}
- * onRenderComplete(function) -- Call back function that gets called after rendeing is complete.
+ * onRenderComplete(function) -- Call back function that gets called after rendering is complete.
  *
  * Apart from the onClick call back function, exposes the following methods.
  * getDynaTree(), returns the underlying dynatree object, use it for readonly and styling purposes.<b> 
@@ -69,9 +69,9 @@
             var path = null;
             if(!fPath)
                 return path;
-            if(fPath.indexOf("//Sites")!=-1)
+            if(fPath.indexOf("//Sites")!==-1)
                 path = fPath.replace("//Sites",$.perc_paths.SITES_ROOT);
-            else if(fPath.indexOf("//Folders/$System$/Assets")!=-1)
+            else if(fPath.indexOf("//Folders/$System$/Assets")!==-1)
                 path = fPath.replace("//Folders/$System$/Assets",$.perc_paths.ASSETS_ROOT);
             return path;
         }
@@ -104,8 +104,8 @@
             var self = this;
             $.extend(this.settings, this.options);
             var rp = this.settings.rootPath;
-            if(!(rp == $.PercFinderTreeConstants.ROOT_PATH_ALL || rp == $.PercFinderTreeConstants.ROOT_PATH_SITES ||
-                rp == $.PercFinderTreeConstants.ROOT_PATH_ASSETS))
+            if(!(rp === $.PercFinderTreeConstants.ROOT_PATH_ALL || rp === $.PercFinderTreeConstants.ROOT_PATH_SITES ||
+                rp === $.PercFinderTreeConstants.ROOT_PATH_ASSETS))
             {
                 this.settings.rootPath = $.PercFinderTreeConstants.ROOT_PATH_ALL;
             }
@@ -116,7 +116,7 @@
             this.intialPathExpanded = true;
             this.initialRenderCompleted = false;
             this.intialPathKey = null;
-            if(this.settings.initialPath && this.settings.initialPath != null && $.trim(this.settings.initialPath).length > 0)
+            if(this.settings.initialPath && this.settings.initialPath.trim().length > 0)
             {
                 this.intialPathExpanded = false;
                 this.intialPathKey = this._generateKey(this.settings.initialPath);
@@ -127,7 +127,7 @@
                 false, 
                 function(status, result)
                 {
-                    if(status == $.PercServiceUtils.STATUS_ERROR)
+                    if(status === $.PercServiceUtils.STATUS_ERROR)
                     { 
                         var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(request);
                         $.perc_utils.alert_dialog({title: 'Error', content: defaultMsg});
@@ -150,15 +150,15 @@
             var rootChildren = [];
             var inPath = self._normalizedPath(self.settings.initialPath);
             $.each(data.PathItem, function(){
-                var include = self.settings.rootPath == $.PercFinderTreeConstants.ROOT_PATH_ALL || self.settings.rootPath == this.name;
-                if(this.name == "Design" || this.name == "Search")
+                var include = self.settings.rootPath === $.PercFinderTreeConstants.ROOT_PATH_ALL || self.settings.rootPath === this.name;
+                if(this.name === "Design" || this.name === "Search")
                     include = false;
                 if(include )
                 {
                     var dtobj = self._makeDtNode(this);
                     $.extend(dtobj,{unselectable:true});
                     var currentPath = self._normalizedPath(this.path);
-                    if(inPath == currentPath)
+                    if(inPath === currentPath)
                     {
                         $.extend(dtobj,{activate:true});
                         self.intialPathExpanded = true;
@@ -168,7 +168,6 @@
             });
             var dynaTree = $(this.element).find("#perc-finder-tree").dynatree({
                 selectMode:1,
-                rootVisible:false,
                 autoFocus: false,
                 imagePath: " ",
                 children: rootChildren,
@@ -177,14 +176,16 @@
                 onQueryActivate: self.settings.onQueryActivate,
                 classNames: self.settings.classNames,
                 onRender : function(dtnode) {
+                    var span;
+                    var uls;
                     if(dtnode.data.type !== "SHOW_MORE"){
-                        var span = $(dtnode.span);
-                        var uls  = span.parents("ul").length - 1;
+                        span = $(dtnode.span);
+                        uls  = span.parents("ul").length - 1;
                         span.css("padding-left", uls * DYNATREE_UL_LI_PADDING + DYNATREE_UL_LI_PADDING_OFFSET);
                     }
                     else{
-                        var span = $(dtnode.span);
-                        var uls  = span.parents("ul").length - 3;
+                        span = $(dtnode.span);
+                        uls  = span.parents("ul").length - 3;
                         span.css("padding-left", uls * DYNATREE_UL_LI_PADDING + DYNATREE_UL_LI_PADDING_OFFSET);
                     }
                 },
@@ -238,7 +239,7 @@
                 $.PercServiceUtils.GET, 
                 false, 
                 function(status, result){
-                    if(status == $.PercServiceUtils.STATUS_ERROR)
+                    if(status === $.PercServiceUtils.STATUS_ERROR)
                     { 
                         var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(request);
                         $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: defaultMsg});
@@ -264,7 +265,7 @@
                 dtnode.setLazyNodeStatus(DTNodeStatus_Ok);                
                 return;
             }
-            if(!$.isArray(temp)){
+            if(!Array.isArray(temp)){
                 temp = [temp];
             }
             
@@ -272,21 +273,21 @@
                 var exclude = self.settings.showFoldersOnly && this.leaf;
 
                 if(typeof this.category != "undefined" && self.settings.filter != null ) {
-                    exclude = exclude || (self.settings.filter == $.PercFinderTreeConstants.FOLDERS_ONLY  && this.category != "FOLDER" && this.category != "SYSTEM");
-                    exclude = exclude || (self.settings.filter == $.PercFinderTreeConstants.SECTIONS_ONLY && this.category != "SECTION_FOLDER");
+                    exclude = exclude || (self.settings.filter === $.PercFinderTreeConstants.FOLDERS_ONLY  && this.category !== "FOLDER" && this.category !== "SYSTEM");
+                    exclude = exclude || (self.settings.filter === $.PercFinderTreeConstants.SECTIONS_ONLY && this.category !== "SECTION_FOLDER");
                 }
                 if(!exclude){
-                    var dtobj = self._makeDtNode(this);
+                    dtobj = self._makeDtNode(this);
                     var chNode = dtnode.addChild(dtobj);
                     if(!self.intialPathExpanded){
                         var currentPath = self._normalizedPath(this.path);
                         var inPath = self._normalizedPath(self.settings.initialPath);
-                        if(inPath == currentPath){
+                        if(inPath === currentPath){
                             chNode.activate();
                             self.settings.getInitialPathItem(chNode.data.pathItem);                                                
                             self.intialPathExpanded = true;
                         }
-                        else if(inPath.indexOf(currentPath) != -1){ 
+                        else if(inPath.indexOf(currentPath) !== -1){
                             expNode = chNode;
                         }
                     }
@@ -315,7 +316,7 @@
                 $.PercServiceUtils.GET, 
                 false, 
                 function(status, result){
-                    if(status == $.PercServiceUtils.STATUS_ERROR)
+                    if(status === $.PercServiceUtils.STATUS_ERROR)
                     { 
                         var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(request);
                         $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: defaultMsg});
@@ -342,14 +343,6 @@
          */
         _adjustScrollWidths: function(dtnode)
         {
-            /*
-            var finderTree = $(this.element).find("#perc-finder-tree");
-            var parent = finderTree.parent();
-            var parentWidth = parent.width();
-            finderTree.width(parentWidth);
-            parentWidth = parent[0].scrollWidth;
-            finderTree.width(parentWidth);
-            */
         },
         
         /**
@@ -378,10 +371,11 @@
         getFolderID: function(dtnode)
         {
             var pathID = dtnode.data.pathItem.id;
+            var folderID;
             if (typeof pathID != 'undefined' )
             {
                 var splitID = pathID.split("-");
-                var folderID = splitID[2];
+                folderID = splitID[2];
                 $.PercFinderTreeConstants.FOLDER_ID = folderID;
             }
             return folderID;
@@ -405,10 +399,10 @@
         _makeDtNode: function(pathItem)
         {
             var self = this;
-            var item_path = $.perc_utils.extract_path( pathItem['path'] );
-            var icon = $.perc_utils.choose_icon( pathItem['type'], pathItem['icon'], item_path );
+            var item_path = $.perc_utils.extract_path( pathItem.path );
+            var icon = $.perc_utils.choose_icon( pathItem.type, pathItem.icon, item_path );
             var key = this._generateKey(pathItem.path);
-            var dtn = {title: pathItem['name'],isFolder:!pathItem.leaf,isLazy:true,icon:icon.src,tooltip:pathItem['name'],pathItem:pathItem,key:key};
+            var dtn = {title: pathItem.name,isFolder:!pathItem.leaf,isLazy:true,icon:icon.src,tooltip:pathItem.name,pathItem:pathItem,key:key};
             if(pathItem.leaf){
                 $.extend(dtn,{"addClass":"perc-hide-node-expander"});
             }
@@ -420,10 +414,8 @@
          * @param {String} parentNode assumed to dynatree node object of parent. 
          */
         _makeMoreResultsDtNode: function(startIndex, parentNode){
-            var self = this;
             var label = I18N.message("perc.ui.finder.tree@Show More");
-            var dtn = {title: label,isLazy:true,tooltip:label,addClass:"perc-hide-node-expander", startIndex:startIndex,type:"SHOW_MORE", isShowing:false, parentNode:parentNode};
-            return dtn;
+            return {title: label,isLazy:true,tooltip:label,addClass:"perc-hide-node-expander", startIndex:startIndex,type:"SHOW_MORE", isShowing:false, parentNode:parentNode};
         },
         
         /**
@@ -435,7 +427,7 @@
              if(!path)
                 return null;
              //Create a unique id using the full path for the path item.
-             if( path && path.length > 1 && path.substring(path.length-1) == '/')
+             if( path && path.length > 1 && path.substring(path.length-1) === '/')
              {
                  path = path.slice(0, path.length-1);
              }

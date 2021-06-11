@@ -113,7 +113,7 @@
          $.PercContentPreSubmitHandlers.clearHandlers();
          $("#create-new-asset-content-frame").contents().find("#perc-content-form").submit();
          //Unbind the function to avoid an acumulation of calls to the same function
-         $("#create-new-asset-content-frame").unbind('load', saveAssetResponse).load(saveAssetResponse);
+         $("#create-new-asset-content-frame").off('load', saveAssetResponse).on("load",saveAssetResponse);
       }
       
       /**

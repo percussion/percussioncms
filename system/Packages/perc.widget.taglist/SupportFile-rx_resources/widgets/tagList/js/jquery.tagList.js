@@ -182,14 +182,14 @@
             */
             function showPageTemplates()
             {
-                $ = $j;   
+                ;   
                 //make an array from the comma delimited options string
                 var pageTemplatesOptionsArray = [];
         
                 //Check if page_templates has been defined
                 if (typeof $('[name="page_templates_list"]').val() != "undefined")
                 {   
-                    var pageTemplatesOptionsArray = $('[name="page_templates_list"]').val().split(",");
+                    pageTemplatesOptionsArray = $('[name="page_templates_list"]').val().split(",");
                 }
 
                 $(document).ready( function(){
@@ -213,7 +213,7 @@
                          var checked = $.inArray(tpl.id,pageTemplatesOptionsArray) == -1?"":" checked ='true' ";
                          $("#perc-pagetemplates-container").append($("<div class='perc-pagetemplates-entry'><input type='checkbox' class='perc-pagetemplates-chkbox'" + checked + " value='" + tpl.id + "'></input><span title='"+ tpl.name +"'>" + tpl.name + "</span></div>"));
                      }
-                     $(".perc-pagetemplates-chkbox").change(function(){    
+                     $(".perc-pagetemplates-chkbox").on("change",function(){
                          var pts = getPageTemplates();
                          pts = pts?pts:"";
                          $('[name="page_templates_list"]').val(pts);
@@ -244,7 +244,7 @@
                     {
                         //Reset the templates if site changes.
                         var oldPath = $('[name="site_path"]').val();
-                        if(oldPath != pathItem.folderPath && getSiteFromFolderPath(oldPath) != getSiteFromFolderPath(pathItem.folderPath))
+                        if(oldPath !== pathItem.folderPath && getSiteFromFolderPath(oldPath) !== getSiteFromFolderPath(pathItem.folderPath))
                         {
                            populateTemplateTypes(getSiteFromFolderPath(pathItem.folderPath),[]);
                         }
@@ -266,7 +266,7 @@
                  var siteName = null;
                  if(folderPath && folderPath.indexOf("//Sites/")>-1)
                  {
-                     var siteName = folderPath.substring(("//Sites/").length);
+                     siteName = folderPath.substring(("//Sites/").length);
                      if(siteName.indexOf("/")>-1)
                         siteName = siteName.substring(0,siteName.indexOf("/"));
                  }
@@ -274,12 +274,12 @@
             }
             //Callbacks Event Code
     
-            $('#perc-content-edit-title_contains').change(function(){
+            $('#perc-content-edit-title_contains').on("change", function(){
                 buildQuery();
             });    
     
             //Build query if mouse leaves the form, i.e when the user goes to click on the save button which is not part of the iframe
-            $('#perc-content-form').mouseleave(function(){
+            $('#perc-content-form').on("mouseleave",function(){
                 buildQuery();
             });
     
@@ -294,18 +294,18 @@
                 $("#display_title_contains").val($('[name="title_contains"]').val());
 				$("#display_tag_page_result").val($('[name="tag_page_result"]').val());
 				
-				$("#display_tag_page_result").blur(function(){
+				$("#display_tag_page_result").on("blur",function(){
                     $('[name="tag_page_result"]').val($("#display_tag_page_result").val());
                 });
-                $("#display_tag_page_result").change(function(){
+                $("#display_tag_page_result").on("change",function(){
                     $('[name="tag_page_result"]').val($("#display_tag_page_result").val());
                 });
 				
-                $("#display_title_contains").blur(function(){
+                $("#display_title_contains").on("blur",function(){
                     $('[name="title_contains"]').val($("#display_title_contains").val());
                     buildQuery();
                 });
-                $("#display_title_contains").change(function(){
+                $("#display_title_contains").on("change",function(){
                     $('[name="title_contains"]').val($("#display_title_contains").val());
                     buildQuery();
                 });
@@ -314,8 +314,8 @@
                 showSites();
                 
                 //Handle the results page browse button click
-                $("#perc_taglist_resultspage_browse").click(function(){
-                     var dlgTitle = "Select Results Page"
+                $("#perc_taglist_resultspage_browse").on("click",function(){
+                     var dlgTitle = "Select Results Page";
                      var inputElemId = "display_tag_page_result";
                      handleBrowseButtonClick(dlgTitle, inputElemId );               
                 });
@@ -339,27 +339,27 @@
              */
             function addDelToDateControls()
             {
-                $('#display_end_date').keydown(function(evt){
+                $('#display_end_date').on("keydown",function(evt){
                     var rawCode = evt.charCode ? evt.charCode : evt.which;
-                    if(rawCode==46 || rawCode==8)
+                    if(rawCode===46 || rawCode===8)
                     {
                         $('#display_end_date').val("");
                         $('[name="end_date"]').val("");
                         buildQuery();
-                    } else if(rawCode==9) {
+                    } else if(rawCode===9) {
 			return true;
 		    } else {
 			return false;
 		    }
                 });
-                $('#display_start_date').keydown(function(evt){
+                $('#display_start_date').on("keydown",function(evt){
                     var rawCode = evt.charCode ? evt.charCode : evt.which;
-                    if(rawCode==46 || rawCode==8)
+                    if(rawCode===46 || rawCode===8)
                     {
                         $('#display_start_date').val("");
                         $('[name="start_date"]').val("");
                         buildQuery();
-                    } else if(rawCode==9) {
+                    } else if(rawCode===9) {
 			return true;
                     } else {
 			return false;

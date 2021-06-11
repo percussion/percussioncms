@@ -474,10 +474,10 @@
             loadContextFromUrl();
             if (toUrlParms.view === "arch")
             {
-                $j("#perc_site_map").perc_site_map({
+                $("#perc_site_map").perc_site_map({
                     site: toUrlParms.site,
                     onChange: function () {
-                        $j.perc_finder().refresh();
+                        $.perc_finder().refresh();
                     }
                 });
             }

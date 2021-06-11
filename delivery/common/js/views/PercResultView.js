@@ -59,7 +59,7 @@
                         }
                         if("undefined" !== typeof (urlstring.query))
                         {
-                            this.settings.query = $.parseJSON(urlstring.query);
+                            this.settings.query = JSON.parse(urlstring.query);
                         }
                         if("undefined" !== typeof (options.orderBy) && "undefined" !== typeof (this.settings.query) && null !== this.settings.query)
                         {
@@ -188,12 +188,13 @@
         var pageItem = $("<div/>").addClass('perc-result-page-item');
         var locale = settings.locale;
         //Page title
-        var title = ("undefined" === typeof (entry["linktext"])) ? "" : entry["linktext"];
+        var title = ("undefined" === typeof (entry.linktext)) ? "" : entry.linktext;
         pageItem.append($("<h3/>")
                         .addClass("perc-result-page-title")
                         .text(title)
                         .css("cursor", "pointer")
-                        .click(function(){window.location = pagePath})
+                        .on("click", function(){window.location = pagePath;
+                        })
         );
 
         //Page date
@@ -260,7 +261,7 @@
 				var data = $el.attr("data-query");
 				if('string' === typeof (data) && 0 < data.length)
 				{
-					var dataObj = $.parseJSON(data);
+					var dataObj = JSON.parse(data);
 				}
 				else
 				{

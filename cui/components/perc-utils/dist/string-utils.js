@@ -55,7 +55,7 @@ define(function() {
     };
     
     var isNullOrEmpty = function (testValue) {
-        return ((testValue == null) || (testValue == undefined) || (testValue === ""));
+        return ((testValue === null) || (testValue === undefined) || (testValue === ""));
     };
     
     var ifNullOrEmpty = function (testValue, defaultValue) {

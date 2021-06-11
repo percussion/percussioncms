@@ -187,8 +187,8 @@ Import PS Admin Security-->
     </tbody>
 </table>
 </body>
-<script src="/rx_resources/js/jquery-2.1.4.js"></script>
-<script src="/rx_resources/js/bootstrap/3.3.4/bootstrap.min.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
+<script src="/cm/jslib/profiles/3x/libraries/bootstrap/js/bootstrap.bundle.js"></script>
 <script>
     $(document).ready(function () {
         var row;
@@ -201,43 +201,42 @@ Import PS Admin Security-->
         {
             /* Stuff to do when the mouse enters the element */
         }
-        $("tr").hover(function () {
+        $("tr").on("mouseenter", function () {
             row = $(this);
-            if (row != undefined)
+            if (typeof row !== "undefined")
                 row.addClass("active");
-
-
-        }, function () {
-            row = $(this);
-            if (row != undefined)
-                row.removeClass('active')
         })
+        .on("mouseleave", function () {
+            row = $(this);
+            if (typeof row !== "undefined")
+                row.removeClass('active');
+        });
 
-        $('#nextStartup').click(function (event) {
+        $('#nextStartup').on("click",function (event) {
 
-            if (row == undefined)
+            if (typeof row === "undefined")
                 rownum = 0;
             else
                 rownum = row.attr("rownum")
             console.log("")
             var newrow = $('tr.success')[rownum + 1];
 
-            if (newrow != undefined)
+            if (typeof newrow !== "undefined")
                 $('table').scrollTop(newrow.top);
             else
                 alert("No More Startups");
 
 
         });
-        $('#previousStartup').click(function (event) {
+        $('#previousStartup').on("click", function (event) {
             var newrow;
 
 
         });
 
-        $('#nextWarning').click(function (event) {
+        $('#nextWarning').on("click", function (event) {
 
-            if (row == undefined)
+            if (row === undefined)
                 rownum = 0;
             else
                 rownum = row.attr("rownum")
@@ -258,18 +257,16 @@ Import PS Admin Security-->
 
 
         });
-        $('#previousWarning').click(function (event) {
+        $('#previousWarning').on("click", function (event) {
+            var newrow;
+        });
+
+        $('#nextError').on("click", function (event) {
             var newrow;
 
 
         });
-
-        $('#nextError').click(function (event) {
-            var newrow;
-
-
-        });
-        $('#previousError').click(function (event) {
+        $('#previousError').on("click", function (event) {
             var newrow;
 
 

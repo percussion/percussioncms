@@ -66,8 +66,8 @@
     <link href="/cm/widgets/PercTooltip/PercTooltip.css" rel="stylesheet" type="text/css" />
 
     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
-    <script src="/cm/jslib/jquery.dataTables.js" ></script>
-    <script src="/cm/jslib/jquery.text-overflow.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js" ></script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
     <script src="/cm/plugins/perc_utils.js" ></script>
     <script src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js" ></script>
     <script src="/cm/widgets/PercTooltip/PercTooltip.js" ></script>

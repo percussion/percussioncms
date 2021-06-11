@@ -51,8 +51,12 @@
                 <psxctl:FileLocation>../rx_resources/css/percTagListControl.css</psxctl:FileLocation>
                 <psxctl:Timestamp/>
             </psxctl:FileDescriptor>
+            <psxctl:FileDescriptor name="jquery.autocomplete.css" type="css" mimetype="text/css">
+                <psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.autocomplete.css</psxctl:FileLocation>
+                <psxctl:Timestamp/>
+            </psxctl:FileDescriptor>
             <psxctl:FileDescriptor name="jquery.autocomplete.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/jquery.autocomplete.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.autocomplete.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
             <psxctl:FileDescriptor name="percTagListControl.js" type="script" mimetype="text/javascript">
