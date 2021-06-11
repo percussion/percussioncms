@@ -25,6 +25,8 @@
 package com.percussion.services.security.loginmods;
 
 import com.percussion.services.security.PSJaasUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
@@ -42,6 +44,9 @@ import javax.security.auth.spi.LoginModule;
  */
 public class PSRxLoginModule implements LoginModule
 {
+
+   private static final Logger log = LogManager.getLogger(PSRxLoginModule.class);
+
    /**
     * Default constructor for this module
     */
@@ -70,7 +75,8 @@ public class PSRxLoginModule implements LoginModule
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          return;
       }
 

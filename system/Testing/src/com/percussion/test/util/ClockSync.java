@@ -25,6 +25,8 @@ package com.percussion.test.util;
 
 import com.percussion.test.statistics.AverageAccumulator;
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,6 +43,9 @@ import java.util.Date;
  */
 public class ClockSync
 {
+
+   private static final Logger log = LogManager.getLogger(ClockSync.class);
+
    /**
     * Test the class
     */
@@ -52,7 +57,8 @@ public class ClockSync
       }
       catch (Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
    }
 

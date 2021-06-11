@@ -63,6 +63,8 @@ import java.util.Set;
 import junit.framework.JUnit4TestAdapter;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -76,6 +78,9 @@ import org.junit.experimental.categories.Category;
 @Category(IntegrationTest.class)
 public class PSAssignmentTypeHelperTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSAssignmentTypeHelperTest.class);
+
    /**
     * State ID for the community roles test state
     */
@@ -495,7 +500,8 @@ public class PSAssignmentTypeHelperTest
          }
          catch (Exception e)
          {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
          }
       }
 
