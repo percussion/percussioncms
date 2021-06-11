@@ -864,8 +864,9 @@ public class PSTaskAdapter implements Job
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         log.error("Failed to log task execution", e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         log.error("Failed to log task execution", e.getMessage());
       }
    }
    

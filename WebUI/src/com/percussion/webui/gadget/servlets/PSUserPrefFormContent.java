@@ -38,6 +38,8 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -54,6 +56,8 @@ import javax.ws.rs.core.MediaType;
  *
  */
 public class PSUserPrefFormContent {
+
+	private static final Logger log = LogManager.getLogger(PSUserPrefFormContent.class);
 
 	private boolean sslSocketFactoryRegistered;
 
@@ -464,13 +468,15 @@ public class PSUserPrefFormContent {
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+			 log.error(e.getMessage());
+			 log.debug(e.getMessage(), e);
             throw new IOException("Problem retrieving or parsing data.");   
          }
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+		  log.error(e.getMessage());
+		  log.debug(e.getMessage(), e);
       }
 	}
 	

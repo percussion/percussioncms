@@ -584,7 +584,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
             try {
                 authScope = new AuthScope(uri.getHost(), uri.getPort(),server.getRealm());
             } catch (URIException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
+                log.debug(e.getMessage(), e);
             }
             this.getState().setCredentials(authScope, new UsernamePasswordCredentials(userName, password));
         }

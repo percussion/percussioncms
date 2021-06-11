@@ -25,6 +25,8 @@ package com.percussion.test.http;
 
 import com.percussion.test.io.LogSink;
 import com.percussion.test.util.ClockSync;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -44,6 +46,9 @@ import java.util.Date;
 
 public class HttpBench
 {
+
+   private static final Logger log = LogManager.getLogger(HttpBench.class);
+
    public static void main(String[] args)
    {
       try
@@ -59,7 +64,8 @@ public class HttpBench
       }
       catch (Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
       finally
       {

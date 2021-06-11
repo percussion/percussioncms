@@ -40,6 +40,8 @@ import org.apache.any23.writer.TripleHandler;
 import org.apache.any23.writer.TripleHandlerException;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Value;
@@ -53,6 +55,9 @@ import org.eclipse.rdf4j.model.Value;
  */
 public class PSTripleHandler implements TripleHandler
 {
+
+    private static final Logger log = LogManager.getLogger(PSTripleHandler.class);
+
     /**
      * Accidental RDFa that will not be included as a metadata property.
      */
@@ -299,7 +304,8 @@ public class PSTripleHandler implements TripleHandler
 
             return new PropertyURLProcessingResult(plainPropertyName, propertyName);
         }catch(IllegalStateException e){
-            e.printStackTrace();
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         return new PropertyURLProcessingResult(completePropertyUrl, completePropertyUrl);
     }

@@ -28,6 +28,8 @@ import com.percussion.services.contentmgr.data.PSContentNode;
 import com.percussion.utils.jsr170.PSProperty;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MethodInvocationException;
@@ -54,6 +56,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class PSJexlExtensionsTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSJexlExtensionsTest.class);
    /**
     * Velocity engine eis initialized in the static block, never
     * <code>null</code> afterward
@@ -69,7 +73,8 @@ public class PSJexlExtensionsTest
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 
