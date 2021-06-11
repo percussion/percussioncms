@@ -45,7 +45,9 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -66,6 +68,7 @@ public class PSPackageService
 {
    @GET
    @Path("/packages")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPackages getAllPackages()
    {
       PSPackages packages = new PSPackages();
@@ -95,6 +98,7 @@ public class PSPackageService
 
    @GET
    @Path("/reapplyVisibility")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPkgUiResponse reapplyVisibility(@QueryParam("packageNames")
    String packageNames)
    {
@@ -123,6 +127,7 @@ public class PSPackageService
    
    @GET
    @Path("/reapplyConfigs")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPkgUiResponse reapplyConfiguration(@QueryParam("packageNames")
    String packageNames)
    {
@@ -151,6 +156,7 @@ public class PSPackageService
 
    @GET
    @Path("/packageCommunities")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPackageCommunities getPackageCommunities()
    {
       
@@ -191,6 +197,7 @@ public class PSPackageService
    
    @GET
    @Path("/communityPackages")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSCommunityPackages getCommunityPackages()
    {
       PSCommunityPackages commPkgs = PSPackageServiceHelper.getCommunityPackages();
@@ -200,6 +207,7 @@ public class PSPackageService
    @POST
    @Path("/updatePackageCommunities")
    @Consumes("application/x-www-form-urlencoded")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPkgUiResponse postUpdatePackageCommunities(
          @QueryParam("packageName")
          String packageName, @QueryParam("selectedComms")
@@ -223,6 +231,7 @@ public class PSPackageService
    @POST
    @Path("/updateCommunityPackages")
    @Consumes("application/x-www-form-urlencoded")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPkgUiResponse postUpdateCommunityPackages(
          @QueryParam("communityName")
          String communityName, @QueryParam("selectedPkgs")
@@ -245,6 +254,7 @@ public class PSPackageService
    @POST
    @Path("/uninstallPackage")
    @Consumes("application/x-www-form-urlencoded")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSUninstallMessages postUninstallPackage(@QueryParam("packageName")
    String packageNames) throws PSNotFoundException {
       PSUninstallMessages msgs = new PSUninstallMessages();
@@ -256,6 +266,7 @@ public class PSPackageService
    @POST
    @Path("/checkPackageDependencies")
    @Consumes("application/x-www-form-urlencoded")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSUninstallMessages postCheckPackageDependencies(
          @QueryParam("packageName")
          String packageName) throws PSNotFoundException {
@@ -267,6 +278,7 @@ public class PSPackageService
 
    @GET
    @Path("/validationResults")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPkgUiResponse getValidationResults(@QueryParam("packageName")
    String packageName)
    {
@@ -285,6 +297,7 @@ public class PSPackageService
 
    @GET
    @Path("serverTimeout")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPkgUiResponse getServerTimeout()
    {
       int sto = PSServer.getServerConfiguration().getUserSessionTimeout();
@@ -296,6 +309,7 @@ public class PSPackageService
    @POST
    @Path("/convertPackage")
    @Consumes("application/x-www-form-urlencoded")
+   @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
    public PSPkgUiResponse postConvertPackage(
          @QueryParam("packageName")
          String packageName)
