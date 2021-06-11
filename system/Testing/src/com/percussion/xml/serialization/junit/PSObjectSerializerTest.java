@@ -26,6 +26,8 @@ package com.percussion.xml.serialization.junit;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.xml.serialization.PSObjectSerializer;
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
@@ -49,6 +51,9 @@ import static org.junit.Assert.assertTrue;
 @Ignore
 public class PSObjectSerializerTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSObjectSerializerTest.class);
+
    static public class PersonList 
    {
       private final List<Person> mi_people = new ArrayList<>();
@@ -167,8 +172,8 @@ public class PSObjectSerializerTest
       }
       catch (IOException | SAXException | IntrospectionException e)
       {
-         // XXX Auto-generated catch block
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 

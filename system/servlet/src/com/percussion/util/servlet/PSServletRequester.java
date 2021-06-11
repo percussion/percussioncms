@@ -40,6 +40,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -59,6 +61,9 @@ import com.percussion.xml.PSXmlDocumentBuilder;
  */
 public class PSServletRequester implements IPSRemoteRequesterEx
 {
+
+   private static final Logger log = LogManager.getLogger(PSServletRequester.class);
+
    /**
     * Creates an instance from the servlet parameters.
     *
@@ -146,7 +151,8 @@ public class PSServletRequester implements IPSRemoteRequesterEx
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new RuntimeException(e.getLocalizedMessage());
       }
    }
@@ -211,7 +217,8 @@ public class PSServletRequester implements IPSRemoteRequesterEx
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new RuntimeException(e.getLocalizedMessage());
       }
    }

@@ -27,13 +27,12 @@ import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
 import com.percussion.rx.publisher.PSRxPubServiceInternalLocator;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * This is used to purge publishing log entries older than a specified date.
@@ -90,9 +89,9 @@ public class PSPurgePublishingLog extends PSPurgeExpiredLog
             }
             catch (Exception e)
             {
-               e.printStackTrace();
-               m_log.error("Failed to archive publishing log for job ID: "
-                     + jobId, e);
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
+               log.error("Failed to archive publishing log for job ID: {} : {}", jobId, e.getMessage());
             }
          }
          
@@ -103,5 +102,5 @@ public class PSPurgePublishingLog extends PSPurgeExpiredLog
    /**
     * logger for this class.
     */
-   private Log m_log = LogFactory.getLog(getClass());
+   private static final Logger log = LogManager.getLogger(PSPurgePublishingLog.class);
 }
