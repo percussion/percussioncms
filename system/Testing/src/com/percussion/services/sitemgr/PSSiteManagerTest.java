@@ -44,6 +44,8 @@ import com.percussion.utils.types.PSPair;
 import junit.framework.Assert;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.xml.sax.SAXException;
@@ -74,6 +76,9 @@ import static org.junit.Assert.fail;
 @Category(IntegrationTest.class)
 public class PSSiteManagerTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSSiteManagerTest.class);
+
    /**
     * 
     */
@@ -124,7 +129,8 @@ public class PSSiteManagerTest
       {
          System.out.println("Deserialization exception: "
                + e.getLocalizedMessage());
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       ((PSSite) dup).setVersion(null);
       ((PSSite) dup).setVersion(ver);

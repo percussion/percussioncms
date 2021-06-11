@@ -258,9 +258,8 @@ public class PSUninstallPackageDialog extends
    {
       RestDataSource restDs = new RestDataSource();
       restDs.setFields(createDsFields());
-      restDs.setXmlRecordXPath("/Messages/message");
-      restDs.setRecordXPath("/Messages");
       restDs.setUpdateDataURL(m_checkDepsUrl + m_packageName);
+      restDs.setXmlRecordXPath("/Messages/Message");
       restDs.updateData(new ListGridRecord(), new DSCallback()
       {
          public void execute(DSResponse response, Object rawData,
@@ -293,9 +292,8 @@ public class PSUninstallPackageDialog extends
    {
       RestDataSource restDs = new RestDataSource();
       restDs.setFields(createDsFields());
-      restDs.setXmlRecordXPath("/Messages/message");
-      restDs.setRecordXPath("/Messages");
       restDs.setUpdateDataURL(m_updateUrl + m_packageName);
+      restDs.setXmlRecordXPath("/Messages/Message");
       restDs.updateData(new ListGridRecord(), new DSCallback()
       {
          public void execute(DSResponse response, Object rawData,

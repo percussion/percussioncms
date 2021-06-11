@@ -35,7 +35,7 @@ import java.util.List;
  */
 @XmlRootElement(name = "Messages")
 public class PSUninstallMessages
-{   
+{
 
    /**
     * 
@@ -58,11 +58,14 @@ public class PSUninstallMessages
    /**
     * @return the messages
     */
-   @XmlElement(name = "message")
+   @XmlElement(name="Message", type=PSUninstallMessage.class)
    public List<PSUninstallMessage> getMessages()
    {
+
       return m_messages;
    }
+
+
 
    /**
     * @param messages the messages to set
@@ -105,5 +108,15 @@ public class PSUninstallMessages
     * The list of messages, never <code>null</code>, may
     * be empty.
     */
+
    private List<PSUninstallMessage> m_messages = new ArrayList<>();
+
+   private Integer status = 0;
+   public Integer getStatus() {
+      return status;
+   }
+   public void setStatus(Integer status) {
+      this.status = status;
+   }
+
 }

@@ -32,6 +32,8 @@ import com.percussion.cms.objectstore.ws.PSRemoteFolderProcessor;
 import com.percussion.design.objectstore.PSEntry;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.util.PSRemoteRequester;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -45,6 +47,8 @@ import java.util.Map;
  */
 public class PSItemCreator
 {
+
+   private static final Logger log = LogManager.getLogger(PSItemCreator.class);
 
    public PSItemCreator(String filepath)
       throws PSInvalidItemCreatorConfigException
@@ -308,7 +312,8 @@ public class PSItemCreator
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          System.out.println("\nFinished with errors!!");
       }      
     }

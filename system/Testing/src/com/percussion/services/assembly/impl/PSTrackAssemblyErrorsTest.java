@@ -25,6 +25,8 @@ package com.percussion.services.assembly.impl;
 
 import com.percussion.services.assembly.data.PSAssemblyWorkItem;
 import junit.framework.TestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -39,6 +41,9 @@ import java.io.UnsupportedEncodingException;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PSTrackAssemblyErrorsTest extends TestCase
 {
+
+   private static final Logger log = LogManager.getLogger(PSTrackAssemblyErrorsTest.class);
+
    /**
     * Dummy result value
     */
@@ -126,7 +131,8 @@ public class PSTrackAssemblyErrorsTest extends TestCase
       }
       catch (UnsupportedEncodingException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 
@@ -144,7 +150,8 @@ public class PSTrackAssemblyErrorsTest extends TestCase
       }
       catch (UnsupportedEncodingException e)
       {
-         e.printStackTrace();
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       return work;
    }
