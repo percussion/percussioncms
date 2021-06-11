@@ -66,13 +66,12 @@
     --%>
 
     <!-- Themes never should be concatenated or packed -->
-    <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.7.2.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.8.9.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
     <!-- <link rel="stylesheet" type="text/css" href="../cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.min.css"/> -->
      <link rel="stylesheet" type="text/css" href="../jslib/profiles/3x/libraries/bootstrap/css/bootstrap.min.css"/>
     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%= locale%>"></script>
-    <script src="../cui/components/jquery/dist/jquery.min.js"></script>
-    <%--<script src="../cui/components/twitter-bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>--%>
-    <script src="../jslib/profiles/3x/libraries/bootstrap/js/bootstrap.bundle.min.js"></script>
+
     <% if (isDebug) { %>
 
     <!-- CSS Includes -->
@@ -82,7 +81,7 @@
     <link type="text/css" href="../css/percWorkflow.css" rel="stylesheet"/>
     <link type="text/css" href="../css/perc_mcol.css" rel="stylesheet"/>
     <link type="text/css" href="../css/perc_decoration.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/jquery.tooltip.css" rel="stylesheet"/>
+
     <!-- Stuff needed for finder to work like Editor -->
     <link rel="stylesheet" type="text/css" href="../css/perc_newsitedialog.css"/>
     <link rel="stylesheet" type="text/css" href="../css/perc_new_page_button.css"/>
@@ -90,7 +89,7 @@
     
     <!-- JavaScript Includes (order matters) -->
     <%@include file="includes/common_js.jsp" %>
-    <script src="../jslib/jquery.dynatree.js"></script>
+    <script src="../jslib/profiles/3x/libraries/bootstrap/js/bootstrap.bundle.min.js"></script>    
     <script src="../plugins/PercDataList.js"></script>
     <script src="../plugins/PercAddItemDialog.js"></script>
     <script src="../services/PercUserService.js"></script>
@@ -117,43 +116,43 @@
     <!--[if gte IE 8]>
     <link rel="stylesheet" type="text/css" href="../css/IE8_styles.css"/><![endif]-->
     <script  >
-        var dirtyController = $j.PercDirtyController;
+        var dirtyController = $.PercDirtyController;
         function navigationEvent() {
             // if template is not dirty, return nothing and allow navigation
             // otherwise return alert message and display confirmantion box
-            $j.wfViewObject.cancelJobs();
+            $.wfViewObject.cancelJobs();
             return dirtyController.navigationEvent();
         }
         //Initialization code
-        $j(document).ready(function () {
-            $j.Percussion.PercFinderView();
-            $j.PercWorkflowView();
-            $j.PercUserView();
-            $j.PercRoleView();
-            $j.PercCategoryView();
+        $(document).ready(function () {
+            $.Percussion.PercFinderView();
+            $.PercWorkflowView();
+            $.PercUserView();
+            $.PercRoleView();
+            $.PercCategoryView();
             fixBottomHeight();
-            $j("select").keypress(function () {
+            $("select").on("keypress",function () {
                 dirtyController.setDirty(true, "asset");
             });
-            $j("#tabs").tabs({
+            $("#tabs").tabs({
                 select: function (event, ui) {
                     if (dirtyController.isDirty()) {
                         // if dirty, then show a confirmation dialog                    
                         dirtyController.confirmIfDirty(function () {
                             // if they click ok, then reset dirty flag and proceed to select the tab
                             dirtyController.setDirty(false);
-                            $j.PercUserController.cancel();
-                            $j.PercRoleController.cancel();
-                            $j("#tabs").tabs('select', ui.index);
+                            $.PercUserController.cancel();
+                            $.PercRoleController.cancel();
+                            $("#tabs").tabs('select', ui.index);
                         });
                         return false;
                     }
 
                     if (ui.index != 3) {
-                        $j.PercCategoryController.getTabLockData(function (lockinfo) {
-                            if (lockinfo.userName == $j.PercNavigationManager.getUserName()) {
+                        $.PercCategoryController.getTabLockData(function (lockinfo) {
+                            if (lockinfo.userName == $.PercNavigationManager.getUserName()) {
                                 // delete the category tab lock file.
-                                $j.PercCategoryController.removeCatTabLock(function(){
+                                $.PercCategoryController.removeCatTabLock(function(){
                                 	
                                 });
                             }
@@ -171,35 +170,35 @@
                 var ROLES_TAB = 1;
                 var USERS_TAB = 2;
                 var CATEGORIES_TAB = 3;
-                if (index == USERS_TAB) {
-                    // Update the 'Avaialble Roles'cache object
-                    $j.PercUserController.cacheAllRoles();
+                if (index === USERS_TAB) {
+                    // Update the 'Available Roles'cache object
+                    $.PercUserController.cacheAllRoles();
 
                     //Update the Assgined Roles list for currently selected user                 
-                    $j("li.perc-users-selected").click();
-                    $j("#perc-wf-update-cancel").click();
+                    $("li.perc-users-selected").trigger("click");
+                    $("#perc-wf-update-cancel").trigger("click");
                 }
-                else if (index == ROLES_TAB) {
-                    //Update the Assgined Users list for currently selected role  
-                    $j("li.perc-item-selected").click();
-                    $j("#perc-wf-update-cancel").click();
+                else if (index === ROLES_TAB) {
+                    //Update the Assigned Users list for currently selected role
+                    $("li.perc-item-selected").trigger("click");
+                    $("#perc-wf-update-cancel").trigger("click");
                 }
-                else if (index == WORKFLOW_TAB) {
+                else if (index === WORKFLOW_TAB) {
                     //Update the Workflow to get changes if a role has been deleted
-                    var workflowName = $j("#perc-workflows-list .perc-itemname-list").find(".perc-item-selected").text();
-                    if ($j.wfViewObject.isWorkflowAvailable) {
+                    var workflowName = $("#perc-workflows-list .perc-itemname-list").find(".perc-item-selected").text();
+                    if ($.wfViewObject.isWorkflowAvailable) {
                         if (workflowName)
-                            $j.PercWorkflowStepsView.refresh(workflowName);
+                            $.PercWorkflowStepsView.refresh(workflowName);
                         else
-                            $j.PercWorkflowView().init();
+                            $.PercWorkflowView().init();
                     }
                 }
-                else if (index == CATEGORIES_TAB) {
+                else if (index === CATEGORIES_TAB) {
 
-                    $j.PercCategoryController.getTabLockData(function (lockinfo) {
+                    $.PercCategoryController.getTabLockData(function (lockinfo) {
                         var user = lockinfo.userName;
 
-                        if (user != null && user != "") {
+                        if (user != null && user !== "") {
                             var currentDate = new Date();
                             var lockDate = Date.parse(lockinfo.creationDate);
                             var diffMs = (currentDate - lockDate);
@@ -207,17 +206,17 @@
 
                             // compare the current time with the lock creation time. If the difference is more than or equal to 20 min, override the lock to the new user.
                             if (diffMins >= 20) {
-                                $j.PercCategoryController.lockCategoryTab();
-                            } else if (user != $j.PercNavigationManager.getUserName()) {
-                                $j.PercCategoryController.confirmDialog(I18n.message("perc.ui.admin.workflow@Categories Locked", [0]), function (action) {
-                                    if (action == "cancel") {
-                                        $j("#tabs").tabs('select', 0);
+                                $.PercCategoryController.lockCategoryTab();
+                            } else if (user !== $.PercNavigationManager.getUserName()) {
+                                $.PercCategoryController.confirmDialog(I18n.message("perc.ui.admin.workflow@Categories Locked", [0]), function (action) {
+                                    if (action === "cancel") {
+                                        $("#tabs").tabs('select', 0);
                                     }
                                 });
                             }
                         } else {
                             // lock categories tab for the current user.
-                            $j.PercCategoryController.lockCategoryTab();
+                            $.PercCategoryController.lockCategoryTab();
                         }
                     });
                 }

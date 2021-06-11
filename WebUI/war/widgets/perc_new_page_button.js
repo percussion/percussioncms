@@ -88,10 +88,10 @@
         function enableButton(flag)
         {
             if(flag){
-                newPageButton.removeClass('ui-disabled').addClass('ui-enabled').unbind('click').click( checkAndOpenNewPageDialog );
+                newPageButton.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", checkAndOpenNewPageDialog );
             }
             else{
-                newPageButton.addClass('ui-disabled').removeClass('ui-enabled').unbind('click');
+                newPageButton.addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
         }
 

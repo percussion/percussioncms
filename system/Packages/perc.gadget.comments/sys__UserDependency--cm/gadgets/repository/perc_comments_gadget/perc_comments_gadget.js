@@ -26,7 +26,7 @@
  * Depends upon the following:
  * /cm/jslib/jQuery.js
  * /cm/jslib/jQuery.dataTables.js
- * /cm/widgets/PercDataTable.js
+ * /cm/widgets/PercDataTable/PercDataTable.js
  * /cm/plugins/perc_path_constants.js - Ancestral Dependancy of PercCommentsGadgetService.js
  * /cm/services/PercServiceUtils.js - Ancestral Dependancy of PercCommentsGadgetService.js
  * /cm/gadgets/repository/perc_comments_gadget/PercCommentsGadgetService.js
@@ -58,7 +58,7 @@
         itemsPerPage = rows;
 
         defaultModerationLink = $(this).find("#perc-set-default-moderation-link")
-            .click(displayDefaultModerationDialog)
+            .on("click",displayDefaultModerationDialog)
             .attr("site", site);
         
         var tableDiv = $(this);
@@ -307,7 +307,7 @@
             TRUNCATELENGTH = 120;
         if (summary.length < TRUNCATELENGTH)
         {*/
-            if ($.trim(summary).length == 0)
+            if (summary.trim().length === 0)
                 return "&nbsp;";
             else
                 return summary;

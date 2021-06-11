@@ -138,7 +138,7 @@
          * Updates the department drop down with only departments
          * from the respective organization that has been selected.
          */
-        orgContainerSelect.change(function() {
+        orgContainerSelect.on("change",function() {
             isOrgSelectDirty = true;
             const selectedValue = orgContainerSelect.val();
 
@@ -153,7 +153,7 @@
          * Updates the organization drop down with the respective
          * parent organization.
          */
-        deptContainerSelect.change(function() {
+        deptContainerSelect.on("change",function() {
             isDeptSelectDirty = true;
             const selectedValue = deptContainerSelect.val();
             if (selectedValue !== null) {

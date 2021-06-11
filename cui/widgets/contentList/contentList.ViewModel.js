@@ -34,7 +34,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
             "MY_RECENT_EMPTY_MSG": "This page will list the 20 most recent items you've worked on.  Add new content or open content to have it appear on this list.",
             "SEARCH_RESULTS":"Search Results",
             "SEARCH_RESULTS_EMPTY_MSG": "No content was found matching your search criteria.",
-            "THUMBNAIL_UNAVAILABLE_IMG":"<div class=\"perc-missing-thumb\"><i title=\"Thumbnail is not yet available for this page.\" class=\"perc-missing-thumb-i perc-font-icon icon-camera fa-5x\"></i></div>",
+            "THUMBNAIL_UNAVAILABLE_IMG":"<div class=\"perc-missing-thumb\"><i title=\"Thumbnail is not yet available for this page.\" class=\"perc-missing-thumb-i perc-font-icon icon-camera fas fa-camera fa-5x \"></i></div>",
             "DELETE_PROMPT_MESSAGE":"Are you sure you want to delete this item?",
             "SEARCH_MAX_RESULTS":200
 		};
@@ -198,7 +198,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
                     searchInfo.criteria.SearchCriteria.startIndex = results.PagedItemPropertiesList.startIndex + self.constants.SEARCH_MAX_RESULTS;
                     self.searchInfo = searchInfo;
                     self.hasMoreResults(searchInfo.criteria.SearchCriteria.startIndex <= results.PagedItemPropertiesList.childrenCount);
-                    if(!$.isArray(children)){
+                    if(!Array.isArray(children)){
                         children = [children];
                     }
                     if(results.PagedItemPropertiesList.childrenCount > 0){
@@ -219,7 +219,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
             }
         }
         function removeItemFromSearchResults(item){
-            if(!$.isArray(self.searchResults))
+            if(!Array.isArray(self.searchResults))
                 return;
             var index = -1;
             for(let i=0;i<self.searchResults.length;i++){

@@ -58,7 +58,7 @@
         }
 
         // A snippet to adjust the frame size on resizing the window.
-        $(window).resize(function() {
+        $(window).on("resize",function() {
             fixIframeHeight();
             fixTemplateHeight();
         });
@@ -96,29 +96,29 @@
         
         function init() {
             resetUserDetails();
-            $("#perc-users-edit-user-button").unbind().click(function(){
+            $("#perc-users-edit-user-button").off("click").on("click",function(){
                 controller.editSelectedUser();
                 addingNewUser = false;
             });
-            $("#perc-users-add-user-button").unbind().click(function(){
+            $("#perc-users-add-user-button").off("click").on("click",function(){
                 dirtyController.confirmIfDirty(function(){
                 	addingNewUser = true;
                     $("#perc-users-external-user-label").hide();
                     controller.addNewUser();
                 });
             });
-            $("#perc-users-save").unbind().click(function(){
+            $("#perc-users-save").off("click").on("click",function(){
                 save();
                 addingNewUser = false;
             });
-            $("#perc-users-cancel").unbind().click(function(){
+            $("#perc-users-cancel").off("click").on("click",function(){
                 controller.cancel();
                 addingNewUser = false;
             });
-            $("#perc-users-remove-role-button").unbind().click(function(){
+            $("#perc-users-remove-role-button").off("click").on("click",function(){
                 removeRoleFromSelectedUser();
             });
-            $("#perc-users-add-role-button").unbind().click(function(){
+            $("#perc-users-add-role-button").off("click").on("click",function(){
                 addRoleToSelectedUser();
             });
             
@@ -137,7 +137,7 @@
             if(directoryServiceAvailable)
             
                 // handle import users button. Display import dialog
-                startUserImportButton.unbind().click(function(){
+                startUserImportButton.off("click").on("click",function(){
                     disableImportButton();
                     dirtyController.confirmIfDirty(function(){
                         
@@ -154,10 +154,10 @@
             }
             
             // if they click on search, controller gets the users from the service and updates the import dialog
-            searchButton.click(function(){
+            searchButton.on("click",function(){
 
                 // uncheck select all checkbox 
-                selectAllCheckbox.attr("checked", false);
+                selectAllCheckbox.prop("checked", false);
 
                 // get the search query and pass it to the controller to pass it to the service
                 var usernameStartsWith = searchBox.val();
@@ -165,24 +165,24 @@
             });
             
             // if the select all checkbox is clicked, toggle all the user checkboxes
-            selectAllCheckbox.click(function() {
+            selectAllCheckbox.on("click",function() {
                 toggleSelectAll();
                 updateImportButton();
             });
             
-            selectAllLabel.click(function(){
-                selectAllCheckbox.click();
+            selectAllLabel.on("click",function(){
+                selectAllCheckbox.trigger("click");
                 toggleSelectAll();
                 updateImportButton();
             });
 
             // if cancel, dismiss dialog
-            cancelButton.click(function() {
+            cancelButton.on("click",function() {
                 importDialog.dialog('close');
             });
 
             // handle import button
-            importButton.click(function() {
+            importButton.on("click",function() {
                 if(importButton.hasClass("perc-users-directory-users-import-button-disabled"))
                    return;
                 
@@ -194,7 +194,7 @@
                     selectedUserNames.push($(this).attr("id"));
                 });
                 
-                if(selectedUserNames.length == 0) {
+                if(selectedUserNames.length === 0) {
                     alertDialog(I18N.message("perc.ui.page.general@Warning"), I18N.message("perc.ui.users.import.dialogs@SelectOneUser"));
                     return;
                 }
@@ -256,11 +256,11 @@
             // create a list of duplicates and error. For now we only show error ones.
             var errorList = [];
             var duplicateList = [];
-            for(u=0; u<users.length; u++) {
-                if(users[u].status != "SUCCESS") {
-                    if(users[u].status == "ERROR")
+            for(let u=0; u<users.length; u++) {
+                if(users[u].status !== "SUCCESS") {
+                    if(users[u].status === "ERROR")
                        errorList.push(users[u]);
-                    else if(users[u].status == "DUPLICATE")
+                    else if(users[u].status === "DUPLICATE")
                        duplicateList.push(users[u]);
                 }
             }
@@ -268,7 +268,7 @@
             // create a table with the list of users. Right now we only show the username but we could also show reason.
             var table = "<div id='perc-users-import-warning-scrollpane'>" +
                         "<table id='perc-users-import-warning'>";            
-            for(u=0; u<errorList.length; u++) {
+            for(let u=0; u<errorList.length; u++) {
                 // one user per row with the username
                 var row = templateUserStatus.replace(/_username_/g, errorList[u].name);
                 table += row;
@@ -294,9 +294,9 @@
          */
         function toggleSelectAll() {
             if(selectAllCheckbox.attr("checked")) {
-                $(".perc-users-checkboxes").attr("checked",true);
+                $(".perc-users-checkboxes").prop("checked",true);
             } else {
-                $(".perc-users-checkboxes").attr("checked",false);
+                $(".perc-users-checkboxes").prop("checked",false);
             }
         }
         
@@ -308,14 +308,14 @@
             $("#perc-users-email-label").hide();
             $("#perc-users-email-field").val("");
         
-           var availableRolesSelectList = $("#perc-users-available-roles > select")
+           var availableRolesSelectList = $("#perc-users-available-roles > select");
            var assignedRolesSelectList  = $("#perc-users-assigned-roles  > select");
         
             assignedRolesSelectList
-                .click(function(){availableRolesSelectList.attr('selectedIndex', '-1'); })
+                .on("click",function(){availableRolesSelectList.attr('selectedIndex', '-1'); })
                 .html("");
             availableRolesSelectList
-                .click(function(){assignedRolesSelectList.attr('selectedIndex', '-1'); })
+                .on("click",function(){assignedRolesSelectList.attr('selectedIndex', '-1'); })
                 .html("");
            
             $("#perc-users-username-field")
@@ -327,7 +327,7 @@
         function updateListOfUsers(userArray) {
             
             currentUserList = userArray;
-            currentUserIds  = new Object();
+            currentUserIds  = {};
             
             // clear the list of users
             var $userListElement = $("#perc-username-list > ul");
@@ -337,7 +337,7 @@
             var $html = "";
             var htmlLi = "";
             var ellipsis = "...";
-            for(i in userArray) {
+            for(let i in userArray) {
                 var username = userArray[i].toString();
                 var id = "perc-users-id-" + i;
                 currentUserIds[username] = id;
@@ -350,7 +350,7 @@
             }
             
             // bind select event on each user element
-            $(".perc-username").unbind().click(function(event){
+            $(".perc-username").off("click").on("click",function(event){
                 // clicking on the user selects the user
                 // element's id contains the username
                 var self = this;
@@ -371,7 +371,7 @@
             
 
             // bind the delete button for each user element         
-            $(".perc-user-delete").unbind().click(function(event) {
+            $(".perc-user-delete").off("click").on("click",function(event) {
                 
                 // stop event because it is nested inside an element that is already bound
                 event.stopPropagation();
@@ -425,7 +425,7 @@
             }
             
             if(users.length > 0)
-                $(".perc-users-checkboxes").click(function() {
+                $(".perc-users-checkboxes").on("click",function() {
                     updateImportButton();
                 });
             
@@ -445,19 +445,19 @@
             startUserImportButton.removeClass("perc-users-import-users-button-enabled");
             startUserImportButton.addClass   ("perc-users-import-users-button-disabled");
             startUserImportButton.attr("title", I18N.message("perc.ui.users.import.tooltips@UserImportUnavailable"));
-            startUserImportButton.unbind();
+            startUserImportButton.off();
         }
         
         function showSelectedUserEditor() {
             $("#perc-users-username-field")
                 .addClass("perc-users-password-field-view-user")
-                .change(function() {
+                .on("change",function() {
                     dirtyController.setDirty(true, "user");
                 });
            $("#perc-users-email-field")
                 .removeClass("perc-users-password-field-view-user")
                 .removeAttr("readonly")
-                .change(function() {
+                .on("change", function() {
                     dirtyController.setDirty(true, "user");
                 });
             $("#perc-users-email-label").show();
@@ -470,8 +470,8 @@
                 .removeClass("perc-users-password-field-view-user")
                 .removeAttr("readonly")
                 .val("")
-                .focus()
-                .change(function() {
+                .trigger("focus")
+                .on("change",function() {
                     dirtyController.setDirty(true, "user");
                 });
             $("#perc-users-username-label").addClass("perc-required-field");    
@@ -480,9 +480,9 @@
                 .removeClass("perc-users-password-field-view-user")
                 .removeAttr("readonly")
                 .val("")
-                .change(function() {
+                .on("change",function() {
                     dirtyController.setDirty(true, "user");
-                })
+                });
             $("#perc-users-email-label").show();
             unhighlightAllUsers();
             $("#perc-users-edit-user-button").hide();
@@ -495,35 +495,35 @@
 			$("#perc-users-password-confirm-label").addClass("perc-required-field");
             $("#perc-users-password-field")
                 .val(dummyPassword)
-                .unbind()
-                .click(function() {
+                .off("click")
+                .on("click",function() {
                     $(this)
                         .val("")
-                        .unbind()
-                        .change(function() {
+                        .off("change")
+                        .on("change",function() {
                             dirtyController.setDirty(true, "user");
                         });
                     $("#perc-users-password-confirm-field")
                         .val("")
-                        .unbind()
-                        .change(function() {
+                        .off("change")
+                        .on("change",function() {
                             dirtyController.setDirty(true, "user");
                         });
                 });
             $("#perc-users-password-confirm-field")
                 .val(dummyPassword)
-                .unbind()
-                .click(function() {
+                .off("click")
+                .on("click",function() {
                     $(this)
                         .val("")
-                        .unbind()
-                        .change(function() {
+                        .off("change")
+                        .on("change",function() {
                             dirtyController.setDirty(true, "user");
                         });
                     $("#perc-users-password-field")
                         .val("")
-                        .unbind()
-                        .change(function() {
+                        .off("change")
+                        .on("change",function() {
                             dirtyController.setDirty(true, "user");
                         });
                 });

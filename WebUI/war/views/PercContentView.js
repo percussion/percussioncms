@@ -181,7 +181,7 @@
 
         var widgetDecorator = P.decorationController( allWidgets, 'perc-widget-puff', 'perc-widget-selected', widgetMenu);
 
-        $('#show-hide-decorations').unbind().click( function(){
+        $('#show-hide-decorations').off("click").on("click", function(){
             widgetDecorator.visible( !widgetDecorator.visible());
         });
 
@@ -488,9 +488,9 @@
         function updateOrphanAssetTray(draggedAsset){
             draggedAsset.remove();
             var orphanAssetsContainer = $(".perc-orphan-assets-list");
-            if(orphanAssetsContainer.find(".perc-orphan-asset").size() === 0){
+            if(orphanAssetsContainer.find(".perc-orphan-asset").length === 0){
                 $.fn.percOrphanAssetsMaximizer(P);
-                $("#perc_orphan_assets_expander").addClass("perc-disabled").unbind();
+                $("#perc_orphan_assets_expander").addClass("perc-disabled").off();
                 $("#perc_orphan_assets_maximizer").addClass("perc-disabled");
             }
         }
@@ -525,7 +525,7 @@
             root.contents().find("body")
                 .css("z-index","-1000")
                 .css("position","static")
-                .unbind().click(function() {
+                .off("click").on("click", function() {
                 widgetDecorator.unselectAll();
             });
             overlap = 0;
@@ -547,7 +547,7 @@
          * current status. Calls the model#initRender to reinitialize the view.
          */
         $(document).ready(function() {
-            $("#perc-content-menu a.perc-dropdown-option-DisableJavaScript").unbind().click(function() {
+            $("#perc-content-menu a.perc-dropdown-option-DisableJavaScript").off("click").on("click", function() {
                 var scriptOff = I18N.message( "perc.ui.menu@JavaScript Off" );
                 var scriptOn = I18N.message( "perc.ui.menu@JavaScript On" );
                 if($(this).text() === scriptOff)

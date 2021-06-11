@@ -691,11 +691,11 @@
          */
         function getPagetIdFromTemplate(XHRstatus, percPageServiceData)
         {
-            var querystring = $j.deparam.querystring();
+            var querystring = $.deparam.querystring();
             // Add the last element needed in the memento and redirect
             memento.pageId = percPageServiceData.firstItemId;
-            $j.PercNavigationManager.goToLocation(
-                $j.PercNavigationManager.VIEW_EDIT_TEMPLATE,
+            $.PercNavigationManager.goToLocation(
+                $.PercNavigationManager.VIEW_EDIT_TEMPLATE,
                 querystring.site,
                 null,
                 null,

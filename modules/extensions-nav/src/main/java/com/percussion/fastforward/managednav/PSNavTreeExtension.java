@@ -114,7 +114,6 @@ public class PSNavTreeExtension extends PSDefaultExtension
       {
          req.printTraceMessage(e.getMessage());
          log.error("PSNavException found: {}", e.getMessage());
-         log.error(getClass().getName(), e);
          log.debug(e.getMessage(),e);
          log.error(e.getMessage());
 
@@ -123,7 +122,6 @@ public class PSNavTreeExtension extends PSDefaultExtension
       }
       catch (Exception ex)
       {
-         log.error("unexcepted exception");
          log.error(getClass().getName(), ex);
          log.debug(ex.getMessage(),ex);
          throw new PSExtensionProcessingException(getClass().getName(), ex);

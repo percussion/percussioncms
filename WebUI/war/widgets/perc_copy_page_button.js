@@ -29,7 +29,7 @@
     var pageName;
     $.perc_build_copy_page_button = function (finderRef, content) {
         var btn = $("<a id='perc-finder-copy-page' href='#' title='Click to copy selected page'>Copy</a>")
-        	.click(function (event) {
+        	.on("click",function (event) {
         		copyPageValidate();
         });        
       
@@ -39,24 +39,24 @@
             var selectedPage1 = $(".mcol-opened.perc-listing-type-percPage.perc-listing-category-LANDING_PAGE");
             var selectedItemList = $("#perc-finder-listview .perc-datatable-row-highlighted");
             
-            if (selectedPage[0] == undefined && selectedPage1[0] == undefined && selectedItemList.size() == 0)
+            if (selectedPage[0] === undefined && selectedPage1[0] === undefined && selectedItemList.length() === 0)
                  return;
             
             pageName = selectedPage.text();
-            if(!pageName || pageName == "")
+            if(!pageName || pageName === "")
                 pageName = selectedPage1.text();
             
             var id;
-            if (selectedItemList.size() > 0)
+            if (selectedItemList.length > 0)
             {
                 listSelectedRowData = selectedItemList.data("percRowData");
-                if (listSelectedRowData.category == "LANDING_PAGE" || listSelectedRowData.category == "PAGE")
+                if (listSelectedRowData.category === "LANDING_PAGE" || listSelectedRowData.category === "PAGE")
                 {
                     id = listSelectedRowData.id;
                     pageName = listSelectedRowData.name;
                 }
             }
-            else if (selectedPage[0] != undefined)
+            else if (selectedPage[0] !== undefined)
             {
                 id = selectedPage.attr("id");
             }
@@ -72,7 +72,7 @@
             }
             
             $.PercUserService.getAccessLevel("percPage", itemId,function(status, result){
-                if(status == $.PercServiceUtils.STATUS_ERROR || result == $.PercUserService.ACCESS_READ || result == $.PercUserService.ACCESS_NONE)
+                if(status === $.PercServiceUtils.STATUS_ERROR || result === $.PercUserService.ACCESS_READ || result === $.PercUserService.ACCESS_NONE)
                 {
                    $.perc_utils.alert_dialog({title: I18N.message("perc.ui.copy.page.button@Copy Page"), content: I18N.message("perc.ui.copy.page.button@Copy Page Authorization") + pageName + ".'"});
                    $.unblockUI();
@@ -130,7 +130,7 @@
                     
                     var selectedItemList = $("#perc-finder-listview .perc-datatable-row-highlighted");
                     
-                    if (selectedItemList.size() > 0)
+                    if (selectedItemList.length > 0)
                     {
                         listSelectedRowData = selectedItemList.data("percRowData");
 
@@ -195,7 +195,7 @@
                 {
                     // We evaluate the callback with the result of the comparission of permission
                     //debugger;
-                    callback(! (result == $.PercFolderHelper().PERMISSION_READ)); 
+                    callback( (result !== $.PercFolderHelper().PERMISSION_READ));
                     return;
                 }
             });
@@ -209,11 +209,11 @@
         {
             if (flag)
             {
-                btn.removeClass('ui-disabled').addClass('ui-enabled').unbind('click').click( copyPageValidate );
+                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", copyPageValidate );
             }
             else
             {
-                btn.addClass('ui-disabled').removeClass('ui-enabled').unbind('click');
+                btn.addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
             // We trigger a custom event using jQuery, the actions button will act acordingly
             btn.trigger('actions-change-enabled-state');

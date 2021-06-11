@@ -36,7 +36,7 @@
     $.perc_build_upload_button = function (finder, contentViewer)
     {
         var btn = $('<a id="perc-finder-upload" href="#" title="' +I18N.message("perc.ui.upload.button@Click Upload File") + '">Upload File...</a>')
-            .click(lauchClickHandler);
+            .on("click",lauchClickHandler);
         
         /**
          * Listener function that is added to the finder listeners, this method gets called whenever a path change
@@ -64,11 +64,11 @@
         {
             if (flag)
             {
-                btn.removeClass('ui-disabled').addClass('ui-enabled').unbind('click').click( lauchClickHandler );
+                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", lauchClickHandler );
             }
             else
             {
-                btn.addClass('ui-disabled').removeClass('ui-enabled').unbind('click');
+                btn.addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
             btn.trigger('actions-change-enabled-state');
         }

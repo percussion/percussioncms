@@ -6,9 +6,6 @@
       "files": [
         "../target/minify-common/shared-common.js",
         "../target/minify-common/shared-finder.js",
-        "jslib/Jeditable.js",
-        "jslib/PSJSUtils.js",
-        "jslib/jquery.dynatree.js",
         "widgets/PercAutoScroll.js",
         "views/PercDashboard.js",
         "services/perc_sectionServiceClient.js",
@@ -16,6 +13,7 @@
         "services/PercSiteService.js",
         "services/PercFormService.js",
         "services/PercCookieConsentService.js",
+        "services/PercItemPublisherService.js",
         "services/PercPathService.js",
         "services/PercMetadataService.js",
         "services/PercDashboardService.js",
@@ -46,7 +44,7 @@
       "files": [
         "../target/minify-common/shared-common.js",
         "../target/minify-common/shared-finder.js",
-        "jslib/jquery.dynatree.js",
+
         "services/perc_sectionServiceClient.js",
         "services/PercSiteService.js",
         "plugins/PercEditSectionLinksDialog.js",
@@ -82,6 +80,9 @@
       "name": "jslibMin/perc_webmgt.packed.js",
       "files": [
         "../target/minify-common/shared-common.js",
+        "../target/minify-common/shared-finder.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.xmldom-1.0.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.jmodal.js",
         "widgets/PercSimpleMenu/PercSimpleMenu.js",
         "widgets/PercPageDataTable/PercPageDataTable.js",
         "widgets/PercActionDataTable/PercActionDataTable.js",
@@ -102,23 +103,19 @@
         "views/PercChangeTemplateDialog.js",
         "views/PercSiteImpactView.js",
         "views/PercEditRegionPropertiesDialog.js",
-        "jslib/jquery.xmldom-1.0.js",
         "plugins/perc_page_schema.js",
         "widgets/perc_asset_edit_dialog.js",
         "widgets/perc_page_edit_dialog.js",
         "widgets/perc_save_as.js",
         "plugins/perc_save_as_shared_asset_dialog.js",
-        "../target/minify-common/shared-finder.js",
         "widgets/perc_widget_library.js",
         "plugins/perc_contentEditDecorate.js",
         "plugins/perc_content_viewer.js",
-        "jslib/jquery.jmodal.js",
         "classes/perc_page_class.js",
         "classes/perc_template_layout_class.js",
         "plugins/perc_template_layout_helper.js",
         "widgets/perc_template_layout_widget.js",
         "plugins/perc_layout_controller.js",
-        "jslib/jquery.dynatree.js",
         "plugins/perc_template_manager.js",
         "plugins/perc_page_schema.js",
         "plugins/perc_template_schema.js",
@@ -132,7 +129,6 @@
         "views/PercInspectionToolHandler.js",
         "views/PercContentView.js",
         "views/widgetPropertiesDialog.js",
-        "jslib/jquery.dataTables.js",
         "plugins/PercContentEditorHandlers.js",
         "plugins/PercRevisionDialog.js",
         "plugins/PercScheduleDialog.js",
@@ -173,6 +169,7 @@
       "name": "jslibMin/perc_publish.packed.js",
       "files": [
         "../target/minify-common/shared-common-minuet.js",
+        "../target/minify-common/shared-finder.js",
         "services/PercPublisherService.js",
         "services/PercUtilService.js",
         "services/PercSiteService.js",
@@ -182,8 +179,7 @@
         "views/PercPublishStatusMinuetView.js",
         "views/PercPublishLogsMinuetView.js",
         "services/PercUserService.js",
-        "plugins/PercChangePasswordMinuet.js",
-        "../target/minify-common/shared-finder.js"
+        "plugins/PercChangePasswordMinuet.js"
       ]
     },
 
@@ -201,6 +197,7 @@
       "name": "jslibMin/perc_users.packed.js",
       "files": [
         "../target/minify-common/shared-common.js",
+        "../target/minify-common/shared-finder.js",
         "plugins/PercDataList.js",
         "plugins/PercAddItemDialog.js",
         "services/PercUserService.js",
@@ -213,14 +210,12 @@
         "views/PercCategoryView.js",
         "views/PercEditWorkflowStepDialog.js",
         "views/PercWorkflowStepsView.js",
-        "jslib/jquery.dynatree.js",
         "services/PercFolderService.js",
         "plugins/PercDataTree.js",
         "plugins/perc_assign_workflow_sites_folder_dialog.js",
         "views/PercWorkflowView.js",
         "plugins/perc_ChangePwDialog.js",
-        "plugins/perc_newsitedialog.js",
-        "../target/minify-common/shared-finder.js"
+        "plugins/perc_newsitedialog.js"
       ]
     },
 
@@ -246,23 +241,16 @@
       "name": "jslibMin/perc_editTemplate.packed.js",
       "files": [
         "../target/minify-common/shared-common.js",
-        "jslib/jquery.text-overflow.js",
-        "jslib/rAF.js",
+        "../target/minify-common/shared-finder.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.xmldom-1.0.js",
+        "jslib/profiles/3x/libraries/perc-retiredjs/rAF.js",
         "widgets/PercSimpleMenu/PercSimpleMenu.js",
         "widgets/PercPageDataTable/PercPageDataTable.js",
         "widgets/PercActionDataTable/PercActionDataTable.js",
         "widgets/PercInlineEditDataTable.js",
-
-
         "services/PercTemplateService.js",
         "services/PercSiteImpactService.js",
-
-
         "classes/perc_template_summary_class.js",
-
-
-
-
         "views/PercIFrameView.js",
         "widgets/perc_template_metadata_dialog.js",
         "plugins/PercAddTemplateDialog.js",
@@ -273,12 +261,9 @@
         "widgets/perc_template_layout_widget.js",
         "plugins/perc_layout_controller.js",
         "plugins/perc_template_manager.js",
-        "jslib/jquery.xmldom-1.0.js",
         "plugins/perc_page_schema.js",
         "plugins/perc_template_schema.js",
         "plugins/perc_contentEditDecorate.js",
-        "jslib/jquery.bbq.js",
-        "../target/minify-common/shared-finder.js",
         "widgets/perc_save_as.js",
         "plugins/perc_save_as_shared_asset_dialog.js",
         "widgets/perc_asset_edit_dialog.js",
@@ -302,7 +287,6 @@
         "views/PercCSSThemeView.js",
         "views/PercOverrideView.js",
         "plugins/PercContentEditorHandlers.js",
-        "jslib/jquery.dynatree.js",
         "views/PercSiteImpactView.js",
         "views/PercLayoutErrorDialog.js",
         "views/PercRegionCSSHandler.js",
@@ -335,9 +319,9 @@
       "name": "jslibMin/perc_widgetBuilder.packed.js",
       "files": [
         "../target/minify-common/shared-common.js",
-        "jslib/underscore-min.js",
-        "jslib/backbone-min.js",
-        "jslib/backgridjs/backgrid.js",
+        "jslib/profiles/3x/libraries/underscore/underscore.js",
+        "jslib/profiles/3x/libraries/backbone/backbone.js",
+        "jslib/profiles/3x/jquery/libraries/backgridjs/backgrid.js",
         "widgetbuilder/js/PercWidgetBuilder.js",
         "widgetbuilder/js/PercWidgetBuilderExpander.js",
         "widgetbuilder/js/PercWidgetBuilderService.js",
@@ -362,7 +346,7 @@
       "files": [
         "../target/minify-common/shared-common.css",
         "css/styles.css",
-        "jslib/backgridjs/backgrid.min.css",
+        "jslib/profiles/3x/jquery/libraries/backgridjs/backgrid.css",
         "widgetbuilder/css/perc_widgetbuilder.css",
         "css/perc_ChangePw.css"
       ]
@@ -374,13 +358,13 @@
       "name": "jslibMin/perc_admin.packed.js",
       "files": [
         "../target/minify-common/shared-common.js",
-        "jslib/printThis.js",
+        "../target/minify-common/shared-finder.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.print-this.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.xmldom-1.0.js",
         "widgets/PercSimpleMenu/PercSimpleMenu.js",
         "widgets/PercPageDataTable/PercPageDataTable.js",
         "widgets/PercActionDataTable/PercActionDataTable.js",
         "widgets/PercAutoScroll.js",
-        "jslib/json.js",
-        "jslib/jquery.text-overflow.js",
         "classes/perc_template_summary_class.js",
         "services/PercTemplateService.js",
         "plugins/PercAddTemplateDialog.js",
@@ -396,10 +380,8 @@
         "plugins/perc_page_schema.js",
         "plugins/perc_template_schema.js",
         "plugins/perc_template_manager.js",
-        "jslib/jquery.xmldom-1.0.js",
         "plugins/perc_contentEditDecorate.js",
         "plugins/perc_asset_manager.js",
-        "../target/minify-common/shared-finder.js",
         "widgets/perc_save_as.js",
         "widgets/perc_asset_edit_dialog.js",
         "plugins/perc_content_viewer.js",

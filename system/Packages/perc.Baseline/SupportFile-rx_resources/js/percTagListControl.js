@@ -126,7 +126,7 @@
 
         $.each(newTagsArray, function()
         {
-            var thisTag = $.trim(this).toLowerCase();
+            var thisTag = this.trim().toLowerCase();
             if(thisTag.length > 0)
             {
                 processedArray.push(thisTag);

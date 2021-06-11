@@ -159,7 +159,7 @@
                     //If there are more description
                     if('' !== item.description.substring(queryString.itemDescriptionLength + 1))
                     {
-                        description.html($.trim(description.html()) + "...");
+                        description.html(description.html().trim() + "...");
                     }
                 }
 

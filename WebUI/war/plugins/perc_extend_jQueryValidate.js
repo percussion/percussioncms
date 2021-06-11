@@ -70,7 +70,7 @@
     $.validator.addMethod("noBinary", function(value, element){ 
             
             // Gets the page name
-            var match = $.trim(value).match(/[\w_.-]*?(?=[\?#])|[\w_.-]*$/i);
+            var match = value.trim().match(/[\w_.-]*?(?=[\?#])|[\w_.-]*$/i);
             if (typeof(match[0]) != "undefined") 
                 var splitMatch = match[0].split("."); // matches 0 since it's the first group
             

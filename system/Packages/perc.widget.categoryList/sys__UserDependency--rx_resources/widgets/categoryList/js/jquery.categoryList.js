@@ -111,13 +111,13 @@
 
         var queryOp=" where ";
 
-        if (p_site_path!=null && p_site_path!=""){
+        if (p_site_path!=null && p_site_path!==""){
 
             //Save site_path
             $('[name="site_path"]').val(p_site_path);
 
             // CM-43 add the trailing slash
-            if(p_site_path.substr(p_site_path.length - 1) != '/')
+            if(p_site_path.substr(p_site_path.length - 1) !== '/')
             {
                 p_query += queryOp + "jcr:path like '" + p_site_path + "/%'";
             }
@@ -182,14 +182,13 @@
             */
             function showPageTemplates()
             {
-                $ = $j;   
                 //make an array from the comma delimited options string
                 var pageTemplatesOptionsArray = [];
         
                 //Check if page_templates has been defined
-                if (typeof $('[name="page_templates_list"]').val() != "undefined")
+                if (typeof $('[name="page_templates_list"]').val() !== "undefined")
                 {   
-                    var pageTemplatesOptionsArray = $('[name="page_templates_list"]').val().split(",");
+                    pageTemplatesOptionsArray = $('[name="page_templates_list"]').val().split(",");
                 }
 
                 $(document).ready( function(){
@@ -210,10 +209,10 @@
                      for(i=0; i<tpls.length; i++)
                      {
                          var tpl = tpls[i];
-                         var checked = $.inArray(tpl.id,pageTemplatesOptionsArray) == -1?"":" checked ='true' ";
+                         var checked = $.inArray(tpl.id,pageTemplatesOptionsArray) === -1?"":" checked ='true' ";
                          $("#perc-pagetemplates-container").append($("<div class='perc-pagetemplates-entry'><input type='checkbox' class='perc-pagetemplates-chkbox'" + checked + " value='" + tpl.id + "'></input><span title='"+ tpl.name +"'>" + tpl.name + "</span></div>"));
                      }
-                     $(".perc-pagetemplates-chkbox").change(function(){    
+                     $(".perc-pagetemplates-chkbox").on("change",function(){
                          var pts = getPageTemplates();
                          pts = pts?pts:"";
                          $('[name="page_templates_list"]').val(pts);
@@ -266,7 +265,7 @@
                  var siteName = null;
                  if(folderPath && folderPath.indexOf("//Sites/")>-1)
                  {
-                     var siteName = folderPath.substring(("//Sites/").length);
+                     siteName = folderPath.substring(("//Sites/").length);
                      if(siteName.indexOf("/")>-1)
                         siteName = siteName.substring(0,siteName.indexOf("/"));
                  }
@@ -274,12 +273,12 @@
             }
             //Callbacks Event Code
     
-            $('#perc-content-edit-title_contains').change(function(){
+            $('#perc-content-edit-title_contains').on("change",function(){
                 buildQuery();
             });    
     
             //Build query if mouse leaves the form, i.e when the user goes to click on the save button which is not part of the iframe
-            $('#perc-content-form').mouseleave(function(){
+            $('#perc-content-form').on("mouseleave",function(){
                 buildQuery();
             });
     
@@ -291,31 +290,30 @@
                 //Set display date range
                 setDisplayDate($('[name="start_date"]').val(),"display_start_date");
                 setDisplayDate($('[name="end_date"]').val(),"display_end_date");        
-                $("#display_title_contains").val($('[name="title_contains"]').val());
-				$("#display_category_page_result").val($('[name="category_page_result"]').val());
-				
-				$("#display_category_page_result").blur(function(){
+
+				$("#display_category_page_result").val($('[name="category_page_result"]').val())
+                    .on("blur",function(){
+                    $('[name="category_page_result"]').val($("#display_category_page_result").val());
+                }).on("change",function(){
                     $('[name="category_page_result"]').val($("#display_category_page_result").val());
                 });
-                $("#display_category_page_result").change(function(){
-                    $('[name="category_page_result"]').val($("#display_category_page_result").val());
-                });
-				
-                $("#display_title_contains").blur(function(){
+
+                $("#display_title_contains").val($('[name="title_contains"]').val())
+                    .on("blur",function(){
+                        $('[name="title_contains"]').val($("#display_title_contains").val());
+                        buildQuery();
+                }).on("change",function(){
                     $('[name="title_contains"]').val($("#display_title_contains").val());
                     buildQuery();
                 });
-                $("#display_title_contains").change(function(){
-                    $('[name="title_contains"]').val($("#display_title_contains").val());
-                    buildQuery();
-                });
+
                 showPageTemplates();
                 addDelToDateControls();
                 showSites();
                 
                 //Handle the results page browse button click
-                $("#perc_categorylist_resultspage_browse").click(function(){
-                     var dlgTitle = "Select Results Page"
+                $("#perc_categorylist_resultspage_browse").on("click", function(){
+                     var dlgTitle = "Select Results Page";
                      var inputElemId = "display_category_page_result";
                      handleBrowseButtonClick(dlgTitle, inputElemId );               
                 });
@@ -339,27 +337,27 @@
              */
             function addDelToDateControls()
             {
-                $('#display_end_date').keydown(function(evt){
+                $('#display_end_date').on("keydown",function(evt){
                     var rawCode = evt.charCode ? evt.charCode : evt.which;
-                    if(rawCode==46 || rawCode==8)
+                    if(rawCode===46 || rawCode===8)
                     {
                         $('#display_end_date').val("");
                         $('[name="end_date"]').val("");
                         buildQuery();
-                    } else if(rawCode==9) {
+                    } else if(rawCode===9) {
 			return true;
 		    } else {
 			return false;
 		    }
                 });
-                $('#display_start_date').keydown(function(evt){
+                $('#display_start_date').on("keydown",function(evt){
                     var rawCode = evt.charCode ? evt.charCode : evt.which;
-                    if(rawCode==46 || rawCode==8)
+                    if(rawCode===46 || rawCode===8)
                     {
                         $('#display_start_date').val("");
                         $('[name="start_date"]').val("");
                         buildQuery();
-                    } else if(rawCode==9) {
+                    } else if(rawCode===9) {
 			return true;
                     } else {
 			return false;

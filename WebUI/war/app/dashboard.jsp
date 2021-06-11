@@ -99,6 +99,7 @@
 
     <!-- Themes never should be concatenated or packed -->
     <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.8.9.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
     <link rel="stylesheet" type="text/css" href="/cm/gadgets/repository/PercBlogsGadget/PercNewBlogDialog.css"/>
     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%= locale%>"></script>
 
@@ -113,12 +114,13 @@
 
     <!-- CSS Includes -->
     <%@include file="includes/common_css.jsp" %>
+
     <link type="text/css" href="../css/perc_css_editor.css" rel="stylesheet"/>
     <link type="text/css" href="../css/styles.css" rel="stylesheet"/>
     <link type="text/css" href="../css/perc_template_layout.css" rel="stylesheet"/>
     <link type="text/css" href="../css/perc_mcol.css" rel="stylesheet"/>
     <link type="text/css" href="../css/perc_decoration.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/jquery.tooltip.css" rel="stylesheet"/>
+    <link type="text/css" href="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.tooltip.css" rel="stylesheet"/>
     <!-- Stuff needed for finder to work like Editor -->
     <link rel="stylesheet" type="text/css" href="../css/perc_newsitedialog.css"/>
     <link rel="stylesheet" type="text/css" href="../css/perc_new_page_button.css"/>
@@ -131,6 +133,13 @@
     <%@include file="includes/finder_js.jsp" %>
 
 
+    <!-- Start Dashboard CSS -->
+    <link type="text/css" href="../css/perc_mcol.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/styles.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/perc_newsitedialog.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/perc_new_page_button.css"/>
+    <link rel="../widgets/PercWizard/PercWizard.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/perc_ChangePw.css"/>
     <!-- Shindig { -->
     <link rel="stylesheet" type="text/css" media="screen" href="../gadgets/container/gadgets.css"/>
     <link rel="stylesheet" type="text/css" media="screen" href="../css/perc_dashboard.css"/>
@@ -139,32 +148,31 @@
     <link rel="stylesheet" type="text/css" media="screen" href="../css/perc_dashboard_IE.css"/>
     <![endif]-->
 
+    <!-- End Dashboard CSS -->
+    <!-- Start Dashboard JS -->
     <script src="../gadgets/js/rpc.js"></script>
     <script src="../gadgets/container/cookies.js"></script>
     <script src="../gadgets/container/util.js"></script>
     <script src="../gadgets/container/gadgets.js"></script>
     <script src="../gadgets/container/serverbaseduserprefstore.js"></script>
-    <!-- } Shindig -->
+
+
     <script src="../widgets/PercAutoScroll.js"></script>
-    <script src="../jslib/jquery.dynatree.js"></script>
-    <script src="../jslib/Jeditable.js"></script>
-    <script src="../jslib/PSJSUtils.js"></script>
-
-    <script src="../services/PercDashboardService.js"></script>
     <script src="../views/PercDashboard.js"></script>
-    <script src="../services/PercServiceUtils.js"></script>
-
     <script src="../services/perc_sectionServiceClient.js"></script>
-
-    <script src="../services/PercReusableSearchService.js"></script>
+    <script src="../services/PercServiceUtils.js"></script>
     <script src="../services/PercSiteService.js"></script>
     <script src="../services/PercFormService.js"></script>
+    <script src="../services/PercCookieConsentService.js"></script>
     <script src="../services/PercPathService.js"></script>
     <script src="../services/PercMetadataService.js"></script>
+    <script src="../services/PercDashboardService.js"></script>
     <script src="../services/PercActivityService.js"></script>
+    <script src="../services/PercReusableSearchService.js"></script>
     <script src="../widgets/PercWizard/PercWizard.js"></script>
     <script src="../plugins/perc_ChangePwDialog.js"></script>
-
+    <script src="../plugins/perc_newsitedialog.js"></script>
+<!-- End Dashboard JS -->
     <% } else { %>
     <link rel="stylesheet" type="text/css" href="../cssMin/perc_dashboard.packed.min.css"/>
 
@@ -186,33 +194,36 @@
     <script src="../jslibMin/perc_dashboard.packed.min.js"></script>
     <% } %>
     <script>
-        var fakeData = <%=fakeData%>;
-        var trafficScale = <%=trafficScale%>;
+        window.addEventListener('DOMContentLoaded', (event) => {
 
-        //Finder initialization code
-        $j(document).ready(function () {
-            $j.Percussion.PercFinderView();
+            var fakeData = <%=fakeData%>;
+            var trafficScale = <%=trafficScale%>;
 
-            // update bottom DIV on window resize
-            window.onresize = function () {
+            //Finder initialization code
+            $(document).ready(function () {
+                $.Percussion.PercFinderView();
 
-                // compute and dynamically set the size of the bottom DIV
-                // so that scrobars appear as needed
+                // update bottom DIV on window resize
+                window.onresize = function () {
+
+                    // compute and dynamically set the size of the bottom DIV
+                    // so that scrobars appear as needed
+                    fixBottomHeight();
+
+                    // mcol-path-summary is the input field right above the miller column. It shows the full path selected in the finder
+                    // the size should always be smaller than the enclosing DIV .perc-finder. Here we subtract 50px to make sure it is smaller
+                    //$perc-jquery("#mcol-path-summary").width($perc-jquery("#mcol-path-summary").parent().width() - ($perc-jquery("#mcol-path-summary").outerWidth(true) - $perc-jquery("#mcol-path-summary").width()) - $perc-jquery("#perc-finder-go-action").outerWidth(true) - 50);
+                };
+
+                // set bottom DIVs height at load time
                 fixBottomHeight();
 
-                // mcol-path-summary is the input field right above the miller column. It shows the full path selected in the finder
-                // the size should always be smaller than the enclosing DIV .perc-finder. Here we subtract 50px to make sure it is smaller
-                //$j("#mcol-path-summary").width($j("#mcol-path-summary").parent().width() - ($j("#mcol-path-summary").outerWidth(true) - $j("#mcol-path-summary").width()) - $j("#perc-finder-go-action").outerWidth(true) - 50);
-            };
-
-            // set bottom DIVs height at load time
-            fixBottomHeight();
-
-            dashOptions = {columns: ["columnWest", "columnCenter", "columnEast"]};
-            $dashboard = $j.PercDashboard(dashOptions);
-            $dashboard.load("/Rhythmyx/services/dashboardmanagement/dashboard/", function () {
-                $dashboard.setupTray();
-                $dashboard.showSplashDialog();
+                dashOptions = {columns: ["columnWest", "columnCenter", "columnEast"]};
+                $dashboard = $.PercDashboard(dashOptions);
+                $dashboard.load("/Rhythmyx/services/dashboardmanagement/dashboard/", function () {
+                    $dashboard.setupTray();
+                    $dashboard.showSplashDialog();
+                });
             });
         });
     </script>
@@ -249,18 +260,18 @@
     <div id="perc-dashboard-gadget-tray" class="perc-tray perc-dashboard-gadget-tray">
         <div class="perc-dashboard-gadget-toolbar">
             <div id="perc-dashboard-gadget-tray-expander" class="perc-tray-expander perc-tray-expander-collapsed">
-                <a href="#" class="perc-tray-expander-label" onclick="return false;"> <i class="icon-cogs"></i><i18n:message key="perc.ui.dashboard@Add Dashboard Gadgets"/></a>
+                <a href="#" class="perc-tray-expander-label" onclick="return false;"> <i class="icon-cogs fas fa-cogs"></i><i18n:message key="perc.ui.dashboard@Add Dashboard Gadgets"/></a>
             </div>
             <div class="perc-gadget-filter">
                 <label><i18n:message key = "perc.ui.dashboard@Type"/></label>
                 <select class="perc-gadget-type">
                     <option value="all"><i18n:message key = "perc.ui.dashboard@View All"/></option>
-                    <option selected="true" value="percussion">Percussion</option>
+                    <option selected value="percussion">Percussion</option>
                     <option value="custom"><i18n:message key = "perc.ui.dashboard@Custom"/></option>
                 </select>
                 <label><i18n:message key = "perc.ui.dashboard@Category"/></label>
                 <select class="perc-gadget-category">
-                    <option class="perc-gadget-category-default" selected="true" value="all"><i18n:message key = "perc.ui.dashboard@View All"/></option>
+                    <option class="perc-gadget-category-default" selected value="all"><i18n:message key = "perc.ui.dashboard@View All"/></option>
                     <option class="perc-gadget-category-predefined" value="analytics"><i18n:message key = "perc.ui.dashboard@Analytics"/></option>
                     <option class="perc-gadget-category-predefined" value="blog"><i18n:message key = "perc.ui.dashboard@Blog"/></option>
                     <option class="perc-gadget-category-predefined" value="content"><i18n:message key = "perc.ui.dashboard@Content"/></option>
@@ -271,7 +282,7 @@
             </div>
             <div id="perc-dashboard-restore-menu" class="perc-dashboard-restore-menu" href="#"
                  title="<i18n:message key="perc.ui.dashboard@Restore Default Dashboard"/>" onclick="return false;">
-                <a href="#" class="perc-dashboard-restore-label"><i class="icon-dashboard"></i><i18n:message key="perc.ui.dashboard@Reset"/></a>
+                <a href="#" class="perc-dashboard-restore-label"><i class="icon-dashboard fas fa-chart-line"></i><i18n:message key="perc.ui.dashboard@Reset"/></a>
             </div>
         </div>
         <div class="perc-dashboard-gadget-list-container">

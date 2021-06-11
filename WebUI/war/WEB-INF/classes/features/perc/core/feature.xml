@@ -15,6 +15,6 @@
     <gadget>
         <!-- fix bug in 1.1 beta 5 missing html-sanitizer-minified -->
         <script src="res://com/google/caja/plugin/html-sanitizer-minified.js"></script>
-        <script src="perc_core.js"/>
+        <script src="perc_core.js"></script>
     </gadget>
 </feature>

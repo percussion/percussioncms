@@ -35,11 +35,11 @@
 		},
         validate:function(oldName){
             var errors = [];
-            var nameVal = $.trim(this.get("name")); 
+            var nameVal = this.get("name").trim();
             //is empty check
             if(nameVal.length < 1 || !WidgetBuilderApp.startsWithAlphaRegEx.test(nameVal) || nameVal.length < 2)
                 errors.push({name:"name",message:"This is a required field, must start with a letter and must contain at least two characters."});
-            else if($.inArray(nameVal.toUpperCase(),sqlWords) != -1)
+            else if($.inArray(nameVal.toUpperCase(),sqlWords) !== -1)
             {
             	errors.push({name:"name",message: nameVal + " is a SQL Reserved Keyword. Please choose another value. See <a href='https://help.percussion.com/percussion-cm1/developers/widget-builder/widget-builder-reserved-field-names/index' title='Widget Builder Reserved Words' target='_blank'>the Help website</a> for a complete list of reserved keywords."});
             }
@@ -59,7 +59,7 @@
             if(isDupe)
                 errors.push({name:"name",message:"The field name must be unique."});
 
-            var labelVal = $.trim(this.get("label"));
+            var labelVal = this.get("label").trim();
             if(labelVal.length < 1)
                 errors.push({name:"label",message:"This is a required field."});
             return errors;

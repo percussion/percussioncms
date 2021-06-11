@@ -12,8 +12,7 @@
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  */
- 
-;(function($) {
+(function($) {
 	
 		// the tooltip element
 	var helper = {},
@@ -24,7 +23,7 @@
 		// timeout id for delayed tooltips
 		tID,
 		// IE 5.5 or 6
-		IE = $.browser.msie && /MSIE\s(5\.5|6\.)/.test(navigator.userAgent),
+		IE = /MSIE\s(5\.5|6\.)/.test(navigator.userAgent),
 		// flag for mouse tracking
 		track = false;
 	
@@ -71,7 +70,7 @@
 						'filter': "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=crop, src='" + image + "')"
 					}).each(function () {
 						var position = $(this).css('position');
-						if (position != 'absolute' && position != 'relative')
+						if (position !== 'absolute' && position !== 'relative')
 							$(this).css('position', 'relative');
 					});
 				}
@@ -121,7 +120,7 @@
 	function handle(event) {
 		// show helper, either with timeout or on instant
 		if( settings(this).delay )
-			tID = setTimeout(show, settings(this).delay);
+			setTimeout(show, settings(this).delay);
 		else
 			show();
 		
@@ -136,7 +135,7 @@
 	// save elements title before the tooltip is displayed
 	function save() {
 		// if this is the current source, or it has no title (occurs with click event), stop
-		if ( $.tooltip.blocked || this == current || (!this.tooltipText && !settings(this).bodyHandler) )
+		if ( $.tooltip.blocked || this === current || (!this.tooltipText && !settings(this).bodyHandler) )
 			return;
 
 		// save current
@@ -147,7 +146,7 @@
 			helper.title.hide();
 			var bodyContent = settings(this).bodyHandler.call(this);
 			if (bodyContent.nodeType || bodyContent.jquery) {
-				helper.body.empty().append(bodyContent)
+				helper.body.empty().append(bodyContent);
 			} else {
 				helper.body.html( bodyContent );
 			}
@@ -212,7 +211,7 @@
 		
 		// stop updating when tracking is disabled and the tooltip is visible
 		if ( !track && helper.parent.is(":visible")) {
-			$(document.body).unbind('mousemove', update)
+			$(document.body).unbind('mousemove', update);
 		}
 		
 		// if no current element is available, remove this listener

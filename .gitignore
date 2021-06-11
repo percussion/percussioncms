@@ -6,7 +6,7 @@
 .idea/sonarlint/issuestore/index.pb
 
 derby.log
- 
+
 # random output file
 **/test-output.jar
 
@@ -95,3 +95,5 @@ fabric.properties
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
 /.idea/sonarlint/issuestore/
+/cui/.grunt/
+/modules/perc-security-utils/null/

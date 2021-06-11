@@ -106,3 +106,5 @@ fabric.properties
 # CodeStream plugin
 # https://plugins.jetbrains.com/plugin/12206-codestream
 .idea/codestream.xml
+/package-lock.json
+/_SpecRunner.html

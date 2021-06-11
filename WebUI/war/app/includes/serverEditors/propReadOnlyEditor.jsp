@@ -54,14 +54,14 @@ editorName = ""; %>
         <li>
             <span class = 'perc-prop-name'>Ignore Un-modified Assets: </span>
             <span percName = 'ignoreUnModifiedAssets' class = 'perc-pro-value'>All assets will be published.</span>
-            <span>&nbsp; <i class="icon-question-sign icon-large" 
+            <span>&nbsp; <i class="icon-question-sign icon-large fas fa-question"></i>"
                 title="Option to only publish assets that have been modified since the last publish."></i>
             </span>
         </li>
         <li style='display:none'>
             <span class = 'perc-prop-name'>Publish Related Items: </span>
             <span percName = 'publishRelatedItems' class = 'perc-pro-value'>Related items will be published during incremental publish.</span>
-            <span>&nbsp; <i class="icon-question-sign icon-large" 
+            <span>&nbsp; <i class="icon-question-sign icon-large fas fa-question"
                 title="Option to publish related items to the incremental items list that are in non approved states. The content is approved first and then published."></i>
             </span>
         </li>
@@ -93,14 +93,14 @@ editorName = ""; %>
         <li>
             <span class = 'perc-prop-name'>Ignore Un-modified Assets: </span>
             <span percName = 'ignoreUnModifiedAssets' class = 'perc-pro-value'>All assets will be published.</span>
-            <span>&nbsp; <i class="icon-question-sign icon-large" 
+            <span>&nbsp; <i class="icon-question-sign icon-large fas fa-question fa-lg"
                 title="Option to only publish assets that have been modified since the last publish."></i>
             </span>
         </li>
         <li style='display:none'>
             <span class = 'perc-prop-name'>Publish Related Items: </span>
             <span percName = 'publishRelatedItems' class = 'perc-pro-value'>Related items will be published during incremental publish.</span>
-            <span>&nbsp; <i class="icon-question-sign icon-large" 
+            <span>&nbsp; <i class="icon-question-sign icon-large fas fa-question fa-lg"
                 title="Option to publish related items to the incremental items list that are in non approved states. The content is approved first and then published."></i>
             </span>
         </li>

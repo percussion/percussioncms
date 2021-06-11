@@ -88,7 +88,7 @@
                     permission = fProps.permission.accessLevel;
                     if(fProps.permission.writePrincipals) {
                         writePrincipals = fProps.permission.writePrincipals;
-                        writePrincipals = $.isArray(writePrincipals) ? writePrincipals : [writePrincipals];
+                        writePrincipals = Array.isArray(writePrincipals) ? writePrincipals : [writePrincipals];
                     }
                 }
                 var checkStatus = [];
@@ -276,20 +276,20 @@
                                     // since the binding provided by the plugin doesn't work properly for some events.
                                     
                                     //refresh message when a checkbox is selected
-                                    $('input[name=multiselect_allowed-sites]').unbind('click');
-                                    $('input[name=multiselect_allowed-sites]').bind('click',function( e ){
-                                        $("#allowed-sites").multiselect('update');
-                                    });
+                                    $('input[name=multiselect_allowed-sites]').off('click')
+                                        .on('click',function( e ){
+                                                $("#allowed-sites").multiselect('update');
+                                        });
                                     
                                     //select all link (check all)
-                                    $('a.ui-multiselect-all').unbind('click.multiselect');
-                                    $('a.ui-multiselect-all').bind('click.multiselect', function( e ){
-                                        $("#allowed-sites").multiselect('checkAll');
-                                    });
+                                    $('a.ui-multiselect-all').off('click.multiselect')
+                                        .on('click.multiselect', function( e ){
+                                            $("#allowed-sites").multiselect('checkAll');
+                                         });
                                     
                                     //Deselect all link (uncheck all)
-                                    $('a.ui-multiselect-none').unbind('click.multiselect');
-                                    $('a.ui-multiselect-none').bind('click.multiselect', function( e ){
+                                    $('a.ui-multiselect-none').off('click.multiselect')
+                                        .on('click.multiselect', function( e ){
                                         $("#allowed-sites").multiselect('uncheckAll');
                                     });
                                 }
@@ -320,13 +320,13 @@
             //Calls the _saveCallBack to handle the server response on save.
             function _saveFolderProps(newWritePrincipals)  
             {
-                if ($.trim($("#perc-folder-name").val()).length < 1) {
+                if ($("#perc-folder-name").val().trim().length < 1) {
                     $("#perc-folder-name").val("");
                     $("#perc_folder_duplicate_error").text(I18N.message("perc.ui.folder.properties.dialog@Field Required"));
                     $("#perc_folder_duplicate_error").show();
                     return;
                 }
-                var folderName = $.trim($("#perc-folder-name").val());
+                var folderName = $("#perc-folder-name").val().trim();
                 folderName =  $.perc_textFilters.WINDOWS_FILE_NAME(folderName);
                 var folderProps =  {
                     FolderProperties : {
@@ -376,7 +376,7 @@
                 if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     // Save was successful close the dialog and invoke callback with no arguments
-                    var newName = $.trim($("#perc-folder-name").val());
+                    var newName = $("#perc-folder-name").val().trim();
                     dialog.remove();
                    if(folderSysPathName.match("^/Sites/") || folderSysPathName.match("^//Sites/")){
                        $.PercRedirectHandler.createRedirect(folderSysPathName,folderSysPath + "/" + newName,"folder")
@@ -401,10 +401,10 @@
                     if(code === "`FolderProperties#name")
                     {
                         var msg = I18N.message("perc.ui.folder.properties.dialog@Cannot Rename Folder") + $("#perc-folder-oldname").val() +
-                         I18N.message("perc.ui.folder.properties.dialog@To") + $.trim($("#perc-folder-name").val()) +
+                         I18N.message("perc.ui.folder.properties.dialog@To") + $("#perc-folder-name").val().trim() +
                          I18N.message("perc.ui.folder.properties.dialog@Object With Same Name");
-                        $("#perc_folder_duplicate_error").text(msg);
-                        $("#perc_folder_duplicate_error").show();
+                        $("#perc_folder_duplicate_error").text(msg)
+                        .show();
                     }
                     else if(code === "saveFolderProperties#reservedName")
                     {
@@ -445,7 +445,7 @@
                 });
 
                 // Bind collapsible event
-                dialog.find(".perc-section-label").unbind().click(function() {
+                dialog.find(".perc-section-label").off("click").on("click",function() {
                     var self = $(this);
                     self.find(".perc-min-max")
                         .toggleClass('perc-section-items-minimizer')

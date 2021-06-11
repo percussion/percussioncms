@@ -34,7 +34,7 @@
     var percWorkflowService = percJQuery.PercWorkflowService();
 
     var isLargeColumn = true;       // if gadget is on the right side (large column)
-    var statusTable = undefined;
+    var statusTable;
     var tableDiv;
     var tableData;
     var jobId;
@@ -62,7 +62,7 @@
         selectFiltersCallback = _selectFiltersCallback;
 
         loadGadget(criteria);
-    }
+    };
 
     /**
      * Retrieves pages from a site that are in a particular status and then renders them as a table
@@ -76,7 +76,7 @@
             tableDiv.find(".dataTables_wrapper").remove();
         }
         // get the data and then pass it to createStatusTable to create the table
-        searchCriteriaObj = {"query": "", "folderPath": (criteria.site == "@all" ? "" : "//Sites/" + criteria.site), "sortColumn":"sys_title","sortOrder":"asc", "formatId":-1}
+        searchCriteriaObj = {"query": "", "folderPath": (criteria.site == "@all" ? "" : "//Sites/" + criteria.site), "sortColumn":"sys_title","sortOrder":"asc", "formatId":-1};
 
         var searchFields = [];
         if (criteria.template != "@all")
@@ -154,10 +154,10 @@
             //var pagePath = (!$.isArray(item.folderPaths) ? item.folderPaths.substring(1, item.folderPaths.length) + "/" + item.name : "");
             var pagePath='';
             if(item.folderPaths){
-                if($.isArray(item.folderPaths)){
-                    pagePath =  item.folderPaths[0].substring(1, item.folderPaths[0].length) + "/" + item.name
+                if(Array.isArray(item.folderPaths)){
+                    pagePath =  item.folderPaths[0].substring(1, item.folderPaths[0].length) + "/" + item.name;
                 }else{
-                    pagePath =  item.folderPaths.substring(1, item.folderPaths.length) + "/" + item.name
+                    pagePath =  item.folderPaths.substring(1, item.folderPaths.length) + "/" + item.name;
                 }
             }
             var itemStatus = valuesMap["sys_statename"]; //sys_statename
@@ -210,10 +210,10 @@
         miniMsg.dismissMessage(loadingMsg);
 
         tableDiv.PercPageDataTable(config, excludeActionMenu);
-        tableDiv.find(".perc-table-row-checkbox").dblclick(function(e) {
+        tableDiv.find(".perc-table-row-checkbox").on("dblclick",function(e) {
             e.stopPropagation();
         });
-        tableDiv.find(".perc-header-checkbox").click(function(){
+        tableDiv.find(".perc-header-checkbox").on("click",function(){
             var allChecked = true;
             tableDiv.find(".perc-table-row-checkbox").each(function(){
                 if(!$(this).is(':checked'))
@@ -262,7 +262,7 @@
 
     function bindRefreshEvent()
     {
-        tableDiv.parents("body").find("#perc-search-criteria-panel-content-refresh-search").removeClass("perc-disabled").unbind("click").click(function(){
+        tableDiv.parents("body").find("#perc-search-criteria-panel-content-refresh-search").removeClass("perc-disabled").off("click").on("click",function(){
             clearErrorMessage();
             loadingMsg = miniMsg.createStaticMessage("Loading...");
             unbindRefreshEvent();
@@ -273,22 +273,22 @@
 
     function unbindRefreshEvent()
     {
-        tableDiv.parents("body").find("#perc-search-criteria-panel-content-refresh-search").addClass("perc-disabled").unbind();
+        tableDiv.parents("body").find("#perc-search-criteria-panel-content-refresh-search").addClass("perc-disabled").off();
     }
 
     function bindApproveEvent()
     {
-        tableDiv.parents("body").find("#perc-bulk-approve-button").removeClass("perc-disabled").unbind("click").click(approveItems);
+        tableDiv.parents("body").find("#perc-bulk-approve-button").removeClass("perc-disabled").off("click").on("click",approveItems);
     }
 
     function unbindApproveEvent()
     {
-        tableDiv.parents("body").find("#perc-bulk-approve-button").unbind().addClass("perc-disabled");
+        tableDiv.parents("body").find("#perc-bulk-approve-button").off().addClass("perc-disabled");
     }
 
     function bindSelectFiltersEvent()
     {
-        tableDiv.parents("body").find("#perc-search-criteria-panel-content-select-filters").unbind("click").css("color","#0099CC").click(function(){
+        tableDiv.parents("body").find("#perc-search-criteria-panel-content-select-filters").off("click").css("color","#0099CC").on("click",function(){
             clearErrorMessage();
             selectFiltersCallback();
         });
@@ -296,7 +296,7 @@
 
     function unbindSelectFiltersEvent()
     {
-        tableDiv.parents("body").find("#perc-search-criteria-panel-content-select-filters").unbind().css("color","#FFFFFF");
+        tableDiv.parents("body").find("#perc-search-criteria-panel-content-select-filters").off().css("color","#FFFFFF");
     }
     /**
      * Approve button click handler function, collects all the selected
@@ -357,7 +357,7 @@
                 var approvalJob = results[0];
                 if(isFull)
                 {
-                    updateTable(approvalJob.BulkApprovalJob)
+                    updateTable(approvalJob.BulkApprovalJob);
                 }
                 else
                 {
@@ -376,7 +376,7 @@
 
         if(processedItems)
         {
-            if(!$.isArray(processedItems))
+            if(!Array.isArray(processedItems))
             {
                 var tempArr = [];
                 tempArr.push(processedItems);
@@ -419,7 +419,7 @@
             case "COMPLETED":
                 if(approvalStatus.items.errors && !jQuery.isEmptyObject(approvalStatus.items.errors))
                 {
-                    showErrorDialog(approvalStatus.items.errors)
+                    showErrorDialog(approvalStatus.items.errors);
                 }
                 //Bind the refresh and approve events back
                 bindRefreshEvent();
@@ -440,8 +440,8 @@
     function showErrorDialog(errors)
     {
         var mapEntries = [];
-        if(!$.isArray(errors.entry))
-            mapEntries.push(errors.entry)
+        if(!Array.isArray(errors.entry))
+            mapEntries.push(errors.entry);
         else
             mapEntries = errors.entry;
 
@@ -527,7 +527,7 @@
                             "labels": labels,
                             "selectFiltersCallback": openSearchCriteriaDialog,
                             "refreshSearchCallback": function(){loadTable(searchConfig);}
-                        }
+                        };
                         $.perc_gadgets_search_criteria_panel.buildSearchInfoPanel(config);
                         var criteriaContentFields = $("#perc-search-criteria-panel-content-fields");
                         var iframe = $(percJQuery.find("#remote_iframe_" + moduleId));
@@ -550,26 +550,25 @@
                 "labels": labels,
                 "selectFiltersCallback": openSearchCriteriaDialog,
                 "refreshSearchCallback": function(){loadTable(searchConfig);}
-            }
+            };
 
             $.perc_gadgets_search_criteria_panel.buildSearchInfoPanel(config);
-            loadTable(searchConfig)
+            loadTable(searchConfig);
         }
 
         setDefaultWorkflow(function(){
             $.perc_gadgets_search_criteria_dialog.getSearchConfig("perc.user." + percJQuery.PercNavigationManager.getUserName() + ".dash.page.0.mid." + moduleId + ".prefs.search_criteria", function(resultObj)
             {
-                var dataObj = percJQuery.parseJSON(resultObj);
                 searchConfig = resultObj;
 
                 if ($.isEmptyObject(searchConfig))
                 {
                     percJQuery.PercMetadataService.find("perc.user." + percJQuery.PercNavigationManager.getUserName() + ".dash.page.0.prefs", function(status, data){
-                        if (status == percJQuery.PercServiceUtils.STATUS_SUCCESS)
+                        if (status === percJQuery.PercServiceUtils.STATUS_SUCCESS)
                         {
                             if (data != null)
                             {
-                                var dataObj = percJQuery.parseJSON(data.metadata.data);
+                                var dataObj = JSON.parse(data.metadata.data);
                                 if (dataObj.userprefs["mid_" + moduleId] != null)
                                 {
                                     var metaPrefsObj = dataObj.userprefs["mid_" + moduleId];
@@ -651,13 +650,13 @@
 
         function loadTable(searchConfig)
         {
-            $("#perc-search-criteria-panel-content-refresh-search").addClass("perc-disabled").unbind();
-            $("#perc-bulk-approve-button").unbind().addClass("perc-disabled");
-            $("#perc-search-criteria-panel-content-select-filters").unbind().css("color","#FFFFFF");
+            $("#perc-search-criteria-panel-content-refresh-search").addClass("perc-disabled").off();
+            $("#perc-bulk-approve-button").off().addClass("perc-disabled");
+            $("#perc-search-criteria-panel-content-select-filters").off().css("color","#FFFFFF");
             loadingMsg = miniMsg.createStaticMessage("Loading...");
-            site = searchConfig.site["value"] == "All" ? "" : searchConfig.site["value"];
+            site = searchConfig.site.value === "All" ? "" : searchConfig.site.value;
             pathService.getLastExistingPath("/Sites/"+site, function(status, result){
-                if(result == ""||(result == null)){
+                if(result === ""||(result === null)){
                     site = "";
                 }
                 else{
@@ -675,7 +674,7 @@
                 gadgets.window.setTitle(title);
 
                 var rows = parseInt(prefs.getString("zrows"));
-                if(rows === NaN)
+                if(isNaN(rows))
                     rows = 10;
 
                 $("#perc-pagesbystatus-gadget").PercWorkflowGadget(site, template, workflow, state, lasteditedby, rows, moduleId, openSearchCriteriaDialog);

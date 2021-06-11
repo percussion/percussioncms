@@ -143,7 +143,7 @@
         //If the type filter is a list, make it into a function which tests
         //for membership in that list. If a function has been passed in,
         //use that directly.
-        if( !$.isFunction( type_filter ) )
+        if(  typeof  type_filter !== "function" )
         {
             type_filter = function(x)
             {
@@ -192,7 +192,7 @@
     
         var root_direc = top.find( '#perc-saveas-dialog-direc' );
     
-        var path_select = top.find( '#perc-saveas-dialog-location' ).change(function()
+        var path_select = top.find( '#perc-saveas-dialog-location' ).on("change",function()
         {
             //Navigate to the path selected in the drop-down.
             var new_path = this.value.split('/');
@@ -236,7 +236,10 @@
     
         if( settings.new_folder_opt )
         {
-            top.parent().find('#perc-saveas-dialog-new-folder').click(function()    {  new_folder_callback(); });
+            top.parent().find('#perc-saveas-dialog-new-folder').on("click", function(e)
+            {
+                new_folder_callback();
+            });
         }
         else
         {
@@ -406,11 +409,11 @@
             {
                 if( leaf_selectable )
                 {
-                    anchor.click( selectAnchor );
-                    anchor.dblclick( function()
+                    anchor.on("click",  selectAnchor );
+                    anchor.on("dblclick", function(evt)
                     {
-                        anchor.click();
-                        $("#perc-saveas-dialog-save-button").click();
+                        anchor.trigger("click");
+                        $("#perc-saveas-dialog-save-button").trigger("click");
                     });
                 }
             }
@@ -418,9 +421,9 @@
             {
                 if( folder_selectable )
                 {
-                    anchor.click( selectAnchor );
+                    anchor.on("click", selectAnchor );
                 }
-                anchor.dblclick( function()
+                anchor.on("dblclick", function(evt)
                 {
                     set_path( item_path );
                 });

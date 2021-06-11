@@ -38,7 +38,7 @@
             {
                 if (data != null)
                 {
-                    var dataObj = percJQuery.parseJSON(data.metadata.data);
+                    var dataObj = JSON.parse(data.metadata.data);
                     callback(dataObj);
                 }
                 else
@@ -123,7 +123,7 @@
                             
                             templateValue = (templateValue == null ? "@all" : templateValue);
                             stateValue = (stateValue == null ? "@all" : stateValue);
-                            modifiedValue = (modifiedValue == null || $.trim(modifiedValue) === "" ? "@all" : modifiedValue);
+                            modifiedValue = (modifiedValue == null || modifiedValue.trim() === "" ? "@all" : modifiedValue);
                             
                             var siteName = (siteValue === "@all" ? "All" : siteValue);
                             templateName = (templateValue === "@all" ? "All" : templateName);
@@ -175,14 +175,14 @@
                                 var value = result[i].value;
                                 var optionElement = $("<OPTION>").html(value).attr("value", value);
                                 if (criteriaData.site != null) {
-                                    if (value === criteriaData.site["value"]) {
+                                    if (value === criteriaData.site.value) {
                                         optionElement.attr("selected", "selected");
                                     }
                                 }
                                 dialog.find("#perc-search-criteria-dialog-site").append(optionElement);
                             }
-                            if (criteriaData.site["value"] !== "@all") {
-                                dialog.find("#perc-search-criteria-dialog-site").change();
+                            if (criteriaData.site.value !== "@all") {
+                                dialog.find("#perc-search-criteria-dialog-site").trigger("change");
                             }
                         });
                     }
@@ -206,7 +206,7 @@
                         }
                         if (criteriaData.workflow["value"] !== "@all")
                         {
-                            dialog.find("#perc-search-criteria-dialog-workflow").change();
+                            dialog.find("#perc-search-criteria-dialog-workflow").trigger("change");
                         }                        
                     });
                      
@@ -229,7 +229,7 @@
                      
                 }
 
-                dialog.find('#perc-search-criteria-dialog-site').change(function() {
+                dialog.find('#perc-search-criteria-dialog-site').on("change",function() {
                     if ($(this).val() === "@all")
                     {
                         dialog.find("#perc-search-criteria-dialog-template").attr("disabled", "disabled").html("");
@@ -281,7 +281,7 @@
                     });  
                 }
                 
-                dialog.find('#perc-search-criteria-dialog-workflow').change(function() {
+                dialog.find('#perc-search-criteria-dialog-workflow').on("change",function() {
                     if ($(this).val() === "@all")
                     {
                         dialog.find("#perc-search-criteria-dialog-state").attr("disabled", "disabled").html("");

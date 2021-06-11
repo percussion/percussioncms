@@ -191,7 +191,7 @@
                             debug: true,                    
                     submitHandler: function(form) {
                     var page_name = $(form).find('[name=page_name]').val( );
-                    page_name = $.trim(page_name);
+                    page_name = page_name.trim();
                     page_name = $.perc_textFilters.WINDOWS_FILE_NAME(page_name);
                     $(form).find('[name=page_name]').val(page_name);
                     $.perc_pathmanager.open_containing_folder( finderPath,
@@ -235,7 +235,7 @@
                         });
                         $(".perc-items .item .item-id").hide();
                         // bind click event to each item to handle selection
-                        $(".perc-items .item").bind('click', function(){
+                        $(".perc-items .item").on('click', function(){
                             var itemId = $(this).find(".item-id").text(); 
                             $("#perc-select-template").val(itemId);
                             $(".perc-items .item").removeClass("perc-selected-item");

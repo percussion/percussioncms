@@ -82,8 +82,8 @@
                     .off('click')
                     .off('mouseenter mouseleave');
                 //  .css("background-image", backgroundImage)
-                $(this).find('input').click(function(event){enableDisableSaveButton(buttonSave, dialog, callback); event.stopPropagation(); });
-                $(this).find('.perc-item-entry').click(function(event){clickRow(event, buttonSave, dialog, callback);});
+                $(this).find('input').on("click",function(event){enableDisableSaveButton(buttonSave, dialog, callback); event.stopPropagation(); });
+                $(this).find('.perc-item-entry').on("click",function(event){clickRow(event, buttonSave, dialog, callback);});
             },
             width: 400
         });
@@ -93,7 +93,7 @@
             var htmlList =   $('<div class="perc-multicheck-list" />')
                 .append($('<div class="perc-items-container" />'));
             var container = htmlList.find('.perc-items-container');
-            for(i in itemList) {
+            for(let i in itemList) {
                 var itemName = itemList[i];
                 var html = $("<div class='perc-item-entry'/>")
                     .append(
@@ -113,8 +113,8 @@
         }
 
         function clickRow(event, buttonSave, dialog, callback){
-            $(event.currentTarget).find('input').attr('checked', !$(event.currentTarget).find('input').attr('checked') );
-            enableDisableSaveButton(buttonSave, dialog, callback)
+            $(event.currentTarget).find('input').prop('checked', !$(event.currentTarget).find('input').attr('checked') );
+            enableDisableSaveButton(buttonSave, dialog, callback);
         }
 
         //Enable the "Save"/"Ok" button only if we select at least one item.
@@ -129,7 +129,7 @@
             if ($(".perc-multicheck-list input:checked").length > 0){
                 buttonSaveOk
                     .off('click')
-                    .click(function(){save(dialog, callback);});
+                    .on("click",function(){save(dialog, callback);});
 
             }
             else {

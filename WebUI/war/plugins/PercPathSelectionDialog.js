@@ -79,7 +79,7 @@
                  * The valid types are determined in the file(s) that call this method. 
                  */
                  click: function(){
-                    if(settings.selectedItemValidator && $.isFunction(settings.selectedItemValidator))
+                    if(settings.selectedItemValidator && typeof settings.selectedItemValidator === "function")
                     {
                         var errMsg = settings.selectedItemValidator(selectedItem);
                         if(errMsg != null){
@@ -122,7 +122,7 @@
                     settings.okCallback(pathItem);
                 };
                 var cancelCallback = function(){};
-                container.find(".perc-create-new-button").show().click(function() {
+                container.find(".perc-create-new-button").show().on("click",function() {
                     
                     if(!endsWith($('#perc_selected_path').text(),"/")) {
                         //TODO: I18N TESTME

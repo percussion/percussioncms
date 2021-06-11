@@ -31,12 +31,12 @@
     $(document).ready(function(){
 
       //listens for dropdown changes and in addition to disabling unrelated inputs, will also uncheck enable option for disabled rows
-      $("#perc-social-button-type").change(function(){
+      $("#perc-social-button-type").on("change",function(){
 
-        if( $(this).val() == 'page') {
-          $(".perc-social-page-link").attr('disabled', false);
+        if( $(this).val() === 'page') {
+          $(".perc-social-page-link").attr('disabled', false)
+            .css('color', '#333333');
           $(".perc-base-url").css('color', '#333333');
-          $(".perc-social-page-link").css('color', '#333333');
           $(".perc-email-row *").attr('disabled', true);
           $(".perc-email-row .perc-social-button-ui").addClass('perc-social-button-ui-disabled');
           $(".perc-email-row").find('td,input').css('color', '#7f7f7f');
@@ -114,9 +114,9 @@
                 //an input field gets the data and the name of the input field is passed to the id of a div that contains
                 //our editor class - we get the id from the div and pull the data from the input field.
                 var dataFieldName = $(".perc-social-buttons").attr("id");
-                var dataStr = $("input[name='" + dataFieldName + "']").val();
+                var dataStr = $("input[name='" + dataFieldName + "']").val().trim();
                 var data = null;
-                if($.trim(dataStr).length>0){
+                if(dataStr.length>0){
                     data = JSON.parse(dataStr);
                 }
 
@@ -124,18 +124,19 @@
                     i = 0;
 
                     //checks the dropdown value on initial load and triggers a change event if necessary
-                    if( data.buttonType == 'page' ){
-                      $('#perc-social-button-type').val('page');
-                      $('#perc-social-button-type').trigger('change');
+                    if( data.buttonType === 'page' ){
+                      $('#perc-social-button-type').val('page')
+                        .trigger('change');
                     }
                     else {
                       // hides youtube row to start
                       $(".perc-youtube-row *").attr('disabled', true);
                       $(".perc-youtube-row .perc-social-button-ui").addClass('perc-social-button-ui-disabled');
                       $(".perc-youtube-row").find('td,input').css('color', '#7f7f7f');
-                      $(".perc-social-page-link").attr('disabled', true);
+                      $(".perc-social-page-link").attr('disabled', true)
+                        .css('color', '#7f7f7f');
                       $(".perc-base-url").css('color', '#7f7f7f');
-                      $(".perc-social-page-link").css('color', '#7f7f7f');
+
                     }
 
                     //restores previously saved options
@@ -184,8 +185,8 @@
             var $table = $('#perc-social-buttons-setup-editor');
 
             // Enables enter keyboard selection for the checkboxes
-            $('input:checkbox').keypress(function(e){
-              if((e.keyCode ? e.keyCode : e.which) == 13){
+            $('input:checkbox').on("keypress",function(e){
+              if((e.keyCode ? e.keyCode : e.which) === 13){
                 $(this).trigger('click');
               }
             });
@@ -262,7 +263,7 @@
             //retrieves all selected options
             $(".perc-social-button-row").each(function(index) {
 
-                  var alt = new Object();
+                  var alt = {};
 
                   alt["platform"] =  $(this).find(".perc-social-platform").val();
                   if( $(this).find(".perc-social-platform-enabled").is(':checked') ) {
@@ -294,7 +295,7 @@
         {
 
             //Get the Widget data and convert it to a JSON string that can be saved.
-            data = new Object();
+            data = {};
             //retrieves dropdown value for buttons type
             data.buttonType = $('#perc-social-button-type option:selected').val();
             //runs function that retrieves individual options
@@ -317,5 +318,5 @@
         }
 
         return socialButtonsSetupApi;
-      }
+      };
 })(jQuery);

@@ -101,8 +101,8 @@
                 .css("left", "15px");
             firstLine.prepend(collapseControl);
             if(toggable) {
-                firstLine.click(handleCollapse);
-                collapseControl.click(handleCollapse);
+                firstLine.on("click",handleCollapse);
+                collapseControl.on("click",handleCollapse);
             }
             
             if(isCollapsed) {
@@ -143,7 +143,7 @@
                 .css("width",parentWidth);
         }
         */
-    }
+    };
     
     function handleCollapse(event) {
         var target = $(event.target);

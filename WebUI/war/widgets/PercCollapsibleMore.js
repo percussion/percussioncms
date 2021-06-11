@@ -59,18 +59,18 @@
         
             
         wrapper.append(toggleControl);
-        toggleControl.click(collapse);
+        toggleControl.on("click",collapse);
 
         collapsible.data("contentHeightOneLine", contentHeightOneLine);
         collapsible.data("contentHeightExpanded", contentHeightExpanded);
         collapsible.data("config", config);
 
         if(contentDoesntFit(collapsible)) {
-            toggleControl.click();
+            toggleControl.trigger("click");
         } else {
             toggleControl.hide();
         }
-    }
+    };
     
     function collapse(event) {
         var target = $(event.target);
@@ -92,8 +92,8 @@
         
         toggleControl
             .html(toggleIcon)
-            .unbind()
-            .click(expand);
+            .off()
+            .on("click",expand);
     }
 
     function expand(event) {
@@ -111,8 +111,8 @@
         
         toggleControl
             .html(toggleIcon)
-            .unbind()
-            .click(collapse);
+            .off("click")
+            .on("click", collapse);
     }
 
     function contentDoesntFit(collapsible) {

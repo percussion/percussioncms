@@ -220,7 +220,7 @@
                     // when the user clicks on the selection, get the values in the hidden inner divs
                     // and assign the values to the hidden input fields of the form
                     // the form will be submitted with the selected item's values in the hidden input fields
-                    $(".perc-items .item").bind('click', function()
+                    $(".perc-items .item").on('click', function()
                     {
                         var editorUrl = $(this).find(".item-editor-url").text();
                         var workflowId = $(this).find(".item-workflow-id").text();
@@ -424,10 +424,10 @@
         function enableButton(flag)
         {
             if(flag){
-                newAssetButton.removeClass('ui-disabled').addClass('ui-enabled').unbind('click').click( check_for_dirty_page );
+                newAssetButton.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", check_for_dirty_page );
             }
             else{
-                newAssetButton.addClass('ui-disabled').removeClass('ui-enabled').unbind('click');
+                newAssetButton.addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
         }
 

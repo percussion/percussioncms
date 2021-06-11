@@ -67,7 +67,7 @@
      */
     $.fn.PercTooltip = function(config) {
         var element = $(this).
-            hover($.PercTooltip.showTooltip);
+            on("mouseenter",$.PercTooltip.showTooltip);
     };
 
     /**
@@ -83,8 +83,9 @@
             css("top","-10000px").
             css("left","-10000px").
             css("z-index","10000").
-            hover(function(event){$.PercTooltip.enterTooltip(event);}, function(event){$.PercTooltip.exitTooltip(event);}).
-            click(function(event){event.stopPropagation();}),
+            on("mouseenter",function(event){$.PercTooltip.enterTooltip(event);}).
+            on("mouseleave", function(event){$.PercTooltip.exitTooltip(event);}).
+            on("click",function(event){event.stopPropagation();}),
         /*
          * this is the hider DIV that will be as big as the tooltip and element
          * to emulate blur on both the tooltip and element to then hide the tooltip
@@ -94,7 +95,8 @@
             css("top","-10000px").
             css("left","-10000px").
             css("z-index","9000").
-            hover(function(event){$.PercTooltip.enterHider(event);}, function(event){$.PercTooltip.exitHider(event);}),
+            on("mouseenter", function(event){$.PercTooltip.enterHider(event);}).
+            on("mouseleave", function(event){$.PercTooltip.exitHider(event);}),
 
         /*
          *  State variables to keep track hover on tooltip and hider
@@ -117,12 +119,12 @@
             var title = element.data("title");
             if(!title) {
                 title = element.attr("title");
-                element.data("title", title)
+                element.data("title", title);
                 element.attr("title",""); // clear the real title so we dont get the real tooltip
             }
 
             // dont bother with empty titles
-            if(title == "")
+            if(title.trim() === "")
                 return;
             
             $.PercTooltip.tooltipDom.
@@ -156,7 +158,7 @@
                 css("left",eLeft).
                 css({"background":"blue","opacity":0.0}).
                 css("cursor",element.css("cursor")).
-                unbind("click").click(function(event){
+                off("click").on(function(event){
                 	if(element.data("events") && element.data("events")["click"] && element.data("events")["click"][0] && element.data("events")["click"][0].data && element.data("events")["click"][0].handler){
 	                    var e = {data : element.data("events")["click"][0].data};
 	                    element.data("events")["click"][0].handler(e);

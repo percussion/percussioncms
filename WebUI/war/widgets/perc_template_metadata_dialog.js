@@ -109,7 +109,7 @@ $.perc_template_metadata_dialog = function(templateId) {
             	prt = "Please sign in";
             }
             $("#perc_template_metadata_protected_region_text").val(prt);
-            $("input[value='" +doctypeSelected + "']").click();
+            $("input[value='" +doctypeSelected + "']").trigger("click");
 		});
 		setButtonHandlers(templateId);
       }
@@ -140,7 +140,7 @@ $.perc_template_metadata_dialog = function(templateId) {
                                                             ]                                    
                                              }
                                           }                       
-                        }       
+                        };
                       
         $.PercSiteTemplatesController(false).saveTemplateMetadata( metadataObj, function() {});            
         dialog.remove();
@@ -148,8 +148,8 @@ $.perc_template_metadata_dialog = function(templateId) {
 
       function setButtonHandlers(templateId)
       {
-		$('#perc_template_metadata-save-button').click(function()	{saveMetadata(templateId);});	
-		$('#perc_template_metadata-cancel-button').click(function()	{ dialog.remove(); });
+		$('#perc_template_metadata-save-button').on("click",function()	{saveMetadata(templateId);});
+		$('#perc_template_metadata-cancel-button').on("click",function() { dialog.remove(); });
       }
 	  
 	  function getSecueSectionFieldGroups(){
@@ -168,7 +168,7 @@ $.perc_template_metadata_dialog = function(templateId) {
 
       
         // Bind collapsible event
-        dialog.find(".perc-section-label").unbind().click(function() {
+        dialog.find(".perc-section-label").off("click").on("click",function() {
             var self = $(this);
             self.find(".perc-min-max")
                 .toggleClass('perc-items-minimizer')
@@ -177,17 +177,17 @@ $.perc_template_metadata_dialog = function(templateId) {
         });
 
         //Bind the click on radio button
-        dialog.find("input[name='doctype']").click(function() {
+        dialog.find("input[name='doctype']").on("click", function() {
             var textarea = $("#perc_template_metadata_custom_doctype");
-            if($(this).attr('value') == "html5") {
+            if($(this).attr('value') === "html5") {
                 textarea.val(doctypeHTML5).attr('readonly', 'readonly').addClass('perc-readOnlyText');
             }
-            else if($(this).attr('value') == "xhtml") {
+            else if($(this).attr('value') === "xhtml") {
                 textarea.val(doctypeXHTML).attr('readonly', 'readonly').addClass('perc-readOnlyText');
             }
-            else if($(this).attr('value') == "custom") {                
+            else if($(this).attr('value') === "custom") {
                 textarea.removeAttr('readonly').removeClass('perc-readOnlyText');
-                if(doctypeCustom != "" && doctypeCustom != null) {
+                if(doctypeCustom !== "" && doctypeCustom != null) {
                     textarea.val(doctypeCustom);
                 }
             }

@@ -55,7 +55,7 @@
         }
         
         // A snippet to adjust the frame size on resizing the window.
-        $(window).resize(function() {
+        $(window).on("resize",function() {
             fixIframeHeight();
             fixBottomHeight();
         });
@@ -92,7 +92,7 @@
                             setDirty(false);
                             self.tabs('select', ui.index);
                             //Reset the JavaScript Off/On menu to JavaScript Off
-                            resetJavaScriptMenu()
+                            resetJavaScriptMenu();
                         }
                     );
                     return false;
@@ -140,17 +140,17 @@
                     frame.css("display", "block");
                     // enable the Metadata  button
                     $(".perc-dropdown-option-EditMeta-data, .perc-dropdown-option-ViewMeta-data, #perc-metadata-button")                       
-                        .unbind().perc_button()
+                        .off().perc_button()
                         .removeClass("ui-meta-pre-disabled").addClass("ui-meta-pre-enabled")
-                        .click( function() {
+                        .on("click", function() {
                             $.perc_template_metadata_dialog(gSelectTemp);
                         });
 							
                     $("#perc-metadata-button").find("img").attr("src","/cm/images/icons/buttonMetadata.png")
-                    .bind("mouseenter", function(){
+                    .on("mouseenter", function(){
                         $(this).attr("src", "/cm/images/icons/buttonMetadataOver.png");
                     })
-                    .bind("mouseleave", function(){
+                    .on("mouseleave", function(){
                           $(this).attr("src", "/cm/images/icons/buttonMetadata.png");
                     });    
                     
@@ -338,16 +338,16 @@
          */            
         function _openPage() {
             $.PercPathService.getPathItemById(memento.pageId, function(status, data){
-                    if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                    if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     	clearCacheRegionCSS();
-                    	var querystring = $j.deparam.querystring();
+                    	var querystring = $.deparam.querystring();
                        var isEditMode = true;
                         var folderPath = "";
                         if(typeof data.PathItem.folderPaths === 'undefined' ){
                             $.perc_utils.alert_dialog({title: I18N.message("perc.ui.recycledPage@RecycledPage"), content: I18N.message("perc.ui.recycledPageWarning@RecycledPage")});
                             return;
                         }
-                        if($.isArray(data.PathItem.folderPaths)){
+                        if(Array.isArray(data.PathItem.folderPaths)){
                             folderPath = data.PathItem.folderPaths[0];
                         }else{
                             folderPath = data.PathItem.folderPaths;
@@ -356,7 +356,6 @@
                        $.PercNavigationManager.handleOpenPage(data.PathItem, isEditMode);
                     } else {
                         $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: data});
-                        return;
                     }
              });        
         }        
@@ -374,23 +373,23 @@
          * TODO: should all cancel events be handled the same way?
          * so that we should use a .perc-cancel and trigger the same behavior?
          */
-        $("#perc-css-editor-cancel").click(function() {
+        $("#perc-css-editor-cancel").on("click",function() {
             model.load();
             dirtyController.setDirty(false, "template");
         });
         
-        $("#perc-css-editor-save").click(function() {
+        $("#perc-css-editor-save").on("click",function() {
 
             cssController.setOverrideCSS();
 
             cssController.save(function (status, data) {
-                if (status == true) {
+                if (status === true) {
                     dirtyController.setDirty(false, "template");
                 }
             });
         });
 
-        $("#perc-wid-lib-expander").click(function(){
+        $("#perc-wid-lib-expander").on("click",function(){
             $.fn.percWidLibMaximizer(P);
         });
 
@@ -473,7 +472,7 @@
         }
          
         //Fixing Iframe size when clicking on sub-tabs under Style tab.
-        $(".perc-style-sub-tab").click(function(){
+        $(".perc-style-sub-tab").on("click",function(){
             fixIframeHeight();
         });        
                         
@@ -510,7 +509,7 @@
         
         function clearCacheRegionCSS()
         {
-            $j.PercTemplateService().regionCSSClearCache(
+            $.PercTemplateService().regionCSSClearCache(
                     model.getTemplateObj().Template.theme, 
                     model.getTemplateObj().Template.name, 
                     function(status, data) {});

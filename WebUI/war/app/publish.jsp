@@ -63,7 +63,7 @@
          the minify target in the build.xml file. If this is not done then it won't
          get into the files used in production.
     --%>
-
+    <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%=locale%>"></script>
     <% if (isDebug) { %>
 
@@ -75,14 +75,13 @@
     <link type="text/css" href="../css/minuet/perc_common_minuet.css" rel="stylesheet"/>
     <link type="text/css" href="../css/minuet/perc_publish_minuet.css" rel="stylesheet"/>
 
-    <script src="../jslib/profiles/3x/jquery/jquery-3.5.1.js"></script>
+    <!-- JavaScript Includes (order matters) -->
+    <%@include file="includes/common_js.jsp" %>
+
     <script src="../jslib/profiles/3x/libraries/popper/popper.js"></script>
     <script src="../jslib/profiles/3x/libraries/bootstrap/js/bootstrap.js"></script>
     <script src="../jslib/profiles/3x/libraries/handlebars/handlebars-v4.0.12.js"></script>
     <script src="../jslib/profiles/3x/libraries/momentjs/moment-with-locales.js"></script>
-
-    <!-- JavaScript Includes (order matters) -->
-    <%@include file="includes/common_js.jsp" %>
 
     <script src="../views/PercCommonMinuetView.js"></script>
     <script src="../services/PercPublisherService.js"></script>

@@ -190,7 +190,7 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
                 savePackageFileList(packageFileList);
             }
         }
-        
+
         //We are finished.
         completeMaintWork();
         appendLogEntry("Packages successfully uninstalled", null, true);
@@ -462,7 +462,7 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
         if (logFilePath == null) {
             return null;
         }
-        
+
         if (logFile == null)
         {
             logFile = new File(PSServer.getRxDir(), logFilePath);
@@ -477,7 +477,7 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
         if (!file.exists()) {
             throw new IOException("Package file does not exist: " + file.getPath());
         }
-            
+
         return file;
     }
 
@@ -486,7 +486,7 @@ public class PSStartupPkgInstaller implements IPSNotificationListener, IPSMainte
         if (packageDir == null) {
             packageDir = new File(PSServer.getRxDir(), "Packages/Percussion");
         }
-        
+
         return packageDir;
     }
 

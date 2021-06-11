@@ -32,11 +32,11 @@
     /cm/gadgets/repository/PercFormTrackerGadget/PercFormTrackerGadget.js
     /cm/gadgets/repository/common/perc_common_gadget.css
     /cm/gadgets/repository/common/PercDataTable.css
-    /cm/jslib/jquery.dataTables.js
+    /cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js
     /cm/widgets/PercCollapsibleMore.js
     /cm/widgets/PercCollapsibleTitle.js
     /cm/widgets/PercSimpleMenu.js
-    /cm/widgets/PercDataTable.js
+    /cm/widgets/PercDataTables/PercDataTable.js
     /cm/plugins/PercNavigationManager.js/openAsset()
     /cm/services/PercFormService.js
     /cm/services/PercPathService.js/getPathItemById()
@@ -72,16 +72,21 @@
 <link href="/cm/widgets/PercPageDataTable/PercPageDataTable.css" rel="stylesheet" type="text/css" />
 
 <script  src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
-  
-<script  src="/cm/jslib/jquery.dataTables.js"></script>
+<script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"</script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"</script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js" ></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js" ></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
+<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js" ></script>
 <script  src="/cm/widgets/PercCollapsibleMore.js"></script>
 <script  src="/cm/widgets/PercCollapsibleTitle.js"></script>
 
-<script  src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js"></script>
-<script  src="/cm/jslib/jquery.dataTables.js"></script>
-<script  src="/cm/widgets/PercActionDataTable/PercActionDataTable.js"></script>
-<script  src="/cm/widgets/PercDataTable/PercDataTable.js"></script>
 
+<script  src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js"></script>
+<script  src="/cm/widgets/PercDataTable/PercDataTable.js"></script>
+<script  src="/cm/widgets/PercActionDataTable/PercActionDataTable.js"></script>
+<script  src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js"></script>
 <script  src="/cm/gadgets/repository/PercFormTrackerGadget/PercFormTrackerGadget.js"></script>
 
 <style>

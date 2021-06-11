@@ -39,12 +39,12 @@ $(document).ready(function () {
         classNames: {'container': "perc-folder-selector-container", 'selected':"perc-folder-selected-item"},
         initialPath: '/Assets/uploads',
         onClick: function(pathItem){
-            if(pathItem.path == "/Assets/")
+            if(pathItem.path === "/Assets/")
             {
                 _setApprovalCheckboxState(false);
                 return;
             }
-            if(pathItem.accessLevel == "READ")
+            if(pathItem.accessLevel === "READ")
             {
                 _setApprovalCheckboxState(false);
                 var msg = "You don't have permission to upload to " + pathItem.path;
@@ -57,11 +57,11 @@ $(document).ready(function () {
             var pathItem = dtnode.data.pathItem;
             var accessLevel = pathItem.accessLevel;
             var path = pathItem.path;
-            if(accessLevel == "READ")
+            if(accessLevel === "READ")
             {
                 return false;
             }
-            if(path == "/Assets/")
+            if(path === "/Assets/")
             {
                 return false;
             }
@@ -69,24 +69,24 @@ $(document).ready(function () {
         }
     });
 
-    $('#perc-files-upload').change(function() {
+    $('#perc-files-upload').on("change",function() {
+        console.log('Change detected');
+        _handleButtonEnableState();
+    });
+
+    $('#perc-html-selector').on("keyup",function() {
         console.log('Change deteceted');
         _handleButtonEnableState();
     });
 
-    $('#perc-html-selector').keyup(function() {
-        console.log('Change deteceted');
-        _handleButtonEnableState();
-    });
-
-    $('#perc-bulk-asset-type').change(function() {
+    $('#perc-bulk-asset-type').on("change", function() {
         _handleButtonEnableState();
     });
 });
 
 function handleChecks(pathItem) {
-    $('#perc-bulk-target-folder').text(pathItem.path);
-    $('#perc-bulk-target-folder').data("pathItem", pathItem);
+    $('#perc-bulk-target-folder').text(pathItem.path)
+        .data("pathItem", pathItem);
     targetpath = pathItem.path;
     _handleApprovalCheckboxState(targetpath);
     _handleButtonEnableState();
@@ -135,12 +135,12 @@ function _handleButtonEnableState(){
     // selector input field value. If there is no value deactivate the button.
     var enableUpload = true;
     var percAssetType = $('#perc-bulk-asset-type option:selected').val();
-    if( percAssetType == "html" ||  percAssetType == "richtext" ||  percAssetType == "simpletext")
+    if( percAssetType === "html" ||  percAssetType === "richtext" ||  percAssetType === "simpletext")
     {
         var percCssSelectorValue = $('#perc-html-selector').val();
-        if (percCssSelectorValue == null || percCssSelectorValue == "" )
+        if (percCssSelectorValue == null || percCssSelectorValue === "" )
         {
-            var enableUpload = false;
+            enableUpload = false;
         }
     }
     var filesList = $('input[type="file"]').prop('files');

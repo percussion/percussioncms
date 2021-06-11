@@ -633,7 +633,7 @@
 
         // Get array of lowercase keywords
         keywords = !settings.keywords ? [] : $.map(settings.keywords.split(','), function(a) {
-            return $.trim(a.toLowerCase());
+            return a.toLowerCase().trim();
         });
 
         // Set color string
@@ -1070,7 +1070,7 @@
 
             // Get array of lowercase keywords
             keywords = !settings.keywords ? [] : $.map(settings.keywords.split(','), function(a) {
-                return $.trim(a.toLowerCase());
+                return a.toLowerCase().trim();
             });
 
             // Set color string
@@ -1126,7 +1126,7 @@
                 case 13: // enter
                 case 27: // esc
                     hide();
-                    input.blur();
+                    input.trigger("blur");
                     break;
             }
         })

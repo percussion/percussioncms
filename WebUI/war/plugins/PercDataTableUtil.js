@@ -51,10 +51,10 @@
         if(pagedItemList.PagedItemList.childrenCount < 1)
             return percData;
         var rows = pagedItemList.PagedItemList.childrenInPage;
-        if(!$.isArray(rows)){
+        if(!Array.isArray(rows)){
             rows = [pagedItemList.PagedItemList.childrenInPage];
         }
-        for(i=0; i<rows.length; i++){
+        for(let i=0; i<rows.length; i++){
             var row = rows[i];
             var cols = row.columnData.column;
             for(j=0;j<cols.length;j++){
@@ -65,7 +65,7 @@
             for(k=0;k<colsInfo.length;k++){
                 var name = colsInfo[k].name;
                 var dataUpdater = colsInfo[k].dataUpdater;
-                dataRow.push($.isFunction(dataUpdater)?dataUpdater(name, row):row[name]);
+                dataRow.push(typeof dataUpdater === "function" ?dataUpdater(name, row):row[name]);
             }
             var percContent = {"rowContent" : dataRow, "rowData" : row };
             percData.push(percContent);
@@ -154,12 +154,12 @@
         
         var pagingBar = $("<div class='perc-paging-bar'/>");
         pagingBar.append(first).append("&nbsp;").append(prev).append("&nbsp;").append(pagedItems).append(next).append("&nbsp;").append(last);
-        pagingBar.find(".paginate_button").click(function(){
+        pagingBar.find(".paginate_button").on("click",function(){
             pagingCallback($(this).data("startIndex"));
         });
         pagingBar.find(".paginate_button").each(function(){
            if($(this).data("startIndex") === (activePage-1)*pageSize + 1){
-               $(this).addClass("perc-disabled").unbind();
+               $(this).addClass("perc-disabled").off();
            }
         });
         

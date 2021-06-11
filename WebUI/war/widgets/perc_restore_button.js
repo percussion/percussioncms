@@ -29,7 +29,7 @@
     var itemName;
     $.perc_build_restore_button = function (finderRef, content) {
         var btn = $("<a id='perc-finder-restore-item' href='#' title='Click to restore the selected item'>Restore Item</a>")
-            .click(function (event) {
+            .on("click",function (event) {
                 restorePageValidate();
             });
 
@@ -38,7 +38,7 @@
             var selectedItem = $('.mcol-opened.perc_last_selected');
             var selectedItemList = $("#perc-finder-listview .perc-datatable-row-highlighted");
 
-            if (!(isItem() || isFolder()) && selectedItemList.size() == 0)
+            if (!(isItem() || isFolder()) && selectedItemList.length === 0)
                 return;
             //Don't allow user restore landing page of Navigation.Let them use folder to restore.
             if(isLandingPage()){
@@ -111,7 +111,7 @@
                 else {
                     var selectedItemList = $("#perc-finder-listview .perc-datatable-row-highlighted");
                     // This is present to select items under List mode in CM1 UI.
-                    if (selectedItemList.size() > 0) {
+                    if (selectedItemList.length > 0) {
                         listSelectedRowData = selectedItemList.data("percRowData");
 
                         // First we must check if the containingFolder is writable
@@ -222,7 +222,7 @@
                 else {
                     // We evaluate the callback with the result of the comparission of permission
                     //debugger;
-                    callback(!(result == $.PercFolderHelper().PERMISSION_READ));
+                    callback((result !== $.PercFolderHelper().PERMISSION_READ));
                     return;
                 }
             });
@@ -234,10 +234,10 @@
          */
         function enableButtonRestore(flag) {
             if (flag) {
-                btn.removeClass('ui-disabled').addClass('ui-enabled').unbind('click').click(restorePageValidate);
+                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",restorePageValidate);
             }
             else {
-                btn.addClass('ui-disabled').removeClass('ui-enabled').unbind('click');
+                btn.addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
             // We trigger a custom event using jQuery, the actions button will act acordingly
             btn.trigger('actions-change-enabled-state');

@@ -29,7 +29,7 @@
  * View for RegistrationWidget. Contains functionality to handle the registration and redirect behaviors
  * (*) Dependencies
  * /jslib/jquery.cookie.js
- * /jslib/jquery.validate.js
+ * /jslib/profiles/3x/jquery/plugins/jquery-validation/jquery.validate.js
  */
 (function($)
 {
@@ -227,7 +227,7 @@
                   var urlstring = $.deparam.querystring();
                   var redirectURL = "";
                   if ("undefined" !== typeof (urlstring.registrationRedirect)){
-                      redirectURL = urlstring.registrationRedirect
+                      redirectURL = urlstring.registrationRedirect;
                   }
                   var confirmation_page = self.find("#perc-confirmation-page").val();
                   
@@ -255,12 +255,12 @@
                                       window.location = redirectURL + params;
                                   }
                                   else {
-                                      window.location = redirectURL
+                                      window.location = redirectURL;
                                   }
                               }
                               // Redirect to the confirmation page and pass all the current URL parameters
                               else {
-                                  var params = '';
+                                  let params = '';
                                   if ($.param.querystring()) {
                                       params = '?' + $.param.querystring(); 
                                   }

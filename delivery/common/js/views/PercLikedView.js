@@ -77,21 +77,21 @@
 		
         var likeWidget = $(PERC_LIKE_WIDGET);
         var button = likeWidget.find("button");
-        button.blur();
+        button.trigger("blur");
         var totalLikes = likeWidget.find(PERC_LIKE_TOTAL_LIKES);
         if(likeWidgetState === LIKED) {
             likeWidget
                 .removeClass(PERC_UNLIKED)
                 .addClass(PERC_LIKED);
             button
-                .unbind().click(unlike)
+                .off('click').on('click',unlike)
                 .attr("title", "Remove");
         } else {
             likeWidget
                 .removeClass(PERC_LIKED)
                 .addClass(PERC_UNLIKED);
             button
-                .unbind().click(like)
+                .off('click').on('click', like)
                 .attr("title", "Like");
         }
         if(0 !== likeTotalLikes && "undefined" !== typeof (likeTotalLikes) && null !== likeTotalLikes) {

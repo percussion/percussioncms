@@ -57,7 +57,7 @@
         
 <!-- JavaScript -->            
         <psxctl:FileDescriptor name="dropdownchecklist.js" type="script" mimetype="text/javascript">
-                <psxctl:FileLocation>../../cm/jslib/dropdownchecklist.js</psxctl:FileLocation>
+                <psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-ui-multiselect-widget/jquery.multiselect.js</psxctl:FileLocation>
                 <psxctl:Timestamp/>
             </psxctl:FileDescriptor>
         <psxctl:FileDescriptor name="perc_utils.js" type="script" mimetype="text/javascript">

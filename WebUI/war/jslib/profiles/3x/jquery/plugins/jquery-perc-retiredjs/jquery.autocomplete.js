@@ -81,15 +81,15 @@ $.Autocompleter = function(input, options) {
 	var blockSubmit;
 	
 	// prevent form submit in opera when selecting with return key
-	$.browser.opera && $(input.form).bind("submit.autocomplete", function() {
-		if (blockSubmit) {
+	 $(input.form).on("submit.autocomplete", function() {
+		if ($.browser.opera && blockSubmit) {
 			blockSubmit = false;
 			return false;
 		}
 	});
 	
 	// only opera doesn't trigger keydown multiple times while pressed, others don't work with keypress at all
-	$input.bind(($.browser.opera ? "keypress" : "keydown") + ".autocomplete", function(event) {
+	$input.on(($.browser.opera ? "keypress" : "keydown") + ".autocomplete", function(event) {
 		// track last key pressed
 		lastKeyPressCode = event.keyCode;
 		switch(event.keyCode) {
@@ -131,7 +131,7 @@ $.Autocompleter = function(input, options) {
 				break;
 			
 			// matches also semicolon
-			case options.multiple && $.trim(options.multipleSeparator) == "," && KEY.COMMA:
+			case options.multiple && options.multipleSeparator.trim() === "," && KEY.COMMA:
 			case KEY.TAB:
 			case KEY.RETURN:
 				if( selectCurrent() ) {
@@ -151,21 +151,21 @@ $.Autocompleter = function(input, options) {
 				timeout = setTimeout(onChange, options.delay);
 				break;
 		}
-	}).focus(function(){
+	}).on("focus",function(){
 		// track whether the field has focus, we shouldn't process any
 		// results if the field no longer has focus
 		hasFocus++;
-	}).blur(function() {
+	}).on("blur",function(evt) {
 		hasFocus = 0;
 		if (!config.mouseDownOnSelect) {
 			hideResults();
 		}
-	}).click(function() {
+	}).on("click",function(evt) {
 		// show select when clicking in a focused field
 		if ( hasFocus++ > 1 && !select.visible() ) {
 			onChange(0, true);
 		}
-	}).bind("search", function() {
+	}).on("search", function(evt) {
 		// TODO why not just specifying both arguments?
 		var fn = (arguments.length > 1) ? arguments[1] : null;
 		function findValueCallback(q, data) {
@@ -184,17 +184,17 @@ $.Autocompleter = function(input, options) {
 		$.each(trimWords($input.val()), function(i, value) {
 			request(value, findValueCallback, findValueCallback);
 		});
-	}).bind("flushCache", function() {
+	}).on("flushCache", function() {
 		cache.flush();
-	}).bind("setOptions", function() {
+	}).on("setOptions", function() {
 		$.extend(options, arguments[1]);
 		// if we've updated the data, repopulate
 		if ( "data" in arguments[1] )
 			cache.populate();
-	}).bind("unautocomplete", function() {
+	}).on("unautocomplete", function() {
 		select.unbind();
 		$input.unbind();
-		$(input.form).unbind(".autocomplete");
+		$(input.form).off(".autocomplete");
 	});
 	
 	
@@ -252,8 +252,8 @@ $.Autocompleter = function(input, options) {
 		var words = value.split( options.multipleSeparator );
 		var result = [];
 		$.each(words, function(i, value) {
-			if ( $.trim(value) )
-				result[i] = $.trim(value);
+			if ( value.trim() )
+				result[i] = value.trim();
 		});
 		return result;
 	}
@@ -367,7 +367,7 @@ $.Autocompleter = function(input, options) {
 		var parsed = [];
 		var rows = data.split("\n");
 		for (var i=0; i < rows.length; i++) {
-			var row = $.trim(rows[i]);
+			var row = rows[i].trim();
 			if (row) {
 				row = row.split("|");
 				parsed[parsed.length] = {
@@ -578,7 +578,7 @@ $.Autocompleter.Select = function (options, input, select, config) {
 		list = $("<ul/>").appendTo(element).mouseover( function(event) {
 			if(target(event).nodeName && target(event).nodeName.toUpperCase() == 'LI') {
 	            active = $("li", list).removeClass(CLASSES.ACTIVE).index(target(event));
-			    $(target(event)).addClass(CLASSES.ACTIVE);            
+			    $(target(event)).addClass(CLASSES.ACTIVE);
 	        }
 		}).click(function(event) {
 			$(target(event)).addClass(CLASSES.ACTIVE);
@@ -628,8 +628,8 @@ $.Autocompleter.Select = function (options, input, select, config) {
 	function movePosition(step) {
 		active += step;
 		if (active < 0) {
-			active = listItems.size() - 1;
-		} else if (active >= listItems.size()) {
+			active = listItems.length- 1;
+		} else if (active >= listItems.length) {
 			active = 0;
 		}
 	}
@@ -683,8 +683,8 @@ $.Autocompleter.Select = function (options, input, select, config) {
 			}
 		},
 		pageDown: function() {
-			if (active != listItems.size() - 1 && active + 8 > listItems.size()) {
-				moveSelect( listItems.size() - 1 - active );
+			if (active != listItems.length - 1 && active + 8 > listItems.length) {
+				moveSelect( listItems.length - 1 - active );
 			} else {
 				moveSelect(8);
 			}
@@ -737,7 +737,8 @@ $.Autocompleter.Select = function (options, input, select, config) {
 			list && list.empty();
 		},
 		unbind: function() {
-			element && element.remove();
+			if(element)
+				element.remove();
 		}
 	};
 };

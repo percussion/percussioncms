@@ -28,7 +28,7 @@
 
         return {
             renderPublishStatusSection: renderPublishStatusSection
-        }
+        };
 
         function renderPublishStatusSection() {
 
@@ -46,11 +46,11 @@
         }
 
         function getPublishStatus() {
-            $j.PercPublisherService(false).getJobStatus(selectedSiteData.siteId, getPublishStatusCallback);
+            $.PercPublisherService(false).getJobStatus(selectedSiteData.siteId, getPublishStatusCallback);
         }
 
         function getPublishStatusCallback(status, result) {
-            if(status == true && result[1] == 'success') {
+            if(status === true && result[1] === 'success') {
                 sitePublishStatusDeferred.resolve(result[0]);
             }
         }
@@ -63,11 +63,11 @@
         }
 
         function renderPublishStatusList(action, toggleFlag, clickEvent) {
-            if(action == 'refresh') {
+            if(action === 'refresh') {
                 activeSort = $('#percPublishStatusList .perc-active-sort');
                 eventObj = activeSort;
             }
-            if(action == 'click') {
+            if(action === 'click') {
                 eventObj = clickEvent;
             }
 
@@ -111,7 +111,7 @@
             startProcessRunningAlert();
             jobId = $(eventObj).data('perc-job-id');
             stopPublishingJobDeferred = $.Deferred();
-            $j.PercPublisherService(false).stopPubJob(jobId, stopPublishingJobCallback);
+            $.PercPublisherService(false).stopPubJob(jobId, stopPublishingJobCallback);
             stopPublishingJobDeferred.done(function(response) {
                 processAlert(response);
             });
@@ -138,23 +138,23 @@
 
         function bindStatusEvents() {
             $('#percPublishStatusList .perc-sortable-header').on('click keypress', function(event) {
-                if(event.type == 'click' || event.which == 13) {
-                    renderPublishStatusList('click', true, this)
+                if(event.type === 'click' || event.which === 13) {
+                    renderPublishStatusList('click', true, this);
                 }
             });
         }
 
         function bindStatusActions() {
-            $('.perc-stop-job-button').click(function() {
+            $('.perc-stop-job-button').on("click", function(evt) {
                 stopPublishingJob(this);
             });
         }
 
-    }
+    };
 
     Handlebars.registerHelper('publishProgress', function(completedItems, totalItems) {
         progress =  {};
-        if(completedItems == 0 & totalItems == 0) {
+        if(completedItems === 0 && totalItems === 0) {
             progress = 100;
         }
         else {

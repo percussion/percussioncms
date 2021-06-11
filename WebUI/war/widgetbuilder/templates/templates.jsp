@@ -131,7 +131,7 @@
     <script type="text/template" id="perc-widget-resource-item-editor-template">
         <form>
             <div type="sys_normal" class="perc-widget-resource">
-                <input type="text" class="datadisplay perc-resource-entry-field" size="50" maxlength="255" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- name @>"><span class="perc-resource-delete perc-font-icon resource-tab-button-background icon-remove" title='<i18n:message key="perc.ui.widget.builder@Remove Resource"/>'></span>
+                <input type="text" class="datadisplay perc-resource-entry-field" size="50" maxlength="255" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- name @>"><span class="perc-resource-delete perc-font-icon resource-tab-button-background icon-remove fas fa-times" title='<i18n:message key="perc.ui.widget.builder@Remove Resource"/>'></span>
                 <br/>
             </div>
         </form>

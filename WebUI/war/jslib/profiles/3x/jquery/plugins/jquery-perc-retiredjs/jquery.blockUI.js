@@ -13,8 +13,8 @@
  */
 
 ;(function() {
-/*jshint eqeqeq:false curly:false latedef:false */
-"use strict";
+	/*jshint eqeqeq:false curly:false latedef:false */
+	"use strict";
 
 	function setup($) {
 		$.fn._fadeIn = $.fn.fadeIn;
@@ -26,7 +26,7 @@
 		var msie = /MSIE/.test(navigator.userAgent);
 		var ie6  = /MSIE 6.0/.test(navigator.userAgent) && ! /MSIE 8.0/.test(navigator.userAgent);
 		var mode = document.documentMode || 0;
-		var setExpr = $.isFunction( document.createElement('div').style.setExpression );
+		var setExpr = typeof document.createElement('div').style.setExpression == "function";
 
 		// global $ methods for blocking/unblocking the entire page
 		$.blockUI   = function(opts) { install(window, opts); };
@@ -212,8 +212,8 @@
 			// page blocking
 			focusInput: true,
 
-            // elements that can receive focus
-            focusableElements: ':input:enabled:visible',
+			// elements that can receive focus
+			focusableElements: ':input:enabled:visible',
 
 			// suppresses the use of overlay styles on FF/Linux (due to performance issues with opacity)
 			// no longer needed in 2012
@@ -551,13 +551,13 @@
 			// bind anchors and inputs for mouse and key events
 			var events = 'mousedown mouseup keydown keypress keyup touchstart touchend touchmove';
 			if (b)
-				$(document).bind(events, opts, handler);
+				$(document).on(events, opts, handler);
 			else
-				$(document).unbind(events, handler);
+				$(document).off(events, handler);
 
-		// former impl...
-		//		var $e = $('a,:input');
-		//		b ? $e.bind(events, opts, handler) : $e.unbind(events, handler);
+			// former impl...
+			//		var $e = $('a,:input');
+			//		b ? $e.bind(events, opts, handler) : $e.unbind(events, handler);
 		}
 
 		// event handler to suppress keyboard/mouse events when blocking

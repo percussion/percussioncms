@@ -220,19 +220,19 @@ var layoutModel;
 
         // toggles size input fields in the region property editor dialog
         // size fields are width, height, padding, and margin
-        $('#perc-region-auto-resize').click(function(){
+        $('#perc-region-auto-resize').on("click",function(){
             var checked = $(this).is(":checked");
             updateSizeFields(checked);
         });
 
         // populates Explore Regions tray and toggles it open/close
-        $("#perc-region-library-expander").unbind().click(function(){
+        $("#perc-region-library-expander").off("click").on("click",function(){
             $.fn.percRegionLibraryMaximizer(P);
             populateRegionLibrary();
         });
 
         // populates Orphan Assets tray and toggles it open/close
-        $("#perc-orphan-assets-expander").unbind().click(function(){
+        $("#perc-orphan-assets-expander").off("click").on("click",function(){
             $.fn.percOrphanAssetsMaximizer(P);
             populateOrphanAssets();
         });
@@ -309,7 +309,7 @@ var layoutModel;
         /**
          * Button or link that toggles region puff decoration
          */
-        $('.perc-dropdown-option-HideGuides').unbind().click( function() {
+        $('.perc-dropdown-option-HideGuides').off("click").on("click", function() {
             regionDecorator.visible( !regionDecorator.visible());
             widgetDecorator.visible( !widgetDecorator.visible());
             puff = !puff;
@@ -320,7 +320,7 @@ var layoutModel;
          * Save button invokes model to save itself which uses page or template manager services that
          * communicate with REST service to persiste the page or template
          */
-        $('#perc-save').unbind().click( function() {
+        $('#perc-save').off("click").on("click", function() {
             if(!layoutModel.isResponsiveBaseTemplate())
                 $.PercInspectionToolHandler.clearItoolMarkup();
             saveLayout();
@@ -333,7 +333,7 @@ var layoutModel;
          * warns the user. Sets the JavaScriptOff to true or false depending on the current status. Calls the
          * initRender to reinitialize the view.
          */
-        $("#perc-layout-menu a.perc-dropdown-option-DisableJavaScript").unbind().click(function() {
+        $("#perc-layout-menu a.perc-dropdown-option-DisableJavaScript").off("click").on("click",function() {
             var __this = this;
             var handleScripts = function()
             {
@@ -382,7 +382,7 @@ var layoutModel;
         /**
          * Reload model and re-render if they cancel
          */
-        $('#perc-layout-cancel').unbind().click( function() {
+        $('#perc-layout-cancel').off("click").on("click", function() {
             cancel();
             if(!layoutModel.isResponsiveBaseTemplate())
                 $.PercInspectionToolHandler.cancelCallback();
@@ -404,8 +404,8 @@ var layoutModel;
         //Initially load all widgets - populate widget library will handle filters
         initWidgetLibrary("all","no");
         populateWidgetLibrary();
-        $(".perc-widget-type").unbind().change(populateWidgetLibrary);
-        $(".perc-widget-category").unbind().change(filterWidgetLibrary);
+        $(".perc-widget-type").off("change").on("change",populateWidgetLibrary);
+        $(".perc-widget-category").off().on("change",filterWidgetLibrary);
         initRender();
 
         /**
@@ -478,7 +478,7 @@ var layoutModel;
          * decorate the regions and widgets with borders, drops, resizing, and fix the widths.
          */
         function afterRender(callback) {
-            iframe.contents().find("div").unbind();
+            iframe.contents().find("div").off();
             widgetDecorator.refresh();
             regionDecorator.refresh();
 
@@ -526,8 +526,8 @@ var layoutModel;
             iframe.contents().find("body")
                 .css("z-index","-1000")
                 .css("position","static")
-                .unbind()
-                .click(function(event){
+                .off("click")
+                .on("click",function(event){
                     widgetDecorator.unselectAll();
                     regionDecorator.unselectAll();
                     populateRegionLibrary();
@@ -542,7 +542,7 @@ var layoutModel;
 
             if(currentRegion){
                 var currentRegionDiv = iframe.contents().find("#"+currentRegion);
-                currentRegionDiv.click();
+                currentRegionDiv.trigger("click");
                 currentRegion=null;
             }
 
@@ -550,7 +550,7 @@ var layoutModel;
             populateRegionLibrary();
 
             // if region is clicked, also highlight the region-tool in "Explore Regions" tray
-            iframe.contents().find(".perc-region").click(function(){
+            iframe.contents().find(".perc-region").on("click",function(){
                 var regionId = "perc-re-" + $(this).attr("id");
                 $(".perc-region-library-tool").removeClass("perc-region-selected");
                 $(".perc-region-library-tool[name="+regionId+"]").addClass("perc-region-selected");
@@ -1223,7 +1223,7 @@ var layoutModel;
                 deleteContentChoice.attr('disabled','disabled');
 
             // handle ok button of dialog
-            deleteRegionDialog.parent().find('.perc-ok').unbind().click( function() {
+            deleteRegionDialog.parent().find('.perc-ok').off("click").on("click", function() {
 
                 // if OK, then find out what their choice was to delete or not the content
                 var deleteContent = $('#perc-delete-content-choice:checked').length!==0;
@@ -1534,7 +1534,7 @@ var layoutModel;
                             .append(w['label']))
                         .addClass("perc-widget-label")
                         .css("overflow", "hidden") )
-                    .attr('id',"widget-" + w['id'] + "-" + $('.perc-widget').size())
+                    .attr('id',"widget-" + w['id'] + "-" + $('.perc-widget').length)
                     .draggable({
                         appendTo: 'body',
                         refreshPositions: true,
@@ -1613,13 +1613,13 @@ var layoutModel;
 
             // bind click events on each of the regions in the tray so that clicking on them highlitghts the region in the layout
             $(".perc-region-library-tool")
-                .click(function(){
+                .on("click",function(){
                     var regionTool = $(this);
                     $(".perc-region-library-tool").removeClass("perc-region-selected");
                     regionTool.addClass("perc-region-selected");
                     var regionId = String(regionTool.attr("name")).replace(/^perc-re-/, '');
                     var region = iframe.contents().find("#"+regionId);
-                    region.click();
+                    region.trigger("click");
                 });
 
             $.PercTextOverflow($(".perc-region-library-tool div"), 122);
@@ -1924,7 +1924,7 @@ var layoutModel;
             });
         }
 
-        $("#perc-error-alert").unbind().click(function(){
+        $("#perc-error-alert").off("click").on("click",function(){
             $.PercLayoutErrorDialog().openLayoutErrorDialog();
         });
 

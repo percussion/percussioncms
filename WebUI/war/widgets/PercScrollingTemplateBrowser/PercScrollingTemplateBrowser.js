@@ -70,7 +70,7 @@
                     items.find(".item .item-id").hide();
                     
                     // bind click event to each item to handle selection
-                    items.find(".item").bind('click', function(){
+                    items.find(".item").on('click', function(){
                         var itemId = $(this).find(".item-id").text();
                         $("#" + config.hiddenFieldId).val(itemId);
                         items.find(".item").removeClass("perc-selected-item");
@@ -93,7 +93,7 @@
                 // after adding all the template entries, truncate the labels if they dont fit
                 // $.PercTextOverflow($("div.perc-text-overflow"), 122);
             }
-        }
+        };
         if(!config.isBase)
         {
         	$.PercSiteService.getTemplates(siteName, calbackfn, widgetDefId);
@@ -105,7 +105,7 @@
             //Load template selector
         return $(this);
             
-    }
+    };
 
     function createTemplateEntry(data, config){
         var temp = "<div for=\"@ITEM_ID@\" class=\"item\">"

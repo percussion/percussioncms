@@ -202,7 +202,7 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
                     return pathItem && (pathItem.type === 'percPage' || pathItem.type === 'percImageAsset' || pathItem.type === 'percFileAsset')?null:'Please select a page, file, or an image';
                 };
 
-                jQuery('[aria-label=\'Insert link\']').find('.mce-btn.mce-open').click(function(){
+                jQuery('[aria-label=\'Insert link\']').find('.mce-btn.mce-open').on("click", function(){
                     var pathSelectionOptions = {
                         okCallback: updateLinkData,
                         dialogTitle: I18N.message("perc.ui.widget.tinymce@Please select"),

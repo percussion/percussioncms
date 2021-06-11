@@ -182,7 +182,7 @@
             */
             function showPageTemplates()
             {
-                $ = $j;   
+                ;   
                 //make an array from the comma delimited options string
                 var pageTemplatesOptionsArray = [];
         
@@ -213,7 +213,7 @@
                          var checked = $.inArray(tpl.id,pageTemplatesOptionsArray) == -1?"":" checked ='true' ";
                          $("#perc-pagetemplates-container").append($("<div class='perc-pagetemplates-entry'><input type='checkbox' class='perc-pagetemplates-chkbox'" + checked + " value='" + tpl.id + "'></input><span title='"+ tpl.name +"'>" + tpl.name + "</span></div>"));
                      }
-                     $(".perc-pagetemplates-chkbox").change(function(){    
+                     $(".perc-pagetemplates-chkbox").on("change", function(){
                          var pts = getPageTemplates();
                          pts = pts?pts:"";
                          $('[name="query_template_list"]').val(pts);
@@ -266,7 +266,7 @@
                  var siteName = null;
                  if(folderPath && folderPath.indexOf("//Sites/")>-1)
                  {
-                     var siteName = folderPath.substring(("//Sites/").length);
+                     siteName = folderPath.substring(("//Sites/").length);
                      if(siteName.indexOf("/")>-1)
                         siteName = siteName.substring(0,siteName.indexOf("/"));
                  }
@@ -274,12 +274,12 @@
             }
             //Callbacks Event Code
     
-            $('#perc-content-edit-title_contains').change(function(){
+            $('#perc-content-edit-title_contains').on("change", function(){
                 buildQuery();
             });    
     
             //Build query if mouse leaves the form, i.e when the user goes to click on the save button which is not part of the iframe
-            $('#perc-content-form').mouseleave(function(){
+            $('#perc-content-form').on("mouseleave", function(){
                 buildQuery();
             });
     
@@ -294,18 +294,18 @@
                 $("#display_title_contains").val($('[name = "query_title_contains"]').val());
 				$("#display_query_page_result").val($('[name="archive_page_result"]').val());
 				
-				$("#display_query_page_result").blur(function(){
+				$("#display_query_page_result").on("blur",function(){
                     $('[name="archive_page_result"]').val($("#display_query_page_result").val());
                 });
-                $("#display_query_page_result").change(function(){
+                $("#display_query_page_result").on("change", function(){
                     $('[name="archive_page_result"]').val($("#display_query_page_result").val());
                 });
 				
-                $("#display_title_contains").blur(function(){
+                $("#display_title_contains").on("blur", function(){
                     $('[name = "query_title_contains"]').val($("#display_title_contains").val());
                     buildQuery();
                 });
-                $("#display_title_contains").change(function(){
+                $("#display_title_contains").on("change", function(){
                     $('[name = "query_title_contains"]').val($("#display_title_contains").val());
                     buildQuery();
                 });
@@ -314,8 +314,8 @@
                 showSites();
                 
                 //Handle the results page browse button click
-                $("#perc_querylist_resultspage_browse").click(function(){
-                     var dlgTitle = "Select Results Page"
+                $("#perc_querylist_resultspage_browse").on("click", function(evt){
+                     var dlgTitle = "Select Results Page";
                      var inputElemId = "display_query_page_result";
                      handleBrowseButtonClick(dlgTitle, inputElemId );               
                 });
@@ -339,27 +339,27 @@
              */
             function addDelToDateControls()
             {
-                $('#display_query_published_before').keydown(function(evt){
+                $('#display_query_published_before').on("keydown",function(evt){
                     var rawCode = evt.charCode ? evt.charCode : evt.which;
-                    if(rawCode==46 || rawCode==8)
+                    if(rawCode===46 || rawCode===8)
                     {
                         $('#display_query_published_before').val("");
                         $('[name="query_published_before"]').val("");
                         buildQuery();
-                    } else if(rawCode==9) {
+                    } else if(rawCode===9) {
 			return true;
 		    } else {
 			return false;
 		    }
                 });
-                $('#display_query_published_after').keydown(function(evt){
+                $('#display_query_published_after').on("keydown",function(evt){
                     var rawCode = evt.charCode ? evt.charCode : evt.which;
-                    if(rawCode==46 || rawCode==8)
+                    if(rawCode===46 || rawCode===8)
                     {
                         $('#display_query_published_after').val("");
                         $('[name="query_published_after"]').val("");
                         buildQuery();
-                    } else if(rawCode==9) {
+                    } else if(rawCode===9) {
 			return true;
                     } else {
 			return false;

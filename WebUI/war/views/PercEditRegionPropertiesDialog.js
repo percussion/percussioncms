@@ -212,7 +212,7 @@
 
             oTableAttributes = $.PercInlineEditDataTable.init($('#perc-region-attributes-table'), regionAttributesConfig);
 
-            $("#perc-css-overrides-disable").click(function () {
+            $("#perc-css-overrides-disable").on("click", function () {
                 _toggleCssOverride(this.checked);
             });
 
@@ -220,7 +220,7 @@
                 $.PercInlineEditDataTable.enableTable($('#perc-css-overrides-table'), !state);
             }
 
-            $('#perc-region-edit').parent().find('.perc-ok').unbind().click(function () {
+            $('#perc-region-edit').parent().find('.perc-ok').off("click").on("click", function () {
                 saveRegionProperties(region);
             });
         }
@@ -284,7 +284,7 @@
             });
 
             // Bind collapsible event
-            dialog.find(".perc-section-label").unbind().click(function () {
+            dialog.find(".perc-section-label").off("click").on("click", function () {
                 var self = $(this);
                 self.find(".perc-min-max")
                     .toggleClass('perc-items-minimizer')
@@ -363,15 +363,15 @@
 
             var attributes = [];
             for (i = 0; i < dataTableAttributes.length; i++) {
-                var name = $.trim($(dataTableAttributes[i][0]).text());
-                var value = $.trim($(dataTableAttributes[i][1]).text());
+                var name = $(dataTableAttributes[i][0]).text().trim();
+                var value = $(dataTableAttributes[i][1]).text().trim();
                 if (name.length > 0) {attributes.push({name: name, value: value});}
             }
 
-            var regionWidth = $.trim($(dataTableOverrides[0][1]).text());
-            var regionHeight = $.trim($(dataTableOverrides[1][1]).text());
-            var regionPadding = $.trim($(dataTableOverrides[2][1]).text());
-            var regionMargin = $.trim($(dataTableOverrides[3][1]).text());
+            var regionWidth = $(dataTableOverrides[0][1]).text().trim();
+            var regionHeight = $(dataTableOverrides[1][1]).text().trim();
+            var regionPadding = $(dataTableOverrides[2][1]).text().trim();
+            var regionMargin = $(dataTableOverrides[3][1]).text().trim();
 
             if (regionWidth === I18N.message("perc.ui.edit.region.properties.dialog@Enter Width"))
                 regionWidth = "";
@@ -437,15 +437,15 @@
             var dataTableAttributes = oTableAttributes.fnGetData();
             var attributes = [];
             for (i = 0; i < dataTableAttributes.length; i++) {
-                var name = $.trim($(dataTableAttributes[i][0]).text());
-                var value = $.trim($(dataTableAttributes[i][1]).text());
+                var name = $(dataTableAttributes[i][0]).text().trim();
+                var value = $(dataTableAttributes[i][1]).text().trim();
 
                 if (name.length > 0) {attributes.push({name: name, value: value});
                 }
             }
 
-            var regionPadding = $.trim($(dataTableOverrides[0][1]).text());
-            var regionMargin = $.trim($(dataTableOverrides[1][1]).text());
+            var regionPadding = $(dataTableOverrides[0][1]).text().trim();
+            var regionMargin = $(dataTableOverrides[1][1]).text().trim();
 
             if (regionPadding === I18N.message("perc.ui.edit.region.properties.dialog@Enter Padding"))
                 regionPadding = "";
@@ -499,7 +499,7 @@
             var dataTableAttributes = oTableAttributes.fnGetData();
             var invalidAttributeMessage='';
             for (i = 0; i < dataTableAttributes.length; i++) {
-                var name = $.trim($(dataTableAttributes[i][0]).text()).toLowerCase();
+                var name = $(dataTableAttributes[i][0]).text().trim().toLowerCase();
                 if(name==='id' || name==='title' || name==='href' || name==='name'){
                     invalidAttributeMessage += invalidAttributeMessage.length===0?name+' ':','+name+' ';
                 }

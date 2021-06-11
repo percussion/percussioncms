@@ -33,17 +33,18 @@
     {
         var self = $(this);
         var serviceData;
-        if($.isFunction(config.folderDblClickCallback))
+        if(typeof config.folderDblClickCallback === "function") {
             _folderDblClickCallback = config.folderDblClickCallback;
-        if (serviceContent['PagedItemList'] != undefined)
+        }
+        if (serviceContent.PagedItemList !== undefined)
         {
-            serviceData = $.perc_utils.convertCXFArray(serviceContent['PagedItemList']['childrenInPage']);
-            self.data('totalResult', serviceContent['PagedItemList']['childrenCount']);
-            self.data('startIndex', serviceContent['PagedItemList']['startIndex'])
+            serviceData = $.perc_utils.convertCXFArray(serviceContent.PagedItemList.childrenInPage);
+            self.data('totalResult', serviceContent.PagedItemList.childrenCount);
+            self.data('startIndex', serviceContent.PagedItemList.startIndex);
         }
         else
         {
-            serviceData = $.perc_utils.convertCXFArray(serviceContent['PathItem']);
+            serviceData = $.perc_utils.convertCXFArray(serviceContent.PathItem);
         }
 
         var c = parseContenIntoConfig(config.displayFormat, serviceData);
@@ -53,9 +54,9 @@
         if(percData.length > 0)
         {
             var arrayRowContent = [];
-            for(s=0; s<aoColumns.length; s++)
+            for(let s=0; s<aoColumns.length; s++)
             {
-                arrayRowContent.push("&nbsp;")
+                arrayRowContent.push("&nbsp;");
             }
 
             percData.push({rowContent : arrayRowContent});
@@ -88,14 +89,14 @@
 
         createItemsDragAndDrop(table);
 
-        $(".perc-datatable-row:last").unbind();
-    }
+        $(".perc-datatable-row:last").off();
+    };
 
     function createItemsDragAndDrop (table)
     {
         var allRows = table.find(".perc-datatable-row");
         $.map( allRows, function(val, i) {
-            if ($(val).data("percRowData") != undefined && $(val).data("percRowData").category == "ASSET")
+            if ($(val).data("percRowData") !== undefined && $(val).data("percRowData").category === "ASSET")
             {
                 $(val).css("cursor", "default");
                 $(val).draggable( {
@@ -153,8 +154,8 @@
     {
         if(!rowData.data)
             return "";
-        var folderPath = rowData.data.folderPaths[0];
-        if (rowData.data.type == "site") // if click on a site don't need to include the item name
+        var folderPath;
+        if (rowData.data.type === "site") // if click on a site don't need to include the item name
         {
             folderPath = rowData.data.folderPaths[0];
         }
@@ -162,12 +163,13 @@
         {
             folderPath = rowData.data.folderPaths[0] + "/" + rowData.data.name;
         }
+
         return folderPath.replace("Folders/$System$/", "").substring(2,folderPath.length).split("/");
     }
 
     function rowDblclickCallback(rowData)
     {
-        if(rowData.data.type=="Folder" || rowData.data.type=="FSFolder")
+        if(rowData.data.type==="Folder" || rowData.data.type==="FSFolder")
         {
             _folderDblClickCallback("/" + getItemFolderPath(rowData).join("/"));
         }
@@ -186,7 +188,7 @@
         var percWidths = [];
 
         var columns = displayFormat.SimpleDisplayFormat.columns;
-        //serviceData = serviceData.PathItem;
+
         var c, s;
         for(s=0; s<serviceData.length; s++)
         {
@@ -205,19 +207,19 @@
                 var data = nameValueMap[colName];
 
                 // format date with no seconds
-                if (column.type.toLowerCase() == "date" && data != null  && data != "")
+                if (column.type.toLowerCase() === "date" && data !== null  && data !== "")
                 {
                     var dateParts = $.perc_utils.splitDateTime(data);
                     var dateAndTime = dateParts.date + ", " + dateParts.time;
                     data = "<div title='"+dateAndTime+"'>"+ dateParts.date + "</div>";
                 }
 
-                if (column.type.toLowerCase() == "number" && data != null  && data != "")
+                if (column.type.toLowerCase() === "number" && data != null  && data !== "")
                 {
                     data = '<div title = "' + data + ' Bytes" style="text-align:right;">' + $.perc_utils.formatFileSize(data) + "</div>";
                 }
                 // The first column should have this kind of tooltip (that's why c != 0)
-                if (column.type.toLowerCase() == "text" && data != null  && data != "" && c != 0)
+                if (column.type.toLowerCase() === "text" && data != null  && data !== "" && c !== 0)
                 {
                     data = '<span title = "' + data + '" style="font-weight: normal;">' + data + "</span>";
                 }
@@ -231,7 +233,7 @@
                     // DANGER: folderPaths may contain an array
                     // What should we do if it is an array? For now, just using the fist one!
                     // HACK: CM-4488 search fails to parse results correctly
-                    if ($.isArray(serviceDataItem.folderPaths)) {
+                    if (Array.isArray(serviceDataItem.folderPaths)) {
                         itemPathRaw = serviceDataItem.folderPaths[0];
                     } else {
                         itemPathRaw = serviceDataItem.folderPaths;
@@ -241,7 +243,7 @@
                         itemPathRaw ="" ;
                     }
                     if(serviceData[s].type == 'site') {
-                        itemPath = itemPathRaw.replace('/' + $.perc_paths.SITES_ROOT, '')
+                        itemPath = itemPathRaw.replace('/' + $.perc_paths.SITES_ROOT, '');
                     }
                     else {
                         itemPath = itemPathRaw.replace('/' + $.perc_paths.SITES_ROOT, '')
@@ -261,15 +263,16 @@
 
         for(c=0; c<columns.length; c++)
         {
-            var column  = columns[c];
+            let column  = columns[c];
             percColNames.push(column.name);
             percHeaders.push(column.label);
             percWidths.push((column.width == -1 ? "*" : ($.browser.msie ? column.width - 20 : column.width ) ));
             var type = column.type.toLowerCase();
-            if(type == "text")
-                type = "string"
+            if(type === "text") {
+                type = "string";
+            }
 
-            if (c == 0)
+            if (c === 0)
             {
                 type = "html";
             }

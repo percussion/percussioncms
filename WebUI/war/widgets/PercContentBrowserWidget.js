@@ -83,7 +83,7 @@
         //If the type filter is a list, make it into a function which tests
         //for membership in that list. If a function has been passed in,
         //use that directly.
-        if( !$.isFunction( type_filter ) )
+        if( typeof type_filter !== "function" )
         {
             type_filter = function(x)
             {
@@ -123,7 +123,7 @@
     
         var root_direc = top.find( '#perc-asset-browser-dialog-direc' );
     
-        var path_select = top.find( '#perc-asset-browser-location-dropdown' ).change(function()
+        var path_select = top.find( '#perc-asset-browser-location-dropdown' ).on("change",function()
         {
             //Navigate to the path selected in the drop-down.
             var new_path = this.value.split('/');
@@ -147,7 +147,7 @@
 //        alert(settings.new_folder_opt);
         if( settings.new_folder_opt )
         {
-            top.parent().find('#perc-new-folder-button').click(function()
+            top.parent().find('#perc-new-folder-button').on("click",function()
             {
                 new_folder_callback();
             });
@@ -309,7 +309,7 @@
             	// } JGA
                 anchor.siblings( '.'+sclass ).removeClass( sclass );
                 anchor.addClass( sclass );
-                if( spec['leaf'] )
+                if( spec.leaf )
                 {
                     asset_name.val( spec['name'] );
                     current_spec = spec;
@@ -319,15 +319,15 @@
                     current_path = ut.acop( item_path );
                 }
             }
-            if( spec['leaf'] )
+            if( spec.leaf )
             {
                 if( leaf_selectable )
                 {
-                    anchor.click( selectAnchor );
-                    anchor.dblclick( function()
+                    anchor.on("click", selectAnchor );
+                    anchor.on("dblclick", function()
                     {
-                        anchor.click();
-                        $("#perc-saveas-dialog-save-button").click();
+                        anchor.trigger("click");
+                        $("#perc-saveas-dialog-save-button").trigger("click");
                     });
                 }
             }
@@ -335,9 +335,9 @@
             {
                 if( folder_selectable )
                 {
-                    anchor.click( selectAnchor );
+                    anchor.trigger("click", selectAnchor );
                 }
-                anchor.dblclick( function()
+                anchor.on("dblclick", function()
                 {
                     set_path( item_path );
                 });

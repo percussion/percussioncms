@@ -435,7 +435,7 @@
 	}
 	
 	var json = "{\"OrphanAssetsSummary\":{\"assetWidgetRelationship\":["+ assets +"]}}";
-	var awr = $.parseJSON(json);
+	var awr = JSON.parse(json);
 	
 	$.ajax({
              url: $.perc_paths.ASSET_ORPHAN_WIDGET_REL_DEL + "/",

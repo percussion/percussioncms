@@ -30,9 +30,9 @@
  *
  * Example Usage:
  *
- * $j(document).ready(function() {
+ * $(document).ready(function() {
  *
- *      var $wizard = $j("<div></div>").perc_wizard({
+ *      var $wizard = $("<div></div>").perc_wizard({
  *         templateUrl: "../html/dialogs/perc_newSiteDialog.html",
  *         title: "New Site",
  *         height: 400
@@ -40,7 +40,7 @@
  *
  *      });
  *
- *      $j('#someButton').click(function() {
+ *      $('#someButton').click(function() {
  *           $wizard.perc_wizard('open');
  *      });
  * });
@@ -114,19 +114,19 @@
             	+ "<button id='perc_wizard_back' class='btn btn-primary'  name='perc_wizard_back' style='float:right;'>" +I18N.message("perc.ui.common.label@Back") +  "</button>" + "</div>";
             //Appending buttons to the buttonpane
             $(self.element).closest('.ui-dialog').append(buttons);
-            $('#perc_wizard_back').click(function()
+            $('#perc_wizard_back').on("click", function()
             {
                 self._onBack();
             });
-            $('#perc_wizard_cancel').click(function()
+            $('#perc_wizard_cancel').on("click", function()
             {
                 self._onCancel();
             }).val(this.options.cancelButtonLabel);
-            $('#perc_wizard_next').click(function()
+            $('#perc_wizard_next').on("click",function()
             {
                 self._onNext();
             });
-            $('#perc_wizard_finish').click(function()
+            $('#perc_wizard_finish').on("click",function()
             {
                 self._onOk();
             });
@@ -222,7 +222,7 @@
             title: typeof I18N == "undefined" ? "Wizard" : I18N.message("perc.ui.common.label@Wizard"),
             onOk: function()
             {
-                alert("No onOk callback was set.")
+                console.log("No onOk callback was set.");
             },
             onValidate: function()
             {

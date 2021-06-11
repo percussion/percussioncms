@@ -70,13 +70,13 @@
                             $("#perc-themes-table-row").append(renderGalleryEntry($name, $thumbUrl, $nameAsEntered));
             
                             // Selecting the theme
-                            $j("#theme-"+$name).click(function() {
+                            $("#theme-"+$name).on("click",function() {
                             	// if user clicks on any theme from the gallery, then set the dirty flag
                             	dirtyController.setDirty(true,"style",saveCSS);
                             	
                                 controller.setTemplateTheme($nameAsEntered, function(success) {
                                    // And finally, reset the save button.
-                                   $j("#perc-css-gallery-edit-save").removeClass("ui-state-disabled");
+                                   $("#perc-css-gallery-edit-save").removeClass("ui-state-disabled");
                                     selectTheme($name);
                                 });
                             });
@@ -138,10 +138,10 @@
             var selector_closeLinks = ".perc-theme-clear";
             var selector_closeLink_selected = "#theme-"+sThemeName+"-clear";
     
-            $j(selector).removeClass("perc-css-gallery-themeHighlighted");
-            $j(selector_closeLinks).css('display','none');
-            $j(selector_selected).addClass("perc-css-gallery-themeHighlighted");
-            $j(selector_closeLink_selected).css('display','inline');
+            $(selector).removeClass("perc-css-gallery-themeHighlighted");
+            $(selector_closeLinks).css('display','none');
+            $(selector_selected).addClass("perc-css-gallery-themeHighlighted");
+            $(selector_closeLink_selected).css('display','inline');
             
         }
     };

@@ -61,7 +61,7 @@
                 return;
             }
             var revSummary = result.data.RevisionsSummary;
-            var comments = revSummary.comments?$.isArray(revSummary.comments)?revSummary.comments:[revSummary.comments]:[];
+            var comments = revSummary.comments?Array.isArray(revSummary.comments)?revSummary.comments:[revSummary.comments]:[];
             if(comments.length === 0){
                 $.perc_utils.alert_dialog({"title": I18N.message("perc.ui.comments.dialog@No Comments"),"content":I18N.message("perc.ui.comments.dialog@No Comments Yet")});
                 return;

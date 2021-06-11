@@ -54,7 +54,7 @@
             }
             var modLic = result;
             //If we have module license validate them else get the types
-            if(modLic && $.isArray(modLic)){
+            if(modLic && Array.isArray(modLic)){
                 var payLoad = _createPayload(modLic);
                 _validateModuleLicenses(payLoad, _validateModuleLicensesCB);
             }
@@ -154,7 +154,7 @@
             else{
                 $.perc_module_license_manager.LICENSING_BASE_URL = data.moduleLicenses.licenseServiceUrl;
                 var result = data.moduleLicenses.moduleLicenses;
-                if(result && !$.isArray(result))
+                if(result && !Array.isArray(result))
                     result = [result];
                 callback(true,result);
             }
@@ -172,7 +172,7 @@
         .done(function(data){
             //Remove SOCIAL_PROMOTION from module license list till cloud build is deployed.
             for(var i=0; i<=data.licenseTypes.length; i++){
-                if(data.licenseTypes[i].id=="SOCIAL_PROMOTION"){
+                if(data.licenseTypes[i].id==="SOCIAL_PROMOTION"){
                     data.licenseTypes.splice(i,1);
                 }
             }
@@ -279,12 +279,13 @@
     }
     
     function _addActivateClickEvent(licActElemCont, activationSuccessCallback){
-        licActElemCont.find(".perc-lmg-activate").click(function(){
+        licActElemCont.find(".perc-lmg-activate").on("click", function(){
             var parent = $(this).closest(".perc-lmg-modulelicense-act-top");
             var errElem = parent.find("#perc-lmg-modulelicense-key-error").hide();
             var key = parent.find("input[name=perc-lmg-modulelicense-key]").val();
             var type = parent.find("#perc-lmg-modulelicense-type-list").val();
-            if($.trim(key).length<1)
+            key = key.trim();
+            if(key.length<1)
             {
                 errElem.text(I18N.message("perc.ui.gadgets.licenseMonitor@Please enter a valid key")).show();
                 return;

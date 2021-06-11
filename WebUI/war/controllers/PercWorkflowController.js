@@ -68,7 +68,7 @@
             else{
                 callback(true);
             }
-        }
+        };
         wfService.checkIn(itemId, chkInCb);
     }
 
@@ -189,10 +189,10 @@
                 var fassets = trResults.ItemTransitionResults.failedAssets;
                 if(typeof fassets !=='undefined' && (!Array.isArray(fassets) || !fassets.length) && fassets.length > 0)
                 {
-                    var type = (itemType == "percAsset")?"asset":"page";
+                    var type = (itemType === "percAsset")?"asset":"page";
                     var msg = I18N.message("perc.ui.workflow.steps.view@Cannot Publish", [type]) + "<br/><br/>";
 
-                    if($.isArray(fassets))
+                    if(Array.isArray(fassets))
                     {
                         $.each(fassets,function(){
                             var fp = this.folderPaths;
@@ -216,7 +216,7 @@
                     callback(true);
                 }
             }
-        }
+        };
         wfService.transition(itemId, transitionName, comment, trCb);
     }
 
@@ -234,10 +234,10 @@
     {
         callback = callback == null?function(){}:callback;
         wfService.getTransitions(itemId, function(status, results){
-            if(status == $.PercServiceUtils.STATUS_SUCCESS){
+            if(status === $.PercServiceUtils.STATUS_SUCCESS){
                 var trAs = [];
                 var triggers = results.data.ItemStateTransition.transitionTriggers;
-                if($.isArray(triggers)){
+                if(Array.isArray(triggers)){
                     $.each(triggers, function(index){
                         //As we already added Publish skip it if exists.
                         if(transitionActions[triggers[index]])
@@ -270,13 +270,13 @@
     {
         callback = callback == null?function(){}:callback;
         var isChkCb = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_SUCCESS){
-                callback(results.data == true, results.data);
+            if(status === $.PercServiceUtils.STATUS_SUCCESS){
+                callback(results.data === true, results.data);
             }
             else{
                 callback(false, $.PercServiceUtils.extractDefaultErrorMessage(results.request));
             }
-        }
+        };
         wfService.isCheckedOutToCurrentUser(itemId, isChkCb);
     }
 
@@ -333,19 +333,19 @@
     }
 
     var warningDlgTitle = [];
-    warningDlgTitle['percPage'] = "Open Page";
-    warningDlgTitle['percAsset'] = "Open Asset";
+    warningDlgTitle.percPage = "Open Page";
+    warningDlgTitle.percAsset = "Open Asset";
 
     /**
      * Object map for transition trigger names and its classes.
      * The class consists of the appropriate buttons.
      */
     var transitionActions = [];
-    transitionActions["Reject"] = {"name":"Reject", "cssClass":"perc-wf-reject","alt":"Reject"};
-    transitionActions["Submit"] = {"name":"Submit", "cssClass":"perc-wf-submit","alt":"Submit"};
-    transitionActions["Approve"] = {"name":"Approve", "cssClass":"perc-wf-approve","alt":"Approve"};
-    transitionActions["Resubmit"] = {"name":"Resubmit", "cssClass":"perc-wf-resubmit","alt":"Resubmit"};
+    transitionActions.Reject = {"name":"Reject", "cssClass":"perc-wf-reject","alt":"Reject"};
+    transitionActions.Submit = {"name":"Submit", "cssClass":"perc-wf-submit","alt":"Submit"};
+    transitionActions.Approve = {"name":"Approve", "cssClass":"perc-wf-approve","alt":"Approve"};
+    transitionActions.Resubmit = {"name":"Resubmit", "cssClass":"perc-wf-resubmit","alt":"Resubmit"};
     transitionActions["Quick Edit"] = {"name":"Quick Edit", "cssClass":"perc-wf-edit","alt":"Edit"};
-    transitionActions["Archive"] = {"name":"Archive", "cssClass":"perc-wf-archive","alt":"Archive"};
+    transitionActions.Archive = {"name":"Archive", "cssClass":"perc-wf-archive","alt":"Archive"};
 
 })(jQuery);

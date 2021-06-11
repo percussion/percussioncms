@@ -127,10 +127,9 @@
      */
     function makeJsonRequest(url, type, sync, callback, dataObject, abortCallback, timeout) {
         var self = this;
-        var version = $.isFunction($.getCMSVersion) ? $.getCMSVersion() : "";
+        var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
         var ajaxTimeout = $.perc_utils.percParseInt(timeout);
         var args = {
-            dataType: 'json',
             async: !sync,
             contentType: 'application/json',
             type: type,
@@ -161,7 +160,7 @@
                     };
                     callback(self.STATUS_ERROR, result);
                 }
-                else if ($.isFunction(abortCallback)) {
+                else if (typeof abortCallback === "function") {
                     abortCallback(self.STATUS_ABORT);
                 }
             }
@@ -181,7 +180,7 @@
      */
     function makeRequest(url, type, sync, callback, dataObject, contentType, dataType, noEscape, abortCallback) {
         var self = this;
-        var version = $.isFunction($.getCMSVersion) ? $.getCMSVersion() : "";
+        var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
         if (dataType === null || typeof dataType === "undefined") {
             dataType = "text";
 
@@ -226,7 +225,7 @@
                     };
                     callback(self.STATUS_ERROR, result);
                 }
-                else if ($.isFunction(abortCallback)) {
+                else if (typeof abortCallback === "function") {
                     abortCallback(self.STATUS_ABORT);
                 }
             }
@@ -264,7 +263,7 @@
      */
     async function makeXdmXmlRequest(servicebase, url, type, callback, dataObject) {
         let self = this;
-        let version = $.isFunction($.getCMSVersion) ? $.getCMSVersion() : "";
+        let version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 
         if (null === callback || 'undefined' === typeof (callback)) {
             alert("Callback cannot be null or undefined");
@@ -355,7 +354,7 @@
      */
     async function makeXdmJsonRequest(servicebase, url, type, callback, dataObject) {
         let self = this;
-        const version = $.isFunction($.getCMSVersion) ? $.getCMSVersion() : "";
+        const version = typeof $.getCMSVersion ==="function" ? $.getCMSVersion() : "";
 
         if(null === callback || 'undefined' === typeof (callback))
 		{
@@ -458,7 +457,7 @@
      */
     function makeXmlRequest(url, type, sync, callback, dataString, abortCallback) {
         var self = this;
-        var version = $.isFunction($.getCMSVersion) ? $.getCMSVersion() : "";
+        var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 
         var args = {
             dataType: 'xml',
@@ -483,7 +482,7 @@
                     };
                     callback(self.STATUS_ERROR, result);
                 }
-                else if ($.isFunction(abortCallback)) {
+                else if (typeof abortCallback === "function") {
                     abortCallback(self.STATUS_ABORT);
                 }
             }
@@ -521,7 +520,7 @@
      */
     function makeDeleteRequest(url, sync, callback, dataString, abortCallback) {
         var self = this;
-        var version = $.isFunction($.getCMSVersion) ? $.getCMSVersion() : "";
+        var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 
         var args = {
             dataType: 'text',
@@ -546,7 +545,7 @@
                     };
                     callback(self.STATUS_ERROR, result);
                 }
-                else if ($.isFunction(abortCallback)) {
+                else if (typeof abortCallback === "function") {
                     abortCallback(self.STATUS_ABORT);
                 }
             }
@@ -742,7 +741,7 @@
      */
     function convertMapToArray(mapEntries) {
         var tempArray = [];
-        if ($.isArray(mapEntries.entry))
+        if (Array.isArray(mapEntries.entry))
             tempArray = mapEntries.entry;
         else if (mapEntries.entry)
             tempArray.push(mapEntries.entry);

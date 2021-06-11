@@ -56,7 +56,7 @@
         }
 
         // A snippet to adjust the frame size on resizing the window.
-        $(window).resize(function()
+        $(window).on("resize",function()
         {
             fixIframeHeight();
             fixBottomHeight();
@@ -181,7 +181,7 @@
         function initializeUnassignedPanel(){
             var panelExpanderIcon = $(".perc-panel-expander-icon");
             var panel = $(".perc-unassigned-panel");
-            panelExpanderIcon.click(function(){
+            panelExpanderIcon.on("click", function(evt){
                 if (typeof($.PercNavigationManager.getSiteName()) != "undefined"){
                     setPanelPreference(panelExpanderIcon.is(".perc-collapsed"));
                     if (panelExpanderIcon.is(".perc-collapsed")){
@@ -208,7 +208,7 @@
             var siteName = $.PercNavigationManager.getSiteName();
             if (typeof(siteName) != "undefined"){
                 $.PercPageService.getUnassignedPagesBySite(siteName, 1, UNASSIGNED_MAX_RESULTS, function(status, result){
-                    if(status == $.PercServiceUtils.STATUS_SUCCESS){
+                    if(status === $.PercServiceUtils.STATUS_SUCCESS){
                         var panelSettings = JSON.parse($.cookie("perc-unassigned-panel-" + $.PercNavigationManager.getSiteName() + "-settings"));
                         var showPanel = false;
                         var pageNumber = 1;
@@ -240,10 +240,10 @@
             $.perc_filterField(percJump, $.perc_textFilters.ONLY_DIGITS);
             
             // Pagination controls - Previous button
-            $('.perc-unassigned-panel .perc-template-pages-controls .previous').click(unassignedPreviousClick)
+            $('.perc-unassigned-panel .perc-template-pages-controls .previous').on("click",unassignedPreviousClick)
             
             // Pagination controls - Next button - Click
-            $('.perc-unassigned-panel .perc-template-pages-controls .next').click(unassignedNextClick)
+            $('.perc-unassigned-panel .perc-template-pages-controls .next').on("click", unassignedNextClick)
             
              // Pagination controls - Text input for page selector
             $('.perc-unassigned-panel .perc-template-pages-controls').submit(function()
@@ -307,14 +307,14 @@
                 panel.find(".previous")
                     .removeClass('previous')
                     .addClass('previous-disabled')
-                    .unbind('click');
+                    .off('click');
             }
             else {
                 panel.find(".previous-disabled")
                     .removeClass('previous-disabled')
                     .addClass('previous')
-                    .unbind('click')
-                    .click(unassignedPreviousClick);
+                    .off('click')
+                    .on("click", unassignedPreviousClick);
             }
             
             var endIndex = startIndex + UNASSIGNED_MAX_RESULTS - 1;
@@ -322,14 +322,14 @@
                 panel.find(".next")
                     .removeClass('next')
                     .addClass('next-disabled')
-                    .unbind('click');
+                    .off('click');
             }
             else {
                 panel.find(".next-disabled")
                     .removeClass('next-disabled')
                     .addClass('next')
-                    .unbind('click')
-                    .click(unassignedNextClick);
+                    .off('click')
+                    .on("click", unassignedNextClick);
             }
         }
         
@@ -413,7 +413,7 @@
                 
                 switch (page.status){
                     case "Imported":
-                        pageObj.addClass("perc-imported-page").click(function(){
+                        pageObj.addClass("perc-imported-page").on("click", function(){
                             $(".perc-imported-page-selected").removeClass("perc-imported-page-selected");
                             $(this).addClass("perc-imported-page-selected");
                             var createTplPageMenuEntry = $(".perc-dropdown-option-CreateTemplatefromPage");
@@ -645,7 +645,7 @@
         function _cleanMementoView()
         {
             var memento;
-            memento = $j.PercNavigationManager.getMemento();
+            memento = $.PercNavigationManager.getMemento();
             memento['view'] = null;
         }
 
@@ -755,7 +755,7 @@
             showUnassignedPanel();
         }
 
-        $("#perc-wid-lib-expander").click(function()
+        $("#perc-wid-lib-expander").on("click", function()
         {
             $.fn.percWidLibMaximizer(P);
         });
@@ -827,7 +827,7 @@
         }
 
         //Fixing Iframe size when clicking on sub-tabs under Style tab.
-        $(".perc-style-sub-tab").click(function()
+        $(".perc-style-sub-tab").on("click", function()
         {
             fixIframeHeight();
         });

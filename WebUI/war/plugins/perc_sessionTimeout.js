@@ -233,6 +233,9 @@
              * @returns jQuery element wrapping the dialog and form created with perc_dialog()
              */
             function createDialog() {
+                let dialogMessage;
+                let button1;
+
                 if (connectionFailure) {
                     button1 = "Close";
                     dialogMessage = o.dialogConnectionWarning;
@@ -284,7 +287,7 @@
             };
 
 
-            var storageTime = new Number(localStorage.getItem("serverCheckTime"));
+            var storageTime =  Number(localStorage.getItem("serverCheckTime"));
             if (storageTime) {
                 if (now - storageTime < 1000) {
                     return;
@@ -299,7 +302,6 @@
                 }
             }
             else {
-                //console.log("setting initial server check time");
                 myStorageTime = now;
                 localStorage.setItem("serverCheckTime", now.toString());
             }
@@ -354,7 +356,7 @@
 
 
         function syncLast() {
-            var storageActivity = new Number(localStorage.getItem("lastActivity"));
+            var storageActivity = Number(localStorage.getItem("lastActivity"));
             if (storageActivity) {
                 var timeDiff = lastActivity - storageActivity;
                 if (timeDiff > 1000) {
@@ -394,11 +396,11 @@
             userActivity();
         }, false);
 
-        $(document).mousemove(function () {
+        $(document).on("mousemove",function () {
             userActivity();
         });
 
-        $(document).keypress(function () {
+        $(document).on("keypress",function () {
             userActivity();
         });
 

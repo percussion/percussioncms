@@ -45,20 +45,20 @@
             
             // Redefining the event for input field of step 1. For some reason they lose the event
             var inputFields = percJQuery.PercWizard.dom.find("input");
-            inputFields.keypress(function(){hideErrors(percJQuery.PercWizard.dom);});
+            inputFields.on("keypress",function(){hideErrors(percJQuery.PercWizard.dom);});
         }
     };
     
     function getPageNameValue(wizardContentDom)
     {
-        return $.trim(wizardContentDom
-            .find("input#perc-page-name").val());
+        return wizardContentDom
+            .find("input#perc-page-name").val().trim();
     }
     
     function getBlogLinkTextValue(wizardContentDom)
     {
-        return $.trim(wizardContentDom
-            .find("input#perc-blog-text-link").val());
+        return wizardContentDom
+            .find("input#perc-blog-text-link").val().trim();
     }
     
     function afterTransition(currentStep, nextStep, wizard){
@@ -246,7 +246,7 @@
             .append(selectTitleNameAndLinkDom);
         
         var inputFields = step1Dom.find("input");
-        inputFields.keypress(function(){hideErrors(step1Dom);});
+        inputFields.on("keypress",function(){hideErrors(step1Dom);});
 
         return step1Dom;
     }
@@ -317,7 +317,7 @@
         var templateSectionObject = wizardContentDom.find(".perc-blog-index-page-template-browser .perc-scrollable .item.perc-selected-item .item-id")[0];
         var templatePageObject = wizardContentDom.find(".perc-blog-post-page-template-browser .perc-scrollable .item.perc-selected-item .item-id")[0];
 
-        var sectionPath =  ""
+        var sectionPath =  "";
         if (selectedSectionPath == null)
         {
             sectionPath = "//Sites/" + siteName;
@@ -346,7 +346,7 @@
                
             percJQuery.PercBlockUI();
             percJQuery.Perc_SectionServiceClient.create(sectionObj, function(status, data){
-                addNewSectionCallback(status, data, sectionObj)
+                addNewSectionCallback(status, data, sectionObj);
             });
         }
     }
@@ -376,7 +376,7 @@
     
     function addNewSectionCallback(status, data, sectionObj)
     {
-        if(status == percJQuery.PercServiceUtils.STATUS_SUCCESS)
+        if(status === percJQuery.PercServiceUtils.STATUS_SUCCESS)
         {
             percJQuery.PercWizard.dialog.remove();
             percJQuery.PercWizard.dom.remove();

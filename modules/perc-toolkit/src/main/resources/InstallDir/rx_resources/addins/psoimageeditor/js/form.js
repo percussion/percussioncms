@@ -184,11 +184,11 @@ jQuery.fn.ajaxSubmit.counter = 0; // used to create unique iframe ids
 
 jQuery.fn.ajaxForm = function(options) {
     return this.each(function() {
-        jQuery("input:submit,input:image,button:submit", this).click(function(ev) {
+        jQuery("input:submit,input:image,button:submit", this).on("click",function(ev) {
             var $form = this.form;
             $form.clk = this;
-            if (this.type == 'image') {
-                if (ev.offsetX != undefined) {
+            if (this.type === 'image') {
+                if (ev.offsetX !== undefined) {
                     $form.clk_x = ev.offsetX;
                     $form.clk_y = ev.offsetY;
                 } else if (typeof jQuery.fn.offset == 'function') { // try to use dimensions plugin
@@ -204,7 +204,7 @@ jQuery.fn.ajaxForm = function(options) {
             setTimeout(function() {
                 $form.clk = $form.clk_x = $form.clk_y = null;
                 }, 10);
-        })
+        });
     }).submit(function(e) {
         jQuery(this).ajaxSubmit(options);
         return false;
@@ -215,25 +215,25 @@ jQuery.fn.ajaxForm = function(options) {
 
 jQuery.fn.formToArray = function(semantic) {
     var a = [];
-    if (this.length == 0) return a;
+    if (this.length === 0) return a;
 
     var form = this[0];
     var els = semantic ? form.getElementsByTagName('*') : form.elements;
     if (!els) return a;
-    for(var i=0, max=els.length; i < max; i++) {
+    for(let i=0, max=els.length; i < max; i++) {
         var el = els[i];
         var n = el.name;
         if (!n) continue;
 
-        if (semantic && form.clk && el.type == "image") {
+        if (semantic && form.clk && el.type === "image") {
             // handle image inputs on the fly when semantic == true
-            if(!el.disabled && form.clk == el)
+            if(!el.disabled && form.clk === el)
                 a.push({name: n+'.x', value: form.clk_x}, {name: n+'.y', value: form.clk_y});
             continue;
         }
         var v = jQuery.fieldValue(el, true);
         if (v === null) continue;
-        if (v.constructor == Array) {
+        if (v.constructor === Array) {
             for(var j=0, jmax=v.length; j < jmax; j++)
                 a.push({name: n, value: v[j]});
         }
@@ -244,10 +244,10 @@ jQuery.fn.formToArray = function(semantic) {
     if (!semantic && form.clk) {
         // input type=='image' are not found in elements array! handle them here
         var inputs = form.getElementsByTagName("input");
-        for(var i=0, max=inputs.length; i < max; i++) {
+        for(let i=0, max=inputs.length; i < max; i++) {
             var input = inputs[i];
-            var n = input.name;
-            if(n && !input.disabled && input.type == "image" && form.clk == input)
+            let n = input.name;
+            if(n && !input.disabled && input.type === "image" && form.clk === input)
                 a.push({name: n+'.x', value: form.clk_x}, {name: n+'.y', value: form.clk_y});
         }
     }
@@ -288,7 +288,7 @@ jQuery.fn.fieldSerialize = function(successful) {
         var n = this.name;
         if (!n) return;
         var v = jQuery.fieldValue(this, successful);
-        if (v && v.constructor == Array) {
+        if (v && v.constructor === Array) {
             for (var i=0,max=v.length; i < max; i++)
                 a.push({name: n, value: v[i]});
         }

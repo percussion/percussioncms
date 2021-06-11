@@ -156,13 +156,13 @@
             // If prerendering is disabled, create tooltip on showEvent
             if(config.content.prerender === false && config.show.when.event !== false && config.show.ready !== true)
             {
-               config.show.when.target.bind(config.show.when.event+'.qtip-'+id+'-create', { qtip: id }, function(event)
+               config.show.when.target.on(config.show.when.event+'.qtip-'+id+'-create', { qtip: id }, function(event)
                {
                   // Retrieve API interface via passed qTip Id
                   api = $.fn.qtip.interfaces[ event.data.qtip ];
 
                   // Unbind show event and cache mouse coords
-                  api.options.show.when.target.unbind(api.options.show.when.event+'.qtip-'+event.data.qtip+'-create');
+                  api.options.show.when.target.off(api.options.show.when.event+'.qtip-'+event.data.qtip+'-create');
                   api.cache.mouse = { x: event.pageX, y: event.pageY };
 
                   // Render tooltip and start the event sequence
@@ -989,17 +989,17 @@
             if(self.status.rendered)
             {
                // Remove event handlers and remove element
-               self.options.show.when.target.unbind('mousemove.qtip', self.updatePosition);
-               self.options.show.when.target.unbind('mouseout.qtip', self.hide);
-               self.options.show.when.target.unbind(self.options.show.when.event + '.qtip');
-               self.options.hide.when.target.unbind(self.options.hide.when.event + '.qtip');
-               self.elements.tooltip.unbind(self.options.hide.when.event + '.qtip');
-               self.elements.tooltip.unbind('mouseover.qtip', self.focus);
+               self.options.show.when.target.off('mousemove.qtip', self.updatePosition);
+               self.options.show.when.target.off('mouseout.qtip', self.hide);
+               self.options.show.when.target.off(self.options.show.when.event + '.qtip');
+               self.options.hide.when.target.off(self.options.hide.when.event + '.qtip');
+               self.elements.tooltip.off(self.options.hide.when.event + '.qtip');
+               self.elements.tooltip.off('mouseover.qtip', self.focus);
                self.elements.tooltip.remove();
             }
 
             // Tooltip isn't yet rendered, remove render event
-            else self.options.show.when.target.unbind(self.options.show.when.event+'.qtip-create');
+            else self.options.show.when.target.off(self.options.show.when.event+'.qtip-create');
 
             // Check to make sure qTip data is present on target element
             if(typeof self.elements.target.data('qtip') == 'object')
@@ -1465,7 +1465,7 @@
             .css( jQueryStyle(self.options.style.button, true) )
             .html(self.options.content.title.button)
             .prependTo(self.elements.title)
-            .click(function(event){ if(!self.status.disabled) self.hide(event) });
+            .on("click",function(event){ if(!self.status.disabled) self.hide(event) });
       };
    };
 
@@ -1501,8 +1501,8 @@
                // Unassign 'inactive' events
                $(inactiveEvents).each(function()
                {
-                  hideTarget.unbind(this+'.qtip-inactive');
-                  self.elements.content.unbind(this+'.qtip-inactive');
+                  hideTarget.off(this+'.qtip-inactive');
+                  self.elements.content.off(this+'.qtip-inactive');
                });
 
                // Hide the tooltip
@@ -1515,7 +1515,7 @@
       // Check if the tooltip is 'fixed'
       else if(self.options.hide.fixed === true)
       {
-         self.elements.tooltip.bind('mouseover.qtip', function()
+         self.elements.tooltip.on('mouseover.qtip', function()
          {
             if(self.status.disabled === true) return;
 
@@ -1535,8 +1535,8 @@
             // Assign each reset event
             $(inactiveEvents).each(function()
             {
-               hideTarget.bind(this+'.qtip-inactive', inactiveMethod);
-               self.elements.content.bind(this+'.qtip-inactive', inactiveMethod);
+               hideTarget.on(this+'.qtip-inactive', inactiveMethod);
+               self.elements.content.on(this+'.qtip-inactive', inactiveMethod);
             });
 
             // Start the inactive timer
@@ -1587,7 +1587,7 @@
       {
          self.cache.toggle = 0;
          // Use a toggle to prevent hide/show conflicts
-         showTarget.bind(self.options.show.when.event + '.qtip', function(event)
+         showTarget.on(self.options.show.when.event + '.qtip', function(event)
          {
             if(self.cache.toggle == 0) showMethod(event);
             else hideMethod(event);
@@ -1597,21 +1597,21 @@
       // Events are not identical, bind normally
       else
       {
-         showTarget.bind(self.options.show.when.event + '.qtip', showMethod);
+         showTarget.on(self.options.show.when.event + '.qtip', showMethod);
 
          // If the hide event is not 'inactive', bind the hide method
          if(self.options.hide.when.event !== 'inactive')
-            hideTarget.bind(self.options.hide.when.event + '.qtip', hideMethod);
+            hideTarget.on(self.options.hide.when.event + '.qtip', hideMethod);
       };
 
       // Focus the tooltip on mouseover
       if(self.options.position.type.search(/(fixed|absolute)/) !== -1)
-         self.elements.tooltip.bind('mouseover.qtip', self.focus);
+         self.elements.tooltip.on('mouseover.qtip', self.focus);
 
       // If mouse is the target, update tooltip position on mousemove
       if(self.options.position.target === 'mouse' && self.options.position.type !== 'static')
       {
-         showTarget.bind('mousemove.qtip', function(event)
+         showTarget.on('mousemove.qtip', function(event)
          {
             // Set the new mouse positions if adjustment is enabled
             self.cache.mouse = { x: event.pageX, y: event.pageY };
@@ -1888,7 +1888,7 @@
 
       // Adjust positions of the tooltips on window resize or scroll if enabled
       var adjustTimer;
-      $(window).bind('resize scroll', function(event)
+      $(window).on('resize scroll', function(event)
       {
          clearTimeout(adjustTimer);
          adjustTimer = setTimeout(function()
@@ -1922,7 +1922,7 @@
       })
 
       // Hide unfocus toolipts on document mousedown
-      $(document).bind('mousedown.qtip', function(event)
+      $(document).on('mousedown.qtip', function(event)
       {
          if($(event.target).parents('div.qtip').length === 0)
          {

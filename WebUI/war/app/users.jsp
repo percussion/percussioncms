@@ -69,7 +69,8 @@
     --%>
 
     <!-- Themes never should be concatenated or packed -->
-    <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.7.2.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.8.9.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
     <script
             src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%= locale %>"></script>
 
@@ -83,7 +84,7 @@
     <link type="text/css" href="../css/perc_mcol.css" rel="stylesheet"/>
     <link type="text/css" href="../css/perc_decoration.css" rel="stylesheet"/>
     <link type="text/css" href="../demos.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/jquery.tooltip.css" rel="stylesheet"/>
+
     <!-- Stuff needed for finder to work like Editor -->
     <link rel="stylesheet" type="text/css" href="../css/perc_newsitedialog.css"/>
     <link rel="stylesheet" type="text/css" href="../css/perc_new_page_button.css"/>
@@ -105,7 +106,7 @@
         // this method is bound to body's onbeforeunload event
         // if method returns string, it's used to display message and confirmation to navigate away
         // if method returns nothing, navigation is allowed
-        var dirtyController = $j.PercDirtyController;
+        var dirtyController = $.PercDirtyController;
         function navigationEvent() {
             // if template is not dirty, return nothing and allow navigation
             // otherwise return alert message and display confirmantion box
@@ -113,13 +114,13 @@
         }
 
         //Finder initialization code
-        $j(document).ready(function () {
+        $(document).ready(function () {
 
-            $j("#perc-manual-publish-widget").find(".perc-foldable").click();
-            $j.Percussion.PercFinderView();
-            $j.PercUserView();
+            $("#perc-manual-publish-widget").find(".perc-foldable").trigger("click");
+            $.Percussion.PercFinderView();
+            $.PercUserView();
 
-            $j("select").keypress(function () {
+            $("select").on("keypress",function () {
                 dirtyController.setDirty(true, "asset");
             });
 

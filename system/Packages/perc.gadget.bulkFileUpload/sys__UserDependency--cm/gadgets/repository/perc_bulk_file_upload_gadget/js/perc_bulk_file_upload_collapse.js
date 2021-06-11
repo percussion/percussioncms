@@ -37,16 +37,15 @@ $(document).ready(function() {
             changeText: false
         },
         function() {
-            $('#perc-bulk-target-collapser').blur();
+            $('#perc-bulk-target-collapser').trigger("blur");
         },
         function() {
             gadgets.window.adjustHeight(50 + $("#perc-bulk-form").height() + $("#perc-buttonbar").height() + $("#perc-buttonbar2").height());
         }
     );
 
-    $('#perc-bulk-details-collapser').click();
-
-    $('#perc-bulk-details-collapser').collapser(
+    $('#perc-bulk-details-collapser').trigger("click")
+        .collapser(
         {
             target: '#perc-bulk-details-section',
             expandClass: 'perc-bulk-expand',
@@ -54,7 +53,7 @@ $(document).ready(function() {
             changeText: false
         },
         function() {
-            $('#perc-bulk-details-collapser').blur();
+            $('#perc-bulk-details-collapser').trigger("blur");
         },
         function() {
             var tableHeight = $('#perc-added-files').height();
