@@ -1,3 +1,4 @@
+
 /*
  *     Percussion CMS
  *     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -22,212 +23,118 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-/**
- * Actions split button
- */
-(function ($)
-{
-    /**
-     * Constructs the actions button.
-     *
-     * @param finder
-     * @param contentViewer
-     */
-    $.perc_build_actions_button = function (finder, contentViewer)
+(function($){
+
+//Add custom validation method for the URL name.
+//$.validator.addMethod( 'url_name',
+//        function(x) { return x.match( /^[a-zA-Z0-9\-]*$/ ); },
+//       I18N.message( "perc.ui.newpagedialog.error@Url name validation error" ));
+
+    $.perc_build_new_page_button = function(finderRef, contentViewer)
     {
-        // Create the action elements
-        var cp = $.perc_build_copy_page_button( finder, contentViewer );
-        var fp = $.perc_build_folderproperties_button( finder, contentViewer );
-        var db = $.perc_build_download_button( finder, contentViewer );
-        var ub = $.perc_build_upload_button( finder, contentViewer );
-        var ri = $.perc_build_restore_button( finder, contentViewer );
+        var finderPath;
 
-        var menuEntries = [cp, fp, db, ub, ri];
-        // Create the menu and the button
-        var menu = createMenuHTML(menuEntries)
-            .on("mouseenter",preventHide)
-            .on("mouseleave",hideOnMouseOut);
 
-        var btnHtml ='<div id="perc-finder-actions" >'
-            + '<a id="perc-finder-actions-button" class="perc-font-icon" title="' +I18N.message("perc.ui.actions.button@Select An Action") + '" href="#"><span class="icon-cog fas fa-cog"></span><span class="icon-caret-down fas fa-caret-down"></span></a>'
-            + '</div>';
-        var btn = $(btnHtml)
-            //.perc_button()
-            .append(menu)
-            .on("mouseenter",preventHide)
-            .on("mouseleave",hideOnMouseOut);
-
-        // This flag, hideOnMouseOut and preventHide prevent an unnatural hiding of the menu
-        var flag_show = false;
+        var newPageButton = $('<a id="mcol-new-page" class="perc-font-icon" href="#" title="' +I18N.message("perc.ui.new.page.button@Click New Page") + '"class="ui-disabled"><span class="icon-plus fas fa-plus"></span><span class="icon-file fas fa-file"></span></a>').perc_button();
 
         /**
-         * Binds the hiding behavior to the menu once the cursor left it.
+         * Listener function that is added to the finder listeners, this method gets called whenever there is a path change
+         * happens on the finder.
+         * @param path, an array of the path entries. For a page Page1 under Foo site Bar folder will be
+         * ["Sites","Foo","Bar","Page1"].
+         * Based on the supplied path decides whether the button needs to be enabled or disabled.
+         * Enables only when the root node is a site or site folder and user has at least write access to the folder.
          */
-        function hideOnMouseOut()
-        {
-            flag_show = false;
-            setTimeout(function() {
-                if (!flag_show) {
-                    showMenu(false);
-                }
-            },500);
-        }
+        function newPageButtonListener(path) {
+            finderPath = path;
 
-        /**
-         * Prevents the menu hiding if the cursor returns to the hover the menu or the button.
-         */
-        function preventHide(event)
-        {
-            var target = $(event.target);
-
-            if (target.attr('id') === btn.attr('id'))
+            // If current view is Search then keep the button disabled (since no path to create is defined in Finder)
+            if ($.Percussion.getCurrentFinderView() == $.Percussion.PERC_FINDER_SEARCH_RESULTS || $.Percussion.getCurrentFinderView() == $.Percussion.PERC_FINDER_RESULT)
             {
-                flag_show = true;
-                return;
+                enableButton(false);
             }
-
-            if (target.is("#perc-finder-actions *"))
+            else if(path[1] == $.perc_paths.SITES_ROOT_NO_SLASH)
             {
-                flag_show = true;
-            }
-        }
-
-        /**
-         * Handler that get called when the button is clicked
-         */
-        function clickHandler()
-        {
-            if ($('#perc-finder-actions-button').hasClass('ui-disabled'))
-            {
-                return false;
-            }
-            else
-            {
-                if (menu.css('display') === 'none')
+                newPageButton.show();
+                enableButton(true);
+                if(path.length < 3)
                 {
-                    showMenu(true);
+                    enableButton(false);
                 }
                 else
                 {
-                    showMenu(false);
+                    $.PercFolderHelper().getAccessLevelByPath(path.join('/'),true,function(status, result){
+                        if(status == $.PercFolderHelper().PERMISSION_ERROR || result == $.PercFolderHelper().PERMISSION_READ)
+                        {
+                            enableButton(false);
+                        }
+                    });
                 }
-                return false;
-            }
-        }
-
-        /**
-         * Makes the menu visible/invisible.
-         * @param boolean flag If true, makes the menu visible
-         */
-        function showMenu(flag)
-        {
-            if (flag)
-            {
-                var menuX = btn.position().left + btn.outerWidth() - menu.outerWidth() - 1;
-                var menuY = btn.position().top + btn.outerHeight() + 9;
-                menu
-                    .css("top", menuY)
-                    .css("left", menuX)
-                    .css("display", "block");
             }
             else
             {
-                menu.hide();
+                if(path[1] == $.perc_paths.DESIGN_ROOT_NO_SLASH || path[1] == $.perc_paths.ASSETS_ROOT_NO_SLASH || path[1] == $.perc_paths.RECYCLING_ROOT_NO_SLASH )
+                {
+                    newPageButton.hide();
+                }
             }
+
         }
 
         /**
-         * Helper function to enable or disable the button in the finder.
+         * Helper function to enable or disable the new page button on finder.
          * @param flag(boolean) if <code>true</code> the button is enabled, otherwise the button is disabled.
          */
         function enableButton(flag)
         {
-            var anchor = $('#perc-finder-actions-button');
-            if (flag)
-            {
-                // We perform an "unbind" first, in case clickHandler has been bound several times by error
-                // (same thing in the else)
-                anchor.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
-                    clickHandler);
+            if(flag){
+                newPageButton.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", checkAndOpenNewPageDialog );
             }
-            else
-            {
-                anchor.addClass('ui-disabled').removeClass('ui-enabled').off('click');
+            else{
+                newPageButton.addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
         }
 
-        /**
-         * Creates the base HTML and adds the menu entries.
-         * @param array of menuentries (former button elements)
-         */
-        function createMenuHTML(menuentries)
-        {
-            var dropdown = $("<ul class=\"perc-actions-menu box_shadow_with_padding\">");
-            var option = $("<li class=\"perc-actions-menu-item\">");
-
-            for(l = 0; l < menuentries.length; l++){
-                option.clone().append(menuentries[l]).appendTo(dropdown);
-            }
-
-            return dropdown;
-        }
 
         /**
-         * Binds the enable/disable change events of the menu entries with the actions button.
-         * If all the menu entries are disabled, the button must be disabled too.
+         * Checks whether the current user has permission to create a new page, if yes, then calls the contentViewer
          */
-        function bindChangeEnabledStateListener()
+        function checkAndOpenNewPageDialog()
         {
-            // We will declare a variable and an internal method first, then we will bind this internal
-            // function to the buttons
-            var entriesListenedLeft = menuEntries.length;
-            var entriesDisabled = 0;
-
-            /**
-             * Callback function that is called whenever an 'actions-change-enabled-state' event
-             * is triggered. It uses closure to take advantage of storing state between asynchronous
-             * calls and maintain state to finally enable/disable the actions button.
-             * NOTE: To debug this function I recommend using console.log()
-             */
-            function entryChangeEnabledStateListener()
-            {
-                // In this case, "this" represents the menu entry
-                var state_enabled = $(this).hasClass("ui-enabled");
-                if (entriesListenedLeft === 1 && entriesDisabled === menuEntries.length - 1)
-                {
-                    // If there only 1 entry left to trigger the event, and the previous ones were
-                    // all disabled, then its states determines the state of the button
-                    enableButton(state_enabled);
-                    entriesListenedLeft = menuEntries.length;
-                    entriesDisabled = 0;
+            var currentItem = finderRef.getCurrentItem();
+            var folderPath = "";
+            if (currentItem != null){
+                if (typeof(currentItem.folderPaths) === 'object') {
+                    folderPath = currentItem.folderPaths[0];
+                } else {
+                    folderPath = currentItem.folderPaths;
                 }
-                else if (entriesListenedLeft == 1 && entriesDisabled < menuEntries.length - 1)
+                //if the current item is a Folder select the current path.
+                if (currentItem.type == "Folder"){
+                    folderPath = currentItem.folderPath;
+                }
+            }
+            //Check user access
+            $.PercUserService.getAccessLevel("percPage", -1, function(status, result){
+                if(status == $.PercServiceUtils.STATUS_ERROR || result == $.PercUserService.ACCESS_READ || result == $.PercUserService.ACCESS_NONE)
                 {
-                    enableButton(true);
-                    entriesListenedLeft = menuEntries.length;
-                    entriesDisabled = 0;
+                    $.perc_utils.alert_dialog({title: I18N.message("perc.ui.new.page.button@New Page"), content: I18N.message("perc.ui.new.page.button@New Page Authorization")});
+                    return;
+                }
+                else if(contentViewer)
+                {
+                    //contentViewer.confirm_if_dirty( $.PercNewPageDialog().openDialog(finderPath.join('/')));
+                    contentViewer.confirm_if_dirty( function () {$.PercNewPageDialog().openDialog(finderPath.join('/'));});
                 }
                 else
                 {
-                    // The entry is not the last, if is disabled count it
-                    if (!state_enabled)
-                    {
-                        entriesDisabled++;
-                    }
-                    entriesListenedLeft--;
+                    open_new_page_dialog($.PercNewPageDialog().openDialog(finderPath.join('/')),null);
                 }
-            }
-
-            // Bind the declared function to the buttons in the array menuEntries
-            for (m = 0; m < menuEntries.length; m++)
-            {
-                menuEntries[m].on('actions-change-enabled-state', entryChangeEnabledStateListener);
-            }
+            }, folderPath);
         }
 
-        // By default, the button will be disabled, and will get enabled whenever one of the menu
-        // entries gets enabled. Check the bindChangeEnabledStateListener() function.
-        bindChangeEnabledStateListener();
-        return btn;
+        finderRef.addPathChangedListener( newPageButtonListener );
+        return newPageButton;
     };
+
 })(jQuery);
