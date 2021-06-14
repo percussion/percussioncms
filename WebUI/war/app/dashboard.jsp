@@ -172,7 +172,7 @@
     <script src="../widgets/PercWizard/PercWizard.js"></script>
     <script src="../plugins/perc_ChangePwDialog.js"></script>
     <script src="../plugins/perc_newsitedialog.js"></script>
-<!-- End Dashboard JS -->
+    <!-- End Dashboard JS -->
     <% } else { %>
     <link rel="stylesheet" type="text/css" href="../cssMin/perc_dashboard.packed.min.css"/>
 
@@ -266,12 +266,12 @@
                 <label><i18n:message key = "perc.ui.dashboard@Type"/></label>
                 <select class="perc-gadget-type">
                     <option value="all"><i18n:message key = "perc.ui.dashboard@View All"/></option>
-                    <option selected value="percussion">Percussion</option>
+                    <option selected="true" value="percussion">Percussion</option>
                     <option value="custom"><i18n:message key = "perc.ui.dashboard@Custom"/></option>
                 </select>
                 <label><i18n:message key = "perc.ui.dashboard@Category"/></label>
                 <select class="perc-gadget-category">
-                    <option class="perc-gadget-category-default" selected value="all"><i18n:message key = "perc.ui.dashboard@View All"/></option>
+                    <option class="perc-gadget-category-default" selected="true" value="all"><i18n:message key = "perc.ui.dashboard@View All"/></option>
                     <option class="perc-gadget-category-predefined" value="analytics"><i18n:message key = "perc.ui.dashboard@Analytics"/></option>
                     <option class="perc-gadget-category-predefined" value="blog"><i18n:message key = "perc.ui.dashboard@Blog"/></option>
                     <option class="perc-gadget-category-predefined" value="content"><i18n:message key = "perc.ui.dashboard@Content"/></option>

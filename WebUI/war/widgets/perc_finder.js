@@ -329,16 +329,16 @@ function finder() {
             $header.removeAttr('collapsed');
             $finder.slideDown(notify_resize);
             $button.removeClass('icon-plus-sign')
-                .removeClass('fa-plus').
+                .removeClass(' fas fa-plus').
             addClass('icon-minus-sign').
-            addClass('fa-minus');
+            addClass('fas fa-minus');
         } else {
             $header.attr('collapsed', true);
             $finder.slideUp(notify_resize);
             $button.removeClass('icon-minus-sign').
-            removeClass('fa-minus').
+            removeClass('fas fa-minus').
             addClass('icon-plus-sign').
-            addClass('fa-plus');
+            addClass('fas fa-plus');
         }
         var frame  = $('#frame');
         var header = $('.perc-main');

@@ -49,7 +49,7 @@
             .on("mouseleave",hideOnMouseOut);
 
         var btnHtml ='<div id="perc-finder-actions" >'
-            + '<a id="perc-finder-actions-button" class="perc-font-icon" title="' +I18N.message("perc.ui.actions.button@Select An Action") + '" href="#"><span class="icon-cog"></span><span class="icon-caret-down"></span></a>'
+            + '<a id="perc-finder-actions-button" class="perc-font-icon" title="' +I18N.message("perc.ui.actions.button@Select An Action") + '" href="#"><span class="icon-cog fas fa-cog"></span><span class="icon-caret-down fas fa-caret-down"></span></a>'
             + '</div>';
         var btn = $(btnHtml)
         //.perc_button()
