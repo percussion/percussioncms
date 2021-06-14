@@ -132,7 +132,7 @@
             var roleTableBody = $('<tbody></tbody>');
             var roleHeaderRow = $('<tr class="perc-wfconfig-row-header"></tr>');
             $(roleHeaderRow).attr('class',generateRowId(0));            
-            var roleHeader = $('<th align="left">Roles</th>');
+            var roleHeader = $('<th style="text-align: left;">Roles</th>');
             $(roleHeader).attr('class',generateColumnId(0));
             $(roleHeaderRow).append(roleHeader);
             var stepPermissions = workflowStep.permissionNames;
@@ -161,7 +161,7 @@
             for (var i=0; i < roleListObject.RoleList.roles.length; i++) {
                 var roleRow = $('<tr class="perc-wfconfig-row"></tr>');
                 roleRow.addClass(generateRowId(i+1));
-                var roleNameElement=$('<td align:"left"><span class = "perc-roleName-wrapper perc-ellipsis"></span></td>');
+                var roleNameElement=$('<td style="text-align:left;"><span class = "perc-roleName-wrapper perc-ellipsis"></span></td>');
                 $(roleNameElement).addClass(generateColumnId(0));
                 var roleName = roleListObject.RoleList.roles[i];
                 roleRow.attr("data", roleName);
@@ -247,7 +247,6 @@
                 var row = this;
                 if($(row).find('td.perc-column-0').text() === roleName) {
                     matchPermissions(roleName, notifyStatus, roleTransitions, row);
-                    return;
                 }
             });
         }
