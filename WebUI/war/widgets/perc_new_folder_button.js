@@ -30,7 +30,7 @@
         var ut = $.perc_utils;
         var finder_path = ["", $.perc_paths.SITES_ROOT_NO_SLASH];
         var pitem = {};
-        var btn = $("<a id='perc-finder-new-folder' class='perc-font-icon ui-disabled' href='#' title='"+I18N.message("perc.ui.new.folder.button@Click New Folder") + "'><span class='icon-plus'></span><span class='icon-folder-close'></span></a>")
+        var btn = $("<a id='perc-finder-new-folder' class='perc-font-icon ui-disabled' href='#' title='"+I18N.message("perc.ui.new.folder.button@Click New Folder") + "'><span class='icon-plus fas fa-plus'></span><span class='icon-folder-close fas fa-folder'></span></a>")
             .perc_button().on("click",function () {
                 createNewFolder();
             });
