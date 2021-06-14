@@ -36,7 +36,6 @@
             "open":open,
             "tempPossiblePermissions": [I18N.message("perc.ui.edit.workflow.step.dialog@Submit"), I18N.message("perc.ui.edit.workflow.step.dialog@Reject"), I18N.message("perc.ui.edit.workflow.step.dialog@Approve"), I18N.message("perc.ui.edit.workflow.step.dialog@Publish"), I18N.message("perc.ui.edit.workflow.step.dialog@Notify")]
         };
-        return dialogApi;
         
         var utils = $.perc_utils;
         function open(isReservedStep, isUpdate, workflowStep, workflowName, previousStepName, currentStep, successCallBack, cancelCallBack)
@@ -270,19 +269,19 @@
                     var tempName = roleTransitions[i];
                     tempName = tempName.transitionPermission.toLowerCase();
                     if(className === tempName){
-                        $(column).find('input').attr('checked','checked');
+                        $(column).find('input').prop('checked',true);
                         if(tempName === "publish" && !isReadOnly) {
-                            $(column).find('input').removeAttr('disabled', false);                        
+                            $(column).find('input').prop('disabled', false);
                         }
                         if(tempName === "approve" && !isReadOnly) {
-                            $(row).find('td.perc-publish input').removeAttr('disabled', false);                        
+                            $(row).find('td.perc-publish input').prop('disabled', false);
                         }
                     }
 
                 }
-                var notifyChkBox = $(row).find("td.perc-notify input").removeAttr('disabled', false);
+                var notifyChkBox = $(row).find("td.perc-notify input").prop('disabled', false);
                 if(notifyStatus) {
-                    notifyChkBox.attr('checked', true);
+                    notifyChkBox.prop('checked', true);
                 }
             });
         }
@@ -293,21 +292,21 @@
             //Enable Publish transistion if Approve transistion is checked. Disable and uncheck Publish transistion if Approve transistion is uncheck.
             if(clickedCheckbox.parent().hasClass('perc-approve')) {
                 if(clickedCheckbox.is(':checked')) {
-                    $(row).find(".perc-publish input").removeAttr('disabled');
+                    $(row).find(".perc-publish input").prop('disabled',false);
                 }
                 else {                    
-                    $(row).find(".perc-publish input").removeAttr('checked').attr('disabled', true);
+                    $(row).find(".perc-publish input").prop('checked',false).prop('disabled', true);
                 }
             }
             if($(row).find("td:not('.perc-notify') input:checked").length > 0){
-                $(row).find(".perc-notify input").attr('disabled', false);
+                $(row).find(".perc-notify input").prop('disabled', false);
             }
             else 
             {
-                $(row).find(".perc-notify input").removeAttr('checked').attr('disabled', true);
+                $(row).find(".perc-notify input").prop('checked',false).prop('disabled', true);
             }
             if(clickedCheckbox.parent().hasClass('perc-publish')&& clickedCheckbox.is(':checked')) {
-               $(row).find(".perc-approve input").attr('checked', 'checked');
+               $(row).find(".perc-approve input").prop('checked', true);
             }          
         }
         function generateRowId(number){    
