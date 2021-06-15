@@ -69,7 +69,7 @@
         
         // bind all callbacks from configuration
         $.each(conf, function(name, fn) {
-            if (typeof fn === "function") { $self.bind(name, fn); }
+            if (typeof fn === "function") { $self.on(name, fn); }
         });
         
         if (wrap.length > 1) { wrap = $(conf.items, root); }
@@ -308,13 +308,13 @@
             },
             
             // bind / unbind
-            bind: function(name, fn) {
-                $self.bind(name, fn);
+            on: function(name, fn) {
+                $self.off(name, fn);
                 return self;    
             },  
             
-            unbind: function(name) {
-                $self.unbind(name);
+            off: function(name) {
+                $self.on(name);
                 return self;    
             }           
             
@@ -323,24 +323,24 @@
         // callbacks    
         $.each("onBeforeSeek,onStart,onSeek,onReload".split(","), function(i, ev) {
             self[ev] = function(fn) {
-                return self.bind(ev, fn);   
+                return self.on(ev, fn);
             };
         });  
             
             
         // prev button      
-        prev.addClass(conf.disabledClass).click(function() {
+        prev.addClass(conf.disabledClass).on("click",function() {
             self.prev(); 
         });
         
 
         // next button
-        next.click(function() { 
+        next.on("click", function() {
             self.next(); 
         });
         
         // prev page button
-        nextPage.click(function() { 
+        nextPage.on("click",function() {
             self.nextPage(); 
         });
         
@@ -350,7 +350,7 @@
         
 
         // next page button
-        prevPage.addClass(conf.disabledClass).click(function() { 
+        prevPage.addClass(conf.disabledClass).on("click",function() {
             self.prevPage(); 
         });     
         
@@ -372,7 +372,7 @@
             // clickable
             if (conf.clickable) {
                 self.getItems().each(function(i) {
-                    $(this).unbind("click.scrollable").bind("click.scrollable", function(e) {
+                    $(this).off("click.scrollable").on("click.scrollable", function(e) {
                         if ($(e.target).is("a")) { return; }
                         return self.click(i);
                     });
@@ -383,23 +383,23 @@
             if (conf.keyboard) {                
                 
                 // keyboard works on one instance at the time. thus we need to unbind first
-                $(document).unbind(keyId).bind(keyId, function(evt) {
+                $(document).off(keyId).on(keyId, function(evt) {
 
                     // do nothing with CTRL / ALT buttons
                     if (evt.altKey || evt.ctrlKey) { return; }
                     
                     // do nothing for unstatic and unfocused instances
-                    if (conf.keyboard != 'static' && current != self) { return; }
+                    if (conf.keyboard !== 'static' && current !== self) { return; }
                     
                     var s = conf.keyboardSteps;             
                                         
-                    if (horizontal && (evt.keyCode == 37 || evt.keyCode == 39)) {                   
-                        self.move(evt.keyCode == 37 ? -s : s);
+                    if (horizontal && (evt.keyCode === 37 || evt.keyCode === 39)) {
+                        self.move(evt.keyCode === 37 ? -s : s);
                         return evt.preventDefault();
                     }   
                     
-                    if (!horizontal && (evt.keyCode == 38 || evt.keyCode == 40)) {
-                        self.move(evt.keyCode == 38 ? -s : s);
+                    if (!horizontal && (evt.keyCode === 38 || evt.keyCode === 40)) {
+                        self.move(evt.keyCode === 38 ? -s : s);
                         return evt.preventDefault();
                     }
                     
@@ -408,7 +408,7 @@
                 });
                 
             } else  {
-                $(document).unbind(keyId);
+                $(document).off(keyId);
             }               
 
         });
