@@ -89,9 +89,9 @@
             var image = eval(data[0]);
 
             // if uploaded invalid or unsupported image ?
-            if (image == undefined || image.error != undefined) {
+            if (image === undefined || image.error !== undefined) {
                 var errorMsg = "Failed to upload the image.";
-                if (image != undefined && image.error != undefined && image.error != null)
+                if (image !== undefined && image.error !== undefined && image.error != null)
                     errorMsg = image.error;
                 $('#perc-upload-error-message').show().html(errorMsg);
 
