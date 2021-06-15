@@ -808,7 +808,7 @@
         function _initThumbprefix()
         {
             var hiddenPrefix = $("input[name=thumbprefix]");
-            if (hiddenPrefix.val() == "") {
+            if (hiddenPrefix.val() === "") {
                 alert('"thumbprefix" field cannot be empty.');
             }
             $thumbPrefix.val(hiddenPrefix.val());
