@@ -492,29 +492,23 @@ percCanonicalRedirect('${defaultDocument}');
 #set($includeUIOnPublishedPage = $widgetitemUI.getProperties().get("includeUIOnPublishedPage"))##
 #set($jQueryUICSSTheme = $widgetitemUI.getProperties().get("jQueryUICSSTheme"))##
 #if("$!{jQueryUICSSTheme}" != "" )## load the jquery-ui.css provided by the user on jquery ui widget
-<link rel="preload" as="style" href="$jQueryUICSSTheme" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="$jQueryUICSSTheme"></noscript>
+<link rel="stylesheet" href="$jQueryUICSSTheme">
 #else## if user has not provided jquery-ui.css then load default css
-<link rel="preload" as="style" href="$css_link" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="$css_link"></noscript>
+<link rel="stylesheet" href="$css_link">
 #end##
 #else## in this case load default jquery-ui.css file
 #if($perc.linkContext.site.overrideSystemJQueryUI==false || $perc.isEditMode())##
-<link rel="preload" as="style" href="$css_link" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="$css_link"></noscript>
+<link rel="stylesheet" href="$css_link">
 #end##
 #end##
 #else## if the css file is other than jquery-ui.css
-<link rel="preload" as="style" href="$css_link" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="$css_link"></noscript>
+<link rel="stylesheet" href="$css_link">
 #end##
 #end##
-<link rel="preload" as="style" href="$rx.pageutils.themeLink($perc.linkContext, $perc.template.theme)" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="$rx.pageutils.themeLink($perc.linkContext, $perc.template.theme)"></noscript>
+<link rel="stylesheet" href="$rx.pageutils.themeLink($perc.linkContext, $perc.template.theme)">
 #set($__perc_region_css = $rx.pageutils.themeRegionCssLink($perc.linkContext, $perc.template.theme, $perc.editMode, $perc.editType).toString().trim())##
 #if("$!__perc_region_css" != "")##
-<link rel="preload" as="style" href="${__perc_region_css}" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="${__perc_region_css}"></noscript>
+<link rel="stylesheet" href="${__perc_region_css}">
 #end##
 #set($__style="")##
 #set($__style = $perc.template.cssRegion.replaceAll("$tools.esc.q", "").trim())##
@@ -608,7 +602,6 @@ $__style
 
 <body>
 <input type="hidden" id="perc_linkback_id" value="$perc.page.id"/>
-<h3 style="display:none;">$tools.esc.html($!perc.page.title)</h3>
 #if($perc.linkContext.mode == "PUBLISH" && $perc.template.protectedRegion && $perc.template.protectedRegion.String != "")##
 #set($loginPage = $rx.pageutils.getSiteLoginPage($perc.linkContext.site.name))##
 <div id="protectedRegionInformation" data="{&quot;protectedRegion&quot;:&quot;$!perc.template.protectedRegion&quot;,&quot;protectedRegionText&quot;:&quot;$!perc.template.protectedRegionText&quot;,&quot$
@@ -756,15 +749,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 #if ($perc.template.sourceTemplateName.startsWith("perc.resp") && $perc.linkContext.site.overrideSystemFoundation==false)##
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 #if($perc.linkContext.mode == "PUBLISH")##
-<link rel="preload" as="style" href="/web_resources/cm/foundation/css/foundation.min.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="/web_resources/cm/foundation/css/foundation.min.css"></noscript>
-<link rel="preload" as="style" href="/web_resources/cm/foundation/css/normalize.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="/web_resources/cm/foundation/css/normalize.cs"></noscript>
+<link rel="stylesheet" href="/web_resources/cm/foundation/css/foundation.min.css">
+<link rel="stylesheet" href="/web_resources/cm/foundation/css/normalize.cs">
 #else##
-<link rel="preload" as="style" href="/Rhythmyx/web_resources/cm/foundation/css/foundation.min.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="/Rhythmyx/web_resources/cm/foundation/css/foundation.min.css"></noscript>
-<link rel="preload" as="style" href="/Rhythmyx/web_resources/cm/foundation/css/normalize.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="/Rhythmyx/web_resources/cm/foundation/css/normalize.css"></noscript>
+<link rel="stylesheet" href="/Rhythmyx/web_resources/cm/foundation/css/foundation.min.css">
+<link rel="stylesheet" href="/Rhythmyx/web_resources/cm/foundation/css/normalize.css">
 #end##
 #end##
 #end##
@@ -1089,107 +1078,4 @@ crossorigin="$!{jQueryCrossOrigin}"
 #end##
 #end##
 #end##
-##
-## Macro to preload css
-##
-#macro(cssPreload)
-<script>
-/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
-/* This file is meant as a standalone workflow for
-- testing support for link[rel=preload]
-- enabling async CSS loading in browsers that do not support rel=preload
-- applying rel preload css once loaded, whether supported or not.
-*/
-(function( w ){
-"use strict";
-// rel=preload support test
-if( !w.loadCSS ){
-w.loadCSS = function(){};
-}
-// define on the loadCSS obj
-var rp = loadCSS.relpreload = {};
-// rel=preload feature support test
-// runs once and returns a function for compat purposes
-rp.support = (function(){
-var ret;
-try {
-ret = w.document.createElement( "link" ).relList.supports( "preload" );
-} catch (e) {
-ret = false;
-}
-return function(){
-return ret;
-};
-})();
-// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
-// then change that media back to its intended value on load
-rp.bindMediaToggle = function( link ){
-// remember existing media attr for ultimate state, or default to 'all'
-var finalMedia = link.media || "all";
-function enableStylesheet(){
-link.media = finalMedia;
-}
-// bind load handlers to enable media
-if( link.addEventListener ){
-link.addEventListener( "load", enableStylesheet );
-} else if( link.attachEvent ){
-link.attachEvent( "onload", enableStylesheet );
-}
-// Set rel and non-applicable media type to start an async request
-// note: timeout allows this to happen async to let rendering continue in IE
-setTimeout(function(){
-link.rel = "stylesheet";
-link.media = "only x";
-});
-// also enable media after 3 seconds,
-// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
-setTimeout( enableStylesheet, 3000 );
-};
 
-// loop through link elements in DOM
-rp.poly = function(){
-// double check this to prevent external calls from running
-if( rp.support() ){
-return;
-}
-var links = w.document.getElementsByTagName( "link" );
-for( var i = 0; i < links.length; i++ ){
-var link = links[ i ];
-// qualify links to those with rel=preload and as=style attrs
-if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
-// prevent rerunning on link
-link.setAttribute( "data-loadcss", true );
-// bind listeners to toggle media back
-rp.bindMediaToggle( link );
-}
-}
-};
-
-// if unsupported, run the polyfill
-if( !rp.support() ){
-// run once at least
-rp.poly();
-// rerun poly on an interval until onload
-var run = w.setInterval( rp.poly, 500 );
-if( w.addEventListener ){
-w.addEventListener( "load", function(){
-rp.poly();
-w.clearInterval( run );
-} );
-} else if( w.attachEvent ){
-w.attachEvent( "onload", function(){
-rp.poly();
-w.clearInterval( run );
-} );
-}
-}
-// commonjs
-if( typeof exports !== "undefined" ){
-exports.loadCSS = loadCSS;
-}
-else {
-w.loadCSS = loadCSS;
-}
-}( typeof global !== "undefined" ? global : this ) );
-</script>
-#end
