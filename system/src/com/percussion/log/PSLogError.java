@@ -29,11 +29,10 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.util.Locale;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.util.Locale;
 
 /**
  * The PSLogError class is used as the base class for all error logging
@@ -94,7 +93,7 @@ public abstract class PSLogError extends PSLogInformation  {
          m_SubMessages         = buildSubMessages(loc);
          m_SubMessagesLocale   = loc.toString();
       }
-      else if (!m_SubMessagesLocale.equals(loc.toString())) {
+      else {
          /* we'll build it in the specified locale, but don't reset the
           * default version
           */
