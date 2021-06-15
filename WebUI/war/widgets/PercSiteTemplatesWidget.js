@@ -523,14 +523,14 @@
             });
 
             // Pagination controls - Text input for page selector
-            $('#perc-activated-templates .perc-template-pages-controls').submit(function()
+            $('#perc-activated-templates .perc-template-pages-controls').on("submit",function()
             {
                 var templateId = $(this).parents(".perc-template-item").attr('id');
                 var totalPages = getTotalPagesByTemplateId(templateId);
                 var jumpInput = $(this).find('.perc-jump');
 
                 //If there are no pages, always go to page 1.
-                if(totalPages == 0)
+                if(totalPages === 0)
                 {
                     jumpInput.val(1);
                     return false;

@@ -113,7 +113,7 @@
 <link rel="stylesheet" type="text/css" href="../css/IE8_styles.css"/><![endif]-->
 <script  >
 
-    $(document).ready(function () {
+    $(function () {
 
         <% if( site != null && site != ""){ %>
         var siteArchUrl = "<%=site%>";
@@ -131,7 +131,7 @@
     });
 </script>
 </head>
-<body style="overflow : auto" view="PERC_SITE">
+<body view="PERC_SITE">
 <div class="perc-main perc-finder-fix" style="position:fixed">
     <div class="perc-header">
         <jsp:include page="includes/header.jsp" flush="true">

@@ -219,7 +219,7 @@ $.perc_newSectionDialog = function() {
         callback("cancel");
     }
     function _submit()  {
-        dialog.find('form').submit();
+        dialog.find('form').trigger("submit");
         $("#pageErrorSpan").hide();
         if($( "#perc-landing-page" ).hasClass( "perc-field-error" )){
             $("#pageErrorSpan").show();

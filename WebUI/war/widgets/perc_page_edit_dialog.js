@@ -317,7 +317,7 @@
              }
              //We are now loading the form, the clear the content presubmit handlers.
              $.PercContentPreSubmitHandlers.clearHandlers();
-            $("#edit-page-metadata-frame").contents().find("#perc-content-form").submit();
+            $("#edit-page-metadata-frame").contents().find("#perc-content-form").trigger("submit");
             $("#edit-page-metadata-frame").load(function() {
                 _handleSaveResults();
             } );

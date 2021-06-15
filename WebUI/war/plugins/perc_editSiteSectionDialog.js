@@ -178,7 +178,7 @@ $.perc_editSiteSectionDialog = function() {
         callback("cancel");
     }
     function _submit()  {
-        dialog.find('form').submit();
+        dialog.find('form').trigger("submit");
     }
     // A private helper method to group the fields and create collapsible sections
     function _addFieldGroups() {

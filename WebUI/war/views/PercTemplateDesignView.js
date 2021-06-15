@@ -31,10 +31,10 @@
     
     P.templateDesignView = function()
     {
-        $.perc_iframe_fix($('#frame'));
-        // P.headerView( $('.perc-main-div'), $("#frame") );
-        var model, tab, cssController, finderIsMaximized;
         var frame = $('#frame');
+        $.perc_iframe_fix(frame);
+        var model, tab, cssController, finderIsMaximized;
+
 
         // by default, the templates view is displayed
         // remove all scrollbars from the document in the templates view
@@ -200,10 +200,10 @@
                         });
                         panelExpanderIcon.removeClass("perc-expanded").addClass("perc-collapsed");
                         window.clearInterval(intervalId);
-                        setPanelPreference(false)
+                        setPanelPreference(false);
                     }
                 }
-            })
+            });
             
             var siteName = $.PercNavigationManager.getSiteName();
             if (typeof(siteName) != "undefined"){
@@ -217,7 +217,7 @@
                             pageNumber = panelSettings.pageNumber;
                         }
                         else{
-                            var unassignedResult = result.UnassignedResults
+                            var unassignedResult = result.UnassignedResults;
                             if (typeof(unassignedResult.unassignedItemList.childrenInPage) != "undefined")
                                 showPanel = unassignedResult.unassignedItemList.childrenInPage.length > 0;
                         }
@@ -229,7 +229,7 @@
                             intervalId = setInterval(requestUnassignedPages, 10000);
                         }
                     }
-                })
+                });
             }
             else{
                 panelExpanderIcon.addClass("perc-disabled");
@@ -240,17 +240,17 @@
             $.perc_filterField(percJump, $.perc_textFilters.ONLY_DIGITS);
             
             // Pagination controls - Previous button
-            $('.perc-unassigned-panel .perc-template-pages-controls .previous').on("click",unassignedPreviousClick)
+            $('.perc-unassigned-panel .perc-template-pages-controls .previous').on("click",unassignedPreviousClick);
             
             // Pagination controls - Next button - Click
-            $('.perc-unassigned-panel .perc-template-pages-controls .next').on("click", unassignedNextClick)
+            $('.perc-unassigned-panel .perc-template-pages-controls .next').on("click", unassignedNextClick);
             
              // Pagination controls - Text input for page selector
-            $('.perc-unassigned-panel .perc-template-pages-controls').submit(function()
+            $('.perc-unassigned-panel .perc-template-pages-controls').on("submit",function()
             {
                 requestUnassignedPages(parseInt(percJump.val()));
                 return false;
-            })
+            });
         }
         
         function unassignedPreviousClick(){
@@ -277,17 +277,17 @@
             if (typeof(siteName) != "undefined"){
                 $.PercPageService.getUnassignedPagesBySite(siteName, startIndex, UNASSIGNED_MAX_RESULTS, function(status, result){
                     if(status == $.PercServiceUtils.STATUS_SUCCESS){
-                        var unassignedResult = result.UnassignedResults
+                        var unassignedResult = result.UnassignedResults;
                         updateProgressBar(unassignedResult.importStatus);
                         drawUnassignedPages(unassignedResult.unassignedItemList);
                         var totalPages = unassignedResult.importStatus.catalogedPageCount + unassignedResult.importStatus.importedPageCount;
                         var childrenInPage = 0;
                         if (typeof(unassignedResult.unassignedItemList.childrenInPage) != "undefined")
-                            childrenInPage = $.perc_utils.convertCXFArray(unassignedResult.unassignedItemList.childrenInPage).length
+                            childrenInPage = $.perc_utils.convertCXFArray(unassignedResult.unassignedItemList.childrenInPage).length;
                         updatePaging(unassignedResult.unassignedItemList.startIndex, childrenInPage, totalPages);
                     }
                     else{}
-                })
+                });
             }
         }
         
@@ -426,7 +426,7 @@
                     case "Importing":
                         pageObj.find(".perc-left-img").attr("src","/Rhythmyx/sys_resources/images/running.gif");
                         pageObj.find(".perc-imported-page-dropdown").hide();
-                        pageObj.attr("disabled", "disabled")
+                        pageObj.prop("disabled", true);
                         break;
                     case "Cataloged":
                         pageObj.find(".perc-left-img").attr("src","/Rhythmyx/sys_resources/images/iconSpider.png");
@@ -646,7 +646,7 @@
         {
             var memento;
             memento = $.PercNavigationManager.getMemento();
-            memento['view'] = null;
+            memento.view = null;
         }
 
         /**
@@ -701,7 +701,7 @@
                 panel.hide();
                 panelExpanderIcon.removeClass("perc-expanded").addClass("perc-collapsed");
                 window.clearInterval(intervalId);
-                setPanelPreference(false)
+                setPanelPreference(false);
             }
             panelExpander.hide();
             container.css("margin-left", "0px");

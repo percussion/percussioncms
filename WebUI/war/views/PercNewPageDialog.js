@@ -178,7 +178,7 @@
             		} else {
 						$.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: result});
 					}
-					dialog.find('form').submit();
+					dialog.find('form').trigger("submit");
 	            });
             }
         
@@ -226,7 +226,7 @@
                
                 $.getJSON( queryPath, function( spec ) {
                     //Load template selector
-                    $.each( spec['TemplateSummary'], function() {
+                    $.each( spec.TemplateSummary, function() {
                         itemContainer.append(createTemplateEntry(this));
                         $("div.perc-scrollable").scrollable({
                             items: ".perc-items",

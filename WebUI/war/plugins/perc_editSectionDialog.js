@@ -208,7 +208,7 @@ $.perc_editSectionDialog = function() {
         }
         
         function _submit()	{
-            dialog.find('form').submit();
+            dialog.find('form').trigger("submit");
         }
         
         // A private helper method to group the fields and create collapsible sections

@@ -523,7 +523,7 @@
             finder.fireActionEvent(finder.ACTIONS.DELETE, eventData);
 
             // Refreshes the pages in the design manager carousel
-            $("form.perc-template-pages-controls").submit();
+            $("form.perc-template-pages-controls").trigger("submit");
             var clickEvent = jQuery.Event("click");
             clickEvent.deletedPageId = id;
             $(".resetPaging").trigger(clickEvent);

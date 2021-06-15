@@ -234,7 +234,7 @@
             var encodedPath = $.perc_utils.encodePathArray(path);
 
             dialog.find('input[name="upload-theme-file-path"]').val('/' + encodedPath.slice(3).join('/') + '/' + fileName);
-            dialog.find('#perc-theme-file-upload-form').submit();
+            dialog.find('#perc-theme-file-upload-form').trigger("submit");
         }
         
         /**

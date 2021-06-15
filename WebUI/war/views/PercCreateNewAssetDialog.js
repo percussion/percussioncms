@@ -111,7 +111,7 @@
          }
          //We are done processing the handlers, as we are submitting the form, clear all handlers.
          $.PercContentPreSubmitHandlers.clearHandlers();
-         $("#create-new-asset-content-frame").contents().find("#perc-content-form").submit();
+         $("#create-new-asset-content-frame").contents().find("#perc-content-form").trigger("submit");
          //Unbind the function to avoid an acumulation of calls to the same function
          $("#create-new-asset-content-frame").off('load', saveAssetResponse).on("load",saveAssetResponse);
       }

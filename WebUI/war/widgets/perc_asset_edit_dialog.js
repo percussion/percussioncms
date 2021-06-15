@@ -453,7 +453,7 @@
                     location.reload();
                   },
               function(data, textStatus){
-                    $("#edit-widget-content-frame").contents().find("#perc-content-form").submit();
+                    $("#edit-widget-content-frame").contents().find("#perc-content-form").trigger("submit");
               }
           );
 

@@ -102,7 +102,7 @@
         });
         
         // Prevent submit (default) behavior of the form element when hitting enter key
-        dialog.find( 'form' ).submit( function () {
+        dialog.find( 'form' ).on("submit", function () {
             return false;
         });
 
