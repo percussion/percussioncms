@@ -140,8 +140,9 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
     @Override
     public PSUiWorkflow getWorkflow(String workflowName) throws PSWorkflowEditorServiceException
     {
-        if (StringUtils.isBlank(workflowName))
+        if (StringUtils.isBlank(workflowName)) {
             throw new IllegalArgumentException("workflowName cannot be blank.");
+        }
 
         PSUiWorkflow defaultWorkflow = new PSUiWorkflow();
         try
@@ -157,7 +158,8 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         catch (Exception ex)
         {
             String msg = "Failed to get workflow for name = " + workflowName + ".";
-            log.error(msg, ex);
+            log.error("{}, Error: {}", msg, ex.getMessage());
+            log.debug(ex.getMessage(),ex);
             throw new PSWorkflowEditorServiceException(msg, ex);
 
         }
@@ -202,7 +204,8 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         catch (Exception ex)
         {
             String msg = "Failed to get the list of workflows";
-            log.error(msg, ex);
+            log.error("{}, Error: {}", msg, ex.getMessage());
+            log.debug(ex.getMessage(),ex);
             throw new PSWorkflowEditorServiceException(msg, ex);
 
         }
@@ -258,7 +261,8 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         catch (Exception ex)
         {
             String msg = "Failed to get the list of workflows";
-            log.error(msg, ex);
+            log.error("{}, Error: {}", msg, ex.getMessage());
+            log.debug(ex.getMessage(),ex);
             throw new PSWorkflowEditorServiceException(msg, ex);
         }
         return workflowList;
@@ -414,6 +418,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         catch (Exception ex)
         {
             log.error(ex.getMessage());
+            log.debug(ex.getMessage(),ex);
             throw new PSWorkflowEditorServiceException(ex.getMessage(), ex);
         }
         finally
@@ -562,14 +567,16 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
             catch (Exception ex)
             {
                 String msg = ex.getMessage();
-                log.error(msg, ex);
+                log.error("Error: {}", ex.getMessage());
+                log.debug(ex.getMessage(),ex);
                 throw new PSWorkflowEditorServiceException(msg, ex);
             }
         }
         finally
         {
-            if (locked)
+            if (locked) {
                 tryToUnlockWorkflow(workflowEditedName);
+            }
         }
     }
 
@@ -613,8 +620,9 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         }
         finally
         {
-            if (locked)
+            if (locked) {
                 tryToUnlockWorkflow(workflowName);
+            }
         }
 
         // Return the workflow from the DB
@@ -623,8 +631,9 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
 
     private boolean tryToLockWorkflow(String workflowName)
     {
-        if (StringUtils.isBlank(workflowName))
+        if (StringUtils.isBlank(workflowName)) {
             return false;
+        }
         
         boolean locked = lockMgr.getLock(workflowName);
         if (!locked)
@@ -668,14 +677,16 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
             }
         }
 
-        if (previousState == null)
+        if (previousState == null) {
             throw new IllegalArgumentException(MessageFormat.format(PSSteppedWorkflowService.STATE_NOT_FOUND, previousStateName));
+        }
 
         PSState nextState = getToStateByTransition(workflow, previousState, TRANSITION_NAME_SUBMIT);
 
-        if (nextState == null)
+        if (nextState == null) {
             throw new IllegalArgumentException("The target step for " + previousStateName
                     + " was not found in the workflow.");
+        }
 
         PSState pendingState = workflowService.loadWorkflowStateByName("Pending", workflow.getGUID());
 
@@ -707,8 +718,9 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
             for (PSUiWorkflowStepRole stepRole : workflowUiStep.getStepRoles()) 
             {
             	stepRoleNames.add(stepRole.getRoleName());
-            	if (stepRole.isEnableNotification())
-            	    stepRoleNamesWithEnableNotification.add(stepRole.getRoleName());
+            	if (stepRole.isEnableNotification()) {
+                    stepRoleNamesWithEnableNotification.add(stepRole.getRoleName());
+                }
     		}
             addWorkflowRolesToState(workflow, newState, stepRoleNames, stepRoleNamesWithEnableNotification);
             
@@ -774,8 +786,9 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         {
             // Obtain the workflow from the DB
             PSWorkflow workflow = getWorkflowFromName(uiWorkflow.getWorkflowName());
-            if(workflow == null)
+            if(workflow == null) {
                 throw new PSWorkflowEditorServiceException("Can't find the workflow by given name '" + uiWorkflow.getWorkflowName() + "'.");
+            }
             workflow = workflowService.loadWorkflow(workflow.getGUID());
 
             // Update the step name
@@ -792,8 +805,9 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
                 }
             }
             
-            if(currentState == null)
+            if(currentState == null) {
                 throw new PSWorkflowEditorServiceException(MessageFormat.format(PSSteppedWorkflowService.STATE_NOT_FOUND, stepByPreviousName));
+            }
             
             //Update the step roles 
             List<String> stepRoleNames = new ArrayList<>();
@@ -802,8 +816,9 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
             for (PSUiWorkflowStepRole stepRole : stepRoles) 
             {
                 stepRoleNames.add(stepRole.getRoleName());
-                if (stepRole.isEnableNotification())
+                if (stepRole.isEnableNotification()) {
                     stepRoleNamesWithEnableNotification.add(stepRole.getRoleName());
+                }
             }
             currentState.setAssignedRoles(new ArrayList<>());
             addWorkflowRolesToState(workflow, currentState, stepRoleNames, stepRoleNamesWithEnableNotification); 
@@ -815,8 +830,9 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
             for(Entry<String, List<String>> entry : transRoles.entrySet()) 
             {
                 PSTransition transition = getTransitionByName(currentState, entry.getKey());
-                if(transition == null)
+                if(transition == null) {
                     throw new PSWorkflowEditorServiceException("Can't find the transition by given name " + entry.getKey());
+                }
                 List<PSTransitionRole> transitionRoles = new ArrayList<>();
                 List<PSTransitionRole> tempRoles = createTransitionRoles(workflow, transition, entry.getValue());
                 transitionRoles.addAll(tempRoles);
@@ -842,8 +858,9 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         }
         finally
         {
-            if (locked)
+            if (locked) {
                 tryToUnlockWorkflow(workflowName);
+            }
         }
 	}
 
@@ -860,8 +877,9 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
             String name = stepName.trim();
             PSWorkflow workflow = getWorkflowFromName(workflowName);
             
-            if(workflow == null)
-            	throw new PSWorkflowEditorServiceException("Can't find the workflow by given name '" + workflowName + "'.");
+            if(workflow == null) {
+                throw new PSWorkflowEditorServiceException("Can't find the workflow by given name '" + workflowName + "'.");
+            }
             workflow = workflowService.loadWorkflow(workflow.getGUID());
             List<PSState> states = workflow.getStates();
             PSState currentState = null;
@@ -873,8 +891,9 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
             		break;
             	}
             }
-            if(currentState == null)
-            	throw new PSWorkflowEditorServiceException(MessageFormat.format(PSSteppedWorkflowService.STATE_NOT_FOUND, name));
+            if(currentState == null) {
+                throw new PSWorkflowEditorServiceException(MessageFormat.format(PSSteppedWorkflowService.STATE_NOT_FOUND, name));
+            }
             
             //Check if it is a system state 
             List<String> systemStates = Arrays.asList("Draft", "Review", "Approved", "Archive");
@@ -892,7 +911,8 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
             }
             catch (Exception e) 
             {
-            	log.debug("Failed to find the items by workflow and state while deleteing the step:", e);
+                log.error("Failed to find the items by workflow and state while deleteing the step, Error: {}", e.getMessage());
+                log.debug(e.getMessage(),e);
             	throw new PSWorkflowEditorServiceException("Unexpected error occurred while deleting the step. " +
             			"Please see the log for more details.");
             }
@@ -921,8 +941,9 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         }
         finally
         {
-            if (locked)
+            if (locked) {
                 tryToUnlockWorkflow(workflowName);
+            }
         }
     	
 	}
@@ -1550,14 +1571,16 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
     {
         Set<Integer> result = new HashSet<>();
         PSState pendingState = getWorkflowStateByName(workflow, stateName);
-        if (pendingState == null)
+        if (pendingState == null) {
             return result;
+        }
         
         List<PSAssignedRole> roles = pendingState.getAssignedRoles();
         for (PSAssignedRole role : roles)
         {
-            if (role.isDoNotify())
+            if (role.isDoNotify()) {
                 result.add(role.getGUID().getUUID());
+            }
         }
         
         return result;
@@ -1754,21 +1777,24 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
          
         //Update the transition roles
         PSTransition liveTransition = getTransitionByName(pendingState, TRANSITION_NAME_LIVE);
-        if(liveTransition == null)
+        if(liveTransition == null) {
             throw new PSWorkflowEditorServiceException("Can't find the transition by given name " + TRANSITION_NAME_LIVE);
+        }
         
         editTransitions.add(liveTransition);
         
         PSTransition transition = getTransitionByName(pendingState, TRANSITION_NAME_EDIT);
-        if(transition == null)
+        if(transition == null) {
             throw new PSWorkflowEditorServiceException("Can't find the transition by given name " + TRANSITION_NAME_EDIT);
+        }
         
         List<PSTransitionRole> transitionRoles = new ArrayList<>();
         List<PSTransitionRole> tempRoles = createTransitionRoles(workflow, transition, stepRoleNames);
         transitionRoles.addAll(tempRoles);
         transition.setTransitionRoles(transitionRoles);
-        if(!editTransitions.contains(transition))
-           editTransitions.add(transition);
+        if(!editTransitions.contains(transition)) {
+            editTransitions.add(transition);
+        }
         
         pendingState.setTransitions(editTransitions);
         
@@ -1784,15 +1810,17 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
 
         //Update the transition roles
         PSTransition editTransition = getTransitionByName(liveState, TRANSITION_NAME_EDIT);
-        if(editTransition == null)
+        if(editTransition == null) {
             throw new PSWorkflowEditorServiceException("Can't find the transition by given name " + TRANSITION_NAME_EDIT);
+        }
         
         transitionRoles = new ArrayList<>();
         tempRoles = createTransitionRoles(workflow, editTransition, stepRoleNames);
         transitionRoles.addAll(tempRoles);
         editTransition.setTransitionRoles(transitionRoles);
-        if(!liveTransitions.contains(editTransition))
-           liveTransitions.add(editTransition);
+        if(!liveTransitions.contains(editTransition)) {
+            liveTransitions.add(editTransition);
+        }
                  
         liveState.setTransitions(liveTransitions);
     }
@@ -1810,8 +1838,9 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
     private PSTransition updateRemoveTransition(PSWorkflow workflow, PSState currentState, List<String> stepRoleNames, List<String> stepRoleNamesWithEnableNotification)
     {
         PSTransition removeTransition = getTransitionByName(currentState, TRANSITION_NAME_REMOVE);
-        if(removeTransition == null)
+        if(removeTransition == null) {
             throw new PSWorkflowEditorServiceException("Can't find the transition by given name " + TRANSITION_NAME_REMOVE);
+        }
                 
         List<PSTransitionRole> transitionRoles = new ArrayList<>();
         List<PSTransitionRole> tempRoles = createTransitionRoles(workflow, removeTransition, stepRoleNames);
@@ -1877,8 +1906,9 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
 
         in = this.getClass().getClassLoader().getResourceAsStream("com/percussion/services/workflow/data/DefaultWorkflow.xml");
          
-        if(in == null)
+        if(in == null) {
             return "";
+        }
 
         br = new BufferedReader(new InputStreamReader(in));
                            
@@ -1932,8 +1962,9 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
     @Override
     public void notifyEvent(PSNotificationEvent notification)
     {
-        if (!EventType.SAVE_ASSETS_PROCESS_COMPLETE.equals(notification.getType()))
+        if (!EventType.SAVE_ASSETS_PROCESS_COMPLETE.equals(notification.getType())) {
             return;
+        }
         
         // start background process to cache all workflows
         PSWorkflowCacheBuilder cacheBuilder = new PSWorkflowCacheBuilder(workflowService, maintenanceManager);
