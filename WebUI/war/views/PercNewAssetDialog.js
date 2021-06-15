@@ -133,7 +133,7 @@
 
             function _submit()
             {
-                dialog.find('form').submit();
+                dialog.find('form').trigger("submit");
             }
 
             // add a validator to the form

@@ -605,7 +605,7 @@
 
                     // Instead we can make an "empty string search", that shows the same result as
                     // searching for an emtpy string in the search list view
-                    searchQuery === "";
+                    searchQuery = "";
                 }
                 percFinderListviewContainer.data('searchQuery', searchQuery);
                 percFinderListviewContainer.data('startIndex', 1);
@@ -1452,7 +1452,7 @@
                 },
                 id: "perc-workflow-comment-ok"
             };
-            buttons["Cancel"] = {
+            buttons.Cancel = {
                 click: function()
                 {
 

@@ -443,7 +443,7 @@ public interface IPSConstants
     * '%' - used to URL encode/escape other characters.
     * </p>
     */
-   public static String UNSAFE_URL_CHARACTERS = "#;%[]<>{}|\\^~`/?:@=&";
+   public static String UNSAFE_URL_CHARACTERS = " #;%[]<>{}|\\^~`/?:@=&";
    
    /**
     * Characters that are invalid for item names (sys_title).

@@ -23,30 +23,6 @@
  */
 package com.percussion.rxfix.dbfixes;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.naming.NamingException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-
 import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummary;
@@ -66,6 +42,29 @@ import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSStringTemplate;
 import com.percussion.util.PSStringTemplate.PSStringTemplateException;
 import com.percussion.utils.jdbc.PSConnectionHelper;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.naming.NamingException;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Detect items and folders where the sys title does not match replacement rules
@@ -85,7 +84,7 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
    /**
     * The log4j logger used for this class.
     */
-   private static Logger ms_logger = Logger.getLogger(PSFixInvalidSysTitle.class);
+   private static Logger log = LogManager.getLogger(PSFixInvalidSysTitle.class);
 
    /**
     * Ctor
@@ -131,10 +130,10 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
 
       HashMap<Integer, Set<Integer>> folders = getChangeItemFolderGroups(items, proc);
       // Store the list of folder ids (path heierarchy) for each item.
-      Map<Integer, List<PSLocator>> folderPaths = new HashMap<Integer, List<PSLocator>>();
+      Map<Integer, List<PSLocator>> folderPaths = new HashMap<>();
 
       // store the item id with its old and new name.
-      Map<Integer, ChangeItem> itemChangeNameMap = new HashMap<Integer, ChangeItem>();
+      Map<Integer, ChangeItem> itemChangeNameMap = new HashMap<>();
 
       //Create new names based other items in folders
       calculateUniqueItemNames(proc, objMgr, folders, folderPaths, itemChangeNameMap);
@@ -161,12 +160,12 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
          String newPath = item.newPath;
          if (preview)
          {
-            ms_logger.warn("Preview mode.  Would change invalid filepath " + oldPath + " to " + newPath);
+            log.warn("Preview mode.  Would change invalid filepath " + oldPath + " to " + newPath);
             logInfo(String.valueOf(item.summary.getContentId()), "Would Change path " + oldPath + " to " + newPath);
          }
          else
          {
-            ms_logger.warn("Changing invalid filepath " + oldPath + " to " + newPath);
+            log.warn("Changing invalid filepath " + oldPath + " to " + newPath);
             logInfo(String.valueOf(item.summary.getContentId()), "Changed path " + oldPath + " to " + newPath);
 
          }
@@ -375,7 +374,7 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
       }
       catch (IOException e)
       {
-         ms_logger.error("Cannot write to csv file " + filename, e);
+         log.error("Cannot write to csv file " + filename, e);
       }
       finally
       {
@@ -428,7 +427,7 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
          }
          catch (PSInvalidContentTypeException e)
          {
-            ms_logger.error("Cannot find get type " + typeName, e);
+            log.error("Cannot find get type " + typeName, e);
          }
       }
       return typeIds;
@@ -453,7 +452,7 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
          catch (Exception e)
          {
             logFailure(String.valueOf(ci.summary.getContentId()), "Failed to update component summary name");
-            ms_logger.error("Failed to update component summary name for id " + ci.summary.getContentId() + " path "
+            log.error("Failed to update component summary name for id " + ci.summary.getContentId() + " path "
                   + ci.summary.getName(), e);
 
          }
@@ -466,7 +465,7 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
       }
       catch (PSCacheException e)
       {
-         ms_logger.error(
+         log.error(
                "Failed to clear the folder cache after updating invalid characters in titles. Restart Server", e);
       }
    }
@@ -660,11 +659,11 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
     * @author stephenbolton
     *
     */
-   class ChangeItem implements Comparable<ChangeItem>
+   static class ChangeItem implements Comparable<ChangeItem>
    {
-      private PSComponentSummary summary;
+      private final PSComponentSummary summary;
 
-      private String newName;
+      private final String newName;
 
       private String oldPath;
 
@@ -685,6 +684,7 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
          return o1.oldSitePath.compareTo(o2.oldSitePath);
       }
 
+      @Override
       public int compareTo(ChangeItem o)
       {
          return oldSitePath.compareTo(o.oldSitePath);

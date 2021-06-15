@@ -204,7 +204,7 @@
        // the form submits to containing document, i.e., submits to itself and frame is reloaded
        $(window).removeData();
        frame.removeData();
-       frame.contents().find("#perc-content-form").submit();
+       frame.contents().find("#perc-content-form").trigger("submit");
     }
     
     /**
