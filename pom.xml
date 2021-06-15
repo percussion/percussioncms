@@ -189,7 +189,7 @@
        <opencsv.version>4.6</opencsv.version>
        <xmpbox.version>2.0.17</xmpbox.version>
        <jbig2.version>3.0.2</jbig2.version>
-       <pdfbox.version>2.0.17</pdfbox.version>
+       <pdfbox.version>2.0.24</pdfbox.version>
        <sqlite.version>3.28.0</sqlite.version>
        <swagger.version>1.6.2</swagger.version>
        <commons.compress.version>1.20</commons.compress.version>
