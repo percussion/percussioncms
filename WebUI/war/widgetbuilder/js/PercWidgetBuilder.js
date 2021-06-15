@@ -190,7 +190,8 @@ var WidgetBuilderApp = {};
      * Makes a service call to create or update a widget
      */
     function renderWidget(status, result, isNew){
-        $("#perc-widget-def-tabs").tabs('select', 0);
+        //CMS-8047 : compatibility for jquery 1.9+
+        $("#perc-widget-def-tabs").tabs('option', 'active', 0);
         $("#perc-widget-menu-buttons").show();
         if(!status){
             $.perc_utils.alert_dialog({"title":"Widget edit error", "content":result});
