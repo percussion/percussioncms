@@ -54,7 +54,7 @@
 }
 
 .perc-dashboard table tr {
-    border : 0;
+    border :0;
 }
 
 .perc-dashboard table th {
@@ -68,22 +68,24 @@
 
 .perc-gadget {
     -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
     -moz-background-origin:padding;
 
     -moz-border-radius: 4px;
 
     -webkit-border-radius: 4px;
 
+
     background: white;
 
     margin: 0 10px 10px 0;
     width:auto;
-
     z-index : 10000;
 }
 
 .perc-gadget-content {
     -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
     -moz-background-origin:padding;
     -moz-border-radius-bottomleft:4px;
     -moz-border-radius-bottomright:4px;

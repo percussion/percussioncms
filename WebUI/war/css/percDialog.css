@@ -25,6 +25,10 @@
 .perc-dialog .ui-dialog-content {
     /* background-color: #E6E6E9; */
 }
+.perc-dialog {
+    /* background-color: #E6E6E9; */
+    z-index :5000;
+}
 
 .perc-dialog .ui-widget-header {
     background: none repeat scroll 0 0 transparent;
