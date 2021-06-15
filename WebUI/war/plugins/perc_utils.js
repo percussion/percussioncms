@@ -1177,19 +1177,19 @@
 
             return ret;
         }
-        var ret = {};
+        var ret1 = {};
         $.each( schema, function( name ) {
             var tagNames = [];
             var matches =data.children().filter( function() {
                 tagNames.push( this.tagName );
                 return this.tagName.toLowerCase() === name.toLowerCase(); } );
             if( matches.length ) {
-                ret[ name ] = unxml( this, matches );
+                ret1[ name ] = unxml( this, matches );
             } else {
                 debug( I18N.message("perc.ui.utils@Expected To Find") + name + I18N.message("perc.ui.utils@Tags Found") + tagNames );
             }
         });
-        return ret;
+        return ret1;
     }
 
     function rexml( schema, pageObj ) {
@@ -1229,18 +1229,18 @@
             return ret;
         } else {
             //Object
-            var ret = "";
+            var ret2 = "";
             $.each( schema, function(name) {
                 if( name in pageObj ) {
                     var isStringArray = Array.isArray(schema[name]) && schema[name].length === 1 && (schema[name])[0] === "$";
-                    if(!isStringArray) ret += "<" + name + ">";
-                    ret += _rexml( schema[ name ], pageObj[ name ], name );
-                    if(!isStringArray) ret += "</" + name + ">";
+                    if(!isStringArray) ret2 += "<" + name + ">";
+                    ret2 += _rexml( schema[ name ], pageObj[ name ], name );
+                    if(!isStringArray) ret2 += "</" + name + ">";
                 } else {
                     debug("Can't find " + name + " in %o", pageObj);
                 }
             } );
-            return ret;
+            return ret2;
         }
     }
 

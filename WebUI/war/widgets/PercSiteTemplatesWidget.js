@@ -77,7 +77,7 @@
             this.controller = $.PercSiteTemplatesController(false);
 
             // load all the template summaries at startup
-            this.controller.on("load", function()
+            $(window).on("load", function()
             {
                 self._afterLoad();
             });
@@ -757,15 +757,15 @@
             function _restorePage(callbackData) {
                 var templateId = callbackData.templateId;
                 var pageId = callbackData.pageId;
-            $.PercRecycleService.restoreItem(pageId,  $.perc_paths.PAGE_RESTORE, function(status, data) {
-                if (status === $.PercServiceUtils.STATUS_ERROR) {
-                    $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: data});
-                } else {
-                    window.location.reload();
-                }
-            });
+                $.PercRecycleService.restoreItem(pageId,  $.perc_paths.PAGE_RESTORE, function(status, data) {
+                    if (status === $.PercServiceUtils.STATUS_ERROR) {
+                        $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: data});
+                    } else {
+                        window.location.reload();
+                    }
+                });
 
-        }
+            }
 
             /**
              * Update pagination indicators after loading paging groups.

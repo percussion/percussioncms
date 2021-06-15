@@ -154,7 +154,7 @@
             var currentPageNumber = Math.ceil(iEnd / itemsPerPage);
             var pageOfPages = currentPageNumber + " of " + pages + (pages === 1 ? " Page" : " Pages");
 
-            if(pages ===- 0)
+            if(pages === 0)
                 pageOfPages = "";
 
             var pInfo = $(".perc-datatables-info");
@@ -290,7 +290,7 @@
             {
                 if(row.rowData)
                 {
-                    rowTr.on("dblclick",null,row.rowData, config.percRowDblclickCallback);
+                    rowTr.on("dblclick",row.rowData, config.percRowDblclickCallback);
                 }
                 else
                 {
@@ -434,8 +434,8 @@
                     }
                 }
 
-                if($.browser.msie || $.browser.webkit)
-                    columnWidth = parseInt(columnWidth) + 20;
+                // if($.browser.browser.msie || $.browser.webkit)
+                //     columnWidth = parseInt(columnWidth) + 20;
 
                 columnWidth += "px";
 

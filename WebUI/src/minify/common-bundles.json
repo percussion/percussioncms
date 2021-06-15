@@ -4,7 +4,6 @@
       "type": "js",
       "name": "shared-common.js",
       "files": [
-        "jslib/modernizer/modernizr-custom.js",
         "jslib/profiles/3x/libraries/bowser/es5.js",
         "jslib/profiles/3x/jquery/jquery-3.6.0.js",
         "jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js",

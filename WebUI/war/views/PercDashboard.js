@@ -430,7 +430,7 @@
                         gadgets.container.addSetTitleListener(_afterSetTitle);
                         renderGadgets(results.DashboardConfig.gadgets);
 
-                        $(document).on("click","#perc-dashboard-restore-menu",function()
+                        $(document).off("click","#perc-dashboard-restore-menu",function()
                         {
                             restore();
                         });
@@ -476,8 +476,7 @@
                                 $('#perc-finder-new-site').trigger("click");
                             }
                         });
-                        //Chrome have some issue recalculating the heigth
-                        $("#perc-splashscreen").find(".ui-dialog-content").css("overflow", "hidden");
+
                     }
                 }, function(){}, true );
         }
@@ -671,11 +670,11 @@
 
         // hide the menu if you hover away from it
         //TODO:
-      /* $(document).on("mouseout","#perc-gadget-menu",function(eventObject )
-        {
-            menu.hide();
-        });
-        */
+        /* $(document).on("mouseout","#perc-gadget-menu",function(eventObject )
+          {
+              menu.hide();
+          });
+          */
 
     }
 

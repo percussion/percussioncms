@@ -1,6 +1,4 @@
 <!-- Start Common JS -->
-<script src="../jslib/modernizer/modernizr-custom.js"></script>
-
 <script src="../jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
 <script src="../jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
 
