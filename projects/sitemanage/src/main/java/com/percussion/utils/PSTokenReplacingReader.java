@@ -77,8 +77,9 @@ public class PSTokenReplacingReader extends Reader
         }
 
         int data = this.pushbackReader.read();
-        if (data != '$')
+        if (data != '$') {
             return data;
+        }
         
         boolean isXmlEncode = false;
 

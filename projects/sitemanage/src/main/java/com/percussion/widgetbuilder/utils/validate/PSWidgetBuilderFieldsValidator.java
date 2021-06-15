@@ -63,14 +63,17 @@ public class PSWidgetBuilderFieldsValidator
         Set<String> names = new HashSet<>();
         for (PSWidgetBuilderFieldData field : fields.getFields())
         {
-            if (!SecureStringUtils.isValidTableOrColumnName(field.getName()))
+            if (!SecureStringUtils.isValidTableOrColumnName(field.getName())) {
                 results.add(new PSWidgetBuilderValidationResult(CATEGORY, NAME, INVALID_VALUE + field.getName()));
+            }
             
-            if (StringUtils.isBlank(field.getLabel()) || field.getLabel().length() > 50)
+            if (StringUtils.isBlank(field.getLabel()) || field.getLabel().length() > 50) {
                 results.add(new PSWidgetBuilderValidationResult(CATEGORY, LABEL, INVALID_VALUE + field.getLabel()));
+            }
             
-            if (!isValidType(field.getType()))
+            if (!isValidType(field.getType())) {
                 results.add(new PSWidgetBuilderValidationResult(CATEGORY, TYPE, INVALID_VALUE + field.getType()));
+            }
             
             if (names.contains(field.getName()))
             {
@@ -91,8 +94,9 @@ public class PSWidgetBuilderFieldsValidator
         FieldType[] values = FieldType.values();
         for (FieldType fieldType : values)
         {
-            if (fieldType.name().equals(type))
+            if (fieldType.name().equals(type)) {
                 return true;
+            }
         }
         
         return false;
