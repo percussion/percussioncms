@@ -303,8 +303,6 @@
                 fixHeight();
                 if ($("#perc_site_map").length > 0)
                 {
-                    //CMS-8036 : Initialize befor calling layout method.
-                    $("#perc_site_map").perc_site_map();
                     $("#perc_site_map").perc_site_map('layoutAll');
                 }
             }
@@ -560,8 +558,6 @@
 
                     if ($("#perc_site_map").length > 0)
                     {
-                        //CMS-8036 : Initialize befor calling layout method.
-                        $("#perc_site_map").perc_site_map();
                         $("#perc_site_map").perc_site_map('layoutAll');
                     }
                 }
@@ -1275,8 +1271,6 @@
         finder.on('resize', function (event, ui) {
             //Refresh the arch view
             if ($("#perc_site_map").length > 0) {
-                //CMS-8036 : Initialize befor calling layout method.
-                $("#perc_site_map").perc_site_map();
                 $("#perc_site_map").perc_site_map('layoutAll');
             }
         });

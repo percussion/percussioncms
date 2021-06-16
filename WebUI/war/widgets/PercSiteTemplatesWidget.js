@@ -72,12 +72,12 @@
         {
             var self = this;
 
-            self.firstPagesArray = new Object();
+            self.firstPagesArray = {};
 
             this.controller = $.PercSiteTemplatesController(false);
 
             // load all the template summaries at startup
-            $(window).on("load", function()
+            this.controller.load(function()
             {
                 self._afterLoad();
             });
@@ -171,11 +171,11 @@
                 }
                 else
                 {
-                    var selectedItem = $("#perc-assigned-templates .perc-selected");
-                    var selectedItemTop = selectedItem.offset().top;
+                    var selectedItem1 = $("#perc-assigned-templates .perc-selected");
+                    var selectedItemTop = selectedItem1.offset().top;
                     $(".perc-templates-layout").animate(
                         {
-                            scrollTop: selectedItemTop - selectedItem.height()
+                            scrollTop: selectedItemTop - selectedItem1.height()
                         }, 500);
                 }
             }
@@ -625,11 +625,11 @@
 
 
                             // Appeand each of the pages returned by the service
-                            for(var i = 0; i < data.childrenInPage.length; i++) {
+                            for(var j = 0; j < data.childrenInPage.length; j++) {
                                 // Remove the "/Sites" string from the path and set it as the title for the li element
-                                var pagePath = data.childrenInPage[i].path.replace('\/\/' + $.perc_paths.SITES_ROOT_NO_SLASH, '');
-                                var curPageId = data.childrenInPage[i].id;
-                                var curPageElem = listElements.eq(i);
+                                var pagePath = data.childrenInPage[j].path.replace('\/\/' + $.perc_paths.SITES_ROOT_NO_SLASH, '');
+                                var curPageId = data.childrenInPage[j].id;
+                                var curPageElem = listElements.eq(j);
                                 var recycledPage = false;
                                 if(pagePath == "" || pagePath == undefined || pagePath == null){
                                     recycledPage = true;
@@ -646,28 +646,28 @@
                                     self.selectedPageIdOriginalTemplateId = memento.templateId;
                                 }
 
-                                var typeProps = getTypePropertyMap(data.childrenInPage[i].typeProperties.entries);
+                                var typeProps = getTypePropertyMap(data.childrenInPage[j].typeProperties.entries);
 
                                 var dropDownElement = '<span class="perc-template-pages-items-dropdown"></span>';
                                 var migrationEmptyWidgetIndicator = typeProps["migrationEmptyWidgetFlag"] == "yes" ?
                                     "<span><img src='../images/images/errorIcon.gif' title='Content migration did not populate all widgets on the page. The original content can be accessed in the Unused Asset tray.'/></span>" : "";
                                 var html = '<span class="perc-template-pages-items-thumbnail"><img src="../images/images/inspectButton.png" alt="perc.ui.extend.ui.dialog@Inspect Button"/></span><div class="perc-template-page-title">' +
-                                    data.childrenInPage[i].name + '</div>' + migrationEmptyWidgetIndicator + dropDownElement;
+                                    data.childrenInPage[j].name + '</div>' + migrationEmptyWidgetIndicator + dropDownElement;
                                 //because if pagePath is empty, then page is in recycle
                                 //don't add drop down and change icon to broken
                                 if (recycledPage) {
                                     html = '<span class="perc-template-pages-items-thumbnail"><img src="../images/images/brokenlink.png" alt="perc.ui.recycledPage@RecycledPage"/></span><div class="perc-template-page-title">' +
-                                        data.childrenInPage[i].name + '</div>' + migrationEmptyWidgetIndicator + dropDownElement;
+                                        data.childrenInPage[j].name + '</div>' + migrationEmptyWidgetIndicator + dropDownElement;
                                     curPageElem.attr('title', I18N.message("perc.ui.recycledPage@RecycledPage")).attr('id', curPageId)
-                                        .data("pageInfo", data.childrenInPage[i])
+                                        .data("pageInfo", data.childrenInPage[j])
                                         .html(html);
                                 }else{
                                     curPageElem.attr('title', pagePath).attr('id', curPageId)
-                                        .data("pageInfo", data.childrenInPage[i])
+                                        .data("pageInfo", data.childrenInPage[j])
                                         .html(html);
                                 }
                                 if (!recycledPage)
-                                    curPageElem.find(".perc-template-pages-items-thumbnail img").attr("data", JSON.stringify(data.childrenInPage[i]));
+                                    curPageElem.find(".perc-template-pages-items-thumbnail img").attr("data", JSON.stringify(data.childrenInPage[j]));
                                 if (typeProps["contentMigrationVersion"] != templateVersion) {
                                     curPageElem.find(".perc-template-pages-items-thumbnail img").addClass('perc-require-migration');
                                 }
@@ -683,7 +683,7 @@
                                         pageId: curPageId,
                                         templateId: templateId
                                     }, {pageId: curPageId, templateId: templateId}]
-                                }
+                                };
                                 if (recycledPage) {
 
                                     dropDownConfig = {
@@ -697,7 +697,7 @@
 
                                         ],
                                         percDropdownCallbackData: ['', {pageId: curPageId, templateId: templateId},{pageId: curPageId, templateId: templateId},{pageId: curPageId, templateId: templateId}]
-                                    }
+                                    };
                                 }
                                 curPageElem.find(".perc-template-pages-items-dropdown").PercDropdown(dropDownConfig);
                             }
