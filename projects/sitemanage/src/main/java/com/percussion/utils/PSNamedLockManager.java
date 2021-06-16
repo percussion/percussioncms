@@ -75,8 +75,9 @@ public class PSNamedLockManager
         {
                 current = lockMap.putIfAbsent(name, lock);
         }
-        if (current != null)
+        if (current != null) {
             lock = current;
+        }
         
         boolean didLock = false;
         

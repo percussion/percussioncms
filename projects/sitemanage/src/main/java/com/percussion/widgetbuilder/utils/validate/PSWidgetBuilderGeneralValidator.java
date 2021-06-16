@@ -88,39 +88,52 @@ public class PSWidgetBuilderGeneralValidator
     {
         List<PSWidgetBuilderValidationResult> results = new ArrayList<>();
         
-        if (StringUtils.isBlank(definition.getAuthor()))
+        if (StringUtils.isBlank(definition.getAuthor())) {
             results.add(new PSWidgetBuilderValidationResult(CATEGORY, AUTHOR, REQUIRED_MSG));
-        else
+        }
+        else {
             validateMaxChars(definition.getAuthor(), 100, CATEGORY, AUTHOR, results);
+        }
         
-        if (StringUtils.isBlank(definition.getLabel()))
+        if (StringUtils.isBlank(definition.getLabel())) {
             results.add(new PSWidgetBuilderValidationResult(CATEGORY, LABEL, REQUIRED_MSG));
-        else if (!isValidLabel(definition.getLabel()))
+        }
+        else if (!isValidLabel(definition.getLabel())) {
             results.add(new PSWidgetBuilderValidationResult(CATEGORY, LABEL, INVALID_CHARS));
-        else if (isDuplicateName(definition, existing))
+        }
+        else if (isDuplicateName(definition, existing)) {
             results.add(new PSWidgetBuilderValidationResult(CATEGORY, LABEL, DUPLICATE_NAME));
-        else
+        }
+        else {
             validateMaxChars(definition.getLabel(), 100, CATEGORY, LABEL, results);
+        }
         
         
-        if (StringUtils.isBlank(definition.getPrefix()))
+        if (StringUtils.isBlank(definition.getPrefix())) {
             results.add(new PSWidgetBuilderValidationResult(CATEGORY, PREFIX, REQUIRED_MSG));
-        else if (!isValidLabel(definition.getPrefix()))
-            results.add(new PSWidgetBuilderValidationResult(CATEGORY, PREFIX, INVALID_CHARS));        
-        else
+        }
+        else if (!isValidLabel(definition.getPrefix())) {
+            results.add(new PSWidgetBuilderValidationResult(CATEGORY, PREFIX, INVALID_CHARS));
+        }
+        else {
             validateMaxChars(definition.getPrefix(), 100, CATEGORY, PREFIX, results);
+        }
         
-        if (StringUtils.isBlank(definition.getPublisherUrl()))
+        if (StringUtils.isBlank(definition.getPublisherUrl())) {
             results.add(new PSWidgetBuilderValidationResult(CATEGORY, PUBLISHER_URL, REQUIRED_MSG));
-        else
+        }
+        else {
             validateMaxChars(definition.getPublisherUrl(), 100, CATEGORY, PUBLISHER_URL, results);
+        }
         
-        if (StringUtils.isBlank(definition.getVersion()))
+        if (StringUtils.isBlank(definition.getVersion())) {
             results.add(new PSWidgetBuilderValidationResult(CATEGORY, VERSION, REQUIRED_MSG));
+        }
         else if (validateMaxChars(definition.getVersion(), 50, CATEGORY, VERSION, results))
         {
-            if (!isValidFormat(definition.getVersion()))
+            if (!isValidFormat(definition.getVersion())) {
                 results.add(new PSWidgetBuilderValidationResult(CATEGORY, VERSION, INVALID_FORMAT));
+            }
         }
         
         if (definition.getDescription() != null) {
@@ -209,13 +222,15 @@ public class PSWidgetBuilderGeneralValidator
     {
         // if an existing widget, no need to check
         long id = NumberUtils.toLong(definition.getId(), 0);
-        if (id > 0)
+        if (id > 0) {
             return false;
+        }
         
         for (PSWidgetBuilderDefinitionData def : existing)
         {
-            if (def.getPrefix().equalsIgnoreCase(definition.getPrefix()) && def.getLabel().equalsIgnoreCase(definition.getLabel()))
+            if (def.getPrefix().equalsIgnoreCase(definition.getPrefix()) && def.getLabel().equalsIgnoreCase(definition.getLabel())) {
                 return true;
+            }
         }
         
         return false;
@@ -226,14 +241,16 @@ public class PSWidgetBuilderGeneralValidator
     {
         boolean isValidFormat = true;
         String[] parts = format.split("\\.");
-        if (parts.length != 3)
+        if (parts.length != 3) {
             isValidFormat = false;
+        }
         else
         {
             for (int i = 0; i < parts.length; i++)
             {
-                if (!NumberUtils.isDigits(parts[i]))
+                if (!NumberUtils.isDigits(parts[i])) {
                     isValidFormat = false;
+                }
             }
         }
         

@@ -108,10 +108,12 @@ public class PSDTSStatusProvider
         //check the external services and add the status to the report
         for(Map.Entry<String, String> externalService : externalServices.entrySet())
         {
-            if (!getExternalTomcatServiceStatus(serverRoot + externalService.getValue()).getFirst())
+            if (!getExternalTomcatServiceStatus(serverRoot + externalService.getValue()).getFirst()) {
                 statusReport.put(externalService.getKey(), new PSPair<>(TaskStatus.FAILED, dtsPair.getSecond()));
-            else
+            }
+            else {
                 statusReport.put(externalService.getKey(), new PSPair<>(TaskStatus.SUCCESS, dtsPair.getSecond()));
+            }
         }
         
         for (Map.Entry<String, String> entry : services.entrySet())
@@ -162,8 +164,9 @@ public class PSDTSStatusProvider
                 conn.setRequestProperty("Content-Type", "*/*");
     
                 response = conn.getResponseMessage();
-                if(response.contains("OK"))
+                if(response.contains("OK")) {
                     alive = true;
+                }
             }
             else{
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -171,8 +174,9 @@ public class PSDTSStatusProvider
                 conn.setRequestProperty("Content-Type", "*/*");
     
                 response = conn.getResponseMessage();
-                if(response.contains("OK"))
+                if(response.contains("OK")) {
                     alive = true;
+                }
                 
             }
             return new PSPair<>(alive, response);
