@@ -537,7 +537,7 @@
                     prefCount++;
                 } // Check if user prefs has values
                 gadgetObj.title = meta.title;
-                $("#gid_" + gadgetObj.id).prop("name", meta.title);
+                $("#gid_" + gadgetObj.id).attr("name", meta.title);
                 gadgetObj.height = meta.height;
                 gadgetObj.width = meta.width;
                 gadgetObj.hasPrefs = prefCount > 0;
