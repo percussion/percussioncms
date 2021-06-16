@@ -36,6 +36,7 @@
         var model, tab, cssController, finderIsMaximized;
 
 
+
         // by default, the templates view is displayed
         // remove all scrollbars from the document in the templates view
         // they will be added back in the content, layout and style tabs
@@ -68,7 +69,7 @@
         //Snippet for displaying the inline help when no site is selected @Story 99
         var inline_help = $("#perc-pageEditor-menu-name").text();
 
-        if(inline_help == "")
+        if(inline_help === "")
         {
             $("#perc-site-templates-label").hide();
             $("#perc-site-templates-inline-help").show();
@@ -87,13 +88,14 @@
 
         //Add Action dropdown menu in toolbar
         var siteName = $.PercNavigationManager.getSiteName();
+        var isEnable = false;
         if(typeof siteName == 'undefined')
         {
-            var isEnable = false;
+            isEnable = false;
         }
         else
         {
-            var isEnable = true;
+            isEnable = true;
         }
 
         var percTemplateActions = $("#perc-dropdown-actions");
@@ -267,7 +269,7 @@
             if (typeof(pageNumber) == "undefined"){
                 //Use the current pageNumber
                 var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
-                var pageNumber = percJump.val()!=""? parseInt(percJump.val()): 1;
+                 pageNumber = percJump.val()!=""? parseInt(percJump.val()): 1;
             }
             pageNumber = (pageNumber!=0)? pageNumber : 1;
             setPanelPreference(null, pageNumber);
@@ -413,7 +415,7 @@
                 
                 switch (page.status){
                     case "Imported":
-                        pageObj.addClass("perc-imported-page").on("click", function(){
+                        pageObj.addClass("perc-imported-page").on("click", function(evt){
                             $(".perc-imported-page-selected").removeClass("perc-imported-page-selected");
                             $(this).addClass("perc-imported-page-selected");
                             var createTplPageMenuEntry = $(".perc-dropdown-option-CreateTemplatefromPage");

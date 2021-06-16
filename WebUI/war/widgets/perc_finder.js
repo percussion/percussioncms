@@ -309,8 +309,6 @@ function finder() {
         fixHeight();
         // refresh Architecture view
         if( $("#perc_site_map").length > 0 )   {
-            //CMS-8036 : Initialize befor calling layout method.
-            $("#perc_site_map").perc_site_map();
             $("#perc_site_map").perc_site_map('layoutAll');
         }
     }
