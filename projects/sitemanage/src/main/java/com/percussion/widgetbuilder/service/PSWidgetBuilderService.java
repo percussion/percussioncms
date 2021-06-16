@@ -52,9 +52,8 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.helper.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -78,7 +77,8 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSWidgetBuilderService.class);
+
+    private static final Logger log = LogManager.getLogger(PSWidgetBuilderService.class);
     
     private static final String SAAS_FLAG = "doSAAS";
 
@@ -193,7 +193,8 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         }
         catch (Exception e)
         {
-            log.debug("Failed to load widget definitions",e);
+            log.error("Failed to load widget definitions", e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new RuntimeException("Failed to load widget definitions",e);
         }
     }
@@ -219,7 +220,8 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         }
         catch (Exception e)
         {
-            log.debug("Failed to load widget definitions",e);
+            log.error("Failed to load widget definitions", e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new RuntimeException("Failed to load widget definitions",e);
         }
     }
@@ -266,8 +268,9 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         {
             // first validate
             PSWidgetBuilderValidationResults results = validate(definition);
-            if (!results.getResults().isEmpty())
+            if (!results.getResults().isEmpty()) {
                 return results;
+            }
             // modify the path for image icon if present for make it OS compatible
             if(StringUtils.isNotBlank(definition.getWidgetTrayCustomizedIconPath())){
                 definition.setWidgetTrayCustomizedIconPath(definition.getWidgetTrayCustomizedIconPath().replaceAll("\\\\","/"));
@@ -300,7 +303,8 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         }
         catch (Exception e)
         {
-            log.error("Error saving Widget Builder Widget Definition: " + e.getLocalizedMessage(), e);
+            log.error("Error saving Widget Builder Widget Definition:{}, Error: {}", e.getLocalizedMessage(), e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new RuntimeException("Failed to save widget definition");
         }
     }
@@ -363,18 +367,23 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
             PSWidgetPackageSpec spec = new PSWidgetPackageSpec(definition.getPrefix(), definition.getPublisherUrl(),
                     definition.getLabel(), definition.getDescription(), definition.getVersion(), PSServer.getVersion());
             spec.setResponsive(definition.isResponsive());
-            if (!StringUtils.isBlank(definition.getWidgetTrayCustomizedIconPath()))
+            if (!StringUtils.isBlank(definition.getWidgetTrayCustomizedIconPath())) {
                 spec.setWidgetTrayCustomizedIconPath(definition.getWidgetTrayCustomizedIconPath());
-            if (!StringUtils.isBlank(definition.getToolTipMessage()))
+            }
+            if (!StringUtils.isBlank(definition.getToolTipMessage())) {
                 spec.setTooTipMessage(definition.getToolTipMessage());
-            if (!StringUtils.isBlank(definition.getFields()))
+            }
+            if (!StringUtils.isBlank(definition.getFields())) {
                 spec.setFields(PSWidgetBuilderFieldsListData.fromXml(definition.getFields()).getFields());
+            }
             
-            if (!StringUtils.isBlank(definition.getCssFiles()))
+            if (!StringUtils.isBlank(definition.getCssFiles())) {
                 spec.setCssFiles(PSWidgetBuilderResourceListData.fromXml(definition.getCssFiles()).getResourceList());
+            }
             
-            if (!StringUtils.isBlank(definition.getJsFiles()))
+            if (!StringUtils.isBlank(definition.getJsFiles())) {
                 spec.setJsFiles(PSWidgetBuilderResourceListData.fromXml(definition.getJsFiles()).getResourceList());
+            }
             
             spec.setWidgetHtml(definition.getWidgetHtml());
             
@@ -390,7 +399,8 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
                 }
                 catch (Exception e)
                 {
-                	log.error(e);
+                	log.error(e.getMessage());
+                    log.debug(e.getMessage(),e);
                 	throw new RuntimeException("Failed to install package: " + e);
                 }
             }
@@ -401,7 +411,9 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
         }
         catch (Exception e)
         {
-            log.error("WidgetBuilder Error",e);
+            log.error("WidgetBuilder Error: {}",e.getMessage());
+            log.debug(e.getMessage(),e);
+
             if (e instanceof RuntimeException)
             {
             	throw (RuntimeException) e;
@@ -429,7 +441,8 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
 	        	try {
 	        		mutableWidgetDir.mkdirs();
 				} catch (Exception e) {
-					log.error("Unable to create mutable widget directory: " + mutableWidgetDir.getAbsolutePath());
+					log.error("Unable to create mutable widget directory: {}, Error: {} ", mutableWidgetDir.getAbsolutePath(), e.getMessage());
+                    log.debug(e.getMessage(),e);
 					throw new RuntimeException("Unable to create mutable widget directory: " + mutableWidgetDir.getAbsoluteFile());
 				}
 	        }
@@ -438,7 +451,8 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
 	        	try {
 	        		mutableObjectStoreDir.mkdirs();
 				} catch (Exception e) {
-					log.error("Unable to create mutable object store directory: " + mutableObjectStoreDir.getAbsolutePath());
+					log.error("Unable to create mutable object store directory: {}. Error: {} ", mutableObjectStoreDir.getAbsolutePath(), e.getMessage());
+                    log.debug(e.getMessage(),e);
 					throw new RuntimeException("Unable to create mutable object store directory: " + mutableObjectStoreDir.getAbsoluteFile());
 				}
 	        }
@@ -454,7 +468,8 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
 			    FileUtils.copyDirectory(objectStoreDir, mutableObjectStoreDir, ceFilter);
 	        }
 		    catch (Exception e) {
-	            log.error("An unexpected Exception occurred while saving the widget definition.",e);
+	            log.error("An unexpected Exception occurred while saving the widget definition., Error: {}",e.getMessage());
+                log.debug(e.getMessage(),e);
 	            if (e instanceof RuntimeException) {
 	            	throw (RuntimeException) e;
 	            }

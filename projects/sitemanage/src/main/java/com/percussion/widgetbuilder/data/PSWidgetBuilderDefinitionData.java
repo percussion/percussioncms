@@ -57,16 +57,19 @@ public class PSWidgetBuilderDefinitionData  extends PSWidgetBuilderSummaryData
     {
         super(dao);
 
-        if (!StringUtils.isBlank(dao.getFields()))
+        if (!StringUtils.isBlank(dao.getFields())) {
             setFieldsList(PSWidgetBuilderFieldsListData.fromXml(dao.getFields()));
+        }
 
         widgetHtml = dao.getWidgetHtml();
 
-        if (!StringUtils.isBlank(dao.getCssFiles()))
+        if (!StringUtils.isBlank(dao.getCssFiles())) {
             setCssFileList(PSWidgetBuilderResourceListData.fromXml(dao.getCssFiles()));
+        }
 
-        if (!StringUtils.isBlank(dao.getJsFiles()))
+        if (!StringUtils.isBlank(dao.getJsFiles())) {
             setJsFileList(PSWidgetBuilderResourceListData.fromXml(dao.getJsFiles()));
+        }
     }
 
     public static PSWidgetBuilderDefinition createDaoObject(PSWidgetBuilderDefinitionData data)
@@ -78,8 +81,9 @@ public class PSWidgetBuilderDefinitionData  extends PSWidgetBuilderSummaryData
         definition.setPrefix(data.getPrefix());
         definition.setPublisherUrl(data.getPublisherUrl());
         definition.setVersion(data.getVersion());
-        if(data.getWidgetId()>0)
+        if(data.getWidgetId()>0) {
             definition.setWidgetBuilderDefinitionId(data.getWidgetId());
+        }
         definition.setFields(data.getFieldsList().toXml());
         definition.setJsFiles(data.getJsFileList().toXml());
         definition.setCssFiles(data.getCssFileList().toXml());
