@@ -111,7 +111,7 @@ var $perc_newSiteDialogLayout;
                                 validClass: "perc_field_success",
                                 wrapper: "p",
                                 validateHiddenFields: false,
-                                debug: true,
+                                debug: false,
                                 rules: _getValidationRules(),
                                 messages: _getValidationMessages(),
                                 showErrors: function() {

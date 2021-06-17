@@ -231,7 +231,7 @@ $.perc_newSectionDialog = function() {
                     validClass: "perc-field-success",
                     wrapper: "p",
                     validateHiddenFields: false,
-                    debug: true,
+                    debug: false,
             submitHandler: function(form) {
                dialog.remove();
                callback("ok", $(form).serializeArray());

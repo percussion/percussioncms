@@ -147,7 +147,7 @@
                     validClass: "perc-field-success",
                     wrapper: "p",
                     validateHiddenFields: false,
-                    debug: true,
+                    debug: false,
                     submitHandler: function(form)
                     {
                         var editorUrl = $("#perc-editor-url").val( );
