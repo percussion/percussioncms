@@ -626,6 +626,10 @@
         // update the menu items based on the current state of the gadget
         updateMinimizeExpandMenuItem(gadget);
 
+        //CMS-8086 : The click event was being bound multiple times resulting in multiple firings of click events in case we clicked different menu items on different gadgets.
+        //Need to de register the already registered click event while showing the menu up.
+        $(document).off("click");
+
         // handle maximize menu item
         $(document).on("click","#perc-gadget-menu-minimize",function(eventObject )
         {
@@ -636,6 +640,7 @@
         // handle remove menu item
         $(document).on("click","#perc-gadget-menu-remove", function(eventObject )
         {
+            menu.hide(); //Hide the menu after clicking.
             var instanceId = gadget.attr("instanceId");
             removeGadget(instanceId);
         });
@@ -650,6 +655,7 @@
         // handle edit settings
         $(document).on("click","#perc-gadget-menu-config", function(eventObject )
         {
+            menu.hide();
             handlePrefs(instanceId);
         });
 
