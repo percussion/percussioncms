@@ -315,7 +315,8 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 			}
 			
 		} catch (PSNavException e) {
-			log.error("Unable to process NavOn slots for NavOn:" + dep.getContentId(),e);
+			log.error("Unable to process NavOn slots for NavOn: {}", dep.getContentId(),e.getMessage());
+			log.debug(e.getMessage(),e);
 			result.setSuccess();
 		}
 
@@ -342,7 +343,7 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
             // we have to temporarily switch communities to save the new item
               changeCommunity = true;
               savedCommunity = PSNavUtil.getSessionCommunity(req);
-              log.debug("Changing communities, old id was " + savedCommunity + ", new id is " + communityId);
+              log.debug("Changing communities, old id was {} new id is {} ", savedCommunity, communityId);
               PSNavUtil.setSessionCommunity(req, communityId);
           }
 			
@@ -350,7 +351,7 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 		 //Create the Landing Page type 
 		   PSItemDefManager defMgr = PSItemDefManager.getInstance();
            String folderName = folder.getName();
-           log.debug("adding new Landing Page to folder " + folderName);
+           log.debug("adding new Landing Page to folder {}", folderName);
 
            m_contentTypeId = defMgr.contentTypeNameToId(m_defaultContentType);
            
@@ -422,7 +423,9 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
          }
          
 		} catch (Exception e) {
-			log.error("Error generating Landing Page", e);
+			log.error("Error generating Landing Page Error: {}", e.getMessage());
+			log.debug(e.getMessage(),e);
+
 			throw e;
 		}
 		 return lpLoc;
@@ -463,7 +466,7 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 			try {
 				lpSlot = asWs.findSlotByName(landingSlotName);
 			} catch (PSAssemblyException e1) {
-				log.debug("An exception occurred while looking up the landing page slot:" + landingSlotName,e1);
+				log.debug("An exception occurred while looking up the landing page slot: {}", landingSlotName,e1);
 				throw new PSNavException(e1);
 			}
 	        
@@ -477,7 +480,7 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 	        
 	        IPSAssemblyTemplate t;
 	        if(slotTempsAndCTs == null || slotTempsAndCTs.isEmpty()){
-	        	throw new PSNavException("Unable to locate a default template for the landing page " + landingSlotName);
+	        	throw new PSNavException("Unable to locate a default template for the landing page" + landingSlotName );
 	        }else{
 	        	IPSGuid templateGUID = null;
 
@@ -510,12 +513,12 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 	            aaList.add(aaRel);
 
 	            aaProxy.addSlotRelationships(aaList, -1);
-	            log.debug("Landing Page added to slot for NavOn:" + navon.getName());
+	            log.debug("Landing Page added to slot for NavOn: {}", navon.getName());
 
 	        }
 	        catch (PSCmsException e)
 	        {
-	            throw new PSNavException("Error adding Landing Page to NavOn slot for NavOn: " + navon.getContentId(), e);
+	            throw new PSNavException("Error adding Landing Page to NavOn slot for NavOn" + navon.getContentId(), e);
 	        }
 		
 		

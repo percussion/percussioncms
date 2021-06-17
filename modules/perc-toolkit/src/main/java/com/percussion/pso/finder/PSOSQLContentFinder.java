@@ -17,8 +17,8 @@ import java.util.Set;
 import javax.jcr.RepositoryException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.pso.utils.PSOItemSummaryFinder;
@@ -123,7 +123,7 @@ public class PSOSQLContentFinder extends PSBaseSlotContentFinder
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSOSQLContentFinder.class);
+   private static final Logger log = LogManager.getLogger(PSOSQLContentFinder.class);
 
    /**
     * Default Constructor
@@ -144,7 +144,7 @@ public class PSOSQLContentFinder extends PSBaseSlotContentFinder
          throws RepositoryException, PSFilterException, PSAssemblyException
    {
       initServices();
-      log.debug("Selectors are " + selectors); 
+      log.debug("Selectors are {}", selectors);
       
       Map<String, String> slotArgs = slot.getFinderArguments();
       LinkedHashSet<SlotItem> items = new LinkedHashSet<SlotItem>();
@@ -159,7 +159,7 @@ public class PSOSQLContentFinder extends PSBaseSlotContentFinder
          log.error(emsg);
          throw new IllegalArgumentException(emsg);
       }
-      log.debug("SQL Query is " + sqlQuery); 
+      log.debug("SQL Query is {}", sqlQuery);
       
       List<? extends Object> sqlParams = (List<? extends Object>)selectors.get(PARAM_SQLPARAMS); 
       if(sqlParams == null)
@@ -210,12 +210,12 @@ public class PSOSQLContentFinder extends PSBaseSlotContentFinder
                      {
                         PSLocator folderLoc = new PSLocator(fid.intValue(), 0); 
                         folderGuid = gmgr.makeGuid(folderLoc);
-                        log.debug("adding folder id " + folderGuid);
+                        log.debug("adding folder id {} ", folderGuid);
                      }
                   }
                   else
                   {
-                     log.warn("Folder ID Result column must be numeric " + result[1]);
+                     log.warn("Folder ID Result column must be numeric {}", result[1]);
                   }
                }
             }
@@ -242,7 +242,8 @@ public class PSOSQLContentFinder extends PSBaseSlotContentFinder
       } catch (Exception ex)
       {
          emsg = "Unexpected Exception " + ex.getMessage();    
-         log.error(emsg,ex);
+         log.error("Unexpected Exception Error: {} ", ex.getMessage());
+         log.debug(ex.getMessage(),ex);
          throw new RuntimeException(emsg,ex);
       }
       

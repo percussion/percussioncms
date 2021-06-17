@@ -8,15 +8,8 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL PERCUSSION SOFTWARE BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package com.percussion.pso.finder;
-
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-import javax.jcr.RepositoryException;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
@@ -38,6 +31,13 @@ import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+
+import javax.jcr.RepositoryException;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This slot finder returns all of the Active Assembly parents of the current item.  The results 
@@ -63,7 +63,8 @@ public class PSOReverseSlotContentFinder extends PSBaseSlotContentFinder  implem
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSOReverseSlotContentFinder.class);
+
+   private static final Logger log = LogManager.getLogger(PSOReverseSlotContentFinder.class);
    
    /**
     * GUID Manager Service 
@@ -118,8 +119,7 @@ public class PSOReverseSlotContentFinder extends PSBaseSlotContentFinder  implem
       limitToPublic = getValue(args, selectors, PARAM_LIMITPUBLIC, null );
       if(log.isDebugEnabled())
       {
-         log.debug("Starting Reverse Slot Content Finder. Template="+ template + " source slot=" 
-               + sourceSlotName + " order by " + orderBy + " public=" + limitToPublic); 
+         log.debug("Starting Reverse Slot Content Finder. Template={},source slot={},order by {},public {}", template,sourceSlotName,  orderBy, limitToPublic);
       }
       if (StringUtils.isBlank(template))
       {
@@ -158,7 +158,9 @@ public class PSOReverseSlotContentFinder extends PSBaseSlotContentFinder  implem
          relations = proxy.getRelationships(filter);
       } catch (PSCmsException ex)
       {
-         log.error("Unexpected CMS Exception " + ex.getMessage(), ex); 
+         log.error("Unexpected CMS Exception Error: {}", ex.getMessage());
+         log.debug(ex.getMessage(),ex);
+
          throw new PSAssemblyException(0, ex, ex.getMessage() );
       } 
       int sortrank = 0; //note: sortrank isn't really used here, but the SlotItem requires one 

@@ -10,8 +10,8 @@
 package com.percussion.pso.effects;
 import java.io.File;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
@@ -42,7 +42,7 @@ public abstract class PSAbstractFolderEffect implements IPSEffect
    /**
     * Logger for this class
     */
-   protected static final Log log = LogFactory.getLog(PSFolderFollowerEffect.class);
+   protected static final Logger log = LogManager.getLogger(PSFolderFollowerEffect.class);
    protected static IPSSystemWs sws = null;
    protected static IPSGuidManager gmgr = null;
    protected static IPSContentWs cws = null; 
