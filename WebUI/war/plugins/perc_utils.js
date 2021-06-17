@@ -165,7 +165,7 @@
      * @param {Object} message the message that needs to be logged must be a valid string if not no logging happens.
      */
     function logToServer(type, category, message){
-        if($.type( type ) !== "string"){
+        if(!($.type( type ) === "string")){
             return;
         }
         //Log client side
@@ -335,7 +335,7 @@
      * @return true if the str is undefined or null or not string type or the length of it is < 1. Otherwise false.
      */
     function isBlankString(str){
-        return !str || false || 'string' !== typeof str || str.trim().length < 1 || "undefined" === typeof str;
+        return !str || str === null || 'string' !== typeof str || $.trim(str).length < 1 || "undefined" === typeof str;
     }
 
     function elem( needle, haystack ){

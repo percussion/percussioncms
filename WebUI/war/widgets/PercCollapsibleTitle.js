@@ -53,7 +53,7 @@
         var secondLine;
         var isToggleVisible = config.isToggleVisible;
 
-        if(title != undefined && content != undefined) {
+        if(typeof title !== 'undefined' && typeof content !== 'undefined') {
             firstLine = $("<div>");
             firstLine.append(title);
             firstLine.attr("title", title);

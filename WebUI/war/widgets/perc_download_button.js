@@ -56,12 +56,12 @@
             {
                 // Get the selected item from Column or List mode with the class FSFile
             	var selectedItemSpec = $("#perc-finder-listview .perc-datatable-row-highlighted").data("percRowData");
-                if (selectedItemSpec === undefined)
+                if (typeof selectedItemSpec === 'undefined')
                 {
                 	 selectedItemSpec = $(".mcol-listing.perc-listing-type-FSFile.mcol-opened.perc_last_selected").data("spec");
                 }
                 // Now check the 3rd condition, that the element selected is a file under Design
-                if (selectedItemSpec !== undefined &&
+                if (typeof selectedItemSpec !== 'undefined' &&
                     selectedItemSpec.type === 'FSFile' &&
                     selectedItemSpec.leaf)
                 {

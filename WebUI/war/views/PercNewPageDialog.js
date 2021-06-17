@@ -178,6 +178,7 @@
             		} else {
 						$.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: result});
 					}
+
 					dialog.find('form').trigger("submit");
 	            });
             }
@@ -188,7 +189,7 @@
                             wrapper: "p",
                             validateHiddenFields: false,
                             messages: _getValidationMessages(),
-                            debug: true,                    
+                            debug: false,
                     submitHandler: function(form) {
                     var page_name = $(form).find('[name=page_name]').val( );
                     page_name = page_name.trim();

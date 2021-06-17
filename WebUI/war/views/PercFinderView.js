@@ -576,7 +576,7 @@
                 percFinderListviewContainer = addListViewContainer();
                 var contentPath = lastColumn.data('path');
                 //if the column doesn't have path data is a summary column
-                if (typeof(contentPath) == "undefined")
+                if (typeof(contentPath) === 'undefined')
                 {
                     lastColumn = lastColumn.prev();
                     contentPath = lastColumn.data('path').join("/");
@@ -926,7 +926,7 @@
             }
             else if (type === "page" || type === "template")
             {
-                if (layoutModel !== undefined && layoutModel != null)
+                if (typeof layoutModel !== 'undefined' && layoutModel != null)
                 {
                     $.PercBlockUI();
                     layoutModel.save(function()
