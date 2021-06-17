@@ -170,7 +170,8 @@ public class PSFolderFollowerEffect extends PSAbstractFolderEffect implements IP
          }
          catch (Exception ex)
          {
-            log.error("Relationship error " + ex, ex); 
+            log.error("Relationship error {} ", ex.getMessage());
+            log.debug(ex.getMessage(),ex);
          }
       }
       result.setSuccess();

@@ -18,8 +18,8 @@ import com.percussion.pso.imageedit.services.ImageSizeDefinitionManager;
 import com.percussion.pso.imageedit.services.ImageSizeDefinitionManagerLocator;
 import com.percussion.utils.tools.PSCopyStream;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -40,7 +40,8 @@ import java.util.Enumeration;
  */
 public class ImageEditorTools extends PSJexlUtilBase implements IPSJexlExpression
 {
-   private static Log log = LogFactory.getLog(ImageEditorTools.class);
+
+   private static final Logger log = LogManager.getLogger(ImageEditorTools.class);
    private ImageSizeDefinitionManager isdm = null; 
    
    private void initServices()
@@ -86,7 +87,7 @@ public class ImageEditorTools extends PSJexlUtilBase implements IPSJexlExpressio
       if(StringUtils.isBlank(sizeCode))
       {
          emsg = "the size code must not be null or empty"; 
-         log.error(emsg); 
+         log.error(emsg);
          throw new IllegalArgumentException(emsg);
       }
       String childName = isdm.getSizedImageNodeName();
@@ -102,12 +103,12 @@ public class ImageEditorTools extends PSJexlUtilBase implements IPSJexlExpressio
             String size = sizeProp.getString(); 
             if(StringUtils.isNotBlank(size) && sizeCode.equals(size))
             {
-               log.debug("found matching size code " + size); 
+               log.debug("found matching size code {}", size);
                return child; 
             }
          }
       }
-      log.debug("size not found: " + sizeCode);
+      log.debug("size not found: {}", sizeCode);
       return null; 
    }
  
@@ -154,8 +155,9 @@ public class ImageEditorTools extends PSJexlUtilBase implements IPSJexlExpressio
          stream = new FileInputStream(path);
       } catch (FileNotFoundException ex)
       {
-         log.error("Configuration error: Unable to find failure image " + path,
-               ex);
+         log.error("Configuration error: Unable to find failure image {}", path,
+               ex.getMessage());
+         log.debug(ex.getMessage(),ex);
          throw ex;
       }
       return stream;

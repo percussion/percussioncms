@@ -20,8 +20,8 @@ import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +36,7 @@ import java.util.Set;
  */
 public class DefaultPageTemplateBean implements ItemTemplateService {
 
-	private static Log log = LogFactory.getLog(DefaultPageTemplateBean.class); 
+	private static final Logger log = LogManager.getLogger(DefaultPageTemplateBean.class);
 	
 	private IPSTemplateService tempSvc = null; 
 	private IPSOObjectFinder objFinder = null; 

@@ -9,11 +9,8 @@
  ******************************************************************************/
 package com.percussion.pso.effects;
 
-import java.io.File;
-import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.design.objectstore.PSLocator;
@@ -36,6 +33,9 @@ import com.percussion.webservices.content.PSContentWsLocator;
 import com.percussion.webservices.system.IPSSystemWs;
 import com.percussion.webservices.system.PSSystemWsLocator;
 
+import java.io.File;
+import java.util.List;
+
 /**
  * A Percussion CMS relationship effects that prevents operations on 
  * content items which are Translated.
@@ -57,7 +57,7 @@ public class PSOPreventOnTranslatedItem implements IPSEffect
 	/**
 	 * Logger for this class
 	 */
-	private static final Log log = LogFactory.getLog(PSEffectLoggingEffect.class);
+	private static final Logger log = LogManager.getLogger(PSEffectLoggingEffect.class);
 
 	protected static IPSContentWs cws = null; 
 	protected static IPSSystemWs sws = null; 
@@ -101,14 +101,15 @@ public class PSOPreventOnTranslatedItem implements IPSEffect
 			int transownerId = findTranslationOwner(owner);
 
 			if (transownerId > 1) {
-				log.debug("Item is a translation of "+transownerId+" preventing relationship");
+				log.debug("Item is a translation of {} preventing relationship",transownerId);
 				result.setError(MSG_TRANSLATED_ITEM); 
 				return;
 			}
 
 		} catch (Exception e)
 		{
-			log.error("unexpected exception", e); 
+			log.error("unexpected exception, Error: {}", e.getMessage());
+			log.debug(e.getMessage(),e);
 			throw new PSExtensionProcessingException(this.getClass().getName(), e); 
 		} 
 
@@ -149,7 +150,7 @@ public class PSOPreventOnTranslatedItem implements IPSEffect
 		
 
 		if (parents.size()>1) {
-			log.error("Item "+id+" has more than one translation parent");
+			log.error("Item {} has more than one translation parent",id);
 			return -1;
 		} else if(parents.size()==1){
 			return parents.get(0).getUUID();

@@ -8,12 +8,6 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL PERCUSSION SOFTWARE BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package com.percussion.pso.effects;
-import java.io.File;
-import java.util.Set;
-import java.util.Map.Entry;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
@@ -33,7 +27,12 @@ import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
 import com.percussion.webservices.system.IPSSystemWs;
 import com.percussion.webservices.system.PSSystemWsLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.util.Map.Entry;
+import java.util.Set;
 
 
 /**
@@ -76,7 +75,8 @@ public class PSEffectLoggingEffect implements IPSEffect
 	 /**
 	    * Logger for this class
 	    */
-	   private static final Log log = LogFactory.getLog(PSEffectLoggingEffect.class);
+
+	   private static final Logger log = LogManager.getLogger(PSEffectLoggingEffect.class);
 
 	   protected static IPSSystemWs sws = null;
 	   protected static IPSGuidManager gmgr = null;

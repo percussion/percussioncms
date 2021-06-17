@@ -84,7 +84,8 @@ public class DemandPreviewController extends ParameterizableViewController
 		   	
 		} catch (Exception e){
 			emsg = e.getMessage(); 
-			log.error("Exception " + e + " " + emsg, e); 
+			log.error("Exception " + e + " " + emsg, e);
+
 			mav.addObject("errorMessage", emsg); 
 			mav.setViewName(errorViewName); 
 		}

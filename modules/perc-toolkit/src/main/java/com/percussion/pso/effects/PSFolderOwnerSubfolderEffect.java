@@ -158,11 +158,13 @@ public class PSFolderOwnerSubfolderEffect extends PSAbstractFolderEffect
          }
          catch (PSErrorException ee)
          {
-            log.error(ee.getErrorMessage(), ee); 
+            log.error(ee.getErrorMessage(), ee);
+
          }
          catch (Exception ex)
          {
-            log.error("Relationship error " + ex, ex); 
+            log.error("Relationship error {}", ex.getMessage());
+            log.debug(ex.getMessage(), ex);
          }
       }
       result.setSuccess();
