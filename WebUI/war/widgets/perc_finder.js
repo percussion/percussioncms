@@ -213,6 +213,7 @@ function finder() {
         if (newPath === currPath && viaGoButton === true
             && ($.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_SEARCH_RESULTS  // This condition avoids the check when
                 && $.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_RESULT)){    // in search view to force the path change
+        return;
         }
         
         else {
@@ -1276,7 +1277,7 @@ function finder() {
          // Add a mouse move listener to body only when dragging a finder item.
          $("body")
             .css("overflow", "visible")
-            .on("mousemove.finderDrag",null, props, function(evt){
+            .on("mousemove.finderDrag", props, function(evt){
                /* Determine if we are dragging within the finder table.
                   If we are not then disable all droppables within the finder else
                   enable them.

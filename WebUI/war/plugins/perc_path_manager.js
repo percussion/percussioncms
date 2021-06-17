@@ -41,17 +41,16 @@
 
         function prepare_folder_items( callback ) {
             return function( pathitems ) {
-                var specs = $.map( pathitems.pathItem, function(s) {
+                var specs = $.map( pathitems.PathItem, function(s) {
                     var paths = s.path.split('/');
                     if( paths[paths.length - 1] === "" ) {
                         paths.pop();
                     }
-
                     s.path = $.map( paths, function(p) { return p; });
                     s.path_component = paths[ paths.length - 1 ];
                     return s;
                 });
-                specs = $.grep( specs, function(s) { return s.type !== 'percNavTree' && s.name !== '.system'; } );
+                specs = $.grep( specs, function(s) { return s.type !== 'percNavTree' && s.name != '.system'; } );
                 callback( specs );
             };
         }
@@ -64,30 +63,28 @@
         else {
             var pathclone = $.map( path, function(x){ return x; } );
             var path_end = pathclone.pop();
-
+            function check_results(specs) {
+                var it = $.grep( specs.PathItem, function( p ) {
+                    var path_components = p.path.split('/');
+                    var e = path_components.pop();
+                    if( e == "" )
+                        e = path_components.pop();
+                    return e == path_end;
+                } );
+                if( it.length == 0 ) {
+                    if_error( I18N.message("perc.ui.path.manager@Item Not Found") ); //I18N
+                }
+                else {
+                    if( it[0].leaf == true ) {
+                        open_path( path, false, if_leaf, if_error );
+                    }
+                    else {
+                        open_path( path, true, if_folder, if_error );
+                    }
+                }
+            }
 
             open_path( pathclone, true, check_results, if_error);
-        }
-    }
-
-    function check_results(specs) {
-        var it = $.grep( specs.PathItem, function( p ) {
-            var path_components = p.path.split('/');
-            var e = path_components.pop();
-            if( e === "" )
-                e = path_components.pop();
-            return e === path_end;
-        } );
-        if( it.length === 0 ) {
-            if_error( I18N.message("perc.ui.path.manager@Item Not Found") ); //I18N
-        }
-        else {
-            if( it[0].leaf === true ) {
-                open_path( path, false, if_leaf, if_error );
-            }
-            else {
-                open_path( path, true, if_folder, if_error );
-            }
         }
     }
 
@@ -99,7 +96,7 @@
 
     function get_folder_path( path, k, err ) {
         open_path( path, false, function(pathItem) {
-            k( pathItem.pathItem.folderPath );
+            k( pathItem.PathItem.folderPath);
         }, err );
     }
 
@@ -125,7 +122,7 @@
         var parent = $.perc_utils.acop( path );
         var nm = parent.pop();
         open_path( parent, true, function( folder_spec ) {
-            var matches = $.grep( folder_spec.pathItem, function(fs) {
+            var matches = $.grep( folder_spec.PathItem, function(fs) {
                 return fs.name === nm;
             });
             if( matches.length > 0 ) {
