@@ -34,7 +34,7 @@ public class ImageCacheManagerImpl implements ImageCacheManager
    public String addImage(ImageData data)    
     {
        String imageKey = generateKey(data);
-       log.debug("new image key is "  + imageKey); 
+       log.debug("new image key is {}", imageKey);
        Element element = new Element(imageKey, data); 
        cache.put(element);
        

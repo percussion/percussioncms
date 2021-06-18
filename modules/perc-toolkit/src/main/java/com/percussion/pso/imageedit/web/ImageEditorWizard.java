@@ -24,8 +24,8 @@ import com.percussion.pso.imageedit.services.cache.ImageCacheManagerLocator;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -53,7 +53,7 @@ import java.util.Map;
 
 public class ImageEditorWizard
 {
-	private static Log log = LogFactory.getLog(ImageEditorWizard.class);
+	private static final Logger log = LogManager.getLogger(ImageEditorWizard.class);
 	private ImageCacheManager imageCacheManager = null;
 	private ImageSizeDefinitionManager imageSizeDefMgr = null; 
 	private ImageResizeManager imageResizeMgr = null; 
@@ -417,7 +417,7 @@ public class ImageEditorWizard
 			log.debug("setupSizedImages: Handling the sized images...");
 			//Images have been selected and we didn't have any images stored previously
 			String[] sizedImagesArray = sizedImages.split(",");
-			log.debug("setupSizedImages: the bean has " + sizedImagesArray.length + " sized image(s) selected");
+			log.debug("setupSizedImages: the bean has {} sized image(s) selected", sizedImagesArray.length );
 			
 			if (simds.size() == 0)
 			{
@@ -563,10 +563,10 @@ public class ImageEditorWizard
 		if(!StringUtils.isBlank(sizedImages))
 		{
 			String[] sizedImagesArray = sizedImages.split(",");
-			log.debug("setPagesDynamically: the bean has " + sizedImagesArray.length + " sized image(s) selected");
+			log.debug("setPagesDynamically: the bean has {} sized image(s) selected",sizedImagesArray.length);
 			
 			maxSize += sizedImagesArray.length;
-			log.debug("setPagesDynamically: the max size is: " + maxSize);
+			log.debug("setPagesDynamically: the max size is: {}", maxSize);
 					
 			wizardPages = new String[maxSize];
 			
@@ -575,7 +575,7 @@ public class ImageEditorWizard
 			for (x = 1; x <= sizedImagesArray.length; x++)
 				wizardPages[x] = SIZE_PAGE;
 
-			log.debug("setPagesDynamically: X after the loop is : " + x);
+			log.debug("setPagesDynamically: X after the loop is : {}", x);
 			wizardPages[x] = CONFIRM_PAGE;
 		}
 		//if no image sizes are selected 
@@ -589,7 +589,7 @@ public class ImageEditorWizard
 		for (int j = 0; j < wizardPages.length; j++)
 			outputWp += "[" + wizardPages[j] + "]  ";
 		
-		log.debug("setPagesDynamically: Wizard Pages: " + outputWp);
+		log.debug("setPagesDynamically: Wizard Pages: {}", outputWp);
 		
 		//Set the pages to the UserSessionData
 		usd.setPages(wizardPages);
@@ -601,10 +601,10 @@ public class ImageEditorWizard
 		try
 		{
 			InputStream imageStream = mpFile.getInputStream();
-			log.debug("storeImage: uploaded a multipart file -- filename: " + FILE_UPLOAD_FIELD);
+			log.debug("storeImage: uploaded a multipart file -- filename: {}", FILE_UPLOAD_FIELD);
 			
 			ImageData imageData = imageResizeMgr.generateImage(imageStream, null, null);
-			log.debug("storeImage: file name is: " + mpFile.getOriginalFilename()); 
+			log.debug("storeImage: file name is: {}", mpFile.getOriginalFilename());
 			imageData.setFilename(mpFile.getOriginalFilename());
 			
 			//Store the image in the cache
@@ -650,7 +650,7 @@ public class ImageEditorWizard
 
 	   if (usd.getPages().length > page)
 	   {
-	      log.debug("getViewName returning page: " + wizardPages[page]);
+	      log.debug("getViewName returning page: {}", wizardPages[page]);
 	      return wizardPages[page];
 	   }
 	   log.debug("getViewName: wizardPages[" + wizardPages.length + "] does not have as many entries as the current page number [" + page + "] expected");
@@ -686,7 +686,7 @@ public class ImageEditorWizard
 		   log.debug("validatePage: Nothing wrong with main page, continuing");
 		   return; 
 		}
-		log.debug("validatePage: Looking at page " + page + " nothing needs to be validated here (yet)...");
+		log.debug("validatePage: Looking at page {} nothing needs to be validated here (yet)... ",page);
 		
 	}
 	
@@ -694,7 +694,7 @@ public class ImageEditorWizard
 	{
 	    if(StringUtils.isBlank(fieldValue))
 	    { // field is null or empty
-	       log.debug("validatePage: field " + fieldName + " is empty "); 
+	       log.debug("validatePage: field {} is empty", fieldName);
 	       return; 
 	    }
 	    if(fieldValue.trim().length() > length)

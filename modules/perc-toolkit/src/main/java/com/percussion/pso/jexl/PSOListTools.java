@@ -22,8 +22,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.extension.IPSJexlExpression;
 import com.percussion.extension.IPSJexlMethod;
@@ -45,7 +45,8 @@ public class PSOListTools extends PSJexlUtilBase implements IPSJexlExpression
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSOListTools.class);
+
+   private static final Logger log = LogManager.getLogger(PSOListTools.class);
    
    public PSOListTools()
    {
@@ -392,16 +393,19 @@ public class PSOListTools extends PSJexlUtilBase implements IPSJexlExpression
          Method m = methods[i];
          if (m.isAnnotationPresent(IPSJexlMethod.class))
          {
-            if (first)
+            if (first) {
                first = false;
-            else
+            }
+            else {
                s.append(",");
+            }
             s.append(m.getName() + "(");
             Class[] params = m.getParameterTypes();
             for (int j = 0; j < params.length; j++) {
             s.append(params[j].getName());
-            if (j < (params.length - 1))
-                s.append(",");
+            if (j < (params.length - 1)) {
+               s.append(",");
+            }
             }
             s.append(")");
          }
