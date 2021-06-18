@@ -8,22 +8,22 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL PERCUSSION SOFTWARE BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package com.percussion.pso.jexl;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import javax.jcr.Property;
-import javax.jcr.RepositoryException;
-import javax.jcr.ValueFormatException;
-import org.apache.commons.codec.binary.Base64;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.percussion.extension.IPSJexlExpression;
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
 import com.percussion.extension.PSJexlUtilBase;
 import com.percussion.utils.tools.PSCopyStream;
+import org.apache.commons.codec.binary.Base64;
+
+import javax.jcr.Property;
+import javax.jcr.RepositoryException;
+import javax.jcr.ValueFormatException;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * 
@@ -36,7 +36,7 @@ public class PSOBase64Codec extends PSJexlUtilBase implements IPSJexlExpression
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSOBase64Codec.class);
+   private static final Logger log = LogManager.getLogger(PSOBase64Codec.class);
 
    /**
     * 
@@ -107,7 +107,8 @@ public class PSOBase64Codec extends PSJexlUtilBase implements IPSJexlExpression
       } catch (IOException ex)
       {
         // should never happen unless we run out of memory
-        log.error("Unexpected exception " + ex.getMessage(), ex);
+        log.error("Unexpected exception Error: {}", ex.getMessage());
+         log.debug(ex.getMessage(),ex);
         throw ex;
       } 
       return baos.toByteArray();
@@ -132,7 +133,8 @@ public class PSOBase64Codec extends PSJexlUtilBase implements IPSJexlExpression
       } catch (UnsupportedEncodingException ex)
       {
          //ASCII is always supported, this should never happen 
-         log.error("Unsupported Encoding " + ex.getMessage(), ex);
+         log.error("Unsupported Encoding Error: {}", ex.getMessage());
+         log.debug(ex.getMessage(),ex);
          throw ex; 
       }
       

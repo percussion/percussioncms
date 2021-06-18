@@ -15,8 +15,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.extension.IPSJexlExpression;
 import com.percussion.extension.IPSJexlMethod;
@@ -35,7 +35,7 @@ public class PSODateTools extends PSJexlUtilBase implements IPSJexlExpression {
 	 /**
 	    * Logger for this class
 	    */
-	   private static final Log log = LogFactory.getLog(PSODateTools.class);
+	   private static final Logger log = LogManager.getLogger(PSODateTools.class);
 
 
 	   public PSODateTools(){}

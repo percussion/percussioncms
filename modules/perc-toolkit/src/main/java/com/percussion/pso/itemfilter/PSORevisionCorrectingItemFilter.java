@@ -12,8 +12,8 @@ package com.percussion.pso.itemfilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.pso.utils.SimplifyParameters;
@@ -50,7 +50,7 @@ public class PSORevisionCorrectingItemFilter extends PSBaseFilter
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSORevisionCorrectingItemFilter.class);
+   private static final Logger log = LogManager.getLogger(PSORevisionCorrectingItemFilter.class);
 
    /* System services */ 
    private static IPSWorkflowService work = null; 
@@ -78,12 +78,12 @@ public class PSORevisionCorrectingItemFilter extends PSBaseFilter
       for(IPSFilterItem item : items)
       {
          IPSGuid itemguid = item.getItemId(); 
-         log.debug("Original Guid is " + itemguid); 
+         log.debug("Original Guid is {}", itemguid);
          IPSGuid revguid = correctGuid(itemguid,wfStates);
          log.debug("Corrected Guid is " + revguid); 
          if(!itemguid.equals(revguid)) 
          {
-            log.debug("replacing GUID " + itemguid + " with GUID " + revguid);
+            log.debug("replacing GUID {} with GUID {}", itemguid, revguid);
             IPSFilterItem revItem = item.clone(revguid);
             results.add(revItem);  
          }

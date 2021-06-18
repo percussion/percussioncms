@@ -24,8 +24,8 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSErrorsException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +42,7 @@ import java.util.Map;
 public class ImagePersistenceManagerImpl extends ImageItemSupport 
   implements ImagePersistenceManager   
 {
-   private static Log log = LogFactory.getLog(ImagePersistenceManagerImpl.class);
+   private static final Logger log = LogManager.getLogger(ImagePersistenceManagerImpl.class);
    
    private boolean extralogging = true; 
    private String imageContentType; 
@@ -107,7 +107,7 @@ public class ImagePersistenceManagerImpl extends ImageItemSupport
    {
        initServices();
        Validate.notEmpty(sysTitle);
-       log.debug("validateSystemTitleUnique: Title is " + sysTitle); 
+       log.debug("validateSystemTitleUnique: Title is {}", sysTitle);
        if(StringUtils.isEmpty(folderId))
        {  // no folder id, no problem...
           return true; 
@@ -178,11 +178,11 @@ public class ImagePersistenceManagerImpl extends ImageItemSupport
          for(SizedImageMetaData sized : image.getSizedImages().values())
          {
             String sizeCode = sized.getSizeDefinition().getCode(); 
-            log.debug("UpdateImage: in the for loop - trying to find child entry for sized: " + sizeCode);
+            log.debug("UpdateImage: in the for loop - trying to find child entry for sized: {}", sizeCode);
             PSItemChildEntry entry =  findChildEntry(entries, sizeCode); 
             if(entry == null)
             { 
-               log.debug("creating new entry for " + sizeCode); 
+               log.debug("creating new entry for {}", sizeCode);
                entry = createChildEntry(itemGuid );
                childrenToInsert.add(entry); 
             }
@@ -199,7 +199,7 @@ public class ImagePersistenceManagerImpl extends ImageItemSupport
             log.debug("UpdateImage: entry is: " + entry);
          }
          String childName = getChildName();
-         log.debug("UpdateImage: Dealing with child: " + childName);
+         log.debug("UpdateImage: Dealing with child: {}", childName);
          
          if(childrenToRemove.size() > 0 )
          {
@@ -264,7 +264,8 @@ public class ImagePersistenceManagerImpl extends ImageItemSupport
           throw ee; 
       } catch (Exception ex)
       {
-          log.error("Unexpected Exception while updating item " + ex,ex);
+          log.error("Unexpected Exception while updating item Error: {}", ex.getMessage());
+          log.debug(ex.getMessage(),ex);
           throw ex; 
       }
    }

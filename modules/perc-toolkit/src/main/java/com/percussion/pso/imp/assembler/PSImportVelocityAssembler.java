@@ -15,8 +15,8 @@ import com.percussion.services.assembly.IPSAssembler;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult;
 import com.percussion.services.assembly.impl.plugin.PSVelocityAssembler;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
@@ -40,7 +40,7 @@ IPSAssembler{
 		/**
 	    * Logger for this class
 	    */
-	   private static final Log log = LogFactory.getLog(PSImportVelocityAssembler.class);
+	   private static final Logger log = LogManager.getLogger(PSImportVelocityAssembler.class);
 	   
 	   
 	   /**
