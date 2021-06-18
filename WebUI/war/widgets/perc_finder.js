@@ -949,7 +949,7 @@ function finder() {
                           load_folder_path( ut.acop( item_path ) ) );
         }
 
-        listing.on("singleclick", onClick );
+        listing.on("click", onClick );
         listing.on("dblclick", function(evt){
             validatePath(evt, item_path, function(){
                 if(spec.type=="Folder" || item_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH)
