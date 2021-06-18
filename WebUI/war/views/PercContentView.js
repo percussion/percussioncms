@@ -536,10 +536,10 @@
             regions = iframe.contents().find(".perc-region");
             widgets = iframe.contents().find(".perc-widget");
 
-            regions.mouseover(function(event){
+            regions.on("mouseover", (function(event){
                 currentRegionId = $(this).attr("id");
                 event.stopPropagation();
-            });
+            }));
         }
 
         /**

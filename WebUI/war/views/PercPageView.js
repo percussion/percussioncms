@@ -123,15 +123,18 @@
             /* If the default tab happens to already be selected, the content will not be loaded, so we do that below. */
             var $tabs = $("#perc-pageEditor-tabs");
             var currentTabIndex = $tabs.tabs().tabs('option', 'selected'); // => 0
-            /* which tab to show when a page is first opened, 0 is content tab, 1 is layout tab */
             var defaultTabIndex = 0;
+            /* which tab to show when a page is first opened, 0 is content tab, 1 is layout tab */
+            if(currentTabIndex === null || typeof currentTabIndex === 'undefined'){
+                currentTabIndex = defaultTabIndex;
+            }
 
             if ($.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_EDIT)
             {
                 pageModel = P.pageModel($.perc_pagemanager, $.perc_templatemanager, pageId, function()
                 {
                     // enable all tabs and select the first tab
-                    $tabs.data('disabled.tabs', []).tabs('select', defaultTabIndex);
+                    $tabs.attr('disabled.tabs', []).attr('select', defaultTabIndex);
                     $("#perc-pageEditor-tabs").find("li").each(function(i)
                     {
                         // Don't enable Layout and Style tabs if template type is UNASSIGNED
@@ -831,9 +834,10 @@
             {
                 //Load preview content into the iFrame for readonly mode
                 var previewPath = $.perc_paths.PAGE_PREVIEW + currentPageId;
-                $("#frame").contents().remove()
-                    .attr("src", previewPath)
-                    .off("load").on("load",function()
+                $("#frame").contents().remove();
+                $("#frame").attr("src", previewPath);
+                $("#frame").off("load");
+                $("#frame").on("load", function()
                 {
                     fixIframeHeight();
                     window.setTimeout(function()

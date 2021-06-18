@@ -130,6 +130,7 @@
         var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
         var ajaxTimeout = $.perc_utils.percParseInt(timeout);
         var args = {
+            dataType: 'json',
             async: !sync,
             contentType: 'application/json',
             type: type,
