@@ -380,7 +380,7 @@
             return $.deparam.querystring().path;
         }
 
-        var newAssetButton = $('<a id="mcol-new-asset" class="perc-font-icon" title="'+I18N.message("perc.ui.new.asset.dialog@Click New Asset")+'" href="#" class="ui-disabled"><span class="icon-plus"></span><span class="icon-file-alt"></span></a>').perc_button();
+        var newAssetButton = $('<a id="mcol-new-asset" class="perc-font-icon" title="'+I18N.message("perc.ui.new.asset.dialog@Click New Asset")+'" href="#" class="ui-disabled"><span class="icon-plus fas fa-plus"></span><span class="icon-file-alt fas fa-file"></span></a>').perc_button();
         function updateBtn(path)
         {
             finderPath = path;
