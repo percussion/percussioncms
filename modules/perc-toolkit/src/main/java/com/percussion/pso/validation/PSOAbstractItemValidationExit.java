@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -47,13 +47,13 @@ public abstract class PSOAbstractItemValidationExit
          IPSItemValidator,
          IPSResultDocumentProcessor
 {
-   private static Log log = LogFactory.getLog(PSOAbstractItemValidationExit.class); 
+   private static final Logger log = LogManager.getLogger(PSOAbstractItemValidationExit.class);
   
    private IPSOWorkflowInfoFinder finder = null; 
    /**
     * Default constructor.
     */
-   public PSOAbstractItemValidationExit()
+   protected PSOAbstractItemValidationExit()
    {
      
    }
@@ -82,18 +82,14 @@ public abstract class PSOAbstractItemValidationExit
          IPSRequestContext request, Document resultDoc)
          throws PSParameterMismatchException, PSExtensionProcessingException
    {
-//      if(log.isTraceEnabled())
-//      {
-//         String idoc = PSXmlDocumentBuilder.toString(resultDoc);
-//         log.trace("result doc is " + idoc); 
-//      }
       Document errorDoc = PSXmlDocumentBuilder.createXmlDocument();
       try
       {
          validateDocs(resultDoc, errorDoc,  request, params);
       } catch (Exception ex)
       {
-         log.error("Unexpected Exception " + ex,ex);
+         log.error("Unexpected Exception {}", ex.getMessage());
+         log.debug(ex.getMessage(), ex);
          throw new PSExtensionProcessingException(getClass().getName(), ex);
       }
       if(hasErrors(errorDoc))
@@ -128,11 +124,8 @@ public abstract class PSOAbstractItemValidationExit
          return false;
       }
       e = w.getNextElement(PSItemErrorDoc.ERROR_FIELD_ELEM, PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN);
-      if(e == null)
-      {
-         return false;
-      }
-      return true; 
+      return (e != null);
+
    }
    
    /**
@@ -161,10 +154,10 @@ public abstract class PSOAbstractItemValidationExit
       PSState state = finder.findDestinationState(contentid, transitionid);
       if(state == null)
       {
-    	  log.warn("Workflow state not found for item " + contentid); 
+    	  log.warn("Workflow state not found for item {}", contentid);
     	  return false; //assume no match. 
       }
-      return allowed.contains(state.getName())? true : false;  
+      return allowed.contains(state.getName());
    }
    
    protected List<String> splitAndTrim(String input)
@@ -173,7 +166,7 @@ public abstract class PSOAbstractItemValidationExit
    }
    protected List<String> splitAndTrim(String input, String delimiter)
    {
-	   List<String> result = new ArrayList<String>(); 
+	   List<String> result = new ArrayList<>();
 	   if(StringUtils.isBlank(input))
 		   return result; 
 	   String[] parts = input.split(delimiter); 
