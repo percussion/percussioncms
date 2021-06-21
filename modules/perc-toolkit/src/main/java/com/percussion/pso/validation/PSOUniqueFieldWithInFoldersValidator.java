@@ -24,8 +24,6 @@ import javax.jcr.query.QueryResult;
 import javax.jcr.query.RowIterator;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
@@ -50,6 +48,8 @@ import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
 import com.percussion.webservices.system.IPSSystemWs;
 import com.percussion.webservices.system.PSSystemWsLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is a field validator that checks whether or not a 
@@ -396,8 +396,8 @@ public class PSOUniqueFieldWithInFoldersValidator implements IPSFieldValidator {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory
-            .getLog(PSOUniqueFieldWithInFoldersValidator.class);
+    private static final Logger log = LogManager
+            .getLogger(PSOUniqueFieldWithInFoldersValidator.class);
 
     public void setContentWs(IPSContentWs contentWs) {
         this.contentWs = contentWs;
