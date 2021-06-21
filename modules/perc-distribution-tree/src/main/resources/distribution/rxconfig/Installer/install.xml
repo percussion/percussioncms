@@ -327,6 +327,7 @@
 
 
     <patternset id="upgrade.delete">
+        <include name="jetty/base/webapps/Rhythmyx/**" />
         <include name="Repository/derby.properties" />
         <include name="cm/**"/>
         <include name="jdbc/**"/>
