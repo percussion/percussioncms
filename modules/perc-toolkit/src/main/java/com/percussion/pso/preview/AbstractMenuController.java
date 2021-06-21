@@ -20,8 +20,8 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.security.IPSSecurityWs;
 import com.percussion.webservices.security.PSSecurityWsLocator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
@@ -49,7 +49,7 @@ import java.util.Set;
  */
 public abstract class AbstractMenuController extends ParameterizableViewController implements Controller
 {
-   private static Log log = LogFactory.getLog(AbstractMenuController.class); 
+   private static Logger log = LogManager.getLogger(AbstractMenuController.class);
    protected SiteFolderFinder siteFolderFinder = null;
    protected static IPSAssemblyService asm = null;
    protected static IPSSecurityWs secws = null;
@@ -86,7 +86,7 @@ public abstract class AbstractMenuController extends ParameterizableViewControll
       if(sites.size() == 0)
       { 
          log.warn("No matching sites found, no templates will be processed");
-         return new ArrayList<IPSAssemblyTemplate>(); 
+         return new ArrayList<>();
       }
       
       PSComponentSummary summary = objectFinder.getComponentSummaryById(contentid);
@@ -105,7 +105,7 @@ public abstract class AbstractMenuController extends ParameterizableViewControll
    {
       initServices();
       
-      List<IPSAssemblyTemplate> visibleTemplates = new ArrayList<IPSAssemblyTemplate>();
+      List<IPSAssemblyTemplate> visibleTemplates = new ArrayList<>();
       
       if(!this.isTestCommunityVisibility())
       {
@@ -123,7 +123,7 @@ public abstract class AbstractMenuController extends ParameterizableViewControll
       {
          glist.add(t1.getGUID()); 
       }
-      if(glist.size() == 0)
+      if(glist.isEmpty())
       { //no templates, return an empty list
           return visibleTemplates; 
       } 
@@ -132,7 +132,7 @@ public abstract class AbstractMenuController extends ParameterizableViewControll
       {
          if(visGuids.contains(t2.getGUID()))
          {
-            log.debug("Template " + t2.getName() + " is visible");
+            log.debug("Template {} is visible", t2.getName());
             if(isTemplateOnSite(t2, sites))
             {
                visibleTemplates.add(t2);
