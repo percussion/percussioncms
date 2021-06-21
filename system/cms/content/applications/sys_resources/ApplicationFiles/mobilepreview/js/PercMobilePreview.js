@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function(event) {
     (function($){
-        $(document).ready(function(){
+        $(function(){
             var prurl = window.location.href;
             var baseurl = window.location.protocol + "//" + window.location.host;
             if(prurl.indexOf("percmobilepreview=true") > 0)
