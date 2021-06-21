@@ -108,3 +108,4 @@ fabric.properties
 .idea/codestream.xml
 /package-lock.json
 /_SpecRunner.html
+/node_modules/

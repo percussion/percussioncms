@@ -146,9 +146,9 @@
             }
         };
         if (dataObj === null || dataObj.length <= 0) {
-            $.PercServiceUtils.makeJsonRequest(url, $.PercServiceUtils.TYPE_GET, true, serviceCallback);
+            $.PercServiceUtils.makeJsonRequest(url, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
         } else {
-            $.PercServiceUtils.makeJsonRequest(url, $.PercServiceUtils.TYPE_PUT, true, serviceCallback, dataObj);
+            $.PercServiceUtils.makeJsonRequest(url, $.PercServiceUtils.TYPE_PUT, false, serviceCallback, dataObj);
         }
     }
 
@@ -171,7 +171,7 @@
                 callback(true,results.data);
             }
         };
-        $.PercServiceUtils.makeRequest(publishUrl, $.PercServiceUtils.TYPE_GET, true, serviceCallback);
+        $.PercServiceUtils.makeRequest(publishUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
 
     }
 
@@ -194,7 +194,7 @@
                 callback(true,results.data);
             }
         };
-        $.PercServiceUtils.makeRequest(getUrl, $.PercServiceUtils.TYPE_GET, true, serviceCallback);
+        $.PercServiceUtils.makeRequest(getUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
 
     }
 
@@ -220,7 +220,7 @@
                 callback(true,results.data);
             }
         };
-        $.PercServiceUtils.makeJsonRequest(setUrl, $.PercServiceUtils.TYPE_POST, true, serviceCallback, obj);
+        $.PercServiceUtils.makeJsonRequest(setUrl, $.PercServiceUtils.TYPE_POST, false, serviceCallback, obj);
 
     }
 
