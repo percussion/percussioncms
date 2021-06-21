@@ -107,11 +107,11 @@
         {
             var self = this;
 
-            var buttons = "<div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>"
-            	+ "<button id='perc_wizard_finish' class='btn btn-primary' name='perc_wizard_finish' style='float:right;'>" +I18N.message("perc.ui.common.label@Finish") + "</button>"
-            	+ "<button id='perc_wizard_next' class='btn btn-primary'  name='perc_wizard_next' style='float:right;'>" + I18N.message("perc.ui.common.label@Next") + "</button>" 
-            	+ "<button id='perc_wizard_cancel' class='btn btn-primary' name='perc_wizard_cancel' style='float:right;'>" +I18N.message("perc.ui.assign.workflow@Cancel") + "</button>" 
-            	+ "<button id='perc_wizard_back' class='btn btn-primary'  name='perc_wizard_back' style='float:right;'>" +I18N.message("perc.ui.common.label@Back") +  "</button>" + "</div>";
+            var buttons = "<div class='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix'>" +
+            	 "<button id='perc_wizard_finish' class='btn btn-primary' name='perc_wizard_finish' style='float:right;'>" +I18N.message("perc.ui.common.label@Finish") + "</button>" +
+                "<button id='perc_wizard_next' class='btn btn-primary'  name='perc_wizard_next' style='float:right;'>" + I18N.message("perc.ui.common.label@Next") + "</button>" +
+                 "<button id='perc_wizard_cancel' class='btn btn-primary' name='perc_wizard_cancel' style='float:right;'>" +I18N.message("perc.ui.assign.workflow@Cancel") + "</button>" +
+                 "<button id='perc_wizard_back' class='btn btn-primary'  name='perc_wizard_back' style='float:right;'>" +I18N.message("perc.ui.common.label@Back") +  "</button>" + "</div>";
             //Appending buttons to the buttonpane
             $(self.element).closest('.ui-dialog').append(buttons);
             $('#perc_wizard_back').on("click", function()

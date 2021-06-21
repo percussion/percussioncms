@@ -151,16 +151,18 @@
         
         $menuTitle.find("*").on("click",menuTitleClick);
         
-        $menuTitle
-            .on("click",menuTitleClick)
-            .on("mouseenter",(
+        $menuTitle.on("click",menuTitleClick);
+
+        $menuTitle.on("mouseenter",(
                 function() {
                     var menuItem = $(this);
                     menuItem.addClass("perc-simplemenu-title-hover");
-                }).on("mouseleave", function() {
+                }));
+
+        $menuTitle.on("mouseleave", (function() {
                     var menuItem = $(this);
                     menuItem.removeClass("perc-simplemenu-title-hover");
-                });
+                }));
 
         // hide all menus if you exit the containing document
         // useful if used inside an iframe like a gadget

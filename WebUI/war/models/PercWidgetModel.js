@@ -51,7 +51,7 @@
         this.assetIds = null;
         
         //the current relationship Id
-        this.relationshipId = -1
+        this.relationshipId = -1;
         
         //
         // setters and getters
@@ -60,83 +60,83 @@
         this.setId = function(id)
         {
             this.id = id;
-        }
+        };
         
         this.getId = function()
         {
             return this.id;
-        }
+        };
         
         this.setHtml = function(html)
         {
             this.html = html;
-        }
+        };
         
         this.getHtml = function()
         {
             return this.html;
-        }
+        };
         
         this.setCss = function(css)
         {
             this.css = css;
-        }
+        };
         
         this.getCss = function()
         {
             return this.css;
-        }
+        };
         
         this.setDefinitionId = function(definitionId)
         {
             this.definitionId = definitionId;
-        }
+        };
         
         this.getDefinitionId = function()
         {
             return this.definitionId;
-        }
+        };
         
         this.setProperties = function(properties)
         {
             this.properties = properties;
-        }
+        };
         
         this.getProperties = function()
         {
             return this.properties;
-        }
+        };
         
         this.setName = function(name)
         {
             this.name = name;
-        }
+        };
         
         this.getName = function()
         {
             return this.name;
-        }
+        };
         
         this.setAssetIds = function(assetIds)
         {
             this.assetIds = assetIds;
-        }
+        };
         
         this.getAssetIds = function()
         {
             return this.assetIds;
-        }
+        };
         
         this.setRelationshipId = function(relationshipId)
         {
             this.relationshipId = relationshipId;
-        }
+        };
         
         this.getRelationshipId = function()
         {
             return this.relationshipId;
-        }
-    }
+        };
+    };
     // JGA
     // Data model for Asset Drop Criteria which contains
     // information about a widget such as whether a widget
@@ -166,8 +166,8 @@
             console.log("multiItemSupport      = " + this.multiItemSupport);
             console.log("ownerId               = " + this.ownerId);
             console.log("supportedContentTypes = " + this.supportedContentTypes);
-        }
-    }
+        };
+    };
     
     // JGA
     // holds data for rendering an asset editor icon
@@ -188,6 +188,6 @@
             console.log("title      = " + this.title);
             console.log("url        = " + this.url);
             console.log("workFlowId = " + this.workflowId);
-        }
-    }
+        };
+    };
 })(jQuery);

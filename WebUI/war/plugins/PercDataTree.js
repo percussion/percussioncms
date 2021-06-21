@@ -71,7 +71,7 @@
     var DISABLED_ITEM_CLASS             = 'perc-item-disabled';
     var CHILDREN_OTHER_WORKFLOW_CLASS   = 'perc-children-other-workflow';
     var ALL_SAME_WORKFLOW_CLASS         = 'perc-item-all-same-workflow';
-    var DISABLED_ITEM_CLASS             = 'perc-item-disabled';
+
     // Some ID important for the plugin
     var DATATREE_ELEM_ID                = 'datatree';
     // Other reusable constants

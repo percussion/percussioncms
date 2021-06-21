@@ -116,7 +116,9 @@ return this.each(function() {
     	}
     	
     function displayTree(data) {
-        $this.dynatree("destroy");
+        if($this.dynatree.initialized){
+            $this.dynatree("destroy");
+        }
         $this.dynatree({
           imagePath: '../web_resources/cm/css/dynatree/skin',
           checkbox: true,

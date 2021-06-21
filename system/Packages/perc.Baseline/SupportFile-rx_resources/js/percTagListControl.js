@@ -41,7 +41,7 @@
         
         $.perc_filterField($("#page_tags-display"), $.perc_textFilters.TAGS);
 
-		if(window.percTagListSource !== undefined)
+		if(window.percTagListSource !== undefined && percTagListSource.length >0)
         {
             $("#page_tags-display").autocomplete(percTagListSource,{
 				minChars: 1,
@@ -62,8 +62,8 @@
 (function($) {
   $.perc_filterField = function(tgt, filter)
   {
-      $(tgt).bind('keypress.filterField', {'filter': filter}, function(evt){
-         var filter = function(txt){return txt};
+      $(tgt).on('keypress.filterField', {'filter': filter}, function(evt){
+         var filter = function(txt){return txt;};
          
          var rawCode = evt.charCode ? evt.charCode : evt.which;
          if(rawCode == 0 || rawCode == 8)
@@ -99,7 +99,7 @@
          tgt.val(evt.data.filter(tgt.val()));
       });
       
-  }   
+  };
 })(jQuery); 
 
 /**

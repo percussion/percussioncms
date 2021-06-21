@@ -87,7 +87,6 @@
                             findTopMostJQuery();
                             addKeyPressDirtyEvents();
                      </xsl:if>       
-			                   fixIE($); // Will only get run if IE browser detected.
                         });
                     })(jQuery);
 				</script>

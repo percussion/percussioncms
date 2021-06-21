@@ -127,6 +127,7 @@
             /* which tab to show when a page is first opened, 0 is content tab, 1 is layout tab */
             if(currentTabIndex === null || typeof currentTabIndex === 'undefined'){
                 currentTabIndex = defaultTabIndex;
+                $tabs.tabs().trigger("select",currentTabIndex);
             }
 
             if ($.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_EDIT)
@@ -309,7 +310,7 @@
                 else
                 {
                     // Add action dropdown on layout tab
-                    var layoutActionsDropdown = $("#perc-dropdown-actions-layout");
+                    let layoutActionsDropdown = $("#perc-dropdown-actions-layout");
                     layoutActionsDropdown.PercDropdown(
                         {
                             percDropdownRootClass: "perc-dropdown-layout-actions",
@@ -322,7 +323,7 @@
                         });
 
                     // Add action dropdown on style tab
-                    var styleActionsDropdown = $("#perc-dropdown-actions-style");
+                    let styleActionsDropdown = $("#perc-dropdown-actions-style");
                     styleActionsDropdown.PercDropdown(
                         {
                             percDropdownRootClass: "perc-dropdown-actions-style",
@@ -1082,9 +1083,7 @@
                                         $.PercBlockUI();
                                         $.PercItemPublisherService.removeFromStaging(itemId, itemType, _afterPublish);
                                     }
-
-                                }
-                            ,
+                                },
                             function()
                             {
                                 //an Admin has overridden the current editor in another session
