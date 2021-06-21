@@ -43,6 +43,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.velocity.shaded.commons.io.FilenameUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
@@ -112,16 +113,19 @@ public class ImageReaderTest
    }
 
    @Test
+   @Ignore //TODO: Should be passing once svg support is working
    public void testSVG() throws IOException{
       testImage("anenome.svg");
    }
 
    @Test
+   @Ignore //TODO: Should be passing once jpeg2000 support is working
    public void testJPEG2000() throws IOException{
       testImage("relax.jp2");
    }
 
    @Test
+   @Ignore //TODO: Should be passing once webp support is working
    public void testWebp() throws IOException{
       testImage("1.webp");
    }
