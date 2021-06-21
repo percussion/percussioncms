@@ -1,13 +1,13 @@
-﻿define(['knockout', 'jquery-ui'], function (ko, $) {
+﻿define(['knockout', 'jquery', 'jquery-ui','jquery-ui/widget'], function (ko, $) {
     $.widget("widGEL.baseWidget", {
         //#region Public Widget Members (API)
         options: {
             modelData : null,  // optional - set at creation time to do object-literal based deep/loose initialization of ViewModel.
             view : null
         },
-        
+
         destroy: function () { },
-        
+
         // model accessor usage:
         // get value: 
         //            $('selector').widgetName("model", "observableFieldX")()
@@ -28,12 +28,12 @@
                 throw ("Invalid ViewModel field name.  Empty string is not allowed.");
             if (field.charAt(0) == "_")
                 throw ("Invalid ViewModel field name.  ViewModel members that start with an _underscore are for internal widget use only.");
-            
+
             var myModel = this._viewModel;
             if (!(myModel.hasOwnProperty(field))) {
                 throw ("Invalid ViewModel field name.  " + field + " does not exist.");
             }
-            
+
             // see if we have more args (set/call)
             if (arguments.length > 1) {
                 // optimize for single arg (set)
@@ -53,34 +53,34 @@
                 return myModel[field];
             }
         },
-        
+
         _createDefaultViewModel: function () {
             // sub-class widgets should override this method to return a view model object with ko observable properties, etc.
             // The returned model can have Public and _Private members.  
             // Public members are get/set and considered part of the widget API.
         },
         //#endregion
-        
+
         //#region Private Widget Members
         _create: function () {
             // sub-class widgets should override to call _initModelView related functionality and any other needed widget bootstrapping.
         },
-        
+
         _viewModel: null,
-        
+
         _initModelView: function () {
             var viewModel = this._viewModel = this._createDefaultViewModel();
             var modelData = this.options.modelData;
-            
+
             if (modelData != null) {
                 this._applyDataToViewModel(modelData);
             }
-            
+
             $(this.element).html($(this.options.view));
-            
+
             ko.applyBindingsToDescendants(viewModel, this.element[0]);
         },
-        
+
         // requiredOptionNames: [string]
         _checkRequiredOptions: function (widgetName, options, requiredOptionNames) {
             for (var i = 0, end = requiredOptionNames.length; i < end; i++) {
@@ -100,20 +100,20 @@
             if (vModel == undefined) {
                 vModel = this._viewModel;
             }
-            
+
             for (var field in data) {
                 if (field.charAt(0) == "_")
                     throw ("Invalid ViewModel field name.  ViewModel members that start with an _underscore are for internal widget use only.");
-                
+
                 if (!(vModel.hasOwnProperty(field)))
                     throw ("Invalid ViewModel field name.  " + field + " does not exist.");
-                
+
                 if ((vModel[field] != null) && (ko.isSubscribable(vModel[field]))) {
                     if (Array.isArray(vModel[field]._latestValue)) {
                         if (!(vModel[field].hasOwnProperty("PushData"))) {
                             throw ("Could not set array data. " + field + "property is observableArray but does not implement PushData() method.");
                         }
-                        
+
                         vModel[field].removeAll();
                         for (var i = 0; i < data[field].length; i++) {
                             vModel[field].PushData(data[field][i]);
@@ -132,7 +132,7 @@
                         for (var i = 0; i < length; i++) {
                             vModel[field].pop();
                         }
-                        
+
                         // now push our new values
                         for (var i = 0; i < data[field].length; i++) {
                             vModel[field].PushData(data[field][i]);
@@ -152,7 +152,7 @@
                 }
             }
         },
-        
+
         _applyDataToPlainProperty: function (data, vModel, field) {
             if ($.isPlainObject(data[field])) {
                 this._applyDataToViewModel(data[field], vModel[field]);
@@ -163,7 +163,7 @@
         }
         //#endregion
     });
-    
+
     // public static members
     $.extend($.widGEL.baseWidget, {
         injectCssFile: function (id, url) {
@@ -174,10 +174,10 @@
                 $('html head').append('<link href="' + url + '" css-widget-id="' + id + '" rel="stylesheet" />');
             }
         },
-        
+
         // dictionary of defined templates
         definedTemplates: { },
-        
+
         registerDefinedTemplate: function (path, templateString) {
             $.widGEL.baseWidget.definedTemplates[path] = templateString;
         }
@@ -203,9 +203,9 @@
             return stringTemplateEngine.originalEngine.prototype.makeTemplateSource(template);
         }
     };
-    
+
     ko.setTemplateEngine(stringTemplateEngine);
-    
+
     // custom Knockout bindings
     ko.bindingHandlers.ignoreBindings = {
         init: function (elem, valueAccessor) {
@@ -227,7 +227,7 @@
             if (!source.hasOwnProperty(prop)) {
                 continue;
             }
-            
+
             if (ko.isWriteableObservable(source[prop])) {
                 isObservable = true;
                 srcVal = source[prop]();
@@ -235,7 +235,7 @@
             else if (typeof (source[prop]) !== 'function') {
                 srcVal = source[prop];
             }
-            
+
             if (ko.isWriteableObservable(target[prop])) {
                 target[prop](srcVal);
             }
@@ -245,7 +245,7 @@
             else if (typeof (target[prop]) !== 'function') {
                 target[prop] = srcVal;
             }
-            
+
             isObservable = false;
         }
     };
@@ -254,14 +254,14 @@
     ko.utils.clone = function (obj, emptyObj) {
         var json = ko.toJSON(obj);
         var js = JSON.parse(json);
-        
+
         return ko.utils.extendObservable(emptyObj, js);
     };
 
     // custom Knockout functions
 
     // define recursive equality checker
-    var primitiveTypes = { 
+    var primitiveTypes = {
         boolean: true,
         number: true,
         string: true,
@@ -272,37 +272,37 @@
         var thisRecursive = this;
         var oldIsPrimitive = (oldV === null) || (typeof (oldV) in primitiveTypes);
         var newIsPrimitive = (newV === null) || (typeof (newV) in primitiveTypes);
-        
+
         if (oldIsPrimitive && newIsPrimitive) {
             return (oldV === newV);
         }
-        
+
         // both not primitive?
         if ((!oldIsPrimitive) && (!newIsPrimitive)) {
             if (Array.isArray(oldV) && Array.isArray(newV)) {
                 if (newV.length != oldV.length) {
                     return false;
                 }
-                
+
                 for (var i = 0, end = newV.length; i < end; i++) {
                     if (!recursiveEqualityComparer(oldV[i], newV[i])) {
                         return false;
                     }
                 }
-                
+
                 return true;
             }
-            
+
             // else its an object
             for (var field in oldV) {
                 if (!newV.hasOwnProperty(field))
                     return false;
-                    
-                if (((newV != null && newV[field] != null) && 
-                     (oldV != null && oldV[field] != null)) &&
-                    (ko.isSubscribable(oldV[field])) && 
+
+                if (((newV != null && newV[field] != null) &&
+                    (oldV != null && oldV[field] != null)) &&
+                    (ko.isSubscribable(oldV[field])) &&
                     (ko.isSubscribable(newV[field]))) {
-                    
+
                     if (!recursiveEqualityComparer(oldV[field](), newV[field]()))
                         return false;
                 }
@@ -311,7 +311,7 @@
                         return false;
                 }
             }
-            
+
             // all oldV[field]s have matching value in newV
             for (var newField in newV) {
                 if (!oldV.hasOwnProperty(newField))
@@ -338,20 +338,20 @@
             string: true,
             undefined: true
         };
-        
+
         // set equalityComparer to our recursive version.  This is necessary to avoid an infinite loop, 
         // since the default knockout comparer considers any non-primitive value as always changed.
         thisObservable.equalityComparer = recursiveEqualityComparer;
         thisObservable.subscribe(function (newValue) {
-                otherObservable(newValue);
+            otherObservable(newValue);
         });
-        
+
         otherObservable.equalityComparer = recursiveEqualityComparer;
         otherObservable.subscribe(function (newValue)
         {
-                thisObservable(newValue);
+            thisObservable(newValue);
         });
-        
+
         // sync values
         otherObservable(thisObservable());
     };
@@ -363,7 +363,7 @@
     // KNOWN ISSUES: observableArray().oneWayBind() not yet supported.
     ko.subscribable.fn.oneWayBind = function (otherObservable) {
         var thisObservable = this;
-        
+
         // set equalityComparer to our recursive version.  This is necessary to avoid an infinite loop, 
         // since the default knockout comparer considers any non-primitive value as always changed.
         thisObservable.equalityComparer = recursiveEqualityComparer;
@@ -371,7 +371,7 @@
         {
             otherObservable(newValue);
         });
-         
+
         // sync values
         otherObservable(thisObservable());
     };
@@ -387,11 +387,11 @@
             read: target,  //always return the original observables value
             write: function (newValue) {
                 var current = target();
-                
+
                 // validate if changed
                 if (current !== newValue) {
                     var validatedValue = limitFunction(current, newValue);
-                    
+
                     //only write if it changed
                     if (validatedValue !== current) {
                         target(validatedValue);
@@ -399,14 +399,14 @@
                 }
             }
         });
-        
+
         //initialize with current value to make sure it is validated appropriately
         extender(target());
-        
+
         //return the new computed observable
         return extender;
     };
-    
+
     // LimitMinMax - limits the value of an observable to be between a min and a max
     // args:  
     //   - {Min: number or ko.observable(number), Max: number or ko.observable(number)}
@@ -416,7 +416,7 @@
             read: target,  //always return the original observables value
             write: function (newValue) {
                 var current = target();
-                
+
                 // validate if changed
                 if (current !== newValue) {
                     var limitedValue = newValue;
@@ -428,7 +428,7 @@
                     else if (newValue > max) {
                         limitedValue = max;
                     }
-                    
+
                     //only write if it changed
                     if (limitedValue !== current) {
                         target(limitedValue);
@@ -436,28 +436,28 @@
                 }
             }
         });
-        
+
         //initialize with current value to make sure it is validated appropriately
         extender(target());
-        
+
         //return the new computed observable
         return extender;
     };
-    
+
     ko.extenders.animatedValue = function (target, extenderArgs) {
         var lastTimeoutID = null;
         target.animateTo = function (newValue, duration) {
             if (lastTimeoutID != null) {
                 clearTimeout(lastTimeoutID);
             }
-                
+
             var onAnimate = function (finalValue, timeToEnd) {
                 // animation time expired?
                 if (timeToEnd <= 0) {
                     target(finalValue);
                     return;
                 }
-                
+
                 // else: animate value to next step value
                 var currentValue = target();
                 var deltaToEndValue = finalValue - currentValue;
@@ -466,7 +466,7 @@
                 target(currentValue + deltaStep);
                 lastTimeoutID = setTimeout(function () { onAnimate(finalValue, timeToEnd - 50); }, 50);
             };
-            
+
             // 20 frames per second
             lastTimeoutID = setTimeout(function () { onAnimate(newValue, duration); }, 50);
         };
@@ -488,22 +488,22 @@
                 if (callbacks.beforeSet) {
                     callbacks.beforeSet(current, newValue);
                 }
-                
+
                 target(newValue);
-                
+
                 if (callbacks.afterSet) {
                     callbacks.afterSet(current, newValue);
                 }
             }
         });
-        
+
         //initialize with current value to have callback get hit
         result(target());
-        
+
         //return the new computed observable
         return result;
     };
-    
+
     // lockDataUpdates - will set a lock flag before updating, then unlock.  
     //                   Typically used to drive an UpdateBlocked flag to throttle date calls 
     //                   until after multiple param changes
@@ -520,11 +520,11 @@
                 lockingObservable(outerLock); // set lock to what it was before
             }
         });
-        
+
         //return the new computed observable
         return result;
     };
-    
+
     // This is alternate way to subscribe that will include the old value as well
     // as the new value.
     // Use like this: myViewModel.myObservable.subscribeChanged(function (oldValue, newValue) { });
@@ -533,18 +533,18 @@
         this.subscribe(function (oldValue) {
             _oldValue = oldValue;
         }, this, 'beforeChange');
-        
+
         this.subscribe(function (newValue) {
             callback(_oldValue, newValue);
         });
     };
-    
+
     // convenience function that sets up a .subscribe and immediately calls the
     // callback with the observable's current value
     ko.subscribable.fn.subscribeAndCall = function (callback) {
         this.subscribe(callback);
         callback(this());
     };
-    
+
     return "SUCCESS: widGEL.baseWidget Registered.";
 });

@@ -65,7 +65,8 @@
                         deferred.reject(defaultMsg);
                     }
             };
-            $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,serviceCallback);
+            //async service call
+            $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,serviceCallback);
         }
         return deferred.promise();
     }

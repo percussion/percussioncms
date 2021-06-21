@@ -22,12 +22,12 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
+define(['knockout', 'pubsub', 'utils', 'jquery-ui','jquery-ui/ui/tooltip'], function(ko,PubSub, utils) {
     return function ContentListViewModel(options) {
         var self = this;
         self.options = options;
-		
-		self.constants = {
+
+        self.constants = {
             "MY_BOOKMARKS":"My Bookmarks",
             "MY_BOOKMARKS_EMPTY_MSG": "You have not bookmarked any content. To bookmark content, open it and select the <i class='fa fa-star icon'></i> icon.",
             "MY_RECENT":"My Recent",
@@ -37,19 +37,19 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
             "THUMBNAIL_UNAVAILABLE_IMG":"<div class=\"perc-missing-thumb\"><i title=\"Thumbnail is not yet available for this page.\" class=\"perc-missing-thumb-i perc-font-icon icon-camera fas fa-camera fa-5x \"></i></div>",
             "DELETE_PROMPT_MESSAGE":"Are you sure you want to delete this item?",
             "SEARCH_MAX_RESULTS":200
-		};
-		
+        };
+
         var item = function(data){
             var itemSelf = this;
             this.path = ko.observable(data.path);
             this.fileName = ko.computed(function() {
                 var str = this.path();
-				if(str != null){
-					var start = str.lastIndexOf('/')+1;
-					return str.substring(start);
-				}else{
-					return str;
-				}
+                if(str != null){
+                    var start = str.lastIndexOf('/')+1;
+                    return str.substring(start);
+                }else{
+                    return str;
+                }
             }, this);
             this.name = ko.observable(data.name);
             this.type = ko.observable(data.type);
@@ -62,35 +62,35 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
             this.newCommentsCount = ko.observable(data.newCommentsCount);
             this.postDate = ko.observable(utils.formatDate(data.postDate));
             this.workflow = ko.observable(data.workflow);
-			this.scheduledPublishDates = ko.observable(utils.formatDate(data.scheduledPublishDate));
-			this.scheduledRemovalDates = ko.observable(utils.formatDate(data.scheduledUnpublishDate));
-			this.thumbnailPath = ko.observable(data.thumbnailPath);
-			
-			//If thumnailPath is empty use the path
-			if(!data.thumbnailPath && data.type === "Image Asset"){
-			    this.thumbnailPath(data.path);
-			}
-			
-			this.isThumbnailAvailable = ko.observable(false);
-			
-			//ping the thumbnail path then ping the full path if that fails
+            this.scheduledPublishDates = ko.observable(utils.formatDate(data.scheduledPublishDate));
+            this.scheduledRemovalDates = ko.observable(utils.formatDate(data.scheduledUnpublishDate));
+            this.thumbnailPath = ko.observable(data.thumbnailPath);
+
+            //If thumnailPath is empty use the path
+            if(!data.thumbnailPath && data.type === "Image Asset"){
+                this.thumbnailPath(data.path);
+            }
+
+            this.isThumbnailAvailable = ko.observable(false);
+
+            //ping the thumbnail path then ping the full path if that fails
             if (this.thumbnailPath()) {
-				$.ajax({
-					url: this.thumbnailPath(),
-					type: 'HEAD',
-					error: function(){
-					    itemSelf.isThumbnailAvailable(false);
-					},
-					success: function(){
-						itemSelf.isThumbnailAvailable(true);
-					}
-				});
-			}
-			
+                $.ajax({
+                    url: this.thumbnailPath(),
+                    type: 'HEAD',
+                    error: function(){
+                        itemSelf.isThumbnailAvailable(false);
+                    },
+                    success: function(){
+                        itemSelf.isThumbnailAvailable(true);
+                    }
+                });
+            }
+
             this.isCopyAllowed = ko.computed(function(){
                 return utils.getPathType(itemSelf.path()) === 'site';
             });
-			
+
             this.isBookmarkAllowed = ko.computed(function(){
                 return utils.getPathType(itemSelf.path()) === 'site' && self.currentTab() !== 'My Bookmarks';
             });
@@ -103,19 +103,19 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
                 this.isSelected(false);
             };
         };
-				
-		self.contentListItems = ko.observableArray();
-		self.isLoading = ko.observable(false);
-		self.debug = ko.observable(options.debug);
-		self.emptyContentMessage = ko.observable("");
-		self.currentTab = ko.observable(self.constants.MY_RECENT);
+
+        self.contentListItems = ko.observableArray();
+        self.isLoading = ko.observable(false);
+        self.debug = ko.observable(options.debug);
+        self.emptyContentMessage = ko.observable("");
+        self.currentTab = ko.observable(self.constants.MY_RECENT);
         self.searchInfo = {"id":-1};
         self.searchResults = [];
         self.hasMoreResults = ko.observable(false);
         self.showMoreResultsRow = ko.computed(function(){
-            return  self.currentTab() === self.constants.SEARCH_RESULTS && self.hasMoreResults; 
+            return  self.currentTab() === self.constants.SEARCH_RESULTS && self.hasMoreResults;
         });
-		self.isEmpty = ko.computed(function () {
+        self.isEmpty = ko.computed(function () {
             return self.contentListItems().length !== 0;
         }, self);
         self.showMoreResults = function(){
@@ -125,17 +125,17 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
             var tabName = tabInfo.name;
             if(tabName === self.constants.MY_BOOKMARKS){
                 getMyBookmarks();
-				self.currentTab(tabName); 
+                self.currentTab(tabName);
             }
             else if(tabName === self.constants.MY_RECENT){
-                getRecentList();     
-				self.currentTab(tabName); 
+                getRecentList();
+                self.currentTab(tabName);
             }
             else if(tabName === self.constants.SEARCH_RESULTS){
-                getSearchResults(tabInfo.info, false);     
-                self.currentTab(tabName); 
+                getSearchResults(tabInfo.info, false);
+                self.currentTab(tabName);
             }
-            
+
         });
         function refreshView(){
             var tabName = self.currentTab();
@@ -143,10 +143,10 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
                 getMyBookmarks();
             }
             else if(tabName === self.constants.MY_RECENT){
-                getRecentList();     
+                getRecentList();
             }
             else if(tabName === self.constants.SEARCH_RESULTS){
-                getSearchResults(self.searchInfo, false);     
+                getSearchResults(self.searchInfo, false);
             }
         }
         function getMyBookmarks(){
@@ -156,14 +156,14 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
                 ko.utils.arrayForEach(results.ItemProperties, function(itemdata) {
                     items.push(new item(itemdata));
                 });
-				if(items.length === 0){
+                if(items.length === 0){
                     self.emptyContentMessage(self.constants.MY_BOOKMARKS_EMPTY_MSG);
                 }
                 self.contentListItems(items);
             }).fail(function(message){
                 PubSub.publish("OpenErrorDialog", message);
             }).always(function(){
-               self.isLoading(false);
+                self.isLoading(false);
             });
         }
         function getRecentList(){
@@ -173,14 +173,14 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
                 ko.utils.arrayForEach(results.data.ItemProperties, function(itemdata) {
                     items.push(new item(itemdata));
                 });
-				if(items.length === 0){
+                if(items.length === 0){
                     self.emptyContentMessage(self.constants.MY_RECENT_EMPTY_MSG);
                 }
                 self.contentListItems(items);
             }).fail(function(message){
                 PubSub.publish("OpenErrorDialog", message);
             }).always(function(){
-               self.isLoading(false);
+                self.isLoading(false);
             });
         }
         function getSearchResults(searchInfo, showMore){
@@ -236,23 +236,23 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
          */
         self.init = function() {
         };
-        
+
         self.launchOpen = function(item) {
             self.options.cm1Adaptor.openItem(item.path(),item.id()).fail(function(message){
                 PubSub.publish("OpenErrorDialog", message);
-			}).always(function(){
+            }).always(function(){
                 item.isSelected(false);
             });
         };
-        
+
         self.launchPreview = function(item) {
             self.options.cm1Adaptor.previewItem(item.path(),item.id()).fail(function(message){
                 PubSub.publish("OpenErrorDialog", message);
-			}).always(function(){
+            }).always(function(){
                 item.isSelected(false);
             });
         };
-        
+
         self.launchCopy = function(item) {
             self.options.cm1Adaptor.copyItem(item.path(),item.id()).done(function(){
                 refreshView();
@@ -262,7 +262,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
                 item.isSelected(false);
             });
         };
-        
+
         self.launchDelete = function(item) {
             var forceDelCallback = function(){
                 self.options.cm1Adaptor.forceDeleteItem(item.path(), item.id(), item.name()).done(function(){
@@ -275,41 +275,41 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
                 });
             };
             var delCallback = function(){
-                    self.options.cm1Adaptor.deleteItem(item.path(), item.id(), item.name()).done(function(){
-                        removeItemFromSearchResults(item);
-                        refreshView();
-                    }).fail(function(result){
-                        var message = result.content;
-                        if(!result.canForceDelete){
-                            PubSub.publish("OpenErrorDialog", message);
-                        }
-                        else{
-                            var data = {message: message, forceChkBoxId:result.chkBoxId, title:"Confirmation", primaryButton:{"text":"Yes", callback:forceDelCallback}};
-                            PubSub.publish("OpenForceDeleteConfirmationDialog", data);
-                        }
-                    }).always(function(){
-                        item.isSelected(false);
-                    });
+                self.options.cm1Adaptor.deleteItem(item.path(), item.id(), item.name()).done(function(){
+                    removeItemFromSearchResults(item);
+                    refreshView();
+                }).fail(function(result){
+                    var message = result.content;
+                    if(!result.canForceDelete){
+                        PubSub.publish("OpenErrorDialog", message);
+                    }
+                    else{
+                        var data = {message: message, forceChkBoxId:result.chkBoxId, title:"Confirmation", primaryButton:{"text":"Yes", callback:forceDelCallback}};
+                        PubSub.publish("OpenForceDeleteConfirmationDialog", data);
+                    }
+                }).always(function(){
+                    item.isSelected(false);
+                });
             };
-			var data = {message: self.constants.DELETE_PROMPT_MESSAGE, title:"Confirmation", primaryButton:{"text":"Yes", callback:delCallback}};
-			PubSub.publish("OpenConfirmationDialog", data);
+            var data = {message: self.constants.DELETE_PROMPT_MESSAGE, title:"Confirmation", primaryButton:{"text":"Yes", callback:delCallback}};
+            PubSub.publish("OpenConfirmationDialog", data);
         };
-		self.launchBookmark = function(item) {
+        self.launchBookmark = function(item) {
             self.options.cm1Adaptor.bookMarkItem(item.path(),item.id()).fail(function(message){
                 PubSub.publish("OpenErrorDialog", message);
-			}).always(function(){
+            }).always(function(){
                 item.isSelected(false);
             });
         };
-        
-		$(function() {
-			$( document ).tooltip({
-				show: {
-					delay: 1000
-				}
-			});
-		});
-		
+
+        $(function() {
+            $( document ).tooltip({
+                show: {
+                    delay: 1000
+                }
+            });
+        });
+
         //Custom binding for jquery fadeout/fadein as well as inverting the menu if not visible
         ko.bindingHandlers.fadeVisible = {
             init: function(element, valueAccessor) {
@@ -319,7 +319,7 @@ define(['knockout', 'pubsub', 'utils'], function(ko,PubSub, utils) {
             update: function(element, valueAccessor) {
                 var value = valueAccessor();
                 var elm = $(element);
-                
+
                 if(ko.unwrap(value)) {
                     elm.stop().delay(300).fadeIn();
 
