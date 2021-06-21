@@ -66,7 +66,7 @@
      *
      */
     $.fn.PercTooltip = function(config) {
-        var element = $(this).
+        $(this).
             on("mouseenter",function(e){
                 $.PercTooltip.showTooltip(e);
         });
@@ -189,7 +189,7 @@
         },
         hideTooltip : function(event) {
             // TODO: use named constants instead
-            if(this.tooltipHoverState == 0 && this.hiderHoverState == 0) {
+            if(this.tooltipHoverState === 0 && this.hiderHoverState === 0) {
                 this.tooltipDom.
                     blur().
                     css("top",-10000).
@@ -203,7 +203,6 @@
         }
     };
 
-    $("body").append($.PercTooltip.tooltipDom);
-    $("body").append($.PercTooltip.hiderDom);
+    $("body").append($.PercTooltip.tooltipDom).append($.PercTooltip.hiderDom);
     
 })(jQuery);
