@@ -19,6 +19,7 @@ public class PSExampleEditionTask implements IPSEditionTask {
 	
 	private static Logger logger = Logger.getLogger(PSExampleEditionTask.class);
 
+
 	public void init(IPSExtensionDef def, File codeRoot) {
 		// No initialization required
 	}

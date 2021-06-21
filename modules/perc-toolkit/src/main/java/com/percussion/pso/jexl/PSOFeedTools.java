@@ -13,8 +13,8 @@ import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.io.FeedException;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.net.URLCodec;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,7 +31,8 @@ public class PSOFeedTools extends PSJexlUtilBase implements IPSJexlExpression {
 	  /**
 	    * Logger for this class
 	    */
-	private static final Log log = LogFactory.getLog(PSOFeedTools.class);
+
+	private static final Logger log = LogManager.getLogger(PSOFeedTools.class);
 	 
 	public PSOFeedTools(){
 		super();
@@ -89,7 +90,8 @@ public class PSOFeedTools extends PSJexlUtilBase implements IPSJexlExpression {
 		 try{
 			 ret = codec.encode(ret);
 		 }catch(Exception ex){
-			 log.debug("Url encoding issue in cleanupItemTitle " + ex.getMessage());
+			 log.error("Url encoding issue in cleanupItemTitle Error: {}", ex.getMessage());
+			 log.debug(ex.getMessage(),ex);
 		 }
 		 return ret;
 	 }
@@ -165,10 +167,12 @@ public class PSOFeedTools extends PSJexlUtilBase implements IPSJexlExpression {
 	 @IPSJexlMethod(description="Returns a folder name of the right length.",
 			 params ={@IPSJexlParam(name="folder", description="Folder name")})
 	 public String getCleanFoldername(String folder){
-		 if(folder.length()>100)
+		 if(folder.length()>100) {
 			 return folder.substring(0, 100);
-		 else
+		 }
+		 else {
 			 return folder;
+		 }
 	 }
 
 

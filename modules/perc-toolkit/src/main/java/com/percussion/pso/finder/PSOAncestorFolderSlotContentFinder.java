@@ -9,20 +9,6 @@
  ******************************************************************************/
 package com.percussion.pso.finder;
 
-import static java.text.MessageFormat.*;
-import static java.util.Collections.*;
-
-import java.io.File;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
@@ -40,6 +26,19 @@ import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
+import javax.jcr.RepositoryException;
+import java.io.File;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static java.text.MessageFormat.format;
+import static java.util.Collections.reverse;
 
 /**
  * Finds a single content item of a given content type in the current folder of the assembly item
@@ -63,8 +62,8 @@ public class PSOAncestorFolderSlotContentFinder extends PSBaseSlotContentFinder 
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory
-            .getLog(PSOAncestorFolderSlotContentFinder.class);
+
+    private static final Logger log = LogManager.getLogger(PSOAncestorFolderSlotContentFinder.class);
     
     /**
      * Constructor for Extensions Manager.
@@ -103,17 +102,18 @@ public class PSOAncestorFolderSlotContentFinder extends PSBaseSlotContentFinder 
             sum = findAncestorItem(assemblyItem, contentType);
 
         } catch (Exception e) {
-            log.error("Error finding ancestor item.");
+            log.error("Error finding ancestor item. Error: {} ", e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new RuntimeException("Error finding ancestor item: ", e);
         }
         if (sum == null) {
-            log.warn(format("Did not find an ancestor item of type: {0}  for item: {1}", 
-                    contentType, assemblyItem.getId()));
+            log.warn("Did not find an ancestor item of type: {}  for item: {}",
+                    contentType, assemblyItem.getId());
             return new HashSet<SlotItem>();
         }
         else if (log.isDebugEnabled()) {
-            log.debug(format("Found ancestor item of type: {0} with id: {1} for item: {2}",
-                    contentType, sum.getGUID(), assemblyItem.getId()));
+            log.debug("Found ancestor item of type: {} with id: {} for item: {}",
+                    contentType, sum.getGUID(), assemblyItem.getId());
         }
         
         HashSet<SlotItem> rvalue = new HashSet<SlotItem>();

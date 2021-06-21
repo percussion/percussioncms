@@ -8,16 +8,11 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL PERCUSSION SOFTWARE BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package com.percussion.pso.effects;
-import java.util.Arrays;
-import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.data.PSConversionException;
 import com.percussion.extension.IPSUdfProcessor;
-import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -28,6 +23,9 @@ import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSWorkflow;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Allocates the next number in a sequence. 
@@ -42,7 +40,7 @@ public class PSOPreventDeepCloneUDF extends PSSimpleJavaUdfExtension
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSOPreventDeepCloneUDF.class);
+   private static final Logger log = LogManager.getLogger(PSOPreventDeepCloneUDF.class);
    
 
 	private static IPSWorkflowService wf;
@@ -91,9 +89,9 @@ public class PSOPreventDeepCloneUDF extends PSSimpleJavaUdfExtension
 	      
 	  
 	   	List<String> states = Arrays.asList(stateList.split(","));
-	   	log.debug("Deep cloning configured for states "+states);
+	   	log.debug("Deep cloning configured for states {}", states);
 	   	String contentid = request.getParameter("sys_contentid");
-	   	log.debug("Checking deep cloning for id "+contentid);
+	   	log.debug("Checking deep cloning for id {}", contentid);
 	   	
 	   	int id = Integer.parseInt(contentid);
 	   	
@@ -101,12 +99,12 @@ public class PSOPreventDeepCloneUDF extends PSSimpleJavaUdfExtension
 	      PSComponentSummary sum = sumsvc.loadComponentSummary(id);
 	      if(sum == null)
 	      {
-	         String emsg = "Content item not found " + id; 
+	         String emsg = "Content item not found "+ id;
 	         log.error(emsg); 
 	         throw new PSConversionException(0,emsg);
 	      }
 	      
-	   	log.debug("Got summary for id "+id);
+	   	log.debug("Got summary for id {}", id);
 
 	   	int wfid = sum.getWorkflowAppId();
 	   	int stateid = sum.getContentStateId();
@@ -118,7 +116,7 @@ public class PSOPreventDeepCloneUDF extends PSSimpleJavaUdfExtension
 		   	String wfName = getWorkflowName(wfid);
 		   	String stateName = getStateName(wfid, stateid);
 		   	
-		   	log.debug("Item is in workflow="+wfName+" state="+stateName);
+		   	log.debug("Item is in workflow= {} state={}", wfName, stateName);
 		   
 		   	if (states.contains(stateName)) {
 		   		log.debug("Found item state in deep clone list ");

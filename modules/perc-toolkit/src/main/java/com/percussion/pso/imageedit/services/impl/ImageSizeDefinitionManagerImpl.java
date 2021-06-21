@@ -12,8 +12,8 @@ package com.percussion.pso.imageedit.services.impl;
 import com.percussion.pso.imageedit.data.ImageSizeDefinition;
 import com.percussion.pso.imageedit.services.ImageSizeDefinitionManager;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,8 @@ import java.util.List;
  */
 public class ImageSizeDefinitionManagerImpl implements ImageSizeDefinitionManager
 {
-   private static Log log = LogFactory.getLog(ImageSizeDefinitionManagerImpl.class);
+
+   private static final Logger log = LogManager.getLogger(ImageSizeDefinitionManagerImpl.class);
    
    private List<ImageSizeDefinition> sizes; 
    
@@ -72,7 +73,7 @@ public class ImageSizeDefinitionManagerImpl implements ImageSizeDefinitionManage
             return sz; 
          }
       }
-      log.debug("request for image size " + code + " not found "); 
+      log.debug("request for image size {} not found", code);
       return null;
    }
 

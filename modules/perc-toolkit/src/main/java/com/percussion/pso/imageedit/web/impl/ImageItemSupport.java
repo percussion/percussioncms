@@ -34,9 +34,8 @@ import com.percussion.webservices.content.PSContentWsLocator;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.beans.PropertyDescriptor;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -58,7 +57,7 @@ public class ImageItemSupport
 
    private static final String _FILENAME = "_filename";
 
-   private static Log log = LogFactory.getLog(ImageItemSupport.class);
+   private static final Logger log = LogManager.getLogger(ImageItemSupport.class);
    
    protected IPSContentWs cws = null; 
    protected IPSGuidManager gmgr = null; 
@@ -121,7 +120,7 @@ public class ImageItemSupport
 	  log.debug("getChildName: getting child name...");
 	  log.debug("getChildName: isdm: " + isdm);
       String childName = isdm.getSizedImageNodeName();
-      log.debug("getChildName: what is childname: " + childName);  
+      log.debug("getChildName: what is childname: {}", childName);
       return childName;
    }
    
@@ -173,7 +172,7 @@ public class ImageItemSupport
          throw new IllegalArgumentException("entry code must be specified"); 
       }
      
-      log.debug("findChildEntry: looking for child " + code);
+      log.debug("findChildEntry: looking for child {}", code);
       String emsg;
       initServices(); 
       String codeField = isdm.getSizedImagePropertyName(); 
@@ -183,11 +182,11 @@ public class ImageItemSupport
          String entrycode = RxItemUtils.getFieldValue(entry, codeField); 
          if(code.equals(entrycode))
          {
-            log.debug("findChildEntry: found entry for code " + code); 
+            log.debug("findChildEntry: found entry for code {}", code);
             return entry; 
          }
       }
-      log.debug("findChildEntry: entry not found for code " + code); 
+      log.debug("findChildEntry: entry not found for code {}", code);
       return null; 
    }
    
@@ -209,7 +208,7 @@ public class ImageItemSupport
       {
          String fieldName = entry.getValue();
          String propertyName = entry.getKey(); 
-         log.debug("readMetaData: setting field " + fieldName + " property " + propertyName);
+         log.debug("readMetaData: setting field {} property {}", fieldName, propertyName);
          PropertyDescriptor pd = PropertyUtils.getPropertyDescriptor(bean, propertyName);
          if(pd != null && pd.getPropertyType().equals(ImageSizeDefinition.class))
          {
@@ -223,7 +222,7 @@ public class ImageItemSupport
          }         		
          else if(RxItemUtils.isBinaryField(item, fieldName))
          {
-            log.debug("readMetaData: found binary field " + fieldName);
+            log.debug("readMetaData: found binary field {}", fieldName);
             ImageData img = new ImageData();
             img.setBinary(RxItemUtils.getFieldBinary(item, fieldName));
             
@@ -284,12 +283,12 @@ public class ImageItemSupport
          }              
          else if(RxItemUtils.isBinaryField(item, fieldName))
          {
-            log.debug("writeMetaData: found binary field " + fieldName);
+            log.debug("writeMetaData: found binary field {}", fieldName);
             String imageKey = BeanUtils.getProperty(bean, propertyName);
 
             
             
-            log.debug("writeMetaData: imageKey: " + imageKey);
+            log.debug("writeMetaData: imageKey: {}", imageKey);
             if(StringUtils.isNotBlank(imageKey))
             {
                ImageMetaData img = cache.getImage(imageKey);
@@ -302,7 +301,7 @@ public class ImageItemSupport
                log.debug("Created a byte array input stream of size");
                
                RxItemUtils.setFieldValue(item, fieldName, byis);
-               log.debug("Stored the byte array into the field: " + fieldName);
+               log.debug("Stored the byte array into the field: {}", fieldName);
                
                if(img != null)
                {  
@@ -310,20 +309,20 @@ public class ImageItemSupport
                }
                else
                {
-                  log.debug("writeMetaData: no image found in cache for field " + fieldName + " key " + imageKey); 
+                  log.debug("writeMetaData: no image found in cache for field {} key {}", fieldName, imageKey);
                }  
             }
             else
             {
-               log.debug("writeMetaData: no image for field " + fieldName); 
+               log.debug("writeMetaData: no image for field {}", fieldName);
             }
              
          }
          else
          {
             RxItemUtils.setFieldValue(item, fieldName, BeanUtils.getProperty(bean, propertyName));
-            log.debug("writeMetaData: dealing with other field: " + fieldName); 
-            log.debug("writeMetaData: value being used: " + BeanUtils.getProperty(bean, propertyName));
+            log.debug("writeMetaData: dealing with other field: {}", fieldName);
+            log.debug("writeMetaData: value being used: {}", BeanUtils.getProperty(bean, propertyName));
          }
       }  
    }

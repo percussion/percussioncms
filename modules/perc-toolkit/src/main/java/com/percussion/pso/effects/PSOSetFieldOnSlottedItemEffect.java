@@ -1,16 +1,5 @@
 package com.percussion.pso.effects;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSFieldValue;
 import com.percussion.cms.objectstore.PSAaRelationship;
@@ -45,6 +34,14 @@ import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 /***
@@ -297,7 +294,7 @@ public class PSOSetFieldOnSlottedItemEffect implements IPSEffect{
 									log.debug("Pre-Destruction");
 								else
 									log.debug("Pre-Construction");
-								log.debug("Updating Content ID:" + item.getContentId());
+								log.debug("Updating Content ID: {}", item.getContentId());
 			
 								//Determine if this is a destroy or a create. 
 								if(context.isPostConstruction()){
@@ -321,7 +318,7 @@ public class PSOSetFieldOnSlottedItemEffect implements IPSEffect{
 												if(r.getSlotName().equals(configParams.slotName)){
 													updateField(item, configParams.fieldName, configParams.valueIfNotEmpty + "");
 													found=true;
-													log.debug("Found item in slot, setting " + configParams.fieldName + " to " + (configParams.valueIfNotEmpty + ""));
+													log.debug("Found item in slot, setting {} to {}", configParams.fieldName, configParams.valueIfNotEmpty);
 													break;
 												}
 											}
@@ -389,8 +386,8 @@ public class PSOSetFieldOnSlottedItemEffect implements IPSEffect{
 		if (fld != null) {
 			updateFieldValue(fld, value);
 		} else {
-			log.error("Cannot find field " + name
-							+ " Ignoring");
+			log.error("Cannot find field {} Ignoring ",name
+							);
 		}
 		
 	}
@@ -403,7 +400,7 @@ public class PSOSetFieldOnSlottedItemEffect implements IPSEffect{
 		if (newValue!=null) {
 			field.addValue(newValue);
 		}else{
-			log.warn("Setting value for " + field.getName() + " to null.");
+			log.warn("Setting value for {} to null. ",field.getName());
 		}
 		 
 	}

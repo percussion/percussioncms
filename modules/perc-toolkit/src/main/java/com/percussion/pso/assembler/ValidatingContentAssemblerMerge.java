@@ -9,9 +9,9 @@
  ******************************************************************************/
 package com.percussion.pso.assembler;
 
-import org.w3c.tidy.Tidy; 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.w3c.tidy.Tidy;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ public class ValidatingContentAssemblerMerge {
 	  /**
 	    * Logger for this class
 	    */
-	   private static final Log log = LogFactory.getLog(ValidatingContentAssemblerMerge.class);
+	   private static final Logger log = LogManager.getLogger(ValidatingContentAssemblerMerge.class);
 
 	   private ValidatingContentAssemblerMerge(){
 	   }

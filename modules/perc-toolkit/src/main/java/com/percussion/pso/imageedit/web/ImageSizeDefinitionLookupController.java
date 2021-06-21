@@ -13,8 +13,8 @@ import com.percussion.pso.imageedit.data.ImageSizeDefinition;
 import com.percussion.pso.imageedit.services.ImageSizeDefinitionManager;
 import com.percussion.pso.imageedit.services.ImageSizeDefinitionManagerLocator;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
@@ -36,8 +36,8 @@ public class ImageSizeDefinitionLookupController
       extends
          ParameterizableViewController implements Controller
 {
-   
-   private static Log log = LogFactory.getLog(ImageSizeDefinitionLookupController.class);
+
+   private static final Logger log = LogManager.getLogger(ImageSizeDefinitionLookupController.class);
    
    /**
     * Key for result passed to view.  Defaults to "result" 
@@ -80,7 +80,7 @@ public class ImageSizeDefinitionLookupController
       List<ImageSizeDefinition> defs = defmgr.getAllImageSizes(); 
       for(ImageSizeDefinition size : defs)
       {
-         log.debug("Adding size " + size.getCode()); 
+         log.debug("Adding size {}", size.getCode());
          Element entry = PSXmlDocumentBuilder.addEmptyElement(resultDoc, root, "PSXEntry");
          PSXmlDocumentBuilder.addElement(resultDoc, entry, "PSXDisplayText", size.getLabel());
          PSXmlDocumentBuilder.addElement(resultDoc, entry, "Value", size.getCode());         

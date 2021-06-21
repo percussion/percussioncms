@@ -24,8 +24,8 @@ import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
@@ -41,7 +41,7 @@ import java.util.concurrent.TimeoutException;
 public class DemandPreviewController extends ParameterizableViewController
 		implements Controller {
 
-	private static Log log = LogFactory.getLog(DemandPreviewController.class); 
+	private static final Logger log = LogManager.getLogger(DemandPreviewController.class);
 	
 	private String errorViewName = "error";  
 	private DemandPublisherService demandPublisherService = null; 
@@ -84,7 +84,9 @@ public class DemandPreviewController extends ParameterizableViewController
 		   	
 		} catch (Exception e){
 			emsg = e.getMessage(); 
-			log.error("Exception " + e + " " + emsg, e); 
+			log.error("Exception {}", e.getMessage());
+			log.debug(e.getMessage(),e);
+
 			mav.addObject("errorMessage", emsg); 
 			mav.setViewName(errorViewName); 
 		}

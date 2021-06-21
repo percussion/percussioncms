@@ -32,8 +32,8 @@ import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.RepositoryException;
 import java.io.File;
@@ -51,7 +51,7 @@ public class PSOFolderTools extends PSJexlUtilBase implements IPSJexlExpression
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSOFolderTools.class);
+   private static final Logger log = LogManager.getLogger(PSOFolderTools.class);
    private IPSContentWs contentWs;
    private IPSGuidManager guidManager;
    
@@ -108,7 +108,7 @@ public class PSOFolderTools extends PSJexlUtilBase implements IPSJexlExpression
       }
       if(paths.size() == 1)
       {
-         log.debug("found path " + paths.get(0));
+         log.debug("found path {}", paths.get(0));
          return paths.get(0); 
 
       }
@@ -120,8 +120,9 @@ public class PSOFolderTools extends PSJexlUtilBase implements IPSJexlExpression
    public PSFolder getFolder(String path){
 	   PSFolder folder = null;
 	   try {
-		   if(path == null)
+		   if(path == null) {
 			   throw new RuntimeException("Path parameter cannot be null");
+		   }
 		  
 		   folder = getContentWs().loadFolders(new String[] { path })
                    .get(0);
@@ -131,10 +132,12 @@ public class PSOFolderTools extends PSJexlUtilBase implements IPSJexlExpression
            }
         	   
        } catch (PSErrorResultsException e) {
-           log.error("Could not locate Folder for: " + path, e);
+           log.error("Could not locate Folder for: {} Error: {}", path, e.getMessage());
+           log.debug(e.getMessage(),e);
            throw new RuntimeException(e);
        }catch (Exception e){
-    	   log.error("An unexpected exception occurred while retrieving Folder for:" + path,e);
+    	   log.error("An unexpected exception occurred while retrieving Folder for: {} Error: {}", path,e.getMessage());
+    	   log.debug(e.getMessage(),e);
        }
 	return folder;
    }
@@ -207,10 +210,10 @@ public class PSOFolderTools extends PSJexlUtilBase implements IPSJexlExpression
             }
         } 
         else {
-            log.debug("Using AssemblyItem's folderid = " + id);
+            log.debug("Using AssemblyItem's folderid = {}", id);
             path = getFolderPath(id);
             if (path==null) {
-            	log.debug("Could not get folder path for id "+id);
+            	log.debug("Could not get folder path for id {}", id);
             }
         }
         return path;

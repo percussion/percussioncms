@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
@@ -39,10 +39,12 @@ public class PSOMapTools extends PSJexlUtilBase {
     }, returns = "an overlayed map")
     public Map<String,Object> overlay(Map<String,Object> defaultOptions, Map<String,Object> customOptions) {
         Map<String,Object> m = new HashMap<String, Object>();
-        if (defaultOptions != null)
+        if (defaultOptions != null) {
             m.putAll(defaultOptions);
-        if (customOptions != null)
+        }
+        if (customOptions != null) {
             m.putAll(customOptions);
+        }
         return m;
     }
     
@@ -54,7 +56,7 @@ public class PSOMapTools extends PSJexlUtilBase {
     public Object getFirstDefined(Map<String,Object> m, List<String> keys, Object d) {
         for(String k : keys) {
             Object rvalue = m.get(k);
-            if (rvalue != null) return rvalue;
+            if (rvalue != null){ return rvalue;}
         }
         return d;
     }
@@ -82,8 +84,8 @@ public class PSOMapTools extends PSJexlUtilBase {
           @IPSJexlParam(name = "values", description = "list of objects")
     }, returns = "map")
     public Map<String,Object> create(List<String> keys, List<? extends Object> values) {
-        if (keys == null) throw new IllegalArgumentException("Keys cannot be null");
-        if (values == null) throw new IllegalArgumentException("Values cannot be null");
+        if (keys == null){ throw new IllegalArgumentException("Keys cannot be null");}
+        if (values == null){ throw new IllegalArgumentException("Values cannot be null");}
         //if (keys.size() < values.size()) throw new IllegalArgumentException("There cannot be more keys then values");
         Map<String, Object> m = new HashMap<String, Object>();
         for(int i = 0; i < keys.size(); i++) {
@@ -103,5 +105,6 @@ public class PSOMapTools extends PSJexlUtilBase {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSOMapTools.class);
+
+    private static final Logger log = LogManager.getLogger(PSOMapTools.class);
 }
