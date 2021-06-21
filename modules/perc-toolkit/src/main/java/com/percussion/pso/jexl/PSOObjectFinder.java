@@ -18,8 +18,8 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
@@ -66,7 +66,8 @@ public class PSOObjectFinder extends PSJexlUtilBase
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSOObjectFinder.class);
+
+   private static final Logger log = LogManager.getLogger(PSOObjectFinder.class);
  
    /**
     * Content Web Service pointer. 
@@ -95,20 +96,25 @@ public class PSOObjectFinder extends PSJexlUtilBase
     */
    private static void initServices()
    {
-	  if(cws == null)
-		cws = PSContentWsLocator.getContentWebservice();
+	  if(cws == null) {
+         cws = PSContentWsLocator.getContentWebservice();
+      }
 
-	  if(wf== null)
-		wf = PSWorkflowServiceLocator.getWorkflowService();
+	  if(wf== null) {
+         wf = PSWorkflowServiceLocator.getWorkflowService();
+      }
     
-	  if(gmgr==null)
-		gmgr = PSGuidManagerLocator.getGuidMgr(); 
+	  if(gmgr==null) {
+         gmgr = PSGuidManagerLocator.getGuidMgr();
+      }
       
-	  if(cmgr==null)
-		cmgr = PSContentMgrLocator.getContentMgr(); 
+	  if(cmgr==null) {
+         cmgr = PSContentMgrLocator.getContentMgr();
+      }
       
-	  if(sws==null)
-    	 sws = PSSecurityWsLocator.getSecurityWebservice();
+	  if(sws==null) {
+         sws = PSSecurityWsLocator.getSecurityWebservice();
+      }
       
    }
    
@@ -144,7 +150,7 @@ public class PSOObjectFinder extends PSJexlUtilBase
       {
          if(ctype.getGuid().longValue() == guid.longValue())
          {
-            log.debug("found Content type" + ctype.getName()); 
+            log.debug("found Content type {}", ctype.getName());
             return ctype; 
          }
       }
@@ -160,7 +166,7 @@ public class PSOObjectFinder extends PSJexlUtilBase
    {
        String jsession = PSRequestInfo.
            getRequestInfo(PSRequestInfo.KEY_JSESSIONID).toString();
-       log.debug("JSESSIONID=" + jsession);
+       log.debug("JSESSIONID= {}", jsession);
        return jsession;
    }
    
@@ -173,7 +179,7 @@ public class PSOObjectFinder extends PSJexlUtilBase
    {
       PSRequest req = (PSRequest)PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
       String sessionid = req.getUserSessionId();
-      log.debug("PSSessionId=" + sessionid ); 
+      log.debug("PSSessionId={}", sessionid );
       return sessionid;
    }
    
@@ -270,7 +276,7 @@ public class PSOObjectFinder extends PSJexlUtilBase
    {
       initServices();
       IPSGuid guid = gmgr.makeGuid(siteid, PSTypeEnum.SITE); 
-      log.debug("Site guid is " + guid);
+      log.debug("Site guid is {}", guid);
       return guid;
    }
    
@@ -283,7 +289,7 @@ public class PSOObjectFinder extends PSJexlUtilBase
    {
       initServices();
       IPSGuid guid = gmgr.makeGuid(templateid, PSTypeEnum.TEMPLATE); 
-      log.debug("Template guid is " + guid);
+      log.debug("Template guid is {}", guid);
       return guid;
    }
    

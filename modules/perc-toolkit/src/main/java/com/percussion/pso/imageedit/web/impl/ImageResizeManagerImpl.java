@@ -12,8 +12,8 @@ package com.percussion.pso.imageedit.web.impl;
 import com.percussion.pso.imageedit.data.ImageData;
 import com.percussion.pso.imageedit.web.ImageResizeManager;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -35,7 +35,7 @@ import java.util.Iterator;
  */
 public class ImageResizeManagerImpl implements ImageResizeManager
 {
-   private static Log log = LogFactory.getLog(ImageResizeManagerImpl.class);
+   private static final Logger log = LogManager.getLogger(ImageResizeManagerImpl.class);
    
    private String imageFormat = "jpeg";
    private String extension = "jpg"; 
@@ -77,7 +77,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager
       Dimension outsize; 
       BufferedImage inImage = ImageIO.read(input);
       
-      log.debug("Image size is " + inImage.getWidth() + " w " + inImage.getHeight() + " h" ); 
+      log.debug("Image size is w {} h {}",inImage.getWidth(),inImage.getHeight() );
       if(size != null && cropBox != null)
       {
          outsize = computeSizeFromAspectRatio(cropBox, size); 
@@ -94,7 +94,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager
       {
          outsize = new Dimension(inImage.getWidth(), inImage.getHeight());    
       }      
-      log.debug("Output size is " + outsize);
+      log.debug("Output size is {}", outsize);
       if(outsize.height == 0 || outsize.width == 0)
       { // generate a zero size image
          result.setSize(0L);
@@ -113,7 +113,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager
            sourceBox = new Rectangle(0, 0, inImage.getWidth(), inImage.getHeight() ); 
       }
       
-      log.debug("Source Box is " + sourceBox);
+      log.debug("Source Box is {}", sourceBox);
       
       
       long startTimer = System.currentTimeMillis();
@@ -124,7 +124,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager
       {
          long endTimer = System.currentTimeMillis();
          long elapsed = endTimer - startTimer; 
-         log.debug("Elapsed time is " + elapsed );
+         log.debug("Elapsed time is {}", elapsed );
       }
       ByteArrayOutputStream outStream = new ByteArrayOutputStream();
       try {
@@ -150,7 +150,8 @@ public class ImageResizeManagerImpl implements ImageResizeManager
          return result;
       } catch (Throwable ex)
       {
-         log.error("Unexpected Exception " + ex,ex);
+         log.error("Unexpected Exception Error: {}",ex.getMessage());
+         log.debug(ex.getMessage(),ex);
          throw new RuntimeException("exception " + ex, ex);
       }      
    }
@@ -206,7 +207,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager
       long timer = System.currentTimeMillis(); 
       int height = inImage.getHeight() / stepFactor;
       int width = inImage.getWidth() / stepFactor; 
-      log.debug("Scaling to image height " + height + " width " + width ); 
+      log.debug("Scaling to image height {} width {}", height, width );
       BufferedImage halfImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
       Graphics2D half = halfImage.createGraphics();
       if((height * width) < maxInterpolationSize)
@@ -229,7 +230,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager
       {
          long timestop = System.currentTimeMillis();
          long elapsed = timestop - timer; 
-         log.debug("Time elapsed is " + elapsed);
+         log.debug("Time elapsed is {}", elapsed);
          //log.debug("half image height " + halfImage.getHeight() + " width " + halfImage.getWidth());
       }      
       half.dispose();
@@ -252,7 +253,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager
           if(box.height > 0)
           {
              scale = size.getWidth() / box.getWidth(); 
-             log.debug("scale is " + scale); 
+             log.debug("scale is {}", scale);
              height = new Long(Math.round(box.getHeight() * scale)).intValue();
           }
           else

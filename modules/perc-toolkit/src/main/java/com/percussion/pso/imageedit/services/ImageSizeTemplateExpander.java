@@ -18,8 +18,8 @@ import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.publisher.IPSTemplateExpander;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -38,7 +38,7 @@ public class ImageSizeTemplateExpander extends AbstractTemplateExpanderAdaptor
       implements
          IPSTemplateExpander
 {
-   Log log = LogFactory.getLog(ImageSizeTemplateExpander.class);
+   private static final Logger log = LogManager.getLogger(ImageSizeTemplateExpander.class);
    
    private ImageSizeDefinitionManager isdm = null; 
    private IPSAssemblyService asm = null; 
@@ -91,7 +91,7 @@ public class ImageSizeTemplateExpander extends AbstractTemplateExpanderAdaptor
          {
             Node child = children.nextNode();
             String sizecode = child.getProperty(sizepropname).getString();
-            log.debug("found image size code " + sizecode);
+            log.debug("found image size code {}", sizecode);
             if(StringUtils.isNotBlank(sizecode))
             {
                 ImageSizeDefinition sizedef = isdm.getImageSize(sizecode); 
@@ -103,7 +103,7 @@ public class ImageSizeTemplateExpander extends AbstractTemplateExpanderAdaptor
                 }
                 else
                 {
-                    log.debug("size code not found " + sizecode); 
+                    log.debug("size code not found {}", sizecode);
                 }
             }
             else
@@ -113,7 +113,8 @@ public class ImageSizeTemplateExpander extends AbstractTemplateExpanderAdaptor
          }
       } catch (Exception ex)
       {
-          log.error("Unexpected Exception " + ex,ex);
+          log.error("Unexpected Exception Error: {}", ex.getMessage());
+          log.debug(ex.getMessage(),ex);
           throw new ImageEditorException(ex);
       } 
       

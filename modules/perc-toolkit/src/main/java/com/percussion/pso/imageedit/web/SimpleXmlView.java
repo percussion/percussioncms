@@ -10,8 +10,8 @@
 package com.percussion.pso.imageedit.web;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.AbstractView;
 import org.w3c.dom.Document;
@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public class SimpleXmlView extends AbstractView implements View
 {
-   private static Log log = LogFactory.getLog(SimpleXmlView.class); 
+   private static final Logger log = LogManager.getLogger(SimpleXmlView.class);
    
    private String encoding = "UTF-8"; 
    

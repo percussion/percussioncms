@@ -15,12 +15,12 @@ import com.percussion.pso.imageedit.services.cache.ImageCacheManager;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ImageCacheManagerImpl implements ImageCacheManager
 {
-    private Log log = LogFactory.getLog(ImageCacheManagerImpl.class);
+    private static final Logger log = LogManager.getLogger(ImageCacheManagerImpl.class);
     private long counter; 
   
     private Cache cache; 
@@ -34,7 +34,7 @@ public class ImageCacheManagerImpl implements ImageCacheManager
    public String addImage(ImageData data)    
     {
        String imageKey = generateKey(data);
-       log.debug("new image key is "  + imageKey); 
+       log.debug("new image key is {}", imageKey);
        Element element = new Element(imageKey, data); 
        cache.put(element);
        

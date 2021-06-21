@@ -11,12 +11,12 @@ package com.percussion.pso.imageedit.web.impl;
 
 import com.percussion.pso.imageedit.web.ImageUrlBuilder;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ImageUrlBuilderImpl implements ImageUrlBuilder
 {
-   private static Log log = LogFactory.getLog(ImageUrlBuilderImpl.class);
+   private static final Logger log = LogManager.getLogger(ImageUrlBuilderImpl.class);
    
    private String baseUrl; 
    private String suffix = "jpg"; 

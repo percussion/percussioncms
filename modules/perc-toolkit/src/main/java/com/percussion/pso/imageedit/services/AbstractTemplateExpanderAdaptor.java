@@ -27,8 +27,8 @@ import com.percussion.services.publisher.data.PSContentListItem;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
@@ -60,7 +60,7 @@ import java.util.Map;
  */
 public abstract class AbstractTemplateExpanderAdaptor implements IPSTemplateExpander
 {
-   Log log = LogFactory.getLog(AbstractTemplateExpanderAdaptor.class);
+   private static final Logger log = LogManager.getLogger(AbstractTemplateExpanderAdaptor.class);
    
    
    private boolean NeedsContentNode = false; 
@@ -124,13 +124,16 @@ public abstract class AbstractTemplateExpanderAdaptor implements IPSTemplateExpa
       String deliveryctx = parameters
             .get(IPSHtmlParameters.SYS_DELIVERY_CONTEXT);
       int context = 0;
-      if (deliveryctx != null)
+      if (deliveryctx != null) {
          context = Integer.parseInt(deliveryctx);
-      else if (ctx != null)
+      }
+      else if (ctx != null) {
          context = Integer.parseInt(ctx);
-      else
+      }
+      else {
          throw new RuntimeException(
-               "Either sys_context or sys_delivery_context must be specified");
+                 "Either sys_context or sys_delivery_context must be specified");
+      }
       try
       {
          Map<IPSGuid, Node> nodeMap  = null; 

@@ -8,11 +8,8 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL PERCUSSION SOFTWARE BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package com.percussion.pso.assembler;
-
-import java.io.File;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
@@ -20,6 +17,8 @@ import com.percussion.services.assembly.IPSAssembler;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult;
 import com.percussion.services.assembly.impl.plugin.PSVelocityAssembler;
+
+import java.io.File;
 
 /*
  * This class provides a validating assembler for Velocity based templates.
@@ -36,7 +35,7 @@ IPSAssembler{
 		/**
 	    * Logger for this class
 	    */
-	   private static final Log log = LogFactory.getLog(PSValidatingVelocityAssembler.class);
+	   private static final Logger log = LogManager.getLogger(PSValidatingVelocityAssembler.class);
 	   
 	   
 	   /**

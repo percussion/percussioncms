@@ -16,8 +16,8 @@ import com.percussion.pso.imageedit.web.ImageUrlBuilder;
 import com.percussion.pso.utils.RxRequestUtils;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
@@ -35,7 +35,7 @@ public class ImageEditorTestPageController extends ParameterizableViewController
       implements
          Controller
 {
-   private static Log log = LogFactory.getLog(ImageEditorTestPageController.class); 
+   private static final Logger log = LogManager.getLogger(ImageEditorTestPageController.class);
    
    private ImagePersistenceManager imagePersistenceManager;
    
@@ -57,9 +57,9 @@ public class ImageEditorTestPageController extends ParameterizableViewController
       //get the view name
       ModelAndView mav = super.handleRequestInternal(request, response); 
       String user = RxRequestUtils.getUserName(request);
-      log.debug("user is " + user);
+      log.debug("user is {}", user);
       String session = RxRequestUtils.getSessionId(request); 
-      log.debug("session is " + session); 
+      log.debug("session is {}", session);
       String contentid = request.getParameter(IPSHtmlParameters.SYS_CONTENTID); 
       if(StringUtils.isNotBlank(contentid))
       {

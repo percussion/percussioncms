@@ -25,8 +25,8 @@ import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.Value;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummaries;
@@ -62,7 +62,8 @@ public class PSONavTools extends PSJexlUtilBase implements IPSJexlExpression
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSONavTools.class);   
+
+   private static final Logger log = LogManager.getLogger(PSONavTools.class);
    
   
    private static IPSGuidManager gmgr = null; 
@@ -97,7 +98,8 @@ public class PSONavTools extends PSJexlUtilBase implements IPSJexlExpression
                   PSRelationshipProcessorProxy.PROCTYPE_SERVERLOCAL,requestContext);
          } catch (PSCmsException ex)
          {
-            log.error("Unexpected Exception initializing proxy " + ex,ex);
+            log.error("Unexpected Exception initializing proxy {} Error: {}",ex.getMessage());
+            log.debug(ex.getMessage(),ex);
          }
       }
         
@@ -151,7 +153,7 @@ public class PSONavTools extends PSJexlUtilBase implements IPSJexlExpression
          while(node != null)
          {
             ancestors.add(0, node);
-            log.trace("adding node " + node.getName() + " depth " + node.getDepth());
+            log.trace("adding node {} depth {}", node.getName(), node.getDepth());
             if(node.getDepth() == 0)
             {
                log.trace("Depth is 0"); 
@@ -170,8 +172,9 @@ public class PSONavTools extends PSJexlUtilBase implements IPSJexlExpression
         //not really an error: we are done 
       } catch (Exception e)
       {
-        String emsg = "Unexpected Exception " + e.getMessage(); 
-        log.error(emsg, e); 
+        String emsg = "Unexpected Exception" + e.getMessage();
+        log.error("Unexpected Exception Error: {}", e.getMessage());
+        log.debug(e.getMessage(),e);
         throw new PSExtensionProcessingException("PSONavTools", e); 
       }
       
@@ -210,7 +213,7 @@ public class PSONavTools extends PSJexlUtilBase implements IPSJexlExpression
          IPSGuid nguid = gmgr.makeGuid(s.getCurrentLocator()); 
          return objFinder.getNodeByGuid(nguid);
       }
-      log.debug("no navons found in folder " + folderid); 
+      log.debug("no navons found in folder {}", folderid);
       return null;
       
    }

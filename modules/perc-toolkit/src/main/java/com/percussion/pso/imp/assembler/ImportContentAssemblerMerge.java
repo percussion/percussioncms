@@ -18,8 +18,8 @@ import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult;
 import com.percussion.services.assembly.data.PSAssemblyWorkItem;
 import com.percussion.util.IPSHtmlParameters;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -35,7 +35,7 @@ public class ImportContentAssemblerMerge {
 	  /**
 	    * Logger for this class
 	    */
-	   private static final Log log = LogFactory.getLog(ImportContentAssemblerMerge.class);
+	   private static final Logger log = LogManager.getLogger(ImportContentAssemblerMerge.class);
 
 	   /**
 	    * Constructor for ImportContentAssemblerMerge.
@@ -88,7 +88,8 @@ public class ImportContentAssemblerMerge {
 	    	  log.debug("No Parent Item Processing Item id="+ result.getId());
 	    	  isSnippet = false;
 	      }
-	      }catch(Exception ex){log.debug("Unexpected Error " + ex.getMessage() + " Snippet detection logic");}
+	      }catch(Exception ex){
+	      	log.debug("Unexpected Error {} Snippet detection logic", ex.getMessage());}
 	      finally{
 	    	isSnippet=false;  //@TODO: FIGURE OUT WHY THIS IS CRASHING ON EVENTS
 	      }
@@ -110,10 +111,10 @@ public class ImportContentAssemblerMerge {
 	    	
 	    	
 	    	if (item!=null) {
-	    		log.debug("Xml In:" +ItemServiceHelper.getItemXml(item));
+	    		log.debug("Xml In: {}", ItemServiceHelper.getItemXml(item));
 	    		Item res = itemService.updateItem(item);
 	    		
-	    		log.debug("Xml Out:" +ItemServiceHelper.getItemXml(res));
+	    		log.debug("Xml Out: {}", ItemServiceHelper.getItemXml(res));
 	    		work.setResultData(ItemServiceHelper.getItemXml(res).getBytes());
 	    	} else {
 	    		log.debug("Cannot parse import item");

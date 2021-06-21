@@ -54,7 +54,7 @@ public class BinaryImageController extends AbstractController
       String emsg; 
       initServices();
       String uri = request.getRequestURI();
-      log.debug("uri is " + uri); 
+      log.debug("uri is {}", uri);
       String imageKey = urlBuilder.extractKey(uri); 
       if(StringUtils.isBlank(imageKey))
       {
@@ -63,7 +63,7 @@ public class BinaryImageController extends AbstractController
          response.sendError(HttpServletResponse.SC_BAD_REQUEST, emsg ); // the url must be bad.  
          return null; 
       }
-      log.debug("Image key is " + imageKey);
+      log.debug("Image key is {}", imageKey);
       if(!cacheMgr.hasImage(imageKey))
       {
          emsg = "The image was not found"; 
@@ -77,7 +77,7 @@ public class BinaryImageController extends AbstractController
       int sz = Long.valueOf(data.getSize()).intValue(); 
       if(sz > 0)
       {
-         log.debug("image size is " + sz);
+         log.debug("image size is {}", sz);
          response.setContentLength(sz);
          response.setStatus(HttpServletResponse.SC_OK);
          ServletOutputStream ostream = response.getOutputStream();
