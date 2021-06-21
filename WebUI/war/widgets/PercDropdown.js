@@ -186,7 +186,9 @@
             .addClass("perc-dropdown-title-"+labels[0])
             .data("callback", callbacks[0])
             .data("callbackData", callbackData[0])
-            .on("click",clickDropdown);
+            .on("click",function(evt){
+                clickDropdown(evt);
+            });
 
         var dropdownOptionList = dropdown.find(".perc-dropdown-option-list");
         var dropdownOptionItemTemplate = dropdown.find(".perc-dropdown-option-item-template");
@@ -235,7 +237,9 @@
             dropdownOptionItem
                 .data("callback", callbacks[k])
                 .data("callbackData", callbackData[k])
-                .on("click",clickDropdown);
+                .on("click",function(evt){
+                    clickDropdown(evt);
+                });
         }
         dropdownOptionItemTemplate.remove();
         dropdown.superfish(config);

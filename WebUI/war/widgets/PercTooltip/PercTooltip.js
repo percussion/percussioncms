@@ -67,7 +67,9 @@
      */
     $.fn.PercTooltip = function(config) {
         var element = $(this).
-            on("mouseenter",$.PercTooltip.showTooltip);
+            on("mouseenter",function(e){
+                $.PercTooltip.showTooltip(e);
+        });
     };
 
     /**
@@ -159,9 +161,9 @@
                 css({"background":"blue","opacity":0.0}).
                 css("cursor",element.css("cursor")).
                 off("click").on(function(event){
-                	if(element.data("events") && element.data("events")["click"] && element.data("events")["click"][0] && element.data("events")["click"][0].data && element.data("events")["click"][0].handler){
-	                    var e = {data : element.data("events")["click"][0].data};
-	                    element.data("events")["click"][0].handler(e);
+                	if(element.data("events") && element.data("events").click && element.data("events".click[0] && element.data("events").click[0].data && element.data("events").click[0].handler)){
+	                    let e = {data : element.data("events").click[0].data};
+	                    element.data("events").click[0].handler(e);
                 	}
                 });
         },

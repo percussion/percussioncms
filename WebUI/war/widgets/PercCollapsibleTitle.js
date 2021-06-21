@@ -101,8 +101,12 @@
                 .css("left", "15px");
             firstLine.prepend(collapseControl);
             if(toggable) {
-                firstLine.on("click",handleCollapse);
-                collapseControl.on("click",handleCollapse);
+                firstLine.on("click",function(evt){
+                    handleCollapse(evt);
+                });
+                collapseControl.on("click",function(evt){
+                    handleCollapse(evt);
+                });
             }
             
             if(isCollapsed) {

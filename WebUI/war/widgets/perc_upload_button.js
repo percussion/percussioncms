@@ -36,7 +36,9 @@
     $.perc_build_upload_button = function (finder, contentViewer)
     {
         var btn = $('<a id="perc-finder-upload" href="#" title="' +I18N.message("perc.ui.upload.button@Click Upload File") + '">Upload File...</a>')
-            .on("click",lauchClickHandler);
+            .on("click",function(evt){
+                lauchClickHandler(evt);
+            });
         
         /**
          * Listener function that is added to the finder listeners, this method gets called whenever a path change
@@ -64,7 +66,10 @@
         {
             if (flag)
             {
-                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", lauchClickHandler );
+                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt){
+                        lauchClickHandler(evt);
+                    } );
             }
             else
             {
@@ -76,7 +81,7 @@
         /**
          * Launches the download functionality specific to the browser on the selected item.
          */
-        function lauchClickHandler()
+        function lauchClickHandler(evt)
         {
             // Open the dialog and pass it the current finder path
             $.perc_upload_theme_file_dialog.open(finder);

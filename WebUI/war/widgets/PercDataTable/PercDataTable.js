@@ -264,11 +264,16 @@
             {
                 if(row.rowData)
                 {
-                    rowTr.on("click",null,row.rowData, config.percRowClickCallback);
+                    rowTr.on("click",null,row.rowData,
+                        function(evt){
+                            config.percRowClickCallback(evt);
+                        });
                 }
                 else
                 {
-                    rowTr.on("click",config.percRowClickCallback);
+                    rowTr.on("click",function(e){
+                        config.percRowClickCallback(e);
+                    });
                 }
             }
 
@@ -290,11 +295,15 @@
             {
                 if(row.rowData)
                 {
-                    rowTr.on("dblclick",row.rowData, config.percRowDblclickCallback);
+                    rowTr.on("dblclick",row.rowData, function(e){
+                        config.percRowDblclickCallback(e);
+                    });
                 }
                 else
                 {
-                    rowTr.on("dblclick",config.percRowDblclickCallback);
+                    rowTr.on("dblclick",function(e){
+                        config.percRowDblclickCallback(e);
+                    });
                 }
             }
 
@@ -376,9 +385,13 @@
                                     .addClass("perc-callback");
                                 columnRow.append(cBack);
                                 if(row.rowData)
-                                    cBack.on("click",null, row.rowData, columnRowData.callback);
+                                    cBack.on("click",null, row.rowData, function(e){
+                                        columnRowData.callback(e);
+                                    });
                                 else
-                                    cBack.on("click",columnRowData.callback);
+                                    cBack.on("click",function(e){
+                                        columnRowData.callback(e);
+                                    });
                             }
                             else {
                                 columnRow
@@ -468,7 +481,9 @@
                     var data = {};
                     data.colName = colName;
                     data.sortFunction = config.sortFunction;
-                    head.on("click",null,data, sortingHandler);
+                    head.on("click",null,data, function(e){
+                        sortingHandler(e);
+                    });
 
                     //Avoid select text on double click in the headers.
                     if($.browser.mozilla)

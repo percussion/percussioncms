@@ -1081,7 +1081,9 @@
                 single();
             }
         });
-        elem.on("dblclick", dbl );
+        elem.on("dblclick", function(e){
+            dbl(e);
+        } );
     }
     $.fn.perc_toggle = function( d )    {
         if($(d).length && $(d).hasClass('perc-hidden'))    {

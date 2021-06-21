@@ -132,10 +132,10 @@
                     menuItems.hide();
                     callback(data);
                 })
-                .on("mouseenter",function() {
+                .on("mouseenter",function(e) {
                     let menuItem = $(this);
                     menuItem.addClass("perc-simplemenu-menuitem-hover");
-                }).on("mouseleave",function() {
+                }).on("mouseleave",function(e) {
                     let menuItem = $(this);
                     menuItem.removeClass("perc-simplemenu-menuitem-hover");
                 });
@@ -149,9 +149,15 @@
         $menu.data("config", config);
         $menuItems.hide();
         
-        $menuTitle.find("*").on("click",menuTitleClick);
+        $menuTitle.find("*").on("click",
+            function(e){
+                menuTitleClick(e);
+            });
         
-        $menuTitle.on("click",menuTitleClick);
+        $menuTitle.on("click",
+            function(e){
+                menuTitleClick(e);
+            });
 
         $menuTitle.on("mouseenter",(
                 function() {
@@ -175,7 +181,7 @@
         // hide all menus when clicking on body
         $("body").on("click",function(event){
             var target = $(event.target);
-            var noParents = target.parents().length == 0;
+            var noParents = target.parents().length === 0;
             var menuParent = target.parent().hasClass("perc-simplemenu-menu");
             if(!noParents && !menuParent)
                 hideAllMenus();

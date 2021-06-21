@@ -301,7 +301,7 @@
                 .data( 'tag', spec.name );
 
             var sclass = 'perc-saveas-dialog-selected';
-            function selectAnchor()
+            function selectAnchor(evt)
             {
             	// JGA { 1/11/2010
             	// notify registered function of selection
@@ -323,7 +323,9 @@
             {
                 if( leaf_selectable )
                 {
-                    anchor.on("click", selectAnchor );
+                    anchor.on("click", function(evt){
+                        selectAnchor(evt);
+                    } );
                     anchor.on("dblclick", function()
                     {
                         anchor.trigger("click");
@@ -335,7 +337,9 @@
             {
                 if( folder_selectable )
                 {
-                    anchor.trigger("click", selectAnchor );
+                    anchor.trigger("click", function(evt){
+                        selectAnchor(evt);
+                    } );
                 }
                 anchor.on("dblclick", function()
                 {

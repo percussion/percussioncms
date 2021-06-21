@@ -391,7 +391,7 @@
                 .data( 'tag', pref + (spec['name'] + "").toLowerCase() );
 
             var sclass = 'perc-saveas-dialog-selected';
-            function selectAnchor()
+            function selectAnchor(evt)
             {
                 anchor.siblings( '.'+sclass ).removeClass( sclass );
                 anchor.addClass( sclass );
@@ -409,7 +409,9 @@
             {
                 if( leaf_selectable )
                 {
-                    anchor.on("click",  selectAnchor );
+                    anchor.on("click",  function(evt){
+                        selectAnchor(evt);
+                    } );
                     anchor.on("dblclick", function(evt)
                     {
                         anchor.trigger("click");
@@ -421,7 +423,9 @@
             {
                 if( folder_selectable )
                 {
-                    anchor.on("click", selectAnchor );
+                    anchor.on("click", function(evt){
+                        selectAnchor(evt);
+                    } );
                 }
                 anchor.on("dblclick", function(evt)
                 {

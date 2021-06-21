@@ -138,7 +138,10 @@
             }            
             var cbAutoSummary = iframeContainer.find("#perc-content-edit-auto_generate_summary");
                var trAutoSummary = cbAutoSummary.closest('tr');
-               cbAutoSummary.on("click",_handleAutoSummary);
+               cbAutoSummary.on("click",
+                   function(evt){
+                        _handleAutoSummary(evt);
+                   });
                if(!pageSysName){
                    pageSysName = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val();
                }
@@ -190,7 +193,7 @@
                     
         // Hide the TinyMCE instead of removing it, and show a div with content like a 
         // disabled text area (like read-only view) if auto generate page summary is checked
-        function _handleAutoSummary()
+        function _handleAutoSummary(evt)
         {
             var cbAutoSummary = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-auto_generate_summary"); 
             var containerArea = $("#edit-page-metadata-frame").contents().find(".mce-tinymce").parent();

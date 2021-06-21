@@ -58,7 +58,9 @@
         itemsPerPage = rows;
 
         defaultModerationLink = $(this).find("#perc-set-default-moderation-link")
-            .on("click",displayDefaultModerationDialog)
+            .on("click",function(evt){
+                displayDefaultModerationDialog(evt);
+            })
             .attr("site", site);
         
         var tableDiv = $(this);
@@ -237,7 +239,7 @@
      *
      */
     
-    function displayDefaultModerationDialog() {
+    function displayDefaultModerationDialog(evt) {
         var link = $(this);
         var site = link.attr("site");
         

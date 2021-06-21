@@ -349,11 +349,14 @@ var assetPagination = null;
         /**
          * Toggle the finders expanded/collapsed state
          */
-        function percFinderMaximizer () {
+        function percFinderMaximizer (evt) {
             expandCollapseFinder(!$(".perc-finder-body").is(":visible"));
         }
 
-        $("#perc-finder-expander").on("click",percFinderMaximizer);
+        $("#perc-finder-expander").on("click",
+            function(evt){
+                percFinderMaximizer(evt);
+            });
 
         /** if not easy to coerce val into a number return def */
         function integer (val, def) {
@@ -722,14 +725,14 @@ var assetPagination = null;
             }
         }
 
-        function pagePrevious(){
+        function pagePrevious(evt){
             var dir = $(this).parents("td");
             var newStartIndex = dir.data('startIndex') - MAX_RESULTS;
             dir.data('startIndex', newStartIndex);
             load_folder(dir, $(this).closest('.perc-paging-finder').is('.perc-paging-finder-bottom'));
         }
 
-        function pageNext(){
+        function pageNext(evt){
             var dir = $(this).parents("td");
             var newStartIndex = dir.data('startIndex') + MAX_RESULTS;
             dir.data('startIndex', newStartIndex);
@@ -779,8 +782,14 @@ var assetPagination = null;
                 .append($('<span class="perc-paging-text" />').text(headerText))
                 .append(
                     $('<div class="perc-paging-finder-navigator" />')
-                        .append($('<a class="perc-paging-finder-previous" />').text('<<').on("click",pagePrevious))
-                        .append($('<a class="perc-paging-finder-next"/>').text('>>').on("click",pageNext))
+                        .append($('<a class="perc-paging-finder-previous" />').text('<<').on("click",
+                            function(evt){
+                                pagePrevious(evt);
+                            }))
+                        .append($('<a class="perc-paging-finder-next"/>').text('>>').on("click",
+                            function(evt){
+                                pageNext(evt);
+                            }))
                 ).addClass(position);
             header = $("<div/>").append(header).append("<div style='clear:both'/>");
             //Enable/disable navigation buttons

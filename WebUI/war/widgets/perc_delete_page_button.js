@@ -34,9 +34,11 @@
         var btn = $('<a id="perc-finder-delete" class="perc-font-icon icon-remove fas fa-trash" title="' + I18N.message("perc.ui.delete.page.button@Click Delete Page") + '"href="#" ></a>')
             .off("click")
             .perc_button()
-            .on("click",deleteFn);
+            .on("click",function(evt){
+                deleteFn(evt);
+            });
 
-        function deleteFn() {
+        function deleteFn(evt) {
             var encodedPath = mcol_path;
             if ($.perc_utils.isPathUnderDesign(encodedPath)) {
                 encodedPath = $.perc_utils.encodePathArray(mcol_path);
@@ -594,7 +596,10 @@
                             $(".perc-finder-menu #perc-finder-delete").removeClass('ui-enabled').addClass('ui-disabled').off('click');
                         }
                         else {
-                            $(".perc-finder-menu #perc-finder-delete").removeClass('ui-disabled').addClass('ui-enabled').off('click').on('click',deleteFn);
+                            $(".perc-finder-menu #perc-finder-delete").removeClass('ui-disabled').addClass('ui-enabled').off('click').on('click',
+                                function(evt){
+                                deleteFn(evt);
+                                });
                         }
                     }
                     else {

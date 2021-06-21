@@ -45,8 +45,12 @@
         var menuEntries = [cp, fp, db, ub, ri];
         // Create the menu and the button
         var menu = createMenuHTML(menuEntries)
-            .on("mouseenter",preventHide)
-            .on("mouseleave",hideOnMouseOut);
+            .on("mouseenter",function(e){
+                preventHide(e);
+            })
+            .on("mouseleave",function(e){
+                hideOnMouseOut(e);
+            });
 
         var btnHtml ='<div id="perc-finder-actions" >'
             + '<a id="perc-finder-actions-button" class="perc-font-icon" title="' +I18N.message("perc.ui.actions.button@Select An Action") + '" href="#"><span class="icon-cog fas fa-cog"></span><span class="icon-caret-down fas fa-caret-down"></span></a>'
@@ -54,8 +58,12 @@
         var btn = $(btnHtml)
         //.perc_button()
             .append(menu)
-            .on("mouseenter",preventHide)
-            .on("mouseleave",hideOnMouseOut);
+            .on("mouseenter",function(e){
+                preventHide(e);
+            })
+            .on("mouseleave",function(e){
+                hideOnMouseOut(e);
+            });
 
         // This flag, hideOnMouseOut and preventHide prevent an unnatural hiding of the menu
         var flag_show = false;
@@ -63,7 +71,7 @@
         /**
          * Binds the hiding behavior to the menu once the cursor left it.
          */
-        function hideOnMouseOut()
+        function hideOnMouseOut(e)
         {
             flag_show = false;
             setTimeout(function() {
@@ -95,7 +103,7 @@
         /**
          * Handler that get called when the button is clicked
          */
-        function clickHandler()
+        function clickHandler(evt)
         {
             if ($('#perc-finder-actions-button').hasClass('ui-disabled'))
             {
@@ -148,7 +156,9 @@
                 // We perform an "unbind" first, in case clickHandler has been bound several times by error
                 // (same thing in the else)
                 anchor.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
-                    clickHandler);
+                    function(evt){
+                        clickHandler(evt);
+                    });
             }
             else
             {

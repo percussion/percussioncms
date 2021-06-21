@@ -122,8 +122,13 @@
 				}
 				else {
 					$menu
-						.on('mouseenter.superfish', targets, over)
-						.on('mouseleave.superfish', targets, out);
+						.on('mouseenter.superfish', targets, function(e){
+							over(e);
+						})
+						.on('mouseleave.superfish', targets,
+							function(e){
+								out(e);
+							});
 				}
 				var touchevent = 'MSPointerDown.superfish';
 				if (unprefixedPointerEvents) {
