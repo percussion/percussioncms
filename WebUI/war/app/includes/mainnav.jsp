@@ -117,8 +117,6 @@ if(locale==null){
             function(evt) {
                 hide(evt);
             });
-    }
-
     });
     /*]]>*/
     </script>
