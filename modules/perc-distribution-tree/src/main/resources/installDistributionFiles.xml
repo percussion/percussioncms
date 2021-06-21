@@ -166,6 +166,19 @@
             <fileset dir="${basedir}/../../system/Tools/TableFactory/src/main/resources/dtd" includes="sys_Tabledata.dtd, sys_Tabledef.dtd" />
         </copy>
 
+        <!-- Force copy of UI files - they weren't getting refreshed on upgrade without this -->
+        <copy todir="${assembly-directory}/jetty/base/webapps/Rhythmyx/" overwrite="true" verbose="true" filtering="true">
+            <fileset dir="../../WebUI/target/perc-web-ui-${project.version}">
+                <include name="cm/**"/>
+                <include name="dce/**"/>
+                <include name="test/**"/>
+                <include name="tmx/**"/>
+                <include name="ui/**"/>
+                <include name="util/**"/>
+                <include name="*.jsp"/>
+                <include name="favicon.ico"/>
+            </fileset>
+        </copy>
         <!--<copy todir="${assembly-directory}/cm">
             <fileset dir="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm">
             </fileset>
