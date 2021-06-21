@@ -31,15 +31,15 @@
         var finder_path = ["", $.perc_paths.SITES_ROOT_NO_SLASH];
         var pitem = {};
         var btn = $("<a id='perc-finder-new-folder' class='perc-font-icon ui-disabled' href='#' title='"+I18N.message("perc.ui.new.folder.button@Click New Folder") + "'><span class='icon-plus fas fa-plus'></span><span class='icon-folder-close fas fa-folder'></span></a>")
-            .perc_button().on("click",function () {
-                createNewFolder();
+            .perc_button().on("click",function (evt) {
+                createNewFolder(evt);
             });
 
 
         /**
          * Makes an ajax request to create the new folder. Passes the finder path.
          */
-        function createNewFolder(){
+        function createNewFolder(evt){
             //Check user access
             $.PercFolderHelper().getAccessLevelByPath(finder_path.join('/'),false,function(status, result){
                 if(status === $.PercFolderHelper().PERMISSION_ERROR || result === $.PercFolderHelper().PERMISSION_READ)
@@ -115,7 +115,10 @@
         function enableButton(flag)
         {
             if(flag){
-                $( ".perc-finder-menu #perc-finder-new-folder" ).removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", createNewFolder );
+                $( ".perc-finder-menu #perc-finder-new-folder" ).removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt){
+                        createNewFolder(evt);
+                    } );
             }
             else{
                 $( ".perc-finder-menu #perc-finder-new-folder" ).addClass('ui-disabled').removeClass('ui-enabled').off('click');

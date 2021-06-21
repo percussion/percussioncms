@@ -500,7 +500,12 @@
                             "relationshipId": asset.relationshipId
                         }).append(
                             $("<div />").css("position", "relative").addClass("perc-widget-tool").append(
-                                $("<img />").attr("src", asset.icon).data("iconSrc", asset.icon).data("overIconSrc", asset.overIcon).on('mouseenter',handleIn).on('mouseleave', handleOut)).append(
+                                $("<img />").attr("src", asset.icon).data("iconSrc", asset.icon).data("overIconSrc", asset.overIcon).on('mouseenter',
+                                    function(e){
+                                        handleIn(e);
+                                    }).on('mouseleave', function(e){
+                                        handleOut(e);
+                                })).append(
                                 $("<div />").css("overflow", "hidden").addClass("perc-asset-label").append(
                                     $("<nobr />").html(asset.title)))).css('cursor', 'pointer').data('assetId', asset.id).data('assetType', asset.type).data('assetFolderPaths', folderPaths).data('widgetId', asset.widgetId).off("click").on("click",selectOrphanAsset)
                     );

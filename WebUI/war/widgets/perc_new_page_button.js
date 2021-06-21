@@ -88,7 +88,10 @@
         function enableButton(flag)
         {
             if(flag){
-                newPageButton.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", checkAndOpenNewPageDialog );
+                newPageButton.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt){
+                        checkAndOpenNewPageDialog(evt);
+                    } );
             }
             else{
                 newPageButton.addClass('ui-disabled').removeClass('ui-enabled').off('click');
@@ -99,7 +102,7 @@
         /**
          * Checks whether the current user has permission to create a new page, if yes, then calls the contentViewer
          */
-        function checkAndOpenNewPageDialog()
+        function checkAndOpenNewPageDialog(evt)
         {
             var currentItem = finderRef.getCurrentItem();
             var folderPath = "";

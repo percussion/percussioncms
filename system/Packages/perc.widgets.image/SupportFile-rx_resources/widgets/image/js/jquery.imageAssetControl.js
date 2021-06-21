@@ -806,7 +806,10 @@
             $("input[name=thumbprefix]").val($thumbPrefix.val());
         }
 
-        $('#perc-image-thumbprefix').on("blur",_updateThumbprefix);
+        $('#perc-image-thumbprefix').on("blur",
+            function(e){
+                _updateThumbprefix(e);
+            });
 
         /**
          * Initialize the editable "thumbnail" input field, populate the field

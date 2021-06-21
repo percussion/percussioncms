@@ -83,7 +83,10 @@
         {
             if (flag)
             {
-                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", launchDownload );
+                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt) {
+                        launchDownload(evt);
+                    });
             }
             else
             {
@@ -95,7 +98,7 @@
         /**
          * Launches the download functionality specific to the browser on the selected item.
          */
-        function launchDownload()
+        function launchDownload(evt)
         {
         }
         
