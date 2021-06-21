@@ -107,8 +107,7 @@
         // create headers
         var headers = config.percHeaders;
 
-        var indices;
-        
+
         if (config.percDeleteRow)
         {
             headers.push ("");
@@ -320,18 +319,18 @@
             
             if (config.percShowValuesPlaceholders && value2.trim() === "")
             {
-                var placeHolderValue = "";
+                var placeHolderValue2 = "";
                 if ($.type(config.percPlaceHolderValues[1]) === "string")
                 {
-                    placeHolderValue = config.percPlaceHolderValues[1];
+                    placeHolderValue2 = config.percPlaceHolderValues[1];
                 }
                 else
                 {
-                    var rowNumber = oTable.row( nRow ).index();
-                    placeHolderValue = config.percPlaceHolderValues[rowNumber][1];
+                    var rowNumber2 = oTable.row( nRow ).index();
+                    placeHolderValue2 = config.percPlaceHolderValues[rowNumber2][1];
                 }
                 placeHolderClass2 = "perc-placeholder";
-                value2 = placeHolderValue;
+                value2 = placeHolderValue2;
             }
     
             oTable.fnUpdate( "<span class='" + placeHolderClass1 + "'>" + value1 + "</span>", nRow, 0, false );
@@ -370,7 +369,8 @@
                 }
                 placeHolderClass = "perc-placeholder";
                 value = placeHolderValue;
-            }            
+            }
+
             oTable.fnUpdate( "<span class='" + placeHolderClass + "'>" + value + "</span>", nRow, colNumber, false );
             oTable.draw();
             var newRowsDefaultValues = config.percNewRowDefaultValues;

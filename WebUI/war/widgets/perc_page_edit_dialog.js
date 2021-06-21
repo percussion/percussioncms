@@ -110,9 +110,9 @@
                 success: function(data, textstatus){
                     var ifrUrl = data + "&nocache=v1";
                     $("#edit-page-metadata").append("<iframe name='edit-page-metadata-frame' id='edit-page-metadata-frame' height='100%' FRAMEBORDER='0' width='100%' src='" + ifrUrl + "' ></iframe>");
-                    $("#edit-page-metadata-frame").load(function(){
+                    $("#edit-page-metadata-frame").trigger("load",(function(){
                         _formatPageContent();
-                    });
+                    }));
                 },
                 error: function(request, textstatus, error){
                     alert(I18N.message("perc.ui.page.edit.dialog@Unable To See Content")+pageid);

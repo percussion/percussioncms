@@ -153,7 +153,7 @@
 
                                 // get users from the list widget and build
                                 // a writePrincipals array of objects to pass to server
-                                var writePrincipals = new Array();
+                                var writePrincipals = [];
                                 if(self.listEdit.isEnabled()) {
                                     var users = self.listEdit.getListItems();
                                     for(u=0; u<users.length; u++)

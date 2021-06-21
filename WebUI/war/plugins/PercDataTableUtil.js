@@ -63,8 +63,8 @@
             }
             var dataRow = [];
             for(k=0;k<colsInfo.length;k++){
-                var name = colsInfo[k].name;
-                var dataUpdater = colsInfo[k].dataUpdater;
+                let name = colsInfo[k].name;
+                let dataUpdater = colsInfo[k].dataUpdater;
                 dataRow.push(typeof dataUpdater === "function" ?dataUpdater(name, row):row[name]);
             }
             var percContent = {"rowContent" : dataRow, "rowData" : row };
