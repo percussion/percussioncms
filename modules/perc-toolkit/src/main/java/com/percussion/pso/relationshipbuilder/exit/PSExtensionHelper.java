@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -73,13 +73,13 @@ public class PSExtensionHelper
     */
    public void updateDisplayChoices(Document resultDoc, boolean selectAll) 
        throws PSExtensionProcessingException {
-       ms_log.debug("Starting Updating display choices with builder: " + 
+       log.debug("Starting Updating display choices with builder: " +
                m_builder.getClass().getCanonicalName());
        String errorMesg = "Error updating display choices";
        if (resultDoc == null)
            throw new IllegalArgumentException(errorMesg + " Result Doc cannot be null");
        PSOExtensionParamsHelper extParamHelper = new PSOExtensionParamsHelper(
-               m_parameters, m_request, ms_log);
+               m_parameters, m_request, log);
        String fieldName = extParamHelper.getRequiredParameter(IDS_FIELD_NAME);
        
        Collection<Integer> ids = null;
@@ -88,12 +88,12 @@ public class PSExtensionHelper
                getRequiredParameterAsNumber(IPSHtmlParameters.SYS_CONTENTID).intValue();
            try {
                 ids = m_builder.retrieve(contentId);
-                ms_log.debug("Selecting ids: " + ids);
+                log.debug("Selecting ids: " + ids);
            } catch (PSAssemblyException e) {
-               ms_log.error(errorMesg, e);
+               log.error(errorMesg, e);
                throw new PSExtensionProcessingException(errorMesg,e);
            } catch (PSException e) {
-               ms_log.error(errorMesg, e);
+               log.error(errorMesg, e);
                throw new PSExtensionProcessingException(errorMesg,e);
            }
        }
@@ -109,7 +109,7 @@ public class PSExtensionHelper
            }
        }
        if (controlElement == null) {
-           ms_log.warn("Field: " + fieldName + " could not be found in the content editor xml");
+           log.warn("Field: " + fieldName + " could not be found in the content editor xml");
        }
        else {
            NodeList displayChoicesNodes = controlElement.getElementsByTagName("DisplayChoices");
@@ -117,44 +117,44 @@ public class PSExtensionHelper
                && displayChoicesNodes.getLength() == 1 
                ? (Element) displayChoicesNodes.item(0) : null;
            if (displayChoicesElement == null) {
-               ms_log.debug("No DisplayChoice Elements. Checking for Value e.g. multi value no child table, ; separated");
+               log.debug("No DisplayChoice Elements. Checking for Value e.g. multi value no child table, ; separated");
                NodeList valueNodes = controlElement.getElementsByTagName("Value");
                if (valueNodes.getLength() > 0) {
             	  String itemList = valueNodes.item(0).getTextContent();
-            	  ms_log.debug("Found selections " + itemList);
+            	  log.debug("Found selections " + itemList);
             	  String replacementString = "";
             	  for (int id : ids) {
             		  if (replacementString.length() >0 ) replacementString+=";";
             		  replacementString += id;
             	  }
-            	  ms_log.debug("Replacing with ids " + replacementString);
+            	  log.debug("Replacing with ids " + replacementString);
             	  valueNodes.item(0).setTextContent(replacementString);
                }
                
                
            }
            else {
-               if (ms_log.isTraceEnabled()) {
+               if (log.isTraceEnabled()) {
                    String xml = PSXmlDocumentBuilder.toString(displayChoicesElement);
-                   ms_log.trace("Nabeel changes...");
-                   ms_log.trace("Display Choices XML: " + xml);
+                   log.trace("Nabeel changes...");
+                   log.trace("Display Choices XML: " + xml);
                }
-               ms_log.debug("Displayed choice... ");
+               log.debug("Displayed choice... ");
                NodeList displayEntryNodes = 
                    displayChoicesElement.getElementsByTagName("DisplayEntry");
-               ms_log.debug("Got display entry elements, there are:  " + displayEntryNodes.getLength());
+               log.debug("Got display entry elements, there are:  " + displayEntryNodes.getLength());
                for(int i = 0; displayEntryNodes != null 
                    && i < displayEntryNodes.getLength(); i++) {
                    Element displayEntryElement = (Element) displayEntryNodes.item(i);
-                   ms_log.debug("displayEntryElement: " + displayEntryElement);
-                   ms_log.debug("selectALL: " + selectAll);
+                   log.debug("displayEntryElement: " + displayEntryElement);
+                   log.debug("selectALL: " + selectAll);
                    if (selectAll) {
                        displayEntryElement.setAttribute("selected", "yes");
                    }
                    else {
                        String idString = displayEntryElement
                            .getElementsByTagName("Value").item(0).getTextContent();
-                       ms_log.debug("idString: " + idString);
+                       log.debug("idString: " + idString);
                        int id = 0;
                        
                       //When the Aging Agent tries to move an item from Public, it tends to fail when the DisplayEntry element
@@ -165,7 +165,7 @@ public class PSExtensionHelper
                       }
                       catch (NumberFormatException nfe)
                       {
-                    	   ms_log.warn("The value for the control is not appropriately formatted or is not a number. Using 0.");
+                    	   log.warn("The value for the control is not appropriately formatted or is not a number. Using 0.");
                     	   id = 0;
                       }
                       
@@ -176,7 +176,7 @@ public class PSExtensionHelper
                }
            }
        }
-       ms_log.debug("Finished updating display choices builder: " 
+       log.debug("Finished updating display choices builder: "
                + m_builder.getClass().getCanonicalName());
    }
    
@@ -195,11 +195,11 @@ public class PSExtensionHelper
    public Object retrieveIds() throws PSConversionException
    {
       IPSRequestContext request = m_request;
-       ms_log.debug("Started retrieving target ids using exit: " + m_builder.getClass().getName());
+       log.debug("Started retrieving target ids using exit: " + m_builder.getClass().getName());
       // get the current content item from the request
       final String contentId = request
             .getParameter(IPSHtmlParameters.SYS_CONTENTID);
-      ms_log.debug("\tProcessing for content id: " + contentId);
+      log.debug("\tProcessing for content id: " + contentId);
       String idsString = DEFAULT_OUTPUT;
       
       if (StringUtils.isNumeric(contentId))
@@ -216,7 +216,7 @@ public class PSExtensionHelper
          }
          catch (PSException e)
          {
-            ms_log.error("\tFailure in relationship API", e);
+            log.error("\tFailure in relationship API", e);
             throw new PSConversionException(0, e);
          }
       }
@@ -226,10 +226,10 @@ public class PSExtensionHelper
           * not every request will have a content id (such as creating a new
           * item), so don't throw exception if it is missing.
           */
-         ms_log.debug("\tskipping extract; no content id in request");
+         log.debug("\tskipping extract; no content id in request");
       }
-      ms_log.debug("\tReturned string for udf: " + idsString);
-      ms_log.debug("Finished extracting ids from slot exit: " + m_builder.getClass().getName());
+      log.debug("\tReturned string for udf: " + idsString);
+      log.debug("Finished extracting ids from slot exit: " + m_builder.getClass().getName());
       return idsString;
    }
 
@@ -256,12 +256,12 @@ public class PSExtensionHelper
 
       if (isRequestToBeProcessedForBuilding(m_request))
       {
-         ms_log.debug("Starting building relationships exit with builder " + 
+         log.debug("Starting building relationships exit with builder " +
                  m_builder.getClass().getName());
          Map<String, String> paramMap = m_parameters;
-         PSOExtensionParamsHelper extParamHelper = new PSOExtensionParamsHelper(paramMap, m_request, ms_log);
+         PSOExtensionParamsHelper extParamHelper = new PSOExtensionParamsHelper(paramMap, m_request, log);
          String contentId = extParamHelper.getParameter(IPSHtmlParameters.SYS_CONTENTID);
-         ms_log.debug("\tProcessing for content id: " + contentId);
+         log.debug("\tProcessing for content id: " + contentId);
          if (StringUtils.isNumeric(contentId))
          {
             int cid = Integer.parseInt(contentId);
@@ -273,21 +273,21 @@ public class PSExtensionHelper
             }
             catch (PSAssemblyException e)
             {
-               ms_log.error("Failure in assembly API", e);
+               log.error("Failure in assembly API", e);
                throw new PSExtensionProcessingException(0, e);
             }
             catch (PSException e)
             {
-               ms_log.error("Failure in relationship API", e);
+               log.error("Failure in relationship API", e);
                throw new PSExtensionProcessingException(0, e);
             }
             catch (Exception e) {
                 String mesg = "An unexpected exception happened in the relationshipbuilder.";
-                ms_log.error(mesg,e);
+                log.error(mesg,e);
                 throw new RuntimeException(mesg,e);
             }
             finally {
-               ms_log.debug("Finished processing exit with builder " + m_builder.getClass().getName());
+               log.debug("Finished processing exit with builder " + m_builder.getClass().getName());
             }
          }
       }
@@ -304,15 +304,15 @@ public class PSExtensionHelper
         */
        Set <Integer> fieldValuesSet = new HashSet<Integer>();
        Collection <Object> invalid = convert (fieldValues, fieldValuesSet);
-       ms_log.debug("\tField values for fieldname '" + fieldName +"' is : " + 
+       log.debug("\tField values for fieldname '" + fieldName +"' is : " +
              fieldValuesSet);
        if (invalid.size() == 1 && invalid.contains("")) {
-           ms_log.debug("\tEmpty String only.  No items checked.  Removing relationships");
+           log.debug("\tEmpty String only.  No items checked.  Removing relationships");
            m_builder.synchronize(cid, fieldValuesSet);
        }
        else if (invalid.size() != 0) {
-          ms_log.debug("\tInvalid id(s) were passed. Not building any relationships");
-          ms_log.debug("\tInvalid: " + invalid);
+          log.debug("\tInvalid id(s) were passed. Not building any relationships");
+          log.debug("\tInvalid: " + invalid);
        }
        else {
           m_builder.synchronize(cid, fieldValuesSet);
@@ -325,7 +325,7 @@ public class PSExtensionHelper
              .getParameter(PSContentEditorHandler.PAGE_ID_PARAM_NAME);
        String processInlineLink = request
              .getParameter(IPSHtmlParameters.SYS_INLINELINK_DATA_UPDATE);
-       ms_log.trace("Command is: " + command 
+       log.trace("Command is: " + command
                + " page is: " + page 
                + " processInlineLink is: " + processInlineLink );
    }
@@ -431,7 +431,7 @@ public class PSExtensionHelper
             else
             {
                // log and return any non-parsables
-               ms_log
+               log
                      .warn("\ttaking note of non-parsable element in array <"
                            + contentId + ">");
                invalid.add(contentId);               
@@ -444,6 +444,6 @@ public class PSExtensionHelper
    /**
     * The log instance to use for this class, never <code>null</code>.
     */
-   private static final Log ms_log = LogFactory.getLog(PSExtensionHelper.class);
+   private static final Logger log = LogManager.getLogger(PSExtensionHelper.class);
 
 }
