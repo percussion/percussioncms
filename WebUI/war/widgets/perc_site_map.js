@@ -495,7 +495,8 @@
 
                     isSiteBeingImported(function(result){
                         // enable and bind the event
-                        if (!result)
+                        //CMS-8082 : result was returning false as string. Need to convert to boolean to enable the delete site button.
+                        if (!JSON.parse(result))
                         {
                             $delete.removeClass("perc-site-map-action-item-disabled")
                                 .addClass("perc-site-map-action-item-enabled")
