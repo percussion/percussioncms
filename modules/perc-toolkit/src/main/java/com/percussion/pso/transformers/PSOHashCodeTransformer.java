@@ -16,8 +16,8 @@ import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.pso.utils.PSOExtensionParamsHelper;
 import com.percussion.server.IPSRequestContext;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
@@ -25,7 +25,7 @@ public class PSOHashCodeTransformer extends PSDefaultExtension
 implements
 IPSFieldInputTransformer
 {
-private static Log log = LogFactory.getLog(PSOHashCodeTransformer.class);
+private static final Logger log = LogManager.getLogger(PSOHashCodeTransformer.class);
 
 private IPSExtensionDef extDef = null;
 
