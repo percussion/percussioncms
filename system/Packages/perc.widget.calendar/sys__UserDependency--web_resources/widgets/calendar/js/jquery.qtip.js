@@ -1535,8 +1535,12 @@
             // Assign each reset event
             $(inactiveEvents).each(function()
             {
-               hideTarget.on(this+'.qtip-inactive', inactiveMethod);
-               self.elements.content.on(this+'.qtip-inactive', inactiveMethod);
+               hideTarget.on(this+'.qtip-inactive', function(evt){
+                  inactiveMethod(evt);
+               });
+               self.elements.content.on(this+'.qtip-inactive', function(evt){
+                  inactiveMethod(evt);
+               });
             });
 
             // Start the inactive timer
@@ -1597,16 +1601,22 @@
       // Events are not identical, bind normally
       else
       {
-         showTarget.on(self.options.show.when.event + '.qtip', showMethod);
+         showTarget.on(self.options.show.when.event + '.qtip', function(evt){
+            showMethod(evt);
+         });
 
          // If the hide event is not 'inactive', bind the hide method
          if(self.options.hide.when.event !== 'inactive')
-            hideTarget.on(self.options.hide.when.event + '.qtip', hideMethod);
+            hideTarget.on(self.options.hide.when.event + '.qtip', function(evt){
+               hideMethod(evt);
+            });
       };
 
       // Focus the tooltip on mouseover
       if(self.options.position.type.search(/(fixed|absolute)/) !== -1)
-         self.elements.tooltip.on('mouseover.qtip', self.focus);
+         self.elements.tooltip.on('mouseover.qtip', function(e){
+            self.focus(e);
+   });
 
       // If mouse is the target, update tooltip position on mousemove
       if(self.options.position.target === 'mouse' && self.options.position.type !== 'static')

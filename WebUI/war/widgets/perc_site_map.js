@@ -840,7 +840,9 @@
                     .attr("src", this.getImageSrc(image))
                     .attr("alt", tooltip)
                     .attr("title", tooltip)
-                    .on("click." + namespace, data, onclick)
+                    .on("click." + namespace, data, function(evt){
+                        onclick(evt);
+                    })
                     .on("mouseenter." + namespace, function(evt){
                         $(this).attr("src", self.getImageSrc(image, true));
                     })

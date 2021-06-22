@@ -199,7 +199,7 @@
              * calls and maintain state to finally enable/disable the actions button.
              * NOTE: To debug this function I recommend using console.log()
              */
-            function entryChangeEnabledStateListener()
+            function entryChangeEnabledStateListener(evt)
             {
                 // In this case, "this" represents the menu entry
                 var state_enabled = $(this).hasClass("ui-enabled");
@@ -231,7 +231,10 @@
             // Bind the declared function to the buttons in the array menuEntries
             for (m = 0; m < menuEntries.length; m++)
             {
-                menuEntries[m].on('actions-change-enabled-state', entryChangeEnabledStateListener);
+                menuEntries[m].on('actions-change-enabled-state',
+                    function(evt){
+                        entryChangeEnabledStateListener(evt);
+                    });
             }
         }
 

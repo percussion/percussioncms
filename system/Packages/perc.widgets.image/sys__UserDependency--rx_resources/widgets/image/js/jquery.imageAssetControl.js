@@ -504,9 +504,13 @@
             $.topFrameJQuery.PercPathSelectionDialog.open(pathSelectionOptions);
         }
 
-        $("#perc-select-image").on("change",_selectImageHandler);
+        $("#perc-select-image").on("change", function(evt){
+            _selectImageHandler(evt);
+        });
 
-        $(".perc-select-folderpath").on('click', _displayPathSelection);
+        $(".perc-select-folderpath").on('click', function(evt){
+            _displayPathSelection(evt);
+        });
 
         $('.image_asset_constrain').on("click",function()  {
 
@@ -690,7 +694,7 @@
         /**
          * The callback function when step "(1)" or "Upload an Image" is clicked.
          */
-        function _step1ClickHandler()
+        function _step1ClickHandler(event)
         {
             displayUploadStep();
             _showStepImage(1);
@@ -705,7 +709,10 @@
         function _enableClickStep1(enable)
         {
             if (enable)
-                $("#perc-image-upload").off('click').on('click', _step1ClickHandler).css("cursor", "pointer");
+                $("#perc-image-upload").off('click').on('click',
+                    function(evt){
+                        _step1ClickHandler(evt);
+                    }).css("cursor", "pointer");
             else
                 $("#perc-image-upload").off('click').css("cursor", "default");
         }
@@ -713,7 +720,7 @@
         /**
          * The callback function when step "(2)" or "Size the Image" is clicked.
          */
-        function _step2ClickHandler()
+        function _step2ClickHandler(event)
         {
             displayImagePage(MAIN_IMAGE);
             _showStepImage(2);
@@ -728,7 +735,10 @@
         function _enableClickStep2(enable)
         {
             if (enable)
-                $("#perc-image-resize").off('click').on('click', _step2ClickHandler).css("cursor", "pointer");
+                $("#perc-image-resize").off('click').on('click',
+                    function(evt){
+                        _step2ClickHandler(evt);
+                    }).css("cursor", "pointer");
             else
                 $("#perc-image-resize").off('click').css("cursor", "default");
         }
@@ -736,7 +746,7 @@
         /**
          * The callback function when step "(3)" or "Create a Thumbnail" is clicked.
          */
-        function _step3ClickHandler()
+        function _step3ClickHandler(event)
         {
             displayImagePage(THUMB_IMAGE);
             _showStepImage(3);
@@ -751,7 +761,10 @@
         function _enableClickStep3(enable)
         {
             if (enable)
-                $("#perc-image-thumbnail").off('click').on('click', _step3ClickHandler).css("cursor", "pointer");
+                $("#perc-image-thumbnail").off('click').on('click',
+                    function(evt){
+                        _step3ClickHandler(evt);
+                    }).css("cursor", "pointer");
             else
                 $("#perc-image-thumbnail").off('click').css("cursor", "default");
         }

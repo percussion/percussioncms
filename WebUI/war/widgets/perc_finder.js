@@ -128,7 +128,10 @@ var assetPagination = null;
         }
 
         // attach event handlers to the dom
-        $('body').on('click', '.perc-action-goto-or-search', finder_do_goto_or_search);
+        $('body').on('click', '.perc-action-goto-or-search',
+            function(evt){
+                finder_do_goto_or_search(evt);
+            });
         $.perc_filterField($("#mcol-path-summary"), $.perc_textFilters.PATH);
         $(document).on("keyup","#mcol-path-summary",function(evt){
             if (evt.keyCode === 13){

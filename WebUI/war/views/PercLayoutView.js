@@ -404,8 +404,14 @@ var layoutModel;
         //Initially load all widgets - populate widget library will handle filters
         initWidgetLibrary("all","no");
         populateWidgetLibrary();
-        $(".perc-widget-type").off("change").on("change",populateWidgetLibrary);
-        $(".perc-widget-category").off().on("change",filterWidgetLibrary);
+        $(".perc-widget-type").off("change").on("change",
+            function(evt){
+                populateWidgetLibrary(evt);
+            });
+        $(".perc-widget-category").off().on("change",
+            function(evt){
+                filterWidgetLibrary(evt);
+            });
         initRender();
 
         /**
@@ -1342,7 +1348,7 @@ var layoutModel;
         /**
          * Fill the widget library with the various widget tools
          */
-        function populateWidgetLibrary() {
+        function populateWidgetLibrary(event) {
             $('.perc-widget-list').empty();
             $.getJSON($.perc_paths.WIDGETS_ALL + "/type/" + $('.perc-widget-type').val() + "?filterDisabledWidgets=yes", function(js) {
                 $.each( js['WidgetSummary'], function( ) {
@@ -1459,7 +1465,7 @@ var layoutModel;
         /**
          * Filter the widget library by category
          */
-        function filterWidgetLibrary() {
+        function filterWidgetLibrary(event) {
             $.each($('.perc-widget-list .perc-widget-tool'), function( ) {
                 if(containsCategory(this))
                     $(this).parent("a").show();

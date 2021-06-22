@@ -640,9 +640,11 @@
         var selector = match[ 2 ];
 
         if ( selector ) {
-          delegateElement.on( eventName, selector, handlerProxy );
+          delegateElement.on( eventName, selector, function(evt){
+            handlerProxy(e);
+          } );
         } else {
-          element.on( eventName, handlerProxy );
+          element.on( eventName, function(evt){handlerProxy(evt);} );
         }
       } );
     },

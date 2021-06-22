@@ -242,10 +242,16 @@
             $.perc_filterField(percJump, $.perc_textFilters.ONLY_DIGITS);
             
             // Pagination controls - Previous button
-            $('.perc-unassigned-panel .perc-template-pages-controls .previous').on("click",unassignedPreviousClick);
+            $('.perc-unassigned-panel .perc-template-pages-controls .previous').on("click",
+                function(evt){
+                    unassignedPreviousClick(evt);
+                });
             
             // Pagination controls - Next button - Click
-            $('.perc-unassigned-panel .perc-template-pages-controls .next').on("click", unassignedNextClick);
+            $('.perc-unassigned-panel .perc-template-pages-controls .next').on("click",
+                function(evt){
+                    unassignedNextClick(evt);
+                });
             
              // Pagination controls - Text input for page selector
             $('.perc-unassigned-panel .perc-template-pages-controls').on("submit",function()
@@ -255,12 +261,12 @@
             });
         }
         
-        function unassignedPreviousClick(){
+        function unassignedPreviousClick(event){
             var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
             requestUnassignedPages(parseInt(percJump.val())-1);
         }
         
-        function unassignedNextClick(){
+        function unassignedNextClick(event){
             var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
             requestUnassignedPages(parseInt(percJump.val())+1);
         }
@@ -316,7 +322,10 @@
                     .removeClass('previous-disabled')
                     .addClass('previous')
                     .off('click')
-                    .on("click", unassignedPreviousClick);
+                    .on("click",
+                        function(evt){
+                            unassignedPreviousClick(evt);
+                        });
             }
             
             var endIndex = startIndex + UNASSIGNED_MAX_RESULTS - 1;
@@ -331,7 +340,9 @@
                     .removeClass('next-disabled')
                     .addClass('next')
                     .off('click')
-                    .on("click", unassignedNextClick);
+                    .on("click", function(evt){
+                            unassignedNextClick(evt);
+                    });
             }
         }
         
