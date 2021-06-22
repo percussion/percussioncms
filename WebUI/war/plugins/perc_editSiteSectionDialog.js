@@ -459,9 +459,9 @@ $.perc_editSiteSectionDialog = function() {
             secureSiteCheck.data('originalValue', props.isSecure);
             //Set the security option.
             if (props.isSecure)
-                secureSiteCheck.attr('checked', 'checked');
+                secureSiteCheck.prop('checked', true);
             else
-                secureSiteCheck.removeAttr('checked');
+                secureSiteCheck.prop('checked',false);
 
             _handleSecurityOption();
 

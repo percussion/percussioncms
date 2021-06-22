@@ -128,13 +128,15 @@
             buttonSave
                 .off('click')
                 // Bind function to the click event in the button
-                .on("click",saveLogic);
+                .on("click",function(evt){
+                    saveLogic(evt);
+                });
         }
         
         /**
          * Logic involved after clicking the Save button
          */
-        function saveLogic()
+        function saveLogic(event)
         {   
             if (checkFileFieldCompleted() === false)
             {

@@ -432,13 +432,13 @@
          * The "Upload" INPUT is a pseudo 'img' field, but it cannot name as 'img' on the field;
          * otherwise it will cause some unintended side effect when uploaded invalid an image file.
          */
-        function _selectImageHandler()
+        function _selectImageHandler(event)
         {
             form.ajaxSubmit(imageFormOptions);
         }
 
         var validator = function(pathItem) {
-            return pathItem && pathItem.type == "Folder" ? null : "Please select a folder.";
+            return pathItem && pathItem.type === "Folder" ? null : "Please select a folder.";
         };
 
         var updateFormActionUrl = function(data) {
@@ -457,8 +457,8 @@
                 data.folderPath.substring(data.folderPath.indexOf('/Assets')),
                 true,
                 function( status, result ) {
-                    var error = status == $.topFrameJQuery.PercFolderHelper().PERMISSION_ERROR,
-                        onlyWrite = result == $.topFrameJQuery.PercFolderHelper().PERMISSION_READ;
+                    var error = status === $.topFrameJQuery.PercFolderHelper().PERMISSION_ERROR,
+                        onlyWrite = result === $.topFrameJQuery.PercFolderHelper().PERMISSION_READ;
                     if ( error || onlyWrite ) {
                         $.topFrameJQuery.perc_utils.alert_dialog({title: I18N.message("perc.ui.newassetdialog.title@New Asset"), content: I18N.message("perc.ui.page.path.selection.dialog@Not Authorized to Create")});
                         return;
@@ -475,12 +475,11 @@
                 null,
                 -1,
                 function( status, result) {
-                    var error = status == $.PercServiceUtils.STATUS_ERROR,
-                        accessRead = result == $.topFrameJQuery.PercUserService.ACCESS_READ,
-                        accessNone = result == $.topFrameJQuery.PercUserService.ACCESS_NONE;
+                    var error = status === $.PercServiceUtils.STATUS_ERROR,
+                        accessRead = result === $.topFrameJQuery.PercUserService.ACCESS_READ,
+                        accessNone = result === $.topFrameJQuery.PercUserService.ACCESS_NONE;
                     if (  error || accessRead || accessNone ) {
                         $.topFrameJQuery.perc_utils.alert_dialog({title: I18N.message("perc.ui.newassetdialog.title@New Asset"), content: I18N.message("perc.ui.page.path.selection.dialog@Not Authorized to Create")});
-                        return;
                     }
                     else {
                         updateFormActionUrl(data);
@@ -490,7 +489,7 @@
             );
         }
 
-        function _displayPathSelection() {
+        function _displayPathSelection(event) {
             var pathSelectionOptions = {
                 okCallback: _checkUserPermission,
                 dialogTitle: "Select Destination Folder",
@@ -503,9 +502,13 @@
             $.topFrameJQuery.PercPathSelectionDialog.open(pathSelectionOptions);
         }
 
-        $("#perc-select-image").on("change",_selectImageHandler);
+        $("#perc-select-image").on("change",function(evt){
+            _selectImageHandler(evt);
+        });
 
-        $(".perc-select-folderpath").on('click', _displayPathSelection);
+        $(".perc-select-folderpath").on("click", function(evt){
+            _displayPathSelection(evt);
+        });
 
         $('.image_asset_constrain').on("click",function()  {
 
@@ -528,7 +531,6 @@
         });
 
         $(this).ajaxError(function(event, request, settings){
-            //alert("ajax error requesting page"+settings.url);
             displayUploadStep();
         });
 
@@ -576,7 +578,6 @@
 
         // handle when height input lose focus - always retrieve & display image if there is any height/width changes
         $('.image_asset_height').on("blur",function() {
-            // utils.debug('".image_asset_height" Handler for .blur() called.');
             resize();
         })
         .on("keypress",function(evt) {
@@ -590,7 +591,6 @@
 
             if(constrain > 0) {
                 var newWidth = Math.round(( uploadedImage.width / uploadedImage.height ) *  $(this).val());
-                //utils.debug('new width = ' + newWidth);
                 step.find(".image_asset_width").val( newWidth );
             }
         });
@@ -598,7 +598,6 @@
 
         // handle when width input lose focus - always retrieve & display image if there is any height/width changes
         $('.image_asset_width').on("blur",function() {
-            // utils.debug('".image_asset_width" Handler for .blur() called.');
             resize();
         })
         .on("keypress",function(evt) {
@@ -612,7 +611,6 @@
             var constrain = step.find(".image_asset_constrain:checked").length;
             if(constrain > 0 ) {
                 var newHeight = Math.round(( uploadedImage.height / uploadedImage.width ) *  $(this).val());
-                //utils.debug('new height = ' + newHeight);
                 step.find(".image_asset_height").val(newHeight);
             }
         });
@@ -697,7 +695,7 @@
         /**
          * The callback function when step "(1)" or "Upload an Image" is clicked.
          */
-        function _step1ClickHandler()
+        function _step1ClickHandler(event)
         {
             displayUploadStep();
             _showStepImage(1);
@@ -712,7 +710,9 @@
         function _enableClickStep1(enable)
         {
             if (enable)
-                $("#perc-image-upload").on('click', _step1ClickHandler).css("cursor", "pointer");
+                $("#perc-image-upload").on("click",function(evt){
+                    _step1ClickHandler(evt);
+                } ).css("cursor", "pointer");
             else
                 $("#perc-image-upload").off('click').css("cursor", "default");
         }
@@ -720,7 +720,7 @@
         /**
          * The callback function when step "(2)" or "Size the Image" is clicked.
          */
-        function _step2ClickHandler()
+        function _step2ClickHandler(event)
         {
             displayImagePage(MAIN_IMAGE);
             _showStepImage(2);
@@ -735,7 +735,10 @@
         function _enableClickStep2(enable)
         {
             if (enable)
-                $("#perc-image-resize").off('click').on('click', _step2ClickHandler).css("cursor", "pointer");
+                $("#perc-image-resize").off('click').on('click',
+                    function(evt){
+                                _step2ClickHandler(evt);
+                            }).css("cursor", "pointer");
             else
                 $("#perc-image-resize").off('click').css("cursor", "default");
         }
@@ -743,7 +746,7 @@
         /**
          * The callback function when step "(3)" or "Create a Thumbnail" is clicked.
          */
-        function _step3ClickHandler()
+        function _step3ClickHandler(event)
         {
             displayImagePage(THUMB_IMAGE);
             _showStepImage(3);
@@ -758,7 +761,10 @@
         function _enableClickStep3(enable)
         {
             if (enable)
-                $("#perc-image-thumbnail").off('click').on('click', _step3ClickHandler).css("cursor", "pointer");
+                $("#perc-image-thumbnail").off('click').on("click",
+                    function(evt){
+                        _step3ClickHandler(evt);
+                    }).css("cursor", "pointer");
             else
                 $("#perc-image-thumbnail").off('click').css("cursor", "default");
         }
@@ -880,7 +886,7 @@
                     imageKey = $(this).find('.image_asset_id').val();
                 }
 
-                if ( imageKey!=undefined && imageKey.length > 0 ) {
+                if ( imageKey!== undefined && imageKey.length > 0 ) {
                     foundExisting = true;
                     imageRequest(imageKey,imageInfo);
                 }

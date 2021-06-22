@@ -111,9 +111,11 @@
          }
          //We are done processing the handlers, as we are submitting the form, clear all handlers.
          $.PercContentPreSubmitHandlers.clearHandlers();
-         $("#create-new-asset-content-frame").contents().find("#perc-content-form").trigger("submit");
+         $("#create-new-asset-content-frame").contents().find("#perc-content-form").trigger("submit")
          //Unbind the function to avoid an acumulation of calls to the same function
-         $("#create-new-asset-content-frame").off('load', saveAssetResponse).on("load",saveAssetResponse);
+         .off('load').on("load",function(evt) {
+             saveAssetResponse(evt);
+         });
       }
       
       /**
@@ -130,7 +132,7 @@
        * Makes an ajax call to relate the asset to the parent (page or template)
        * and add to asset library folder and page folder if it is a resource.
        */
-      function saveAssetResponse() {
+      function saveAssetResponse(event) {
             if ($("#create-new-asset-content-frame").contents().find("#perc-content-edit-errors").length > 0){
                 $.unblockUI();
                 return;

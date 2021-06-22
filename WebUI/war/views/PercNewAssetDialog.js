@@ -309,7 +309,7 @@
             });
         };
 
-        function check_for_dirty_page()
+        function check_for_dirty_page(event)
         {
             $.PercFolderHelper().getAccessLevelByPath(finderPath.join('/'),false,function(status, result){
                 if(status === $.PercFolderHelper().PERMISSION_ERROR || result === $.PercFolderHelper().PERMISSION_READ)
@@ -424,7 +424,10 @@
         function enableButton(flag)
         {
             if(flag){
-                newAssetButton.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", check_for_dirty_page );
+                newAssetButton.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt){
+                        check_for_dirty_page(evt);
+                    } );
             }
             else{
                 newAssetButton.addClass('ui-disabled').removeClass('ui-enabled').off('click');

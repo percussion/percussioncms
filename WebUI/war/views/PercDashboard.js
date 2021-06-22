@@ -486,10 +486,9 @@
      */
     function renderGadgets(jsonGadgets)
     {
-        var i = 0;
         var chromeIds = Array();
         gadgets.container.clearGadgetInstanceIds();
-        for (var i = 0; i < jsonGadgets.length; i++)
+        for (let i = 0; i < jsonGadgets.length; i++)
         {
             if (jsonGadgets[i].url) createGadget(jsonGadgets[i]);
         }
@@ -530,9 +529,9 @@
             }], [gadgets.container.userPrefStore.getPrefs(gadgetObj)], function(data)
             {
                 var meta = data.gadgets[0];
-                var prefs = meta["userPrefs"];
+                var prefs = meta.userPrefs;
                 var prefCount = 0;
-                for (c in prefs)
+                for (let c in prefs)
                 {
                     prefCount++;
                 } // Check if user prefs has values
@@ -819,7 +818,7 @@
                 var statusSelect = $('[name="m_' + gadgetId + '_up_status"]');
                 statusSelect.find('option').remove();
                 var statusList = $.perc_utils.convertCXFArray(result.data.EnumVals.entries);
-                for (s in statusList)
+                for (let s in statusList)
                 {
                     var value = statusList[s].value;
                     statusSelect.append($('<option/>').val(value).html(value));
@@ -1065,7 +1064,9 @@
             });
         });
 
-        $(document).on("change",".perc-gadget-category",filterGadgetLibrary);
+        $(document).on("change",".perc-gadget-category",function(evt){
+            filterGadgetLibrary(evt);
+        });
 
         populateTrayGadgets(function()
         {
@@ -1173,7 +1174,7 @@
     /**
      * Filter the gadget library by category
      */
-    function filterGadgetLibrary()
+    function filterGadgetLibrary(event)
     {
         $.each($('.perc-tray-item'), function()
         {

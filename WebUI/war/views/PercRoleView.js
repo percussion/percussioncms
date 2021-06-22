@@ -84,9 +84,15 @@
             });
 
             //Bind Add Users to Role event
-            $(".perc-roles-addusers-button").off("click").on("click", addUsers);
+            $(".perc-roles-addusers-button").off("click").on("click",
+                function(evt){
+                    addUsers(evt);
+                });
             //Bind remove Users from Role event
-            $(".perc-roles-removeusers-button").off("click").on("click", removeUsers);
+            $(".perc-roles-removeusers-button").off("click").on("click",
+                function(evt){
+                    removeUsers(evt);
+                });
 
             //Bind Save event
             $("#perc-roles-save").off("click").on("click", function(evt){
@@ -112,20 +118,20 @@
             $.PercDataList.init(container, config);
         }
 
-        function addUsers(){
-            var assignedUsers = new Array();
+        function addUsers(event){
+            var assignedUsers = [];
             $(".perc-roles-assigned-users-list span").each(function() {
                 assignedUsers.push($(this).html());
             });
             controller.getAvailableUsers(assignedUsers);
         }
 
-        function removeUsers(){
+        function removeUsers(event){
             if (!addingRole){
                 if (!deletingRole) {
                     deletingRole = true;
-                    var remainUsers = new Array();
-                    var selectedUsers = new Array();
+                    var remainUsers = [];
+                    var selectedUsers = [];
                     //Get a list of selected users and the remaining.
                     $(".perc-roles-assigned-users-list li").each(function() {
                         var userRow = $(this);
@@ -276,7 +282,10 @@
                     liUser.find("span").css("color", "#000000");
                 }
                 else{
-                    liUser.on("click", selectUser);
+                    liUser.on("click",
+                        function(evt){
+                            selectUser(evt);
+                        });
                 }
                 ulUsers.append(liUser);
             }
@@ -377,14 +386,18 @@
             $(".perc-roles-addusers-button")
                 .removeClass("perc-item-disabled")
                 .off("click")
-                .on("click", addUsers);
+                .on("click", function(evt){
+                    addUsers(evt);
+                });
         }
 
         function enableRemoveUsers(){
             $(".perc-roles-removeusers-button")
                 .removeClass("perc-item-disabled")
                 .off("click")
-                .on("click", removeUsers);
+                .on("click", function(evt){
+                    removeUsers(evt);
+                });
         }
 
         function disableRemoveUsers(){

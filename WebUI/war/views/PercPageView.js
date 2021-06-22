@@ -507,7 +507,10 @@
                                         handleOut(e);
                                 })).append(
                                 $("<div />").css("overflow", "hidden").addClass("perc-asset-label").append(
-                                    $("<nobr />").html(asset.title)))).css('cursor', 'pointer').data('assetId', asset.id).data('assetType', asset.type).data('assetFolderPaths', folderPaths).data('widgetId', asset.widgetId).off("click").on("click",selectOrphanAsset)
+                                    $("<nobr />").html(asset.title)))).css('cursor', 'pointer').data('assetId', asset.id).data('assetType', asset.type).data('assetFolderPaths', folderPaths).data('widgetId', asset.widgetId).off("click").on("click",
+                                function(evt){
+                                        selectOrphanAsset(evt);
+                                })
                     );
                 }
                 // populates Orphan Assets tray and toggles it open/close
@@ -567,7 +570,7 @@
             $(".perc-ui-edit-asset").attr("src", "/cm/images/icons/editor/editInactive.png").off();
         }
 
-        function deleteOrphanAsset()
+        function deleteOrphanAsset(event)
         {
             var assets = $("#perc_asset_library").find(".perc-orphan-assets-list");
             var unused = assets.find(".perc-orphan-assets-selected");
@@ -622,7 +625,7 @@
             }
         }
 
-        function editOrphanAsset()
+        function editOrphanAsset(event)
         {
             var assets = $("#perc_asset_library").find(".perc-orphan-assets-list");
             var unused = assets.find(".perc-orphan-assets-selected");
@@ -661,8 +664,14 @@
             var selected = $(parent).find(".perc-orphan-assets-selected");
             if (selected.length > 0)
             {
-                $(".perc-ui-delete-asset").attr("src", "/cm/images/icons/editor/delete.png").off("click").on("click",deleteOrphanAsset);
-                $(".perc-ui-edit-asset").attr("src", "/cm/images/icons/editor/edit.png").on("click",editOrphanAsset);
+                $(".perc-ui-delete-asset").attr("src", "/cm/images/icons/editor/delete.png").off("click").on("click",
+                    function(evt){
+                        deleteOrphanAsset(evt);
+                    });
+                $(".perc-ui-edit-asset").attr("src", "/cm/images/icons/editor/edit.png").on("click",
+                    function(evt){
+                        editOrphanAsset(evt);
+                    });
             }
             else
             {
