@@ -20,8 +20,8 @@ import com.percussion.pso.utils.SimplifyParameters;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.Controller;
@@ -47,7 +47,8 @@ public class ActionSiteForwardingController extends AbstractMenuController
       implements
          Controller
 {
-   private static Log log = LogFactory.getLog(ActionSiteForwardingController.class);
+
+   private static final Logger log = LogManager.getLogger(ActionSiteForwardingController.class);
    
    private String baseUrl = null; 
    
@@ -72,7 +73,7 @@ public class ActionSiteForwardingController extends AbstractMenuController
       
       Map<String, String[]> pmap = request.getParameterMap();
       Map<String, String> simpleMap = SimplifyParameters.simplifyMapStringStringArray(pmap);
-      log.debug("Simple map is " + simpleMap); 
+      log.debug("Simple map is {}", simpleMap);
      
       if(simpleMap.containsKey(IPSHtmlParameters.SYS_SITEID))
       { //there is already a site id, we can just use it.  
@@ -88,7 +89,7 @@ public class ActionSiteForwardingController extends AbstractMenuController
       if(sites.size() == 1)
       {
          IPSSite site = (IPSSite) sites.toArray()[0];
-         log.debug("found single site " + site.getName());
+         log.debug("found single site {}", site.getName());
          simpleMap.put(IPSHtmlParameters.SYS_SITEID, 
                String.valueOf(site.getSiteId()));
          return redirectTo(baseUrl, simpleMap); 
@@ -100,13 +101,13 @@ public class ActionSiteForwardingController extends AbstractMenuController
       {
          PreviewLocation location = new PreviewLocation();
          location.setSiteName(site.getName());
-         log.debug("adding site " + site.getName());
+         log.debug("adding site {}", site.getName());
          url.setParam(IPSHtmlParameters.SYS_SITEID,String.valueOf(site.getSiteId()));
          location.setUrl(url.toString()); 
          locations.add(location); 
       }
       mav.addObject("previews", locations);
-      log.debug("locations: " + locations); 
+      log.debug("locations: {}", locations);
       return mav; 
    }
    
@@ -125,9 +126,9 @@ public class ActionSiteForwardingController extends AbstractMenuController
 
       List<SiteFolderLocation> locations = this.siteFolderFinder.findSiteFolderLocations(contentid, folderid, siteid);
       SiteFolderLocation loc; 
-      log.debug("there are " + locations.size() + " locations"); 
+      log.debug("there are {} locations",locations.size());
       Set<IPSSite> sites = findSitesFromLocations(locations);
-      log.debug("there are " + sites.size() +  " sites"); 
+      log.debug("there are {} sites",sites.size());
       return sites; 
    }
   

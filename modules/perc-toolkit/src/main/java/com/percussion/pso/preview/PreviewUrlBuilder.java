@@ -12,8 +12,8 @@ package com.percussion.pso.preview;
 import com.percussion.pso.utils.PSOMutableUrl;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.util.IPSHtmlParameters;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +27,8 @@ import java.util.Map;
  */
 public class PreviewUrlBuilder implements UrlBuilder, Cloneable
 {
-   private static Log log = LogFactory.getLog(PreviewUrlBuilder.class);
+
+   private static final Logger log = LogManager.getLogger(PreviewUrlBuilder.class);
    
    private String defaultLocationUrl; 
    
@@ -54,12 +55,12 @@ public class PreviewUrlBuilder implements UrlBuilder, Cloneable
       if(useMultiple)
       {
          url = new PSOMutableUrl(this.getMultipleLocationUrl());
-         log.debug("multiple url is : " + url.toString()); 
+         log.debug("multiple url is : {}", url.toString());
       }
       else
       {  
          url = new PSOMutableUrl(this.getDefaultLocationUrl());
-         log.debug("single url is : " + url.toString()); 
+         log.debug("single url is : {}", url.toString());
       }
       Map<String,Object> newParams = new HashMap<String, Object>(urlParams); 
       if(location != null)
@@ -72,7 +73,7 @@ public class PreviewUrlBuilder implements UrlBuilder, Cloneable
       newParams.put(IPSHtmlParameters.SYS_TEMPLATE, templateid); 
       
       url.setParamList(newParams); 
-      log.debug("new url is  " + url.toString()); 
+      log.debug("new url is {}", url.toString());
       return url.toString();
    }
 
@@ -84,7 +85,7 @@ public class PreviewUrlBuilder implements UrlBuilder, Cloneable
    protected String findTemplateId(IPSAssemblyTemplate template)
    {
       String templateid = String.valueOf(template.getGUID().getUUID());
-      log.debug("templateid is " + templateid); 
+      log.debug("templateid is {}", templateid);
       return templateid; 
    }
    
