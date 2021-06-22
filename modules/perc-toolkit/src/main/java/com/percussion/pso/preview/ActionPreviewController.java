@@ -16,8 +16,8 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.timing.PSStopwatch;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.w3c.dom.Document;
@@ -42,7 +42,8 @@ import java.util.Set;
  */
 public class ActionPreviewController extends AbstractMenuController implements
 		Controller {
-	private static Log log = LogFactory.getLog(ActionPreviewController.class);
+
+	private static final Logger log = LogManager.getLogger(ActionPreviewController.class);
 
 	private String snippetTargetStyle = null;
 
@@ -87,7 +88,7 @@ public class ActionPreviewController extends AbstractMenuController implements
 					request.getLocale());
 			mav.addObject("result", errResult);
 			timer.stop();
-			log.debug("elapsed time is " + timer.elapsed());
+			log.debug("elapsed time is {}", timer.elapsed());
 			return mav;
 		}
 
@@ -118,9 +119,9 @@ public class ActionPreviewController extends AbstractMenuController implements
 		List<SiteFolderLocation> locations = this.siteFolderFinder
 				.findSiteFolderLocations(contentid, folderid, siteid);
 		tm.stop();
-		log.debug("Time to fetch locations " + tm.elapsed());
+		log.debug("Time to fetch locations {}", tm.elapsed());
 		SiteFolderLocation loc;
-		log.debug("there are " + locations.size() + " locations");
+		log.debug("there are {} locations",locations.size());
 		if (locations.size() == 1) {
 			loc = locations.get(0);
 		} else if (locations.size() > 1) {
@@ -133,7 +134,7 @@ public class ActionPreviewController extends AbstractMenuController implements
 		Set<IPSSite> sites = findSitesFromLocations(locations);
 		List<IPSAssemblyTemplate> templates = findVisibleTemplates(contentid,
 				sites);
-		log.debug("found " + templates.size() + " visible templates");
+		log.debug("found {} visible templates",templates.size());
 		actions = makeActionsFromTemplates(actions, templates, properties,
 				urlParams, loc, useMultipleSites);
 		Collections.sort(actions);
@@ -141,7 +142,7 @@ public class ActionPreviewController extends AbstractMenuController implements
 		mav.addObject("result", result);
 
 		timer.stop();
-		log.debug("Elapsed time is " + timer.elapsed());
+		log.debug("Elapsed time is {}", timer.elapsed());
 
 		return mav;
 	}
@@ -154,7 +155,7 @@ public class ActionPreviewController extends AbstractMenuController implements
 		PSOAction action;
 		for (IPSAssemblyTemplate template : templates) {
 
-			log.debug("processing template " + template.getName());
+			log.debug("processing template {}", template.getName());
 
 			action = new PSOAction();
 			action.setHandler(PSAction.HANDLER_SERVER);

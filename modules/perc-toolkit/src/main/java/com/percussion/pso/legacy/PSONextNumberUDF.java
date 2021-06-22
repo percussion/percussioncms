@@ -8,8 +8,8 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL PERCUSSION SOFTWARE BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package com.percussion.pso.legacy;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 import org.apache.commons.lang.StringUtils;
@@ -33,7 +33,8 @@ public class PSONextNumberUDF extends PSSimpleJavaUdfExtension
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSONextNumberUDF.class);
+
+   private static final Logger log = LogManager.getLogger(PSONextNumberUDF.class);
 
    /**
     * 
@@ -66,7 +67,8 @@ public class PSONextNumberUDF extends PSSimpleJavaUdfExtension
       } catch (SQLException ex)
       {
          String emsg = "Database Error Allocating ID"; 
-         log.error(emsg, ex);
+         log.error("Database Error Allocating ID Error: {}", ex.getMessage());
+         log.debug(ex.getMessage(), ex);
          throw new PSConversionException(0, emsg); 
       } 
       
