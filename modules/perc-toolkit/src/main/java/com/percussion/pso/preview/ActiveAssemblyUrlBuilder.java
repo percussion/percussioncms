@@ -13,8 +13,8 @@ import com.percussion.pso.utils.PSOMutableUrl;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -30,7 +30,8 @@ import java.util.Map;
  */
 public class ActiveAssemblyUrlBuilder extends PreviewUrlBuilder implements UrlBuilder, Cloneable
 {
-   private static Log log = LogFactory.getLog(ActiveAssemblyUrlBuilder.class);
+
+   private static final Logger log = LogManager.getLogger(ActiveAssemblyUrlBuilder.class);
 
    /**
     * Builds the active assembly URL. 
@@ -70,7 +71,7 @@ public class ActiveAssemblyUrlBuilder extends PreviewUrlBuilder implements UrlBu
       newParams.put("sys_assemblyurl", URLEncoder.encode(fixupUrl(assyUrl), "UTF-8")); 
       
       url.setParamList(newParams); 
-      log.debug("new url is  " + url.toString()); 
+      log.debug("new url is {}", url.toString());
       return url.toString();
    }
    

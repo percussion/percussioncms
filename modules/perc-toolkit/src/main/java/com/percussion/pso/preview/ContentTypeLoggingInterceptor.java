@@ -9,8 +9,8 @@
  ******************************************************************************/
 package com.percussion.pso.preview;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -30,7 +30,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ContentTypeLoggingInterceptor implements HandlerInterceptor
 {
-   private static final Log log = LogFactory.getLog(ContentTypeLoggingInterceptor.class); 
+
+   private static final Logger log = LogManager.getLogger(ContentTypeLoggingInterceptor.class);
    
    /**
     * 
@@ -62,15 +63,15 @@ public class ContentTypeLoggingInterceptor implements HandlerInterceptor
    public boolean preHandle(HttpServletRequest request,
          HttpServletResponse response, Object handler) throws Exception
    {
-      log.info("Request is a " + request.getClass().getCanonicalName());
+      log.info("Request is a {}", request.getClass().getCanonicalName());
       ServletRequest innerRequest = request; 
       while(innerRequest instanceof ServletRequestWrapper)
       {
          innerRequest = ((ServletRequestWrapper)innerRequest).getRequest(); 
-         log.info("   Wrapping request " + innerRequest.getClass().getCanonicalName()); 
+         log.info("   Wrapping request {}", innerRequest.getClass().getCanonicalName());
       }
-      log.info("Content type is " + request.getContentType()); 
-      log.info("Character set is " + request.getCharacterEncoding());
+      log.info("Content type is {}", request.getContentType());
+      log.info("Character set is {}", request.getCharacterEncoding());
       return true; 
    }
 }
