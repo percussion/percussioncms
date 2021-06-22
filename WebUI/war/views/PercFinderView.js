@@ -1541,7 +1541,7 @@
                 var takeDownUrl =  $.perc_paths.PAGE_TAKEDOWN ;
                 takeDownUrl+="/" + pageId;
 
-                $.PercServiceUtils.makeJsonRequest(findLinkedItemsUrl, $.PercServiceUtils.TYPE_GET, true, function(status, result) {
+                $.PercServiceUtils.makeJsonRequest(findLinkedItemsUrl, $.PercServiceUtils.TYPE_GET, false, function(status, result) {
                     if (status === $.PercServiceUtils.STATUS_ERROR) {
                         var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result);
                         console.error(defaultMsg);
