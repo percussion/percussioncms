@@ -10392,7 +10392,7 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
      	    <prop type="sectionname" xml:lang="en-us">User Controller</prop>
      	    <note xml:lang="en-us"></note>
      	    <tuv xml:lang="en-us">
-     	        <seg>The username should be 4-20 characters long. The user name contains an invalid character. The valid characters of a user name are 'a' to 'z', 'A' to 'Z' and '0' to '9'.</seg>
+     	        <seg>The username should be 4-20 characters long. OR The user name contains an invalid character. The valid characters of a user name are 'a' to 'z', 'A' to 'Z' and '0' to '9'.</seg>
      	    </tuv>
      	      <tuv xml:lang="es">
      	        <seg>El nombre de usuario debe tener entre 4 y 20 caracteres. O El nombre de usuario contiene un carácter no válido. Los caracteres válidos de un nombre de usuario son 'a' a 'z', 'A' a 'Z' y '0' a '9'.</seg>
