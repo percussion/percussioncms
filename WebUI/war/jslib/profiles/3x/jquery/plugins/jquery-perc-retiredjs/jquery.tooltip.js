@@ -55,10 +55,13 @@
 					$(this).removeAttr("title");
 					// also remove alt attribute to prevent default tooltip in IE
 					this.alt = "";
-				})
-				.mouseover(save)
-				.mouseout(hide)
-				.click(hide);
+			}).on('mouseover',function(evt){
+				save(evt);
+			}).on('mouseout',function (evt){
+				hide(evt);
+			}).on('click',function (evt){
+				hide(evt);
+			});
 		},
 		fixPNG: IE ? function() {
 			return this.each(function () {
@@ -126,14 +129,16 @@
 		
 		// if selected, update the helper position when the mouse moves
 		track = !!settings(this).track;
-		$(document.body).bind('mousemove', update);
+		$(document.body).on('mousemove',function (evt) {
+			update(evt);
+		});
 			
 		// update at least once
 		update(event);
 	}
 	
 	// save elements title before the tooltip is displayed
-	function save() {
+	function save(evt) {
 		// if this is the current source, or it has no title (occurs with click event), stop
 		if ( $.tooltip.blocked || this === current || (!this.tooltipText && !settings(this).bodyHandler) )
 			return;
@@ -211,12 +216,12 @@
 		
 		// stop updating when tracking is disabled and the tooltip is visible
 		if ( !track && helper.parent.is(":visible")) {
-			$(document.body).unbind('mousemove', update);
+			$(document.body).off('mousemove');
 		}
 		
 		// if no current element is available, remove this listener
 		if( current == null ) {
-			$(document.body).unbind('mousemove', update);
+			$(document.body).off('mousemove');
 			return;	
 		}
 		

@@ -193,7 +193,7 @@
 
             if (attributes) {
                 for (i = 0; i < attributes.length; i++) {
-                    percAttributeData.push({rowContent: [attributes[i]["name"], attributes[i]["value"]]});
+                    percAttributeData.push({rowContent: [attributes[i].name, attributes[i].value]});
                 }
             }
 
@@ -220,7 +220,7 @@
                 $.PercInlineEditDataTable.enableTable($('#perc-css-overrides-table'), !state);
             }
 
-            $('#perc-region-edit').parent().find('.perc-ok').off("click").on("click", function () {
+            $('#perc-region-edit').parent().find('.perc-ok').off().on("click", function () {
                 saveRegionProperties(region);
             });
         }
@@ -278,13 +278,19 @@
                     "<span  class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
                     "</div>" +
                     "</div>";
-                dialog.find('#' + this.groupName).before(groupHtml);
-                // The first group will be the only one expanded (hide all others)
-                index !== 0 && dialog.find('#' + this.groupName).hide();
+                try {
+                    dialog.find('#' + this.groupName).before(groupHtml);
+                    // The first group will be the only one expanded (hide all others)
+                    index !== 0 && dialog.find('#' + this.groupName).hide();
+                    }
+                catch(err) {
+
+                }
+
             });
 
             // Bind collapsible event
-            dialog.find(".perc-section-label").off("click").on("click", function () {
+            dialog.find(".perc-section-label").off().on("click", function () {
                 var self = $(this);
                 self.find(".perc-min-max")
                     .toggleClass('perc-items-minimizer')
@@ -505,16 +511,16 @@
                 }
             }
             if(invalidAttributeMessage){
-                var message = "Invalid attributes found, Cannot use reserved attribute(s) : "+invalidAttributeMessage;
-                $.perc_utils.alert_dialog({title: 'Invalid Attributes Error', content: message, width: '595px'});
+                var message1 = "Invalid attributes found, Cannot use reserved attribute(s) : "+invalidAttributeMessage;
+                $.perc_utils.alert_dialog({title: 'Invalid Attributes Error', content: message1, width: '595px'});
                 return;
             }
             // end cms#2947
             // verify that the region ID has changed and that it is not already in use
             if (previousRegionId !== id && _layoutModel.containsRegionId(id)) {
                 // if id is already in use, alert user and return without updating region properties
-                var message = "Region Name '" + id + "' is already in use.\nPlease use another name.";
-                $.perc_utils.alert_dialog({title: 'Region Name Already Exists', content: message, width: '595px'});
+                var message2 = "Region Name '" + id + "' is already in use.\nPlease use another name.";
+                $.perc_utils.alert_dialog({title: 'Region Name Already Exists', content: message2, width: '595px'});
                 return;
             }
 
