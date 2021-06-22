@@ -14,8 +14,8 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerException;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.utils.timing.PSStopwatch;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.util.List;
@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class CachingSiteLoaderImpl implements InitializingBean, SiteLoader
 {
-   private static Log log = LogFactory.getLog(CachingSiteLoaderImpl.class); 
+   private static final Logger log = LogManager.getLogger(CachingSiteLoaderImpl.class);
    
    private static IPSSiteManager siteMgr = null; 
    
@@ -85,7 +85,7 @@ public class CachingSiteLoaderImpl implements InitializingBean, SiteLoader
       tm.start();
       List<IPSSite> mySites = siteMgr.findAllSites();
       tm.stop(); 
-      log.debug("Loading all sites took " + tm.elapsed() + " ms."); 
+      log.debug("Loading all sites took {} ms.",tm.elapsed());
       return mySites;
    }
    
@@ -154,10 +154,12 @@ public class CachingSiteLoaderImpl implements InitializingBean, SiteLoader
             }
          } catch (PSSiteManagerException ex)
          {
-            log.error("Unexpected Site Manager Exception " + ex,ex);
+            log.error("Unexpected Site Manager Exception Error: {]",ex.getMessage());
+            log.debug(ex.getMessage(), ex);
          } catch (InterruptedException ex)
          {
-             log.error("Site Reloading was Interrupted " + ex,ex);
+             log.error("Site Reloading was Interrupted Error: {}", ex.getMessage());
+             log.debug(ex.getMessage(), ex);
          }
       }
       

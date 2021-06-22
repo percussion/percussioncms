@@ -11,8 +11,8 @@ package com.percussion.pso.preview;
 
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.PSSiteManagerException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,8 @@ import java.util.List;
 public class ConfigurableSiteLoaderImpl extends CachingSiteLoaderImpl
    implements SiteLoader 
 {
-	private static Log log = LogFactory.getLog(ConfigurableSiteLoaderImpl.class); 
+
+	private static final Logger log = LogManager.getLogger(ConfigurableSiteLoaderImpl.class);
 	
 	private List<String> allowedSites; 
 
@@ -45,12 +46,12 @@ public class ConfigurableSiteLoaderImpl extends CachingSiteLoaderImpl
 		{
 			if(allowedSites.contains(site.getName()))
 			{
-				log.debug("found allowed site " + site.getName()); 
+				log.debug("found allowed site {}", site.getName());
 				mySites.add(site); 
 			}
 			else
 			{
-				log.debug("ignoring site " + site.getName()); 
+				log.debug("ignoring site {}", site.getName());
 			}
 		}
 		
