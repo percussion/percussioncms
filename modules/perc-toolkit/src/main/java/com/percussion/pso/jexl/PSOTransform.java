@@ -28,8 +28,8 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.percussion.data.PSCachedStylesheet;
 import com.percussion.extension.IPSJexlExpression;
 import com.percussion.extension.IPSJexlMethod;
@@ -48,7 +48,7 @@ public class PSOTransform extends PSJexlUtilBase implements IPSJexlExpression
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSOTransform.class);
+   private static final Logger log = LogManager.getLogger(PSOTransform.class);
    
    /**
     * 
@@ -107,7 +107,7 @@ public class PSOTransform extends PSJexlUtilBase implements IPSJexlExpression
          for(String pkey : params.keySet())
          { 
             Object pval = params.get(pkey);
-            log.debug("Adding parameter " + pkey + " value " + pval);
+            log.debug("Adding parameter {} value {}", pkey,  pval);
             nt.setParameter(pkey, pval); 
          }
          Source src = new StreamSource(new StringReader(wrapField(source)));
@@ -120,7 +120,8 @@ public class PSOTransform extends PSJexlUtilBase implements IPSJexlExpression
 
       } catch (Throwable ex)
       {         
-         log.error("XSLT Error: " + ex.getMessage(), ex);
+         log.error("XSLT Error: {} Error: {}", ex.getMessage());
+         log.debug(ex.getMessage(), ex);
       } 
       return "";
    }

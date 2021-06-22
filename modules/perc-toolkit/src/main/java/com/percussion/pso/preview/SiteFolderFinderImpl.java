@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSFolder;
@@ -39,7 +39,8 @@ import com.percussion.webservices.security.PSSecurityWsLocator;
  */
 public class SiteFolderFinderImpl implements SiteFolderFinder 
 {
-    private static Log log = LogFactory.getLog(SiteFolderFinderImpl.class);
+
+    private static final Logger log = LogManager.getLogger(SiteFolderFinderImpl.class);
     
     private static IPSGuidManager gmgr = null; 
     private static IPSContentWs cws = null; 
@@ -132,13 +133,13 @@ public class SiteFolderFinderImpl implements SiteFolderFinder
        sw3.start(); 
        List<IPSSite> allSites = siteLoader.findAllSites(); 
           //siteMgr.findAllSites();
-       log.debug("time to find all sites " + sw3.elapsed());
+       log.debug("time to find all sites {}", sw3.elapsed());
        if(isTestCommunityVisibility())
        {
           allSites = filterVisibleSites(allSites);
        }
        sw3.stop(); 
-       log.debug("time to find and filter visible sites " + sw3.elapsed()) ;
+       log.debug("time to find and filter visible sites {}", sw3.elapsed()) ;
        
        PSStopwatch sw4 = new PSStopwatch(); 
        sw4.start();
@@ -149,14 +150,14 @@ public class SiteFolderFinderImpl implements SiteFolderFinder
              if((siteidl != 0) && (site.getSiteId().longValue() != siteidl))
              {
                 //site was specified, and this is NOT our site
-                log.debug("site id " + siteidl + " != " + site.getSiteId());
+                log.debug("site id {} != {}",siteidl, site.getSiteId());
                 continue; 
              }
              
              if(path.startsWith(site.getFolderRoot()))
              {
                 //We found a matching site
-                log.debug("Matching site " + site.getName() + " root " + site.getFolderRoot());
+                log.debug("Matching site {} root {}",site.getName(), site.getFolderRoot());
                 SiteFolderLocation location = new SiteFolderLocation();
                 location.setFolderPath(path); 
                 location.setSite(site); 
@@ -175,8 +176,8 @@ public class SiteFolderFinderImpl implements SiteFolderFinder
           }
        }
        sw4.stop();
-       log.debug("time to process site folders " + sw4.toString()); 
-       log.debug("total time is " + sw4.elapsed()); 
+       log.debug("time to process site folders {}", sw4.toString());
+       log.debug("total time is {}", sw4.elapsed());
        return previewList; 
     }
    
@@ -199,12 +200,12 @@ public class SiteFolderFinderImpl implements SiteFolderFinder
       {
          if(g2.contains(site.getGUID()))
          {
-            log.debug("Site " + site.getName() + " is visible"); 
+            log.debug("Site {} is visible", site.getName());
             visible.add(site); 
          }
          else
          {
-            log.debug("Site " + site.getName() + " is not visible"); 
+            log.debug("Site {} is not visible",site.getName());
          }
       }
       return visible; 
