@@ -149,6 +149,7 @@ public class ImageReaderTest
    }
 
    @Test
+   @Ignore
    public void testSmallGif() throws IOException
    {
       //This GIF in particular had an issue with site sucker.
