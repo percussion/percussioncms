@@ -13,8 +13,8 @@ import com.percussion.error.PSException;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.sitemgr.IPSSite;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.mvc.Controller;
 
 import java.util.ArrayList;
@@ -30,7 +30,8 @@ import java.util.Set;
 public class ActionActiveAssemblyController extends ActionPreviewController
   implements Controller
 {
-   private static Log log = LogFactory.getLog(ActionActiveAssemblyController.class);
+
+   private static final Logger log = LogManager.getLogger(ActionActiveAssemblyController.class);
    
    private boolean showSnippets = true; 
    /**

@@ -10,8 +10,8 @@
 package com.percussion.pso.preview;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
@@ -31,7 +31,8 @@ public class MultipartResolverEncoding extends CommonsMultipartResolver
       implements
          MultipartResolver
 {
-   private static Log log = LogFactory.getLog(MultipartResolverEncoding.class); 
+
+   private static final Logger log = LogManager.getLogger(MultipartResolverEncoding.class);
    /**
     * @see CommonsMultipartResolver#determineEncoding(HttpServletRequest)
     */
@@ -43,7 +44,7 @@ public class MultipartResolverEncoding extends CommonsMultipartResolver
       if(encoding.contains(";"))
       {
          encoding = StringUtils.substringBefore(encoding, ";");
-         log.debug("fixed up encoding " + encoding); 
+         log.debug("fixed up encoding {]", encoding);
       }
       return encoding;
    }
