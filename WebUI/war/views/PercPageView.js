@@ -68,7 +68,11 @@
             resetPageName: resetPageName,
             reload: function()
             {
-                loadTab($('#perc-pageEditor-tabs').tabs('selected'));
+                currentTabIndex = $('#perc-pageEditor-tabs').tabs('option','active');
+                if(typeof currentTabIndex === 'undefined'){
+                    currentTabIndex = CONTENT_TAB;
+                }
+                loadTab(currentTabIndex,true);
             },
             getPageId: function()
             {
@@ -122,7 +126,7 @@
 
             /* If the default tab happens to already be selected, the content will not be loaded, so we do that below. */
             var $tabs = $("#perc-pageEditor-tabs");
-            var currentTabIndex = $tabs.tabs().tabs('option', 'selected'); // => 0
+            var currentTabIndex = $tabs.tabs('option','active');
             var defaultTabIndex = 0;
             /* which tab to show when a page is first opened, 0 is content tab, 1 is layout tab */
             if(currentTabIndex === null || typeof currentTabIndex === 'undefined'){
@@ -693,8 +697,9 @@
             {
                 // Disable all Layout and Style tabs at load time
                 disabled: [1, 2],
-                select: function(event, ui)
+                select: function(event)
                 {
+                   var idx = $('#perc-pageEditor-tabs').tabs('option','active');
                     // Ask for confirmation to navigate away from tab if the page has been modified
                     if (dirtyController.isDirty())
                     {
@@ -703,7 +708,7 @@
                         {
                             // if they click ok, then reset dirty flag and proceed to select the tab
                             setDirty(false);
-                            $("#perc-pageEditor-tabs").tabs('select', ui.index);
+                            $('#perc-pageEditor-tabs').tabs("option", "active", idx );
                             //Reset the JavaScript Off/On menu to JavaScript Off
                             resetJavaScriptMenu();
                         });
@@ -714,7 +719,8 @@
                         //Reset the JavaScript Off/On menu to JavaScript Off
                         resetJavaScriptMenu();
                     }
-                    loadTab(ui.index, true);
+
+                    loadTab(idx, true);
                 }
             });
 
