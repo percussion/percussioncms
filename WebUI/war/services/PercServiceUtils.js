@@ -125,7 +125,7 @@
      *  @param abortCallback {function} the callback function to which return if error
      *  request status <= 0 (no status recieved from server)
      */
-    function makeJsonRequest(url, type, sync, callback, dataObject, abortCallback, timeout) {
+    function makeJsonRequest(url, type, sync=false, callback, dataObject, abortCallback, timeout) {
         var self = this;
         var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
         var ajaxTimeout = $.perc_utils.percParseInt(timeout);
@@ -179,7 +179,7 @@
      *  Makes generic request
      *  TODO: Write the other requests in terms of this one
      */
-    function makeRequest(url, type, sync, callback, dataObject, contentType, dataType, noEscape, abortCallback) {
+    function makeRequest(url, type, sync=false, callback, dataObject, contentType, dataType, noEscape, abortCallback) {
         var self = this;
         var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
         if (dataType === null || typeof dataType === "undefined") {
@@ -456,7 +456,7 @@
      *  @param abortCallback {function} the callback function to which return if error
      *  request status <= 0 (no status recieved from server)
      */
-    function makeXmlRequest(url, type, sync, callback, dataString, abortCallback) {
+    function makeXmlRequest(url, type, sync=false, callback, dataString, abortCallback) {
         var self = this;
         var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 
@@ -519,7 +519,7 @@
      *  @param abortCallback {function} the callback function to which return if error
      *  request status <= 0 (no status recieved from server)
      */
-    function makeDeleteRequest(url, sync, callback, dataString, abortCallback) {
+    function makeDeleteRequest(url, sync=false, callback, dataString, abortCallback) {
         var self = this;
         var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 
