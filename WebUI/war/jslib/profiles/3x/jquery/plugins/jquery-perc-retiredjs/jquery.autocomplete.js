@@ -34,7 +34,7 @@ $.fn.extend({
 		});
 	},
 	result: function(handler) {
-		return this.bind("result", handler);
+		return this.on("result", handler);
 	},
 	search: function(handler) {
 		return this.trigger("search", [handler]);
@@ -192,8 +192,8 @@ $.Autocompleter = function(input, options) {
 		if ( "data" in arguments[1] )
 			cache.populate();
 	}).on("unautocomplete", function() {
-		select.unbind();
-		$input.unbind();
+		select.off();
+		$input.off();
 		$(input.form).off(".autocomplete");
 	});
 	
@@ -243,7 +243,7 @@ $.Autocompleter = function(input, options) {
 			stopLoading();
 			select.hide();
 		}
-	};
+	}
 	
 	function trimWords(value) {
 		if ( !value ) {
@@ -277,13 +277,13 @@ $.Autocompleter = function(input, options) {
 			// select the portion of the value not typed by the user (so the next character will erase)
 			$.Autocompleter.Selection(input, previousValue.length, previousValue.length + sValue.length);
 		}
-	};
+	}
 
 	function hideResults() {
 		clearTimeout(timeout);
 		timeout = setTimeout(hideResultsNow, 200);
 
-	};
+	}
 
 	function hideResultsNow() {
 		var wasVisible = select.visible();
@@ -309,7 +309,7 @@ $.Autocompleter = function(input, options) {
 		if (wasVisible)
 			// position cursor at end of input field
 			$.Autocompleter.Selection(input, input.value.length, input.value.length);
-	};
+	}
 
 	function receiveData(q, data) {
 		if ( data && data.length && hasFocus ) {
@@ -320,7 +320,7 @@ $.Autocompleter = function(input, options) {
 		} else {
 			hideResultsNow();
 		}
-	};
+	}
 
 	function request(term, success, failure) {
 		if (!options.matchCase)
@@ -361,7 +361,7 @@ $.Autocompleter = function(input, options) {
 			select.emptyList();
 			failure(term);
 		}
-	};
+	}
 	
 	function parse(data) {
 		var parsed = [];
@@ -378,11 +378,11 @@ $.Autocompleter = function(input, options) {
 			}
 		}
 		return parsed;
-	};
+	}
 
 	function stopLoading() {
 		$input.removeClass(options.loadingClass);
-	};
+	}
 
 };
 
@@ -427,7 +427,7 @@ $.Autocompleter.Cache = function(options) {
 		}
 		if (i == -1) return false;
 		return i == 0 || options.matchContains;
-	};
+	}
 	
 	function add(q, value) {
 		if (length > options.cacheLength){
@@ -480,7 +480,7 @@ $.Autocompleter.Cache = function(options) {
 			if ( nullData++ < options.max ) {
 				stMatchSets[""].push(row);
 			}
-		};
+		}
 
 		// add the data items to the cache
 		$.each(stMatchSets, function(i, value) {
@@ -535,9 +535,9 @@ $.Autocompleter.Cache = function(options) {
 			} else
 			if (options.matchSubset) {
 				for (var i = q.length - 1; i >= options.minChars; i--) {
-					var c = data[q.substr(0, i)];
+					let c = data[q.substr(0, i)];
 					if (c) {
-						var csub = [];
+						let csub = [];
 						$.each(c, function(i, x) {
 							if (matchSubset(x.value, q)) {
 								csub[csub.length] = x;
@@ -623,7 +623,7 @@ $.Autocompleter.Select = function (options, input, select, config) {
                 list.scrollTop(offset);
             }
         }
-	};
+	}
 	
 	function movePosition(step) {
 		active += step;
@@ -635,9 +635,9 @@ $.Autocompleter.Select = function (options, input, select, config) {
 	}
 	
 	function limitNumberOfItems(available) {
-		return options.max && options.max < available
-			? options.max
-			: available;
+		return options.max && options.max < available ?
+			 options.max :
+			 available;
 	}
 	
 	function fillList() {
@@ -690,9 +690,13 @@ $.Autocompleter.Select = function (options, input, select, config) {
 			}
 		},
 		hide: function() {
-			element && element.hide();
-			listItems && listItems.removeClass(CLASSES.ACTIVE);
-			active = -1;
+			if(typeof element !== "undefined") {
+				element.hide();
+			}
+			if(typeof listItems !== "undefined") {
+				listItems.removeClass(CLASSES.ACTIVE);
+				active = -1;
+			}
 		},
 		visible : function() {
 			return element && element.is(":visible");
@@ -734,10 +738,12 @@ $.Autocompleter.Select = function (options, input, select, config) {
 			return selected && selected.length && $.data(selected[0], "ac_data");
 		},
 		emptyList: function (){
-			list && list.empty();
+			if( typeof list !== "undefined"){
+				list.empty();
+			}
 		},
-		unbind: function() {
-			if(element)
+		off: function() {
+			if(typeof element !== "undefined")
 				element.remove();
 		}
 	};
