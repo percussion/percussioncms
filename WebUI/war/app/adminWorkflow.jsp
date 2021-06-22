@@ -98,6 +98,7 @@
     <script src="../controllers/PercRoleController.js"></script>
     <script src="../views/PercRoleView.js"></script>
     <script src="../services/PercCategoryService.js"></script>
+    <script src="../services/PercFolderService.js"></script>
     <script src="../controllers/PercCategoryController.js"></script>
     <script src="../views/PercCategoryView.js"></script>
     <script src="../views/PercEditWorkflowStepDialog.js"></script>
