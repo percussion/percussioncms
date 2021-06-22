@@ -63,7 +63,7 @@
             }
             // nothing to do in case of error
         }
-        service.makeJsonRequest(url, service.TYPE_GET, true, serviceCallback);
+        service.makeJsonRequest(url, service.TYPE_GET, false, serviceCallback);
     }
     
     /**
@@ -82,7 +82,7 @@
                 // nothing to do in case of error
             //}
         }
-        service.makeJsonRequest(url, service.TYPE_POST, true, serviceCallback);
+        service.makeJsonRequest(url, service.TYPE_POST, false, serviceCallback);
     }
     
     /**
@@ -199,7 +199,7 @@
                 callback(true,results.data);
             }
         };        
-        $.PercServiceUtils.makeRequest(getUrl, $.PercServiceUtils.TYPE_POST, true, serviceCallback);
+        $.PercServiceUtils.makeRequest(getUrl, $.PercServiceUtils.TYPE_POST, false, serviceCallback);
 
     }     
     
@@ -215,7 +215,7 @@
        $.PercServiceUtils.makeRequest(
             url,
             $.PercServiceUtils.TYPE_POST,
-            true,
+            false,
             function(status, result){
                 if(status === $.PercServiceUtils.STATUS_SUCCESS){
                     callback($.PercServiceUtils.STATUS_SUCCESS, result);
