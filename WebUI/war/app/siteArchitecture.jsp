@@ -131,7 +131,7 @@
     });
 </script>
 </head>
-<body view="PERC_SITE">
+<body view="PERC_SITE" style="overflow:auto">
 <div class="perc-main perc-finder-fix" style="position:fixed">
     <div class="perc-header">
         <jsp:include page="includes/header.jsp" flush="true">
