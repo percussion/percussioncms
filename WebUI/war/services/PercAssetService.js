@@ -366,7 +366,7 @@
              }
          };
          $.PercServiceUtils.makeJsonRequest($.perc_paths.ASSET_WIDGET_REL_UPDATE + "/", 
-                $.PercServiceUtils.TYPE_POST, true, function(status, results) 
+                $.PercServiceUtils.TYPE_POST, false, function(status, results)
          {
             if (status === $.PercServiceUtils.STATUS_SUCCESS) 
             {
@@ -469,7 +469,7 @@
                 callback(true,results.data);
             }
         };
-        $.PercServiceUtils.makeRequest(getUrl, $.PercServiceUtils.TYPE_POST, true, serviceCallback);
+        $.PercServiceUtils.makeRequest(getUrl, $.PercServiceUtils.TYPE_POST, false, serviceCallback);
 
     }
     

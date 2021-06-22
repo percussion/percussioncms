@@ -58,7 +58,7 @@
                callback($.PercServiceUtils.STATUS_SUCCESS,result);
             }
         };
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,serviceCallback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,serviceCallback);
     }
     
 })(jQuery);
