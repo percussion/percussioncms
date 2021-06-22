@@ -133,7 +133,7 @@ var WidgetBuilderApp = {};
             title: "Delete Widget Warning",
             question: "Are you sure you want to delete the selected widget?",
             success: deleteWidget,
-            cancel:function(){},
+            cancel:function(){return false;},
             type: "YES_NO",
             width: 700
         };
@@ -150,7 +150,7 @@ var WidgetBuilderApp = {};
                 return;
             }
             WidgetBuilderApp.loadDefinitions();
-            if(currentWidgetView != null && currentWidgetView.model.get("widgetId") == WidgetBuilderApp.selectedModel){
+            if(currentWidgetView != null && currentWidgetView.model.get("widgetId") === WidgetBuilderApp.selectedModel){
                 dirtyController.setDirty(false);
                 handleWidgetClose();
             }
@@ -168,7 +168,7 @@ var WidgetBuilderApp = {};
                 WidgetBuilderApp.dirtyController.setDirty(true,"Widget",WidgetBuilderApp.saveOnDirty);
                 return;
             }
-            var wdgDefFull = $.PercWidgetBuilderService.loadWidgetDefFull(WidgetBuilderApp.selectedModel, renderWidget);
+            $.PercWidgetBuilderService.loadWidgetDefFull(WidgetBuilderApp.selectedModel, renderWidget);
         });
     }
 
@@ -225,7 +225,7 @@ var WidgetBuilderApp = {};
                 jsResModels.push({name:this});
             }, this);
         }
-        else if(jsResObj.trim()!==""){
+        else if(typeof jsResObj !== "undefined" && jsResObj.trim()!==""){
             jsResModels.push({name:jsResObj});
         }
         WidgetBuilderApp.jsResList.add(jsResModels);
@@ -380,12 +380,12 @@ var WidgetBuilderApp = {};
                         for(var obj in errors){
                             showValidationErrors(obj,errors[obj]);
                         }
-                        isValid = valRes.length == 0;
+                        isValid = valRes.length === 0;
                     }
                     else{
                         var category = tabCategoryMap[currentTabIndex];
                         showValidationErrors(category, errors[category]);
-                        isValid = errors[category]?false:true;
+                        isValid = !errors[category];
                     }
                 }
                 else{

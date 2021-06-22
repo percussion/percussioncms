@@ -46,7 +46,7 @@
     if (site == null)
         site = "";
     Boolean hasSites = (Boolean) request.getAttribute("hasSites");
-    String inlineHelpMsg = hasSites != null && hasSites.booleanValue()
+    String inlineHelpMsg = hasSites != null && hasSites
             ? PSI18nUtils.getString("perc.ui.site.architecture@Work On Navigation", locale)
             : PSI18nUtils.getString("perc.ui.site.architecture@Click Create Site To Create Site", locale);
 %>

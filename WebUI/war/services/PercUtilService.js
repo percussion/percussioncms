@@ -36,7 +36,7 @@
         logToServer:logToServer
     };
 
-    function getPrivateKeys(callback, async){
+    function getPrivateKeys(callback, async=true){
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.UTIL_GET_PRIVATE_KEYS,
             $.PercServiceUtils.TYPE_GET,
@@ -67,7 +67,7 @@
      * </pre>
      * @type string
      */
-    function encryptString(str, callback, async){
+    function encryptString(str, callback, async=true){
         var object = {"psmap":{"entries":{"entry":{"key":"string","value":str}}}};
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.UTIL_ENCRYPT_STRING,
@@ -100,7 +100,7 @@
      * </pre>
      * @type string
      */
-    function encryptStrings(values, callback, async){
+    function encryptStrings(values, callback, async=true){
         var object = {"pslist":{"list":[]}};
         object.pslist.list = values;
         $.PercServiceUtils.makeJsonRequest(
@@ -165,7 +165,7 @@
      * </pre>
      * @type string
      */
-    function decryptString(str, callback, async){
+    function decryptString(str, callback, async=true){
         var object = {"psmap":{"entries":{"entry":{"key":"string","value":str}}}};
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.UTIL_DECRYPT_STRING,
