@@ -232,7 +232,7 @@
 
 
         function update_action_btn(path){
-            console.log("path changed:" + path);
+            //Placeholder for capturing path changes.
         }
 
         finder.addPathChangedListener( update_action_btn );
