@@ -612,13 +612,15 @@
         menuExpand = $("#perc-gadget-menu-expand");
         menuConfig = $("#perc-gadget-menu-config");
         menuRemove = $("#perc-gadget-menu-remove");
+
+        menuButton = $("#perc-gadget-menu-button");
         var instanceId = gadget.attr("instanceId");
         var gInstance = gadgets.container.getGadget(instanceId);
         var hasPrefs = gInstance.hasPrefs;
         // move the menu to the current gadget so that it shows right under the gadget's titlebar
         var top = titleBar.position().top + $(".perc-dashboard-container").scrollTop();
         var left = titleBar.position().left;
-        var menuX = left + titleBar.outerWidth() - menu.width();
+        var menuX = titleBar[0].getBoundingClientRect().left + titleBar[0].getBoundingClientRect().width + $(window)['scrollLeft']()-menu.outerWidth(true);
         var menuY = top + titleBar.outerHeight();
         menu.css("top", menuY).css("left", menuX).css("display", "block");
 
