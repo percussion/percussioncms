@@ -132,7 +132,9 @@
         {
             if (flag)
             {
-                var menuX = btn.position().left + btn.outerWidth() - menu.outerWidth() - 1;
+                var menuX = btn[0].getBoundingClientRect().left + btn[0].getBoundingClientRect().width + $(window)['scrollLeft']()-menu.outerWidth(true);
+
+                //var menuX = btn.position().left + btn.outerWidth() - menu.outerWidth() - 1;
                 var menuY = btn.position().top + btn.outerHeight() + 9;
                 menu
                     .css("top", menuY)
