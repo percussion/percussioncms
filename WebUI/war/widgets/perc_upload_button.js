@@ -49,7 +49,7 @@
          */
         function uploadButtonChangePathListener(path)
         {
-            if(path.length > 3 && $.perc_paths.DESIGN_THEMES == path[0] + '/' + path[1] + '/' + path[2] + '/' + path[3])
+            if(path.length > 3 && $.perc_paths.DESIGN_THEMES === path[0] + '/' + path[1] + '/' + path[2] + '/' + path[3])
             {
                 enableButton(true);
                 return;
@@ -75,7 +75,7 @@
             {
                 btn.addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
-            btn.trigger('actions-change-enabled-state');
+            $(document).trigger('actions-change-enabled-state');
         }
 
         /**
