@@ -165,7 +165,7 @@
      * @param {Object} message the message that needs to be logged must be a valid string if not no logging happens.
      */
     function logToServer(type, category, message){
-        if(!($.type( type ) === "string")){
+        if(($.type( type ) !== "string")){
             return;
         }
         //Log client side
@@ -227,7 +227,6 @@
         frame.contents().find("#perc-content-form").find('label').each(function(){
             if($(this).hasClass("perc-required-field")){
                 if($(this).siblings('input').val()===''){
-                    //dosubmit = false;
                     showMandatoryFieldAlertPopUp=true;
                 }
             }
@@ -351,7 +350,7 @@
     function input( label, name, id, tabindex, type ) {
         type = type || "text";
         return "<label for='"+id+"'>" + label + "</label><br/>" +
-            "<input type='"+type+"' name='"+name+"' id='"+id+"' ></input><br/>";
+            "<input type='"+type+"' name='"+name+"' id='"+id+"' /><br/>";
     }
 
     function extract_path( path ) {
@@ -365,7 +364,6 @@
         return $.map( path, function(x)
         {
             return x;
-            //return x.replace(/[^a-zA-Z0-9\/]/g, '_');
         }).join('-');
     }
 
@@ -856,12 +854,6 @@
             //TODO: Need to map calls to this to make sure they are setting alt/title/role
             debug("Accessibility Check: Verify that " + icon + " has accessible attributes set");
             debug("i18n Check: Verify that " + icon + " has i18n strings set");
-
-            /*returnIcon.src=icon;
-            returnIcon.alt=I18N.message("perc.ui.images@FolderIconAlt");
-            returnIcon.title=I18N.message("perc.ui.images@FolderIconTitle");
-            returnIcon.decorative=true;
-            return returnIcon;*/
         }
 
         if( type && type_icons[ type ] ){
@@ -1099,34 +1091,16 @@
     };
     $.fn.perc_toggle_padding = function(  )    {
         var args = $.fn.perc_toggle_padding.arguments;
-        for(var i = 0 ; i < args.length ; i ++ )    {
-            if($(args[i]).length && $(args[i]).hasClass('perc-nopadding'))    {
-                $(args[i]).removeClass('perc-nopadding');
+        for(let i of args )    {
+            if(i.length && i.hasClass('perc-nopadding'))  {
+                i.removeClass('perc-nopadding');
             }
             else    {
-                $(args[i]).addClass('perc-nopadding');
+                i.addClass('perc-nopadding');
             }
         }
         return this;
     };
-
-
-
-    var tot = 0;
-
-    /*
-    var recursive_test_schema;
-    recursive_test_schema = {'a': '$', 'rts': [function(){ return recursive_test_schema; }]};
-    rts_schema = { 'Top': recursive_test_schema };
-
-    rts_json = {'a': 'x', 'rts': [{'a': 'y', 'rts': [{'a': 'z', 'rts': []}]}]};
-
-    // rexml( rts_schema, rts_json ) = <Top><a>x</a><rts><rt><a>y</a>....</Top>
-
-    option_schema = { 'Top': [function(tag) { if(tag == 'a'){ return {'b':'$'} } else { return {'d':'$'} } }] };
-
-    option_xml = "<Top><a><b>foo</b></a><c><d>bar</d></c><a><b>foo2</b></a></Top>";
-    */
 
     function addAutoScroll(){
         $("#frame").percAutoScroll({
@@ -1163,7 +1137,7 @@
             if(children.length === 0 && child_schema === '$')
             {
                 var len = data.length;
-                for(i = 0; i < len; i++)
+                for(let i = 0; i < len; i++)
                 {
                     ret.unshift($(data[i]).text());
                 }
@@ -1454,6 +1428,14 @@
      */
     function formatTimeFromDate(date, showsecs) {
 
+        if(typeof date === "undefined"){
+            return "";
+            console.trace("undefined date passed to frmateTimeFromDate.");
+        }else if(typeof date === "string"){
+            date = new Date(date);
+        }
+
+
         var formattedTime;
         var hours      = date.getHours();
         var minutes    = date.getMinutes();
@@ -1672,14 +1654,7 @@
             return false;
         }
 
-        if(path[1] === 'Design')
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (path[1] === 'Design');
     }
 
 
