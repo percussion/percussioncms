@@ -162,7 +162,7 @@
                 .css("cursor","default")
                 .html(labels[0]);
         } else {
-            var arrowClass = config.percDropdownRootClass ? config.percDropdownRootClass + "-split-button-arrow" : "perc-split-button-arrow";
+            var arrowClass = config.percDropdownRootClass ? config.percDropdownRootClass + "-split-button-arrow" : "perc-split-button-arrow"
             title
                 .html("&nbsp;")
                 .css("cursor","pointer")
@@ -265,7 +265,9 @@
     function clickDropdown(event) {
         var callback = $(this).data("callback");
         var callbackData = $(this).data("callbackData");
-        callback(callbackData);
+        if(typeof callback !== 'undefined'){
+            callback(callbackData);
+        }
     }
 
     /**

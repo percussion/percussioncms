@@ -18438,7 +18438,7 @@ $.widget( "ui.tabs", {
 		heightStyle: "content",
 		hide: null,
 		show: null,
-		select:null,
+
 		// Callbacks
 		activate: null,
 		beforeActivate: null,
@@ -18502,13 +18502,7 @@ $.widget( "ui.tabs", {
 			this.load( options.active );
 		}
 	},
-	select: function (a) {
-		a = this._getIndex(a);
-		if (a == -1)
-			if (this.options.collapsible && this.options.selected != -1) a = this.options.selected;
-			else return this;
-		return this.anchors.eq(a).trigger(this.options.event + ".tabs"), this;
-	},
+
 
 	_initialActive: function() {
 		var active = this.options.active,
@@ -19027,7 +19021,6 @@ $.widget( "ui.tabs", {
 
 		if ( toShow.length ) {
 			this.load( this.tabs.index( tab ), event );
-			this._trigger('select',this.tabs.index( tab ),event);
 		}
 		this._toggle( event, eventData );
 	},
