@@ -766,7 +766,7 @@
             $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
             frame.contents().remove();
             frame.attr("src", renderPath);
-            frame.unbind().load(function()
+            frame.off("load").on("load",function()
             {
                 loadAssetDropCriteria(function(){
                     loadPageAssetDropCriteria(function(){

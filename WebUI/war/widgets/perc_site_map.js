@@ -94,7 +94,7 @@
                 if(site)
                 {
                     $.Perc_SectionServiceClient.getRootSection(site, function(status, data){
-                        if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                        if(status === $.PercServiceUtils.STATUS_SUCCESS)
                         {
                             var section = data.SiteSection;
                             var $level1 = self.addLevel("");
@@ -109,10 +109,10 @@
                         else
                         {
                             var msg = data;
-                            if(data.indexOf("Cannot find object name") != -1)
+                            if(data.indexOf("Cannot find object name") !== -1)
                             {
-                                msg = I18N.message("perc.ui.site.map@Requested Site") + site
-                                    + I18N.message("perc.ui.site.map@Site Does Not Exist");
+                                msg = I18N.message("perc.ui.site.map@Requested Site") + site +
+                                     I18N.message("perc.ui.site.map@Site Does Not Exist");
                             }
                             $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: msg,
                                 okCallBack: function(){
@@ -183,7 +183,7 @@
              */
             layoutLevel: function(idx){
                 var self = this;
-                var topspacing = this.TOPSPACING * (idx == 1 ? 2 : 1);
+                var topspacing = this.TOPSPACING * (idx === 1 ? 2 : 1);
 
                 var $level = $(".perc-site-map-level").slice(idx - 1, idx);
                 var levelParentId = $level.metadata({type: 'attr', name: 'data'}).parentId;
@@ -257,7 +257,7 @@
 
                 // Layout level line
                 var $levelLine = $level.children(".perc-site-map-level-line");
-                if(len > 1 || (len == 1 && offscreenParentOffset > -1))
+                if(len > 1 || (len === 1 && offscreenParentOffset > -1))
                 {
                     var eOffset = Math.max(endOffset, offscreenParentOffset);
                     //if(offscreenParentOffset > -1 && len > 1)
@@ -289,7 +289,7 @@
                         return;
                     var $lastDropArea =
                         $(this).find(".perc-site-map-nodes .perc-site-map-droparea:last");
-                    if($lastDropArea.length == 0)
+                    if($lastDropArea.length === 0)
                         return;
                     var left = $lastDropArea.offset().left;
                     maxPos = Math.max(maxPos, left);
@@ -322,7 +322,7 @@
                 var data = $node.metadata({type: 'attr', name: 'data'});
                 var info = {targetId: data.parentId, index: 0};
                 //Before Drop area
-                if(i == 0)
+                if(i === 0)
                 {
                     var $bDroparea = $("<div class='perc-site-map-droparea'></div>");
                     $bDroparea.attr("data", JSON.stringify(info));
@@ -350,7 +350,7 @@
             initDropArea: function($dropArea, targetId){
                 var self = this;
                 $dropArea.droppable({
-                    accept: function(droppable){return self.onDropAccept(this, droppable)},
+                    accept: function(droppable){return self.onDropAccept(this, droppable);},
                     tolerance: "pointer",
                     over: function(event, ui){
                         var $target = $(this);
@@ -371,7 +371,7 @@
                             droppedData.parentId,
                             droppedData.index,
                             targetData.targetId,
-                            targetData.index)
+                            targetData.index);
                     }
                 });
             },
@@ -400,7 +400,7 @@
                 var $nodes = $level.children(".perc-site-map-nodes");
                 $nodes.append($section);
                 // if level 1 then hide top line
-                if(levelIdx == 1)
+                if(levelIdx === 1)
                     $section.children(".perc-site-map-node-topline").hide();
             },
 
@@ -412,7 +412,7 @@
             addLevel: function(parentId){
                 var $levels = $(".perc-site-map-level");
                 var levelCount = $levels.length;
-                var isTopLevel = levelCount == 0;
+                var isTopLevel = levelCount === 0;
                 var title = isTopLevel
                     ? I18N.message('perc.ui.sitemap.label@Level 1 (Top)')
                     : I18N.message('perc.ui.sitemap.label@Level', [(levelCount + 1) + ""]);
@@ -506,7 +506,7 @@
                                 });
                         }
 
-                    })
+                    });
 
                     $menu.append($delete);
 
@@ -541,7 +541,7 @@
                 function isSiteBeingImported(callback)
                 {
                     var sitename = $.PercNavigationManager.getSiteName();
-                    if(sitename != "undefined")
+                    if(typeof sitename !== "undefined")
                     {
                         $.PercSiteService.isSiteBeingImported(sitename, function (status, result)
                         {
@@ -598,10 +598,10 @@
             onCopySiteDialog: function(){
                 var sitename = $(".perc-site-map-sitetitle").text();
 
-                if(sitename != "" && $('#perc-site-map-copy').not('.perc-site-map-action-item-disabled').length>0)
+                if(sitename !== "" && $('#perc-site-map-copy').not('.perc-site-map-action-item-disabled').length>0)
                 {
                     $.PercSiteService.copySiteInfo(function(status, result){
-                        if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                        if(status === $.PercServiceUtils.STATUS_SUCCESS)
                         {
                             if (!jQuery.isEmptyObject(result.psmap.entries)){
 
@@ -624,7 +624,7 @@
             checkCopySite: function(){
                 var self = this;
                 $.PercSiteService.copySiteInfo(function(status, result){
-                    if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                    if(status === $.PercServiceUtils.STATUS_SUCCESS)
                     {
                         if (!jQuery.isEmptyObject(result.psmap.entries)){
                             $('#perc-site-map-copy').addClass("perc-site-map-action-item-disabled").removeClass("perc-site-map-action-item-enabled");
@@ -693,7 +693,7 @@
                     });
                 }
                 $box.droppable({
-                    accept: function(droppable){return self.onDropAccept(this, droppable)},
+                    accept: function(droppable){return self.onDropAccept(this, droppable);},
                     tolerance: "pointer",
                     zIndex: 9600,
                     over: function(event, ui){
@@ -793,12 +793,12 @@
              */
             addNodeCountArea: function($parent, sectionObj, levelIdx){
                 var self = this;
-                if(sectionObj.sectionType == $.Perc_SectionServiceClient.PERC_SECTION_TYPE.EXTERNAL_LINK)
+                if(sectionObj.sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.EXTERNAL_LINK)
                 {
                     var $extLink = $("<div></div>").addClass("perc-site-map-externallink").append("External Link");
                     $parent.append($extLink);
                 }
-                else if(sectionObj.sectionType == $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION_LINK)
+                else if(sectionObj.sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION_LINK)
                 {
                     var $secLink = $("<div></div>").addClass("perc-site-map-sectionlink").append("Section Link");
                     $parent.append($secLink);
@@ -861,7 +861,7 @@
              */
             expandSections: function(sectionIds)
             {
-                if(sectionIds == null || sectionIds.length == 0)
+                if(sectionIds == null || sectionIds.length === 0)
                     return;
                 var self = this;
                 var temp = [];
@@ -920,7 +920,7 @@
 
                         $.Perc_SectionServiceClient.getChildren(self.getSectionObject($section),
                             function(status, parentSection, data){
-                                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                                 {
                                     var children = self.convertCXFArray(data.SiteSection);
                                     var count = children.length;
@@ -1010,10 +1010,10 @@
                 if($source.hasClass("perc-listing-category-PAGE") && $target.hasClass("perc-site-map-box"))
                 {
                     var targetData = JSON.parse($target.attr('data'));
-                    if(targetData.sectionType && targetData.sectionType != $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION)
+                    if(targetData.sectionType && targetData.sectionType !== $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION)
                         return false;
-                    var pageSite = (spec['path'].split('/'))[2];
-                    if($.PercNavigationManager.getSiteName() != pageSite)
+                    var pageSite = (spec.path.split('/'))[2];
+                    if($.PercNavigationManager.getSiteName() !== pageSite)
                         return false;
                     return true;
                 }
@@ -1023,18 +1023,18 @@
                 {
                     var targetData = JSON.parse($target.attr('data'));
                     var sourceData =  JSON.parse($source.attr('data'));
-                    if(targetData.sectionType && targetData.sectionType != $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION)
+                    if(targetData.sectionType && targetData.sectionType !== $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION)
                         return false;
                     if(typeof(targetData.targetId) != "undefined")
                         targetData.parentId = targetData.targetId; // This is a drop areas parent
                     if(typeof(targetData.parentId) == "undefined")
                         return false; // target is root
-                    if(targetData.parentId == sourceData.id)
+                    if(targetData.parentId === sourceData.id)
                         return false;
-                    if(targetData.index==0)
+                    if(targetData.index===0)
                         return true;
                     var parents = this.getSectionParentChain(targetData.parentId);
-                    return ($.inArray(sourceData.id, parents) == -1);
+                    return ($.inArray(sourceData.id, parents) === -1);
                 }
                 catch(err)
                 {
@@ -1071,14 +1071,14 @@
                 var self = evt.data.context;
                 var sectionID = evt.data.sectionId;
                 self.editSiteSectionDialog.open(evt.data.site, function(dStatus, fieldData){
-                    if(dStatus == "ok")
+                    if(dStatus === "ok")
                     {
                         // create a map of the request parameters
                         var fields = {};
                         $.each( fieldData, function() { fields[this.name] = this.value; } );
 
                         // if parameters include a list of users, they are comma separated, parse them into an array
-                        var writePrincipalsParam = fields['writePrincipals'];
+                        var writePrincipalsParam = fields.writePrincipals;
                         var usernames = [];
                         if(writePrincipalsParam)
                             usernames = writePrincipalsParam.split(",");
@@ -1094,17 +1094,17 @@
                         var canonicalURLsReplace = (typeof(fields['perc-replace-canonical-tags']) != "undefined");
 
                         var sitePropsObj = {'SiteProperties': {
-                                'id': fields['site_id'],
-                                'homePageLinkText': fields['page_title_link'],
-                                'name': fields['site_hostname'],
-                                'description': fields['site_desc'],
-                                'folderPermission':{'accessLevel':fields['perc-site-folder-permission'],
+                                'id': fields.site_id,
+                                'homePageLinkText': fields.page_title_link,
+                                'name': fields.site_hostname,
+                                'description': fields.site_desc,
+                                'folderPermission':{'accessLevel':fields.perc-site-folder-permission,
                                     'writePrincipals':writePrincipals},
-                                'loginPage' : fields['perc-site-login-page'],
+                                'loginPage' : fields.perc-site-login-page,
                                 //'registrationPage' : fields['perc-site-registration-page'],
-                                'registrationConfirmationPage' : fields['perc-site-registration-confirmation-page'],
-                                'resetRequestPasswordPage' : fields['perc-site-reset-pw-request-page'],
-                                'resetPage' : fields['perc-site-reset-password-page'],
+                                'registrationConfirmationPage' : fields.perc-site-registration-confirmation-page,
+                                'resetRequestPasswordPage' : fields.perc-site-reset-pw-request-page,
+                                'resetPage' : fields.perc-site-reset-password-page,
                                 'isSecure' : secureSite,
                                 'cssClassNames' : fields['perc-site-navigation-cssclassnames'],
                                 'defaultFileExtention' : fields['perc-site-pagefile-extention-default'],
@@ -1117,7 +1117,7 @@
                             }};
                         $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
                         $.PercSiteService.updateSiteProperties(sitePropsObj, function(status, results){
-                            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                            if (status === $.PercServiceUtils.STATUS_SUCCESS)
                             {
                                 if (results.SiteProperties.pubServersChanged)
                                 {
@@ -1126,13 +1126,13 @@
                                         title: I18N.message("perc.ui.page.general@Warning"),
                                         content: I18N.message("perc.ui.site.map@Publishing Location Changed"),
                                         okCallBack: function(){
-                                            $.PercNavigationManager.goToLocation($.PercNavigationManager.VIEW_SITE_ARCH, fields['site_hostname']);
+                                            $.PercNavigationManager.goToLocation($.PercNavigationManager.VIEW_SITE_ARCH, fields.site_hostname);
                                         }
                                     });
                                 }
                                 else
                                 {
-                                    $.PercNavigationManager.goToLocation($.PercNavigationManager.VIEW_SITE_ARCH, fields['site_hostname']);
+                                    $.PercNavigationManager.goToLocation($.PercNavigationManager.VIEW_SITE_ARCH, fields.site_hostname);
                                 }
                             }
                             else
@@ -1154,11 +1154,11 @@
                 var self = evt.data.context;
                 var $section = $("#" + evt.data.sectionId);
                 var sectionType = $section.metadata({type: 'attr', name: 'data'}).sectionType;
-                if(sectionType == $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION_LINK)
+                if(sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION_LINK)
                 {
                     self.editSectionLink(evt);
                 }
-                else if(sectionType == $.Perc_SectionServiceClient.PERC_SECTION_TYPE.EXTERNAL_LINK)
+                else if(sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.EXTERNAL_LINK)
                 {
                     self.editExternalLink(evt);
                 }
@@ -1180,7 +1180,7 @@
                 var self = evt.data.context;
                 var sectionID = evt.data.sectionId;
                 self.editSectionDialog.open(evt.data.sectionId, function(dStatus, fieldData) {
-                    if (dStatus == "ok")
+                    if (dStatus === "ok")
                     {
                         // Process the OK
 
@@ -1189,7 +1189,7 @@
                         $.each( fieldData, function() { fields[this.name] = this.value; } );
 
                         // if parameters include a list of users, they are comma separated, parse them into an array
-                        var writePrincipalsParam = fields['writePrincipals'];
+                        var writePrincipalsParam = fields.writePrincipals;
                         var usernames = [];
                         if(writePrincipalsParam)
                             usernames = writePrincipalsParam.split(",");
@@ -1201,14 +1201,14 @@
 
                         var editSectionObj = {'SiteSectionProperties' : {
                                 'id' : sectionID,
-                                'title' : fields['section_name'],
-                                'folderName' : fields['page_url'],
-                                'target' : fields['perc-section-target'],
-                                'folderPermission':{'accessLevel':fields['perc-section-folder-permission'],
+                                'title' : fields.section_name,
+                                'folderName' : fields.page_url,
+                                'target' : fields.perc-section-target,
+                                'folderPermission':{'accessLevel':fields.perc-section-folder-permission,
                                     'writePrincipals':writePrincipals},
-                                'requiresLogin': fields['requiresLogin'],
-                                'allowAccessTo':fields['perc-group-name-allowed'],
-                                'cssClassNames':fields['perc-section-navigation-cssclassnames']
+                                'requiresLogin': fields.requiresLogin,
+                                'allowAccessTo':fields.perc-group-name-allowed,
+                                'cssClassNames':fields.perc-section-navigation-cssclassnames
                             }};
                         $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
                         $.Perc_SectionServiceClient.edit(editSectionObj, function(status, data) {
@@ -1241,14 +1241,14 @@
                 var sectionPath = $section.metadata({type: 'attr', name: 'data'}).displayTitlePath;
                 var dlgTitle = I18N.message('perc.ui.sitemap.editsectionlink.dlgtitle@Edit Section Link');
                 $.PercEditSectionLinksDialog().open(sectionObj, sectionPath, siteName, dlgTitle, function(dStatus, fieldData) {
-                    if (dStatus == "ok")
+                    if (dStatus === "ok")
                     {
                         // Process the OK
                         // create a map of the request parameters
                         var fields = { };
                         $.each( fieldData, function() { fields[this.name] = this.value; } );
                         //If user picks the same section simply return.
-                        if(evt.data.sectionId == fields['perc-section-link-targetid'] || evt.data.sectionId.split("_")[0] ==
+                        if(evt.data.sectionId === fields['perc-section-link-targetid'] || evt.data.sectionId.split("_")[0] ===
                             fields['perc-section-link-targetid'])
                         {
                             $.unblockUI();
@@ -1258,7 +1258,6 @@
                         if(self.isChild(parentSectionId,tid))
                         {
                             self.displayDuplicateSectionMessage();
-                            return;
                         }
                         else
                         {
@@ -1294,7 +1293,7 @@
                 var parentPath = self.getParentPath(evt.data.sectionId);
                 var dlgTitle = I18N.message('perc.ui.sitemap.editexternallink.dlgtitle@Edit External Link');
                 $.PercEditSectionLinksDialog().open(sectionObj, parentPath, siteName, dlgTitle, function(dStatus, fieldData) {
-                    if (dStatus == "ok")
+                    if (dStatus === "ok")
                     {
                         // Process the OK
                         // create a map of the request parameters
@@ -1334,9 +1333,9 @@
                 var sectionID = evt.data.sectionId;
                 var $section = $("#" + sectionID);
                 var oldSecData = JSON.parse($("#" + sectionID).attr("data"));
-                if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                if (status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
-                    if(data.SiteSection.sectionType == $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION_LINK)
+                    if(data.SiteSection.sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION_LINK)
                     {
                         // need to do a reload as we moved to a different section parent
                         var expandState = this.getExpansionState();
@@ -1367,7 +1366,7 @@
                     self.updateSectionData($section, data);
 
                     //Update section links pointing to the section, if we are editing the section
-                    if(data.SiteSection.sectionType == $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION)
+                    if(data.SiteSection.sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION)
                     {
                         $("[id*='" + sectionID + "_']").each(function(){
                             $(this).find("div.perc-site-map-sectiontitle")
@@ -1380,7 +1379,7 @@
                     //Related to the fix for issue CM-1364, since we don't calculate the displaytitlepath in the client side,
                     //we should keep the displayTitlePath property of the section links updated.
                     //Update the displayTitlePath of the sections links that are affected by node title change.
-                    if(oldSectionName != data.SiteSection.title){ // just if the display title change
+                    if(oldSectionName !== data.SiteSection.title){ // just if the display title change
                         $(".perc-site-map-sectionlink").parents(".perc-site-map-node").each(function(){
                             //Get all sections nodes
                             var displayTitlePath = $(this).metadata({type: 'attr', name: 'data'}).displayTitlePath;
@@ -1390,7 +1389,7 @@
                                 var newPath = parentNodePath + "/" + data.SiteSection.title;
                                 $(this).metadata({type: 'attr', name: 'data'}).displayTitlePath = displayTitlePath.replace(oldPath, newPath);
                             }
-                        })
+                        });
                     }
 
                     $.Perc_SectionServiceClient.clearCache("getChildren");
@@ -1400,7 +1399,7 @@
                     self.fireOnChange(); // refresh finder in case folder name changed
                     $.unblockUI();
 
-                    if (data.SiteSection.sectionType == $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION) {
+                    if (data.SiteSection.sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION) {
                         $.PercRedirectHandler.createRedirect(oldSecData.folderPath, data.SiteSection.folderPath, "section").fail(function(errMsg){
                             $.unblockUI();
                             $.perc_utils.alert_dialog({
@@ -1448,7 +1447,7 @@
                 {
                     var levelIdx =  parseInt($section.metadata({type: 'attr', name: 'data'}).level);
                     var $childLevel =  $("#perc_level_" + (levelIdx + 1));
-                    var $nodes = $childLevel.children(".perc-site-map-nodes").children(".perc-site-map-node")
+                    var $nodes = $childLevel.children(".perc-site-map-nodes").children(".perc-site-map-node");
                     $nodes.each(function(){
 
                         var $childSection = $(this);
@@ -1456,7 +1455,7 @@
 
                         $.Perc_SectionServiceClient.getSection(mData.id, function(status, result){
 
-                            if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                            if (status === $.PercServiceUtils.STATUS_SUCCESS)
                             {
                                 self.updateSectionData($childSection, result);
                             }
@@ -1483,7 +1482,7 @@
                     var selectedData = JSON.parse($selected.attr("data"));
                     var parentData = JSON.parse($selected.parent().attr("data"));
                     var sitename = $(".perc-site-map-sitetitle").text();
-                    var treeLabel = I18N.message('perc.ui.sitemap.movesection.label@message', [parentData.title])
+                    var treeLabel = I18N.message('perc.ui.sitemap.movesection.label@message', [parentData.title]);
                     $.PercSectionTreeDialog.open(sitename, selectedData.id, treeLabel, I18N.message('perc.ui.sitemap.movesection.title@Move Section'), "Move", function(targetId){
                         self.onMove(
                             selectedData.id,
@@ -1543,8 +1542,8 @@
             onAssignLandingPage: function(source, target){
                 var self = this;
                 var srcSpec = source.data("spec");
-                var pageId = srcSpec['id'];
-                var pageName = srcSpec['name'];
+                var pageId = srcSpec.id;
+                var pageName = srcSpec.name;
                 var sectionName = target.name;
                 var sectionId = target.id;
                 var path = target.folderPath;
@@ -1553,7 +1552,7 @@
                     pageId,
                     sectionId,
                     function(status, result){
-                        if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                        if(status === $.PercServiceUtils.STATUS_SUCCESS)
                         {
                             self.fireOnChange();
                             $.unblockUI();
@@ -1564,21 +1563,20 @@
                                 data.newLandingPageName,
                                 data.oldLandingPageName,
                                 path];
-                            var $dialog = $("<div>"
-                                + "<div style='float:left;'>"
-                                + I18N.message('perc.ui.sitemap.assign.landing.page.label@message', args)
-                                + "</div>"
-                                + "<div class='ui-layout-south'>"
-                                + "<div id='perc_buttons' style='z-index: 100;'></div>"
-                                +  "</div>"
-                                + "</div>")
-                                .perc_dialog({
+                            var $dialog = $("<div>" +
+                                 "<div style='float:left;'>" +
+                                I18N.message('perc.ui.sitemap.assign.landing.page.label@message', args) +
+                                "</div>" +
+                                "<div class='ui-layout-south'>" +
+                                "<div id='perc_buttons' style='z-index: 100;'></div>" +
+                                "</div>" +
+                                "</div>").perc_dialog({
                                     title: I18N.message('perc.ui.sitemap.assign.landing.page.title@Landing Page Assigned'),
                                     resizable: false,
                                     modal: true,
                                     percButtons:  {
                                         "Ok": {
-                                            click: function(){$dialog.remove()},
+                                            click: function(){$dialog.remove();},
                                             id: "perc-landing-page-assign-info-ok"
                                         }
                                     },
@@ -1610,7 +1608,7 @@
              */
             onMove: function(sourceId, sourceParentId, sourceIdx, targetId, targetIdx){
                 var self = this;
-                var isSortOnly = (sourceParentId == targetId);
+                var isSortOnly = (sourceParentId === targetId);
                 var newIndex = (isSortOnly && (sourceIdx < targetIdx))
                     ? targetIdx - 1
                     : targetIdx;
@@ -1625,7 +1623,7 @@
                 var scrollTop = $(window).scrollTop();
                 $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
                 $.Perc_SectionServiceClient.move(req, function(status, data, result){
-                    if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                    if(status === $.PercServiceUtils.STATUS_SUCCESS)
                     {
                         var $source = $("#" + sourceId);
                         var $sourceParent = $("#" + sourceParentId);
@@ -1662,7 +1660,7 @@
                                     self.layoutAll();
                                 }
                                 else
-                                if ((sourceIdx < targetIdx) && (sourceIdx != (targetIdx - 1))) {
+                                if ((sourceIdx < targetIdx) && (sourceIdx !== (targetIdx - 1))) {
 
                                     var $node = $nodes.children(".perc-site-map-node:eq(" + (targetIdx - 1) + ")");
                                     $node.after($source);
@@ -1737,11 +1735,11 @@
                 var path = folderPath.replace('//Sites', $.perc_paths.SITES_ROOT);
                 var sectionName = JSON.parse($section.attr("data")).title;
                 var sectionType = $section.metadata({type: 'attr', name: 'data'}).sectionType;
-                if(sectionType == $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION_LINK)
+                if(sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION_LINK)
                 {
                     self.deleteSectionLink(evt);
                 }
-                else if(sectionType == $.Perc_SectionServiceClient.PERC_SECTION_TYPE.EXTERNAL_LINK)
+                else if(sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.EXTERNAL_LINK)
                 {
                     self.deleteExternalLink(evt);
                 }
@@ -1772,7 +1770,7 @@
                         question: delConfirmHtml,
                         success: function(){
                             var deleteOption = $("input:radio[name ='perc-remove-section-option']:checked").val();
-                            if(deleteOption == "delete-section"){
+                            if(deleteOption === "delete-section"){
                                 $.PercPathService.deleteSection(path, sectionName,function(){
                                     self.afterDeleteCallback(evt, true);
                                 });
@@ -1804,8 +1802,8 @@
                 var metadata = $section.metadata({type: 'attr', name: 'data'});
                 var sectionType = metadata.sectionType;
                 //If the section has any section links then hard refresh as we have to remove the section links
-                if((sectionType == $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION && $("[id*='" + evt.data.sectionId + "_']").length>0)||
-                    sectionType == $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION_LINK)
+                if((sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION && $("[id*='" + evt.data.sectionId + "_']").length>0)||
+                    sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION_LINK)
                 {
                     var expandState = this.getExpansionState();
                     var scrollTop = $(window).scrollTop();
@@ -1838,7 +1836,7 @@
                 var $pagecount = $parentSection.find(".perc-site-map-pagecount span");
                 var count = parseInt($pagecount.text()) - 1;
                 $pagecount.attr("value",count).text(count);
-                if(count == 0)
+                if(count === 0)
                     $parentSection.children(".perc-site-map-node-bottomline").remove();
 
                 // Update child list in parent
@@ -1877,7 +1875,7 @@
                     question: 'Delete section link ' + sectionName +'?',
                     success: function(){
                         $.Perc_SectionServiceClient.deleteSectionLink(evt.data.sectionId,parentSectionId,function(status, result){
-                            if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                            if(status === $.PercServiceUtils.STATUS_SUCCESS)
                             {
                                 self.afterDeleteCallback(evt, true);
                             }
@@ -1909,7 +1907,7 @@
                     question: 'Delete external link ' + sectionName +'?',
                     success: function(){
                         $.Perc_SectionServiceClient.deleteSection(evt.data.sectionId,function(status, result){
-                            if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                            if(status === $.PercServiceUtils.STATUS_SUCCESS)
                             {
                                 self.afterDeleteCallback(evt, false);
                             }
@@ -1935,30 +1933,30 @@
                 var folderPath = $parentSection.metadata({type: 'attr', name: 'data'}).folderPath;
                 var allTitle = [];
                 $(evt.currentTarget).parent().next().children().each( function( ){
-                    var data  = $(this).attr("data")
-                    data = JSON.parse(data)
-                    var title  = data.title
-                    if(!(title == undefined || title == "")){
+                    var data  = $(this).attr("data");
+                    data = JSON.parse(data);
+                    var title  = data.title;
+                    if(!(typeof title === "undefined" || title.trim() === "")){
                         allTitle.push(title);
                     }
                 });
                 self.newSectionDialog.open(self.options.site, evt.data.parentSectionId, function(dStatus, fieldData){
-                    if(dStatus == "ok")
+                    if(dStatus === "ok")
                     {
                         var fields = {};
                         $.each( fieldData, function() { fields[this.name] = this.value; } );
                         $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
-                        if(fields['perc-section-type'] == "section")
+                        if(fields['perc-section-type'] === "section")
                         {
                             var fileName = 'index';
-                            var duplicateErrorMessage = I18N.message("perc.ui.site.map@Section Duplicate",[fields['section_name']]);
-                            if(allTitle.indexOf(fields['section_name']) > -1) {
+                            var duplicateErrorMessage = I18N.message("perc.ui.site.map@Section Duplicate",[fields.section_name]);
+                            if(allTitle.indexOf(fields.section_name) > -1) {
                                 $.unblockUI();
                                 $.perc_utils.alert_dialog({title: 'Error', content: duplicateErrorMessage});
                                 return;
                             }
                             $.PercSiteService.getSiteProperties(self.options.site, function(status, result) {
-                                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                                     var fileExt = result.SiteProperties.defaultFileExtention;
                                     if (fileExt) {
                                         fileName += "." + fileExt;
@@ -1968,10 +1966,10 @@
                                 }
                                 var sectionObj = {'CreateSiteSection' : {
                                         'pageName' : fileName,
-                                        'pageTitle' : fields['section_name'],
-                                        'templateId' : fields['template'],
-                                        'pageUrlIdentifier' : fields['page_url'],
-                                        'pageLinkTitle' : fields['section_name'],
+                                        'pageTitle' : fields.section_name,
+                                        'templateId' : fields.template,
+                                        'pageUrlIdentifier' : fields.page_url,
+                                        'pageLinkTitle' : fields.section_name,
                                         'folderPath': folderPath,
                                         'copyTemplates':false,
                                         'sectionType':fields['perc-section-type']} };
@@ -1980,7 +1978,7 @@
                             });
 
                         }
-                        else if(fields['perc-section-type'] == "externallink")
+                        else if(fields['perc-section-type'] === "externallink")
                         {
                             var sectionObj = {'CreateExternalLinkSection' : {
                                     'externalUrl' : fields['perc-external-link-url'],
@@ -1990,14 +1988,12 @@
                             $.Perc_SectionServiceClient.create(sectionObj,  function(status, data){
                                 self.addNewSectionCallback(status, data, evt);});
                         }
-                        else if(fields['perc-section-type'] == "sectionlink")
+                        else if(fields['perc-section-type'] === "sectionlink")
                         {
                             var sid = fields['perc-section-link-targetid'];
                             if(self.isChild(evt.data.parentSectionId,sid))
                             {
                                 self.displayDuplicateSectionMessage();
-
-                                return;
                             }
                             else
                             {
@@ -2005,7 +2001,7 @@
                                     self.addNewSectionCallback(status, data, evt);});
                             }
                         }
-                        else if(fields['perc-section-type'] == "convertfolder")
+                        else if(fields['perc-section-type'] === "convertfolder")
                         {
                             var sectionObj = {'CreateSectionFromFolderRequest' : {
                                     'sourceFolderPath' : fields['perc-convert-folder-path'],
@@ -2032,7 +2028,7 @@
                 var self = evt.data.context;
                 var $parentSection = $("#" + evt.data.parentSectionId);
                 var folderPath = $parentSection.metadata({type: 'attr', name: 'data'}).folderPath;
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     var temp = $parentSection.metadata({type: 'attr', name: 'data'});
                     temp.childIds = self.convertCXFArray(temp.childIds);
@@ -2044,7 +2040,7 @@
                     var $pagecount = $parentSection.find(".perc-site-map-pagecount span");
                     var count = parseInt($pagecount.text()) + 1;
                     $pagecount.attr("value",count).text(count);
-                    if(count == 1)
+                    if(count === 1)
                     {
                         // Add bottom line
                         var $bottomLine = $("<div></div>")
@@ -2153,7 +2149,7 @@
                 $.unblockUI();
                 site_delete_handle_error(result);
             });
-    };
+    }
 
     function site_delete_handle_error( data, textStatus, errorThrown) {
         var ut = $.perc_utils;
@@ -2162,7 +2158,7 @@
         var warnCloseSpan = "</span>";
         var id = "perc-finder-delete-error-open";
         var title = I18N.message("perc.ui.site.map@Delete Site");
-        var defMessage = $.PercServiceUtils.extractDefaultErrorMessage(data)
+        var defMessage = $.PercServiceUtils.extractDefaultErrorMessage(data);
         if( data.responseText.indexOf("site.isPublishing") > 0 ) {
             ut.alert_dialog( {
                 id: id,
@@ -2170,12 +2166,12 @@
                 content: warnOpenSpan + I18N.message( "perc.ui.deletesiteedialog.warning@SiteTag") + " " + sitename + " " + I18N.message( "perc.ui.deletesiteedialog.warning@SitePublishing" ) + warnCloseSpan
             });
         }
-        else if (defMessage != "") {
+        else if (defMessage !== "") {
             ut.alert_dialog( {
                 id: id,
                 title: title,
                 content: warnOpenSpan + defMessage + warnCloseSpan
-            })
+            });
         }
         else {
             ut.alert_dialog( {
