@@ -31,7 +31,7 @@ var sizeLimit = 157286400;
 var bigFileIds = [];
 var bigFiles = [];
 
-$(document).ready(function () {
+$(function () {
     // Initialize the finder tree for asset selection
     $('#perc-bulk-target-tree').PercFinderTree({
         showFoldersOnly: true,
@@ -66,6 +66,9 @@ $(document).ready(function () {
                 return false;
             }
             return true;
+        },
+        onRenderComplete: function(initialPath, initialNode){
+            $("perc-bulk-target-tree").show();
         }
     });
 
@@ -150,31 +153,31 @@ function _handleButtonEnableState(){
     }
     if(enableUpload && !inprogress && targetpath.length > 0 && totalfilecount > 0)
     {
-        $("#perc-upload-start").attr('disabled', false);
+        $("#perc-upload-start").prop('disabled', false);
     }
     else
     {
-        $("#perc-upload-start").attr('disabled', true);
+        $("#perc-upload-start").prop('disabled', true);
     }
 
     // Clear all button
     if(totalfilecount > 0 && !inprogress)
     {
-        $("#perc-upload-clear").attr('disabled', false);
+        $("#perc-upload-clear").prop('disabled', false);
     }
     else
     {
-        $("#perc-upload-clear").attr('disabled', true);
+        $("#perc-upload-clear").prop('disabled', true);
     }
 
     // Asset type
     if(inprogress)
     {
-        $('#perc-bulk-asset-type').attr("disabled", "true");
+        $('#perc-bulk-asset-type').prop("disabled", true);
     }
     else
     {
-        $('#perc-bulk-asset-type').removeAttr("disabled");
+        $('#perc-bulk-asset-type').prop("disabled", false);
     }
 
 }
