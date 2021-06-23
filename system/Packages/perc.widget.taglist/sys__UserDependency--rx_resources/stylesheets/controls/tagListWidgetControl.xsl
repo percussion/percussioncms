@@ -337,7 +337,7 @@
                                     var summaries = result.data.TemplateSummary;
                                     var temps = {};
                                     var tempsArray = [];
-                                    var tempIds = ($("#perc_template_list").val() != "") ? $("#perc_template_list").val().split(',') : "";
+                                    var tempIds = ($("#perc_template_list").val() !== "") ? $("#perc_template_list").val().split(',') : "";
                                     for(i = 0; i < summaries.length; i++)
                                     {
                                         temps[summaries[i].id] = summaries[i].name;

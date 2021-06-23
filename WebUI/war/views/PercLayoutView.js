@@ -101,18 +101,19 @@ var layoutModel;
                 //Note this uses allWidgetDefs to account for Pages with Widgets that have been deleted or are disabled or currently filtered in widget tray.
                 name : 'configure',
                 img : function (elem){
+                    var imgSrc;
                     if (allWidgetDefs[elem.attr('widgetdefid')].id === "percRawHtml")
-                        var imgSrc = '/cm/images/icons/editor/buttonConfigure2Gray';
+                        imgSrc = '/cm/images/icons/editor/buttonConfigure2Gray';
                     else
-                        var imgSrc = '/cm/images/icons/editor/configureInactive';
+                        imgSrc = '/cm/images/icons/editor/configureInactive';
 
                     //if(!widgetDefs[elem.attr('widgetdefid')].hasUserPrefs)
                     if(layoutModel.isTemplate() || allWidgetDefs[elem.attr('widgetdefid')].hasUserPrefs)
                     {
                         if (allWidgetDefs[elem.attr('widgetdefid')].id === "percRawHtml")
-                            var imgSrc =  '/cm/images/icons/editor/buttonConfigure2';
+                            imgSrc =  '/cm/images/icons/editor/buttonConfigure2';
                         else
-                            var imgSrc =  '/cm/images/icons/editor/configure';
+                            imgSrc =  '/cm/images/icons/editor/configure';
                     }
                     return imgSrc;
                 },
@@ -774,15 +775,15 @@ var layoutModel;
                 region.append( this );
                 if(index === NORTH || index === SOUTH ) {
                     // if it's north or south, then shrink the width by 20px
-                    var newWidth = dirs[index].width() - 20;
+                    let newWidth = dirs[index].width() - 20;
                     dirs[index].css('width', newWidth);
                 } else if(index === EAST || index === WEST) {
                     // if it's east or west, then shrink the height by 20px
-                    var newHeight = dirs[index].height() - 20;
+                    let newHeight = dirs[index].height() - 20;
                     dirs[index].css('height', newHeight);
                 } else if(index === CENTER) {
-                    var newHeight = dirs[index].height() - 24;
-                    var newWidth = dirs[index].width() - 24;
+                    let newHeight = dirs[index].height() - 24;
+                    let newWidth = dirs[index].width() - 24;
                     dirs[index]
                         .css('height', newHeight)
                         .css('width', newWidth);
@@ -1351,7 +1352,7 @@ var layoutModel;
         function populateWidgetLibrary(event) {
             $('.perc-widget-list').empty();
             $.getJSON($.perc_paths.WIDGETS_ALL + "/type/" + $('.perc-widget-type').val() + "?filterDisabledWidgets=yes", function(js) {
-                $.each( js['WidgetSummary'], function( ) {
+                $.each( js.WidgetSummary, function( ) {
                     widgetDefs[this.id] = this;
                     $('.perc-widget-list').append( createWidgetLibraryItem( this ) );
                 });
@@ -1369,7 +1370,7 @@ var layoutModel;
         function initWidgetLibrary(typeFilter, disabledFilter) {
             $('.perc-widget-list').empty();
             $.getJSON($.perc_paths.WIDGETS_ALL + "/type/" + typeFilter + "?filterDisabledWidgets=" + disabledFilter, function(js) {
-                $.each( js['WidgetSummary'], function( ) {
+                $.each( js.WidgetSummary, function( ) {
                     allWidgetDefs[this.id] = this;
 
                 });
@@ -1534,13 +1535,13 @@ var layoutModel;
                 .append($("<div/>")
                     .css({'position': 'relative'})
                     .addClass("perc-widget-tool")
-                    .append($("<img src=\"/Rhythmyx" + w['icon'] + "\" alt=\"\"></img>") )
+                    .append($("<img src=\"/Rhythmyx" + w.icon + "\" alt=\"\"></img>") )
                     .append($("<div/>")
                         .append($("<nobr/>")
-                            .append(w['label']))
+                            .append(w.label))
                         .addClass("perc-widget-label")
                         .css("overflow", "hidden") )
-                    .attr('id',"widget-" + w['id'] + "-" + $('.perc-widget').length)
+                    .attr('id',"widget-" + w.id + "-" + $('.perc-widget').length)
                     .draggable({
                         appendTo: 'body',
                         refreshPositions: true,
@@ -1607,7 +1608,7 @@ var layoutModel;
                 regionIdsArray.push(regionId);
             });
             regionIdsArray.sort();
-            for(r=0; r<regionIdsArray.length; r++){
+            for(let r=0; r<regionIdsArray.length; r++){
                 regionLibraryHtml += regionToolDivHtml.replace(/_REGION_ID_/g, "perc-re-" + regionIdsArray[r]).replace(/_REGION_LABEL_/g, regionIdsArray[r]);
             }
             regionLibrary.html(regionLibraryHtml);
@@ -1939,7 +1940,7 @@ var layoutModel;
          */
         function checkForErrors(){
             // check first if there is a js error
-            var percJSErrors = document.getElementById('frame').contentWindow['percGlobalErrors'];
+            var percJSErrors = document.getElementById('frame').contentWindow.percGlobalErrors;
             if (percJSErrors.length > 0) {
                 return true;
             }

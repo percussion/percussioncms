@@ -252,7 +252,7 @@
 
         this.append(dropdown);
 
-        if(config.percDropdownRootClass == "perc-dropdown-template-pages-items-dropdown"){
+        if(config.percDropdownRootClass === "perc-dropdown-template-pages-items-dropdown"){
             $('ul.perc-dropdown-template-pages-items-dropdown > li > ul.perc-dropdown-option-list').css('max-height', '66px');
             $('ul.perc-dropdown-template-pages-items-dropdown > li > ul.perc-dropdown-option-list').css('overflow-y', 'auto');
         }

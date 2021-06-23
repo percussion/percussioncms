@@ -325,19 +325,19 @@
 
                 // Fill templates field
 
-                if (splitPath[0] != undefined && splitPath[0] != "")
+                if (splitPath[0] !== undefined && splitPath[0] !== "")
                 {
                     $.PercServiceUtils.makeJsonRequest(
                             $.perc_paths.TEMPLATES_BY_SITE + "/" + splitPath[0],
                             $.PercServiceUtils.TYPE_GET,
                             false,
                             function(status, result){
-                                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                                 {
                                     var summaries = result.data.TemplateSummary;
                                     var temps = {};
                                     var tempsArray = [];
-                                    var tempIds = ($("#perc_template_list").val() != "") ? $("#perc_template_list").val().split(',') : "";
+                                    var tempIds = ($("#perc_template_list").val() !== "") ? $("#perc_template_list").val().split(',') : "";
                                     for(i = 0; i < summaries.length; i++)
                                     {
                                         temps[summaries[i].id] = summaries[i].name;
