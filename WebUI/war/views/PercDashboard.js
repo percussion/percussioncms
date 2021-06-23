@@ -674,12 +674,11 @@
         });
 
         // hide the menu if you hover away from it
-        //TODO:
-        /* $(document).on("mouseout","#perc-gadget-menu",function(eventObject )
-          {
-              menu.hide();
-          });
-          */
+        $(document).on("mouseleave","#perc-gadget-menu",function(eventObject )
+        {
+            menu.hide();
+        });
+
 
     }
 
