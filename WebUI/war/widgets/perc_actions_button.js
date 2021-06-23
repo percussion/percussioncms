@@ -52,11 +52,12 @@
                 hideOnMouseOut(e);
             });
 
-        var btnHtml ='<div id="perc-finder-actions" >'
-            + '<a id="perc-finder-actions-button" class="perc-font-icon" title="' +I18N.message("perc.ui.actions.button@Select An Action") + '" href="#"><span class="icon-cog fas fa-cog"></span><span class="icon-caret-down fas fa-caret-down"></span></a>'
-            + '</div>';
+        var btnHtml ='<div id="perc-finder-actions" >' +
+            '<a id="perc-finder-actions-button" class="perc-font-icon" title="' +I18N.message("perc.ui.actions.button@Select An Action") +
+            '" href="#"><span class="icon-cog fas fa-cog"></span><span class="icon-caret-down fas fa-caret-down"></span></a>' +
+            '</div>';
         var btn = $(btnHtml)
-        //.perc_button()
+            //.perc_button()
             .append(menu)
             .on("mouseenter",function(e){
                 preventHide(e);
@@ -175,72 +176,68 @@
             var dropdown = $("<ul class=\"perc-actions-menu box_shadow_with_padding\">");
             var option = $("<li class=\"perc-actions-menu-item\">");
 
-            for(l = 0; l < menuentries.length; l++){
-                option.clone().append(menuentries[l]).appendTo(dropdown);
+            for(let l of menuentries){
+                option.clone().append(l).appendTo(dropdown);
             }
 
             return dropdown;
         }
 
+        var entriesListenedLeft = menuEntries.length;
+        var entriesDisabled = 0;
+
         /**
-         * Binds the enable/disable change events of the menu entries with the actions button.
-         * If all the menu entries are disabled, the button must be disabled too.
+         * Callback function that is called whenever an 'actions-change-enabled-state' event
+         * is triggered. It uses closure to take advantage of storing state between asynchronous
+         * calls and maintain state to finally enable/disable the actions button.
+         * NOTE: To debug this function I recommend using console.log()
          */
-        function bindChangeEnabledStateListener()
+        function entryChangeEnabledStateListener(evt)
         {
-            // We will declare a variable and an internal method first, then we will bind this internal
-            // function to the buttons
-            var entriesListenedLeft = menuEntries.length;
-            var entriesDisabled = 0;
 
-            /**
-             * Callback function that is called whenever an 'actions-change-enabled-state' event
-             * is triggered. It uses closure to take advantage of storing state between asynchronous
-             * calls and maintain state to finally enable/disable the actions button.
-             * NOTE: To debug this function I recommend using console.log()
-             */
-            function entryChangeEnabledStateListener(evt)
+            // In this case, "this" represents the menu entry
+            var state_enabled = evt.target.classList.contains("ui-enabled");
+            if (entriesListenedLeft === 1 && entriesDisabled === menuEntries.length - 1)
             {
-                // In this case, "this" represents the menu entry
-                var state_enabled = $(this).hasClass("ui-enabled");
-                if (entriesListenedLeft === 1 && entriesDisabled === menuEntries.length - 1)
-                {
-                    // If there only 1 entry left to trigger the event, and the previous ones were
-                    // all disabled, then its states determines the state of the button
-                    enableButton(state_enabled);
-                    entriesListenedLeft = menuEntries.length;
-                    entriesDisabled = 0;
-                }
-                else if (entriesListenedLeft == 1 && entriesDisabled < menuEntries.length - 1)
-                {
-                    enableButton(true);
-                    entriesListenedLeft = menuEntries.length;
-                    entriesDisabled = 0;
-                }
-                else
-                {
-                    // The entry is not the last, if is disabled count it
-                    if (!state_enabled)
-                    {
-                        entriesDisabled++;
-                    }
-                    entriesListenedLeft--;
-                }
+                // If there only 1 entry left to trigger the event, and the previous ones were
+                // all disabled, then its states determines the state of the button
+                enableButton(state_enabled);
+                entriesListenedLeft = menuEntries.length;
+                entriesDisabled = 0;
             }
-
-            // Bind the declared function to the buttons in the array menuEntries
-            for (m = 0; m < menuEntries.length; m++)
+            else if (entriesListenedLeft === 1 && entriesDisabled < menuEntries.length - 1)
             {
-                menuEntries[m].on('actions-change-enabled-state',
-                    function(evt){
-                        entryChangeEnabledStateListener(evt);
-                    });
+                enableButton(true);
+                entriesListenedLeft = menuEntries.length;
+                entriesDisabled = 0;
+            }
+            else
+            {
+                // The entry is not the last, if is disabled count it
+                if (!state_enabled)
+                {
+                    entriesDisabled++;
+                }
+                entriesListenedLeft--;
             }
         }
 
-        // By default, the button will be disabled, and will get enabled whenever one of the menu
-        // entries gets enabled. Check the bindChangeEnabledStateListener() function.
-        bindChangeEnabledStateListener();
+        // Bind the declared function to the buttons in the array menuEntries
+        for (let m of menuEntries){
+            m.on('actions-change-enabled-state', function(evt){
+                entryChangeEnabledStateListener(evt);
+            });
+        }
+
+
+
+        function update_action_btn(path){
+            console.log("path changed:" + path);
+        }
+
+        finder.addPathChangedListener( update_action_btn );
+
         return btn;
     };
+
 })(jQuery);

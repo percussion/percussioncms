@@ -82,7 +82,7 @@ var assetPagination = null;
         var flagChangeView = true,
             dragging = false,
             finderExpandStateCookie = "perc-finder-expand-state",
-            first_dir = first_dir(),
+            first_dir = fn_first_dir(),
             top = make_top_level(first_dir),
             ut = $.perc_utils,
             current_path = [],
@@ -213,16 +213,13 @@ var assetPagination = null;
             newPath = absPath(newPath);
             newPath = (newPath.charAt(0) !== "/") ? "/" + newPath : newPath;
             newPath = (newPath === "/" || newPath === "")? "/" + getCurrentPath()[1] : newPath;
-            if (newPath === currPath && viaGoButton === true
-                && ($.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_SEARCH_RESULTS  // This condition avoids the check when
-                    && $.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_RESULT)){    // in search view to force the path change
-                return;
-            }
-
-            else {
+            if (newPath === currPath && viaGoButton === true &&
+                 ($.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_SEARCH_RESULTS  && // This condition avoids the check when
+                     $.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_RESULT)){    // in search view to force the path change
+            }else {
 
                 $.PercPathService.validatePath(newPath, function(status, result){
-                    if (status == $.PercServiceUtils.STATUS_SUCCESS){
+                    if (status === $.PercServiceUtils.STATUS_SUCCESS){
                         //validatePath return the exact caseSensitive path.
                         $("#mcol-path-summary").val(result);
                         if ($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDITOR) {
@@ -253,7 +250,7 @@ var assetPagination = null;
             }
 
             $.PercPathService.validatePath(encodedPath.join("/"), function(status, result){
-                if (status == $.PercServiceUtils.STATUS_SUCCESS){
+                if (status === $.PercServiceUtils.STATUS_SUCCESS){
                     callback(evt);
                 }
                 else {
@@ -537,7 +534,8 @@ var assetPagination = null;
         }
 
         function setCurrentItem(item){
-            return currentItem = item;
+            currentItem = item;
+            return currentItem;
         }
 
         function _addToPathIdArray(path, id)
@@ -552,9 +550,9 @@ var assetPagination = null;
          * @type string
          */
         function idFromItem(item) {
-            var postfix = typeof(item.id) === 'undefined'
-                ? item.path.split("/")[1]
-                : item.id;
+            var postfix = typeof(item.id) === 'undefined' ?
+                 item.path.split("/")[1] :
+                 item.id;
             return FINDER_LISTING_ID_PREFIX + postfix;
         }
 
@@ -570,10 +568,8 @@ var assetPagination = null;
                 var viewWrapper = $.PercComponentWrapper("perc-action-finder-refresh",compArray);
                 var isWrapperSet = $.PercViewReadyManager.setWrapper(viewWrapper);
                 if(!isWrapperSet){
-                    if(!isWrapperSet){
                         $.PercViewReadyManager.showRenderingProgressWarning();
                         return;
-                    }
                 }
             }
             open( current_path,k);
@@ -657,7 +653,7 @@ var assetPagination = null;
             if (path.length > 0)
                 dir.data("child", path[0]);
 
-            if (new_path.length > 1 && new_path[1] == $.perc_paths.DESIGN_ROOT_NO_SLASH)
+            if (new_path.length > 1 && new_path[1] === $.perc_paths.DESIGN_ROOT_NO_SLASH)
             {
                 setStateButtonsDesignNode(true);
             }
@@ -679,7 +675,7 @@ var assetPagination = null;
                     //to reflect the current set of children.
                     update_dir( dir, children);
                 }
-                if( path.length == 0 ) {
+                if( path.length === 0 ) {
                     //We have finished opening to our destination.
 
                     //Set the path summary to the correct path.
@@ -709,7 +705,7 @@ var assetPagination = null;
                     //Find the element corresponding to the next path element.
                     var next = dir_children( dir ).filter( function() {
                         if (typeof($(this).data('name')) != "undefined" && typeof(path[0]) != "undefined"){
-                            return $(this).data('name') == path[0];
+                            return $(this).data('name') === path[0];
                         }
                         return false;
                     });
@@ -773,7 +769,7 @@ var assetPagination = null;
             var headerText = "";
             if (MAX_RESULTS >= totalResult){
                 var nItems = totalResult - (startIndex-1);
-                headerText = nItems + " item" +(nItems!=1? "s": "");
+                headerText = nItems + " item" +(nItems!==1? "s": "");
             }else{
                 var endIndex = ((startIndex-1 + MAX_RESULTS > totalResult)? totalResult : (startIndex-1 + MAX_RESULTS));
                 headerText = startIndex + " - " + endIndex + " of " + totalResult;
@@ -814,7 +810,7 @@ var assetPagination = null;
         function pagingHeaderCountOnly(dir, position){
             var totalResult = dir.data('totalResult');
             var nItems = totalResult;
-            var headerText = nItems + " item" +(nItems!=1? "s": "");
+            var headerText = nItems + " item" +(nItems!==1? "s": "");
             var header = $('<div class="perc-paging-finder perc-paging-finder-top "/>')
                 .data('name', position)
                 .append($('<span class="perc-paging-text" />').text(headerText))
@@ -867,7 +863,7 @@ var assetPagination = null;
         }
 
         function open_next( next, dir, path, new_path, k ) {
-            if( next.length == 0 ) {
+            if( next.length === 0 ) {
                 path_changed( new_path );
                 finderOpenInProgress = false;
                 //Set the path summary to the correct path.
@@ -918,18 +914,19 @@ var assetPagination = null;
         function make_item( spec, open_rel ) {
 
             var tabindex = 10;
-            var pref = (spec['type'] === 'Folder') ? 'a' : 'z';
-            var item_path = ut.extract_path( spec['path'] );
+            var pref = (spec.type === 'Folder') ? 'a' : 'z';
+            var item_path = ut.extract_path( spec.path );
             var isSystemCategory = false;
             var icon;
-            if(spec && spec['category'] && spec['category']==='SYSTEM' && spec['type'] && spec['type']==='FSFile' && spec['name'] && spec['name'].indexOf('.') !==-1){
+            if(spec && spec.category && spec.category ==='SYSTEM' && spec.type && spec.type ==='FSFile' &&
+                spec.name && spec.name.indexOf('.') !==-1){
                 // customizing for case of category:system && it is a file type or image type.
                 var ImageFileTypes = ['tif','jpg','jpeg','gif','png','tiff','jfif','jpe','bmp','dib'];
-                var myFileType = spec['name'].substr(spec['name'].indexOf(".") + 1);
+                var myFileType = spec.name.substr(spec.name.indexOf(".") + 1);
                 if(ImageFileTypes.indexOf(myFileType) > -1){
-                    icon = ut.choose_icon( 'FSIMAGEFile', spec['icon'], item_path );
+                    icon = ut.choose_icon( 'FSIMAGEFile', spec.icon, item_path );
                 }else{
-                    icon = ut.choose_icon( 'FSFile', spec['icon'], item_path );
+                    icon = ut.choose_icon( 'FSFile', spec.icon, item_path );
                 }
             }else{ //default workflow
                 icon = ut.choose_icon( spec.type, spec.icon, item_path );
@@ -939,7 +936,7 @@ var assetPagination = null;
                 .attr('id', idFromItem(spec))
                 //.attr('tabindex', tabindex)
                 .append($("<img src='"+ icon.src +"' style='float:left' alt='"+ icon.alt + "' title='" + icon.title + "' aria-hidden='" + icon.decorative + "' />" ))
-                .append($("<div class='perc-finder-item-name' style='cursor: default; text-overflow : ellipsis;overflow : hidden'>" + spec[ 'name' ] + "</div>" )).attr('title', spec[ 'name' ])
+                .append($("<div class='perc-finder-item-name' style='cursor: default; text-overflow : ellipsis;overflow : hidden'>" + spec.name + "</div>" )).attr('title', spec.name)
                 .data( 'tag', pref + (spec.name + "").toLowerCase() )
                 .data( 'name', item_path[ item_path.length - 1 ] )
                 .data( 'spec', spec );
@@ -1009,12 +1006,12 @@ var assetPagination = null;
             function hoverStart(event, ui){
                 var startCount = hoverCount;
                 var itemPath = ui.draggable.data('spec').path;
-                var targetPath = spec['path'];
-                var targetType = spec['type'];
+                var targetPath = spec.path;
+                var targetType = spec.type;
                 if(!canDrop(itemPath, targetPath, ui.draggable.data('spec').type, targetType))
                     return;
-                if(spec['accessLevel'] != $.PercFolderHelper().PERMISSION_READ &&
-                    ui.draggable.data('spec').accessLevel != $.PercFolderHelper().PERMISSION_READ)
+                if(spec.accessLevel !== $.PercFolderHelper().PERMISSION_READ &&
+                    ui.draggable.data('spec').accessLevel !== $.PercFolderHelper().PERMISSION_READ)
                     $(this).addClass("perc-finder-item-over");
                 if($(this).hasClass("perc-listing-type-site"))
                     return; // do not expand a site node
@@ -1044,7 +1041,7 @@ var assetPagination = null;
                 var targetType = spec.type;
                 $(this).removeClass("perc-finder-item-over");
                 hoverCancel();
-                if(spec['accessLevel'] === $.PercFolderHelper().PERMISSION_READ ||
+                if(spec.accessLevel === $.PercFolderHelper().PERMISSION_READ ||
                     ui.draggable.data('spec').accessLevel === $.PercFolderHelper().PERMISSION_READ)
                     return false;
                 if(!canDrop(itemPath, targetPath, itemType, targetType))
@@ -1078,14 +1075,14 @@ var assetPagination = null;
                         else
                         {
                             var content = data;
-                            if (data.indexOf("item with the same name already exists in the folder") != -1)
+                            if (data.indexOf("item with the same name already exists in the folder") !== -1)
                             {
                                 var itemLabel = "asset";
-                                if (itemType == "percPage")
+                                if (itemType === "percPage")
                                 {
                                     itemLabel = "page";
                                 }
-                                else if (itemType == "Folder")
+                                else if (itemType === "Folder")
                                 {
                                     itemLabel = "folder";
                                 }
@@ -1110,27 +1107,27 @@ var assetPagination = null;
              */
             function canDrop(itemPath, targetPath, itemtype, targetType)
             {
-                if(targetType && (targetType != 'Folder' && targetType != 'site'))
+                if(targetType && (targetType !== 'Folder' && targetType !== 'site'))
                 {
                     return false;
                 }
-                var tPath = (targetPath.match("\/$") == "/")
+                var tPath = (targetPath.match("\/$") === "/")
                     ? targetPath.substr(0, targetPath.length - 1)
                     : targetPath;
-                if(tPath == (itemPath.substring(0, itemPath.lastIndexOf("/"))))
+                if(tPath === (itemPath.substring(0, itemPath.lastIndexOf("/"))))
                     return false;
-                if(itemtype == 'Folder')
+                if(itemtype === 'Folder')
                 {
                     var sPath = itemPath.substr(1).split("/");
-                    if(sPath[sPath.length - 1] == "")
+                    if(sPath[sPath.length - 1] === "")
                         sPath.pop();
                     var tPath = targetPath.substr(1).split("/");
-                    if(tPath[tPath.length - 1] == "")
+                    if(tPath[tPath.length - 1] === "")
                         tPath.pop();
                     var isSame = true;
                     for(var i = 0; i < sPath.length; i++)
                     {
-                        if(sPath[i] != tPath[i])
+                        if(sPath[i] !== tPath[i])
                         {
                             isSame = false;
                             break;
@@ -1146,22 +1143,22 @@ var assetPagination = null;
              * Determine if the passed in item should be made draggable.
              */
             function isDraggableItem(item){
-                var type = item['type'];
-                var cat = item['category'];
+                var type = item.type;
+                var cat = item.category;
 
                 if(!type)
                     return false;
-                if(type == 'site')
+                if(type === 'site')
                     return false;
-                if(type == 'percPage' && cat == 'LANDING_PAGE')
+                if(type === 'percPage' && cat === 'LANDING_PAGE')
                     return false;
-                if(type == 'Folder' && cat =='SECTION_FOLDER')
+                if(type === 'Folder' && cat ==='SECTION_FOLDER')
                     return false;
-                if(type == 'Folder' && item['accessLevel'] != $.PercFolderHelper().PERMISSION_ADMIN)
+                if(type === 'Folder' && item.accessLevel !== $.PercFolderHelper().PERMISSION_ADMIN)
                     return false;
-                if(type == 'FSFile')
+                if(type === 'FSFile')
                     return false;
-                if(type == 'FSFolder')
+                if(type === 'FSFolder')
                     return false;
                 return true;
 
@@ -1171,13 +1168,13 @@ var assetPagination = null;
              * Determine if the passed in item should be made droppable.
              */
             function isDroppableItem(item){
-                var type = item['type'];
-                var cat = item['category'];
-                if(!type && item['path'] == $.perc_paths.ASSETS_ROOT + "/")
+                var type = item.type;
+                var cat = item.category;
+                if(!type && item.path === $.perc_paths.ASSETS_ROOT + "/")
                     return true;
                 if(!type)
                     return false;
-                if(type == 'percPage')
+                if(type === 'percPage')
                     return false;
                 return true;
             }
@@ -1301,8 +1298,7 @@ var assetPagination = null;
                     var inY  = (evt.pageY >= evt.data.top) && (evt.pageY <= bottom);
                     enableDisableFinderDroppables(inY && inX);
 
-
-                })
+                });
 
 
         }
@@ -1326,19 +1322,19 @@ var assetPagination = null;
          */
         function make_leaf_summary( spec, callback ) {
             var summary = " ";
-            $.perc_pathmanager.getItemProperties(spec['path'], function(status, itemProps){
+            $.perc_pathmanager.getItemProperties(spec.path, function(status, itemProps){
                 if(status)
                 {
                     var nameType = null;
                     var type = null;
                     var linkTag = null;
-                    var isAssetResource = spec['category']=="ASSET" || spec['category'] == "RESOURCE";
+                    var isAssetResource = spec.category==="ASSET" || spec.category === "RESOURCE";
                     if(isAssetResource)
                     {
                         //Asset/Type
                         nameType = "Asset";
                         type = "Type";
-                        if(!spec['path'].includes("Recycling")){
+                        if(!spec.path.includes("Recycling")){
                             linkTag = "<a href='#' class='perc-finder-preview-link' id='perc-asset-preview-link' title='Click for preview'>";
                         }else{
                             linkTag = "";
@@ -1350,7 +1346,7 @@ var assetPagination = null;
                         //Page/Template
                         nameType = "Page Link";
                         type = "Template";
-                        if(!spec['path'].includes("Recycling")){
+                        if(!spec.path.includes("Recycling")){
                             linkTag = "<a href='#' class='perc-finder-preview-link' id='perc-page-preview-link' title='Click for preview'>";
                         }else{
                             linkTag = "";
@@ -1358,7 +1354,7 @@ var assetPagination = null;
 
                     }
                     var lpdate = itemProps.lastPublishedDate;
-                    if (lpdate == undefined || lpdate == null || lpdate == '')
+                    if (typeof lpdate === "undefined" || lpdate === null || lpdate.trim() === '')
                     {
                         lpdate = '';
                     }
@@ -1371,7 +1367,7 @@ var assetPagination = null;
 
                     var lastModifiedDateParts = $.perc_utils.splitDateTime(itemProps.lastModifiedDate);
 
-                    if (spec['path'].split("/")[1] == $.perc_paths.DESIGN_ROOT_NO_SLASH)
+                    if (spec.path.split("/")[1] === $.perc_paths.DESIGN_ROOT_NO_SLASH)
                     {
                         var fileSize = $.perc_utils.formatFileSize(itemProps.size);
                         summary = '<div style="padding:10px 0 0 10px;">' + "Properties" + ': <span id="perc_finder_details_name">' + itemProps.name + '</span></div>' +
@@ -1393,7 +1389,7 @@ var assetPagination = null;
                     {
                         $sum.find("#perc-asset-preview-link").each(function(){
                             $(this).off('click').on('click', function(){
-                                launchAssetPreview(spec['id']);
+                                launchAssetPreview(spec.id);
                             });
                         });
                     }
@@ -1401,7 +1397,7 @@ var assetPagination = null;
                     {
                         $sum.find("#perc-page-preview-link").each(function(){
                             $(this).off('click').on('click', function(){
-                                launchPagePreview(spec['id']);
+                                launchPagePreview(spec.id);
                             });
                         });
                     }
@@ -1460,11 +1456,11 @@ var assetPagination = null;
         function launchPagePreview(id, revId){
             // Retrieve the path for the given page id to build the friendly URL and open hte preview
             $.PercPathService.getPathItemById(id, function(status, result, errorCode) {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS) {
+                if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     var href = result.PathItem.folderPaths + "/" + result.PathItem.name;
                     var mobilePreview = result.PathItem.mobilePreviewEnabled;
-                    if(mobilePreview == undefined || mobilePreview == null){
-                        mobilePreview = false
+                    if(typeof mobilePreview === "undefined" || mobilePreview === null){
+                        mobilePreview = false;
                     }
                     href = href.substring(1);
 
@@ -1526,8 +1522,8 @@ var assetPagination = null;
                     var href = result.PathItem.folderPaths + "/" + result.PathItem.name;
                     href = href.substring(1);
                     var mobilePreview = result.PathItem.mobilePreviewEnabled;
-                    if(mobilePreview == undefined || mobilePreview == null){
-                        mobilePreview = false
+                    if(typeof mobilePreview === "undefined" || mobilePreview === null){
+                        mobilePreview = false;
                     }
 
                     if(revId)
@@ -1573,27 +1569,28 @@ var assetPagination = null;
                 }
                 //check if we need to find a specific page for the next item and add the child in the url
                 //if the child element doesn't exist the server returned the first page of the current folder
-                if (!assetPagination && typeof(dir.data('child')) != "undefined" && dir.data('child') != ""){
-                    //str_path += "&child=" + $.perc_utils.encodeURL(dir.data('child'));
+                if (!assetPagination && typeof(dir.data('child')) !== "undefined" && dir.data('child') !== ""){
+
                     if(str_path.indexOf("?") >-1){
                         str_path += "&child=" + $.perc_utils.encodeURL(dir.data('child'));
                     }else{
                         str_path +="/?child=" + $.perc_utils.encodeURL(dir.data('child'));
                     }
-                    dir.data('child', "") //clean the next child element.
+                    dir.data('child', ""); //clean the next child element.
                 }
 
                 $.perc_pathmanager.open_path( str_path, true, getChildren, err, true );
                 function getChildren( folder_spec ) {
                     var children = {};
-                    $.each( $.perc_utils.convertCXFArray(folder_spec['PagedItemList']['childrenInPage']), function() {
+                    $.each( $.perc_utils.convertCXFArray(folder_spec.PagedItemList.childrenInPage),
+                        function() {
                         //Use the postfix "_item" to avoid reserved name collision (e.g. toString, watch, toSource, etc).
                         children[ ut.extract_path_end( this.path ) + "_item"] = this;
                     });
-                    dir.data('path', path)
+                    dir.data('path', path);
                     //set the startIndex of the child element, if was not provided the child param the service return the original startindex
-                    dir.data('startIndex', folder_spec['PagedItemList']['startIndex'])
-                    dir.data('totalResult', folder_spec['PagedItemList']['childrenCount']);
+                    dir.data('startIndex', folder_spec.PagedItemList.startIndex);
+                    dir.data('totalResult', folder_spec.PagedItemList.childrenCount);
                     k( children);
                 }
             };
@@ -1677,7 +1674,7 @@ var assetPagination = null;
             return td.append(resize.append(content));
         }
 
-        function first_dir () {
+        function fn_first_dir () {
             var resizable = false, fdir;
             fdir = new_dir(resizable);
             fdir.find('.mcol-direc-wrapper').addClass('perc-view-column-fixed');
@@ -1732,9 +1729,7 @@ var assetPagination = null;
                 var siteName = path.substring((index + 1), index2);
                 return siteName;
             }
-            var siteName = path.substring(index + 1);
-
-            return siteName;
+            return  path.substring(index + 1);
         }
 
         /**
