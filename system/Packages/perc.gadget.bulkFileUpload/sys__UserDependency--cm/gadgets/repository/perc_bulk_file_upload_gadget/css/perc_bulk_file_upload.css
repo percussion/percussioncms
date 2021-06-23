@@ -99,6 +99,7 @@
     margin-bottom: 10px;
     overflow: scroll;
     width: 380px;
+    display:block;
 }
 #perc-bulk-target-tree a:active {
     color: #0099cc !important;
@@ -154,7 +155,7 @@
     padding:0px;
     white-space:nowrap;
     margin-top:0px;
-    background-color:none;
+    background-color:unset;
 }
 #perc-folder-selector{
     float:left;
