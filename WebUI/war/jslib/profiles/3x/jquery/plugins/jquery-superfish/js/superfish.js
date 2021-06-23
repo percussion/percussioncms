@@ -72,7 +72,9 @@
 			over = function () {
 				var $this = $(this),
 					o = getOptions($this);
-				clearTimeout(o.sfTimer);
+				if(typeof o !== 'undefined'){
+					clearTimeout(o.sfTimer);
+				}
 				$this.siblings().superfish('hide').end().superfish('show');
 			},
 			close = function (o) {
@@ -93,8 +95,10 @@
 					$.proxy(close, $this, o)();
 				}
 				else {
-					clearTimeout(o.sfTimer);
-					o.sfTimer = setTimeout($.proxy(close, $this, o), o.delay);
+					if(typeof o !== 'undefined'){
+						clearTimeout(o.sfTimer);
+						o.sfTimer = setTimeout($.proxy(close, $this, o), o.delay);
+					}
 				}
 			},
 			touchHandler = function (e) {
