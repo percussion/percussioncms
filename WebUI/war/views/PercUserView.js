@@ -521,7 +521,6 @@
                             dirtyController.setDirty(true, "user");
                         });
                     $("#perc-users-password-field")
-                        .val("")
                         .off("change")
                         .on("change",function() {
                             dirtyController.setDirty(true, "user");
