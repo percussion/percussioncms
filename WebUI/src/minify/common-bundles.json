@@ -30,6 +30,7 @@
         "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.cookie.js",
         "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.tooltip.js",
         "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.autocomplete.js",
+        "jslib/profiles/3x/jquery/plugins/jquery-superfish/js/hoverIntent.js",
         "jslib/profiles/3x/jquery/plugins/jquery-superfish/js/superfish.js",
         "jslib/profiles/3x/libraries/handlebars/handlebars-v4.0.12.js",
         "jslib/profiles/3x/libraries/popper/popper.js",

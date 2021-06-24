@@ -26,6 +26,7 @@
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.cookie.js"></script>
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.tooltip.js"></script>
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.autocomplete.js"></script>
+<script src="../jslib/profiles/3x/jquery/plugins/jquery-superfish/js/hoverIntent.js"></script>
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-superfish/js/superfish.js"></script>
 <script src="../jslib/profiles/3x/libraries/handlebars/handlebars-v4.0.12.js"></script>
 <script src="../jslib/profiles/3x/libraries/popper/popper.js"></script>
