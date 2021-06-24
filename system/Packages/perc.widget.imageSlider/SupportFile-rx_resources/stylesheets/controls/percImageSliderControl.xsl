@@ -76,8 +76,8 @@
 				<psxctl:FileLocation>../sys_resources/js/PercPageSelectionControl.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
-			<psxctl:FileDescriptor name="font-awesome.min.css" type="css" mimetype="text/css">
-				<psxctl:FileLocation>../../cm/jslib/profiles/1x/libraries/fontawesome/css/font-awesome.min.css</psxctl:FileLocation>
+			<psxctl:FileDescriptor name="all" type="css" mimetype="text/css">
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/libraries/fontawesome/css/all.css</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="percImageSlider.js" type="script" mimetype="text/javascript">
