@@ -1050,6 +1050,9 @@
 
                                         }
                                     });
+                                }else{
+                                    //CMS-8107 : item.name always returned the asset name.
+                                    $.PercNavigationManager.handleOpenAsset(item, true);
                                 }
                             }
                             else
