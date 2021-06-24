@@ -120,9 +120,9 @@
             
             var title = element.data("title");
             if(!title) {
-                title = element.attr("title");
+                title = element.prop("title");
                 element.data("title", title);
-                element.attr("title",""); // clear the real title so we dont get the real tooltip
+                element.prop("title",""); // clear the real title so we dont get the real tooltip
             }
 
             // dont bother with empty titles
@@ -203,6 +203,7 @@
         }
     };
 
-    $("body").append($.PercTooltip.tooltipDom).append($.PercTooltip.hiderDom);
+    $("body").append($.PercTooltip.tooltipDom)
+    $("body").append($.PercTooltip.hiderDom);
     
 })(jQuery);

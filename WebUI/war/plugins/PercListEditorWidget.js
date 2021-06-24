@@ -90,7 +90,7 @@
 
         // I18N
         var fieldHelpText = "";
-        if (options.help !== undefined && options.help != null)
+        if (typeof options.help !== 'undefined' && options.help != null)
             fieldHelpText = options.help;
         else
             fieldHelpText = I18N.message("perc.ui.folderPropsDialog.inputField@Enter a username");
@@ -112,7 +112,7 @@
         });
 
         // show/hide input field to add a new item
-        startAddButton.off("click").on("click",function() {
+        startAddButton.off().on("click",function() {
             inputFieldDiv.toggle();
         });
 
@@ -215,7 +215,7 @@
         function setListItems(items) {
             // copy the items to a local array
             listItems = [];
-            if(items !== undefined && items != null && items.length > 0) {
+            if(typeof items !== 'undefined' && items != null && items.length > 0) {
                 for(u=0; u<items.length; u++) {
                     listItems.splice(0,0,items[u]);
                     filterAllowedItems(items[u]);
@@ -252,7 +252,7 @@
 
         function addListItem(listItem) {
             // basic validation
-            if(listItem == null || listItem === "")
+            if(listItem == null || listItem === "" || typeof listItem === 'undefined')
                 return;
 
             // dont allow duplicates
@@ -353,7 +353,7 @@
             deleteButtons.show();
             updatePlusButton();
             startAddButton
-                .off("click")
+                .off()
                 .removeClass("disabled")
                 .on("click",function() {
                     inputFieldDiv.toggle();

@@ -295,13 +295,13 @@
             
             // Get the selected item from Column or List mode with the class FSFile
             selectedItemSpec = $("#perc-finder-listview .perc-datatable-row-highlighted").data("percRowData");
-            if (selectedItemSpec === undefined)
+            if (typeof selectedItemSpec === 'undefined')
             {
                 var selectedItemSpec = $(".mcol-listing.perc-listing-type-FSFile.mcol-opened").data("spec");
             }
             
             // If we selected a file, pop out the last element
-            if (selectedItemSpec !== undefined && selectedItemSpec.type === 'FSFile' && selectedItemSpec.leaf)
+            if (typeof selectedItemSpec !== 'undefined' && selectedItemSpec.type === 'FSFile' && selectedItemSpec.leaf)
             {
                 current_path.pop();
             }
