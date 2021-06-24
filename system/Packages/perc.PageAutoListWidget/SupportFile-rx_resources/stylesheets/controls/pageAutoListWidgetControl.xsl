@@ -176,10 +176,7 @@
     <xsl:template match="Control[@name='pageAutoListWidgetControl']" mode="psxcontrol">
 
         <script >
-
-            $=$j;
-
-            $(document).ready(function() {
+            $(function() {
             $('#display_start_date').datepicker({
             onSelect:
             function(value, date) {

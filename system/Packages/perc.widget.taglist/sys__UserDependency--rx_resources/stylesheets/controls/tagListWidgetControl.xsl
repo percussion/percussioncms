@@ -164,10 +164,7 @@
 	<xsl:template match="Control[@name='tagListWidgetControl']" mode="psxcontrol">
 
 		<script >
-
-			$=$j;
-
-			$(document).ready(function() {
+			$(function() {
 			$('#display_start_date').attr("autocomplete","off");
 			$('#display_end_date').attr("autocomplete","off");
 			$('#display_start_date').datepicker({

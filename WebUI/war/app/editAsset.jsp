@@ -45,7 +45,7 @@
     if (debug == null)
         debug = "false";
     String ua = request.getHeader("User-Agent");
-    boolean isMSIE = (ua != null && ua.indexOf("MSIE") != -1);
+    boolean isMSIE = (ua != null && ua.contains("MSIE"));
     char msiever = '0';
     if (isMSIE) {
         int msieverind = ua.indexOf("MSIE ");
