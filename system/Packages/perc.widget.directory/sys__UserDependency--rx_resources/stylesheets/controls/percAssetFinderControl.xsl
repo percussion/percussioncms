@@ -73,8 +73,8 @@
          </psxctl:Param>
         </psxctl:ParamList>
 		<psxctl:AssociatedFileList>
-            <psxctl:FileDescriptor name="font-awesome.min.css" type="css" mimetype="text/css">
-                <psxctl:FileLocation>../../cm/jslib/profiles/1x/libraries/fontawesome/css/font-awesome.min.css</psxctl:FileLocation>
+            <psxctl:FileDescriptor name="all.css" type="css" mimetype="text/css">
+                <psxctl:FileLocation>../../cm/jslib/profiles/1x/libraries/fontawesome/css/all.css</psxctl:FileLocation>
                 <psxctl:Timestamp/>
             </psxctl:FileDescriptor> 
             <psxctl:FileDescriptor name="AssetFinder.css" type="css" mimetype="text/css">
