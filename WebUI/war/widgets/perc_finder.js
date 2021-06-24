@@ -214,8 +214,8 @@ var assetPagination = null;
             newPath = (newPath.charAt(0) !== "/") ? "/" + newPath : newPath;
             newPath = (newPath === "/" || newPath === "")? "/" + getCurrentPath()[1] : newPath;
             if (newPath === currPath && viaGoButton === true &&
-                 ($.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_SEARCH_RESULTS  && // This condition avoids the check when
-                     $.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_RESULT)){    // in search view to force the path change
+                ($.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_SEARCH_RESULTS  && // This condition avoids the check when
+                    $.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_RESULT)){    // in search view to force the path change
             }else {
 
                 $.PercPathService.validatePath(newPath, function(status, result){
@@ -551,8 +551,8 @@ var assetPagination = null;
          */
         function idFromItem(item) {
             var postfix = typeof(item.id) === 'undefined' ?
-                 item.path.split("/")[1] :
-                 item.id;
+                item.path.split("/")[1] :
+                item.id;
             return FINDER_LISTING_ID_PREFIX + postfix;
         }
 
@@ -568,8 +568,8 @@ var assetPagination = null;
                 var viewWrapper = $.PercComponentWrapper("perc-action-finder-refresh",compArray);
                 var isWrapperSet = $.PercViewReadyManager.setWrapper(viewWrapper);
                 if(!isWrapperSet){
-                        $.PercViewReadyManager.showRenderingProgressWarning();
-                        return;
+                    $.PercViewReadyManager.showRenderingProgressWarning();
+                    return;
                 }
             }
             open( current_path,k);
@@ -1438,7 +1438,7 @@ var assetPagination = null;
                                 nRef.document.title = nRef.document.title + I18N.message("perc.ui.finder@Revision") + revId + ")";
                             }, 1000); // There needs to be a delay for title to be ready
                         }
-                        nRef.trigger("focus");
+                        nRef.focus();
                     });
                 }
                 else
@@ -1584,9 +1584,9 @@ var assetPagination = null;
                     var children = {};
                     $.each( $.perc_utils.convertCXFArray(folder_spec.PagedItemList.childrenInPage),
                         function() {
-                        //Use the postfix "_item" to avoid reserved name collision (e.g. toString, watch, toSource, etc).
-                        children[ ut.extract_path_end( this.path ) + "_item"] = this;
-                    });
+                            //Use the postfix "_item" to avoid reserved name collision (e.g. toString, watch, toSource, etc).
+                            children[ ut.extract_path_end( this.path ) + "_item"] = this;
+                        });
                     dir.data('path', path);
                     //set the startIndex of the child element, if was not provided the child param the service return the original startindex
                     dir.data('startIndex', folder_spec.PagedItemList.startIndex);
