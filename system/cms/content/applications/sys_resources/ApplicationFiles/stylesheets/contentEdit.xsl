@@ -42,7 +42,7 @@
 				<xsl:text>&#10;</xsl:text>
 				<script src="../../cm/jslib/profiles/3x/libraries/bowser/es5.js"></script>
 				<xsl:text>&#10;</xsl:text>
-				<script src="../cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"></script>
+				<script src="../../cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"></script>
 				<xsl:text>&#10;</xsl:text>
 				<script src="../sys_resources/js/cm/init.js"></script>
 				<xsl:text>&#10;</xsl:text>
