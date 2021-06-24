@@ -8,16 +8,8 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL PERCUSSION SOFTWARE BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package com.percussion.pso.transform;
-
-import java.io.File;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.percussion.data.PSConversionException;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSFieldInputTransformer;
@@ -26,6 +18,12 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.pso.utils.PSOExtensionParamsHelper;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSDataTypeConverter;
+import org.apache.commons.lang.StringUtils;
+
+import java.io.File;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A field input transform for setting one date field based on another.
@@ -42,7 +40,7 @@ public class PSODateAdjust extends PSDefaultExtension
       implements
          IPSFieldInputTransformer
 {
-   private static Log log = LogFactory.getLog(PSODateAdjust.class);
+   private static final Logger log = LogManager.getLogger(PSODateAdjust.class);
    private IPSExtensionDef extDef = null; 
    
    /**
@@ -63,7 +61,7 @@ public class PSODateAdjust extends PSDefaultExtension
          {
             sourceDate = PSDataTypeConverter
                   .parseStringToDate(sourceFieldValue);
-            log.debug("source date is " + sourceDate);
+            log.debug("source date is {}", sourceDate);
          } else
          {
             log.debug("no source field value found: using current time");

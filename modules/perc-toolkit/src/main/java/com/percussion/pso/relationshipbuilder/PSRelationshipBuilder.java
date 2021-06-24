@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSAaRelationship;
@@ -84,9 +84,9 @@ public abstract class PSRelationshipBuilder implements IPSRelationshipBuilder {
 	    	              
 	        if (isParent) {
 	            filter.setOwnerId(id);
-	            ms_log.debug("filter setting owner to " + id);
+	            log.debug("filter setting owner to {}", id);
 	        } else {
-	        	ms_log.debug("filter setting dependent to " + id);
+	        	log.debug("filter setting dependent to {}", id);
 	        	filter.setDependentIds(singleton(id));
 	        }
 	        
@@ -96,9 +96,9 @@ public abstract class PSRelationshipBuilder implements IPSRelationshipBuilder {
 	                .findByFilter(filter);
 	        	
 	        	if(isParent) {
-	        		ms_log.debug("Adding " +relationships.size() + " relationships for id "+ id);
+	        		log.debug("Adding " +relationships.size() + " relationships for id "+ id);
 	        	} else {
-	        		ms_log.debug("Adding " +relationships.size() + " relationships for id "+ id);
+	        		log.debug("Adding " +relationships.size() + " relationships for id "+ id);
 	        	}
 	        	
 	        	
@@ -115,9 +115,9 @@ public abstract class PSRelationshipBuilder implements IPSRelationshipBuilder {
         Collection<PSRelationship> cleanupRelationships = new ArrayList<PSRelationship>();
      
         if (isParent) {
-        	ms_log.debug("Filtering relationships source ids are relationship owners");
+        	log.debug("Filtering relationships source ids are relationship owners");
         } else {
-        	ms_log.debug("Filtering relationships source ids are relationship dependents");
+        	log.debug("Filtering relationships source ids are relationship dependents");
         }
         Collection<Integer> relcids = new HashSet<Integer>();
         HashMap<Integer,Integer> tipRevisionMap = new HashMap<Integer,Integer>();
@@ -149,29 +149,29 @@ public abstract class PSRelationshipBuilder implements IPSRelationshipBuilder {
         	
         	if (id == relSourceId  && 
         		    ( relSourceRevision == -1 || relSourceRevision == tipRevisionMap.get(relSourceId))) {
-        		ms_log.debug("found relationship result " + relationship.getId() + "source id="+ relSourceId + "source revision = "+relSourceRevision +" with contentid = " + relResultId + "and revision " + relResultRevision);
+        		log.debug("found relationship result " + relationship.getId() + "source id="+ relSourceId + "source revision = "+relSourceRevision +" with contentid = " + relResultId + "and revision " + relResultRevision);
         		
         		if (relResultRevision == -1 || relResultRevision == tipRevisionMap.get(relResultId)) {
         			if (resultIds.contains(relResultId)) {
-        				ms_log.error("This relationship is a duplicate adding it to cleanup list ");
+        				log.error("This relationship is a duplicate adding it to cleanup list ");
         				cleanupRelationships.add(relationship);
         			} else {
-        				ms_log.debug("Adding relationship to results");
+        				log.debug("Adding relationship to results");
         				filteredRelationships.add(relationship);
         				resultIds.add(relResultId);
         			}
         		} else {
-        			ms_log.debug("result revision " + relResultRevision + " does not match tip revision " + tipRevisionMap.get(relResultId) + " Skipping");
+        			log.debug("result revision {} does not match tip revision {} Skipping", relResultRevision, tipRevisionMap.get(relResultId));
         		}
         	
         	} else {
-        		ms_log.debug("Source id = "+ relSourceId + "with tip revision " + tipRevisionMap.get(relSourceId) + 
+        		log.debug("Source id = "+ relSourceId + "with tip revision " + tipRevisionMap.get(relSourceId) +
         				" does not match relationship with id=" +relSourceId + " revision " + sourceLocator.getRevision() + " or id not expected Skipping");
         	}
         }
         			
         if(cleanupRelationships.size() > 0 && cleanupBrokenRels == true) {
-        	ms_log.debug("Cleaning up duplicate relationships");
+        	log.debug("Cleaning up duplicate relationships");
         	deleteRelationships(cleanupRelationships);
         }
         
@@ -182,7 +182,7 @@ public abstract class PSRelationshipBuilder implements IPSRelationshipBuilder {
 			throws PSAssemblyException, PSException {
 	    if (!init) init();
 		setId(sourceId);
-		ms_log.debug("Set id to "+sourceId);
+		log.debug("Set id to {}", sourceId);
 		populateRelationships();
 		return resultIds;
 	}
@@ -224,7 +224,7 @@ public abstract class PSRelationshipBuilder implements IPSRelationshipBuilder {
     public void addRelationships(
             Collection<Integer> ids) throws PSAssemblyException, PSException {
         
-        ms_log.debug("Calling Abstract PSRelationship:addRelationship doing nothing");
+        log.debug("Calling Abstract PSRelationship:addRelationship doing nothing");
     }
     /* (non-Javadoc)
      * @see com.percussion.pso.relationshipbuilder.IPSRelationshipHelperService#createEmptyRelationshipCollection()
@@ -277,8 +277,8 @@ public abstract class PSRelationshipBuilder implements IPSRelationshipBuilder {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log ms_log = LogFactory
-            .getLog(PSRelationshipBuilder.class);
+
+	private static final Logger log = LogManager.getLogger(PSRelationshipBuilder.class);
 
 	public Collection<PSRelationship> getRelationships() {
 		return relationships;
