@@ -62,38 +62,38 @@
                 // Set the basic markup for the dialog and assign it to the module's dialog variable
                 var dialogContent;
                 dialogContent =  '<div class="perc-search-criteria-dialog-content" >';
-                dialogContent +=             '<form id="perc-search-criteria-dialog-form" action="">';
+                dialogContent +=             '<form id="perc-search-criteria-dialog-form" action="#">';
                 dialogContent +=                 '<div id="perc-search-criteria-dialog-general-container">';
                 if (criteriaData.type === "pages") {
                     dialogContent += '<div class="perc-search-criteria-dialog-fields-containers" id="perc-search-criteria-dialog-site-container">';
                     dialogContent += '<label id="perc-search-criteria-dialog-site-label" for="perc-search-criteria-dialog-site"> Site: </label>';
-                    dialogContent += '<div class="perc-search-criteria-dialog-select-containers" ><select type="select" name="perc-search-criteria-dialog-site" id="perc-search-criteria-dialog-site" maxlength="255" >';
+                    dialogContent += '<div class="perc-search-criteria-dialog-select-containers" ><select name="perc-search-criteria-dialog-site" id="perc-search-criteria-dialog-site">';
                     dialogContent += '</select></div>';
                     dialogContent += '</div>';
                     dialogContent += '<div class="perc-search-criteria-dialog-fields-containers" id="perc-search-criteria-dialog-template-container">';
                     dialogContent += '<label class="perc-disabled" id="perc-search-criteria-dialog-template-label" for="perc-search-criteria-dialog-template"> Template: </label>';
-                    dialogContent += '<div class="perc-search-criteria-dialog-select-containers"><select name="perc-search-criteria-dialog-template" id="perc-search-criteria-dialog-template" maxlength="255" disabled="disabled">';
+                    dialogContent += '<div class="perc-search-criteria-dialog-select-containers"><select name="perc-search-criteria-dialog-template" id="perc-search-criteria-dialog-template" disabled="disabled">';
                     dialogContent += '</select></div>';
                     dialogContent += '</div>';
                 }
                 else if (criteriaData.type === "assets") {
                     dialogContent += '<div class="perc-search-criteria-dialog-fields-containers" id="perc-search-criteria-dialog-assettype-container">';
                     dialogContent += '<label id="perc-search-criteria-dialog-assettype-label" for="perc-search-criteria-dialog-assettype"> Asset Type: </label>';
-                    dialogContent += '<div class="perc-search-criteria-dialog-select-containers"><select name="perc-search-criteria-dialog-assettype" id="perc-search-criteria-dialog-assettype" maxlength="255" >';
-                    dialogContent += '<option value="@all" maxlength="255">All</option>';
-                    dialogContent += '</select><div/>';
+                    dialogContent += '<div class="perc-search-criteria-dialog-select-containers"><select name="perc-search-criteria-dialog-assettype" id="perc-search-criteria-dialog-assettype" >';
+                    dialogContent += '<option value="@all">All</option>';
+                    dialogContent += '</select></div>';
                     dialogContent += '</div>';
                 }
                 dialogContent += '<div class="perc-search-criteria-dialog-fields-containers" id="perc-search-criteria-dialog-workflow-container">';
                 dialogContent += '<label id="perc-search-criteria-dialog-workflow-label" for="perc-search-criteria-dialog-workflow"> Workflow: </label>';
-                dialogContent += '<div class="perc-search-criteria-dialog-select-containers"><select name="perc-search-criteria-dialog-workflow" id="perc-search-criteria-dialog-workflow" maxlength="255" >';
-                dialogContent += '<option value="@all" maxlength="255">All</option>';
-                dialogContent += '</select><div/>';
+                dialogContent += '<div class="perc-search-criteria-dialog-select-containers"><select name="perc-search-criteria-dialog-workflow" id="perc-search-criteria-dialog-workflow" >';
+                dialogContent += '<option value="@all">All</option>';
+                dialogContent += '</select></div>';
                 dialogContent += '</div>';
                 dialogContent +=                     '<div class="perc-search-criteria-dialog-fields-containers" id="perc-search-criteria-dialog-state-container">';
                 dialogContent +=                         '<label class="perc-disabled" id="perc-search-criteria-dialog-state-label" for="perc-search-criteria-dialog-state"> State: </label>';
-                dialogContent +=                         '<div class="perc-search-criteria-dialog-select-containers"><select name="perc-search-criteria-dialog-state" id="perc-search-criteria-dialog-state" maxlength="255" disabled="disabled" >';
-                dialogContent +=                             '<option value="@all" maxlength="255">All</option>';
+                dialogContent +=                         '<div class="perc-search-criteria-dialog-select-containers"><select name="perc-search-criteria-dialog-state" id="perc-search-criteria-dialog-state" disabled="disabled" >';
+                dialogContent +=                             '<option value="@all">All</option>';
                 dialogContent +=                         '</select></div>';                
                 dialogContent +=                     '</div>';
                 dialogContent +=                     '<div class="perc-search-criteria-dialog-fields-containers" id="perc-search-criteria-dialog-created-by-container">';
@@ -232,13 +232,13 @@
                 dialog.find('#perc-search-criteria-dialog-site').on("change",function() {
                     if ($(this).val() === "@all")
                     {
-                        dialog.find("#perc-search-criteria-dialog-template").attr("disabled", "disabled").html("");
+                        dialog.find("#perc-search-criteria-dialog-template").prop("disabled", true).html("");
                         dialog.find("#perc-search-criteria-dialog-template-label").addClass("perc-disabled");
                     }
                     else
                     {
                         loadTemplatesCombo($(this).val(), function(){
-                            dialog.find("#perc-search-criteria-dialog-template").removeAttr("disabled");
+                            dialog.find("#perc-search-criteria-dialog-template").prop("disabled",false);
                             dialog.find("#perc-search-criteria-dialog-template-label").removeClass("perc-disabled");
                         });
                     }
@@ -284,13 +284,13 @@
                 dialog.find('#perc-search-criteria-dialog-workflow').on("change",function() {
                     if ($(this).val() === "@all")
                     {
-                        dialog.find("#perc-search-criteria-dialog-state").attr("disabled", "disabled").html("");
+                        dialog.find("#perc-search-criteria-dialog-state").prop("disabled", true).html("");
                         dialog.find("#perc-search-criteria-dialog-state-label").addClass("perc-disabled");
                     }
                     else
                     {
                         loadStatesCombo($(this).find('option:selected').html(), function(){
-                            dialog.find("#perc-search-criteria-dialog-state").removeAttr("disabled");
+                            dialog.find("#perc-search-criteria-dialog-state").prop("disabled",false);
                             dialog.find("#perc-search-criteria-dialog-state-label").removeClass("perc-disabled");
                         });
                     }
