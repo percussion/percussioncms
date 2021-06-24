@@ -243,7 +243,6 @@
         "../target/minify-common/shared-common.js",
         "../target/minify-common/shared-finder.js",
         "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.xmldom-1.0.js",
-        "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.jmodal.js",
         "jslib/profiles/3x/libraries/perc-retiredjs/rAF.js",
         "widgets/PercSimpleMenu/PercSimpleMenu.js",
         "widgets/PercPageDataTable/PercPageDataTable.js",

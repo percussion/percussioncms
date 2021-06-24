@@ -1,8 +1,8 @@
 <%--  Services --%>
 
 
-<script src="jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.xmldom-1.0.js",
-<script src="jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.jmodal.js",
+<script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.xmldom-1.0.js"></script>
+<script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.jmodal.js"></script>
 <script src="../services/PercTemplateService.js"></script>
 <script  src="../services/PercSiteImpactService.js"></script>
 
