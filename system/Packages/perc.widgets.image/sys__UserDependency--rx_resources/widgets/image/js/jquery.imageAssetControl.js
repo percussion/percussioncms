@@ -55,7 +55,7 @@
             //target:    '#response',  // target element(s) to be updated with server response
             success: imageUploadResponse,
             beforeSubmit: function(a,f,o) {
-                imageUpload.find('input[type="file"]').removeAttr("disabled");
+                imageUpload.find('input[type="file"]').prop("disabled",false);
                 $('#image_asset_upload_message').html('Uploading...');
             },
             iframe: true,
@@ -72,8 +72,6 @@
 
         function imageUploadResponse(data, statusText) {
 
-            // alert('status: ' + statusText + '\n\ndata: \n' + data +
-            //  '\n\nThe output div should have already been updated with the responseText.');
             $('#image_asset_upload_message').html('');
             if (config.debug) {
                 var $out = $('#uploadOutput');
@@ -141,14 +139,14 @@
 
         function resetImages(image) {
             //  Create main and thumbnail images
-            for (i=0;i<imagePages.length;i++) {
+            for (let i of imagePages) {
 
-                imagePages[i].image = image;
+                i.image = image;
 
-                setDefaultSizes(imagePages[i]);
+                setDefaultSizes(i);
 
-                imagePages[i].dirty = true;
-                setImageIdOnForm(imagePages[i]);
+                i.dirty = true;
+                setImageIdOnForm(i);
 
             }
             updateImageForDisplay(imagePages[MAIN_IMAGE]);
@@ -160,7 +158,7 @@
             var defaultWidth = imageInfo.page.find(".image_asset_default_width").val();
             var resize=false;
 
-            if ( defaultWidth !== 'undefined' && defaultWidth > 0) {
+            if ( typeof defaultWidth !== 'undefined' && defaultWidth > 0) {
                 if (imageInfo.image.thumbWidth) {
                     defaultWidth = imageInfo.image.thumbWidth;
                 }
