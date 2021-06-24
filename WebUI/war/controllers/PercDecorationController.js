@@ -214,7 +214,7 @@
                 $.each( menuItems, function()
                 {
                     //Custom menuItem for widgetType. undefined this.widgetType means all widgets.
-                    if(typeof(this.widgetType) === "undefined" || this.widgetType === elem.attr("widgetdefid"))
+                    if(typeof(this.widgetType) === 'undefined' || this.widgetType === elem.attr("widgetdefid"))
                         addMenuItem( elem, menu, this );
                 });
             }

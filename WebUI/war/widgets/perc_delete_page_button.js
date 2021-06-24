@@ -32,7 +32,7 @@
         var spec;
 
         var btn = $('<a id="perc-finder-delete" class="perc-font-icon icon-remove fas fa-trash" title="' + I18N.message("perc.ui.delete.page.button@Click Delete Page") + '"href="#" ></a>')
-            .off("click")
+            .off()
             .perc_button()
             .on("click",function(evt){
                 deleteFn(evt);
@@ -596,7 +596,7 @@
                             $(".perc-finder-menu #perc-finder-delete").removeClass('ui-enabled').addClass('ui-disabled').off('click');
                         }
                         else {
-                            $(".perc-finder-menu #perc-finder-delete").removeClass('ui-disabled').addClass('ui-enabled').off('click').on('click',
+                            $(".perc-finder-menu #perc-finder-delete").removeClass('ui-disabled').addClass('ui-enabled').off().on('click',
                                 function(evt){
                                 deleteFn(evt);
                                 });
