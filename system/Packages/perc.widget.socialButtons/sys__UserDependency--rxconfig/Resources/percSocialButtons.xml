@@ -25,7 +25,7 @@
 
 <Resources>
   <file type="css" path="/rx_resources/widgets/percSocialButtons/css/percSocialButtons.css" context="PREVIEW" id="percSocialButtons_style"/>
-    <file id="social_button_font_awesome_css"  path="/web_resources/cm/css/fontawesome/css/font-awesome.min.css"  type="css" />
+    <file id="social_button_font_awesome_css"  path="/web_resources/cm/css/fontawesome/css/all.css"  type="css" />
     <file id="social_button_js"  path="/web_resources/widgets/socialButtons/js/percSocialButtons.js"  type="javascript" >
 	    <dependency refid="percSystem.jquery"/>
 	</file>

@@ -95,16 +95,18 @@
                 }    
                 
                 if(data!=null){
-                 var $table = $('#perc-default-lang-editor');    
-                 for(let i =0 ; i < data.config.length ; i++){
+                 var $table = $('#perc-default-lang-editor');
+                    //After fixing the plus "+" icon not appearing data.config was undefined.
+                    //Thus breaking the editor and "+" icon functionality as data was array of SiteSummary.
+                 for(let i =0 ; i < data.SiteSummary.length ; i++){
                     var $clone = $table.find('tr.hide').clone(true).removeClass('hide table-line');
-                        if (data.config[i].protocol) {
-                            $clone.find('.perc-lang-protocol').val(data.config[i].protocol);
+                        if (data.SiteSummary[i].protocol) {
+                            $clone.find('.perc-lang-protocol').val(data.SiteSummary[i].protocol);
                         }
-                        $clone.find('.perc-site-list').val(data.config[i].siteid);
-                        $clone.find('.perc-lang-list').val(data.config[i].lang);
-                        $clone.find('.perc-country-list').val(data.config[i].country);
-                        $clone.find('input[name="default-lang"]').prop("checked", data.config[i].defLang);
+                        $clone.find('.perc-site-list').val(data.SiteSummary[i].siteid);
+                        $clone.find('.perc-lang-list').val(data.SiteSummary[i].lang);
+                        $clone.find('.perc-country-list').val(data.SiteSummary[i].country);
+                        $clone.find('input[name="default-lang"]').prop("checked", data.SiteSummary[i].defLang);
       
                         $table.find('table').append($clone);      
                     }
