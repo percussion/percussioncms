@@ -1492,7 +1492,7 @@ onchange    %Script;       #IMPLIED
          // mark asset as dirty when date is selected
          onSelect : function(dateText, inst) {
          // if the top most jquery is defined
-         if($.topFrameJQuery != undefined)
+         if(typeof $.topFrameJQuery !== 'undefined')
          // mark the asset as dirty
          $.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
          },
@@ -1510,10 +1510,10 @@ onchange    %Script;       #IMPLIED
          $('#' + options.inputId).val(newFormatDate);
          }
          })
-         .bind('paste', function(evt){evt.preventDefault();})
-         .bind('keypress keydown', function(evt)
+         .on('paste', function(evt){evt.preventDefault();})
+         .on('keypress keydown', function(evt)
          {
-         if(evt.keyCode == 46 || evt.keyCode == 8 )
+         if(evt.keyCode === 46 || evt.keyCode === 8 )
          {
          var field = evt.target;
          field.value = "";
@@ -1521,7 +1521,7 @@ onchange    %Script;       #IMPLIED
          evt.preventDefault();
          return;
          }
-         if(evt.charCode == 0 || typeof(evt.charCode) == 'undefined')
+         if(evt.charCode === 0 || typeof(evt.charCode) === 'undefined')
          return;
          evt.preventDefault();
          })
