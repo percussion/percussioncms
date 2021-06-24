@@ -74,7 +74,7 @@
         </psxctl:ParamList>
 		<psxctl:AssociatedFileList>
             <psxctl:FileDescriptor name="all.css" type="css" mimetype="text/css">
-                <psxctl:FileLocation>../../cm/jslib/profiles/1x/libraries/fontawesome/css/all.css</psxctl:FileLocation>
+                <psxctl:FileLocation>../../cm/jslib/profiles/3x/libraries/fontawesome/css/all.css</psxctl:FileLocation>
                 <psxctl:Timestamp/>
             </psxctl:FileDescriptor> 
             <psxctl:FileDescriptor name="AssetFinder.css" type="css" mimetype="text/css">
