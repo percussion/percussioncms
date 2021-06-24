@@ -13,8 +13,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -57,7 +57,7 @@ import com.percussion.webservices.content.PSContentWsLocator;
  */
 public class PSOSetFieldOnSlottedItemTransform  implements IPSItemInputTransformer, IPSRequestPreProcessor,com.percussion.extension.IPSResultDocumentProcessor {
 
-	private static Log log = LogFactory.getLog(PSOSetFieldOnSlottedItemTransform.class); 
+	private static final Logger log = LogManager.getLogger(PSOSetFieldOnSlottedItemTransform.class);
 	private IPSGuidManager mGmgr;
 	private IPSContentWs mCws;
 
@@ -91,21 +91,21 @@ public class PSOSetFieldOnSlottedItemTransform  implements IPSItemInputTransform
 						
 				if(params[0]!=null){
 					fieldName=params[0].toString();
-					log.debug("fieldName=" + params[0]);
+					log.debug("fieldName={}", params[0]);
 				}else{
 					fieldName=null;
 				}
 				
 				if(params[1]!=null){
 					valueIfEmpty=params[1].toString();
-					log.debug("valueIfEmpty=" + params[1]);
+					log.debug("valueIfEmpty={}", params[1]);
 				}else{
 					valueIfEmpty=null;
 				}
 				
 				if(params[2]!=null){
 					valueIfNotEmpty=params[2].toString();
-					log.debug("valueIfNotEmpty=" + params[2]);
+					log.debug("valueIfNotEmpty={}", params[2]);
 				}else{
 					valueIfNotEmpty=null;
 				}
@@ -189,16 +189,17 @@ public class PSOSetFieldOnSlottedItemTransform  implements IPSItemInputTransform
 				if(rel.getSlotName().equals(configParams.slotName)){
 					request.setParameter(configParams.fieldName, (configParams.valueIfNotEmpty + ""));
 					found=true;
-					log.debug("Found item in slot, setting " + configParams.fieldName + " to " + (configParams.valueIfNotEmpty + ""));
+					log.debug("Found item in slot, setting {} to {}",configParams.fieldName, (configParams.valueIfNotEmpty ));
 					break;
 				}
 		  }
 			if(!found){
 				request.setParameter(configParams.fieldName, (configParams.valueIfEmpty + ""));
-				log.debug("No item found in slot, setting " + configParams.fieldName + " to " + (configParams.valueIfEmpty + ""));
+				log.debug("No item found in slot, setting {} to {}",configParams.fieldName, (configParams.valueIfEmpty));
 			}
 		} catch (PSErrorException e) {
-			log.debug("Error processing slot relationships for item " + "" );
+			log.error("Error processing slot relationships for item, Error: {}", e.getMessage());
+			log.debug(e.getMessage(), e);
 		}finally{} 
 	         
 	}

@@ -45,8 +45,8 @@ import javax.imageio.stream.MemoryCacheImageOutputStream;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Node;
 
 import com.percussion.design.objectstore.PSField;
@@ -85,7 +85,7 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 public class PSOThumbnailGenerator extends PSFileInfo
    implements IPSItemInputTransformer, IPSRequestPreProcessor {
  
-   private static Log log = LogFactory.getLog(PSOThumbnailGenerator.class); 
+    private static final Logger log = LogManager.getLogger(PSOThumbnailGenerator.class);
    
    /**
     * Controls the size of steps by which the image is rescaled. 
@@ -281,15 +281,16 @@ public class PSOThumbnailGenerator extends PSFileInfo
                else
                {
                   log.info("Unable to process thumbnail from base64 encoded String"); 
-                  log.info("image file name is " + source_filename); 
-                  log.info("mimetype is " + parent_mimetype);
+                  log.info("image file name is {}", source_filename);
+                  log.info("mimetype is {}", parent_mimetype);
                   log.info("data starts with " + StringUtils.substring(imageStr,0, 50)); 
                }
             }
          }
       } catch (Exception ex)
       {
-         log.error("Unexpected Exception processing thumbnail " + ex,ex);
+         log.error("Unexpected Exception processing thumbnail, Error: {}", ex.getMessage());
+         log.debug(ex.getMessage(), ex);
       }
       super.preProcessRequest(params, request);
    }
@@ -310,7 +311,7 @@ public class PSOThumbnailGenerator extends PSFileInfo
    public PSPurgableTempFile makeThumbFile(InputStream imageStream, String source_filename, String thumb_prefix,
          String parent_mimetype, int maxDimension, int width, int height, boolean useOriginalType )
    {
-      log.debug("processing file " + source_filename);
+      log.debug("processing file {}", source_filename);
       String fullImageFileName = StringUtils.contains(source_filename, File.separator) ? 
             StringUtils.substringAfterLast(source_filename, File.separator) : source_filename;
             
@@ -334,7 +335,7 @@ public class PSOThumbnailGenerator extends PSFileInfo
            return thumb_temp; 
          }
          catch(IOException ioe){
-            log.error("unable to create thumbnail " + thumb_filename, ioe);            
+            log.error("unable to create thumbnail {}", thumb_filename, ioe);
          }
       }
       else{
@@ -363,7 +364,7 @@ public class PSOThumbnailGenerator extends PSFileInfo
          Validate.notNull(reader, "unable to locate image reader for image type"); 
          if(log.isDebugEnabled())
          {
-            log.debug("Image format is " + reader.getFormatName());
+            log.debug("Image format is {}", reader.getFormatName());
          }
          inImage = readImage(iis, reader); 
          
@@ -387,7 +388,8 @@ public class PSOThumbnailGenerator extends PSFileInfo
     
       }
       catch (Exception e) {
-         log.error("Could not create thumbnail " + e.getMessage(), e);
+         log.error("Could not create thumbnail, Error: {}", e.getMessage());
+         log.debug(e.getMessage(),e);
       }
    }
 
@@ -497,7 +499,7 @@ public class PSOThumbnailGenerator extends PSFileInfo
        {
            log.debug("setting GIF transparency flag"); 
            metadata = getTransparentMetadata(outImage, iw, iwp);
-           log.debug("transparent metadata is " + metadata); 
+           log.debug("transparent metadata is {}", metadata);
        }
        
        MemoryCacheImageOutputStream mcios = new MemoryCacheImageOutputStream(outstream);
@@ -638,7 +640,7 @@ public class PSOThumbnailGenerator extends PSFileInfo
        boolean transparency = isTransparent(baseImage);
        log.debug("image transparency is " + transparency);
        int imageType = baseImage.getType();
-       log.debug("image type is " + imageType); 
+       log.debug("image type is {}", imageType);
        GraphicsConfiguration gc = baseImage.createGraphics().getDeviceConfiguration();
        BufferedImage outImage = gc.createCompatibleImage(width, height, Transparency.BITMASK); 
        if(imageType == 0)           
@@ -686,11 +688,11 @@ public class PSOThumbnailGenerator extends PSFileInfo
    {
        IndexColorModel cm = (IndexColorModel) image.getColorModel();
        int transparentColor = cm.getTransparentPixel(); 
-       log.debug("transparent color is " + transparentColor); 
+       log.debug("transparent color is {}", transparentColor);
        ImageTypeSpecifier imageTypeSpecifier = new ImageTypeSpecifier(image); 
        IIOMetadata metadata = riter.getDefaultImageMetadata(imageTypeSpecifier, riteParam);
        String metaFormatName = metadata.getNativeMetadataFormatName(); 
-       log.debug("meta format name is " + metaFormatName); 
+       log.debug("meta format name is {}", metaFormatName);
        IIOMetadataNode root = (IIOMetadataNode) metadata.getAsTree(metaFormatName); 
        IIOMetadataNode gce = getChildMetadataNode(root, "GraphicControlExtension"); 
        gce.setAttribute("transparentColorFlag", "true");
@@ -704,8 +706,9 @@ public class PSOThumbnailGenerator extends PSFileInfo
    
    protected void logXml(Node node)
    {
-       if(!log.isDebugEnabled())
-           return; 
+       if(!log.isDebugEnabled()) {
+           return;
+       }
     	   String xstr = PSXmlDocumentBuilder.toString(node, PSXmlDocumentBuilder.FLAG_ALLOW_NULL);
     	   log.debug(xstr); 
    
@@ -713,8 +716,9 @@ public class PSOThumbnailGenerator extends PSFileInfo
    
    protected boolean isTransparent(BufferedImage image)
    {
-       if(image.getTransparency() == Transparency.OPAQUE) 
-          return false; 
+       if(image.getTransparency() == Transparency.OPAQUE) {
+           return false;
+       }
        return true; 
    }
    /**
@@ -732,13 +736,13 @@ public class PSOThumbnailGenerator extends PSFileInfo
            node = (IIOMetadataNode) root.item(i); 
            if(node.getNodeName().equalsIgnoreCase(nodeName))
            {
-               log.debug("found node " + nodeName);
+               log.debug("found node {}", nodeName);
                return node; 
            }
        }
        node = new IIOMetadataNode(nodeName);       
        root.appendChild(node); 
-       log.debug("created new node "  + nodeName); 
+       log.debug("created new node {}", nodeName);
        return node; 
    }
    

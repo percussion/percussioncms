@@ -19,8 +19,8 @@ import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.beanutils.converters.BooleanConverter;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.design.objectstore.IPSReplacementValue;
 import com.percussion.extension.IPSExtensionDef;
@@ -48,13 +48,13 @@ public class PSOExtensionParamsHelper {
     /**
      * The log instance to use for this class if one is not provided, never <code>null</code>.
      */
-    private static final Log defaultLog = LogFactory
-            .getLog(PSOExtensionParamsHelper.class);
+
+    private static final Logger defaultLog = LogManager.getLogger(PSOExtensionParamsHelper.class);
     
     /**
      * The user log instance.
      */
-    private Log log;
+    private Logger log;
     
     /**
      * Constructor
@@ -70,7 +70,7 @@ public class PSOExtensionParamsHelper {
      */
     public PSOExtensionParamsHelper(IPSExtensionDef def, Object [] params,
             IPSRequestContext request,
-            Log log) {
+            Logger log) {
         this.extensionDef = def;
         this.params = params;
         this.request = request;
@@ -91,7 +91,7 @@ public class PSOExtensionParamsHelper {
      * @see #getParameter(String)
      */
     public PSOExtensionParamsHelper(Map<String,String> parameters, 
-            IPSRequestContext request, Log log) {
+            IPSRequestContext request, Logger log) {
         this.extensionParameters = parameters;
         this.request = request;
         doLog(log);
@@ -105,7 +105,7 @@ public class PSOExtensionParamsHelper {
      * @param log
      */
     public PSOExtensionParamsHelper(Map<String,? extends Object> args, 
-            Map<String,Object> selectors, Log log) {
+            Map<String,Object> selectors, Logger log) {
         doLog(log);
         if (args == null)
         {
@@ -282,7 +282,7 @@ public class PSOExtensionParamsHelper {
         return this.extensionParameters;
     }
     
-    protected void doLog(Log log) {
+    protected void doLog(Logger log) {
         this.log = log == null ? PSOExtensionParamsHelper.defaultLog : log;
     }
     

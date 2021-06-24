@@ -12,8 +12,8 @@ package com.percussion.pso.transform;
 import java.io.File;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSItemInputTransformer;
@@ -40,7 +40,7 @@ import com.percussion.server.PSRequestValidationException;
 public class PSOCopyParameter implements IPSItemInputTransformer,IPSRequestPreProcessor
 {
 	
-   private static Log log = LogFactory.getLog(PSOCopyParameter.class); 
+	private static final Logger log = LogManager.getLogger(PSOCopyParameter.class);
 	 
    public PSOCopyParameter()
    {
@@ -54,8 +54,9 @@ public class PSOCopyParameter implements IPSItemInputTransformer,IPSRequestPrePr
          PSParameterMismatchException, PSExtensionProcessingException
    {
 	   String emsg = "";
-	   if (params == null || params.length < 4)
-	          throw new PSParameterMismatchException("Required Parameters are missing");
+	   if (params == null || params.length < 4) {
+		   throw new PSParameterMismatchException("Required Parameters are missing");
+	   }
 
       // expects two string parameters   
       String sourceName = getParameter(params, 0);
@@ -131,7 +132,7 @@ public class PSOCopyParameter implements IPSItemInputTransformer,IPSRequestPrePr
       
       if (s != null && (!doNotCopyEmpty || s.length()>0)) {
     	  if (!onlyIfEmpty.equals("true") || d==null || d.trim().length()==0) {
-    		  if (fieldSize > 0 && (s.length() > fieldSize)) s=s.substring(0,fieldSize);
+    		  if (fieldSize > 0 && (s.length() > fieldSize)){ s=s.substring(0,fieldSize);}
     		  if (cleanup) {
     			  s = PathCleanupUtils.cleanupPathPart(s, forceLower, includesExtension,stripExtension,prefix,suffix,forceExtension);
     		  }
