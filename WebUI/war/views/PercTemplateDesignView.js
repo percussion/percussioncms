@@ -36,6 +36,7 @@
         var model, tab, cssController, finderIsMaximized;
 
 
+
         // by default, the templates view is displayed
         // remove all scrollbars from the document in the templates view
         // they will be added back in the content, layout and style tabs
@@ -68,7 +69,7 @@
         //Snippet for displaying the inline help when no site is selected @Story 99
         var inline_help = $("#perc-pageEditor-menu-name").text();
 
-        if(inline_help == "")
+        if(inline_help === "")
         {
             $("#perc-site-templates-label").hide();
             $("#perc-site-templates-inline-help").show();
@@ -87,13 +88,14 @@
 
         //Add Action dropdown menu in toolbar
         var siteName = $.PercNavigationManager.getSiteName();
+        var isEnable = false;
         if(typeof siteName == 'undefined')
         {
-            var isEnable = false;
+            isEnable = false;
         }
         else
         {
-            var isEnable = true;
+            isEnable = true;
         }
 
         var percTemplateActions = $("#perc-dropdown-actions");
@@ -240,10 +242,16 @@
             $.perc_filterField(percJump, $.perc_textFilters.ONLY_DIGITS);
             
             // Pagination controls - Previous button
-            $('.perc-unassigned-panel .perc-template-pages-controls .previous').on("click",unassignedPreviousClick);
+            $('.perc-unassigned-panel .perc-template-pages-controls .previous').on("click",
+                function(evt){
+                    unassignedPreviousClick(evt);
+                });
             
             // Pagination controls - Next button - Click
-            $('.perc-unassigned-panel .perc-template-pages-controls .next').on("click", unassignedNextClick);
+            $('.perc-unassigned-panel .perc-template-pages-controls .next').on("click",
+                function(evt){
+                    unassignedNextClick(evt);
+                });
             
              // Pagination controls - Text input for page selector
             $('.perc-unassigned-panel .perc-template-pages-controls').on("submit",function()
@@ -253,12 +261,12 @@
             });
         }
         
-        function unassignedPreviousClick(){
+        function unassignedPreviousClick(event){
             var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
             requestUnassignedPages(parseInt(percJump.val())-1);
         }
         
-        function unassignedNextClick(){
+        function unassignedNextClick(event){
             var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
             requestUnassignedPages(parseInt(percJump.val())+1);
         }
@@ -267,7 +275,7 @@
             if (typeof(pageNumber) == "undefined"){
                 //Use the current pageNumber
                 var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
-                var pageNumber = percJump.val()!=""? parseInt(percJump.val()): 1;
+                 pageNumber = percJump.val()!=""? parseInt(percJump.val()): 1;
             }
             pageNumber = (pageNumber!=0)? pageNumber : 1;
             setPanelPreference(null, pageNumber);
@@ -314,7 +322,10 @@
                     .removeClass('previous-disabled')
                     .addClass('previous')
                     .off('click')
-                    .on("click", unassignedPreviousClick);
+                    .on("click",
+                        function(evt){
+                            unassignedPreviousClick(evt);
+                        });
             }
             
             var endIndex = startIndex + UNASSIGNED_MAX_RESULTS - 1;
@@ -329,7 +340,9 @@
                     .removeClass('next-disabled')
                     .addClass('next')
                     .off('click')
-                    .on("click", unassignedNextClick);
+                    .on("click", function(evt){
+                            unassignedNextClick(evt);
+                    });
             }
         }
         
@@ -413,7 +426,7 @@
                 
                 switch (page.status){
                     case "Imported":
-                        pageObj.addClass("perc-imported-page").on("click", function(){
+                        pageObj.addClass("perc-imported-page").on("click", function(evt){
                             $(".perc-imported-page-selected").removeClass("perc-imported-page-selected");
                             $(this).addClass("perc-imported-page-selected");
                             var createTplPageMenuEntry = $(".perc-dropdown-option-CreateTemplatefromPage");

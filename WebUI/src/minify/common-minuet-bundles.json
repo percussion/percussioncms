@@ -8,6 +8,8 @@
         "jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js",
         "jslib/profiles/3x/libraries/bowser/es5.js",
         "jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js",
+        "jslib/profiles/3x/libraries/popper/popper.js",
+        "jslib/profiles/3x/libraries/bootstrap/js/bootstrap.js",
         "jslib/profiles/3x/libraries/perc-retiredjs/json2.js",
         "jslib/profiles/3x/jquery/plugins/jquery-form/jquery.form.js",
         "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.blockUI.js",
@@ -32,7 +34,7 @@
         "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.autocomplete.js",
         "jslib/profiles/3x/jquery/plugins/jquery-superfish/js/superfish.js",
         "jslib/profiles/3x/libraries/handlebars/handlebars-v4.0.12.js",
-        "jslib/profiles/3x/libraries/popper/popper.js",
+        "jslib/profiles/3x/libraries/momentjs/moment-with-locales.js",
         "jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/timepicker.js",
         "plugins/perc_path_constants.js",
         "plugins/perc_errors.js",
@@ -52,7 +54,8 @@
         "plugins/PercPathSelectionDialog.js",
         "plugins/PercPathSelectionDialog.js",
         "views/PercCreateNewAssetDialog.js",
-        "plugins/PercFolderPropertiesDialog.js"
+        "plugins/PercFolderPropertiesDialog.js",
+        "views/PercCommonMinuetView.js"
       ]
     },
     {

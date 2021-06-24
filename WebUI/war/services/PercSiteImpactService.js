@@ -41,7 +41,7 @@
     function getSiteImpactDetails(itemId, callback)
     {
         var url = $.perc_paths.ASSET_SITE_IMPACT + "/" + itemId;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
 })(jQuery);
     

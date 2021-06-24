@@ -37,7 +37,7 @@
         deployWidget:_deployWidget,
         saveWidgetDef:_saveWidgetDef,
         validate:_validate
-    }
+    };
 
     function _getWidgetDefSummaries(callback){
         _makeServiceCall($.perc_paths.WIDGET_DEFS_SUMMARIES,$.PercServiceUtils.TYPE_GET,null,callback);
@@ -60,13 +60,13 @@
 
     function _makeServiceCall(url, type, data, callback){
         var srvCallback = function(status, result){
-            if(status == $.PercServiceUtils.STATUS_ERROR){ 
+            if(status === $.PercServiceUtils.STATUS_ERROR){
                 var errorMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                 callback(false, errorMsg);
                 return;
             }
             callback(true, result.data);
-        }
-        $.PercServiceUtils.makeJsonRequest(url,type,true,srvCallback,data);
+        };
+        $.PercServiceUtils.makeJsonRequest(url,type,false,srvCallback,data);
     }
 })(jQuery);

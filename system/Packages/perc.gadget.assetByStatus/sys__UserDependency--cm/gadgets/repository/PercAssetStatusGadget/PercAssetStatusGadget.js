@@ -275,7 +275,9 @@
 
     function bindApproveEvent()
     {
-        tableDiv.parents("body").find("#perc-bulk-approve-button").removeClass("perc-disabled").off("click").on("click", approveItems);
+        tableDiv.parents("body").find("#perc-bulk-approve-button").removeClass("perc-disabled").off("click").on("click",function(evt){
+            approveItems(evt);
+        });
     }
 
     function unbindApproveEvent()
@@ -298,7 +300,7 @@
     /**
      * Approve button click handler function, collects all the selected
      */
-    function approveItems()
+    function approveItems(evt)
     {
         var selectedRows = tableDiv.find(".perc-table-row-checkbox:checked");
         if(selectedRows.length < 1)

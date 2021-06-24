@@ -72,7 +72,9 @@
 			over = function () {
 				var $this = $(this),
 					o = getOptions($this);
-				clearTimeout(o.sfTimer);
+				if(typeof o !== 'undefined'){
+					clearTimeout(o.sfTimer);
+				}
 				$this.siblings().superfish('hide').end().superfish('show');
 			},
 			close = function (o) {
@@ -93,8 +95,10 @@
 					$.proxy(close, $this, o)();
 				}
 				else {
-					clearTimeout(o.sfTimer);
-					o.sfTimer = setTimeout($.proxy(close, $this, o), o.delay);
+					if(typeof o !== 'undefined'){
+						clearTimeout(o.sfTimer);
+						o.sfTimer = setTimeout($.proxy(close, $this, o), o.delay);
+					}
 				}
 			},
 			touchHandler = function (e) {
@@ -122,8 +126,13 @@
 				}
 				else {
 					$menu
-						.on('mouseenter.superfish', targets, over)
-						.on('mouseleave.superfish', targets, out);
+						.on('mouseenter.superfish', targets, function(e){
+							over(e);
+						})
+						.on('mouseleave.superfish', targets,
+							function(e){
+								out(e);
+							});
 				}
 				var touchevent = 'MSPointerDown.superfish';
 				if (unprefixedPointerEvents) {

@@ -113,7 +113,10 @@
         function enableButton(flag)
         {
             if (flag) {
-                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", clickHandler );
+                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt){
+                        clickHandler(evt);
+                    } );
             }
             else {
                 btn.addClass('ui-disabled').removeClass('ui-enabled').off('click');
@@ -124,25 +127,25 @@
         /**
          * Handler function invoked when clicking the Folder properties option in the actions menu.
          */
-        function clickHandler()
+        function clickHandler(evt)
         {
             // We must perform some checks before opening the dialog
-            if(pathItemSpec.category == "SYSTEM") {
+            if(pathItemSpec.category === "SYSTEM") {
                 $.perc_utils.alert_dialog({
                     title: I18N.message("perc.ui.page.general@Warning"),
                     content: I18N.message("perc.ui.folder.properties.button@Path Nonvalid String")
                 });
                 return;
             }
-            else if(pathItemSpec.accessLevel != $.PercFolderHelper().PERMISSION_ADMIN) {
-                var type = pathItemSpec.category == "SECTION_FOLDER" ? "section" : "folder";
+            else if(pathItemSpec.accessLevel !== $.PercFolderHelper().PERMISSION_ADMIN) {
+                var type = pathItemSpec.category === "SECTION_FOLDER" ? "section" : "folder";
                 $.perc_utils.alert_dialog({
                     title: I18N.message("perc.ui.page.general@Warning"),
                     content: I18N.message("perc.ui.folder.properties.button@Permissions Error") + type + "."
                 });
                 return;
             }
-            else if(pathItemSpec.category == "SECTION_FOLDER") {
+            else if(pathItemSpec.category === "SECTION_FOLDER") {
                 $.perc_utils.alert_dialog({
                     title: I18N.message("perc.ui.page.general@Warning"),
                     content: I18N.message("perc.ui.folder.properties.button@Use Navigation Editor")

@@ -583,7 +583,7 @@ function saveSICredentials(metadataName, data, callback) {
         PercSIServiceUtils.TYPE_PUT,
         false,
         function (status, result) {
-            if (status == PercSIServiceUtils.STATUS_SUCCESS) {
+            if (status === PercSIServiceUtils.STATUS_SUCCESS) {
                 callback(PercSIServiceUtils.STATUS_SUCCESS, result.data);
             }
             else {
@@ -600,7 +600,7 @@ function getSIToken(siteName, callback) {
         PercSIServiceUtils.TYPE_GET,
         false,
         function (status, result) {
-            if (status == PercSIServiceUtils.STATUS_SUCCESS) {
+            if (status === PercSIServiceUtils.STATUS_SUCCESS) {
                 callback(PercSIServiceUtils.STATUS_SUCCESS, result.data);
             }
             else {
@@ -616,7 +616,7 @@ function getNewSiteImproveToken(callback) {
         PercSIServiceUtils.TYPE_GET,
         false,
         function (status, result) {
-            if (status == PercSIServiceUtils.STATUS_SUCCESS) {
+            if (status === PercSIServiceUtils.STATUS_SUCCESS) {
                 callback(PercSIServiceUtils.STATUS_SUCCESS, result.data);
             }
             else {
@@ -632,7 +632,7 @@ function getAllSISiteCredentials(callback) {
         PercSIServiceUtils.TYPE_GET,
         false,
         function (status, result) {
-            if (status == PercSIServiceUtils.STATUS_SUCCESS) {
+            if (status === PercSIServiceUtils.STATUS_SUCCESS) {
                 callback(PercSIServiceUtils.STATUS_SUCCESS, result.data);
             }
             else {
@@ -649,7 +649,7 @@ function saveSISiteConfig(metadataName, data, callback) {
         PercSIServiceUtils.TYPE_PUT,
         false,
         function (status, result) {
-            if (status == PercSIServiceUtils.STATUS_SUCCESS) {
+            if (status === PercSIServiceUtils.STATUS_SUCCESS) {
                 callback(PercSIServiceUtils.STATUS_SUCCESS, result.data);
             }
             else {
@@ -665,7 +665,7 @@ function getAllSISiteConfig(callback) {
         PercSIServiceUtils.TYPE_GET,
         false,
         function (status, result) {
-            if (status == PercSIServiceUtils.STATUS_SUCCESS) {
+            if (status === PercSIServiceUtils.STATUS_SUCCESS) {
                 callback(PercSIServiceUtils.STATUS_SUCCESS, result.data);
             }
             else {

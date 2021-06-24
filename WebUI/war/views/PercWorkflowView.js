@@ -131,7 +131,7 @@
         /**
          *  Edit workflow
          */
-        function editWorkflow()
+        function editWorkflow(evt)
         {
             $(".perc-wf-default").find('input').removeAttr('checked').removeAttr('disabled');   
             $(".perc-step-config-button, .perc-reserved-step-config-bttn, .perc-step-delete-button, .perc-create-new-step").off("click").on("click");
@@ -545,7 +545,7 @@
             //Bind Edit event
             $("#perc-wf-edit").off("click").on("click", function(evt)
             {
-                editWorkflow();
+                editWorkflow(evt);
             });
 
             //Bind Update event

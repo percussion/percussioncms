@@ -40,7 +40,7 @@ public class PSOExtensionParamsHelper {
     Object[] params;
     IPSExtensionDef extensionDef;
     Map<String,String> extensionParameters;
-    Map<String,? extends Object> slotArguments;
+    Map<String,?> slotArguments;
     Map<String,Object> slotSelectors;
     
     IPSRequestContext request;
@@ -49,7 +49,9 @@ public class PSOExtensionParamsHelper {
      * The log instance to use for this class if one is not provided, never <code>null</code>.
      */
 
+
     private static final Logger defaultLog = LogManager.getLogger(PSOExtensionParamsHelper.class);
+
     
     /**
      * The user log instance.
@@ -104,7 +106,9 @@ public class PSOExtensionParamsHelper {
      * @param selectors The selectors that are passed with the find method.
      * @param log
      */
-    public PSOExtensionParamsHelper(Map<String,? extends Object> args, 
+
+    public PSOExtensionParamsHelper(Map<String,?> args,
+
             Map<String,Object> selectors, Logger log) {
         doLog(log);
         if (args == null)
@@ -137,22 +141,18 @@ public class PSOExtensionParamsHelper {
             // This helper is for a slot finder.
             Object val = slotSelectors.get(paramName);
             if (val != null) {
-                log.debug("Got the parameter name = " + paramName
-                        + " value = " + val + " from the slot selectors.");
-            }
-            if (val == null)
-            {
+                log.debug("Got the parameter name = {} value = {} from the slot selectors.", paramName, val);
+            } else {
                val = slotArguments.get(paramName);
                if (val != null) {
-                   log.debug("Got the parameter name = " + paramName
-                           + " value = " + val + " from the slot arguments.");
+                   log.debug("Got the parameter name = {} value = {} from the slot arguments.", paramName, val);
                }
             }
             if (val instanceof String)
                return (String) val;
             else if (val instanceof String[])
             {
-               String vals[] = (String[]) val;
+               String[] vals = (String[]) val;
                if (vals.length == 0) {
                    String errorMessage = "No value for " + paramName;
                    log.error(errorMessage);
@@ -164,20 +164,18 @@ public class PSOExtensionParamsHelper {
                return val.toString();
             else {
                 log.debug("Returning null for slot aruments and selectors");
-               return null;
+                return null;
             }
         }
         
         if (request != null) {
             String value = request.getParameter(paramName);
-            log.debug("Got the parameter name = " + paramName
-                    + " value = " + value + " from the request.");
+            log.debug("Got the parameter name = {} value = {} from the request.", paramName, value);
             if (value != null) return value;
         }
         if (extensionParameters != null) {
             String value = extensionParameters.get(paramName);
-            log.debug("Got the parameter name = " + paramName
-                    + " value = " + value + " from the extension parameters.");
+            log.debug("Got the parameter name = {} value = {} from the extension parameters.", paramName, value);
             return value;
         }
         log.warn("Extension Parameters is null");
@@ -231,7 +229,7 @@ public class PSOExtensionParamsHelper {
     public String getOptionalParameter(String paramName, String defaultValue) {
         String value = getParameter(paramName);
         if ( value == null || isBlank(value)) {
-            log.debug("Parameter " + paramName + " was not set. Using default value = " + defaultValue);
+            log.debug("Parameter {} was not set. Using default value = {}", paramName, defaultValue);
             return defaultValue;
         }
         return value;        
@@ -260,8 +258,7 @@ public class PSOExtensionParamsHelper {
         Converter cvt = new BooleanConverter();
         try
       {
-         Boolean val = (Boolean) cvt.convert(Boolean.class, param);
-           return val;
+         return cvt.convert(Boolean.class, param);
       } catch (ConversionException ex)
       {
          String message = "Parameter " + paramName + " is not a boolean. " +
@@ -289,15 +286,15 @@ public class PSOExtensionParamsHelper {
     @SuppressWarnings("unchecked")
     protected void doParameters()
     {  
-       extensionParameters = new HashMap<String, String>();
+       extensionParameters = new HashMap<>();
        
        if (params != null)
        {
           int index = 0;
-          Iterator names = extensionDef.getRuntimeParameterNames();
+          Iterator<String> names = extensionDef.getRuntimeParameterNames();
           while (names.hasNext())
           {
-             String name = (String) names.next();
+             String name = names.next();
           
              if (params.length > index) {
                  Object p = params[index];

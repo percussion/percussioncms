@@ -91,7 +91,7 @@ public class BinaryUploadController
       catch (Exception ex)
       {
 
-         String emsg = "Unexpected Exception " + ex.getLocalizedMessage();
+         String emsg = "Unexpected Exception " + ex.getMessage();
          log.error(emsg, ex);
          JSONObject error = new JSONObject();
          error.put("error", emsg);

@@ -104,19 +104,19 @@
         var leaf_selectable = settings.selectable_object == "leaf" || settings.selectable_object == "all";
         var folder_selectable = settings.selectable_object == "folder" || settings.selectable_object == "all";
     
-        var top = jQuery("<div>"
+        var top = jQuery("<div>" +
             //Selection box for the location drop-down, which provides a
             //list of parent directories.
             
             
-            + (settings.new_asset_option?
+             (settings.new_asset_option?
                 "<select name='location' id='perc-asset-browser-location-dropdown'></select>":
-                "<select name='location' id='perc-asset-browser-location-dropdown' ></select>")
-            + (settings.new_asset_option?
-                "<input type='button' id='perc-new-folder-button' value=' + '>":"")
+                "<select name='location' id='perc-asset-browser-location-dropdown' ></select>") +
+             (settings.new_asset_option?
+                "<input type='button' id='perc-new-folder-button' value=' + '>":"")  +
             //Space for the directory navigation.
-            + "<div id='perc-asset-browser-dialog-direc'></div>"
-            + "</div>"
+            "<div id='perc-asset-browser-dialog-direc'></div>" +
+             "</div>"
         );
         
         $("#"+options.placeHolder).append(top);
@@ -193,9 +193,9 @@
 
             function addChildren(folder_spec)
             {
-                $.each( folder_spec['PathItem'], function()
+                $.each( folder_spec.PathItem, function()
                 {
-                    if( type_filter( this['type'] ) )
+                    if( type_filter( this.type ) )
                     {
                         insert_item( root_direc, make_item( this ) );
                     }
@@ -281,11 +281,11 @@
     
         function make_item( spec )
         {
-            var path_end = ut.extract_path_end( spec['path'] );
-            var item_path = ut.extract_path( spec['path'] );
-            var icon = ut.choose_icon( spec['type'], spec['icon'],    item_path  );
+            var path_end = ut.extract_path_end( spec.path );
+            var item_path = ut.extract_path( spe.path );
+            var icon = ut.choose_icon( spec.type, spec.icon,    item_path  );
 			
-			if(settings.siteIcon != "" && spec['type'] == "site")
+			if(settings.siteIcon != "" && spec.type == "site")
 				icon = settings.siteIcon;
 			
             var anchor = $("<a href='#'/>")
@@ -296,12 +296,12 @@
             //    } JGA
                 .attr('id',"perc-saveas-dialog-listing"+ ut.path_id( item_path ))
                 .append($("<img src='"+ icon.src +"' style='float:left' alt='"+ icon.alt + "' title='" + icon.title + "' aria-hidden='" + icon.decorative + "' />" ))
-                .append( spec[ 'name' ] )
+                .append( spec.name )
                 .data( 'name', path_end )
-                .data( 'tag', spec['name'] );
+                .data( 'tag', spec.name );
 
             var sclass = 'perc-saveas-dialog-selected';
-            function selectAnchor()
+            function selectAnchor(evt)
             {
             	// JGA { 1/11/2010
             	// notify registered function of selection
@@ -311,7 +311,7 @@
                 anchor.addClass( sclass );
                 if( spec.leaf )
                 {
-                    asset_name.val( spec['name'] );
+                    asset_name.val( spec.name );
                     current_spec = spec;
                 }
                 else
@@ -323,7 +323,9 @@
             {
                 if( leaf_selectable )
                 {
-                    anchor.on("click", selectAnchor );
+                    anchor.on("click", function(evt){
+                        selectAnchor(evt);
+                    } );
                     anchor.on("dblclick", function()
                     {
                         anchor.trigger("click");
@@ -335,7 +337,9 @@
             {
                 if( folder_selectable )
                 {
-                    anchor.trigger("click", selectAnchor );
+                    anchor.trigger("click", function(evt){
+                        selectAnchor(evt);
+                    } );
                 }
                 anchor.on("dblclick", function()
                 {

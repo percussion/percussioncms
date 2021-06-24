@@ -30,10 +30,10 @@
     $.perc_build_restore_button = function (finderRef, content) {
         var btn = $("<a id='perc-finder-restore-item' href='#' title='Click to restore the selected item'>Restore Item</a>")
             .on("click",function (event) {
-                restorePageValidate();
+                restorePageValidate(event);
             });
 
-        function restorePageValidate() {
+        function restorePageValidate(evt) {
             $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
             var selectedItem = $('.mcol-opened.perc_last_selected');
             var selectedItemList = $("#perc-finder-listview .perc-datatable-row-highlighted");
@@ -234,7 +234,10 @@
          */
         function enableButtonRestore(flag) {
             if (flag) {
-                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",restorePageValidate);
+                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt){
+                        restorePageValidate(evt);
+                    });
             }
             else {
                 btn.addClass('ui-disabled').removeClass('ui-enabled').off('click');

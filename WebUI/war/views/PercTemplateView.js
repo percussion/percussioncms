@@ -68,11 +68,11 @@
          */
         
         $("#tabs").tabs({
-            selected:-1,
+            active:-1,
             show : function() {
                 fixBottomHeight();
             },
-            select : function(event, ui) {
+            activate : function(event, ui) {
 
                 // The persist method will check to see if the editor has been
                 // initialised.
@@ -81,7 +81,7 @@
                     return false;
 
                 var self = $(this);
-
+                currentTabIndex = self.tabs('option','active');
                 // if user clicks on a tab, check if dirty status has been set
                 if(dirtyController.isDirty()) {
                     // if dirty, then show a confirmation dialog
@@ -90,7 +90,7 @@
                         function() {
                             // if they click ok, then reset dirty flag and proceed to select the tab
                             setDirty(false);
-                            self.tabs('select', ui.index);
+                            self.tabs("option", "active", currentTabIndex );
                             //Reset the JavaScript Off/On menu to JavaScript Off
                             resetJavaScriptMenu();
                         }
@@ -103,7 +103,7 @@
                     resetJavaScriptMenu()
                 }
                 deactivateRegionToolButton();
-                if(ui.index == TEMPLATE_CONTENT ) {
+                if(currentTabIndex == TEMPLATE_CONTENT ) {
                     // put back scrollbars in the content view as needed
                     $("body").css("overflow","auto");
                     //  Add Action dropdown menu under Content Tab (Template Editor)
@@ -160,7 +160,7 @@
                     return;
                 }
 
-                if(ui.index == TEMPLATE_LAYOUT) {
+                if(currentTabIndex == TEMPLATE_LAYOUT) {
                     // put back scrollbars in the layout view as needed
                     $("body").css("overflow","auto");
                     //  Add Action dropdown menu under Layout Tab (Template Editor)                
@@ -218,7 +218,7 @@
                     return;
                 }
 
-                if(ui.index == TEMPLATE_STYLE) {
+                if(currentTabIndex == TEMPLATE_STYLE) {
                     // put back scrollbars in the style view as needed
                     $("body").css("overflow","auto");
                     
@@ -309,13 +309,14 @@
         // scope, from its original place in jsp/template_style.jsp
         $("#perc-styleTabs").tabs({
             collapsible: true,
-                selected: 0,      // We do not want any tabs to be selected, by default.
-                select: function(event, ui)
+            active: 0,       // We do not want any tabs to be selected, by default.
+            activate: function(event, ui)
                 {
                     // Be sure to persist changes in current tab into template model between tab changes.
                     cssController.updateTemplateObject();
-        
-                    switch(ui.index)
+                    var self = $(this);
+                    currentTabIndex = self.tabs('option','active');
+                    switch(currentTabIndex)
                     {
                     case 0:
                         // CSS Gallery

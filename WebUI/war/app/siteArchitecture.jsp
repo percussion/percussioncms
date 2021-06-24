@@ -46,7 +46,7 @@
     if (site == null)
         site = "";
     Boolean hasSites = (Boolean) request.getAttribute("hasSites");
-    String inlineHelpMsg = hasSites != null && hasSites.booleanValue()
+    String inlineHelpMsg = hasSites != null && hasSites
             ? PSI18nUtils.getString("perc.ui.site.architecture@Work On Navigation", locale)
             : PSI18nUtils.getString("perc.ui.site.architecture@Click Create Site To Create Site", locale);
 %>
@@ -131,7 +131,7 @@
     });
 </script>
 </head>
-<body view="PERC_SITE">
+<body view="PERC_SITE" style="overflow:auto">
 <div class="perc-main perc-finder-fix" style="position:fixed">
     <div class="perc-header">
         <jsp:include page="includes/header.jsp" flush="true">

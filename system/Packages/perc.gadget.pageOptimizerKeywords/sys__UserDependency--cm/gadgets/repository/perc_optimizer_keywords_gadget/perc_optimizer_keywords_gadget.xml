@@ -67,7 +67,7 @@
             parentFrameId = "#" + window.frameElement.id;
             window.parent.jQuery(parentFrameId).height(appHeight);
 
-            $.PercServiceUtils.makeJsonRequest($.perc_paths.PAGE_OPT_INFO, $.PercServiceUtils.TYPE_GET, true, function (status, result) {
+            $.PercServiceUtils.makeJsonRequest($.perc_paths.PAGE_OPT_INFO, $.PercServiceUtils.TYPE_GET, false, function (status, result) {
                 $("#perc-kw-frame").attr('width', appWidth).attr('height', appHeight);
                 if (status == $.PercServiceUtils.STATUS_SUCCESS) {
                     var clientIdentity = result.data.PageOptimizerInfo.clientIdentity;

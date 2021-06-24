@@ -67,8 +67,8 @@
          </psxctl:Param>
         </psxctl:ParamList>
 		<psxctl:AssociatedFileList>
-        	<psxctl:FileDescriptor name="font-awesome.min.css" type="css" mimetype="text/css">
-				<psxctl:FileLocation>../../cm/jslib/profiles/1x/libraries/fontawesome/css/font-awesome.min.css</psxctl:FileLocation>
+        	<psxctl:FileDescriptor name="all.css" type="css" mimetype="text/css">
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/libraries/fontawesome/css/all.css</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="percSocialButtons.js" type="script" mimetype="text/javascript">
@@ -146,7 +146,7 @@
 								<input name="platform" class="datadisplay perc-social-button-input perc-social-platform" style="height: 15px;padding-top: 3px;padding-bottom: 5px;" value="facebook" type="hidden"></input>
 							</td>
 							<td class="perc-social-button-td perc-platform-name">
-								<div class="perc-social-button-ui"><i class="fa fa-fw fa-facebook" aria-hidden="true" aria-label="Facebook"></i></div>
+								<div class="perc-social-button-ui"><i class="fab fa-fw fa-facebook" aria-hidden="true" aria-label="Facebook"></i></div>
 							</td>
 							<td class="perc-input-td perc-social-button-td">
 								<input type="checkbox" name="enableButton" class="datadisplay perc-social-button-input perc-social-platform-enabled" style="height: 15px;padding-top: 3px;padding-bottom: 5px;"></input>
@@ -164,7 +164,7 @@
 								<input name="platform" class="datadisplay perc-social-button-input perc-social-platform" style="height: 15px;padding-top: 3px;padding-bottom: 5px;" value="twitter" type="hidden"></input>
 							</td>
 							<td class="perc-social-button-td perc-platform-name">
-								<div class="perc-social-button-ui"><i class="fa fa-fw fa-twitter" aria-hidden="true" aria-label="Twitter"></i></div>
+								<div class="perc-social-button-ui"><i class="fab fa-fw fa-twitter" aria-hidden="true" aria-label="Twitter"></i></div>
 							</td>
 							<td class="perc-input-td perc-social-button-td">
 								<input type="checkbox" name="enableButton" class="datadisplay perc-social-button-input perc-social-platform-enabled" style="height: 15px;padding-top: 3px;padding-bottom: 5px;"></input>
@@ -182,7 +182,7 @@
 								<input name="platform" class="datadisplay perc-social-button-input perc-social-platform" style="height: 15px;padding-top: 3px;padding-bottom: 5px;" value="linkedin" type="hidden"></input>
 							</td>
 							<td class="perc-social-button-td perc-platform-name">
-								<div class="perc-social-button-ui"><i class="fa fa-fw fa-linkedin" aria-hidden="true" aria-label="LinkedIn"></i></div>
+								<div class="perc-social-button-ui"><i class="fab fa-fw fa-linkedin" aria-hidden="true" aria-label="LinkedIn"></i></div>
 							</td>
 							<td class="perc-input-td perc-social-button-td">
 								<input type="checkbox" name="enableButton" class="datadisplay perc-social-button-input perc-social-platform-enabled" style="height: 15px;padding-top: 3px;padding-bottom: 5px;"></input>
@@ -200,7 +200,7 @@
 								<input name="platform" class="datadisplay perc-social-button-input perc-social-platform" style="height: 15px;padding-top: 3px;padding-bottom: 5px;" value="pinterest" type="hidden"></input>
 							</td>
 							<td class="perc-social-button-td perc-platform-name">
-								<div class="perc-social-button-ui"><i class="fa fa-fw fa-pinterest" aria-hidden="true" aria-label="Pinterest"></i></div>
+								<div class="perc-social-button-ui"><i class="fab fa-fw fa-pinterest" aria-hidden="true" aria-label="Pinterest"></i></div>
 							</td>
 							<td class="perc-input-td perc-social-button-td">
 								<input type="checkbox" name="enableButton" class="datadisplay perc-social-button-input perc-social-platform-enabled" style="height: 15px;padding-top: 3px;padding-bottom: 5px;"></input>
@@ -218,7 +218,7 @@
 								<input name="platform" class="datadisplay perc-social-button-input perc-social-platform" style="height: 15px;padding-top: 3px;padding-bottom: 5px;" value="youtube" type="hidden"></input>
 							</td>
 							<td class="perc-social-button-td perc-platform-name">
-								<div class="perc-social-button-ui"><i class="fa fa-fw fa-youtube" aria-hidden="true" aria-label="YouTube"></i></div>
+								<div class="perc-social-button-ui"><i class="fab fa-fw fa-youtube" aria-hidden="true" aria-label="YouTube"></i></div>
 							</td>
 							<td class="perc-input-td perc-social-button-td">
 								<input type="checkbox" name="enableButton" class="datadisplay perc-social-button-input perc-social-platform-enabled perc-social-enable-youtube-checkbox" style="height: 15px;padding-top: 3px;padding-bottom: 5px;"></input>
@@ -236,7 +236,7 @@
 								<input name="platform" class="datadisplay perc-social-button-input perc-social-platform" style="height: 15px;padding-top: 3px;padding-bottom: 5px;" value="whatsapp" type="hidden"></input>
 							</td>
 							<td class="perc-social-button-td perc-platform-name">
-								<div class="perc-social-button-ui"><i class="fa fa-fw fa-whatsapp" aria-hidden="true" aria-label="WhatsApp"></i></div>
+								<div class="perc-social-button-ui"><i class="fab fa-fw fa-whatsapp" aria-hidden="true" aria-label="WhatsApp"></i></div>
 							</td>
 							<td class="perc-input-td perc-social-button-td">
 								<input type="checkbox" name="enableButton" class="datadisplay perc-social-button-input perc-social-platform-enabled perc-social-enable-whatsapp-checkbox" style="height: 15px;padding-top: 3px;padding-bottom: 5px;"></input>
@@ -254,7 +254,7 @@
 								<input name="platform" class="datadisplay perc-social-button-input perc-social-platform" style="height: 15px;padding-top: 3px;padding-bottom: 5px;" value="email" type="hidden"></input>
 							</td>
 							<td class="perc-social-button-td perc-platform-name">
-								<div class="perc-social-button-ui"><i class="fa fa-fw fa-envelope" aria-hidden="true" aria-label="Email"></i></div>
+								<div class="perc-social-button-ui"><i class="fas fa-fw fa-envelope" aria-hidden="true" aria-label="Email"></i></div>
 							</td>
 							<td class="perc-input-td perc-social-button-td">
 								<input type="checkbox" name="enableButton" class="datadisplay perc-social-button-input perc-social-platform-enabled perc-social-enable-email-checkbox" style="height: 15px;padding-top: 3px;padding-bottom: 5px;"></input>

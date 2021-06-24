@@ -66,5 +66,5 @@
             console.log("path        = " + this.path);
         };
         */
-    }
+    };
 })(jQuery);

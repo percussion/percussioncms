@@ -36,7 +36,9 @@
     $.perc_build_upload_button = function (finder, contentViewer)
     {
         var btn = $('<a id="perc-finder-upload" href="#" title="' +I18N.message("perc.ui.upload.button@Click Upload File") + '">Upload File...</a>')
-            .on("click",lauchClickHandler);
+            .on("click",function(evt){
+                lauchClickHandler(evt);
+            });
         
         /**
          * Listener function that is added to the finder listeners, this method gets called whenever a path change
@@ -47,7 +49,7 @@
          */
         function uploadButtonChangePathListener(path)
         {
-            if(path.length > 3 && $.perc_paths.DESIGN_THEMES == path[0] + '/' + path[1] + '/' + path[2] + '/' + path[3])
+            if(path.length > 3 && $.perc_paths.DESIGN_THEMES === path[0] + '/' + path[1] + '/' + path[2] + '/' + path[3])
             {
                 enableButton(true);
                 return;
@@ -64,19 +66,22 @@
         {
             if (flag)
             {
-                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", lauchClickHandler );
+                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt){
+                        lauchClickHandler(evt);
+                    } );
             }
             else
             {
                 btn.addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
-            btn.trigger('actions-change-enabled-state');
+            $(document).trigger('actions-change-enabled-state');
         }
 
         /**
          * Launches the download functionality specific to the browser on the selected item.
          */
-        function lauchClickHandler()
+        function lauchClickHandler(evt)
         {
             // Open the dialog and pass it the current finder path
             $.perc_upload_theme_file_dialog.open(finder);

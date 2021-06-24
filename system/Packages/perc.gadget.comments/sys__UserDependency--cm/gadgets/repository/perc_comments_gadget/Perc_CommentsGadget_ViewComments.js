@@ -155,14 +155,20 @@
             .append(approvalActionAllLabel)
             .addClass("perc-gadget-comments-default-all");
         
-        approvalActionRejectAction.on("click",rejectAll);
-        approvalActionApproveAction.on("click",approveAll);
-        approvalActionDeleteAction.on("click", deleteAll);
+        approvalActionRejectAction.on("click",function(evt){
+            rejectAll(evt);
+        });
+        approvalActionApproveAction.on("click",function(evt){
+            approveAll(evt);
+        });
+        approvalActionDeleteAction.on("click", function(evt){
+            deleteAll(evt);
+        });
         
         return approvalActionMenu;
     }
 
-    function deleteAll() {
+    function deleteAll(evt) {
         var approvalActionMenu = $(this).parent();
         approvalActionMenu
             .attr("currentState", "ALL_DELETED")
@@ -178,7 +184,7 @@
             .addClass("perc-gadget-comments-deleted");
     }
 
-    function rejectAll() {
+    function rejectAll(evt) {
         var approvalActionMenu = $(this).parent();
         approvalActionMenu
             .attr("currentState", "ALL_REJECTED")
@@ -194,7 +200,7 @@
             .addClass("perc-gadget-comments-rejected");
     }
 
-    function approveAll() {
+    function approveAll(evt) {
         var approvalActionMenu = $(this).parent();
         approvalActionMenu
             .attr("currentState", "ALL_APPROVED")
@@ -228,14 +234,22 @@
             .attr("currentState",  approvalState)
             .attr("originalState", approvalState);
 
-        approvalActionRejectAction.on("click",reject);
-        approvalActionApproveAction.on("click", approve);
-        approvalActionDeleteAction.on("click",deleteComment);
+        approvalActionRejectAction.on("click",function (evt){
+            reject(evt);
+        });
+
+        approvalActionApproveAction.on("click", function(evt){
+            approve(evt);
+        });
+
+        approvalActionDeleteAction.on("click",function(evt){
+            deleteComment(evt);
+        });
         
         return approvalActionMenu;
     }
     
-    function reject() {
+    function reject(evt) {
         var approvalActionMenu = $(this).parent();
         approvalActionMenu
             .attr("currentState", "REJECTED")
@@ -245,7 +259,7 @@
         updateApproveRejectAllActions();
     }
     
-    function approve() {
+    function approve(evt) {
         var approvalActionMenu = $(this).parent();
         approvalActionMenu
             .attr("currentState", "APPROVED")
@@ -255,7 +269,7 @@
         updateApproveRejectAllActions();
     }
     
-    function deleteComment() {
+    function deleteComment(evt) {
         var approvalActionMenu = $(this).parent();
         approvalActionMenu
             .attr("currentState", "DELETED")
