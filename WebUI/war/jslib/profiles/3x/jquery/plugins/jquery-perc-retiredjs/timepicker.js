@@ -59,10 +59,10 @@ $.datepicker._connectDatepicker = function(target, inst) {
 
     if (showOn == 'button' || showOn == 'both') {
         // Unbind all click events
-        inst.trigger.unbind('click');
+        inst.trigger.off('click');
 
         // Bind new click event
-        inst.trigger.click(function() {
+        inst.trigger.on("click",function(evt) {
             if ($.datepicker._datepickerShowing && $.datepicker._lastInput == target)
                 $.datepicker._hideDatepicker(null); // This override is all about the "null"
             else
@@ -109,16 +109,16 @@ $.datepicker._checkExternalClick = function (event) {
     var $target = $(event.target);
 
     if (($target.parents('#' + $.timepicker._mainDivId).length == 0)) {
-			inst = $.datepicker._getInst($target[0]);
+			let inst = $.datepicker._getInst($target[0]);
 
-		if ((($target[0].id != $.datepicker._mainDivId &&
+		if (($target[0].id != $.datepicker._mainDivId &&
 		$target.parents('#' + $.datepicker._mainDivId).length == 0 &&
 		!$target.hasClass($.datepicker.markerClassName) &&
 		!$target.closest("." + $.datepicker._triggerClass).length &&
 		$.datepicker._datepickerShowing &&
-		!($.datepicker._inDialog && $.blockUI))) ||
+		!($.datepicker._inDialog && $.blockUI)) ||
 		($target.hasClass($.datepicker.markerClassName) && $.datepicker._curInst != inst)) 
-			$('html').click(function (){
+			$('html').on("click",function (evt){
 				$.datepicker._hideDatepicker();
 			})
     }
@@ -190,7 +190,7 @@ $.datepicker._selectDate = function(id, dateStr) {
             this._hideDatepicker(null, this._get(inst, 'duration'));
             this._lastInput = inst.input[0];
             if (typeof(inst.input[0]) != 'object')
-                inst.input[0].focus(); // restore focus
+                inst.input[0].trigger("focus"); // restore focus
             this._lastInput = null;
         }
     }
@@ -351,7 +351,7 @@ Timepicker.prototype = {
                 self._writeTime('hour', ui.value);
             },
             stop: function(event, ui) {
-                $('#' + self._inputId).focus();
+                $('#' + self._inputId).trigger("focus");
             }
         });
 
@@ -365,7 +365,7 @@ Timepicker.prototype = {
                 self._writeTime('minute', ui.value);
             },
             stop: function(event, ui) {
-                $('#' + self._inputId).focus();
+                $('#' + self._inputId).trigger("focus");
             }
         });
 
