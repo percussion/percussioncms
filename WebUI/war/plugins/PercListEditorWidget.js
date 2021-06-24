@@ -49,19 +49,19 @@
             '                ' + options.title2 +
             '            </div>' +
             '        </div>' +
-            '        <div id="perc-ui-permission-addstartbutton"/>' +
+            '        <div id="perc-ui-permission-addstartbutton"></div>' +
             '    </div>' +
             '' +
             '    <div id="perc-ui-listedit-listitemfield">' +
             '        <input id="perc-ui-permission-usernamefield" name="perc-ui-permission-usernamefield"/>' +
-            '        <div id="perc-ui-permission-plusbutton" title="Add user"/>' +
+            '        <div id="perc-ui-permission-plusbutton" title="Add user"></div>' +
             '    </div>' +
             '' +
             '    <div id="perc-ui-permission-user-list-scroll-pane">' +
             '        <ul id="perc-ui-permission-user-list">' +
             '            <li>' +
             '                <span>Username</span>' +
-            '                <div class="perc-ui-permission-deletebutton" id="Username"/>' +
+            '                <div class="perc-ui-permission-deletebutton" id="Username"></div>' +
             '            </li>' +
             '        </ul>' +
             '    </div>';
@@ -70,7 +70,7 @@
         var listItem = '' +
             '            <li>' +
             '                <span>_username_</span>' +
-            '                <div class="perc-ui-permission-deletebutton" id="_username_" title="Remove user"/>' +
+            '                <div class="perc-ui-permission-deletebutton" id="_username_" title="Remove user"></div>' +
             '            </li>';
 
         // ID of the DIV element where this widget will render
@@ -131,7 +131,7 @@
                     if(findItem(itemText))
                         addListItem(itemText);
             }).on("click",function(){
-            inputField.focus();
+            inputField.trigger("focus");
             updatePlusButton();
             updateInputField("clear");
             list.find("li").removeClass("perc-ui-listedit-itemselected");
@@ -201,8 +201,8 @@
         }
 
         function findItem(item) {
-            for(r=0; r<resultItems.length; r++)
-                if(item.toLowerCase() === resultItems[r].toLowerCase())
+            for(let r of resultItems)
+                if(item.toLowerCase() === r.toLowerCase())
                     return true;
             return false;
         }
@@ -216,9 +216,9 @@
             // copy the items to a local array
             listItems = [];
             if(items !== undefined && items != null && items.length > 0) {
-                for(u=0; u<items.length; u++) {
-                    listItems.splice(0,0,items[u]);
-                    filterAllowedItems(items[u]);
+                for(let u of items) {
+                    listItems.splice(0,0,u);
+                    filterAllowedItems(u);
                 }
             }
 
@@ -256,8 +256,8 @@
                 return;
 
             // dont allow duplicates
-            for(li=0; li<listItems.length; li++)
-                if(listItem.toLowerCase() === listItems[li].toLowerCase())
+            for(let li of listItems)
+                if(listItem.toLowerCase() === li.toLowerCase())
                     return;
 
             // add the new list item
@@ -272,7 +272,7 @@
 
             // find where did the element end up
             var index = -1;
-            for(li=0; li<listItems.length; li++) {
+            for(let li=0; li<listItems.length; li++) {
                 if(listItem === listItems[li]) {
                     index = li;
                     break;
