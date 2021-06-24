@@ -39,7 +39,11 @@
 				<script src="../../cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
 				<xsl:text>&#10;</xsl:text>
                 <script language="javascript" src="../../cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"></script>
-                <xsl:text>&#10;</xsl:text>
+				<xsl:text>&#10;</xsl:text>
+				<script src="../../cm/jslib/profiles/3x/libraries/bowser/es5.js"></script>
+				<xsl:text>&#10;</xsl:text>
+				<script src="../jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"></script>
+				<xsl:text>&#10;</xsl:text>
 				<script language="javascript" src="../sys_resources/js/cm/init.js"></script>
 				<xsl:text>&#10;</xsl:text>
 				<xsl:variable name="scripttags">
