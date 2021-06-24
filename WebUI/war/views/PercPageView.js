@@ -131,7 +131,7 @@
             /* which tab to show when a page is first opened, 0 is content tab, 1 is layout tab */
             if(currentTabIndex === null || typeof currentTabIndex === 'undefined'){
                 currentTabIndex = defaultTabIndex;
-                $tabs.tabs().trigger("select",currentTabIndex);
+                $tabs.tabs().trigger("activate",currentTabIndex);
             }
 
             if ($.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_EDIT)
@@ -139,7 +139,7 @@
                 pageModel = P.pageModel($.perc_pagemanager, $.perc_templatemanager, pageId, function()
                 {
                     // enable all tabs and select the first tab
-                    $tabs.attr('disabled.tabs', []).attr('select', defaultTabIndex);
+                    $tabs.tabs(  "option", "disabled", [] ).trigger('activate', defaultTabIndex);
                     $("#perc-pageEditor-tabs").find("li").each(function(i)
                     {
                         // Don't enable Layout and Style tabs if template type is UNASSIGNED
@@ -508,13 +508,13 @@
                                     function(e){
                                         handleIn(e);
                                     }).on('mouseleave', function(e){
-                                        handleOut(e);
+                                    handleOut(e);
                                 })).append(
                                 $("<div />").css("overflow", "hidden").addClass("perc-asset-label").append(
                                     $("<nobr />").html(asset.title)))).css('cursor', 'pointer').data('assetId', asset.id).data('assetType', asset.type).data('assetFolderPaths', folderPaths).data('widgetId', asset.widgetId).off("click").on("click",
-                                function(evt){
-                                        selectOrphanAsset(evt);
-                                })
+                            function(evt){
+                                selectOrphanAsset(evt);
+                            })
                     );
                 }
                 // populates Orphan Assets tray and toggles it open/close
@@ -697,9 +697,9 @@
             {
                 // Disable all Layout and Style tabs at load time
                 disabled: [1, 2],
-                select: function(event)
+                activate: function(event)
                 {
-                   var idx = $('#perc-pageEditor-tabs').tabs('option','active');
+                    var idx = $('#perc-pageEditor-tabs').tabs('option','active');
                     // Ask for confirmation to navigate away from tab if the page has been modified
                     if (dirtyController.isDirty())
                     {
@@ -1066,44 +1066,44 @@
                     {
                         /*doIfCheckedOutToCurrentUser(itemId, function()
                             { */
-                                doIfDefaultServerNotModified(siteName, function()
+                        doIfDefaultServerNotModified(siteName, function()
+                            {
+                                if (trName === I18N.message("perc.ui.page.menu@Publish"))
                                 {
-                                    if (trName === I18N.message("perc.ui.page.menu@Publish"))
+                                    $.PercItemPublisherService.getScheduleDates(itemId, function(status, result)
                                     {
-                                        $.PercItemPublisherService.getScheduleDates(itemId, function(status, result)
+                                        if (status)
                                         {
-                                            if (status)
-                                            {
-                                                var scheduleDates = eval("(" + result + ")").ItemDates;
-                                                _confirmPublish(scheduleDates);
-                                            }
-                                            else
-                                            {
-                                                $.perc_utils.alert_dialog(
-                                                    {
-                                                        content: I18N.message("perc.ui.page.confirmpublish@Unable to get the saved publish dates"),
-                                                        title: I18N.message("perc.ui.labels@Error")
-                                                    });
-                                                return false;
-                                            }
-                                        });
-                                    }
-                                    else if (trName === I18N.message("perc.ui.page.menu@Take Down"))
-                                    {
-                                        // $.PercBlockUI();
-                                        $.PercItemPublisherService.takeDownItem(itemId, itemType, _afterPublish);
-                                    }
-                                    else if(trName === I18N.message("perc.ui.page.menu@Stage"))
-                                    {
-                                        $.PercBlockUI();
-                                        $.PercItemPublisherService.publishToStaging(itemId, itemType, _afterPublish);
-                                    }
-                                    else if(trName === I18N.message("perc.ui.page.menu@Remove from Staging"))
-                                    {
-                                        $.PercBlockUI();
-                                        $.PercItemPublisherService.removeFromStaging(itemId, itemType, _afterPublish);
-                                    }
-                                },
+                                            var scheduleDates = eval("(" + result + ")").ItemDates;
+                                            _confirmPublish(scheduleDates);
+                                        }
+                                        else
+                                        {
+                                            $.perc_utils.alert_dialog(
+                                                {
+                                                    content: I18N.message("perc.ui.page.confirmpublish@Unable to get the saved publish dates"),
+                                                    title: I18N.message("perc.ui.labels@Error")
+                                                });
+                                            return false;
+                                        }
+                                    });
+                                }
+                                else if (trName === I18N.message("perc.ui.page.menu@Take Down"))
+                                {
+                                    // $.PercBlockUI();
+                                    $.PercItemPublisherService.takeDownItem(itemId, itemType, _afterPublish);
+                                }
+                                else if(trName === I18N.message("perc.ui.page.menu@Stage"))
+                                {
+                                    $.PercBlockUI();
+                                    $.PercItemPublisherService.publishToStaging(itemId, itemType, _afterPublish);
+                                }
+                                else if(trName === I18N.message("perc.ui.page.menu@Remove from Staging"))
+                                {
+                                    $.PercBlockUI();
+                                    $.PercItemPublisherService.removeFromStaging(itemId, itemType, _afterPublish);
+                                }
+                            },
                             function()
                             {
                                 //an Admin has overridden the current editor in another session

@@ -90,7 +90,7 @@
 
         // I18N
         var fieldHelpText = "";
-        if (options.help !== undefined && options.help != null)
+        if (typeof options.help !== 'undefined' && options.help != null)
             fieldHelpText = options.help;
         else
             fieldHelpText = I18N.message("perc.ui.folderPropsDialog.inputField@Enter a username");
@@ -215,7 +215,7 @@
         function setListItems(items) {
             // copy the items to a local array
             listItems = [];
-            if(items !== undefined && items != null && items.length > 0) {
+            if(typeof items !== undefined && items != null && items.length > 0) {
                 for(let u of items) {
                     listItems.splice(0,0,u);
                     filterAllowedItems(u);
@@ -252,7 +252,7 @@
 
         function addListItem(listItem) {
             // basic validation
-            if(listItem == null || listItem === "")
+            if(listItem == null || listItem === "" || typeof listItem === 'undefined')
                 return;
 
             // dont allow duplicates
