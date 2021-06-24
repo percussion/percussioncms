@@ -182,7 +182,7 @@
             if (controller.getSelectedRole() !== "Admin" && controller.getSelectedRole() !== "Designer"){
                 $("#perc-roles-name-field")
                     .removeClass("perc-roles-field-readonly")
-                    .removeAttr("readonly")
+                    .prop("readonly",false)
                     .on("change",function() {
                         dirtyController.setDirty(true, "role");
                     });
@@ -190,7 +190,7 @@
 
             $("#perc-roles-description-field")
                 .removeClass("perc-roles-field-readonly")
-                .removeAttr("readonly")
+                .prop("readonly",false)
                 .attr("style", "height: 55px;width: 100%;")
                 .on("change",function() {
                     dirtyController.setDirty(true, "role");
@@ -212,7 +212,7 @@
         function showNewRoleEditor() {
             $("#perc-roles-name-field")
                 .removeClass("perc-roles-field-readonly")
-                .removeAttr("readonly")
+                .prop("readonly",false)
                 .val("")
                 .trigger("focus")
                 .on("change",function() {
@@ -221,7 +221,7 @@
             $("#perc-roles-name-label").addClass("perc-required-field");
             $("#perc-roles-description-field")
                 .removeClass("perc-roles-field-readonly")
-                .removeAttr("readonly")
+                .prop("readonly",false)
                 .attr("style", "height: 55px;width: 100%;")
                 .val("")
                 .on("change",function() {
