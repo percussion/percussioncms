@@ -92,9 +92,9 @@
                     }
                 }
                 var checkStatus = [];
-                checkStatus[0] = permission === $.PercFolderHelper().PERMISSION_READ?" selected='true' ":"";
-                checkStatus[1] = permission === $.PercFolderHelper().PERMISSION_WRITE?" selected='true' ":"";
-                checkStatus[2] = permission === $.PercFolderHelper().PERMISSION_ADMIN?" selected='true' ":"";
+                checkStatus[0] = permission === $.PercFolderHelper().PERMISSION_READ?" selected ":"";
+                checkStatus[1] = permission === $.PercFolderHelper().PERMISSION_WRITE?" selected ":"";
+                checkStatus[2] = permission === $.PercFolderHelper().PERMISSION_ADMIN?" selected ":"";
 
                 dialog = $(
                     "<div>" +
@@ -103,7 +103,7 @@
                     "<div class='fieldGroup'>" +
                     "<div id='perc-folder-general-properties-container'>" +
                     "<div>" +
-                    "<label for='perc-folder-name'class='perc-required-field'>" + I18N.message( "perc.ui.folderPropsDialog.label@Name" ) + ":</label> <br/> " +
+                    "<label for='perc-folder-name' class='perc-required-field'>" + I18N.message( "perc.ui.folderPropsDialog.label@Name" ) + ":</label> <br/> " +
                     "<input type='text' class='required' tabindex='" + taborder + "' id='perc-folder-name' name='folder_name' maxlength='50' value=\""+ fProps.name +"\"/> <br/>" +
                     "<label id='perc_folder_duplicate_error' style='display: none;' class='perc_field_error'></label><br/>" +
                     "</div>" +
@@ -111,7 +111,7 @@
                     "</div>" +
 
                     "<div class='fieldGroup'>" +
-                    "<div id='perc-user-permissions-container' style='display:inline-block;>"  +
+                    "<div id='perc-user-permissions-container' style='display:inline-block;'>"  +
                     "<label for='perc-folder-permission'>" + I18N.message( "perc.ui.folderPropsDialog.label@Permission" ) + ":</label> <br/>" +
 
                     // refactored from radio buttons to drop downs
@@ -125,7 +125,7 @@
                     "<input type='hidden' id='perc-folder-oldname' value=\"" + fProps.name + "\"/>" +
 
                     // render the list editor widget for folder permission users in the following div
-                    "<div id='perc-folder-permission-users'/>" +
+                    "<div id='perc-folder-permission-users'></div>" +
                     "</div>" +
                     "</div>" +
 
@@ -182,7 +182,6 @@
 
                 $.PercUserService.getUsers(function(status, usersJson) {
                     if(status === $.PercUserService.STATUS_ERROR) {
-                        //TODO: TEST ME I18N
                         $.PercUserView.alertDialog(I18N.message("perc.ui.folder.properties.dialog@Error Loading Users"), usersJson);
                         return;
                     }
@@ -211,7 +210,7 @@
 
                     _addFieldGroups();
 
-                    //Only render the sites allowed for asset folder if the folder is a root asset folder.  
+                    //Only render the sites allowed for asset folder if the folder is a root asset folder.
                     if(isRootAssetFolder)
                     {
                         // Make an AJAX request to get the list of all sites
@@ -228,7 +227,7 @@
                                     var securityPanel = dialog.find('#perc-asset-folder-sites-container');
                                     var allowedSitesSelect = $("<select name='allowed-sites' id='allowed-sites' multiple='multiple'></select>");
                                     securityPanel.append(allowedSitesSelect);
-                                    // The list of allowed sites for the folder is a comma-sepparated 
+                                    // The list of allowed sites for the folder is a comma-sepparated
                                     // string or a number (if only one site was allowed)
                                     var allowedSites = [];
                                     if (fProps.allowedSites !== undefined) {
@@ -250,7 +249,8 @@
                                         var option = $("<option/>")
                                             .attr("value",sites[s].siteId)
                                             .attr("title",sites[s].name)
-                                            .text(sites[s].name);
+                                            .text(sites[s].name)
+                                            .css("color", "#212121");
                                         if (selected) option.attr("selected", "selected");
                                         allowedSitesSelect.append(option);
                                     }
