@@ -3565,7 +3565,7 @@ public class PSPublisherService
       
       Session session = getSessionFactory().getCurrentSession();
 
-         Query q =session.createQuery("select sr.name, p.date, p.operation, p.status, p.message, p.statusId from PSPubItem p, PSPubStatus s, PSPubServer sr where p.statusId = s.statusId and s.pubServerId = sr.serverId and p.contentId = :contentId order by p.date desc");
+         Query q =session.createQuery("select sr.name, p.date, p.operation, p.status, p.message, p.statusId,p.contentId, p.revisionId,p.location from PSPubItem p, PSPubStatus s, PSPubServer sr where p.statusId = s.statusId and s.pubServerId = sr.serverId and p.contentId = :contentId order by p.date desc");
          q.setParameter("contentId", new Integer(lguid.getContentId()));
          List<Object[]> rows = q.list();
          Set<Integer> statusIds = new HashSet<>();
@@ -3581,21 +3581,26 @@ public class PSPublisherService
                }
                catch(Exception e){
                   //This should not happen, in case happens log the details and send the operation as error
-                  log.error("Error occurred converting the operation for publishing entry for content id: "
-                  + lguid.toString() + " and publishing date " + date.toString(), e);
+                  log.error("Error occurred converting the operation for publishing entry for content id: {} and publishing date {}. Error: {}" ,
+                          lguid , date, e.getMessage());
+                  log.debug(e.getMessage(),e);
                }
                String status = "Error";
                try{
-                  int st = Integer.valueOf(StringUtils.EMPTY + row[3]);
+                  int st = Integer.parseInt(StringUtils.EMPTY + row[3]);
                   status = (IPSSiteItem.Status.values()[st]).toString();
                }
                catch(Exception e){
                   //This should not happen, in case happens log the details and send the operation as error
-                  log.error("Error occurred converting the status for publishing entry for content id: "
-                  + lguid.toString() + " and publishing date " + date.toString(), e);
+                  log.error("Error occurred converting the status for publishing entry for content id: {} and publishing date {}. Error: {}",
+                          lguid, date, e.getMessage());
+                  log.debug(e.getMessage(),e);
                }
+               Integer contentId = Integer.valueOf(StringUtils.EMPTY + row[6]);
+               Integer revisionId = Integer.valueOf(StringUtils.EMPTY + row[7]);
+               String location = StringUtils.EMPTY + row[8];
                String message = StringUtils.EMPTY + row[4];
-               PSItemPublishingHistory ph = new PSItemPublishingHistory(srvName,date,status,operation, message);
+               PSItemPublishingHistory ph = new PSItemPublishingHistory(contentId, revisionId, srvName,date,status,operation, message,location);
                results.add(ph);
             }
             statusIds.add(statusId);
