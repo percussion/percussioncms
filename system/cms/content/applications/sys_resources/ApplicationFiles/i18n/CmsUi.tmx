@@ -3644,7 +3644,56 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
         <seg>Última revisión</seg>
     </tuv>
 </tu>
-
+<tu tuid="perc.ui.revisionDialog.label@Revision">
+    <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Revision</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Revisión</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.label@Status">
+    <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Status</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Estado</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.label@Last Modified">
+    <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Last Modified</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Última modificación</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.label@Last Modifier">
+    <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Last Modifier</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Último modificador</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.label@Actions">
+    <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Actions</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Comportamiento</seg>
+    </tuv>
+</tu>
 <!-- User Management -->
 
 <!-- Edit LDAP User -->
@@ -13777,5 +13826,114 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 </tuv>
 </tu>
 
-</body>
+<tu tuid="perc.ui.publishing.history@No Publishing History">
+    <prop type="sectionname" xml:lang="en-us">Publishing History</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>No Publishing History found for:</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>No se encontró historial de publicación para:</seg>
+    </tuv>
+</tu>
+
+<tu tuid="perc.ui.publishing.history@Publishing History">
+    <prop type="sectionname" xml:lang="en-us">Publishing History</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Publishing History</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Historial de publicaciones</seg>
+    </tuv>
+</tu>
+
+<tu tuid="perc.ui.publishing.history@Server">
+    <prop type="sectionname" xml:lang="en-us">Publishing History</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Server</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Servidor</seg>
+    </tuv>
+</tu>
+
+<tu tuid="perc.ui.publishing.history@Content Id">
+    <prop type="sectionname" xml:lang="en-us">Publishing History</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Content Id</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>ID de contenido</seg>
+    </tuv>
+</tu>
+
+<tu tuid="perc.ui.publishing.history@Revision">
+    <prop type="sectionname" xml:lang="en-us">Publishing History</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Revision</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Revisión</seg>
+    </tuv>
+</tu>
+
+<tu tuid="perc.ui.publishing.history@Date">
+    <prop type="sectionname" xml:lang="en-us">Publishing History</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Date</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Fecha</seg>
+    </tuv>
+</tu>
+
+<tu tuid="perc.ui.publishing.history@Status">
+    <prop type="sectionname" xml:lang="en-us">Publishing History</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Status</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Estado</seg>
+    </tuv>
+</tu>
+
+<tu tuid="perc.ui.publishing.history@Error Fetching History">
+    <prop type="sectionname" xml:lang="en-us">Publishing History</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Error fetching publishing history for:</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Error al obtener el historial de publicaciones de:</seg>
+    </tuv>
+</tu>
+
+<tu tuid="perc.ui.publishing.history@Location">
+    <prop type="sectionname" xml:lang="en-us">Publishing History</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Location</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Localización</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.publishing.history@Operation">
+    <prop type="sectionname" xml:lang="en-us">Publishing History</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Operation</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Operación</seg>
+    </tuv>
+</tu>
+
+    </body>
 </tmx>

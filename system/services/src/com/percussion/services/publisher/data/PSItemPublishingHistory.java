@@ -40,7 +40,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class PSItemPublishingHistory extends PSAbstractDataObject
 {
 
+   private String location;
+
    String server;
+
+   Integer contentId;
+
+   Integer revisionId;
 
    String errorMessage;
 
@@ -69,13 +75,9 @@ public class PSItemPublishingHistory extends PSAbstractDataObject
 
    /**
     * Constructs an instance of the class.
-    * 
-    * @param revId revision id not an actual ID but a numeric counter
-    * @param lastModifiedDate date when this item was last modified, never blank
-    * @param lastModifier the user name who modified the item last, never blank
-    * @param status status of this page or asset, never blank
+    *
     */
-   public PSItemPublishingHistory(String server, Date publishedDate, String status, String operation, String errorMessage)
+   public PSItemPublishingHistory(Integer contentId, Integer revisionId, String server, Date publishedDate, String status, String operation, String errorMessage, String location)
    {
       notEmpty(server, "server");
       notEmpty(status, "status");
@@ -85,6 +87,9 @@ public class PSItemPublishingHistory extends PSAbstractDataObject
       this.errorMessage = errorMessage;
       this.status = status;
       this.operation = operation;
+      this.contentId = contentId;
+      this.revisionId = revisionId;
+      this.location = location;
    }
 
    /**
@@ -147,6 +152,30 @@ public class PSItemPublishingHistory extends PSAbstractDataObject
     */
    public String getStatus() {
       return status;
+   }
+
+   public Integer getContentId() {
+      return contentId;
+   }
+
+   public void setContentId(Integer contentId) {
+      this.contentId = contentId;
+   }
+
+   public Integer getRevisionId() {
+      return revisionId;
+   }
+
+   public void setRevisionId(Integer revisionId) {
+      this.revisionId = revisionId;
+   }
+
+   public String getLocation() {
+      return location;
+   }
+
+   public void setLocation(String location) {
+      this.location = location;
    }
 
    /**

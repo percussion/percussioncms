@@ -23,71 +23,51 @@
  */
 
 /**
-* Publishing History Dialog
-*/
+ * Publishing History Dialog
+ */
 (function($){
     //Public API for the publishing history dialog.
     $.PercPublishingHistoryDialog = {
-            open: openDialog,
-            ITEM_TYPE_ASSET:"asset",
-            ITEM_TYPE_PAGE:"page",
-            ITEM_MODE_EDIT:"edit",
-            ITEM_MODE_VIEW:"view"
+        open: openDialog,
+        ITEM_TYPE_ASSET:"asset",
+        ITEM_TYPE_PAGE:"page",
+        ITEM_MODE_EDIT:"edit",
+        ITEM_MODE_VIEW:"view"
     };
-    
+
     /**
      * Opens the publishing history dialog and shows the publishing history in a table for the supplied item.
      * @param itemId(String), assumed to be a valid guid of the item (Page or Asset)
      * @param itemName(String) name of the item to be shown part of the dialog.
      * @param itemType(String), The type of the item. Use ITEM_TYPE_XXX constants.
      */
-    function openDialog(itemId, itemName, itemType) 
+    function openDialog(itemId, itemName, itemType)
     {
-        // custom column sorting for Modified and Published columns (We need this before the table is assigned)
-        $.fn.dataTableExt.afnSortData['perc-dom-text'] = function  ( oSettings, iColumn ) {
-            var aData = [];
-            $( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
-                var data = $(this).text();
-                aData.push( data );
-            });
-            return aData;
-        };
-        // custom column sorting for Modified column
-        $.fn.dataTableExt.afnSortData['perc-dom-date'] = function  ( oSettings, iColumn ) {
-            var aData = [];
-            $( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
-                var data = $(this).data("timedate");
-                aData.push( data );
-            });
-            return aData;
-        };
-    	
-    	
-    	getItemPublishingHistory(itemId).done(function(data){
-    		if(data.ItemPublishingHistory.length === 0){
+        getItemPublishingHistory(itemId).done(function(data){
+            if(data.ItemPublishingHistory.length === 0){
                 $.perc_utils.alert_dialog({"title":I18N.message("perc.ui.publishing.history@No Publishing History") + itemType,"content":I18N.message("perc.ui.publishing.history@No Publishing History For") + ' ' + itemType});
                 return;
-    		}
-    		createDialog(data);
-    	}).fail(function(errorMsg){
+            }
+            createDialog(data);
+        }).fail(function(errorMsg){
             $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: errorMsg});
 
-    	});
+        });
         var dialog;
         /**
-        * Creates the dialog and on dialog open calls the addHistoryRows to add the history entries.
-        */
+         * Creates the dialog and on dialog open calls the addHistoryRows to add the history entries.
+         */
         function createDialog(data)
         {
             var self = this;
             var pubHistory = data.ItemPublishingHistory;
             if(!Array.isArray(data.ItemPublishingHistory)){
-            	pubHistory = [data.ItemPublishingHistory];
+                pubHistory = [data.ItemPublishingHistory];
             }
             var dialogHTML = createPubHistoryTable();
             dialog = $(dialogHTML).perc_dialog( {
                 resizable : false,
-                title: I18N.message("Publishing History") + ": " + itemName,
+                title: I18N.message("perc.ui.publishing.history@Publishing History") + ": " + itemName + " (" + pubHistory[0].contentId + ")",
                 modal: true,
                 closeOnEscape : true,
                 percButtons:{
@@ -107,28 +87,36 @@
             });
 
         }
-        
+
         /**
          * Creates the publisshing history table html, with wrapper div. Empty tbody is added.
          * @return publishing history table html.
          */
         function createPubHistoryTable()
         {
-            var $dialogHtml = $("<div class='dataTables_wrapper' style='height: 100%; z-index: 4470;position:relative;' id='perc-pubhistory-container'>" +
-                                "<table id='pubHistoryTable' width='100%''>" +
-                                    "<thead>" +
-                                        "<tr>" +
-                                            "<th align='left' width='30%' id='perc-header-server'><span class='col-name'>Server</span></th>" +
-                                            "<th align='left' width='30%' id='perc-header-date'><span class='col-name'>Date</span></th>" +
-                                            "<th align='left' width='20%' id='perc-header-status'><span class='col-name'>Status</span></th>" +
-                                        "</tr>" +
-                                    "</thead>" +
-                                    "<tbody></tbody>" +
-                                 "</table>" +
-                             "</div>");
-            return $dialogHtml;
+            return $("<div class='dataTables_wrapper' style='height: 100%; z-index: 4470;position:relative;' id='perc-pubhistory-container'>" +
+                "<table id='pubHistoryTable' style='width:100%'>" +
+                "<thead>" +
+                "<tr>" +
+                "<th style='text-align:left;width:10%;' id='perc-header-server'><span class='col-name'>" +
+                I18N.message("perc.ui.publishing.history@Server") + "</span></th>" +
+                "<th style='text-align:left;width:40%;' id='perc-header-location'><span class='col-name'>" +
+                I18N.message("perc.ui.publishing.history@Location") + "</span></th>" +
+                "<th style='text-align:left;width:5%;' id='perc-header-revision'><span class='col-name'>" +
+                I18N.message("perc.ui.publishing.history@Revision") + "</span></th>" +
+                "<th style='text-align:left;width:30%;' id='perc-header-date'><span class='col-name'>" +
+                I18N.message("perc.ui.publishing.history@Date") + "</span></th>" +
+                "<th style='text-align:left;width:10%;' id='perc-header-operation'><span class='col-name'>" +
+                I18N.message("perc.ui.publishing.history@Operation") + "</span></th>" +
+                "<th style='text-align:left;width:10%;' id='perc-header-status'><span class='col-name'>" +
+                I18N.message("perc.ui.publishing.history@Status") + "</span></th>" +
+                "</tr>" +
+                "</thead>" +
+                "<tbody></tbody>" +
+                "</table>" +
+                "</div>");
         }
-        
+
         /**
          * Adds the publishing history table header and data rows, then applies the data table plugin.
          */
@@ -145,39 +133,37 @@
                 var pubDateTime = pubDateParts.time;
                 var errorMsg="";
                 if(pubEntry.status === "FAILURE"){
-                	errorMsg = " title=\"" + pubEntry.errorMessage + "\" ";
+                    errorMsg = " title=\"" + pubEntry.errorMessage + "\" ";
                 }
                 var $rowHTML = $(
-                "<tr>" +
-                    "<td valign='middle'><div class='data-cell perc-ellipsis'>" + pubEntry.server + "</div></td>" +
-                    "<td valign='middle'><div class='data-cell perc-ellipsis'>" + pubDateDate + " " + pubDateTime + "</div></td>" +
-                    "<td valign='middle'><div class='data-cell perc-ellipsis'>" + pubEntry.operation + "</div></td>" +
-                    "<td valign='middle'><div class='data-cell perc-ellipsis'" + errorMsg + ">" + pubEntry.status + "</div></td>" +
-                "</tr>");
+                    "<tr>" +
+                    "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis'>" + pubEntry.server + "</div></td>" +
+                    "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis'>" + pubEntry.location + "</div></td>" +
+                    "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis'>" + pubEntry.revisionId + "</div></td>" +
+                    "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis'>" + pubDateDate + " " + pubDateTime + "</div></td>" +
+                    "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis'>" + pubEntry.operation + "</div></td>" +
+                    "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis' title='" + errorMsg + "'>" + pubEntry.status + "</div></td>" +
+                    "</tr>");
                 $rowHTML.find("td:eq(1)").data("timedate", pubDate);
                 $tbody.append($rowHTML);
             }
 
-            $("#pubHistoryTable").dataTable({
+            $("#pubHistoryTable").DataTable({
                 "aaSorting": [[ 1, "desc" ]],
                 "bFilter" : false,
                 "bDestroy":true,
-                "bAutoWidth" : false,
+                "autoWidth" : true,
+                "ordering": true,
+                "searching": false,
+                responsive: true,
                 // turn on pagination and use sequential and random access pagination controls
-                "bPaginate" : true,
+                "paging" : true,
                 "sPaginationType" : "full_numbers",
                 "iDisplayLength" : 10,
                 "bLengthChange" : false,
                 "bInfo" : true,
                 // if table has no rows show the following error
                 "oLanguage": {"sZeroRecords": "No History Found"},
-                // set custom column sorter data types
-                "aoColumns": [
-                    null,
-                    {"sType": "date" , "sSortDataType": "perc-dom-date"},
-                    null,
-                    null
-                ],
                 // if on first or last page, update the disabled color of the sequential pagination controls
                 "fnFooterCallback": function( nFoot, aasData, iStart, iEnd, aiDisplay ) {
                     // set them all to their default active color
@@ -197,8 +183,9 @@
                     }
                 }
             });
+
         }
-        
+
         /**
          * Makes a service call to fetch the publishing history entries from server.
          * If successful resolves with data object returned by the service, rejects with error message.
@@ -208,13 +195,13 @@
             var deferred  = $.Deferred();
             var url = $.perc_paths.ITEM_PUB_HISTORY + itemId;
             var serviceCallback = function(status, result){
-                    if(status === $.PercServiceUtils.STATUS_SUCCESS){
-                        deferred.resolve(result.data);
-                    } else {
-                        var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
-                        $.perc_utils.info(I18N.message("perc.ui.publishing.history@Error Fetching History") + itemId + defaultMsg);
-                        deferred.reject(defaultMsg);
-                    }
+                if(status === $.PercServiceUtils.STATUS_SUCCESS){
+                    deferred.resolve(result.data);
+                } else {
+                    var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
+                    $.perc_utils.info(I18N.message("perc.ui.publishing.history@Error Fetching History") + itemId + defaultMsg);
+                    deferred.reject(defaultMsg);
+                }
             };
             $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,serviceCallback);
             return deferred.promise();

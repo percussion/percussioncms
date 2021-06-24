@@ -71,9 +71,6 @@
         };
 
         function imageUploadResponse(data, statusText) {
-
-            // alert('status: ' + statusText + '\n\ndata: \n' + data +
-            //  '\n\nThe output div should have already been updated with the responseText.');
             $('#image_asset_upload_message').html('');
             if (config.debug) {
                 var $out = $('#uploadOutput');
@@ -127,7 +124,7 @@
                 },
                 function ( data, textStatus) {
                     imageInfo.image = data;
-                    if (typeof(uploadedImage) == "undefined"  ) {
+                    if (typeof(uploadedImage) === "undefined"  ) {
                         uploadedImage = imageInfo.image;
                         form.find(".image_asset_orig_height").html(uploadedImage.height);
                         form.find(".image_asset_orig_width").html(uploadedImage.width);
@@ -235,7 +232,6 @@
                 imageInfo.displayImage = imageInfo.image;
                 renderMainImage(imageInfo);
             } else {
-                //alert ('image too large resizing');
                 var height=imageInfo.image.height;
                 var width=imageInfo.image.width;
                 var displayScale = 100;
