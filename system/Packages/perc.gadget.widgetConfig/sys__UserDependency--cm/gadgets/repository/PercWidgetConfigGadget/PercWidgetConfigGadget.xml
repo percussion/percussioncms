@@ -80,7 +80,7 @@
     <script >
         var loadingMsg = null;
         var miniMsg = null;
-        $(document).ready(function() {
+        $(function() {
             miniMsg = new gadgets.MiniMessage(__MODULE_ID__);
             loadingMsg = miniMsg.createStaticMessage("Loading...");
             var widgetArray = [];
@@ -102,8 +102,14 @@
 
                         return;
                     }
-                    disabledWidgets = data?data.metadata.data:[];
-                    disabledWidgets = $.parseJSON(disabledWidgets);
+
+                    if(typeof data === 'undefined'){
+                        disabledWidgets = [];
+                    }else if(typeof data === 'string'){
+                        disabledWidgets = JSON.parse(data).metadata.data;
+                    }else{
+                        disabledWidgets = data.metadata.data;
+                    }
                     renderWidgets();
                 });
             }
@@ -131,8 +137,12 @@
             {
                 var wdgSum = widgetsList[i-1];
                 var checkedAttr = " checked=\"checked\" ";
-                if($.inArray(wdgSum.id, disabledWidgets) != -1)
+
+                if(disabledWidgets.indexOf(wdgSum.id) !== -1){
                     checkedAttr = "";
+                    console.debug("Disabling widget: " + wdgSum.id);
+                }
+
                 var toolTip = wdgSum.description;
                 if(wdgSum.name)
                     toolTip += " (" + wdgSum.name + ")";
@@ -154,7 +164,7 @@
                 }).get();
                 percJQuery.PercMetadataService.save("percwidgetconfiguration", values, function(status, data){
                     percJQuery.unblockUI();
-                    if(status == percJQuery.PercServiceUtils.STATUS_ERROR){
+                    if(status === percJQuery.PercServiceUtils.STATUS_ERROR){
                         return;
                     }
 

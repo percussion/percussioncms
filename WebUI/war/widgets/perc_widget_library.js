@@ -42,9 +42,9 @@ $.perc_create_widget_library = function( btn ) {
        wdg = $("<div/>") 
 	    .css({'position': 'relative', 'width': '200px'})
 	    .addClass("perc-widget")
-	    .append($("<span/>").append(w['label']).addClass("perc-widget-label") )
-	    .append( $("<img src=\"" + w['icon'] + "\" alt=\"\"></img>") )
-	    .attr('id',"widget-" + w['id'] + "-" + $('.perc-widget').length)
+	    .append($("<span/>").append(w.label).addClass("perc-widget-label") )
+	    .append( $("<img src=\"" + w.icon + "\" alt=\"\"></img>") )
+	    .attr('id',"widget-" + w.id + "-" + $('.perc-widget').length)
             .draggable({
                   appendTo: 'body',
                   helper: 'clone',
@@ -57,7 +57,7 @@ $.perc_create_widget_library = function( btn ) {
     }
 
     function mk_sortable_items( specs ){
-	return $.map(specs['WidgetSummary'], function(spec) {
+	return $.map(specs.WidgetSummary, function(spec) {
 		   var sortDiv = $("<div/>").append( mk_widget( spec ) ).css({ 'float': 'left' } );
                    return sortDiv; });
     }

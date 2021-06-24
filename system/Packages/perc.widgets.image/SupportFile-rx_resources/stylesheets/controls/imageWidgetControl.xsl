@@ -293,7 +293,7 @@
                             $.PercServiceUtils.TYPE_GET,
                             false,
                             function(status, result){
-                               if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                               if(status === $.PercServiceUtils.STATUS_SUCCESS)
                                {                  
                                   $("#" + prefix + "_height").text(result.data.height);  
 				  $("#" + prefix + "_width").text(result.data.width);

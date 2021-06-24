@@ -80,10 +80,10 @@ if(locale==null){
             workflow: 'VIEW_WORKFLOW',
             widgetbuilder: 'VIEW_WIDGET_BUILDER'
         };
-        function clear () {
+        function clear (evt) {
             clearTimeout(timerid);
         }
-        function hide () {
+        function hide (evt) {
             clear();
             timerid = setTimeout(function () {
                 $('.perc-topnav .perc-actions-menu').hide();
@@ -110,8 +110,13 @@ if(locale==null){
             navMgr.goToLocation.apply(navMgr, navMgrArguments);
             $(this).parents('.perc-actions-menu').hide();
         });
-        $('.perc-topnav, .perc-topnav .perc-actions-menu').on("mouseenter",clear).on("mouseleave",hide);
-
+        $('.perc-topnav, .perc-topnav .perc-actions-menu').on("mouseenter",
+            function(evt){
+                clear(evt);
+            }).on("mouseleave",
+            function(evt) {
+                hide(evt);
+            });
     });
     /*]]>*/
     </script>

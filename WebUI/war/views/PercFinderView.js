@@ -57,10 +57,24 @@
         this.setView = setView;
 
         // choose column or list view
-        var chooseColumnView = $("#perc-finder-choose-columnview").on("click",setViewColumn);
-        var chooseListView = $("#perc-finder-choose-listview").on("click",setViewList);
-        var chooseSearchView = $("#perc-finder-search-submit").on("click",setViewSearch);
-        var chooseMyPagesView = $("#perc-finder-choose-mypagesview").on("click",setMyPagesView);
+        var chooseColumnView = $("#perc-finder-choose-columnview").on("click",
+            function(evt){
+                setViewColumn(evt);
+            });
+
+        var chooseListView = $("#perc-finder-choose-listview").on("click",
+            function(evt){
+                setViewList(evt);
+            });
+        var chooseSearchView = $("#perc-finder-search-submit").on("click",
+            function(evt){
+                setViewSearch(evt);
+            });
+        var chooseMyPagesView = $("#perc-finder-choose-mypagesview").on("click",
+            function(evt){
+                setMyPagesView(evt);
+            });
+
         setColumnViewButtonOn();
 
         // singleton to keep track of dirty state across various types of resources such as pages, templates and assets
@@ -101,8 +115,10 @@
             }
             else
             {
-                $("#perc-finder-item-search").removeAttr('disabled');
-                chooseSearchView.on("click",setViewSearch);
+                $("#perc-finder-item-search").prop('disabled',false);
+                chooseSearchView.on("click",function(evt){
+                    setViewSearch(evt);
+                });
             }
         };
 
@@ -118,7 +134,9 @@
             }
             else
             {
-                chooseListView.on("click",setViewList);
+                chooseListView.on("click",function(evt){
+                    setViewList(evt);
+                });
             }
         };
 
@@ -135,7 +153,7 @@
         var pagingBar = "";
 
         // Bind the Enter key and Esc key on Input search field
-        $("#perc-finder-item-search").on("focus",function()
+        $("#perc-finder-item-search").on("focus",function(evt)
         {
             $(this).css('color', '#FFFFFF').css('background-color', '#5a5d69');
         }).on('keyup', function(evt)
@@ -158,7 +176,7 @@
         });
 
         //Set the newStartIndex and refresh the view
-        function pagePrevious()
+        function pagePrevious(event)
         {
             percFinderListviewContainer = $(".perc-finder").find('#perc-finder-listview');
             percFinderListviewContainer.data('startIndex', percFinderListviewContainer.data('startIndex') - MAX_RESULTS);
@@ -167,7 +185,7 @@
         }
 
         //Set the newStartIndex and refresh the view
-        function pageNext(newStartIndex)
+        function pageNext(event)
         {
             var percFinderListviewContainer = $(".perc-finder").find('#perc-finder-listview');
             percFinderListviewContainer.data('startIndex', percFinderListviewContainer.data('startIndex') + MAX_RESULTS);
@@ -267,13 +285,19 @@
             //Enable/disable navigation buttons
             //Check if have next items
             if ((totalResult - (startIndex - 1 + MAX_RESULTS)) > 0)
-                pagingBar.find('.perc-pagingbar-next').removeClass('perc-disabled-navigator').off('click').on("click",pageNext);
+                pagingBar.find('.perc-pagingbar-next').removeClass('perc-disabled-navigator').off('click').on("click",
+                    function(evt){
+                        pageNext(evt);
+                    });
             else
                 pagingBar.find('.perc-pagingbar-next').addClass('perc-disabled-navigator').off('click');
 
             //Check if have previous items
             if (startIndex > MAX_RESULTS)
-                pagingBar.find('.perc-pagingbar-previous').removeClass('perc-disabled-navigator').off('click').on("click",pagePrevious);
+                pagingBar.find('.perc-pagingbar-previous').removeClass('perc-disabled-navigator').off('click').on("click",
+                    function(evt){
+                        pagePrevious(evt);
+                    });
             else
                 pagingBar.find('.perc-pagingbar-previous').addClass('perc-disabled-navigator').off('click');
         }
@@ -303,8 +327,6 @@
                 fixHeight();
                 if ($("#perc_site_map").length > 0)
                 {
-                    //CMS-8036 : Initialize befor calling layout method.
-                    $("#perc_site_map").perc_site_map();
                     $("#perc_site_map").perc_site_map('layoutAll');
                 }
             }
@@ -468,7 +490,7 @@
          * Calls the setView method to set the finder in Column mode.
          * It is generally bound to click events on buttons that switch views.
          */
-        function setViewColumn()
+        function setViewColumn(event)
         {
             setView(PERC_FINDER_VIEW_COLUMN);
         }
@@ -477,7 +499,7 @@
          * Calls the setView method to set the finder in List mode.
          * It is generally bound to click events on buttons that switch views.
          */
-        function setViewList()
+        function setViewList(event)
         {
             setView(PERC_FINDER_VIEW_LIST);
         }
@@ -486,12 +508,12 @@
          * Calls the setView method to set the finder in Search results mode.
          * It is generally bound to click events on buttons that switch views.
          */
-        function setViewSearch()
+        function setViewSearch(event)
         {
             performSearch();
         }
 
-        function setMyPagesView()
+        function setMyPagesView(event)
         {
             setView(PERC_FINDER_SEARCH_TYPE_MYPAGES, true);
         }
@@ -560,8 +582,6 @@
 
                     if ($("#perc_site_map").length > 0)
                     {
-                        //CMS-8036 : Initialize befor calling layout method.
-                        $("#perc_site_map").perc_site_map();
                         $("#perc_site_map").perc_site_map('layoutAll');
                     }
                 }
@@ -580,7 +600,7 @@
                 percFinderListviewContainer = addListViewContainer();
                 var contentPath = lastColumn.data('path');
                 //if the column doesn't have path data is a summary column
-                if (typeof(contentPath) == "undefined")
+                if (typeof(contentPath) === 'undefined')
                 {
                     lastColumn = lastColumn.prev();
                     contentPath = lastColumn.data('path').join("/");
@@ -930,7 +950,7 @@
             }
             else if (type === "page" || type === "template")
             {
-                if (layoutModel !== undefined && layoutModel != null)
+                if (typeof layoutModel !== 'undefined' && layoutModel != null)
                 {
                     $.PercBlockUI();
                     layoutModel.save(function()
@@ -1030,6 +1050,9 @@
 
                                         }
                                     });
+                                }else{
+                                    //CMS-8107 : item.name always returned the asset name.
+                                    $.PercNavigationManager.handleOpenAsset(item, true);
                                 }
                             }
                             else
@@ -1275,8 +1298,6 @@
         finder.on('resize', function (event, ui) {
             //Refresh the arch view
             if ($("#perc_site_map").length > 0) {
-                //CMS-8036 : Initialize befor calling layout method.
-                $("#perc_site_map").perc_site_map();
                 $("#perc_site_map").perc_site_map('layoutAll');
             }
         });
@@ -1523,7 +1544,7 @@
                 var takeDownUrl =  $.perc_paths.PAGE_TAKEDOWN ;
                 takeDownUrl+="/" + pageId;
 
-                $.PercServiceUtils.makeJsonRequest(findLinkedItemsUrl, $.PercServiceUtils.TYPE_GET, true, function(status, result) {
+                $.PercServiceUtils.makeJsonRequest(findLinkedItemsUrl, $.PercServiceUtils.TYPE_GET, false, function(status, result) {
                     if (status === $.PercServiceUtils.STATUS_ERROR) {
                         var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result);
                         console.error(defaultMsg);

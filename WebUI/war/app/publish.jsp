@@ -104,11 +104,7 @@
     %>
     <link rel="stylesheet" type="text/css" href="../cssMin/perc_publish.packed.min.css"/>
     <link rel="stylesheet" href="../jslib/profiles/3x/libraries/fontawesome/css/all.css">
-    <script src="../jslib/profiles/3x/jquery/jquery-3.5.1.js"></script>
-    <script src="../jslib/profiles/3x/libraries/popper/popper.js"></script>
-    <script src="../jslib/profiles/3x/libraries/bootstrap/js/bootstrap.js"></script>
-    <script src="../jslib/profiles/3x/libraries/handlebars/handlebars-v4.0.12.js"></script>
-    <script src="../jslib/profiles/3x/libraries/momentjs/moment-with-locales.js"></script>
+
     <script src="../jslibMin/perc_publish.packed.min.js"></script>
     <%
         }

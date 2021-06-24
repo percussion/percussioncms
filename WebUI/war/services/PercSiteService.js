@@ -205,7 +205,7 @@
     function getBaseTemplates(type, callback){
         var templUrl = $.perc_paths.TEMPLATES_READONLY + "?type=" + type;
         //Load regular base templates
-        $.PercServiceUtils.makeJsonRequest(templUrl,$.PercServiceUtils.TYPE_GET,true,function(status, result){
+        $.PercServiceUtils.makeJsonRequest(templUrl,$.PercServiceUtils.TYPE_GET,false,function(status, result){
                 if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback(true, result.data);

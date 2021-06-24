@@ -147,7 +147,7 @@
                     validClass: "perc-field-success",
                     wrapper: "p",
                     validateHiddenFields: false,
-                    debug: true,
+                    debug: false,
                     submitHandler: function(form)
                     {
                         var editorUrl = $("#perc-editor-url").val( );
@@ -309,7 +309,7 @@
             });
         };
 
-        function check_for_dirty_page()
+        function check_for_dirty_page(event)
         {
             $.PercFolderHelper().getAccessLevelByPath(finderPath.join('/'),false,function(status, result){
                 if(status === $.PercFolderHelper().PERMISSION_ERROR || result === $.PercFolderHelper().PERMISSION_READ)
@@ -380,7 +380,7 @@
             return $.deparam.querystring().path;
         }
 
-        var newAssetButton = $('<a id="mcol-new-asset" class="perc-font-icon" title="'+I18N.message("perc.ui.new.asset.dialog@Click New Asset")+'" href="#" class="ui-disabled"><span class="icon-plus"></span><span class="icon-file-alt"></span></a>').perc_button();
+        var newAssetButton = $('<a id="mcol-new-asset" class="perc-font-icon" title="'+I18N.message("perc.ui.new.asset.dialog@Click New Asset")+'" href="#" class="ui-disabled"><span class="icon-plus fas fa-plus"></span><span class="icon-file-alt fas fa-file"></span></a>').perc_button();
         function updateBtn(path)
         {
             finderPath = path;
@@ -424,7 +424,10 @@
         function enableButton(flag)
         {
             if(flag){
-                newAssetButton.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", check_for_dirty_page );
+                newAssetButton.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt){
+                        check_for_dirty_page(evt);
+                    } );
             }
             else{
                 newAssetButton.addClass('ui-disabled').removeClass('ui-enabled').off('click');

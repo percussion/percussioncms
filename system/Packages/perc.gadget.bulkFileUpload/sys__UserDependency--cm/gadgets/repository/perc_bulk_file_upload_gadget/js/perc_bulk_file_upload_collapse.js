@@ -25,7 +25,7 @@
 var MODULE_ID = '';
 var iFrame = $(percJQuery.find("#remote_iframe_" + MODULE_ID));
 
-$(document).ready(function() {
+$(function() {
     MODULE_ID = $('#fileupload').data('module-id');
 
     // Initialize the two collapsers used

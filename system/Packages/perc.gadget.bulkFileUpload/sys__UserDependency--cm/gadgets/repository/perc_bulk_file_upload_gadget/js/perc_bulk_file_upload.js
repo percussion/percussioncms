@@ -31,16 +31,17 @@ var IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg', 'tiff', 'gif'];
 var DID_UPLOAD_FAIL = false;
 var XHR_REQUESTS = [];
 
-$(document).ready(function () {
+$(function () {
     $('#perc-selector-wrapper').hide();
     $('#perc-html-selector').val('');
-    $('#perc-upload-start').attr('disabled', true);
-    $('#perc-upload-clear').attr('disabled', true);
-    $('#perc-upload-cancel').attr('disabled', true);
+    $('#perc-upload-start').prop('disabled', true).
+        on("click",function() {
+            triggerSubmit();
+        });
+    $('#perc-upload-clear').prop('disabled', true);
+    $('#perc-upload-cancel').prop('disabled', true);
 
-    $('#perc-upload-start').on("click",function() {
-        triggerSubmit();
-    });
+
 
     $('#fileupload').fileupload({
         url: '/Rhythmyx/uploadAssetFile?folder=/Assets/uploads/test',
@@ -53,12 +54,12 @@ $(document).ready(function () {
             var buttonHtml = generateButtonHTML(data);
             data.context = buttonHtml;
             $('#perc-upload-trigger').on("click",function() {
-                $('#perc-upload-clear').attr('disabled', true);
-                $(this).unbind();
+                $('#perc-upload-clear').prop('disabled', true);
+                $(this).off();
                 if (data.files.length > 0) {
-                    $('#perc-upload-cancel').attr('disabled', false);
-                    $('#perc-global-progress').removeClass('fade');
-                    $('#perc-global-progress').show();
+                    $('#perc-upload-cancel').prop('disabled', false);
+                    $('#perc-global-progress').removeClass('fade')
+                    .show();
                     gadgets.window.adjustHeight();
                     data.url = calculateUrl();
                     jqXHR = data.submit();
@@ -73,7 +74,7 @@ $(document).ready(function () {
                     $('#perc-bulk-status').text(TOTAL_IN_QUEUE + MSG_QUEUED_FOR_UPLOAD);
                 }
                 $('#perc-added-files').fadeOut('slow', function() {
-                    $('#perc-upload-clear').attr('disabled', true);
+                    $('#perc-upload-clear').prop('disabled', true);
                     $(this).empty();
                 });
             });
@@ -179,16 +180,15 @@ markCompleted = function() {
     NUM_FAILED = 0;
     XHR_REQUESTS = [];
 
-    $('#perc-global-progress').addClass('fade');
-    $('#perc-upload-start').attr('disabled', true);
+    $('#perc-upload-start').prop('disabled', true);
     if (!DID_UPLOAD_FAIL) {
         // should remain available to clear the failed uploads
-        $('#perc-upload-clear').attr('disabled', true);
+        $('#perc-upload-clear').prop('disabled', true);
     }
-    $('#perc-upload-cancel').attr('disabled', true);
+    $('#perc-upload-cancel').prop('disabled', true);
 
-    $('#perc-global-progress').addClass('fade');
-    $('#perc-global-progress').hide();
+    $('#perc-global-progress').addClass('fade')
+    .hide();
 };
 
 calculateUrl = function() {

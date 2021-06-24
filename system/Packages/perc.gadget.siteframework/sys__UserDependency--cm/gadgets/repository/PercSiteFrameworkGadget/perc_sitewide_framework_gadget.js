@@ -149,7 +149,9 @@ function renderSubmit() {
 
     $('#percSitewideFrameworkTarget').append(submitHtml);
 
-    $('#percSitewideFrameworkSubmit').on('click', showSitewideWarningDialog);
+    $('#percSitewideFrameworkSubmit').on('click', function(evt){
+        showSitewideWarningDialog(evt);
+    });
 }
 
 function percSitewideFrameworkSubmitHandler() {
@@ -179,7 +181,7 @@ function percSitewideFrameworkSubmitHandler() {
 
 }
 
-function showSitewideWarningDialog() {
+function showSitewideWarningDialog(event) {
     errorDialogHtml = `<div><h4>${I18N.message("perc.ui.gadgets.sitewideFramework@Notfication detail")}</h4><br></div>`;
     var dialog = percJQuery(errorDialogHtml).perc_dialog({
         title: I18N.message("perc.ui.gadgets.sitewideFramework@Update Warning"),

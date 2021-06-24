@@ -581,7 +581,9 @@
                  });
 
                  sitesContainer.find(".perc-ga-apikey-field").each(function(){
-                    $(this).on("focus",apiKeyFocus).on("blur",apiKeyBlur);
+                    $(this).on("focus",apiKeyFocus).on("blur",function(e){
+                        apiKeyBlur(e);
+                        });
                 })
               }
               else
@@ -662,10 +664,18 @@
               var $save = $("#perc-ga-save");
               var $delete = $("#perc-ga-delete");
 
-              $connect.off('click').on('click', _onConnect);
-              $cancel.off('click').on('click', _onCancel);
-              $save.off('click').on('click', _onSave);
-              $delete.off('click').on('click', _onDelete);
+              $connect.off('click').on('click', function(e){
+                _onConnect(e);
+              });
+              $cancel.off('click').on('click', function(e){
+                _onCancel(e);
+                });
+              $save.off('click').on('click', function(e){
+                _onSave(e);
+                });
+              $delete.off('click').on('click', function(e){
+                _onDelete(e);
+                });
 
 
            }
@@ -691,14 +701,18 @@
 
               }
 
-              $user.off().on('blur', _handleButtonState).on('keyup',
-                 function(){
+              $user.off().on('blur', function(e){
+                _handleButtonState(e);
+              }).on('keyup',
+                 function(e){
                     _validCreds = false;
                     $pwd.val("");
                     _hasStoredPwd = false;
                     _handleButtonState();
                  });
-              $pwd.off().on('blur', _handleButtonState).on('change',
+              $pwd.off().on('blur', function(e){
+                _handleButtonState(e);
+                }).on('change',
                  function(){
                     _hasStoredPwd = false;
                     _validCreds = false;
@@ -712,7 +726,7 @@
             * creds against the google provider and if successful loads profiles and
             * updates the UI.
             */
-           function _onConnect(){
+           function _onConnect(event){
               if(!$(this).hasClass("perc-inactive"))
               {
                 var thePwd = _hasStoredPwd ? "null" : $("#perc-ga-pwd").val();
@@ -749,7 +763,7 @@
             * Action called when the cancel button is clicked. Reverts the UI back
             * to the persisted state.
             */
-           function _onCancel(){
+           function _onCancel(event){
               _storedConfig = _originalValues['config'];
               _hasStoredPwd = _originalValues['hasStoredPwd'];
               _profileList = _originalValues['profileList'];
@@ -763,7 +777,7 @@
             * Action called when the save button is clicked. Persists config and
             * profiles to the server.
             */
-           function _onSave(){
+           function _onSave(event){
               if(!$(this).hasClass("perc-inactive"))
               {
                 percJQuery.PercBlockUI();
@@ -774,7 +788,7 @@
            /**
             * Action called when the clear credentials is clicked. Deletes the config.
             */
-           function _onDelete(){
+           function _onDelete(event){
               if(!$(this).hasClass("perc-inactive"))
               {
                     percJQuery.perc_utils.confirm_dialog({
@@ -805,7 +819,7 @@
            /**
             * Helper function to set the appropriate enable/disable state for the buttons.
             */
-           function _handleButtonState(){
+           function _handleButtonState(event){
               var $user = $("#perc-ga-user");
               var $pwd = $("#perc-ga-pwd");
               var hasUser = $user.val().length > 0;

@@ -296,7 +296,7 @@
                 data.text = function()
                 {
                     return "No Theme has been selected.";
-                }
+                };
                 callback(false, data);
             }
         }
@@ -443,7 +443,7 @@
                     });
                 }
 
-            }
+            };
             //If asset exists check it out.
             if(assetId)
             {
@@ -766,7 +766,7 @@
             $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
             frame.contents().remove();
             frame.attr("src", renderPath);
-            frame.unbind().load(function()
+            frame.off("load").on("load",function()
             {
                 loadAssetDropCriteria(function(){
                     loadPageAssetDropCriteria(function(){
@@ -907,7 +907,7 @@
 
         return region;
 
-    }
+    };
     P.respRegionsFromTree = function(tree, regionWidgetAssociations, owner){
         // parse the widgets from the regionWidgetAssociation branch
         // so we can copy them over to the region's widget's property
@@ -950,7 +950,7 @@
 
         return region;
 
-    }
+    };
     // At load time, parse widgetItem and its properties into widget model
     P.widgetFromWidgetItem = function( widgetItem ) {
         var properties = [];
@@ -1004,13 +1004,12 @@
                     region.width += "px";
                 startTag +='width:'+region.width+';';
             }
-            startTag += padding + margin
-                + '"'
+            startTag += padding + margin + '"';
         }
 
-        startTag += ' class="' + modelObject.encodeHtml(('perc-region'+leaf+noAutoResize+fixed+direction+hspan+vspan+cssClass).replace(/\s\s+/g, ' ')) +'" '
-            +  ' data-noautoresize="'+modelObject.encodeHtml(region.noAutoResize) + '" id="'+modelObject.encodeHtml(region.regionId)+'">'
-            +  ' <div class="'+modelObject.encodeHtml(direction)+'"';
+        startTag += ' class="' + modelObject.encodeHtml(('perc-region'+leaf+noAutoResize+fixed+direction+hspan+vspan+cssClass).replace(/\s\s+/g, ' ')) +'" ' +
+             ' data-noautoresize="'+modelObject.encodeHtml(region.noAutoResize) + '" id="'+modelObject.encodeHtml(region.regionId)+'">' +
+             ' <div class="'+modelObject.encodeHtml(direction)+'"';
 
         var treeAttributes = [];
         if( region.attributes ) {
@@ -1067,12 +1066,11 @@
         var startTag = '<div ';
         if(region.padding || region.margin) {
             startTag += 'style="';
-            startTag += padding + margin
-                + '"'
+            startTag += padding + margin  + '"';
         }
 
-        startTag += ' class="perc-region'+modelObject.encodeHtml(leaf+row+columns+large+cssClass)+'" '
-            + 'id="'+modelObject.encodeHtml(region.regionId)+'"';
+        startTag += ' class="perc-region'+modelObject.encodeHtml(leaf+row+columns+large+cssClass)+'" ' +
+             'id="'+modelObject.encodeHtml(region.regionId)+'"';
 
 
         var treeAttributes = [];
@@ -1167,6 +1165,6 @@
         this.afterBodyStartContent = afterBodyStartContent;
         this.protectedRegion = protectedRegion;
         this.protectedRegionText = protectedRegionText;
-    }
+    };
 
 })(jQuery, jQuery.Percussion);

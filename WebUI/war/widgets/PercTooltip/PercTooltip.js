@@ -66,8 +66,10 @@
      *
      */
     $.fn.PercTooltip = function(config) {
-        var element = $(this).
-            on("mouseenter",$.PercTooltip.showTooltip);
+        $(this).
+            on("mouseenter",function(e){
+                $.PercTooltip.showTooltip(e);
+        });
     };
 
     /**
@@ -118,9 +120,9 @@
             
             var title = element.data("title");
             if(!title) {
-                title = element.attr("title");
+                title = element.prop("title");
                 element.data("title", title);
-                element.attr("title",""); // clear the real title so we dont get the real tooltip
+                element.prop("title",""); // clear the real title so we dont get the real tooltip
             }
 
             // dont bother with empty titles
@@ -159,9 +161,9 @@
                 css({"background":"blue","opacity":0.0}).
                 css("cursor",element.css("cursor")).
                 off("click").on(function(event){
-                	if(element.data("events") && element.data("events")["click"] && element.data("events")["click"][0] && element.data("events")["click"][0].data && element.data("events")["click"][0].handler){
-	                    var e = {data : element.data("events")["click"][0].data};
-	                    element.data("events")["click"][0].handler(e);
+                	if(element.data("events") && element.data("events").click && element.data("events".click[0] && element.data("events").click[0].data && element.data("events").click[0].handler)){
+	                    let e = {data : element.data("events").click[0].data};
+	                    element.data("events").click[0].handler(e);
                 	}
                 });
         },
@@ -187,7 +189,7 @@
         },
         hideTooltip : function(event) {
             // TODO: use named constants instead
-            if(this.tooltipHoverState == 0 && this.hiderHoverState == 0) {
+            if(this.tooltipHoverState === 0 && this.hiderHoverState === 0) {
                 this.tooltipDom.
                     blur().
                     css("top",-10000).
@@ -201,7 +203,7 @@
         }
     };
 
-    $("body").append($.PercTooltip.tooltipDom);
+    $("body").append($.PercTooltip.tooltipDom)
     $("body").append($.PercTooltip.hiderDom);
     
 })(jQuery);

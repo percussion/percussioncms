@@ -152,7 +152,7 @@
                     validClass: "perc_field_success",
                     wrapper: "p",
                     validateHiddenFields: false,
-                    debug: true,
+                    debug: false,
                     rules: rules,
                     messages: messages
                 });

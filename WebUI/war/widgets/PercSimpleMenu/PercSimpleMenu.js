@@ -114,8 +114,14 @@
         
         $(this).append(menu);
         
-        menuTitle.on("click",menuTitleClicked);
-        menu.on("mouseenter",menuHoverIn).on("mouseleave",menuHoverOut);
+        menuTitle.on("click",function(e){
+            menuTitleClicked(e);
+        });
+        menu.on("mouseenter",function(e){
+            menuHoverIn(e);
+        }).on("mouseleave",function(e){
+            menuHoverOut(e);
+        });
         
         return $(menu);
     };

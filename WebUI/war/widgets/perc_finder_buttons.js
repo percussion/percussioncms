@@ -106,7 +106,10 @@
 
             $newSiteDialog = $.perc_createNewSiteDialog(onSuccessCallBackHandler);
 
-            $('#perc-finder-new-site').off('click').on("click",createFn);
+            $('#perc-finder-new-site').off('click').on("click",
+                function(evt){
+                    createFn(evt);
+                });
             
             finder.addPathChangedListener( update_newsite_btn );
 
@@ -127,7 +130,7 @@
         /**
          * Create new site function.
          */
-        function createFn() {
+        function createFn(evt) {
             // check to see if dirty before allowing creating a new site
             // show confirm dialog if dirty
             dirtyController.confirmIfDirty(function(){
@@ -147,7 +150,10 @@
             }
             else{
                 if(!$.PercNavigationManager.getPath().startsWith($.perc_paths.RECYCLING_ROOT)){
-                    $( ".perc-finder-menu #perc-finder-new-site" ).removeClass('ui-disabled').addClass('ui-enabled').off('click').on('click', createFn );
+                    $( ".perc-finder-menu #perc-finder-new-site" ).removeClass('ui-disabled').addClass('ui-enabled').off('click').on('click',
+                        function(evt){
+                            createFn(evt);
+                        } );
                 }else{
                     $( ".perc-finder-menu #perc-finder-new-site" ).removeClass('ui-enabled').addClass('ui-disabled').off('click');
                 }

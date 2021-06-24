@@ -63,7 +63,7 @@
     function getStatusByWorkflow(workflow, callback){
         var url = "/Rhythmyx/services/workflowmanagement/workflows/" + $.perc_utils.encodeURL(workflow) + "/states/choices";
         callback = callback === null?function(){}:callback;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
     /**
      * Makes an Ajax call to server to check out the item, Expects the following object from the server as result.
@@ -85,7 +85,7 @@
         }
         callback = callback === null?function(){}:callback;
         var url = $.perc_paths.WORKFLOW_CHECKOUT + "/" + itemId;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
 
     /**
@@ -102,7 +102,7 @@
         }
         callback = callback === null?function(){}:callback;
         var url = $.perc_paths.WORKFLOW_CHECKIN + "/" + itemId;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
 
     /**
@@ -127,7 +127,7 @@
         }
         callback = callback === null?function(){}:callback;
         var url = $.perc_paths.WORKFLOW_TRANSITIONS + "/" + itemId;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
 
     /**
@@ -145,7 +145,7 @@
         }
         callback = callback === null?function(){}:callback;
         var url = $.perc_paths.WORKFLOW_TRANSITION_COMMENT + "/" + itemId + "/" + transitionName + "?comment=" + comment;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
 
     /**
@@ -169,7 +169,7 @@
         }
         callback = callback === null?function(){}:callback;
         var url = $.perc_paths.WORKFLOW_FORCE_CHECKOUT + "/" + itemId;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
 
     }
 
@@ -186,7 +186,7 @@
         }
         callback = callback === null?function(){}:callback;
         var url = $.perc_paths.WORKFLOW_CHECKED_OUT_TO_USER + "/" + itemId;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
 
     /**
@@ -203,7 +203,7 @@
         }
         callback = callback === null?function(){}:callback;
         var url = $.perc_paths.WORKFLOW_IS_APPROVE_ALLOWED + folderPath;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
 
 

@@ -33,7 +33,7 @@
                 launchPreview();
             });
 
-        function launchPreview()
+        function launchPreview(event)
         {
             if ($("#perc-finder-listview .perc-datatable-row-highlighted").length > 0)
             {
@@ -126,7 +126,10 @@
         {
             if(flag)
             {
-                $( "#perc-finder-preview" ).removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", launchPreview );
+                $( "#perc-finder-preview" ).removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt){
+                        launchPreview(evt);
+                    } );
 
             }
             else

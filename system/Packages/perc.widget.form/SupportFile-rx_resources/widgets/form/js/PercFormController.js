@@ -80,8 +80,6 @@
         IsRecaptchaEnabled : 0
     };
 
-    //var fieldIdUniqueNumber = 0;
-    //var fieldUniquifierId = { };
 
     $.PercFormFieldPref = {
         "REQUIRED": {
@@ -3154,10 +3152,12 @@
                 var deleteControl = "<img src='../rx_resources/widgets/form/images/form-minus.png' class='control-img-button delete-control' alt='Delete field' title='Delete field'/>";
 
                 // Callbacks for minus and add buttons.
-                var delete_function = function(){
+                var delete_function = function(event){
                     if ($(this).parent().find(".add-control").is('.add-control')) {
                         $(this).parent().prev().append(addControl);
-                        $(this).parent().prev().find(".add-control").on("click",add_function);
+                        $(this).parent().prev().find(".add-control").on("click",function(evt){
+                            add_function(evt);
+                        });
                         if (!$(this).parent().prev().prev().is("div")) {
                             $(this).parent().prev().find('.delete-control').remove();
                         }
@@ -3168,15 +3168,21 @@
                         }}
                     $(this).parent().remove();
                 };
-                var add_function = function(){
+                var add_function = function(event){
                     var newRow = $(newOption).append(deleteControl);
                     newRow.append(addControl);
                     if (!$(this).parent().prev().is('div')) {
                         $(this).parent().append(deleteControl);
-                        $(this).parent().find(".delete-control").on("click",delete_function);
+                        $(this).parent().find(".delete-control").on("click",function(evt){
+                            delete_function(evt);
+                        });
                     }
-                    newRow.find(".delete-control").on("click",delete_function);
-                    newRow.find(".add-control").on("click",add_function);
+                    newRow.find(".delete-control").on("click",function(evt){
+                        delete_function(evt);
+                    });
+                    newRow.find(".add-control").on("click",function(evt){
+                        add_function(evt);
+                    });
                     $(this).parent().parent().find('.fix').before(newRow);
                     $(this).remove();
 
@@ -3211,8 +3217,12 @@
                 //Add the final div
                 fieldEditorHtml.append("<div class='fix' style='clear:both;'></div>");
                 // For every button add the corresponding events.
-                fieldEditorHtml.find(".delete-control").on("click",delete_function);
-                fieldEditorHtml.find(".add-control").on("click",add_function);
+                fieldEditorHtml.find(".delete-control").on("click",function(evt){
+                    delete_function(evt);
+                });
+                fieldEditorHtml.find(".add-control").on("click",function(evt){
+                    add_function(evt);
+                });
                 fieldEditorHtmlWrapper.append(fieldEditorHtml);
             }
             else if(fieldData)
@@ -3401,10 +3411,13 @@
                 var deleteControl = "<img src='../rx_resources/widgets/form/images/form-minus.png' class='control-img-button delete-control' alt='Delete field' title='Delete field'/>";
 
                 // Callbacks for minus and add buttons.
-                var delete_function = function(){
+                var delete_function = function(event){
                     if ($(this).parent().find(".add-control").is('.add-control')) {
                         $(this).parent().prev().append(addControl);
-                        $(this).parent().prev().find(".add-control").on("click",add_function);
+                        $(this).parent().prev().find(".add-control").on("click",
+                            function(evt){
+                                add_function(evt);
+                            });
                         if (!$(this).parent().prev().prev().is("div")) {
                             $(this).parent().prev().find('.delete-control').remove();
                         }
@@ -3415,15 +3428,24 @@
                         }}
                     $(this).parent().remove();
                 };
-                var add_function = function(){
+                var add_function = function(event){
                     var newRow = $(newOption).append(deleteControl);
                     newRow.append(addControl);
                     if (!$(this).parent().prev().is('div')) {
                         $(this).parent().append(deleteControl);
-                        $(this).parent().find(".delete-control").on("click",delete_function);
+                        $(this).parent().find(".delete-control").on("click",
+                            function(evt){
+                                delete_function(evt);
+                            });
                     }
-                    newRow.find(".delete-control").on("click",delete_function);
-                    newRow.find(".add-control").on("click", add_function);
+                    newRow.find(".delete-control").on("click",
+                        function(evt){
+                            delete_function(evt);
+                        });
+
+                    newRow.find(".add-control").on("click", function(evt){
+                        add_function(evt);
+                    });
                     $(this).parent().parent().find('.fix').before(newRow);
                     $(this).remove();
 
@@ -3461,8 +3483,12 @@
                 //Add the final div
                 fieldEditorHtml.append("<div class='fix' style='clear:both;'></div>");
                 // For every button add the corresponding events.
-                fieldEditorHtml.find(".delete-control").on("click",delete_function);
-                fieldEditorHtml.find(".add-control").on("click", add_function);
+                fieldEditorHtml.find(".delete-control").on("click",function(evt){
+                    delete_function(evt);
+                });
+                fieldEditorHtml.find(".add-control").on("click", function(evt){
+                    add_function(evt);
+                });
                 fieldEditorHtmlWrapper.append(fieldEditorHtml);
             }
             else if(fieldData)
@@ -3677,10 +3703,13 @@
                 var deleteControl = "<img src='../rx_resources/widgets/form/images/form-minus.png' class='control-img-button delete-control' alt='Delete field' title='Delete field'/>";
 
                 // Callbacks for minus and add buttons.
-                var delete_function = function(){
+                var delete_function = function(event){
                     if ($(this).parent().find(".add-control").is('.add-control')) {
                         $(this).parent().prev().append(addControl);
-                        $(this).parent().prev().find(".add-control").on("click",add_function);
+                        $(this).parent().prev().find(".add-control").on("click",
+                            function(evt){
+                                add_function(evt);
+                            });
                         if (!$(this).parent().prev().prev().is("div")) {
                             $(this).parent().prev().find('.delete-control').remove();
                         }
@@ -3691,15 +3720,21 @@
                         }}
                     $(this).parent().remove();
                 };
-                var add_function = function(){
+                var add_function = function(event){
                     var newRow = $(newOption).append(deleteControl);
                     newRow.append(addControl);
                     if (!$(this).parent().prev().is('div')) {
                         $(this).parent().append(deleteControl);
-                        $(this).parent().find(".delete-control").on("click",delete_function);
+                        $(this).parent().find(".delete-control").on("click",function(evt){
+                            delete_function(evt);
+                        });
                     }
-                    newRow.find(".delete-control").on("click",delete_function);
-                    newRow.find(".add-control").on("click",add_function);
+                    newRow.find(".delete-control").on("click",function(evt){
+                        delete_function(evt);
+                    });
+                    newRow.find(".add-control").on("click",function(evt){
+                        add_function(evt);
+                    });
                     $(this).parent().parent().find('.fix').before(newRow);
                     $(this).remove();
 
@@ -3738,8 +3773,12 @@
                 //Add the final div
                 fieldEditorHtml.append("<div class='fix' style='clear:both;'></div>");
                 // For every button add the corresponding events.
-                fieldEditorHtml.find(".delete-control").on("click",delete_function);
-                fieldEditorHtml.find(".add-control").on("click",add_function);
+                fieldEditorHtml.find(".delete-control").on("click",function(evt){
+                    delete_function(evt);
+                });
+                fieldEditorHtml.find(".add-control").on("click",function(evt){
+                    add_function(evt);
+                });
                 fieldEditorHtmlWrapper.append(fieldEditorHtml);
             }
             else if(fieldData)
