@@ -242,7 +242,6 @@ var gSelectTemp = null;
 		
 			if(this.pageId == null && gSelectTemp == null)
 			{
-			//	alert('You must select a page or a template first.');
 				return;
 			}
 	
@@ -682,7 +681,7 @@ var gSelectTemp = null;
 				    // set the CSS attribute and move on.
 				    
 				    //console.log("Setting #"+selector+" property "+property+":"+this.helper.regionCSS[selector][property]);
-				    if (property == "width" || property == "height")
+				    if (property === "width" || property === "height")
 					{
 					    $('#'+selector).css(property, this.helper.regionCSS[selector][property]);
 					} else 
@@ -696,7 +695,7 @@ var gSelectTemp = null;
 		},
 		render : function()
 		{
-			html = this.helper.rootRegion.generateHtml(false);
+			let html = this.helper.rootRegion.generateHtml(false);
 		     
 			this.element.html(html);
 			this._regionize();
