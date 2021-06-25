@@ -265,7 +265,7 @@
             var fieldGroups = [
                 {groupName: "perc-region-edit-properties-container", groupLabel: "Region based CSS"},
                 {groupName: "perc-region-edit-attributes-container", groupLabel: "Region HTML attributes"},
-                {groupName: "perc-region-edit-css-container'", groupLabel: "Use additional CSS classes"},
+                {groupName: "perc-region-edit-css-container", groupLabel: "Use additional CSS classes"},
                 {groupName: "perc-region-edit-cssoverrides-container", groupLabel: "CSS overrides"}
             ];
             $.each(fieldGroups, function (index) {
@@ -278,14 +278,11 @@
                     "<span  class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
                     "</div>" +
                     "</div>";
-                try {
+
                     dialog.find('#' + this.groupName).before(groupHtml);
                     // The first group will be the only one expanded (hide all others)
                     index !== 0 && dialog.find('#' + this.groupName).hide();
-                    }
-                catch(err) {
 
-                }
 
             });
 

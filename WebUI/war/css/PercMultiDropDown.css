@@ -39,7 +39,7 @@
 .ui-multiselect-menu { display:none; padding:0px; position:absolute; z-index:10000;  -moz-box-shadow: 6px 6px 3px 0 #bbbbbb; box-shadow: 6px 6px 3px 0 #bbbbbb; -webkit-box-shadow:6px 6px 3px 0 #bbbbbb; }
 .ui-multiselect-checkboxes { position:relative /* fixes bug in IE6/7 */; overflow-y:auto }
 .ui-multiselect-checkboxes label { cursor:default; display:block; border:0px solid transparent; padding:3px 1px 1px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; width:190px;}
-.ui-multiselect-checkboxes label input { position:relative; top:1px }
+.ui-multiselect-checkboxes label input { position:relative; top:1px; width: 30px;}
 .ui-multiselect-checkboxes li { clear:both; font-size:0.9em; padding-right:3px; }
 .ui-multiselect-checkboxes li.ui-multiselect-optgroup-label { text-align:center; font-weight:bold; border-bottom:1px solid }
 .ui-multiselect-checkboxes li.ui-multiselect-optgroup-label a { display:block; padding:3px; margin:1px 0; text-decoration:none }
