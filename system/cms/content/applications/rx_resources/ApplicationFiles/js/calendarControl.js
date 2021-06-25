@@ -25,8 +25,8 @@ $(document).ready(function() {
         buttonImageOnly: true,
         dateFormat: 'yy-mm-dd',
         buttonText: ''
-    }).bind('paste', function(evt){evt.preventDefault();})
-        .bind('keypress keydown', function(evt){
+    }).on('paste', function(evt){evt.preventDefault();})
+        .on('keypress keydown', function(evt){
             if(evt.keyCode === 46 || evt.keyCode === 8 )
             {
                 var field = evt.target;
@@ -34,7 +34,7 @@ $(document).ready(function() {
                 evt.preventDefault();
                 return;
             }
-            if(evt.charCode === 0 || typeof(evt.charCode) == 'undefined')
+            if(evt.charCode === 0 || typeof(evt.charCode) === 'undefined')
                 return;
             evt.preventDefault();
         });
