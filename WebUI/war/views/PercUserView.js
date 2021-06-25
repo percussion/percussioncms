@@ -498,13 +498,11 @@
                 .off("click")
                 .on("click",function() {
                     $(this)
-                        .val("")
                         .off("change")
                         .on("change",function() {
                             dirtyController.setDirty(true, "user");
                         });
                     $("#perc-users-password-confirm-field")
-                        .val("")
                         .off("change")
                         .on("change",function() {
                             dirtyController.setDirty(true, "user");
@@ -515,7 +513,6 @@
                 .off("click")
                 .on("click",function() {
                     $(this)
-                        .val("")
                         .off("change")
                         .on("change",function() {
                             dirtyController.setDirty(true, "user");
