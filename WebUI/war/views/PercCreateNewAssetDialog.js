@@ -111,9 +111,10 @@
          }
          //We are done processing the handlers, as we are submitting the form, clear all handlers.
          $.PercContentPreSubmitHandlers.clearHandlers();
-         $("#create-new-asset-content-frame").contents().find("#perc-content-form").trigger("submit")
+         $("#create-new-asset-content-frame").contents().find("#perc-content-form").trigger("submit");
          //Unbind the function to avoid an acumulation of calls to the same function
-         .off('load').on("load",function(evt) {
+         //CMS-8127 : The saveAssetResponse function was not getting called if the load even was propagated with submit.
+         $("#create-new-asset-content-frame").off('load').on("load",function(evt) {
              saveAssetResponse(evt);
          });
       }
