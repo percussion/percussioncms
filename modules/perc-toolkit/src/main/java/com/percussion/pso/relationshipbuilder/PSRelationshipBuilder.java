@@ -96,9 +96,9 @@ public abstract class PSRelationshipBuilder implements IPSRelationshipBuilder {
 	                .findByFilter(filter);
 	        	
 	        	if(isParent) {
-	        		log.debug("Adding " +relationships.size() + " relationships for id "+ id);
+	        		log.debug("Adding {} relationships for id {}", relationships.size(), id);
 	        	} else {
-	        		log.debug("Adding " +relationships.size() + " relationships for id "+ id);
+	        		log.debug("Adding {} relationships for id {}", relationships.size(), id);
 	        	}
 	        	
 	        	
@@ -149,7 +149,7 @@ public abstract class PSRelationshipBuilder implements IPSRelationshipBuilder {
         	
         	if (id == relSourceId  && 
         		    ( relSourceRevision == -1 || relSourceRevision == tipRevisionMap.get(relSourceId))) {
-        		log.debug("found relationship result " + relationship.getId() + "source id="+ relSourceId + "source revision = "+relSourceRevision +" with contentid = " + relResultId + "and revision " + relResultRevision);
+        		log.debug("found relationship result {}, source id={}, source revision = {} with contentid = {} and revision {}", relationship.getId(),relSourceId,relSourceRevision, relResultId, relResultRevision);
         		
         		if (relResultRevision == -1 || relResultRevision == tipRevisionMap.get(relResultId)) {
         			if (resultIds.contains(relResultId)) {
@@ -165,8 +165,7 @@ public abstract class PSRelationshipBuilder implements IPSRelationshipBuilder {
         		}
         	
         	} else {
-        		log.debug("Source id = "+ relSourceId + "with tip revision " + tipRevisionMap.get(relSourceId) +
-        				" does not match relationship with id=" +relSourceId + " revision " + sourceLocator.getRevision() + " or id not expected Skipping");
+        		log.debug("Source id = {} with tip revision {} does not match relationship with id={} revision {} or id not expected Skipping",relSourceId,tipRevisionMap.get(relSourceId),relSourceId,sourceLocator.getRevision());
         	}
         }
         			

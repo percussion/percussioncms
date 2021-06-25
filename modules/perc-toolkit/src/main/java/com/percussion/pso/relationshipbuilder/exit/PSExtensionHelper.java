@@ -89,7 +89,7 @@ public class PSExtensionHelper
                getRequiredParameterAsNumber(IPSHtmlParameters.SYS_CONTENTID).intValue();
            try {
                 ids = m_builder.retrieve(contentId);
-                log.debug("Selecting ids: {]", ids);
+                log.debug("Selecting ids: {}", ids);
            } catch (PSAssemblyException e) {
                log.error(errorMesg, e);
                throw new PSExtensionProcessingException(errorMesg,e);

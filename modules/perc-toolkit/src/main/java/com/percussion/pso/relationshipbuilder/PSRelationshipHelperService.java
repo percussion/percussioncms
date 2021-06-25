@@ -114,10 +114,12 @@ public class PSRelationshipHelperService implements IPSRelationshipHelperService
             }
             return returnIds;
         } catch (InvalidQueryException e) {
-            log.warn("getFolders: Query is invalid", e);
+            log.warn("getFolders: Query is invalid Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new IllegalArgumentException("Query is invalid: ",e);
         } catch (RepositoryException e) {
-            log.error("getFolders: Query is probably wrong",e);
+            log.error("getFolders: Query is probably wrong Error: {}",e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new RuntimeException("Something wrong with the repository: ", e);
         }
     }

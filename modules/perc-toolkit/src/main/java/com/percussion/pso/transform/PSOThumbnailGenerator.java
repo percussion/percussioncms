@@ -706,9 +706,9 @@ public class PSOThumbnailGenerator extends PSFileInfo
    
    protected void logXml(Node node)
    {
-       if(!log.isDebugEnabled()) {
+       if(!log.isDebugEnabled())
            return;
-       }
+
     	   String xstr = PSXmlDocumentBuilder.toString(node, PSXmlDocumentBuilder.FLAG_ALLOW_NULL);
     	   log.debug(xstr); 
    
