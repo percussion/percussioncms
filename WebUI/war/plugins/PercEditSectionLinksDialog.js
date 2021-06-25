@@ -141,7 +141,7 @@ $.PercEditSectionLinksDialog = function() {
                     validClass: "perc-field-success",
                     wrapper: "p",
                     validateHiddenFields: false,
-                    debug: true,
+                    debug: false,
             submitHandler: function(form) {
                dialog.remove();
                okCallback("ok", $(form).serializeArray());

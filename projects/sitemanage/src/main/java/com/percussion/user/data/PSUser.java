@@ -53,7 +53,8 @@ public class PSUser extends PSAbstractNamedObject
     /**
      * Message used when user name contains invalid characters.
      */
-    private static final String INVALID_CHAR_ERROR_MSG = 
+    private static final String INVALID_CHAR_ERROR_MSG =
+        "The username should be 4-20 characters long. OR " +
         "The user name contains an invalid character. " +
         "The valid characters of a user name are 'a' to 'z', 'A' to 'Z' and '0' to '9'.";
     

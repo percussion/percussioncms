@@ -164,10 +164,7 @@
 	<xsl:template match="Control[@name='tagListWidgetControl']" mode="psxcontrol">
 
 		<script >
-
-			$=$j;
-
-			$(document).ready(function() {
+			$(function() {
 			$('#display_start_date').attr("autocomplete","off");
 			$('#display_end_date').attr("autocomplete","off");
 			$('#display_start_date').datepicker({
@@ -337,7 +334,7 @@
                                     var summaries = result.data.TemplateSummary;
                                     var temps = {};
                                     var tempsArray = [];
-                                    var tempIds = ($("#perc_template_list").val() != "") ? $("#perc_template_list").val().split(',') : "";
+                                    var tempIds = ($("#perc_template_list").val() !== "") ? $("#perc_template_list").val().split(',') : "";
                                     for(i = 0; i < summaries.length; i++)
                                     {
                                         temps[summaries[i].id] = summaries[i].name;

@@ -34,8 +34,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Base class for all {@link IPSListViewHelper} implementations. It validates
@@ -50,7 +50,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public abstract class PSBaseListViewHelper implements IPSListViewHelper
 {
-    protected static final Log log = LogFactory.getLog(PSBaseListViewHelper.class);
+    protected static final Logger log = LogManager.getLogger(PSBaseListViewHelper.class);
     
     protected List<IPSListViewProcessor> postProcessors = null;
 

@@ -18503,6 +18503,7 @@ $.widget( "ui.tabs", {
 		}
 	},
 
+
 	_initialActive: function() {
 		var active = this.options.active,
 			collapsible = this.options.collapsible,

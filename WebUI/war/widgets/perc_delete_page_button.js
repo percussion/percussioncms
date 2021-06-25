@@ -32,11 +32,13 @@
         var spec;
 
         var btn = $('<a id="perc-finder-delete" class="perc-font-icon icon-remove fas fa-trash" title="' + I18N.message("perc.ui.delete.page.button@Click Delete Page") + '"href="#" ></a>')
-            .off("click")
+            .off()
             .perc_button()
-            .on("click",deleteFn);
+            .on("click",function(evt){
+                deleteFn(evt);
+            });
 
-        function deleteFn() {
+        function deleteFn(evt) {
             var encodedPath = mcol_path;
             if ($.perc_utils.isPathUnderDesign(encodedPath)) {
                 encodedPath = $.perc_utils.encodePathArray(mcol_path);
@@ -47,7 +49,7 @@
                     mcol.refresh();
                     return;
                 }
-                else if (result == $.PercFolderHelper().PERMISSION_READ) {
+                else if (result === $.PercFolderHelper().PERMISSION_READ) {
                     $.perc_utils.alert_dialog({ title: I18N.message("perc.ui.page.general@Warning"), content: I18N.message("perc.ui.delete.page.button@Delete Permissions") });
                     return;
                 }
@@ -66,7 +68,7 @@
         function asset_delete_handle_error(data, textStatus, errorThrown) {
             var title = I18N.message("perc.ui.deleteassetdialog.title@Delete Asset");
             delete_handle_error(data, "asset", title, function () {
-                var assetId = spec['PathItem']['id'];
+                var assetId = spec.PathItem.id;
 				 if (mcol_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH) {
 					purge_item(assetId, $.perc_paths.ASSET_PURGE, 'asset');
 					return;
@@ -87,7 +89,7 @@
         function page_delete_handle_error(data, textStatus, errorThrown) {
             var title = I18N.message("perc.ui.deletepagedialog.title@Delete Page");
             delete_handle_error(data, "page", title, function () {
-                var pageId = spec['PathItem']['id'];
+                var pageId = spec.PathItem.id;
                 $.PercPageService.forceDeletePage(pageId,
                     delete_success(pageId, 'page'),
                     page_delete_handle_error);
@@ -101,7 +103,7 @@
          ** @param title (String) - dialog title
          **/
         function delete_handle_error(data, type, title, forceDeleteCallback) {
-            var result = $.PercDeleteItemHelper.extractDeleteErrorMessage(data, spec['PathItem']['name'], type);
+            var result = $.PercDeleteItemHelper.extractDeleteErrorMessage(data, spec.PathItem.name, type);
             if (result.canForceDelete) {
                 if($("#perc-finder-delete-approved-ok").is(':visible')){
                     return;
@@ -165,10 +167,10 @@
         }
         function delete_site() {
             $.PercBlockUI();
-            $.perc_pagemanager.delete_site(spec['PathItem']['name'],
+            $.perc_pagemanager.delete_site(spec.PathItem.name,
                 function () {
                     dialog.remove();
-                    var eventData = { type: 'site', name: spec['PathItem']['name'] };
+                    var eventData = { type: 'site', name: spec.PathItem.name };
                     finder.fireActionEvent(finder.ACTIONS.DELETE, eventData);
                     setTimeout(function () {
                             $.PercDirtyController.setDirty(false);
@@ -184,7 +186,7 @@
         }
 
         function delete_asset() {
-            var assetId = spec['PathItem']['id'];
+            var assetId = spec.PathItem.id;
             if (mcol_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH) {
                 purge_item(assetId, $.perc_paths.ASSET_PURGE, 'asset');
                 return;
@@ -207,10 +209,10 @@
                 // Here is where everything starts
 
                 // if we are deleting a page
-                if (spec['PathItem']['type'] == 'percPage') {
+                if (spec.PathItem.type === 'percPage') {
 
                     // we cant delete the landing page
-                    if (spec['PathItem']['category'] == 'LANDING_PAGE') {
+                    if (spec.PathItem.category === 'LANDING_PAGE') {
                         return;
                     }
 
@@ -218,7 +220,7 @@
                     else {
 
                         // check with server if we can delete this page
-                        $.PercPageService.validateDeletePage(spec['PathItem']['id'],
+                        $.PercPageService.validateDeletePage(spec.PathItem.id,
 
                             // if we can delete this page
                             function () {
@@ -237,9 +239,9 @@
                 }
 
                 // if we are deleting a folder
-                else if (spec['PathItem']['type'] == 'Folder') {
-                    if ((spec['PathItem']['category'] == 'FOLDER') ||
-                        spec['PathItem']['category'] === 'SECTION_FOLDER' && mcol_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH) {
+                else if (spec.PathItem.type === 'Folder') {
+                    if ((spec.PathItem.category === 'FOLDER') ||
+                        spec.PathItem.category === 'SECTION_FOLDER' && mcol_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH) {
                         function deleteFolder() {
                             // do not validate if deleting folders and user is Admin
                             if ($.PercNavigationManager.isAdmin()) {
@@ -252,8 +254,8 @@
                                 $.PercPathService.deleteFolder(mcol_path.join('/'), mcol_path[mcol_path.length - 1], mcol_path[1], cbDfSuccess);
                             }
                         }
-                        if (spec['PathItem'].path.match("^/Sites/") || spec['PathItem'].path.match("^//Sites/")) {
-                            $.PercRedirectHandler.createRedirect(spec['PathItem'].path, "", "folder").fail(function (errMsg) {
+                        if (spec.PathItem.path.match("^/Sites/") || spec.PathItem.path.match("^//Sites/")) {
+                            $.PercRedirectHandler.createRedirect(spec.PathItem.path, "", "folder").fail(function (errMsg) {
                                 $.perc_utils.alert_dialog({
                                     title: I18N.message("perc.ui.contributor.ui.adaptor@Redirect creation error"),
                                     content: errMsg,
@@ -277,16 +279,16 @@
                 }
 
                 // if we are deleting a theme folder or a theme file
-                else if (spec['PathItem']['type'] == 'FSFolder') {
+                else if (spec.PathItem.type === 'FSFolder') {
                     // manually encode the url for non-Ascii characters
                     var url = $.perc_utils.encodePathArray(mcol_path);
 
                     $.PercPathService.deleteFSFolder(url.join('/'), mcol_path[mcol_path.length - 1], cbDfSuccess);
                 }
 
-                else if (spec['PathItem']['type'] == 'FSFile') {
+                else if (spec.PathItem.type === 'FSFile') {
                     var url = "";
-                    var paths = spec['PathItem']['path'].split("/");
+                    var paths = spec.PathItem.path.split("/");
                     paths = paths.slice(3, paths.length - 1);
 
                     $.each(paths, function (index, element) {
@@ -303,7 +305,7 @@
                 else {
                     // check with server if we can delete this asset
                     $.PercAssetService.validateDeleteAsset(
-                        spec['PathItem']['id'],
+                        spec.PathItem.id,
 
                         // if we can delete this asset
                         function () {
@@ -318,7 +320,7 @@
 		function getAssetDeleteQuestionString(spec,data){
 
             var message = mcol_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH ? I18N.message("perc.ui.deleteassetdialog.purge@Confirm") : I18N.message("perc.ui.deleteassetdialog.warning@Confirm");
-            var dialog = I18N.message("perc.ui.deleteassetdialog.tag@Asset") + ': ' + spec['PathItem']['name'] + "<br/><br/>"	+message;
+            var dialog = I18N.message("perc.ui.deleteassetdialog.tag@Asset") + ': ' + spec.PathItem.name + "<br/><br/>"	+message;
             if (data != null && data.ArrayList != null && data.ArrayList.length > 0) {
 
                 dialog = I18N.message("perc.ui.publish.question@Remove From Site") + "<br/><br/>";
@@ -354,7 +356,7 @@
 		
 		function takeDownPageAndDeleteAsset(takeDownUrl,data){
 			 var serviceCallback = function(status, results){
-			if(status == $.PercServiceUtils.STATUS_ERROR)
+			if(status === $.PercServiceUtils.STATUS_ERROR)
 			{
 				page_delete_handle_error(results.request,results.textstatus,results.error);
 			}
@@ -364,7 +366,7 @@
 			}
 		 };
 
-		$.PercServiceUtils.makeJsonRequest(takeDownUrl, $.PercServiceUtils.TYPE_PUT, true, serviceCallback, data);
+		$.PercServiceUtils.makeJsonRequest(takeDownUrl, $.PercServiceUtils.TYPE_PUT, false, serviceCallback, data);
 	}
 
         /**
@@ -379,7 +381,7 @@
         function getDeleteQuestionString(spec,data){
 
             var message = mcol_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH ? I18N.message("perc.ui.deletepagedialog.purge@Confirm") : I18N.message("perc.ui.deletepagedialog.warning@Confirm");
-            var dialog = I18N.message("perc.ui.deletepagedialog.tag@Delete Page") + ': ' + spec['PathItem']['name'] + "<br/><br/>"	+message;
+            var dialog = I18N.message("perc.ui.deletepagedialog.tag@Delete Page") + ': ' + spec.PathItem.name + "<br/><br/>"	+message;
             if (data != null && data.ArrayList != null && data.ArrayList.length > 0) {
 
                 dialog = I18N.message("perc.ui.publish.question@Remove From Site") + "<br/><br/>";
@@ -411,7 +413,7 @@
 		
 		function takeDownPageAndDeletePage(takeDownUrl,data,spec){
 			 var serviceCallback = function(status, results){
-			if(status == $.PercServiceUtils.STATUS_ERROR)
+			if(status === $.PercServiceUtils.STATUS_ERROR)
 			{
 				page_delete_handle_error(results.request,results.textstatus,results.error);
 			}
@@ -421,7 +423,7 @@
 			}
 		 };
 
-		$.PercServiceUtils.makeJsonRequest(takeDownUrl, $.PercServiceUtils.TYPE_PUT, true, serviceCallback, data);
+		$.PercServiceUtils.makeJsonRequest(takeDownUrl, $.PercServiceUtils.TYPE_PUT, false, serviceCallback, data);
 	}
         // recycles an item.  now calls purge_page() if path starts with /Recycling.
         function delete_page(spec) {
@@ -433,9 +435,9 @@
                 .fail(function (errMsg) {
                     $.perc_utils.alert_dialog({
                         title: I18N.message("perc.ui.contributor.ui.adaptor@Redirect creation error"), content: errMsg, okCallBack: function () {
-                            $.perc_pagemanager.delete_page(spec['PathItem']['id'],
+                            $.perc_pagemanager.delete_page(spec.PathItem.id,
                                 function () {
-                                    delete_success(spec['PathItem']['id'], 'page')
+                                    delete_success(spec.PathItem.id, 'page');
                                 },
                                 page_delete_handle_error
                             );
@@ -443,9 +445,9 @@
                     });
                 })
                 .done(function () {
-                    $.perc_pagemanager.delete_page(spec['PathItem']['id'],
+                    $.perc_pagemanager.delete_page(spec.PathItem.id,
                         function () {
-                            delete_success(spec['PathItem']['id'], 'page')
+                            delete_success(spec.PathItem.id, 'page');
                         },
                         page_delete_handle_error);
                 });
@@ -465,12 +467,12 @@
         }
 
         function checkIfLinkedPage(spec) {
-            var findLinkedItemsUrl = $.perc_paths.ITEM_LINKED_TO_ITEM + "/" + spec['PathItem']['id'];
+            var findLinkedItemsUrl = $.perc_paths.ITEM_LINKED_TO_ITEM + "/" + spec.PathItem.id;
             var takeDownUrl =  $.perc_paths.PAGE_TAKEDOWN ;
-            takeDownUrl+="/" + spec['PathItem']['id'];
+            takeDownUrl+="/" + spec.PathItem.id;
 
-            $.PercServiceUtils.makeJsonRequest(findLinkedItemsUrl, $.PercServiceUtils.TYPE_GET, true, function(status, result) {
-                if (status == $.PercServiceUtils.STATUS_ERROR) {
+            $.PercServiceUtils.makeJsonRequest(findLinkedItemsUrl, $.PercServiceUtils.TYPE_GET, false, function(status, result) {
+                if (status === $.PercServiceUtils.STATUS_ERROR) {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result);
                     console.error(defaultMsg);
                     // if there is an error, we proceed with previous behavior (no confirm display)
@@ -486,12 +488,12 @@
         }
 		
 		function checkIfLinkedPageForAsset(spec) {
-            var findLinkedItemsUrl = $.perc_paths.ITEM_LINKED_TO_ITEM + "/" + spec['PathItem']['id'];
+            var findLinkedItemsUrl = $.perc_paths.ITEM_LINKED_TO_ITEM + "/" + spec.PathItem.id;
             var takeDownUrl =  $.perc_paths.PAGE_TAKEDOWN ;
-            takeDownUrl+="/" + spec['PathItem']['id'];
+            takeDownUrl+="/" + spec.PathItem.id;
 
-            $.PercServiceUtils.makeJsonRequest(findLinkedItemsUrl, $.PercServiceUtils.TYPE_GET, true, function(status, result) {
-                if (status == $.PercServiceUtils.STATUS_ERROR) {
+            $.PercServiceUtils.makeJsonRequest(findLinkedItemsUrl, $.PercServiceUtils.TYPE_GET, false, function(status, result) {
+                if (status === $.PercServiceUtils.STATUS_ERROR) {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result);
                     console.error(defaultMsg);
                     // if there is an error, we proceed with previous behavior (no confirm display)
@@ -512,9 +514,9 @@
          * @param id the id of the item.
          */
         function delete_success(id, type) {
-            setTimeout(function () { mcol.refresh() }, 200);
+            setTimeout(function () { mcol.refresh(); }, 200);
             var isOpen = false;
-            if (id == $.PercNavigationManager.getId()) {
+            if (id===$.PercNavigationManager.getId()) {
                 isOpen = true;
                 content.clear();
             }
@@ -530,7 +532,7 @@
 
             // Reload the current view if it is not VIEW_EDITOR, without pageId (deleted) in memento.
             var view = $.PercNavigationManager.getView();
-            if (type == 'page' && view != $.PercNavigationManager.VIEW_EDITOR) {
+            if (type === 'page' && view !== $.PercNavigationManager.VIEW_EDITOR) {
                 page_deleted(view);
             }
         }
@@ -568,20 +570,20 @@
                 ut.acop(path),
                 false,
                 function (spec) {
-                    var type = spec['PathItem'].type;
-                    var cat = spec['PathItem'].category;
-                    var disable = (typeof (cat) != 'undefined')
-                        && (cat == 'LANDING_PAGE'
-                            || (cat == 'SECTION_FOLDER' && mcol_path[1] !== $.perc_paths.RECYCLING_ROOT_NO_SLASH)
-                            || cat == 'SYSTEM');
-                    if (type == 'Folder' && spec['PathItem'].accessLevel != $.PercFolderHelper().PERMISSION_ADMIN)
+                    var type = spec.PathItem.type;
+                    var cat = spec.PathItem.category;
+                    var disable = (typeof (cat) != 'undefined') &&
+                         (cat === 'LANDING_PAGE' ||
+                             (cat === 'SECTION_FOLDER' && mcol_path[1] !== $.perc_paths.RECYCLING_ROOT_NO_SLASH) ||
+                             cat === 'SYSTEM');
+                    if (type === 'Folder' && spec.PathItem.accessLevel !== $.PercFolderHelper().PERMISSION_ADMIN)
                         disable = true;
-                    else if ((cat == 'ASSET' || cat == 'PAGE') && spec['PathItem'].accessLevel == $.PercFolderHelper().PERMISSION_READ)
+                    else if ((cat === 'ASSET' || cat === 'PAGE') && spec.PathItem.accessLevel === $.PercFolderHelper().PERMISSION_READ)
                         disable = true;
 
                     // Story CM-79: if the type is FSFile or FSFolder, the cat will still be SYSTEM, so we need to recheck
-                    if ((type == "FSFolder" || type == "FSFile") && mcol_path.length >= 5
-                        && spec['PathItem'].accessLevel != $.PercFolderHelper().PERMISSION_ADMIN) {
+                    if ((type === "FSFolder" || type === "FSFile") && mcol_path.length >= 5 &&
+                        spec.PathItem.accessLevel !== $.PercFolderHelper().PERMISSION_ADMIN) {
                         disable = false;
                     }
 
@@ -594,7 +596,10 @@
                             $(".perc-finder-menu #perc-finder-delete").removeClass('ui-enabled').addClass('ui-disabled').off('click');
                         }
                         else {
-                            $(".perc-finder-menu #perc-finder-delete").removeClass('ui-disabled').addClass('ui-enabled').off('click').on('click',deleteFn);
+                            $(".perc-finder-menu #perc-finder-delete").removeClass('ui-disabled').addClass('ui-enabled').off().on('click',
+                                function(evt){
+                                deleteFn(evt);
+                                });
                         }
                     }
                     else {

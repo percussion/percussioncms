@@ -4294,11 +4294,13 @@ Data.prototype = {
 		return cache;
 	},
 	get: function( owner, key ) {
-		return key === undefined ?
-			this.cache( owner ) :
+		if(owner !== null) {
+			return key === undefined ?
+				this.cache(owner) :
 
-			// Always use camelCase key (gh-2257)
-			owner[ this.expando ] && owner[ this.expando ][ camelCase( key ) ];
+				// Always use camelCase key (gh-2257)
+				owner[this.expando] && owner[this.expando][camelCase(key)];
+		}
 	},
 	access: function( owner, key, value ) {
 
