@@ -2184,7 +2184,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
             PSLegacyGuid landingPageId = (PSLegacyGuid)navSrv.getLandingPageFromNavnode(navonId);
             
             if(landingPageId == null){
-            	log.warn("No Landing Page detected for Section " + newFolderName + " attempting to auto-detect Landing Page.");
+            	log.warn("No Landing Page detected for Section {} attempting to auto-detect Landing Page.",  newFolderName );
             	landingPageId = fixMissingLandingPage(navonId);
             
             }
