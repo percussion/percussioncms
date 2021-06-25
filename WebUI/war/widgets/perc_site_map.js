@@ -112,7 +112,7 @@
                             if(data.indexOf("Cannot find object name") !== -1)
                             {
                                 msg = I18N.message("perc.ui.site.map@Requested Site") + site +
-                                     I18N.message("perc.ui.site.map@Site Does Not Exist");
+                                    I18N.message("perc.ui.site.map@Site Does Not Exist");
                             }
                             $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: msg,
                                 okCallBack: function(){
@@ -1564,25 +1564,25 @@
                                 data.oldLandingPageName,
                                 path];
                             var $dialog = $("<div>" +
-                                 "<div style='float:left;'>" +
+                                "<div style='float:left;'>" +
                                 I18N.message('perc.ui.sitemap.assign.landing.page.label@message', args) +
                                 "</div>" +
                                 "<div class='ui-layout-south'>" +
                                 "<div id='perc_buttons' style='z-index: 100;'></div>" +
                                 "</div>" +
                                 "</div>").perc_dialog({
-                                    title: I18N.message('perc.ui.sitemap.assign.landing.page.title@Landing Page Assigned'),
-                                    resizable: false,
-                                    modal: true,
-                                    percButtons:  {
-                                        "Ok": {
-                                            click: function(){$dialog.remove();},
-                                            id: "perc-landing-page-assign-info-ok"
-                                        }
-                                    },
-                                    id: "perc-landing-page-assign-info",
-                                    width: 400
-                                });
+                                title: I18N.message('perc.ui.sitemap.assign.landing.page.title@Landing Page Assigned'),
+                                resizable: false,
+                                modal: true,
+                                percButtons:  {
+                                    "Ok": {
+                                        click: function(){$dialog.remove();},
+                                        id: "perc-landing-page-assign-info-ok"
+                                    }
+                                },
+                                id: "perc-landing-page-assign-info",
+                                width: 400
+                            });
 
                         }
                         else
@@ -1936,7 +1936,7 @@
                     var data  = $(this).attr("data");
                     data = JSON.parse(data);
                     var title  = data.title;
-                    if(!(typeof title === "undefined" || title.trim() === "")){
+                    if((typeof title !== "undefined" || (title +"").trim() !== "")){
                         allTitle.push(title);
                     }
                 });

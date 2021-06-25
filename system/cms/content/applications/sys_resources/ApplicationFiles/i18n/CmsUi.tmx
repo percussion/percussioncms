@@ -2961,6 +2961,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
         <seg>Ventana superior</seg>
     </tuv>
 </tu>
+<tu tuid="perc.ui.editSectionDialog.label@Parent window">
+    <prop type="sectionname" xml:lang="en-us">New Section Dialog</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Parent window</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Ventana principal</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.editSectionDialog.label@Same window">
+    <prop type="sectionname" xml:lang="en-us">New Section Dialog</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Same window</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>La misma ventana</seg>
+    </tuv>
+</tu>
 <tu tuid="perc.ui.editSectionDialog.label@Navigation class names">
     <prop type="sectionname" xml:lang="en-us">Navigation class names</prop>
     <note xml:lang="en-us"></note>

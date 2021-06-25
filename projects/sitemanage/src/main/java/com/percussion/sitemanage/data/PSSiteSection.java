@@ -289,7 +289,12 @@ public class PSSiteSection extends PSAbstractPersistantObject implements IPSFold
     	/**
     	 * Top window option
     	 */
-    	_top
+    	_top,
+
+        /**
+         * Parent window option
+         */
+        _parent
     	
     }
     /**
