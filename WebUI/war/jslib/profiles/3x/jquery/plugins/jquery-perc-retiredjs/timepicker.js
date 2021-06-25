@@ -48,7 +48,7 @@ $.datepicker._setDateFromField = function(inst, noDefault) {
  */
 $.datepicker._connectDatepickerOverride = $.datepicker._connectDatepicker;
 $.datepicker._connectDatepicker = function(target, inst) {
-    $.datepicker._connectDatepickerOverride(target, inst);
+    //$.datepicker._connectDatepickerOverride(target, inst);
 
     // showButtonPanel is required with timepicker
     if (this._get(inst, 'showTime')) {
@@ -59,10 +59,10 @@ $.datepicker._connectDatepicker = function(target, inst) {
 
     if (showOn == 'button' || showOn == 'both') {
         // Unbind all click events
-        inst.trigger.off('click');
-
+        var adiv = $('#' + inst.id);
+        adiv.off('click');
         // Bind new click event
-        inst.trigger.on("click",function(evt) {
+        adiv.on("click",function(evt) {
             if ($.datepicker._datepickerShowing && $.datepicker._lastInput == target)
                 $.datepicker._hideDatepicker(null); // This override is all about the "null"
             else
@@ -80,7 +80,7 @@ $.datepicker._connectDatepicker = function(target, inst) {
 $.datepicker._showDatepickerOverride = $.datepicker._showDatepicker;
 $.datepicker._showDatepicker = function (input) {
     // Call the original method which will show the datepicker
-    $.datepicker._showDatepickerOverride(input);
+   // $.datepicker._showDatepickerOverride(input);
 
     input = input.target || input;
 
