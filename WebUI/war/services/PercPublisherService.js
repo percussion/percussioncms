@@ -394,7 +394,7 @@ var publishingServer;
                 callback(true, [results.data, results.textstatus]);
             }
         };
-        $.PercServiceUtils.makeRequest(serviceUrl, $.PercServiceUtils.TYPE_GET, true, serviceCallback);
+        $.PercServiceUtils.makeRequest(serviceUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
     }
 
     /**

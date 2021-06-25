@@ -74,14 +74,14 @@
                 // find out where we are, what view and what tab within that view
                 var currentView     = $.PercNavigationManager.getView();
                 if(currentView === $.PercNavigationManager.VIEW_DESIGN) {
-                    var currentTabIndex = $("#tabs").tabs('option', 'selected');
+                    var currentTabIndex = $("#tabs").tabs('option','active');
                     if(currentTabIndex === 3) {
                     	dirtyController.setDirty(true, "template", saveCSS); 
                     	initRender();
                     }
                 } else if(currentView === $.PercNavigationManager.VIEW_EDITOR) {
-                    var currentTabIndex = $("#perc-pageEditor-tabs").tabs('option', 'selected');
-                    if(currentTabIndex === 2) {
+                    var currentTabIndex2 = $("#perc-pageEditor-tabs").tabs('option','active');
+                    if(currentTabIndex2 === 2) {
                         dirtyController.setDirty(true, "page", saveCSS);
                     	initRender();
                     }

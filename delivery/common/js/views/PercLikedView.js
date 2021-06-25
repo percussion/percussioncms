@@ -84,14 +84,18 @@
                 .removeClass(PERC_UNLIKED)
                 .addClass(PERC_LIKED);
             button
-                .off('click').on('click',unlike)
-                .attr("title", "Remove");
+                .off('click').on('click',
+                function(evt){
+                    unlike(evt);
+                }).attr("title", "Remove");
         } else {
             likeWidget
                 .removeClass(PERC_LIKED)
                 .addClass(PERC_UNLIKED);
             button
-                .off('click').on('click', like)
+                .off('click').on('click', function(evt){
+                    like(evt);
+            })
                 .attr("title", "Like");
         }
         if(0 !== likeTotalLikes && "undefined" !== typeof (likeTotalLikes) && null !== likeTotalLikes) {
@@ -110,7 +114,7 @@
         }
     }
     
-    function like() {
+    function like(event) {
         likeWidgetState = LIKED;
         $.PercLikedService.likeThis(function(success, data){
             if(success) {
@@ -127,7 +131,7 @@
         });
     }
     
-    function unlike() {
+    function unlike(event) {
         $.PercLikedService.unlikeThis(function(success, data){
 			if(success){
 				likeWidgetState = UNLIKED;

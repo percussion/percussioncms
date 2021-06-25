@@ -10,8 +10,8 @@
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.caret.js"></script>
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js"></script>
 <script src="../plugins/PercViewReadyManager.js"></script>
-<script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js"></script>
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"></script>
+<script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js"></script>
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-dropdown/jquery.dropdown.js"></script>
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-ui-multiselect-widget/jquery.multiselect.js"></script>
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-ui-multiselect-widget/jquery.multiselect.filter.js"></script>

@@ -94,7 +94,7 @@
         // Extend options and assign as data in the container the options extended
         var options = $.extend(true, {}, defaultConfig, config);
         // Check that the instanceID property was defined
-        if (options.instanceIdSuffix === undefined)
+        if (typeof options.instanceIdSuffix === 'undefined')
         {
             throw "instanceIdSuffix must be defined.";
         }
@@ -113,11 +113,11 @@
             options.enableAdd    && head.append($('<div class="' + ADD_BTN_CLASS + '"/>').attr('title', options.addTitle));
 
             // Bind collapse and add button evetns
-            container.find('.' + COLLAPSE_BTN_CLASS).off("click").on("click",function() {
+            container.find('.' + COLLAPSE_BTN_CLASS).off().on("click",function() {
                 $(this).toggleClass(MINIMIZER_CLASS).toggleClass(MAXIMIZER_CLASS);
                 container.find('.' + TREELIST_CONTAINER_CLASS).slideToggle("fast");
             });
-            container.find('.' + ADD_BTN_CLASS).off("click").on("click",function() {
+            container.find('.' + ADD_BTN_CLASS).off().on("click",function() {
                 var options = container.data('options');
                 if (typeof(options.createItem) == 'function')
                 {                
@@ -181,7 +181,7 @@
         });
 
         // Once the tree is ready, update its contents with an empty collection,
-        if (options.listItem !== undefined && typeof(options.listItem) == 'object')
+        if (typeof options.listItem !== 'undefined' && typeof(options.listItem) === 'object')
         {
             updateTree(container, options.listItem);
         }
@@ -196,7 +196,7 @@
     {
         // Get the current options (we set them in the init() method ) from the container
         options = container.data('options');
-        if (workflowName !== undefined)
+        if (typeof workflowName !== 'undefined')
         {
             selectedWorkflow = workflowName;
         }   
@@ -239,7 +239,7 @@
          */
         function addSubtreeContents(dynatree_node, dataSubtrees, levelLimit, level)
         {
-            if (levelLimit !== undefined && level > levelLimit)
+            if (typeof levelLimit !== 'undefined' && level > levelLimit)
             {
                 return;
             }
@@ -302,7 +302,7 @@
                     // Call recursively addSubtreeContents with dynatree_node.chldren
                     // we must also convert the 'children' property to an array (CXF problem)
 
-                    if(this.children!==undefined) {
+                    if(typeof this.children !== 'undefined') {
                       var many_data_children = (this.children.child instanceof Array);
 
                     if (many_data_children)
@@ -330,7 +330,7 @@
         {
             container.find('.' + ADD_BTN_CLASS)
                 .removeClass('.' + DISABLED_ITEM_CLASS)
-                .off("click")
+                .off()
                 .on("click",function() {
                     if (typeof(options.createItem) == 'function')
                     {

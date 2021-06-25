@@ -172,7 +172,7 @@
         var top = window.parent.parent.jQuery("<div>"
 
             //A field at the top of the dialog to hold error messages.
-            + "<p id='perc-saveas-dialog-error' class='perc-field-error' />"
+            + "<p id='perc-saveas-dialog-error' class='perc-field-error'>"
 
             //Text field for the name under which to save the asset
             + ut.input( settings.asset_name ,
@@ -186,7 +186,7 @@
                 sa_tabindex )
 
             //Space for the directory navigation.
-            + "<div id='perc-saveas-dialog-direc'></div>"
+            + "</p><div id='perc-saveas-dialog-direc'></div>"
             + "</div>"
         );
     
@@ -391,7 +391,7 @@
                 .data( 'tag', pref + (spec['name'] + "").toLowerCase() );
 
             var sclass = 'perc-saveas-dialog-selected';
-            function selectAnchor()
+            function selectAnchor(evt)
             {
                 anchor.siblings( '.'+sclass ).removeClass( sclass );
                 anchor.addClass( sclass );
@@ -409,7 +409,9 @@
             {
                 if( leaf_selectable )
                 {
-                    anchor.on("click",  selectAnchor );
+                    anchor.on("click",  function(evt){
+                        selectAnchor(evt);
+                    } );
                     anchor.on("dblclick", function(evt)
                     {
                         anchor.trigger("click");
@@ -421,7 +423,9 @@
             {
                 if( folder_selectable )
                 {
-                    anchor.on("click", selectAnchor );
+                    anchor.on("click", function(evt){
+                        selectAnchor(evt);
+                    } );
                 }
                 anchor.on("dblclick", function(evt)
                 {

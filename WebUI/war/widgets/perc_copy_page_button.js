@@ -30,10 +30,10 @@
     $.perc_build_copy_page_button = function (finderRef, content) {
         var btn = $("<a id='perc-finder-copy-page' href='#' title='Click to copy selected page'>Copy</a>")
         	.on("click",function (event) {
-        		copyPageValidate();
+        		copyPageValidate(event);
         });        
       
-        function copyPageValidate(){
+        function copyPageValidate(evt){
             $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
             var selectedPage = $(".mcol-opened.perc-listing-type-percPage.perc-listing-category-PAGE");
             var selectedPage1 = $(".mcol-opened.perc-listing-type-percPage.perc-listing-category-LANDING_PAGE");
@@ -209,7 +209,10 @@
         {
             if (flag)
             {
-                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click", copyPageValidate );
+                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt){
+                        copyPageValidate(evt);
+                    } );
             }
             else
             {

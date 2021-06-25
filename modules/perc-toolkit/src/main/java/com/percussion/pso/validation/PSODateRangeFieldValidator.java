@@ -15,8 +15,8 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.data.PSConversionException;
 import com.percussion.extension.IPSExtensionDef;
@@ -37,8 +37,8 @@ public class PSODateRangeFieldValidator extends PSDefaultExtension
       implements
          IPSFieldValidator
 {
-   
-   private static Log log = LogFactory.getLog(PSODateRangeFieldValidator.class);
+
+   private static final Logger log = LogManager.getLogger(PSODateRangeFieldValidator.class);
    
    private IPSExtensionDef extDef = null; 
    /**
@@ -59,13 +59,13 @@ public class PSODateRangeFieldValidator extends PSDefaultExtension
          if(StringUtils.isNotBlank(sourceVal))
          {
             sourceDate = PSDataTypeConverter.parseStringToDate(sourceVal);
-            log.debug("Setting source date to " + sourceDate); 
+            log.debug("Setting source date to {}", sourceDate);
          }
    
       }
       Calendar currentCal = Calendar.getInstance();
       currentCal.setTime(currentDate); 
-      log.debug("Current calendar is " + currentCal.getTime()); 
+      log.debug("Current calendar is {}", currentCal.getTime());
 
       Number minDays = helper.getOptionalParameterAsNumber(MIN_DAYS, "-1"); 
       if(minDays.intValue() >= 0)
@@ -73,11 +73,11 @@ public class PSODateRangeFieldValidator extends PSDefaultExtension
          Calendar minCal = Calendar.getInstance();
          minCal.setTime(sourceDate); 
          minCal.add(Calendar.DAY_OF_MONTH, minDays.intValue()); 
-         log.debug("Min Cal is "  + minCal.getTime()); 
+         log.debug("Min Cal is {}", minCal.getTime());
          if(currentCal.before(minCal))
          {
-            log.debug("Source is before "  + minCal.getTime());
-            return new Boolean(false); 
+            log.debug("Source is before {}", minCal.getTime());
+            return Boolean.FALSE;
          }
       }
       Number maxDays = helper.getOptionalParameterAsNumber(MAX_DAYS, "-1"); 
@@ -86,16 +86,16 @@ public class PSODateRangeFieldValidator extends PSDefaultExtension
          Calendar maxCal = Calendar.getInstance(); 
          maxCal.setTime(sourceDate);
          maxCal.add(Calendar.DAY_OF_MONTH, maxDays.intValue()); 
-         log.debug("Max Cal is "  + maxCal.getTime()); 
+         log.debug("Max Cal is {}", maxCal.getTime());
          if(currentCal.after(maxCal))
          {
-            log.debug("Source is after " + maxCal.getTime()); 
-            return new Boolean(false); 
+            log.debug("Source is after {}", maxCal.getTime());
+            return Boolean.FALSE;
          }
       }
        
       
-      return new Boolean(true); //validation succeeds
+      return Boolean.TRUE; //validation succeeds
    }
    
    @Override

@@ -51,7 +51,7 @@
         };
     };
 
-    var _cache = new Object();
+    var _cache = {};
     var _pseudoIdPrefix = "perc-pseudo-temp-";
     var _pseudoIdIncrement = 0;
     var _currentSiteId = null;
@@ -68,14 +68,14 @@
 
     function getSitesWithTemplates()
     {
-        sites = new Array();
-        for(t in _cache.templates)
+        sites = [];
+        for(var t in _cache.templates)
         {
             assignedSites = _cache.templates[t].getAssignedSites();
-            for(s in assignedSites)
+            for(var s in assignedSites)
             {
                 contains = false;
-                for (ss in sites)
+                for (var ss in sites)
                 if (assignedSites[s] == sites[ss]) contains = true;
                 if (!contains) sites.push(assignedSites[s]);
             }
@@ -264,7 +264,7 @@
             if(status == $.PercServiceUtils.STATUS_SUCCESS)
             {
                 var sites = result.data.SiteSummary;
-                var results = new Array();
+                var results = [];
                 for(i = 0; i < sites.length; i++)
                 {
                     var site = sites[i];
@@ -295,9 +295,9 @@
     function getAssignedSitesByTemplate(templateid)
     {
         var temp = _getAssignedTemplateById(templateid);
-        if(temp == null) return new Array();
+        if(temp == null) return [];
         var sites = temp.getAssignedSites();
-        if(sites == null || sites == 'undefined') return new Array();
+        if(sites == null || sites == 'undefined') return [];
         return sites;
     }
 
@@ -321,8 +321,8 @@
         }
 
         // figure out which templates need to be created new and which just assigned
-        var assigns = new Array();
-        var creates = new Array();
+        var assigns = [];
+        var creates = [];
 
         // iterate over dirty templates
         for(var i = 0; i < dirtyTemps.length; i++)
@@ -413,7 +413,7 @@
 
         if(_cache.templates != null && siteRequest === '') return;
 
-        if(_cache.templates == null) _cache.templates = new Array();
+        if(_cache.templates == null) _cache.templates = [];
         
         var currentSiteName;
         
@@ -480,6 +480,7 @@
                 {
                     result.setAssignedSites(sites);
                 });
+
             }
             _cache.templates[sum.id] = result;
         }
@@ -515,17 +516,18 @@
         var nameLowerCase = name.toLowerCase();
 
         // check to see if that name is already in use and alert appropriately
-        for(tempId in _cache.templates)
+        for(var tempId in _cache.templates)
         {
             var template = _cache.templates[tempId];
             if(template.containsSite(currentSite) && nameLowerCase == template.getTemplateNameLowerCase())
             {
-                var defMsg = "Template name '" + name + "' is already in use in the current site.\nPlease use a different name for the template." + "\nNote that template names are case insensitive.";
-                return defMsg;
+                var defMsg1 = "Template name '" + name + "' is already in use in the current site.\nPlease use a different name for the template." + "\nNote that template names are case insensitive.";
+                return defMsg1;
             }
         }
 
-        // if the name is valid, get the template and change its name
+        // if the name is valid, get
+        // the template and change its name
         var temp = _cache.templates[templateId];
         temp.setTemplateName(name);
         temp.setPersisted(false);
@@ -602,7 +604,7 @@
                 if(status == $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     var sites = result.data.SiteSummary;
-                    var results = new Array();
+                    var results = [];
                     for(i = 0; i < sites.length; i++)
                     {
                         var site = sites[i];
@@ -632,8 +634,11 @@
 
         // Go through the array, only saving the items
         // that pass the validator function
-        for(var elem in elems)
-        if (!inv != !callback(elems[elem])) ret.push(elems[elem]);
+        for(var elem in elems) {
+            if (!inv !== !callback(elems[elem])) {
+                ret.push(elems[elem]);
+            }
+        }
 
         return ret;
     }

@@ -93,7 +93,7 @@
             //Last edited formatted date
             var le = "";
             if(pageOptDetails.lastEdited){
-                var le = $.perc_utils.splitDateTime(pageOptDetails.lastEdited);
+                let le = $.perc_utils.splitDateTime(pageOptDetails.lastEdited);
                 le = le.date + " " + le.time;
             }
             var wfstatus = pageOptDetails.status + " (" + pageOptDetails.workflow + ")";

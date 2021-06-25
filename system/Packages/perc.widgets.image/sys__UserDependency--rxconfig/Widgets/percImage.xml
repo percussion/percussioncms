@@ -36,9 +36,6 @@
     <Resource href="/rx_resources/widgets/image/css/style.css"
               type="css"
               placement="head" />
-    <Resource href="/cmlite/jslib/jquery-1.3.2.js"
-              type="javascript"
-              placement="head"/>
     <UserPref name="rendering"
               display_name="Rendering format"
               required="true"

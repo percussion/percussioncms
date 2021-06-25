@@ -486,10 +486,9 @@
      */
     function renderGadgets(jsonGadgets)
     {
-        var i = 0;
         var chromeIds = Array();
         gadgets.container.clearGadgetInstanceIds();
-        for (var i = 0; i < jsonGadgets.length; i++)
+        for (let i = 0; i < jsonGadgets.length; i++)
         {
             if (jsonGadgets[i].url) createGadget(jsonGadgets[i]);
         }
@@ -530,14 +529,14 @@
             }], [gadgets.container.userPrefStore.getPrefs(gadgetObj)], function(data)
             {
                 var meta = data.gadgets[0];
-                var prefs = meta["userPrefs"];
+                var prefs = meta.userPrefs;
                 var prefCount = 0;
-                for (c in prefs)
+                for (let c in prefs)
                 {
                     prefCount++;
                 } // Check if user prefs has values
                 gadgetObj.title = meta.title;
-                $("#gid_" + gadgetObj.id).prop("name", meta.title);
+                $("#gid_" + gadgetObj.id).attr("name", meta.title);
                 gadgetObj.height = meta.height;
                 gadgetObj.width = meta.width;
                 gadgetObj.hasPrefs = prefCount > 0;
@@ -613,18 +612,24 @@
         menuExpand = $("#perc-gadget-menu-expand");
         menuConfig = $("#perc-gadget-menu-config");
         menuRemove = $("#perc-gadget-menu-remove");
+
+        menuButton = $("#perc-gadget-menu-button");
         var instanceId = gadget.attr("instanceId");
         var gInstance = gadgets.container.getGadget(instanceId);
         var hasPrefs = gInstance.hasPrefs;
         // move the menu to the current gadget so that it shows right under the gadget's titlebar
         var top = titleBar.position().top + $(".perc-dashboard-container").scrollTop();
         var left = titleBar.position().left;
-        var menuX = left + titleBar.outerWidth() - menu.width();
+        var menuX = titleBar[0].getBoundingClientRect().left + titleBar[0].getBoundingClientRect().width + $(window)['scrollLeft']()-menu.outerWidth(true);
         var menuY = top + titleBar.outerHeight();
         menu.css("top", menuY).css("left", menuX).css("display", "block");
 
         // update the menu items based on the current state of the gadget
         updateMinimizeExpandMenuItem(gadget);
+
+        //CMS-8086 : The click event was being bound multiple times resulting in multiple firings of click events in case we clicked different menu items on different gadgets.
+        //Need to de register the already registered click event while showing the menu up.
+        $(document).off("click");
 
         // handle maximize menu item
         $(document).on("click","#perc-gadget-menu-minimize",function(eventObject )
@@ -636,6 +641,7 @@
         // handle remove menu item
         $(document).on("click","#perc-gadget-menu-remove", function(eventObject )
         {
+            menu.hide(); //Hide the menu after clicking.
             var instanceId = gadget.attr("instanceId");
             removeGadget(instanceId);
         });
@@ -650,6 +656,7 @@
         // handle edit settings
         $(document).on("click","#perc-gadget-menu-config", function(eventObject )
         {
+            menu.hide();
             handlePrefs(instanceId);
         });
 
@@ -669,12 +676,11 @@
         });
 
         // hide the menu if you hover away from it
-        //TODO:
-        /* $(document).on("mouseout","#perc-gadget-menu",function(eventObject )
-          {
-              menu.hide();
-          });
-          */
+        $(document).on("mouseleave","#perc-gadget-menu",function(eventObject )
+        {
+            menu.hide();
+        });
+
 
     }
 
@@ -813,7 +819,7 @@
                 var statusSelect = $('[name="m_' + gadgetId + '_up_status"]');
                 statusSelect.find('option').remove();
                 var statusList = $.perc_utils.convertCXFArray(result.data.EnumVals.entries);
-                for (s in statusList)
+                for (let s in statusList)
                 {
                     var value = statusList[s].value;
                     statusSelect.append($('<option/>').val(value).html(value));
@@ -1059,7 +1065,9 @@
             });
         });
 
-        $(document).on("change",".perc-gadget-category",filterGadgetLibrary);
+        $(document).on("change",".perc-gadget-category",function(evt){
+            filterGadgetLibrary(evt);
+        });
 
         populateTrayGadgets(function()
         {
@@ -1167,7 +1175,7 @@
     /**
      * Filter the gadget library by category
      */
-    function filterGadgetLibrary()
+    function filterGadgetLibrary(event)
     {
         $.each($('.perc-tray-item'), function()
         {

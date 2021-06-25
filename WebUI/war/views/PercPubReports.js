@@ -147,7 +147,10 @@
                 content: I18N.message("perc.ui.perc.pub.reports@Invalid Site"),
                 title: I18N.message("perc.ui.perc.pub.reports@Site Publish")
             });
-            $("perc-manual-publish-widget").find("perc-foldable").on("click", FoldToggle(this));
+            $("perc-manual-publish-widget").find("perc-foldable").on("click",
+                function(evt){
+                    FoldToggle(this);
+                });
             return true;
         }
         this.service = $.PercPublisherService(false);
@@ -434,7 +437,7 @@
              Expects the data for a single row in the summary table to be assigned
              with the _ROW_DATA_NAME key in the object that calls this method.
              */
-            function _handleViewDetails()
+            function _handleViewDetails(event)
             {
                 var rowData = $(this).data(_ROW_DATA_NAME);
                 getLogDetails(rowData.jobId, rowData);
@@ -445,7 +448,9 @@
 
                 var node = $("#perc-view-detail-" + r);
                 node.data(_ROW_DATA_NAME, results[r]);
-                node.on("click",_handleViewDetails);
+                node.on("click", function(evt){
+                        _handleViewDetails(evt);
+                });
             }
 
             /************* Invoking dataTable plugin to make the columns sortable ****************************/
@@ -762,7 +767,10 @@
             $.fn.perc_toggle("#perc-publish-logs-widget");
         });
 
-        $("#perc-publish-current-jobs").on('click', '.perc-stop-active', stopPublishing);
+        $("#perc-publish-current-jobs").on('click', '.perc-stop-active',
+            function(evt){
+                stopPublishing(evt);
+    });
 
     });
 })(jQuery);

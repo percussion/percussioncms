@@ -231,10 +231,22 @@
     
     /** initialize the UI event listeners for this dialog */
     $(function () {
-        $('body').on('click', '.perc-site-summary h2 a', onToggleSection);
-        $('body').on('click', '.perc-action-print', onPrintDialog);
-        $('body').on('click', '.perc-action-refresh', onRefreshDialog);
-        $('body').on('click', '.perc-site-summary-action.perc-open-dialog', onOpenDialog);
+        let body = $('body');
+        body.on('click', '.perc-site-summary h2 a', function(evt){
+            onToggleSection(evt);
+        });
+
+        body.on('click', '.perc-action-print', function(evt){
+            onPrintDialog(evt);
+        });
+
+        body.on('click', '.perc-action-refresh', function(evt){
+            onRefreshDialog(evt);
+        });
+
+        body.on('click', '.perc-site-summary-action.perc-open-dialog', function(evt){
+            onOpenDialog(evt);
+        });
     });
 
 })(jQuery);

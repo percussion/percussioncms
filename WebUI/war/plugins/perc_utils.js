@@ -41,7 +41,7 @@
 
     $.ajaxSetup( { cache: false } );
     $.Percussion = $.Percussion || {};
-  
+
 
     $.perc_fakes = {
         path_service: false,
@@ -165,7 +165,7 @@
      * @param {Object} message the message that needs to be logged must be a valid string if not no logging happens.
      */
     function logToServer(type, category, message){
-        if($.type( type ) !== "string"){
+        if(($.type( type ) !== "string")){
             return;
         }
         //Log client side
@@ -227,7 +227,6 @@
         frame.contents().find("#perc-content-form").find('label').each(function(){
             if($(this).hasClass("perc-required-field")){
                 if($(this).siblings('input').val()===''){
-                    //dosubmit = false;
                     showMandatoryFieldAlertPopUp=true;
                 }
             }
@@ -335,7 +334,7 @@
      * @return true if the str is undefined or null or not string type or the length of it is < 1. Otherwise false.
      */
     function isBlankString(str){
-        return !str || false || 'string' !== typeof str || str.trim().length < 1 || "undefined" === typeof str;
+        return !str || str === null || 'string' !== typeof str || str.trim().length < 1 || "undefined" === typeof str;
     }
 
     function elem( needle, haystack ){
@@ -345,13 +344,13 @@
 
     function select( label, name, id ) {
         return "<label for='"+id+"'>" + label + "</label><br/>" +
-             "<select name='"+name+"' id='"+id+"' ></select><br/>";
+            "<select name='"+name+"' id='"+id+"' ></select><br/>";
     }
 
     function input( label, name, id, tabindex, type ) {
         type = type || "text";
         return "<label for='"+id+"'>" + label + "</label><br/>" +
-             "<input type='"+type+"' name='"+name+"' id='"+id+"' ></input><br/>";
+            "<input type='"+type+"' name='"+name+"' id='"+id+"' /><br/>";
     }
 
     function extract_path( path ) {
@@ -365,7 +364,6 @@
         return $.map( path, function(x)
         {
             return x;
-            //return x.replace(/[^a-zA-Z0-9\/]/g, '_');
         }).join('-');
     }
 
@@ -753,9 +751,9 @@
     $.fn.perc_button = function( ) {
         this.addClass("ui-state-default ui-corner-all")
             .on("mouseenter",function(){
-                    if( ! $(this).hasClass("ui-state-disabled") )
-                        $(this).addClass("ui-state-hover");
-                })
+                if( ! $(this).hasClass("ui-state-disabled") )
+                    $(this).addClass("ui-state-hover");
+            })
             .on("mouseleave",
                 function(){
                     $(this).removeClass("ui-state-hover");
@@ -856,12 +854,6 @@
             //TODO: Need to map calls to this to make sure they are setting alt/title/role
             debug("Accessibility Check: Verify that " + icon + " has accessible attributes set");
             debug("i18n Check: Verify that " + icon + " has i18n strings set");
-
-            /*returnIcon.src=icon;
-            returnIcon.alt=I18N.message("perc.ui.images@FolderIconAlt");
-            returnIcon.title=I18N.message("perc.ui.images@FolderIconTitle");
-            returnIcon.decorative=true;
-            return returnIcon;*/
         }
 
         if( type && type_icons[ type ] ){
@@ -971,24 +963,24 @@
      */
     $.fn.percWidLibMaximizer = function (P)    {
         var baseEle = "#perc-layout-menu";
-        if($jQuery("#tabs-3").length)    {
+        if($("#tabs-3").length)    {
             baseEle = "#tabs-3 #perc-layout-menu";
         }
 
-        if($jQuery(baseEle).parent().find(".perc-template-container").hasClass("perc-visible")) {
-            $jQuery(baseEle).parent().find(".perc-template-container").removeClass("perc-visible").addClass("perc-hidden");
-            $jQuery(baseEle).parent().find("#perc-wid-lib-expander").removeClass("perc-whitebg");
-            $jQuery(baseEle).parent().find("#perc-wid-lib-minimizer").replaceWith('<a id="perc-wid-lib-maximizer" style="float: left;" href="#"></a>');
+        if($(baseEle).parent().find(".perc-template-container").hasClass("perc-visible")) {
+            $(baseEle).parent().find(".perc-template-container").removeClass("perc-visible").addClass("perc-hidden");
+            $(baseEle).parent().find("#perc-wid-lib-expander").removeClass("perc-whitebg");
+            $(baseEle).parent().find("#perc-wid-lib-minimizer").replaceWith('<a id="perc-wid-lib-maximizer" style="float: left;" href="#"></a>');
         } else {
-            var regionLibContainer   = $jQuery(baseEle).parent().find(".perc-region-library-container");
+            var regionLibContainer   = $(baseEle).parent().find(".perc-region-library-container");
             // if region tray is visible, toggle it (close it) so that only the widget tray is shown
             if(regionLibContainer.hasClass("perc-visible")) {
                 $.fn.percRegionLibraryMaximizer(P);
             }
 
-            $jQuery(baseEle).parent().find(".perc-template-container").removeClass("perc-hidden").addClass("perc-visible");
-            $jQuery(baseEle).parent().find("#perc-wid-lib-expander").addClass("perc-whitebg");
-            $jQuery(baseEle).parent().find("#perc-wid-lib-maximizer").replaceWith('<a id="perc-wid-lib-minimizer" style="float: left;" href="#"></a>');
+            $(baseEle).parent().find(".perc-template-container").removeClass("perc-hidden").addClass("perc-visible");
+            $(baseEle).parent().find("#perc-wid-lib-expander").addClass("perc-whitebg");
+            $(baseEle).parent().find("#perc-wid-lib-maximizer").replaceWith('<a id="perc-wid-lib-minimizer" style="float: left;" href="#"></a>');
         }
 
         // fix the height of the iframe based on the height of the top part
@@ -1003,16 +995,16 @@
      */
     $.fn.percRegionLibraryMaximizer = function (P)    {
         var baseEle = "#perc-layout-menu";
-        if($jQuery("#tabs-3").length)    {
+        if($("#tabs-3").length)    {
             baseEle = "#tabs-3 #perc-layout-menu";
         }
 
-        var parent = $jQuery(baseEle).parent();
-        var regionLibraryContainer = $jQuery(parent.find(".perc-region-library-container"));
-        var templateContainer      = $jQuery(baseEle).parent().find(".perc-template-container");
-        var regionLibraryExpander  = $jQuery(parent.find("#perc-region-library-expander" ));
-        var regionLibraryMaximizer = $jQuery(parent.find("#perc-region-library-maximizer"));
-        var regionLibraryMinimizer = $jQuery(parent.find("#perc-region-library-minimizer"));
+        var parent = $(baseEle).parent();
+        var regionLibraryContainer = $(parent.find(".perc-region-library-container"));
+        var templateContainer      = $(baseEle).parent().find(".perc-template-container");
+        var regionLibraryExpander  = $(parent.find("#perc-region-library-expander" ));
+        var regionLibraryMaximizer = $(parent.find("#perc-region-library-maximizer"));
+        var regionLibraryMinimizer = $(parent.find("#perc-region-library-minimizer"));
 
         if( regionLibraryContainer.hasClass("perc-visible")) {
             regionLibraryContainer.removeClass("perc-visible").addClass("perc-hidden");
@@ -1041,11 +1033,11 @@
      */
     $.fn.percOrphanAssetsMaximizer = function (P) {
         var baseEle = "#perc-layout-menu";
-        if($jQuery("#tabs-2").length)    {
+        if($("#tabs-2").length)    {
             baseEle = "#tabs-2 #perc-content-menu";
         }
 
-        var parent = $jQuery(baseEle).parent();
+        var parent = $(baseEle).parent();
         var orphanAssetsContainer = parent.find("#perc_asset_library");
         var orphanAssetsExpander  = parent.find("#perc_orphan_assets_expander" );
 
@@ -1081,7 +1073,9 @@
                 single();
             }
         });
-        elem.on("dblclick", dbl );
+        elem.on("dblclick", function(e){
+            dbl(e);
+        } );
     }
     $.fn.perc_toggle = function( d )    {
         if($(d).length && $(d).hasClass('perc-hidden'))    {
@@ -1097,34 +1091,16 @@
     };
     $.fn.perc_toggle_padding = function(  )    {
         var args = $.fn.perc_toggle_padding.arguments;
-        for(var i = 0 ; i < args.length ; i ++ )    {
-            if($(args[i]).length && $(args[i]).hasClass('perc-nopadding'))    {
-                $(args[i]).removeClass('perc-nopadding');
+        for(let i of args )    {
+            if(i.length && i.hasClass('perc-nopadding'))  {
+                i.removeClass('perc-nopadding');
             }
             else    {
-                $(args[i]).addClass('perc-nopadding');
+                i.addClass('perc-nopadding');
             }
         }
         return this;
     };
-
-
-
-    var tot = 0;
-
-    /*
-    var recursive_test_schema;
-    recursive_test_schema = {'a': '$', 'rts': [function(){ return recursive_test_schema; }]};
-    rts_schema = { 'Top': recursive_test_schema };
-
-    rts_json = {'a': 'x', 'rts': [{'a': 'y', 'rts': [{'a': 'z', 'rts': []}]}]};
-
-    // rexml( rts_schema, rts_json ) = <Top><a>x</a><rts><rt><a>y</a>....</Top>
-
-    option_schema = { 'Top': [function(tag) { if(tag == 'a'){ return {'b':'$'} } else { return {'d':'$'} } }] };
-
-    option_xml = "<Top><a><b>foo</b></a><c><d>bar</d></c><a><b>foo2</b></a></Top>";
-    */
 
     function addAutoScroll(){
         $("#frame").percAutoScroll({
@@ -1161,7 +1137,7 @@
             if(children.length === 0 && child_schema === '$')
             {
                 var len = data.length;
-                for(i = 0; i < len; i++)
+                for(let i = 0; i < len; i++)
                 {
                     ret.unshift($(data[i]).text());
                 }
@@ -1423,7 +1399,7 @@
             // Deactivate the link by replacing its href value
             $(this).attr("href", "javascript:void(0);");
         });
-        
+
     }
 
 
@@ -1451,6 +1427,14 @@
      * Formats a date object into a time string h:mm AM
      */
     function formatTimeFromDate(date, showsecs) {
+
+        if(typeof date === "undefined"){
+            return "";
+            console.trace("undefined date passed to frmateTimeFromDate.");
+        }else if(typeof date === "string"){
+            date = new Date(date);
+        }
+
 
         var formattedTime;
         var hours      = date.getHours();
@@ -1564,7 +1548,7 @@
                                 $.unblockUI();
                                 var errorMsg = "";
                                 if (code === "renameFolderItem.reservedName" || code === "renameFolderItem.longName" ||
-                                     code === "renameFolderItem.invalidCharInName")
+                                    code === "renameFolderItem.invalidCharInName")
                                 {
                                     errorMsg = result.replace("<old_name>", oldName).replace("<new_name>", value);
                                 }
@@ -1670,14 +1654,7 @@
             return false;
         }
 
-        if(path[1] === 'Design')
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (path[1] === 'Design');
     }
 
 

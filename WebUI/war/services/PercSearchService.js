@@ -55,7 +55,7 @@ function getSearchResult(searchCriteriaObj, callback)
             }
          };
 
-        $.PercServiceUtils.makeJsonRequest(setUrl, $.PercServiceUtils.TYPE_POST, true, serviceCallback, searchCriteriaObj);
+        $.PercServiceUtils.makeJsonRequest(setUrl, $.PercServiceUtils.TYPE_POST, false, serviceCallback, searchCriteriaObj);
 
     }	
 

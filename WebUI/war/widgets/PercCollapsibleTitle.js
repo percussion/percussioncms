@@ -53,7 +53,7 @@
         var secondLine;
         var isToggleVisible = config.isToggleVisible;
 
-        if(title != undefined && content != undefined) {
+        if(typeof title !== 'undefined' && typeof content !== 'undefined') {
             firstLine = $("<div>");
             firstLine.append(title);
             firstLine.attr("title", title);
@@ -101,8 +101,12 @@
                 .css("left", "15px");
             firstLine.prepend(collapseControl);
             if(toggable) {
-                firstLine.on("click",handleCollapse);
-                collapseControl.on("click",handleCollapse);
+                firstLine.on("click",function(evt){
+                    handleCollapse(evt);
+                });
+                collapseControl.on("click",function(evt){
+                    handleCollapse(evt);
+                });
             }
             
             if(isCollapsed) {

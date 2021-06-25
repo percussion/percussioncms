@@ -152,10 +152,7 @@
 	<xsl:template match="Control[@name='percQueryControl']" mode="psxcontrol">
 
 		<script >
-
-			$=$j;
-
-			$(document).ready(function() {
+			$(function() {
 			$(".hasDatepicker").addClass('datadisplay');
 			$('#display_query_published_after').attr("autocomplete","off");
 			$('#display_query_published_before').attr("autocomplete","off");

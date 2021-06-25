@@ -424,7 +424,7 @@
         $.PercServiceUtils.makeRequest(
             getUrl,
             $.PercServiceUtils.TYPE_GET,
-            true,
+            false,
             serviceCallback);
     }
 
@@ -473,7 +473,7 @@
         $.PercServiceUtils.makeJsonRequest(
             url,
             $.PercServiceUtils.TYPE_POST,
-            true,
+            false,
             serviceCallback,
             newWidgetObj);
     }
@@ -494,7 +494,7 @@
         $.PercServiceUtils.makeJsonRequest(
             url,
             $.PercServiceUtils.TYPE_GET,
-            true,
+            false,
             serviceCallback);
     }
 

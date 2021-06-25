@@ -66,6 +66,8 @@ public class PSOProxyQueryResource extends PSDefaultExtension
      * The log instance to use for this class, never <code>null</code>.
      */
 
+
+
     private static final Logger log = LogManager.getLogger(PSOProxyQueryResource.class);
 
     public boolean canModifyStyleSheet() {

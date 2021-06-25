@@ -209,7 +209,9 @@
     var self    = this;
     var $window = $(window);
 
-    $window.on('resize', $.proxy(this.sizeOverlay, this));
+    $window.on('resize', function(evt){
+        $.proxy(this.sizeOverlay, this);
+    });
 
     $('select, object, embed').css({
       visibility: 'hidden'
@@ -480,7 +482,9 @@
   };
 
   Lightbox.prototype.enableKeyboardNav = function() {
-    $(document).on('keyup.keyboard', $.proxy(this.keyboardAction, this));
+    $(document).on('keyup.keyboard', function(evt){
+        $.proxy(this.keyboardAction, this);
+    });
   };
 
   Lightbox.prototype.disableKeyboardNav = function() {

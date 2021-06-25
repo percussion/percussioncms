@@ -36,7 +36,7 @@ $.perc_editSectionDialog = function() {
     function openDialog(sectionId, callback) {
         //make an Ajax request to get the folder properties and call the createDiaog method by suppling that data.
         var url = $.perc_paths.SECTION_GET_PROPERTIES + "/" + sectionId;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,createDialog);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,createDialog);
 
         var taborder = 30;
         var v;
@@ -295,7 +295,7 @@ $.perc_editSectionDialog = function() {
                     validClass: "perc-field-success",
                     wrapper: "p",
                     validateHiddenFields: false,
-                    debug: true,
+                    debug: false,
                     submitHandler: function(form) {
                        dialog.remove();
                        callback("ok", $(form).serializeArray());

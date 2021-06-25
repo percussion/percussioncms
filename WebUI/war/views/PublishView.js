@@ -100,13 +100,29 @@
         });
         
         // Bind the click even to Edit Server Button
-        $("#perc-servers-wrapper").on('click', '#perc-server-edit', loadServerEditor)
-            .on('click', '#perc-define-save', save);
+        $("#perc-servers-wrapper").on('click', '#perc-server-edit',
+            function(evt){
+                loadServerEditor(evt);
+            })
+            .on('click', '#perc-define-save',
+                function(evt){
+                    save(evt);
+                });
 
-        $("#perc-servers-container").on('click', '#perc-define-cancel', cancel)
-            .on('click', '#perc_wizard_cancel', cancel)
-            .on('click', '#perc-publish-now', publishServer)
-            .on('click', '#perc-full-publish-now', publishServer);
+        $("#perc-servers-container").on('click', '#perc-define-cancel',
+            function(evt){
+                cancel(evt);
+            })
+            .on('click', '#perc_wizard_cancel', function(evt){
+                cancel(evt);
+            })
+            .on('click', '#perc-publish-now', function(evt){
+                    publishServer(evt);
+            })
+            .on('click', '#perc-full-publish-now',
+                function(evt){
+                    publishServer(evt);
+                });
 
         if (siteName != null) 
         {
@@ -251,7 +267,7 @@
     /**
      * Load Server Editor in Edit mode
      */
-    function loadServerEditor()
+    function loadServerEditor(evt)
     {
         var container = $("#perc-servers-list");
         isNewServer = false;
@@ -505,7 +521,7 @@
     }
     
     //Publish the site using selected server
-    function publishServer()
+    function publishServer(evt)
     {
         if (serverProperties.serverInfo.isModified) 
             return;

@@ -180,10 +180,8 @@
 			</xsl:choose>
 		</xsl:variable>
 		<script >
-
-			$=$j;
 			var percAssetContentTypeName = '<xsl:value-of select="$contentTypeName"/>';
-			$(document).ready(function() {
+			$(function() {
 
 			$('#display_start_date').datepicker({
 			onSelect:

@@ -162,7 +162,7 @@
                 .css("cursor","default")
                 .html(labels[0]);
         } else {
-            var arrowClass = config.percDropdownRootClass ? config.percDropdownRootClass + "-split-button-arrow" : "perc-split-button-arrow";
+            var arrowClass = config.percDropdownRootClass ? config.percDropdownRootClass + "-split-button-arrow" : "perc-split-button-arrow"
             title
                 .html("&nbsp;")
                 .css("cursor","pointer")
@@ -186,7 +186,9 @@
             .addClass("perc-dropdown-title-"+labels[0])
             .data("callback", callbacks[0])
             .data("callbackData", callbackData[0])
-            .on("click",clickDropdown);
+            .on("click",function(evt){
+                clickDropdown(evt);
+            });
 
         var dropdownOptionList = dropdown.find(".perc-dropdown-option-list");
         var dropdownOptionItemTemplate = dropdown.find(".perc-dropdown-option-item-template");
@@ -235,7 +237,9 @@
             dropdownOptionItem
                 .data("callback", callbacks[k])
                 .data("callbackData", callbackData[k])
-                .on("click",clickDropdown);
+                .on("click",function(evt){
+                    clickDropdown(evt);
+                });
         }
         dropdownOptionItemTemplate.remove();
         dropdown.superfish(config);
@@ -248,7 +252,7 @@
 
         this.append(dropdown);
 
-        if(config.percDropdownRootClass == "perc-dropdown-template-pages-items-dropdown"){
+        if(config.percDropdownRootClass === "perc-dropdown-template-pages-items-dropdown"){
             $('ul.perc-dropdown-template-pages-items-dropdown > li > ul.perc-dropdown-option-list').css('max-height', '66px');
             $('ul.perc-dropdown-template-pages-items-dropdown > li > ul.perc-dropdown-option-list').css('overflow-y', 'auto');
         }
@@ -261,7 +265,9 @@
     function clickDropdown(event) {
         var callback = $(this).data("callback");
         var callbackData = $(this).data("callbackData");
-        callback(callbackData);
+        if(typeof callback !== 'undefined'){
+            callback(callbackData);
+        }
     }
 
     /**

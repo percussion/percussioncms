@@ -145,15 +145,15 @@
   $.perc_filterField = function(tgt, filter, callback)
   {
       $(tgt).on('keypress.filterField', {'filter': filter}, function(evt){
-         var filter = function(txt){return txt;};
+         var filt = function(txt){return txt;};
          
          var rawCode = evt.charCode ? evt.charCode : evt.which;
          if(rawCode === 0 || rawCode === 8 || rawCode === 13)
             return;
          var theChar = String.fromCharCode(rawCode);
          if(typeof evt.data.filter == 'function')
-            filter = evt.data.filter;
-         var filtered = filter(theChar);
+            filt = evt.data.filter;
+         var filtered = filt(theChar);
          if(filtered.length === 0)
          {
             evt.preventDefault();

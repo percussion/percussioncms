@@ -54,7 +54,7 @@
                     callback(false, defaultMsg);
                 }
         };
-        $.PercServiceUtils.makeRequest(url,$.PercServiceUtils.TYPE_GET,true,serviceCallback);
+        $.PercServiceUtils.makeRequest(url,$.PercServiceUtils.TYPE_GET,false,serviceCallback);
     }
     
     /**
@@ -71,7 +71,7 @@
                 }
         };
 
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,serviceCallback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,serviceCallback);
     }
 
     /**
@@ -89,7 +89,7 @@
                 }
         };
 
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,serviceCallback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,serviceCallback);
     }
     
 })(jQuery);
