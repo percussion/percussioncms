@@ -263,7 +263,9 @@
         var callback = $(this).data("callback");
         var callbackData = $(this).data("callbackData");
 
-        callback(callbackData);
+        if(typeof callback === "function") {
+            callback(callbackData);
+        }
 
     }
 
