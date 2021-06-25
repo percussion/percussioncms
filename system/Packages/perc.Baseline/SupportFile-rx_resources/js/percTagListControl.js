@@ -94,7 +94,7 @@
          }
       });
       
-      $(tgt).bind('blur.filterField', {'filter': filter}, function(evt){
+      $(tgt).on('blur.filterField', {'filter': filter}, function(evt){
          // Run through the filter on blur
          tgt.val(evt.data.filter(tgt.val()));
       });
@@ -132,7 +132,7 @@
                 processedArray.push(thisTag);
             }
         });
-        processedArray = $.unique(processedArray);
+        processedArray = $.uniqueSort(processedArray);
         $.each(processedArray, function()
         {
            $tagSelect.append("<option selected='selected'>" + this + "</option>");

@@ -732,7 +732,7 @@
       .on('mouseenter.multiselect', 'label', function() {
         if (!this.classList.contains('ui-state-disabled')) {
           self.$labels.removeClass('ui-state-hover');
-          $(this).addClass('ui-state-hover').find('input').trigger('focus');
+          $(this).addClass('ui-state-hover').find('input').trigger("focus");
         }
       })
       // Keyboard navigation of the menu
@@ -751,7 +751,7 @@
           case 9: // tab
             if (e.shiftKey) {
               self.$menu.find(".ui-state-hover").removeClass("ui-state-hover");
-              self.$header.find("li").last().find("a").trigger('focus');
+              self.$header.find("li").last().find("a").trigger("focus");
             }
             else {
               self.close();
@@ -821,7 +821,7 @@
 
         // make sure the input has focus. otherwise, the esc key
         // won't close the menu after clicking an item.
-        input.trigger('focus');
+        input.focus();
 
         // toggle aria state
         $input.prop('aria-selected', checked);
@@ -1275,7 +1275,7 @@
       $inputs.each(self._toggleState('checked', flag));
 
       // Give the first input focus
-      $inputs.eq(0).trigger('focus');
+      $inputs.eq(0).trigger("focus");
 
       // update button text
       self.update();
