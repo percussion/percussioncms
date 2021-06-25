@@ -598,7 +598,7 @@
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.SITES_BY_TEMPLATE + "/" + templateid,
             $.PercServiceUtils.TYPE_GET,
-            true,
+            false,
             function(status, result)
             {
                 if(status == $.PercServiceUtils.STATUS_SUCCESS)
