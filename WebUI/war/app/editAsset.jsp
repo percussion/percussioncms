@@ -241,7 +241,7 @@
             <%}%>
             <div id="perc-dropdown-publish-now" style="float : left">
             </div>
-            <div id="perc-dropdown-page-workflow" style="float : right" class="jq-dropdown jq-dropdown-tip" role="menu">
+            <div id="perc-dropdown-page-workflow" style="float : right" role="menu">
             </div>
         </div>
         <div id="perc-pageEditor-toolbar-content" class="ui-helper-clearfix"></div>
