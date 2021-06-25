@@ -1418,6 +1418,10 @@
 
         function handlePageWorkflowDropdownAction(params)
         {
+            if(params.class === jQuery.Event.class){
+                params = params.data;
+            }
+
 
             var contentId = params.contentId;
             var itemType = params.itemType;
@@ -1601,6 +1605,10 @@
          */
         function _openSchedule(callbackData)
         {
+            if(callbackData.class === jQuery.Event.class){
+                callbackData = callbackData.data;
+            }
+
             var itemId = callbackData.assetId;
             var assetName = callbackData.aName;
             if (dialogFlag)
@@ -1657,6 +1665,11 @@
          */
         function _publishItem(callbackData)
         {
+
+            if(callbackData.class === jQuery.Event.class){
+                callbackData = callbackData.data;
+            }
+
             var itemId = callbackData.assetId;
             var trName = callbackData.trName;
             var view = $.PercNavigationManager.getView();
@@ -1787,3 +1800,4 @@
     };
 
 })(jQuery, jQuery.Percussion);
+

@@ -192,7 +192,7 @@
 
         var dropdownOptionList = dropdown.find(".perc-dropdown-option-list");
         var dropdownOptionItemTemplate = dropdown.find(".perc-dropdown-option-item-template");
-        var k = 0;
+        let k = 0;
         for(let l=1; l<labels.length; l++){
             k = l;
             var dropdownOptionLabel = labels[l];
@@ -234,6 +234,7 @@
             }
 
             dropdownOptionList.append(dropdownOptionItem);
+
             dropdownOptionItem
                 .on("click",null,callbackData[k], callbacks[k]);
         }
