@@ -173,10 +173,10 @@
                         $(this)
                             .css("overflow","visible");
                     }).on("mouseleave",
-                    function(){
-                        $(this)
-                            .css("overflow","visible");
-                    });
+                function(){
+                    $(this)
+                        .css("overflow","visible");
+                });
 
             // TODO: should this styling be on a CSS? the margin should be based on the size of the image.
             var optionsList = dropdown.find(".perc-dropdown-option-list");
@@ -235,11 +235,7 @@
 
             dropdownOptionList.append(dropdownOptionItem);
             dropdownOptionItem
-                .data("callback", callbacks[k])
-                .data("callbackData", callbackData[k])
-                .on("click",function(evt){
-                    clickDropdown(evt);
-                });
+                .on("click",null,callbackData[k], callbacks[k]);
         }
         dropdownOptionItemTemplate.remove();
         dropdown.superfish(config);
@@ -265,9 +261,9 @@
     function clickDropdown(event) {
         var callback = $(this).data("callback");
         var callbackData = $(this).data("callbackData");
-        if(typeof callback !== 'undefined'){
-            callback(callbackData);
-        }
+
+        callback(callbackData);
+
     }
 
     /**
