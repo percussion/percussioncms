@@ -1214,20 +1214,13 @@ public class PSSiteSectionService implements IPSSiteSectionService
         IPSGuid sourceParentId = idMapper.getGuid(req.getSourceParentId());
         IPSGuid sourceId = idMapper.getGuid(req.getSourceId());
         IPSGuid targetId = idMapper.getGuid(req.getTargetId());
-        try
-        {
-            // ensure Admin perms
-            folderHelper.hasFolderPermission(folderHelper.getParentFolderId(sourceParentId).toString(), Access.ADMIN);
-            folderHelper.hasFolderPermission(folderHelper.getParentFolderId(sourceId).toString(), Access.ADMIN);
-            folderHelper.hasFolderPermission(folderHelper.getParentFolderId(targetId).toString(), Access.ADMIN);
-            navSrv.moveNavon(sourceId, sourceParentId, targetId, req.getTargetIndex());
-        }
-        catch (Exception ex)
-        {
-            log.error("Failed to move the source navigation node {} to the target navigation node {} Error was: {}",req.getSourceId() , req.getTargetId() , ex.getMessage());
-            throw new PSSiteSectionException(ex.getMessage());
 
-        }
+        // ensure Admin perms
+        folderHelper.hasFolderPermission(folderHelper.getParentFolderId(sourceParentId).toString(), Access.ADMIN);
+        folderHelper.hasFolderPermission(folderHelper.getParentFolderId(sourceId).toString(), Access.ADMIN);
+        folderHelper.hasFolderPermission(folderHelper.getParentFolderId(targetId).toString(), Access.ADMIN);
+        navSrv.moveNavon(sourceId, sourceParentId, targetId, req.getTargetIndex());
+
     }
 
     /**

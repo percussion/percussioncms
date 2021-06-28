@@ -264,7 +264,7 @@ public interface IPSSiteSectionService extends IPSDataService<PSSiteSection, PSS
      * (Runtime) Exception is thrown when an unexpected error occurs in this
      * service.
      */
-    public static class PSSiteSectionException extends PSDataServiceException
+    public static class PSSiteSectionException extends RuntimeException
     {
        /**
         * Generated serial number.
