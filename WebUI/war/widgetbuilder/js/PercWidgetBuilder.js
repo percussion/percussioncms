@@ -242,7 +242,7 @@ var WidgetBuilderApp = {};
                 });
             }, this);
         }
-        else if(cssResObj.trim() !==""){
+        else if(typeof cssResObj !== 'undefined' && cssResObj.trim() !==""){
             cssResModels.push({name:cssResObj});
         }
         WidgetBuilderApp.cssResList.add(cssResModels);
