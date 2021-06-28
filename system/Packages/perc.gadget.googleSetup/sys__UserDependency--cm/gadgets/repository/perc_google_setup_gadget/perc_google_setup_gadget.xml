@@ -317,7 +317,7 @@
                          retSt = false;
                          retMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                      }
-                     if($.isFunction(callback)){
+                     if(typeof callback === "function"){
                          callback(retSt, retMsg);
                      }
                  }
