@@ -92,14 +92,13 @@
             </table>    
         </div>
         <script src="/Rhythmyx/rx_resources/js/calendarControl.js"/>
-    :
     </xsl:template>
     <xsl:template match="Control[@name='percCalendarControl' and @isReadOnly='yes']" priority='10' mode="psxcontrol">
-        <div id = "perc-content-edit-page_calendar" style = "padding-bottom:10px;" class="ui-perc-ctl_daterange" for = "page_calendar">
+        <div id = "perc-content-edit-page_calendar" style = "padding-bottom:10px;" class="ui-perc-ctl_daterange">
             <table style = "line-height:17px;">
                     <tr>
                         <td>
-                          <label>Select calendar:<br/></label>
+                          <label for="{@paramName}">Select calendar:<br/></label>
                           <div id = "selectedCalendars" class = "datadisplay"> </div>
                           <select multiple="1" id="{@paramName}" name="{@paramName}" style = "display:none">
                              <xsl:apply-templates select="DisplayChoices" mode="psxcontrol-sysdropdownmultiple">

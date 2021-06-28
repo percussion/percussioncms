@@ -74,7 +74,7 @@
     $(document).ready(function(){
         //Change the form action url to point to the right server
         deliveryServicesURL = getDeliveryServicesDomain(".perc-comments-view");
-        var version = $.isFunction($.getCMSVersion)?$.getCMSVersion():"";
+        var version = typeof($.getCMSVersion) === "function" ?$.getCMSVersion():"";
         var url =  joinURL(deliveryServicesURL, "/perc-comments-services/comment?perc-version=" + version);
         $("form[name = 'commentForm']").attr("action", url);
     });
@@ -236,7 +236,7 @@
     */
     function getUrl()
     {
-        var version = $.isFunction($.getCMSVersion)?$.getCMSVersion():"";
+        var version = typeof($.getCMSVersion) === "function"?$.getCMSVersion():"";
         
         //Build a valid service URL based on the value stored in the delivery
         var url = deliveryServicesURL + "/perc-comments-services/comment/jsonp";

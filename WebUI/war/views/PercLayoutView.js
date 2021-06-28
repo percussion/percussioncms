@@ -173,12 +173,12 @@ var layoutModel;
                     // if the DIV's parent is not a DIV, then this must be the top most DIV
                     if($(elem).parent()[0].nodeName !== "DIV")
 
-                    // if this is the top DIV, then we dont want to add a delete menu: return null
+                        // if this is the top DIV, then we dont want to add a delete menu: return null
                         return null;
 
                     else
 
-                    // otherwise use the delete icon
+                        // otherwise use the delete icon
                         return '/cm/images/icons/editor/delete';
                 },
                 callback: function(region) {
@@ -193,11 +193,11 @@ var layoutModel;
                     // if the DIV's parent is not a DIV, then this must be the top most DIV
                     if($(elem).parent()[0].nodeName !== "DIV")
 
-                    // if this is the top DIV, then use one delete icon
+                        // if this is the top DIV, then use one delete icon
                         return '/cm/images/images/buttonConfigStandalone';
                     else
 
-                    // otherwise use default icon
+                        // otherwise use default icon
                         return '/cm/images/icons/editor/configure';
                 },
                 callback: function(region) {
@@ -628,10 +628,10 @@ var layoutModel;
 
             // you can drop a widget on the region and it will be added to the end
             region.droppable({
-                accept: '.perc-widget-tool',
-                tolerance: 'pointer',
+                accept: '*',
+                tolerance: 'touch',
                 greedy: true,
-                scope: $.perc_iframe_scope,
+                scope: 'default',
                 drop: function(event,ui) {
                     regionDrop(ui, region);
                 },
@@ -645,10 +645,9 @@ var layoutModel;
             // if the region already has widgets, then you can drop on the existing widgets themselves
             // the new widget will be added on top of the existing widget
             widgets.droppable({
-                accept: '.perc-widget-tool',
-                tolerance: 'pointer',
+                accept: '*',
+                tolerance: 'touch',
                 greedy: true,
-                scope: $.perc_iframe_scope,
                 drop: function(event,ui) {
                     widgetDrop(ui, $(this), region);
                 },
@@ -799,9 +798,9 @@ var layoutModel;
             return $("<div/>")
                 .addClass("perc-region-feedback")
                 .css({'position':'absolute'}).droppable({
-                    scope: $.perc_iframe_scope,
-                    accept: '#region-tool',
-                    tolerance: 'pointer',
+                    scope: 'default',
+                    accept: '*',
+                    tolerance: 'touch',
                     greedy: true,
                     hoverClass: 'perc-show-feedback',
                     over : function(event, ui) {
@@ -868,7 +867,7 @@ var layoutModel;
                 insideIframe( region ).sortable({
                     delay : 500,
                     containment : "parent", // we can only sort within the parent
-                    tolerance : "pointer",
+                    tolerance : "touch",
                     // we only sort direct children
                     items : "> .perc-horizontal > .perc-region",
                     axis : "x",             // we can only move left right
@@ -927,7 +926,7 @@ var layoutModel;
                     insideIframe( region ).sortable({
                         delay : 500,
                         containment : "parent",
-                        tolerance : "pointer",
+                        tolerance : "touch",
 
                         // only sort children
                         items : "> .perc-vertical > .perc-region",
@@ -958,7 +957,7 @@ var layoutModel;
                     dropOnEmpty: true,
                     placeholder: 'placeholder-widget',
                     items : "div.perc-widget:not('.perc-locked')",
-                    tolerance: 'pointer',
+                    tolerance: 'touch',
                     start : function(event,ui) {
                         // temporarily set overflow to visible so that we dont scroll if the content is too big
                         $(this).css("overflow","visible");

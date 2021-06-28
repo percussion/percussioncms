@@ -433,7 +433,7 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
                 }
 
                 setSrcAndSize();
-                if(topFrJQ.isFunction(callback)) {
+                if(typeof callback === "function") {
                     callback(renderLink.url, renderLink.thumbUrl, renderLink.title);
                 }
             });

@@ -49,6 +49,7 @@
 <!DOCTYPE html>
 <html lang="<%= lang %>">
     <head>
+        <title>Import Template</title>
         <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
             <link rel="stylesheet" type="text/css" href="../cssMin/perc_admin.packed.min.css" />
             <link rel="stylesheet" type="text/css" href="../css/layout.css" />
@@ -56,7 +57,7 @@
             <%@include file="includes/common_js.jsp" %>
 
               <script>
-              $(document).ready(function() {
+              $(function() {
                       $(".perc-template-import-field").on("change", function(){
                             $(".perc-import-error").hide();
                             $("#per-import-message").hide();
@@ -65,10 +66,10 @@
                 });        
               </script>
     </head>
-    <body style = "margin:0px; background-color:#E6E6E9">
+    <body style = "margin:0; background-color:#E6E6E9">
         <form id="perc-import-template-form" encType="multipart/form-data"  method="post" name="perc-import-template-form" style = "margin-bottom:0px">
             <div id = "perc-import-label" style = "margin-top:-4px">
-                <label style = "font-size:11px; font-family:Verdana; font-weight:normal"><i18n:message key = "perc.ui.import.template@File Name"/></label>
+                <label style = "font-size:11px; font-family:Verdana,serif; font-weight:normal"><i18n:message key = "perc.ui.import.template@File Name"/></label>
             </div>
             <div id = "per-import-input-field">
                 <input type = "file" size = "53" class = "perc-template-import-field" style = "margin:5px 0px 0px 0px" name = "import-template" />
