@@ -198,7 +198,8 @@ var WidgetBuilderApp = {};
             return;
         }
         $("#perc-widget-def-tabs").tabs({disabled: []});
-        $(".perc-widget-editing-container").show();
+        //CMS-8177 : "perc-widget-editing-container" class is used on all tab containers. Calling ".show()" function on the class caused all the tab content to show in first tab container element.
+        $("#perc-widget-tab-general").show();
         var wdgModel = new WidgetBuilderApp.WidgetDefinitionModel();
         var wdgObject = isNew ? result : wdgModel.convertFromServerObject(result.WidgetBuilderDefinitionData);
         wdgModel.set(wdgObject);
