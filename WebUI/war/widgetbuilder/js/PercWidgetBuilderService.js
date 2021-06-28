@@ -67,6 +67,6 @@
             }
             callback(true, result.data);
         };
-        $.PercServiceUtils.makeJsonRequest(url,type,false,srvCallback,data);
+        $.PercServiceUtils.makeJsonRequest(url,type,true, srvCallback,data);
     }
 })(jQuery);
