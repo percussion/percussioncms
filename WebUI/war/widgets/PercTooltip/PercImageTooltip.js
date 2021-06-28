@@ -168,7 +168,7 @@
                 "background": "blue",
                 "opacity": 0.0
             }).css("cursor", element.css("cursor")).off("click").on("click",function(event){
-                if ($.isFunction(_clickCallback))
+                if (typeof _clickCallback === "function")
                     _clickCallback(element, data.id);
                 if (element.data("events") && element.data("events")["click"] && element.data("events")["click"][0] && element.data("events")["click"][0].data && element.data("events")["click"][0].handler) {
                     var e = {
