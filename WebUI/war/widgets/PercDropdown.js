@@ -149,7 +149,8 @@
         if(config.percDropdownResizeToElement) {
             config.onBeforeShow = resizeDropdown;
         }
-
+        config.autoArrows = false;
+        config.cssArrows = false;
         var callbacks = config.percDropdownCallbacks;
         var callbackData = config.percDropdownCallbackData;
         var labels = config.percDropdownOptionLabels;
