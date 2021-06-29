@@ -36,7 +36,7 @@ function countProperties(obj) {
 
 (function($, P) {
     P.widgetPropertiesDialog = function( setWidgetProperty, widgetProperties, widgetDefinitionId, postCallback, propertyType, getWidgetByName ) {
-        $.perc_widget_definition_client.restGetWidgetDefinition(widgetDefinitionId, propertyType, function(widgetDef) {
+        restGetWidgetDefinition(widgetDefinitionId, propertyType, function(widgetDef) {
             if (widgetProperties){
                 if (typeof(widgetProperties.sys_perc_name) != "undefined" && typeof(widgetProperties.sys_perc_description) != "undefined" ){
                     widgetDef.userPrefDef.sys_perc_name = (new $.perc_sys_pref("perc_sys_name","","Name","sys_perc_name"));
@@ -74,8 +74,15 @@ function countProperties(obj) {
             if(requiredFieldsValid === true) {
                 //Check the uniqueness of the widget name.
                 var widget = $(this).find('[name=sys_perc_name]');
-                var widgetName = widget.val().trim().toUpperCase();
-                var originalName = widget.attr('originalValue').trim().toUpperCase();
+                var widgetName = widget.val();
+
+                if(typeof widgetName !== "undefined")
+                    widgetName = widgetName.trim().toUpperCase();
+
+                var originalName = widget.attr('data-perc-original-value');
+                if(typeof originalName !== "undefined")
+                    originalName = originalName.trim().toUpperCase();
+
                 if (typeof(widgetName) !== "undefined" && widgetName !== "" && widgetName !== originalName && getWidgetByName(widgetName) !== null ){
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: I18N.message("perc.ui.widget.properties.dialog@Widget Name") + widgetName + I18N.message("perc.ui.widget.properties.dialog@Widget Name Already Used")});
                     return;
@@ -136,14 +143,14 @@ function countProperties(obj) {
                 var minmaxClass = (index === 0) ? "perc-items-minimizer" : "perc-items-maximizer";
                 var groupHtml =
                     "<div class='perc-section-header'>" +
-                    "<div class='perc-section-label' groupName='" + this.groupName + "'>" +
+                    "<div class='perc-section-label' data-perc-group-name='" + this.groupName + "'>" +
                     "<span  class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
                     "</div>" +
                     "</div>";
                 dialog.find('#' + this.groupName).before(groupHtml);
                 // The first group will be the only one expanded (hide all others)
                 if(index !== 0){
-                   dialog.find('#' + this.groupName).hide();
+                    dialog.find('#' + this.groupName).hide();
                 }
             });
 
@@ -153,7 +160,7 @@ function countProperties(obj) {
                 self.find(".perc-min-max")
                     .toggleClass('perc-items-minimizer')
                     .toggleClass('perc-items-maximizer');
-                dialog.find('#' + self.attr('groupName')).toggle();
+                dialog.find('#' + self.attr('data-perc-group-name')).toggle();
             });
         }
     };
@@ -285,58 +292,53 @@ function countProperties(obj) {
         };
     };
 
-    /**
-     *  Widget Definition Client
-     *  Retrieves widget definition from REST Service and creates a widget definition model
-     */
 
-    $.perc_widget_definition_client = function()
+    function restGetWidgetDefinition( widgetDefinitionId, propertyType, callback)
     {
-        this.restGetWidgetDefinition = function(widgetDefinitionId, propertyType, callback)
-        {
-            $.ajax(
+        $.ajax(
+            {
+                headers: {
+                    'Accept': 'application/xml',
+                    'Content-Type': 'application/xml'
+                },
+                url: $.perc_paths.WIDGET_FULL + "/" + widgetDefinitionId,
+                type: "GET",
+                success: function(xml, textstatus)
                 {
-                    headers: {
-                        'Accept': 'application/xml',
-                        'Content-Type': 'application/xml'
-                    },
-                    url: $.perc_paths.WIDGET_FULL + "/" + widgetDefinitionId,
-                    type: "GET",
-                    success: function(xml, textstatus)
-                    {
-                        var model = new $.perc_widget_definition_model(xml);
-                        model.init(xml, propertyType);
-                        callback(model);
-                    },
-                    error : function()
-                    {
-                        alert(I18N.message("perc.ui.widget.properties.dialog@Unable To Retrieve Widget Definition") + widgetDefinitionId);
-                    }
-                });
-        };
-        this.restGetWidgetPrefs = function(widgetDefinitionId, callback)
-        {
-            $.ajax(
+                    var model = new $.perc_widget_definition_model(xml);
+                    model.init(xml, propertyType);
+                    callback(model);
+                },
+                error : function()
                 {
-                    headers: {
-                        'Accept': 'application/xml',
-                        'Content-Type': 'application/xml'
-                    },
-                    url: $.perc_paths.WIDGET_FULL + "/" + widgetDefinitionId,
-                    type: "GET",
-                    success: function(xml, textstatus)
-                    {
-                        var $widgetDefinitionXml = $(xml);
-                        var $widgetPrefs = $widgetDefinitionXml.find("WidgetPrefs");
-                        callback($widgetPrefs);
-                    },
-                    error : function()
-                    {
-                        alert(I18N.message("perc.ui.widget.properties.dialog@Unable To Retrieve Widget Definition") + widgetDefinitionId);
-                    }
-                });
-        };
+                    alert(I18N.message("perc.ui.widget.properties.dialog@Unable To Retrieve Widget Definition") + widgetDefinitionId);
+                }
+            });
     };
+
+    function restGetWidgetPrefs(widgetDefinitionId, callback)
+    {
+        $.ajax(
+            {
+                headers: {
+                    'Accept': 'application/xml',
+                    'Content-Type': 'application/xml'
+                },
+                url: $.perc_paths.WIDGET_FULL + "/" + widgetDefinitionId,
+                type: "GET",
+                success: function(xml, textstatus)
+                {
+                    var $widgetDefinitionXml = $(xml);
+                    var $widgetPrefs = $widgetDefinitionXml.find("WidgetPrefs");
+                    callback($widgetPrefs);
+                },
+                error : function()
+                {
+                    alert(I18N.message("perc.ui.widget.properties.dialog@Unable To Retrieve Widget Definition") + widgetDefinitionId);
+                }
+            });
+    };
+
 
     $.perc_sys_pref = function(datatype, default_value, display_name, name, required_field)
     {
@@ -354,7 +356,7 @@ function countProperties(obj) {
                 var value = (typeof(this.realValue) != "undefined") ? this.realValue : this.default_value;
                 buff =  '<tr>\n';
                 buff += '   <td><label for="' + this.name + '">' + this.display_name+'</label>: </td>\n'+ '</tr>\n';
-                buff += '   <td><input class="perc-widget-property" name="'+this.name+'" type="text" value="'+value+'" originalValue="'+value+'" maxlength="30"></td>\n'+ '</tr>\n';
+                buff += '   <td><input class="perc-widget-property" name="'+this.name+'" type="text" value="'+value+'" data-perc-original-value="'+value+'" maxlength="30"></td>\n'+ '</tr>\n';
                 buff += '</tr>\n';
                 return buff;
             }
@@ -451,8 +453,7 @@ function countProperties(obj) {
             }
             else if(datatype2 === 'list')
             {
-                //  var values = JSON.parse(value); // not sure why this does not work
-                var values = eval(value2);
+                var values = JSON.parse(value);
 
                 buff += '   <td><label' + this.required_class + 'for="' + this.name + '">' + this.display_name+'</label>: </td>\n'+ '</tr>\n';
                 buff += '   <td><textarea class="perc-widget-property" name="'+this.name+'">\n';
