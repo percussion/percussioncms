@@ -47,7 +47,7 @@
    Boolean hasSites = (Boolean)request.getAttribute("hasSites");
     if (site == null)
         site = "";
-   String inlineHelpMsg = hasSites != null && hasSites.booleanValue()
+   String inlineHelpMsg = hasSites != null && hasSites
       ? PSI18nUtils.getString("perc.ui.template.create@Click Site To Work On Templates", locale)
       : PSI18nUtils.getString("perc.ui.site.architecture@Click Create Site To Create Site", locale);
 %>
@@ -83,11 +83,10 @@
         <form class="perc-template-pages-controls" action="#">
             <div class="previous-disabled" style="right:56px;"><i18n:message key = "perc.ui.template.create@Prev"/></div>        
             <input type="text" autocomplete="off" name="perc-template-pages-controls-jump" class="perc-jump">
-            <div class="next" style="right:0px;"><i18n:message key = "perc.ui.common.label@Next"/></div>
+            <div class="next" style="right:0;"><i18n:message key = "perc.ui.common.label@Next"/></div>
         </form>
         <div class="perc-panel-page-range"><i18n:message key = "perc.ui.template.create@Items"/><span class="perc-panel-page-group-range"></span></div>
         <div class="perc-panel-total-item"><i18n:message key = "perc.ui.template.create@Total Items"/><span class="perc-panel-total"></span></div>
-        <!-- <div class="perc-panel-view-all"><a href="#">View all</a></div> Will be implemented in 2.11-->
     </div>
     <div id="perc-template-view-container" style="overflow: hidden; margin-left: 38px">
         <div id="perc-activated-templates" class="perc-templates-detailed">
