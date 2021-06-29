@@ -457,7 +457,6 @@ function getDomPath(el) {
         }
 
         initializeForm();
-        $("#ui-datepicker-div").addClass('ui-helper-hidden-accessible');
         return $(this);
 
     };

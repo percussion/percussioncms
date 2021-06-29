@@ -368,7 +368,6 @@
             }
             
             initializeForm();
-            $("#ui-datepicker-div").addClass('ui-helper-hidden-accessible');
 			buildQuery();
             return $(this);
 
