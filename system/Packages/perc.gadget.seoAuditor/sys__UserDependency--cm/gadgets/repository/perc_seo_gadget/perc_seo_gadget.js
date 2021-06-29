@@ -174,12 +174,12 @@
             }
 
             var issues = [];
-            for (j = 0; j < issueCodes.length; j++)
+            for (let issueCode of issueCodes)
             {
-                var issueCode = issueCodes[j];
-                if (typeof(issueCode) == 'undefined') break;
+
+                if (typeof(issueCode) === 'undefined') break;
                 issueText = issueMessages[issueCode];
-                if (j < 2) issues.push(
+                if (issues.length < 2) issues.push(
                     {
                         content: issueText,
                         title: issueText
@@ -203,7 +203,7 @@
             else issuesMessageTitle = sevText + "&#xD;" + issuesMessageTitle;
             var toolTip = issuesMessageTitle;
 
-            imageName = "<img src='/cm/gadgets/repository/common/images/" + imageName + "' severity='" + stats.severity + "' title='" + toolTip + "'>";
+            imageName = "<img src='/cm/gadgets/repository/common/images/" + imageName + "' data-severity='" + stats.severity + "' alt='" + toolTip + "'>";
 
             var callbackInfo = {
                 pageId: pageSummary.id + "",
@@ -260,17 +260,6 @@
 
     function declareCustomSortingFunctions()
     {
-        // custom column sorting for images that express severity of SEO issues.
-        $.fn.dataTableExt.afnSortData['perc-type-html-img'] = function(oSettings, iColumn)
-        {
-            var aData = [];
-            $('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function()
-            {
-                var img = $(this).find('img');
-                aData.push(img.attr('severity'));
-            });
-            return aData;
-        };
         $.fn.dataTableExt.oSort['html-img-asc'] = function(x, y)
         {
             return ((x < y) ? -1 : ((x > y) ? 1 : 0));
