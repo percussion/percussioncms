@@ -295,12 +295,12 @@
                 buffer += '    <div class="perc-apply" id="' + template.getTemplateId() + '-apply" title="' +I18N.message("perc.ui.site.templates.widget@Match Content To Template Layout") + '">' + '</div>';
                 buffer += '    <div class="perc-edit" id="' + template.getTemplateId() + '-edit" title="' +I18N.message("perc.ui.site.templates.widget@Edit Template") + '">' + '</div>';
                 buffer += '    <div class="perc-delete" id="' + template.getTemplateId() + '-delete" title="' +I18N.message("perc.ui.admin.packed@Delete Template") + '">' + '</div>';
-                buffer += '    <div class="perc-template-label" title="' + originalName + '" alt="' + originalName + '" id="' + template.getTemplateId() + '-name">' + originalName + '</div>';
-                buffer += '    <div percBaseTemplateName="' + template.getBaseTemplateName() + '" id="' + template.getTemplateId() + 'id" class="perc-template-thumbnail-container perc-template-background">';
+                buffer += '    <div class="perc-template-label" title="' + originalName + '" id="' + template.getTemplateId() + '-name">' + originalName + '</div>';
+                buffer += '    <div data-base-template="' + template.getBaseTemplateName() + '" id="' + template.getTemplateId() + 'id" class="perc-template-thumbnail-container perc-template-background">';
                 buffer += '         <img height = "122px" width="174px" src = "' + template.getImageUrl() + '" alt="' + I18N.message("perc.ui.new.site.dialog@Basic Template") + '" />';
                 buffer += '    </div>';
                 buffer += ' <div class="perc-template-paging-container"' + hideInThumbnail + '>';
-                buffer += '    <ul class="perc-template-pages" templateVersion ="'+ template.getContentMigrationVersion() + '"templateId="' + template.getTemplateId() + '">';
+                buffer += '    <ul class="perc-template-pages" data-perc-template-version ="'+ template.getContentMigrationVersion() + ' "templateId="' + template.getTemplateId() + '">';
                 buffer += '         <li class="perc-template-pages-items" ></li>';
                 buffer += '         <li class="perc-template-pages-items" ></li>';
                 buffer += '         <li class="perc-template-pages-items" ></li>';
@@ -610,7 +610,7 @@
                         {
                             data.childrenInPage = $.perc_utils.convertCXFArray(data.childrenInPage);
                             var listElements = $('#' + templateId + ' .perc-template-pages li.perc-template-pages-items');
-                            var templateVersion = $('#' + templateId + ' .perc-template-pages' ).attr('templateVersion');
+                            var templateVersion = $('#' + templateId + ' .perc-template-pages' ).attr('data-perc-template-version');
                             listElements.removeClass("perc-template-page-highlighted-color");
                             // Clear the list of pages and their previous title attribute
                             if(data.firstItemId != null)
@@ -618,13 +618,13 @@
                                 self.firstPagesArray[templateId] = data.firstItemId;
                             }
 
-                            for(var i = 0; i < listElements.length; i++)
+                            for(let i of listElements)
                             {
-                                $(listElements[i]).html('').attr('title', '').removeClass('perc-require-migration');
+                                i.html('').attr('title', '').removeClass('perc-require-migration');
                             }
 
 
-                            // Appeand each of the pages returned by the service
+                            // Append each of the pages returned by the service
                             for(var j = 0; j < data.childrenInPage.length; j++) {
                                 // Remove the "/Sites" string from the path and set it as the title for the li element
                                 var pagePath = data.childrenInPage[j].path.replace('\/\/' + $.perc_paths.SITES_ROOT_NO_SLASH, '');
@@ -668,7 +668,7 @@
                                 }
                                 if (!recycledPage)
                                     curPageElem.find(".perc-template-pages-items-thumbnail img").attr("data", JSON.stringify(data.childrenInPage[j]));
-                                if (typeProps["contentMigrationVersion"] != templateVersion) {
+                                if (typeProps["contentMigrationVersion"] !== templateVersion) {
                                     curPageElem.find(".perc-template-pages-items-thumbnail img").addClass('perc-require-migration');
                                 }
                                 var dropDownConfig = {
@@ -907,7 +907,7 @@
                 var view = $.Percussion.getCurrentTemplatesView();
 
                 var querystring = $.deparam.querystring();
-                var currentTemplateName = $("#" + templateId).find('.perc-template-thumbnail-container').attr('percbasetemplatename');
+                var currentTemplateName = $("#" + templateId).find('.perc-template-thumbnail-container').attr('data-base-template');
                 var memento = {
                     'templateName': currentTemplateName,
                     'templateId': templateId,
@@ -1313,7 +1313,7 @@
     function _exportTemplate(callbackData)
     {
         var templateId = $("#perc-activated-templates").find('.perc-selected').attr('id');
-        var templateName = $("#" + templateId).find('.perc-template-thumbnail-container').attr('percbasetemplatename');
+        var templateName = $("#" + templateId).find('.perc-template-thumbnail-container').attr('data-base-template');
         $.PercTemplateService().exportTemplate(templateId, templateName, function(status, result)
         {
             if(status)

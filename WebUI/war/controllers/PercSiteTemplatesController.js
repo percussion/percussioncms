@@ -258,6 +258,7 @@
             callback($.merge([], _cache.sites));
             return;
         }
+
         $.PercServiceUtils.makeJsonRequest(
         $.perc_paths.SITES_ALL + "/", $.PercServiceUtils.TYPE_GET, false, function(status, result)
         {
@@ -265,9 +266,8 @@
             {
                 var sites = result.data.SiteSummary;
                 var results = [];
-                for(i = 0; i < sites.length; i++)
+                for(let site of sites)
                 {
-                    var site = sites[i];
                     results.push(site.name);
                 }
                 _cache.sites = $.merge([], results);
