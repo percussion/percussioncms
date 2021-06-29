@@ -37,7 +37,7 @@
  *
  * [W] - widget is rendered as an HTML TABLE
  * [T] - template is rendered as an HTML DIV inside an HTML TD
- *      Custom attribute percBaseTemplateName maintains the name of the original base template
+ *      Custom attribute data-base-template maintains the name of the original base template
  *
  * Gestures handled by this widget
  * [Site Filter |V]
@@ -167,7 +167,7 @@
 				{
 					template = loadTemplatesContext.templates[t];
 					lastTemp = template;
-					buff += '<td><div percBaseTemplateName="' + template.getTemplateName() + '" id="perc-template-' + template.getTemplateId() + '" class="template" style="display:table-cell; ">\n';
+					buff += '<td><div data-base-template="' + template.getTemplateName() + '" id="perc-template-' + template.getTemplateId() + '" class="template" style="display:table-cell; ">\n';
 					buff += '<img style="border:1px solid #E6E6E9" src="' + template.getImageUrl() + '" class="perc-template-thumbnail"/>\n';
 					var theName = template.getTemplateName().replace("perc.base.", "");
 					theName = theName.replace("perc.resp.", "");

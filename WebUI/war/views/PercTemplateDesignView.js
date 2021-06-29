@@ -383,7 +383,7 @@
         function drawUnassignedPages(unassignedItemList){
             var panel = $(".perc-unassigned-panel");
             //This panel gets reloaded every 10 seconds, capture the previous selection and reapply
-            var selectedPageId = panel.find(".perc-imported-page-selected").size()==1?panel.find(".perc-imported-page-selected").attr("id"):null;
+            var selectedPageId = panel.find(".perc-imported-page-selected").length === 1? panel.find(".perc-imported-page-selected").attr("id"):null;
             var pageContainer = panel.find(".perc-panel-pages-list");
             pageContainer.empty();
             var pageList = $("<ul/>");
