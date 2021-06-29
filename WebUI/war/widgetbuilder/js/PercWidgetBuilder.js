@@ -98,7 +98,29 @@ var WidgetBuilderApp = {};
             handleWidgetNew();
         });
         $("#perc-widget-save").on("click",function(){
-            handleWidgetSave();
+            var saveCallback = function(status, result){
+                if(status === $.PercServiceUtils.STATUS_ERROR){
+                    var errorMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
+                    callback(false, errorMsg);
+                    return;
+                }
+                $.PercBlockUI();
+                $.PercWidgetBuilderService.saveWidgetDef(prepareWidgetDef(), function(status, result){
+                    $.unblockUI();
+                    if(!status){
+                        $.perc_utils.alert_dialog({"title":"Widget save error", "content":result});
+                        return;
+                    }
+                    dirtyController.setDirty(false);
+                    if(!currentWidgetView.model.get("widgetId")){
+                        currentWidgetView.model.set({"widgetId":result.WidgetBuilderValidationResults.definitionId});
+                    }
+
+                    WidgetBuilderApp.loadDefinitions();
+
+                });
+            };
+            handleWidgetSave(saveCallback);
         });
         $("#perc-widget-close").on("click",function(){
             handleWidgetClose();
