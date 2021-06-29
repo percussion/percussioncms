@@ -109,8 +109,8 @@
                 type: "GET",
                 success: function(data, textstatus){
                     var ifrUrl = data + "&nocache=v1";
-                    $("#edit-page-metadata").append("<iframe name='edit-page-metadata-frame' id='edit-page-metadata-frame' height='100%' FRAMEBORDER='0' width='100%' src='" + ifrUrl + "' ></iframe>");
-                    $("#edit-page-metadata-frame").load(function(){
+                    $("#edit-page-metadata").append("<iframe name='edit-page-metadata-frame' id='edit-page-metadata-frame' height='100%' style='border:0;' width='100%' src='" + ifrUrl + "' ></iframe>");
+                    $("#edit-page-metadata-frame").on("load",function(){
                         _formatPageContent();
                     });
                 },
@@ -247,7 +247,7 @@
                     $.PercPageService.savePageMetadata(pageid, function() {
                         $.PercPathService.getPathItemById($.PercNavigationManager.getId(),
                             function(status, result, errorCode){
-                                   if(status === $.PercServiceUtils.STATUS_SUCCESS)
+                                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                                 {
                                     $.PercNavigationManager.setName(result.PathItem.name);
 
@@ -276,8 +276,8 @@
                                 else
                                 {
                                     $.unblockUI();
-                                        var msg;
-                                        if (errorCode === "cannot.find.item")
+                                    var msg;
+                                    if (errorCode === "cannot.find.item")
                                     {
                                         msg = I18N.message( 'perc.ui.common.error@Content Deleted' );
                                     }
