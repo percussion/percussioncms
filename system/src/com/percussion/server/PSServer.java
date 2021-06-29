@@ -133,8 +133,8 @@ import com.percussion.utils.types.PSPair;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.serialization.PSObjectSerializer;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.log4j.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -294,7 +294,7 @@ public class PSServer {
     */
    public static URL getResolvedURL(URL url) throws IOException
    {
-      if (url.getProtocol().equals("file") && url.getFile().startsWith("/") == false)
+      if (url.getProtocol().equals("file") && !url.getFile().startsWith("/"))
       {
          File absFile = new File(getRxDir(), url.getFile());
          if (!absFile.exists())
@@ -328,7 +328,7 @@ public class PSServer {
          }
          String scheme = PSServer.getProperty("proxyScheme");
          if(PSServer.isRequestBehindProxy(null) &&  !(host.equals("localhost") || host.equals("127.0.0.1"))){
-            int ports  = Integer.valueOf(PSServer.getProperty("proxyPort"));
+            int ports  = Integer.parseInt(PSServer.getProperty("proxyPort"));
             String domainName = PSServer.getProperty("publicCmsHostname");
             return new URL(scheme, domainName, ports, path);
          }else{
@@ -339,7 +339,7 @@ public class PSServer {
       {
          return url;
       }
-   } // new
+   }
 
    /**
     * Get the configuration directory
@@ -378,7 +378,7 @@ public class PSServer {
          throw new IllegalArgumentException("path may not be null");
       }
       File item = new File(getRxDir(), path);
-      if (item.exists() == false)
+      if (!item.exists())
       {
          throw new IllegalArgumentException("file does not exist: " + item.getAbsolutePath());
       }
@@ -686,8 +686,7 @@ public class PSServer {
       StringWriter sw = new StringWriter();
       PrintWriter pw = new PrintWriter(sw);
       t.printStackTrace(pw);
-      String sStackTrace = t.getMessage() + " Stack=:/n"+sw.toString(); // stack trace as a string
-      return sStackTrace;
+      return t.getMessage() + " Stack=:/n"+sw.toString(); // stack trace as a string
    }
 
    /**
@@ -773,9 +772,9 @@ public class PSServer {
        * Check the database for Unicode compatibility
        */
       Connection conn = null;
-      PSConnectionDetail connDetail= null;
-      Log logger = LogFactory.getLog(PSServer.class);
-      logger.info("Check database compatibility with unicode");
+      PSConnectionDetail connDetail;
+      Logger log = LogManager.getLogger(PSServer.class);
+      log.info("Check database compatibility with unicode");
       try
       {
          // Use default connection
@@ -785,12 +784,12 @@ public class PSServer {
          boolean unicode = PSSqlHelper.supportsUnicode(conn, connDetail);
          if (!unicode)
          {
-            logger.warn("!!!Database does not support unicode!!!");
+            log.warn("!!!Database does not support unicode!!!");
          }
       }
       catch(Throwable e)
       {
-         logger.error("Problem trying to discover if db supports unicode", e);
+         log.error("Problem trying to discover if db supports unicode", e);
       }
       finally
       {
@@ -802,7 +801,7 @@ public class PSServer {
             }
             catch (SQLException e)
             {
-               logger.error("Problem closing connection", e);
+               log.error("Problem closing connection", e);
             }
          }
       }
@@ -922,7 +921,7 @@ public class PSServer {
       if (!PSUserSessionManager.doesSessionExist(request))
       {
          IPSRequestHandler rh = getRequestHandler(request);
-         if (rh != null && rh instanceof IPSValidateSession)
+         if (rh instanceof IPSValidateSession)
             throw new PSAuthenticationRequiredException("Designer Connection", null);
       }
 
@@ -1000,7 +999,7 @@ public class PSServer {
     */
    public static PSInternalRequest getInternalRequest(String path,
                                                       PSRequest request,
-                                                      Map extraParams,
+                                                      Map<String, Object> extraParams,
                                                       boolean inheritParams,
                                                       Document inputDoc)
    {
@@ -1015,7 +1014,7 @@ public class PSServer {
       PSRequest clonedRequest = request.cloneRequest();
 
       if (!inheritParams)
-         clonedRequest.setParameters( new HashMap() );
+         clonedRequest.setParameters( new HashMap<>() );
       if (extraParams != null)
          clonedRequest.putAllParameters( extraParams );
       if ( null != inputDoc)
@@ -1075,7 +1074,7 @@ public class PSServer {
       if (queryParams != null) {
          try
          {
-            HashMap params = new HashMap();
+            HashMap<String, Object> params = new HashMap<>();
             PSFormContentParser.parseParameterString( params, queryParams );
             clonedRequest.putAllParameters( params );
          } catch (PSRequestParsingException e)
@@ -1110,7 +1109,7 @@ public class PSServer {
     */
    public static PSInternalRequest getInternalRequest(String path,
                                                       IPSRequestContext ctx,
-                                                      Map extraParams,
+                                                      Map<String, Object> extraParams,
                                                       boolean inheritParams,
                                                       Document inputDoc)
    {
@@ -1147,7 +1146,7 @@ public class PSServer {
     */
    public static PSInternalRequest getInternalRequest(String path,
                                                       PSRequest request,
-                                                      Map extraParams,
+                                                      Map<String, Object> extraParams,
                                                       boolean inheritParams)
    {
       return getInternalRequest(path, request, extraParams, inheritParams,
@@ -1209,9 +1208,9 @@ public class PSServer {
     * Contains the mappings described by the
     * {@link #getTranslatedTarget(String, String)} method. 
     */
-   private static Map<PSPair<String, String>, PSPair<String, String>> 
-      ms_resourceMap = 
-         new HashMap<PSPair<String, String>, PSPair<String, String>>();
+   private static final Map<PSPair<String, String>, PSPair<String, String>>
+      ms_resourceMap =
+           new HashMap<>();
    /**
     * Initialize the resource map
     */
@@ -1259,16 +1258,16 @@ public class PSServer {
                String targetPageName = target.substring(pos+1);
                
                ms_resourceMap.put(
-                     new PSPair<String, String>(
-                           sourceAppName.toLowerCase(), 
-                           sourcePageName.toLowerCase()),
-                     new PSPair<String, String>(targetAppName, targetPageName));
+                       new PSPair<>(
+                               sourceAppName.toLowerCase(),
+                               sourcePageName.toLowerCase()),
+                       new PSPair<>(targetAppName, targetPageName));
                //also put just application with null for request page
                ms_resourceMap.put(
-                     new PSPair<String, String>(
-                           sourceAppName.toLowerCase(), 
-                           null),
-                     new PSPair<String, String>(targetAppName, null));
+                       new PSPair<>(
+                               sourceAppName.toLowerCase(),
+                               null),
+                       new PSPair<>(targetAppName, null));
                
             }
          }
@@ -1309,7 +1308,7 @@ public class PSServer {
 
    public static boolean isRequestBehindProxy(HttpServletRequest request) {
        if(request == null){
-           return Boolean.valueOf(PSServer.getProperty("requestBehindProxy", "false"));
+           return Boolean.parseBoolean(PSServer.getProperty("requestBehindProxy", "false"));
        }else{
           try{
              String oldPath = request.getRequestURL().toString();
@@ -1317,7 +1316,7 @@ public class PSServer {
              if(requesturl.getHost().equalsIgnoreCase("localhost") ||  requesturl.getHost().equalsIgnoreCase("127.0.0.1")  ){
                 return false;
              }else{
-                return Boolean.valueOf(PSServer.getProperty("requestBehindProxy", "false"));
+                return Boolean.parseBoolean(PSServer.getProperty("requestBehindProxy", "false"));
              }
           }catch (Exception e){
              return false;
@@ -1356,8 +1355,8 @@ public class PSServer {
    private static PSPair<String, String> getTranslatedTarget(String appName,
          String pageName)
    {
-      PSPair<String, String> key = new PSPair<String, String>(
-            appName.toLowerCase(), pageName.toLowerCase());
+      PSPair<String, String> key = new PSPair<>(
+              appName.toLowerCase(), pageName.toLowerCase());
       PSPair<String, String> p = ms_resourceMap.get(key);
       
       //If p is null try try to find the resource with just appname
@@ -1655,7 +1654,7 @@ public class PSServer {
                   // oh well, keep going
                }
             }
-            
+
             // now try to shutdown the app server
             try
             {
@@ -1663,7 +1662,7 @@ public class PSServer {
             }
             catch (Throwable e)
             {
-               PSConsole.printMsg("Server", e, 
+               PSConsole.printMsg("Server", e,
                   "Failed to initiate server shutdown");
             }
          }};
@@ -1770,7 +1769,7 @@ public class PSServer {
    @SuppressWarnings(value="unchecked")
    public static Iterator<PSEntry> getAclEntries(int type)
    {
-      Map<String,PSEntry> entryMap = new HashMap<String,PSEntry>();
+      Map<String,PSEntry> entryMap = new HashMap<>();
 
       // add app handler entries
       Iterator<IPSRequestHandler> handlers = 
@@ -1851,7 +1850,7 @@ public class PSServer {
                isEncrypted.trim().equalsIgnoreCase("yes"))
             {
                // decrypt the password
-               String password = "";
+               String password;
                try {
                   password = PSEncryptor.getInstance(PSEncryptionKeyFactory.AES_GCM_ALGORIYTHM,null).decrypt(ms_serverProps.getProperty("loginPw"));
                }catch(PSEncryptionException | java.lang.IllegalArgumentException e) {
@@ -1962,7 +1961,7 @@ public class PSServer {
 
       PSApplication[] apps = ms_objectStore.init();
       ms_allApps = apps;
-      ArrayList<PSApplication> appList = new ArrayList<PSApplication>(apps.length);
+      ArrayList<PSApplication> appList = new ArrayList<>(apps.length);
       for (int i = 0; i < apps.length; i++)
       {
          PSApplication app = apps[i];
@@ -2246,8 +2245,8 @@ public class PSServer {
 
       Element handlers = doc.createElement("RequestHandlers");
       handlers.setAttribute("size",
-         new Integer(ms_RequestHandlers.size() +
-            ms_rootedRequestHandlers.size()).toString());
+              Integer.toString(ms_RequestHandlers.size() +
+                      ms_rootedRequestHandlers.size()));
       handlers.appendChild(requestHandlers);
       handlers.appendChild(rootedHandlers);
 
@@ -2271,9 +2270,9 @@ public class PSServer {
       PSConsole.printInfoMsg("Server",
             IPSServerErrors.REQ_HANDLER_INIT, (Object[])null);
 
-      ms_RequestHandlers      = new Hashtable<String,IPSRequestHandler>();
-      ms_rootedRequestHandlers      = new Hashtable<String,IPSRequestHandler>();
-      ms_requestHandlerTypes = new Hashtable<IPSRequestHandler,List<String>>();
+      ms_RequestHandlers      = new Hashtable<>();
+      ms_rootedRequestHandlers      = new Hashtable<>();
+      ms_requestHandlerTypes = new Hashtable<>();
       IPSRequestHandler handler;
 
       if (ms_srvConfig != null)
@@ -2420,7 +2419,7 @@ public class PSServer {
     */
    private static void setEstimatedStatistics()
    {
-      Log log = LogFactory.getLog(PSServer.class);
+      Logger log = LogManager.getLogger(PSServer.class);
       String estStats = (String)ms_serverProps.get(PROP_ESTIMATE_STATS);
       log.debug("Server property '" + PROP_ESTIMATE_STATS + "' =" + estStats);
       if (estStats == null || estStats.trim().length() == 0)
@@ -2937,9 +2936,9 @@ public class PSServer {
        */
       if (ms_RequestHandlers != null) {
          Set<IPSRequestHandler> stoppedHandlers =
-            new HashSet<IPSRequestHandler>();
+            new HashSet<>();
          Hashtable<String, IPSRequestHandler> reqHandlers = 
-            new Hashtable<String, IPSRequestHandler>();
+            new Hashtable<>();
          reqHandlers.putAll(ms_RequestHandlers);
          for (Enumeration<IPSRequestHandler> e = reqHandlers.elements();
             e.hasMoreElements(); )
@@ -3356,7 +3355,7 @@ public class PSServer {
    public static String getProxyURL(HttpServletRequest httpReq, boolean withoutParam) {
       try{
          String oldPath = httpReq.getRequestURL().toString();
-         int port  = Integer.valueOf(PSServer.getProperty("proxyPort",""+getListenerPort()));
+         int port  = Integer.parseInt(PSServer.getProperty("proxyPort",""+getListenerPort()));
          String scheme = PSServer.getProperty("proxyScheme", "http");
          String domainName = PSServer.getProperty("publicCmsHostname", "localhost");
          oldPath += httpReq.getQueryString() == null? "" : "?" + httpReq.getQueryString();
@@ -3658,7 +3657,7 @@ public class PSServer {
          {
             if (m_cmsObjectMap == null)  // do lazy query
             {
-               Map<Integer, PSCmsObject> m = new ConcurrentHashMap<Integer,PSCmsObject>(8, 0.9f, 1);
+               Map<Integer, PSCmsObject> m = new ConcurrentHashMap<>(8, 0.9f, 1);
 
          IPSCmsObjectMgr cmsMgr = PSCmsObjectMgrLocator.getObjectManager();
          List<PSCmsObject> cmsObjects = cmsMgr.findAllCmsObjects();
@@ -3813,8 +3812,7 @@ public class PSServer {
          // if system community, then no need to validate
          if(!(userCommunity.equals(SYSTEM_COMMUNITY)))
          {
-            if (list == null)
-               list = request.getUserSession().getUserCommunities(request);
+            list = request.getUserSession().getUserCommunities(request);
 
             if (null == list || !list.contains(userCommunity))
             {
@@ -3826,13 +3824,12 @@ public class PSServer {
                      IPSHtmlParameters.SYS_FALLBACK_COMMUNITYID);
                if (list == null
                   || override == null
-                  || (override != null
-                     && (fallback == null || fallback.equals("true") == false)))
+                  || fallback == null
+                  || !fallback.equals("true"))
                {
                   //user is not member of his role-communities, user fails
                   //authentication
                   Object[] args = { realUser, userCommunity };
-                  userCommunity = null;
                   throw new PSServerException(
                      IPSServerErrors
                         .COMMUNITIES_AUTHENTICATION_FAILED_INVALID_COMMUNITY,
@@ -3846,7 +3843,6 @@ public class PSServer {
                   if (userCommunity == null || userCommunity.trim().length() == 0)
                   {
                      Object[] args = { realUser, "" };
-                     userCommunity = null;
                      throw new PSServerException(
                         IPSServerErrors
                            .COMMUNITIES_AUTHENTICATION_FAILED_INVALID_COMMUNITY,
@@ -3974,7 +3970,7 @@ public class PSServer {
 
       List<String> typeList = ms_requestHandlerTypes.get(handler);
       if (typeList == null)
-         typeList = new ArrayList<String>();
+         typeList = new ArrayList<>();
 
       typeList.add(type.toUpperCase());
 
@@ -3995,7 +3991,7 @@ public class PSServer {
          {
             if (m_stdAppRequestTypes == null)
             {
-         m_stdAppRequestTypes = new ArrayList<String>();
+         m_stdAppRequestTypes = new ArrayList<>();
          m_stdAppRequestTypes.add("POST");
          m_stdAppRequestTypes.add("GET");
          m_stdAppRequestTypes.add("HEAD");
@@ -4020,7 +4016,7 @@ public class PSServer {
          {
             if (m_stdHandlerRequestTypes == null)
             {
-         m_stdHandlerRequestTypes = new ArrayList<String>();
+         m_stdHandlerRequestTypes = new ArrayList<>();
          m_stdHandlerRequestTypes.add("POST");
       }
          }
@@ -4076,7 +4072,7 @@ public class PSServer {
        * initialize, then log a non-fatal error and return.  If FTS is enabled,
        * then any failure to initialize the engine is fatal.
        */
-      if (searchConfig.isFtsEnabled() == false)
+      if (!searchConfig.isFtsEnabled())
       {
          if (se != null)
          {
@@ -4096,7 +4092,7 @@ public class PSServer {
          // TODO: admin configuration here
 
          // walk all applications and create a set of known content types
-         Set<Long> knownContentTypeIds = new HashSet<Long>();
+         Set<Long> knownContentTypeIds = new HashSet<>();
          if (apps != null)
          {
             for (int i = 0; i < apps.length; i++)
@@ -4163,7 +4159,7 @@ public class PSServer {
                PSSearchConfig.INDEX_ON_STARTUP);
          boolean doIndexAll = indexStr != null && 
               (indexStr.equalsIgnoreCase("yes") || 
-                    indexStr.equalsIgnoreCase("true")) ? true : false;
+                    indexStr.equalsIgnoreCase("true"));
          
          String indexTypeStr = searchConfig.getCustomProp(
                PSSearchConfig.INDEX_TYPE_ON_STARTUP);
@@ -4467,7 +4463,7 @@ public class PSServer {
     * (i.e. GET or POST) - all types should be uppercased.
     */
    private static Hashtable<IPSRequestHandler,List<String>>
-      ms_requestHandlerTypes = new Hashtable<IPSRequestHandler,List<String>>();
+      ms_requestHandlerTypes = new Hashtable<>();
 
 
    /**
@@ -4548,7 +4544,7 @@ public class PSServer {
     * are added during server init, never <code>null</code> or empty after that.
     */
    private static List<IPSHandlerInitListener> ms_handlerInitListeners =
-      new ArrayList<IPSHandlerInitListener>();
+      new ArrayList<>();
 
 
    /**
