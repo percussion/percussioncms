@@ -146,14 +146,20 @@
                  sitename = $('#perc-category-site-dropdown').find(":selected").val();
                  controller.getCategories(sitename);
              });
-             
-            
+
+            $( "#perc-category-site-dropdown" ).on("click",function() {
+
+                siteSelection = $('#perc-category-site-dropdown').find(":selected").val();
+            });
+
             $( "#perc-category-site-dropdown" ).on("change",function() {
 
                 if (editing)
                 {
                         currentlyEditing();
-                        siteSelection.prop("selected",true);
+                    if(typeof siteSelection !== 'undefined'){
+                        $('#perc-category-site-dropdown').val(siteSelection).trigger('chosen:updated');
+                    }
                         return;
                 }
                 sitename = $('#perc-category-site-dropdown').find(":selected").val();
@@ -284,7 +290,7 @@
             //Bind Save event
             $("#perc-category-save").off("click").on("click", function(){
                 var node = container.dynatree("getActiveNode");
-                if (node.data.title === "New Category")
+                if (node != null && node.data.title === "New Category")
                 {
                     alertDialog("Error", "You must change the category name.");
                     return;
@@ -505,7 +511,7 @@
             });
 
             $("#perc-category-show-in-page-field").prop("disabled", false)
-               .removeClass("perc-category-field-readonly");
+                .removeClass("perc-category-field-readonly");
         
             $("#perc-category-save-cancel-block").show();
             $("#perc-category-name-field").trigger("focus");
@@ -534,7 +540,6 @@
             var parentNode;
             
                 w = 400;
-
                 $.perc_utils.alert_dialog({
                     title: I18N.message("perc.ui.category.view@Editing Category"),
                     content: I18N.message("perc.ui.category.view@Editing Category Dialog"),

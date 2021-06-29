@@ -284,7 +284,7 @@
                 else{
                     liUser.on("click",
                         function(evt){
-                            selectUser(evt);
+                            selectUser.call(this,[evt]);
                         });
                 }
                 ulUsers.append(liUser);

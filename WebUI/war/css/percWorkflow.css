@@ -303,7 +303,7 @@ li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
 .perc-users-selected
 {
     color:#000;
-    font-size:normal;
+    font-size:inherit;
     background-color:#caf589;
 }
 
@@ -641,7 +641,7 @@ li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
     width:20px;
 }
 
-.perc-roles-addusers-button,#perc-categories-add-child-category-button
+#perc-categories-add-child-category-button
 {
     cursor:pointer;
     float:right;
