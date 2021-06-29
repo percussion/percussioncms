@@ -186,7 +186,7 @@ public class PSOParentFinder implements IPSOParentFinder
                   PSRelationshipProcessorProxy.PROCTYPE_SERVERLOCAL,requestContext);
          } catch (PSCmsException ex)
          {
-            log.error("Unexpected Exception initializing proxy {}, Error: {}",ex.getMessage());
+            log.error("Unexpected Exception initializing proxy, Error: {}",ex.getMessage());
             log.debug(ex.getMessage(), ex);
 
          }

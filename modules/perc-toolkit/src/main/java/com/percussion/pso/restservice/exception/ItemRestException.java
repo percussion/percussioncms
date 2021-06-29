@@ -36,7 +36,7 @@ public class ItemRestException extends Exception {
 	}
 	public ItemRestException(String msg,Exception e) { 
 		super(msg,e);
-		log.debug("Rest exception {}",msg,e);
+		log.debug("Rest exception {} {}", msg, e);
 	}
 	public void setErrorCode(ErrorCode errorCode) {
 		this.errorCode = errorCode;
