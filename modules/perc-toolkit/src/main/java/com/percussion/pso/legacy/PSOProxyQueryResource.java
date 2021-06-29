@@ -65,6 +65,9 @@ public class PSOProxyQueryResource extends PSDefaultExtension
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
+
+
+
     private static final Logger log = LogManager.getLogger(PSOProxyQueryResource.class);
 
     public boolean canModifyStyleSheet() {
@@ -95,7 +98,7 @@ public class PSOProxyQueryResource extends PSDefaultExtension
         
         url = url + prepend + queryString;
         String repr = "url = " + url + " user = " + user + " password = " + password;
-        log.debug("Trying to get document with: " + repr);
+        log.debug("Trying to get document with: {}", repr);
         
         try {
 
@@ -105,19 +108,24 @@ public class PSOProxyQueryResource extends PSDefaultExtension
                 return createXmlDocument(new StringReader(results), false);
             } catch (SAXException e) {
                 String message = "XML Error with " + repr;
-                log.error(message,e);
+                log.error("{}, Error: {}", message, e.getMessage());
+                log.debug(e.getMessage(), e);
                 throw new RuntimeException(message,e);
             }
         } catch (HttpException e) {
             String message = "Http Error with " + repr;
-            log.error(message, e);
+            log.error("{}, Error: {}", message, e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new RuntimeException(message, e);
         } catch (IOException e) {
             String message = "IO Error with " + repr;
-            log.error(message,e);
+            log.error("{}, Error: {}", message, e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new RuntimeException(message, e);
         } catch (ServletException e) {
             String message = "Servlet error with " + repr;
+            log.error("{}, Error: {}", message, e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new RuntimeException(message, e);
         }
     }

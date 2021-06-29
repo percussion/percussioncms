@@ -36,8 +36,8 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +51,8 @@ public class ImportItemSystemInfoImpl implements IImportItemSystemInfo {
 	/**
 	 * Logger for this class
 	 */
-	private static final Log log = LogFactory.getLog(ImportItemSystemInfoImpl.class);
+
+	private static final Logger log = LogManager.getLogger(ImportItemSystemInfoImpl.class);
 
 	
 	/**
@@ -176,7 +177,9 @@ public class ImportItemSystemInfoImpl implements IImportItemSystemInfo {
 				siteNameMap.put(id, siteName);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				log.error("Cannot load site", e);
+				log.error("Cannot load site Error: {}", e.getMessage());
+				log.debug(e.getMessage(), e);
+
 			}
 //		}
 		return siteName;
@@ -197,7 +200,7 @@ public class ImportItemSystemInfoImpl implements IImportItemSystemInfo {
 			log.debug("Got folder Path");
 			return folderList.get(0).getFolderPath();
 		} catch (PSErrorResultsException e) {
-			log.error("Cannot get folder path for foder id "+id);
+			log.error("Cannot get folder path for foder id {}", id);
 		} 
 
 		return null;
@@ -219,7 +222,8 @@ public class ImportItemSystemInfoImpl implements IImportItemSystemInfo {
 				slot = aService.loadSlot(new PSGuid(PSTypeEnum.SLOT, id));
 				slotname=slot.getName();
 			} catch (Exception e) {
-				log.debug("Cannot load slot "+id,e);
+				log.error("Cannot load slot {}, Error: {}", id, e.getMessage());
+				log.debug(e.getMessage(), e);
 				slotname=String.valueOf(id);
 			}
 
@@ -255,7 +259,7 @@ public class ImportItemSystemInfoImpl implements IImportItemSystemInfo {
 		try {
 			template = aService.loadTemplate(new PSGuid(PSTypeEnum.TEMPLATE, id),false);
 		} catch (PSAssemblyException e) {
-			log.error("Cannot find template with id "+id);
+			log.error("Cannot find template with id {}", id);
 		}
 		log.debug("Got template name");
 		return (template==null) ? Integer.toString(id) : template.getName();

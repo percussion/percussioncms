@@ -76,8 +76,9 @@ public class PSExtensionHelper
        log.debug("Starting Updating display choices with builder: " +
                m_builder.getClass().getCanonicalName());
        String errorMesg = "Error updating display choices";
-       if (resultDoc == null)
+       if (resultDoc == null) {
            throw new IllegalArgumentException(errorMesg + " Result Doc cannot be null");
+       }
        PSOExtensionParamsHelper extParamHelper = new PSOExtensionParamsHelper(
                m_parameters, m_request, log);
        String fieldName = extParamHelper.getRequiredParameter(IDS_FIELD_NAME);
@@ -88,7 +89,9 @@ public class PSExtensionHelper
                getRequiredParameterAsNumber(IPSHtmlParameters.SYS_CONTENTID).intValue();
            try {
                 ids = m_builder.retrieve(contentId);
-                log.debug("Selecting ids: " + ids);
+
+                log.debug("Selecting ids: {}", ids);
+
            } catch (PSAssemblyException e) {
                log.error(errorMesg, e);
                throw new PSExtensionProcessingException(errorMesg,e);
@@ -109,7 +112,10 @@ public class PSExtensionHelper
            }
        }
        if (controlElement == null) {
-           log.warn("Field: " + fieldName + " could not be found in the content editor xml");
+
+
+           log.warn("Field: {} could not be found in the content editor xml", fieldName);
+
        }
        else {
            NodeList displayChoicesNodes = controlElement.getElementsByTagName("DisplayChoices");
@@ -121,13 +127,18 @@ public class PSExtensionHelper
                NodeList valueNodes = controlElement.getElementsByTagName("Value");
                if (valueNodes.getLength() > 0) {
             	  String itemList = valueNodes.item(0).getTextContent();
+
+
             	  log.debug("Found selections " + itemList);
+
             	  String replacementString = "";
             	  for (int id : ids) {
             		  if (replacementString.length() >0 ) replacementString+=";";
             		  replacementString += id;
             	  }
-            	  log.debug("Replacing with ids " + replacementString);
+
+            	  log.debug("Replacing with ids {}", replacementString);
+
             	  valueNodes.item(0).setTextContent(replacementString);
                }
                
@@ -137,24 +148,31 @@ public class PSExtensionHelper
                if (log.isTraceEnabled()) {
                    String xml = PSXmlDocumentBuilder.toString(displayChoicesElement);
                    log.trace("Nabeel changes...");
-                   log.trace("Display Choices XML: " + xml);
+
+                   log.trace("Display Choices XML: {}", xml);
+
                }
                log.debug("Displayed choice... ");
                NodeList displayEntryNodes = 
                    displayChoicesElement.getElementsByTagName("DisplayEntry");
+
+
                log.debug("Got display entry elements, there are:  " + displayEntryNodes.getLength());
                for(int i = 0; displayEntryNodes != null 
                    && i < displayEntryNodes.getLength(); i++) {
                    Element displayEntryElement = (Element) displayEntryNodes.item(i);
-                   log.debug("displayEntryElement: " + displayEntryElement);
-                   log.debug("selectALL: " + selectAll);
+                   log.debug("displayEntryElement: {}", displayEntryElement);
+                   log.debug("selectALL: {}", selectAll);
+
                    if (selectAll) {
                        displayEntryElement.setAttribute("selected", "yes");
                    }
                    else {
                        String idString = displayEntryElement
                            .getElementsByTagName("Value").item(0).getTextContent();
-                       log.debug("idString: " + idString);
+
+                       log.debug("idString: {}", idString);
+
                        int id = 0;
                        
                       //When the Aging Agent tries to move an item from Public, it tends to fail when the DisplayEntry element
@@ -199,7 +217,9 @@ public class PSExtensionHelper
       // get the current content item from the request
       final String contentId = request
             .getParameter(IPSHtmlParameters.SYS_CONTENTID);
-      log.debug("\tProcessing for content id: " + contentId);
+
+      log.debug("\tProcessing for content id: {}", contentId);
+
       String idsString = DEFAULT_OUTPUT;
       
       if (StringUtils.isNumeric(contentId))
@@ -228,7 +248,9 @@ public class PSExtensionHelper
           */
          log.debug("\tskipping extract; no content id in request");
       }
-      log.debug("\tReturned string for udf: " + idsString);
+
+      log.debug("\tReturned string for udf: {}", idsString);
+
       log.debug("Finished extracting ids from slot exit: " + m_builder.getClass().getName());
       return idsString;
    }
@@ -261,7 +283,9 @@ public class PSExtensionHelper
          Map<String, String> paramMap = m_parameters;
          PSOExtensionParamsHelper extParamHelper = new PSOExtensionParamsHelper(paramMap, m_request, log);
          String contentId = extParamHelper.getParameter(IPSHtmlParameters.SYS_CONTENTID);
-         log.debug("\tProcessing for content id: " + contentId);
+
+         log.debug("\tProcessing for content id: {}", contentId);
+
          if (StringUtils.isNumeric(contentId))
          {
             int cid = Integer.parseInt(contentId);
@@ -273,12 +297,18 @@ public class PSExtensionHelper
             }
             catch (PSAssemblyException e)
             {
-               log.error("Failure in assembly API", e);
+
+               log.error("Failure in assembly API, Error:{}", e.getMessage());
+               log.debug(e.getMessage(), e);
+
                throw new PSExtensionProcessingException(0, e);
             }
             catch (PSException e)
             {
-               log.error("Failure in relationship API", e);
+
+               log.error("Failure in relationship API Error:{}", e.getMessage());
+               log.debug(e.getMessage(), e);
+
                throw new PSExtensionProcessingException(0, e);
             }
             catch (Exception e) {
@@ -287,7 +317,9 @@ public class PSExtensionHelper
                 throw new RuntimeException(mesg,e);
             }
             finally {
-               log.debug("Finished processing exit with builder " + m_builder.getClass().getName());
+
+               log.debug("Finished processing exit with builder {}", m_builder.getClass().getName());
+
             }
          }
       }
@@ -304,15 +336,17 @@ public class PSExtensionHelper
         */
        Set <Integer> fieldValuesSet = new HashSet<Integer>();
        Collection <Object> invalid = convert (fieldValues, fieldValuesSet);
-       log.debug("\tField values for fieldname '" + fieldName +"' is : " +
-             fieldValuesSet);
+
+       log.debug("\tField values for fieldname {} is : {}", fieldName, fieldValuesSet);
        if (invalid.size() == 1 && invalid.contains("")) {
            log.debug("\tEmpty String only.  No items checked.  Removing relationships");
            m_builder.synchronize(cid, fieldValuesSet);
        }
        else if (invalid.size() != 0) {
           log.debug("\tInvalid id(s) were passed. Not building any relationships");
-          log.debug("\tInvalid: " + invalid);
+
+          log.debug("\tInvalid: {}", invalid);
+
        }
        else {
           m_builder.synchronize(cid, fieldValuesSet);
@@ -325,9 +359,9 @@ public class PSExtensionHelper
              .getParameter(PSContentEditorHandler.PAGE_ID_PARAM_NAME);
        String processInlineLink = request
              .getParameter(IPSHtmlParameters.SYS_INLINELINK_DATA_UPDATE);
-       log.trace("Command is: " + command
-               + " page is: " + page 
-               + " processInlineLink is: " + processInlineLink );
+
+       log.trace("Command is: {}, page is: {}, processInlineLink is: {}", command,page, processInlineLink );
+
    }
    
    public static boolean isRequestToBeProcessedForBuilding(IPSRequestContext request) {
@@ -444,6 +478,7 @@ public class PSExtensionHelper
    /**
     * The log instance to use for this class, never <code>null</code>.
     */
+
    private static final Logger log = LogManager.getLogger(PSExtensionHelper.class);
 
 }

@@ -48,8 +48,10 @@ public class PSOExtensionParamsHelper {
     /**
      * The log instance to use for this class if one is not provided, never <code>null</code>.
      */
-    private static final Logger defaultLog = LogManager
-            .getLogger(PSOExtensionParamsHelper.class);
+
+
+    private static final Logger defaultLog = LogManager.getLogger(PSOExtensionParamsHelper.class);
+
     
     /**
      * The user log instance.
@@ -104,7 +106,9 @@ public class PSOExtensionParamsHelper {
      * @param selectors The selectors that are passed with the find method.
      * @param log
      */
+
     public PSOExtensionParamsHelper(Map<String,?> args,
+
             Map<String,Object> selectors, Logger log) {
         doLog(log);
         if (args == null)

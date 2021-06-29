@@ -7,8 +7,8 @@ import static com.percussion.pso.relationshipbuilder.exit.PSExtensionHelper.logR
 import java.io.File;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import com.percussion.data.PSConversionException;
@@ -37,8 +37,8 @@ public abstract class PSAbstractBuildRelationshipsExtension extends PSDefaultExt
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log ms_log = LogFactory
-            .getLog(PSAbstractBuildRelationshipsExtension.class);
+
+    private static final Logger log = LogManager.getLogger(PSAbstractBuildRelationshipsExtension.class);
     
     public enum Mode { BUILD, SELECT };
     
@@ -55,7 +55,7 @@ public abstract class PSAbstractBuildRelationshipsExtension extends PSDefaultExt
         if (mode == null) {
             String errorMsg =  "Extension Init parameter: "+ MODE_INIT_PARAM 
             +  " is required and was not set, " + validValues ;
-            ms_log.error(errorMsg);
+            log.error(errorMsg);
             throw new PSExtensionException(IPSExtensionErrors.EXT_INIT_FAILED, errorMsg);
         }
         else if (mode.trim().toUpperCase().equals(Mode.BUILD.toString())) {
@@ -68,11 +68,11 @@ public abstract class PSAbstractBuildRelationshipsExtension extends PSDefaultExt
         else {
             String errorMsg =  "Extension Init parameter: "+ MODE_INIT_PARAM 
             +  " is required and was set to: "+ mode + ", " + validValues ;
-            ms_log.error(errorMsg);
+            log.error(errorMsg);
             throw new PSExtensionException(IPSExtensionErrors.EXT_INIT_FAILED, errorMsg);
         }
         String name = def.getRef().getFQN();
-        ms_log.debug("Setting relationship builder extension mode to " + m_mode + " for " + name);
+        log.debug("Setting relationship builder extension mode to {} for {}",m_mode, name);
         
     }
 
