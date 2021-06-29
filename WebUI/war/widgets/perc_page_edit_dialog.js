@@ -299,7 +299,7 @@
          */
         function _saveMetadata()
         {
-            var fieldValue = $.perc_textFilters.WINDOWS_FILE_NAME($.trim($("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val()));
+            var fieldValue = $.perc_textFilters.WINDOWS_FILE_NAME($("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val().trim());
             $("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val(fieldValue);
 
             $.PercBlockUI();
@@ -307,6 +307,7 @@
             var dosubmit = true;
             $.each($.PercContentPreSubmitHandlers.getHandlers(),function(){
                 if(!this()){
+                    console.log("Save blocked by pre-submit handler");
                     dosubmit = false;
                 }
             });

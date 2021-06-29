@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
     $("#page_calendar").multiselect({
         height:175,
         minWidth:225,
@@ -64,7 +64,7 @@ function updateCalendar()
         $("#perc-content-edit-page_calendar").append('<label style="display: block;" for="page_calendar" class="perc_field_error">Start date must be less than End date.</label>');
         return false;
     }
-    if($("#page_calendar").val() && startDate === '')
+    if($("#page_calendar").val().length > 0  && startDate === '')
     {
         $("#perc-content-edit-page_calendar").append('<label style="display: block;" for="page_calendar" class="perc_field_error">Start date must not be empty, if at least one calendar is selected.</label>');
         return false;
