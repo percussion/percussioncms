@@ -66,7 +66,7 @@
                         // if they click ok, then reset dirty flag and proceed to select the tab
                         dirtyController.setDirty(false);
                         cancel();
-                        $("#tabs").tabs('select', ui.index);
+                        $("#tabs").tabs( "option", "active", ui.index);
                     });
                     return false;
                 }
