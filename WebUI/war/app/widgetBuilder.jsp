@@ -115,7 +115,7 @@
     }
 </script>
 </head>
-<body onbeforeunload="return navigationEvent()">
+<body onbeforeunload="return navigationEvent()" style="overflow:auto;">
 <div class="perc-main">
     <div class="perc-header">
         <jsp:include page="includes/header.jsp" flush="true">

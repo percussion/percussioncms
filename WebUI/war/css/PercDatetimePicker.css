@@ -22,8 +22,8 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-.perc-schedule .ui-datepicker .ui-widget-header { border: 1px solid #aaaaaa; background: #cccccc url(images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x; color: #222222; font-weight: bold; }
-.perc-schedule .ui-widget-content { border: 1px solid #aaaaaa; background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x; color: #222222; }
+.perc-schedule .ui-datepicker .ui-widget-header { border: 1px solid #aaaaaa; background: #cccccc url(../themes/base/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x; color: #222222; font-weight: bold; }
+.perc-schedule .ui-widget-content { border: 1px solid #aaaaaa; background: #ffffff url(../themes/smoothness/images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x; color: #222222; }
 .perc-schedule .ui-datepicker .ui-corner-all { -moz-border-radius: 4px; -webkit-border-radius: 4px; }
 .perc-schedule .ui-datepicker { width: auto; padding: .2em .2em 0; }
 .perc-schedule .ui-widget { font-family: Verdana,Arial,sans-serif; font-size: 11px; }

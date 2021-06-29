@@ -104,7 +104,7 @@ span.ui-icon.ui-icon-check, span.ui-icon.ui-icon-closethick {
 	padding-top:8px;
 }
 .ui-datepicker-header.ui-widget-header, .ui-datepicker-header .ui-widget-header {
-    background: url("../themes/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png") repeat-x scroll 50% 50% #CCCCCC;
+    background: url(../themes/base/images/ui-bg_highlight-soft_75_cccccc_1x100.png) repeat-x scroll 50% 50% #CCCCCC;
     border: 1px solid #AAAAAA;
     color: #222222;
     font-weight: bold;

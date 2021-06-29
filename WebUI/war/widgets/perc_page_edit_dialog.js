@@ -24,7 +24,7 @@
 
 /**
  * Handles the editing of a page meta-data. Openes a dialog with an Iframe and gets the page edit url from server and
- * sets it as source on the iframe. 
+ * sets it as source on the iframe.
  */
 (function($) {
     $.perc_page_edit_dialog = function(mcol, content_viewer, pageid) {
@@ -46,7 +46,7 @@
                 "Cancel":    {
                     click: function()    {
                         $.PercDirtyController.setDirty(false,"page");
-                        dialog.remove(); 
+                        dialog.remove();
                         return true;},
                     id: "perc-content-edit-cancel-button"
                 }
@@ -55,12 +55,12 @@
             dialogWidth = 800;
         } else {
             //Read-only mode
-            dialogTitle = I18N.message("perc.ui.page.edit.dialog@Metadata");
+            dialogTitle = I18N.message("perc.ui.page.edit.dialog@Metadata")
             dialogButtons = {
                 "Ok":    {
                     click: function()    {
                         $.PercDirtyController.setDirty(false,"page");
-                        dialog.remove(); 
+                        dialog.remove();
                         return true;},
                     id: "perc-content-edit-ok-button"
                 }
@@ -71,7 +71,7 @@
         var initialLoad = true;
         var dlgHtml = "<div id='edit-page-metadata'>" + "</div>";
 
-        var dialog = $(dlgHtml).perc_dialog( { 
+        var dialog = $(dlgHtml).perc_dialog( {
             title: dialogTitle,
             modal: true,
             width: dialogWidth,
@@ -80,8 +80,8 @@
                 $.PercDirtyController.setDirty(false,"page");
                 dialog.remove();
             },
-            open: function(){ 
-                _setPageContent(pageid); 
+            open: function(){
+                _setPageContent(pageid);
             },
             percButtons: dialogButtons,
             id:"perc-page-edit-dialog"
@@ -101,7 +101,7 @@
                 //Read-only mode
                 pageUrl = $.perc_paths.PAGE_VIEWURL + "/" + pageid;
             }
-            
+
             $.ajax({
                 url: pageUrl,
                 dataType: "text",
@@ -110,9 +110,9 @@
                 success: function(data, textstatus){
                     var ifrUrl = data + "&nocache=v1";
                     $("#edit-page-metadata").append("<iframe name='edit-page-metadata-frame' id='edit-page-metadata-frame' height='100%' FRAMEBORDER='0' width='100%' src='" + ifrUrl + "' ></iframe>");
-                    $("#edit-page-metadata-frame").trigger("load",(function(){
+                    $("#edit-page-metadata-frame").load(function(){
                         _formatPageContent();
-                    }));
+                    });
                 },
                 error: function(request, textstatus, error){
                     alert(I18N.message("perc.ui.page.edit.dialog@Unable To See Content")+pageid);
@@ -120,7 +120,7 @@
             });
         }
         //Binds the frame load and calls the format page content on load of the frame.
-        
+
         /**
          * Helper function to format the metadata, this must be called in the frame load events functions.
          * As we use the regular content editor for editing the page meta-data, the editor putput needs to be
@@ -129,44 +129,42 @@
         function _formatPageContent()
         {
             var iframeContainer = $("#edit-page-metadata-frame").contents();
-            $.perc_filterField(iframeContainer.find("[name=sys_title]"), $.perc_textFilters.URL);
-            iframeContainer.find("#perc-content-edit-metadata-link").hide();
-            iframeContainer.find("#perc-content-edit-metadata-panel .perc-content-edit-data").show();
-            if (iframeContainer.find("#perc-content-edit-errors").length > 0)
+            $.perc_filterField($("#edit-page-metadata-frame").contents().find("[name=sys_title]"), $.perc_textFilters.URL);
+            $("#edit-page-metadata-frame").contents().find("#perc-content-edit-metadata-link").hide();
+            $("#edit-page-metadata-frame").contents().find("#perc-content-edit-metadata-panel .perc-content-edit-data").show();
+            if ($("#edit-page-metadata-frame").contents().find("#perc-content-edit-errors").length > 0)
             {
                 $("#edit-page-metadata-frame").contents().find("#perc-content-edit-errors label").html("Error saving the page meta-data.");
-            }            
-            var cbAutoSummary = iframeContainer.find("#perc-content-edit-auto_generate_summary");
-               var trAutoSummary = cbAutoSummary.closest('tr');
-               cbAutoSummary.on("click",
-                   function(evt){
-                        _handleAutoSummary(evt);
-                   });
-               if(!pageSysName){
-                   pageSysName = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val();
-               }
-            _addFieldGroups();            
+            }
+            var cbAutoSummary = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-auto_generate_summary");
+            var trAutoSummary = cbAutoSummary.closest('tr');
+            cbAutoSummary.on("click",_handleAutoSummary);
+            if(!pageSysName){
+                pageSysName = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val();
+            }
+            _addFieldGroups();
+            $("#edit-page-metadata-frame").contents().find("#perc-content-edit-metadata-link").show();
         }
-        
+
         // A private helper method to group the fields and create collapsible sections
         function _addFieldGroups()
         {
             var iframeContainer = $("#edit-page-metadata-frame").contents();
             iframeContainer.find("input[id='perc-content-edit-auto_generate_summary']").closest('div[type]').attr("groupName", "perc-pageSum-container");
-            iframeContainer.find("input[id='perc-content-edit-page_noindex']").closest("div[type]").attr("groupName", "perc-seo-container").hide();
+            iframeContainer.find("input[id='perc-content-edit-page_noindex']").closest('div[type]').attr("groupName", "perc-seo-container").hide();
             iframeContainer.find("label[for='sys_contentpostdate']").before('<div id = "perc-date-override">Override Post Date</div><span class = "perc-date-override-msg">' +I18N.message("perc.ui.page.edit.dialog@Page Will Appear Published") + '<br /></span>');
             var fieldGroups = [{groupName:"perc-pageSum-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@Page Summary"), fieldNames:["resource_link_title","sys_title","page_summary", "sys_contentpostdate","sys_contentpostdatetz"]},
-                               {groupName:"perc-seo-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@SEO"), fieldNames:["page_title","page_description","page_noindex"]},
-                               {groupName:"perc-tagCat-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@Tags And Categories"), fieldNames:["page_tags","page_categories_tree"]},
-                               {groupName:"perc-calendar-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@Calendar"), fieldNames:["page_calendar"]},
-                               {groupName:"perc-headCode-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@Additional Code"), fieldNames:["additional_head_content","code_insert_after_body_start","code_insert_before_body_close"]}];
+                {groupName:"perc-seo-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@SEO"), fieldNames:["page_title","page_description","page_noindex"]},
+                {groupName:"perc-tagCat-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@Tags And Categories"), fieldNames:["page_tags","page_categories_tree"]},
+                {groupName:"perc-calendar-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@Calendar"), fieldNames:["page_calendar"]},
+                {groupName:"perc-headCode-container", groupLabel:I18N.message("perc.ui.page.edit.dialog@Additional Code"), fieldNames:["additional_head_content","code_insert_after_body_start","code_insert_before_body_close"]}];
             $.each(fieldGroups, function(index){
                 var minmaxClass = index===0?"perc-items-minimizer":"perc-items-maximizer";
                 var groupHtml = "<div id = '" + this.groupName + "' ><div class = 'perc-section-label' group='" + this.groupName + "'><span  class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel + "</div></div>";
                 var ceField = iframeContainer.find("[for='" + this.fieldNames[0] + "']").closest('div[type]').before(groupHtml);
                 var fields = this.fieldNames;
                 var groupName = this.groupName;
-                for(let i=0;i<fields.length;i++)
+                for(var i=0;i<fields.length;i++)
                 {
                     var fieldDiv = iframeContainer.find("[for='" + fields[i] + "']").closest('div[type]').attr("groupName", groupName);
                     if(index!==0)
@@ -175,30 +173,29 @@
             });
             var FileNameField = iframeContainer.find("label[for='sys_title']").closest('div[type]');
             iframeContainer.find("#perc-pageSum-container").after(FileNameField);
-            
+
             //bind collapsible event
             iframeContainer.find(".perc-section-label").off('click').on('click',function() {
                 $(this).find(".perc-min-max").toggleClass('perc-items-minimizer').toggleClass('perc-items-maximizer');
                 var groupName = $(this).attr("group");
                 iframeContainer.find("div[groupName='" + groupName + "']").toggle();
             });
-            //Find all error 
+            //Find all error
             $.each(iframeContainer.find('div[type="sys_error"]'), function(){
-            var secGroupName =  $(this).attr("groupName");
-            if(secGroupName !== 'perc-pageSum-container')
-                iframeContainer.find("div[group='" + secGroupName + "']").trigger('click');
+                var secGroupName =  $(this).attr("groupName");
+                if(secGroupName !== 'perc-pageSum-container')
+                    iframeContainer.find("div[group='" + secGroupName + "']").trigger('click');
             });
-            setTimeout(_handleAutoSummary,600);
         }
-                    
-        // Hide the TinyMCE instead of removing it, and show a div with content like a 
+
+        // Hide the TinyMCE instead of removing it, and show a div with content like a
         // disabled text area (like read-only view) if auto generate page summary is checked
-        function _handleAutoSummary(evt)
+        function _handleAutoSummary()
         {
-            var cbAutoSummary = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-auto_generate_summary"); 
+            var cbAutoSummary = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-auto_generate_summary");
             var containerArea = $("#edit-page-metadata-frame").contents().find(".mce-tinymce").parent();
             var tinyMCESpan = $("#edit-page-metadata-frame").contents().find(".mce-tinymce");
-            if (cbAutoSummary.attr('checked'))
+            if (cbAutoSummary.prop('checked'))
             {
                 content = $("#edit-page-metadata-frame").contents().find(".tinymce").val();
                 containerArea.append(
@@ -221,107 +218,107 @@
                 tinyMCESpan.show();
             }
         }
-        
+
         /**
          * Checks whether there are any errors saving the meta-data, if yes, unblocks the UI and leaves the editor open.
          * If none, reloads the page.
          */
-        function _handleSaveResults()
+        function _handleSaveResults(evt)
         {
-            if ($("#edit-page-metadata-frame").contents().find("#perc-content-edit-errors").length > 0) 
+            if ($("#edit-page-metadata-frame").contents().find("#perc-content-edit-errors").length > 0)
             {
                 $.unblockUI();
+                return;
             }
             else
             {
                 if ($("#edit-page-metadata-frame").contents().find("PSXLogErrorSet").length > 0)
                 {
                     $.unblockUI();
-                    
+
                     var msg = I18N.message( 'perc.ui.common.error@Content Deleted' );
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: msg, okCallBack: function(){
-                        $.PercNavigationManager.goToLocation($.PercNavigationManager.VIEW_EDITOR);
-                    }});                    
+                            $.PercNavigationManager.goToLocation($.PercNavigationManager.VIEW_EDITOR);
+                        }});
                     dialog.remove();
                 }
                 else
                 {
                     $.PercPageService.savePageMetadata(pageid, function() {
-                        $.PercPathService.getPathItemById($.PercNavigationManager.getId(), 
-                                function(status, result, errorCode){
+                        $.PercPathService.getPathItemById($.PercNavigationManager.getId(),
+                            function(status, result, errorCode){
                                    if(status === $.PercServiceUtils.STATUS_SUCCESS)
-                                   {
-                                       $.PercNavigationManager.setName(result.PathItem.name);
+                                {
+                                    $.PercNavigationManager.setName(result.PathItem.name);
 
-                                       var newPath = result.PathItem.folderPaths + "/" + result.PathItem.name;
-                                       newPath = newPath.substring(1);
-                                       $.PercNavigationManager.setPath(newPath);
+                                    var newPath = result.PathItem.folderPaths + "/" + result.PathItem.name;
+                                    newPath = newPath.substring(1);
+                                    $.PercNavigationManager.setPath(newPath);
 
-                                       $.PercDirtyController.setDirty(false,"page");
-                                       var currentUrl = $.PercNavigationManager.getBookmark();
-                                       $(window).removeData();
-                                       $("#edit-page-metadata-frame").removeData();
-                                                                             
-                                       var oldPath = result.PathItem.folderPaths + "/" + pageSysName;
-                                       var toPath = "/" + newPath;
-                                       $.unblockUI();
-                                       $.PercRedirectHandler.createRedirect(oldPath, toPath, "page")
-                                       .fail(function(errMsg){
+                                    $.PercDirtyController.setDirty(false,"page");
+                                    var currentUrl = $.PercNavigationManager.getBookmark();
+                                    $(window).removeData();
+                                    $("#edit-page-metadata-frame").removeData();
+
+                                    var oldPath = result.PathItem.folderPaths + "/" + pageSysName;
+                                    var toPath = "/" + newPath;
+                                    $.unblockUI();
+                                    $.PercRedirectHandler.createRedirect(oldPath, toPath, "page")
+                                        .fail(function(errMsg){
                                             $.perc_utils.alert_dialog({title: I18N.message("perc.ui.page.edit.dialog@Redirect Creation Error"), content: errMsg, okCallBack: function(){
-                                                window.location.href = currentUrl;
-                                            }});
-                                       })
-                                       .done(function(){
-                                           window.location.href = currentUrl;
-                                       });
-                                   }
-                                   else
-                                   {
-                                      $.unblockUI();
+                                                    window.location.href = currentUrl;
+                                                }});
+                                        })
+                                        .done(function(){
+                                            window.location.href = currentUrl;
+                                        });
+                                }
+                                else
+                                {
+                                    $.unblockUI();
                                         var msg;
                                         if (errorCode === "cannot.find.item")
-                                        {
-                                            msg = I18N.message( 'perc.ui.common.error@Content Deleted' );
-                                        }
-                                        else
-                                        {
-                                            msg = result;
-                                        }
-                                        
-                                        $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: msg});
-                                   }
-                              });           
+                                    {
+                                        msg = I18N.message( 'perc.ui.common.error@Content Deleted' );
+                                    }
+                                    else
+                                    {
+                                        msg = result;
+                                    }
+
+                                    $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: msg});
+                                }
+                            });
                     });
                 }
             }
         }
-        
+
         /**
          * Submits the form and binds the onload function of the frame, as frame gets reloaded after it has been submitted.
          */
         function _saveMetadata()
         {
-                var iframeContainer = $("#edit-page-metadata-frame").contents();
-                var fieldValue = $.perc_textFilters.WINDOWS_FILE_NAME(iframeContainer.find("#perc-content-edit-sys_title").val().trim());
-                iframeContainer.find("#perc-content-edit-sys_title").val(fieldValue);
-                
+            var fieldValue = $.perc_textFilters.WINDOWS_FILE_NAME($.trim($("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val()));
+            $("#edit-page-metadata-frame").contents().find("#perc-content-edit-sys_title").val(fieldValue);
+
             $.PercBlockUI();
-             //call all the pre submit handlers if nothing returns flase, submit the form.
-             var dosubmit = true;
-             $.each($.PercContentPreSubmitHandlers.getHandlers(),function(){
+            //call all the pre submit handlers if nothing returns flase, submit the form.
+            var dosubmit = true;
+            $.each($.PercContentPreSubmitHandlers.getHandlers(),function(){
                 if(!this()){
                     dosubmit = false;
                 }
-             });
-             if(!dosubmit)
-             {
+            });
+            if(!dosubmit)
+            {
                 $.unblockUI();
                 return;
-             }
-             //We are now loading the form, the clear the content presubmit handlers.
-             $.PercContentPreSubmitHandlers.clearHandlers();
+            }
+            //We are now loading the form, the clear the content presubmit handlers.
+            $.PercContentPreSubmitHandlers.clearHandlers();
             $("#edit-page-metadata-frame").contents().find("#perc-content-form").trigger("submit");
-            $("#edit-page-metadata-frame").load(function() {
+            $("#edit-page-metadata-frame").on("load",function(evt) {
                 _handleSaveResults();
             } );
         }

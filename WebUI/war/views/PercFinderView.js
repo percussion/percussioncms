@@ -1611,22 +1611,13 @@
 
             var itemId = callbackData.assetId;
             var assetName = callbackData.aName;
-            if (dialogFlag)
-            {
-                $.PercScheduleDialog.open(itemId, assetName);
-                $(".ui-datepicker-trigger").trigger("click");
-                $("#ui-datepicker-div").css('z-index', 9501).css('display', 'none');
-                $("#ui-timepicker-div").css('z-index', 9501).css('display', 'none');
-                $("#perc-schedule-dialog-cancel").trigger("click");
-                $.PercScheduleDialog.open(itemId, assetName);
-                dialogFlag = false;
-            }
-            else
-            {
-                $("#ui-datepicker-div").css('z-index', 100000);
-                $("#ui-timepicker-div").css('z-index', 100000);
-                $.PercScheduleDialog.open(itemId, assetName);
-            }
+
+            $.PercScheduleDialog.open(itemId, assetName);
+            $(".ui-datepicker-trigger").trigger("click");
+            $("#ui-datepicker-div").css('z-index', 9501).css('display', 'none');
+            $("#ui-timepicker-div").css('z-index', 9501).css('display', 'none');
+            $("#perc-schedule-dialog-cancel").trigger("click");
+
         }
         /**
          * Check if Publish date is set for item before doing immediate publishing.

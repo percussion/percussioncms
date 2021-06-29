@@ -276,8 +276,7 @@
                 });
                 insideIframe(widget).droppable({
                     // only interact with iframe draggables
-                    scope: $.perc_iframe_scope,
-                    tolerance : 'pointer',
+                    tolerance : 'touch',
                     // as you hover over the widget, update cursor and background
                     over : function(evt, ui) {
 
@@ -364,9 +363,7 @@
             }
 
             widget.droppable({
-                // only interact with iframe draggables
-                scope: $.perc_iframe_scope,
-                tolerance : 'pointer',
+                tolerance : 'touch',
                 // as you hover over the widget, update cursor and background
                 over : function(evt, ui) {
                     var parentRegionId = $(this).parent().parent().attr("id");
