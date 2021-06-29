@@ -13,8 +13,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.error.PSException;
 import com.percussion.services.assembly.PSAssemblyException;
@@ -57,27 +57,27 @@ public abstract class PSAbstractRelationshipBuilder implements
      * {@inheritDoc}
      */
     public void synchronize(int sourceId, Set<Integer> targetIds) throws PSAssemblyException, PSException {
-        ms_log.debug("\tdesired ids: " + targetIds);
+        log.debug("\tdesired ids: {}", targetIds);
 
         Set<Integer> currentRelatedIds = new HashSet<Integer>(retrieve(sourceId));
-        ms_log.debug("\tcurrent ids: " + currentRelatedIds);
+        log.debug("\tcurrent ids: {}", currentRelatedIds);
 
         if (currentRelatedIds.isEmpty()) {
-            ms_log.debug("\tno current ids");
-            ms_log.debug("\tadd ids = desired ids");
-            ms_log.debug("\tno remove ids");
+            log.debug("\tno current ids");
+            log.debug("\tadd ids = desired ids");
+            log.debug("\tno remove ids");
 
             add(sourceId, targetIds);
         } else {
             // desired - current = add
             Set<Integer> idsToAdd = createComplement(targetIds,
                     currentRelatedIds);
-            ms_log.debug("\tadd ids: " + idsToAdd);
+            log.debug("\tadd ids: {}", idsToAdd);
             add(sourceId, idsToAdd);
             // current - desired = remove
             Set<Integer> idsToRemove = createComplement(currentRelatedIds,
                     targetIds);
-            ms_log.debug("\tremove ids:" + idsToRemove);
+            log.debug("\tremove ids: {}", idsToRemove);
             delete(sourceId, idsToRemove);
         }
     }
@@ -125,13 +125,13 @@ public abstract class PSAbstractRelationshipBuilder implements
     public void addRelationships(Collection<Integer> ids)
 			throws PSAssemblyException, PSException
 	{
-		ms_log.debug("addRelationships in PSAbstractRelationshipBuilder does nothing");
+		log.debug("addRelationships in PSAbstractRelationshipBuilder does nothing");
 		
 	}
 
 	/**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log ms_log = LogFactory
-            .getLog(PSAbstractRelationshipBuilder.class);
+
+    private static final Logger log = LogManager.getLogger(PSAbstractRelationshipBuilder.class);
 }

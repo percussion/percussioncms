@@ -11,8 +11,8 @@ package com.percussion.pso.relationshipbuilder.exit;
 
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.pso.relationshipbuilder.IPSRelationshipBuilder;
@@ -43,8 +43,8 @@ public class PSBuildAaRelationshipsExit extends PSAbstractBuildRelationshipsExte
      * The log instance to use for this class, never <code>null</code>.
      */
     @SuppressWarnings("unused")
-    private static final Log ms_log = LogFactory
-            .getLog(PSBuildAaRelationshipsExit.class);
+
+    private static final Logger log = LogManager.getLogger(PSBuildAaRelationshipsExit.class);
     
     /**
      * Maintains active-assembly-style relationships between the request's

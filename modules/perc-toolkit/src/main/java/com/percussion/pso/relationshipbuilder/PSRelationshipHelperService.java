@@ -18,8 +18,8 @@ import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSAaRelationship;
@@ -90,8 +90,7 @@ public class PSRelationshipHelperService implements IPSRelationshipHelperService
      * @throws IllegalArgumentException if the query is bad.
      */
     public Collection<Integer> getFolders(int itemId, String jcrQuery) {
-        ms_log.debug("Geting folders with itemId: " + itemId 
-                + " with query:" + jcrQuery);
+        log.debug("Geting folders with itemId: {} with query: {}",itemId, jcrQuery);
         if (!jcrQuery.contains("rx:sys_folderid")) {
             throw new IllegalArgumentException(
                     "The query string does not select on rx:sys_folderid.");
@@ -115,10 +114,12 @@ public class PSRelationshipHelperService implements IPSRelationshipHelperService
             }
             return returnIds;
         } catch (InvalidQueryException e) {
-            ms_log.warn("getFolders: Query is invalid", e);
+            log.warn("getFolders: Query is invalid Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new IllegalArgumentException("Query is invalid: ",e);
         } catch (RepositoryException e) {
-            ms_log.error("getFolders: Query is probably wrong",e);
+            log.error("getFolders: Query is probably wrong Error: {}",e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new RuntimeException("Something wrong with the repository: ", e);
         }
     }
@@ -149,7 +150,7 @@ public class PSRelationshipHelperService implements IPSRelationshipHelperService
             Row r = riter.nextRow();
             Value v = r.getValue(field);
             if (v == null) {
-                ms_log.warn("getIdsFromQuery: field " + field + " is missing from the results row");
+                log.warn("getIdsFromQuery: field {} is missing from the results row",field);
             }
             else {
                 int fid = (int) r.getValue(field).getLong();
@@ -188,7 +189,7 @@ public class PSRelationshipHelperService implements IPSRelationshipHelperService
             PSRelationship rel = iter.next();
             PSLocator owner = rel.getDependent();
             if (cids.contains(owner.getId())) {
-                ms_log.debug("\tDuplicate dependent ids "
+                log.debug("\tDuplicate dependent ids "
                         + "in relationship set due to revisions."
                         + " Skipping id: " + owner.getId());
             } else {
@@ -243,8 +244,8 @@ public class PSRelationshipHelperService implements IPSRelationshipHelperService
             for (PSLocator dependentLoc : dependentLocators) {
                 PSAaRelationship newRelationship = new PSAaRelationship(ownerLoc,
                         dependentLoc, slot, template);
-                ms_log.debug("Adding relationsion Owner id="+ownerLoc.getId()+" Owner Revision="+ownerLoc.getRevision());
-                ms_log.debug("Adding relationsion Dependent id="+dependentLoc.getId()+" Dependent Revision="+dependentLoc.getRevision());
+                log.debug("Adding relationsion Owner id="+ownerLoc.getId()+" Owner Revision="+ownerLoc.getRevision());
+                log.debug("Adding relationsion Dependent id="+dependentLoc.getId()+" Dependent Revision="+dependentLoc.getRevision());
                 
                 relationshipSet.add(newRelationship);
             }
@@ -318,7 +319,7 @@ public class PSRelationshipHelperService implements IPSRelationshipHelperService
        if (slot.getRelationshipName() == null
              || StringUtils.isBlank(slot.getRelationshipName()))
        {
-          ms_log
+          log
                 .warn("The slot does not have relationship name set."
                       + "The relationship name should be active assembly."
                       + "Check the Slot type table to make sure the relationship name is set.");
@@ -397,7 +398,7 @@ public class PSRelationshipHelperService implements IPSRelationshipHelperService
           boolean trueKeepOnlyIdsFalseRemoveOnlyIds,
           boolean trueOwnerIdsFalseDependentIds)
     {
-       ms_log.debug("Filter on : " + ids 
+       log.debug("Filter on : " + ids
                + " trueKeepOnlyIdsFalseRemoveOnlyIds: " 
                + trueKeepOnlyIdsFalseRemoveOnlyIds
                + " trueOwnerIdsFalseDependentIds: "
@@ -423,8 +424,8 @@ public class PSRelationshipHelperService implements IPSRelationshipHelperService
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log ms_log = LogFactory
-            .getLog(PSRelationshipHelperService.class);
+
+    private static final Logger log = LogManager.getLogger(PSRelationshipHelperService.class);
 
     public IPSCmsObjectMgr getCmsObjectManager() {
         return m_cmsObjectManager;
@@ -485,11 +486,11 @@ public class PSRelationshipHelperService implements IPSRelationshipHelperService
             String slotName, String templateName) throws PSException {
         try {
             if (owners.isEmpty() || dependents.isEmpty()) {
-                ms_log.debug("Not deleting relationships because " +
+                log.debug("Not deleting relationships because " +
                         "either dependents or owners ids is empty");
                 return;
             }
-            ms_log.debug("Deleting relationships where " +
+            log.debug("Deleting relationships where " +
                     opMessage(owners,dependents,slotName,templateName));
             deleteRelationships(getRelationships(owners, dependents, slotName, templateName));
         } catch (PSAssemblyException e) {
@@ -514,7 +515,7 @@ public class PSRelationshipHelperService implements IPSRelationshipHelperService
             int ownerId, 
             String slotName, 
             String templateName) throws PSException {
-        ms_log.debug("Getting Dependent Ids where " +
+        log.debug("Getting Dependent Ids where " +
                 " ownerId = " + ownerId +
                 " m_slotName = " + slotName +
                 " m_templateName = " + templateName );
@@ -535,7 +536,7 @@ public class PSRelationshipHelperService implements IPSRelationshipHelperService
             int dependentId, 
             String slotName, 
             String templateName) throws PSException {
-        ms_log.debug("Getting Owner Ids where " +
+        log.debug("Getting Owner Ids where " +
                 " dependentId = " + dependentId +
                 " slotName = " + slotName +
                 " templateName = " + templateName );
