@@ -12,8 +12,8 @@ package com.percussion.pso.relationships;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
@@ -50,7 +50,8 @@ public class PSOParentFinder implements IPSOParentFinder
    private IPSAssemblyService asm = null;
    private IPSOWorkflowInfoFinder workflow;   
 
-   private static Log log = LogFactory.getLog(PSOParentFinder.class); 
+
+   private static final Logger log = LogManager.getLogger(PSOParentFinder.class);
 
    /**
     * Default constructor.
@@ -102,7 +103,7 @@ public class PSOParentFinder implements IPSOParentFinder
    {       
       initServices();
       String slotid = getSlotId(slotName); 
-      log.debug("Slot name " + slotName +  " id is " + slotid); 
+      log.debug("Slot name {} id is {}",slotName, slotid);
       PSRelationshipFilter filter = new PSRelationshipFilter(); 
       filter.setDependent(dependent); 
       filter.setCategory(PSRelationshipFilter.FILTER_CATEGORY_ACTIVE_ASSEMBLY);
@@ -185,7 +186,9 @@ public class PSOParentFinder implements IPSOParentFinder
                   PSRelationshipProcessorProxy.PROCTYPE_SERVERLOCAL,requestContext);
          } catch (PSCmsException ex)
          {
-            log.error("Unexpected Exception initializing proxy " + ex,ex);
+            log.error("Unexpected Exception initializing proxy, Error: {}",ex.getMessage());
+            log.debug(ex.getMessage(), ex);
+
          }
       }
    }

@@ -6,8 +6,8 @@ import static java.util.Collections.singleton;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.design.objectstore.PSLocator;
@@ -26,8 +26,8 @@ public abstract class PSActiveAssemblyRelationshipBuilder extends
 	  /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log ms_log = LogFactory
-            .getLog(PSActiveAssemblyRelationshipBuilder.class);
+
+	private static final Logger log = LogManager.getLogger(PSActiveAssemblyRelationshipBuilder.class);
     
 	private String slotName;
 	private String templateName;
@@ -38,8 +38,9 @@ public abstract class PSActiveAssemblyRelationshipBuilder extends
 	}
 	 
 	 public void init() {
-	        if (m_assemblyService == null)
-	            m_assemblyService = PSAssemblyServiceLocator.getAssemblyService();
+	        if (m_assemblyService == null) {
+				m_assemblyService = PSAssemblyServiceLocator.getAssemblyService();
+			}
 	        super.init();
 	 }
 	 
@@ -85,8 +86,8 @@ public abstract class PSActiveAssemblyRelationshipBuilder extends
 		            for (PSLocator dependentLoc : dependentLocators) {
 		                PSAaRelationship newRelationship = new PSAaRelationship(ownerLoc,
 		                        dependentLoc, slot, template);
-		                ms_log.debug("Adding relation Owner id="+ownerLoc.getId()+" Owner Revision="+ownerLoc.getRevision());
-		                ms_log.debug("Adding relation Dependent id="+dependentLoc.getId()+" Dependent Revision="+dependentLoc.getRevision());
+		                log.debug("Adding relation Owner id="+ownerLoc.getId()+" Owner Revision="+ownerLoc.getRevision());
+		                log.debug("Adding relation Dependent id="+dependentLoc.getId()+" Dependent Revision="+dependentLoc.getRevision());
 		                
 		                relationshipSet.add(newRelationship);
 		            }
@@ -108,7 +109,7 @@ public abstract class PSActiveAssemblyRelationshipBuilder extends
 		       if (slot.getRelationshipName() == null
 		             || StringUtils.isBlank(slot.getRelationshipName()))
 		       {
-		          ms_log
+		          log
 		                .warn("The slot does not have relationship name set."
 		                      + "The relationship name should be active assembly."
 		                      + "Check the Slot type table to make sure the relationship name is set.");
