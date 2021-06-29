@@ -9,12 +9,17 @@
  ******************************************************************************/
 package com.percussion.pso.transform;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+
 
 import com.percussion.data.PSConversionException;
 import com.percussion.extension.IPSExtensionDef;
@@ -24,8 +29,8 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.pso.utils.PSOExtensionParamsHelper;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSDataTypeConverter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+
 
 /**
  * A field input transform for setting one date field based on another.
@@ -63,7 +68,7 @@ public class PSODateAdjust extends PSDefaultExtension
          {
             sourceDate = PSDataTypeConverter
                   .parseStringToDate(sourceFieldValue);
-            log.debug("source date is " + sourceDate);
+            log.debug("source date is {}", sourceDate);
          } else
          {
             log.debug("no source field value found: using current time");
