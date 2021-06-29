@@ -430,7 +430,7 @@
                         gadgets.container.addSetTitleListener(_afterSetTitle);
                         renderGadgets(results.DashboardConfig.gadgets);
 
-                        $(document).off("click","#perc-dashboard-restore-menu",function()
+                        $(document).off("click").on("click","#perc-dashboard-restore-menu",function()
                         {
                             restore();
                         });
