@@ -49,7 +49,7 @@
 .perc-datetime-picker{   background-color: #CCCCCC; border: 1px inset #999999; color: #333333; font-family: Verdana; font-size: 11px; font-weight: normal;}
 #perc_removal_date, #perc_publish_date{width:120px; padding: 4px 0px 4px 4px;    }
 .perc-schedule  .ui-widget-content .ui-priority-secondary { font-weight: bold; opacity: 1;}
-.perc-schedule  .ui-widget-content .ui-state-active { background: url("images/ui-bg_glass_65_ffffff_1x400.png") repeat-x scroll 50% 50% #FFFFFF; border: 1px solid #AAAAAA; color: #212121; font-weight: normal; outline: medium none; }
+.perc-schedule  .ui-widget-content .ui-state-active { background: url("../themes/smoothness/images/ui-bg_glass_65_ffffff_1x400.png") repeat-x scroll 50% 50% #FFFFFF; border: 1px solid #AAAAAA; color: #212121; font-weight: normal; outline: medium none; }
 .perc-schedule input, .perc-schedule select, .perc-schedule textarea, .perc-schedule .ui-widget button{font-family: 'Open Sans',sans-serif !important;}
 #ui-datepicker-div.ui-datepicker select.ui-datepicker-month{width: 47%;}
 #ui-datepicker-div.ui-datepicker select.ui-datepicker-year{width: 52%;}

@@ -243,7 +243,7 @@
             //made to UI files. It will be a quick note to refer before updating Jquery Plugins.
             //Chetan Jain
 
-            this.tpDiv      = $('<div id="' + this._mainDivId + '" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all ui-helper-hidden-accessible" style=" display: none; position: absolute;"></div>');
+            this.tpDiv      = $('<div id="' + this._mainDivId + '" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all " style=" display: none; position: absolute;"></div>');
             this._generateHtml();
         },
 
