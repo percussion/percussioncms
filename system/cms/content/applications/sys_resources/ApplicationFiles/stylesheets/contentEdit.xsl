@@ -99,30 +99,27 @@
 				<xsl:text>&#10;</xsl:text>
 				<title><xsl:value-of select="//DisplayField/Control[@paramName='sys_title']/Value"/></title>
 				<xsl:text>&#10;</xsl:text>
+				<style type="text/css">
+					.perc-required-legend{
+						position: relative; float: left; padding-right: 9px; margin-top: 3px;
+					}
+					#edit-page-metadata > form > span.perc-required-legend{
+						margin-top: -29px;
+						padding-right: 0;
+						margin-right: -2px;
+					}
+					.perc-required-field:before {
+						content: "* ";
+						margin-left: -11px;
+					}
+
+					.perc-content-edit-data {
+						padding-right:35px;
+						padding-bottom:30px;
+					}
+				</style>
 			</head>
 			<body>
-				<style type="text/css"> 
-				   .perc-required-legend{
-                        position: relative; float: right; padding-right: 9px; margin-top: 3px;
-				   }
-
-				   #edit-page-metadata > form > span.perc-required-legend{
-                                      margin-top: -29px;
-				        padding-right: 0px;
-				        margin-right: -2px;
-				   }
-				   .perc-required-field:before {
-                        content: "* ";
-                        margin-left: -11px;
-                    }
-                    
-                   .perc-content-edit-data {
-                        padding-right:35px;
-                        padding-bottom:30px;
-                    }
-
-                    
-				</style>
 				<form method="post" action="{@submitHref}" id="perc-content-form" name="perc-content-form" encType="multipart/form-data">
 				<xsl:if test="//DisplayField[@displayType='sys_normal']/Control[@isRequired = 'yes' and @isReadOnly='no' and @name != 'sys_HiddenInput']">
 			   	<span class="perc-required-legend"><label>* - denotes required field</label></span>

@@ -418,5 +418,6 @@
             }
         }
         }
+        return dialogApi;
     };
 })(jQuery);

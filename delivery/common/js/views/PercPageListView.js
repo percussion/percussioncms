@@ -43,7 +43,7 @@
      * Finds all the rss feed links by class perc-rss-icon and adds the version, and hostname to the url.
      */
     function updateRSSLinks() {
-        var version = $.isFunction($.getCMSVersion) ? $.getCMSVersion() : "";
+        var version = typeof($.getCMSVersion)=== "function" ? $.getCMSVersion() : "";
         var hostname = window.location.host;
 
         $(".perc-rss-icon").each(function() {

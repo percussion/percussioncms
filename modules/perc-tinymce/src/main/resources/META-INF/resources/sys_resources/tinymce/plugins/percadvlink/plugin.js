@@ -326,7 +326,7 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
                 cm1LinkData.pathItem = pathItem;
                 win.find('#href').value(renderLink.url);
                 win.find('#title').value(renderLink.title);
-                if(topFrJQ.isFunction(callback)) {
+                if(typeof callback === "function") {
                     callback(renderLink.url, renderLink.title);
                 }
             });

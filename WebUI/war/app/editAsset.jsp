@@ -176,7 +176,6 @@
     <script src="../plugins/PercRevisionDialog.js"></script>
     <script src="../plugins/PercPublishingHistoryDialog.js"></script>
     <script src="../views/PercSiteImpactView.js"></script>
-    <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/timepicker.js"></script>
     <script src="../plugins/PercScheduleDialog.js"></script>
     <script src="../plugins/perc_ChangePwDialog.js"></script>
     <% } else { %>
