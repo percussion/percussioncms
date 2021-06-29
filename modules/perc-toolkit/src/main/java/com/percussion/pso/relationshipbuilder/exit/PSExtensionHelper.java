@@ -90,7 +90,7 @@ public class PSExtensionHelper
            try {
                 ids = m_builder.retrieve(contentId);
 
-                log.debug("Selecting ids: {]", ids);
+                log.debug("Selecting ids: {}", ids);
 
            } catch (PSAssemblyException e) {
                log.error(errorMesg, e);
@@ -114,7 +114,7 @@ public class PSExtensionHelper
        if (controlElement == null) {
 
 
-           log.warn("Field: " + fieldName + " could not be found in the content editor xml");
+           log.warn("Field: {} could not be found in the content editor xml", fieldName);
 
        }
        else {
@@ -161,8 +161,8 @@ public class PSExtensionHelper
                for(int i = 0; displayEntryNodes != null 
                    && i < displayEntryNodes.getLength(); i++) {
                    Element displayEntryElement = (Element) displayEntryNodes.item(i);
-                   log.debug("displayEntryElement: " + displayEntryElement);
-                   log.debug("selectALL: " + selectAll);
+                   log.debug("displayEntryElement: {}", displayEntryElement);
+                   log.debug("selectALL: {}", selectAll);
 
                    if (selectAll) {
                        displayEntryElement.setAttribute("selected", "yes");
@@ -298,7 +298,7 @@ public class PSExtensionHelper
             catch (PSAssemblyException e)
             {
 
-               log.error("Failure in assembly API", e.getMessage());
+               log.error("Failure in assembly API, Error:{}", e.getMessage());
                log.debug(e.getMessage(), e);
 
                throw new PSExtensionProcessingException(0, e);
@@ -306,7 +306,7 @@ public class PSExtensionHelper
             catch (PSException e)
             {
 
-               log.error("Failure in relationship API", e.getMessage());
+               log.error("Failure in relationship API Error:{}", e.getMessage());
                log.debug(e.getMessage(), e);
 
                throw new PSExtensionProcessingException(0, e);
@@ -318,7 +318,7 @@ public class PSExtensionHelper
             }
             finally {
 
-               log.debug("Finished processing exit with builder " + m_builder.getClass().getName());
+               log.debug("Finished processing exit with builder {}", m_builder.getClass().getName());
 
             }
          }
@@ -337,9 +337,7 @@ public class PSExtensionHelper
        Set <Integer> fieldValuesSet = new HashSet<Integer>();
        Collection <Object> invalid = convert (fieldValues, fieldValuesSet);
 
-       log.debug("\tField values for fieldname '" + fieldName +"' is : " +
-
-             fieldValuesSet);
+       log.debug("\tField values for fieldname {} is : {}", fieldName, fieldValuesSet);
        if (invalid.size() == 1 && invalid.contains("")) {
            log.debug("\tEmpty String only.  No items checked.  Removing relationships");
            m_builder.synchronize(cid, fieldValuesSet);
