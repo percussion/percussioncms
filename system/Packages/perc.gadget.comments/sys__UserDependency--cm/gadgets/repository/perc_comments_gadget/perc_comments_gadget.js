@@ -240,7 +240,8 @@
      */
     
     function displayDefaultModerationDialog(evt) {
-        var link = $(this);
+        //CMS-8176 : as event is passed so $(this) returned event instead of link, thus site was undefined and also causing save error.
+        var link = $("#perc-set-default-moderation-link");
         var site = link.attr("site");
         
         $.PercCommentsGadgetService().getDefaultCommentModeration(site,
