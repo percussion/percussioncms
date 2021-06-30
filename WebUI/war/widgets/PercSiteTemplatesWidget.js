@@ -618,9 +618,9 @@
                                 self.firstPagesArray[templateId] = data.firstItemId;
                             }
 
-                            for(let i of listElements)
+                            for(var i = 0; i < listElements.length; i++)
                             {
-                                i.html('').attr('title', '').removeClass('perc-require-migration');
+                                $(listElements[i]).html('').attr('title', '').removeClass('perc-require-migration');
                             }
 
 
@@ -1099,7 +1099,9 @@
         {
             // unselect/unhighlight other templates
             $('.perc-template-item').removeClass('perc-template-page-highlighted-color').removeClass('perc-template-highlighted-color-border').removeClass('perc-selected');
-
+            if(typeof templateId === 'undefined'){
+                return;
+            }
             if(doCleanSelectedPage)
             {
                 // unselect / unhighlight other pages selection

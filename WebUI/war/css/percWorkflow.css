@@ -1360,7 +1360,7 @@ li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
 {
     margin-right:-10px;
     margin-top:3px;
-    text-align:right;
+    text-align:left;
     color:#900;
     font-family: 'Open Sans', sans-serif;
     font-size:11px;
