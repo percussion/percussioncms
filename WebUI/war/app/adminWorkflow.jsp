@@ -136,7 +136,7 @@
                 dirtyController.setDirty(true, "asset");
             });
             $("#tabs").tabs({
-                select: function (event, ui) {
+                activate: function (event, ui) {
                     if (dirtyController.isDirty()) {
                         // if dirty, then show a confirmation dialog                    
                         dirtyController.confirmIfDirty(function () {
