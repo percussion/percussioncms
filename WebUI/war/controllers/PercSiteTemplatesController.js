@@ -260,7 +260,7 @@
         }
 
         $.PercServiceUtils.makeJsonRequest(
-            $.perc_paths.SITES_ALL + "/", $.PercServiceUtils.TYPE_GET, true,
+            $.perc_paths.SITES_ALL + "/", $.PercServiceUtils.TYPE_GET, false,
             function(status, result){
                 getSitesCallback(status,result,callback);
             }
@@ -440,7 +440,7 @@
 
         // load all the template summaries
         $.PercServiceUtils.makeJsonRequest(
-            $.perc_paths.TEMPLATES_ALL + currentSiteName, $.PercServiceUtils.TYPE_GET, true,
+            $.perc_paths.TEMPLATES_ALL + currentSiteName, $.PercServiceUtils.TYPE_GET, false,
             function(status,result){
                 loadCallback(status,result,loadPostCallbacks);
             }, null, null // abort callback function not needed in this case
@@ -615,7 +615,7 @@
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.SITES_BY_TEMPLATE + "/" + templateid,
             $.PercServiceUtils.TYPE_GET,
-            true,function(status,result){
+            false,function(status,result){
                 getTemplateSitesCallback(status,result,callback);
             },
             null,
