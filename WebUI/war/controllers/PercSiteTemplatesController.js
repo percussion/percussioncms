@@ -477,8 +477,10 @@
      */
     function _updateCache(templateSummaries, callback)
     {
+        var cbCount = 0;
         for(var i = 0; i < templateSummaries.length; i++)
         {
+
             // create template summary object from JSON data
             var sum = templateSummaries[i];
             var isBase = sum.readOnly == true;
@@ -489,18 +491,36 @@
             result.setContentMigrationVersion(sum.contentMigrationVersion);
             if(!isBase)
             {
-                _getTemplateSites(sum.id, function(sites)
+                cbCount = cbCount + 1;
+                _getTemplateSites(sum.id, function(sites,sumId)
                 {
+                    cbCount = cbCount -1;
+                    if(cbCount == 0){
+                        cbCount = -1;
+                        templateSitesCB(sites,callback,sumId);
+                    }else{
+                        templateSitesCB(sites,null,sumId);
+                    }
 
-                    result.setAssignedSites(sites);
+
 
                 });
 
             }
             _cache.templates[sum.id] = result;
+
+        }
+        if(cbCount === 0){
+            callback();
         }
 
-        callback();
+    }
+
+    function templateSitesCB(sites,callback,id){
+        _cache.templates[id].setAssignedSites(sites);
+        if(callback != null){
+            callback();
+        }
     }
 
 
@@ -616,14 +636,14 @@
             $.perc_paths.SITES_BY_TEMPLATE + "/" + templateid,
             $.PercServiceUtils.TYPE_GET,
             false,function(status,result){
-                getTemplateSitesCallback(status,result,callback);
+                getTemplateSitesCallback(status,result,callback,templateid);
             },
             null,
             null // abort callback function not needed in this case
         );
     }
 
-    function getTemplateSitesCallback(status, result,callback){
+    function getTemplateSitesCallback(status, result,callback,templateid){
         if(status == $.PercServiceUtils.STATUS_SUCCESS)
         {
             var sites = result.data.SiteSummary;
@@ -634,7 +654,7 @@
                 results.push(site.name);
             }
             if(typeof callback !== 'undefined'){
-                callback(results);
+                callback(results,templateid);
             }
         }
         else
