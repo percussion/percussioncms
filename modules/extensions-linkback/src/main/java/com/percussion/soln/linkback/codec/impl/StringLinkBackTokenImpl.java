@@ -28,8 +28,8 @@ import com.percussion.soln.linkback.codec.LinkbackTokenCodec;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -44,7 +44,7 @@ import java.util.Map;
  */
 public class StringLinkBackTokenImpl implements LinkbackTokenCodec {
 
-    private static Log log = LogFactory.getLog(StringLinkBackTokenImpl.class);
+    private static final Logger log = LogManager.getLogger(StringLinkBackTokenImpl.class);
 
     private static byte bitMask;
 
@@ -73,7 +73,7 @@ public class StringLinkBackTokenImpl implements LinkbackTokenCodec {
             log.error("Unsupported Encoding " + ASCII, ex);
             throw new IllegalStateException("Encoding Error");
         }
-        log.debug("decoded token is " + codedToken);
+        log.debug("Decoded token is {}", codedToken);
         String[] parts = codedToken.split(DELIM);
         for (int i = 0; i < parts.length; i++) {
             decodePart(oparm, parts[i]);
@@ -83,12 +83,12 @@ public class StringLinkBackTokenImpl implements LinkbackTokenCodec {
 
     private void decodePart(Map<String, String> pmap, String part) {
         if (StringUtils.isBlank(part)) { // do nothing
-            log.debug("part is blank");
+            log.debug("Part is blank");
             return;
         }
         char first = part.charAt(0);
         String rest = (part.length() > 1) ? part.substring(1) : "";
-        log.debug("matching part " + first + " - " + rest);
+        log.debug("Matching part {} - {}", first, rest);
         switch (first) {
         case CONTENTID:
             pmap.put(IPSHtmlParameters.SYS_CONTENTID, rest);
@@ -106,7 +106,7 @@ public class StringLinkBackTokenImpl implements LinkbackTokenCodec {
             pmap.put(IPSHtmlParameters.SYS_FOLDERID, rest);
             break;
         default:
-            log.warn("Unrecognized part " + first + " - " + rest);
+            log.warn("Unrecognized part {} - {}", first, rest);
         }
     }
 
@@ -127,7 +127,7 @@ public class StringLinkBackTokenImpl implements LinkbackTokenCodec {
         appendPart(params, sb, templateParamName, TEMPLATE);
         appendPart(params, sb, IPSHtmlParameters.SYS_SITEID, SITE);
         appendPart(params, sb, IPSHtmlParameters.SYS_FOLDERID, FOLDER);
-        log.debug("Encoded Raw value is " + sb.toString());
+        log.debug("Encoded Raw value is {}", sb);
         String token;
         try {
             byte[] tokenBytes = sb.toString().getBytes(ASCII);
@@ -138,7 +138,8 @@ public class StringLinkBackTokenImpl implements LinkbackTokenCodec {
             return token;
         } catch (UnsupportedEncodingException ex) {
             // this should never happen, ascii is always supported.
-            log.error("Unsupported Encoding " + ASCII, ex);
+            log.error("Unsupported Encoding {}, Error: {}", ASCII, ex.getMessage());
+            log.debug(ex.getMessage(), ex);
             return null;
         }
     }
@@ -152,7 +153,7 @@ public class StringLinkBackTokenImpl implements LinkbackTokenCodec {
             sb.append(marker);
             sb.append(value);
         } else {
-            log.warn("Missing value in parameter map " + pname);
+            log.warn("Missing value in parameter map {}", pname);
         }
 
     }
@@ -171,18 +172,18 @@ public class StringLinkBackTokenImpl implements LinkbackTokenCodec {
                 return "";
             }
             sval = x[0];
-            log.trace("Converted String[] to " + sval + " " + value);
+            log.trace("Converted String[] to {} {}", sval, value);
         } else if (value instanceof List) {
             List x = (List) value;
-            if (x.size() == 0) {
+            if (x.isEmpty()) {
                 log.debug("Empty List");
                 return "";
             }
             sval = x.get(0).toString();
-            log.trace("Converted List to " + sval + " " + value);
+            log.trace("Converted List to {} {}", sval, value);
         } else {
             sval = value.toString();
-            log.trace("Converted Object to " + sval);
+            log.trace("Converted Object to {}", sval);
         }
         return sval;
     }
