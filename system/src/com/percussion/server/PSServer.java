@@ -999,7 +999,7 @@ public class PSServer {
     */
    public static PSInternalRequest getInternalRequest(String path,
                                                       PSRequest request,
-                                                      Map<String, Object> extraParams,
+                                                      Map extraParams,
                                                       boolean inheritParams,
                                                       Document inputDoc)
    {
@@ -1074,7 +1074,7 @@ public class PSServer {
       if (queryParams != null) {
          try
          {
-            HashMap<String, Object> params = new HashMap<>();
+            HashMap params = new HashMap<>();
             PSFormContentParser.parseParameterString( params, queryParams );
             clonedRequest.putAllParameters( params );
          } catch (PSRequestParsingException e)
@@ -1109,7 +1109,7 @@ public class PSServer {
     */
    public static PSInternalRequest getInternalRequest(String path,
                                                       IPSRequestContext ctx,
-                                                      Map<String, Object> extraParams,
+                                                      Map extraParams,
                                                       boolean inheritParams,
                                                       Document inputDoc)
    {
@@ -1146,7 +1146,7 @@ public class PSServer {
     */
    public static PSInternalRequest getInternalRequest(String path,
                                                       PSRequest request,
-                                                      Map<String, Object> extraParams,
+                                                      Map extraParams,
                                                       boolean inheritParams)
    {
       return getInternalRequest(path, request, extraParams, inheritParams,
