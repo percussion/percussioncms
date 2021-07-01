@@ -24,8 +24,8 @@
 
 package com.percussion.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.*;
@@ -41,7 +41,7 @@ import java.util.*;
  */
 public class PSProperties extends java.util.Properties {
 
-    private static final Log log = LogFactory.getLog(PSProperties.class);
+    private static final Logger log = LogManager.getLogger(PSProperties.class);
 
     /**
      * Constant for the name of the config file containing name/value pairs for

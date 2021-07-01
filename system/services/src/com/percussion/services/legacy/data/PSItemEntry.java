@@ -27,7 +27,8 @@ import com.percussion.cms.objectstore.PSCmsObject;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.server.cache.PSItemSummaryCache;
 import com.percussion.services.legacy.IPSItemEntry;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -462,7 +463,7 @@ public class PSItemEntry implements IPSItemEntry
    /**
     * The log4j logger used for this class. 
     */
-   private static Logger ms_logger = Logger.getLogger("PSItemEntry");
+   private static final Logger ms_logger = LogManager.getLogger("PSItemEntry");
 
    
 }

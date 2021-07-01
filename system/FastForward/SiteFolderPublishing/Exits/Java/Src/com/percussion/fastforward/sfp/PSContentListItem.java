@@ -35,7 +35,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -694,7 +694,7 @@ public class PSContentListItem implements Comparable
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private Logger log = Logger.getLogger(getClass());
+   private Logger log = LogManager.getLogger(getClass());
    
    /**
     * This is used to determine whether it needs get the last public revision

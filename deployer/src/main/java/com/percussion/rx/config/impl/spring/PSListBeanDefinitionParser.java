@@ -27,8 +27,8 @@ import com.percussion.rx.config.IPSBeanProperties;
 import com.percussion.rx.config.PSBeanPropertiesLocator;
 import com.percussion.rx.config.impl.PSConfigMapper;
 import com.percussion.utils.types.PSPair;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
 import org.w3c.dom.Element;
@@ -100,6 +100,6 @@ public class PSListBeanDefinitionParser extends
    /**
     * Logger for this class.
     */
-   private static Log ms_log = LogFactory.getLog("PSListBeanDefinitionParser");
+   private static final Logger ms_log = LogManager.getLogger("PSListBeanDefinitionParser");
    
 }

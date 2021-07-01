@@ -20,7 +20,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
@@ -55,7 +56,7 @@ public class PSOSetRevisionLock extends PSDefaultExtension
    /**
     * Logger for this class
     */
-   private static Logger log = Logger.getLogger(PSOSetRevisionLock.class);
+   private static final Logger log = LogManager.getLogger(PSOSetRevisionLock.class);
    /**
     * 
     */

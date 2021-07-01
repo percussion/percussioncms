@@ -27,8 +27,8 @@ import com.percussion.extension.*;
 import com.percussion.soln.linkback.codec.LinkbackTokenCodec;
 import com.percussion.soln.linkback.codec.impl.StringLinkBackTokenImpl;
 import com.percussion.soln.linkback.utils.LinkbackUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Map;
@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public class LinkbackJexlTools implements IPSJexlExpression {
 
-    private static final Log log = LogFactory.getLog(LinkbackJexlTools.class);
+    private static final Logger log = LogManager.getLogger(LinkbackJexlTools.class);
 
     private LinkbackTokenCodec linkbackCodec = null;
 

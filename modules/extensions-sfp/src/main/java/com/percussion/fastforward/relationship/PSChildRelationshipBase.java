@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSRelationshipProcessor;
@@ -207,7 +207,7 @@ public abstract class PSChildRelationshipBase
    /**
     * The log instance to use for this class, never <code>null</code>.
     */
-   protected Log m_log = LogFactory.getLog(PSChildRelationshipBase.class);
+   protected static final Logger m_log = LogManager.getLogger(PSChildRelationshipBase.class);
 
    /**
     * Processor for querying and updating relationships. Assigned in ctor, never

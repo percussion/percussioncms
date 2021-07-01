@@ -37,7 +37,8 @@ import com.percussion.util.servlet.PSServletRequester;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webdav.PSWebdavServlet;
 import com.percussion.webdav.method.PSWebdavUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 import javax.servlet.ServletException;
@@ -382,9 +383,8 @@ public class PSServletRequesterTest extends PSWebdavServlet
          writeln(test + " failed with errors", ERROR);
          writeStackTrace((Exception)e.getTargetException());
          writeln("");
-         
-         //EC_UNRELATED_TYPES 
-         Logger.getLogger(getClass()).error(e.getLocalizedMessage(),e);
+
+         LogManager.getLogger(getClass()).error(e.getLocalizedMessage(),e);
           
       }      
    

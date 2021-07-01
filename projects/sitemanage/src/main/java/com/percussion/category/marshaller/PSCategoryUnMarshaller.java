@@ -50,8 +50,8 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -60,7 +60,7 @@ import org.springframework.stereotype.Component;
 public class PSCategoryUnMarshaller {
 	
 	private static final String LEGACY_ADD_TOP_LEVEL_CATEGORIES = "Add Top Level Categories";
-    private static Log log = LogFactory.getLog(PSCategoryUnMarshaller.class);
+    private static final Logger log = LogManager.getLogger(PSCategoryUnMarshaller.class);
 	
 	public PSCategory unMarshal() {
 		

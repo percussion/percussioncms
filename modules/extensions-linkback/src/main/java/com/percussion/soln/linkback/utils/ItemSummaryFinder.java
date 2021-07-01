@@ -30,8 +30,8 @@ import com.percussion.error.PSException;
 import com.percussion.services.legacy.IPSCmsContentSummaries;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Class finds content summaries for content item ids.
@@ -46,7 +46,7 @@ public class ItemSummaryFinder {
     /**
      * Logger for this class
      */
-    private static final Log log = LogFactory.getLog(ItemSummaryFinder.class);
+    private static final Logger log = LogManager.getLogger(ItemSummaryFinder.class);
 
     private IPSCmsContentSummaries cmsContentSummaries = null;
 

@@ -30,7 +30,8 @@ import java.util.List;
 import javax.naming.NamingException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.rxfix.IPSFix;
 import com.percussion.rxfix.PSFixResult.Status;
@@ -49,7 +50,7 @@ import com.percussion.webservices.content.PSContentWsLocator;
  */
 public class PSFixPageCatalog extends PSFixDBBase implements IPSFix
 {
-   private static final Logger log = Logger.getLogger(PSFixPageCatalog.class.getName());
+   private static final Logger log = LogManager.getLogger(PSFixPageCatalog.class.getName());
 
    public PSFixPageCatalog() throws NamingException, SQLException
    {

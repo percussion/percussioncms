@@ -21,8 +21,8 @@ import javax.jcr.RepositoryException;
 import javax.jcr.query.QueryResult;
 import javax.jcr.query.RowIterator;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -58,7 +58,7 @@ import com.percussion.utils.types.PSPair;
 @Ignore()
 public class AbstractTemplateExpanderAdaptorTest
 {
-   Log log = LogFactory.getLog(AbstractTemplateExpanderAdaptorTest.class);
+   private static final Logger log = LogManager.getLogger(AbstractTemplateExpanderAdaptorTest.class);
    
    Mockery context; 
    TestableTemplateExpanderAdaptor cut; 

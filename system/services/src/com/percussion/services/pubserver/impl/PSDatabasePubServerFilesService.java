@@ -36,7 +36,8 @@ import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSDatasourceConfig;
 import com.percussion.utils.servlet.PSServletUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.sql.Connection;
@@ -524,5 +525,5 @@ public class PSDatabasePubServerFilesService implements IPSDatabasePubServerFile
     
     private static String SITEID_SEP = "_-_";
     
-    private static Logger ms_logger = Logger.getLogger(PSDatabasePubServerFilesService.class);
+    private static final Logger ms_logger = LogManager.getLogger(PSDatabasePubServerFilesService.class);
 }

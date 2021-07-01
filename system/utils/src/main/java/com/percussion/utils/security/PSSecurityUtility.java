@@ -24,29 +24,18 @@
 
 package com.percussion.utils.security;
 
+import com.percussion.util.PSProperties;
+import com.percussion.utils.io.PathUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
-
-import com.percussion.utils.io.PathUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
-
-
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
-
-import com.percussion.utils.container.PSContainerUtilsFactory;
-import com.percussion.util.PSProperties;
 
 public class PSSecurityUtility {
     
@@ -103,7 +92,7 @@ public class PSSecurityUtility {
     private String xContentTypeOptions = null; 
     private String cacheControl = null; 
     
-    private static final Log log = LogFactory.getLog(PSSecurityUtility.class);
+    private static final Logger log = LogManager.getLogger(PSSecurityUtility.class);
     
     public PSSecurityUtility(){}
     

@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
@@ -111,6 +111,6 @@ public class PSExtractIdsFromSlotExit extends PSDefaultExtension implements
    /**
     * The log instance to use for this class, never <code>null</code>.
     */
-   private static Log ms_log = LogFactory
+   private static final Logger ms_log = LogFactory
       .getLog(PSExtractIdsFromSlotExit.class);
 }

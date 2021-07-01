@@ -39,8 +39,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class provides convenient methods to catalog the definitions of 
@@ -49,7 +49,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSJexlExtensionHelper
 {
-   protected static Log ms_log = LogFactory.getLog(PSJexlExtensionHelper.class);
+   protected static Logger ms_log = LogManager.getLogger(PSJexlExtensionHelper.class);
 
    /**
     * Catalog all JEXL extensions from the extension manager.

@@ -160,6 +160,6 @@ public class PSNavSQLUtils
    /**
     * Writes the log.
     */
-   private static Logger log = LogManager.getLogger(PSNavSQLUtils.class);
+   private static final Logger log = LogManager.getLogger(PSNavSQLUtils.class);
 
 }

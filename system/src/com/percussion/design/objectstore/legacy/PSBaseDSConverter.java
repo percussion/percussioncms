@@ -36,8 +36,8 @@ import com.percussion.utils.jdbc.IPSDatasourceConfig;
 import com.percussion.utils.jdbc.PSDatasourceConfig;
 import com.percussion.utils.jdbc.PSDatasourceResolver;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.List;
@@ -414,7 +414,7 @@ public abstract class PSBaseDSConverter
     * 
     * @return The logger, never <code>null</code>.
     */
-   protected Log getLogger()
+   protected static final Logger getLogger()
    {
       return ms_logger;
    }
@@ -439,6 +439,6 @@ public abstract class PSBaseDSConverter
    /**
     * Logger to use, never <code>null</code>.
     */
-   private static Log ms_logger = LogFactory.getLog(
+   private static final Logger ms_logger = LogManager.getLogger(
       PSBaseDSConverter.class);
 }

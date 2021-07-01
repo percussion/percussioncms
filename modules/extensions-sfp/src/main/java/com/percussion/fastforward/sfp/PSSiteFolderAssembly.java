@@ -37,7 +37,8 @@ import com.percussion.fastforward.utils.PSUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.util.IPSHtmlParameters;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
@@ -353,5 +354,5 @@ public class PSSiteFolderAssembly extends PSDefaultExtension
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   Logger log = Logger.getLogger(this.getClass());
+   private static final Logger log = LogManager.getLogger(PSSiteFolderAssembly.class);
 }

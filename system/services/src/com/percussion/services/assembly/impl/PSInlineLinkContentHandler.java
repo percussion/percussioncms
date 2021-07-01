@@ -67,8 +67,8 @@ import com.percussion.utils.xml.PSSaxHelper;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.JDOMException;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -121,8 +121,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
    /**
     * Logger for this class
     */
-   private static Log ms_log = LogFactory
-         .getLog(PSInlineLinkContentHandler.class);
+   private static final Logger ms_log = LogManager.getLogger(PSInlineLinkContentHandler.class);
 
    
    

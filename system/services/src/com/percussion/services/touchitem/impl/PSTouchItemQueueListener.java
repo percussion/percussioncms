@@ -37,7 +37,8 @@ import com.percussion.services.touchitem.IPSTouchItemService;
 import com.percussion.services.touchitem.PSTouchItemLocator;
 import com.percussion.services.touchitem.data.PSTouchItemData;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Listens for Touching Messages.
@@ -110,6 +111,6 @@ public class PSTouchItemQueueListener extends PSMessageQueueListenerAdapter<PSTo
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger(PSTouchItemQueueListener.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSTouchItemQueueListener.class);
 
 }

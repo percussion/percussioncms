@@ -43,7 +43,8 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,7 @@ public class PSDefaultTemplateLookup extends PSJexlUtilBase {
 			description = "The item to find the default variant too.") })
 	public String lookup(IPSAssemblyItem item) {
 		List<IPSAssemblyTemplate> l = this.lookupDefaults(item);
-		if (l.size() > 0){
+		if (!l.isEmpty()){
 			if (l.size() > 1){
 				log.warn("More than one default variant arbitrarily selecting one");
 			}
@@ -160,5 +161,5 @@ public class PSDefaultTemplateLookup extends PSJexlUtilBase {
 		return template.getPublishWhen() == IPSAssemblyTemplate.PublishWhen.Default;
 	}
 
-	Logger log = Logger.getLogger(this.getClass());
+	private static final Logger log = LogManager.getLogger(PSDefaultTemplateLookup.class);
 }

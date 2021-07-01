@@ -49,8 +49,8 @@ import com.percussion.utils.string.PSStringUtils;
 import com.percussion.utils.timing.PSStopwatch;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 
 import javax.servlet.RequestDispatcher;
@@ -104,7 +104,7 @@ public class PSAssemblyServlet extends HttpServlet
    /**
     * The logger for this class
     */
-   private static Log ms_log = LogFactory.getLog(PSAssemblyServlet.class);
+   private static final Logger ms_log = LogManager.getLogger(PSAssemblyServlet.class);
 
    /**
     * A preparsed expression for the inner template

@@ -29,7 +29,8 @@ import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -141,7 +142,7 @@ public class PSPublishContent
     */
    private static int m_pollingTime = 1500;
 
-   Logger ms_logger = Logger.getLogger(PSPublishContent.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSPublishContent.class);
    
    /**
     * The init method is called when the action is initially loaded.

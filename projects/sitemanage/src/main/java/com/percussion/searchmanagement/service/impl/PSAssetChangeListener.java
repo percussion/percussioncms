@@ -44,7 +44,8 @@ import com.percussion.utils.guid.IPSGuid;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -53,7 +54,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @PSSiteManageBean("assetChangeListener")
 public class PSAssetChangeListener implements IPSEditorChangeListener, IPSHandlerInitListener
 {
-    private static final Logger log = Logger.getLogger(PSAssetChangeListener.class.getName());
+    private static final Logger log = LogManager.getLogger(PSAssetChangeListener.class.getName());
 
     @Autowired
     public PSAssetChangeListener(IPSWorkflowHelper workflowHelper, 

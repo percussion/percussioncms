@@ -27,7 +27,8 @@ import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.share.service.exception.PSExtractHTMLException;
 import com.percussion.sitemanage.importer.theme.PSAssetCreator;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -162,7 +163,7 @@ public class PSAssetUploadServlet extends HttpServlet
     /**
      * The logger
      */
-    private static Logger ms_logger = Logger.getLogger("PSAssetUploadServlet");
+    private static final Logger ms_logger = LogManager.getLogger("PSAssetUploadServlet");
 
     /**
      * The asset creator

@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
@@ -60,7 +60,7 @@ public class PSORelationshipTools extends PSJexlUtilBase implements IPSJexlExpre
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSORelationshipTools.class);
+   private static final Logger log = LogManager.getLogger(PSORelationshipTools.class);
    private static IPSGuidManager gmgr = null;
    
    /**

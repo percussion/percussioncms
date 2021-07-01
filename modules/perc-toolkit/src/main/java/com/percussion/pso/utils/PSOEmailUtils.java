@@ -1,8 +1,8 @@
 package com.percussion.pso.utils;
 
 import com.percussion.server.PSServer;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.mail.Address;
 import javax.mail.Message;
@@ -21,7 +21,7 @@ public class PSOEmailUtils {
 	  /**
 	    * Logger for this class
 	    */
-	private static final Log log = LogFactory.getLog(PSOEmailUtils.class);
+	private static final Logger log = LogManager.getLogger(PSOEmailUtils.class);
 
 	/***
 	 * Takes a comma seperated list of email addresses and returns a list of 

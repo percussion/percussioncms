@@ -27,7 +27,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -225,7 +226,7 @@ public class PSSetArrayHtmlParameter implements IPSRequestPreProcessor
    /**
     * Logger for this exit.
     */
-   private Logger m_log = Logger.getLogger(PSSetArrayHtmlParameter.class);
+   private Logger m_log = LogManager.getLogger(PSSetArrayHtmlParameter.class);
 
    /**
     * Expected number of parameters of this exit

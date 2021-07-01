@@ -31,8 +31,8 @@ import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.Node;
 import javax.jcr.Property;
@@ -309,7 +309,7 @@ public class PSCalendarMonthModel extends PSJexlUtilBase
    /**
     * The log instance to use for this class, never <code>null</code>.
     */
-   private static Log ms_log = LogFactory.getLog(PSCalendarMonthModel.class);
+   private static final Logger ms_log = LogManager.getLogger(PSCalendarMonthModel.class);
 
    /**
     * A mapping of events, keyed by day of the month (Integer), returning a

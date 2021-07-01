@@ -32,8 +32,8 @@ import com.percussion.server.IPSRequestContext;
 
 import java.io.File;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The compare panel defaults to using the previous revision if the second
@@ -45,7 +45,7 @@ import org.apache.commons.logging.LogFactory;
 public class PSCalculateCompareRevision implements IPSRequestPreProcessor
 {
    private static final String SYS_REVISION2 = "sys_revision2";
-   private static Log ms_log = LogFactory.getLog(PSCalculateCompareRevision.class);
+   private static final Logger ms_log = LogManager.getLogger(PSCalculateCompareRevision.class);
 
    /**
     * Calculate the right revision to use for the second revision. Returns an

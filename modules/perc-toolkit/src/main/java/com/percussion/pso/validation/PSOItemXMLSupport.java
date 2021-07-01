@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -31,7 +31,7 @@ import com.percussion.xml.PSXmlTreeWalker;
  */
 public class PSOItemXMLSupport
 {
-   private static Log log = LogFactory.getLog(PSOItemXMLSupport.class);
+   private static final Logger log = LogManager.getLogger(PSOItemXMLSupport.class);
 
    /**
     * Finds the field element for a given field

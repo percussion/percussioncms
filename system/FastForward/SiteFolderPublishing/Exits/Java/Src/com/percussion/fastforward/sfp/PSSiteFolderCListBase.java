@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -802,7 +802,7 @@ public abstract class PSSiteFolderCListBase
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   protected Logger m_log = Logger.getLogger(getClass());
+   protected Logger m_log = LogManager.getLogger(getClass());
 
    /**
     * Caches the sys_casGeneratePubLocation UDF used to build pub locations

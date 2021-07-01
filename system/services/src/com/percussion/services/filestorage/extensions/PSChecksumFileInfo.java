@@ -40,8 +40,8 @@ import com.percussion.services.filestorage.PSFileStorageServiceLocator;
 import com.percussion.services.filestorage.data.PSMeta;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPurgableTempFile;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class PSChecksumFileInfo extends PSDefaultExtension
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSChecksumFileInfo.class);
+   private static final Logger log = LogManager.getLogger(PSChecksumFileInfo.class);
 
    /**
     * This method handles the pre-exit request.

@@ -23,8 +23,8 @@
  */
 package com.percussion.rx.config.impl.spring;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -161,7 +161,7 @@ public class PSBeanPropertiesSample
    /**
     * Logger for this class.
     */
-   private static Log ms_log = LogFactory.getLog("PSPropertyValueBeanSample");
+   private static final Logger ms_log = LogManager.getLogger("PSPropertyValueBeanSample");
 
    /**
     * The following can be used to find out the bean loading sequence.

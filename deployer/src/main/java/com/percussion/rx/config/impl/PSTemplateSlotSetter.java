@@ -37,8 +37,8 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -357,7 +357,7 @@ public class PSTemplateSlotSetter extends PSPropertySetterWithValidation
    /**
     * The logger for this class
     */
-   static Log ms_log = LogFactory.getLog("PSTemplateSlotSetter");
+    private static final Logger ms_log = LogManager.getLogger("PSTemplateSlotSetter");
 
 
    /**

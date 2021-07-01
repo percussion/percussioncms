@@ -38,8 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.myfaces.trinidad.model.CollectionModel;
 import org.apache.myfaces.trinidad.model.SortCriterion;
 
@@ -54,7 +54,7 @@ public class PSPubLogBean extends CollectionModel
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog(PSPubLogBean.class);
+   private static final Logger ms_log = LogManager.getLogger(PSPubLogBean.class);
 
    /**
     * Holds the current job id.

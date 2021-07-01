@@ -43,8 +43,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -192,5 +192,5 @@ public class PSGetItemTypeIconPaths implements IPSResultDocumentProcessor
    /**
     * Logger to use, never <code>null</code>.
     */
-   private static Log ms_log = LogFactory.getLog(PSGetItemTypeIconPaths.class);
+   private static final Logger ms_log = LogManager.getLogger(PSGetItemTypeIconPaths.class);
 }

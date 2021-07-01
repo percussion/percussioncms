@@ -36,7 +36,8 @@ import com.percussion.hooks.PSUtils;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.tools.PSHttpRequest;
 import com.percussion.utils.servlet.PSServletUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.soap.Body;
 import org.apache.soap.Constants;
@@ -743,7 +744,6 @@ public class PSWebServices
             String oldval = System.getProperty("log4j.defaultInitOverride");
             System.setProperty("log4j.defaultInitOverride", "true");
             PropertyConfigurator.configure(props);
-            ms_logger = Logger.getLogger(PSWebServices.class);
             
             // reset the property
             System.setProperty("log4j.defaultInitOverride", 
@@ -848,5 +848,5 @@ public class PSWebServices
    /**
     * The logger for this class
     */
-   private static Logger ms_logger;
+   private static final Logger ms_logger = LogManager.getLogger(PSWebServices.class);
 }

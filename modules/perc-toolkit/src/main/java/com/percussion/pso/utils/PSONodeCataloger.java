@@ -23,8 +23,8 @@ import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
@@ -42,7 +42,7 @@ import com.percussion.services.contentmgr.PSContentMgrLocator;
  */
 public class PSONodeCataloger
 {
-   private static Log log = LogFactory.getLog(PSONodeCataloger.class);
+   private static final Logger log = LogManager.getLogger(PSONodeCataloger.class);
    
    private IPSContentMgr cmgr = null; 
    

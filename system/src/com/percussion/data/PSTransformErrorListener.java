@@ -34,7 +34,8 @@ import java.util.List;
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.TransformerException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * An error handler for JAXP Transformers which keeps the errors in
@@ -138,7 +139,7 @@ public class PSTransformErrorListener implements ErrorListener
     **/
    public void error(TransformerException exception) throws TransformerException
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       l.error(exception);
       
       if(m_printWriter != null)
@@ -165,7 +166,7 @@ public class PSTransformErrorListener implements ErrorListener
    public void fatalError(TransformerException exception)
                               throws TransformerException
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       l.fatal(exception);
             
       if(m_printWriter != null)
@@ -195,7 +196,7 @@ public class PSTransformErrorListener implements ErrorListener
    public void warning(TransformerException exception)
                            throws TransformerException
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       l.warn(exception);
             
       if(m_printWriter != null)

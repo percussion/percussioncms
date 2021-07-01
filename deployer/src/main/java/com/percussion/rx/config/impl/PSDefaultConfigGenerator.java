@@ -26,7 +26,8 @@ package com.percussion.rx.config.impl;
 import com.percussion.rx.config.IPSConfigHandler;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +134,7 @@ public class PSDefaultConfigGenerator
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("PSDefaultConfigGenerator");
+   private static final Logger ms_logger = LogManager.getLogger("PSDefaultConfigGenerator");
    
 
 }

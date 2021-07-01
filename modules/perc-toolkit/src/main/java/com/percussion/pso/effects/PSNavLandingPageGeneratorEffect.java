@@ -54,7 +54,7 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 	public static String DEFAULT_LANDING_REQUIRED_FIELD_VALUES="navon.landingpage.default.required.fields.values";
 	public static String DEFAULT_LANDING_COMMUNITYID="navon.landingpage.default.communityid";
 	
-	 private static Logger log = LogManager.getLogger(PSNavLandingPageGeneratorEffect.class);
+	 private static final Logger log = LogManager.getLogger(PSNavLandingPageGeneratorEffect.class);
 	 private String m_defaultContentType=null;
 	 private String m_defaultLandingTitleTemplate = "{0}-LP";
 	 private String m_defaultLandingDisplayTitleField = null;

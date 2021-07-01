@@ -27,8 +27,8 @@ import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
 import com.percussion.extension.PSJexlUtilBase;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONStringer;
@@ -246,6 +246,6 @@ public class PSStringUtils extends PSJexlUtilBase
    /**
     * Logger.
     */
-   private static Log ms_log = LogFactory.getLog(PSStringUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSStringUtils.class);
    
 }

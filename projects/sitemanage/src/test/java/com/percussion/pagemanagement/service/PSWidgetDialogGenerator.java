@@ -56,7 +56,8 @@ import java.util.Set;
 
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -1041,7 +1042,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
         }
     }
     
-    private static Logger m_log = Logger.getLogger(PSWidgetDialogGenerator.class);
+    private static final Logger m_log = LogManager.getLogger(PSWidgetDialogGenerator.class);
     
     private static final String LAYOUT_DIALOG_SUFFIX = "WidgetLayoutDialog";
     private static final String STYLE_DIALOG_SUFFIX = "WidgetStyleDialog";

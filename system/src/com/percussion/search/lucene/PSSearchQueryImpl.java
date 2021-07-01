@@ -34,8 +34,8 @@ import com.percussion.search.lucene.analyzer.PSLuceneAnalyzerFactory;
 import com.percussion.server.PSServer;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
@@ -506,7 +506,6 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
    /**
     * Reference to log for this class
     */
-   private final static Log ms_log = LogFactory
-         .getLog(PSSearchQueryImpl.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSearchQueryImpl.class);
 
 }

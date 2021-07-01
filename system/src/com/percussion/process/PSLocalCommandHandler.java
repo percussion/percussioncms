@@ -38,7 +38,8 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
 /**
@@ -110,7 +111,7 @@ public class PSLocalCommandHandler implements IPSCommandHandler
       // supplied vars have highest precedence
       if (null != extraParams)
          vars.putAll(extraParams);
-      Logger sink = Logger.getLogger(getClass());
+      Logger sink = LogManager.getLogger(getClass());
       return doExecuteProcess(m_processManager, procName, vars, wait, 
             terminate, sink);
    }

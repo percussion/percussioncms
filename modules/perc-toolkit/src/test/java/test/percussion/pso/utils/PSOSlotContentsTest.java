@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnit4Mockery;
@@ -48,7 +48,7 @@ import com.percussion.webservices.content.IPSContentWs;
  */
 public class PSOSlotContentsTest extends TestCase
 {
-   private static Log log = LogFactory.getLog(PSOSlotContentsTest.class); 
+   private static final Logger log = LogManager.getLogger(PSOSlotContentsTest.class);
    
    JUnit4Mockery mocks = new JUnit4Mockery() {{
        setImposteriser(ClassImposteriser.INSTANCE);

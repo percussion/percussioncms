@@ -94,8 +94,8 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -161,7 +161,7 @@ public class PSCmsObjectMgr
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog("PSCmsObjectMgr");
+   private static final Logger ms_log = LogManager.getLogger("PSCmsObjectMgr");
    
    private static final int BATCH_SIZE = 50;
    private static ThreadLocal<Integer> ms_itemCount = new ThreadLocal<>();

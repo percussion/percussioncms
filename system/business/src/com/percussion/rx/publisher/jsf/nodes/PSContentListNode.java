@@ -41,8 +41,8 @@ import com.percussion.util.PSCharSets;
 import com.percussion.util.PSUrlUtils;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
@@ -60,7 +60,7 @@ public class PSContentListNode extends PSDesignNode
    /**
     * Log.
     */
-   public final static Log ms_log = LogFactory.getLog(PSContentListNode.class);
+   public static final Logger ms_log = LogManager.getLogger(PSContentListNode.class);
 
    /**
     * Utils.

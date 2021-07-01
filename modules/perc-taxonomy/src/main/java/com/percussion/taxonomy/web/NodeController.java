@@ -27,8 +27,8 @@ package com.percussion.taxonomy.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.BindException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,7 +46,7 @@ import java.util.HashMap;
 @Controller
 public class NodeController {
 
-    protected final Log logger = LogFactory.getLog(getClass());
+    protected final Logger logger = LogManager.getLogger(getClass());
     private NodeService nodeService;
 
     public NodeController() {

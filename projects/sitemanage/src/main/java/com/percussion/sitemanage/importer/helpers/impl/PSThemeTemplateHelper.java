@@ -39,8 +39,8 @@ import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.theme.data.PSThemeSummary;
 import com.percussion.theme.service.IPSThemeService;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -143,7 +143,7 @@ public class PSThemeTemplateHelper extends PSImportHelper
         // No rollback needed, nothing was created by the helper
     }
     
-    private static final Log log = LogFactory.getLog(PSThemeTemplateHelper.class);
+    private static final Logger log = LogManager.getLogger(PSThemeTemplateHelper.class);
     
     private IPSThemeService themeService;
     private String themesRootDirectory;

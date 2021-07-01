@@ -40,8 +40,8 @@ import com.percussion.sitemanage.importer.dao.IPSImportLogDao;
 import com.percussion.sitemanage.importer.helpers.impl.PSImportHelper;
 import com.percussion.sitemanage.service.IPSSiteImportService;
 import com.percussion.sitesummaryservice.service.IPSSiteImportSummaryService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -54,7 +54,7 @@ import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.get
 @Lazy
 public class PSSiteImportService implements IPSSiteImportService
 {
-    private static final Log log = LogFactory.getLog(PSSiteImportService.class);
+    private static final Logger log = LogManager.getLogger(PSSiteImportService.class);
     
     private List<PSImportHelper> mandatoryHelpers;
 

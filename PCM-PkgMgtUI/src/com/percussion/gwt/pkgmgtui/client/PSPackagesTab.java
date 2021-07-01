@@ -59,9 +59,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * Creates the packages tab.
  * 
@@ -159,12 +156,9 @@ public class PSPackagesTab
          {
             Record[] recs = response.getData();
             ListGridRecord[] lgrecs = new ListGridRecord[recs.length];
-            logger.log(Level.INFO, "found " + recs.length + " records");
             for (int i=0; i<recs.length; i++)
             {
                JavaScriptObject jsObj = recs[i].getJsObj();
-               logger.log(Level.INFO,"jsObj="+
-                       jsObj.toString());
 
 
                ListGridRecord lgr = new ListGridRecord(recs[i].getJsObj());
@@ -830,7 +824,6 @@ public class PSPackagesTab
 
    private static final String PACKAGE_STATUS = "packageStatus";
 
-   private Logger logger = Logger.getLogger(PSPackagesTab.class.getName());
 
    
 }

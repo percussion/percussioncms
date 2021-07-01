@@ -39,8 +39,8 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.utils.guid.IPSGuid;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author JaySeletz
@@ -52,7 +52,7 @@ public class PSPubServicePubJobStatusHandler implements IPSPublishingJobStatusCa
    private IPSPublisherService m_pubSvc;
    private IPSPubServerDao m_pubServerDao;
    private IPSSiteManager m_siteManager;
-   private static Log m_log = LogFactory.getLog(PSPubServicePubJobStatusHandler.class);
+   private static final Logger m_log = LogManager.getLogger(PSPubServicePubJobStatusHandler.class);
 
    public PSPubServicePubJobStatusHandler()
    {

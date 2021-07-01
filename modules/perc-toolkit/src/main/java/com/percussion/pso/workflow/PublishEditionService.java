@@ -18,8 +18,8 @@ package com.percussion.pso.workflow;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 
 import com.percussion.rx.publisher.IPSRxPublisherService;
@@ -45,7 +45,7 @@ public class PublishEditionService implements InitializingBean
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PublishEditionService.class);
+   private static final Logger log = LogManager.getLogger(PublishEditionService.class);
 
    private String baseUrl = "http://127.0.0.1";  
    private String listenerPort = null;

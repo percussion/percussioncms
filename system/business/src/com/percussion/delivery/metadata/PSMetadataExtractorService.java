@@ -39,8 +39,8 @@ import org.apache.any23.mime.TikaMIMETypeDetector;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -72,7 +72,7 @@ public class PSMetadataExtractorService implements IPSMetadataExtractorService
     /**
      * Logger for this class.
      */
-    public static Log log = LogFactory.getLog(PSMetadataExtractorService.class);
+    public static final Logger log = LogManager.getLogger(PSMetadataExtractorService.class);
 
     public static final String ALTERNATIVE_PROPERTY_NAME = "dcterms:alternative";
 

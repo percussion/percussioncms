@@ -28,8 +28,8 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.security.IPSSecurityWs;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -52,7 +52,7 @@ import static org.junit.Assert.fail;
 
 public class ActionPreviewControllerTest
 {
-   private static Log log = LogFactory.getLog(ActionPreviewControllerTest.class);
+   private static final Logger log = LogManager.getLogger(ActionPreviewControllerTest.class);
    
    private ActionPreviewController cut; 
    private Mockery context;

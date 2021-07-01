@@ -25,8 +25,8 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.server.IPSInternalRequest;
@@ -66,7 +66,7 @@ public class PSOSimpleSqlQuery
    /**
     * Logger for this class
     */
-   private static final Log ms_log = LogFactory.getLog(PSOSimpleSqlQuery.class);
+   private static final Logger ms_log = LogManager.getLogger(PSOSimpleSqlQuery.class);
 
    /**
     * Database pool from Percussion CMS Server

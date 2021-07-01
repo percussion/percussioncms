@@ -29,7 +29,8 @@ import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.security.PSEncryptProperties;
@@ -59,7 +60,7 @@ import com.percussion.security.PSEncryptProperties;
  */
 public class PSSecureMailProgram implements IPSMailProgram {
 
-    private static final Logger log = Logger.getLogger(PSSecureMailProgram.class.getName());
+    private static final Logger log = LogManager.getLogger(PSSecureMailProgram.class.getName());
 
     /**
      * Default ctor.

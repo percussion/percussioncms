@@ -28,8 +28,8 @@ import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.sitemanage.importer.dao.IPSImportLogDao;
 import com.percussion.sitemanage.importer.data.PSImportLogEntry;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -51,7 +51,7 @@ import static com.percussion.services.utils.orm.PSDataCollectionHelper.MAX_IDS;
 @Transactional
 public class PSImportLogDao implements IPSImportLogDao
 {
-    private static final Log log = LogFactory.getLog(PSImportLogDao.class);
+    private static final Logger log = LogManager.getLogger(PSImportLogDao.class);
     
     /**
      * Constant for the key used to generate local content id's.
