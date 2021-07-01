@@ -88,7 +88,8 @@ import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.workflow.PSConnectionMgr;
 import com.percussion.workflow.PSTransitionsContext;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -117,8 +118,8 @@ public class PSWorkflowCommandHandler extends PSCommandHandler
    /**
     * Logger
     */
-   private static Logger ms_logger = 
-      Logger.getLogger(PSWorkflowCommandHandler.class);
+   private static final Logger ms_logger = 
+      LogManager.getLogger(PSWorkflowCommandHandler.class);
    
    /**
     * Looks in the system def for pre/post exits assigned to this handler and

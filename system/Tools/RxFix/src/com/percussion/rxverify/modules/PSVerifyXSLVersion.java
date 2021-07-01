@@ -30,7 +30,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXParseException;
@@ -66,7 +67,7 @@ public class PSVerifyXSLVersion implements IPSVerify
    public void verify(File rxdir, File originalRxDir,
          PSInstallation installation) throws Exception
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       // Find all XSL files, and make sure each has the right version. This
       // code is very inefficient since it is reading each stylesheet into
       // a DOM, but the verifier does not need to be overly efficient

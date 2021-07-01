@@ -28,8 +28,8 @@ import com.percussion.delivery.caching.data.PSCacheRegion;
 import com.percussion.delivery.caching.data.PSInvalidateRequest;
 import com.percussion.delivery.caching.utils.PSJaxbUtils;
 import com.percussion.delivery.listeners.IPSServiceDataChangeListener;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
@@ -78,7 +78,7 @@ public class PSCacheManagerConnector implements IPSServiceDataChangeListener
     private final String PERC_CACHING_MANAGER_CONFIG = "/perc-caching/manager/config";
     Set<String> cacheRegions;
     
-    public static final Log log = LogFactory.getLog(PSCacheManagerConnector.class);
+     public static final Logger log = LogManager.getLogger(PSCacheManagerConnector.class);
     
     public PSCacheManagerConnector()
     {
@@ -519,7 +519,7 @@ public class PSCacheManagerConnector implements IPSServiceDataChangeListener
             /**
              * Log object for this class.
              */
-            private final Log LOG = LogFactory.getLog(SimpleTrustManager.class);
+           private final Logger LOG = LogManager.getLogger(SimpleTrustManager.class);
 
             /**
              * Constructor for EasyX509TrustManager.

@@ -34,7 +34,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 
@@ -270,41 +271,6 @@ public class PSLogger
     */
    private static synchronized void ensureLog4jConfiguration(String logFilePath)
    {
-      if (ms_Logger == null)
-      {
-         if (logFilePath== null)
-            return;
-         
-         ms_Logger = Logger.getRootLogger();
-         
-         // Not configured, setup a minimal configuration here that
-         // logs to the console only. 
-         PSProperties props = new PSProperties();
-         
-         String log4jFile = System.getProperty("ps.log4j.properties.file");
-         
-         if (log4jFile==null || log4jFile.trim().length() < 1)
-         {
-            setDefaultLog4JProps(props, logFilePath);
-         }
-         else
-         {
-            try {
-               props = new PSProperties(log4jFile);
-            }
-            catch (Exception e)
-            {
-               ms_Logger.error(e.getMessage());
-               ms_Logger.debug(e.getMessage(), e);
-               
-               setDefaultLog4JProps(props, logFilePath);
-            }
-         }
-         
-         PropertyConfigurator.configure(props);
-         
-         ms_Logger = Logger.getLogger("com.percussion.install.PSLogger");
-      }
    }
    
    /**
@@ -368,7 +334,7 @@ public class PSLogger
     * This reference to a root logger. Initialized in ensureLog4jConfiguration
     * may be <code>null</code> if used before that.
     */
-   private static Logger ms_Logger = null;
+   private static final Logger ms_Logger = LogManager.getLogger();
    
    
    /**

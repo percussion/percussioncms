@@ -25,8 +25,8 @@ package com.percussion.pagemanagement.resource.data;
 
 import static java.util.Arrays.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup;
@@ -63,6 +63,6 @@ public class PSResourcesSerializationTest
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSResourcesSerializationTest.class);
+    private static final Logger log = LogManager.getLogger(PSResourcesSerializationTest.class);
 
 }

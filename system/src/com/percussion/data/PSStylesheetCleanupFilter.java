@@ -67,7 +67,7 @@ import org.xml.sax.SAXException;
  */
 public class PSStylesheetCleanupFilter
 {
-   private static Logger log = LogManager.getLogger(PSStylesheetCleanupFilter.class);
+   private static final Logger log = LogManager.getLogger(PSStylesheetCleanupFilter.class);
 
    /**
     * Private ctor. This class is a singleton. Use {@link #getInstance(Element)}

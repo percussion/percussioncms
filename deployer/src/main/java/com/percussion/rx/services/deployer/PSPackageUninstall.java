@@ -41,7 +41,8 @@ import com.percussion.services.system.PSSystemServiceLocator;
 import com.percussion.services.system.data.PSDependency;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -276,6 +277,6 @@ public class PSPackageUninstall implements IPSPackageUninstaller
    /**
     * The logger for this class.
     */
-   private static final Logger ms_logger = Logger.getLogger("PSPackageUninstall");
+   private static final Logger ms_logger = LogManager.getLogger("PSPackageUninstall");
 
 }

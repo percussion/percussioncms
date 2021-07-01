@@ -31,8 +31,8 @@ import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.util.PSBaseBean;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -48,7 +48,7 @@ import java.util.List;
 @Transactional
 public class PSUserItemsDao implements IPSUserItemsDao
 {
-   private static final Log log = LogFactory.getLog(PSUserItemsDao.class);
+   private static final Logger log = LogManager.getLogger(PSUserItemsDao.class);
 
     private SessionFactory sessionFactory;
 

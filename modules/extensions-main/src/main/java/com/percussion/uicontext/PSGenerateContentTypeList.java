@@ -57,8 +57,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -367,7 +367,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
 
    };
 
-   private static Log ms_log = LogFactory.getLog(PSGenerateContentTypeList.class);
+   private static final Logger ms_log = LogManager.getLogger(PSGenerateContentTypeList.class);
 
    public static final String SERVER_PROP_GROUP_CONTENTTYPES = "contentTypeGroupingInCX";
    

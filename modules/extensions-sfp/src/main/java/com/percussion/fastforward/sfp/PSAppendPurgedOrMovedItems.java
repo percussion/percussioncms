@@ -53,7 +53,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -688,5 +689,5 @@ public class PSAppendPurgedOrMovedItems extends PSDefaultExtension
    /**
     * The logger instance for this class, never <code>null</code>.
     */
-   private static Logger ms_logger = Logger.getLogger("PSAppendPurgeOrMovedItems");
+   private static final Logger ms_logger = LogManager.getLogger("PSAppendPurgeOrMovedItems");
 }

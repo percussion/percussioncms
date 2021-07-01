@@ -47,8 +47,8 @@ import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -370,7 +370,7 @@ public abstract class PSRelationshipFinderUtils<T extends Object> extends PSCont
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog(PSRelationshipFinderUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSRelationshipFinderUtils.class);
  
    /**
     * Cache handler

@@ -43,7 +43,7 @@ import java.util.Properties;
 
 public class PSScript implements IPSScript
 {
-    /** The logger. */
+    /** The logger. NOTE:  jexl requires commons logging */
     private static final Log LOG = LogFactory.getLog(PSScript.class);
 
     /** The shared expression cache size. */

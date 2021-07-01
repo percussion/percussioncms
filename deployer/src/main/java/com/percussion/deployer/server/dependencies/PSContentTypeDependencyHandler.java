@@ -79,8 +79,8 @@ import com.percussion.utils.types.PSPair;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -1129,7 +1129,7 @@ public class PSContentTypeDependencyHandler
                enableCType = false;
 
                // log warning
-               LogFactory.getLog(PSContentTypeDependencyHandler.class)
+               LogManager.getLogger(PSContentTypeDependencyHandler.class)
                .warn(
                      "Could not locate workflow for assignment to "
                      + "Content Type: " + itemDef.getName()
@@ -1559,7 +1559,7 @@ public class PSContentTypeDependencyHandler
    /**
     * logger 
     */
-   private Logger m_log = Logger.getLogger(this.getClass());
+   private Logger m_log = LogManager.getLogger(this.getClass());
 
    
    /**

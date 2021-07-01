@@ -32,8 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A JAXB serializable Exception wrapper.
@@ -45,7 +45,7 @@ import org.apache.commons.logging.LogFactory;
 public class PSErrorCause
 {
 	
-	private Log log = LogFactory.getLog(getClass());    
+	private static final Logger log = LogManager.getLogger(PSErrorCause.class);
     private PSErrorCause errorCause;
     private List<PSErrorCauseElement> errorCauseStackTrace;
     private StackTraceElement[] stackTrace;

@@ -311,7 +311,7 @@ public class PSNavTreeXMLUtils
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger log = LogManager.getLogger(PSNavTreeXMLUtils.class);
+   private static final Logger log = LogManager.getLogger(PSNavTreeXMLUtils.class);
 
    /**
     * Name of the Thythmyx resource to query the assembler properties.

@@ -48,8 +48,8 @@ import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -74,7 +74,7 @@ public class PSSiteImproveProviderService implements IPSIntegrationProviderServi
    private static final String CONTENT_TYPE = "Content-Type";
    private static final String UTF_8 = "UTF-8";
    private static ExecutorService pool = Executors.newFixedThreadPool(1);
-   private static Log logger = LogFactory.getLog(PSSiteImproveProviderService.class);
+   private static final Logger logger = LogManager.getLogger(PSSiteImproveProviderService.class);
    
    private static final int HTTPS_PORT = 443;
    private static final String DEFAULT_PROTOCOL = "http";

@@ -38,8 +38,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This servlet picks out requests that must be handled by the webdav servlet
@@ -53,7 +53,7 @@ public class PSWebDavRequestFilter implements Filter
    /**
     * log to use, never <code>null</code>.
     */
-   static Log ms_log = LogFactory.getLog(PSWebDavRequestFilter.class);
+    private static final Logger ms_log = LogManager.getLogger(PSWebDavRequestFilter.class);
    /**
     * If one of these methods is matched, then the request will be forwarded.
     * Not every webdav method is included because most only make sense once 

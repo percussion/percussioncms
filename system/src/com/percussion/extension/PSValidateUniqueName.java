@@ -36,8 +36,8 @@ import java.util.List;
 
 import javax.jcr.RepositoryException;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * System extension used to validate the sys_title field for a Content 
@@ -165,7 +165,7 @@ public class PSValidateUniqueName implements IPSFieldValidator
    /**
     * Logger for this class
     */
-   private static Log log = LogFactory.getLog(PSValidateUniqueName.class);
+   private static final Logger log = LogManager.getLogger(PSValidateUniqueName.class);
 
 
 }

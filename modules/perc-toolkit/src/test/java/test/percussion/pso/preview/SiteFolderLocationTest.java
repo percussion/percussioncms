@@ -19,8 +19,8 @@ import static org.junit.Assert.*;
 
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
@@ -32,7 +32,7 @@ import com.percussion.services.sitemgr.IPSSite;
 
 public class SiteFolderLocationTest
 {
-   private Log log = LogFactory.getLog(SiteFolderLocation.class); 
+   private static final Logger log = LogManager.getLogger(SiteFolderLocation.class);
    
    SiteFolderLocation cut;
    Mockery context; 

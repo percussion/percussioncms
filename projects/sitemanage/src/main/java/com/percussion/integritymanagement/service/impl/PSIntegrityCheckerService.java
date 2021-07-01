@@ -69,8 +69,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -398,7 +398,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
     private static final String IMAGE_DELETE_TASK = "Image-Delete";
     private static final String IMAGE_APPROVE_TASK = "Image-Approve";
     private static final String IMAGE_PUBLISH_TASK = "Image-Publish";
-    static Log ms_log = LogFactory.getLog(PSIntegrityCheckerService.class);
+    private static final Logger ms_log = LogManager.getLogger(PSIntegrityCheckerService.class);
 
 
 }

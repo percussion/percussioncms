@@ -9,8 +9,8 @@
  ******************************************************************************/
 package com.percussion.pso.restservice.model;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -22,7 +22,7 @@ public class XhtmlValue implements Value {
 	/**
      * Logger for this class
      */
-    private static final Log log = LogFactory.getLog(XhtmlValue.class);
+    private static final Logger log = LogManager.getLogger(XhtmlValue.class);
  
 	/**
 	 * Field stringValue.

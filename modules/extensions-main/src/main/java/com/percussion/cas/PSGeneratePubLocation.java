@@ -90,8 +90,8 @@ import java.util.Map;
 import javax.naming.NamingException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This generic UDF generates public locations for all contexts. The preview
@@ -103,7 +103,7 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
    /**
     * Commons logging logger for this class
     */
-   private static Log ms_log = LogFactory.getLog(PSGeneratePubLocation.class);
+   private static final Logger ms_log = LogManager.getLogger(PSGeneratePubLocation.class);
 
    /**
     * Overwrite the base class to save the extension definition used to report

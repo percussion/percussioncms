@@ -27,8 +27,8 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 import junit.framework.TestCase;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Test the stopwatch stack
@@ -37,7 +37,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSStopwatchStackTest extends TestCase
 {
-   private static Log ms_log = LogFactory.getLog(PSStopwatchStackTest.class);
+   private static final Logger ms_log = LogManager.getLogger(PSStopwatchStackTest.class);
 
    /**
     * Single level test to see that things are working correctly

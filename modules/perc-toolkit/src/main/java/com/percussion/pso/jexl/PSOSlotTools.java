@@ -29,8 +29,8 @@ import javax.jcr.RepositoryException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.extension.IPSJexlExpression;
 import com.percussion.extension.IPSJexlMethod;
@@ -58,7 +58,7 @@ import com.percussion.utils.exceptions.PSExceptionHelper;
 public class PSOSlotTools extends PSJexlUtilBase implements IPSJexlExpression
 {
 
-   private static final Log ms_log = LogFactory.getLog(PSOListTools.class);
+   private static final Logger ms_log = LogManager.getLogger(PSOListTools.class);
    
    /**
     * Ctor. 

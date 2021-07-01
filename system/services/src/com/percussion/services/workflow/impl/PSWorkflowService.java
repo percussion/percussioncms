@@ -43,8 +43,8 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.workflow.PSWorkFlowUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -89,7 +89,7 @@ public class PSWorkflowService
    /**
     * Commons logger
     */
-   static Log ms_log = LogFactory.getLog(PSWorkflowService.class);
+    private static final Logger ms_log = LogManager.getLogger(PSWorkflowService.class);
 
    /**
     * This listener responds to table change notices by removing the cached

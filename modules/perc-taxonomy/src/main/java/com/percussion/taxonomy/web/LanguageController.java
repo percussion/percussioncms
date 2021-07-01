@@ -29,8 +29,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.validation.BindException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.taxonomy.TaxonomySecurityHelper;
 import com.percussion.taxonomy.domain.Language;
@@ -44,7 +44,7 @@ import java.util.HashMap;
 @Controller
 public class LanguageController {
 
-    protected final Log logger = LogFactory.getLog(getClass());
+    protected final Logger logger = LogManager.getLogger(getClass());
     private LanguageService languageService;
 
     public LanguageController() {

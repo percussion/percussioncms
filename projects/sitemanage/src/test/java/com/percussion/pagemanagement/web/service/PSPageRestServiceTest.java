@@ -54,8 +54,8 @@ import java.util.List;
 
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -772,5 +772,5 @@ public class PSPageRestServiceTest extends PSRestTestCase<PSPageRestClient>
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSPageRestServiceTest.class);
+    private static final Logger log = LogManager.getLogger(PSPageRestServiceTest.class);
 }

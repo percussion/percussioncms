@@ -59,8 +59,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -761,8 +761,8 @@ public class PSSearchIndexerImpl extends PSSearchIndexer
    /**
     * Reference to log for this class
     */
-   private final static Log ms_log = 
-      LogFactory.getLog(PSSearchIndexerImpl.class);
+   private static final Logger ms_log = 
+      LogManager.getLogger(PSSearchIndexerImpl.class);
 
    /**
     * Map of content type ids and index writers that need to be optimized

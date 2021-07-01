@@ -27,8 +27,8 @@ package com.percussion.taxonomy.visibility;
 import java.io.File;
 import java.util.Collection;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -46,7 +46,7 @@ public class TaxonomyFieldVisibility implements IPSFieldVisibilityRule {
 	// TODO we should really be using the taxonomy DAO... originally we didn't think this would run in the spring context
 	private String SQL_STRING = "select v.community_id from Visibility v where v.taxonomy.id = :taxonomy_id";
 
-	private Log log = LogFactory.getLog(TaxonomyFieldVisibility.class);
+	private static final Logger log = LogManager.getLogger(TaxonomyFieldVisibility.class);
 
 	public Object processUdf(Object[] params, IPSRequestContext ipsRequestContext) throws PSConversionException {
 

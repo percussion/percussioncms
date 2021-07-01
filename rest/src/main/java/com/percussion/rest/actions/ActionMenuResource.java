@@ -32,8 +32,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -55,7 +55,7 @@ import java.util.List;
 @Api(value = "/actions", description = "Action Menu operations")
 public class ActionMenuResource {
 
-    private Log log = LogFactory.getLog(ActionMenuResource.class);
+    private static final Logger log = LogManager.getLogger(ActionMenuResource.class);
 
     @Autowired
     private IActionMenuAdaptor adaptor;

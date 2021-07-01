@@ -281,5 +281,5 @@ public class PSLuceneAnalyzerFactory
    /**
     * Static instance of logger for this class.
     */
-   private static Logger log = LogManager.getLogger(PSLuceneAnalyzerFactory.class);
+   private static final Logger log = LogManager.getLogger(PSLuceneAnalyzerFactory.class);
 }

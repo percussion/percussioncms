@@ -30,8 +30,8 @@ import com.percussion.delivery.metadata.extractor.data.PSMetadataProperty;
 import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.util.PSPurgableTempFile;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
@@ -57,7 +57,7 @@ public class PSSolrDeliveryHandler
    /**
     * Logger for this class
     */
-   public static Log log = LogFactory.getLog(PSSolrDeliveryHandler.class);
+   public static final Logger log = LogManager.getLogger(PSSolrDeliveryHandler.class);
 
    private boolean fatalError = false;
 

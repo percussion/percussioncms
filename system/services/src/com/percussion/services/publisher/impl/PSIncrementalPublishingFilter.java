@@ -64,8 +64,8 @@ import javax.jcr.RepositoryException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Filter a content list for incremental publishing
@@ -77,8 +77,7 @@ public class PSIncrementalPublishingFilter
    /**
     * Log
     */
-   private static Log ms_log = LogFactory
-         .getLog(PSIncrementalPublishingFilter.class);
+   private static final Logger ms_log = LogManager.getLogger(PSIncrementalPublishingFilter.class);
 
    /**
     * Each site item needs to be recorded under a key that allows us to lookup

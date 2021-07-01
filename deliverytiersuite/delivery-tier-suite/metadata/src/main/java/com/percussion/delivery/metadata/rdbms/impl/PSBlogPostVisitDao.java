@@ -28,8 +28,8 @@ import com.percussion.delivery.metadata.IPSBlogPostVisit;
 import com.percussion.delivery.metadata.IPSBlogPostVisitDao;
 import com.percussion.delivery.metadata.utils.PSHashCalculator;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +63,7 @@ public class PSBlogPostVisitDao  implements IPSBlogPostVisitDao {
     /**
      * Logger for this class.
      */
-    private static final Log log = LogFactory.getLog(PSBlogPostVisitDao.class);
+    private static final Logger log = LogManager.getLogger(PSBlogPostVisitDao.class);
 
     private static PSHashCalculator hashCalculator = new PSHashCalculator();
 

@@ -63,8 +63,8 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class computes the assignment type for one or more content items. This
@@ -79,7 +79,7 @@ public class PSAssignmentTypeHelper
    /**
     * Commons logger
     */
-   static Log ms_logger = LogFactory.getLog("PSAssignmentTypeHelper");
+    private static final Logger ms_logger = LogManager.getLogger("PSAssignmentTypeHelper");
 
    /**
     * The workflow service

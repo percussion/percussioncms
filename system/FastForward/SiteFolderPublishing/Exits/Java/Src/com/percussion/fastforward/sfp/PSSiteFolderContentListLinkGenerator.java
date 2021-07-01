@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Defines methods to generate various types of assembly locations.
@@ -310,7 +310,7 @@ public class PSSiteFolderContentListLinkGenerator
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private Logger log = Logger.getLogger(getClass());
+   private Logger log = LogManager.getLogger(getClass());
 
    /**
     * String constant for the assembly generation UDF.

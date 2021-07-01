@@ -34,8 +34,8 @@ import com.percussion.services.schedule.data.PSNotificationTemplate;
 import com.percussion.services.schedule.data.PSScheduledTask;
 import com.percussion.services.schedule.data.PSScheduledTaskLog;
 import com.percussion.utils.guid.IPSGuid;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -688,5 +688,5 @@ public class PSSchedulingService
    /**
     * The logger for this class.
     */
-   private final static Log ms_log = LogFactory.getLog(PSSchedulingService.class);   
+   private static final Logger ms_log = LogManager.getLogger(PSSchedulingService.class);   
 }

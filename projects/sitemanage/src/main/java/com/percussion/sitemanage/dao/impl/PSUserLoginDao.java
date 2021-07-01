@@ -37,8 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.percussion.utils.security.PSSecurityUtility;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -56,7 +56,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository("userLoginDao")
 public class PSUserLoginDao implements IPSUserLoginDao
 {
-    private static Log log = LogFactory.getLog(PSUserLoginDao.class); 
+    private static final Logger log = LogManager.getLogger(PSUserLoginDao.class);
     
     private SessionFactory sessionFactory;
     private PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();

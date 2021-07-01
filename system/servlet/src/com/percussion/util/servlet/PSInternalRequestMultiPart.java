@@ -55,7 +55,7 @@ class PSInternalRequestMultiPart
    implements HttpServletRequest
 {
 
-   private static Logger log = LogManager.getLogger(PSInternalRequestMultiPart.class);
+   private static final Logger log = LogManager.getLogger(PSInternalRequestMultiPart.class);
 
    /**
     * Constructs an instance from a given servlet request.

@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSAaRelationship;
@@ -58,7 +58,7 @@ public class PSOSlotRelations
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSOSlotRelations.class);
+   private static final Logger log = LogManager.getLogger(PSOSlotRelations.class);
 
    /**
     * Static methods only, never constructed.  

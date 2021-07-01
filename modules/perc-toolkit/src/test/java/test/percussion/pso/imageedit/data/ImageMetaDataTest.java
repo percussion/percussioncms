@@ -16,8 +16,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,7 +25,7 @@ import com.percussion.pso.imageedit.data.ImageMetaData;
 
 public class ImageMetaDataTest
 {
-   private static Log log = LogFactory.getLog(ImageMetaDataTest.class);
+   private static final Logger log = LogManager.getLogger(ImageMetaDataTest.class);
    
    ImageMetaData cut;
    

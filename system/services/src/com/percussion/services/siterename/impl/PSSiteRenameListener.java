@@ -30,7 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
@@ -63,7 +64,7 @@ public class PSSiteRenameListener implements IPSSiteRenameService, IPSNotificati
     /**
      * Logger.
      */
-    private static final Logger log = Logger.getLogger(PSSiteRenameListener.class.getName());
+    private static final Logger log = LogManager.getLogger(PSSiteRenameListener.class.getName());
 
     /**
      * The delivery info service.

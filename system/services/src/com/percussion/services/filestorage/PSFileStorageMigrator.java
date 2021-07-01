@@ -49,8 +49,8 @@ import javax.naming.NamingException;
 
 import org.apache.axis.utils.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -509,7 +509,7 @@ public class PSFileStorageMigrator implements Runnable
     /**
      * Logger for this class
      */
-    private static final Log log = LogFactory.getLog(PSFileStorageMigrator.class);
+    private static final Logger log = LogManager.getLogger(PSFileStorageMigrator.class);
 
     /**
      * Number of rows to process as a batch.

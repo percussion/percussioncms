@@ -25,8 +25,8 @@ package com.percussion.share.dao;
 
 import net.sf.json.*;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.mapped.MappedNamespaceConvention;
 import org.codehaus.jettison.mapped.MappedXMLStreamWriter;
 
@@ -292,6 +292,6 @@ public class PSSerializerUtils
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSerializerUtils.class);
+    private static final Logger log = LogManager.getLogger(PSSerializerUtils.class);
     
 }

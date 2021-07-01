@@ -25,8 +25,8 @@ package com.percussion.rx.config.impl.spring;
 
 import com.percussion.rx.config.IPSBeanProperties;
 import com.percussion.rx.config.PSBeanPropertiesLocator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
 import java.util.Properties;
@@ -61,6 +61,6 @@ public class PSPropertyPlaceholderConfigurer extends
    /**
     * Logger for this class.
     */
-   private static Log ms_log = LogFactory.getLog("PSPropertyPlaceholderConfigurer");
+   private static final Logger ms_log = LogManager.getLogger("PSPropertyPlaceholderConfigurer");
    
 }

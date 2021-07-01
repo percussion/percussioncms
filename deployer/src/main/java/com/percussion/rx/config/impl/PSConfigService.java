@@ -41,7 +41,8 @@ import com.percussion.utils.types.PSPair;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.JAXBException;
 import java.io.ByteArrayInputStream;
@@ -51,6 +52,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -138,7 +140,7 @@ public class PSConfigService implements IPSConfigService
          String configDef) throws IOException
    {
       PSPurgableTempFile cfgFile = new PSPurgableTempFile(cfgName, "xml", null);
-      FileUtils.writeStringToFile(cfgFile, configDef, "UTF8");
+      FileUtils.writeStringToFile(cfgFile, configDef, StandardCharsets.UTF_8);
       return cfgFile;
    }
 
@@ -1071,7 +1073,7 @@ public class PSConfigService implements IPSConfigService
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("PSConfigService");
+   private static final Logger ms_logger = LogManager.getLogger("PSConfigService");
 
    /**
     * Object of configuration registration manager.

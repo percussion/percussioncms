@@ -58,7 +58,7 @@ import org.junit.experimental.categories.Category;
 public class PSManagedNavServiceTest extends ServletTestCase
 {
 
-   private static Logger log = LogManager.getLogger(PSManagedNavServiceTest.class);
+   private static final Logger log = LogManager.getLogger(PSManagedNavServiceTest.class);
 
    @Override
    public void setUp() throws Exception

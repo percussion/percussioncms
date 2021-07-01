@@ -55,12 +55,12 @@ import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ImageAssetInputTranslation extends PSDefaultExtension implements IPSItemInputTransformer
 {
-   Log log = LogFactory.getLog(ImageAssetInputTranslation.class);
+   private static final Logger log = LogManager.getLogger(ImageAssetInputTranslation.class);
 
    ImageCacheManager cacheManager = null;
 

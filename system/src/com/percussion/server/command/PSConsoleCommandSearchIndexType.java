@@ -30,8 +30,8 @@ import com.percussion.search.PSSearchIndexEventQueue;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  * Implements the 'search index type' console command. This command takes
  * 1 optional argument which is a content type identifier, either numeric
@@ -157,6 +157,6 @@ public class PSConsoleCommandSearchIndexType
     * {@link #doExecute(PSRequest, PSKey[])}.
     */
    private int m_indexCount = 0; 
-   private final static Log ms_log = 
-      LogFactory.getLog(PSConsoleCommandSearchIndexType.class);
+   private static final Logger ms_log = 
+      LogManager.getLogger(PSConsoleCommandSearchIndexType.class);
 }

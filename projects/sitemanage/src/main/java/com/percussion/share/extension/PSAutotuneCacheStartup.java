@@ -26,7 +26,8 @@ package com.percussion.share.extension;
 
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.server.IPSStartupProcess;
 import com.percussion.server.IPSStartupProcessManager;
@@ -42,7 +43,7 @@ import com.percussion.server.cache.PSAutotuneCacheLocator;
  */
 public class PSAutotuneCacheStartup implements IPSStartupProcess {
     
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(PSAutotuneCacheStartup.class.getName());
 
     @Override
