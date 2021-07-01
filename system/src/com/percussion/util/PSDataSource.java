@@ -31,7 +31,7 @@ import java.sql.Driver;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
-import org.apache.logging.log4j.Logger;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 

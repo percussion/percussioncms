@@ -23,6 +23,7 @@
  */
 package com.percussion.utils.timing;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Logger;
 
@@ -32,17 +33,13 @@ import org.apache.logging.log4j.Logger;
 public class PSTimer
 {
    PSStopwatch m_watch = new PSStopwatch();
-   private static final Logger m_log;
-   Logger log;
+   private static final Logger log = LogManager.getLogger(PSTimer.class);
 
-   public PSTimer(Log log)
-   {
-      m_log = log;
-      m_watch.start();
+   public PSTimer(){
+      //NOOP
    }
 
    public PSTimer(Logger log){
-      this.log = log;
       m_watch.start();
    }
    /**
@@ -52,9 +49,7 @@ public class PSTimer
    public void logElapsed(String msg)
    {
       m_watch.stop();
-      if(m_log!=null)
-         m_log.debug(msg + " " + m_watch.toString());
-      else
-         log.debug(msg +" " +m_watch.toString());
+      log.debug( "{} {}",msg, m_watch);
+
    }
 }
