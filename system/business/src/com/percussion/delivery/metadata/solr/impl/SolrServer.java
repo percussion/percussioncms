@@ -38,15 +38,15 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "SolrServer")
 public class SolrServer
 {
    
-   public static Log log = LogFactory.getLog(SolrServer.class);
+   public static final Logger log = LogManager.getLogger(SolrServer.class);
    
 
    @XmlElement(name = "serverType")

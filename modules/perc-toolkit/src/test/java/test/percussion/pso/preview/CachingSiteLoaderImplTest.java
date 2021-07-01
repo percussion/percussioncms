@@ -22,8 +22,8 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
@@ -35,7 +35,7 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 
 public class CachingSiteLoaderImplTest
 {
-   private static Log log = LogFactory.getLog(CachingSiteLoaderImplTest.class); 
+   private static final Logger log = LogManager.getLogger(CachingSiteLoaderImplTest.class);
    
    private CachingSiteLoaderImpl cut; 
    

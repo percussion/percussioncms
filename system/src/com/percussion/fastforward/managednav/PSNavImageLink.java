@@ -32,7 +32,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -45,6 +46,8 @@ import org.w3c.dom.Element;
  */
 public class PSNavImageLink extends PSNavLink
 {
+
+   private static final Logger log = LogManager.getLogger(PSNavImageLink.class);
    /**
     * Construct a image link from a relationship.
     * 
@@ -124,8 +127,6 @@ public class PSNavImageLink extends PSNavLink
     */
    private String getSelector(int id) throws PSNavException
    {
-      Logger log = Logger.getLogger(getClass());
-
       Connection conn = PSNavSQLUtils.connect();
       PreparedStatement stmt = null;
       ResultSet rs = null;

@@ -46,7 +46,8 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -344,14 +345,6 @@ public class PSDatasourceConverter
             "%m%n");         
          PropertyConfigurator.configure(props);
          
-         // Check that the configuration is workable
-         ms_rootLogger = Logger.getRootLogger();
-         if (ms_rootLogger == null ||
-            !ms_rootLogger.getAllAppenders().hasMoreElements())
-         {
-            throw new InternalError("Could not configure log4j logger");
-         }
-         
          // Tell commons logging to use log4j (used by base converter class)
          System.setProperty("org.apache.commons.logging.Log", 
             "org.apache.commons.logging.impl.Log4JLogger");
@@ -365,7 +358,7 @@ public class PSDatasourceConverter
     * is in memory. It also serves as a flag to indicate that log4j has
     * been configured.
     */
-   private static Logger ms_rootLogger = null;
+   private static final Logger ms_rootLogger = null;
    
    static
    {
@@ -375,7 +368,7 @@ public class PSDatasourceConverter
    /**
     * The logger to be used by this class, never <code>null</code>.
     */
-   private static Logger ms_log = ms_rootLogger.getLogger(
+   private static final Logger ms_log = LogManager.getLogger(
       PSDatasourceConverter.class);
    
    /**

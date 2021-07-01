@@ -17,8 +17,8 @@ package test.percussion.pso.utils;
 
 import static org.junit.Assert.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -31,7 +31,7 @@ import com.percussion.services.legacy.IPSCmsContentSummaries;
 
 public class PSOItemSummaryFinderTest
 {
-   private static Log log = LogFactory.getLog(PSOItemSummaryFinderTest.class);
+   private static final Logger log = LogManager.getLogger(PSOItemSummaryFinderTest.class);
    
    private Mockery context = new Mockery() {{
       setImposteriser(ClassImposteriser.INSTANCE);

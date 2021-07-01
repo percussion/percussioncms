@@ -37,7 +37,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSDesignModel implements IPSDesignModel
 {
@@ -644,5 +645,5 @@ public class PSDesignModel implements IPSDesignModel
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("PSDesignModel");
+   private static final Logger ms_logger = LogManager.getLogger("PSDesignModel");
 }

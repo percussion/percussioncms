@@ -46,8 +46,8 @@ import com.percussion.services.pkginfo.data.PSPkgInfo;
 import com.percussion.services.pkginfo.utils.PSIdNameHelper;
 import com.percussion.services.pkginfo.utils.PSPkgHelper;
 import com.percussion.utils.guid.IPSGuid;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -524,6 +524,6 @@ public class PSDependencyValidator
    /**
     * Logger for the site manager
     */
-   static Log ms_log = LogFactory.getLog("PSDependencyValidator");
+    private static final Logger ms_log = LogManager.getLogger("PSDependencyValidator");
 
 }

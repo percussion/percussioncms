@@ -35,21 +35,18 @@ import com.percussion.services.publisher.PSPublisherException;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.Iterator;
-import java.util.List;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.List;
 
 /**
  * Invokes demand publishing and presents a user interface to allow the user to
@@ -67,6 +64,7 @@ public class PSDemandPublishServlet extends HttpServlet
     * 
     */
    private static final long serialVersionUID = 1L;
+   private static final Logger log = LogManager.getLogger("publish-jsp");
 
    /*
     * (non-Javadoc)
@@ -94,7 +92,7 @@ public class PSDemandPublishServlet extends HttpServlet
       /* The last part after the . is used in the output, don't want all jsp pages
        * to show up as [jsp].
        */
-      Log log = LogFactory.getLog("publish-jsp");
+
 
       // attempt to figure one out
       final String DEFAULT_GENERATOR = 

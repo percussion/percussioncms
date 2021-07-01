@@ -48,7 +48,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.percussion.util.PSSiteManageBean;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -218,5 +219,5 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
     }
 
 
-	private static Logger ms_logger = Logger.getLogger(PSSitePublishServiceHelper.class);
+	private static final Logger ms_logger = LogManager.getLogger(PSSitePublishServiceHelper.class);
 }

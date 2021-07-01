@@ -55,8 +55,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The backing bean for a scheduled task.
@@ -556,5 +556,5 @@ public class PSTaskNode extends PSEditableNode
    /**
     * The logger for this class.
     */
-   private final static Log ms_log = LogFactory.getLog(PSTaskNode.class);
+   private static final Logger ms_log = LogManager.getLogger(PSTaskNode.class);
 }

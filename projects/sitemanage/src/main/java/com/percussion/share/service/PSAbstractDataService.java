@@ -32,8 +32,8 @@ import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.Serializable;
 
@@ -108,5 +108,5 @@ public abstract class PSAbstractDataService <FULL, SUM, PK extends Serializable>
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSAbstractDataService.class);
+    private static final Logger log = LogManager.getLogger(PSAbstractDataService.class);
 }

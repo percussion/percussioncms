@@ -11,8 +11,8 @@ package test.percussion.pso.utils;
 
 import static org.junit.Assert.assertEquals;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +21,7 @@ import com.percussion.pso.utils.PathCleanupUtils;
 
 public class PathCleanupUtilsTest
 {
-   private static Log log = LogFactory.getLog(PathCleanupUtilsTest.class); 
+   private static final Logger log = LogManager.getLogger(PathCleanupUtilsTest.class);
    
    Mockery context; 
    

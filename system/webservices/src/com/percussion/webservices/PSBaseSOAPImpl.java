@@ -55,7 +55,8 @@ import org.apache.axis.attachments.Attachments;
 import org.apache.axis.transport.http.HTTPConstants;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This base class implements generic functionality available with every
@@ -68,7 +69,7 @@ public class PSBaseSOAPImpl
     /**
      * The logger for this class.
      */
-    private static Logger ms_logger = Logger.getLogger(PSBaseSOAPImpl.class);
+    private static final Logger ms_logger = LogManager.getLogger(PSBaseSOAPImpl.class);
 
 
     /**

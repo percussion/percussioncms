@@ -28,7 +28,8 @@ import com.percussion.server.webservices.crosssite.PSCrossSiteFolderRemoveAction
 import com.percussion.server.webservices.crosssite.PSCrossSiteFolderRemoveActionProcessor;
 import com.percussion.services.notification.PSMessageQueueListenerAdapter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Listens for Cross Site Remove Item operations.
@@ -67,6 +68,6 @@ public class PSCrossSiteRemoveQueueListener extends PSMessageQueueListenerAdapte
       return PSCrossSiteFolderRemoveActionData.class;
    }
    
-   private static final Logger ms_logger = Logger.getLogger(PSCrossSiteRemoveQueueListener.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSCrossSiteRemoveQueueListener.class);
 
 }

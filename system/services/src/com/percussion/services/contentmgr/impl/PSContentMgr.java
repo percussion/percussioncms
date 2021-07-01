@@ -49,8 +49,8 @@ import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
@@ -105,7 +105,7 @@ public class PSContentMgr  implements IPSContentMgr
    /**
     * The logger for the content manager
     */
-   static Log ms_log = LogFactory.getLog(PSContentMgr.class);
+    private static final Logger ms_log = LogManager.getLogger(PSContentMgr.class);
    
    /**
     * The region that caches information for the content manager. Used for 

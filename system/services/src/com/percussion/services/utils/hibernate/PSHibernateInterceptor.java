@@ -38,8 +38,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.Transaction;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
@@ -63,7 +63,7 @@ public class PSHibernateInterceptor extends EmptyInterceptor
    /**
     * Logger for this class
     */
-   private static Log ms_log = LogFactory.getLog(PSHibernateInterceptor.class);
+   private static final Logger ms_log = LogManager.getLogger(PSHibernateInterceptor.class);
 
    /**
     * Initialized in ctor, <code>true</code> if loads should be reported

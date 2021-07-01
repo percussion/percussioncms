@@ -24,8 +24,8 @@
 
 package com.percussion.utils.jexl;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 public class JexlScriptFixes {
 
     /** The logger. */
-    private static final Log LOG = LogFactory.getLog(PSScript.class);
+    private static final Logger LOG = LogManager.getLogger(PSScript.class);
 
     public static final String REF_REGEX="[a-zA-Z_$][0-9a-zA-Z_$]*";
     public static final Pattern REF_EQUALS_REGEX = Pattern.compile("("+REF_REGEX+")=(\\$[0-9a-zA-Z_$]+)");

@@ -34,8 +34,8 @@ import com.percussion.services.general.IPSRhythmyxInfo;
 import com.percussion.services.general.PSRhythmyxInfoLocator;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,7 +49,7 @@ import java.util.Properties;
 public class PSNavConfig
 {
  
-   private static Log ms_log = LogFactory.getLog(PSNavConfig.class);
+   private static final Logger ms_log = LogManager.getLogger(PSNavConfig.class);
 
    /**
     * Last modified time for the file

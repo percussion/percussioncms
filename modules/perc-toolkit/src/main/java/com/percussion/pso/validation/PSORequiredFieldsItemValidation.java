@@ -13,8 +13,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -43,7 +43,7 @@ public class PSORequiredFieldsItemValidation
       extends
          PSOAbstractItemValidationExit implements IPSItemValidator
 {
-   private static Log log = LogFactory.getLog(PSORequiredFieldsItemValidation.class);
+   private static final Logger log = LogManager.getLogger(PSORequiredFieldsItemValidation.class);
    /**
     * 
     */

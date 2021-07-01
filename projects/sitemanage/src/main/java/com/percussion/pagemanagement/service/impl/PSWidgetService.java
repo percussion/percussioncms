@@ -57,8 +57,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -390,7 +390,7 @@ public class PSWidgetService implements IPSWidgetService {
    /**
  * The log instance to use for this class, never <code>null</code>.
  */
-   private static final Log log = LogFactory.getLog(PSWidgetService.class);
+   private static final Logger log = LogManager.getLogger(PSWidgetService.class);
 
 
     

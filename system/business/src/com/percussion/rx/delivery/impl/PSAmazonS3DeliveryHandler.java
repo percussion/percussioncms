@@ -54,8 +54,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Invocation;
@@ -90,7 +90,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
      * Logger.
      */
     @SuppressWarnings("hiding")
-    static Log ms_log = LogFactory.getLog(PSAmazonS3DeliveryHandler.class);
+    private static final Logger ms_log = LogManager.getLogger(PSAmazonS3DeliveryHandler.class);
 
     private ConcurrentHashMap<Long,TransferManager> jobTransferManagers;
 

@@ -35,12 +35,12 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class PSThumbnailImageUtils {
-    private static final Log log = LogFactory.getLog(PSThumbnailImageUtils.class);
+    private static final Logger log = LogManager.getLogger(PSThumbnailImageUtils.class);
 
     public static void resizeThumbnail(String thumbnailFilePath) throws InterruptedException {
 

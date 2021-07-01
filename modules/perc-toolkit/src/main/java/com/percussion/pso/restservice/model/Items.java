@@ -14,8 +14,8 @@
  ******************************************************************************/
 package com.percussion.pso.restservice.model;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -40,7 +40,7 @@ public void setItems(List<Item> items) {
 	this.items = items;
 }
 
-private static final Log log = LogFactory.getLog(Items.class);
+private static final Logger log = LogManager.getLogger(Items.class);
 @XmlElement(name = "Error")
 @XmlElementWrapper(name="Errors")
 public List<Error> getErrors() {

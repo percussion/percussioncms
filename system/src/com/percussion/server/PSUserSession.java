@@ -51,8 +51,8 @@ import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -1611,7 +1611,7 @@ public class PSUserSession
    /**
     * Logger for this class.
     */
-   private static final Log ms_log = LogFactory.getLog(PSUserSession.class);
+   private static final Logger ms_log = LogManager.getLogger(PSUserSession.class);
    
    /**
     * The name used to store a client id as session private object.

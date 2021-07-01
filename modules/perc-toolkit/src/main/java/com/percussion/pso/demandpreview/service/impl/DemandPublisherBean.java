@@ -37,7 +37,7 @@ public class DemandPublisherBean implements DemandPublisherService
    /**
     * Logger for this class
     */
-   private static Logger log = LogManager.getLogger(DemandPublisherBean.class);
+   private static final Logger log = LogManager.getLogger(DemandPublisherBean.class);
    
    /**
     * Service for RxPublisherService

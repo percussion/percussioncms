@@ -49,7 +49,7 @@ import java.util.Set;
  */
 public abstract class AbstractMenuController extends ParameterizableViewController implements Controller
 {
-   private static Logger log = LogManager.getLogger(AbstractMenuController.class);
+   private static final Logger log = LogManager.getLogger(AbstractMenuController.class);
    protected SiteFolderFinder siteFolderFinder = null;
    protected static IPSAssemblyService asm = null;
    protected static IPSSecurityWs secws = null;

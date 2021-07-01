@@ -45,8 +45,8 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 
 import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author dougrand
@@ -88,13 +88,8 @@ public class PSVerify
       System.setProperty("javax.xml.parsers.SAXParserFactory",
          "com.percussion.xml.PSSaxParserFactoryImpl");
       
-      Logger l = Logger.getLogger("Main");
+      Logger l = LogManager.getLogger("Main");
       PSVerify it = new PSVerify(args);
-      if (it.m_arguments.isFlag("debug"))
-      {
-         Logger root = LogManager.getRootLogger();
-         root.setLevel(Level.DEBUG);
-      }
       
       try
       {
@@ -114,7 +109,7 @@ public class PSVerify
     */
    private void run() throws Exception
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       
       // Verify Rhythmyx directory
       List args = m_arguments.getRest();
@@ -228,7 +223,7 @@ public class PSVerify
     */
    void doGenerate(File rxdir) throws Exception
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       String bomfile = m_arguments.getArgument("generate");
       if (bomfile == null || bomfile.trim().length() == 0)
       {
@@ -264,7 +259,7 @@ public class PSVerify
     */
    private void doTest(File rxdir) throws Exception
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       String module = m_arguments.getArgument("test");
       l.info("Testing "  + module);
       String moduleClassName = "com.percussion.rxverify.modules." + module;
@@ -286,7 +281,7 @@ public class PSVerify
     */
    private void doList() throws Exception
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       String bomfile = m_arguments.getArgument("list");
       if (bomfile == null || bomfile.trim().length() == 0)
       {
@@ -310,7 +305,7 @@ public class PSVerify
     */
    private void doVerify(File rxdir,boolean debug) throws Exception
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       
       l.info("Started");
       for (int i = 0; i < ms_checkers.length; i++)
@@ -332,7 +327,7 @@ public class PSVerify
     */
    private void doVerifyIndexes( File rxdir, boolean debug ) throws Exception
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       
       l.info("Started");
       PSJdbcTableCheck tc = new PSJdbcTableCheck();
@@ -354,7 +349,7 @@ public class PSVerify
    {
       PSInstallation installation = null;
       File originalRxDir = null;
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
 
       String bomfile = m_arguments.getArgument("verify");
       if (bomfile == null || bomfile.trim().length() == 0)

@@ -36,8 +36,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -55,7 +55,7 @@ import static org.junit.Assert.assertTrue;
 @Category(IntegrationTest.class)
 public class PSPublisherTouchItemsTest
 {
-   static Log ms_log = LogFactory.getLog(PSPublisherTouchItemsTest.class);
+    private static final Logger ms_log = LogManager.getLogger(PSPublisherTouchItemsTest.class);
 
    static IPSPublisherService ps = PSPublisherServiceLocator
          .getPublisherService();

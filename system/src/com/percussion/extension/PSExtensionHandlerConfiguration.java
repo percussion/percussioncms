@@ -30,8 +30,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -871,5 +871,5 @@ class PSExtensionHandlerConfiguration
     */
    private volatile Set m_pendingRemovals = new HashSet();
    
-   private static Log ms_log = LogFactory.getLog("PSExtensionHandlerConfiguration"); 
+   private static final Logger ms_log = LogManager.getLogger("PSExtensionHandlerConfiguration");
 }

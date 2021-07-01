@@ -23,7 +23,6 @@
  */
 package com.percussion.i18n.rxlt;
 
-import com.percussion.tools.Logger;
 import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.io.BufferedReader;
@@ -38,6 +37,9 @@ import java.util.StringTokenizer;
 
 import org.apache.commons.io.IOUtils;
 import java.io.InputStream;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -74,7 +76,7 @@ public class PSCommandLineProcessor
    public PSCommandLineProcessor(String rxroot, boolean standalone)
       throws SAXException, IOException
    {
-      try(InputStream is = (InputStream) getClass()
+      try(InputStream is = getClass()
               .getResourceAsStream(CONFIG_FILE)){
       Document cfgDoc = PSXmlDocumentBuilder.createXmlDocument(is , false);
       if(rxroot != null)
@@ -126,7 +128,6 @@ public class PSCommandLineProcessor
       m_rxroot = cfgDoc.getDocumentElement().getAttribute(
          PSRxltConfigUtils.ATTR_RXROOT);
       
-      ms_logger.setOutputFile(new File(m_rxroot, LOG_FILE));
       
       //log version string
       logMessage("--------------------------------------------");
@@ -145,7 +146,6 @@ public class PSCommandLineProcessor
          IOUtils.closeQuietly(ms_consoleLineReader);
       if(ms_consoleInputStreamReader != null)
          IOUtils.closeQuietly(ms_consoleInputStreamReader);
-      ms_logger.logShutdown();
    }
    /**
     * This method gets the action to run from UI. Gathers all the inoformation
@@ -606,13 +606,8 @@ public class PSCommandLineProcessor
    private String m_rxroot = null;
    
    private boolean ms_standalone = false;
-
-
-   /**
-    * Reference to the singleton Logger object. Not suitable to run in a
-    * multithread environment. All threads write log to one single file.
-    */
-   private static Logger ms_logger = Logger.getLogger();
+   
+   private static final org.apache.logging.log4j.Logger ms_logger = LogManager.getLogger(PSCommandLineProcessor.class);
    
    /**
     * String constant representing the Logfile name. Log file is always written
@@ -629,7 +624,7 @@ public class PSCommandLineProcessor
    {
       if (ms_logEnabled)
       {
-         ms_logger.logMessage(msg);
+         ms_logger.info(msg);
       }
    }
 
@@ -649,10 +644,10 @@ public class PSCommandLineProcessor
       String msgText = getRes().getString(key);
       if(msgText != null)
       {
-         ms_logger.logMessage(msgText, args);
+         ms_logger.info(msgText, args);
       }
       else
-         ms_logger.logMessage(key);
+         ms_logger.info(key);
    }
 
    /**
@@ -671,10 +666,10 @@ public class PSCommandLineProcessor
       String msgText = getRes().getString(key);
       if(msgText != null)
       {
-         ms_logger.logMessage(msgText, args);
+         ms_logger.info(msgText, args);
       }
       else
-         ms_logger.logMessage(key);
+         ms_logger.info(key);
    }
 
    /**

@@ -34,8 +34,8 @@ import java.util.Map;
 import java.util.Properties;
 import javax.naming.NamingException;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
@@ -299,5 +299,5 @@ public class PSSchedulerBean implements FactoryBean, InitializingBean
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog(PSSchedulerBean.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSchedulerBean.class);
 }

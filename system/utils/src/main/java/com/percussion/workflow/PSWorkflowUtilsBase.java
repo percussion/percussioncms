@@ -24,7 +24,8 @@
 
 package com.percussion.workflow;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -1417,6 +1418,6 @@ public static final String ROLE_DELIMITER = ",";
     /**
      * The logger
      */
-    private static final Logger ms_log = Logger.getLogger(PSWorkflowUtilsBase.class.getName());
+    private static final Logger ms_log = LogManager.getLogger(PSWorkflowUtilsBase.class.getName());
 }
 

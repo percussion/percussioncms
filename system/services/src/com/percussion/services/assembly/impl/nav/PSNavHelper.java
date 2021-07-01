@@ -92,8 +92,8 @@ import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.commons.net.nntp.NNTPConnectionClosedException;
 
 
@@ -123,7 +123,7 @@ public class PSNavHelper
    /**
     * Logger for this class
     */
-   private static Log ms_log = LogFactory.getLog(PSNavHelper.class);
+   private static final Logger ms_log = LogManager.getLogger(PSNavHelper.class);
 
    /**
     * Static configuration used for loading navon nodes

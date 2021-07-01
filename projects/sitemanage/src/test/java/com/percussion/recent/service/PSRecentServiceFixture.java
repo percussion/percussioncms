@@ -67,8 +67,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSRecentServiceFixture
 {
@@ -498,7 +498,7 @@ public class PSRecentServiceFixture
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSRecentServiceFixture.class);
+    private static final Logger log = LogManager.getLogger(PSRecentServiceFixture.class);
     
 
 }

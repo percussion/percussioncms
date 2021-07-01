@@ -76,7 +76,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -626,7 +627,7 @@ public class PSActionSet
          ByteArrayOutputStream bout = new ByteArrayOutputStream();
          Result res = new StreamResult( bout );
 
-         Logger l = Logger.getLogger(this.getClass());
+         Logger l = LogManager.getLogger(this.getClass());
          PSStopwatch watch = null;
          if (l.isDebugEnabled())
          {

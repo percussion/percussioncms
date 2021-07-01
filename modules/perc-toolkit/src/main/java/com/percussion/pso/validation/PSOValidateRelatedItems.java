@@ -11,8 +11,8 @@ package com.percussion.pso.validation;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import com.percussion.cms.objectstore.PSAaRelationship;
@@ -75,7 +75,7 @@ public class PSOValidateRelatedItems extends PSDefaultExtension implements
    /**
     * Logger for this class
     */
-   private static final Log logger = LogFactory.getLog(PSOValidateRelatedItems.class);
+   private static final Logger logger = LogManager.getLogger(PSOValidateRelatedItems.class);
 
     
    private static IPSGuidManager gmgr = null; 

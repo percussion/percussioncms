@@ -133,8 +133,8 @@ import com.percussion.utils.types.PSPair;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.serialization.PSObjectSerializer;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.log4j.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -209,6 +209,7 @@ import static org.apache.commons.lang.Validate.notNull;
  */
 public class PSServer {
 
+   private static final Logger logger = LogManager.getLogger(PSServer.class);
 
    /**
     * The property to define the broken link logic on publishing managed links
@@ -774,7 +775,7 @@ public class PSServer {
        */
       Connection conn = null;
       PSConnectionDetail connDetail= null;
-      Log logger = LogFactory.getLog(PSServer.class);
+
       logger.info("Check database compatibility with unicode");
       try
       {
@@ -2420,9 +2421,8 @@ public class PSServer {
     */
    private static void setEstimatedStatistics()
    {
-      Log log = LogFactory.getLog(PSServer.class);
       String estStats = (String)ms_serverProps.get(PROP_ESTIMATE_STATS);
-      log.debug("Server property '" + PROP_ESTIMATE_STATS + "' =" + estStats);
+      logger.debug("Server property '" + PROP_ESTIMATE_STATS + "' =" + estStats);
       if (estStats == null || estStats.trim().length() == 0)
          return;
       
@@ -2443,16 +2443,16 @@ public class PSServer {
             catch (NumberFormatException e)
             {
                // ignore bad data
-               log.warn("Discard bad Estimate Statistics: '" + pairString + "'");
+               logger.warn("Discard bad Estimate Statistics: '" + pairString + "'");
                continue;
             }
-            log.debug("add Estimate Statistics: (" + pair[0] + "," + rows + ")");
+            logger.debug("add Estimate Statistics: (" + pair[0] + "," + rows + ")");
             estimateStats.put(pair[0], rows);
          }
          else
          {
             // ignore bad data
-            log.warn("Discard bad Estimate Statistics: '" + pairString + "'");
+            logger.warn("Discard bad Estimate Statistics: '" + pairString + "'");
          }
       }
       

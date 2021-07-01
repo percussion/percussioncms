@@ -38,8 +38,8 @@ import javax.security.auth.Subject;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.login.LoginException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Implementation class for login manager
@@ -117,5 +117,5 @@ public class PSLoginMgr implements IPSLoginMgr
    /**
     * Logger to use, never <code>null</code>.
     */
-   private static Log ms_log = LogFactory.getLog(PSLoginMgr.class);
+   private static final Logger ms_log = LogManager.getLogger(PSLoginMgr.class);
 }

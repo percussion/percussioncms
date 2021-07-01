@@ -28,7 +28,7 @@ public class BinaryImageController extends AbstractController
       implements
          Controller
 {
-   private static Logger log = LogManager.getLogger(BinaryImageController.class);
+   private static final Logger log = LogManager.getLogger(BinaryImageController.class);
    
    private ImageUrlBuilder urlBuilder;  
    

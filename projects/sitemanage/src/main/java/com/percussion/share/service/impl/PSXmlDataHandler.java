@@ -43,8 +43,8 @@ import java.util.Map;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This handler uses jaxb to load data from a specified xml file.
@@ -140,7 +140,7 @@ public class PSXmlDataHandler
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSXmlDataHandler.class);
+    private static final Logger log = LogManager.getLogger(PSXmlDataHandler.class);
  
     /**
      * The path to the xml data file.  Initialized in constructor, never <code>null</code> after that.

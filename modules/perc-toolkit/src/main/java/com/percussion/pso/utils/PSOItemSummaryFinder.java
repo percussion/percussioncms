@@ -15,8 +15,8 @@
  */
 package com.percussion.pso.utils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.error.PSException;
@@ -29,7 +29,7 @@ public class PSOItemSummaryFinder
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSOItemSummaryFinder.class);
+   private static final Logger log = LogManager.getLogger(PSOItemSummaryFinder.class);
 
    private static IPSCmsContentSummaries sumsvc = null;
 

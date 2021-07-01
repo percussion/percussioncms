@@ -61,8 +61,8 @@ import java.util.List;
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -539,6 +539,6 @@ public class PSSiteTemplateServiceTest extends PSRestTestCase<PSSiteTemplateRest
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSiteTemplateServiceTest.class);
+    private static final Logger log = LogManager.getLogger(PSSiteTemplateServiceTest.class);
 
 }

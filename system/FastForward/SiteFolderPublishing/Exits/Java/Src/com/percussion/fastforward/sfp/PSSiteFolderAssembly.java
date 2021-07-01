@@ -28,7 +28,7 @@ import com.percussion.util.IPSHtmlParameters;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Extension that can be used a location scheme generator as well as a UDF to
@@ -342,5 +342,5 @@ public class PSSiteFolderAssembly extends PSDefaultExtension
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   Logger log = Logger.getLogger(this.getClass());
+   Logger log = LogManager.getLogger(this.getClass());
 }

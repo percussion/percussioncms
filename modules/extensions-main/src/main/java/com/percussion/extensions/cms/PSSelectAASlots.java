@@ -41,8 +41,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -54,7 +54,7 @@ import org.w3c.dom.NodeList;
  */
 public class PSSelectAASlots implements IPSResultDocumentProcessor
 {
-   private static Log ms_log = LogFactory.getLog(PSSelectAASlots.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSelectAASlots.class);
 
    public boolean canModifyStyleSheet()
    {

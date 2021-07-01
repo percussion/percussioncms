@@ -23,8 +23,8 @@ import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.webservices.security.IPSSecurityWs;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
@@ -51,7 +51,7 @@ import static org.junit.Assert.fail;
  */
 public class ActionSiteForwardingControllerTest
 {
-   private static final Log log = LogFactory.getLog(ActionSiteForwardingControllerTest.class);
+   private static final Logger log = LogManager.getLogger(ActionSiteForwardingControllerTest.class);
    
    Mockery context; 
    ActionSiteForwardingController cut;

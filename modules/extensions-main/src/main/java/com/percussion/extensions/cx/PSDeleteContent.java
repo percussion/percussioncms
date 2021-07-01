@@ -46,8 +46,8 @@ import com.percussion.services.relationship.IPSRelationshipService;
 import com.percussion.services.relationship.PSRelationshipServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -439,7 +439,7 @@ public class PSDeleteContent implements IPSRequestPreProcessor
    /**
     * The log instance to use for purging, never <code>null</code>.
     */
-   private static final Log purge_log = LogFactory.getLog("PurgeLog");
+   private static final Logger purge_log = LogManager.getLogger("PurgeLog");
 
 }
 

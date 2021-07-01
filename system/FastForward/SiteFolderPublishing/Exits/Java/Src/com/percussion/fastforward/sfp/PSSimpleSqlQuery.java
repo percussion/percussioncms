@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Prepares and executes a simple SQL Query using the standard Rhythmyx
@@ -344,6 +344,6 @@ public class PSSimpleSqlQuery
    /**
     * Logger for diagnostic messages.
     */
-   static Logger ms_log = Logger.getLogger(PSSimpleSqlQuery.class);
+   static Logger ms_log = LogManager.getLogger(PSSimpleSqlQuery.class);
 
 }
